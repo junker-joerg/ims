@@ -15,3 +15,7 @@ class SimulationContext:
     max_periods: int = 0
     run_index: int = 0
     rng_seed: int = 0
+"""Placeholder module for future runtime context code.
+
+No simulation or business initialization logic is implemented yet.
+"""
