@@ -1,29 +1,21 @@
-# IMS-Migrationsinventar
+# IMS-Bestandsinventar
 
-Dieses Dokument beschreibt ein erstes, bewusst vorsichtiges Inventar der voraussichtlich zentralen Altdateien der IMS-C-Codebasis.
-Aktuell liegen diese Dateien noch nicht in diesem Repository vor; die folgende Liste ist daher eine Arbeitsgrundlage für die spätere Einsortierung und muss beim Auftauchen der Originaldateien überprüft werden.
+Dieses Inventar dokumentiert den aktuellen Bestand für die Migration.
+Historische C-Dateien werden in diesem PR nicht verschoben, sondern nur beschrieben.
 
-## Hinweise zum Status
+## Aktueller Repo-Bestand
 
-- **Keine Altdatei wurde in diesem PR verschoben oder portiert.**
-- **Unsicherheiten sind ausdrücklich markiert.**
-- Die Zuordnungen dienen nur der Migrationsplanung und sind **noch keine belastbare Architekturentscheidung**.
-
-## Vorläufige Liste zentraler Altdateien
-
-| Altdatei (vorläufig) | Kurzbeschreibung | Grobe Zuordnung | Status / Unsicherheit |
+| Datei | Zweck heute | Spätere Zielzuordnung | Hinweis |
 | --- | --- | --- | --- |
-| `inventory_main.c` | Vermuteter Prozess- oder Programmeinstieg. | Initialisierung, ggf. UI | **Unsicher**: Datei aktuell nicht im Repo vorhanden. |
-| `inventory_context.c` | Vermutete Initialisierung gemeinsamer Laufzeitdaten. | Initialisierung, Aggregate | **Unsicher**: Name und Verantwortung müssen an Originalcode geprüft werden. |
-| `inventory_scheduler.c` | Vermutete Steuerung der Abarbeitungsreihenfolge. | Scheduler | **Unsicher**: Schnittstellen und Nebenwirkungen noch unbekannt. |
-| `inventory_rng.c` | Vermutete Zufallszahl- oder Seed-Verwaltung. | RNG | **Unsicher**: unklar, ob RNG isoliert oder verteilt implementiert ist. |
-| `inventory_ui.c` | Vermutete Ausgabe- oder Bedienlogik. | UI | **Unsicher**: kann auch mit I/O oder CLI vermischt sein. |
-| `inventory_aggregate.c` | Vermutete Berechnung aggregierter Bestände oder Kennzahlen. | Aggregate | **Unsicher**: Aggregatlogik kann über mehrere Dateien verteilt sein. |
-| `inventory_domain.c` | Vermutete Kerndomäne rund um Bestände/Objekte. | Domäne | **Unsicher**: Domänengrenzen erst nach Sichtung belastbar. |
+| `legacy_c/` | vorgesehener Ablageort für historische C-Dateien | Referenzbestand für spätere Portierung | Aktuell liegen im Repository noch keine C-Dateien vor. |
+| `docs/migration/README.md` | Migrationsleitfaden | Dokumentation | beschreibt das Vorgehen, nicht die Fachlogik |
+| `docs/migration/ims_inventory.md` | Inventar und Zuordnung | Dokumentation | wird mit wachsendem Altbestand erweitert |
+| `docs/migration/python_target_architecture.md` | erstes Zielbild | Dokumentation / Architekturplanung | bewusst vorläufig |
+| `docs/plans/README.md` | Platz für Arbeitspläne | Planungsdokumentation | für spätere PR-Zerlegung gedacht |
+| `python_port/` | künftiger Python-Zielbereich | Python-Port | in diesem PR noch ohne Business-Implementierung |
+| `tests/` | künftige Testbasis | Regressionen / Referenztests | in diesem PR noch ohne fachliche Tests |
 
-## Einsortierungsprinzip für spätere PRs
+## Offene Punkte
 
-1. Historische C-Dateien bleiben zunächst an ihrem bisherigen Ort.
-2. Jede Datei wird erst nach Sichtung des tatsächlichen Inhalts einer Ziel-Domäne zugeordnet.
-3. Grenzfälle zwischen Domäne, Scheduler, RNG, UI, Aggregaten und Initialisierung werden separat dokumentiert.
-4. Erst nach dieser Einordnung werden semantisch konservative Portierungs-PRs vorbereitet.
+- Sobald historische C-Dateien im Repository vorliegen, werden sie hier einzeln mit Zweck und Zielzuordnung ergänzt.
+- Fachliche Priorisierung und Portierungsreihenfolge bleiben noch offen.

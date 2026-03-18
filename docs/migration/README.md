@@ -1,11 +1,10 @@
-# Migrationsprinzipien
+# Migration
 
-Die IMS-Migration erfolgt schrittweise, PR-basiert und semantisch konservativ.
+Diese Dokumente schaffen das organisatorische Grundgerüst für die schrittweise IMS-Migration.
+In diesem Stand werden noch keine fachliche Logik und keine Python-Business-Regeln portiert.
 
-## Leitlinien
+## Fokus dieses Grundgerüsts
 
-- Kleine PRs mit klar abgegrenztem Scope.
-- Zuerst Struktur, Inventar und Dokumentation.
-- Fachliche Logik wird erst portiert, wenn die Altdateien gesichtet und eingeordnet sind.
-- Historische C-Dateien bleiben vorerst an ihrem Ort, sofern keine zwingende strukturelle Maßnahme dagegen spricht.
-- Jede spätere Portierung soll das vorhandene Verhalten möglichst unverändert abbilden, bevor Refactorings erfolgen.
+- vorhandene Bestände sichtbar machen
+- Zielstruktur für spätere kleine PRs benennen
+- offene Fragen und Unsicherheiten dokumentieren

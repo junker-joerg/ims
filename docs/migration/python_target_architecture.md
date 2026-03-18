@@ -1,30 +1,19 @@
-# Zielbild der Python-Struktur
+# Vorläufige Python-Zielstruktur
 
-Dieses Dokument beschreibt ein erstes Zielbild für die spätere Python-Portierung von IMS.
-Es dient ausschließlich der Orientierung für künftige, kleine Migrations-PRs.
-
-## Geplante Zielstruktur
+Die Python-Portierung soll schrittweise und mit kleinen PRs aufgebaut werden.
+Dieses Zielbild ist bewusst knapp und noch keine endgültige Architekturentscheidung.
 
 ```text
+docs/
+  migration/
+  plans/
 python_port/
-  ims/
-    model/
-    engine/
-    io/
-    analysis/
 tests/
 ```
 
-## Bedeutung der Zielbereiche
+## Geplante Einordnung
 
-- `python_port/ims/model/`: Fachliche Modelle, Entitäten und wertartige Strukturen.
-- `python_port/ims/engine/`: Ablaufsteuerung, Scheduler-nahe Koordination und orchestrierende Komponenten.
-- `python_port/ims/io/`: Ein- und Ausgabe, Dateizugriffe und Adapter zu externen Schnittstellen.
-- `python_port/ims/analysis/`: Auswertungen, Aggregationen und analytische Hilfsbausteine.
-- `tests/`: Begleitende Tests für schrittweise, semantisch konservative Migrationen.
-
-## Leitplanken
-
-- Dieses Zielbild ist **vorläufig**.
-- Aus der Struktur folgt **noch keine Portierung fachlicher Logik**.
-- Abweichungen vom Zielbild sollen in späteren PRs begründet dokumentiert werden.
+- `python_port/`: Zielbereich für den späteren Python-Port
+- `tests/`: Referenz- und Regressionstests für portierte Ausschnitte
+- `docs/migration/`: Migrationsdokumentation und Bestandsinventar
+- `docs/plans/`: Arbeitspläne für die Zerlegung in kleine PRs
