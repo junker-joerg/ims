@@ -11,6 +11,7 @@ MODULES = [
     "ims.engine.context",
     "ims.engine.scheduler",
     "ims.io",
+    "ims.io.scenario_loader",
     "ims.analysis",
 ]
 
