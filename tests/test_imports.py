@@ -1,0 +1,58 @@
+def test_package_imports() -> None:
+    import ims
+    import ims.model
+    import ims.engine
+    import ims.io
+    import ims.analysis
+
+    assert ims is not None
+    assert ims.model is not None
+    assert ims.engine is not None
+    assert ims.io is not None
+    assert ims.analysis is not None
+
+
+def test_core_placeholders_import() -> None:
+    from ims.engine.context import SimulationContext, ensure_context_rng
+    from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
+    from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
+    from ims.engine.scheduler import Event, Scheduler
+    from ims.io.scenario_loader import LoadedScenario, load_scenario
+    from ims.model.bav_updates import BAVUpdateResult, update_bav_central_state
+    from ims.model.entities import BAV, BaseEntity, Insurer, Policyholder
+
+    ctx = SimulationContext()
+    scheduler = Scheduler()
+    entity = BaseEntity(entity_id=1)
+    event = Event(0, 0, 0, "entity", 1, "noop")
+    rng = create_rng(123)
+    scenario = load_scenario("tests/fixtures/minimal_scenario.json")
+    snapshot = collect_basic_aggregates(
+        scenario.context,
+        scenario.bav,
+        scenario.insurers,
+        scenario.policyholders,
+    )
+
+    assert ctx.period == 0
+    assert ensure_context_rng(SimulationContext(rng_seed=123)) is not None
+    assert scheduler.empty() is True
+    assert entity.entity_id == 1
+    assert event.action == "noop"
+    assert 0.0 <= rand_uniform_0_1(rng) < 1.0
+    assert 1 <= rand_int_inclusive(create_rng(123), 1, 3) <= 3
+    update_result = update_bav_central_state(
+        scenario.context,
+        scenario.bav,
+        scenario.insurers,
+        scenario.policyholders,
+    )
+
+    assert BAV is not None
+    assert Insurer is not None
+    assert Policyholder is not None
+    assert isinstance(scenario, LoadedScenario)
+    assert isinstance(snapshot, AggregateSnapshot)
+    assert snapshot.assigned_policyholders == 1
+    assert isinstance(update_result, BAVUpdateResult)
+    assert update_result.active_policyholder_count == 1
