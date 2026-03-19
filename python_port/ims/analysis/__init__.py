@@ -11,3 +11,4 @@ class BaseEntity:
     """
     entity_id: int
     active: bool = True
+"""Analysis package placeholders for the IMS Python port."""
