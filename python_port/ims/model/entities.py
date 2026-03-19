@@ -19,6 +19,11 @@ class BAV(BaseEntity):
     """Kleiner Zustandscontainer für eine BAV-nahe Entität."""
 
     name: str = ""
+    last_update_period: int | None = None
+    last_update_logtime: int | None = None
+    last_active_insurer_count: int = 0
+    last_active_policyholder_count: int = 0
+    last_sample_token: float | None = None
 
 
 @dataclass(slots=True)
