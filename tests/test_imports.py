@@ -13,6 +13,24 @@ def test_package_imports() -> None:
 
 
 def test_core_placeholders_import() -> None:
+    from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
+    from ims.engine.context import SimulationContext
+    from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
+    from ims.engine.scheduler import Event, Scheduler
+    from ims.engine.simulation import (
+        DispatchedEventResult,
+        ScheduledSequenceResult,
+        SimulationStepResult,
+        TwoStepSimulationResult,
+        dispatch_event,
+        run_scheduled_bav_update,
+        run_single_bav_update_step,
+        run_two_bav_update_steps,
+        run_two_prioritized_bav_updates,
+        run_two_scheduled_bav_updates,
+    )
+    from ims.io.scenario_loader import LoadedScenario, load_scenario
+    from ims.model.bav_updates import BAVUpdateResult, update_bav_central_state
     from ims.engine.context import SimulationContext, ensure_context_rng
     from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
     from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
@@ -37,6 +55,46 @@ def test_core_placeholders_import() -> None:
     ctx = SimulationContext()
     scheduler = Scheduler()
     entity = BaseEntity(entity_id=1)
+    bav = BAV(entity_id=1)
+    insurer = Insurer(entity_id=101)
+    policyholder = Policyholder(entity_id=201)
+    rng = create_rng(1995)
+
+    event = Event(
+        period=0,
+        logtime=0,
+        priority=0,
+        subject_type="test",
+        subject_id=1,
+        action="noop",
+    )
+
+    scheduler.plan(event)
+
+    assert ctx.period == 0
+    assert scheduler.empty() is False
+    assert entity.entity_id == 1
+    assert bav.entity_id == 1
+    assert insurer.entity_id == 101
+    assert policyholder.entity_id == 201
+    assert LoadedScenario is not None
+    assert load_scenario is not None
+    assert AggregateSnapshot is not None
+    assert collect_basic_aggregates is not None
+    assert BAVUpdateResult is not None
+    assert update_bav_central_state is not None
+    assert SimulationStepResult is not None
+    assert TwoStepSimulationResult is not None
+    assert DispatchedEventResult is not None
+    assert ScheduledSequenceResult is not None
+    assert dispatch_event is not None
+    assert run_scheduled_bav_update is not None
+    assert run_single_bav_update_step is not None
+    assert run_two_bav_update_steps is not None
+    assert run_two_scheduled_bav_updates is not None
+    assert run_two_prioritized_bav_updates is not None
+    assert rand_uniform_0_1(rng) >= 0.0
+    assert rand_int_inclusive(rng, 1, 1) == 1
     event = Event(0, 0, 0, "entity", 1, "noop")
     rng = create_rng(123)
     scenario = load_scenario("tests/fixtures/minimal_scenario.json")

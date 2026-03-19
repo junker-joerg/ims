@@ -6,6 +6,8 @@ from typing import Any
 
 @dataclass(order=True, slots=True)
 class Event:
+    """Kleines generisches Event mit technischer Sortierung und Action-String."""
+
     period: int
     logtime: int
     priority: int
