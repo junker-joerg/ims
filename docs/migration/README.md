@@ -26,3 +26,13 @@ Dieses Verzeichnis bündelt die fachliche und technische Dokumentation für die 
 - `ims_inventory.md`: Inventar und grobe Klassifikation der Altdateien
 - `python_target_architecture.md`: geplante Zielstruktur des Python-Ports
 - weitere Mapping- und Verifikationsnotizen folgen in späteren PRs
+# Migration
+
+Diese Dokumente schaffen das organisatorische Grundgerüst für die schrittweise IMS-Migration.
+In diesem Stand werden noch keine fachliche Logik und keine Python-Business-Regeln portiert.
+
+## Fokus dieses Grundgerüsts
+
+- vorhandene Bestände sichtbar machen
+- Zielstruktur für spätere kleine PRs benennen
+- offene Fragen und Unsicherheiten dokumentieren

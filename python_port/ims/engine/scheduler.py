@@ -6,6 +6,8 @@ from typing import Any
 
 @dataclass(order=True, slots=True)
 class Event:
+    """Kleines generisches Event mit technischer Sortierung und Action-String."""
+
     period: int
     logtime: int
     priority: int
@@ -43,3 +45,7 @@ class Scheduler:
 
     def __len__(self) -> int:
         return len(self._events)
+"""Placeholder module for future scheduler code.
+
+This file intentionally contains no scheduling or rule execution logic yet.
+"""
