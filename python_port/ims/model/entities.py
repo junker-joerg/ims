@@ -9,6 +9,8 @@ class BaseEntity:
     In späteren PRs werden daraus konkretere Typen wie BAV, VU und VN
     abgeleitet oder separat modelliert.
     """
+    entity_id: int
+    active: bool = True
 
     entity_id: int
     active: bool = True
@@ -39,3 +41,8 @@ class Policyholder(BaseEntity):
 
     name: str = ""
     insurer_id: int | None = None
+"""Placeholder module for future entity definitions.
+
+This file reserves the import path for later PRs and intentionally omits
+business fields and domain behavior.
+"""

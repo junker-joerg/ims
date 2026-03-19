@@ -48,3 +48,7 @@ def ensure_context_rng(context: SimulationContext) -> random.Random:
     if context.rng is None:
         context.rng = create_rng(context.rng_seed)
     return context.rng
+"""Placeholder module for future runtime context code.
+
+No simulation or business initialization logic is implemented yet.
+"""
