@@ -46,6 +46,7 @@ class DispatchedEventResult:
 
     event: Event
     context: SimulationContext
+    bav_update: BAVUpdateResult | None
     bav_update: BAVUpdateResult
     aggregate_snapshot: AggregateSnapshot
 
@@ -148,6 +149,48 @@ def _build_sequenced_bav_events(
     ]
 
 
+def _build_progressed_bav_events(
+    *,
+    context: SimulationContext,
+    bav: BAV,
+    num_events: int,
+    use_rng_sample: bool,
+    logtimes_per_period: int,
+) -> list[Event]:
+    events: list[Event] = []
+    event_context = context
+
+    for index in range(num_events):
+        events.append(
+            Event(
+                period=event_context.period,
+                logtime=event_context.logtime,
+                priority=0,
+                subject_type="bav",
+                subject_id=bav.entity_id,
+                action="bav_update",
+                payload={"use_rng_sample": use_rng_sample, "index": index},
+            )
+        )
+
+        if index == num_events - 1:
+            continue
+
+        if event_context.logtime >= logtimes_per_period - 1:
+            event_context = event_context.advanced(
+                period_increment=1,
+                logtime_increment=0,
+                reset_logtime_to=0,
+            )
+        else:
+            event_context = event_context.advanced(
+                period_increment=0,
+                logtime_increment=1,
+            )
+
+    return events
+
+
 def dispatch_event(
     event: Event,
     *,
@@ -161,6 +204,24 @@ def dispatch_event(
 
     Unterstützt in diesem PR nur:
     - action == "bav_update"
+    - action == "bav_snapshot"
+    """
+
+    if event.action == "bav_update":
+        bav_update = update_bav_central_state(
+            context=context,
+            bav=bav,
+            insurers=insurers,
+            policyholders=policyholders,
+            use_rng_sample=bool(event.payload.get("use_rng_sample", False))
+            if isinstance(event.payload, dict)
+            else False,
+        )
+    elif event.action == "bav_snapshot":
+        bav_update = None
+    else:
+        raise ValueError(f"unsupported event action: {event.action}")
+
     """
 
     if event.action != "bav_update":
@@ -552,6 +613,86 @@ def run_two_prioritized_bav_updates(
     )
 
 
+
+def run_mixed_bav_event_sequence(
+    path: str | Path,
+    *,
+    initialize_rng: bool = False,
+    use_rng_sample: bool = False,
+    update_first: bool = True,
+) -> ScheduledSequenceResult:
+    loaded = load_scenario(path)
+
+    initial_context = loaded.context
+    if initialize_rng:
+        ensure_context_rng(initial_context)
+        loaded.context = initial_context
+
+    if update_first:
+        first_event = Event(
+            period=initial_context.period,
+            logtime=initial_context.logtime,
+            priority=0,
+            subject_type="bav",
+            subject_id=loaded.bav.entity_id,
+            action="bav_update",
+            payload={"use_rng_sample": use_rng_sample},
+        )
+        second_event = Event(
+            period=initial_context.period,
+            logtime=initial_context.logtime + 1,
+            priority=0,
+            subject_type="bav",
+            subject_id=loaded.bav.entity_id,
+            action="bav_snapshot",
+            payload={},
+        )
+    else:
+        first_event = Event(
+            period=initial_context.period,
+            logtime=initial_context.logtime,
+            priority=0,
+            subject_type="bav",
+            subject_id=loaded.bav.entity_id,
+            action="bav_snapshot",
+            payload={},
+        )
+        second_event = Event(
+            period=initial_context.period,
+            logtime=initial_context.logtime + 1,
+            priority=0,
+            subject_type="bav",
+            subject_id=loaded.bav.entity_id,
+            action="bav_update",
+            payload={"use_rng_sample": use_rng_sample},
+        )
+
+    scheduler = Scheduler()
+    scheduler.plan(first_event)
+    scheduler.plan(second_event)
+
+    dispatched_results: list[DispatchedEventResult] = []
+
+    while not scheduler.empty():
+        event = scheduler.pop()
+        event_context = _context_for_event(initial_context, event)
+        loaded.context = event_context
+
+        dispatched = dispatch_event(
+            event,
+            context=event_context,
+            bav=loaded.bav,
+            insurers=loaded.insurers,
+            policyholders=loaded.policyholders,
+        )
+        dispatched_results.append(dispatched)
+
+    return ScheduledSequenceResult(
+        initial_context=initial_context,
+        planned_events=[first_event, second_event],
+        dispatched_results=dispatched_results,
+    )
+
 def run_controlled_bav_event_loop(
     path: str | Path,
     *,
@@ -576,6 +717,66 @@ def run_controlled_bav_event_loop(
         bav=loaded.bav,
         num_events=num_events,
         use_rng_sample=use_rng_sample,
+    )
+
+    scheduler = Scheduler()
+    for event in planned_events:
+        scheduler.plan(event)
+
+    dispatched_results: list[DispatchedEventResult] = []
+    while not scheduler.empty() and len(dispatched_results) < max_events:
+        event = scheduler.pop()
+        event_context = _context_for_event(initial_context, event)
+        loaded.context = event_context
+        dispatched_results.append(
+            dispatch_event(
+                event,
+                context=event_context,
+                bav=loaded.bav,
+                insurers=loaded.insurers,
+                policyholders=loaded.policyholders,
+            )
+        )
+
+    remaining_scheduled_events = len(scheduler)
+    return ControlledLoopResult(
+        initial_context=initial_context,
+        planned_events=planned_events,
+        dispatched_results=dispatched_results,
+        max_events=max_events,
+        stopped_due_to_limit=remaining_scheduled_events > 0,
+        remaining_scheduled_events=remaining_scheduled_events,
+    )
+
+
+def run_progressed_bav_event_loop(
+    path: str | Path,
+    *,
+    initialize_rng: bool = False,
+    use_rng_sample: bool = False,
+    num_events: int = 4,
+    max_events: int = 4,
+    logtimes_per_period: int = 2,
+) -> ControlledLoopResult:
+    if num_events <= 0:
+        raise ValueError("num_events must be greater than 0")
+    if max_events <= 0:
+        raise ValueError("max_events must be greater than 0")
+    if logtimes_per_period <= 0:
+        raise ValueError("logtimes_per_period must be greater than 0")
+
+    loaded = load_scenario(path)
+    initial_context = loaded.context
+    if initialize_rng:
+        ensure_context_rng(initial_context)
+        loaded.context = initial_context
+
+    planned_events = _build_progressed_bav_events(
+        context=initial_context,
+        bav=loaded.bav,
+        num_events=num_events,
+        use_rng_sample=use_rng_sample,
+        logtimes_per_period=logtimes_per_period,
     )
 
     scheduler = Scheduler()

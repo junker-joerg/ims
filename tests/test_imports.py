@@ -28,6 +28,8 @@ def test_core_placeholders_import() -> None:
         TwoStepSimulationResult,
         dispatch_event,
         run_controlled_bav_event_loop,
+        run_mixed_bav_event_sequence,
+        run_progressed_bav_event_loop,
         run_scheduled_bav_update,
         run_single_bav_update_step,
         run_two_bav_update_steps,
@@ -102,6 +104,8 @@ def test_core_placeholders_import() -> None:
     assert ScheduledSequenceResult is not None
     assert dispatch_event is not None
     assert run_controlled_bav_event_loop is not None
+    assert run_mixed_bav_event_sequence is not None
+    assert run_progressed_bav_event_loop is not None
     assert DispatchedEventResult is not None
     assert ScheduledSequenceResult is not None
     assert dispatch_event is not None
