@@ -21,11 +21,13 @@ def test_core_placeholders_import() -> None:
     from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
     from ims.engine.scheduler import Event, Scheduler
     from ims.engine.simulation import (
+        ControlledLoopResult,
         DispatchedEventResult,
         ScheduledSequenceResult,
         SimulationStepResult,
         TwoStepSimulationResult,
         dispatch_event,
+        run_controlled_bav_event_loop,
         run_scheduled_bav_update,
         run_single_bav_update_step,
         run_two_bav_update_steps,
@@ -95,6 +97,11 @@ def test_core_placeholders_import() -> None:
     assert update_bav_central_state is not None
     assert SimulationStepResult is not None
     assert TwoStepSimulationResult is not None
+    assert ControlledLoopResult is not None
+    assert DispatchedEventResult is not None
+    assert ScheduledSequenceResult is not None
+    assert dispatch_event is not None
+    assert run_controlled_bav_event_loop is not None
     assert DispatchedEventResult is not None
     assert ScheduledSequenceResult is not None
     assert dispatch_event is not None

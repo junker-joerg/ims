@@ -61,6 +61,16 @@ class ScheduledSequenceResult:
     dispatched_results: list[DispatchedEventResult]
 
 
+@dataclass(slots=True)
+class ControlledLoopResult:
+    initial_context: SimulationContext
+    planned_events: list[Event]
+    dispatched_results: list[DispatchedEventResult]
+    max_events: int
+    stopped_due_to_limit: bool
+    remaining_scheduled_events: int
+
+
 def _run_loaded_bav_update_step(
     context: SimulationContext,
     bav: BAV,
@@ -115,6 +125,27 @@ def _context_for_event(
         rng_seed=base_context.rng_seed,
         rng=base_context.rng,
     )
+
+
+def _build_sequenced_bav_events(
+    *,
+    context: SimulationContext,
+    bav: BAV,
+    num_events: int,
+    use_rng_sample: bool,
+) -> list[Event]:
+    return [
+        Event(
+            period=context.period,
+            logtime=context.logtime + index,
+            priority=0,
+            subject_type="bav",
+            subject_id=bav.entity_id,
+            action="bav_update",
+            payload={"use_rng_sample": use_rng_sample, "index": index},
+        )
+        for index in range(num_events)
+    ]
 
 
 def dispatch_event(
@@ -518,6 +549,62 @@ def run_two_prioritized_bav_updates(
         initial_context=initial_context,
         planned_events=[first_event, second_event],
         dispatched_results=dispatched_results,
+    )
+
+
+def run_controlled_bav_event_loop(
+    path: str | Path,
+    *,
+    initialize_rng: bool = False,
+    use_rng_sample: bool = False,
+    num_events: int = 3,
+    max_events: int = 3,
+) -> ControlledLoopResult:
+    if num_events <= 0:
+        raise ValueError("num_events must be greater than 0")
+    if max_events <= 0:
+        raise ValueError("max_events must be greater than 0")
+
+    loaded = load_scenario(path)
+    initial_context = loaded.context
+    if initialize_rng:
+        ensure_context_rng(initial_context)
+        loaded.context = initial_context
+
+    planned_events = _build_sequenced_bav_events(
+        context=initial_context,
+        bav=loaded.bav,
+        num_events=num_events,
+        use_rng_sample=use_rng_sample,
+    )
+
+    scheduler = Scheduler()
+    for event in planned_events:
+        scheduler.plan(event)
+
+    dispatched_results: list[DispatchedEventResult] = []
+    while not scheduler.empty() and len(dispatched_results) < max_events:
+        event = scheduler.pop()
+        event_context = _context_for_event(initial_context, event)
+        loaded.context = event_context
+        dispatched_results.append(
+            dispatch_event(
+                event,
+                context=event_context,
+                bav=loaded.bav,
+                insurers=loaded.insurers,
+                policyholders=loaded.policyholders,
+            )
+        )
+
+    remaining_scheduled_events = len(scheduler)
+    return ControlledLoopResult(
+        initial_context=initial_context,
+        planned_events=planned_events,
+        dispatched_results=dispatched_results,
+        max_events=max_events,
+        stopped_due_to_limit=remaining_scheduled_events > 0,
+        remaining_scheduled_events=remaining_scheduled_events,
     aggregate_snapshot = collect_basic_aggregates(
         loaded.context,
         loaded.bav,
