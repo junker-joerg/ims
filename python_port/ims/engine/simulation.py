@@ -82,6 +82,13 @@ def _run_loaded_bav_update_step(
         insurers=insurers,
         policyholders=policyholders,
     )
+        context,
+        bav,
+        insurers,
+        policyholders,
+        use_rng_sample=use_rng_sample,
+    )
+    aggregate_snapshot = collect_basic_aggregates(context, bav, insurers, policyholders)
     return SimulationStepResult(
         context=context,
         bav=bav,
@@ -195,6 +202,20 @@ def run_single_bav_update_step(
         aggregate_snapshot=aggregate_snapshot,
     )
 
+    loaded = load_scenario(path)
+
+    if initialize_rng:
+        ensure_context_rng(loaded.context)
+
+    return _run_loaded_bav_update_step(
+    bav_update = update_bav_central_state(
+        loaded.context,
+        loaded.bav,
+        loaded.insurers,
+        loaded.policyholders,
+        use_rng_sample=use_rng_sample,
+    )
+
 
 def run_two_bav_update_steps(
     path: str | Path,
@@ -273,6 +294,31 @@ def run_two_bav_update_steps(
         aggregate_snapshot=second_aggregate,
     )
 
+    loaded = load_scenario(path)
+
+    if initialize_rng:
+        ensure_context_rng(loaded.context)
+
+    initial_context = loaded.context
+    first_step = _run_loaded_bav_update_step(
+        initial_context,
+        loaded.bav,
+        loaded.insurers,
+        loaded.policyholders,
+        use_rng_sample=use_rng_sample,
+    )
+    if second_step_new_period:
+        second_context = initial_context.advanced(period_increment=1, logtime_increment=0, reset_logtime_to=0)
+    else:
+        second_context = initial_context.advanced(period_increment=0, logtime_increment=1)
+
+    second_step = _run_loaded_bav_update_step(
+        second_context,
+        loaded.bav,
+        loaded.insurers,
+        loaded.policyholders,
+        use_rng_sample=use_rng_sample,
+    )
     return TwoStepSimulationResult(
         initial_context=initial_context,
         first_step=first_step,
@@ -472,4 +518,17 @@ def run_two_prioritized_bav_updates(
         initial_context=initial_context,
         planned_events=[first_event, second_event],
         dispatched_results=dispatched_results,
+    aggregate_snapshot = collect_basic_aggregates(
+        loaded.context,
+        loaded.bav,
+        loaded.insurers,
+        loaded.policyholders,
+    )
+    return SimulationStepResult(
+        context=loaded.context,
+        bav=loaded.bav,
+        insurers=loaded.insurers,
+        policyholders=loaded.policyholders,
+        bav_update=bav_update,
+        aggregate_snapshot=aggregate_snapshot,
     )
