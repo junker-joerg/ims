@@ -20,6 +20,10 @@ def test_core_placeholders_import() -> None:
     from ims.engine.simulation import SimulationStepResult, run_single_bav_update_step
     from ims.io.scenario_loader import LoadedScenario, load_scenario
     from ims.model.bav_updates import BAVUpdateResult, update_bav_central_state
+    from ims.engine.context import SimulationContext
+    from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
+    from ims.engine.scheduler import Event, Scheduler
+    from ims.io.scenario_loader import LoadedScenario, load_scenario
     from ims.model.entities import BAV, BaseEntity, Insurer, Policyholder
 
     ctx = SimulationContext()
@@ -29,6 +33,7 @@ def test_core_placeholders_import() -> None:
     rng = create_rng(123)
     scenario = load_scenario("tests/fixtures/minimal_scenario.json")
     simulation_result = run_single_bav_update_step("tests/fixtures/minimal_scenario.json")
+    scenario = load_scenario("tests/fixtures/minimal_scenario.json")
     snapshot = collect_basic_aggregates(
         scenario.context,
         scenario.bav,
@@ -50,6 +55,9 @@ def test_core_placeholders_import() -> None:
         scenario.policyholders,
     )
 
+    assert scheduler.empty() is True
+    assert entity.entity_id == 1
+    assert event.action == "noop"
     assert BAV is not None
     assert Insurer is not None
     assert Policyholder is not None
@@ -60,3 +68,28 @@ def test_core_placeholders_import() -> None:
     assert update_result.active_policyholder_count == 1
     assert isinstance(simulation_result, SimulationStepResult)
     assert simulation_result.aggregate_snapshot.assigned_policyholders == 1
+"""Import smoke tests for the IMS Python scaffold."""
+
+import importlib
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1] / "python_port"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+MODULES = [
+    "ims",
+    "ims.model",
+    "ims.model.entities",
+    "ims.engine",
+    "ims.engine.context",
+    "ims.engine.scheduler",
+    "ims.io",
+    "ims.analysis",
+]
+
+
+def test_scaffold_modules_are_importable() -> None:
+    for module_name in MODULES:
+        assert importlib.import_module(module_name) is not None

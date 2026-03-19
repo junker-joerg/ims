@@ -43,3 +43,7 @@ class Scheduler:
 
     def __len__(self) -> int:
         return len(self._events)
+"""Placeholder module for future scheduler code.
+
+This file intentionally contains no scheduling or rule execution logic yet.
+"""
