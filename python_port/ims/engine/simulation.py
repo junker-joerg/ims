@@ -64,6 +64,7 @@ def run_single_bav_update_step(
         ensure_context_rng(loaded.context)
 
     return _run_loaded_bav_update_step(
+    bav_update = update_bav_central_state(
         loaded.context,
         loaded.bav,
         loaded.insurers,
@@ -109,4 +110,17 @@ def run_two_bav_update_steps(
         first_step=first_step,
         second_context=second_context,
         second_step=second_step,
+    aggregate_snapshot = collect_basic_aggregates(
+        loaded.context,
+        loaded.bav,
+        loaded.insurers,
+        loaded.policyholders,
+    )
+    return SimulationStepResult(
+        context=loaded.context,
+        bav=loaded.bav,
+        insurers=loaded.insurers,
+        policyholders=loaded.policyholders,
+        bav_update=bav_update,
+        aggregate_snapshot=aggregate_snapshot,
     )
