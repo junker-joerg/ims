@@ -9,6 +9,8 @@ class BaseEntity:
     In späteren PRs werden daraus konkretere Typen wie BAV, VU und VN
     abgeleitet oder separat modelliert.
     """
+    entity_id: int
+    active: bool = True
 
     entity_id: int
     active: bool = True

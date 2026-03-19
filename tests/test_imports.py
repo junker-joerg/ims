@@ -13,6 +13,9 @@ def test_package_imports() -> None:
 
 
 def test_core_placeholders_import() -> None:
+    from ims.engine.context import SimulationContext
+    from ims.engine.scheduler import Event, Scheduler
+    from ims.model.entities import BaseEntity
     from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
     from ims.engine.context import SimulationContext
     from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
@@ -55,6 +58,13 @@ def test_core_placeholders_import() -> None:
     ctx = SimulationContext()
     scheduler = Scheduler()
     entity = BaseEntity(entity_id=1)
+    event = Event(0, 0, 0, "entity", 1, "noop")
+
+    assert ctx.period == 0
+    assert ctx.max_periods == 0
+    assert scheduler.empty() is True
+    assert entity.entity_id == 1
+    assert event.action == "noop"
     bav = BAV(entity_id=1)
     insurer = Insurer(entity_id=101)
     policyholder = Policyholder(entity_id=201)
