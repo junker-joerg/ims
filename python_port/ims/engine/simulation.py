@@ -191,6 +191,106 @@ def _build_progressed_bav_events(
     return events
 
 
+def _build_mixed_bav_events(
+    *,
+    context: SimulationContext,
+    bav: BAV,
+    num_pairs: int,
+    use_rng_sample: bool,
+    start_with_update: bool,
+) -> list[Event]:
+    events: list[Event] = []
+
+    for index in range(num_pairs):
+        base_logtime = context.logtime + (index * 2)
+        if start_with_update:
+            first_action = "bav_update"
+            second_action = "bav_snapshot"
+        else:
+            first_action = "bav_snapshot"
+            second_action = "bav_update"
+
+        events.append(
+            Event(
+                period=context.period,
+                logtime=base_logtime,
+                priority=0,
+                subject_type="bav",
+                subject_id=bav.entity_id,
+                action=first_action,
+                payload={"use_rng_sample": use_rng_sample, "index": index}
+                if first_action == "bav_update"
+                else {},
+            )
+        )
+        events.append(
+            Event(
+                period=context.period,
+                logtime=base_logtime + 1,
+                priority=0,
+                subject_type="bav",
+                subject_id=bav.entity_id,
+                action=second_action,
+                payload={"use_rng_sample": use_rng_sample, "index": index}
+                if second_action == "bav_update"
+                else {},
+            )
+        )
+
+    return events
+
+
+def _build_progressed_mixed_bav_events(
+    *,
+    context: SimulationContext,
+    bav: BAV,
+    num_pairs: int,
+    use_rng_sample: bool,
+    logtimes_per_period: int,
+    start_with_update: bool,
+) -> list[Event]:
+    events: list[Event] = []
+    event_context = context
+
+    for index in range(num_pairs):
+        if start_with_update:
+            actions = ("bav_update", "bav_snapshot")
+        else:
+            actions = ("bav_snapshot", "bav_update")
+
+        for action in actions:
+            events.append(
+                Event(
+                    period=event_context.period,
+                    logtime=event_context.logtime,
+                    priority=0,
+                    subject_type="bav",
+                    subject_id=bav.entity_id,
+                    action=action,
+                    payload={"use_rng_sample": use_rng_sample, "index": index}
+                    if action == "bav_update"
+                    else {},
+                )
+            )
+
+            if index == num_pairs - 1 and action == actions[-1]:
+                continue
+
+            if event_context.logtime >= logtimes_per_period - 1:
+                event_context = event_context.advanced(
+                    period_increment=1,
+                    logtime_increment=0,
+                    reset_logtime_to=0,
+                )
+            else:
+                event_context = event_context.advanced(
+                    period_increment=0,
+                    logtime_increment=1,
+                )
+
+    return events
+
+
 def dispatch_event(
     event: Event,
     *,
@@ -748,6 +848,126 @@ def run_controlled_bav_event_loop(
         remaining_scheduled_events=remaining_scheduled_events,
     )
 
+
+
+def run_mixed_controlled_bav_event_loop(
+    path: str | Path,
+    *,
+    initialize_rng: bool = False,
+    use_rng_sample: bool = False,
+    num_pairs: int = 2,
+    max_events: int = 4,
+    start_with_update: bool = True,
+) -> ControlledLoopResult:
+    if num_pairs <= 0:
+        raise ValueError("num_pairs must be greater than 0")
+    if max_events <= 0:
+        raise ValueError("max_events must be greater than 0")
+
+    loaded = load_scenario(path)
+    initial_context = loaded.context
+    if initialize_rng:
+        ensure_context_rng(initial_context)
+        loaded.context = initial_context
+
+    planned_events = _build_mixed_bav_events(
+        context=initial_context,
+        bav=loaded.bav,
+        num_pairs=num_pairs,
+        use_rng_sample=use_rng_sample,
+        start_with_update=start_with_update,
+    )
+
+    scheduler = Scheduler()
+    for event in planned_events:
+        scheduler.plan(event)
+
+    dispatched_results: list[DispatchedEventResult] = []
+    while not scheduler.empty() and len(dispatched_results) < max_events:
+        event = scheduler.pop()
+        event_context = _context_for_event(initial_context, event)
+        loaded.context = event_context
+        dispatched_results.append(
+            dispatch_event(
+                event,
+                context=event_context,
+                bav=loaded.bav,
+                insurers=loaded.insurers,
+                policyholders=loaded.policyholders,
+            )
+        )
+
+    remaining_scheduled_events = len(scheduler)
+    return ControlledLoopResult(
+        initial_context=initial_context,
+        planned_events=planned_events,
+        dispatched_results=dispatched_results,
+        max_events=max_events,
+        stopped_due_to_limit=remaining_scheduled_events > 0,
+        remaining_scheduled_events=remaining_scheduled_events,
+    )
+
+
+def run_progressed_mixed_controlled_bav_event_loop(
+    path: str | Path,
+    *,
+    initialize_rng: bool = False,
+    use_rng_sample: bool = False,
+    num_pairs: int = 3,
+    max_events: int = 6,
+    logtimes_per_period: int = 2,
+    start_with_update: bool = True,
+) -> ControlledLoopResult:
+    if num_pairs <= 0:
+        raise ValueError("num_pairs must be greater than 0")
+    if max_events <= 0:
+        raise ValueError("max_events must be greater than 0")
+    if logtimes_per_period <= 0:
+        raise ValueError("logtimes_per_period must be greater than 0")
+
+    loaded = load_scenario(path)
+    initial_context = loaded.context
+    if initialize_rng:
+        ensure_context_rng(initial_context)
+        loaded.context = initial_context
+
+    planned_events = _build_progressed_mixed_bav_events(
+        context=initial_context,
+        bav=loaded.bav,
+        num_pairs=num_pairs,
+        use_rng_sample=use_rng_sample,
+        logtimes_per_period=logtimes_per_period,
+        start_with_update=start_with_update,
+    )
+
+    scheduler = Scheduler()
+    for event in planned_events:
+        scheduler.plan(event)
+
+    dispatched_results: list[DispatchedEventResult] = []
+    while not scheduler.empty() and len(dispatched_results) < max_events:
+        event = scheduler.pop()
+        event_context = _context_for_event(initial_context, event)
+        loaded.context = event_context
+        dispatched_results.append(
+            dispatch_event(
+                event,
+                context=event_context,
+                bav=loaded.bav,
+                insurers=loaded.insurers,
+                policyholders=loaded.policyholders,
+            )
+        )
+
+    remaining_scheduled_events = len(scheduler)
+    return ControlledLoopResult(
+        initial_context=initial_context,
+        planned_events=planned_events,
+        dispatched_results=dispatched_results,
+        max_events=max_events,
+        stopped_due_to_limit=remaining_scheduled_events > 0,
+        remaining_scheduled_events=remaining_scheduled_events,
+    )
 
 def run_progressed_bav_event_loop(
     path: str | Path,
