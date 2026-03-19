@@ -13,6 +13,15 @@ def test_package_imports() -> None:
 
 
 def test_core_placeholders_import() -> None:
+    from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
+    from ims.engine.context import SimulationContext
+    from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
+    from ims.engine.event_builders import (
+        build_mixed_bav_events,
+        build_progressed_bav_events,
+        build_progressed_mixed_bav_events,
+        build_sequenced_bav_events,
+    )
     from ims.engine.context import SimulationContext
     from ims.engine.scheduler import Event, Scheduler
     from ims.model.entities import BaseEntity
@@ -26,6 +35,8 @@ def test_core_placeholders_import() -> None:
         ScheduledSequenceResult,
         SimulationStepResult,
         TwoStepSimulationResult,
+        _dispatch_planned_events,
+        _load_initialized_scenario,
         dispatch_event,
         run_controlled_bav_event_loop,
         run_mixed_bav_event_sequence,
@@ -89,6 +100,10 @@ def test_core_placeholders_import() -> None:
     scheduler.plan(event)
 
     assert ctx.period == 0
+    assert build_sequenced_bav_events is not None
+    assert build_progressed_bav_events is not None
+    assert build_mixed_bav_events is not None
+    assert build_progressed_mixed_bav_events is not None
     assert scheduler.empty() is False
     assert entity.entity_id == 1
     assert bav.entity_id == 1
@@ -102,6 +117,8 @@ def test_core_placeholders_import() -> None:
     assert update_bav_central_state is not None
     assert SimulationStepResult is not None
     assert TwoStepSimulationResult is not None
+    assert _dispatch_planned_events is not None
+    assert _load_initialized_scenario is not None
     assert ControlledLoopResult is not None
     assert DispatchedEventResult is not None
     assert ScheduledSequenceResult is not None
