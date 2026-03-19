@@ -17,6 +17,14 @@ def test_core_placeholders_import() -> None:
     from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
     from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
     from ims.engine.scheduler import Event, Scheduler
+    from ims.engine.simulation import (
+        SimulationStepResult,
+        TwoStepSimulationResult,
+        run_single_bav_update_step,
+        run_two_bav_update_steps,
+    )
+    from ims.io.scenario_loader import LoadedScenario, load_scenario
+    from ims.model.bav_updates import BAVUpdateResult, update_bav_central_state
     from ims.engine.simulation import SimulationStepResult, run_single_bav_update_step
     from ims.io.scenario_loader import LoadedScenario, load_scenario
     from ims.model.bav_updates import BAVUpdateResult, update_bav_central_state
@@ -33,6 +41,7 @@ def test_core_placeholders_import() -> None:
     rng = create_rng(123)
     scenario = load_scenario("tests/fixtures/minimal_scenario.json")
     simulation_result = run_single_bav_update_step("tests/fixtures/minimal_scenario.json")
+    two_step_result = run_two_bav_update_steps("tests/fixtures/minimal_scenario.json")
     scenario = load_scenario("tests/fixtures/minimal_scenario.json")
     snapshot = collect_basic_aggregates(
         scenario.context,
@@ -43,6 +52,7 @@ def test_core_placeholders_import() -> None:
 
     assert ctx.period == 0
     assert ensure_context_rng(SimulationContext(rng_seed=123)) is not None
+    assert SimulationContext(period=0, logtime=0).advanced(logtime_increment=1).logtime == 1
     assert scheduler.empty() is True
     assert entity.entity_id == 1
     assert event.action == "noop"
@@ -68,6 +78,8 @@ def test_core_placeholders_import() -> None:
     assert update_result.active_policyholder_count == 1
     assert isinstance(simulation_result, SimulationStepResult)
     assert simulation_result.aggregate_snapshot.assigned_policyholders == 1
+    assert isinstance(two_step_result, TwoStepSimulationResult)
+    assert two_step_result.second_step.aggregate_snapshot.assigned_policyholders == 1
 """Import smoke tests for the IMS Python scaffold."""
 
 import importlib
