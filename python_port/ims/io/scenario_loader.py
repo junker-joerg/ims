@@ -50,19 +50,12 @@ def load_scenario(path: str | Path) -> LoadedScenario:
         run_index=int(context_data.get("run_index", 0)),
         rng_seed=int(context_data.get("rng_seed", 0)),
     )
-    bav = BAV(
-        entity_id=int(bav_data["entity_id"]),
-        active=bool(bav_data.get("active", True)),
-        name=str(bav_data["name"]),
-    )
+    bav = BAV(entity_id=int(bav_data["entity_id"]), active=bool(bav_data.get("active", True)), name=str(bav_data["name"]))
     insurers = [
         Insurer(
             entity_id=int(item["entity_id"]),
             active=bool(item.get("active", True)),
             name=str(item["name"]),
-            premiums_prev=float(item.get("premiums_prev", 0.0)),
-            advertising_prev=float(item.get("advertising_prev", 0.0)),
-            reserves_prev=float(item.get("reserves_prev", 0.0)),
         )
         for item in insurer_items
     ]
@@ -72,7 +65,6 @@ def load_scenario(path: str | Path) -> LoadedScenario:
             active=bool(item.get("active", True)),
             name=str(item["name"]),
             insurer_id=int(item["insurer_id"]) if item.get("insurer_id") is not None else None,
-            insured_prev=float(item.get("insured_prev", 0.0)),
         )
         for item in policyholder_items
     ]

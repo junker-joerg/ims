@@ -13,18 +13,14 @@
   "insurers": [
     {
       "entity_id": 200,
-      "name": "Muster-VU",
-      "premiums_prev": 12.0,
-      "advertising_prev": 3.0,
-      "reserves_prev": 20.0
+      "name": "Muster-VU"
     }
   ],
   "policyholders": [
     {
       "entity_id": 300,
       "name": "Muster-VN",
-      "insurer_id": 200,
-      "insured_prev": 0.5
+      "insurer_id": 200
     }
   ]
 }
