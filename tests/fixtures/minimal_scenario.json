@@ -1,0 +1,30 @@
+{
+  "context": {
+    "period": 0,
+    "logtime": 0,
+    "max_periods": 12,
+    "run_index": 1,
+    "rng_seed": 123
+  },
+  "bav": {
+    "entity_id": 100,
+    "name": "Basis-BAV"
+  },
+  "insurers": [
+    {
+      "entity_id": 200,
+      "name": "Muster-VU",
+      "premiums_prev": 12.0,
+      "advertising_prev": 3.0,
+      "reserves_prev": 20.0
+    }
+  ],
+  "policyholders": [
+    {
+      "entity_id": 300,
+      "name": "Muster-VN",
+      "insurer_id": 200,
+      "insured_prev": 0.5
+    }
+  ]
+}
