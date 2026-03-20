@@ -6,7 +6,7 @@ import pytest
 
 TESTS_DIR = Path(__file__).resolve().parent
 REPO_ROOT = TESTS_DIR.parent
-PYTHON_PORT_DIR = REPO_ROOT / "python_port"
+PYTHON_PORT_DIR = (REPO_ROOT / "python_port").resolve()
 
 if str(PYTHON_PORT_DIR) not in sys.path:
     sys.path.insert(0, str(PYTHON_PORT_DIR))
