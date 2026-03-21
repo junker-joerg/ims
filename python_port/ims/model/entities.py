@@ -110,7 +110,8 @@ class Insurer(BaseEntity):
     Kleiner Zustandscontainer für einen Versicherer.
 
     Die *_prev-Felder, aktuellen Snapshots und Regelmarker bleiben bewusst klein und
-    dienen nur den bislang portierten Frmdinf-/Agrsich-Slices.
+    dienen nur den bislang portierten Frmdinf-/Agrsich-Slices. Für den validierten
+    Versicherer-Agrsich-Export werden aktuelle Reserven jetzt sektorgetrennt geführt.
     """
 
     name: str = ""
@@ -122,7 +123,7 @@ class Insurer(BaseEntity):
     rule_class: int | None = None
     premiums_current: float = 0.0
     advertising_current: float = 0.0
-    reserves_current: float = 0.0
+    reserves_current: list[float] = field(default_factory=lambda: [0.0, 0.0])
     policyholders_current: float = 0.0
     claims_count_current: list[int] = field(default_factory=lambda: [0, 0])
     claims_sum_current: list[float] = field(default_factory=lambda: [0.0, 0.0])

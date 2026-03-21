@@ -71,6 +71,17 @@ def _mode_smallest(values: list[int | None]) -> int | None:
     return None
 
 
+def _reserve_sector(item: Insurer, index: int) -> float:
+    reserves = item.reserves_current
+    if isinstance(reserves, list):
+        if len(reserves) > index:
+            return float(reserves[index])
+        if reserves:
+            return float(reserves[-1])
+        return 0.0
+    return float(reserves)
+
+
 def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float | int | None]:
     if not items:
         return {
@@ -92,33 +103,33 @@ def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float 
         return {
             "premium_1": _mean([item.premiums_current for item in items]),
             "advertising_1": _mean([item.advertising_current for item in items]),
-            "reserves_1": _mean([item.reserves_current for item in items]),
+            "reserves_1": _mean([_reserve_sector(item, 0) for item in items]),
             "policyholders_1": _mean([item.policyholders_current for item in items]),
             "claims_count_1": _mean([item.claims_count_current[0] for item in items]),
             "claims_sum_1": _mean([item.claims_sum_current[0] for item in items]),
             "premium_2": _mean([item.premiums_current for item in items]),
             "advertising_2": _mean([item.advertising_current for item in items]),
-            "reserves_2": _mean([item.reserves_current for item in items]),
+            "reserves_2": _mean([_reserve_sector(item, 1) for item in items]),
             "policyholders_2": _mean([item.policyholders_current for item in items]),
             "claims_count_2": _mean([item.claims_count_current[1] for item in items]),
             "claims_sum_2": _mean([item.claims_sum_current[1] for item in items]),
-            "reserves": _mean([item.reserves_current for item in items]),
+            "reserves": _mean([_reserve_sector(item, 0) for item in items]),
         }
     item = items[0]
     return {
         "premium_1": item.premiums_current,
         "advertising_1": item.advertising_current,
-        "reserves_1": item.reserves_current,
+        "reserves_1": _reserve_sector(item, 0),
         "policyholders_1": item.policyholders_current,
         "claims_count_1": item.claims_count_current[0],
         "claims_sum_1": item.claims_sum_current[0],
         "premium_2": item.premiums_current,
         "advertising_2": item.advertising_current,
-        "reserves_2": item.reserves_current,
+        "reserves_2": _reserve_sector(item, 1),
         "policyholders_2": item.policyholders_current,
         "claims_count_2": item.claims_count_current[1],
         "claims_sum_2": item.claims_sum_current[1],
-        "reserves": item.reserves_current,
+        "reserves": _reserve_sector(item, 0),
     }
 
 

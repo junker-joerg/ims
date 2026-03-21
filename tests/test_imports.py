@@ -15,13 +15,13 @@ def test_package_imports() -> None:
 def test_core_placeholders_import() -> None:
     from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
     from ims.engine.context import SimulationContext
-    from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
     from ims.engine.event_builders import (
         build_mixed_bav_events,
         build_progressed_bav_events,
         build_progressed_mixed_bav_events,
         build_sequenced_bav_events,
     )
+    from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
     from ims.engine.scheduler import Event, Scheduler
     from ims.engine.simulation import (
         ControlledLoopResult,
@@ -88,6 +88,15 @@ def test_core_placeholders_import() -> None:
         Insurer,
         Policyholder,
     )
+    from ims.model.legacy_agrsich_reference import (
+        LegacyComparison,
+        LegacyFieldComparison,
+        LegacyInsurerRow,
+        LegacyInsurerTable,
+        compare_export_record_to_legacy_row,
+        extract_legacy_row,
+        parse_legacy_insurer_dat,
+    )
 
     ctx = SimulationContext()
     scheduler = Scheduler()
@@ -144,6 +153,13 @@ def test_core_placeholders_import() -> None:
     assert ComparisonResult is not None
     assert write_agrsich_export_tables is not None
     assert compare_export_files_to_reference is not None
+    assert LegacyInsurerRow is not None
+    assert LegacyInsurerTable is not None
+    assert LegacyFieldComparison is not None
+    assert LegacyComparison is not None
+    assert parse_legacy_insurer_dat is not None
+    assert extract_legacy_row is not None
+    assert compare_export_record_to_legacy_row is not None
     assert BAVForeignInfoResult is not None
     assert compute_basic_foreign_info is not None
     assert compute_extended_foreign_info is not None
@@ -175,6 +191,7 @@ def test_core_placeholders_import() -> None:
     assert insurer.rule_id is None
     assert insurer.rule_class is None
     assert insurer.premiums_current == 0.0
+    assert insurer.reserves_current == [0.0, 0.0]
     assert insurer.claims_count_current == [0, 0]
     assert insurer.claims_sum_current == [0.0, 0.0]
     assert policyholder.active_prev is True

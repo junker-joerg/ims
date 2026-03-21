@@ -32,6 +32,24 @@ def _float_list(value: object, *, default: list[float]) -> list[float]:
     return [float(item) for item in value]
 
 
+def _insurer_reserves_vector(item: dict[str, object]) -> list[float]:
+    current_value = item.get("reserves_current")
+    if isinstance(current_value, list):
+        values = [float(entry) for entry in current_value[:2]]
+        if len(values) == 1:
+            return [values[0], values[0]]
+        if len(values) >= 2:
+            return values
+        return [0.0, 0.0]
+    if current_value is not None:
+        value = float(current_value)
+        return [value, value]
+
+    previous_value = item.get("reserves_prev", 0.0)
+    value = float(previous_value)
+    return [value, value]
+
+
 def load_scenario(path: str | Path) -> LoadedScenario:
     scenario_path = Path(path)
     with scenario_path.open("r", encoding="utf-8") as handle:
@@ -80,7 +98,7 @@ def load_scenario(path: str | Path) -> LoadedScenario:
             rule_class=int(item["rule_class"]) if item.get("rule_class") is not None else None,
             premiums_current=float(item.get("premiums_current", item.get("premiums_prev", 0.0))),
             advertising_current=float(item.get("advertising_current", item.get("advertising_prev", 0.0))),
-            reserves_current=float(item.get("reserves_current", item.get("reserves_prev", 0.0))),
+            reserves_current=_insurer_reserves_vector(item),
             policyholders_current=float(item.get("policyholders_current", 0.0)),
             claims_count_current=_int_list(item.get("claims_count_current"), default=[0, 0]),
             claims_sum_current=_float_list(item.get("claims_sum_current"), default=[0.0, 0.0]),

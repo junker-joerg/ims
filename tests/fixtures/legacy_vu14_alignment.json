@@ -1,0 +1,42 @@
+{
+  "context": {
+    "period": 2,
+    "logtime": 0,
+    "max_periods": 100,
+    "run_index": 0,
+    "rng_seed": 14
+  },
+  "bav": {
+    "entity_id": 1,
+    "name": "Legacy-VU14-Alignment-BAV"
+  },
+  "insurers": [
+    {
+      "entity_id": 14,
+      "name": "Legacy VU 14",
+      "active": true,
+      "active_prev": true,
+      "rule_id": 14,
+      "rule_class": 1,
+      "premiums_prev": 0.0,
+      "advertising_prev": 0.0,
+      "reserves_prev": 0.0,
+      "premiums_current": 102.0,
+      "advertising_current": 10.2,
+      "reserves_current": [
+        204.0,
+        254.0
+      ],
+      "policyholders_current": 52.0,
+      "claims_count_current": [
+        3,
+        4
+      ],
+      "claims_sum_current": [
+        21.0,
+        26.0
+      ]
+    }
+  ],
+  "policyholders": []
+}
