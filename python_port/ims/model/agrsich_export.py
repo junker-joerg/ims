@@ -100,6 +100,22 @@ def _policyholder_values(global_period: int, metrics: dict[str, float | int | No
     ]
 
 
+def _format_value(value: float | int | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, int):
+        return str(value)
+    return repr(float(value))
+
+
+def render_export_header(table: ExportTable) -> str:
+    return f"{table.header}\n"
+
+
+def render_export_row(row: ExportRow) -> str:
+    return " ".join(_format_value(value) for value in row.values) + "\n"
+
+
 def build_agrsich_export_tables(context: SimulationContext, agrsich_result: AgrsichResult) -> list[ExportTable]:
     global_period = compute_global_period(context)
     tables: list[ExportTable] = []

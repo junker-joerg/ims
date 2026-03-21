@@ -51,6 +51,8 @@ def test_core_placeholders_import() -> None:
         ExportTable,
         build_agrsich_export_tables,
         compute_global_period,
+        render_export_header,
+        render_export_row,
     )
     from ims.model.agrsich_service import (
         AggregateRecord,
@@ -58,6 +60,12 @@ def test_core_placeholders_import() -> None:
         collect_basic_agrsich_records,
         collect_extended_agrsich_records,
         refresh_bav_aggregate_state,
+    )
+    from ims.model.agrsich_writer import (
+        ComparisonResult,
+        FileComparison,
+        compare_export_files_to_reference,
+        write_agrsich_export_tables,
     )
     from ims.model.bav_service import (
         BAVForeignInfoResult,
@@ -125,11 +133,17 @@ def test_core_placeholders_import() -> None:
     assert ExportTable is not None
     assert build_agrsich_export_tables is not None
     assert compute_global_period is not None
+    assert render_export_header is not None
+    assert render_export_row is not None
     assert AggregateRecord is not None
     assert AgrsichResult is not None
     assert refresh_bav_aggregate_state is not None
     assert collect_basic_agrsich_records is not None
     assert collect_extended_agrsich_records is not None
+    assert FileComparison is not None
+    assert ComparisonResult is not None
+    assert write_agrsich_export_tables is not None
+    assert compare_export_files_to_reference is not None
     assert BAVForeignInfoResult is not None
     assert compute_basic_foreign_info is not None
     assert compute_extended_foreign_info is not None
