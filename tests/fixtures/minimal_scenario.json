@@ -1,0 +1,44 @@
+{
+  "context": {
+    "period": 0,
+    "logtime": 0,
+    "max_periods": 12,
+    "run_index": 1,
+    "rng_seed": 123
+  },
+  "bav": {
+    "entity_id": 100,
+    "name": "Basis-BAV"
+  },
+  "insurers": [
+    {
+      "entity_id": 200,
+      "name": "Muster-VU",
+      "active": true,
+      "active_prev": true,
+      "rule_id": 7,
+      "rule_class": 1,
+      "premiums_prev": 12.0,
+      "advertising_prev": 3.0,
+      "reserves_prev": 20.0,
+      "premiums_current": 12.0,
+      "advertising_current": 3.0,
+      "reserves_current": 20.0,
+      "policyholders_current": 1.0
+    }
+  ],
+  "policyholders": [
+    {
+      "entity_id": 300,
+      "name": "Muster-VN",
+      "insurer_id": 200,
+      "active": true,
+      "active_prev": true,
+      "rule_id": 17,
+      "rule_class": 10,
+      "insured_prev": 0.5,
+      "insured_current": 0.5,
+      "chosen_insurer_current": 200
+    }
+  ]
+}
