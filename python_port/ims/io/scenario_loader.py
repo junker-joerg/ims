@@ -20,6 +20,18 @@ class ScenarioValidationError(ValueError):
     """Signalisiert ein grob ungültiges Szenarioformat."""
 
 
+def _int_list(value: object, *, default: list[int]) -> list[int]:
+    if not isinstance(value, list):
+        return list(default)
+    return [int(item) for item in value]
+
+
+def _float_list(value: object, *, default: list[float]) -> list[float]:
+    if not isinstance(value, list):
+        return list(default)
+    return [float(item) for item in value]
+
+
 def load_scenario(path: str | Path) -> LoadedScenario:
     scenario_path = Path(path)
     with scenario_path.open("r", encoding="utf-8") as handle:
@@ -70,6 +82,8 @@ def load_scenario(path: str | Path) -> LoadedScenario:
             advertising_current=float(item.get("advertising_current", item.get("advertising_prev", 0.0))),
             reserves_current=float(item.get("reserves_current", item.get("reserves_prev", 0.0))),
             policyholders_current=float(item.get("policyholders_current", 0.0)),
+            claims_count_current=_int_list(item.get("claims_count_current"), default=[0, 0]),
+            claims_sum_current=_float_list(item.get("claims_sum_current"), default=[0.0, 0.0]),
         )
         for item in insurer_items
     ]
@@ -89,6 +103,10 @@ def load_scenario(path: str | Path) -> LoadedScenario:
                 if item.get("chosen_insurer_current") is not None
                 else (int(item["insurer_id"]) if item.get("insurer_id") is not None else None)
             ),
+            paid_premium_current=_float_list(item.get("paid_premium_current"), default=[0.0, 0.0]),
+            self_damage_current=_float_list(item.get("self_damage_current"), default=[0.0, 0.0]),
+            claim_sum_current=_float_list(item.get("claim_sum_current"), default=[0.0, 0.0]),
+            end_wealth_current=float(item.get("end_wealth_current", 0.0)),
         )
         for item in policyholder_items
     ]

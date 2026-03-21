@@ -45,10 +45,18 @@ def test_core_placeholders_import() -> None:
         run_two_scheduled_bav_updates,
     )
     from ims.io.scenario_loader import LoadedScenario, load_scenario
+    from ims.model.agrsich_export import (
+        ExportFileSpec,
+        ExportRow,
+        ExportTable,
+        build_agrsich_export_tables,
+        compute_global_period,
+    )
     from ims.model.agrsich_service import (
         AggregateRecord,
         AgrsichResult,
         collect_basic_agrsich_records,
+        collect_extended_agrsich_records,
         refresh_bav_aggregate_state,
     )
     from ims.model.bav_service import (
@@ -112,10 +120,16 @@ def test_core_placeholders_import() -> None:
     assert load_scenario is not None
     assert AggregateSnapshot is not None
     assert collect_basic_aggregates is not None
+    assert ExportFileSpec is not None
+    assert ExportRow is not None
+    assert ExportTable is not None
+    assert build_agrsich_export_tables is not None
+    assert compute_global_period is not None
     assert AggregateRecord is not None
     assert AgrsichResult is not None
     assert refresh_bav_aggregate_state is not None
     assert collect_basic_agrsich_records is not None
+    assert collect_extended_agrsich_records is not None
     assert BAVForeignInfoResult is not None
     assert compute_basic_foreign_info is not None
     assert compute_extended_foreign_info is not None
@@ -147,9 +161,15 @@ def test_core_placeholders_import() -> None:
     assert insurer.rule_id is None
     assert insurer.rule_class is None
     assert insurer.premiums_current == 0.0
+    assert insurer.claims_count_current == [0, 0]
+    assert insurer.claims_sum_current == [0.0, 0.0]
     assert policyholder.active_prev is True
     assert policyholder.rule_id is None
     assert policyholder.rule_class is None
     assert policyholder.chosen_insurer_current is None
+    assert policyholder.paid_premium_current == [0.0, 0.0]
+    assert policyholder.self_damage_current == [0.0, 0.0]
+    assert policyholder.claim_sum_current == [0.0, 0.0]
+    assert policyholder.end_wealth_current == 0.0
     assert rand_uniform_0_1(rng) >= 0.0
     assert rand_int_inclusive(rng, 1, 1) == 1

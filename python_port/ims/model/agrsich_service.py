@@ -55,8 +55,8 @@ def refresh_bav_aggregate_state(
     )
 
 
-def _mean(values: list[float]) -> float:
-    return sum(values) / len(values) if values else 0.0
+def _mean(values: list[float | int]) -> float:
+    return float(sum(values)) / len(values) if values else 0.0
 
 
 def _mode_smallest(values: list[int | None]) -> int | None:
@@ -75,73 +75,105 @@ def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float 
     if not items:
         return {
             "premium_1": 0.0,
-            "premium_2": 0.0,
             "advertising_1": 0.0,
-            "advertising_2": 0.0,
-            "reserves": 0.0,
+            "reserves_1": 0.0,
             "policyholders_1": 0.0,
+            "claims_count_1": 0.0,
+            "claims_sum_1": 0.0,
+            "premium_2": 0.0,
+            "advertising_2": 0.0,
+            "reserves_2": 0.0,
             "policyholders_2": 0.0,
+            "claims_count_2": 0.0,
+            "claims_sum_2": 0.0,
+            "reserves": 0.0,
         }
     if average:
         return {
             "premium_1": _mean([item.premiums_current for item in items]),
-            "premium_2": _mean([item.premiums_current for item in items]),
             "advertising_1": _mean([item.advertising_current for item in items]),
-            "advertising_2": _mean([item.advertising_current for item in items]),
-            "reserves": _mean([item.reserves_current for item in items]),
+            "reserves_1": _mean([item.reserves_current for item in items]),
             "policyholders_1": _mean([item.policyholders_current for item in items]),
+            "claims_count_1": _mean([item.claims_count_current[0] for item in items]),
+            "claims_sum_1": _mean([item.claims_sum_current[0] for item in items]),
+            "premium_2": _mean([item.premiums_current for item in items]),
+            "advertising_2": _mean([item.advertising_current for item in items]),
+            "reserves_2": _mean([item.reserves_current for item in items]),
             "policyholders_2": _mean([item.policyholders_current for item in items]),
+            "claims_count_2": _mean([item.claims_count_current[1] for item in items]),
+            "claims_sum_2": _mean([item.claims_sum_current[1] for item in items]),
+            "reserves": _mean([item.reserves_current for item in items]),
         }
     item = items[0]
     return {
         "premium_1": item.premiums_current,
-        "premium_2": item.premiums_current,
         "advertising_1": item.advertising_current,
-        "advertising_2": item.advertising_current,
-        "reserves": item.reserves_current,
+        "reserves_1": item.reserves_current,
         "policyholders_1": item.policyholders_current,
+        "claims_count_1": item.claims_count_current[0],
+        "claims_sum_1": item.claims_sum_current[0],
+        "premium_2": item.premiums_current,
+        "advertising_2": item.advertising_current,
+        "reserves_2": item.reserves_current,
         "policyholders_2": item.policyholders_current,
+        "claims_count_2": item.claims_count_current[1],
+        "claims_sum_2": item.claims_sum_current[1],
+        "reserves": item.reserves_current,
     }
 
 
 def _policyholder_metrics(items: list[Policyholder], *, average: bool) -> dict[str, float | int | None]:
     if not items:
         return {
+            "paid_premium_1": 0.0,
+            "self_damage_1": 0.0,
             "coverage_1": 0.0,
-            "coverage_2": 0.0,
             "chosen_insurer_1": None,
+            "claim_sum_1": 0.0,
+            "paid_premium_2": 0.0,
+            "self_damage_2": 0.0,
+            "coverage_2": 0.0,
             "chosen_insurer_2": None,
+            "claim_sum_2": 0.0,
+            "end_wealth": 0.0,
         }
     if average:
         mode_value = _mode_smallest([item.chosen_insurer_current for item in items])
         return {
+            "paid_premium_1": _mean([item.paid_premium_current[0] for item in items]),
+            "self_damage_1": _mean([item.self_damage_current[0] for item in items]),
             "coverage_1": _mean([item.insured_current for item in items]),
-            "coverage_2": _mean([item.insured_current for item in items]),
             "chosen_insurer_1": mode_value,
+            "claim_sum_1": _mean([item.claim_sum_current[0] for item in items]),
+            "paid_premium_2": _mean([item.paid_premium_current[1] for item in items]),
+            "self_damage_2": _mean([item.self_damage_current[1] for item in items]),
+            "coverage_2": _mean([item.insured_current for item in items]),
             "chosen_insurer_2": mode_value,
+            "claim_sum_2": _mean([item.claim_sum_current[1] for item in items]),
+            "end_wealth": _mean([item.end_wealth_current for item in items]),
         }
     item = items[0]
     return {
+        "paid_premium_1": item.paid_premium_current[0],
+        "self_damage_1": item.self_damage_current[0],
         "coverage_1": item.insured_current,
-        "coverage_2": item.insured_current,
         "chosen_insurer_1": item.chosen_insurer_current,
+        "claim_sum_1": item.claim_sum_current[0],
+        "paid_premium_2": item.paid_premium_current[1],
+        "self_damage_2": item.self_damage_current[1],
+        "coverage_2": item.insured_current,
         "chosen_insurer_2": item.chosen_insurer_current,
+        "claim_sum_2": item.claim_sum_current[1],
+        "end_wealth": item.end_wealth_current,
     }
 
 
-def collect_basic_agrsich_records(
+def _build_agrsich_records(
     context: SimulationContext,
     bav: BAV,
     insurers: list[Insurer],
     policyholders: list[Policyholder],
 ) -> AgrsichResult:
-    """
-    Portiert einen ersten substanziellen Agrsich-Kern mit Aggregatstufen I-IV.
-
-    Der Slice bleibt bewusst auf In-Memory-Records begrenzt: keine historischen
-    Dateiformate, keine vollständige Altvektorportierung und keine Vollsimulation.
-    """
-
     refresh_bav_aggregate_state(bav, insurers, policyholders, period=context.period)
 
     active_insurers = [insurer for insurer in insurers if insurer.active]
@@ -168,36 +200,10 @@ def collect_basic_agrsich_records(
         insurer_by_class.setdefault(insurer.rule_class, []).append(insurer)
 
     for key, items in sorted(insurer_by_rule.items(), key=lambda entry: (entry[0] is None, entry[0])):
-        insurer_records.append(
-            AggregateRecord(
-                subject_type="insurer",
-                aggregate_level="II",
-                aggregate_key=key,
-                entity_ids=[item.entity_id for item in items],
-                metrics=_insurer_metrics(items, average=True),
-            )
-        )
-
+        insurer_records.append(AggregateRecord("insurer", "II", key, [item.entity_id for item in items], _insurer_metrics(items, average=True)))
     for key, items in sorted(insurer_by_class.items(), key=lambda entry: (entry[0] is None, entry[0])):
-        insurer_records.append(
-            AggregateRecord(
-                subject_type="insurer",
-                aggregate_level="III",
-                aggregate_key=key,
-                entity_ids=[item.entity_id for item in items],
-                metrics=_insurer_metrics(items, average=True),
-            )
-        )
-
-    insurer_records.append(
-        AggregateRecord(
-            subject_type="insurer",
-            aggregate_level="IV",
-            aggregate_key="all",
-            entity_ids=[item.entity_id for item in active_insurers],
-            metrics=_insurer_metrics(active_insurers, average=True),
-        )
-    )
+        insurer_records.append(AggregateRecord("insurer", "III", key, [item.entity_id for item in items], _insurer_metrics(items, average=True)))
+    insurer_records.append(AggregateRecord("insurer", "IV", "all", [item.entity_id for item in active_insurers], _insurer_metrics(active_insurers, average=True)))
 
     for policyholder in active_policyholders:
         policyholder_records.append(
@@ -217,38 +223,33 @@ def collect_basic_agrsich_records(
         policyholder_by_class.setdefault(policyholder.rule_class, []).append(policyholder)
 
     for key, items in sorted(policyholder_by_rule.items(), key=lambda entry: (entry[0] is None, entry[0])):
-        policyholder_records.append(
-            AggregateRecord(
-                subject_type="policyholder",
-                aggregate_level="II",
-                aggregate_key=key,
-                entity_ids=[item.entity_id for item in items],
-                metrics=_policyholder_metrics(items, average=True),
-            )
-        )
-
+        policyholder_records.append(AggregateRecord("policyholder", "II", key, [item.entity_id for item in items], _policyholder_metrics(items, average=True)))
     for key, items in sorted(policyholder_by_class.items(), key=lambda entry: (entry[0] is None, entry[0])):
-        policyholder_records.append(
-            AggregateRecord(
-                subject_type="policyholder",
-                aggregate_level="III",
-                aggregate_key=key,
-                entity_ids=[item.entity_id for item in items],
-                metrics=_policyholder_metrics(items, average=True),
-            )
-        )
+        policyholder_records.append(AggregateRecord("policyholder", "III", key, [item.entity_id for item in items], _policyholder_metrics(items, average=True)))
+    policyholder_records.append(AggregateRecord("policyholder", "IV", "all", [item.entity_id for item in active_policyholders], _policyholder_metrics(active_policyholders, average=True)))
 
-    policyholder_records.append(
-        AggregateRecord(
-            subject_type="policyholder",
-            aggregate_level="IV",
-            aggregate_key="all",
-            entity_ids=[item.entity_id for item in active_policyholders],
-            metrics=_policyholder_metrics(active_policyholders, average=True),
-        )
-    )
+    return AgrsichResult(insurer_records=insurer_records, policyholder_records=policyholder_records)
 
-    return AgrsichResult(
-        insurer_records=insurer_records,
-        policyholder_records=policyholder_records,
-    )
+
+def collect_basic_agrsich_records(
+    context: SimulationContext,
+    bav: BAV,
+    insurers: list[Insurer],
+    policyholders: list[Policyholder],
+) -> AgrsichResult:
+    """Kompatibler Einstieg für den bisherigen Agrsich-Slice."""
+
+    return _build_agrsich_records(context, bav, insurers, policyholders)
+
+
+def collect_extended_agrsich_records(
+    context: SimulationContext,
+    bav: BAV,
+    insurers: list[Insurer],
+    policyholders: list[Policyholder],
+) -> AgrsichResult:
+    """
+    Erweitert den portierten Agrsich-Kern um breitere Messgrößen für Exportrepräsentationen.
+    """
+
+    return _build_agrsich_records(context, bav, insurers, policyholders)
