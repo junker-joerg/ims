@@ -74,6 +74,23 @@ class LegacyComparison:
     field_comparisons: list[LegacyFieldComparison]
 
 
+@dataclass(slots=True)
+class LegacyRowComparison:
+    global_period: int | None
+    matches: bool
+    field_comparisons: list[LegacyFieldComparison]
+
+
+@dataclass(slots=True)
+class LegacyWindowComparison:
+    matches: bool
+    export_path: Path
+    legacy_path: Path
+    start_period: int
+    end_period: int
+    row_comparisons: list[LegacyRowComparison]
+
+
 def _normalize_whitespace(value: str) -> str:
     return " ".join(value.split())
 
@@ -122,6 +139,14 @@ def extract_legacy_row(table: LegacyInsurerTable, global_period: int) -> LegacyI
         if row.global_period == global_period:
             return row
     return None
+
+
+def extract_legacy_window(
+    table: LegacyInsurerTable,
+    start_period: int,
+    end_period: int,
+) -> list[LegacyInsurerRow]:
+    return [row for row in table.rows if start_period <= row.global_period <= end_period]
 
 
 def compare_export_record_to_legacy_row(
@@ -174,4 +199,144 @@ def compare_export_record_to_legacy_row(
     return LegacyComparison(
         matches=all(item.matches for item in field_comparisons),
         field_comparisons=field_comparisons,
+    )
+
+
+def _parse_export_rows(export_path: Path) -> tuple[str, list[list[float]]]:
+    raw_text = export_path.read_text(encoding="utf-8")
+    normalized_text = raw_text.replace("\r\n", "\n").replace("\r", "\n")
+    lines = [line for line in normalized_text.split("\n") if line.strip()]
+    if not lines:
+        raise ValueError(f"export file is empty: {export_path}")
+
+    rows: list[list[float]] = []
+    for line in lines[1:]:
+        parts = line.split()
+        if len(parts) != 13:
+            raise ValueError(f"export insurer row must contain 13 columns: {line}")
+        rows.append([float(part) for part in parts])
+    return lines[0], rows
+
+
+def _missing_export_row_comparison(expected_period: int) -> LegacyRowComparison:
+    return LegacyRowComparison(
+        global_period=expected_period,
+        matches=False,
+        field_comparisons=[
+            LegacyFieldComparison(
+                name="global_period",
+                actual="missing export row",
+                expected=expected_period,
+                matches=False,
+            )
+        ],
+    )
+
+
+def _unexpected_export_row_comparison(actual_period: int) -> LegacyRowComparison:
+    return LegacyRowComparison(
+        global_period=actual_period,
+        matches=False,
+        field_comparisons=[
+            LegacyFieldComparison(
+                name="global_period",
+                actual=actual_period,
+                expected="outside legacy window",
+                matches=False,
+            )
+        ],
+    )
+
+
+def _duplicate_export_row_comparison(actual_period: int) -> LegacyRowComparison:
+    return LegacyRowComparison(
+        global_period=actual_period,
+        matches=False,
+        field_comparisons=[
+            LegacyFieldComparison(
+                name="global_period",
+                actual=actual_period,
+                expected="unique global period",
+                matches=False,
+            )
+        ],
+    )
+
+
+def compare_export_file_to_legacy_window(
+    export_path: str | Path,
+    legacy_table: LegacyInsurerTable,
+    start_period: int,
+    end_period: int,
+    *,
+    tolerance: float = 0.05,
+) -> LegacyWindowComparison:
+    file_path = Path(export_path)
+    export_header, export_rows = _parse_export_rows(file_path)
+    export_rows_by_period: dict[int, list[float]] = {}
+    duplicate_periods: set[int] = set()
+    for row in export_rows:
+        global_period = int(row[0])
+        if global_period in export_rows_by_period:
+            duplicate_periods.add(global_period)
+            continue
+        export_rows_by_period[global_period] = row
+
+    legacy_rows = extract_legacy_window(legacy_table, start_period, end_period)
+    legacy_periods = {row.global_period for row in legacy_rows}
+    normalized_actual_header = _normalize_whitespace(export_header)
+    normalized_expected_header = _normalize_whitespace(INSURER_HEADER)
+
+    row_comparisons: list[LegacyRowComparison] = []
+    for legacy_row in legacy_rows:
+        export_values = export_rows_by_period.get(legacy_row.global_period)
+        if export_values is None:
+            row_comparisons.append(_missing_export_row_comparison(legacy_row.global_period))
+            continue
+
+        field_comparisons = [
+            LegacyFieldComparison(
+                name="header",
+                actual=normalized_actual_header,
+                expected=normalized_expected_header,
+                matches=normalized_actual_header == normalized_expected_header,
+            ),
+            LegacyFieldComparison(
+                name="global_period",
+                actual=int(export_values[0]),
+                expected=legacy_row.global_period,
+                matches=int(export_values[0]) == legacy_row.global_period,
+            ),
+        ]
+        for name, actual, expected in zip(INSURER_FIELD_NAMES, export_values[1:], legacy_row.metric_values()):
+            actual_value = float(actual)
+            expected_value = float(expected)
+            field_comparisons.append(
+                LegacyFieldComparison(
+                    name=name,
+                    actual=actual_value,
+                    expected=expected_value,
+                    matches=abs(actual_value - expected_value) <= tolerance,
+                )
+            )
+        row_comparisons.append(
+            LegacyRowComparison(
+                global_period=legacy_row.global_period,
+                matches=all(item.matches for item in field_comparisons),
+                field_comparisons=field_comparisons,
+            )
+        )
+
+    for actual_period in sorted(set(export_rows_by_period) - legacy_periods):
+        row_comparisons.append(_unexpected_export_row_comparison(actual_period))
+    for actual_period in sorted(duplicate_periods):
+        row_comparisons.append(_duplicate_export_row_comparison(actual_period))
+
+    return LegacyWindowComparison(
+        matches=bool(row_comparisons) and all(row.matches for row in row_comparisons),
+        export_path=file_path,
+        legacy_path=legacy_table.path,
+        start_period=start_period,
+        end_period=end_period,
+        row_comparisons=row_comparisons,
     )
