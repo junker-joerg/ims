@@ -88,6 +88,13 @@ def test_core_placeholders_import() -> None:
         Insurer,
         Policyholder,
     )
+    from ims.model.legacy_agrsich_multi_period import (
+        LegacyTableComparison,
+        MultiPeriodLegacyComparison,
+        build_multi_period_legacy_comparison,
+        compare_insurer_export_table_to_legacy,
+        compare_policyholder_export_table_to_legacy,
+    )
     from ims.model.legacy_agrsich_reference import (
         LegacyComparison,
         LegacyFieldComparison,
@@ -162,6 +169,11 @@ def test_core_placeholders_import() -> None:
     assert ComparisonResult is not None
     assert write_agrsich_export_tables is not None
     assert compare_export_files_to_reference is not None
+    assert LegacyTableComparison is not None
+    assert MultiPeriodLegacyComparison is not None
+    assert compare_insurer_export_table_to_legacy is not None
+    assert compare_policyholder_export_table_to_legacy is not None
+    assert build_multi_period_legacy_comparison is not None
     assert LegacyInsurerRow is not None
     assert LegacyInsurerTable is not None
     assert LegacyFieldComparison is not None

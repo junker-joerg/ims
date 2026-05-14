@@ -1,0 +1,134 @@
+from dataclasses import dataclass
+
+from ims.model.agrsich_export import ExportTable
+from ims.model.legacy_agrsich_reference import (
+    LegacyComparison,
+    LegacyFieldComparison,
+    LegacyInsurerTable,
+    compare_export_record_to_legacy_row,
+    extract_legacy_row,
+)
+from ims.model.legacy_vn_reference import (
+    LegacyPolicyholderComparison,
+    LegacyPolicyholderFieldComparison,
+    LegacyPolicyholderTable,
+    compare_policyholder_export_record_to_legacy_row,
+    extract_legacy_policyholder_row,
+)
+
+
+@dataclass(slots=True)
+class LegacyTableComparison:
+    filename: str
+    subject_type: str
+    matches: bool
+    row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison]
+
+
+@dataclass(slots=True)
+class MultiPeriodLegacyComparison:
+    matches: bool
+    table_comparisons: list[LegacyTableComparison]
+
+
+def _single_row_table(table: ExportTable, row_index: int) -> ExportTable:
+    return ExportTable(
+        spec=table.spec,
+        header=table.header,
+        rows=[table.rows[row_index]],
+    )
+
+
+def _missing_insurer_row_comparison(global_period: int) -> LegacyComparison:
+    return LegacyComparison(
+        matches=False,
+        field_comparisons=[
+            LegacyFieldComparison(
+                name="global_period",
+                actual=global_period,
+                expected="missing legacy row",
+                matches=False,
+            )
+        ],
+    )
+
+
+def _missing_policyholder_row_comparison(global_period: int) -> LegacyPolicyholderComparison:
+    return LegacyPolicyholderComparison(
+        matches=False,
+        field_comparisons=[
+            LegacyPolicyholderFieldComparison(
+                name="global_period",
+                actual=global_period,
+                expected="missing legacy row",
+                matches=False,
+            )
+        ],
+    )
+
+
+def compare_insurer_export_table_to_legacy(
+    export_table: ExportTable,
+    legacy_table: LegacyInsurerTable,
+    *,
+    tolerance: float = 0.05,
+) -> LegacyTableComparison:
+    row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison] = []
+    for index, row in enumerate(export_table.rows):
+        global_period = int(row.values[0])
+        legacy_row = extract_legacy_row(legacy_table, global_period)
+        if legacy_row is None:
+            row_comparisons.append(_missing_insurer_row_comparison(global_period))
+            continue
+        row_comparisons.append(
+            compare_export_record_to_legacy_row(
+                _single_row_table(export_table, index),
+                legacy_row,
+                tolerance=tolerance,
+            )
+        )
+
+    return LegacyTableComparison(
+        filename=export_table.spec.filename,
+        subject_type="insurer",
+        matches=bool(row_comparisons) and all(comparison.matches for comparison in row_comparisons),
+        row_comparisons=row_comparisons,
+    )
+
+
+def compare_policyholder_export_table_to_legacy(
+    export_table: ExportTable,
+    legacy_table: LegacyPolicyholderTable,
+    *,
+    tolerance: float = 0.05,
+) -> LegacyTableComparison:
+    row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison] = []
+    for index, row in enumerate(export_table.rows):
+        global_period = int(row.values[0])
+        legacy_row = extract_legacy_policyholder_row(legacy_table, global_period)
+        if legacy_row is None:
+            row_comparisons.append(_missing_policyholder_row_comparison(global_period))
+            continue
+        row_comparisons.append(
+            compare_policyholder_export_record_to_legacy_row(
+                _single_row_table(export_table, index),
+                legacy_row,
+                tolerance=tolerance,
+            )
+        )
+
+    return LegacyTableComparison(
+        filename=export_table.spec.filename,
+        subject_type="policyholder",
+        matches=bool(row_comparisons) and all(comparison.matches for comparison in row_comparisons),
+        row_comparisons=row_comparisons,
+    )
+
+
+def build_multi_period_legacy_comparison(
+    table_comparisons: list[LegacyTableComparison],
+) -> MultiPeriodLegacyComparison:
+    return MultiPeriodLegacyComparison(
+        matches=bool(table_comparisons) and all(comparison.matches for comparison in table_comparisons),
+        table_comparisons=table_comparisons,
+    )
