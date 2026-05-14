@@ -17,7 +17,7 @@ class LoadedScenario:
 
 
 class ScenarioValidationError(ValueError):
-    """Signalisiert ein grob ungültiges Szenarioformat."""
+    """Signalisiert ein grob ungueltiges Szenarioformat."""
 
 
 def _int_list(value: object, *, default: list[int]) -> list[int]:
@@ -67,11 +67,7 @@ def _policyholder_chosen_insurer_vector(item: dict[str, object]) -> list[int | N
     return [value, value]
 
 
-def load_scenario(path: str | Path) -> LoadedScenario:
-    scenario_path = Path(path)
-    with scenario_path.open("r", encoding="utf-8") as handle:
-        data = json.load(handle)
-
+def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     if not isinstance(data, dict):
         raise ScenarioValidationError("scenario must be a JSON object")
 
@@ -153,3 +149,11 @@ def load_scenario(path: str | Path) -> LoadedScenario:
         insurers=insurers,
         policyholders=policyholders,
     )
+
+
+def load_scenario(path: str | Path) -> LoadedScenario:
+    scenario_path = Path(path)
+    with scenario_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+
+    return load_scenario_from_mapping(data)
