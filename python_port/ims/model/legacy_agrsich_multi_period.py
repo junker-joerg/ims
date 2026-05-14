@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 
+from ims.engine.context import SimulationContext
 from ims.model.agrsich_export import ExportTable
+from ims.model.agrsich_export import build_agrsich_export_tables
+from ims.model.agrsich_service import collect_extended_agrsich_records
+from ims.model.entities import BAV, Insurer, Policyholder
 from ims.model.legacy_agrsich_reference import (
     LegacyComparison,
     LegacyFieldComparison,
@@ -15,6 +19,14 @@ from ims.model.legacy_vn_reference import (
     compare_policyholder_export_record_to_legacy_row,
     extract_legacy_policyholder_row,
 )
+
+
+@dataclass(slots=True)
+class AgrsichPeriodState:
+    context: SimulationContext
+    bav: BAV
+    insurers: list[Insurer]
+    policyholders: list[Policyholder]
 
 
 @dataclass(slots=True)
@@ -36,6 +48,16 @@ def _single_row_table(table: ExportTable, row_index: int) -> ExportTable:
         spec=table.spec,
         header=table.header,
         rows=[table.rows[row_index]],
+    )
+
+
+def _table_key(table: ExportTable) -> tuple[str, str, str, str, int | str | None]:
+    return (
+        table.spec.filename,
+        table.spec.subject_type,
+        table.spec.level,
+        table.spec.selector_kind,
+        table.spec.selector_value,
     )
 
 
@@ -93,6 +115,28 @@ def _duplicate_policyholder_row_comparison(global_period: int) -> LegacyPolicyho
             )
         ],
     )
+
+
+def build_multi_period_agrsich_export_tables(period_states: list[AgrsichPeriodState]) -> list[ExportTable]:
+    tables_by_key: dict[tuple[str, str, str, str, int | str | None], ExportTable] = {}
+    table_order: list[tuple[str, str, str, str, int | str | None]] = []
+
+    for period_state in period_states:
+        result = collect_extended_agrsich_records(
+            period_state.context,
+            period_state.bav,
+            period_state.insurers,
+            period_state.policyholders,
+        )
+        single_period_tables = build_agrsich_export_tables(period_state.context, result)
+        for table in single_period_tables:
+            key = _table_key(table)
+            if key not in tables_by_key:
+                tables_by_key[key] = ExportTable(spec=table.spec, header=table.header, rows=[])
+                table_order.append(key)
+            tables_by_key[key].rows.extend(table.rows)
+
+    return [tables_by_key[key] for key in table_order]
 
 
 def compare_insurer_export_table_to_legacy(
