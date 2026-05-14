@@ -50,6 +50,23 @@ def _insurer_reserves_vector(item: dict[str, object]) -> list[float]:
     return [value, value]
 
 
+def _policyholder_chosen_insurer_vector(item: dict[str, object]) -> list[int | None]:
+    current_value = item.get("chosen_insurer_sector_current")
+    if isinstance(current_value, list):
+        values = [int(entry) if entry is not None else None for entry in current_value[:2]]
+        if len(values) == 1:
+            return [values[0], values[0]]
+        if len(values) >= 2:
+            return values
+        return [None, None]
+
+    scalar_value = item.get("chosen_insurer_current", item.get("insurer_id"))
+    if scalar_value is None:
+        return [None, None]
+    value = int(scalar_value)
+    return [value, value]
+
+
 def load_scenario(path: str | Path) -> LoadedScenario:
     scenario_path = Path(path)
     with scenario_path.open("r", encoding="utf-8") as handle:
@@ -121,9 +138,11 @@ def load_scenario(path: str | Path) -> LoadedScenario:
                 if item.get("chosen_insurer_current") is not None
                 else (int(item["insurer_id"]) if item.get("insurer_id") is not None else None)
             ),
+            chosen_insurer_sector_current=_policyholder_chosen_insurer_vector(item),
             paid_premium_current=_float_list(item.get("paid_premium_current"), default=[0.0, 0.0]),
             self_damage_current=_float_list(item.get("self_damage_current"), default=[0.0, 0.0]),
             claim_sum_current=_float_list(item.get("claim_sum_current"), default=[0.0, 0.0]),
+            end_wealth_sector_current=_float_list(item.get("end_wealth_sector_current"), default=[0.0, 0.0]),
             end_wealth_current=float(item.get("end_wealth_current", 0.0)),
         )
         for item in policyholder_items

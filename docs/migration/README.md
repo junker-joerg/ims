@@ -25,4 +25,6 @@ Dieses Verzeichnis bündelt die fachliche und technische Dokumentation für die 
 
 - `ims_inventory.md`: Inventar und grobe Klassifikation der Altdateien
 - `python_target_architecture.md`: geplante Zielstruktur des Python-Ports
+- `legacy_agrsich_validation_step.md`: erster echter Versicherer-Agrsich-Vergleich
+- `legacy_vn_validation_step.md`: erster echter VN-Agrsich-Vergleich
 - weitere Mapping- und Verifikationsnotizen folgen in späteren PRs

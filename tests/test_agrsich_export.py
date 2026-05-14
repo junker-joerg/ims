@@ -82,10 +82,10 @@ def test_export_tables_contain_expected_stage_ii_to_iv_values() -> None:
 
     policyholder_rule_table = by_filename["imsvnr05.dat"]
     assert policyholder_rule_table.header == POLICYHOLDER_HEADER
-    assert policyholder_rule_table.rows[0].values == [26, 2.0, 0.3, 0.4, 200, 0.5, 3.0, 0.4, 0.4, 200, 0.6000000000000001, 15.0]
+    assert policyholder_rule_table.rows[0].values == [26, 200, 0.4, 2.0, 0.0, 0.5, 200, 0.4, 3.0, 0.0, 0.6000000000000001, 15.0]
 
     policyholder_all_table = by_filename["imsvnsk1.dat"]
-    assert policyholder_all_table.rows[0].values == [26, 3.0, 0.5, (0.2 + 0.6 + 0.8) / 3.0, 201, 0.7000000000000001, 4.0, 0.6, (0.2 + 0.6 + 0.8) / 3.0, 201, 0.7999999999999999, 20.0]
+    assert policyholder_all_table.rows[0].values == [26, 201, (0.2 + 0.6 + 0.8) / 3.0, 3.0, 0.0, 0.7000000000000001, 201, (0.2 + 0.6 + 0.8) / 3.0, 4.0, 0.0, 0.7999999999999999, 20.0]
 
 
 def test_scenario_loader_reads_extended_export_metrics(minimal_scenario_path: Path) -> None:
@@ -98,4 +98,5 @@ def test_scenario_loader_reads_extended_export_metrics(minimal_scenario_path: Pa
     assert scenario.policyholders[0].paid_premium_current == [1.5, 2.5]
     assert scenario.policyholders[0].self_damage_current == [0.2, 0.4]
     assert scenario.policyholders[0].claim_sum_current == [0.3, 0.7]
+    assert scenario.policyholders[0].end_wealth_sector_current == [9.0, 9.5]
     assert scenario.policyholders[0].end_wealth_current == 10.0

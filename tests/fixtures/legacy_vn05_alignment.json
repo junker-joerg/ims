@@ -1,0 +1,48 @@
+{
+  "context": {
+    "period": 2,
+    "logtime": 0,
+    "max_periods": 100,
+    "run_index": 0,
+    "rng_seed": 5
+  },
+  "bav": {
+    "entity_id": 1,
+    "name": "Legacy-VN05-Alignment-BAV"
+  },
+  "insurers": [],
+  "policyholders": [
+    {
+      "entity_id": 500,
+      "name": "Legacy VN rule 5",
+      "active": true,
+      "active_prev": true,
+      "rule_id": 5,
+      "rule_class": 1,
+      "insured_prev": 0.0,
+      "insured_current": 1.02,
+      "chosen_insurer_current": 2,
+      "chosen_insurer_sector_current": [
+        2,
+        2
+      ],
+      "paid_premium_current": [
+        7.5,
+        33.0
+      ],
+      "self_damage_current": [
+        0.0,
+        0.0
+      ],
+      "claim_sum_current": [
+        30.1,
+        31.1
+      ],
+      "end_wealth_sector_current": [
+        0.4,
+        0.4
+      ],
+      "end_wealth_current": -143.8
+    }
+  ]
+}

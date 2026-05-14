@@ -146,7 +146,9 @@ class Policyholder(BaseEntity):
     rule_class: int | None = None
     insured_current: float = 0.0
     chosen_insurer_current: int | None = None
+    chosen_insurer_sector_current: list[int | None] = field(default_factory=lambda: [None, None])
     paid_premium_current: list[float] = field(default_factory=lambda: [0.0, 0.0])
     self_damage_current: list[float] = field(default_factory=lambda: [0.0, 0.0])
     claim_sum_current: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    end_wealth_sector_current: list[float] = field(default_factory=lambda: [0.0, 0.0])
     end_wealth_current: float = 0.0

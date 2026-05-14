@@ -5,7 +5,7 @@ from ims.model.agrsich_service import AgrsichResult, AggregateRecord
 
 
 INSURER_HEADER = "#t Pr1 Wa1 Rs1 Vn1 Sa1 Sh1 Pr2 Wa2 Rs2 Vn2 Sa2 Sh2"
-POLICYHOLDER_HEADER = "#t Pz1 Se1 St1 Vu1 Sh1 Pz2 Se2 St2 Vu2 Sh2 Ev"
+POLICYHOLDER_HEADER = "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm"
 
 
 @dataclass(slots=True)
@@ -86,15 +86,15 @@ def _insurer_values(global_period: int, metrics: dict[str, float | int | None]) 
 def _policyholder_values(global_period: int, metrics: dict[str, float | int | None]) -> list[float | int | None]:
     return [
         global_period,
-        metrics["paid_premium_1"],
-        metrics["self_damage_1"],
-        metrics["coverage_1"],
         metrics["chosen_insurer_1"],
+        metrics["coverage_1"],
+        metrics["paid_premium_1"],
+        metrics["end_wealth_1"],
         metrics["claim_sum_1"],
-        metrics["paid_premium_2"],
-        metrics["self_damage_2"],
-        metrics["coverage_2"],
         metrics["chosen_insurer_2"],
+        metrics["coverage_2"],
+        metrics["paid_premium_2"],
+        metrics["end_wealth_2"],
         metrics["claim_sum_2"],
         metrics["end_wealth"],
     ]

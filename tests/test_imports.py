@@ -97,6 +97,15 @@ def test_core_placeholders_import() -> None:
         extract_legacy_row,
         parse_legacy_insurer_dat,
     )
+    from ims.model.legacy_vn_reference import (
+        LegacyPolicyholderComparison,
+        LegacyPolicyholderFieldComparison,
+        LegacyPolicyholderRow,
+        LegacyPolicyholderTable,
+        compare_policyholder_export_record_to_legacy_row,
+        extract_legacy_policyholder_row,
+        parse_legacy_policyholder_dat,
+    )
 
     ctx = SimulationContext()
     scheduler = Scheduler()
@@ -160,6 +169,13 @@ def test_core_placeholders_import() -> None:
     assert parse_legacy_insurer_dat is not None
     assert extract_legacy_row is not None
     assert compare_export_record_to_legacy_row is not None
+    assert LegacyPolicyholderRow is not None
+    assert LegacyPolicyholderTable is not None
+    assert LegacyPolicyholderFieldComparison is not None
+    assert LegacyPolicyholderComparison is not None
+    assert parse_legacy_policyholder_dat is not None
+    assert extract_legacy_policyholder_row is not None
+    assert compare_policyholder_export_record_to_legacy_row is not None
     assert BAVForeignInfoResult is not None
     assert compute_basic_foreign_info is not None
     assert compute_extended_foreign_info is not None
@@ -198,9 +214,11 @@ def test_core_placeholders_import() -> None:
     assert policyholder.rule_id is None
     assert policyholder.rule_class is None
     assert policyholder.chosen_insurer_current is None
+    assert policyholder.chosen_insurer_sector_current == [None, None]
     assert policyholder.paid_premium_current == [0.0, 0.0]
     assert policyholder.self_damage_current == [0.0, 0.0]
     assert policyholder.claim_sum_current == [0.0, 0.0]
+    assert policyholder.end_wealth_sector_current == [0.0, 0.0]
     assert policyholder.end_wealth_current == 0.0
     assert rand_uniform_0_1(rng) >= 0.0
     assert rand_int_inclusive(rng, 1, 1) == 1
