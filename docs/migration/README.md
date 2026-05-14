@@ -27,4 +27,5 @@ Dieses Verzeichnis bündelt die fachliche und technische Dokumentation für die 
 - `python_target_architecture.md`: geplante Zielstruktur des Python-Ports
 - `legacy_agrsich_validation_step.md`: erster echter Versicherer-Agrsich-Vergleich
 - `legacy_vn_validation_step.md`: erster echter VN-Agrsich-Vergleich
+- `legacy_agrsich_multi_period_step.md`: mehrperiodiger Rahmen fuer validierte Agrsich-Legacy-Vergleiche
 - weitere Mapping- und Verifikationsnotizen folgen in späteren PRs
