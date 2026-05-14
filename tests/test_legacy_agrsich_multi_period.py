@@ -98,6 +98,19 @@ def test_compare_insurer_export_table_to_legacy_detects_bad_period_row() -> None
     assert comparison.row_comparisons[2].matches is True
 
 
+def test_compare_insurer_export_table_to_legacy_rejects_duplicate_periods() -> None:
+    legacy_table = parse_legacy_insurer_dat(Path("tests/references/legacy_agrsich/VU14L1.DAT"))
+    export_table = _insurer_table_from_legacy_rows(legacy_table, "imsvu014.dat", [1])
+    export_table.rows.append(ExportRow(values=list(export_table.rows[0].values)))
+
+    comparison = compare_insurer_export_table_to_legacy(export_table, legacy_table)
+
+    assert comparison.matches is False
+    assert comparison.row_comparisons[0].matches is True
+    assert comparison.row_comparisons[1].matches is False
+    assert comparison.row_comparisons[1].field_comparisons[0].expected == "unique global period"
+
+
 def test_compare_policyholder_export_table_to_legacy_accepts_multiple_periods() -> None:
     legacy_table = parse_legacy_policyholder_dat(Path("tests/references/legacy_agrsich/IMSVNR05.DAT"))
     export_table = _policyholder_table_from_legacy_rows(legacy_table, "imsvnr05.dat", [1, 2, 3])
@@ -108,6 +121,19 @@ def test_compare_policyholder_export_table_to_legacy_accepts_multiple_periods() 
     assert comparison.filename == "imsvnr05.dat"
     assert comparison.subject_type == "policyholder"
     assert [row.field_comparisons[1].actual for row in comparison.row_comparisons] == [1, 2, 3]
+
+
+def test_compare_policyholder_export_table_to_legacy_rejects_duplicate_periods() -> None:
+    legacy_table = parse_legacy_policyholder_dat(Path("tests/references/legacy_agrsich/IMSVNR05.DAT"))
+    export_table = _policyholder_table_from_legacy_rows(legacy_table, "imsvnr05.dat", [1])
+    export_table.rows.append(ExportRow(values=list(export_table.rows[0].values)))
+
+    comparison = compare_policyholder_export_table_to_legacy(export_table, legacy_table)
+
+    assert comparison.matches is False
+    assert comparison.row_comparisons[0].matches is True
+    assert comparison.row_comparisons[1].matches is False
+    assert comparison.row_comparisons[1].field_comparisons[0].expected == "unique global period"
 
 
 def test_multi_period_legacy_comparison_combines_vu_and_vn_tables() -> None:
