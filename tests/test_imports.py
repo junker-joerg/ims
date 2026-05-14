@@ -22,6 +22,13 @@ def test_core_placeholders_import() -> None:
         build_sequenced_bav_events,
     )
     from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
+    from ims.engine.replay_runner import (
+        ReplayPeriodResult,
+        ReplayRunResult,
+        ReplaySnapshot,
+        ReplayWindowTarget,
+        run_agrsich_replay_from_fixture,
+    )
     from ims.engine.scheduler import Event, Scheduler
     from ims.engine.simulation import (
         ControlledLoopResult,
@@ -44,7 +51,7 @@ def test_core_placeholders_import() -> None:
         run_two_prioritized_bav_updates,
         run_two_scheduled_bav_updates,
     )
-    from ims.io.scenario_loader import LoadedScenario, load_scenario
+    from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
     from ims.model.agrsich_export import (
         ExportFileSpec,
         ExportRow,
@@ -100,8 +107,12 @@ def test_core_placeholders_import() -> None:
         LegacyFieldComparison,
         LegacyInsurerRow,
         LegacyInsurerTable,
+        LegacyRowComparison,
+        LegacyWindowComparison,
         compare_export_record_to_legacy_row,
+        compare_export_file_to_legacy_window,
         extract_legacy_row,
+        extract_legacy_window,
         parse_legacy_insurer_dat,
     )
     from ims.model.legacy_vn_reference import (
@@ -151,6 +162,7 @@ def test_core_placeholders_import() -> None:
     assert isinstance(bav.service_state.computation_meta, BAVServiceComputationMeta)
     assert LoadedScenario is not None
     assert load_scenario is not None
+    assert load_scenario_from_mapping is not None
     assert AggregateSnapshot is not None
     assert collect_basic_aggregates is not None
     assert ExportFileSpec is not None
@@ -178,9 +190,13 @@ def test_core_placeholders_import() -> None:
     assert LegacyInsurerTable is not None
     assert LegacyFieldComparison is not None
     assert LegacyComparison is not None
+    assert LegacyRowComparison is not None
+    assert LegacyWindowComparison is not None
     assert parse_legacy_insurer_dat is not None
     assert extract_legacy_row is not None
+    assert extract_legacy_window is not None
     assert compare_export_record_to_legacy_row is not None
+    assert compare_export_file_to_legacy_window is not None
     assert LegacyPolicyholderRow is not None
     assert LegacyPolicyholderTable is not None
     assert LegacyPolicyholderFieldComparison is not None
@@ -234,3 +250,8 @@ def test_core_placeholders_import() -> None:
     assert policyholder.end_wealth_current == 0.0
     assert rand_uniform_0_1(rng) >= 0.0
     assert rand_int_inclusive(rng, 1, 1) == 1
+    assert ReplaySnapshot is not None
+    assert ReplayWindowTarget is not None
+    assert ReplayPeriodResult is not None
+    assert ReplayRunResult is not None
+    assert run_agrsich_replay_from_fixture is not None
