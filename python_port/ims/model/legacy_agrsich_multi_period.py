@@ -67,6 +67,34 @@ def _missing_policyholder_row_comparison(global_period: int) -> LegacyPolicyhold
     )
 
 
+def _duplicate_insurer_row_comparison(global_period: int) -> LegacyComparison:
+    return LegacyComparison(
+        matches=False,
+        field_comparisons=[
+            LegacyFieldComparison(
+                name="global_period",
+                actual=global_period,
+                expected="unique global period",
+                matches=False,
+            )
+        ],
+    )
+
+
+def _duplicate_policyholder_row_comparison(global_period: int) -> LegacyPolicyholderComparison:
+    return LegacyPolicyholderComparison(
+        matches=False,
+        field_comparisons=[
+            LegacyPolicyholderFieldComparison(
+                name="global_period",
+                actual=global_period,
+                expected="unique global period",
+                matches=False,
+            )
+        ],
+    )
+
+
 def compare_insurer_export_table_to_legacy(
     export_table: ExportTable,
     legacy_table: LegacyInsurerTable,
@@ -74,8 +102,14 @@ def compare_insurer_export_table_to_legacy(
     tolerance: float = 0.05,
 ) -> LegacyTableComparison:
     row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison] = []
+    seen_global_periods: set[int] = set()
     for index, row in enumerate(export_table.rows):
         global_period = int(row.values[0])
+        if global_period in seen_global_periods:
+            row_comparisons.append(_duplicate_insurer_row_comparison(global_period))
+            continue
+        seen_global_periods.add(global_period)
+
         legacy_row = extract_legacy_row(legacy_table, global_period)
         if legacy_row is None:
             row_comparisons.append(_missing_insurer_row_comparison(global_period))
@@ -103,8 +137,14 @@ def compare_policyholder_export_table_to_legacy(
     tolerance: float = 0.05,
 ) -> LegacyTableComparison:
     row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison] = []
+    seen_global_periods: set[int] = set()
     for index, row in enumerate(export_table.rows):
         global_period = int(row.values[0])
+        if global_period in seen_global_periods:
+            row_comparisons.append(_duplicate_policyholder_row_comparison(global_period))
+            continue
+        seen_global_periods.add(global_period)
+
         legacy_row = extract_legacy_policyholder_row(legacy_table, global_period)
         if legacy_row is None:
             row_comparisons.append(_missing_policyholder_row_comparison(global_period))
