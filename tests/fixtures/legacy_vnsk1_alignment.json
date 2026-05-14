@@ -1,0 +1,48 @@
+{
+  "context": {
+    "period": 2,
+    "logtime": 0,
+    "max_periods": 100,
+    "run_index": 0,
+    "rng_seed": 2
+  },
+  "bav": {
+    "entity_id": 1,
+    "name": "Legacy-VNSK1-Alignment-BAV"
+  },
+  "insurers": [],
+  "policyholders": [
+    {
+      "entity_id": 501,
+      "name": "Legacy VN aggregate carrier",
+      "active": true,
+      "active_prev": true,
+      "rule_id": 5,
+      "rule_class": 1,
+      "insured_prev": 0.0,
+      "insured_current": 0.58,
+      "chosen_insurer_current": 23,
+      "chosen_insurer_sector_current": [
+        23,
+        2
+      ],
+      "paid_premium_current": [
+        12.0,
+        17.9
+      ],
+      "self_damage_current": [
+        0.0,
+        0.0
+      ],
+      "claim_sum_current": [
+        21.8,
+        22.3
+      ],
+      "end_wealth_sector_current": [
+        4.9,
+        4.7
+      ],
+      "end_wealth_current": -105.3
+    }
+  ]
+}

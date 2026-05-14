@@ -44,6 +44,7 @@
       "paid_premium_current": [1.5, 2.5],
       "self_damage_current": [0.2, 0.4],
       "claim_sum_current": [0.3, 0.7],
+      "end_wealth_sector_current": [9.0, 9.5],
       "end_wealth_current": 10.0
     }
   ]

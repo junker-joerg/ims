@@ -71,6 +71,15 @@ def _mode_smallest(values: list[int | None]) -> int | None:
     return None
 
 
+def _chosen_insurer_sector(item: Policyholder, index: int) -> int | None:
+    values = item.chosen_insurer_sector_current
+    if len(values) > index:
+        return values[index] if values[index] is not None else item.chosen_insurer_current
+    if values:
+        return values[-1] if values[-1] is not None else item.chosen_insurer_current
+    return item.chosen_insurer_current
+
+
 def _reserve_sector(item: Insurer, index: int) -> float:
     reserves = item.reserves_current
     if isinstance(reserves, list):
@@ -146,21 +155,24 @@ def _policyholder_metrics(items: list[Policyholder], *, average: bool) -> dict[s
             "coverage_2": 0.0,
             "chosen_insurer_2": None,
             "claim_sum_2": 0.0,
+            "end_wealth_1": 0.0,
+            "end_wealth_2": 0.0,
             "end_wealth": 0.0,
         }
     if average:
-        mode_value = _mode_smallest([item.chosen_insurer_current for item in items])
         return {
             "paid_premium_1": _mean([item.paid_premium_current[0] for item in items]),
             "self_damage_1": _mean([item.self_damage_current[0] for item in items]),
             "coverage_1": _mean([item.insured_current for item in items]),
-            "chosen_insurer_1": mode_value,
+            "chosen_insurer_1": _mode_smallest([_chosen_insurer_sector(item, 0) for item in items]),
             "claim_sum_1": _mean([item.claim_sum_current[0] for item in items]),
             "paid_premium_2": _mean([item.paid_premium_current[1] for item in items]),
             "self_damage_2": _mean([item.self_damage_current[1] for item in items]),
             "coverage_2": _mean([item.insured_current for item in items]),
-            "chosen_insurer_2": mode_value,
+            "chosen_insurer_2": _mode_smallest([_chosen_insurer_sector(item, 1) for item in items]),
             "claim_sum_2": _mean([item.claim_sum_current[1] for item in items]),
+            "end_wealth_1": _mean([item.end_wealth_sector_current[0] for item in items]),
+            "end_wealth_2": _mean([item.end_wealth_sector_current[1] for item in items]),
             "end_wealth": _mean([item.end_wealth_current for item in items]),
         }
     item = items[0]
@@ -168,13 +180,15 @@ def _policyholder_metrics(items: list[Policyholder], *, average: bool) -> dict[s
         "paid_premium_1": item.paid_premium_current[0],
         "self_damage_1": item.self_damage_current[0],
         "coverage_1": item.insured_current,
-        "chosen_insurer_1": item.chosen_insurer_current,
+        "chosen_insurer_1": _chosen_insurer_sector(item, 0),
         "claim_sum_1": item.claim_sum_current[0],
         "paid_premium_2": item.paid_premium_current[1],
         "self_damage_2": item.self_damage_current[1],
         "coverage_2": item.insured_current,
-        "chosen_insurer_2": item.chosen_insurer_current,
+        "chosen_insurer_2": _chosen_insurer_sector(item, 1),
         "claim_sum_2": item.claim_sum_current[1],
+        "end_wealth_1": item.end_wealth_sector_current[0],
+        "end_wealth_2": item.end_wealth_sector_current[1],
         "end_wealth": item.end_wealth_current,
     }
 
