@@ -45,11 +45,7 @@ class ReplayRunResult:
     legacy_comparison: LegacyWindowComparison | None
 
 
-def _fixture_path(path: str | Path) -> Path:
-    return Path(path).resolve()
-
-
-def _load_target(data: dict, fixture_path: Path) -> ReplayWindowTarget | None:
+def _load_target(data: dict, fixture_base_path: Path) -> ReplayWindowTarget | None:
     target_data = data.get("legacy_window")
     if target_data is None:
         return None
@@ -58,7 +54,7 @@ def _load_target(data: dict, fixture_path: Path) -> ReplayWindowTarget | None:
 
     legacy_path = Path(str(target_data["legacy_path"]))
     if not legacy_path.is_absolute():
-        legacy_path = fixture_path.parent / legacy_path
+        legacy_path = fixture_base_path / legacy_path
     return ReplayWindowTarget(
         legacy_path=legacy_path,
         export_filename=str(target_data["export_filename"]),
@@ -111,15 +107,17 @@ def _deduplicate_paths(paths: list[Path]) -> list[Path]:
     return result
 
 
-def run_agrsich_replay_from_fixture(path: str | Path, output_dir: str | Path) -> ReplayRunResult:
-    fixture_path = _fixture_path(path)
-    with fixture_path.open("r", encoding="utf-8") as handle:
-        data = json.load(handle)
+def run_agrsich_replay_from_mapping(
+    data: dict,
+    output_dir: str | Path,
+    *,
+    fixture_base_path: str | Path = ".",
+) -> ReplayRunResult:
     if not isinstance(data, dict):
         raise ValueError("replay fixture must be a JSON object")
 
     snapshots = _load_snapshots(data)
-    target = _load_target(data, fixture_path)
+    target = _load_target(data, Path(fixture_base_path).resolve())
 
     output_path = Path(output_dir)
     all_written_files: list[Path] = []
@@ -152,4 +150,16 @@ def run_agrsich_replay_from_fixture(path: str | Path, output_dir: str | Path) ->
         written_files=_deduplicate_paths(all_written_files),
         period_results=period_results,
         legacy_comparison=legacy_comparison,
+    )
+
+
+def run_agrsich_replay_from_fixture(path: str | Path, output_dir: str | Path) -> ReplayRunResult:
+    fixture_path = Path(path).resolve()
+    with fixture_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+
+    return run_agrsich_replay_from_mapping(
+        data,
+        output_dir,
+        fixture_base_path=fixture_path.parent,
     )
