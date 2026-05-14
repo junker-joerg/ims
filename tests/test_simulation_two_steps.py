@@ -1,10 +1,12 @@
+from pathlib import Path
+
 import pytest
 
 from ims.engine.simulation import TwoStepSimulationResult, run_two_bav_update_steps
 
 
-def test_two_step_simulation_advances_logtime_within_same_period() -> None:
-    result = run_two_bav_update_steps("tests/fixtures/minimal_scenario.json")
+def test_two_step_simulation_advances_logtime_within_same_period(minimal_scenario_path: Path) -> None:
+    result = run_two_bav_update_steps(minimal_scenario_path)
 
     assert isinstance(result, TwoStepSimulationResult)
     assert result.initial_context.period == 0
@@ -17,9 +19,9 @@ def test_two_step_simulation_advances_logtime_within_same_period() -> None:
     assert result.second_step.bav_update.logtime == 1
 
 
-def test_two_step_simulation_can_start_new_period_on_second_step() -> None:
+def test_two_step_simulation_can_start_new_period_on_second_step(minimal_scenario_path: Path) -> None:
     result = run_two_bav_update_steps(
-        "tests/fixtures/minimal_scenario.json",
+        minimal_scenario_path,
         second_step_new_period=True,
     )
 
@@ -29,14 +31,14 @@ def test_two_step_simulation_can_start_new_period_on_second_step() -> None:
     assert result.second_step.bav_update.logtime == 0
 
 
-def test_two_step_simulation_rng_samples_are_deterministic_for_same_seed() -> None:
+def test_two_step_simulation_rng_samples_are_deterministic_for_same_seed(minimal_scenario_path: Path) -> None:
     first = run_two_bav_update_steps(
-        "tests/fixtures/minimal_scenario.json",
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
     )
     second = run_two_bav_update_steps(
-        "tests/fixtures/minimal_scenario.json",
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
     )
@@ -47,10 +49,10 @@ def test_two_step_simulation_rng_samples_are_deterministic_for_same_seed() -> No
     assert second.second_step.bav_update.sample_token == first.second_step.bav_update.sample_token
 
 
-def test_two_step_simulation_raises_if_sampling_without_rng() -> None:
+def test_two_step_simulation_raises_if_sampling_without_rng(minimal_scenario_path: Path) -> None:
     with pytest.raises(ValueError, match="context.rng is required"):
         run_two_bav_update_steps(
-            "tests/fixtures/minimal_scenario.json",
+            minimal_scenario_path,
             initialize_rng=False,
             use_rng_sample=True,
         )

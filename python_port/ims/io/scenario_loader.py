@@ -20,6 +20,36 @@ class ScenarioValidationError(ValueError):
     """Signalisiert ein grob ungültiges Szenarioformat."""
 
 
+def _int_list(value: object, *, default: list[int]) -> list[int]:
+    if not isinstance(value, list):
+        return list(default)
+    return [int(item) for item in value]
+
+
+def _float_list(value: object, *, default: list[float]) -> list[float]:
+    if not isinstance(value, list):
+        return list(default)
+    return [float(item) for item in value]
+
+
+def _insurer_reserves_vector(item: dict[str, object]) -> list[float]:
+    current_value = item.get("reserves_current")
+    if isinstance(current_value, list):
+        values = [float(entry) for entry in current_value[:2]]
+        if len(values) == 1:
+            return [values[0], values[0]]
+        if len(values) >= 2:
+            return values
+        return [0.0, 0.0]
+    if current_value is not None:
+        value = float(current_value)
+        return [value, value]
+
+    previous_value = item.get("reserves_prev", 0.0)
+    value = float(previous_value)
+    return [value, value]
+
+
 def load_scenario(path: str | Path) -> LoadedScenario:
     scenario_path = Path(path)
     with scenario_path.open("r", encoding="utf-8") as handle:
@@ -50,12 +80,28 @@ def load_scenario(path: str | Path) -> LoadedScenario:
         run_index=int(context_data.get("run_index", 0)),
         rng_seed=int(context_data.get("rng_seed", 0)),
     )
-    bav = BAV(entity_id=int(bav_data["entity_id"]), active=bool(bav_data.get("active", True)), name=str(bav_data["name"]))
+    bav = BAV(
+        entity_id=int(bav_data["entity_id"]),
+        active=bool(bav_data.get("active", True)),
+        name=str(bav_data["name"]),
+    )
     insurers = [
         Insurer(
             entity_id=int(item["entity_id"]),
             active=bool(item.get("active", True)),
             name=str(item["name"]),
+            premiums_prev=float(item.get("premiums_prev", 0.0)),
+            advertising_prev=float(item.get("advertising_prev", 0.0)),
+            reserves_prev=float(item.get("reserves_prev", 0.0)),
+            active_prev=bool(item.get("active_prev", True)),
+            rule_id=int(item["rule_id"]) if item.get("rule_id") is not None else None,
+            rule_class=int(item["rule_class"]) if item.get("rule_class") is not None else None,
+            premiums_current=float(item.get("premiums_current", item.get("premiums_prev", 0.0))),
+            advertising_current=float(item.get("advertising_current", item.get("advertising_prev", 0.0))),
+            reserves_current=_insurer_reserves_vector(item),
+            policyholders_current=float(item.get("policyholders_current", 0.0)),
+            claims_count_current=_int_list(item.get("claims_count_current"), default=[0, 0]),
+            claims_sum_current=_float_list(item.get("claims_sum_current"), default=[0.0, 0.0]),
         )
         for item in insurer_items
     ]
@@ -65,6 +111,20 @@ def load_scenario(path: str | Path) -> LoadedScenario:
             active=bool(item.get("active", True)),
             name=str(item["name"]),
             insurer_id=int(item["insurer_id"]) if item.get("insurer_id") is not None else None,
+            insured_prev=float(item.get("insured_prev", 0.0)),
+            active_prev=bool(item.get("active_prev", True)),
+            rule_id=int(item["rule_id"]) if item.get("rule_id") is not None else None,
+            rule_class=int(item["rule_class"]) if item.get("rule_class") is not None else None,
+            insured_current=float(item.get("insured_current", item.get("insured_prev", 0.0))),
+            chosen_insurer_current=(
+                int(item["chosen_insurer_current"])
+                if item.get("chosen_insurer_current") is not None
+                else (int(item["insurer_id"]) if item.get("insurer_id") is not None else None)
+            ),
+            paid_premium_current=_float_list(item.get("paid_premium_current"), default=[0.0, 0.0]),
+            self_damage_current=_float_list(item.get("self_damage_current"), default=[0.0, 0.0]),
+            claim_sum_current=_float_list(item.get("claim_sum_current"), default=[0.0, 0.0]),
+            end_wealth_current=float(item.get("end_wealth_current", 0.0)),
         )
         for item in policyholder_items
     ]

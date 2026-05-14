@@ -7,11 +7,8 @@ from ims.io.scenario_loader import load_scenario
 from ims.model.entities import BAV
 
 
-SCENARIO_PATH = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
-
-def test_bav_update_mutates_bav_and_bav_snapshot_does_not() -> None:
-    loaded = load_scenario(SCENARIO_PATH)
+def test_bav_update_mutates_bav_and_bav_snapshot_does_not(minimal_scenario_path: Path) -> None:
+    loaded = load_scenario(minimal_scenario_path)
     bav = loaded.bav
 
     update_result = dispatch_event(
@@ -58,8 +55,8 @@ def test_bav_update_mutates_bav_and_bav_snapshot_does_not() -> None:
     assert before_snapshot_state == after_snapshot_state
 
 
-def test_mixed_sequence_with_update_first() -> None:
-    result = run_mixed_bav_event_sequence(SCENARIO_PATH, update_first=True)
+def test_mixed_sequence_with_update_first(minimal_scenario_path: Path) -> None:
+    result = run_mixed_bav_event_sequence(minimal_scenario_path, update_first=True)
 
     assert [item.event.action for item in result.dispatched_results] == [
         "bav_update",
@@ -72,8 +69,8 @@ def test_mixed_sequence_with_update_first() -> None:
     ] == [(0, 0), (0, 1)]
 
 
-def test_mixed_sequence_with_update_first_false() -> None:
-    result = run_mixed_bav_event_sequence(SCENARIO_PATH, update_first=False)
+def test_mixed_sequence_with_update_first_false(minimal_scenario_path: Path) -> None:
+    result = run_mixed_bav_event_sequence(minimal_scenario_path, update_first=False)
 
     assert [item.event.action for item in result.dispatched_results] == [
         "bav_snapshot",
@@ -86,8 +83,8 @@ def test_mixed_sequence_with_update_first_false() -> None:
     ] == [(0, 0), (0, 1)]
 
 
-def test_bav_snapshot_result_has_no_bav_update() -> None:
-    result = run_mixed_bav_event_sequence(SCENARIO_PATH, update_first=True)
+def test_bav_snapshot_result_has_no_bav_update(minimal_scenario_path: Path) -> None:
+    result = run_mixed_bav_event_sequence(minimal_scenario_path, update_first=True)
 
     snapshot_result = result.dispatched_results[1]
     assert snapshot_result.event.action == "bav_snapshot"
@@ -95,15 +92,15 @@ def test_bav_snapshot_result_has_no_bav_update() -> None:
     assert snapshot_result.aggregate_snapshot is not None
 
 
-def test_mixed_sequence_seeded_rng_is_deterministic_for_update_part() -> None:
+def test_mixed_sequence_seeded_rng_is_deterministic_for_update_part(minimal_scenario_path: Path) -> None:
     result_a = run_mixed_bav_event_sequence(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         update_first=True,
     )
     result_b = run_mixed_bav_event_sequence(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         update_first=True,
@@ -117,18 +114,18 @@ def test_mixed_sequence_seeded_rng_is_deterministic_for_update_part() -> None:
     )
 
 
-def test_mixed_sequence_raises_when_sampling_without_rng() -> None:
+def test_mixed_sequence_raises_when_sampling_without_rng(minimal_scenario_path: Path) -> None:
     with pytest.raises(ValueError, match="context.rng is required"):
         run_mixed_bav_event_sequence(
-            SCENARIO_PATH,
+            minimal_scenario_path,
             initialize_rng=False,
             use_rng_sample=True,
             update_first=True,
         )
 
 
-def test_dispatch_event_rejects_unknown_action() -> None:
-    loaded = load_scenario(SCENARIO_PATH)
+def test_dispatch_event_rejects_unknown_action(minimal_scenario_path: Path) -> None:
+    loaded = load_scenario(minimal_scenario_path)
 
     with pytest.raises(ValueError, match="unsupported event action: unsupported"):
         dispatch_event(

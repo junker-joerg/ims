@@ -5,12 +5,9 @@ import pytest
 from ims.engine.simulation import ControlledLoopResult, run_mixed_controlled_bav_event_loop
 
 
-SCENARIO_PATH = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
-
-def test_mixed_controlled_loop_with_update_first() -> None:
+def test_mixed_controlled_loop_with_update_first(minimal_scenario_path: Path) -> None:
     result = run_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=2,
         max_events=4,
         start_with_update=True,
@@ -31,9 +28,9 @@ def test_mixed_controlled_loop_with_update_first() -> None:
     ]
 
 
-def test_mixed_controlled_loop_with_update_first_false() -> None:
+def test_mixed_controlled_loop_with_update_first_false(minimal_scenario_path: Path) -> None:
     result = run_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=2,
         max_events=4,
         start_with_update=False,
@@ -53,9 +50,9 @@ def test_mixed_controlled_loop_with_update_first_false() -> None:
     ]
 
 
-def test_mixed_controlled_loop_stops_at_max_events() -> None:
+def test_mixed_controlled_loop_stops_at_max_events(minimal_scenario_path: Path) -> None:
     result = run_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=3,
         max_events=3,
         start_with_update=True,
@@ -67,9 +64,9 @@ def test_mixed_controlled_loop_stops_at_max_events() -> None:
     assert result.remaining_scheduled_events == 3
 
 
-def test_mixed_controlled_loop_rng_samples_are_deterministic_for_updates() -> None:
+def test_mixed_controlled_loop_rng_samples_are_deterministic_for_updates(minimal_scenario_path: Path) -> None:
     result_a = run_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         num_pairs=2,
@@ -77,7 +74,7 @@ def test_mixed_controlled_loop_rng_samples_are_deterministic_for_updates() -> No
         start_with_update=True,
     )
     result_b = run_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         num_pairs=2,
@@ -107,17 +104,18 @@ def test_mixed_controlled_loop_rng_samples_are_deterministic_for_updates() -> No
     ],
 )
 def test_mixed_controlled_loop_rejects_invalid_parameters(
+    minimal_scenario_path: Path,
     kwargs: dict[str, int],
     message: str,
 ) -> None:
     with pytest.raises(ValueError, match=message):
-        run_mixed_controlled_bav_event_loop(SCENARIO_PATH, **kwargs)
+        run_mixed_controlled_bav_event_loop(minimal_scenario_path, **kwargs)
 
 
-def test_mixed_controlled_loop_raises_when_sampling_without_rng() -> None:
+def test_mixed_controlled_loop_raises_when_sampling_without_rng(minimal_scenario_path: Path) -> None:
     with pytest.raises(ValueError, match="context.rng is required"):
         run_mixed_controlled_bav_event_loop(
-            SCENARIO_PATH,
+            minimal_scenario_path,
             initialize_rng=False,
             use_rng_sample=True,
             num_pairs=2,

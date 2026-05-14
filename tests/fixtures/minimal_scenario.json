@@ -13,14 +13,38 @@
   "insurers": [
     {
       "entity_id": 200,
-      "name": "Muster-VU"
+      "name": "Muster-VU",
+      "active": true,
+      "active_prev": true,
+      "rule_id": 7,
+      "rule_class": 1,
+      "premiums_prev": 12.0,
+      "advertising_prev": 3.0,
+      "reserves_prev": 20.0,
+      "premiums_current": 12.0,
+      "advertising_current": 3.0,
+      "reserves_current": 20.0,
+      "policyholders_current": 1.0,
+      "claims_count_current": [1, 2],
+      "claims_sum_current": [5.0, 7.5]
     }
   ],
   "policyholders": [
     {
       "entity_id": 300,
       "name": "Muster-VN",
-      "insurer_id": 200
+      "insurer_id": 200,
+      "active": true,
+      "active_prev": true,
+      "rule_id": 17,
+      "rule_class": 10,
+      "insured_prev": 0.5,
+      "insured_current": 0.5,
+      "chosen_insurer_current": 200,
+      "paid_premium_current": [1.5, 2.5],
+      "self_damage_current": [0.2, 0.4],
+      "claim_sum_current": [0.3, 0.7],
+      "end_wealth_current": 10.0
     }
   ]
 }

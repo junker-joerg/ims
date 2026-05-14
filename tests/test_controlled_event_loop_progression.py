@@ -5,12 +5,9 @@ import pytest
 from ims.engine.simulation import ControlledLoopResult, run_progressed_bav_event_loop
 
 
-SCENARIO_PATH = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
-
-def test_progressed_loop_crosses_period_boundary() -> None:
+def test_progressed_loop_crosses_period_boundary(minimal_scenario_path: Path) -> None:
     result = run_progressed_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_events=4,
         max_events=4,
         logtimes_per_period=2,
@@ -20,9 +17,9 @@ def test_progressed_loop_crosses_period_boundary() -> None:
     assert planned_points == [(0, 0), (0, 1), (1, 0), (1, 1)]
 
 
-def test_progressed_loop_processes_all_events_when_limit_allows() -> None:
+def test_progressed_loop_processes_all_events_when_limit_allows(minimal_scenario_path: Path) -> None:
     result = run_progressed_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_events=4,
         max_events=4,
         logtimes_per_period=2,
@@ -35,9 +32,9 @@ def test_progressed_loop_processes_all_events_when_limit_allows() -> None:
     assert result.remaining_scheduled_events == 0
 
 
-def test_progressed_loop_stops_at_max_events_across_periods() -> None:
+def test_progressed_loop_stops_at_max_events_across_periods(minimal_scenario_path: Path) -> None:
     result = run_progressed_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_events=5,
         max_events=3,
         logtimes_per_period=2,
@@ -52,9 +49,9 @@ def test_progressed_loop_stops_at_max_events_across_periods() -> None:
     assert result.remaining_scheduled_events == 2
 
 
-def test_progressed_loop_dispatch_order_follows_period_and_logtime() -> None:
+def test_progressed_loop_dispatch_order_follows_period_and_logtime(minimal_scenario_path: Path) -> None:
     result = run_progressed_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_events=6,
         max_events=6,
         logtimes_per_period=2,
@@ -66,9 +63,9 @@ def test_progressed_loop_dispatch_order_follows_period_and_logtime() -> None:
     assert dispatched_points == [(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1)]
 
 
-def test_progressed_loop_seeded_rng_sequence_is_deterministic() -> None:
+def test_progressed_loop_seeded_rng_sequence_is_deterministic(minimal_scenario_path: Path) -> None:
     result_a = run_progressed_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         num_events=4,
@@ -76,7 +73,7 @@ def test_progressed_loop_seeded_rng_sequence_is_deterministic() -> None:
         logtimes_per_period=2,
     )
     result_b = run_progressed_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         num_events=4,
@@ -98,15 +95,19 @@ def test_progressed_loop_seeded_rng_sequence_is_deterministic() -> None:
         ({"num_events": 1, "max_events": 1, "logtimes_per_period": 0}, "logtimes_per_period must be greater than 0"),
     ],
 )
-def test_progressed_loop_rejects_invalid_parameters(kwargs: dict[str, int], message: str) -> None:
+def test_progressed_loop_rejects_invalid_parameters(
+    minimal_scenario_path: Path,
+    kwargs: dict[str, int],
+    message: str,
+) -> None:
     with pytest.raises(ValueError, match=message):
-        run_progressed_bav_event_loop(SCENARIO_PATH, **kwargs)
+        run_progressed_bav_event_loop(minimal_scenario_path, **kwargs)
 
 
-def test_progressed_loop_raises_when_sampling_without_rng() -> None:
+def test_progressed_loop_raises_when_sampling_without_rng(minimal_scenario_path: Path) -> None:
     with pytest.raises(ValueError, match="context.rng is required"):
         run_progressed_bav_event_loop(
-            SCENARIO_PATH,
+            minimal_scenario_path,
             initialize_rng=False,
             use_rng_sample=True,
             num_events=4,
