@@ -8,11 +8,8 @@ from ims.engine.simulation import (
 )
 
 
-SCENARIO_PATH = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
-
-def test_run_single_bav_update_step_keeps_consistent_result_fields() -> None:
-    result = run_single_bav_update_step(SCENARIO_PATH)
+def test_run_single_bav_update_step_keeps_consistent_result_fields(minimal_scenario_path: Path) -> None:
+    result = run_single_bav_update_step(minimal_scenario_path)
 
     assert result.context.period == 0
     assert result.context.logtime == 0
@@ -23,9 +20,9 @@ def test_run_single_bav_update_step_keeps_consistent_result_fields() -> None:
     assert result.aggregate_snapshot.period == 0
 
 
-def test_run_controlled_bav_event_loop_keeps_result_metadata() -> None:
+def test_run_controlled_bav_event_loop_keeps_result_metadata(minimal_scenario_path: Path) -> None:
     result = run_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_events=5,
         max_events=3,
     )
@@ -36,8 +33,8 @@ def test_run_controlled_bav_event_loop_keeps_result_metadata() -> None:
     assert len(result.dispatched_results) == 3
 
 
-def test_run_two_scheduled_bav_updates_keeps_two_dispatched_results_in_order() -> None:
-    result = run_two_scheduled_bav_updates(SCENARIO_PATH)
+def test_run_two_scheduled_bav_updates_keeps_two_dispatched_results_in_order(minimal_scenario_path: Path) -> None:
+    result = run_two_scheduled_bav_updates(minimal_scenario_path)
 
     assert len(result.dispatched_results) == 2
     assert [
@@ -49,9 +46,9 @@ def test_run_two_scheduled_bav_updates_keeps_two_dispatched_results_in_order() -
     ]
 
 
-def test_run_progressed_mixed_controlled_bav_event_loop_keeps_sequence_metadata() -> None:
+def test_run_progressed_mixed_controlled_bav_event_loop_keeps_sequence_metadata(minimal_scenario_path: Path) -> None:
     result = run_progressed_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=3,
         max_events=6,
         logtimes_per_period=2,

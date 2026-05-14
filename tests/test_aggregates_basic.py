@@ -1,11 +1,13 @@
+from pathlib import Path
+
 from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
 from ims.engine.context import SimulationContext
 from ims.io.scenario_loader import load_scenario
 from ims.model.entities import BAV, Insurer, Policyholder
 
 
-def test_collect_basic_aggregates_from_minimal_fixture() -> None:
-    scenario = load_scenario("tests/fixtures/minimal_scenario.json")
+def test_collect_basic_aggregates_from_minimal_fixture(minimal_scenario_path: Path) -> None:
+    scenario = load_scenario(minimal_scenario_path)
 
     snapshot = collect_basic_aggregates(
         scenario.context,

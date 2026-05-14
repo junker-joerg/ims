@@ -1,8 +1,20 @@
-"""Pytest configuration for local package imports."""
-
 from pathlib import Path
 import sys
+import os
 
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+import pytest
+
+
+TESTS_DIR = Path(__file__).resolve().parent
+REPO_ROOT = TESTS_DIR.parent
+PYTHON_PORT_DIR = (REPO_ROOT / "python_port").resolve()
+
+if str(PYTHON_PORT_DIR) not in sys.path:
+    sys.path.insert(0, str(PYTHON_PORT_DIR))
+
+os.chdir(REPO_ROOT)
+
+
+@pytest.fixture
+def minimal_scenario_path() -> Path:
+    return TESTS_DIR / "fixtures" / "minimal_scenario.json"

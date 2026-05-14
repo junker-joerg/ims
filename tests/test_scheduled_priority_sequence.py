@@ -5,11 +5,9 @@ import pytest
 from ims.engine.simulation import ScheduledSequenceResult, run_two_prioritized_bav_updates
 
 
-def test_lower_priority_value_is_dispatched_first() -> None:
-    scenario_path = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
+def test_lower_priority_value_is_dispatched_first(minimal_scenario_path: Path) -> None:
     result = run_two_prioritized_bav_updates(
-        scenario_path,
+        minimal_scenario_path,
         initialize_rng=False,
         use_rng_sample=False,
         first_priority=5,
@@ -29,11 +27,9 @@ def test_lower_priority_value_is_dispatched_first() -> None:
     assert result.dispatched_results[1].event.payload["label"] == "first"
 
 
-def test_planned_order_can_differ_from_dispatch_order() -> None:
-    scenario_path = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
+def test_planned_order_can_differ_from_dispatch_order(minimal_scenario_path: Path) -> None:
     result = run_two_prioritized_bav_updates(
-        scenario_path,
+        minimal_scenario_path,
         first_priority=9,
         second_priority=0,
     )
@@ -47,11 +43,9 @@ def test_planned_order_can_differ_from_dispatch_order() -> None:
     assert dispatched_labels == ["second", "first"]
 
 
-def test_equal_priority_uses_stable_fifo_order() -> None:
-    scenario_path = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
+def test_equal_priority_uses_stable_fifo_order(minimal_scenario_path: Path) -> None:
     result = run_two_prioritized_bav_updates(
-        scenario_path,
+        minimal_scenario_path,
         first_priority=3,
         second_priority=3,
     )
@@ -63,18 +57,16 @@ def test_equal_priority_uses_stable_fifo_order() -> None:
     assert dispatched_labels == ["first", "second"]
 
 
-def test_seeded_priority_sequence_is_deterministic() -> None:
-    scenario_path = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
+def test_seeded_priority_sequence_is_deterministic(minimal_scenario_path: Path) -> None:
     result_a = run_two_prioritized_bav_updates(
-        scenario_path,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         first_priority=5,
         second_priority=1,
     )
     result_b = run_two_prioritized_bav_updates(
-        scenario_path,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         first_priority=5,
@@ -94,15 +86,13 @@ def test_seeded_priority_sequence_is_deterministic() -> None:
     )
 
 
-def test_priority_sequence_raises_when_sampling_without_rng() -> None:
-    scenario_path = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
+def test_priority_sequence_raises_when_sampling_without_rng(minimal_scenario_path: Path) -> None:
     with pytest.raises(
         ValueError,
         match="context.rng is required",
     ):
         run_two_prioritized_bav_updates(
-            scenario_path,
+            minimal_scenario_path,
             initialize_rng=False,
             use_rng_sample=True,
         )

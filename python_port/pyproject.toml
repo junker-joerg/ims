@@ -16,15 +16,8 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["../tests"]
 pythonpath = ["."]
-addopts = "-q"
+addopts = "-q ../tests"
 
 [tool.setuptools]
 packages = ["ims", "ims.model", "ims.engine", "ims.io", "ims.analysis"]
-description = "Minimal Python scaffold for the IMS/ESS port"
-requires-python = ">=3.12"
-dependencies = []
-
-[tool.pytest.ini_options]
-testpaths = ["../tests"]

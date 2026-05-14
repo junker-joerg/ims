@@ -8,12 +8,9 @@ from ims.engine.simulation import (
 )
 
 
-SCENARIO_PATH = Path(__file__).parent / "fixtures" / "minimal_scenario.json"
-
-
-def test_progressed_mixed_loop_crosses_period_boundary() -> None:
+def test_progressed_mixed_loop_crosses_period_boundary(minimal_scenario_path: Path) -> None:
     result = run_progressed_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=3,
         max_events=6,
         logtimes_per_period=2,
@@ -30,9 +27,9 @@ def test_progressed_mixed_loop_crosses_period_boundary() -> None:
     ]
 
 
-def test_progressed_mixed_loop_with_start_with_update_true() -> None:
+def test_progressed_mixed_loop_with_start_with_update_true(minimal_scenario_path: Path) -> None:
     result = run_progressed_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=2,
         max_events=4,
         logtimes_per_period=2,
@@ -54,9 +51,9 @@ def test_progressed_mixed_loop_with_start_with_update_true() -> None:
     ]
 
 
-def test_progressed_mixed_loop_with_start_with_update_false() -> None:
+def test_progressed_mixed_loop_with_start_with_update_false(minimal_scenario_path: Path) -> None:
     result = run_progressed_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=2,
         max_events=4,
         logtimes_per_period=2,
@@ -77,9 +74,9 @@ def test_progressed_mixed_loop_with_start_with_update_false() -> None:
     ]
 
 
-def test_progressed_mixed_loop_stops_at_max_events_across_periods() -> None:
+def test_progressed_mixed_loop_stops_at_max_events_across_periods(minimal_scenario_path: Path) -> None:
     result = run_progressed_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         num_pairs=3,
         max_events=5,
         logtimes_per_period=2,
@@ -95,9 +92,9 @@ def test_progressed_mixed_loop_stops_at_max_events_across_periods() -> None:
     ] == [(0, 0), (0, 1), (1, 0), (1, 1), (2, 0)]
 
 
-def test_progressed_mixed_loop_rng_samples_are_deterministic_for_updates() -> None:
+def test_progressed_mixed_loop_rng_samples_are_deterministic_for_updates(minimal_scenario_path: Path) -> None:
     result_a = run_progressed_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         num_pairs=3,
@@ -106,7 +103,7 @@ def test_progressed_mixed_loop_rng_samples_are_deterministic_for_updates() -> No
         start_with_update=True,
     )
     result_b = run_progressed_mixed_controlled_bav_event_loop(
-        SCENARIO_PATH,
+        minimal_scenario_path,
         initialize_rng=True,
         use_rng_sample=True,
         num_pairs=3,
@@ -138,17 +135,18 @@ def test_progressed_mixed_loop_rng_samples_are_deterministic_for_updates() -> No
     ],
 )
 def test_progressed_mixed_loop_rejects_invalid_parameters(
+    minimal_scenario_path: Path,
     kwargs: dict[str, int],
     message: str,
 ) -> None:
     with pytest.raises(ValueError, match=message):
-        run_progressed_mixed_controlled_bav_event_loop(SCENARIO_PATH, **kwargs)
+        run_progressed_mixed_controlled_bav_event_loop(minimal_scenario_path, **kwargs)
 
 
-def test_progressed_mixed_loop_raises_when_sampling_without_rng() -> None:
+def test_progressed_mixed_loop_raises_when_sampling_without_rng(minimal_scenario_path: Path) -> None:
     with pytest.raises(ValueError, match="context.rng is required"):
         run_progressed_mixed_controlled_bav_event_loop(
-            SCENARIO_PATH,
+            minimal_scenario_path,
             initialize_rng=False,
             use_rng_sample=True,
             num_pairs=3,

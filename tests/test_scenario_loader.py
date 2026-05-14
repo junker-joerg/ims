@@ -5,8 +5,8 @@ import pytest
 from ims.io.scenario_loader import LoadedScenario, ScenarioValidationError, load_scenario
 
 
-def test_scenario_loader_loads_minimal_scenario() -> None:
-    scenario = load_scenario(Path("tests/fixtures/minimal_scenario.json"))
+def test_scenario_loader_loads_minimal_scenario(minimal_scenario_path: Path) -> None:
+    scenario = load_scenario(minimal_scenario_path)
 
     assert isinstance(scenario, LoadedScenario)
     assert scenario.context.max_periods == 12
@@ -20,7 +20,7 @@ def test_scenario_loader_loads_minimal_scenario() -> None:
 
 def test_scenario_loader_raises_for_missing_file() -> None:
     with pytest.raises(FileNotFoundError):
-        load_scenario("tests/fixtures/does_not_exist.json")
+        load_scenario(Path(__file__).resolve().parent / "fixtures" / "does_not_exist.json")
 
 
 def test_scenario_loader_raises_for_invalid_top_level_shape(tmp_path: Path) -> None:
