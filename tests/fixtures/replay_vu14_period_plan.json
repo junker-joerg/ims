@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "purpose": "Deterministischer Periodenplan fuer VU14L1.DAT; erzeugt Replay-Snapshots aus Startzustand plus expliziten Updates."
+  },
+  "legacy_window": {
+    "legacy_path": "../references/legacy_agrsich/VU14L1.DAT",
+    "export_filename": "imsvu014.dat",
+    "start_period": 1,
+    "end_period": 4
+  },
+  "base_snapshot": {
+    "context": {"period": 0, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1400},
+    "bav": {"entity_id": 1, "name": "Replay-VU14-Plan-BAV"},
+    "insurers": [
+      {"entity_id": 14, "name": "Replay VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 0.0, "advertising_current": 0.0, "reserves_current": [0.0, 0.0], "policyholders_current": 0.0, "claims_count_current": [0, 0], "claims_sum_current": [0.0, 0.0]}
+    ],
+    "policyholders": []
+  },
+  "period_updates": [
+    {"context": {"period": 1, "run_index": 0, "rng_seed": 1401}, "insurers": [{"entity_id": 14, "premiums_current": 101.0, "advertising_current": 10.1, "reserves_current": [202.0, 252.0], "policyholders_current": 51.0, "claims_count_current": [2, 3], "claims_sum_current": [20.5, 25.5]}], "policyholders": []},
+    {"context": {"period": 2, "run_index": 0, "rng_seed": 1402}, "insurers": [{"entity_id": 14, "premiums_current": 102.0, "advertising_current": 10.2, "reserves_current": [204.0, 254.0], "policyholders_current": 52.0, "claims_count_current": [3, 4], "claims_sum_current": [21.0, 26.0]}], "policyholders": []},
+    {"context": {"period": 3, "run_index": 0, "rng_seed": 1403}, "insurers": [{"entity_id": 14, "premiums_current": 103.0, "advertising_current": 10.3, "reserves_current": [206.0, 256.0], "policyholders_current": 53.0, "claims_count_current": [4, 5], "claims_sum_current": [21.5, 26.5]}], "policyholders": []},
+    {"context": {"period": 4, "run_index": 0, "rng_seed": 1404}, "insurers": [{"entity_id": 14, "premiums_current": 104.0, "advertising_current": 10.4, "reserves_current": [208.0, 258.0], "policyholders_current": 54.0, "claims_count_current": [5, 6], "claims_sum_current": [22.0, 27.0]}], "policyholders": []}
+  ]
+}
