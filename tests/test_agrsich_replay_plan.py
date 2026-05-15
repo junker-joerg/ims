@@ -47,6 +47,23 @@ def test_period_plan_replay_matches_vu14_legacy_window(tmp_path: Path) -> None:
     assert [int(line.split()[0]) for line in lines[1:]] == [1, 2, 3, 4]
 
 
+def test_period_plan_replay_matches_vusk1_legacy_window(tmp_path: Path) -> None:
+    result = run_agrsich_replay_from_period_plan_fixture(
+        FIXTURE_DIR / "replay_vusk1_period_plan.json",
+        tmp_path,
+    )
+
+    assert result.processed_periods == [101, 102, 103, 104]
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is True
+
+    lines = _non_empty_lines(tmp_path / "imsvusk1.dat")
+    assert sum(1 for line in lines if line.startswith("#t ")) == 1
+    periods = [int(line.split()[0]) for line in lines[1:]]
+    assert periods == [101, 102, 103, 104]
+    assert len(periods) == len(set(periods))
+
+
 def test_period_plan_replay_detects_bad_update(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "replay_vu14_period_plan.json").read_text(encoding="utf-8"))
     data["legacy_window"]["legacy_path"] = str(Path("tests/references/legacy_agrsich/VU14L1.DAT").resolve())
