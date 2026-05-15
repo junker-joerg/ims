@@ -28,12 +28,14 @@ from ims.model.legacy_vn_reference import (
 )
 from ims.model.legacy_validation_report import (
     LegacyFieldDeviationSummary,
+    LegacyValidationDeviationRecord,
     LegacyValidationReport,
     LegacyValidationGroupSummary,
     LegacyValidationPeriodSummary,
     build_legacy_validation_report,
     build_legacy_validation_report_from_multi_period_comparison,
     legacy_validation_report_to_dict,
+    write_legacy_validation_deviation_index_csv,
     write_legacy_validation_field_summary_csv,
     write_legacy_validation_group_summary_csv,
     write_legacy_validation_period_summary_csv,
@@ -112,6 +114,7 @@ def test_validation_report_summarizes_matching_replay_windows(tmp_path: Path) ->
     assert report.mismatched_rows == 0
     assert report.match_rate == 1.0
     assert report.field_summaries == []
+    assert report.deviation_index == []
     assert report.group_summaries == [
         LegacyValidationGroupSummary(
             subject_type="insurer",
@@ -237,10 +240,15 @@ def test_validation_report_exports_json_and_csv(tmp_path: Path) -> None:
         result.validation_report,
         tmp_path / "report_periods.csv",
     )
+    deviation_csv_path = write_legacy_validation_deviation_index_csv(
+        result.validation_report,
+        tmp_path / "report_deviations.csv",
+    )
 
     payload = json.loads(json_path.read_text(encoding="utf-8"))
     assert payload["matches"] is True
     assert payload["field_summaries"] == []
+    assert payload["deviation_index"] == []
     assert payload["group_summaries"][0]["subject_type"] == "insurer"
     assert payload["group_summaries"][0]["row_count"] == 4
     assert payload["period_summaries"][0]["global_period"] == 1
@@ -276,6 +284,10 @@ def test_validation_report_exports_json_and_csv(tmp_path: Path) -> None:
     assert period_rows[0]["row_count"] == "1"
     assert period_rows[0]["filenames"] == "imsvu014.dat"
 
+    with deviation_csv_path.open("r", encoding="utf-8", newline="") as handle:
+        deviation_rows = list(csv.DictReader(handle))
+    assert deviation_rows == []
+
 
 def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) -> None:
     run_agrsich_replay_from_fixture(FIXTURE_DIR / "replay_vu14_window.json", tmp_path)
@@ -298,6 +310,19 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert report.file_summaries[0].periods_with_differences == [2]
     assert report.file_summaries[0].fields_with_differences == ["Rs1"]
     assert report.file_summaries[0].field_deviations[0].actual == 999.0
+    assert report.deviation_index == [
+        LegacyValidationDeviationRecord(
+            filename="imsvu014.dat",
+            subject_type="insurer",
+            level="",
+            selector_kind="",
+            selector_value=None,
+            global_period=2,
+            field_name="Rs1",
+            actual=999.0,
+            expected=204.0,
+        )
+    ]
     assert report.file_summaries[0].field_summaries == [
         LegacyFieldDeviationSummary(
             filename="imsvu014.dat",
@@ -310,6 +335,9 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     ]
     assert report.field_summaries == report.file_summaries[0].field_summaries
     assert report_data["field_summaries"][0]["field_name"] == "Rs1"
+    assert report_data["deviation_index"][0]["filename"] == "imsvu014.dat"
+    assert report_data["deviation_index"][0]["global_period"] == 2
+    assert report_data["deviation_index"][0]["field_name"] == "Rs1"
     assert report_data["field_summaries"][0]["deviation_count"] == 1
     assert report_data["field_summaries"][0]["max_abs_delta"] == 795.0
     assert report_data["group_summaries"][0]["fields_with_differences"] == ["Rs1"]
@@ -328,6 +356,15 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert field_rows[0]["field_name"] == "Rs1"
     assert field_rows[0]["deviation_count"] == "1"
     assert field_rows[0]["max_abs_delta"] == "795.000000"
+
+    deviation_csv_path = write_legacy_validation_deviation_index_csv(report, tmp_path / "report_deviations.csv")
+    with deviation_csv_path.open("r", encoding="utf-8", newline="") as handle:
+        deviation_rows = list(csv.DictReader(handle))
+    assert deviation_rows[0]["filename"] == "imsvu014.dat"
+    assert deviation_rows[0]["global_period"] == "2"
+    assert deviation_rows[0]["field_name"] == "Rs1"
+    assert deviation_rows[0]["actual"] == "999.0"
+    assert deviation_rows[0]["expected"] == "204.0"
 
 
 def test_validation_report_summarizes_vu_and_vn_file_families() -> None:
@@ -397,6 +434,10 @@ def test_validation_report_detects_vn_family_deviation() -> None:
     assert report.file_summaries[0].field_summaries[0].field_name == "Vp1"
     assert report.file_summaries[0].field_summaries[0].deviation_count == 1
     assert report.field_summaries[0].filename == "imsvnr05.dat"
+    assert report.deviation_index[0].subject_type == "policyholder"
+    assert report.deviation_index[0].level == "II"
+    assert report.deviation_index[0].selector_kind == "rule"
+    assert report.deviation_index[0].selector_value == 5
     assert report.group_summaries[0].fields_with_differences == ["Vp1"]
     assert report.period_summaries[1].global_period == 2
     assert report.period_summaries[1].fields_with_differences == ["Vp1"]
