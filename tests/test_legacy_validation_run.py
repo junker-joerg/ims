@@ -92,6 +92,20 @@ def test_legacy_validation_fixture_rejects_duplicate_target_periods(tmp_path: Pa
         raise AssertionError("duplicate target periods should fail")
 
 
+def test_legacy_validation_fixture_rejects_unsorted_target_periods(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
+    data["targets"][0]["periods"] = [101, 103, 102]
+    fixture_path = tmp_path / "unsorted_periods_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_from_fixture(fixture_path)
+    except ValueError as exc:
+        assert "periods must be sorted ascending" in str(exc)
+    else:
+        raise AssertionError("unsorted target periods should fail")
+
+
 def test_legacy_validation_fixture_rejects_missing_file_identity(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     data["targets"][0]["export_filename"] = " "
