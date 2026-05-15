@@ -55,6 +55,7 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "legacy_validation_bundle_fields.csv",
         "legacy_validation_bundle_groups.csv",
         "legacy_validation_bundle_periods.csv",
+        "legacy_validation_bundle_deviations.csv",
     ]
     payload = json.loads((tmp_path / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     assert payload["matches"] is True
@@ -86,6 +87,7 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "imsvnsk1.dat",
         "imsvnr05.dat",
     ]
+    assert payload["deviation_index"] == []
 
     with (tmp_path / "legacy_validation_bundle.csv").open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
@@ -109,6 +111,10 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert period_rows[0]["filenames"] == "imsvusk1.dat"
     assert period_rows[10]["global_period"] == "1"
     assert period_rows[10]["row_count"] == "3"
+
+    with (tmp_path / "legacy_validation_bundle_deviations.csv").open("r", encoding="utf-8", newline="") as handle:
+        deviation_rows = list(csv.DictReader(handle))
+    assert deviation_rows == []
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:

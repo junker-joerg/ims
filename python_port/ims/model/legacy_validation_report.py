@@ -55,6 +55,19 @@ class LegacyValidationPeriodSummary:
 
 
 @dataclass(slots=True)
+class LegacyValidationDeviationRecord:
+    filename: str
+    subject_type: str
+    level: str
+    selector_kind: str
+    selector_value: int | str | None
+    global_period: int | None
+    field_name: str
+    actual: str | float | int
+    expected: str | float | int
+
+
+@dataclass(slots=True)
 class LegacyFileValidationSummary:
     filename: str
     subject_type: str
@@ -89,6 +102,7 @@ class LegacyValidationReport:
     field_summaries: list[LegacyFieldDeviationSummary]
     group_summaries: list[LegacyValidationGroupSummary]
     period_summaries: list[LegacyValidationPeriodSummary]
+    deviation_index: list[LegacyValidationDeviationRecord]
 
 
 def _match_rate(matched: int, total: int) -> float:
@@ -230,6 +244,26 @@ def _build_period_summaries(
             )
         )
     return period_summaries
+
+
+def _build_deviation_index(
+    file_summaries: Iterable[LegacyFileValidationSummary],
+) -> list[LegacyValidationDeviationRecord]:
+    return [
+        LegacyValidationDeviationRecord(
+            filename=summary.filename,
+            subject_type=summary.subject_type,
+            level=summary.level,
+            selector_kind=summary.selector_kind,
+            selector_value=summary.selector_value,
+            global_period=deviation.global_period,
+            field_name=deviation.field_name,
+            actual=deviation.actual,
+            expected=deviation.expected,
+        )
+        for summary in file_summaries
+        for deviation in summary.field_deviations
+    ]
 
 
 def build_legacy_file_validation_summary(
@@ -393,6 +427,7 @@ def _build_report_from_summaries(
     matched_rows = sum(summary.matched_rows for summary in file_summaries)
     group_summaries = _build_group_summaries(file_summaries)
     period_summaries = _build_period_summaries(file_summaries)
+    deviation_index = _build_deviation_index(file_summaries)
 
     return LegacyValidationReport(
         matches=bool(file_summaries) and all(summary.matches for summary in file_summaries),
@@ -409,6 +444,7 @@ def _build_report_from_summaries(
         ],
         group_summaries=group_summaries,
         period_summaries=period_summaries,
+        deviation_index=deviation_index,
     )
 
 
@@ -452,6 +488,20 @@ def _period_summary_to_dict(summary: LegacyValidationPeriodSummary) -> dict:
     }
 
 
+def _deviation_record_to_dict(record: LegacyValidationDeviationRecord) -> dict:
+    return {
+        "filename": record.filename,
+        "subject_type": record.subject_type,
+        "level": record.level,
+        "selector_kind": record.selector_kind,
+        "selector_value": record.selector_value,
+        "global_period": record.global_period,
+        "field_name": record.field_name,
+        "actual": record.actual,
+        "expected": record.expected,
+    }
+
+
 def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
     return {
         "matches": report.matches,
@@ -471,6 +521,10 @@ def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
         "period_summaries": [
             _period_summary_to_dict(summary)
             for summary in report.period_summaries
+        ],
+        "deviation_index": [
+            _deviation_record_to_dict(record)
+            for record in report.deviation_index
         ],
         "files": [
             {
@@ -693,6 +747,45 @@ def write_legacy_validation_period_summary_csv(
                     "matches": summary.matches,
                     "filenames": ";".join(summary.filenames),
                     "fields_with_differences": ";".join(summary.fields_with_differences),
+                }
+            )
+    return output_path
+
+
+def write_legacy_validation_deviation_index_csv(
+    report: LegacyValidationReport,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "filename",
+                "subject_type",
+                "level",
+                "selector_kind",
+                "selector_value",
+                "global_period",
+                "field_name",
+                "actual",
+                "expected",
+            ],
+        )
+        writer.writeheader()
+        for record in report.deviation_index:
+            writer.writerow(
+                {
+                    "filename": record.filename,
+                    "subject_type": record.subject_type,
+                    "level": record.level,
+                    "selector_kind": record.selector_kind,
+                    "selector_value": "" if record.selector_value is None else record.selector_value,
+                    "global_period": "" if record.global_period is None else record.global_period,
+                    "field_name": record.field_name,
+                    "actual": record.actual,
+                    "expected": record.expected,
                 }
             )
     return output_path
