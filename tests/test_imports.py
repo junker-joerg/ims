@@ -129,6 +129,7 @@ def test_core_placeholders_import() -> None:
         LegacyFieldDeviationSummary,
         LegacyFileValidationSummary,
         LegacyValidationReport,
+        LegacyValidationGroupSummary,
         build_legacy_file_validation_summary,
         build_legacy_table_validation_summary,
         build_legacy_validation_report,
@@ -136,6 +137,7 @@ def test_core_placeholders_import() -> None:
         build_legacy_validation_report_from_table_comparisons,
         legacy_validation_report_to_dict,
         write_legacy_validation_field_summary_csv,
+        write_legacy_validation_group_summary_csv,
         write_legacy_validation_report_csv,
         write_legacy_validation_report_json,
     )
@@ -279,6 +281,7 @@ def test_core_placeholders_import() -> None:
     assert LegacyFieldDeviationSummary is not None
     assert LegacyFileValidationSummary is not None
     assert LegacyValidationReport is not None
+    assert LegacyValidationGroupSummary is not None
     assert build_legacy_file_validation_summary is not None
     assert build_legacy_table_validation_summary is not None
     assert build_legacy_validation_report is not None
@@ -286,6 +289,7 @@ def test_core_placeholders_import() -> None:
     assert build_legacy_validation_report_from_multi_period_comparison is not None
     assert legacy_validation_report_to_dict is not None
     assert write_legacy_validation_field_summary_csv is not None
+    assert write_legacy_validation_group_summary_csv is not None
     assert write_legacy_validation_report_json is not None
     assert write_legacy_validation_report_csv is not None
     assert LegacyValidationRunResult is not None

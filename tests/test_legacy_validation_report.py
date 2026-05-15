@@ -29,10 +29,12 @@ from ims.model.legacy_vn_reference import (
 from ims.model.legacy_validation_report import (
     LegacyFieldDeviationSummary,
     LegacyValidationReport,
+    LegacyValidationGroupSummary,
     build_legacy_validation_report,
     build_legacy_validation_report_from_multi_period_comparison,
     legacy_validation_report_to_dict,
     write_legacy_validation_field_summary_csv,
+    write_legacy_validation_group_summary_csv,
     write_legacy_validation_report_csv,
     write_legacy_validation_report_json,
 )
@@ -108,6 +110,20 @@ def test_validation_report_summarizes_matching_replay_windows(tmp_path: Path) ->
     assert report.mismatched_rows == 0
     assert report.match_rate == 1.0
     assert report.field_summaries == []
+    assert report.group_summaries == [
+        LegacyValidationGroupSummary(
+            subject_type="insurer",
+            level="",
+            file_count=2,
+            row_count=8,
+            matched_rows=8,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvu014.dat", "imsvusk1.dat"],
+            fields_with_differences=[],
+        )
+    ]
     assert [summary.filename for summary in report.file_summaries] == ["imsvu014.dat", "imsvusk1.dat"]
 
 
@@ -121,10 +137,16 @@ def test_validation_report_exports_json_and_csv(tmp_path: Path) -> None:
         result.validation_report,
         tmp_path / "report_fields.csv",
     )
+    group_csv_path = write_legacy_validation_group_summary_csv(
+        result.validation_report,
+        tmp_path / "report_groups.csv",
+    )
 
     payload = json.loads(json_path.read_text(encoding="utf-8"))
     assert payload["matches"] is True
     assert payload["field_summaries"] == []
+    assert payload["group_summaries"][0]["subject_type"] == "insurer"
+    assert payload["group_summaries"][0]["row_count"] == 4
     assert payload["files"][0]["filename"] == "imsvu014.dat"
     assert payload["files"][0]["field_summaries"] == []
     assert payload["files"][0]["field_deviations"] == []
@@ -142,6 +164,12 @@ def test_validation_report_exports_json_and_csv(tmp_path: Path) -> None:
     with field_csv_path.open("r", encoding="utf-8", newline="") as handle:
         field_rows = list(csv.DictReader(handle))
     assert field_rows == []
+
+    with group_csv_path.open("r", encoding="utf-8", newline="") as handle:
+        group_rows = list(csv.DictReader(handle))
+    assert group_rows[0]["subject_type"] == "insurer"
+    assert group_rows[0]["row_count"] == "4"
+    assert group_rows[0]["filenames"] == "imsvu014.dat"
 
 
 def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) -> None:
@@ -179,6 +207,8 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert report_data["field_summaries"][0]["field_name"] == "Rs1"
     assert report_data["field_summaries"][0]["deviation_count"] == 1
     assert report_data["field_summaries"][0]["max_abs_delta"] == 795.0
+    assert report_data["group_summaries"][0]["fields_with_differences"] == ["Rs1"]
+    assert report.group_summaries[0].fields_with_differences == ["Rs1"]
     assert report_data["files"][0]["field_summaries"][0]["periods_with_differences"] == [2]
     assert report_data["files"][0]["field_deviations"][0]["field_name"] == "Rs1"
 
@@ -224,6 +254,10 @@ def test_validation_report_summarizes_vu_and_vn_file_families() -> None:
     assert report_data["files"][0]["selector_kind"] == "entity"
     assert report_data["files"][0]["selector_value"] == 14
     assert report_data["files"][1]["subject_type"] == "policyholder"
+    assert [(item.subject_type, item.level, item.row_count) for item in report.group_summaries] == [
+        ("insurer", "I", 2),
+        ("policyholder", "II", 2),
+    ]
 
 
 def test_validation_report_detects_vn_family_deviation() -> None:
@@ -248,3 +282,4 @@ def test_validation_report_detects_vn_family_deviation() -> None:
     assert report.file_summaries[0].field_summaries[0].field_name == "Vp1"
     assert report.file_summaries[0].field_summaries[0].deviation_count == 1
     assert report.field_summaries[0].filename == "imsvnr05.dat"
+    assert report.group_summaries[0].fields_with_differences == ["Vp1"]
