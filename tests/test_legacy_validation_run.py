@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from ims.model.legacy_validation_run import (
+    LegacyValidationArtifact,
     LegacyValidationRunResult,
     LegacyValidationTarget,
     run_legacy_validation_from_fixture,
@@ -56,6 +57,16 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "legacy_validation_bundle_groups.csv",
         "legacy_validation_bundle_periods.csv",
         "legacy_validation_bundle_deviations.csv",
+        "legacy_validation_bundle_artifacts.json",
+    ]
+    assert [artifact.kind for artifact in result.artifacts] == [
+        "report_json",
+        "file_summary_csv",
+        "field_summary_csv",
+        "group_summary_csv",
+        "period_summary_csv",
+        "deviation_index_csv",
+        "artifact_manifest_json",
     ]
     payload = json.loads((tmp_path / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     assert payload["matches"] is True
@@ -115,6 +126,23 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     with (tmp_path / "legacy_validation_bundle_deviations.csv").open("r", encoding="utf-8", newline="") as handle:
         deviation_rows = list(csv.DictReader(handle))
     assert deviation_rows == []
+
+    manifest = json.loads((tmp_path / "legacy_validation_bundle_artifacts.json").read_text(encoding="utf-8"))
+    assert manifest["report_name"] == "legacy_validation_bundle"
+    assert manifest["matches"] is True
+    assert manifest["total_files"] == 4
+    assert manifest["total_rows"] == 40
+    assert manifest["artifact_count"] == 7
+    assert [artifact["kind"] for artifact in manifest["artifacts"]] == [
+        "report_json",
+        "file_summary_csv",
+        "field_summary_csv",
+        "group_summary_csv",
+        "period_summary_csv",
+        "deviation_index_csv",
+        "artifact_manifest_json",
+    ]
+    assert manifest["artifacts"][-1]["filename"] == "legacy_validation_bundle_artifacts.json"
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
@@ -230,6 +258,7 @@ def test_legacy_validation_fixture_rejects_duplicate_targets(tmp_path: Path) -> 
 
 
 def test_legacy_validation_fixture_import_shapes() -> None:
+    assert LegacyValidationArtifact is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert run_legacy_validation_from_fixture is not None

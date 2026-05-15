@@ -146,6 +146,7 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_report_json,
     )
     from ims.model.legacy_validation_run import (
+        LegacyValidationArtifact,
         LegacyValidationRunResult,
         LegacyValidationTarget,
         run_legacy_validation_from_fixture,
@@ -300,6 +301,7 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_period_summary_csv is not None
     assert write_legacy_validation_report_json is not None
     assert write_legacy_validation_report_csv is not None
+    assert LegacyValidationArtifact is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert run_legacy_validation_from_fixture is not None

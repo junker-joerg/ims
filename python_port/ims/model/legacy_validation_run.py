@@ -49,11 +49,18 @@ class LegacyValidationTarget:
 
 
 @dataclass(slots=True)
+class LegacyValidationArtifact:
+    kind: str
+    path: Path
+
+
+@dataclass(slots=True)
 class LegacyValidationRunResult:
     targets: list[LegacyValidationTarget]
     comparison: MultiPeriodLegacyComparison
     report: LegacyValidationReport
     written_reports: list[Path]
+    artifacts: list[LegacyValidationArtifact]
 
 
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
@@ -180,6 +187,41 @@ def _compare_target(target: LegacyValidationTarget):
     return compare_policyholder_export_table_to_legacy(export_table, legacy_table)
 
 
+def _artifact_to_mapping(artifact: LegacyValidationArtifact) -> dict:
+    return {
+        "kind": artifact.kind,
+        "filename": artifact.path.name,
+        "path": str(artifact.path),
+    }
+
+
+def _write_legacy_validation_artifact_manifest(
+    *,
+    report_name: str,
+    fixture_path: Path,
+    report: LegacyValidationReport,
+    artifacts: list[LegacyValidationArtifact],
+    path: Path,
+) -> Path:
+    payload = {
+        "report_name": report_name,
+        "fixture_path": str(fixture_path),
+        "matches": report.matches,
+        "total_files": report.total_files,
+        "total_rows": report.total_rows,
+        "matched_rows": report.matched_rows,
+        "mismatched_rows": report.mismatched_rows,
+        "artifact_count": len(artifacts),
+        "artifacts": [
+            _artifact_to_mapping(artifact)
+            for artifact in artifacts
+        ],
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return path
+
+
 def run_legacy_validation_from_fixture(
     path: str | Path,
     output_dir: str | Path | None = None,
@@ -200,27 +242,54 @@ def run_legacy_validation_from_fixture(
     report = build_legacy_validation_report_from_multi_period_comparison(comparison)
 
     written_reports: list[Path] = []
+    artifacts: list[LegacyValidationArtifact] = []
     if output_dir is not None:
         output_path = Path(output_dir)
         report_name = str(data.get("report_name", fixture_path.stem))
-        written_reports.append(write_legacy_validation_report_json(report, output_path / f"{report_name}.json"))
-        written_reports.append(write_legacy_validation_report_csv(report, output_path / f"{report_name}.csv"))
-        written_reports.append(
-            write_legacy_validation_field_summary_csv(report, output_path / f"{report_name}_fields.csv")
+        artifacts = [
+            LegacyValidationArtifact(
+                kind="report_json",
+                path=write_legacy_validation_report_json(report, output_path / f"{report_name}.json"),
+            ),
+            LegacyValidationArtifact(
+                kind="file_summary_csv",
+                path=write_legacy_validation_report_csv(report, output_path / f"{report_name}.csv"),
+            ),
+            LegacyValidationArtifact(
+                kind="field_summary_csv",
+                path=write_legacy_validation_field_summary_csv(report, output_path / f"{report_name}_fields.csv"),
+            ),
+            LegacyValidationArtifact(
+                kind="group_summary_csv",
+                path=write_legacy_validation_group_summary_csv(report, output_path / f"{report_name}_groups.csv"),
+            ),
+            LegacyValidationArtifact(
+                kind="period_summary_csv",
+                path=write_legacy_validation_period_summary_csv(report, output_path / f"{report_name}_periods.csv"),
+            ),
+            LegacyValidationArtifact(
+                kind="deviation_index_csv",
+                path=write_legacy_validation_deviation_index_csv(report, output_path / f"{report_name}_deviations.csv"),
+            ),
+        ]
+        manifest_artifact = LegacyValidationArtifact(
+            kind="artifact_manifest_json",
+            path=output_path / f"{report_name}_artifacts.json",
         )
-        written_reports.append(
-            write_legacy_validation_group_summary_csv(report, output_path / f"{report_name}_groups.csv")
+        artifacts.append(manifest_artifact)
+        _write_legacy_validation_artifact_manifest(
+            report_name=report_name,
+            fixture_path=fixture_path,
+            report=report,
+            artifacts=artifacts,
+            path=manifest_artifact.path,
         )
-        written_reports.append(
-            write_legacy_validation_period_summary_csv(report, output_path / f"{report_name}_periods.csv")
-        )
-        written_reports.append(
-            write_legacy_validation_deviation_index_csv(report, output_path / f"{report_name}_deviations.csv")
-        )
+        written_reports = [artifact.path for artifact in artifacts]
 
     return LegacyValidationRunResult(
         targets=targets,
         comparison=comparison,
         report=report,
         written_reports=written_reports,
+        artifacts=artifacts,
     )
