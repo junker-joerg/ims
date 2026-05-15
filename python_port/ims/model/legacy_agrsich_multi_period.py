@@ -21,6 +21,9 @@ from ims.model.legacy_vn_reference import (
 class LegacyTableComparison:
     filename: str
     subject_type: str
+    level: str
+    selector_kind: str
+    selector_value: int | str | None
     matches: bool
     row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison]
 
@@ -125,6 +128,9 @@ def compare_insurer_export_table_to_legacy(
     return LegacyTableComparison(
         filename=export_table.spec.filename,
         subject_type="insurer",
+        level=export_table.spec.level,
+        selector_kind=export_table.spec.selector_kind,
+        selector_value=export_table.spec.selector_value,
         matches=bool(row_comparisons) and all(comparison.matches for comparison in row_comparisons),
         row_comparisons=row_comparisons,
     )
@@ -160,6 +166,9 @@ def compare_policyholder_export_table_to_legacy(
     return LegacyTableComparison(
         filename=export_table.spec.filename,
         subject_type="policyholder",
+        level=export_table.spec.level,
+        selector_kind=export_table.spec.selector_kind,
+        selector_value=export_table.spec.selector_value,
         matches=bool(row_comparisons) and all(comparison.matches for comparison in row_comparisons),
         row_comparisons=row_comparisons,
     )

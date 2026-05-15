@@ -132,6 +132,9 @@ def test_validation_report_exports_json_and_csv(tmp_path: Path) -> None:
     with csv_path.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     assert rows[0]["filename"] == "imsvu014.dat"
+    assert rows[0]["level"] == ""
+    assert rows[0]["selector_kind"] == ""
+    assert rows[0]["selector_value"] == ""
     assert rows[0]["match_rate"] == "1.000000"
     assert rows[0]["field_deviation_count"] == "0"
     assert rows[0]["field_summary_count"] == "0"
@@ -210,6 +213,16 @@ def test_validation_report_summarizes_vu_and_vn_file_families() -> None:
         ("imsvusk1.dat", "insurer"),
         ("imsvnsk1.dat", "policyholder"),
     ]
+    assert [
+        (item.level, item.selector_kind, item.selector_value)
+        for item in report.file_summaries
+    ] == [
+        ("I", "entity", 14),
+        ("II", "rule", 5),
+    ]
+    assert report_data["files"][0]["level"] == "I"
+    assert report_data["files"][0]["selector_kind"] == "entity"
+    assert report_data["files"][0]["selector_value"] == 14
     assert report_data["files"][1]["subject_type"] == "policyholder"
 
 
@@ -229,6 +242,9 @@ def test_validation_report_detects_vn_family_deviation() -> None:
     assert report.mismatched_rows == 1
     assert report.file_summaries[0].periods_with_differences == [2]
     assert report.file_summaries[0].fields_with_differences == ["Vp1"]
+    assert report.file_summaries[0].level == "II"
+    assert report.file_summaries[0].selector_kind == "rule"
+    assert report.file_summaries[0].selector_value == 5
     assert report.file_summaries[0].field_summaries[0].field_name == "Vp1"
     assert report.file_summaries[0].field_summaries[0].deviation_count == 1
     assert report.field_summaries[0].filename == "imsvnr05.dat"
