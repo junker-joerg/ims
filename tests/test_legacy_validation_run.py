@@ -51,6 +51,7 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert [path.name for path in result.written_reports] == [
         "legacy_validation_bundle.json",
         "legacy_validation_bundle.csv",
+        "legacy_validation_bundle_fields.csv",
     ]
     payload = json.loads((tmp_path / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     assert payload["matches"] is True

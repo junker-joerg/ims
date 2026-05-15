@@ -23,6 +23,7 @@ from ims.model.legacy_agrsich_reference import (
 from ims.model.legacy_validation_report import (
     LegacyValidationReport,
     build_legacy_validation_report_from_multi_period_comparison,
+    write_legacy_validation_field_summary_csv,
     write_legacy_validation_report_csv,
     write_legacy_validation_report_json,
 )
@@ -201,6 +202,9 @@ def run_legacy_validation_from_fixture(
         report_name = str(data.get("report_name", fixture_path.stem))
         written_reports.append(write_legacy_validation_report_json(report, output_path / f"{report_name}.json"))
         written_reports.append(write_legacy_validation_report_csv(report, output_path / f"{report_name}.csv"))
+        written_reports.append(
+            write_legacy_validation_field_summary_csv(report, output_path / f"{report_name}_fields.csv")
+        )
 
     return LegacyValidationRunResult(
         targets=targets,
