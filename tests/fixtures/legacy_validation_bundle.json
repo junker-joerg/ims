@@ -8,7 +8,7 @@
       "subject_type": "insurer",
       "legacy_path": "../references/legacy_agrsich/VUSK1L4.DAT",
       "export_filename": "imsvusk1.dat",
-      "periods": [101, 102],
+      "periods": [101, 102, 103, 104],
       "level": "IV",
       "selector_kind": "all",
       "selector_value": "SK1"
@@ -17,7 +17,7 @@
       "subject_type": "policyholder",
       "legacy_path": "../references/legacy_agrsich/IMSVNSK1.DAT",
       "export_filename": "imsvnsk1.dat",
-      "periods": [1, 2],
+      "periods": [1, 2, 3, 4],
       "level": "IV",
       "selector_kind": "all",
       "selector_value": "SK1"
