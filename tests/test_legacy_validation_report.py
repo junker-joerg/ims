@@ -30,11 +30,13 @@ from ims.model.legacy_validation_report import (
     LegacyFieldDeviationSummary,
     LegacyValidationReport,
     LegacyValidationGroupSummary,
+    LegacyValidationPeriodSummary,
     build_legacy_validation_report,
     build_legacy_validation_report_from_multi_period_comparison,
     legacy_validation_report_to_dict,
     write_legacy_validation_field_summary_csv,
     write_legacy_validation_group_summary_csv,
+    write_legacy_validation_period_summary_csv,
     write_legacy_validation_report_csv,
     write_legacy_validation_report_json,
 )
@@ -124,6 +126,96 @@ def test_validation_report_summarizes_matching_replay_windows(tmp_path: Path) ->
             fields_with_differences=[],
         )
     ]
+    assert report.period_summaries == [
+        LegacyValidationPeriodSummary(
+            global_period=1,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvu014.dat"],
+            fields_with_differences=[],
+        ),
+        LegacyValidationPeriodSummary(
+            global_period=2,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvu014.dat"],
+            fields_with_differences=[],
+        ),
+        LegacyValidationPeriodSummary(
+            global_period=3,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvu014.dat"],
+            fields_with_differences=[],
+        ),
+        LegacyValidationPeriodSummary(
+            global_period=4,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvu014.dat"],
+            fields_with_differences=[],
+        ),
+        LegacyValidationPeriodSummary(
+            global_period=101,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvusk1.dat"],
+            fields_with_differences=[],
+        ),
+        LegacyValidationPeriodSummary(
+            global_period=102,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvusk1.dat"],
+            fields_with_differences=[],
+        ),
+        LegacyValidationPeriodSummary(
+            global_period=103,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvusk1.dat"],
+            fields_with_differences=[],
+        ),
+        LegacyValidationPeriodSummary(
+            global_period=104,
+            file_count=1,
+            row_count=1,
+            matched_rows=1,
+            mismatched_rows=0,
+            match_rate=1.0,
+            matches=True,
+            filenames=["imsvusk1.dat"],
+            fields_with_differences=[],
+        ),
+    ]
     assert [summary.filename for summary in report.file_summaries] == ["imsvu014.dat", "imsvusk1.dat"]
 
 
@@ -141,13 +233,20 @@ def test_validation_report_exports_json_and_csv(tmp_path: Path) -> None:
         result.validation_report,
         tmp_path / "report_groups.csv",
     )
+    period_csv_path = write_legacy_validation_period_summary_csv(
+        result.validation_report,
+        tmp_path / "report_periods.csv",
+    )
 
     payload = json.loads(json_path.read_text(encoding="utf-8"))
     assert payload["matches"] is True
     assert payload["field_summaries"] == []
     assert payload["group_summaries"][0]["subject_type"] == "insurer"
     assert payload["group_summaries"][0]["row_count"] == 4
+    assert payload["period_summaries"][0]["global_period"] == 1
+    assert payload["period_summaries"][0]["filenames"] == ["imsvu014.dat"]
     assert payload["files"][0]["filename"] == "imsvu014.dat"
+    assert payload["files"][0]["compared_periods"] == [1, 2, 3, 4]
     assert payload["files"][0]["field_summaries"] == []
     assert payload["files"][0]["field_deviations"] == []
 
@@ -170,6 +269,12 @@ def test_validation_report_exports_json_and_csv(tmp_path: Path) -> None:
     assert group_rows[0]["subject_type"] == "insurer"
     assert group_rows[0]["row_count"] == "4"
     assert group_rows[0]["filenames"] == "imsvu014.dat"
+
+    with period_csv_path.open("r", encoding="utf-8", newline="") as handle:
+        period_rows = list(csv.DictReader(handle))
+    assert period_rows[0]["global_period"] == "1"
+    assert period_rows[0]["row_count"] == "1"
+    assert period_rows[0]["filenames"] == "imsvu014.dat"
 
 
 def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) -> None:
@@ -209,6 +314,10 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert report_data["field_summaries"][0]["max_abs_delta"] == 795.0
     assert report_data["group_summaries"][0]["fields_with_differences"] == ["Rs1"]
     assert report.group_summaries[0].fields_with_differences == ["Rs1"]
+    assert report.period_summaries[1].global_period == 2
+    assert report.period_summaries[1].matches is False
+    assert report.period_summaries[1].fields_with_differences == ["Rs1"]
+    assert report_data["period_summaries"][1]["mismatched_rows"] == 1
     assert report_data["files"][0]["field_summaries"][0]["periods_with_differences"] == [2]
     assert report_data["files"][0]["field_deviations"][0]["field_name"] == "Rs1"
 
@@ -258,6 +367,12 @@ def test_validation_report_summarizes_vu_and_vn_file_families() -> None:
         ("insurer", "I", 2),
         ("policyholder", "II", 2),
     ]
+    assert [(item.global_period, item.row_count) for item in report.period_summaries] == [
+        (101, 1),
+        (102, 1),
+        (1, 1),
+        (2, 1),
+    ]
 
 
 def test_validation_report_detects_vn_family_deviation() -> None:
@@ -283,3 +398,5 @@ def test_validation_report_detects_vn_family_deviation() -> None:
     assert report.file_summaries[0].field_summaries[0].deviation_count == 1
     assert report.field_summaries[0].filename == "imsvnr05.dat"
     assert report.group_summaries[0].fields_with_differences == ["Vp1"]
+    assert report.period_summaries[1].global_period == 2
+    assert report.period_summaries[1].fields_with_differences == ["Vp1"]

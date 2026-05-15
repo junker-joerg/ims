@@ -25,6 +25,7 @@ from ims.model.legacy_validation_report import (
     build_legacy_validation_report_from_multi_period_comparison,
     write_legacy_validation_field_summary_csv,
     write_legacy_validation_group_summary_csv,
+    write_legacy_validation_period_summary_csv,
     write_legacy_validation_report_csv,
     write_legacy_validation_report_json,
 )
@@ -208,6 +209,9 @@ def run_legacy_validation_from_fixture(
         )
         written_reports.append(
             write_legacy_validation_group_summary_csv(report, output_path / f"{report_name}_groups.csv")
+        )
+        written_reports.append(
+            write_legacy_validation_period_summary_csv(report, output_path / f"{report_name}_periods.csv")
         )
 
     return LegacyValidationRunResult(
