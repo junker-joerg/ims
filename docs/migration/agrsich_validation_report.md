@@ -13,7 +13,8 @@ ohne neue fachliche Exportlogik oder neue Simulationssemantik einzufuehren.
 - Perioden mit Abweichungen
 - betroffene Feldnamen
 - Detailabweichungen mit Ist- und Sollwerten
-- Export als JSON und als kompakte CSV-Dateizusammenfassung
+- Feldabweichungen als aggregierte Summaries je Datei und Feld
+- Export als JSON, kompakte CSV-Dateizusammenfassung und Feldsummary-CSV
 
 Der Replay-Runner liefert fuer ein Legacy-Fenster nun zusaetzlich zum bestehenden
 `LegacyWindowComparison` einen `LegacyValidationReport`.
@@ -29,6 +30,8 @@ bereits vorhandene Legacy-Fenstervergleich gegen echte Dateien wie `VU14L1.DAT` 
 Dies ist noch kein UI-Dashboard und keine neue Validierung weiterer Dateifamilien. Der Report
 berechnet keine fachlichen Werte neu, sondern strukturiert nur bestehende Vergleichsergebnisse.
 Er behauptet keine historische Vollgleichheit ausserhalb der konkret verglichenen Fenster.
+Die Feldsummary nennt Abweichungsanzahl, betroffene Perioden und, falls beide Werte numerisch
+sind, die groesste absolute Differenz. Sie bewertet diese Differenz nicht fachlich.
 
 ## Anschluss
 
@@ -46,6 +49,10 @@ Der Fixture-Lader weist unvollstaendige Targets mit fehlenden Datei-, Stufen- od
 Selektorangaben, doppelte, unsortierte oder lueckenhafte Perioden innerhalb eines Targets und
 doppelt eingetragene Targets frueh zurueck, damit die Reportzahlen nicht durch versehentliche
 Doppelvergleiche oder missverstaendliche Fenstergrenzen verzerrt werden.
+
+Wenn ein Bundle Reports schreibt, entstehen nun drei Artefakte: der vollstaendige JSON-Report,
+die Datei-Zusammenfassung als CSV und eine separate Feldsummary-CSV fuer schnelle Auswertungen
+von Abweichungsschwerpunkten.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

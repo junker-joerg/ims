@@ -18,6 +18,16 @@ class LegacyFieldDeviation:
 
 
 @dataclass(slots=True)
+class LegacyFieldDeviationSummary:
+    filename: str
+    field_name: str
+    deviation_count: int
+    periods_with_differences: list[int | None]
+    numeric_deviation_count: int
+    max_abs_delta: float | None
+
+
+@dataclass(slots=True)
 class LegacyFileValidationSummary:
     filename: str
     subject_type: str
@@ -33,6 +43,7 @@ class LegacyFileValidationSummary:
     periods_with_differences: list[int | None]
     fields_with_differences: list[str]
     field_deviations: list[LegacyFieldDeviation]
+    field_summaries: list[LegacyFieldDeviationSummary]
 
 
 @dataclass(slots=True)
@@ -44,6 +55,7 @@ class LegacyValidationReport:
     mismatched_rows: int
     match_rate: float
     file_summaries: list[LegacyFileValidationSummary]
+    field_summaries: list[LegacyFieldDeviationSummary]
 
 
 def _match_rate(matched: int, total: int) -> float:
@@ -61,6 +73,49 @@ def _unique_in_order(values: Iterable[int | str | None]) -> list:
         seen.add(value)
         result.append(value)
     return result
+
+
+def _numeric_delta(deviation: LegacyFieldDeviation) -> float | None:
+    if isinstance(deviation.actual, bool) or isinstance(deviation.expected, bool):
+        return None
+    if not isinstance(deviation.actual, int | float) or not isinstance(deviation.expected, int | float):
+        return None
+    return abs(float(deviation.actual) - float(deviation.expected))
+
+
+def _build_field_deviation_summaries(
+    deviations: Iterable[LegacyFieldDeviation],
+) -> list[LegacyFieldDeviationSummary]:
+    grouped: dict[tuple[str, str], list[LegacyFieldDeviation]] = {}
+    ordered_keys: list[tuple[str, str]] = []
+    for deviation in deviations:
+        key = (deviation.filename, deviation.field_name)
+        if key not in grouped:
+            grouped[key] = []
+            ordered_keys.append(key)
+        grouped[key].append(deviation)
+
+    summaries: list[LegacyFieldDeviationSummary] = []
+    for filename, field_name in ordered_keys:
+        items = grouped[(filename, field_name)]
+        deltas = [
+            delta
+            for delta in (_numeric_delta(deviation) for deviation in items)
+            if delta is not None
+        ]
+        summaries.append(
+            LegacyFieldDeviationSummary(
+                filename=filename,
+                field_name=field_name,
+                deviation_count=len(items),
+                periods_with_differences=_unique_in_order(
+                    deviation.global_period for deviation in items
+                ),
+                numeric_deviation_count=len(deltas),
+                max_abs_delta=max(deltas) if deltas else None,
+            )
+        )
+    return summaries
 
 
 def build_legacy_file_validation_summary(
@@ -91,6 +146,7 @@ def build_legacy_file_validation_summary(
     fields_with_differences = _unique_in_order(
         deviation.field_name for deviation in field_deviations
     )
+    field_summaries = _build_field_deviation_summaries(field_deviations)
 
     return LegacyFileValidationSummary(
         filename=filename,
@@ -107,6 +163,7 @@ def build_legacy_file_validation_summary(
         periods_with_differences=periods_with_differences,
         fields_with_differences=fields_with_differences,
         field_deviations=field_deviations,
+        field_summaries=field_summaries,
     )
 
 
@@ -140,6 +197,7 @@ def build_legacy_table_validation_summary(
     fields_with_differences = _unique_in_order(
         deviation.field_name for deviation in field_deviations
     )
+    field_summaries = _build_field_deviation_summaries(field_deviations)
     numeric_periods = [period for period in global_periods if period is not None]
 
     return LegacyFileValidationSummary(
@@ -157,6 +215,7 @@ def build_legacy_table_validation_summary(
         periods_with_differences=periods_with_differences,
         fields_with_differences=fields_with_differences,
         field_deviations=field_deviations,
+        field_summaries=field_summaries,
     )
 
 
@@ -218,7 +277,23 @@ def _build_report_from_summaries(
         mismatched_rows=total_rows - matched_rows,
         match_rate=_match_rate(matched_rows, total_rows),
         file_summaries=file_summaries,
+        field_summaries=[
+            field_summary
+            for summary in file_summaries
+            for field_summary in summary.field_summaries
+        ],
     )
+
+
+def _field_summary_to_dict(summary: LegacyFieldDeviationSummary) -> dict:
+    return {
+        "filename": summary.filename,
+        "field_name": summary.field_name,
+        "deviation_count": summary.deviation_count,
+        "periods_with_differences": summary.periods_with_differences,
+        "numeric_deviation_count": summary.numeric_deviation_count,
+        "max_abs_delta": summary.max_abs_delta,
+    }
 
 
 def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
@@ -229,6 +304,10 @@ def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
         "matched_rows": report.matched_rows,
         "mismatched_rows": report.mismatched_rows,
         "match_rate": report.match_rate,
+        "field_summaries": [
+            _field_summary_to_dict(summary)
+            for summary in report.field_summaries
+        ],
         "files": [
             {
                 "filename": summary.filename,
@@ -244,6 +323,10 @@ def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
                 "match_rate": summary.match_rate,
                 "periods_with_differences": summary.periods_with_differences,
                 "fields_with_differences": summary.fields_with_differences,
+                "field_summaries": [
+                    _field_summary_to_dict(field_summary)
+                    for field_summary in summary.field_summaries
+                ],
                 "field_deviations": [
                     {
                         "filename": deviation.filename,
@@ -296,6 +379,7 @@ def write_legacy_validation_report_csv(
                 "periods_with_differences",
                 "fields_with_differences",
                 "field_deviation_count",
+                "field_summary_count",
             ],
         )
         writer.writeheader()
@@ -318,6 +402,43 @@ def write_legacy_validation_report_csv(
                     ),
                     "fields_with_differences": ";".join(summary.fields_with_differences),
                     "field_deviation_count": len(summary.field_deviations),
+                    "field_summary_count": len(summary.field_summaries),
+                }
+            )
+    return output_path
+
+
+def write_legacy_validation_field_summary_csv(
+    report: LegacyValidationReport,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "filename",
+                "field_name",
+                "deviation_count",
+                "numeric_deviation_count",
+                "max_abs_delta",
+                "periods_with_differences",
+            ],
+        )
+        writer.writeheader()
+        for summary in report.field_summaries:
+            writer.writerow(
+                {
+                    "filename": summary.filename,
+                    "field_name": summary.field_name,
+                    "deviation_count": summary.deviation_count,
+                    "numeric_deviation_count": summary.numeric_deviation_count,
+                    "max_abs_delta": "" if summary.max_abs_delta is None else f"{summary.max_abs_delta:.6f}",
+                    "periods_with_differences": ";".join(
+                        "" if period is None else str(period)
+                        for period in summary.periods_with_differences
+                    ),
                 }
             )
     return output_path
