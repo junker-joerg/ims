@@ -57,19 +57,30 @@ def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidatio
     if subject_type not in {"insurer", "policyholder"}:
         raise ValueError(f"unsupported validation target subject_type: {subject_type}")
 
+    legacy_path_data = str(data.get("legacy_path", "")).strip()
+    if not legacy_path_data:
+        raise ValueError("validation target must contain a legacy_path")
+
+    export_filename = str(data.get("export_filename", "")).strip()
+    if not export_filename:
+        raise ValueError("validation target must contain an export_filename")
+
     periods_data = data.get("periods")
     if not isinstance(periods_data, list) or not periods_data:
         raise ValueError("validation target must contain a non-empty periods list")
+    periods = [int(period) for period in periods_data]
+    if len(periods) != len(set(periods)):
+        raise ValueError("validation target periods must be unique")
 
-    legacy_path = Path(str(data["legacy_path"]))
+    legacy_path = Path(legacy_path_data)
     if not legacy_path.is_absolute():
         legacy_path = fixture_base_path / legacy_path
 
     return LegacyValidationTarget(
         subject_type=subject_type,
         legacy_path=legacy_path,
-        export_filename=str(data["export_filename"]),
-        periods=[int(period) for period in periods_data],
+        export_filename=export_filename,
+        periods=periods,
         level=str(data.get("level", "")),
         selector_kind=str(data.get("selector_kind", "")),
         selector_value=data.get("selector_value"),
