@@ -61,6 +61,8 @@ von Abweichungsschwerpunkten, eine Gruppensummary-CSV fuer Subjekttyp-/Stufen-Au
 eine Periodensummary-CSV fuer globale Perioden-Auswertungen sowie eine flache
 Abweichungsindex-CSV fuer direkte Drilldowns und ein Artefaktmanifest, das alle Dateien mit
 stabilen Rollen auflistet.
+Das Artefaktmanifest kann wieder geladen und gegen die erwartete Artefaktanzahl sowie die
+existierenden Dateien geprueft werden.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
