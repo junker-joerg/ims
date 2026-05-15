@@ -47,6 +47,9 @@ def test_replay_runner_appends_vu14_window_and_matches_legacy(tmp_path: Path) ->
     assert len(set(line.split()[0] for line in lines[1:])) == 4
     assert isinstance(result.legacy_comparison, LegacyWindowComparison)
     assert result.legacy_comparison.matches is True
+    assert result.validation_report is not None
+    assert result.validation_report.matches is True
+    assert result.validation_report.total_rows == 4
 
 
 def test_replay_runner_appends_vusk1_window_and_matches_legacy(tmp_path: Path) -> None:
@@ -61,6 +64,8 @@ def test_replay_runner_appends_vusk1_window_and_matches_legacy(tmp_path: Path) -
     assert len(set(line.split()[0] for line in lines[1:])) == 4
     assert result.legacy_comparison is not None
     assert result.legacy_comparison.matches is True
+    assert result.validation_report is not None
+    assert result.validation_report.file_summaries[0].filename == "imsvusk1.dat"
 
 
 def test_compare_export_file_to_legacy_window_detects_targeted_deviation(tmp_path: Path) -> None:
