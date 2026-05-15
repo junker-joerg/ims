@@ -9,6 +9,7 @@ ohne neue fachliche Exportlogik oder neue Simulationssemantik einzufuehren.
 ## Was der Report leistet
 
 - Match-Status je validierter Exportdatei
+- Target-Metadaten je Datei: Subjekttyp, Stufe, Selektorart und Selektorwert
 - Zeilenanzahl, Treffer, Abweichungen und Match-Rate
 - Perioden mit Abweichungen
 - betroffene Feldnamen

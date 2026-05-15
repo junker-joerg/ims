@@ -1,3 +1,4 @@
+import csv
 import json
 from pathlib import Path
 
@@ -58,11 +59,26 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert payload["total_rows"] == 40
     assert payload["files"][1]["filename"] == "imsvu014.dat"
     assert payload["files"][1]["subject_type"] == "insurer"
+    assert payload["files"][1]["level"] == "I"
+    assert payload["files"][1]["selector_kind"] == "entity"
+    assert payload["files"][1]["selector_value"] == 14
     assert payload["files"][1]["end_period"] == 10
     assert payload["files"][2]["filename"] == "imsvnsk1.dat"
     assert payload["files"][2]["subject_type"] == "policyholder"
+    assert payload["files"][2]["level"] == "IV"
+    assert payload["files"][2]["selector_kind"] == "all"
+    assert payload["files"][2]["selector_value"] == "SK1"
     assert payload["files"][3]["filename"] == "imsvnr05.dat"
     assert payload["files"][3]["start_period"] == 1
+
+    with (tmp_path / "legacy_validation_bundle.csv").open("r", encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    assert rows[1]["level"] == "I"
+    assert rows[1]["selector_kind"] == "entity"
+    assert rows[1]["selector_value"] == "14"
+    assert rows[2]["level"] == "IV"
+    assert rows[2]["selector_kind"] == "all"
+    assert rows[2]["selector_value"] == "SK1"
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:

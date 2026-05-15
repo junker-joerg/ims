@@ -31,6 +31,9 @@ class LegacyFieldDeviationSummary:
 class LegacyFileValidationSummary:
     filename: str
     subject_type: str
+    level: str
+    selector_kind: str
+    selector_value: int | str | None
     export_path: Path
     legacy_path: Path | None
     start_period: int
@@ -151,6 +154,9 @@ def build_legacy_file_validation_summary(
     return LegacyFileValidationSummary(
         filename=filename,
         subject_type="insurer",
+        level="",
+        selector_kind="",
+        selector_value=None,
         export_path=comparison.export_path,
         legacy_path=comparison.legacy_path,
         start_period=comparison.start_period,
@@ -203,6 +209,9 @@ def build_legacy_table_validation_summary(
     return LegacyFileValidationSummary(
         filename=comparison.filename,
         subject_type=comparison.subject_type,
+        level=comparison.level,
+        selector_kind=comparison.selector_kind,
+        selector_value=comparison.selector_value,
         export_path=Path(comparison.filename),
         legacy_path=None,
         start_period=min(numeric_periods) if numeric_periods else 0,
@@ -312,6 +321,9 @@ def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
             {
                 "filename": summary.filename,
                 "subject_type": summary.subject_type,
+                "level": summary.level,
+                "selector_kind": summary.selector_kind,
+                "selector_value": summary.selector_value,
                 "export_path": str(summary.export_path),
                 "legacy_path": None if summary.legacy_path is None else str(summary.legacy_path),
                 "start_period": summary.start_period,
@@ -368,6 +380,9 @@ def write_legacy_validation_report_csv(
             fieldnames=[
                 "filename",
                 "subject_type",
+                "level",
+                "selector_kind",
+                "selector_value",
                 "legacy_path",
                 "start_period",
                 "end_period",
@@ -388,6 +403,9 @@ def write_legacy_validation_report_csv(
                 {
                     "filename": summary.filename,
                     "subject_type": summary.subject_type,
+                    "level": summary.level,
+                    "selector_kind": summary.selector_kind,
+                    "selector_value": "" if summary.selector_value is None else summary.selector_value,
                     "legacy_path": "" if summary.legacy_path is None else str(summary.legacy_path),
                     "start_period": summary.start_period,
                     "end_period": summary.end_period,
