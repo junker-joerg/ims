@@ -30,4 +30,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `legacy_agrsich_multi_period_step.md`: mehrperiodiger Rahmen fuer validierte Agrsich-Legacy-Vergleiche
 - `agrsich_replay_runner.md`: deterministischer Mehrperioden-Replay-Runner mit Legacy-Fenstervergleich
 - `agrsich_replay_plan.md`: deterministische Replay-Snapshot-Erzeugung aus Startzustand plus expliziten Periodenupdates
+- `agrsich_validation_report.md`: maschinenlesbarer Report fuer Agrsich-Legacy-Fenstervergleiche
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
