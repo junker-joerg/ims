@@ -87,6 +87,26 @@ def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidatio
     )
 
 
+def _target_identity(target: LegacyValidationTarget) -> tuple[str, str, str]:
+    return (
+        target.subject_type,
+        str(target.legacy_path.resolve()),
+        target.export_filename,
+    )
+
+
+def _validate_unique_targets(targets: list[LegacyValidationTarget]) -> None:
+    seen: set[tuple[str, str, str]] = set()
+    for target in targets:
+        identity = _target_identity(target)
+        if identity in seen:
+            raise ValueError(
+                "legacy validation fixture must not contain duplicate targets: "
+                f"{target.subject_type} {target.export_filename} {target.legacy_path}"
+            )
+        seen.add(identity)
+
+
 def _insurer_export_table_from_target(target: LegacyValidationTarget, legacy_table: LegacyInsurerTable) -> ExportTable:
     rows: list[ExportRow] = []
     for period in target.periods:
@@ -158,6 +178,7 @@ def run_legacy_validation_from_fixture(
         raise ValueError("legacy validation fixture must contain a non-empty targets list")
 
     targets = [_target_from_mapping(item, fixture_path.parent) for item in target_items]
+    _validate_unique_targets(targets)
     comparison = build_multi_period_legacy_comparison([_compare_target(target) for target in targets])
     report = build_legacy_validation_report_from_multi_period_comparison(comparison)
 
