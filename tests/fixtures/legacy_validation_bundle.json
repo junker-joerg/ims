@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "purpose": "Kleines gemeinsames Validierungs-Fixture fuer bestehende VU- und VN-Legacy-Dateifamilien; kein historischer Vollsimulationslauf."
+  },
+  "report_name": "legacy_validation_bundle",
+  "targets": [
+    {
+      "subject_type": "insurer",
+      "legacy_path": "../references/legacy_agrsich/VUSK1L4.DAT",
+      "export_filename": "imsvusk1.dat",
+      "periods": [101, 102],
+      "level": "IV",
+      "selector_kind": "all",
+      "selector_value": "SK1"
+    },
+    {
+      "subject_type": "policyholder",
+      "legacy_path": "../references/legacy_agrsich/IMSVNSK1.DAT",
+      "export_filename": "imsvnsk1.dat",
+      "periods": [1, 2],
+      "level": "IV",
+      "selector_kind": "all",
+      "selector_value": "SK1"
+    }
+  ]
+}

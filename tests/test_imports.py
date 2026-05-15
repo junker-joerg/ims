@@ -137,6 +137,11 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_report_csv,
         write_legacy_validation_report_json,
     )
+    from ims.model.legacy_validation_run import (
+        LegacyValidationRunResult,
+        LegacyValidationTarget,
+        run_legacy_validation_from_fixture,
+    )
 
     ctx = SimulationContext()
     scheduler = Scheduler()
@@ -279,3 +284,6 @@ def test_core_placeholders_import() -> None:
     assert legacy_validation_report_to_dict is not None
     assert write_legacy_validation_report_json is not None
     assert write_legacy_validation_report_csv is not None
+    assert LegacyValidationRunResult is not None
+    assert LegacyValidationTarget is not None
+    assert run_legacy_validation_from_fixture is not None
