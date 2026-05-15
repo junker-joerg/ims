@@ -19,7 +19,7 @@ ohne neue fachliche Exportlogik oder neue Simulationssemantik einzufuehren.
 - Detailabweichungen mit Ist- und Sollwerten
 - Feldabweichungen als aggregierte Summaries je Datei und Feld
 - Export als JSON, kompakte CSV-Dateizusammenfassung, Feldsummary-CSV, Gruppensummary-CSV,
-  Periodensummary-CSV und Abweichungsindex-CSV
+  Periodensummary-CSV, Abweichungsindex-CSV und Artefaktmanifest
 
 Der Replay-Runner liefert fuer ein Legacy-Fenster nun zusaetzlich zum bestehenden
 `LegacyWindowComparison` einen `LegacyValidationReport`.
@@ -55,11 +55,12 @@ Selektorangaben, doppelte, unsortierte oder lueckenhafte Perioden innerhalb eine
 doppelt eingetragene Targets frueh zurueck, damit die Reportzahlen nicht durch versehentliche
 Doppelvergleiche oder missverstaendliche Fenstergrenzen verzerrt werden.
 
-Wenn ein Bundle Reports schreibt, entstehen nun sechs Artefakte: der vollstaendige JSON-Report,
+Wenn ein Bundle Reports schreibt, entstehen nun sieben Artefakte: der vollstaendige JSON-Report,
 die Datei-Zusammenfassung als CSV, eine separate Feldsummary-CSV fuer schnelle Auswertungen
-von Abweichungsschwerpunkten, eine Gruppensummary-CSV fuer Subjekttyp-/Stufen-Auswertungen
+von Abweichungsschwerpunkten, eine Gruppensummary-CSV fuer Subjekttyp-/Stufen-Auswertungen,
 eine Periodensummary-CSV fuer globale Perioden-Auswertungen sowie eine flache
-Abweichungsindex-CSV fuer direkte Drilldowns.
+Abweichungsindex-CSV fuer direkte Drilldowns und ein Artefaktmanifest, das alle Dateien mit
+stabilen Rollen auflistet.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
