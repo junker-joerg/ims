@@ -36,5 +36,9 @@ Dieser Reportpfad kann nun sowohl einzelne Versicherer-Fenstervergleiche als auc
 mehrperiodige Tabellenvergleiche ueber mehrere Dateifamilien zusammenfassen. Damit lassen sich
 Versicherer- und VN-Vergleiche in einem gemeinsamen Validierungsbericht buendeln.
 
-Der naechste sinnvolle Schritt ist, diesen gemeinsamen Reportpfad aus einem einzigen
-Validierungs-Fixture heraus ueber mehrere reale Legacy-Zieldateien laufen zu lassen.
+Ein kleines Validierungs-Fixture kann nun mehrere reale Legacy-Zieldateien beschreiben und den
+gemeinsamen Reportpfad automatisch ausfuehren. Das aktuelle Bundle validiert ein
+Versichererfenster aus `VUSK1L4.DAT` und ein VN-Fenster aus `IMSVNSK1.DAT` in einem Lauf.
+
+Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
+bereits parsergestuetzte Dateifamilien auszuweiten.
