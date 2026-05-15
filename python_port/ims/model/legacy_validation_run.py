@@ -73,6 +73,9 @@ def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidatio
         raise ValueError("validation target periods must be unique")
     if periods != sorted(periods):
         raise ValueError("validation target periods must be sorted ascending")
+    expected_periods = list(range(periods[0], periods[-1] + 1))
+    if periods != expected_periods:
+        raise ValueError("validation target periods must be contiguous")
 
     legacy_path = Path(legacy_path_data)
     if not legacy_path.is_absolute():
