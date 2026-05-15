@@ -78,6 +78,34 @@ def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) 
         raise AssertionError("unknown subject_type should fail")
 
 
+def test_legacy_validation_fixture_rejects_duplicate_target_periods(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
+    data["targets"][0]["periods"] = [101, 102, 102]
+    fixture_path = tmp_path / "duplicate_periods_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_from_fixture(fixture_path)
+    except ValueError as exc:
+        assert "periods must be unique" in str(exc)
+    else:
+        raise AssertionError("duplicate target periods should fail")
+
+
+def test_legacy_validation_fixture_rejects_missing_file_identity(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
+    data["targets"][0]["export_filename"] = " "
+    fixture_path = tmp_path / "missing_export_filename_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_from_fixture(fixture_path)
+    except ValueError as exc:
+        assert "export_filename" in str(exc)
+    else:
+        raise AssertionError("missing export_filename should fail")
+
+
 def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
