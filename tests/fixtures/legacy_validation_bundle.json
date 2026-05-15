@@ -21,6 +21,15 @@
       "level": "IV",
       "selector_kind": "all",
       "selector_value": "SK1"
+    },
+    {
+      "subject_type": "policyholder",
+      "legacy_path": "../references/legacy_agrsich/IMSVNR05.DAT",
+      "export_filename": "imsvnr05.dat",
+      "periods": [1, 2, 3, 4],
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 5
     }
   ]
 }

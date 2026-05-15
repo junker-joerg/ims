@@ -38,8 +38,9 @@ Versicherer- und VN-Vergleiche in einem gemeinsamen Validierungsbericht buendeln
 
 Ein kleines Validierungs-Fixture kann nun mehrere reale Legacy-Zieldateien beschreiben und den
 gemeinsamen Reportpfad automatisch ausfuehren. Das aktuelle Bundle validiert ein
-Versichererfenster aus `VUSK1L4.DAT` und ein VN-Fenster aus `IMSVNSK1.DAT` in einem Lauf.
-Beide Fenster umfassen aktuell je vier Perioden.
+Versichererfenster aus `VUSK1L4.DAT`, ein VN-Gesamtfenster aus `IMSVNSK1.DAT` und ein
+VN-Regelfenster aus `IMSVNR05.DAT` in einem Lauf. Alle drei Fenster umfassen aktuell je vier
+Perioden.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
