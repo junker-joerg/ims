@@ -11,6 +11,10 @@ from ims.model.legacy_agrsich_reference import (
     compare_export_file_to_legacy_window,
     parse_legacy_insurer_dat,
 )
+from ims.model.legacy_validation_report import (
+    LegacyValidationReport,
+    build_legacy_validation_report,
+)
 
 
 @dataclass(slots=True)
@@ -43,6 +47,7 @@ class ReplayRunResult:
     written_files: list[Path]
     period_results: list[ReplayPeriodResult]
     legacy_comparison: LegacyWindowComparison | None
+    validation_report: LegacyValidationReport | None
 
 
 def _load_target(data: dict, fixture_base_path: Path) -> ReplayWindowTarget | None:
@@ -136,6 +141,7 @@ def run_agrsich_replay_from_mapping(
         )
 
     legacy_comparison = None
+    validation_report = None
     if target is not None:
         legacy_table = parse_legacy_insurer_dat(target.legacy_path)
         legacy_comparison = compare_export_file_to_legacy_window(
@@ -144,12 +150,14 @@ def run_agrsich_replay_from_mapping(
             target.start_period,
             target.end_period,
         )
+        validation_report = build_legacy_validation_report([legacy_comparison])
 
     return ReplayRunResult(
         processed_periods=[snapshot.global_period for snapshot in snapshots],
         written_files=_deduplicate_paths(all_written_files),
         period_results=period_results,
         legacy_comparison=legacy_comparison,
+        validation_report=validation_report,
     )
 
 
