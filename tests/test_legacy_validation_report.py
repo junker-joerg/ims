@@ -3,13 +3,33 @@ import json
 from pathlib import Path
 
 from ims.engine.replay_runner import run_agrsich_replay_from_fixture
+from ims.model.agrsich_export import (
+    INSURER_HEADER,
+    POLICYHOLDER_HEADER,
+    ExportFileSpec,
+    ExportRow,
+    ExportTable,
+)
+from ims.model.legacy_agrsich_multi_period import (
+    build_multi_period_legacy_comparison,
+    compare_insurer_export_table_to_legacy,
+    compare_policyholder_export_table_to_legacy,
+)
 from ims.model.legacy_agrsich_reference import (
+    LegacyInsurerTable,
     compare_export_file_to_legacy_window,
+    extract_legacy_row,
     parse_legacy_insurer_dat,
+)
+from ims.model.legacy_vn_reference import (
+    LegacyPolicyholderTable,
+    extract_legacy_policyholder_row,
+    parse_legacy_policyholder_dat,
 )
 from ims.model.legacy_validation_report import (
     LegacyValidationReport,
     build_legacy_validation_report,
+    build_legacy_validation_report_from_multi_period_comparison,
     legacy_validation_report_to_dict,
     write_legacy_validation_report_csv,
     write_legacy_validation_report_json,
@@ -22,6 +42,52 @@ REFERENCE_DIR = Path("tests/references/legacy_agrsich")
 
 def _non_empty_lines(path: Path) -> list[str]:
     return [line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def _insurer_table_from_legacy_rows(
+    legacy_table: LegacyInsurerTable,
+    filename: str,
+    periods: list[int],
+) -> ExportTable:
+    rows: list[ExportRow] = []
+    for period in periods:
+        legacy_row = extract_legacy_row(legacy_table, period)
+        assert legacy_row is not None
+        rows.append(ExportRow(values=[legacy_row.global_period, *legacy_row.metric_values()]))
+    return ExportTable(
+        spec=ExportFileSpec(
+            filename=filename,
+            subject_type="insurer",
+            level="I",
+            selector_kind="entity",
+            selector_value=14,
+        ),
+        header=INSURER_HEADER,
+        rows=rows,
+    )
+
+
+def _policyholder_table_from_legacy_rows(
+    legacy_table: LegacyPolicyholderTable,
+    filename: str,
+    periods: list[int],
+) -> ExportTable:
+    rows: list[ExportRow] = []
+    for period in periods:
+        legacy_row = extract_legacy_policyholder_row(legacy_table, period)
+        assert legacy_row is not None
+        rows.append(ExportRow(values=[legacy_row.global_period, *legacy_row.metric_values()]))
+    return ExportTable(
+        spec=ExportFileSpec(
+            filename=filename,
+            subject_type="policyholder",
+            level="II",
+            selector_kind="rule",
+            selector_value=5,
+        ),
+        header=POLICYHOLDER_HEADER,
+        rows=rows,
+    )
 
 
 def test_validation_report_summarizes_matching_replay_windows(tmp_path: Path) -> None:
@@ -83,3 +149,46 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert report.file_summaries[0].fields_with_differences == ["Rs1"]
     assert report.file_summaries[0].field_deviations[0].actual == 999.0
     assert report_data["files"][0]["field_deviations"][0]["field_name"] == "Rs1"
+
+
+def test_validation_report_summarizes_vu_and_vn_file_families() -> None:
+    insurer_legacy = parse_legacy_insurer_dat(REFERENCE_DIR / "VUSK1L4.DAT")
+    policyholder_legacy = parse_legacy_policyholder_dat(REFERENCE_DIR / "IMSVNSK1.DAT")
+    insurer_export = _insurer_table_from_legacy_rows(insurer_legacy, "imsvusk1.dat", [101, 102])
+    policyholder_export = _policyholder_table_from_legacy_rows(policyholder_legacy, "imsvnsk1.dat", [1, 2])
+
+    comparison = build_multi_period_legacy_comparison([
+        compare_insurer_export_table_to_legacy(insurer_export, insurer_legacy),
+        compare_policyholder_export_table_to_legacy(policyholder_export, policyholder_legacy),
+    ])
+
+    report = build_legacy_validation_report_from_multi_period_comparison(comparison)
+    report_data = legacy_validation_report_to_dict(report)
+
+    assert report.matches is True
+    assert report.total_files == 2
+    assert report.total_rows == 4
+    assert report.match_rate == 1.0
+    assert [(item.filename, item.subject_type) for item in report.file_summaries] == [
+        ("imsvusk1.dat", "insurer"),
+        ("imsvnsk1.dat", "policyholder"),
+    ]
+    assert report_data["files"][1]["subject_type"] == "policyholder"
+
+
+def test_validation_report_detects_vn_family_deviation() -> None:
+    legacy_table = parse_legacy_policyholder_dat(REFERENCE_DIR / "IMSVNR05.DAT")
+    export_table = _policyholder_table_from_legacy_rows(legacy_table, "imsvnr05.dat", [1, 2, 3])
+    export_table.rows[1].values[3] = 999.0
+
+    comparison = build_multi_period_legacy_comparison([
+        compare_policyholder_export_table_to_legacy(export_table, legacy_table)
+    ])
+    report = build_legacy_validation_report_from_multi_period_comparison(comparison)
+
+    assert report.matches is False
+    assert report.total_files == 1
+    assert report.total_rows == 3
+    assert report.mismatched_rows == 1
+    assert report.file_summaries[0].periods_with_differences == [2]
+    assert report.file_summaries[0].fields_with_differences == ["Vp1"]

@@ -32,5 +32,9 @@ Er behauptet keine historische Vollgleichheit ausserhalb der konkret verglichene
 
 ## Anschluss
 
-Der naechste sinnvolle Schritt ist, mehrere Dateifamilien in einem gemeinsamen Validierungslauf
-zu buendeln und denselben Reportpfad fuer breitere Legacy-Fenster zu nutzen.
+Dieser Reportpfad kann nun sowohl einzelne Versicherer-Fenstervergleiche als auch
+mehrperiodige Tabellenvergleiche ueber mehrere Dateifamilien zusammenfassen. Damit lassen sich
+Versicherer- und VN-Vergleiche in einem gemeinsamen Validierungsbericht buendeln.
+
+Der naechste sinnvolle Schritt ist, diesen gemeinsamen Reportpfad aus einem einzigen
+Validierungs-Fixture heraus ueber mehrere reale Legacy-Zieldateien laufen zu lassen.

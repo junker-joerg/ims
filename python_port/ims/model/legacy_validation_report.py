@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Iterable
 
+from ims.model.legacy_agrsich_multi_period import LegacyTableComparison, MultiPeriodLegacyComparison
 from ims.model.legacy_agrsich_reference import LegacyWindowComparison
 
 
@@ -19,8 +20,9 @@ class LegacyFieldDeviation:
 @dataclass(slots=True)
 class LegacyFileValidationSummary:
     filename: str
+    subject_type: str
     export_path: Path
-    legacy_path: Path
+    legacy_path: Path | None
     start_period: int
     end_period: int
     matches: bool
@@ -92,6 +94,7 @@ def build_legacy_file_validation_summary(
 
     return LegacyFileValidationSummary(
         filename=filename,
+        subject_type="insurer",
         export_path=comparison.export_path,
         legacy_path=comparison.legacy_path,
         start_period=comparison.start_period,
@@ -107,6 +110,74 @@ def build_legacy_file_validation_summary(
     )
 
 
+def build_legacy_table_validation_summary(
+    comparison: LegacyTableComparison,
+) -> LegacyFileValidationSummary:
+    row_count = len(comparison.row_comparisons)
+    matched_rows = sum(1 for row in comparison.row_comparisons if row.matches)
+    global_periods: list[int | None] = []
+    field_deviations: list[LegacyFieldDeviation] = []
+
+    for row in comparison.row_comparisons:
+        global_period = _global_period_from_row_comparison(row)
+        global_periods.append(global_period)
+        for field in row.field_comparisons:
+            if field.matches:
+                continue
+            field_deviations.append(
+                LegacyFieldDeviation(
+                    filename=comparison.filename,
+                    global_period=global_period,
+                    field_name=field.name,
+                    actual=field.actual,
+                    expected=field.expected,
+                )
+            )
+
+    periods_with_differences = _unique_in_order(
+        deviation.global_period for deviation in field_deviations
+    )
+    fields_with_differences = _unique_in_order(
+        deviation.field_name for deviation in field_deviations
+    )
+    numeric_periods = [period for period in global_periods if period is not None]
+
+    return LegacyFileValidationSummary(
+        filename=comparison.filename,
+        subject_type=comparison.subject_type,
+        export_path=Path(comparison.filename),
+        legacy_path=None,
+        start_period=min(numeric_periods) if numeric_periods else 0,
+        end_period=max(numeric_periods) if numeric_periods else 0,
+        matches=comparison.matches,
+        row_count=row_count,
+        matched_rows=matched_rows,
+        mismatched_rows=row_count - matched_rows,
+        match_rate=_match_rate(matched_rows, row_count),
+        periods_with_differences=periods_with_differences,
+        fields_with_differences=fields_with_differences,
+        field_deviations=field_deviations,
+    )
+
+
+def _global_period_from_row_comparison(row_comparison) -> int | None:
+    global_period = getattr(row_comparison, "global_period", None)
+    if global_period is not None:
+        return int(global_period)
+
+    for field in row_comparison.field_comparisons:
+        if field.name != "global_period":
+            continue
+        try:
+            return int(field.actual)
+        except (TypeError, ValueError):
+            try:
+                return int(field.expected)
+            except (TypeError, ValueError):
+                return None
+    return None
+
+
 def build_legacy_validation_report(
     comparisons: Iterable[LegacyWindowComparison],
 ) -> LegacyValidationReport:
@@ -114,6 +185,28 @@ def build_legacy_validation_report(
         build_legacy_file_validation_summary(comparison)
         for comparison in comparisons
     ]
+    return _build_report_from_summaries(file_summaries)
+
+
+def build_legacy_validation_report_from_table_comparisons(
+    comparisons: Iterable[LegacyTableComparison],
+) -> LegacyValidationReport:
+    file_summaries = [
+        build_legacy_table_validation_summary(comparison)
+        for comparison in comparisons
+    ]
+    return _build_report_from_summaries(file_summaries)
+
+
+def build_legacy_validation_report_from_multi_period_comparison(
+    comparison: MultiPeriodLegacyComparison,
+) -> LegacyValidationReport:
+    return build_legacy_validation_report_from_table_comparisons(comparison.table_comparisons)
+
+
+def _build_report_from_summaries(
+    file_summaries: list[LegacyFileValidationSummary],
+) -> LegacyValidationReport:
     total_rows = sum(summary.row_count for summary in file_summaries)
     matched_rows = sum(summary.matched_rows for summary in file_summaries)
 
@@ -139,8 +232,9 @@ def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
         "files": [
             {
                 "filename": summary.filename,
+                "subject_type": summary.subject_type,
                 "export_path": str(summary.export_path),
-                "legacy_path": str(summary.legacy_path),
+                "legacy_path": None if summary.legacy_path is None else str(summary.legacy_path),
                 "start_period": summary.start_period,
                 "end_period": summary.end_period,
                 "matches": summary.matches,
@@ -190,6 +284,7 @@ def write_legacy_validation_report_csv(
             handle,
             fieldnames=[
                 "filename",
+                "subject_type",
                 "legacy_path",
                 "start_period",
                 "end_period",
@@ -208,7 +303,8 @@ def write_legacy_validation_report_csv(
             writer.writerow(
                 {
                     "filename": summary.filename,
-                    "legacy_path": str(summary.legacy_path),
+                    "subject_type": summary.subject_type,
+                    "legacy_path": "" if summary.legacy_path is None else str(summary.legacy_path),
                     "start_period": summary.start_period,
                     "end_period": summary.end_period,
                     "matches": summary.matches,
