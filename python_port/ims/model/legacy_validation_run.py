@@ -55,6 +55,18 @@ class LegacyValidationArtifact:
 
 
 @dataclass(slots=True)
+class LegacyValidationArtifactManifest:
+    report_name: str
+    fixture_path: Path
+    matches: bool
+    total_files: int
+    total_rows: int
+    matched_rows: int
+    mismatched_rows: int
+    artifacts: list[LegacyValidationArtifact]
+
+
+@dataclass(slots=True)
 class LegacyValidationRunResult:
     targets: list[LegacyValidationTarget]
     comparison: MultiPeriodLegacyComparison
@@ -195,6 +207,19 @@ def _artifact_to_mapping(artifact: LegacyValidationArtifact) -> dict:
     }
 
 
+def _artifact_from_mapping(data: dict, manifest_base_path: Path) -> LegacyValidationArtifact:
+    kind = str(data.get("kind", "")).strip()
+    if not kind:
+        raise ValueError("legacy validation artifact must contain a kind")
+    path_data = str(data.get("path", "")).strip()
+    if not path_data:
+        raise ValueError("legacy validation artifact must contain a path")
+    artifact_path = Path(path_data)
+    if not artifact_path.is_absolute():
+        artifact_path = manifest_base_path / artifact_path
+    return LegacyValidationArtifact(kind=kind, path=artifact_path)
+
+
 def _write_legacy_validation_artifact_manifest(
     *,
     report_name: str,
@@ -220,6 +245,54 @@ def _write_legacy_validation_artifact_manifest(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
     return path
+
+
+def load_legacy_validation_artifact_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationArtifactManifest:
+    manifest_path = Path(path).resolve()
+    with manifest_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError("legacy validation artifact manifest must be a JSON object")
+
+    artifacts_data = data.get("artifacts")
+    if not isinstance(artifacts_data, list) or not artifacts_data:
+        raise ValueError("legacy validation artifact manifest must contain a non-empty artifacts list")
+
+    artifacts = [
+        _artifact_from_mapping(item, manifest_path.parent)
+        for item in artifacts_data
+    ]
+    artifact_count = int(data.get("artifact_count", -1))
+    if artifact_count != len(artifacts):
+        raise ValueError("legacy validation artifact manifest artifact_count must match artifacts")
+
+    kinds = [artifact.kind for artifact in artifacts]
+    if len(kinds) != len(set(kinds)):
+        raise ValueError("legacy validation artifact manifest must contain unique artifact kinds")
+
+    if require_existing_artifacts:
+        missing = [
+            artifact.path
+            for artifact in artifacts
+            if not artifact.path.exists()
+        ]
+        if missing:
+            raise ValueError(f"legacy validation artifact manifest references missing artifacts: {missing}")
+
+    return LegacyValidationArtifactManifest(
+        report_name=str(data.get("report_name", "")),
+        fixture_path=Path(str(data.get("fixture_path", ""))),
+        matches=bool(data.get("matches")),
+        total_files=int(data.get("total_files", 0)),
+        total_rows=int(data.get("total_rows", 0)),
+        matched_rows=int(data.get("matched_rows", 0)),
+        mismatched_rows=int(data.get("mismatched_rows", 0)),
+        artifacts=artifacts,
+    )
 
 
 def run_legacy_validation_from_fixture(

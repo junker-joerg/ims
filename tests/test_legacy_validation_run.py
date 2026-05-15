@@ -4,8 +4,10 @@ from pathlib import Path
 
 from ims.model.legacy_validation_run import (
     LegacyValidationArtifact,
+    LegacyValidationArtifactManifest,
     LegacyValidationRunResult,
     LegacyValidationTarget,
+    load_legacy_validation_artifact_manifest,
     run_legacy_validation_from_fixture,
 )
 
@@ -144,6 +146,24 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     ]
     assert manifest["artifacts"][-1]["filename"] == "legacy_validation_bundle_artifacts.json"
 
+    loaded_manifest = load_legacy_validation_artifact_manifest(
+        tmp_path / "legacy_validation_bundle_artifacts.json"
+    )
+    assert isinstance(loaded_manifest, LegacyValidationArtifactManifest)
+    assert loaded_manifest.report_name == "legacy_validation_bundle"
+    assert loaded_manifest.matches is True
+    assert loaded_manifest.total_rows == 40
+    assert [artifact.kind for artifact in loaded_manifest.artifacts] == [
+        "report_json",
+        "file_summary_csv",
+        "field_summary_csv",
+        "group_summary_csv",
+        "period_summary_csv",
+        "deviation_index_csv",
+        "artifact_manifest_json",
+    ]
+    assert all(artifact.path.exists() for artifact in loaded_manifest.artifacts)
+
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
@@ -257,8 +277,45 @@ def test_legacy_validation_fixture_rejects_duplicate_targets(tmp_path: Path) -> 
         raise AssertionError("duplicate validation targets should fail")
 
 
+def test_legacy_validation_artifact_manifest_rejects_bad_count(tmp_path: Path) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path,
+    )
+    manifest_path = result.artifacts[-1].path
+    data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    data["artifact_count"] = 999
+    bad_path = tmp_path / "bad_artifacts.json"
+    bad_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        load_legacy_validation_artifact_manifest(bad_path)
+    except ValueError as exc:
+        assert "artifact_count" in str(exc)
+    else:
+        raise AssertionError("bad artifact_count should fail")
+
+
+def test_legacy_validation_artifact_manifest_rejects_missing_artifact(tmp_path: Path) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path,
+    )
+    missing_path = result.artifacts[1].path
+    missing_path.unlink()
+
+    try:
+        load_legacy_validation_artifact_manifest(result.artifacts[-1].path)
+    except ValueError as exc:
+        assert "missing artifacts" in str(exc)
+    else:
+        raise AssertionError("missing artifact should fail")
+
+
 def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationArtifact is not None
+    assert LegacyValidationArtifactManifest is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
+    assert load_legacy_validation_artifact_manifest is not None
     assert run_legacy_validation_from_fixture is not None
