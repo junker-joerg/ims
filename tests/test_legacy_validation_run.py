@@ -134,6 +134,34 @@ def test_legacy_validation_fixture_rejects_missing_file_identity(tmp_path: Path)
         raise AssertionError("missing export_filename should fail")
 
 
+def test_legacy_validation_fixture_rejects_missing_target_level(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
+    data["targets"][0]["level"] = " "
+    fixture_path = tmp_path / "missing_level_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_from_fixture(fixture_path)
+    except ValueError as exc:
+        assert "level" in str(exc)
+    else:
+        raise AssertionError("missing level should fail")
+
+
+def test_legacy_validation_fixture_rejects_missing_selector_kind(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
+    data["targets"][0]["selector_kind"] = " "
+    fixture_path = tmp_path / "missing_selector_kind_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_from_fixture(fixture_path)
+    except ValueError as exc:
+        assert "selector_kind" in str(exc)
+    else:
+        raise AssertionError("missing selector_kind should fail")
+
+
 def test_legacy_validation_fixture_rejects_duplicate_targets(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     data["targets"].append(dict(data["targets"][0]))

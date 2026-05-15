@@ -65,6 +65,14 @@ def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidatio
     if not export_filename:
         raise ValueError("validation target must contain an export_filename")
 
+    level = str(data.get("level", "")).strip()
+    if not level:
+        raise ValueError("validation target must contain a level")
+
+    selector_kind = str(data.get("selector_kind", "")).strip()
+    if not selector_kind:
+        raise ValueError("validation target must contain a selector_kind")
+
     periods_data = data.get("periods")
     if not isinstance(periods_data, list) or not periods_data:
         raise ValueError("validation target must contain a non-empty periods list")
@@ -86,8 +94,8 @@ def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidatio
         legacy_path=legacy_path,
         export_filename=export_filename,
         periods=periods,
-        level=str(data.get("level", "")),
-        selector_kind=str(data.get("selector_kind", "")),
+        level=level,
+        selector_kind=selector_kind,
         selector_value=data.get("selector_value"),
     )
 
