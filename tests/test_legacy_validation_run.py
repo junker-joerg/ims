@@ -106,6 +106,20 @@ def test_legacy_validation_fixture_rejects_missing_file_identity(tmp_path: Path)
         raise AssertionError("missing export_filename should fail")
 
 
+def test_legacy_validation_fixture_rejects_duplicate_targets(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
+    data["targets"].append(dict(data["targets"][0]))
+    fixture_path = tmp_path / "duplicate_targets_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_from_fixture(fixture_path)
+    except ValueError as exc:
+        assert "duplicate targets" in str(exc)
+    else:
+        raise AssertionError("duplicate validation targets should fail")
+
+
 def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
