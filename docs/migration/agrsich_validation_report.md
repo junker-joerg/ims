@@ -40,7 +40,7 @@ Ein kleines Validierungs-Fixture kann nun mehrere reale Legacy-Zieldateien besch
 gemeinsamen Reportpfad automatisch ausfuehren. Das aktuelle Bundle validiert ein
 Versicherer-Gesamtfenster aus `VUSK1L4.DAT`, ein Versicherer-Einzelfenster aus `VU14L1.DAT`,
 ein VN-Gesamtfenster aus `IMSVNSK1.DAT` und ein VN-Regelfenster aus `IMSVNR05.DAT` in einem
-Lauf. Alle vier Fenster umfassen aktuell je vier Perioden.
+Lauf. Alle vier Fenster umfassen aktuell je zehn Perioden.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

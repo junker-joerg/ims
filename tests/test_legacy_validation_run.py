@@ -31,16 +31,16 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "imsvnr05.dat",
     ]
     assert [target.periods for target in result.targets] == [
-        [101, 102, 103, 104],
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
+        list(range(101, 111)),
+        list(range(1, 11)),
+        list(range(1, 11)),
+        list(range(1, 11)),
     ]
     assert result.comparison.matches is True
     assert result.report.matches is True
     assert result.report.total_files == 4
-    assert result.report.total_rows == 16
-    assert result.report.matched_rows == 16
+    assert result.report.total_rows == 40
+    assert result.report.matched_rows == 40
     assert [summary.subject_type for summary in result.report.file_summaries] == [
         "insurer",
         "insurer",
@@ -54,9 +54,10 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     ]
     payload = json.loads((tmp_path / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     assert payload["matches"] is True
-    assert payload["total_rows"] == 16
+    assert payload["total_rows"] == 40
     assert payload["files"][1]["filename"] == "imsvu014.dat"
     assert payload["files"][1]["subject_type"] == "insurer"
+    assert payload["files"][1]["end_period"] == 10
     assert payload["files"][2]["filename"] == "imsvnsk1.dat"
     assert payload["files"][2]["subject_type"] == "policyholder"
     assert payload["files"][3]["filename"] == "imsvnr05.dat"
