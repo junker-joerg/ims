@@ -12,11 +12,13 @@ ohne neue fachliche Exportlogik oder neue Simulationssemantik einzufuehren.
 - Target-Metadaten je Datei: Subjekttyp, Stufe, Selektorart und Selektorwert
 - Zeilenanzahl, Treffer, Abweichungen und Match-Rate
 - Gruppensummaries je Subjekttyp und Aggregatstufe
+- Periodensummaries je globaler Periode
 - Perioden mit Abweichungen
 - betroffene Feldnamen
 - Detailabweichungen mit Ist- und Sollwerten
 - Feldabweichungen als aggregierte Summaries je Datei und Feld
-- Export als JSON, kompakte CSV-Dateizusammenfassung, Feldsummary-CSV und Gruppensummary-CSV
+- Export als JSON, kompakte CSV-Dateizusammenfassung, Feldsummary-CSV, Gruppensummary-CSV
+  und Periodensummary-CSV
 
 Der Replay-Runner liefert fuer ein Legacy-Fenster nun zusaetzlich zum bestehenden
 `LegacyWindowComparison` einen `LegacyValidationReport`.
@@ -52,9 +54,10 @@ Selektorangaben, doppelte, unsortierte oder lueckenhafte Perioden innerhalb eine
 doppelt eingetragene Targets frueh zurueck, damit die Reportzahlen nicht durch versehentliche
 Doppelvergleiche oder missverstaendliche Fenstergrenzen verzerrt werden.
 
-Wenn ein Bundle Reports schreibt, entstehen nun vier Artefakte: der vollstaendige JSON-Report,
+Wenn ein Bundle Reports schreibt, entstehen nun fuenf Artefakte: der vollstaendige JSON-Report,
 die Datei-Zusammenfassung als CSV, eine separate Feldsummary-CSV fuer schnelle Auswertungen
-von Abweichungsschwerpunkten und eine Gruppensummary-CSV fuer Subjekttyp-/Stufen-Auswertungen.
+von Abweichungsschwerpunkten, eine Gruppensummary-CSV fuer Subjekttyp-/Stufen-Auswertungen
+und eine Periodensummary-CSV fuer globale Perioden-Auswertungen.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

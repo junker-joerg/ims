@@ -54,6 +54,7 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "legacy_validation_bundle.csv",
         "legacy_validation_bundle_fields.csv",
         "legacy_validation_bundle_groups.csv",
+        "legacy_validation_bundle_periods.csv",
     ]
     payload = json.loads((tmp_path / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     assert payload["matches"] is True
@@ -77,6 +78,14 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         ("policyholder", "IV", 10),
         ("policyholder", "II", 10),
     ]
+    assert payload["period_summaries"][0]["global_period"] == 101
+    assert payload["period_summaries"][0]["filenames"] == ["imsvusk1.dat"]
+    assert payload["period_summaries"][10]["global_period"] == 1
+    assert payload["period_summaries"][10]["filenames"] == [
+        "imsvu014.dat",
+        "imsvnsk1.dat",
+        "imsvnr05.dat",
+    ]
 
     with (tmp_path / "legacy_validation_bundle.csv").open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
@@ -93,6 +102,13 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert group_rows[0]["level"] == "IV"
     assert group_rows[0]["row_count"] == "10"
     assert group_rows[0]["filenames"] == "imsvusk1.dat"
+
+    with (tmp_path / "legacy_validation_bundle_periods.csv").open("r", encoding="utf-8", newline="") as handle:
+        period_rows = list(csv.DictReader(handle))
+    assert period_rows[0]["global_period"] == "101"
+    assert period_rows[0]["filenames"] == "imsvusk1.dat"
+    assert period_rows[10]["global_period"] == "1"
+    assert period_rows[10]["row_count"] == "3"
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
