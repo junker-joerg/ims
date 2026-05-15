@@ -14,6 +14,15 @@
       "selector_value": "SK1"
     },
     {
+      "subject_type": "insurer",
+      "legacy_path": "../references/legacy_agrsich/VU14L1.DAT",
+      "export_filename": "imsvu014.dat",
+      "periods": [1, 2, 3, 4],
+      "level": "I",
+      "selector_kind": "entity",
+      "selector_value": 14
+    },
+    {
       "subject_type": "policyholder",
       "legacy_path": "../references/legacy_agrsich/IMSVNSK1.DAT",
       "export_filename": "imsvnsk1.dat",

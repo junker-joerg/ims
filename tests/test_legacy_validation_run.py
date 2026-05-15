@@ -18,9 +18,15 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     )
 
     assert isinstance(result, LegacyValidationRunResult)
-    assert [target.subject_type for target in result.targets] == ["insurer", "policyholder", "policyholder"]
+    assert [target.subject_type for target in result.targets] == [
+        "insurer",
+        "insurer",
+        "policyholder",
+        "policyholder",
+    ]
     assert [target.export_filename for target in result.targets] == [
         "imsvusk1.dat",
+        "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
     ]
@@ -28,13 +34,15 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         [101, 102, 103, 104],
         [1, 2, 3, 4],
         [1, 2, 3, 4],
+        [1, 2, 3, 4],
     ]
     assert result.comparison.matches is True
     assert result.report.matches is True
-    assert result.report.total_files == 3
-    assert result.report.total_rows == 12
-    assert result.report.matched_rows == 12
+    assert result.report.total_files == 4
+    assert result.report.total_rows == 16
+    assert result.report.matched_rows == 16
     assert [summary.subject_type for summary in result.report.file_summaries] == [
+        "insurer",
         "insurer",
         "policyholder",
         "policyholder",
@@ -46,11 +54,13 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     ]
     payload = json.loads((tmp_path / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     assert payload["matches"] is True
-    assert payload["total_rows"] == 12
-    assert payload["files"][1]["filename"] == "imsvnsk1.dat"
-    assert payload["files"][1]["subject_type"] == "policyholder"
-    assert payload["files"][2]["filename"] == "imsvnr05.dat"
-    assert payload["files"][2]["start_period"] == 1
+    assert payload["total_rows"] == 16
+    assert payload["files"][1]["filename"] == "imsvu014.dat"
+    assert payload["files"][1]["subject_type"] == "insurer"
+    assert payload["files"][2]["filename"] == "imsvnsk1.dat"
+    assert payload["files"][2]["subject_type"] == "policyholder"
+    assert payload["files"][3]["filename"] == "imsvnr05.dat"
+    assert payload["files"][3]["start_period"] == 1
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
