@@ -42,5 +42,9 @@ Versicherer-Gesamtfenster aus `VUSK1L4.DAT`, ein Versicherer-Einzelfenster aus `
 ein VN-Gesamtfenster aus `IMSVNSK1.DAT` und ein VN-Regelfenster aus `IMSVNR05.DAT` in einem
 Lauf. Alle vier Fenster umfassen aktuell je zehn Perioden.
 
+Der Fixture-Lader weist unvollstaendige Targets und doppelte Perioden innerhalb eines Targets
+frueh zurueck, damit die Reportzahlen nicht durch versehentliche Doppelvergleiche verzerrt
+werden.
+
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
