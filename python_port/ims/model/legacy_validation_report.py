@@ -28,6 +28,20 @@ class LegacyFieldDeviationSummary:
 
 
 @dataclass(slots=True)
+class LegacyValidationGroupSummary:
+    subject_type: str
+    level: str
+    file_count: int
+    row_count: int
+    matched_rows: int
+    mismatched_rows: int
+    match_rate: float
+    matches: bool
+    filenames: list[str]
+    fields_with_differences: list[str]
+
+
+@dataclass(slots=True)
 class LegacyFileValidationSummary:
     filename: str
     subject_type: str
@@ -59,6 +73,7 @@ class LegacyValidationReport:
     match_rate: float
     file_summaries: list[LegacyFileValidationSummary]
     field_summaries: list[LegacyFieldDeviationSummary]
+    group_summaries: list[LegacyValidationGroupSummary]
 
 
 def _match_rate(matched: int, total: int) -> float:
@@ -119,6 +134,44 @@ def _build_field_deviation_summaries(
             )
         )
     return summaries
+
+
+def _build_group_summaries(
+    file_summaries: Iterable[LegacyFileValidationSummary],
+) -> list[LegacyValidationGroupSummary]:
+    grouped: dict[tuple[str, str], list[LegacyFileValidationSummary]] = {}
+    ordered_keys: list[tuple[str, str]] = []
+    for summary in file_summaries:
+        key = (summary.subject_type, summary.level)
+        if key not in grouped:
+            grouped[key] = []
+            ordered_keys.append(key)
+        grouped[key].append(summary)
+
+    group_summaries: list[LegacyValidationGroupSummary] = []
+    for subject_type, level in ordered_keys:
+        items = grouped[(subject_type, level)]
+        row_count = sum(item.row_count for item in items)
+        matched_rows = sum(item.matched_rows for item in items)
+        group_summaries.append(
+            LegacyValidationGroupSummary(
+                subject_type=subject_type,
+                level=level,
+                file_count=len(items),
+                row_count=row_count,
+                matched_rows=matched_rows,
+                mismatched_rows=row_count - matched_rows,
+                match_rate=_match_rate(matched_rows, row_count),
+                matches=all(item.matches for item in items),
+                filenames=[item.filename for item in items],
+                fields_with_differences=_unique_in_order(
+                    field_name
+                    for item in items
+                    for field_name in item.fields_with_differences
+                ),
+            )
+        )
+    return group_summaries
 
 
 def build_legacy_file_validation_summary(
@@ -277,6 +330,7 @@ def _build_report_from_summaries(
 ) -> LegacyValidationReport:
     total_rows = sum(summary.row_count for summary in file_summaries)
     matched_rows = sum(summary.matched_rows for summary in file_summaries)
+    group_summaries = _build_group_summaries(file_summaries)
 
     return LegacyValidationReport(
         matches=bool(file_summaries) and all(summary.matches for summary in file_summaries),
@@ -291,6 +345,7 @@ def _build_report_from_summaries(
             for summary in file_summaries
             for field_summary in summary.field_summaries
         ],
+        group_summaries=group_summaries,
     )
 
 
@@ -305,6 +360,21 @@ def _field_summary_to_dict(summary: LegacyFieldDeviationSummary) -> dict:
     }
 
 
+def _group_summary_to_dict(summary: LegacyValidationGroupSummary) -> dict:
+    return {
+        "subject_type": summary.subject_type,
+        "level": summary.level,
+        "file_count": summary.file_count,
+        "row_count": summary.row_count,
+        "matched_rows": summary.matched_rows,
+        "mismatched_rows": summary.mismatched_rows,
+        "match_rate": summary.match_rate,
+        "matches": summary.matches,
+        "filenames": summary.filenames,
+        "fields_with_differences": summary.fields_with_differences,
+    }
+
+
 def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
     return {
         "matches": report.matches,
@@ -316,6 +386,10 @@ def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
         "field_summaries": [
             _field_summary_to_dict(summary)
             for summary in report.field_summaries
+        ],
+        "group_summaries": [
+            _group_summary_to_dict(summary)
+            for summary in report.group_summaries
         ],
         "files": [
             {
@@ -457,6 +531,47 @@ def write_legacy_validation_field_summary_csv(
                         "" if period is None else str(period)
                         for period in summary.periods_with_differences
                     ),
+                }
+            )
+    return output_path
+
+
+def write_legacy_validation_group_summary_csv(
+    report: LegacyValidationReport,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "subject_type",
+                "level",
+                "file_count",
+                "row_count",
+                "matched_rows",
+                "mismatched_rows",
+                "match_rate",
+                "matches",
+                "filenames",
+                "fields_with_differences",
+            ],
+        )
+        writer.writeheader()
+        for summary in report.group_summaries:
+            writer.writerow(
+                {
+                    "subject_type": summary.subject_type,
+                    "level": summary.level,
+                    "file_count": summary.file_count,
+                    "row_count": summary.row_count,
+                    "matched_rows": summary.matched_rows,
+                    "mismatched_rows": summary.mismatched_rows,
+                    "match_rate": f"{summary.match_rate:.6f}",
+                    "matches": summary.matches,
+                    "filenames": ";".join(summary.filenames),
+                    "fields_with_differences": ";".join(summary.fields_with_differences),
                 }
             )
     return output_path
