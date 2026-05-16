@@ -93,6 +93,9 @@ Batchlauf spaeter ohne erneutes Durchsuchen des Ausgabebaums nachvollzogen werde
 Der Batch-Run-Manifest-Lader trennt Payload-Schema und Artefakt-Existenzpruefung: Run-Eintraege
 und Pflichtpfade werden immer validiert, auch wenn Dateiexistenzpruefungen fuer spezielle
 Analysefaelle deaktiviert sind.
+Bei aktivierter Artefaktpruefung gleicht der Lader nun zusaetzlich die im Batch-Run-Manifest
+gespeicherten Summen gegen das referenzierte Summary-Buendelmanifest ab. Dadurch werden
+nachtraeglich veraenderte oder nicht mehr zusammenpassende Batch-Manifeste frueh erkannt.
 Die Artefaktmanifest-Lader loesen relative Pfade tolerant auf und neu geschriebene Manifeste
 speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Scan ignoriert
 Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich

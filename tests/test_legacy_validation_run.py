@@ -939,6 +939,44 @@ def test_legacy_validation_batch_manifest_rejects_bad_run_count(tmp_path: Path) 
         raise AssertionError("bad batch run_count should fail")
 
 
+def test_legacy_validation_batch_manifest_rejects_summary_total_mismatch(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["total_rows"] = 999
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+    except ValueError as exc:
+        assert "summary manifest field total_rows" in str(exc)
+    else:
+        raise AssertionError("batch summary total mismatch should fail")
+
+
+def test_legacy_validation_batch_manifest_summary_total_check_is_io_bound(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["total_rows"] = 999
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    loaded_payload = load_legacy_validation_batch_run_manifest(
+        result.batch_manifest_path,
+        require_existing_artifacts=False,
+    )
+
+    assert loaded_payload["total_rows"] == 999
+
+
 def test_legacy_validation_batch_manifest_validates_run_entry_shape_without_io(
     tmp_path: Path,
 ) -> None:
