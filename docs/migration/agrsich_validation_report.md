@@ -96,6 +96,9 @@ Analysefaelle deaktiviert sind.
 Bei aktivierter Artefaktpruefung gleicht der Lader nun zusaetzlich die im Batch-Run-Manifest
 gespeicherten Summen gegen das referenzierte Summary-Buendelmanifest ab. Dadurch werden
 nachtraeglich veraenderte oder nicht mehr zusammenpassende Batch-Manifeste frueh erkannt.
+Auch die Einzellauf-Eintraege werden gegen ihre jeweiligen Report-Manifeste validiert:
+Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest muessen vorhanden sein, und die pro Run
+gespeicherten Summen muessen zu den Manifest-Summen des Einzelreports passen.
 Die Artefaktmanifest-Lader loesen relative Pfade tolerant auf und neu geschriebene Manifeste
 speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Scan ignoriert
 Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich

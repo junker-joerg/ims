@@ -977,6 +977,45 @@ def test_legacy_validation_batch_manifest_summary_total_check_is_io_bound(
     assert loaded_payload["total_rows"] == 999
 
 
+def test_legacy_validation_batch_manifest_rejects_run_report_total_mismatch(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["total_rows"] = 999
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+    except ValueError as exc:
+        assert "report manifest field total_rows" in str(exc)
+        assert "legacy_validation_bundle_a" in str(exc)
+    else:
+        raise AssertionError("batch run report total mismatch should fail")
+
+
+def test_legacy_validation_batch_manifest_run_report_total_check_is_io_bound(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["total_rows"] = 999
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    loaded_payload = load_legacy_validation_batch_run_manifest(
+        result.batch_manifest_path,
+        require_existing_artifacts=False,
+    )
+
+    assert loaded_payload["runs"][0]["total_rows"] == 999
+
+
 def test_legacy_validation_batch_manifest_validates_run_entry_shape_without_io(
     tmp_path: Path,
 ) -> None:
@@ -1022,6 +1061,21 @@ def test_legacy_validation_batch_manifest_validates_required_paths_without_io(
 
     payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
     payload["summary_manifest_path"] = "summary/legacy_validation_batch_artifacts.json"
+    payload["runs"][0]["output_dir"] = ""
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_batch_run_manifest(
+            result.batch_manifest_path,
+            require_existing_artifacts=False,
+        )
+    except ValueError as exc:
+        assert "output_dir" in str(exc)
+    else:
+        raise AssertionError("missing output_dir should fail without IO checks")
+
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["output_dir"] = str(Path("bundle_a"))
     payload["runs"][0]["report_manifest_path"] = ""
     result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
 
@@ -1034,6 +1088,24 @@ def test_legacy_validation_batch_manifest_validates_required_paths_without_io(
         assert "report_manifest_path" in str(exc)
     else:
         raise AssertionError("missing report_manifest_path should fail without IO checks")
+
+
+def test_legacy_validation_batch_manifest_rejects_missing_run_output_dir(tmp_path: Path) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["output_dir"] = "missing-output"
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+    except ValueError as exc:
+        assert "missing artifacts" in str(exc)
+        assert "missing-output" in str(exc)
+    else:
+        raise AssertionError("missing batch run output_dir should fail")
 
 
 def test_legacy_validation_batch_fixture_rejects_duplicate_output_dirs(tmp_path: Path) -> None:

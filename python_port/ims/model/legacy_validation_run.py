@@ -1026,6 +1026,26 @@ def _validate_batch_run_summary_manifest_totals(
             )
 
 
+def _validate_batch_run_item_report_manifest_totals(
+    item: dict,
+    report_manifest: LegacyValidationArtifactManifest,
+) -> None:
+    expected_fields = {
+        "matches": report_manifest.matches,
+        "total_files": report_manifest.total_files,
+        "total_rows": report_manifest.total_rows,
+        "matched_rows": report_manifest.matched_rows,
+        "mismatched_rows": report_manifest.mismatched_rows,
+    }
+    item_name = str(item.get("name", "")).strip()
+    for field_name, expected_value in expected_fields.items():
+        if item.get(field_name) != expected_value:
+            raise ValueError(
+                "legacy validation batch run manifest item "
+                f"{item_name} does not match report manifest field {field_name}"
+            )
+
+
 def load_legacy_validation_batch_run_manifest(
     path: str | Path,
     *,
@@ -1053,6 +1073,14 @@ def load_legacy_validation_batch_run_manifest(
             raise ValueError("legacy validation batch run manifest run entries must be objects")
         if not str(item.get("name", "")).strip():
             raise ValueError("legacy validation batch run manifest run entries must contain a name")
+        if not str(item.get("fixture_path", "")).strip():
+            raise ValueError(
+                "legacy validation batch run manifest run entries must contain a fixture_path"
+            )
+        if not str(item.get("output_dir", "")).strip():
+            raise ValueError(
+                "legacy validation batch run manifest run entries must contain an output_dir"
+            )
         if not str(item.get("report_manifest_path", "")).strip():
             raise ValueError(
                 "legacy validation batch run manifest run entries must contain a report_manifest_path"
@@ -1067,6 +1095,18 @@ def load_legacy_validation_batch_run_manifest(
         if not summary_manifest_path.exists():
             missing.append(summary_manifest_path)
         for item in runs:
+            fixture_path = _resolve_artifact_path(
+                str(item.get("fixture_path", "")),
+                manifest_path.parent,
+            )
+            if not fixture_path.exists():
+                missing.append(fixture_path)
+            output_dir = _resolve_artifact_path(
+                str(item.get("output_dir", "")),
+                manifest_path.parent,
+            )
+            if not output_dir.exists():
+                missing.append(output_dir)
             report_manifest_path = _resolve_artifact_path(
                 str(item.get("report_manifest_path", "")),
                 manifest_path.parent,
@@ -1082,6 +1122,15 @@ def load_legacy_validation_batch_run_manifest(
             summary_manifest_path
         )
         _validate_batch_run_summary_manifest_totals(payload, summary_manifest)
+        for item in runs:
+            report_manifest_path = _resolve_artifact_path(
+                str(item.get("report_manifest_path", "")),
+                manifest_path.parent,
+            )
+            report_manifest = load_legacy_validation_artifact_manifest(
+                report_manifest_path
+            )
+            _validate_batch_run_item_report_manifest_totals(item, report_manifest)
     return payload
 
 
