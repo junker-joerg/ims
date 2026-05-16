@@ -1024,17 +1024,29 @@ def load_legacy_validation_batch_run_manifest(
     if run_count != len(runs):
         raise ValueError("legacy validation batch run manifest run_count must match runs")
 
+    summary_manifest_data = str(payload.get("summary_manifest_path", "")).strip()
+    if not summary_manifest_data:
+        raise ValueError("legacy validation batch run manifest must contain a summary_manifest_path")
+
+    for item in runs:
+        if not isinstance(item, dict):
+            raise ValueError("legacy validation batch run manifest run entries must be objects")
+        if not str(item.get("name", "")).strip():
+            raise ValueError("legacy validation batch run manifest run entries must contain a name")
+        if not str(item.get("report_manifest_path", "")).strip():
+            raise ValueError(
+                "legacy validation batch run manifest run entries must contain a report_manifest_path"
+            )
+
     if require_existing_artifacts:
         summary_manifest_path = _resolve_artifact_path(
-            str(payload.get("summary_manifest_path", "")),
+            summary_manifest_data,
             manifest_path.parent,
         )
         missing = []
         if not summary_manifest_path.exists():
             missing.append(summary_manifest_path)
         for item in runs:
-            if not isinstance(item, dict):
-                raise ValueError("legacy validation batch run manifest run entries must be objects")
             report_manifest_path = _resolve_artifact_path(
                 str(item.get("report_manifest_path", "")),
                 manifest_path.parent,

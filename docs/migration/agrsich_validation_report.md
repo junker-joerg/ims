@@ -90,6 +90,9 @@ nur bestehende Validierungsfixtures; er fuehrt keine neue fachliche Vergleichslo
 Der Batchlauf schreibt zusaetzlich ein Batch-Run-Manifest. Es verbindet Batch-Fixture,
 Einzellauf-Ausgabeverzeichnisse, Einzelreport-Manifeste und Summary-Buendelmanifest, sodass ein
 Batchlauf spaeter ohne erneutes Durchsuchen des Ausgabebaums nachvollzogen werden kann.
+Der Batch-Run-Manifest-Lader trennt Payload-Schema und Artefakt-Existenzpruefung: Run-Eintraege
+und Pflichtpfade werden immer validiert, auch wenn Dateiexistenzpruefungen fuer spezielle
+Analysefaelle deaktiviert sind.
 Die Artefaktmanifest-Lader loesen relative Pfade tolerant auf und neu geschriebene Manifeste
 speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Scan ignoriert
 Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich
