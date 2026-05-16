@@ -10,12 +10,16 @@ from ims.model.legacy_validation_run import (
     LegacyValidationRunResult,
     LegacyValidationTarget,
     build_legacy_validation_report_summary_bundle,
+    legacy_validation_report_payload_summary_to_dict,
+    legacy_validation_report_summary_bundle_to_dict,
     load_legacy_validation_artifact_manifest,
     load_legacy_validation_report_payload_from_manifest,
     run_legacy_validation_from_fixture,
     summarize_legacy_validation_report_payload_from_manifest,
     summarize_legacy_validation_report_payloads_from_directory,
     summarize_legacy_validation_report_payloads_from_manifests,
+    write_legacy_validation_report_summary_bundle_csv,
+    write_legacy_validation_report_summary_bundle_json,
 )
 
 
@@ -553,6 +557,49 @@ def test_legacy_validation_report_payload_summary_bundle_tracks_mixed_results(tm
     assert bundle.deviation_count == 1
 
 
+def test_legacy_validation_report_payload_summary_bundle_writes_json_and_csv(tmp_path: Path) -> None:
+    first = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "first",
+    )
+    second = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "second",
+    )
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        [first.artifacts[-1].path, second.artifacts[-1].path]
+    )
+
+    json_path = write_legacy_validation_report_summary_bundle_json(
+        bundle,
+        tmp_path / "bundle_summary.json",
+    )
+    csv_path = write_legacy_validation_report_summary_bundle_csv(
+        bundle,
+        tmp_path / "bundle_summary.csv",
+    )
+
+    payload = json.loads(json_path.read_text(encoding="utf-8"))
+    assert payload == legacy_validation_report_summary_bundle_to_dict(bundle)
+    assert payload["report_count"] == 2
+    assert payload["total_files"] == 8
+    assert payload["total_rows"] == 80
+    assert payload["summaries"][0] == legacy_validation_report_payload_summary_to_dict(
+        bundle.summaries[0]
+    )
+
+    with csv_path.open("r", encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    assert len(rows) == 2
+    assert rows[0]["report_name"] == "legacy_validation_bundle"
+    assert rows[0]["matches"] == "True"
+    assert rows[0]["total_files"] == "4"
+    assert rows[0]["total_rows"] == "40"
+    assert rows[0]["match_rate"] == "1.000000"
+    assert rows[0]["artifact_count"] == "7"
+    assert rows[0]["deviation_count"] == "0"
+
+
 def test_legacy_validation_report_payload_summary_bundle_rejects_empty_inputs(tmp_path: Path) -> None:
     try:
         summarize_legacy_validation_report_payloads_from_manifests([])
@@ -577,9 +624,13 @@ def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert build_legacy_validation_report_summary_bundle is not None
+    assert legacy_validation_report_payload_summary_to_dict is not None
+    assert legacy_validation_report_summary_bundle_to_dict is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert run_legacy_validation_from_fixture is not None
     assert summarize_legacy_validation_report_payload_from_manifest is not None
     assert summarize_legacy_validation_report_payloads_from_directory is not None
     assert summarize_legacy_validation_report_payloads_from_manifests is not None
+    assert write_legacy_validation_report_summary_bundle_csv is not None
+    assert write_legacy_validation_report_summary_bundle_json is not None

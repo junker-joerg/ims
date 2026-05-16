@@ -73,6 +73,9 @@ Mehrere solche Manifest-Summaries koennen nun zu einem Batch-Buendel zusammengef
 Das Buendel aggregiert Reportanzahl, Datei- und Zeilenzaehler, Match-Rate, Artefaktrollen und
 Abweichungsachsen ueber mehrere bereits erzeugte Reports. Auch dieser Pfad liest nur bestehende
 Reportartefakte und fuehrt keinen neuen Legacy-Vergleich aus.
+Das Batch-Buendel kann als JSON-Artefakt und als kompakte CSV-Datei geschrieben werden. JSON
+enthaelt die Gesamtsicht und alle enthaltenen Einzelreport-Summaries; CSV schreibt je Report
+eine Zeile fuer schnelle manuelle oder tabellarische Kontrollen.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
