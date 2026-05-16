@@ -65,6 +65,12 @@ class LegacyValidationArtifactManifest:
     mismatched_rows: int
     artifacts: list[LegacyValidationArtifact]
 
+    def artifact_for_kind(self, kind: str) -> LegacyValidationArtifact | None:
+        for artifact in self.artifacts:
+            if artifact.kind == kind:
+                return artifact
+        return None
+
 
 @dataclass(slots=True)
 class LegacyValidationRunResult:
@@ -293,6 +299,40 @@ def load_legacy_validation_artifact_manifest(
         mismatched_rows=int(data.get("mismatched_rows", 0)),
         artifacts=artifacts,
     )
+
+
+def load_legacy_validation_report_payload_from_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> dict:
+    manifest = load_legacy_validation_artifact_manifest(
+        path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    report_artifact = manifest.artifact_for_kind("report_json")
+    if report_artifact is None:
+        raise ValueError("legacy validation artifact manifest must contain a report_json artifact")
+
+    with report_artifact.path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("legacy validation report artifact must be a JSON object")
+
+    expected_values = {
+        "matches": manifest.matches,
+        "total_files": manifest.total_files,
+        "total_rows": manifest.total_rows,
+        "matched_rows": manifest.matched_rows,
+        "mismatched_rows": manifest.mismatched_rows,
+    }
+    for field_name, expected_value in expected_values.items():
+        if payload.get(field_name) != expected_value:
+            raise ValueError(
+                "legacy validation report artifact does not match manifest "
+                f"field {field_name}"
+            )
+    return payload
 
 
 def run_legacy_validation_from_fixture(

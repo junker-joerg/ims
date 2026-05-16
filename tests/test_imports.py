@@ -151,6 +151,7 @@ def test_core_placeholders_import() -> None:
         LegacyValidationRunResult,
         LegacyValidationTarget,
         load_legacy_validation_artifact_manifest,
+        load_legacy_validation_report_payload_from_manifest,
         run_legacy_validation_from_fixture,
     )
 
@@ -308,4 +309,5 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert load_legacy_validation_artifact_manifest is not None
+    assert load_legacy_validation_report_payload_from_manifest is not None
     assert run_legacy_validation_from_fixture is not None
