@@ -1006,6 +1006,26 @@ def write_legacy_validation_batch_run_manifest(
     return output_path
 
 
+def _validate_batch_run_summary_manifest_totals(
+    payload: dict,
+    summary_manifest: LegacyValidationReportSummaryBundleArtifactManifest,
+) -> None:
+    expected_fields = {
+        "matches": summary_manifest.matches,
+        "run_count": summary_manifest.report_count,
+        "total_files": summary_manifest.total_files,
+        "total_rows": summary_manifest.total_rows,
+        "matched_rows": summary_manifest.matched_rows,
+        "mismatched_rows": summary_manifest.mismatched_rows,
+    }
+    for field_name, expected_value in expected_fields.items():
+        if payload.get(field_name) != expected_value:
+            raise ValueError(
+                "legacy validation batch run manifest does not match "
+                f"summary manifest field {field_name}"
+            )
+
+
 def load_legacy_validation_batch_run_manifest(
     path: str | Path,
     *,
@@ -1058,6 +1078,10 @@ def load_legacy_validation_batch_run_manifest(
                 "legacy validation batch run manifest references missing artifacts: "
                 f"{missing}"
             )
+        summary_manifest = load_legacy_validation_report_summary_bundle_artifact_manifest(
+            summary_manifest_path
+        )
+        _validate_batch_run_summary_manifest_totals(payload, summary_manifest)
     return payload
 
 
