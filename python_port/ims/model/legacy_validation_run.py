@@ -172,6 +172,16 @@ class LegacyValidationBatchRunManifestCheck:
     issues: list[LegacyValidationBatchRunManifestIssue]
 
 
+@dataclass(slots=True)
+class LegacyValidationBatchRunManifestCheckBundle:
+    manifest_count: int
+    matches: bool
+    total_runs: int
+    checked_artifact_count: int
+    issue_count: int
+    checks: list[LegacyValidationBatchRunManifestCheck]
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -1081,6 +1091,22 @@ def legacy_validation_batch_run_manifest_check_to_dict(
     }
 
 
+def legacy_validation_batch_run_manifest_check_bundle_to_dict(
+    bundle: LegacyValidationBatchRunManifestCheckBundle,
+) -> dict:
+    return {
+        "manifest_count": bundle.manifest_count,
+        "matches": bundle.matches,
+        "total_runs": bundle.total_runs,
+        "checked_artifact_count": bundle.checked_artifact_count,
+        "issue_count": bundle.issue_count,
+        "checks": [
+            legacy_validation_batch_run_manifest_check_to_dict(check)
+            for check in bundle.checks
+        ],
+    }
+
+
 def load_legacy_validation_batch_run_manifest(
     path: str | Path,
     *,
@@ -1211,6 +1237,89 @@ def check_legacy_validation_batch_run_manifest(
         checked_artifact_count=checked_artifact_count,
         issues=issues,
     )
+
+
+def build_legacy_validation_batch_run_manifest_check_bundle(
+    checks: list[LegacyValidationBatchRunManifestCheck],
+) -> LegacyValidationBatchRunManifestCheckBundle:
+    if not checks:
+        raise ValueError("legacy validation batch run manifest check bundle requires checks")
+    issue_count = sum(len(check.issues) for check in checks)
+    return LegacyValidationBatchRunManifestCheckBundle(
+        manifest_count=len(checks),
+        matches=all(check.matches for check in checks),
+        total_runs=sum(check.run_count for check in checks),
+        checked_artifact_count=sum(check.checked_artifact_count for check in checks),
+        issue_count=issue_count,
+        checks=checks,
+    )
+
+
+def check_legacy_validation_batch_run_manifests(
+    paths: list[str | Path],
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationBatchRunManifestCheckBundle:
+    if not paths:
+        raise ValueError("legacy validation batch run manifest check requires paths")
+    checks = [
+        check_legacy_validation_batch_run_manifest(
+            path,
+            require_existing_artifacts=require_existing_artifacts,
+        )
+        for path in paths
+    ]
+    return build_legacy_validation_batch_run_manifest_check_bundle(checks)
+
+
+def _is_legacy_validation_batch_run_manifest(path: Path) -> bool:
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(data, dict):
+        return False
+    return "summary_manifest_path" in data and (
+        "runs" in data or "run_count" in data
+    )
+
+
+def check_legacy_validation_batch_run_manifests_from_directory(
+    input_dir: str | Path,
+    *,
+    pattern: str = "**/*_batch.json",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationBatchRunManifestCheckBundle:
+    directory_path = Path(input_dir)
+    manifest_paths = [
+        manifest_path
+        for manifest_path in sorted(directory_path.glob(pattern))
+        if _is_legacy_validation_batch_run_manifest(manifest_path)
+    ]
+    if not manifest_paths:
+        raise ValueError("legacy validation batch run manifest directory contains no manifests")
+    return check_legacy_validation_batch_run_manifests(
+        manifest_paths,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+
+
+def write_legacy_validation_batch_run_manifest_check_bundle_json(
+    bundle: LegacyValidationBatchRunManifestCheckBundle,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        json.dumps(
+            legacy_validation_batch_run_manifest_check_bundle_to_dict(bundle),
+            indent=2,
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
+    return output_path
 
 
 def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:
