@@ -834,6 +834,44 @@ def load_legacy_validation_report_summary_bundle_payload_from_manifest(
     return payload
 
 
+def write_legacy_validation_report_summary_bundle_artifacts_from_manifests(
+    manifest_paths: list[str | Path],
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_report_summary_bundle",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationReportSummaryBundleArtifactManifest:
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        manifest_paths,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    return write_legacy_validation_report_summary_bundle_artifacts(
+        bundle,
+        output_dir,
+        bundle_name=bundle_name,
+    )
+
+
+def write_legacy_validation_report_summary_bundle_artifacts_from_directory(
+    input_dir: str | Path,
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_report_summary_bundle",
+    pattern: str = "**/*_artifacts.json",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationReportSummaryBundleArtifactManifest:
+    bundle = summarize_legacy_validation_report_payloads_from_directory(
+        input_dir,
+        pattern=pattern,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    return write_legacy_validation_report_summary_bundle_artifacts(
+        bundle,
+        output_dir,
+        bundle_name=bundle_name,
+    )
+
+
 def run_legacy_validation_from_fixture(
     path: str | Path,
     output_dir: str | Path | None = None,
