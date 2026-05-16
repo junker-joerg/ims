@@ -73,6 +73,23 @@ class LegacyValidationArtifactManifest:
 
 
 @dataclass(slots=True)
+class LegacyValidationReportPayloadSummary:
+    report_name: str
+    manifest_path: Path
+    matches: bool
+    total_files: int
+    total_rows: int
+    matched_rows: int
+    mismatched_rows: int
+    match_rate: float
+    artifact_kinds: list[str]
+    filenames_with_differences: list[str]
+    periods_with_differences: list[int | None]
+    fields_with_differences: list[str]
+    deviation_count: int
+
+
+@dataclass(slots=True)
 class LegacyValidationRunResult:
     targets: list[LegacyValidationTarget]
     comparison: MultiPeriodLegacyComparison
@@ -333,6 +350,78 @@ def load_legacy_validation_report_payload_from_manifest(
                 f"field {field_name}"
             )
     return payload
+
+
+def _unique_in_order(values: list) -> list:
+    result = []
+    seen = set()
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        result.append(value)
+    return result
+
+
+def summarize_legacy_validation_report_payload_from_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationReportPayloadSummary:
+    manifest_path = Path(path).resolve()
+    manifest = load_legacy_validation_artifact_manifest(
+        manifest_path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    payload = load_legacy_validation_report_payload_from_manifest(
+        manifest_path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+
+    files = payload.get("files", [])
+    if not isinstance(files, list):
+        raise ValueError("legacy validation report artifact files must be a list")
+    deviation_index = payload.get("deviation_index", [])
+    if not isinstance(deviation_index, list):
+        raise ValueError("legacy validation report artifact deviation_index must be a list")
+
+    filenames_with_differences = _unique_in_order(
+        [
+            str(file_item.get("filename", ""))
+            for file_item in files
+            if isinstance(file_item, dict) and int(file_item.get("mismatched_rows", 0)) > 0
+        ]
+    )
+    periods_with_differences = _unique_in_order(
+        [
+            item.get("global_period")
+            for item in deviation_index
+            if isinstance(item, dict)
+        ]
+    )
+    fields_with_differences = _unique_in_order(
+        [
+            str(item.get("field_name", ""))
+            for item in deviation_index
+            if isinstance(item, dict)
+        ]
+    )
+
+    return LegacyValidationReportPayloadSummary(
+        report_name=manifest.report_name,
+        manifest_path=manifest_path,
+        matches=manifest.matches,
+        total_files=manifest.total_files,
+        total_rows=manifest.total_rows,
+        matched_rows=manifest.matched_rows,
+        mismatched_rows=manifest.mismatched_rows,
+        match_rate=float(payload.get("match_rate", 0.0)),
+        artifact_kinds=[artifact.kind for artifact in manifest.artifacts],
+        filenames_with_differences=filenames_with_differences,
+        periods_with_differences=periods_with_differences,
+        fields_with_differences=fields_with_differences,
+        deviation_count=len(deviation_index),
+    )
 
 
 def run_legacy_validation_from_fixture(
