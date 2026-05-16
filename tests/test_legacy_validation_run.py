@@ -13,8 +13,10 @@ from ims.model.legacy_validation_run import (
     LegacyValidationRunResult,
     LegacyValidationTarget,
     build_legacy_validation_report_summary_bundle,
+    legacy_validation_batch_run_result_to_dict,
     legacy_validation_report_payload_summary_to_dict,
     legacy_validation_report_summary_bundle_to_dict,
+    load_legacy_validation_batch_run_manifest,
     load_legacy_validation_artifact_manifest,
     load_legacy_validation_report_payload_from_manifest,
     load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -29,6 +31,7 @@ from ims.model.legacy_validation_run import (
     write_legacy_validation_report_summary_bundle_artifacts_from_manifests,
     write_legacy_validation_report_summary_bundle_csv,
     write_legacy_validation_report_summary_bundle_json,
+    write_legacy_validation_batch_run_manifest,
 )
 
 
@@ -882,6 +885,59 @@ def test_legacy_validation_batch_fixture_runs_items_and_writes_summary(tmp_path:
         "legacy_validation_bundle",
     ]
 
+    batch_manifest_payload = load_legacy_validation_batch_run_manifest(
+        result.batch_manifest_path
+    )
+    assert batch_manifest_payload["batch_name"] == "legacy_validation_batch"
+    assert batch_manifest_payload["run_count"] == 2
+    assert batch_manifest_payload["total_rows"] == 80
+    assert batch_manifest_payload["summary_manifest_path"] == str(
+        Path("summary") / "legacy_validation_batch_artifacts.json"
+    )
+    assert [item["name"] for item in batch_manifest_payload["runs"]] == [
+        "legacy_validation_bundle_a",
+        "legacy_validation_bundle_b",
+    ]
+    assert batch_manifest_payload["runs"][0]["report_manifest_path"] == str(
+        Path("bundle_a") / "legacy_validation_bundle_artifacts.json"
+    )
+    assert legacy_validation_batch_run_result_to_dict(
+        result,
+        manifest_base_path=tmp_path,
+    )["run_count"] == 2
+
+
+def test_legacy_validation_batch_manifest_rejects_missing_report_manifest(tmp_path: Path) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    result.runs[0].result.artifacts[-1].path.unlink()
+
+    try:
+        load_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+    except ValueError as exc:
+        assert "missing artifacts" in str(exc)
+    else:
+        raise AssertionError("missing batch report manifest should fail")
+
+
+def test_legacy_validation_batch_manifest_rejects_bad_run_count(tmp_path: Path) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["run_count"] = 999
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+    except ValueError as exc:
+        assert "run_count" in str(exc)
+    else:
+        raise AssertionError("bad batch run_count should fail")
+
 
 def test_legacy_validation_batch_fixture_rejects_duplicate_output_dirs(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "legacy_validation_batch.json").read_text(encoding="utf-8"))
@@ -938,8 +994,10 @@ def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert build_legacy_validation_report_summary_bundle is not None
+    assert legacy_validation_batch_run_result_to_dict is not None
     assert legacy_validation_report_payload_summary_to_dict is not None
     assert legacy_validation_report_summary_bundle_to_dict is not None
+    assert load_legacy_validation_batch_run_manifest is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
@@ -954,3 +1012,4 @@ def test_legacy_validation_fixture_import_shapes() -> None:
     assert write_legacy_validation_report_summary_bundle_artifacts_from_manifests is not None
     assert write_legacy_validation_report_summary_bundle_csv is not None
     assert write_legacy_validation_report_summary_bundle_json is not None
+    assert write_legacy_validation_batch_run_manifest is not None

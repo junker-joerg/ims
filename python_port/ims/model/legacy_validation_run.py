@@ -153,6 +153,7 @@ class LegacyValidationBatchRunResult:
     output_dir: Path
     runs: list[LegacyValidationBatchRunItem]
     summary_manifest: LegacyValidationReportSummaryBundleArtifactManifest
+    batch_manifest_path: Path
 
 
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
@@ -931,6 +932,123 @@ def write_legacy_validation_report_summary_bundle_artifacts_from_directory(
     )
 
 
+def _path_to_mapping(path: Path, manifest_base_path: Path | None = None) -> str:
+    path_text = str(path)
+    if manifest_base_path is not None:
+        try:
+            path_text = str(path.resolve().relative_to(manifest_base_path.resolve()))
+        except ValueError:
+            path_text = str(path)
+    return path_text
+
+
+def _batch_run_manifest_item_to_mapping(
+    item: LegacyValidationBatchRunItem,
+    manifest_base_path: Path,
+) -> dict:
+    report_manifest_path = item.result.artifacts[-1].path
+    return {
+        "name": item.name,
+        "fixture_path": _path_to_mapping(item.fixture_path, manifest_base_path),
+        "output_dir": _path_to_mapping(item.output_dir, manifest_base_path),
+        "matches": item.result.report.matches,
+        "total_files": item.result.report.total_files,
+        "total_rows": item.result.report.total_rows,
+        "matched_rows": item.result.report.matched_rows,
+        "mismatched_rows": item.result.report.mismatched_rows,
+        "report_manifest_path": _path_to_mapping(report_manifest_path, manifest_base_path),
+    }
+
+
+def legacy_validation_batch_run_result_to_dict(
+    result: LegacyValidationBatchRunResult,
+    *,
+    manifest_base_path: Path | None = None,
+) -> dict:
+    return {
+        "batch_name": result.batch_name,
+        "fixture_path": _path_to_mapping(result.fixture_path, manifest_base_path),
+        "output_dir": _path_to_mapping(result.output_dir, manifest_base_path),
+        "run_count": len(result.runs),
+        "matches": result.summary_manifest.matches,
+        "total_files": result.summary_manifest.total_files,
+        "total_rows": result.summary_manifest.total_rows,
+        "matched_rows": result.summary_manifest.matched_rows,
+        "mismatched_rows": result.summary_manifest.mismatched_rows,
+        "summary_manifest_path": _path_to_mapping(
+            result.summary_manifest.artifacts[-1].path,
+            manifest_base_path,
+        ),
+        "runs": [
+            _batch_run_manifest_item_to_mapping(item, manifest_base_path or Path.cwd())
+            for item in result.runs
+        ],
+    }
+
+
+def write_legacy_validation_batch_run_manifest(
+    result: LegacyValidationBatchRunResult,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        json.dumps(
+            legacy_validation_batch_run_result_to_dict(
+                result,
+                manifest_base_path=output_path.parent,
+            ),
+            indent=2,
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
+    return output_path
+
+
+def load_legacy_validation_batch_run_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> dict:
+    manifest_path = Path(path).resolve()
+    with manifest_path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("legacy validation batch run manifest must be a JSON object")
+
+    runs = payload.get("runs")
+    if not isinstance(runs, list) or not runs:
+        raise ValueError("legacy validation batch run manifest must contain runs")
+    run_count = int(payload.get("run_count", -1))
+    if run_count != len(runs):
+        raise ValueError("legacy validation batch run manifest run_count must match runs")
+
+    if require_existing_artifacts:
+        summary_manifest_path = _resolve_artifact_path(
+            str(payload.get("summary_manifest_path", "")),
+            manifest_path.parent,
+        )
+        missing = []
+        if not summary_manifest_path.exists():
+            missing.append(summary_manifest_path)
+        for item in runs:
+            if not isinstance(item, dict):
+                raise ValueError("legacy validation batch run manifest run entries must be objects")
+            report_manifest_path = _resolve_artifact_path(
+                str(item.get("report_manifest_path", "")),
+                manifest_path.parent,
+            )
+            if not report_manifest_path.exists():
+                missing.append(report_manifest_path)
+        if missing:
+            raise ValueError(
+                "legacy validation batch run manifest references missing artifacts: "
+                f"{missing}"
+            )
+    return payload
+
+
 def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:
     name = str(data.get("name", "")).strip()
     fixture_path_data = str(data.get("fixture_path", "")).strip()
@@ -1007,13 +1125,16 @@ def run_legacy_validation_batch_from_fixture(
         output_path / "summary",
         bundle_name=batch_name,
     )
-    return LegacyValidationBatchRunResult(
+    result = LegacyValidationBatchRunResult(
         batch_name=batch_name,
         fixture_path=fixture_path,
         output_dir=output_path,
         runs=runs,
         summary_manifest=summary_manifest,
+        batch_manifest_path=output_path / f"{batch_name}_batch.json",
     )
+    write_legacy_validation_batch_run_manifest(result, result.batch_manifest_path)
+    return result
 
 
 def run_legacy_validation_from_fixture(

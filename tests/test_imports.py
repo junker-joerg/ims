@@ -156,8 +156,10 @@ def test_core_placeholders_import() -> None:
         LegacyValidationRunResult,
         LegacyValidationTarget,
         build_legacy_validation_report_summary_bundle,
+        legacy_validation_batch_run_result_to_dict,
         legacy_validation_report_payload_summary_to_dict,
         legacy_validation_report_summary_bundle_to_dict,
+        load_legacy_validation_batch_run_manifest,
         load_legacy_validation_artifact_manifest,
         load_legacy_validation_report_payload_from_manifest,
         load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -172,6 +174,7 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_report_summary_bundle_artifacts_from_manifests,
         write_legacy_validation_report_summary_bundle_csv,
         write_legacy_validation_report_summary_bundle_json,
+        write_legacy_validation_batch_run_manifest,
     )
 
     ctx = SimulationContext()
@@ -333,8 +336,10 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert build_legacy_validation_report_summary_bundle is not None
+    assert legacy_validation_batch_run_result_to_dict is not None
     assert legacy_validation_report_payload_summary_to_dict is not None
     assert legacy_validation_report_summary_bundle_to_dict is not None
+    assert load_legacy_validation_batch_run_manifest is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
@@ -349,3 +354,4 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_report_summary_bundle_artifacts_from_manifests is not None
     assert write_legacy_validation_report_summary_bundle_csv is not None
     assert write_legacy_validation_report_summary_bundle_json is not None
+    assert write_legacy_validation_batch_run_manifest is not None
