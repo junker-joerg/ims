@@ -929,13 +929,13 @@ def test_legacy_validation_batch_manifest_check_reports_valid_manifest(
     assert isinstance(check, LegacyValidationBatchRunManifestCheck)
     assert check.matches is True
     assert check.run_count == 2
-    assert check.checked_artifact_count == 3
+    assert check.checked_artifact_count == 7
     assert check.issues == []
     assert legacy_validation_batch_run_manifest_check_to_dict(check) == {
         "manifest_path": str(result.batch_manifest_path.resolve()),
         "matches": True,
         "run_count": 2,
-        "checked_artifact_count": 3,
+        "checked_artifact_count": 7,
         "issues": [],
     }
 
@@ -986,7 +986,7 @@ def test_legacy_validation_batch_manifest_check_bundle_from_manifests(
     assert bundle.matches is True
     assert bundle.manifest_count == 2
     assert bundle.total_runs == 4
-    assert bundle.checked_artifact_count == 6
+    assert bundle.checked_artifact_count == 14
     assert bundle.issue_count == 0
     payload = legacy_validation_batch_run_manifest_check_bundle_to_dict(bundle)
     assert payload["manifest_count"] == 2
@@ -1015,7 +1015,7 @@ def test_legacy_validation_batch_manifest_check_bundle_tracks_mixed_results(
     assert bundle.matches is False
     assert bundle.manifest_count == 2
     assert bundle.total_runs == 2
-    assert bundle.checked_artifact_count == 3
+    assert bundle.checked_artifact_count == 7
     assert bundle.issue_count == 1
     assert bundle.checks[1].issues[0].code == "batch_run_manifest_invalid"
 
@@ -1042,6 +1042,7 @@ def test_legacy_validation_batch_manifest_check_bundle_from_directory_writes_jso
     assert payload["matches"] is True
     assert payload["manifest_count"] == 2
     assert payload["total_runs"] == 4
+    assert payload["checked_artifact_count"] == 14
 
 
 def test_legacy_validation_batch_manifest_check_bundle_rejects_empty_inputs(
@@ -1261,6 +1262,23 @@ def test_legacy_validation_batch_manifest_rejects_missing_run_output_dir(tmp_pat
         assert "missing-output" in str(exc)
     else:
         raise AssertionError("missing batch run output_dir should fail")
+
+
+def test_legacy_validation_batch_manifest_rejects_file_as_run_output_dir(tmp_path: Path) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["output_dir"] = str(Path("bundle_a") / "legacy_validation_bundle.json")
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+    except ValueError as exc:
+        assert "output_dir must be a directory" in str(exc)
+    else:
+        raise AssertionError("file as batch run output_dir should fail")
 
 
 def test_legacy_validation_batch_fixture_rejects_duplicate_output_dirs(tmp_path: Path) -> None:

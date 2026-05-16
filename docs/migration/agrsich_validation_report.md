@@ -106,6 +106,10 @@ Mehrere Batch-Run-Manifeste koennen zu einem Diagnose-Buendel zusammengefasst we
 Buendel aggregiert Manifestanzahl, Run-Anzahl, gepruefte Artefakte und Issues ueber explizit
 uebergebene Manifestpfade oder einen Verzeichnisscan und kann als JSON-Artefakt geschrieben
 werden.
+Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
+Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
+Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
+Dateipfad.
 Die Artefaktmanifest-Lader loesen relative Pfade tolerant auf und neu geschriebene Manifeste
 speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Scan ignoriert
 Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich

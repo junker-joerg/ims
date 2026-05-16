@@ -1168,6 +1168,11 @@ def load_legacy_validation_batch_run_manifest(
             )
             if not output_dir.exists():
                 missing.append(output_dir)
+            elif not output_dir.is_dir():
+                raise ValueError(
+                    "legacy validation batch run manifest output_dir must be a directory: "
+                    f"{output_dir}"
+                )
             report_manifest_path = _resolve_artifact_path(
                 str(item.get("report_manifest_path", "")),
                 manifest_path.parent,
@@ -1229,7 +1234,7 @@ def check_legacy_validation_batch_run_manifest(
     if isinstance(runs, list):
         run_count = len(runs)
     if require_existing_artifacts:
-        checked_artifact_count = 1 + run_count
+        checked_artifact_count = 1 + (3 * run_count)
     return LegacyValidationBatchRunManifestCheck(
         manifest_path=manifest_path,
         matches=True,
