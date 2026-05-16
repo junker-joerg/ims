@@ -80,6 +80,9 @@ Fuer diese Batch-Buendelartefakte kann nun ebenfalls ein Manifest geschrieben un
 werden. Es listet JSON, CSV und Manifest selbst mit stabilen Artefaktrollen auf und prueft
 beim Laden optional, ob alle referenzierten Dateien existieren. Der JSON-Buendelpayload kann
 aus diesem Manifest wieder geladen und gegen die Manifest-Summen geprueft werden.
+Zusaetzlich gibt es einen direkten Schreibpfad, der vorhandene Einzelreport-Manifeste oder ein
+Verzeichnis mit solchen Manifesten einliest, daraus das Summary-Buendel erzeugt und die
+manifestierten Batch-Artefakte in ein Zielverzeichnis schreibt.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
