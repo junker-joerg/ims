@@ -65,6 +65,10 @@ Das Artefaktmanifest kann wieder geladen und gegen die erwartete Artefaktanzahl 
 existierenden Dateien geprueft werden.
 Aus dem Manifest kann zudem der vollstaendige JSON-Report wieder geladen und gegen die
 Manifest-Summen geprueft werden.
+Auf dieser Grundlage kann nun auch eine typisierte Report-Payload-Summary erzeugt werden.
+Sie verdichtet Reportname, Artefaktrollen, Gesamtzaehler, Match-Rate und die vorhandenen
+Abweichungsachsen nach Datei, Periode und Feld, ohne den eigentlichen Vergleich neu zu
+berechnen.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

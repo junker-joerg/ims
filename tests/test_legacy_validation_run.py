@@ -5,11 +5,13 @@ from pathlib import Path
 from ims.model.legacy_validation_run import (
     LegacyValidationArtifact,
     LegacyValidationArtifactManifest,
+    LegacyValidationReportPayloadSummary,
     LegacyValidationRunResult,
     LegacyValidationTarget,
     load_legacy_validation_artifact_manifest,
     load_legacy_validation_report_payload_from_manifest,
     run_legacy_validation_from_fixture,
+    summarize_legacy_validation_report_payload_from_manifest,
 )
 
 
@@ -173,6 +175,31 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert report_payload["matches"] is True
     assert report_payload["total_rows"] == 40
     assert report_payload["total_files"] == 4
+
+    report_summary = summarize_legacy_validation_report_payload_from_manifest(
+        tmp_path / "legacy_validation_bundle_artifacts.json"
+    )
+    assert isinstance(report_summary, LegacyValidationReportPayloadSummary)
+    assert report_summary.report_name == "legacy_validation_bundle"
+    assert report_summary.matches is True
+    assert report_summary.total_files == 4
+    assert report_summary.total_rows == 40
+    assert report_summary.matched_rows == 40
+    assert report_summary.mismatched_rows == 0
+    assert report_summary.match_rate == 1.0
+    assert report_summary.artifact_kinds == [
+        "report_json",
+        "file_summary_csv",
+        "field_summary_csv",
+        "group_summary_csv",
+        "period_summary_csv",
+        "deviation_index_csv",
+        "artifact_manifest_json",
+    ]
+    assert report_summary.filenames_with_differences == []
+    assert report_summary.periods_with_differences == []
+    assert report_summary.fields_with_differences == []
+    assert report_summary.deviation_count == 0
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
@@ -340,11 +367,82 @@ def test_legacy_validation_report_payload_rejects_manifest_mismatch(tmp_path: Pa
         raise AssertionError("report and manifest mismatch should fail")
 
 
+def test_legacy_validation_report_payload_summary_tracks_deviations(tmp_path: Path) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path,
+    )
+    report_path = result.artifacts[0].path
+    report_data = json.loads(report_path.read_text(encoding="utf-8"))
+    report_data["matches"] = False
+    report_data["matched_rows"] = 39
+    report_data["mismatched_rows"] = 1
+    report_data["match_rate"] = 0.975
+    report_data["files"][1]["matches"] = False
+    report_data["files"][1]["matched_rows"] = 9
+    report_data["files"][1]["mismatched_rows"] = 1
+    report_data["files"][1]["match_rate"] = 0.9
+    report_data["files"][1]["periods_with_differences"] = [2]
+    report_data["files"][1]["fields_with_differences"] = ["Pr1"]
+    report_data["deviation_index"] = [
+        {
+            "filename": "imsvu014.dat",
+            "subject_type": "insurer",
+            "level": "I",
+            "selector_kind": "entity",
+            "selector_value": 14,
+            "global_period": 2,
+            "field_name": "Pr1",
+            "actual": 99.0,
+            "expected": 100.0,
+        }
+    ]
+    report_path.write_text(json.dumps(report_data), encoding="utf-8")
+
+    manifest_path = result.artifacts[-1].path
+    manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_data["matches"] = False
+    manifest_data["matched_rows"] = 39
+    manifest_data["mismatched_rows"] = 1
+    manifest_path.write_text(json.dumps(manifest_data), encoding="utf-8")
+
+    summary = summarize_legacy_validation_report_payload_from_manifest(manifest_path)
+
+    assert summary.matches is False
+    assert summary.matched_rows == 39
+    assert summary.mismatched_rows == 1
+    assert summary.match_rate == 0.975
+    assert summary.filenames_with_differences == ["imsvu014.dat"]
+    assert summary.periods_with_differences == [2]
+    assert summary.fields_with_differences == ["Pr1"]
+    assert summary.deviation_count == 1
+
+
+def test_legacy_validation_report_payload_summary_rejects_bad_files_shape(tmp_path: Path) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path,
+    )
+    report_path = result.artifacts[0].path
+    report_data = json.loads(report_path.read_text(encoding="utf-8"))
+    report_data["files"] = {}
+    report_path.write_text(json.dumps(report_data), encoding="utf-8")
+
+    try:
+        summarize_legacy_validation_report_payload_from_manifest(result.artifacts[-1].path)
+    except ValueError as exc:
+        assert "files must be a list" in str(exc)
+    else:
+        raise AssertionError("bad files shape should fail")
+
+
 def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationArtifact is not None
     assert LegacyValidationArtifactManifest is not None
+    assert LegacyValidationReportPayloadSummary is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert run_legacy_validation_from_fixture is not None
+    assert summarize_legacy_validation_report_payload_from_manifest is not None
