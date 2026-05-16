@@ -150,6 +150,7 @@ def test_core_placeholders_import() -> None:
         LegacyValidationArtifactManifest,
         LegacyValidationReportPayloadSummary,
         LegacyValidationReportSummaryBundle,
+        LegacyValidationReportSummaryBundleArtifactManifest,
         LegacyValidationRunResult,
         LegacyValidationTarget,
         build_legacy_validation_report_summary_bundle,
@@ -157,10 +158,13 @@ def test_core_placeholders_import() -> None:
         legacy_validation_report_summary_bundle_to_dict,
         load_legacy_validation_artifact_manifest,
         load_legacy_validation_report_payload_from_manifest,
+        load_legacy_validation_report_summary_bundle_artifact_manifest,
+        load_legacy_validation_report_summary_bundle_payload_from_manifest,
         run_legacy_validation_from_fixture,
         summarize_legacy_validation_report_payload_from_manifest,
         summarize_legacy_validation_report_payloads_from_directory,
         summarize_legacy_validation_report_payloads_from_manifests,
+        write_legacy_validation_report_summary_bundle_artifacts,
         write_legacy_validation_report_summary_bundle_csv,
         write_legacy_validation_report_summary_bundle_json,
     )
@@ -318,6 +322,7 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationArtifactManifest is not None
     assert LegacyValidationReportPayloadSummary is not None
     assert LegacyValidationReportSummaryBundle is not None
+    assert LegacyValidationReportSummaryBundleArtifactManifest is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert build_legacy_validation_report_summary_bundle is not None
@@ -325,9 +330,12 @@ def test_core_placeholders_import() -> None:
     assert legacy_validation_report_summary_bundle_to_dict is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
+    assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
+    assert load_legacy_validation_report_summary_bundle_payload_from_manifest is not None
     assert run_legacy_validation_from_fixture is not None
     assert summarize_legacy_validation_report_payload_from_manifest is not None
     assert summarize_legacy_validation_report_payloads_from_directory is not None
     assert summarize_legacy_validation_report_payloads_from_manifests is not None
+    assert write_legacy_validation_report_summary_bundle_artifacts is not None
     assert write_legacy_validation_report_summary_bundle_csv is not None
     assert write_legacy_validation_report_summary_bundle_json is not None

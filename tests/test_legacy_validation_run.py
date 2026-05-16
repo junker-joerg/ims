@@ -7,6 +7,7 @@ from ims.model.legacy_validation_run import (
     LegacyValidationArtifactManifest,
     LegacyValidationReportPayloadSummary,
     LegacyValidationReportSummaryBundle,
+    LegacyValidationReportSummaryBundleArtifactManifest,
     LegacyValidationRunResult,
     LegacyValidationTarget,
     build_legacy_validation_report_summary_bundle,
@@ -14,10 +15,13 @@ from ims.model.legacy_validation_run import (
     legacy_validation_report_summary_bundle_to_dict,
     load_legacy_validation_artifact_manifest,
     load_legacy_validation_report_payload_from_manifest,
+    load_legacy_validation_report_summary_bundle_artifact_manifest,
+    load_legacy_validation_report_summary_bundle_payload_from_manifest,
     run_legacy_validation_from_fixture,
     summarize_legacy_validation_report_payload_from_manifest,
     summarize_legacy_validation_report_payloads_from_directory,
     summarize_legacy_validation_report_payloads_from_manifests,
+    write_legacy_validation_report_summary_bundle_artifacts,
     write_legacy_validation_report_summary_bundle_csv,
     write_legacy_validation_report_summary_bundle_json,
 )
@@ -600,6 +604,98 @@ def test_legacy_validation_report_payload_summary_bundle_writes_json_and_csv(tmp
     assert rows[0]["deviation_count"] == "0"
 
 
+def test_legacy_validation_report_summary_bundle_artifacts_roundtrip(tmp_path: Path) -> None:
+    first = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "first",
+    )
+    second = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "second",
+    )
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        [first.artifacts[-1].path, second.artifacts[-1].path]
+    )
+
+    manifest = write_legacy_validation_report_summary_bundle_artifacts(
+        bundle,
+        tmp_path / "bundle",
+        bundle_name="validation_batch",
+    )
+
+    assert isinstance(manifest, LegacyValidationReportSummaryBundleArtifactManifest)
+    assert manifest.bundle_name == "validation_batch"
+    assert manifest.matches is True
+    assert manifest.report_count == 2
+    assert manifest.total_files == 8
+    assert manifest.total_rows == 80
+    assert manifest.artifact_count == 3
+    assert [artifact.kind for artifact in manifest.artifacts] == [
+        "summary_bundle_json",
+        "summary_bundle_csv",
+        "summary_bundle_manifest_json",
+    ]
+    assert [artifact.path.name for artifact in manifest.artifacts] == [
+        "validation_batch.json",
+        "validation_batch.csv",
+        "validation_batch_artifacts.json",
+    ]
+
+    loaded_manifest = load_legacy_validation_report_summary_bundle_artifact_manifest(
+        tmp_path / "bundle" / "validation_batch_artifacts.json"
+    )
+    assert loaded_manifest.bundle_name == "validation_batch"
+    assert loaded_manifest.total_rows == 80
+    assert loaded_manifest.artifact_for_kind("summary_bundle_json") is not None
+    assert loaded_manifest.artifact_for_kind("unknown") is None
+
+    payload = load_legacy_validation_report_summary_bundle_payload_from_manifest(
+        tmp_path / "bundle" / "validation_batch_artifacts.json"
+    )
+    assert payload == legacy_validation_report_summary_bundle_to_dict(bundle)
+
+
+def test_legacy_validation_report_summary_bundle_manifest_rejects_missing_artifact(tmp_path: Path) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "run",
+    )
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        [result.artifacts[-1].path]
+    )
+    manifest = write_legacy_validation_report_summary_bundle_artifacts(bundle, tmp_path / "bundle")
+    manifest.artifacts[1].path.unlink()
+
+    try:
+        load_legacy_validation_report_summary_bundle_artifact_manifest(manifest.artifacts[-1].path)
+    except ValueError as exc:
+        assert "missing artifacts" in str(exc)
+    else:
+        raise AssertionError("missing bundle artifact should fail")
+
+
+def test_legacy_validation_report_summary_bundle_payload_rejects_manifest_mismatch(tmp_path: Path) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "run",
+    )
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        [result.artifacts[-1].path]
+    )
+    manifest = write_legacy_validation_report_summary_bundle_artifacts(bundle, tmp_path / "bundle")
+    payload_path = manifest.artifacts[0].path
+    payload = json.loads(payload_path.read_text(encoding="utf-8"))
+    payload["total_rows"] = 999
+    payload_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_report_summary_bundle_payload_from_manifest(manifest.artifacts[-1].path)
+    except ValueError as exc:
+        assert "total_rows" in str(exc)
+    else:
+        raise AssertionError("bundle payload and manifest mismatch should fail")
+
+
 def test_legacy_validation_report_payload_summary_bundle_rejects_empty_inputs(tmp_path: Path) -> None:
     try:
         summarize_legacy_validation_report_payloads_from_manifests([])
@@ -621,6 +717,7 @@ def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationArtifactManifest is not None
     assert LegacyValidationReportPayloadSummary is not None
     assert LegacyValidationReportSummaryBundle is not None
+    assert LegacyValidationReportSummaryBundleArtifactManifest is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert build_legacy_validation_report_summary_bundle is not None
@@ -628,9 +725,12 @@ def test_legacy_validation_fixture_import_shapes() -> None:
     assert legacy_validation_report_summary_bundle_to_dict is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
+    assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
+    assert load_legacy_validation_report_summary_bundle_payload_from_manifest is not None
     assert run_legacy_validation_from_fixture is not None
     assert summarize_legacy_validation_report_payload_from_manifest is not None
     assert summarize_legacy_validation_report_payloads_from_directory is not None
     assert summarize_legacy_validation_report_payloads_from_manifests is not None
+    assert write_legacy_validation_report_summary_bundle_artifacts is not None
     assert write_legacy_validation_report_summary_bundle_csv is not None
     assert write_legacy_validation_report_summary_bundle_json is not None
