@@ -279,12 +279,35 @@ def _compare_target(target: LegacyValidationTarget):
     return compare_policyholder_export_table_to_legacy(export_table, legacy_table)
 
 
-def _artifact_to_mapping(artifact: LegacyValidationArtifact) -> dict:
+def _artifact_to_mapping(artifact: LegacyValidationArtifact, manifest_base_path: Path | None = None) -> dict:
+    artifact_path = artifact.path
+    path_text = str(artifact_path)
+    if manifest_base_path is not None:
+        try:
+            path_text = str(artifact_path.resolve().relative_to(manifest_base_path.resolve()))
+        except ValueError:
+            path_text = str(artifact_path)
     return {
         "kind": artifact.kind,
         "filename": artifact.path.name,
-        "path": str(artifact.path),
+        "path": path_text,
     }
+
+
+def _resolve_artifact_path(path_data: str, manifest_base_path: Path) -> Path:
+    artifact_path = Path(path_data)
+    if artifact_path.is_absolute():
+        return artifact_path
+
+    candidates = [
+        artifact_path,
+        manifest_base_path / artifact_path,
+        manifest_base_path.parent / artifact_path,
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return manifest_base_path / artifact_path
 
 
 def _artifact_from_mapping(data: dict, manifest_base_path: Path) -> LegacyValidationArtifact:
@@ -294,9 +317,7 @@ def _artifact_from_mapping(data: dict, manifest_base_path: Path) -> LegacyValida
     path_data = str(data.get("path", "")).strip()
     if not path_data:
         raise ValueError("legacy validation artifact must contain a path")
-    artifact_path = Path(path_data)
-    if not artifact_path.is_absolute():
-        artifact_path = manifest_base_path / artifact_path
+    artifact_path = _resolve_artifact_path(path_data, manifest_base_path)
     return LegacyValidationArtifact(kind=kind, path=artifact_path)
 
 
@@ -318,7 +339,7 @@ def _write_legacy_validation_artifact_manifest(
         "mismatched_rows": report.mismatched_rows,
         "artifact_count": len(artifacts),
         "artifacts": [
-            _artifact_to_mapping(artifact)
+            _artifact_to_mapping(artifact, path.parent)
             for artifact in artifacts
         ],
     }
@@ -550,6 +571,23 @@ def summarize_legacy_validation_report_payloads_from_manifests(
     )
 
 
+def _is_legacy_validation_report_artifact_manifest(path: Path) -> bool:
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(data, dict):
+        return False
+    artifacts = data.get("artifacts")
+    if not isinstance(artifacts, list):
+        return False
+    return any(
+        isinstance(artifact, dict) and artifact.get("kind") == "report_json"
+        for artifact in artifacts
+    )
+
+
 def summarize_legacy_validation_report_payloads_from_directory(
     path: str | Path,
     *,
@@ -559,7 +597,11 @@ def summarize_legacy_validation_report_payloads_from_directory(
     directory_path = Path(path)
     if not directory_path.is_dir():
         raise ValueError("legacy validation report summary directory must exist")
-    manifest_paths = sorted(directory_path.glob(pattern))
+    manifest_paths = [
+        manifest_path
+        for manifest_path in sorted(directory_path.glob(pattern))
+        if _is_legacy_validation_report_artifact_manifest(manifest_path)
+    ]
     if not manifest_paths:
         raise ValueError("legacy validation report summary directory contains no manifests")
     return summarize_legacy_validation_report_payloads_from_manifests(
@@ -698,7 +740,7 @@ def _write_legacy_validation_report_summary_bundle_artifact_manifest(
         "mismatched_rows": bundle.mismatched_rows,
         "artifact_count": len(artifacts),
         "artifacts": [
-            _artifact_to_mapping(artifact)
+            _artifact_to_mapping(artifact, path.parent)
             for artifact in artifacts
         ],
     }
