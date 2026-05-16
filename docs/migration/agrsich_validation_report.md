@@ -69,6 +69,10 @@ Auf dieser Grundlage kann nun auch eine typisierte Report-Payload-Summary erzeug
 Sie verdichtet Reportname, Artefaktrollen, Gesamtzaehler, Match-Rate und die vorhandenen
 Abweichungsachsen nach Datei, Periode und Feld, ohne den eigentlichen Vergleich neu zu
 berechnen.
+Mehrere solche Manifest-Summaries koennen nun zu einem Batch-Buendel zusammengefasst werden.
+Das Buendel aggregiert Reportanzahl, Datei- und Zeilenzaehler, Match-Rate, Artefaktrollen und
+Abweichungsachsen ueber mehrere bereits erzeugte Reports. Auch dieser Pfad liest nur bestehende
+Reportartefakte und fuehrt keinen neuen Legacy-Vergleich aus.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

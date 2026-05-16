@@ -90,6 +90,26 @@ class LegacyValidationReportPayloadSummary:
 
 
 @dataclass(slots=True)
+class LegacyValidationReportSummaryBundle:
+    report_count: int
+    matches: bool
+    total_files: int
+    total_rows: int
+    matched_rows: int
+    mismatched_rows: int
+    match_rate: float
+    artifact_count: int
+    summaries: list[LegacyValidationReportPayloadSummary]
+    report_names: list[str]
+    manifest_paths: list[Path]
+    artifact_kinds: list[str]
+    filenames_with_differences: list[str]
+    periods_with_differences: list[int | None]
+    fields_with_differences: list[str]
+    deviation_count: int
+
+
+@dataclass(slots=True)
 class LegacyValidationRunResult:
     targets: list[LegacyValidationTarget]
     comparison: MultiPeriodLegacyComparison
@@ -421,6 +441,93 @@ def summarize_legacy_validation_report_payload_from_manifest(
         periods_with_differences=periods_with_differences,
         fields_with_differences=fields_with_differences,
         deviation_count=len(deviation_index),
+    )
+
+
+def build_legacy_validation_report_summary_bundle(
+    summaries: list[LegacyValidationReportPayloadSummary],
+) -> LegacyValidationReportSummaryBundle:
+    total_rows = sum(summary.total_rows for summary in summaries)
+    matched_rows = sum(summary.matched_rows for summary in summaries)
+    mismatched_rows = sum(summary.mismatched_rows for summary in summaries)
+
+    return LegacyValidationReportSummaryBundle(
+        report_count=len(summaries),
+        matches=bool(summaries) and all(summary.matches for summary in summaries),
+        total_files=sum(summary.total_files for summary in summaries),
+        total_rows=total_rows,
+        matched_rows=matched_rows,
+        mismatched_rows=mismatched_rows,
+        match_rate=0.0 if total_rows == 0 else matched_rows / total_rows,
+        artifact_count=sum(len(summary.artifact_kinds) for summary in summaries),
+        summaries=summaries,
+        report_names=[summary.report_name for summary in summaries],
+        manifest_paths=[summary.manifest_path for summary in summaries],
+        artifact_kinds=_unique_in_order(
+            [
+                kind
+                for summary in summaries
+                for kind in summary.artifact_kinds
+            ]
+        ),
+        filenames_with_differences=_unique_in_order(
+            [
+                filename
+                for summary in summaries
+                for filename in summary.filenames_with_differences
+            ]
+        ),
+        periods_with_differences=_unique_in_order(
+            [
+                period
+                for summary in summaries
+                for period in summary.periods_with_differences
+            ]
+        ),
+        fields_with_differences=_unique_in_order(
+            [
+                field_name
+                for summary in summaries
+                for field_name in summary.fields_with_differences
+            ]
+        ),
+        deviation_count=sum(summary.deviation_count for summary in summaries),
+    )
+
+
+def summarize_legacy_validation_report_payloads_from_manifests(
+    paths: list[str | Path],
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationReportSummaryBundle:
+    if not paths:
+        raise ValueError("legacy validation report summary bundle requires at least one manifest path")
+    return build_legacy_validation_report_summary_bundle(
+        [
+            summarize_legacy_validation_report_payload_from_manifest(
+                path,
+                require_existing_artifacts=require_existing_artifacts,
+            )
+            for path in paths
+        ]
+    )
+
+
+def summarize_legacy_validation_report_payloads_from_directory(
+    path: str | Path,
+    *,
+    pattern: str = "**/*_artifacts.json",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationReportSummaryBundle:
+    directory_path = Path(path)
+    if not directory_path.is_dir():
+        raise ValueError("legacy validation report summary directory must exist")
+    manifest_paths = sorted(directory_path.glob(pattern))
+    if not manifest_paths:
+        raise ValueError("legacy validation report summary directory contains no manifests")
+    return summarize_legacy_validation_report_payloads_from_manifests(
+        manifest_paths,
+        require_existing_artifacts=require_existing_artifacts,
     )
 
 
