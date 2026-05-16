@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import csv
 import json
 from pathlib import Path
 
@@ -529,6 +530,119 @@ def summarize_legacy_validation_report_payloads_from_directory(
         manifest_paths,
         require_existing_artifacts=require_existing_artifacts,
     )
+
+
+def legacy_validation_report_payload_summary_to_dict(
+    summary: LegacyValidationReportPayloadSummary,
+) -> dict:
+    return {
+        "report_name": summary.report_name,
+        "manifest_path": str(summary.manifest_path),
+        "matches": summary.matches,
+        "total_files": summary.total_files,
+        "total_rows": summary.total_rows,
+        "matched_rows": summary.matched_rows,
+        "mismatched_rows": summary.mismatched_rows,
+        "match_rate": summary.match_rate,
+        "artifact_kinds": summary.artifact_kinds,
+        "filenames_with_differences": summary.filenames_with_differences,
+        "periods_with_differences": summary.periods_with_differences,
+        "fields_with_differences": summary.fields_with_differences,
+        "deviation_count": summary.deviation_count,
+    }
+
+
+def legacy_validation_report_summary_bundle_to_dict(
+    bundle: LegacyValidationReportSummaryBundle,
+) -> dict:
+    return {
+        "report_count": bundle.report_count,
+        "matches": bundle.matches,
+        "total_files": bundle.total_files,
+        "total_rows": bundle.total_rows,
+        "matched_rows": bundle.matched_rows,
+        "mismatched_rows": bundle.mismatched_rows,
+        "match_rate": bundle.match_rate,
+        "artifact_count": bundle.artifact_count,
+        "report_names": bundle.report_names,
+        "manifest_paths": [str(path) for path in bundle.manifest_paths],
+        "artifact_kinds": bundle.artifact_kinds,
+        "filenames_with_differences": bundle.filenames_with_differences,
+        "periods_with_differences": bundle.periods_with_differences,
+        "fields_with_differences": bundle.fields_with_differences,
+        "deviation_count": bundle.deviation_count,
+        "summaries": [
+            legacy_validation_report_payload_summary_to_dict(summary)
+            for summary in bundle.summaries
+        ],
+    }
+
+
+def write_legacy_validation_report_summary_bundle_json(
+    bundle: LegacyValidationReportSummaryBundle,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        json.dumps(
+            legacy_validation_report_summary_bundle_to_dict(bundle),
+            indent=2,
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
+    return output_path
+
+
+def write_legacy_validation_report_summary_bundle_csv(
+    bundle: LegacyValidationReportSummaryBundle,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "report_name",
+                "manifest_path",
+                "matches",
+                "total_files",
+                "total_rows",
+                "matched_rows",
+                "mismatched_rows",
+                "match_rate",
+                "artifact_count",
+                "deviation_count",
+                "filenames_with_differences",
+                "periods_with_differences",
+                "fields_with_differences",
+            ],
+        )
+        writer.writeheader()
+        for summary in bundle.summaries:
+            writer.writerow(
+                {
+                    "report_name": summary.report_name,
+                    "manifest_path": str(summary.manifest_path),
+                    "matches": summary.matches,
+                    "total_files": summary.total_files,
+                    "total_rows": summary.total_rows,
+                    "matched_rows": summary.matched_rows,
+                    "mismatched_rows": summary.mismatched_rows,
+                    "match_rate": f"{summary.match_rate:.6f}",
+                    "artifact_count": len(summary.artifact_kinds),
+                    "deviation_count": summary.deviation_count,
+                    "filenames_with_differences": ";".join(summary.filenames_with_differences),
+                    "periods_with_differences": ";".join(
+                        "" if period is None else str(period)
+                        for period in summary.periods_with_differences
+                    ),
+                    "fields_with_differences": ";".join(summary.fields_with_differences),
+                }
+            )
+    return output_path
 
 
 def run_legacy_validation_from_fixture(
