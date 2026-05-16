@@ -76,6 +76,10 @@ Reportartefakte und fuehrt keinen neuen Legacy-Vergleich aus.
 Das Batch-Buendel kann als JSON-Artefakt und als kompakte CSV-Datei geschrieben werden. JSON
 enthaelt die Gesamtsicht und alle enthaltenen Einzelreport-Summaries; CSV schreibt je Report
 eine Zeile fuer schnelle manuelle oder tabellarische Kontrollen.
+Fuer diese Batch-Buendelartefakte kann nun ebenfalls ein Manifest geschrieben und geladen
+werden. Es listet JSON, CSV und Manifest selbst mit stabilen Artefaktrollen auf und prueft
+beim Laden optional, ob alle referenzierten Dateien existieren. Der JSON-Buendelpayload kann
+aus diesem Manifest wieder geladen und gegen die Manifest-Summen geprueft werden.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

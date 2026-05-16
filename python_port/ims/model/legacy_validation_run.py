@@ -111,6 +111,25 @@ class LegacyValidationReportSummaryBundle:
 
 
 @dataclass(slots=True)
+class LegacyValidationReportSummaryBundleArtifactManifest:
+    bundle_name: str
+    matches: bool
+    report_count: int
+    total_files: int
+    total_rows: int
+    matched_rows: int
+    mismatched_rows: int
+    artifact_count: int
+    artifacts: list[LegacyValidationArtifact]
+
+    def artifact_for_kind(self, kind: str) -> LegacyValidationArtifact | None:
+        for artifact in self.artifacts:
+            if artifact.kind == kind:
+                return artifact
+        return None
+
+
+@dataclass(slots=True)
 class LegacyValidationRunResult:
     targets: list[LegacyValidationTarget]
     comparison: MultiPeriodLegacyComparison
@@ -643,6 +662,176 @@ def write_legacy_validation_report_summary_bundle_csv(
                 }
             )
     return output_path
+
+
+def _write_legacy_validation_report_summary_bundle_artifact_manifest(
+    *,
+    bundle_name: str,
+    bundle: LegacyValidationReportSummaryBundle,
+    artifacts: list[LegacyValidationArtifact],
+    path: Path,
+) -> Path:
+    payload = {
+        "bundle_name": bundle_name,
+        "matches": bundle.matches,
+        "report_count": bundle.report_count,
+        "total_files": bundle.total_files,
+        "total_rows": bundle.total_rows,
+        "matched_rows": bundle.matched_rows,
+        "mismatched_rows": bundle.mismatched_rows,
+        "artifact_count": len(artifacts),
+        "artifacts": [
+            _artifact_to_mapping(artifact)
+            for artifact in artifacts
+        ],
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return path
+
+
+def write_legacy_validation_report_summary_bundle_artifacts(
+    bundle: LegacyValidationReportSummaryBundle,
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_report_summary_bundle",
+) -> LegacyValidationReportSummaryBundleArtifactManifest:
+    output_path = Path(output_dir)
+    artifacts = [
+        LegacyValidationArtifact(
+            kind="summary_bundle_json",
+            path=write_legacy_validation_report_summary_bundle_json(
+                bundle,
+                output_path / f"{bundle_name}.json",
+            ),
+        ),
+        LegacyValidationArtifact(
+            kind="summary_bundle_csv",
+            path=write_legacy_validation_report_summary_bundle_csv(
+                bundle,
+                output_path / f"{bundle_name}.csv",
+            ),
+        ),
+    ]
+    manifest_artifact = LegacyValidationArtifact(
+        kind="summary_bundle_manifest_json",
+        path=output_path / f"{bundle_name}_artifacts.json",
+    )
+    artifacts.append(manifest_artifact)
+    _write_legacy_validation_report_summary_bundle_artifact_manifest(
+        bundle_name=bundle_name,
+        bundle=bundle,
+        artifacts=artifacts,
+        path=manifest_artifact.path,
+    )
+    return LegacyValidationReportSummaryBundleArtifactManifest(
+        bundle_name=bundle_name,
+        matches=bundle.matches,
+        report_count=bundle.report_count,
+        total_files=bundle.total_files,
+        total_rows=bundle.total_rows,
+        matched_rows=bundle.matched_rows,
+        mismatched_rows=bundle.mismatched_rows,
+        artifact_count=len(artifacts),
+        artifacts=artifacts,
+    )
+
+
+def load_legacy_validation_report_summary_bundle_artifact_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationReportSummaryBundleArtifactManifest:
+    manifest_path = Path(path).resolve()
+    with manifest_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError("legacy validation report summary bundle manifest must be a JSON object")
+
+    artifacts_data = data.get("artifacts")
+    if not isinstance(artifacts_data, list) or not artifacts_data:
+        raise ValueError("legacy validation report summary bundle manifest must contain artifacts")
+    artifacts = [
+        _artifact_from_mapping(item, manifest_path.parent)
+        for item in artifacts_data
+    ]
+    artifact_count = int(data.get("artifact_count", -1))
+    if artifact_count != len(artifacts):
+        raise ValueError("legacy validation report summary bundle manifest artifact_count must match artifacts")
+    kinds = [artifact.kind for artifact in artifacts]
+    if len(kinds) != len(set(kinds)):
+        raise ValueError("legacy validation report summary bundle manifest must contain unique artifact kinds")
+
+    required_kinds = {
+        "summary_bundle_json",
+        "summary_bundle_csv",
+        "summary_bundle_manifest_json",
+    }
+    missing_kinds = sorted(required_kinds.difference(kinds))
+    if missing_kinds:
+        raise ValueError(
+            "legacy validation report summary bundle manifest is missing artifact kinds: "
+            f"{missing_kinds}"
+        )
+
+    if require_existing_artifacts:
+        missing = [
+            artifact.path
+            for artifact in artifacts
+            if not artifact.path.exists()
+        ]
+        if missing:
+            raise ValueError(
+                "legacy validation report summary bundle manifest references missing artifacts: "
+                f"{missing}"
+            )
+
+    return LegacyValidationReportSummaryBundleArtifactManifest(
+        bundle_name=str(data.get("bundle_name", "")),
+        matches=bool(data.get("matches")),
+        report_count=int(data.get("report_count", 0)),
+        total_files=int(data.get("total_files", 0)),
+        total_rows=int(data.get("total_rows", 0)),
+        matched_rows=int(data.get("matched_rows", 0)),
+        mismatched_rows=int(data.get("mismatched_rows", 0)),
+        artifact_count=artifact_count,
+        artifacts=artifacts,
+    )
+
+
+def load_legacy_validation_report_summary_bundle_payload_from_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> dict:
+    manifest = load_legacy_validation_report_summary_bundle_artifact_manifest(
+        path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    bundle_artifact = manifest.artifact_for_kind("summary_bundle_json")
+    if bundle_artifact is None:
+        raise ValueError("legacy validation report summary bundle manifest must contain summary_bundle_json")
+
+    with bundle_artifact.path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("legacy validation report summary bundle artifact must be a JSON object")
+
+    expected_values = {
+        "matches": manifest.matches,
+        "report_count": manifest.report_count,
+        "total_files": manifest.total_files,
+        "total_rows": manifest.total_rows,
+        "matched_rows": manifest.matched_rows,
+        "mismatched_rows": manifest.mismatched_rows,
+    }
+    for field_name, expected_value in expected_values.items():
+        if payload.get(field_name) != expected_value:
+            raise ValueError(
+                "legacy validation report summary bundle artifact does not match manifest "
+                f"field {field_name}"
+            )
+    return payload
 
 
 def run_legacy_validation_from_fixture(
