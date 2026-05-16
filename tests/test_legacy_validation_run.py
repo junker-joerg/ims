@@ -6,12 +6,16 @@ from ims.model.legacy_validation_run import (
     LegacyValidationArtifact,
     LegacyValidationArtifactManifest,
     LegacyValidationReportPayloadSummary,
+    LegacyValidationReportSummaryBundle,
     LegacyValidationRunResult,
     LegacyValidationTarget,
+    build_legacy_validation_report_summary_bundle,
     load_legacy_validation_artifact_manifest,
     load_legacy_validation_report_payload_from_manifest,
     run_legacy_validation_from_fixture,
     summarize_legacy_validation_report_payload_from_manifest,
+    summarize_legacy_validation_report_payloads_from_directory,
+    summarize_legacy_validation_report_payloads_from_manifests,
 )
 
 
@@ -436,13 +440,146 @@ def test_legacy_validation_report_payload_summary_rejects_bad_files_shape(tmp_pa
         raise AssertionError("bad files shape should fail")
 
 
+def test_legacy_validation_report_payload_summary_bundle_from_manifests(tmp_path: Path) -> None:
+    first = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "first",
+    )
+    second = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "second",
+    )
+
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        [first.artifacts[-1].path, second.artifacts[-1].path]
+    )
+
+    assert isinstance(bundle, LegacyValidationReportSummaryBundle)
+    assert bundle.report_count == 2
+    assert bundle.matches is True
+    assert bundle.total_files == 8
+    assert bundle.total_rows == 80
+    assert bundle.matched_rows == 80
+    assert bundle.mismatched_rows == 0
+    assert bundle.match_rate == 1.0
+    assert bundle.artifact_count == 14
+    assert bundle.report_names == ["legacy_validation_bundle", "legacy_validation_bundle"]
+    assert bundle.artifact_kinds == [
+        "report_json",
+        "file_summary_csv",
+        "field_summary_csv",
+        "group_summary_csv",
+        "period_summary_csv",
+        "deviation_index_csv",
+        "artifact_manifest_json",
+    ]
+    assert bundle.filenames_with_differences == []
+    assert bundle.periods_with_differences == []
+    assert bundle.fields_with_differences == []
+    assert bundle.deviation_count == 0
+
+
+def test_legacy_validation_report_payload_summary_bundle_from_directory(tmp_path: Path) -> None:
+    run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "first",
+    )
+    run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "second",
+    )
+
+    bundle = summarize_legacy_validation_report_payloads_from_directory(tmp_path)
+
+    assert bundle.report_count == 2
+    assert bundle.total_files == 8
+    assert bundle.total_rows == 80
+    assert bundle.match_rate == 1.0
+
+
+def test_legacy_validation_report_payload_summary_bundle_tracks_mixed_results(tmp_path: Path) -> None:
+    first = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "first",
+    )
+    second = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "second",
+    )
+    report_path = second.artifacts[0].path
+    report_data = json.loads(report_path.read_text(encoding="utf-8"))
+    report_data["matches"] = False
+    report_data["matched_rows"] = 39
+    report_data["mismatched_rows"] = 1
+    report_data["match_rate"] = 0.975
+    report_data["files"][1]["matches"] = False
+    report_data["files"][1]["matched_rows"] = 9
+    report_data["files"][1]["mismatched_rows"] = 1
+    report_data["deviation_index"] = [
+        {
+            "filename": "imsvu014.dat",
+            "subject_type": "insurer",
+            "level": "I",
+            "selector_kind": "entity",
+            "selector_value": 14,
+            "global_period": 2,
+            "field_name": "Pr1",
+            "actual": 99.0,
+            "expected": 100.0,
+        }
+    ]
+    report_path.write_text(json.dumps(report_data), encoding="utf-8")
+
+    manifest_path = second.artifacts[-1].path
+    manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_data["matches"] = False
+    manifest_data["matched_rows"] = 39
+    manifest_data["mismatched_rows"] = 1
+    manifest_path.write_text(json.dumps(manifest_data), encoding="utf-8")
+
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        [first.artifacts[-1].path, second.artifacts[-1].path]
+    )
+
+    assert bundle.matches is False
+    assert bundle.total_files == 8
+    assert bundle.total_rows == 80
+    assert bundle.matched_rows == 79
+    assert bundle.mismatched_rows == 1
+    assert bundle.match_rate == 79 / 80
+    assert bundle.filenames_with_differences == ["imsvu014.dat"]
+    assert bundle.periods_with_differences == [2]
+    assert bundle.fields_with_differences == ["Pr1"]
+    assert bundle.deviation_count == 1
+
+
+def test_legacy_validation_report_payload_summary_bundle_rejects_empty_inputs(tmp_path: Path) -> None:
+    try:
+        summarize_legacy_validation_report_payloads_from_manifests([])
+    except ValueError as exc:
+        assert "at least one manifest path" in str(exc)
+    else:
+        raise AssertionError("empty manifest paths should fail")
+
+    try:
+        summarize_legacy_validation_report_payloads_from_directory(tmp_path)
+    except ValueError as exc:
+        assert "contains no manifests" in str(exc)
+    else:
+        raise AssertionError("empty manifest directory should fail")
+
+
 def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationArtifact is not None
     assert LegacyValidationArtifactManifest is not None
     assert LegacyValidationReportPayloadSummary is not None
+    assert LegacyValidationReportSummaryBundle is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
+    assert build_legacy_validation_report_summary_bundle is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert run_legacy_validation_from_fixture is not None
     assert summarize_legacy_validation_report_payload_from_manifest is not None
+    assert summarize_legacy_validation_report_payloads_from_directory is not None
+    assert summarize_legacy_validation_report_payloads_from_manifests is not None
