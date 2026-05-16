@@ -5,6 +5,8 @@ from pathlib import Path
 from ims.model.legacy_validation_run import (
     LegacyValidationArtifact,
     LegacyValidationArtifactManifest,
+    LegacyValidationBatchRunManifestCheck,
+    LegacyValidationBatchRunManifestIssue,
     LegacyValidationReportPayloadSummary,
     LegacyValidationReportSummaryBundle,
     LegacyValidationReportSummaryBundleArtifactManifest,
@@ -13,6 +15,8 @@ from ims.model.legacy_validation_run import (
     LegacyValidationRunResult,
     LegacyValidationTarget,
     build_legacy_validation_report_summary_bundle,
+    check_legacy_validation_batch_run_manifest,
+    legacy_validation_batch_run_manifest_check_to_dict,
     legacy_validation_batch_run_result_to_dict,
     legacy_validation_report_payload_summary_to_dict,
     legacy_validation_report_summary_bundle_to_dict,
@@ -905,6 +909,56 @@ def test_legacy_validation_batch_fixture_runs_items_and_writes_summary(tmp_path:
         result,
         manifest_base_path=tmp_path,
     )["run_count"] == 2
+
+
+def test_legacy_validation_batch_manifest_check_reports_valid_manifest(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+
+    check = check_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+
+    assert isinstance(check, LegacyValidationBatchRunManifestCheck)
+    assert check.matches is True
+    assert check.run_count == 2
+    assert check.checked_artifact_count == 3
+    assert check.issues == []
+    assert legacy_validation_batch_run_manifest_check_to_dict(check) == {
+        "manifest_path": str(result.batch_manifest_path.resolve()),
+        "matches": True,
+        "run_count": 2,
+        "checked_artifact_count": 3,
+        "issues": [],
+    }
+
+
+def test_legacy_validation_batch_manifest_check_reports_invalid_manifest(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["total_rows"] = 999
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    check = check_legacy_validation_batch_run_manifest(result.batch_manifest_path)
+
+    assert check.matches is False
+    assert check.run_count == 0
+    assert check.checked_artifact_count == 0
+    assert len(check.issues) == 1
+    assert isinstance(check.issues[0], LegacyValidationBatchRunManifestIssue)
+    assert check.issues[0].code == "batch_run_manifest_invalid"
+    assert "report manifest field total_rows" in check.issues[0].message
+    assert check.issues[0].path == result.batch_manifest_path.resolve()
+    payload = legacy_validation_batch_run_manifest_check_to_dict(check)
+    assert payload["matches"] is False
+    assert payload["issues"][0]["code"] == "batch_run_manifest_invalid"
 
 
 def test_legacy_validation_batch_manifest_rejects_missing_report_manifest(tmp_path: Path) -> None:

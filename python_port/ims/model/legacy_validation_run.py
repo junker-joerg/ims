@@ -156,6 +156,22 @@ class LegacyValidationBatchRunResult:
     batch_manifest_path: Path
 
 
+@dataclass(slots=True)
+class LegacyValidationBatchRunManifestIssue:
+    code: str
+    message: str
+    path: Path | None = None
+
+
+@dataclass(slots=True)
+class LegacyValidationBatchRunManifestCheck:
+    manifest_path: Path
+    matches: bool
+    run_count: int
+    checked_artifact_count: int
+    issues: list[LegacyValidationBatchRunManifestIssue]
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -1046,6 +1062,25 @@ def _validate_batch_run_item_report_manifest_totals(
             )
 
 
+def legacy_validation_batch_run_manifest_check_to_dict(
+    check: LegacyValidationBatchRunManifestCheck,
+) -> dict:
+    return {
+        "manifest_path": str(check.manifest_path),
+        "matches": check.matches,
+        "run_count": check.run_count,
+        "checked_artifact_count": check.checked_artifact_count,
+        "issues": [
+            {
+                "code": issue.code,
+                "message": issue.message,
+                "path": None if issue.path is None else str(issue.path),
+            }
+            for issue in check.issues
+        ],
+    }
+
+
 def load_legacy_validation_batch_run_manifest(
     path: str | Path,
     *,
@@ -1132,6 +1167,50 @@ def load_legacy_validation_batch_run_manifest(
             )
             _validate_batch_run_item_report_manifest_totals(item, report_manifest)
     return payload
+
+
+def check_legacy_validation_batch_run_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationBatchRunManifestCheck:
+    manifest_path = Path(path).resolve()
+    run_count = 0
+    checked_artifact_count = 0
+    issues: list[LegacyValidationBatchRunManifestIssue] = []
+    try:
+        payload = load_legacy_validation_batch_run_manifest(
+            manifest_path,
+            require_existing_artifacts=require_existing_artifacts,
+        )
+    except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
+        issues.append(
+            LegacyValidationBatchRunManifestIssue(
+                code="batch_run_manifest_invalid",
+                message=str(exc),
+                path=manifest_path,
+            )
+        )
+        return LegacyValidationBatchRunManifestCheck(
+            manifest_path=manifest_path,
+            matches=False,
+            run_count=run_count,
+            checked_artifact_count=checked_artifact_count,
+            issues=issues,
+        )
+
+    runs = payload.get("runs", [])
+    if isinstance(runs, list):
+        run_count = len(runs)
+    if require_existing_artifacts:
+        checked_artifact_count = 1 + run_count
+    return LegacyValidationBatchRunManifestCheck(
+        manifest_path=manifest_path,
+        matches=True,
+        run_count=run_count,
+        checked_artifact_count=checked_artifact_count,
+        issues=issues,
+    )
 
 
 def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:
