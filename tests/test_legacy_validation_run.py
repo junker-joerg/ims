@@ -8,6 +8,8 @@ from ims.model.legacy_validation_run import (
     LegacyValidationReportPayloadSummary,
     LegacyValidationReportSummaryBundle,
     LegacyValidationReportSummaryBundleArtifactManifest,
+    LegacyValidationBatchRunItem,
+    LegacyValidationBatchRunResult,
     LegacyValidationRunResult,
     LegacyValidationTarget,
     build_legacy_validation_report_summary_bundle,
@@ -17,6 +19,7 @@ from ims.model.legacy_validation_run import (
     load_legacy_validation_report_payload_from_manifest,
     load_legacy_validation_report_summary_bundle_artifact_manifest,
     load_legacy_validation_report_summary_bundle_payload_from_manifest,
+    run_legacy_validation_batch_from_fixture,
     run_legacy_validation_from_fixture,
     summarize_legacy_validation_report_payload_from_manifest,
     summarize_legacy_validation_report_payloads_from_directory,
@@ -769,6 +772,76 @@ def test_legacy_validation_report_summary_bundle_artifacts_from_directory_reject
         raise AssertionError("empty input directory should fail")
 
 
+def test_legacy_validation_batch_fixture_runs_items_and_writes_summary(tmp_path: Path) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path,
+    )
+
+    assert isinstance(result, LegacyValidationBatchRunResult)
+    assert result.batch_name == "legacy_validation_batch"
+    assert [item.name for item in result.runs] == [
+        "legacy_validation_bundle_a",
+        "legacy_validation_bundle_b",
+    ]
+    assert all(isinstance(item, LegacyValidationBatchRunItem) for item in result.runs)
+    assert [item.output_dir.name for item in result.runs] == ["bundle_a", "bundle_b"]
+    assert [item.result.report.total_rows for item in result.runs] == [40, 40]
+    assert [item.result.report.matches for item in result.runs] == [True, True]
+
+    summary_manifest = result.summary_manifest
+    assert summary_manifest.bundle_name == "legacy_validation_batch"
+    assert summary_manifest.report_count == 2
+    assert summary_manifest.total_files == 8
+    assert summary_manifest.total_rows == 80
+    assert summary_manifest.matched_rows == 80
+    assert summary_manifest.artifact_count == 3
+    assert [artifact.path.name for artifact in summary_manifest.artifacts] == [
+        "legacy_validation_batch.json",
+        "legacy_validation_batch.csv",
+        "legacy_validation_batch_artifacts.json",
+    ]
+    assert all(artifact.path.exists() for artifact in summary_manifest.artifacts)
+
+    payload = load_legacy_validation_report_summary_bundle_payload_from_manifest(
+        summary_manifest.artifacts[-1].path
+    )
+    assert payload["report_count"] == 2
+    assert payload["total_rows"] == 80
+    assert payload["report_names"] == [
+        "legacy_validation_bundle",
+        "legacy_validation_bundle",
+    ]
+
+
+def test_legacy_validation_batch_fixture_rejects_duplicate_output_dirs(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_batch.json").read_text(encoding="utf-8"))
+    data["items"][1]["output_subdir"] = data["items"][0]["output_subdir"]
+    fixture_path = tmp_path / "bad_batch.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_batch_from_fixture(fixture_path, tmp_path / "out")
+    except ValueError as exc:
+        assert "duplicate output_subdir" in str(exc)
+    else:
+        raise AssertionError("duplicate batch output_subdir should fail")
+
+
+def test_legacy_validation_batch_fixture_rejects_absolute_output_dir(tmp_path: Path) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_batch.json").read_text(encoding="utf-8"))
+    data["items"][0]["output_subdir"] = str(tmp_path / "absolute")
+    fixture_path = tmp_path / "bad_batch.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_batch_from_fixture(fixture_path, tmp_path / "out")
+    except ValueError as exc:
+        assert "output_subdir must be relative" in str(exc)
+    else:
+        raise AssertionError("absolute batch output_subdir should fail")
+
+
 def test_legacy_validation_report_payload_summary_bundle_rejects_empty_inputs(tmp_path: Path) -> None:
     try:
         summarize_legacy_validation_report_payloads_from_manifests([])
@@ -788,6 +861,8 @@ def test_legacy_validation_report_payload_summary_bundle_rejects_empty_inputs(tm
 def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationArtifact is not None
     assert LegacyValidationArtifactManifest is not None
+    assert LegacyValidationBatchRunItem is not None
+    assert LegacyValidationBatchRunResult is not None
     assert LegacyValidationReportPayloadSummary is not None
     assert LegacyValidationReportSummaryBundle is not None
     assert LegacyValidationReportSummaryBundleArtifactManifest is not None
@@ -800,6 +875,7 @@ def test_legacy_validation_fixture_import_shapes() -> None:
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
     assert load_legacy_validation_report_summary_bundle_payload_from_manifest is not None
+    assert run_legacy_validation_batch_from_fixture is not None
     assert run_legacy_validation_from_fixture is not None
     assert summarize_legacy_validation_report_payload_from_manifest is not None
     assert summarize_legacy_validation_report_payloads_from_directory is not None
