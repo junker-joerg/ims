@@ -148,6 +148,8 @@ def test_core_placeholders_import() -> None:
     from ims.model.legacy_validation_run import (
         LegacyValidationArtifact,
         LegacyValidationArtifactManifest,
+        LegacyValidationBatchRunItem,
+        LegacyValidationBatchRunResult,
         LegacyValidationReportPayloadSummary,
         LegacyValidationReportSummaryBundle,
         LegacyValidationReportSummaryBundleArtifactManifest,
@@ -160,6 +162,7 @@ def test_core_placeholders_import() -> None:
         load_legacy_validation_report_payload_from_manifest,
         load_legacy_validation_report_summary_bundle_artifact_manifest,
         load_legacy_validation_report_summary_bundle_payload_from_manifest,
+        run_legacy_validation_batch_from_fixture,
         run_legacy_validation_from_fixture,
         summarize_legacy_validation_report_payload_from_manifest,
         summarize_legacy_validation_report_payloads_from_directory,
@@ -322,6 +325,8 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_report_csv is not None
     assert LegacyValidationArtifact is not None
     assert LegacyValidationArtifactManifest is not None
+    assert LegacyValidationBatchRunItem is not None
+    assert LegacyValidationBatchRunResult is not None
     assert LegacyValidationReportPayloadSummary is not None
     assert LegacyValidationReportSummaryBundle is not None
     assert LegacyValidationReportSummaryBundleArtifactManifest is not None
@@ -334,6 +339,7 @@ def test_core_placeholders_import() -> None:
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
     assert load_legacy_validation_report_summary_bundle_payload_from_manifest is not None
+    assert run_legacy_validation_batch_from_fixture is not None
     assert run_legacy_validation_from_fixture is not None
     assert summarize_legacy_validation_report_payload_from_manifest is not None
     assert summarize_legacy_validation_report_payloads_from_directory is not None

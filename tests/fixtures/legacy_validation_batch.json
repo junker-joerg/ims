@@ -1,0 +1,15 @@
+{
+  "batch_name": "legacy_validation_batch",
+  "items": [
+    {
+      "name": "legacy_validation_bundle_a",
+      "fixture_path": "legacy_validation_bundle.json",
+      "output_subdir": "bundle_a"
+    },
+    {
+      "name": "legacy_validation_bundle_b",
+      "fixture_path": "legacy_validation_bundle.json",
+      "output_subdir": "bundle_b"
+    }
+  ]
+}

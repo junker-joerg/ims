@@ -83,6 +83,10 @@ aus diesem Manifest wieder geladen und gegen die Manifest-Summen geprueft werden
 Zusaetzlich gibt es einen direkten Schreibpfad, der vorhandene Einzelreport-Manifeste oder ein
 Verzeichnis mit solchen Manifesten einliest, daraus das Summary-Buendel erzeugt und die
 manifestierten Batch-Artefakte in ein Zielverzeichnis schreibt.
+Ein kleines Batch-Fixture kann nun mehrere vorhandene Legacy-Validierungsfixtures ausfuehren,
+deren Einzelreport-Artefakte in getrennte Unterverzeichnisse schreiben und anschliessend das
+manifestierte Summary-Buendel fuer den gesamten Batch erzeugen. Auch dieser Runner orchestriert
+nur bestehende Validierungsfixtures; er fuehrt keine neue fachliche Vergleichslogik ein.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

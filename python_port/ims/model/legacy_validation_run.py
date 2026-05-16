@@ -138,6 +138,23 @@ class LegacyValidationRunResult:
     artifacts: list[LegacyValidationArtifact]
 
 
+@dataclass(slots=True)
+class LegacyValidationBatchRunItem:
+    name: str
+    fixture_path: Path
+    output_dir: Path
+    result: LegacyValidationRunResult
+
+
+@dataclass(slots=True)
+class LegacyValidationBatchRunResult:
+    batch_name: str
+    fixture_path: Path
+    output_dir: Path
+    runs: list[LegacyValidationBatchRunItem]
+    summary_manifest: LegacyValidationReportSummaryBundleArtifactManifest
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -869,6 +886,91 @@ def write_legacy_validation_report_summary_bundle_artifacts_from_directory(
         bundle,
         output_dir,
         bundle_name=bundle_name,
+    )
+
+
+def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:
+    name = str(data.get("name", "")).strip()
+    fixture_path_data = str(data.get("fixture_path", "")).strip()
+    if not fixture_path_data:
+        raise ValueError("legacy validation batch item must contain a fixture_path")
+    fixture_path = Path(fixture_path_data)
+    if not fixture_path.is_absolute():
+        fixture_path = fixture_base_path / fixture_path
+
+    output_subdir = str(data.get("output_subdir", name or fixture_path.stem)).strip()
+    if not output_subdir:
+        raise ValueError("legacy validation batch item must contain an output_subdir")
+    if Path(output_subdir).is_absolute() or ".." in Path(output_subdir).parts:
+        raise ValueError("legacy validation batch item output_subdir must be relative")
+
+    return name or fixture_path.stem, fixture_path, output_subdir
+
+
+def run_legacy_validation_batch_from_fixture(
+    path: str | Path,
+    output_dir: str | Path,
+) -> LegacyValidationBatchRunResult:
+    fixture_path = Path(path).resolve()
+    with fixture_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError("legacy validation batch fixture must be a JSON object")
+
+    batch_name = str(data.get("batch_name", fixture_path.stem)).strip()
+    if not batch_name:
+        raise ValueError("legacy validation batch fixture must contain a batch_name")
+
+    items_data = data.get("items")
+    if not isinstance(items_data, list) or not items_data:
+        raise ValueError("legacy validation batch fixture must contain a non-empty items list")
+
+    output_path = Path(output_dir)
+    runs: list[LegacyValidationBatchRunItem] = []
+    manifest_paths: list[Path] = []
+    item_names: set[str] = set()
+    output_subdirs: set[str] = set()
+    batch_items: list[tuple[str, Path, str]] = []
+
+    for item_data in items_data:
+        name, item_fixture_path, output_subdir = _batch_item_from_mapping(item_data, fixture_path.parent)
+        if name in item_names:
+            raise ValueError(f"legacy validation batch fixture contains duplicate item name: {name}")
+        if output_subdir in output_subdirs:
+            raise ValueError(
+                "legacy validation batch fixture contains duplicate output_subdir: "
+                f"{output_subdir}"
+            )
+        item_names.add(name)
+        output_subdirs.add(output_subdir)
+        batch_items.append((name, item_fixture_path, output_subdir))
+
+    for name, item_fixture_path, output_subdir in batch_items:
+        item_output_dir = output_path / output_subdir
+        result = run_legacy_validation_from_fixture(item_fixture_path, item_output_dir)
+        if not result.artifacts:
+            raise ValueError(f"legacy validation batch item did not write artifacts: {name}")
+        manifest_paths.append(result.artifacts[-1].path)
+        runs.append(
+            LegacyValidationBatchRunItem(
+                name=name,
+                fixture_path=item_fixture_path,
+                output_dir=item_output_dir,
+                result=result,
+            )
+        )
+
+    summary_manifest = write_legacy_validation_report_summary_bundle_artifacts_from_manifests(
+        manifest_paths,
+        output_path / "summary",
+        bundle_name=batch_name,
+    )
+    return LegacyValidationBatchRunResult(
+        batch_name=batch_name,
+        fixture_path=fixture_path,
+        output_dir=output_path,
+        runs=runs,
+        summary_manifest=summary_manifest,
     )
 
 
