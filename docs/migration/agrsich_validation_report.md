@@ -87,6 +87,10 @@ Ein kleines Batch-Fixture kann nun mehrere vorhandene Legacy-Validierungsfixture
 deren Einzelreport-Artefakte in getrennte Unterverzeichnisse schreiben und anschliessend das
 manifestierte Summary-Buendel fuer den gesamten Batch erzeugen. Auch dieser Runner orchestriert
 nur bestehende Validierungsfixtures; er fuehrt keine neue fachliche Vergleichslogik ein.
+Die Artefaktmanifest-Lader loesen relative Pfade tolerant auf und neu geschriebene Manifeste
+speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Scan ignoriert
+Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich
+ihre eigenen Summary-Ausgaben erneut als Einzelreports einlesen.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

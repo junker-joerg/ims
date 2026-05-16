@@ -84,6 +84,7 @@ class LegacyFileValidationSummary:
     mismatched_rows: int
     match_rate: float
     compared_periods: list[int | None]
+    row_matches: list[bool]
     periods_with_differences: list[int | None]
     fields_with_differences: list[str]
     field_deviations: list[LegacyFieldDeviation]
@@ -206,38 +207,34 @@ def _build_group_summaries(
 def _build_period_summaries(
     file_summaries: Iterable[LegacyFileValidationSummary],
 ) -> list[LegacyValidationPeriodSummary]:
-    grouped: dict[int | None, list[LegacyFileValidationSummary]] = {}
+    grouped: dict[int | None, list[tuple[LegacyFileValidationSummary, bool]]] = {}
     ordered_periods: list[int | None] = []
     for summary in file_summaries:
-        for period in summary.compared_periods:
+        for period, row_matches in zip(summary.compared_periods, summary.row_matches, strict=True):
             if period not in grouped:
                 grouped[period] = []
                 ordered_periods.append(period)
-            grouped[period].append(summary)
+            grouped[period].append((summary, row_matches))
 
     period_summaries: list[LegacyValidationPeriodSummary] = []
     for period in ordered_periods:
         items = grouped[period]
-        mismatched_rows = sum(
-            1
-            for item in items
-            if period in item.periods_with_differences
-        )
+        mismatched_rows = sum(1 for _, row_matches in items if not row_matches)
         row_count = len(items)
         matched_rows = row_count - mismatched_rows
         period_summaries.append(
             LegacyValidationPeriodSummary(
                 global_period=period,
-                file_count=len(_unique_in_order(item.filename for item in items)),
+                file_count=len(_unique_in_order(item.filename for item, _ in items)),
                 row_count=row_count,
                 matched_rows=matched_rows,
                 mismatched_rows=mismatched_rows,
                 match_rate=_match_rate(matched_rows, row_count),
                 matches=mismatched_rows == 0,
-                filenames=_unique_in_order(item.filename for item in items),
+                filenames=_unique_in_order(item.filename for item, _ in items),
                 fields_with_differences=_unique_in_order(
                     deviation.field_name
-                    for item in items
+                    for item, _ in items
                     for deviation in item.field_deviations
                     if deviation.global_period == period
                 ),
@@ -273,6 +270,7 @@ def build_legacy_file_validation_summary(
     row_count = len(comparison.row_comparisons)
     matched_rows = sum(1 for row in comparison.row_comparisons if row.matches)
     compared_periods = [row.global_period for row in comparison.row_comparisons]
+    row_matches = [row.matches for row in comparison.row_comparisons]
     field_deviations: list[LegacyFieldDeviation] = []
 
     for row in comparison.row_comparisons:
@@ -313,6 +311,7 @@ def build_legacy_file_validation_summary(
         mismatched_rows=row_count - matched_rows,
         match_rate=_match_rate(matched_rows, row_count),
         compared_periods=compared_periods,
+        row_matches=row_matches,
         periods_with_differences=periods_with_differences,
         fields_with_differences=fields_with_differences,
         field_deviations=field_deviations,
@@ -326,11 +325,13 @@ def build_legacy_table_validation_summary(
     row_count = len(comparison.row_comparisons)
     matched_rows = sum(1 for row in comparison.row_comparisons if row.matches)
     global_periods: list[int | None] = []
+    row_matches: list[bool] = []
     field_deviations: list[LegacyFieldDeviation] = []
 
     for row in comparison.row_comparisons:
         global_period = _global_period_from_row_comparison(row)
         global_periods.append(global_period)
+        row_matches.append(row.matches)
         for field in row.field_comparisons:
             if field.matches:
                 continue
@@ -369,6 +370,7 @@ def build_legacy_table_validation_summary(
         mismatched_rows=row_count - matched_rows,
         match_rate=_match_rate(matched_rows, row_count),
         compared_periods=global_periods,
+        row_matches=row_matches,
         periods_with_differences=periods_with_differences,
         fields_with_differences=fields_with_differences,
         field_deviations=field_deviations,
@@ -543,6 +545,7 @@ def legacy_validation_report_to_dict(report: LegacyValidationReport) -> dict:
                 "mismatched_rows": summary.mismatched_rows,
                 "match_rate": summary.match_rate,
                 "compared_periods": summary.compared_periods,
+                "row_matches": summary.row_matches,
                 "periods_with_differences": summary.periods_with_differences,
                 "fields_with_differences": summary.fields_with_differences,
                 "field_summaries": [

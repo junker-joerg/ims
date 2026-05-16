@@ -219,6 +219,24 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert report_summary.deviation_count == 0
 
 
+def test_legacy_validation_artifact_manifest_loads_relative_output_paths(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    fixture_path = (Path.cwd() / FIXTURE_DIR / "legacy_validation_bundle.json").resolve()
+    monkeypatch.chdir(tmp_path)
+
+    result = run_legacy_validation_from_fixture(fixture_path, Path("relative_reports"))
+    manifest_path = result.artifacts[-1].path
+
+    loaded_manifest = load_legacy_validation_artifact_manifest(manifest_path)
+    assert all(artifact.path.exists() for artifact in loaded_manifest.artifacts)
+    assert loaded_manifest.artifact_for_kind("report_json") is not None
+
+    payload = load_legacy_validation_report_payload_from_manifest(manifest_path)
+    assert payload["total_rows"] == 40
+
+
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     data["targets"][0]["subject_type"] = "unknown"
@@ -660,6 +678,33 @@ def test_legacy_validation_report_summary_bundle_artifacts_roundtrip(tmp_path: P
     assert payload == legacy_validation_report_summary_bundle_to_dict(bundle)
 
 
+def test_legacy_validation_report_summary_bundle_manifest_loads_relative_output_paths(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    fixture_path = (Path.cwd() / FIXTURE_DIR / "legacy_validation_bundle.json").resolve()
+    monkeypatch.chdir(tmp_path)
+    result = run_legacy_validation_from_fixture(fixture_path, Path("run"))
+    bundle = summarize_legacy_validation_report_payloads_from_manifests(
+        [result.artifacts[-1].path]
+    )
+
+    manifest = write_legacy_validation_report_summary_bundle_artifacts(
+        bundle,
+        Path("bundle"),
+        bundle_name="relative_batch",
+    )
+
+    loaded_manifest = load_legacy_validation_report_summary_bundle_artifact_manifest(
+        manifest.artifacts[-1].path
+    )
+    assert all(artifact.path.exists() for artifact in loaded_manifest.artifacts)
+    payload = load_legacy_validation_report_summary_bundle_payload_from_manifest(
+        manifest.artifacts[-1].path
+    )
+    assert payload["total_rows"] == 40
+
+
 def test_legacy_validation_report_summary_bundle_manifest_rejects_missing_artifact(tmp_path: Path) -> None:
     result = run_legacy_validation_from_fixture(
         FIXTURE_DIR / "legacy_validation_bundle.json",
@@ -756,6 +801,30 @@ def test_legacy_validation_report_summary_bundle_artifacts_from_directory(tmp_pa
     assert manifest.matched_rows == 80
     assert manifest.artifact_count == 3
     assert all(artifact.path.exists() for artifact in manifest.artifacts)
+
+
+def test_legacy_validation_report_summary_bundle_directory_scan_ignores_summary_manifests(
+    tmp_path: Path,
+) -> None:
+    run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "runs" / "first",
+    )
+    run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "runs" / "second",
+    )
+    write_legacy_validation_report_summary_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "runs" / "summary",
+        bundle_name="existing_summary",
+    )
+
+    bundle = summarize_legacy_validation_report_payloads_from_directory(tmp_path / "runs")
+
+    assert bundle.report_count == 2
+    assert bundle.total_files == 8
+    assert bundle.total_rows == 80
 
 
 def test_legacy_validation_report_summary_bundle_artifacts_from_directory_rejects_empty_input(

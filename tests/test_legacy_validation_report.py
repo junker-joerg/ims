@@ -412,6 +412,36 @@ def test_validation_report_summarizes_vu_and_vn_file_families() -> None:
     ]
 
 
+def test_validation_report_counts_duplicate_period_mismatches_per_row() -> None:
+    insurer_legacy = parse_legacy_insurer_dat(REFERENCE_DIR / "VUSK1L4.DAT")
+    insurer_export = _insurer_table_from_legacy_rows(insurer_legacy, "imsvusk1.dat", [101, 101])
+
+    comparison = build_multi_period_legacy_comparison([
+        compare_insurer_export_table_to_legacy(insurer_export, insurer_legacy)
+    ])
+    report = build_legacy_validation_report_from_multi_period_comparison(comparison)
+
+    assert report.matches is False
+    assert report.total_rows == 2
+    assert report.matched_rows == 1
+    assert report.mismatched_rows == 1
+    assert report.file_summaries[0].compared_periods == [101, 101]
+    assert report.file_summaries[0].row_matches == [True, False]
+    assert report.period_summaries == [
+        LegacyValidationPeriodSummary(
+            global_period=101,
+            file_count=1,
+            row_count=2,
+            matched_rows=1,
+            mismatched_rows=1,
+            match_rate=0.5,
+            matches=False,
+            filenames=["imsvusk1.dat"],
+            fields_with_differences=["global_period"],
+        )
+    ]
+
+
 def test_validation_report_detects_vn_family_deviation() -> None:
     legacy_table = parse_legacy_policyholder_dat(REFERENCE_DIR / "IMSVNR05.DAT")
     export_table = _policyholder_table_from_legacy_rows(legacy_table, "imsvnr05.dat", [1, 2, 3])
