@@ -148,6 +148,8 @@ def test_core_placeholders_import() -> None:
     from ims.model.legacy_validation_run import (
         LegacyValidationArtifact,
         LegacyValidationArtifactManifest,
+        LegacyValidationBatchRunManifestCheck,
+        LegacyValidationBatchRunManifestIssue,
         LegacyValidationBatchRunItem,
         LegacyValidationBatchRunResult,
         LegacyValidationReportPayloadSummary,
@@ -156,6 +158,8 @@ def test_core_placeholders_import() -> None:
         LegacyValidationRunResult,
         LegacyValidationTarget,
         build_legacy_validation_report_summary_bundle,
+        check_legacy_validation_batch_run_manifest,
+        legacy_validation_batch_run_manifest_check_to_dict,
         legacy_validation_batch_run_result_to_dict,
         legacy_validation_report_payload_summary_to_dict,
         legacy_validation_report_summary_bundle_to_dict,
@@ -328,6 +332,8 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_report_csv is not None
     assert LegacyValidationArtifact is not None
     assert LegacyValidationArtifactManifest is not None
+    assert LegacyValidationBatchRunManifestCheck is not None
+    assert LegacyValidationBatchRunManifestIssue is not None
     assert LegacyValidationBatchRunItem is not None
     assert LegacyValidationBatchRunResult is not None
     assert LegacyValidationReportPayloadSummary is not None
@@ -336,6 +342,8 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert build_legacy_validation_report_summary_bundle is not None
+    assert check_legacy_validation_batch_run_manifest is not None
+    assert legacy_validation_batch_run_manifest_check_to_dict is not None
     assert legacy_validation_batch_run_result_to_dict is not None
     assert legacy_validation_report_payload_summary_to_dict is not None
     assert legacy_validation_report_summary_bundle_to_dict is not None
