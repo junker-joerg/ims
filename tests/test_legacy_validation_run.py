@@ -8,6 +8,7 @@ from ims.model.legacy_validation_run import (
     LegacyValidationRunResult,
     LegacyValidationTarget,
     load_legacy_validation_artifact_manifest,
+    load_legacy_validation_report_payload_from_manifest,
     run_legacy_validation_from_fixture,
 )
 
@@ -163,6 +164,15 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "artifact_manifest_json",
     ]
     assert all(artifact.path.exists() for artifact in loaded_manifest.artifacts)
+    assert loaded_manifest.artifact_for_kind("report_json") is not None
+    assert loaded_manifest.artifact_for_kind("unknown") is None
+
+    report_payload = load_legacy_validation_report_payload_from_manifest(
+        tmp_path / "legacy_validation_bundle_artifacts.json"
+    )
+    assert report_payload["matches"] is True
+    assert report_payload["total_rows"] == 40
+    assert report_payload["total_files"] == 4
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
@@ -312,10 +322,29 @@ def test_legacy_validation_artifact_manifest_rejects_missing_artifact(tmp_path: 
         raise AssertionError("missing artifact should fail")
 
 
+def test_legacy_validation_report_payload_rejects_manifest_mismatch(tmp_path: Path) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path,
+    )
+    report_path = result.artifacts[0].path
+    report_data = json.loads(report_path.read_text(encoding="utf-8"))
+    report_data["total_rows"] = 999
+    report_path.write_text(json.dumps(report_data), encoding="utf-8")
+
+    try:
+        load_legacy_validation_report_payload_from_manifest(result.artifacts[-1].path)
+    except ValueError as exc:
+        assert "total_rows" in str(exc)
+    else:
+        raise AssertionError("report and manifest mismatch should fail")
+
+
 def test_legacy_validation_fixture_import_shapes() -> None:
     assert LegacyValidationArtifact is not None
     assert LegacyValidationArtifactManifest is not None
     assert LegacyValidationRunResult is not None
     assert LegacyValidationTarget is not None
     assert load_legacy_validation_artifact_manifest is not None
+    assert load_legacy_validation_report_payload_from_manifest is not None
     assert run_legacy_validation_from_fixture is not None

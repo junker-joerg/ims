@@ -63,6 +63,8 @@ Abweichungsindex-CSV fuer direkte Drilldowns und ein Artefaktmanifest, das alle 
 stabilen Rollen auflistet.
 Das Artefaktmanifest kann wieder geladen und gegen die erwartete Artefaktanzahl sowie die
 existierenden Dateien geprueft werden.
+Aus dem Manifest kann zudem der vollstaendige JSON-Report wieder geladen und gegen die
+Manifest-Summen geprueft werden.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
