@@ -6,6 +6,7 @@ from ims.model.legacy_validation_run import (
     LegacyValidationArtifact,
     LegacyValidationArtifactManifest,
     LegacyValidationBatchRunManifestCheck,
+    LegacyValidationBatchRunManifestCheckBundle,
     LegacyValidationBatchRunManifestIssue,
     LegacyValidationReportPayloadSummary,
     LegacyValidationReportSummaryBundle,
@@ -14,8 +15,11 @@ from ims.model.legacy_validation_run import (
     LegacyValidationBatchRunResult,
     LegacyValidationRunResult,
     LegacyValidationTarget,
+    check_legacy_validation_batch_run_manifests,
+    check_legacy_validation_batch_run_manifests_from_directory,
     build_legacy_validation_report_summary_bundle,
     check_legacy_validation_batch_run_manifest,
+    legacy_validation_batch_run_manifest_check_bundle_to_dict,
     legacy_validation_batch_run_manifest_check_to_dict,
     legacy_validation_batch_run_result_to_dict,
     legacy_validation_report_payload_summary_to_dict,
@@ -36,6 +40,7 @@ from ims.model.legacy_validation_run import (
     write_legacy_validation_report_summary_bundle_csv,
     write_legacy_validation_report_summary_bundle_json,
     write_legacy_validation_batch_run_manifest,
+    write_legacy_validation_batch_run_manifest_check_bundle_json,
 )
 
 
@@ -959,6 +964,102 @@ def test_legacy_validation_batch_manifest_check_reports_invalid_manifest(
     payload = legacy_validation_batch_run_manifest_check_to_dict(check)
     assert payload["matches"] is False
     assert payload["issues"][0]["code"] == "batch_run_manifest_invalid"
+
+
+def test_legacy_validation_batch_manifest_check_bundle_from_manifests(
+    tmp_path: Path,
+) -> None:
+    first = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "first",
+    )
+    second = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "second",
+    )
+
+    bundle = check_legacy_validation_batch_run_manifests(
+        [first.batch_manifest_path, second.batch_manifest_path]
+    )
+
+    assert isinstance(bundle, LegacyValidationBatchRunManifestCheckBundle)
+    assert bundle.matches is True
+    assert bundle.manifest_count == 2
+    assert bundle.total_runs == 4
+    assert bundle.checked_artifact_count == 6
+    assert bundle.issue_count == 0
+    payload = legacy_validation_batch_run_manifest_check_bundle_to_dict(bundle)
+    assert payload["manifest_count"] == 2
+    assert payload["checks"][0]["matches"] is True
+
+
+def test_legacy_validation_batch_manifest_check_bundle_tracks_mixed_results(
+    tmp_path: Path,
+) -> None:
+    first = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "first",
+    )
+    second = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "second",
+    )
+    payload = json.loads(second.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["total_rows"] = 999
+    second.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    bundle = check_legacy_validation_batch_run_manifests(
+        [first.batch_manifest_path, second.batch_manifest_path]
+    )
+
+    assert bundle.matches is False
+    assert bundle.manifest_count == 2
+    assert bundle.total_runs == 2
+    assert bundle.checked_artifact_count == 3
+    assert bundle.issue_count == 1
+    assert bundle.checks[1].issues[0].code == "batch_run_manifest_invalid"
+
+
+def test_legacy_validation_batch_manifest_check_bundle_from_directory_writes_json(
+    tmp_path: Path,
+) -> None:
+    run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "first",
+    )
+    run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "second",
+    )
+
+    bundle = check_legacy_validation_batch_run_manifests_from_directory(tmp_path)
+    json_path = write_legacy_validation_batch_run_manifest_check_bundle_json(
+        bundle,
+        tmp_path / "diagnostics" / "batch_manifest_checks.json",
+    )
+
+    payload = json.loads(json_path.read_text(encoding="utf-8"))
+    assert payload["matches"] is True
+    assert payload["manifest_count"] == 2
+    assert payload["total_runs"] == 4
+
+
+def test_legacy_validation_batch_manifest_check_bundle_rejects_empty_inputs(
+    tmp_path: Path,
+) -> None:
+    try:
+        check_legacy_validation_batch_run_manifests([])
+    except ValueError as exc:
+        assert "requires paths" in str(exc)
+    else:
+        raise AssertionError("empty batch run manifest path list should fail")
+
+    try:
+        check_legacy_validation_batch_run_manifests_from_directory(tmp_path)
+    except ValueError as exc:
+        assert "contains no manifests" in str(exc)
+    else:
+        raise AssertionError("empty batch run manifest directory should fail")
 
 
 def test_legacy_validation_batch_manifest_rejects_missing_report_manifest(tmp_path: Path) -> None:

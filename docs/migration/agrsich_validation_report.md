@@ -102,6 +102,10 @@ gespeicherten Summen muessen zu den Manifest-Summen des Einzelreports passen.
 Fuer aufrufende Batch- oder Analysepfade gibt es nun zusaetzlich einen nicht-werfenden
 Manifest-Check. Er kapselt denselben Lade- und Validierungspfad in einem maschinenlesbaren
 Ergebnisobjekt mit Status, gepruefter Run-Anzahl, gepruefter Artefaktanzahl und Diagnose-Issues.
+Mehrere Batch-Run-Manifeste koennen zu einem Diagnose-Buendel zusammengefasst werden. Dieses
+Buendel aggregiert Manifestanzahl, Run-Anzahl, gepruefte Artefakte und Issues ueber explizit
+uebergebene Manifestpfade oder einen Verzeichnisscan und kann als JSON-Artefakt geschrieben
+werden.
 Die Artefaktmanifest-Lader loesen relative Pfade tolerant auf und neu geschriebene Manifeste
 speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Scan ignoriert
 Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich
