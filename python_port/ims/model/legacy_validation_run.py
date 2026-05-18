@@ -345,9 +345,9 @@ def _resolve_artifact_path(path_data: str, manifest_base_path: Path) -> Path:
         return artifact_path
 
     candidates = [
-        artifact_path,
         manifest_base_path / artifact_path,
         manifest_base_path.parent / artifact_path,
+        artifact_path,
     ]
     for candidate in candidates:
         if candidate.exists():
