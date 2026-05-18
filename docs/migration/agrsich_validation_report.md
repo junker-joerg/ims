@@ -107,6 +107,9 @@ Buendel aggregiert Manifestanzahl, Run-Anzahl, gepruefte Artefakte und Issues ue
 uebergebene Manifestpfade oder einen Verzeichnisscan und kann als JSON-Artefakt geschrieben
 werden. Zusaetzlich kann das Diagnose-Buendel nun als kompakte CSV-Datei geschrieben werden:
 eine Zeile je Batch-Run-Manifest mit Status, Zaehlern und Issue-Zusammenfassung.
+JSON und CSV des Diagnose-Buendels koennen nun zusammen mit einem Artefaktmanifest geschrieben
+werden. Der Manifest-Lader prueft die stabilen Artefaktrollen, optionale Dateiexistenz und die
+Summen des JSON-Payloads gegen die Manifest-Summen.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
