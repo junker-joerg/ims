@@ -110,6 +110,9 @@ eine Zeile je Batch-Run-Manifest mit Status, Zaehlern und Issue-Zusammenfassung.
 JSON und CSV des Diagnose-Buendels koennen nun zusammen mit einem Artefaktmanifest geschrieben
 werden. Der Manifest-Lader prueft die stabilen Artefaktrollen, optionale Dateiexistenz und die
 Summen des JSON-Payloads gegen die Manifest-Summen.
+Das manifestierte Diagnosepaket kann direkt aus expliziten Batch-Run-Manifestpfaden oder per
+Verzeichnisscan erzeugt werden, ohne dass aufrufende Batchpfade das Buendel vorher selbst
+konstruieren muessen.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
