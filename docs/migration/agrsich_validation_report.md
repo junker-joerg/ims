@@ -117,6 +117,10 @@ Bereits geschriebene Diagnose-Artefaktmanifeste koennen nun ebenfalls per Verzei
 wieder geladen werden. Der Scan filtert auf die stabilen Diagnose-Artefaktrollen, damit
 andere Summary- oder Batch-Manifeste im selben Ausgabebaum nicht versehentlich als
 Diagnosepakete gelesen werden.
+Mehrere geladene Diagnosepakete koennen nun zu einer uebergreifenden Payload-Summary
+verdichtet werden. Diese Summary zaehlt Diagnosepakete, validierte Batch-Manifeste, Runs,
+gepruefte Artefakte, Issues und fehlschlagende Diagnosepakete, ohne die zugrunde liegenden
+Batchlaeufe oder Legacy-Vergleiche erneut auszufuehren.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender

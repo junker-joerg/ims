@@ -200,6 +200,17 @@ class LegacyValidationBatchRunManifestCheckBundleArtifactManifest:
         return None
 
 
+@dataclass(slots=True)
+class LegacyValidationBatchRunManifestCheckPayloadSummary:
+    bundle_count: int
+    matches: bool
+    manifest_count: int
+    total_runs: int
+    checked_artifact_count: int
+    issue_count: int
+    failing_bundle_count: int
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -1125,6 +1136,20 @@ def legacy_validation_batch_run_manifest_check_bundle_to_dict(
     }
 
 
+def legacy_validation_batch_run_manifest_check_payload_summary_to_dict(
+    summary: LegacyValidationBatchRunManifestCheckPayloadSummary,
+) -> dict:
+    return {
+        "bundle_count": summary.bundle_count,
+        "matches": summary.matches,
+        "manifest_count": summary.manifest_count,
+        "total_runs": summary.total_runs,
+        "checked_artifact_count": summary.checked_artifact_count,
+        "issue_count": summary.issue_count,
+        "failing_bundle_count": summary.failing_bundle_count,
+    }
+
+
 def load_legacy_validation_batch_run_manifest(
     path: str | Path,
     *,
@@ -1636,6 +1661,48 @@ def load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directo
         )
         for manifest_path in manifest_paths
     ]
+
+
+def build_legacy_validation_batch_run_manifest_check_payload_summary(
+    payloads: list[dict],
+) -> LegacyValidationBatchRunManifestCheckPayloadSummary:
+    if not payloads:
+        raise ValueError(
+            "legacy validation batch run manifest check payload summary requires payloads"
+        )
+    for payload in payloads:
+        if not isinstance(payload, dict):
+            raise ValueError(
+                "legacy validation batch run manifest check payload summary entries must be objects"
+            )
+    return LegacyValidationBatchRunManifestCheckPayloadSummary(
+        bundle_count=len(payloads),
+        matches=all(bool(payload.get("matches")) for payload in payloads),
+        manifest_count=sum(int(payload.get("manifest_count", 0)) for payload in payloads),
+        total_runs=sum(int(payload.get("total_runs", 0)) for payload in payloads),
+        checked_artifact_count=sum(
+            int(payload.get("checked_artifact_count", 0))
+            for payload in payloads
+        ),
+        issue_count=sum(int(payload.get("issue_count", 0)) for payload in payloads),
+        failing_bundle_count=sum(
+            1 for payload in payloads if not bool(payload.get("matches"))
+        ),
+    )
+
+
+def summarize_legacy_validation_batch_run_manifest_check_payloads_from_directory(
+    input_dir: str | Path,
+    *,
+    pattern: str = "**/*_artifacts.json",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationBatchRunManifestCheckPayloadSummary:
+    payloads = load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directory(
+        input_dir,
+        pattern=pattern,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    return build_legacy_validation_batch_run_manifest_check_payload_summary(payloads)
 
 
 def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:
