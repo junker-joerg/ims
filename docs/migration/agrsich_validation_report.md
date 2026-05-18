@@ -128,6 +128,10 @@ Mehrere solcher manifestierten Diagnosepaket-Summaries koennen wiederum per Verz
 geladen und zu einem Gesamt-Buendel verdichtet werden. Der Scan filtert auf die stabilen
 Summary-Artefaktrollen und ignoriert darunterliegende Diagnose-Buendelmanifeste im selben
 Ausgabebaum.
+Dieses Gesamt-Buendel kann nun ebenfalls als JSON- und CSV-Artefakt mit Manifest geschrieben
+und aus dem Manifest wieder geladen werden. Damit kann ein hoeherer Abnahme- oder
+Batch-Workflow die letzte Diagnoseebene persistieren, ohne die darunterliegenden Laeufe erneut
+zu starten.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
