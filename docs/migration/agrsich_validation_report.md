@@ -137,6 +137,9 @@ werden. Er fasst Status, Gruende, Issue-Zaehler und die wichtigsten Diagnosezaeh
 und kann ebenfalls als JSON-/CSV-Artefakt mit Manifest persistiert werden. Der Verdict ist eine
 technische Abnahmeentscheidung ueber die vorhandenen Diagnoseartefakte, keine neue fachliche
 Bewertung der historischen Modellgleichheit.
+Fuer Batch- oder Release-nahe Aufrufer gibt es nun zusaetzlich einen One-Shot-Schreibpfad:
+Aus einem Verzeichnis mit manifestierten Diagnosepaket-Summaries werden das Summary-Gesamtbuendel
+und der daraus abgeleitete Acceptance Verdict in einem Schritt persistiert.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender

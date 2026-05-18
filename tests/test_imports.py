@@ -158,6 +158,7 @@ def test_core_placeholders_import() -> None:
         LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest,
         LegacyValidationAcceptanceVerdict,
         LegacyValidationAcceptanceVerdictArtifactManifest,
+        LegacyValidationAcceptanceRunResult,
         LegacyValidationBatchRunItem,
         LegacyValidationBatchRunResult,
         LegacyValidationReportPayloadSummary,
@@ -226,6 +227,7 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_manifest,
         write_legacy_validation_acceptance_verdict_csv,
         write_legacy_validation_acceptance_verdict_json,
+        write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
     )
 
     ctx = SimulationContext()
@@ -389,6 +391,7 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest is not None
     assert LegacyValidationAcceptanceVerdict is not None
     assert LegacyValidationAcceptanceVerdictArtifactManifest is not None
+    assert LegacyValidationAcceptanceRunResult is not None
     assert LegacyValidationBatchRunItem is not None
     assert LegacyValidationBatchRunResult is not None
     assert LegacyValidationReportPayloadSummary is not None
@@ -457,3 +460,4 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_manifest is not None
     assert write_legacy_validation_acceptance_verdict_csv is not None
     assert write_legacy_validation_acceptance_verdict_json is not None
+    assert write_legacy_validation_acceptance_run_artifacts_from_summary_directory is not None
