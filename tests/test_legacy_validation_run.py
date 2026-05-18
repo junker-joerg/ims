@@ -12,6 +12,7 @@ from ims.model.legacy_validation_run import (
     LegacyValidationBatchRunManifestCheckPayloadSummary,
     LegacyValidationBatchRunManifestCheckPayloadSummaryArtifactManifest,
     LegacyValidationBatchRunManifestCheckPayloadSummaryBundle,
+    LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest,
     LegacyValidationReportPayloadSummary,
     LegacyValidationReportSummaryBundle,
     LegacyValidationReportSummaryBundleArtifactManifest,
@@ -39,6 +40,8 @@ from ims.model.legacy_validation_run import (
     load_legacy_validation_batch_run_manifest_check_payload_summary_artifact_manifest,
     load_legacy_validation_batch_run_manifest_check_payload_summary_from_manifest,
     load_legacy_validation_batch_run_manifest_check_payload_summary_payloads_from_directory,
+    load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifact_manifest,
+    load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest,
     load_legacy_validation_artifact_manifest,
     load_legacy_validation_report_payload_from_manifest,
     load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -65,6 +68,10 @@ from ims.model.legacy_validation_run import (
     write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory,
     write_legacy_validation_batch_run_manifest_check_payload_summary_csv,
     write_legacy_validation_batch_run_manifest_check_payload_summary_json,
+    write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts,
+    write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts_from_directory,
+    write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_csv,
+    write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_json,
 )
 
 
@@ -1640,6 +1647,152 @@ def test_legacy_validation_batch_manifest_check_payload_summary_bundle_tracks_fa
     assert bundle.failing_summary_count == 1
     assert bundle.failing_bundle_count == 1
     assert bundle.issue_count == 1
+
+
+def test_legacy_validation_batch_manifest_check_payload_summary_bundle_artifacts(
+    tmp_path: Path,
+) -> None:
+    run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "runs" / "first",
+    )
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "first",
+        bundle_name="first_checks",
+    )
+    write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory(
+        tmp_path / "diagnostics" / "first",
+        tmp_path / "summary_artifacts" / "first",
+        bundle_name="first_payload_summary",
+    )
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "second",
+        bundle_name="second_checks",
+    )
+    write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory(
+        tmp_path / "diagnostics",
+        tmp_path / "summary_artifacts" / "second",
+        bundle_name="second_payload_summary",
+    )
+    bundle = summarize_legacy_validation_batch_run_manifest_check_payload_summaries_from_directory(
+        tmp_path / "summary_artifacts"
+    )
+
+    manifest = write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts(
+        bundle,
+        tmp_path / "bundle_artifacts",
+        bundle_name="summary_acceptance_bundle",
+    )
+
+    assert isinstance(
+        manifest,
+        LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest,
+    )
+    assert manifest.bundle_name == "summary_acceptance_bundle"
+    assert manifest.matches is True
+    assert manifest.summary_count == 2
+    assert manifest.bundle_count == 3
+    assert manifest.manifest_count == 3
+    assert manifest.total_runs == 6
+    assert manifest.checked_artifact_count == 21
+    assert manifest.issue_count == 0
+    assert manifest.failing_bundle_count == 0
+    assert manifest.failing_summary_count == 0
+    assert [artifact.path.name for artifact in manifest.artifacts] == [
+        "summary_acceptance_bundle.json",
+        "summary_acceptance_bundle.csv",
+        "summary_acceptance_bundle_artifacts.json",
+    ]
+    loaded_manifest = load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifact_manifest(
+        manifest.artifacts[-1].path
+    )
+    assert loaded_manifest.artifact_count == 3
+    payload = load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest(
+        manifest.artifacts[-1].path
+    )
+    assert payload == legacy_validation_batch_run_manifest_check_payload_summary_bundle_to_dict(
+        bundle
+    )
+
+    with manifest.artifacts[1].path.open("r", encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    assert [row["bundle_count"] for row in rows] == ["1", "2"]
+    assert [row["total_runs"] for row in rows] == ["2", "4"]
+
+
+def test_legacy_validation_batch_manifest_check_payload_summary_bundle_artifacts_from_directory(
+    tmp_path: Path,
+) -> None:
+    run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "runs" / "first",
+    )
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "first",
+        bundle_name="first_checks",
+    )
+    write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory(
+        tmp_path / "diagnostics" / "first",
+        tmp_path / "summary_artifacts" / "first",
+        bundle_name="first_payload_summary",
+    )
+
+    manifest = write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts_from_directory(
+        tmp_path / "summary_artifacts",
+        tmp_path / "bundle_artifacts",
+        bundle_name="summary_acceptance_bundle",
+    )
+
+    assert manifest.matches is True
+    assert manifest.summary_count == 1
+    assert manifest.bundle_count == 1
+    assert manifest.total_runs == 2
+    payload = load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest(
+        manifest.artifacts[-1].path
+    )
+    assert payload["summary_count"] == 1
+    assert payload["total_runs"] == 2
+
+
+def test_legacy_validation_batch_manifest_check_payload_summary_bundle_rejects_manifest_mismatch(
+    tmp_path: Path,
+) -> None:
+    bundle = build_legacy_validation_batch_run_manifest_check_payload_summary_bundle(
+        [
+            {
+                "matches": True,
+                "bundle_count": 1,
+                "manifest_count": 1,
+                "total_runs": 2,
+                "checked_artifact_count": 7,
+                "issue_count": 0,
+                "failing_bundle_count": 0,
+            }
+        ]
+    )
+    manifest = write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts(
+        bundle,
+        tmp_path / "bundle_artifacts",
+    )
+    json_artifact = manifest.artifact_for_kind(
+        "batch_manifest_check_payload_summary_bundle_json"
+    )
+    assert json_artifact is not None
+    payload = json.loads(json_artifact.path.read_text(encoding="utf-8"))
+    payload["summary_count"] = 999
+    json_artifact.path.write_text(json.dumps(payload), encoding="utf-8")
+
+    try:
+        load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest(
+            manifest.artifacts[-1].path
+        )
+    except ValueError as exc:
+        assert "manifest field summary_count" in str(exc)
+    else:
+        raise AssertionError("diagnostic payload summary bundle mismatch should fail")
 
 
 def test_legacy_validation_batch_manifest_check_bundle_payloads_from_directory_rejects_empty_input(

@@ -155,6 +155,7 @@ def test_core_placeholders_import() -> None:
         LegacyValidationBatchRunManifestCheckPayloadSummary,
         LegacyValidationBatchRunManifestCheckPayloadSummaryArtifactManifest,
         LegacyValidationBatchRunManifestCheckPayloadSummaryBundle,
+        LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest,
         LegacyValidationBatchRunItem,
         LegacyValidationBatchRunResult,
         LegacyValidationReportPayloadSummary,
@@ -182,6 +183,8 @@ def test_core_placeholders_import() -> None:
         load_legacy_validation_batch_run_manifest_check_payload_summary_artifact_manifest,
         load_legacy_validation_batch_run_manifest_check_payload_summary_from_manifest,
         load_legacy_validation_batch_run_manifest_check_payload_summary_payloads_from_directory,
+        load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifact_manifest,
+        load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest,
         load_legacy_validation_artifact_manifest,
         load_legacy_validation_report_payload_from_manifest,
         load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -208,6 +211,10 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory,
         write_legacy_validation_batch_run_manifest_check_payload_summary_csv,
         write_legacy_validation_batch_run_manifest_check_payload_summary_json,
+        write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts,
+        write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts_from_directory,
+        write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_csv,
+        write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_json,
     )
 
     ctx = SimulationContext()
@@ -368,6 +375,7 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationBatchRunManifestCheckPayloadSummary is not None
     assert LegacyValidationBatchRunManifestCheckPayloadSummaryArtifactManifest is not None
     assert LegacyValidationBatchRunManifestCheckPayloadSummaryBundle is not None
+    assert LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest is not None
     assert LegacyValidationBatchRunItem is not None
     assert LegacyValidationBatchRunResult is not None
     assert LegacyValidationReportPayloadSummary is not None
@@ -395,6 +403,8 @@ def test_core_placeholders_import() -> None:
     assert load_legacy_validation_batch_run_manifest_check_payload_summary_artifact_manifest is not None
     assert load_legacy_validation_batch_run_manifest_check_payload_summary_from_manifest is not None
     assert load_legacy_validation_batch_run_manifest_check_payload_summary_payloads_from_directory is not None
+    assert load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifact_manifest is not None
+    assert load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
@@ -421,3 +431,7 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory is not None
     assert write_legacy_validation_batch_run_manifest_check_payload_summary_csv is not None
     assert write_legacy_validation_batch_run_manifest_check_payload_summary_json is not None
+    assert write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts is not None
+    assert write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts_from_directory is not None
+    assert write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_csv is not None
+    assert write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_json is not None
