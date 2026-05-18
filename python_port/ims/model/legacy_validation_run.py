@@ -182,6 +182,24 @@ class LegacyValidationBatchRunManifestCheckBundle:
     checks: list[LegacyValidationBatchRunManifestCheck]
 
 
+@dataclass(slots=True)
+class LegacyValidationBatchRunManifestCheckBundleArtifactManifest:
+    bundle_name: str
+    matches: bool
+    manifest_count: int
+    total_runs: int
+    checked_artifact_count: int
+    issue_count: int
+    artifact_count: int
+    artifacts: list[LegacyValidationArtifact]
+
+    def artifact_for_kind(self, kind: str) -> LegacyValidationArtifact | None:
+        for artifact in self.artifacts:
+            if artifact.kind == kind:
+                return artifact
+        return None
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -1360,6 +1378,174 @@ def write_legacy_validation_batch_run_manifest_check_bundle_csv(
                 }
             )
     return output_path
+
+
+def _write_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest(
+    *,
+    bundle_name: str,
+    bundle: LegacyValidationBatchRunManifestCheckBundle,
+    artifacts: list[LegacyValidationArtifact],
+    path: Path,
+) -> Path:
+    payload = {
+        "bundle_name": bundle_name,
+        "matches": bundle.matches,
+        "manifest_count": bundle.manifest_count,
+        "total_runs": bundle.total_runs,
+        "checked_artifact_count": bundle.checked_artifact_count,
+        "issue_count": bundle.issue_count,
+        "artifact_count": len(artifacts),
+        "artifacts": [
+            _artifact_to_mapping(artifact, path.parent)
+            for artifact in artifacts
+        ],
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return path
+
+
+def write_legacy_validation_batch_run_manifest_check_bundle_artifacts(
+    bundle: LegacyValidationBatchRunManifestCheckBundle,
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_batch_manifest_checks",
+) -> LegacyValidationBatchRunManifestCheckBundleArtifactManifest:
+    output_path = Path(output_dir)
+    artifacts = [
+        LegacyValidationArtifact(
+            kind="batch_manifest_check_bundle_json",
+            path=write_legacy_validation_batch_run_manifest_check_bundle_json(
+                bundle,
+                output_path / f"{bundle_name}.json",
+            ),
+        ),
+        LegacyValidationArtifact(
+            kind="batch_manifest_check_bundle_csv",
+            path=write_legacy_validation_batch_run_manifest_check_bundle_csv(
+                bundle,
+                output_path / f"{bundle_name}.csv",
+            ),
+        ),
+    ]
+    manifest_artifact = LegacyValidationArtifact(
+        kind="batch_manifest_check_bundle_manifest_json",
+        path=output_path / f"{bundle_name}_artifacts.json",
+    )
+    artifacts.append(manifest_artifact)
+    _write_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest(
+        bundle_name=bundle_name,
+        bundle=bundle,
+        artifacts=artifacts,
+        path=manifest_artifact.path,
+    )
+    return LegacyValidationBatchRunManifestCheckBundleArtifactManifest(
+        bundle_name=bundle_name,
+        matches=bundle.matches,
+        manifest_count=bundle.manifest_count,
+        total_runs=bundle.total_runs,
+        checked_artifact_count=bundle.checked_artifact_count,
+        issue_count=bundle.issue_count,
+        artifact_count=len(artifacts),
+        artifacts=artifacts,
+    )
+
+
+def load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationBatchRunManifestCheckBundleArtifactManifest:
+    manifest_path = Path(path).resolve()
+    with manifest_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError("legacy validation batch run manifest check bundle manifest must be a JSON object")
+
+    artifacts_data = data.get("artifacts")
+    if not isinstance(artifacts_data, list) or not artifacts_data:
+        raise ValueError("legacy validation batch run manifest check bundle manifest must contain artifacts")
+    artifacts = [
+        _artifact_from_mapping(item, manifest_path.parent)
+        for item in artifacts_data
+    ]
+    artifact_count = int(data.get("artifact_count", -1))
+    if artifact_count != len(artifacts):
+        raise ValueError(
+            "legacy validation batch run manifest check bundle manifest artifact_count must match artifacts"
+        )
+    kinds = [artifact.kind for artifact in artifacts]
+    if len(kinds) != len(set(kinds)):
+        raise ValueError(
+            "legacy validation batch run manifest check bundle manifest must contain unique artifact kinds"
+        )
+    required_kinds = {
+        "batch_manifest_check_bundle_json",
+        "batch_manifest_check_bundle_csv",
+        "batch_manifest_check_bundle_manifest_json",
+    }
+    missing_kinds = sorted(required_kinds.difference(kinds))
+    if missing_kinds:
+        raise ValueError(
+            "legacy validation batch run manifest check bundle manifest is missing artifact kinds: "
+            f"{missing_kinds}"
+        )
+    if require_existing_artifacts:
+        missing = [
+            artifact.path
+            for artifact in artifacts
+            if not artifact.path.exists()
+        ]
+        if missing:
+            raise ValueError(
+                "legacy validation batch run manifest check bundle manifest references missing artifacts: "
+                f"{missing}"
+            )
+    return LegacyValidationBatchRunManifestCheckBundleArtifactManifest(
+        bundle_name=str(data.get("bundle_name", "")),
+        matches=bool(data.get("matches")),
+        manifest_count=int(data.get("manifest_count", 0)),
+        total_runs=int(data.get("total_runs", 0)),
+        checked_artifact_count=int(data.get("checked_artifact_count", 0)),
+        issue_count=int(data.get("issue_count", 0)),
+        artifact_count=artifact_count,
+        artifacts=artifacts,
+    )
+
+
+def load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> dict:
+    manifest = load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest(
+        path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    bundle_artifact = manifest.artifact_for_kind("batch_manifest_check_bundle_json")
+    if bundle_artifact is None:
+        raise ValueError(
+            "legacy validation batch run manifest check bundle manifest must contain "
+            "batch_manifest_check_bundle_json"
+        )
+    with bundle_artifact.path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("legacy validation batch run manifest check bundle artifact must be a JSON object")
+    expected_values = {
+        "matches": manifest.matches,
+        "manifest_count": manifest.manifest_count,
+        "total_runs": manifest.total_runs,
+        "checked_artifact_count": manifest.checked_artifact_count,
+        "issue_count": manifest.issue_count,
+    }
+    for field_name, expected_value in expected_values.items():
+        if payload.get(field_name) != expected_value:
+            raise ValueError(
+                "legacy validation batch run manifest check bundle artifact does not match "
+                f"manifest field {field_name}"
+            )
+    return payload
 
 
 def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:

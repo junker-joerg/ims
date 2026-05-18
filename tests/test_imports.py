@@ -150,6 +150,7 @@ def test_core_placeholders_import() -> None:
         LegacyValidationArtifactManifest,
         LegacyValidationBatchRunManifestCheck,
         LegacyValidationBatchRunManifestCheckBundle,
+        LegacyValidationBatchRunManifestCheckBundleArtifactManifest,
         LegacyValidationBatchRunManifestIssue,
         LegacyValidationBatchRunItem,
         LegacyValidationBatchRunResult,
@@ -168,6 +169,8 @@ def test_core_placeholders_import() -> None:
         legacy_validation_report_payload_summary_to_dict,
         legacy_validation_report_summary_bundle_to_dict,
         load_legacy_validation_batch_run_manifest,
+        load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest,
+        load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest,
         load_legacy_validation_artifact_manifest,
         load_legacy_validation_report_payload_from_manifest,
         load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -183,6 +186,7 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_report_summary_bundle_csv,
         write_legacy_validation_report_summary_bundle_json,
         write_legacy_validation_batch_run_manifest,
+        write_legacy_validation_batch_run_manifest_check_bundle_artifacts,
         write_legacy_validation_batch_run_manifest_check_bundle_csv,
         write_legacy_validation_batch_run_manifest_check_bundle_json,
     )
@@ -340,6 +344,7 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationArtifactManifest is not None
     assert LegacyValidationBatchRunManifestCheck is not None
     assert LegacyValidationBatchRunManifestCheckBundle is not None
+    assert LegacyValidationBatchRunManifestCheckBundleArtifactManifest is not None
     assert LegacyValidationBatchRunManifestIssue is not None
     assert LegacyValidationBatchRunItem is not None
     assert LegacyValidationBatchRunResult is not None
@@ -358,6 +363,8 @@ def test_core_placeholders_import() -> None:
     assert legacy_validation_report_payload_summary_to_dict is not None
     assert legacy_validation_report_summary_bundle_to_dict is not None
     assert load_legacy_validation_batch_run_manifest is not None
+    assert load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest is not None
+    assert load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
@@ -373,5 +380,6 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_report_summary_bundle_csv is not None
     assert write_legacy_validation_report_summary_bundle_json is not None
     assert write_legacy_validation_batch_run_manifest is not None
+    assert write_legacy_validation_batch_run_manifest_check_bundle_artifacts is not None
     assert write_legacy_validation_batch_run_manifest_check_bundle_csv is not None
     assert write_legacy_validation_batch_run_manifest_check_bundle_json is not None
