@@ -121,6 +121,9 @@ Mehrere geladene Diagnosepakete koennen nun zu einer uebergreifenden Payload-Sum
 verdichtet werden. Diese Summary zaehlt Diagnosepakete, validierte Batch-Manifeste, Runs,
 gepruefte Artefakte, Issues und fehlschlagende Diagnosepakete, ohne die zugrunde liegenden
 Batchlaeufe oder Legacy-Vergleiche erneut auszufuehren.
+Diese Diagnosepaket-Summary kann nun ebenfalls als JSON- und CSV-Artefakt mit eigenem
+Artefaktmanifest geschrieben und aus dem Manifest wieder geladen werden. Damit bleibt auch
+die uebergeordnete Diagnoseauswertung reproduzierbar und maschinenlesbar pruefbar.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
