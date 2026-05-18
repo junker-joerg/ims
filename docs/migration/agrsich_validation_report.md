@@ -113,6 +113,10 @@ Summen des JSON-Payloads gegen die Manifest-Summen.
 Das manifestierte Diagnosepaket kann direkt aus expliziten Batch-Run-Manifestpfaden oder per
 Verzeichnisscan erzeugt werden, ohne dass aufrufende Batchpfade das Buendel vorher selbst
 konstruieren muessen.
+Bereits geschriebene Diagnose-Artefaktmanifeste koennen nun ebenfalls per Verzeichnisscan
+wieder geladen werden. Der Scan filtert auf die stabilen Diagnose-Artefaktrollen, damit
+andere Summary- oder Batch-Manifeste im selben Ausgabebaum nicht versehentlich als
+Diagnosepakete gelesen werden.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
