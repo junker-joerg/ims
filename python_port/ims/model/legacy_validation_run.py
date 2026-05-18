@@ -304,6 +304,19 @@ class LegacyValidationAcceptanceVerdictArtifactManifest:
 class LegacyValidationAcceptanceRunResult:
     summary_bundle_manifest: LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest
     verdict_manifest: LegacyValidationAcceptanceVerdictArtifactManifest
+    run_manifest_path: Path | None = None
+
+
+@dataclass(slots=True)
+class LegacyValidationAcceptanceRunManifest:
+    run_name: str
+    passed: bool
+    status: str
+    summary_bundle_manifest_path: Path
+    verdict_manifest_path: Path
+    total_runs: int
+    issue_count: int
+    failing_summary_count: int
 
 
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
@@ -2748,6 +2761,7 @@ def write_legacy_validation_acceptance_run_artifacts_from_summary_directory(
     input_dir: str | Path,
     output_dir: str | Path,
     *,
+    run_name: str = "legacy_validation_acceptance_run",
     summary_bundle_name: str = "legacy_validation_diagnostic_summary_bundle",
     verdict_bundle_name: str = "legacy_validation_acceptance_verdict",
     pattern: str = "**/*_artifacts.json",
@@ -2767,9 +2781,143 @@ def write_legacy_validation_acceptance_run_artifacts_from_summary_directory(
         bundle_name=verdict_bundle_name,
         require_existing_artifacts=require_existing_artifacts,
     )
+    run_manifest_path = write_legacy_validation_acceptance_run_manifest(
+        run_name=run_name,
+        summary_bundle_manifest_path=summary_manifest.artifacts[-1].path,
+        verdict_manifest_path=verdict_manifest.artifacts[-1].path,
+        output_path=output_path / f"{run_name}.json",
+        require_existing_artifacts=require_existing_artifacts,
+    )
     return LegacyValidationAcceptanceRunResult(
         summary_bundle_manifest=summary_manifest,
         verdict_manifest=verdict_manifest,
+        run_manifest_path=run_manifest_path,
+    )
+
+
+def write_legacy_validation_acceptance_run_manifest(
+    *,
+    run_name: str,
+    summary_bundle_manifest_path: str | Path,
+    verdict_manifest_path: str | Path,
+    output_path: str | Path,
+    require_existing_artifacts: bool = True,
+) -> Path:
+    summary_payload = load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest(
+        summary_bundle_manifest_path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    verdict_payload = load_legacy_validation_acceptance_verdict_from_manifest(
+        verdict_manifest_path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    expected_fields = [
+        "total_runs",
+        "issue_count",
+        "failing_summary_count",
+    ]
+    for field_name in expected_fields:
+        if summary_payload.get(field_name) != verdict_payload.get(field_name):
+            raise ValueError(
+                "legacy validation acceptance run manifest summary and verdict mismatch "
+                f"for field {field_name}"
+            )
+    payload = {
+        "run_name": run_name,
+        "passed": bool(verdict_payload.get("passed")),
+        "status": str(verdict_payload.get("status", "")),
+        "summary_bundle_manifest_path": str(Path(summary_bundle_manifest_path)),
+        "verdict_manifest_path": str(Path(verdict_manifest_path)),
+        "total_runs": int(verdict_payload.get("total_runs", 0)),
+        "issue_count": int(verdict_payload.get("issue_count", 0)),
+        "failing_summary_count": int(verdict_payload.get("failing_summary_count", 0)),
+    }
+    path = Path(output_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return path
+
+
+def load_legacy_validation_acceptance_run_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationAcceptanceRunManifest:
+    manifest_path = Path(path).resolve()
+    with manifest_path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("legacy validation acceptance run manifest must be a JSON object")
+
+    run_name = str(payload.get("run_name", "")).strip()
+    if not run_name:
+        raise ValueError("legacy validation acceptance run manifest must contain a run_name")
+
+    summary_manifest_data = str(payload.get("summary_bundle_manifest_path", "")).strip()
+    verdict_manifest_data = str(payload.get("verdict_manifest_path", "")).strip()
+    if not summary_manifest_data:
+        raise ValueError(
+            "legacy validation acceptance run manifest must contain a summary_bundle_manifest_path"
+        )
+    if not verdict_manifest_data:
+        raise ValueError(
+            "legacy validation acceptance run manifest must contain a verdict_manifest_path"
+        )
+    summary_manifest_path = _resolve_artifact_path(
+        summary_manifest_data,
+        manifest_path.parent,
+    )
+    verdict_manifest_path = _resolve_artifact_path(
+        verdict_manifest_data,
+        manifest_path.parent,
+    )
+
+    if require_existing_artifacts:
+        missing = [
+            item
+            for item in [summary_manifest_path, verdict_manifest_path]
+            if not item.exists()
+        ]
+        if missing:
+            raise ValueError(
+                "legacy validation acceptance run manifest references missing artifacts: "
+                f"{missing}"
+            )
+        summary_payload = load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest(
+            summary_manifest_path
+        )
+        verdict_payload = load_legacy_validation_acceptance_verdict_from_manifest(
+            verdict_manifest_path
+        )
+        expected_fields = {
+            "passed": bool(verdict_payload.get("passed")),
+            "status": str(verdict_payload.get("status", "")),
+            "total_runs": int(verdict_payload.get("total_runs", 0)),
+            "issue_count": int(verdict_payload.get("issue_count", 0)),
+            "failing_summary_count": int(verdict_payload.get("failing_summary_count", 0)),
+        }
+        for field_name, expected_value in expected_fields.items():
+            if payload.get(field_name) != expected_value:
+                raise ValueError(
+                    "legacy validation acceptance run manifest does not match "
+                    f"verdict field {field_name}"
+                )
+        for field_name in ["total_runs", "issue_count", "failing_summary_count"]:
+            if summary_payload.get(field_name) != verdict_payload.get(field_name):
+                raise ValueError(
+                    "legacy validation acceptance run manifest summary and verdict mismatch "
+                    f"for field {field_name}"
+                )
+
+    return LegacyValidationAcceptanceRunManifest(
+        run_name=run_name,
+        passed=bool(payload.get("passed")),
+        status=str(payload.get("status", "")),
+        summary_bundle_manifest_path=summary_manifest_path,
+        verdict_manifest_path=verdict_manifest_path,
+        total_runs=int(payload.get("total_runs", 0)),
+        issue_count=int(payload.get("issue_count", 0)),
+        failing_summary_count=int(payload.get("failing_summary_count", 0)),
     )
 
 
