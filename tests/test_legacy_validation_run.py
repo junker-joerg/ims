@@ -256,6 +256,37 @@ def test_legacy_validation_artifact_manifest_loads_relative_output_paths(
     assert payload["total_rows"] == 40
 
 
+def test_legacy_validation_artifact_manifest_prefers_manifest_relative_paths(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_from_fixture(
+        FIXTURE_DIR / "legacy_validation_bundle.json",
+        tmp_path / "report",
+    )
+    manifest_path = result.artifacts[-1].path
+    stale_report_path = Path("legacy_validation_bundle.json")
+    stale_report_path.write_text(
+        json.dumps(
+            {
+                "matches": False,
+                "total_files": 999,
+                "total_rows": 999,
+                "matched_rows": 0,
+                "mismatched_rows": 999,
+            }
+        ),
+        encoding="utf-8",
+    )
+    try:
+        payload = load_legacy_validation_report_payload_from_manifest(manifest_path)
+    finally:
+        stale_report_path.unlink()
+
+    assert payload["matches"] is True
+    assert payload["total_files"] == 4
+    assert payload["total_rows"] == 40
+
+
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     data["targets"][0]["subject_type"] = "unknown"
