@@ -124,6 +124,10 @@ Batchlaeufe oder Legacy-Vergleiche erneut auszufuehren.
 Diese Diagnosepaket-Summary kann nun ebenfalls als JSON- und CSV-Artefakt mit eigenem
 Artefaktmanifest geschrieben und aus dem Manifest wieder geladen werden. Damit bleibt auch
 die uebergeordnete Diagnoseauswertung reproduzierbar und maschinenlesbar pruefbar.
+Mehrere solcher manifestierten Diagnosepaket-Summaries koennen wiederum per Verzeichnisscan
+geladen und zu einem Gesamt-Buendel verdichtet werden. Der Scan filtert auf die stabilen
+Summary-Artefaktrollen und ignoriert darunterliegende Diagnose-Buendelmanifeste im selben
+Ausgabebaum.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
