@@ -268,6 +268,38 @@ class LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest:
         return None
 
 
+@dataclass(slots=True)
+class LegacyValidationAcceptanceVerdict:
+    passed: bool
+    status: str
+    reason_count: int
+    reasons: list[str]
+    summary_count: int
+    bundle_count: int
+    manifest_count: int
+    total_runs: int
+    checked_artifact_count: int
+    issue_count: int
+    failing_bundle_count: int
+    failing_summary_count: int
+
+
+@dataclass(slots=True)
+class LegacyValidationAcceptanceVerdictArtifactManifest:
+    bundle_name: str
+    passed: bool
+    status: str
+    reason_count: int
+    artifact_count: int
+    artifacts: list[LegacyValidationArtifact]
+
+    def artifact_for_kind(self, kind: str) -> LegacyValidationArtifact | None:
+        for artifact in self.artifacts:
+            if artifact.kind == kind:
+                return artifact
+        return None
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -1225,6 +1257,25 @@ def legacy_validation_batch_run_manifest_check_payload_summary_bundle_to_dict(
             legacy_validation_batch_run_manifest_check_payload_summary_to_dict(summary)
             for summary in bundle.summaries
         ],
+    }
+
+
+def legacy_validation_acceptance_verdict_to_dict(
+    verdict: LegacyValidationAcceptanceVerdict,
+) -> dict:
+    return {
+        "passed": verdict.passed,
+        "status": verdict.status,
+        "reason_count": verdict.reason_count,
+        "reasons": verdict.reasons,
+        "summary_count": verdict.summary_count,
+        "bundle_count": verdict.bundle_count,
+        "manifest_count": verdict.manifest_count,
+        "total_runs": verdict.total_runs,
+        "checked_artifact_count": verdict.checked_artifact_count,
+        "issue_count": verdict.issue_count,
+        "failing_bundle_count": verdict.failing_bundle_count,
+        "failing_summary_count": verdict.failing_summary_count,
     }
 
 
@@ -2440,6 +2491,340 @@ def load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_
         if payload.get(field_name) != expected_value:
             raise ValueError(
                 "legacy validation batch run manifest check payload summary bundle artifact does not match "
+                f"manifest field {field_name}"
+            )
+    return payload
+
+
+def _legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_mapping(
+    payload: dict,
+) -> LegacyValidationBatchRunManifestCheckPayloadSummaryBundle:
+    if not isinstance(payload, dict):
+        raise ValueError(
+            "legacy validation batch run manifest check payload summary bundle must be an object"
+        )
+    summaries_data = payload.get("summaries", [])
+    if not isinstance(summaries_data, list):
+        raise ValueError(
+            "legacy validation batch run manifest check payload summary bundle summaries must be a list"
+        )
+    manifest_paths_data = payload.get("manifest_paths", [])
+    if not isinstance(manifest_paths_data, list):
+        raise ValueError(
+            "legacy validation batch run manifest check payload summary bundle manifest_paths must be a list"
+        )
+    summaries = [
+        _batch_run_manifest_check_payload_summary_from_mapping(summary)
+        for summary in summaries_data
+    ]
+    manifest_paths = [Path(path) for path in manifest_paths_data]
+    summary_count = int(payload.get("summary_count", len(summaries)))
+    if summary_count != len(summaries):
+        raise ValueError(
+            "legacy validation batch run manifest check payload summary bundle summary_count must match summaries"
+        )
+    if manifest_paths and len(manifest_paths) != len(summaries):
+        raise ValueError(
+            "legacy validation batch run manifest check payload summary bundle manifest_paths must match summaries"
+        )
+    return LegacyValidationBatchRunManifestCheckPayloadSummaryBundle(
+        summary_count=summary_count,
+        matches=bool(payload.get("matches")),
+        bundle_count=int(payload.get("bundle_count", 0)),
+        manifest_count=int(payload.get("manifest_count", 0)),
+        total_runs=int(payload.get("total_runs", 0)),
+        checked_artifact_count=int(payload.get("checked_artifact_count", 0)),
+        issue_count=int(payload.get("issue_count", 0)),
+        failing_bundle_count=int(payload.get("failing_bundle_count", 0)),
+        failing_summary_count=int(payload.get("failing_summary_count", 0)),
+        summaries=summaries,
+        manifest_paths=manifest_paths,
+    )
+
+
+def build_legacy_validation_acceptance_verdict(
+    bundle: LegacyValidationBatchRunManifestCheckPayloadSummaryBundle,
+) -> LegacyValidationAcceptanceVerdict:
+    reasons: list[str] = []
+    if bundle.summary_count <= 0:
+        reasons.append("no diagnostic summary bundles were evaluated")
+    if not bundle.matches:
+        reasons.append("at least one diagnostic summary bundle did not match")
+    if bundle.issue_count > 0:
+        reasons.append(f"{bundle.issue_count} diagnostic issue(s) were reported")
+    if bundle.failing_bundle_count > 0:
+        reasons.append(
+            f"{bundle.failing_bundle_count} diagnostic bundle(s) failed"
+        )
+    if bundle.failing_summary_count > 0:
+        reasons.append(
+            f"{bundle.failing_summary_count} diagnostic summary bundle(s) failed"
+        )
+    passed = not reasons
+    return LegacyValidationAcceptanceVerdict(
+        passed=passed,
+        status="passed" if passed else "failed",
+        reason_count=len(reasons),
+        reasons=reasons,
+        summary_count=bundle.summary_count,
+        bundle_count=bundle.bundle_count,
+        manifest_count=bundle.manifest_count,
+        total_runs=bundle.total_runs,
+        checked_artifact_count=bundle.checked_artifact_count,
+        issue_count=bundle.issue_count,
+        failing_bundle_count=bundle.failing_bundle_count,
+        failing_summary_count=bundle.failing_summary_count,
+    )
+
+
+def build_legacy_validation_acceptance_verdict_from_summary_bundle_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationAcceptanceVerdict:
+    payload = load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest(
+        path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    bundle = _legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_mapping(
+        payload
+    )
+    return build_legacy_validation_acceptance_verdict(bundle)
+
+
+def write_legacy_validation_acceptance_verdict_json(
+    verdict: LegacyValidationAcceptanceVerdict,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        json.dumps(
+            legacy_validation_acceptance_verdict_to_dict(verdict),
+            indent=2,
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
+    return output_path
+
+
+def write_legacy_validation_acceptance_verdict_csv(
+    verdict: LegacyValidationAcceptanceVerdict,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "passed",
+                "status",
+                "reason_count",
+                "summary_count",
+                "bundle_count",
+                "manifest_count",
+                "total_runs",
+                "checked_artifact_count",
+                "issue_count",
+                "failing_bundle_count",
+                "failing_summary_count",
+                "reasons",
+            ],
+        )
+        writer.writeheader()
+        writer.writerow(
+            {
+                "passed": str(verdict.passed),
+                "status": verdict.status,
+                "reason_count": verdict.reason_count,
+                "summary_count": verdict.summary_count,
+                "bundle_count": verdict.bundle_count,
+                "manifest_count": verdict.manifest_count,
+                "total_runs": verdict.total_runs,
+                "checked_artifact_count": verdict.checked_artifact_count,
+                "issue_count": verdict.issue_count,
+                "failing_bundle_count": verdict.failing_bundle_count,
+                "failing_summary_count": verdict.failing_summary_count,
+                "reasons": ";".join(verdict.reasons),
+            }
+        )
+    return output_path
+
+
+def _write_legacy_validation_acceptance_verdict_artifact_manifest(
+    *,
+    bundle_name: str,
+    verdict: LegacyValidationAcceptanceVerdict,
+    artifacts: list[LegacyValidationArtifact],
+    path: Path,
+) -> Path:
+    payload = {
+        "bundle_name": bundle_name,
+        "passed": verdict.passed,
+        "status": verdict.status,
+        "reason_count": verdict.reason_count,
+        "artifact_count": len(artifacts),
+        "artifacts": [
+            _artifact_to_mapping(artifact, path.parent)
+            for artifact in artifacts
+        ],
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return path
+
+
+def write_legacy_validation_acceptance_verdict_artifacts(
+    verdict: LegacyValidationAcceptanceVerdict,
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_acceptance_verdict",
+) -> LegacyValidationAcceptanceVerdictArtifactManifest:
+    output_path = Path(output_dir)
+    artifacts = [
+        LegacyValidationArtifact(
+            kind="acceptance_verdict_json",
+            path=write_legacy_validation_acceptance_verdict_json(
+                verdict,
+                output_path / f"{bundle_name}.json",
+            ),
+        ),
+        LegacyValidationArtifact(
+            kind="acceptance_verdict_csv",
+            path=write_legacy_validation_acceptance_verdict_csv(
+                verdict,
+                output_path / f"{bundle_name}.csv",
+            ),
+        ),
+    ]
+    manifest_artifact = LegacyValidationArtifact(
+        kind="acceptance_verdict_manifest_json",
+        path=output_path / f"{bundle_name}_artifacts.json",
+    )
+    artifacts.append(manifest_artifact)
+    _write_legacy_validation_acceptance_verdict_artifact_manifest(
+        bundle_name=bundle_name,
+        verdict=verdict,
+        artifacts=artifacts,
+        path=manifest_artifact.path,
+    )
+    return LegacyValidationAcceptanceVerdictArtifactManifest(
+        bundle_name=bundle_name,
+        passed=verdict.passed,
+        status=verdict.status,
+        reason_count=verdict.reason_count,
+        artifact_count=len(artifacts),
+        artifacts=artifacts,
+    )
+
+
+def write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_manifest(
+    path: str | Path,
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_acceptance_verdict",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationAcceptanceVerdictArtifactManifest:
+    verdict = build_legacy_validation_acceptance_verdict_from_summary_bundle_manifest(
+        path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    return write_legacy_validation_acceptance_verdict_artifacts(
+        verdict,
+        output_dir,
+        bundle_name=bundle_name,
+    )
+
+
+def load_legacy_validation_acceptance_verdict_artifact_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationAcceptanceVerdictArtifactManifest:
+    manifest_path = Path(path).resolve()
+    with manifest_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError("legacy validation acceptance verdict manifest must be a JSON object")
+
+    artifacts_data = data.get("artifacts")
+    if not isinstance(artifacts_data, list) or not artifacts_data:
+        raise ValueError("legacy validation acceptance verdict manifest must contain artifacts")
+    artifacts = [
+        _artifact_from_mapping(item, manifest_path.parent)
+        for item in artifacts_data
+    ]
+    artifact_count = int(data.get("artifact_count", -1))
+    if artifact_count != len(artifacts):
+        raise ValueError(
+            "legacy validation acceptance verdict manifest artifact_count must match artifacts"
+        )
+    kinds = [artifact.kind for artifact in artifacts]
+    if len(kinds) != len(set(kinds)):
+        raise ValueError(
+            "legacy validation acceptance verdict manifest must contain unique artifact kinds"
+        )
+    required_kinds = {
+        "acceptance_verdict_json",
+        "acceptance_verdict_csv",
+        "acceptance_verdict_manifest_json",
+    }
+    missing_kinds = sorted(required_kinds.difference(kinds))
+    if missing_kinds:
+        raise ValueError(
+            "legacy validation acceptance verdict manifest is missing artifact kinds: "
+            f"{missing_kinds}"
+        )
+    if require_existing_artifacts:
+        missing = [
+            artifact.path
+            for artifact in artifacts
+            if not artifact.path.exists()
+        ]
+        if missing:
+            raise ValueError(
+                "legacy validation acceptance verdict manifest references missing artifacts: "
+                f"{missing}"
+            )
+    return LegacyValidationAcceptanceVerdictArtifactManifest(
+        bundle_name=str(data.get("bundle_name", "")),
+        passed=bool(data.get("passed")),
+        status=str(data.get("status", "")),
+        reason_count=int(data.get("reason_count", 0)),
+        artifact_count=artifact_count,
+        artifacts=artifacts,
+    )
+
+
+def load_legacy_validation_acceptance_verdict_from_manifest(
+    path: str | Path,
+    *,
+    require_existing_artifacts: bool = True,
+) -> dict:
+    manifest = load_legacy_validation_acceptance_verdict_artifact_manifest(
+        path,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    verdict_artifact = manifest.artifact_for_kind("acceptance_verdict_json")
+    if verdict_artifact is None:
+        raise ValueError(
+            "legacy validation acceptance verdict manifest must contain acceptance_verdict_json"
+        )
+    with verdict_artifact.path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("legacy validation acceptance verdict artifact must be a JSON object")
+    expected_values = {
+        "passed": manifest.passed,
+        "status": manifest.status,
+        "reason_count": manifest.reason_count,
+    }
+    for field_name, expected_value in expected_values.items():
+        if payload.get(field_name) != expected_value:
+            raise ValueError(
+                "legacy validation acceptance verdict artifact does not match "
                 f"manifest field {field_name}"
             )
     return payload
