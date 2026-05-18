@@ -140,6 +140,9 @@ Bewertung der historischen Modellgleichheit.
 Fuer Batch- oder Release-nahe Aufrufer gibt es nun zusaetzlich einen One-Shot-Schreibpfad:
 Aus einem Verzeichnis mit manifestierten Diagnosepaket-Summaries werden das Summary-Gesamtbuendel
 und der daraus abgeleitete Acceptance Verdict in einem Schritt persistiert.
+Dieser One-Shot-Pfad schreibt nun auch ein Acceptance-Run-Manifest, das Summary-Gesamtbuendel
+und Verdict-Manifest zusammen referenziert und beim Laden zentrale Zaehler konsistent gegen
+die referenzierten Artefakte prueft.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
