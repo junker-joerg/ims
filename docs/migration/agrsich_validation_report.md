@@ -132,6 +132,11 @@ Dieses Gesamt-Buendel kann nun ebenfalls als JSON- und CSV-Artefakt mit Manifest
 und aus dem Manifest wieder geladen werden. Damit kann ein hoeherer Abnahme- oder
 Batch-Workflow die letzte Diagnoseebene persistieren, ohne die darunterliegenden Laeufe erneut
 zu starten.
+Aus diesem Gesamt-Buendel kann nun zusaetzlich ein kompakter Acceptance Verdict abgeleitet
+werden. Er fasst Status, Gruende, Issue-Zaehler und die wichtigsten Diagnosezaehler zusammen
+und kann ebenfalls als JSON-/CSV-Artefakt mit Manifest persistiert werden. Der Verdict ist eine
+technische Abnahmeentscheidung ueber die vorhandenen Diagnoseartefakte, keine neue fachliche
+Bewertung der historischen Modellgleichheit.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender

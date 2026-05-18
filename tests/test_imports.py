@@ -156,6 +156,8 @@ def test_core_placeholders_import() -> None:
         LegacyValidationBatchRunManifestCheckPayloadSummaryArtifactManifest,
         LegacyValidationBatchRunManifestCheckPayloadSummaryBundle,
         LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest,
+        LegacyValidationAcceptanceVerdict,
+        LegacyValidationAcceptanceVerdictArtifactManifest,
         LegacyValidationBatchRunItem,
         LegacyValidationBatchRunResult,
         LegacyValidationReportPayloadSummary,
@@ -165,6 +167,8 @@ def test_core_placeholders_import() -> None:
         LegacyValidationTarget,
         build_legacy_validation_batch_run_manifest_check_payload_summary,
         build_legacy_validation_batch_run_manifest_check_payload_summary_bundle,
+        build_legacy_validation_acceptance_verdict,
+        build_legacy_validation_acceptance_verdict_from_summary_bundle_manifest,
         build_legacy_validation_report_summary_bundle,
         check_legacy_validation_batch_run_manifest,
         check_legacy_validation_batch_run_manifests,
@@ -172,6 +176,7 @@ def test_core_placeholders_import() -> None:
         legacy_validation_batch_run_manifest_check_bundle_to_dict,
         legacy_validation_batch_run_manifest_check_payload_summary_bundle_to_dict,
         legacy_validation_batch_run_manifest_check_payload_summary_to_dict,
+        legacy_validation_acceptance_verdict_to_dict,
         legacy_validation_batch_run_manifest_check_to_dict,
         legacy_validation_batch_run_result_to_dict,
         legacy_validation_report_payload_summary_to_dict,
@@ -185,6 +190,8 @@ def test_core_placeholders_import() -> None:
         load_legacy_validation_batch_run_manifest_check_payload_summary_payloads_from_directory,
         load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifact_manifest,
         load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest,
+        load_legacy_validation_acceptance_verdict_artifact_manifest,
+        load_legacy_validation_acceptance_verdict_from_manifest,
         load_legacy_validation_artifact_manifest,
         load_legacy_validation_report_payload_from_manifest,
         load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -215,6 +222,10 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts_from_directory,
         write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_csv,
         write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_json,
+        write_legacy_validation_acceptance_verdict_artifacts,
+        write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_manifest,
+        write_legacy_validation_acceptance_verdict_csv,
+        write_legacy_validation_acceptance_verdict_json,
     )
 
     ctx = SimulationContext()
@@ -376,6 +387,8 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationBatchRunManifestCheckPayloadSummaryArtifactManifest is not None
     assert LegacyValidationBatchRunManifestCheckPayloadSummaryBundle is not None
     assert LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest is not None
+    assert LegacyValidationAcceptanceVerdict is not None
+    assert LegacyValidationAcceptanceVerdictArtifactManifest is not None
     assert LegacyValidationBatchRunItem is not None
     assert LegacyValidationBatchRunResult is not None
     assert LegacyValidationReportPayloadSummary is not None
@@ -385,6 +398,8 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationTarget is not None
     assert build_legacy_validation_batch_run_manifest_check_payload_summary is not None
     assert build_legacy_validation_batch_run_manifest_check_payload_summary_bundle is not None
+    assert build_legacy_validation_acceptance_verdict is not None
+    assert build_legacy_validation_acceptance_verdict_from_summary_bundle_manifest is not None
     assert build_legacy_validation_report_summary_bundle is not None
     assert check_legacy_validation_batch_run_manifest is not None
     assert check_legacy_validation_batch_run_manifests is not None
@@ -392,6 +407,7 @@ def test_core_placeholders_import() -> None:
     assert legacy_validation_batch_run_manifest_check_bundle_to_dict is not None
     assert legacy_validation_batch_run_manifest_check_payload_summary_bundle_to_dict is not None
     assert legacy_validation_batch_run_manifest_check_payload_summary_to_dict is not None
+    assert legacy_validation_acceptance_verdict_to_dict is not None
     assert legacy_validation_batch_run_manifest_check_to_dict is not None
     assert legacy_validation_batch_run_result_to_dict is not None
     assert legacy_validation_report_payload_summary_to_dict is not None
@@ -405,6 +421,8 @@ def test_core_placeholders_import() -> None:
     assert load_legacy_validation_batch_run_manifest_check_payload_summary_payloads_from_directory is not None
     assert load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifact_manifest is not None
     assert load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest is not None
+    assert load_legacy_validation_acceptance_verdict_artifact_manifest is not None
+    assert load_legacy_validation_acceptance_verdict_from_manifest is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
@@ -435,3 +453,7 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts_from_directory is not None
     assert write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_csv is not None
     assert write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_json is not None
+    assert write_legacy_validation_acceptance_verdict_artifacts is not None
+    assert write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_manifest is not None
+    assert write_legacy_validation_acceptance_verdict_csv is not None
+    assert write_legacy_validation_acceptance_verdict_json is not None
