@@ -105,7 +105,8 @@ Ergebnisobjekt mit Status, gepruefter Run-Anzahl, gepruefter Artefaktanzahl und 
 Mehrere Batch-Run-Manifeste koennen zu einem Diagnose-Buendel zusammengefasst werden. Dieses
 Buendel aggregiert Manifestanzahl, Run-Anzahl, gepruefte Artefakte und Issues ueber explizit
 uebergebene Manifestpfade oder einen Verzeichnisscan und kann als JSON-Artefakt geschrieben
-werden.
+werden. Zusaetzlich kann das Diagnose-Buendel nun als kompakte CSV-Datei geschrieben werden:
+eine Zeile je Batch-Run-Manifest mit Status, Zaehlern und Issue-Zusammenfassung.
 Die Artefaktzaehlung dieses Diagnosepfads entspricht den tatsaechlich geprueften Pfaden:
 Summary-Manifest sowie Fixture-Pfad, Ausgabeverzeichnis und Report-Manifest je Run. Das
 Ausgabeverzeichnis muss dabei auch wirklich ein Verzeichnis sein, nicht nur ein existierender
