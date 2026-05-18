@@ -40,6 +40,7 @@ from ims.model.legacy_validation_run import (
     write_legacy_validation_report_summary_bundle_csv,
     write_legacy_validation_report_summary_bundle_json,
     write_legacy_validation_batch_run_manifest,
+    write_legacy_validation_batch_run_manifest_check_bundle_csv,
     write_legacy_validation_batch_run_manifest_check_bundle_json,
 )
 
@@ -1043,6 +1044,39 @@ def test_legacy_validation_batch_manifest_check_bundle_from_directory_writes_jso
     assert payload["manifest_count"] == 2
     assert payload["total_runs"] == 4
     assert payload["checked_artifact_count"] == 14
+
+
+def test_legacy_validation_batch_manifest_check_bundle_writes_csv(
+    tmp_path: Path,
+) -> None:
+    run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "first",
+    )
+    second = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "second",
+    )
+    payload = json.loads(second.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["total_rows"] = 999
+    second.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    bundle = check_legacy_validation_batch_run_manifests_from_directory(tmp_path)
+    csv_path = write_legacy_validation_batch_run_manifest_check_bundle_csv(
+        bundle,
+        tmp_path / "diagnostics" / "batch_manifest_checks.csv",
+    )
+
+    with csv_path.open("r", encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+
+    assert len(rows) == 2
+    assert rows[0]["matches"] == "True"
+    assert rows[0]["issue_count"] == "0"
+    assert rows[1]["matches"] == "False"
+    assert rows[1]["issue_count"] == "1"
+    assert rows[1]["issue_codes"] == "batch_run_manifest_invalid"
+    assert "report manifest field total_rows" in rows[1]["issue_messages"]
 
 
 def test_legacy_validation_batch_manifest_check_bundle_rejects_empty_inputs(

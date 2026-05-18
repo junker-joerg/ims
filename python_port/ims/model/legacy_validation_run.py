@@ -1327,6 +1327,41 @@ def write_legacy_validation_batch_run_manifest_check_bundle_json(
     return output_path
 
 
+def write_legacy_validation_batch_run_manifest_check_bundle_csv(
+    bundle: LegacyValidationBatchRunManifestCheckBundle,
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "manifest_path",
+                "matches",
+                "run_count",
+                "checked_artifact_count",
+                "issue_count",
+                "issue_codes",
+                "issue_messages",
+            ],
+        )
+        writer.writeheader()
+        for check in bundle.checks:
+            writer.writerow(
+                {
+                    "manifest_path": str(check.manifest_path),
+                    "matches": str(check.matches),
+                    "run_count": check.run_count,
+                    "checked_artifact_count": check.checked_artifact_count,
+                    "issue_count": len(check.issues),
+                    "issue_codes": ";".join(issue.code for issue in check.issues),
+                    "issue_messages": ";".join(issue.message for issue in check.issues),
+                }
+            )
+    return output_path
+
+
 def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:
     name = str(data.get("name", "")).strip()
     fixture_path_data = str(data.get("fixture_path", "")).strip()
