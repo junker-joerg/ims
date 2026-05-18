@@ -1451,6 +1451,44 @@ def write_legacy_validation_batch_run_manifest_check_bundle_artifacts(
     )
 
 
+def write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_manifests(
+    manifest_paths: list[str | Path],
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_batch_manifest_checks",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationBatchRunManifestCheckBundleArtifactManifest:
+    bundle = check_legacy_validation_batch_run_manifests(
+        manifest_paths,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    return write_legacy_validation_batch_run_manifest_check_bundle_artifacts(
+        bundle,
+        output_dir,
+        bundle_name=bundle_name,
+    )
+
+
+def write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+    input_dir: str | Path,
+    output_dir: str | Path,
+    *,
+    bundle_name: str = "legacy_validation_batch_manifest_checks",
+    pattern: str = "**/*_batch.json",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationBatchRunManifestCheckBundleArtifactManifest:
+    bundle = check_legacy_validation_batch_run_manifests_from_directory(
+        input_dir,
+        pattern=pattern,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    return write_legacy_validation_batch_run_manifest_check_bundle_artifacts(
+        bundle,
+        output_dir,
+        bundle_name=bundle_name,
+    )
+
+
 def load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest(
     path: str | Path,
     *,
