@@ -300,6 +300,12 @@ class LegacyValidationAcceptanceVerdictArtifactManifest:
         return None
 
 
+@dataclass(slots=True)
+class LegacyValidationAcceptanceRunResult:
+    summary_bundle_manifest: LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest
+    verdict_manifest: LegacyValidationAcceptanceVerdictArtifactManifest
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -2735,6 +2741,35 @@ def write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_man
         verdict,
         output_dir,
         bundle_name=bundle_name,
+    )
+
+
+def write_legacy_validation_acceptance_run_artifacts_from_summary_directory(
+    input_dir: str | Path,
+    output_dir: str | Path,
+    *,
+    summary_bundle_name: str = "legacy_validation_diagnostic_summary_bundle",
+    verdict_bundle_name: str = "legacy_validation_acceptance_verdict",
+    pattern: str = "**/*_artifacts.json",
+    require_existing_artifacts: bool = True,
+) -> LegacyValidationAcceptanceRunResult:
+    output_path = Path(output_dir)
+    summary_manifest = write_legacy_validation_batch_run_manifest_check_payload_summary_bundle_artifacts_from_directory(
+        input_dir,
+        output_path / "summary_bundle",
+        bundle_name=summary_bundle_name,
+        pattern=pattern,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    verdict_manifest = write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_manifest(
+        summary_manifest.artifacts[-1].path,
+        output_path / "verdict",
+        bundle_name=verdict_bundle_name,
+        require_existing_artifacts=require_existing_artifacts,
+    )
+    return LegacyValidationAcceptanceRunResult(
+        summary_bundle_manifest=summary_manifest,
+        verdict_manifest=verdict_manifest,
     )
 
 

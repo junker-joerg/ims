@@ -15,6 +15,7 @@ from ims.model.legacy_validation_run import (
     LegacyValidationBatchRunManifestCheckPayloadSummaryBundleArtifactManifest,
     LegacyValidationAcceptanceVerdict,
     LegacyValidationAcceptanceVerdictArtifactManifest,
+    LegacyValidationAcceptanceRunResult,
     LegacyValidationReportPayloadSummary,
     LegacyValidationReportSummaryBundle,
     LegacyValidationReportSummaryBundleArtifactManifest,
@@ -83,6 +84,7 @@ from ims.model.legacy_validation_run import (
     write_legacy_validation_acceptance_verdict_artifacts_from_summary_bundle_manifest,
     write_legacy_validation_acceptance_verdict_csv,
     write_legacy_validation_acceptance_verdict_json,
+    write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
 )
 
 
@@ -2011,6 +2013,94 @@ def test_legacy_validation_acceptance_verdict_payload_rejects_manifest_mismatch(
         assert "manifest field status" in str(exc)
     else:
         raise AssertionError("acceptance verdict mismatch should fail")
+
+
+def test_legacy_validation_acceptance_run_artifacts_from_summary_directory(
+    tmp_path: Path,
+) -> None:
+    run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "runs" / "first",
+    )
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "first",
+        bundle_name="first_checks",
+    )
+    write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory(
+        tmp_path / "diagnostics" / "first",
+        tmp_path / "summary_artifacts" / "first",
+        bundle_name="first_payload_summary",
+    )
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "second",
+        bundle_name="second_checks",
+    )
+    write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory(
+        tmp_path / "diagnostics",
+        tmp_path / "summary_artifacts" / "second",
+        bundle_name="second_payload_summary",
+    )
+
+    result = write_legacy_validation_acceptance_run_artifacts_from_summary_directory(
+        tmp_path / "summary_artifacts",
+        tmp_path / "acceptance",
+        summary_bundle_name="summary_bundle",
+        verdict_bundle_name="acceptance_verdict",
+    )
+
+    assert isinstance(result, LegacyValidationAcceptanceRunResult)
+    assert result.summary_bundle_manifest.bundle_name == "summary_bundle"
+    assert result.summary_bundle_manifest.summary_count == 2
+    assert result.summary_bundle_manifest.total_runs == 6
+    assert result.verdict_manifest.bundle_name == "acceptance_verdict"
+    assert result.verdict_manifest.passed is True
+    summary_payload = load_legacy_validation_batch_run_manifest_check_payload_summary_bundle_from_manifest(
+        result.summary_bundle_manifest.artifacts[-1].path
+    )
+    verdict_payload = load_legacy_validation_acceptance_verdict_from_manifest(
+        result.verdict_manifest.artifacts[-1].path
+    )
+    assert summary_payload["summary_count"] == 2
+    assert summary_payload["total_runs"] == 6
+    assert verdict_payload["passed"] is True
+    assert verdict_payload["total_runs"] == 6
+
+
+def test_legacy_validation_acceptance_run_artifacts_from_summary_directory_tracks_failure(
+    tmp_path: Path,
+) -> None:
+    result = run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "runs",
+    )
+    payload = json.loads(result.batch_manifest_path.read_text(encoding="utf-8"))
+    payload["runs"][0]["total_rows"] = 999
+    result.batch_manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics",
+        bundle_name="checks",
+    )
+    write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_from_directory(
+        tmp_path / "diagnostics",
+        tmp_path / "summary_artifacts",
+        bundle_name="payload_summary",
+    )
+
+    acceptance = write_legacy_validation_acceptance_run_artifacts_from_summary_directory(
+        tmp_path / "summary_artifacts",
+        tmp_path / "acceptance",
+    )
+
+    verdict_payload = load_legacy_validation_acceptance_verdict_from_manifest(
+        acceptance.verdict_manifest.artifacts[-1].path
+    )
+    assert acceptance.verdict_manifest.passed is False
+    assert verdict_payload["passed"] is False
+    assert verdict_payload["issue_count"] == 1
+    assert verdict_payload["failing_summary_count"] == 1
 
 
 def test_legacy_validation_batch_manifest_check_bundle_payloads_from_directory_rejects_empty_input(
