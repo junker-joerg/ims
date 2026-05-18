@@ -1586,6 +1586,58 @@ def load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest
     return payload
 
 
+def _is_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest(
+    path: Path,
+) -> bool:
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(data, dict):
+        return False
+    artifacts_data = data.get("artifacts")
+    if not isinstance(artifacts_data, list):
+        return False
+    kinds = {
+        str(artifact.get("kind", ""))
+        for artifact in artifacts_data
+        if isinstance(artifact, dict)
+    }
+    return {
+        "batch_manifest_check_bundle_json",
+        "batch_manifest_check_bundle_csv",
+        "batch_manifest_check_bundle_manifest_json",
+    }.issubset(kinds)
+
+
+def load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directory(
+    input_dir: str | Path,
+    *,
+    pattern: str = "**/*_artifacts.json",
+    require_existing_artifacts: bool = True,
+) -> list[dict]:
+    directory_path = Path(input_dir)
+    manifest_paths = [
+        manifest_path
+        for manifest_path in sorted(directory_path.glob(pattern))
+        if _is_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest(
+            manifest_path
+        )
+    ]
+    if not manifest_paths:
+        raise ValueError(
+            "legacy validation batch run manifest check bundle directory contains no manifests"
+        )
+    return [
+        load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest(
+            manifest_path,
+            require_existing_artifacts=require_existing_artifacts,
+        )
+        for manifest_path in manifest_paths
+    ]
+
+
 def _batch_item_from_mapping(data: dict, fixture_base_path: Path) -> tuple[str, Path, str]:
     name = str(data.get("name", "")).strip()
     fixture_path_data = str(data.get("fixture_path", "")).strip()

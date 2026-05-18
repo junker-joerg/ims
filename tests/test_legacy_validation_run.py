@@ -28,6 +28,7 @@ from ims.model.legacy_validation_run import (
     load_legacy_validation_batch_run_manifest,
     load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest,
     load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest,
+    load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directory,
     load_legacy_validation_artifact_manifest,
     load_legacy_validation_report_payload_from_manifest,
     load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -1271,6 +1272,51 @@ def test_legacy_validation_batch_manifest_check_bundle_payload_rejects_manifest_
         assert "manifest field manifest_count" in str(exc)
     else:
         raise AssertionError("diagnostic bundle payload mismatch should fail")
+
+
+def test_legacy_validation_batch_manifest_check_bundle_payloads_from_directory(
+    tmp_path: Path,
+) -> None:
+    run_legacy_validation_batch_from_fixture(
+        FIXTURE_DIR / "legacy_validation_batch.json",
+        tmp_path / "runs" / "first",
+    )
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "first",
+        bundle_name="first_checks",
+    )
+    write_legacy_validation_report_summary_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "summary",
+        bundle_name="summary_bundle",
+    )
+    write_legacy_validation_batch_run_manifest_check_bundle_artifacts_from_directory(
+        tmp_path / "runs",
+        tmp_path / "diagnostics" / "second",
+        bundle_name="second_checks",
+    )
+
+    payloads = load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directory(
+        tmp_path / "diagnostics"
+    )
+
+    assert [payload["manifest_count"] for payload in payloads] == [1, 1]
+    assert [payload["total_runs"] for payload in payloads] == [2, 2]
+    assert all(payload["matches"] is True for payload in payloads)
+
+
+def test_legacy_validation_batch_manifest_check_bundle_payloads_from_directory_rejects_empty_input(
+    tmp_path: Path,
+) -> None:
+    try:
+        load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directory(
+            tmp_path
+        )
+    except ValueError as exc:
+        assert "contains no manifests" in str(exc)
+    else:
+        raise AssertionError("empty diagnostic artifact manifest directory should fail")
 
 
 def test_legacy_validation_batch_manifest_check_bundle_rejects_empty_inputs(

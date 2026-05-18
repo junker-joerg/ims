@@ -171,6 +171,7 @@ def test_core_placeholders_import() -> None:
         load_legacy_validation_batch_run_manifest,
         load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest,
         load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest,
+        load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directory,
         load_legacy_validation_artifact_manifest,
         load_legacy_validation_report_payload_from_manifest,
         load_legacy_validation_report_summary_bundle_artifact_manifest,
@@ -367,6 +368,7 @@ def test_core_placeholders_import() -> None:
     assert load_legacy_validation_batch_run_manifest is not None
     assert load_legacy_validation_batch_run_manifest_check_bundle_artifact_manifest is not None
     assert load_legacy_validation_batch_run_manifest_check_bundle_payload_from_manifest is not None
+    assert load_legacy_validation_batch_run_manifest_check_bundle_payloads_from_directory is not None
     assert load_legacy_validation_artifact_manifest is not None
     assert load_legacy_validation_report_payload_from_manifest is not None
     assert load_legacy_validation_report_summary_bundle_artifact_manifest is not None
