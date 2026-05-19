@@ -137,6 +137,14 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
             rule_class=int(item["rule_class"]) if item.get("rule_class") is not None else None,
             premiums_current=float(item.get("premiums_current", item.get("premiums_prev", 0.0))),
             advertising_current=float(item.get("advertising_current", item.get("advertising_prev", 0.0))),
+            premiums_current_sector=_two_float_vector(
+                item.get("premiums_current_sector"),
+                fallback=float(item.get("premiums_current", item.get("premiums_prev", 0.0))),
+            ),
+            advertising_current_sector=_two_float_vector(
+                item.get("advertising_current_sector"),
+                fallback=float(item.get("advertising_current", item.get("advertising_prev", 0.0))),
+            ),
             reserves_current=_insurer_reserves_vector(item),
             policyholders_current=float(item.get("policyholders_current", 0.0)),
             claims_count_current=_int_list(item.get("claims_count_current"), default=[0, 0]),

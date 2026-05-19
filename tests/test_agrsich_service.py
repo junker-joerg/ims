@@ -142,6 +142,42 @@ def test_collect_basic_agrsich_records_insurer_stage_ii_to_iv_use_means() -> Non
     assert stage_iv_all.metrics["policyholders_2"] == 100.0
 
 
+def test_collect_basic_agrsich_records_insurer_uses_sector_premium_and_advertising_vectors() -> None:
+    context, bav, insurers, policyholders = _build_agrsich_sample()
+    insurers[0].premiums_current_sector = [11.0, 12.0]
+    insurers[0].advertising_current_sector = [1.0, 2.0]
+    insurers[1].premiums_current_sector = [21.0, 24.0]
+    insurers[1].advertising_current_sector = [5.0, 8.0]
+
+    result = collect_basic_agrsich_records(context, bav, insurers, policyholders)
+    insurer_records = {(record.aggregate_level, record.aggregate_key): record for record in result.insurer_records}
+
+    stage_i_200 = insurer_records[("I", 200)]
+    assert stage_i_200.metrics["premium_1"] == 11.0
+    assert stage_i_200.metrics["premium_2"] == 12.0
+    assert stage_i_200.metrics["advertising_1"] == 1.0
+    assert stage_i_200.metrics["advertising_2"] == 2.0
+
+    stage_ii_rule_1 = insurer_records[("II", 1)]
+    assert stage_ii_rule_1.metrics["premium_1"] == 16.0
+    assert stage_ii_rule_1.metrics["premium_2"] == 18.0
+    assert stage_ii_rule_1.metrics["advertising_1"] == 3.0
+    assert stage_ii_rule_1.metrics["advertising_2"] == 5.0
+
+
+def test_collect_basic_agrsich_records_insurer_scalar_current_values_remain_fallback() -> None:
+    context, bav, insurers, policyholders = _build_agrsich_sample()
+
+    result = collect_basic_agrsich_records(context, bav, insurers, policyholders)
+    insurer_records = {(record.aggregate_level, record.aggregate_key): record for record in result.insurer_records}
+
+    stage_i_200 = insurer_records[("I", 200)]
+    assert stage_i_200.metrics["premium_1"] == 10.0
+    assert stage_i_200.metrics["premium_2"] == 10.0
+    assert stage_i_200.metrics["advertising_1"] == 2.0
+    assert stage_i_200.metrics["advertising_2"] == 2.0
+
+
 def test_collect_basic_agrsich_records_policyholder_uses_mean_and_mode_with_tiebreak() -> None:
     context, bav, insurers, policyholders = _build_agrsich_sample()
     policyholders[0].chosen_insurer_current = 200

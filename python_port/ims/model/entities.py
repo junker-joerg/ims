@@ -127,6 +127,8 @@ class Insurer(BaseEntity):
     rule_class: int | None = None
     premiums_current: float = 0.0
     advertising_current: float = 0.0
+    premiums_current_sector: list[float] = field(default_factory=list)
+    advertising_current_sector: list[float] = field(default_factory=list)
     reserves_current: list[float] = field(default_factory=lambda: [0.0, 0.0])
     policyholders_current: float = 0.0
     claims_count_current: list[int] = field(default_factory=lambda: [0, 0])

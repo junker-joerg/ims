@@ -91,6 +91,24 @@ def _reserve_sector(item: Insurer, index: int) -> float:
     return float(reserves)
 
 
+def _premium_sector(item: Insurer, index: int) -> float:
+    premiums = item.premiums_current_sector
+    if len(premiums) > index:
+        return float(premiums[index])
+    if premiums:
+        return float(premiums[-1])
+    return float(item.premiums_current)
+
+
+def _advertising_sector(item: Insurer, index: int) -> float:
+    advertising = item.advertising_current_sector
+    if len(advertising) > index:
+        return float(advertising[index])
+    if advertising:
+        return float(advertising[-1])
+    return float(item.advertising_current)
+
+
 def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float | int | None]:
     if not items:
         return {
@@ -110,14 +128,14 @@ def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float 
         }
     if average:
         return {
-            "premium_1": _mean([item.premiums_current for item in items]),
-            "advertising_1": _mean([item.advertising_current for item in items]),
+            "premium_1": _mean([_premium_sector(item, 0) for item in items]),
+            "advertising_1": _mean([_advertising_sector(item, 0) for item in items]),
             "reserves_1": _mean([_reserve_sector(item, 0) for item in items]),
             "policyholders_1": _mean([item.policyholders_current for item in items]),
             "claims_count_1": _mean([item.claims_count_current[0] for item in items]),
             "claims_sum_1": _mean([item.claims_sum_current[0] for item in items]),
-            "premium_2": _mean([item.premiums_current for item in items]),
-            "advertising_2": _mean([item.advertising_current for item in items]),
+            "premium_2": _mean([_premium_sector(item, 1) for item in items]),
+            "advertising_2": _mean([_advertising_sector(item, 1) for item in items]),
             "reserves_2": _mean([_reserve_sector(item, 1) for item in items]),
             "policyholders_2": _mean([item.policyholders_current for item in items]),
             "claims_count_2": _mean([item.claims_count_current[1] for item in items]),
@@ -126,14 +144,14 @@ def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float 
         }
     item = items[0]
     return {
-        "premium_1": item.premiums_current,
-        "advertising_1": item.advertising_current,
+        "premium_1": _premium_sector(item, 0),
+        "advertising_1": _advertising_sector(item, 0),
         "reserves_1": _reserve_sector(item, 0),
         "policyholders_1": item.policyholders_current,
         "claims_count_1": item.claims_count_current[0],
         "claims_sum_1": item.claims_sum_current[0],
-        "premium_2": item.premiums_current,
-        "advertising_2": item.advertising_current,
+        "premium_2": _premium_sector(item, 1),
+        "advertising_2": _advertising_sector(item, 1),
         "reserves_2": _reserve_sector(item, 1),
         "policyholders_2": item.policyholders_current,
         "claims_count_2": item.claims_count_current[1],
