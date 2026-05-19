@@ -32,6 +32,20 @@ def _float_list(value: object, *, default: list[float]) -> list[float]:
     return [float(item) for item in value]
 
 
+def _two_float_vector(value: object, *, fallback: float) -> list[float]:
+    if isinstance(value, list):
+        values = [float(entry) for entry in value[:2]]
+        if len(values) == 1:
+            return [values[0], values[0]]
+        if len(values) >= 2:
+            return values
+        return [fallback, fallback]
+    if value is not None:
+        scalar = float(value)
+        return [scalar, scalar]
+    return [fallback, fallback]
+
+
 def _insurer_reserves_vector(item: dict[str, object]) -> list[float]:
     current_value = item.get("reserves_current")
     if isinstance(current_value, list):
@@ -106,6 +120,18 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
             premiums_prev=float(item.get("premiums_prev", 0.0)),
             advertising_prev=float(item.get("advertising_prev", 0.0)),
             reserves_prev=float(item.get("reserves_prev", 0.0)),
+            premiums_prev_sector=_two_float_vector(
+                item.get("premiums_prev_sector"),
+                fallback=float(item.get("premiums_prev", 0.0)),
+            ),
+            advertising_prev_sector=_two_float_vector(
+                item.get("advertising_prev_sector"),
+                fallback=float(item.get("advertising_prev", 0.0)),
+            ),
+            reserves_prev_sector=_two_float_vector(
+                item.get("reserves_prev_sector"),
+                fallback=float(item.get("reserves_prev", 0.0)),
+            ),
             active_prev=bool(item.get("active_prev", True)),
             rule_id=int(item["rule_id"]) if item.get("rule_id") is not None else None,
             rule_class=int(item["rule_class"]) if item.get("rule_class") is not None else None,
@@ -125,6 +151,10 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
             name=str(item["name"]),
             insurer_id=int(item["insurer_id"]) if item.get("insurer_id") is not None else None,
             insured_prev=float(item.get("insured_prev", 0.0)),
+            insured_prev_sector=_two_float_vector(
+                item.get("insured_prev_sector"),
+                fallback=float(item.get("insured_prev", 0.0)),
+            ),
             active_prev=bool(item.get("active_prev", True)),
             rule_id=int(item["rule_id"]) if item.get("rule_id") is not None else None,
             rule_class=int(item["rule_class"]) if item.get("rule_class") is not None else None,

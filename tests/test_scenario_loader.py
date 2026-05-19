@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from ims.io.scenario_loader import LoadedScenario, ScenarioValidationError, load_scenario
+from ims.io.scenario_loader import LoadedScenario, ScenarioValidationError, load_scenario, load_scenario_from_mapping
 
 
 def test_scenario_loader_loads_minimal_scenario(minimal_scenario_path: Path) -> None:
@@ -29,3 +29,37 @@ def test_scenario_loader_raises_for_invalid_top_level_shape(tmp_path: Path) -> N
 
     with pytest.raises(ScenarioValidationError, match="missing top-level field|context must be an object"):
         load_scenario(invalid_path)
+
+
+def test_scenario_loader_reads_sector_specific_previous_frmdinf_inputs() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [
+                {
+                    "entity_id": 10,
+                    "name": "VU",
+                    "premiums_prev": 99.0,
+                    "advertising_prev": 99.0,
+                    "reserves_prev": 99.0,
+                    "premiums_prev_sector": [11.0, 22.0],
+                    "advertising_prev_sector": [3.0, 4.0],
+                    "reserves_prev_sector": [50.0, 60.0],
+                }
+            ],
+            "policyholders": [
+                {
+                    "entity_id": 20,
+                    "name": "VN",
+                    "insured_prev": 0.0,
+                    "insured_prev_sector": [1.0, 0.0],
+                }
+            ],
+        }
+    )
+
+    assert scenario.insurers[0].premiums_prev_sector == [11.0, 22.0]
+    assert scenario.insurers[0].advertising_prev_sector == [3.0, 4.0]
+    assert scenario.insurers[0].reserves_prev_sector == [50.0, 60.0]
+    assert scenario.policyholders[0].insured_prev_sector == [1.0, 0.0]
