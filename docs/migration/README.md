@@ -31,4 +31,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `agrsich_replay_runner.md`: deterministischer Mehrperioden-Replay-Runner mit Legacy-Fenstervergleich
 - `agrsich_replay_plan.md`: deterministische Replay-Snapshot-Erzeugung aus Startzustand plus expliziten Periodenupdates
 - `agrsich_validation_report.md`: maschinenlesbarer Report fuer Agrsich-Legacy-Fenstervergleiche
+- `bav_frmdinf_sector_vectors.md`: sparten- und risikogetrennte BAV-Fremdinformationen
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
