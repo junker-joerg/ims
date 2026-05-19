@@ -35,6 +35,26 @@ class VUForeignInfoRuleResult:
     reserves_current: list[float]
 
 
+@dataclass(slots=True)
+class VUForeignInfoRuleSnapshot:
+    """Expliziter Parameter-Snapshot fuer einen VU-Frmdinf-Regelkern-Aufruf."""
+
+    insurer_id: int
+    rule_kind: VUForeignInfoRuleKind
+    parameters: VUForeignInfoRuleParameters
+    interest_rate: float = 0.0
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VUForeignInfoRuleApplication:
+    """Diagnose eines angewendeten expliziten VU-Regelparameter-Snapshots."""
+
+    insurer_id: int
+    rule_kind: VUForeignInfoRuleKind
+    result: VUForeignInfoRuleResult
+
+
 def _two_values(values: object, *, fallback: float) -> list[float]:
     if values is None:
         return [float(fallback), float(fallback)]
@@ -62,6 +82,65 @@ def _foreign_info_vectors(bav: BAV, rule_kind: VUForeignInfoRuleKind) -> tuple[l
 
 def _parameter_values(values: list[float]) -> list[float]:
     return _two_values(values, fallback=0.0)
+
+
+def _required_list(mapping: dict[str, object], key: str) -> list[float]:
+    value = mapping.get(key)
+    if not isinstance(value, list):
+        raise ValueError(f"VU foreign-info rule parameters require list field: {key}")
+    return _two_values(value, fallback=0.0)
+
+
+def vu_foreign_info_rule_parameters_from_mapping(mapping: dict[str, object]) -> VUForeignInfoRuleParameters:
+    """Laedt den kleinen VU-Frmdinf-Parameterblock aus einer Mapping-Struktur."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU foreign-info rule parameters must be an object")
+    return VUForeignInfoRuleParameters(
+        premium_intercept_normal=_required_list(mapping, "premium_intercept_normal"),
+        premium_factor_normal=_required_list(mapping, "premium_factor_normal"),
+        advertising_intercept_normal=_required_list(mapping, "advertising_intercept_normal"),
+        advertising_factor_normal=_required_list(mapping, "advertising_factor_normal"),
+        premium_intercept_shock=_required_list(mapping, "premium_intercept_shock"),
+        premium_factor_shock=_required_list(mapping, "premium_factor_shock"),
+        advertising_intercept_shock=_required_list(mapping, "advertising_intercept_shock"),
+        advertising_factor_shock=_required_list(mapping, "advertising_factor_shock"),
+    )
+
+
+def vu_foreign_info_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VUForeignInfoRuleSnapshot:
+    """Laedt einen expliziten VU-Frmdinf-Regelparameter-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU foreign-info rule snapshot must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VU foreign-info rule snapshot requires field: insurer_id")
+    if "rule_kind" not in mapping:
+        raise ValueError("VU foreign-info rule snapshot requires field: rule_kind")
+    parameters = mapping.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ValueError("VU foreign-info rule snapshot requires object field: parameters")
+    try:
+        rule_kind = VUForeignInfoRuleKind(str(mapping["rule_kind"]))
+    except ValueError as exc:
+        raise ValueError(f"unsupported VU foreign-info rule kind: {mapping['rule_kind']}") from exc
+    return VUForeignInfoRuleSnapshot(
+        insurer_id=int(mapping["insurer_id"]),
+        rule_kind=rule_kind,
+        parameters=vu_foreign_info_rule_parameters_from_mapping(parameters),
+        interest_rate=float(mapping.get("interest_rate", 0.0)),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vu_foreign_info_rule_snapshots_from_mapping(value: object) -> list[VUForeignInfoRuleSnapshot]:
+    """Laedt mehrere explizite VU-Frmdinf-Regelparameter-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VU foreign-info rule snapshots must be a list")
+    return [vu_foreign_info_rule_snapshot_from_mapping(item) for item in value]
 
 
 def apply_vu_foreign_info_rule(
@@ -148,3 +227,41 @@ def apply_vu_foreign_info_rule_to_insurer(
     insurer.advertising_current = result.advertising_current_sector[0]
     insurer.reserves_current = result.reserves_current
     return result
+
+
+def apply_vu_foreign_info_rule_snapshots(
+    insurers: list[Insurer],
+    bav: BAV,
+    snapshots: list[VUForeignInfoRuleSnapshot],
+    *,
+    period: int,
+) -> list[VUForeignInfoRuleApplication]:
+    """Wendet explizite VU-Frmdinf-Snapshots deterministisch auf passende Versicherer an."""
+
+    insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
+    applications: list[VUForeignInfoRuleApplication] = []
+    seen_insurer_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.insurer_id in seen_insurer_ids:
+            raise ValueError(f"duplicate VU foreign-info rule snapshot for insurer: {snapshot.insurer_id}")
+        seen_insurer_ids.add(snapshot.insurer_id)
+        insurer = insurers_by_id.get(snapshot.insurer_id)
+        if insurer is None:
+            raise ValueError(f"VU foreign-info rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        result = apply_vu_foreign_info_rule_to_insurer(
+            insurer,
+            bav,
+            snapshot.parameters,
+            period=period,
+            interest_rate=snapshot.interest_rate,
+            rule_kind=snapshot.rule_kind,
+            change_shock=snapshot.change_shock,
+        )
+        applications.append(
+            VUForeignInfoRuleApplication(
+                insurer_id=snapshot.insurer_id,
+                rule_kind=snapshot.rule_kind,
+                result=result,
+            )
+        )
+    return applications

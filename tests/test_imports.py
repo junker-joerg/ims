@@ -233,11 +233,17 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
     )
     from ims.model.vu_rules import (
+        VUForeignInfoRuleApplication,
         VUForeignInfoRuleKind,
         VUForeignInfoRuleParameters,
         VUForeignInfoRuleResult,
+        VUForeignInfoRuleSnapshot,
         apply_vu_foreign_info_rule,
+        apply_vu_foreign_info_rule_snapshots,
         apply_vu_foreign_info_rule_to_insurer,
+        load_vu_foreign_info_rule_snapshots_from_mapping,
+        vu_foreign_info_rule_parameters_from_mapping,
+        vu_foreign_info_rule_snapshot_from_mapping,
     )
 
     ctx = SimulationContext()
@@ -477,5 +483,11 @@ def test_core_placeholders_import() -> None:
     assert VUForeignInfoRuleKind is not None
     assert VUForeignInfoRuleParameters is not None
     assert VUForeignInfoRuleResult is not None
+    assert VUForeignInfoRuleSnapshot is not None
+    assert VUForeignInfoRuleApplication is not None
     assert apply_vu_foreign_info_rule is not None
+    assert apply_vu_foreign_info_rule_snapshots is not None
     assert apply_vu_foreign_info_rule_to_insurer is not None
+    assert load_vu_foreign_info_rule_snapshots_from_mapping is not None
+    assert vu_foreign_info_rule_parameters_from_mapping is not None
+    assert vu_foreign_info_rule_snapshot_from_mapping is not None
