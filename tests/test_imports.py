@@ -232,6 +232,13 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_acceptance_run_manifest,
         write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
     )
+    from ims.model.vu_rules import (
+        VUForeignInfoRuleKind,
+        VUForeignInfoRuleParameters,
+        VUForeignInfoRuleResult,
+        apply_vu_foreign_info_rule,
+        apply_vu_foreign_info_rule_to_insurer,
+    )
 
     ctx = SimulationContext()
     scheduler = Scheduler()
@@ -467,3 +474,8 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_acceptance_verdict_json is not None
     assert write_legacy_validation_acceptance_run_manifest is not None
     assert write_legacy_validation_acceptance_run_artifacts_from_summary_directory is not None
+    assert VUForeignInfoRuleKind is not None
+    assert VUForeignInfoRuleParameters is not None
+    assert VUForeignInfoRuleResult is not None
+    assert apply_vu_foreign_info_rule is not None
+    assert apply_vu_foreign_info_rule_to_insurer is not None

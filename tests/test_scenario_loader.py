@@ -63,3 +63,47 @@ def test_scenario_loader_reads_sector_specific_previous_frmdinf_inputs() -> None
     assert scenario.insurers[0].advertising_prev_sector == [3.0, 4.0]
     assert scenario.insurers[0].reserves_prev_sector == [50.0, 60.0]
     assert scenario.policyholders[0].insured_prev_sector == [1.0, 0.0]
+
+
+def test_scenario_loader_reads_sector_specific_current_vu_rule_inputs() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [
+                {
+                    "entity_id": 10,
+                    "name": "VU",
+                    "premiums_current": 99.0,
+                    "advertising_current": 88.0,
+                    "premiums_current_sector": [11.0, 22.0],
+                    "advertising_current_sector": [3.0, 4.0],
+                }
+            ],
+            "policyholders": [],
+        }
+    )
+
+    assert scenario.insurers[0].premiums_current_sector == [11.0, 22.0]
+    assert scenario.insurers[0].advertising_current_sector == [3.0, 4.0]
+
+
+def test_scenario_loader_duplicates_scalar_current_vu_rule_inputs_for_compatibility() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [
+                {
+                    "entity_id": 10,
+                    "name": "VU",
+                    "premiums_current": 12.0,
+                    "advertising_current": 5.0,
+                }
+            ],
+            "policyholders": [],
+        }
+    )
+
+    assert scenario.insurers[0].premiums_current_sector == [12.0, 12.0]
+    assert scenario.insurers[0].advertising_current_sector == [5.0, 5.0]
