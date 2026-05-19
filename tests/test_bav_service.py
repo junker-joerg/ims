@@ -20,13 +20,13 @@ def test_initialize_bav_first_run_sets_foreign_info_to_zero() -> None:
 
     initialize_bav_first_run(context, bav)
 
-    assert bav.service_state.insurer.dp == 0.0
-    assert bav.service_state.insurer.dw == 0.0
-    assert bav.service_state.insurer.pm == 0.0
-    assert bav.service_state.insurer.wm == 0.0
-    assert bav.service_state.insurer.mp == 0.0
-    assert bav.service_state.insurer.mw == 0.0
-    assert bav.service_state.policyholder.dg == 0.0
+    assert bav.service_state.insurer.dp == [0.0, 0.0]
+    assert bav.service_state.insurer.dw == [0.0, 0.0]
+    assert bav.service_state.insurer.pm == [0.0, 0.0]
+    assert bav.service_state.insurer.wm == [0.0, 0.0]
+    assert bav.service_state.insurer.mp == [0.0, 0.0]
+    assert bav.service_state.insurer.mw == [0.0, 0.0]
+    assert bav.service_state.policyholder.dg == [0.0, 0.0]
     assert bav.service_state.computation_meta.foreign_info_available is False
 
 
@@ -39,13 +39,13 @@ def test_initialize_bav_followup_run_sets_foreign_info_to_zero() -> None:
 
     initialize_bav_followup_run(context, bav)
 
-    assert bav.service_state.insurer.dp == 0.0
-    assert bav.service_state.insurer.dw == 0.0
-    assert bav.service_state.insurer.pm == 0.0
-    assert bav.service_state.insurer.wm == 0.0
-    assert bav.service_state.insurer.mp == 0.0
-    assert bav.service_state.insurer.mw == 0.0
-    assert bav.service_state.policyholder.dg == 0.0
+    assert bav.service_state.insurer.dp == [0.0, 0.0]
+    assert bav.service_state.insurer.dw == [0.0, 0.0]
+    assert bav.service_state.insurer.pm == [0.0, 0.0]
+    assert bav.service_state.insurer.wm == [0.0, 0.0]
+    assert bav.service_state.insurer.mp == [0.0, 0.0]
+    assert bav.service_state.insurer.mw == [0.0, 0.0]
+    assert bav.service_state.policyholder.dg == [0.0, 0.0]
     assert bav.service_state.computation_meta.leader_insurer_id is None
 
 
@@ -84,13 +84,13 @@ def test_compute_extended_foreign_info_returns_zero_values_for_period_one_or_low
     result = compute_extended_foreign_info(context, bav, insurers, policyholders)
 
     assert isinstance(result, BAVForeignInfoResult)
-    assert result.insurer.dp == 0.0
-    assert result.insurer.dw == 0.0
-    assert result.insurer.pm == 0.0
-    assert result.insurer.wm == 0.0
-    assert result.insurer.mp == 0.0
-    assert result.insurer.mw == 0.0
-    assert result.policyholder.dg == 0.0
+    assert result.insurer.dp == [0.0, 0.0]
+    assert result.insurer.dw == [0.0, 0.0]
+    assert result.insurer.pm == [0.0, 0.0]
+    assert result.insurer.wm == [0.0, 0.0]
+    assert result.insurer.mp == [0.0, 0.0]
+    assert result.insurer.mw == [0.0, 0.0]
+    assert result.policyholder.dg == [0.0, 0.0]
     assert bav.service_state.activity_state.active_insurer_ids_prev == [10]
     assert bav.service_state.activity_state.active_policyholder_ids_prev == [20]
     assert bav.service_state.activity_state.active_insurer_ids_current == [10]
@@ -116,13 +116,13 @@ def test_compute_extended_foreign_info_uses_only_previous_period_activity() -> N
 
     result = compute_extended_foreign_info(context, bav, insurers, policyholders)
 
-    assert result.insurer.dp == 15.0
-    assert result.insurer.dw == 5.0
-    assert result.policyholder.dg == 0.5
-    assert result.insurer.pm == 12.0
-    assert result.insurer.wm == 6.0
-    assert result.insurer.mp == 18.0
-    assert result.insurer.mw == 6.0
+    assert result.insurer.dp == [15.0, 15.0]
+    assert result.insurer.dw == [5.0, 5.0]
+    assert result.policyholder.dg == [0.5, 0.5]
+    assert result.insurer.pm == [12.0, 12.0]
+    assert result.insurer.wm == [6.0, 6.0]
+    assert result.insurer.mp == [18.0, 18.0]
+    assert result.insurer.mw == [6.0, 6.0]
 
 
 def test_compute_extended_foreign_info_persists_activity_and_market_leader_meta() -> None:
@@ -155,6 +155,51 @@ def test_compute_extended_foreign_info_persists_activity_and_market_leader_meta(
     assert meta.foreign_info_available is True
     assert meta.used_previous_period_values is True
     assert meta.leader_insurer_id == 201
+    assert meta.leader_insurer_ids == [201, 201]
+
+
+def test_compute_extended_foreign_info_keeps_sector_specific_frmdinf_values() -> None:
+    context = SimulationContext(period=2, run_index=1)
+    bav = BAV(entity_id=1)
+    insurers = [
+        Insurer(
+            entity_id=200,
+            active=True,
+            active_prev=True,
+            premiums_prev=99.0,
+            advertising_prev=99.0,
+            reserves_prev=99.0,
+            premiums_prev_sector=[10.0, 40.0],
+            advertising_prev_sector=[2.0, 8.0],
+            reserves_prev_sector=[100.0, 20.0],
+        ),
+        Insurer(
+            entity_id=201,
+            active=True,
+            active_prev=True,
+            premiums_prev=99.0,
+            advertising_prev=99.0,
+            reserves_prev=99.0,
+            premiums_prev_sector=[20.0, 30.0],
+            advertising_prev_sector=[5.0, 6.0],
+            reserves_prev_sector=[50.0, 90.0],
+        ),
+    ]
+    policyholders = [
+        Policyholder(entity_id=300, active=True, active_prev=True, insured_prev=0.0, insured_prev_sector=[1.0, 0.0]),
+        Policyholder(entity_id=301, active=True, active_prev=True, insured_prev=0.0, insured_prev_sector=[0.0, 1.0]),
+    ]
+
+    result = compute_extended_foreign_info(context, bav, insurers, policyholders)
+
+    assert result.insurer.dp == [15.0, 35.0]
+    assert result.insurer.dw == [3.5, 7.0]
+    assert result.insurer.pm == [10.0, 30.0]
+    assert result.insurer.wm == [5.0, 8.0]
+    assert result.insurer.mp == [10.0, 30.0]
+    assert result.insurer.mw == [2.0, 6.0]
+    assert result.policyholder.dg == [0.5, 0.5]
+    assert bav.service_state.computation_meta.leader_insurer_ids == [200, 201]
 
 
 def test_compute_extended_foreign_info_uses_zero_values_for_empty_previous_active_sets() -> None:
@@ -168,13 +213,13 @@ def test_compute_extended_foreign_info_uses_zero_values_for_empty_previous_activ
         policyholders=[Policyholder(entity_id=20, active=True, active_prev=False, insured_prev=0.9)],
     )
 
-    assert result.insurer.dp == 0.0
-    assert result.insurer.dw == 0.0
-    assert result.insurer.pm == 0.0
-    assert result.insurer.wm == 0.0
-    assert result.insurer.mp == 0.0
-    assert result.insurer.mw == 0.0
-    assert result.policyholder.dg == 0.0
+    assert result.insurer.dp == [0.0, 0.0]
+    assert result.insurer.dw == [0.0, 0.0]
+    assert result.insurer.pm == [0.0, 0.0]
+    assert result.insurer.wm == [0.0, 0.0]
+    assert result.insurer.mp == [0.0, 0.0]
+    assert result.insurer.mw == [0.0, 0.0]
+    assert result.policyholder.dg == [0.0, 0.0]
     assert bav.service_state.computation_meta.foreign_info_available is True
     assert bav.service_state.computation_meta.used_previous_period_values is True
     assert bav.service_state.computation_meta.leader_insurer_id is None
@@ -189,5 +234,9 @@ def test_scenario_loader_reads_optional_previous_activity_and_rule_class(minimal
 
     assert scenario.insurers[0].active_prev is True
     assert scenario.insurers[0].rule_class == 1
+    assert scenario.insurers[0].premiums_prev_sector == [12.0, 12.0]
+    assert scenario.insurers[0].advertising_prev_sector == [3.0, 3.0]
+    assert scenario.insurers[0].reserves_prev_sector == [20.0, 20.0]
     assert scenario.policyholders[0].active_prev is True
     assert scenario.policyholders[0].rule_class == 10
+    assert scenario.policyholders[0].insured_prev_sector == [0.5, 0.5]
