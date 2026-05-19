@@ -1,0 +1,152 @@
+import json
+from pathlib import Path
+
+import pytest
+
+from ims.engine.vu_rule_runner import (
+    VUForeignInfoPeriodRunResult,
+    run_vu_foreign_info_period_from_fixture,
+    run_vu_foreign_info_period_from_mapping,
+)
+from ims.io.scenario_loader import load_scenario_from_mapping
+from ims.model.vu_rules import VUForeignInfoRuleKind
+
+
+def _parameters() -> dict[str, list[float]]:
+    return {
+        "premium_intercept_normal": [1.0, 2.0],
+        "premium_factor_normal": [0.5, 0.25],
+        "advertising_intercept_normal": [3.0, 4.0],
+        "advertising_factor_normal": [0.1, 0.2],
+        "premium_intercept_shock": [10.0, 20.0],
+        "premium_factor_shock": [1.0, 2.0],
+        "advertising_intercept_shock": [30.0, 40.0],
+        "advertising_factor_shock": [3.0, 4.0],
+    }
+
+
+def _scenario() -> dict:
+    return {
+        "context": {"period": 2, "logtime": 3, "max_periods": 12, "run_index": 1},
+        "bav": {"entity_id": 1, "name": "BAV"},
+        "insurers": [
+            {
+                "entity_id": 10,
+                "name": "VU-10",
+                "active": True,
+                "active_prev": True,
+                "premiums_prev_sector": [100.0, 200.0],
+                "advertising_prev_sector": [10.0, 20.0],
+                "reserves_prev_sector": [1000.0, 100.0],
+                "reserves_current": [50.0, 60.0],
+            },
+            {
+                "entity_id": 11,
+                "name": "VU-11",
+                "active": True,
+                "active_prev": True,
+                "premiums_prev_sector": [300.0, 400.0],
+                "advertising_prev_sector": [30.0, 40.0],
+                "reserves_prev_sector": [500.0, 900.0],
+                "reserves_current": [70.0, 80.0],
+            },
+        ],
+        "policyholders": [
+            {
+                "entity_id": 20,
+                "name": "VN-20",
+                "active": True,
+                "active_prev": True,
+                "insurer_id": 10,
+                "insured_prev_sector": [1.0, 0.0],
+            }
+        ],
+        "vu_foreign_info_rule_snapshots": [
+            {
+                "insurer_id": 10,
+                "rule_kind": "average",
+                "interest_rate": 0.05,
+                "parameters": _parameters(),
+            },
+            {
+                "insurer_id": 11,
+                "rule_kind": "attack",
+                "interest_rate": 0.1,
+                "change_shock": True,
+                "parameters": _parameters(),
+            },
+        ],
+    }
+
+
+def test_vu_rule_runner_computes_bav_foreign_info_before_applying_snapshots() -> None:
+    result = run_vu_foreign_info_period_from_mapping(_scenario())
+
+    assert isinstance(result, VUForeignInfoPeriodRunResult)
+    assert result.context_period == 2
+    assert result.context_logtime == 3
+    assert result.foreign_info.insurer.dp == [200.0, 300.0]
+    assert result.foreign_info.insurer.dw == [20.0, 30.0]
+    assert result.foreign_info.insurer.pm == [100.0, 200.0]
+    assert result.foreign_info.insurer.wm == [30.0, 40.0]
+    assert result.foreign_info.insurer.mp == [100.0, 400.0]
+    assert result.foreign_info.insurer.mw == [10.0, 40.0]
+    assert result.foreign_info.policyholder.dg == [1.0, 0.0]
+
+
+def test_vu_rule_runner_updates_targeted_insurers_and_returns_diagnostics() -> None:
+    result = run_vu_foreign_info_period_from_mapping(_scenario())
+
+    insurer_by_id = {insurer.entity_id: insurer for insurer in result.insurers}
+    assert insurer_by_id[10].premiums_current_sector == [101.0, 77.0]
+    assert insurer_by_id[10].advertising_current_sector == [5.0, 10.0]
+    assert insurer_by_id[10].reserves_current == [52.5, 63.0]
+    assert insurer_by_id[11].premiums_current_sector == [110.0, 820.0]
+    assert insurer_by_id[11].advertising_current_sector == [60.0, 200.0]
+    assert insurer_by_id[11].reserves_current == [77.0, 88.0]
+    assert [application.insurer_id for application in result.rule_applications] == [10, 11]
+    assert result.rule_applications[0].rule_kind == VUForeignInfoRuleKind.AVERAGE
+    assert result.rule_applications[1].rule_kind == VUForeignInfoRuleKind.ATTACK
+
+
+def test_vu_rule_runner_collects_basic_aggregate_after_period_step() -> None:
+    result = run_vu_foreign_info_period_from_mapping(_scenario())
+
+    assert result.aggregate_snapshot.period == 2
+    assert result.aggregate_snapshot.logtime == 3
+    assert result.aggregate_snapshot.active_insurers == 2
+    assert result.aggregate_snapshot.active_policyholders == 1
+    assert result.aggregate_snapshot.assigned_policyholders == 1
+
+
+def test_vu_rule_runner_can_run_without_snapshots() -> None:
+    scenario = _scenario()
+    scenario.pop("vu_foreign_info_rule_snapshots")
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    assert result.rule_applications == []
+    assert result.insurers[0].premiums_current_sector == [0.0, 0.0]
+    assert result.foreign_info.insurer.dp == [200.0, 300.0]
+
+
+def test_vu_rule_runner_loads_fixture_path(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_period.json"
+    fixture_path.write_text(json.dumps(_scenario()), encoding="utf-8")
+
+    result = run_vu_foreign_info_period_from_fixture(fixture_path)
+
+    assert result.context_period == 2
+    assert len(result.rule_applications) == 2
+
+
+def test_vu_rule_runner_rejects_duplicate_snapshot_targets() -> None:
+    scenario = _scenario()
+    scenario["vu_foreign_info_rule_snapshots"].append(dict(scenario["vu_foreign_info_rule_snapshots"][0]))
+
+    loaded = load_scenario_from_mapping(scenario)
+
+    with pytest.raises(ValueError, match="duplicate"):
+        run_vu_foreign_info_period_from_mapping(scenario)
+
+    assert len(loaded.vu_foreign_info_rule_snapshots) == 3
