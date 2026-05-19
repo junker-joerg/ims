@@ -4,9 +4,9 @@ from dataclasses import dataclass, field
 @dataclass(slots=True)
 class BaseEntity:
     """
-    Minimaler gemeinsamer Platzhalter für fachliche Entitäten.
+    Minimaler gemeinsamer Platzhalter fuer fachliche Entitaeten.
 
-    In späteren PRs werden daraus konkretere Typen wie BAV, VU und VN
+    In spaeteren PRs werden daraus konkretere Typen wie BAV, VU und VN
     abgeleitet oder separat modelliert.
     """
 
@@ -16,30 +16,30 @@ class BaseEntity:
 
 @dataclass(slots=True)
 class BAVForeignInfoInsurer:
-    """Kleiner Container für wenige VU-bezogene Fremdinformationen des BAV-Service."""
+    """Kleiner Container fuer wenige VU-bezogene Fremdinformationen des BAV-Service."""
 
-    dp: float = 0.0
-    dw: float = 0.0
-    pm: float = 0.0
-    wm: float = 0.0
-    mp: float = 0.0
-    mw: float = 0.0
+    dp: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    dw: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    pm: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    wm: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    mp: list[float] = field(default_factory=lambda: [0.0, 0.0])
+    mw: list[float] = field(default_factory=lambda: [0.0, 0.0])
 
 
 @dataclass(slots=True)
 class BAVForeignInfoPolicyholder:
-    """Kleiner Container für wenige VN-bezogene Fremdinformationen des BAV-Service."""
+    """Kleiner Container fuer wenige VN-bezogene Fremdinformationen des BAV-Service."""
 
-    dg: float = 0.0
+    dg: list[float] = field(default_factory=lambda: [0.0, 0.0])
 
 
 @dataclass(slots=True)
 class BAVActivityState:
     """
-    Kleiner Aktivitätscontainer für den erweiterten Frmdinf-Slice.
+    Kleiner Aktivitaetscontainer fuer den erweiterten Frmdinf-Slice.
 
-    Er hält Vorperioden- und aktuelle Aktivitätsmengen explizit getrennt, ohne bereits
-    vollständige historische Aktivierungsschock- oder Regelvektoren zu modellieren.
+    Er haelt Vorperioden- und aktuelle Aktivitaetsmengen explizit getrennt, ohne bereits
+    vollstaendige historische Aktivierungsschock- oder Regelvektoren zu modellieren.
     """
 
     active_insurer_ids_prev: list[int] = field(default_factory=list)
@@ -54,7 +54,7 @@ class BAVActivityState:
 
 @dataclass(slots=True)
 class BAVAggregateState:
-    """Kleiner Aggregatzustand für den ersten substanziellen Agrsich-Slice."""
+    """Kleiner Aggregatzustand fuer den ersten substanziellen Agrsich-Slice."""
 
     active_insurer_ids_current: list[int] = field(default_factory=list)
     active_policyholder_ids_current: list[int] = field(default_factory=list)
@@ -72,15 +72,16 @@ class BAVServiceComputationMeta:
     used_previous_period_values: bool = False
     foreign_info_available: bool = False
     leader_insurer_id: int | None = None
+    leader_insurer_ids: list[int | None] = field(default_factory=lambda: [None, None])
 
 
 @dataclass(slots=True)
 class BAVServiceState:
     """
-    Servicezustand für den bislang portierten BAV-Servicekern.
+    Servicezustand fuer den bislang portierten BAV-Servicekern.
 
-    Dies bleibt bewusst eine kleine, strukturierte Abbildung für Fremdinformation,
-    Aktivität, Aggregatideen und Berechnungsmetadaten und keine vollständige
+    Dies bleibt bewusst eine kleine, strukturierte Abbildung fuer Fremdinformation,
+    Aktivitaet, Aggregatideen und Berechnungsmetadaten und keine vollstaendige
     historische Vektorportierung.
     """
 
@@ -93,7 +94,7 @@ class BAVServiceState:
 
 @dataclass(slots=True)
 class BAV(BaseEntity):
-    """Kleiner Zustandscontainer für eine BAV-nahe Entität."""
+    """Kleiner Zustandscontainer fuer eine BAV-nahe Entitaet."""
 
     name: str = ""
     last_update_period: int | None = None
@@ -107,17 +108,20 @@ class BAV(BaseEntity):
 @dataclass(slots=True)
 class Insurer(BaseEntity):
     """
-    Kleiner Zustandscontainer für einen Versicherer.
+    Kleiner Zustandscontainer fuer einen Versicherer.
 
     Die *_prev-Felder, aktuellen Snapshots und Regelmarker bleiben bewusst klein und
-    dienen nur den bislang portierten Frmdinf-/Agrsich-Slices. Für den validierten
-    Versicherer-Agrsich-Export werden aktuelle Reserven jetzt sektorgetrennt geführt.
+    dienen nur den bislang portierten Frmdinf-/Agrsich-Slices. Fuer den validierten
+    Versicherer-Agrsich-Export werden aktuelle Reserven jetzt sektorgetrennt gefuehrt.
     """
 
     name: str = ""
     premiums_prev: float = 0.0
     advertising_prev: float = 0.0
     reserves_prev: float = 0.0
+    premiums_prev_sector: list[float] = field(default_factory=list)
+    advertising_prev_sector: list[float] = field(default_factory=list)
+    reserves_prev_sector: list[float] = field(default_factory=list)
     active_prev: bool = True
     rule_id: int | None = None
     rule_class: int | None = None
@@ -132,15 +136,16 @@ class Insurer(BaseEntity):
 @dataclass(slots=True)
 class Policyholder(BaseEntity):
     """
-    Kleiner Zustandscontainer für einen Versicherungsnehmer.
+    Kleiner Zustandscontainer fuer einen Versicherungsnehmer.
 
-    Auch hier bleiben Vorperiodenaktivität, aktuelle Snapshots und Regelmarker bewusst
-    kleine, explizite Ausschnitte für die portierten BAV-Servicekerne.
+    Auch hier bleiben Vorperiodenaktivitaet, aktuelle Snapshots und Regelmarker bewusst
+    kleine, explizite Ausschnitte fuer die portierten BAV-Servicekerne.
     """
 
     name: str = ""
     insurer_id: int | None = None
     insured_prev: float = 0.0
+    insured_prev_sector: list[float] = field(default_factory=list)
     active_prev: bool = True
     rule_id: int | None = None
     rule_class: int | None = None
