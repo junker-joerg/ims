@@ -28,6 +28,7 @@ Der neue Einstieg liegt in `python_port/ims/engine/vu_rule_runner.py`.
 Ergaenzt wurden:
 
 - `VUForeignInfoPeriodRunResult`
+- `VUForeignInfoCarryover`
 - `VUForeignInfoMultiPeriodRunResult`
 - `run_loaded_vu_foreign_info_period`
 - `run_vu_foreign_info_period_from_mapping`
@@ -43,6 +44,15 @@ Der Runner nutzt:
 
 Der Mehrperiodenpfad verarbeitet eine Liste expliziter Periodenszenarien oder ein Fixture mit dem Feld `periods`. Die Periodennummern muessen eindeutig und streng steigend sein. Das ist eine Reproduzierbarkeitspruefung, keine historische Ablaufherleitung.
 
+Optional kann `carry_forward_insurer_state=True` gesetzt werden. Dann schreibt der Runner fuer Versicherer, die in zwei aufeinanderfolgenden Periodenszenarien dieselbe `entity_id` haben, die berechneten aktuellen VU-Werte der Vorperiode kontrolliert in die Vorperioden- und Startwerte der naechsten Periode:
+
+- Praemienvektor
+- Werbevektor
+- Reservenvektor
+- Vorperiodenaktivitaet
+
+Dieser Carryover ist bewusst eng und diagnostiziert die betroffenen Versicherer ueber `VUForeignInfoCarryover`.
+
 ## Validierung
 
 Die Tests pruefen:
@@ -54,6 +64,8 @@ Die Tests pruefen:
 - Szenarioausfuehrung funktioniert aus Mapping und Fixture-Datei
 - Mehrperioden-Fixtures funktionieren als Liste und als Objekt mit `periods`
 - doppelte oder unsortierte Perioden werden abgelehnt
+- optionaler Carryover schreibt passende Versichererwerte in die Folgeperiode
+- nicht passende Versicherer werden beim Carryover ignoriert
 - doppelte Snapshot-Ziele werden abgelehnt
 - ein Szenario ohne Snapshots bleibt gueltig und berechnet nur BAV-Frmdinf
 
@@ -63,7 +75,8 @@ Bewusst nicht enthalten sind:
 
 - kein historischer Scheduler-Anschluss
 - keine automatische Auswahl von VU-Regelarten
-- keine automatische Zustandsfortschreibung zwischen Perioden
+- keine breite automatische Zustandsfortschreibung zwischen Perioden
+- kein Carryover fuer VN-Zustand, Vertraege, Schaeden oder Marktmechanik
 - keine Parameterherleitung aus historischen Tabellen
 - keine VN-Regelportierung
 - keine Vollsimulation
@@ -71,4 +84,4 @@ Bewusst nicht enthalten sind:
 
 ## Naechster sinnvoller Schritt
 
-Der naechste fachliche Schritt kann entweder einen weiteren eng abgegrenzten VU-/VN-Regelteil portieren oder eine kleine kontrollierte Zustandsfortschreibung zwischen expliziten Periodenszenarien einfuehren.
+Der naechste fachliche Schritt kann entweder einen weiteren eng abgegrenzten VU-/VN-Regelteil portieren oder den Carryover schrittweise auf klar belegte weitere Zustandsfelder ausweiten.
