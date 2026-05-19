@@ -24,12 +24,22 @@ class VUForeignInfoPeriodRunResult:
 
 
 @dataclass(slots=True)
+class VUForeignInfoCarryover:
+    """Diagnose der kontrollierten Fortschreibung von VU-Aktuellwerten."""
+
+    from_period: int
+    to_period: int
+    insurer_ids: list[int]
+
+
+@dataclass(slots=True)
 class VUForeignInfoMultiPeriodRunResult:
     """Ergebnis eines kleinen deterministischen Mehrperiodenlaufs."""
 
     period_results: list[VUForeignInfoPeriodRunResult]
     processed_periods: list[int]
     total_rule_applications: int
+    carryovers: list[VUForeignInfoCarryover]
 
 
 def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPeriodRunResult:
@@ -83,6 +93,48 @@ def run_vu_foreign_info_period_from_fixture(path: str | Path) -> VUForeignInfoPe
     return run_loaded_vu_foreign_info_period(load_scenario(path))
 
 
+def _set_two_sector_state(insurer: Insurer, *, premiums: list[float], advertising: list[float], reserves: list[float]) -> None:
+    insurer.premiums_prev_sector = list(premiums)
+    insurer.premiums_prev = float(premiums[0]) if premiums else 0.0
+    insurer.premiums_current_sector = list(premiums)
+    insurer.premiums_current = float(premiums[0]) if premiums else 0.0
+    insurer.advertising_prev_sector = list(advertising)
+    insurer.advertising_prev = float(advertising[0]) if advertising else 0.0
+    insurer.advertising_current_sector = list(advertising)
+    insurer.advertising_current = float(advertising[0]) if advertising else 0.0
+    insurer.reserves_prev_sector = list(reserves)
+    insurer.reserves_prev = float(reserves[0]) if reserves else 0.0
+    insurer.reserves_current = list(reserves)
+
+
+def _apply_carryover(
+    previous_result: VUForeignInfoPeriodRunResult,
+    loaded: LoadedScenario,
+) -> VUForeignInfoCarryover | None:
+    previous_insurers = {insurer.entity_id: insurer for insurer in previous_result.insurers}
+    carried_ids: list[int] = []
+    for insurer in loaded.insurers:
+        previous = previous_insurers.get(insurer.entity_id)
+        if previous is None:
+            continue
+        _set_two_sector_state(
+            insurer,
+            premiums=previous.premiums_current_sector,
+            advertising=previous.advertising_current_sector,
+            reserves=previous.reserves_current,
+        )
+        insurer.active_prev = previous.active
+        carried_ids.append(insurer.entity_id)
+
+    if not carried_ids:
+        return None
+    return VUForeignInfoCarryover(
+        from_period=previous_result.context_period,
+        to_period=loaded.context.period,
+        insurer_ids=carried_ids,
+    )
+
+
 def _validate_strictly_increasing_periods(period_results: list[VUForeignInfoPeriodRunResult]) -> list[int]:
     processed_periods = [result.context_period for result in period_results]
     if not processed_periods:
@@ -96,20 +148,30 @@ def _validate_strictly_increasing_periods(period_results: list[VUForeignInfoPeri
 
 def run_vu_foreign_info_multi_period_from_mappings(
     period_scenarios: list[dict],
+    *,
+    carry_forward_insurer_state: bool = False,
 ) -> VUForeignInfoMultiPeriodRunResult:
     """Fuehrt mehrere explizite VU-Frmdinf-Periodenszenarien deterministisch aus."""
 
     if not isinstance(period_scenarios, list):
         raise ValueError("VU foreign-info multi-period run requires a list of period scenarios")
-    period_results = [
-        run_vu_foreign_info_period_from_mapping(period_scenario)
-        for period_scenario in period_scenarios
-    ]
+
+    period_results: list[VUForeignInfoPeriodRunResult] = []
+    carryovers: list[VUForeignInfoCarryover] = []
+    for period_scenario in period_scenarios:
+        loaded = load_scenario_from_mapping(period_scenario)
+        if carry_forward_insurer_state and period_results:
+            carryover = _apply_carryover(period_results[-1], loaded)
+            if carryover is not None:
+                carryovers.append(carryover)
+        period_results.append(run_loaded_vu_foreign_info_period(loaded))
+
     processed_periods = _validate_strictly_increasing_periods(period_results)
     return VUForeignInfoMultiPeriodRunResult(
         period_results=period_results,
         processed_periods=processed_periods,
         total_rule_applications=sum(len(result.rule_applications) for result in period_results),
+        carryovers=carryovers,
     )
 
 
@@ -123,12 +185,17 @@ def _period_scenarios_from_fixture_payload(payload: object) -> list[dict]:
     raise ValueError("VU foreign-info multi-period fixture requires a list or object field: periods")
 
 
-def run_vu_foreign_info_multi_period_from_fixture(path: str | Path) -> VUForeignInfoMultiPeriodRunResult:
+def run_vu_foreign_info_multi_period_from_fixture(
+    path: str | Path,
+    *,
+    carry_forward_insurer_state: bool = False,
+) -> VUForeignInfoMultiPeriodRunResult:
     """Laedt ein Mehrperioden-Fixture und fuehrt den kleinen VU-Frmdinf-Lauf aus."""
 
     fixture_path = Path(path)
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
     return run_vu_foreign_info_multi_period_from_mappings(
-        _period_scenarios_from_fixture_payload(payload)
+        _period_scenarios_from_fixture_payload(payload),
+        carry_forward_insurer_state=carry_forward_insurer_state,
     )

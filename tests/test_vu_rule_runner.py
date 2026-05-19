@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from ims.engine.vu_rule_runner import (
+    VUForeignInfoCarryover,
     VUForeignInfoMultiPeriodRunResult,
     VUForeignInfoPeriodRunResult,
     run_vu_foreign_info_multi_period_from_fixture,
@@ -182,9 +183,43 @@ def test_vu_rule_multi_period_runner_processes_increasing_period_scenarios() -> 
     assert isinstance(result, VUForeignInfoMultiPeriodRunResult)
     assert result.processed_periods == [2, 3]
     assert result.total_rule_applications == 2
+    assert result.carryovers == []
     assert [period.context_logtime for period in result.period_results] == [12, 13]
     assert result.period_results[0].insurers[0].premiums_current_sector == [51.0, 52.0]
     assert result.period_results[1].aggregate_snapshot.period == 3
+
+
+def test_vu_rule_multi_period_runner_can_carry_current_insurer_state_forward() -> None:
+    result = run_vu_foreign_info_multi_period_from_mappings(
+        [_scenario_for_period(2), _scenario_for_period(3)],
+        carry_forward_insurer_state=True,
+    )
+
+    assert result.processed_periods == [2, 3]
+    assert result.total_rule_applications == 2
+    assert len(result.carryovers) == 1
+    assert isinstance(result.carryovers[0], VUForeignInfoCarryover)
+    assert result.carryovers[0].from_period == 2
+    assert result.carryovers[0].to_period == 3
+    assert result.carryovers[0].insurer_ids == [10]
+
+    second = result.period_results[1]
+    assert second.foreign_info.insurer.dp == [51.0, 52.0]
+    assert second.foreign_info.insurer.dw == [4.0, 8.0]
+    assert second.foreign_info.insurer.mp == [51.0, 52.0]
+    assert second.insurers[0].premiums_current_sector == [26.5, 15.0]
+    assert second.insurers[0].advertising_current_sector == [3.4, 5.6]
+    assert second.insurers[0].reserves_current == pytest.approx([55.125, 66.15])
+
+
+def test_vu_rule_multi_period_runner_only_carries_matching_insurers() -> None:
+    result = run_vu_foreign_info_multi_period_from_mappings(
+        [_scenario_for_period(2, insurer_id=10), _scenario_for_period(3, insurer_id=11)],
+        carry_forward_insurer_state=True,
+    )
+
+    assert result.carryovers == []
+    assert result.period_results[1].foreign_info.insurer.dp == [100.0, 200.0]
 
 
 def test_vu_rule_multi_period_runner_loads_fixture_object(tmp_path: Path) -> None:
@@ -212,6 +247,19 @@ def test_vu_rule_multi_period_runner_loads_fixture_list(tmp_path: Path) -> None:
     result = run_vu_foreign_info_multi_period_from_fixture(fixture_path)
 
     assert result.processed_periods == [2, 3]
+
+
+def test_vu_rule_multi_period_runner_fixture_supports_carryover(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_multi_period_carry.json"
+    fixture_path.write_text(json.dumps([_scenario_for_period(2), _scenario_for_period(3)]), encoding="utf-8")
+
+    result = run_vu_foreign_info_multi_period_from_fixture(
+        fixture_path,
+        carry_forward_insurer_state=True,
+    )
+
+    assert result.carryovers[0].insurer_ids == [10]
+    assert result.period_results[1].foreign_info.insurer.dp == [51.0, 52.0]
 
 
 def test_vu_rule_multi_period_runner_rejects_duplicate_periods() -> None:
