@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 from pathlib import Path
 
 from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
@@ -20,6 +21,15 @@ class VUForeignInfoPeriodRunResult:
     foreign_info: BAVForeignInfoResult
     rule_applications: list[VUForeignInfoRuleApplication]
     aggregate_snapshot: AggregateSnapshot
+
+
+@dataclass(slots=True)
+class VUForeignInfoMultiPeriodRunResult:
+    """Ergebnis eines kleinen deterministischen Mehrperiodenlaufs."""
+
+    period_results: list[VUForeignInfoPeriodRunResult]
+    processed_periods: list[int]
+    total_rule_applications: int
 
 
 def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPeriodRunResult:
@@ -71,3 +81,54 @@ def run_vu_foreign_info_period_from_fixture(path: str | Path) -> VUForeignInfoPe
     """Laedt ein Szenariofile und fuehrt den kleinen VU-Frmdinf-Periodenschritt aus."""
 
     return run_loaded_vu_foreign_info_period(load_scenario(path))
+
+
+def _validate_strictly_increasing_periods(period_results: list[VUForeignInfoPeriodRunResult]) -> list[int]:
+    processed_periods = [result.context_period for result in period_results]
+    if not processed_periods:
+        raise ValueError("VU foreign-info multi-period run requires at least one period scenario")
+    if len(set(processed_periods)) != len(processed_periods):
+        raise ValueError("VU foreign-info multi-period run rejects duplicate periods")
+    if processed_periods != sorted(processed_periods):
+        raise ValueError("VU foreign-info multi-period run requires increasing periods")
+    return processed_periods
+
+
+def run_vu_foreign_info_multi_period_from_mappings(
+    period_scenarios: list[dict],
+) -> VUForeignInfoMultiPeriodRunResult:
+    """Fuehrt mehrere explizite VU-Frmdinf-Periodenszenarien deterministisch aus."""
+
+    if not isinstance(period_scenarios, list):
+        raise ValueError("VU foreign-info multi-period run requires a list of period scenarios")
+    period_results = [
+        run_vu_foreign_info_period_from_mapping(period_scenario)
+        for period_scenario in period_scenarios
+    ]
+    processed_periods = _validate_strictly_increasing_periods(period_results)
+    return VUForeignInfoMultiPeriodRunResult(
+        period_results=period_results,
+        processed_periods=processed_periods,
+        total_rule_applications=sum(len(result.rule_applications) for result in period_results),
+    )
+
+
+def _period_scenarios_from_fixture_payload(payload: object) -> list[dict]:
+    if isinstance(payload, list):
+        return payload
+    if isinstance(payload, dict):
+        period_scenarios = payload.get("periods")
+        if isinstance(period_scenarios, list):
+            return period_scenarios
+    raise ValueError("VU foreign-info multi-period fixture requires a list or object field: periods")
+
+
+def run_vu_foreign_info_multi_period_from_fixture(path: str | Path) -> VUForeignInfoMultiPeriodRunResult:
+    """Laedt ein Mehrperioden-Fixture und fuehrt den kleinen VU-Frmdinf-Lauf aus."""
+
+    fixture_path = Path(path)
+    with fixture_path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    return run_vu_foreign_info_multi_period_from_mappings(
+        _period_scenarios_from_fixture_payload(payload)
+    )
