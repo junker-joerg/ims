@@ -1998,7 +1998,7 @@ def write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts(
     summary: LegacyValidationBatchRunManifestCheckPayloadSummary,
     output_dir: str | Path,
     *,
-    bundle_name: str = "legacy_validation_batch_manifest_check_payload_summary",
+    bundle_name: str = "legacy_validation_diagnostic_payload_summary",
 ) -> LegacyValidationBatchRunManifestCheckPayloadSummaryArtifactManifest:
     output_path = Path(output_dir)
     artifacts = [
@@ -2046,7 +2046,7 @@ def write_legacy_validation_batch_run_manifest_check_payload_summary_artifacts_f
     input_dir: str | Path,
     output_dir: str | Path,
     *,
-    bundle_name: str = "legacy_validation_batch_manifest_check_payload_summary",
+    bundle_name: str = "legacy_validation_diagnostic_payload_summary",
     pattern: str = "**/*_artifacts.json",
     require_existing_artifacts: bool = True,
 ) -> LegacyValidationBatchRunManifestCheckPayloadSummaryArtifactManifest:
