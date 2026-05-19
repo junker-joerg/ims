@@ -4,7 +4,10 @@ from pathlib import Path
 import pytest
 
 from ims.engine.vu_rule_runner import (
+    VUForeignInfoMultiPeriodRunResult,
     VUForeignInfoPeriodRunResult,
+    run_vu_foreign_info_multi_period_from_fixture,
+    run_vu_foreign_info_multi_period_from_mappings,
     run_vu_foreign_info_period_from_fixture,
     run_vu_foreign_info_period_from_mapping,
 )
@@ -79,6 +82,25 @@ def _scenario() -> dict:
     }
 
 
+def _scenario_for_period(period: int, *, insurer_id: int = 10) -> dict:
+    scenario = _scenario()
+    scenario["context"]["period"] = period
+    scenario["context"]["logtime"] = period + 10
+    scenario["insurers"] = [dict(scenario["insurers"][0])]
+    scenario["insurers"][0]["entity_id"] = insurer_id
+    scenario["insurers"][0]["name"] = f"VU-{insurer_id}"
+    scenario["policyholders"] = []
+    scenario["vu_foreign_info_rule_snapshots"] = [
+        {
+            "insurer_id": insurer_id,
+            "rule_kind": "average",
+            "interest_rate": 0.05,
+            "parameters": _parameters(),
+        }
+    ]
+    return scenario
+
+
 def test_vu_rule_runner_computes_bav_foreign_info_before_applying_snapshots() -> None:
     result = run_vu_foreign_info_period_from_mapping(_scenario())
 
@@ -150,3 +172,62 @@ def test_vu_rule_runner_rejects_duplicate_snapshot_targets() -> None:
         run_vu_foreign_info_period_from_mapping(scenario)
 
     assert len(loaded.vu_foreign_info_rule_snapshots) == 3
+
+
+def test_vu_rule_multi_period_runner_processes_increasing_period_scenarios() -> None:
+    result = run_vu_foreign_info_multi_period_from_mappings(
+        [_scenario_for_period(2), _scenario_for_period(3)]
+    )
+
+    assert isinstance(result, VUForeignInfoMultiPeriodRunResult)
+    assert result.processed_periods == [2, 3]
+    assert result.total_rule_applications == 2
+    assert [period.context_logtime for period in result.period_results] == [12, 13]
+    assert result.period_results[0].insurers[0].premiums_current_sector == [51.0, 52.0]
+    assert result.period_results[1].aggregate_snapshot.period == 3
+
+
+def test_vu_rule_multi_period_runner_loads_fixture_object(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_multi_period.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "metadata": {"name": "small-vu-run"},
+                "periods": [_scenario_for_period(2), _scenario_for_period(3)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vu_foreign_info_multi_period_from_fixture(fixture_path)
+
+    assert result.processed_periods == [2, 3]
+    assert len(result.period_results) == 2
+
+
+def test_vu_rule_multi_period_runner_loads_fixture_list(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_multi_period_list.json"
+    fixture_path.write_text(json.dumps([_scenario_for_period(2), _scenario_for_period(3)]), encoding="utf-8")
+
+    result = run_vu_foreign_info_multi_period_from_fixture(fixture_path)
+
+    assert result.processed_periods == [2, 3]
+
+
+def test_vu_rule_multi_period_runner_rejects_duplicate_periods() -> None:
+    with pytest.raises(ValueError, match="duplicate periods"):
+        run_vu_foreign_info_multi_period_from_mappings(
+            [_scenario_for_period(2), _scenario_for_period(2, insurer_id=11)]
+        )
+
+
+def test_vu_rule_multi_period_runner_rejects_unsorted_periods() -> None:
+    with pytest.raises(ValueError, match="increasing periods"):
+        run_vu_foreign_info_multi_period_from_mappings(
+            [_scenario_for_period(3), _scenario_for_period(2)]
+        )
+
+
+def test_vu_rule_multi_period_runner_rejects_empty_input() -> None:
+    with pytest.raises(ValueError, match="at least one"):
+        run_vu_foreign_info_multi_period_from_mappings([])

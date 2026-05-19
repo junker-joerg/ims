@@ -52,8 +52,11 @@ def test_core_placeholders_import() -> None:
         run_two_scheduled_bav_updates,
     )
     from ims.engine.vu_rule_runner import (
+        VUForeignInfoMultiPeriodRunResult,
         VUForeignInfoPeriodRunResult,
         run_loaded_vu_foreign_info_period,
+        run_vu_foreign_info_multi_period_from_fixture,
+        run_vu_foreign_info_multi_period_from_mappings,
         run_vu_foreign_info_period_from_fixture,
         run_vu_foreign_info_period_from_mapping,
     )
@@ -358,8 +361,11 @@ def test_core_placeholders_import() -> None:
     assert run_two_bav_update_steps is not None
     assert run_two_scheduled_bav_updates is not None
     assert run_two_prioritized_bav_updates is not None
+    assert VUForeignInfoMultiPeriodRunResult is not None
     assert VUForeignInfoPeriodRunResult is not None
     assert run_loaded_vu_foreign_info_period is not None
+    assert run_vu_foreign_info_multi_period_from_fixture is not None
+    assert run_vu_foreign_info_multi_period_from_mappings is not None
     assert run_vu_foreign_info_period_from_fixture is not None
     assert run_vu_foreign_info_period_from_mapping is not None
     assert insurer.active_prev is True

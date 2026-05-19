@@ -4,7 +4,7 @@
 
 Dieser Schritt verbindet den portierten BAV-Frmdinf-Kern mit den expliziten VU-Frmdinf-Regelparameter-Snapshots.
 
-Damit entsteht ein kleiner deterministischer Fachlauf:
+Damit entsteht ein kleiner deterministischer Fachlauf fuer eine oder mehrere explizite Perioden:
 
 1. Szenario laden
 2. BAV-Fremdinformationen aus Vorperiodenwerten berechnen
@@ -28,15 +28,20 @@ Der neue Einstieg liegt in `python_port/ims/engine/vu_rule_runner.py`.
 Ergaenzt wurden:
 
 - `VUForeignInfoPeriodRunResult`
+- `VUForeignInfoMultiPeriodRunResult`
 - `run_loaded_vu_foreign_info_period`
 - `run_vu_foreign_info_period_from_mapping`
 - `run_vu_foreign_info_period_from_fixture`
+- `run_vu_foreign_info_multi_period_from_mappings`
+- `run_vu_foreign_info_multi_period_from_fixture`
 
 Der Runner nutzt:
 
 - `compute_extended_foreign_info`
 - `apply_vu_foreign_info_rule_snapshots`
 - `collect_basic_aggregates`
+
+Der Mehrperiodenpfad verarbeitet eine Liste expliziter Periodenszenarien oder ein Fixture mit dem Feld `periods`. Die Periodennummern muessen eindeutig und streng steigend sein. Das ist eine Reproduzierbarkeitspruefung, keine historische Ablaufherleitung.
 
 ## Validierung
 
@@ -47,6 +52,8 @@ Die Tests pruefen:
 - Zielversicherer werden aktualisiert
 - Diagnoseobjekte halten die angewendeten Regeln fest
 - Szenarioausfuehrung funktioniert aus Mapping und Fixture-Datei
+- Mehrperioden-Fixtures funktionieren als Liste und als Objekt mit `periods`
+- doppelte oder unsortierte Perioden werden abgelehnt
 - doppelte Snapshot-Ziele werden abgelehnt
 - ein Szenario ohne Snapshots bleibt gueltig und berechnet nur BAV-Frmdinf
 
@@ -56,6 +63,7 @@ Bewusst nicht enthalten sind:
 
 - kein historischer Scheduler-Anschluss
 - keine automatische Auswahl von VU-Regelarten
+- keine automatische Zustandsfortschreibung zwischen Perioden
 - keine Parameterherleitung aus historischen Tabellen
 - keine VN-Regelportierung
 - keine Vollsimulation
@@ -63,4 +71,4 @@ Bewusst nicht enthalten sind:
 
 ## Naechster sinnvoller Schritt
 
-Der naechste fachliche Schritt kann entweder einen weiteren eng abgegrenzten VU-/VN-Regelteil portieren oder diesen kleinen Periodenschritt in einen mehrperiodigen Fachlauf mit expliziten Snapshots einbetten.
+Der naechste fachliche Schritt kann entweder einen weiteren eng abgegrenzten VU-/VN-Regelteil portieren oder eine kleine kontrollierte Zustandsfortschreibung zwischen expliziten Periodenszenarien einfuehren.
