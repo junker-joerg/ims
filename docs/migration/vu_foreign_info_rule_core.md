@@ -89,4 +89,4 @@ Bewusst nicht enthalten sind:
 
 ## Naechster sinnvoller Schritt
 
-Der naechste fachliche Schritt sollte entweder weitere klar abgegrenzte VU-/VN-Regelausschnitte portieren oder diese expliziten Snapshots kontrolliert in einen kleinen periodischen Fachlauf einhaengen, ohne bereits eine vollstaendige historische Simulation zu behaupten.
+Der naechste fachliche Schritt kann weitere klar abgegrenzte VU-/VN-Regelausschnitte portieren oder auf dem kleinen Periodenschritt in `vu_foreign_info_period_runner.md` aufbauen, ohne bereits eine vollstaendige historische Simulation zu behaupten.
