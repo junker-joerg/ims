@@ -4,8 +4,10 @@ from ims.model.entities import BAV, Insurer
 from ims.model.vu_rules import (
     VUForeignInfoRuleKind,
     VUForeignInfoRuleParameters,
+    apply_vu_foreign_info_rule_snapshots,
     apply_vu_foreign_info_rule,
     apply_vu_foreign_info_rule_to_insurer,
+    load_vu_foreign_info_rule_snapshots_from_mapping,
 )
 
 
@@ -140,3 +142,154 @@ def test_vu_foreign_info_rule_can_update_insurer_snapshot() -> None:
     assert insurer.premiums_current == 51.0
     assert insurer.advertising_current == 4.0
     assert insurer.reserves_current == [11.0, 22.0]
+
+
+def test_vu_foreign_info_rule_snapshots_load_and_apply_to_matching_insurers() -> None:
+    bav = _bav_with_foreign_info()
+    insurers = [Insurer(entity_id=7, reserves_current=[100.0, 200.0]), Insurer(entity_id=8)]
+    snapshots = load_vu_foreign_info_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "rule_kind": "average",
+                "interest_rate": 0.05,
+                "parameters": {
+                    "premium_intercept_normal": [1.0, 2.0],
+                    "premium_factor_normal": [0.5, 0.25],
+                    "advertising_intercept_normal": [3.0, 4.0],
+                    "advertising_factor_normal": [0.1, 0.2],
+                    "premium_intercept_shock": [10.0, 20.0],
+                    "premium_factor_shock": [1.0, 2.0],
+                    "advertising_intercept_shock": [30.0, 40.0],
+                    "advertising_factor_shock": [3.0, 4.0],
+                },
+            }
+        ]
+    )
+
+    applications = apply_vu_foreign_info_rule_snapshots(insurers, bav, snapshots, period=2)
+
+    assert len(applications) == 1
+    assert applications[0].insurer_id == 7
+    assert applications[0].rule_kind == VUForeignInfoRuleKind.AVERAGE
+    assert insurers[0].premiums_current_sector == [151.0, 102.0]
+    assert insurers[0].advertising_current_sector == [6.0, 12.0]
+    assert insurers[0].reserves_current == [105.0, 210.0]
+    assert insurers[1].premiums_current_sector == []
+
+
+def test_vu_foreign_info_rule_snapshots_support_change_shock() -> None:
+    bav = _bav_with_foreign_info()
+    insurers = [Insurer(entity_id=7, reserves_current=[10.0, 20.0])]
+    snapshots = load_vu_foreign_info_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "rule_kind": "dumping",
+                "change_shock": True,
+                "parameters": {
+                    "premium_intercept_normal": [1.0, 2.0],
+                    "premium_factor_normal": [0.5, 0.25],
+                    "advertising_intercept_normal": [3.0, 4.0],
+                    "advertising_factor_normal": [0.1, 0.2],
+                    "premium_intercept_shock": [10.0, 20.0],
+                    "premium_factor_shock": [1.0, 2.0],
+                    "advertising_intercept_shock": [30.0, 40.0],
+                    "advertising_factor_shock": [3.0, 4.0],
+                },
+            }
+        ]
+    )
+
+    apply_vu_foreign_info_rule_snapshots(insurers, bav, snapshots, period=2)
+
+    assert insurers[0].premiums_current_sector == [110.0, 420.0]
+    assert insurers[0].advertising_current_sector == [60.0, 120.0]
+
+
+def test_vu_foreign_info_rule_snapshots_reject_unknown_insurer() -> None:
+    snapshots = load_vu_foreign_info_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 99,
+                "rule_kind": "attack",
+                "parameters": {
+                    "premium_intercept_normal": [1.0, 2.0],
+                    "premium_factor_normal": [0.5, 0.25],
+                    "advertising_intercept_normal": [3.0, 4.0],
+                    "advertising_factor_normal": [0.1, 0.2],
+                    "premium_intercept_shock": [10.0, 20.0],
+                    "premium_factor_shock": [1.0, 2.0],
+                    "advertising_intercept_shock": [30.0, 40.0],
+                    "advertising_factor_shock": [3.0, 4.0],
+                },
+            }
+        ]
+    )
+
+    with pytest.raises(ValueError, match="unknown insurer"):
+        apply_vu_foreign_info_rule_snapshots([], _bav_with_foreign_info(), snapshots, period=2)
+
+
+def test_vu_foreign_info_rule_snapshots_reject_duplicate_insurer_targets() -> None:
+    snapshots = [
+        load_vu_foreign_info_rule_snapshots_from_mapping(
+            [
+                {
+                    "insurer_id": 7,
+                    "rule_kind": "attack",
+                    "parameters": {
+                        "premium_intercept_normal": [1.0, 2.0],
+                        "premium_factor_normal": [0.5, 0.25],
+                        "advertising_intercept_normal": [3.0, 4.0],
+                        "advertising_factor_normal": [0.1, 0.2],
+                        "premium_intercept_shock": [10.0, 20.0],
+                        "premium_factor_shock": [1.0, 2.0],
+                        "advertising_intercept_shock": [30.0, 40.0],
+                        "advertising_factor_shock": [3.0, 4.0],
+                    },
+                }
+            ]
+        )[0]
+        for _ in range(2)
+    ]
+
+    with pytest.raises(ValueError, match="duplicate"):
+        apply_vu_foreign_info_rule_snapshots([Insurer(entity_id=7)], _bav_with_foreign_info(), snapshots, period=2)
+
+
+def test_vu_foreign_info_rule_snapshots_reject_missing_parameter_lists() -> None:
+    with pytest.raises(ValueError, match="premium_factor_normal"):
+        load_vu_foreign_info_rule_snapshots_from_mapping(
+            [
+                {
+                    "insurer_id": 7,
+                    "rule_kind": "average",
+                    "parameters": {
+                        "premium_intercept_normal": [1.0, 2.0],
+                    },
+                }
+            ]
+        )
+
+
+def test_vu_foreign_info_rule_snapshots_reject_bad_rule_kind() -> None:
+    with pytest.raises(ValueError, match="unsupported"):
+        load_vu_foreign_info_rule_snapshots_from_mapping(
+            [
+                {
+                    "insurer_id": 7,
+                    "rule_kind": "not-historical",
+                    "parameters": {
+                        "premium_intercept_normal": [1.0, 2.0],
+                        "premium_factor_normal": [0.5, 0.25],
+                        "advertising_intercept_normal": [3.0, 4.0],
+                        "advertising_factor_normal": [0.1, 0.2],
+                        "premium_intercept_shock": [10.0, 20.0],
+                        "premium_factor_shock": [1.0, 2.0],
+                        "advertising_intercept_shock": [30.0, 40.0],
+                        "advertising_factor_shock": [3.0, 4.0],
+                    },
+                }
+            ]
+        )

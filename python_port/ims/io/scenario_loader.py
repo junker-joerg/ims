@@ -1,9 +1,10 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 from pathlib import Path
 
 from ims.engine.context import SimulationContext
 from ims.model.entities import BAV, Insurer, Policyholder
+from ims.model.vu_rules import VUForeignInfoRuleSnapshot, load_vu_foreign_info_rule_snapshots_from_mapping
 
 
 @dataclass(slots=True)
@@ -14,6 +15,7 @@ class LoadedScenario:
     bav: BAV
     insurers: list[Insurer]
     policyholders: list[Policyholder]
+    vu_foreign_info_rule_snapshots: list[VUForeignInfoRuleSnapshot] = field(default_factory=list)
 
 
 class ScenarioValidationError(ValueError):
@@ -186,6 +188,9 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         bav=bav,
         insurers=insurers,
         policyholders=policyholders,
+        vu_foreign_info_rule_snapshots=load_vu_foreign_info_rule_snapshots_from_mapping(
+            data.get("vu_foreign_info_rule_snapshots")
+        ),
     )
 
 

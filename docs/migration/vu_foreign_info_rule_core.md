@@ -31,8 +31,12 @@ Ergaenzt wurden:
 - `VUForeignInfoRuleKind`
 - `VUForeignInfoRuleParameters`
 - `VUForeignInfoRuleResult`
+- `VUForeignInfoRuleSnapshot`
+- `VUForeignInfoRuleApplication`
 - `apply_vu_foreign_info_rule`
 - `apply_vu_foreign_info_rule_to_insurer`
+- `apply_vu_foreign_info_rule_snapshots`
+- `load_vu_foreign_info_rule_snapshots_from_mapping`
 
 Damit der Ausschnitt spartengetrennt testbar bleibt, fuehrt `Insurer` zusaetzlich kleine aktuelle Vektoren fuer Praemie und Werbung:
 
@@ -40,6 +44,20 @@ Damit der Ausschnitt spartengetrennt testbar bleibt, fuehrt `Insurer` zusaetzlic
 - `advertising_current_sector`
 
 Der Szenario-Lader liest diese Felder optional. Bei alten Skalarwerten bleibt die bisherige Kompatibilitaet erhalten, indem der Skalar konservativ fuer beide Sparten verwendet wird.
+
+## Explizite Parameter-Snapshots
+
+Nach dem ersten Regelkern-Slice kann ein Szenario optional explizite VU-Frmdinf-Regelparameter-Snapshots enthalten.
+
+Das Feld `vu_foreign_info_rule_snapshots` ist bewusst kein Scheduler und keine historische Regelauswahl. Es verbindet nur einen bekannten Versicherer, eine der drei bereits portierten Frmdinf-Quellen und einen vollstaendig angegebenen Parameterblock:
+
+- `insurer_id`
+- `rule_kind`
+- `interest_rate`
+- `change_shock`
+- `parameters`
+
+Der Loader macht daraus `VUForeignInfoRuleSnapshot`-Objekte. `apply_vu_foreign_info_rule_snapshots` wendet diese Snapshots deterministisch auf passende Versicherer an und liefert pro Anwendung eine kleine Diagnose zurueck.
 
 ## Validierung
 
@@ -52,6 +70,9 @@ Die neuen Tests pruefen:
 - Aktualisierung des VU-Snapshots
 - Loader-Kompatibilitaet fuer neue Vektorfelder und alte Skalarfelder
 - Agrsich-Auswertung der neuen aktuellen VU-Spartenfelder
+- Laden expliziter VU-Frmdinf-Regelparameter-Snapshots aus In-Memory-Szenarien
+- deterministische Anwendung dieser Snapshots auf passende Versicherer
+- Fehlerfall fuer unbekannte Versicherer und unvollstaendige Parameterbloecke
 
 ## Grenzen
 
@@ -63,8 +84,9 @@ Bewusst nicht enthalten sind:
 - keine automatische Aktivierung der Regeln aus dem Periodenlauf
 - keine Zufalls- oder Marktmechanik
 - keine Herleitung der Parameter aus vollstaendigen historischen Regeltabellen
+- keine automatische Auswahl von Regelkindern aus historischen Ablaufbedingungen
 - keine Aussage ueber historische Vollgleichheit
 
 ## Naechster sinnvoller Schritt
 
-Der naechste fachliche Schritt sollte diesen Regelkern entweder mit einem kleinen, expliziten VU-Regelparameter-Snapshot verbinden oder einen weiteren klar abgegrenzten VU-/VN-Regelausschnitt portieren, der bereits durch vorhandene Zustandsfelder und Tests abgesichert werden kann.
+Der naechste fachliche Schritt sollte entweder weitere klar abgegrenzte VU-/VN-Regelausschnitte portieren oder diese expliziten Snapshots kontrolliert in einen kleinen periodischen Fachlauf einhaengen, ohne bereits eine vollstaendige historische Simulation zu behaupten.
