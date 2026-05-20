@@ -31,6 +31,30 @@ def test_scenario_loader_raises_for_invalid_top_level_shape(tmp_path: Path) -> N
         load_scenario(invalid_path)
 
 
+def test_scenario_loader_rejects_non_object_insurer_entries() -> None:
+    with pytest.raises(ScenarioValidationError, match="insurer entries must be objects: index 0"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": ["VU-10"],
+                "policyholders": [],
+            }
+        )
+
+
+def test_scenario_loader_rejects_policyholder_entries_without_entity_id() -> None:
+    with pytest.raises(ScenarioValidationError, match="policyholder entries require field: entity_id at index 0"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": [],
+                "policyholders": [{"name": "VN ohne ID"}],
+            }
+        )
+
+
 def test_scenario_loader_rejects_duplicate_insurer_entity_ids() -> None:
     with pytest.raises(ScenarioValidationError, match="duplicate insurer entity_id values: 10"):
         load_scenario_from_mapping(

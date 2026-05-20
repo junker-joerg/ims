@@ -19,6 +19,11 @@ Es bereitet wenige Zustandscontainer und ein kleines JSON-Szenario vor, ohne ber
 
 ## Spaetere Loader-Haertung
 
+Die VU- und VN-Listen werden vor der Entitaetskonstruktion auf Objektform und
+vorhandene `entity_id`-Felder geprueft. Dadurch liefern grob fehlerhafte
+Szenarien frueh eine `ScenarioValidationError` statt spaeterer Typ- oder
+Schluesselfehler.
+
 Der Szenario-Loader weist inzwischen doppelte `entity_id`-Werte innerhalb der
 VU- und VN-Listen frueh ab. Damit werden stille Ueberschreibungen in den
 bereits portierten regel- und aggregatnahen Pfaden vermieden, ohne daraus eine
