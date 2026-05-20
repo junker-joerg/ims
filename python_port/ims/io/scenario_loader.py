@@ -120,6 +120,27 @@ def _validate_unique_entity_ids(items: list[object], *, label: str) -> None:
         raise ScenarioValidationError(f"duplicate {label} entity_id values: {values}")
 
 
+def _validate_policyholder_insurer_references(
+    insurer_items: list[object],
+    policyholder_items: list[object],
+) -> None:
+    insurer_ids = {
+        int(item["entity_id"])
+        for item in insurer_items
+        if isinstance(item, dict) and "entity_id" in item
+    }
+    unknown_insurer_ids: set[int] = set()
+    for item in policyholder_items:
+        if not isinstance(item, dict) or item.get("insurer_id") is None:
+            continue
+        insurer_id = int(item["insurer_id"])
+        if insurer_id not in insurer_ids:
+            unknown_insurer_ids.add(insurer_id)
+    if unknown_insurer_ids:
+        values = ", ".join(str(insurer_id) for insurer_id in sorted(unknown_insurer_ids))
+        raise ScenarioValidationError(f"policyholder insurer_id references unknown insurers: {values}")
+
+
 def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     if not isinstance(data, dict):
         raise ScenarioValidationError("scenario must be a JSON object")
@@ -140,6 +161,7 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         raise ScenarioValidationError("insurers and policyholders must be lists")
     _validate_unique_entity_ids(insurer_items, label="insurer")
     _validate_unique_entity_ids(policyholder_items, label="policyholder")
+    _validate_policyholder_insurer_references(insurer_items, policyholder_items)
 
     context = SimulationContext(
         period=int(context_data.get("period", 0)),
