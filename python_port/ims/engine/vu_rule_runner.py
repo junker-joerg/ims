@@ -235,8 +235,7 @@ def _apply_carryover(
     )
 
 
-def _validate_strictly_increasing_periods(period_results: list[VUForeignInfoPeriodRunResult]) -> list[int]:
-    processed_periods = [result.context_period for result in period_results]
+def _validate_strictly_increasing_periods(processed_periods: list[int]) -> list[int]:
     if not processed_periods:
         raise ValueError("VU foreign-info multi-period run requires at least one period scenario")
     if len(set(processed_periods)) != len(processed_periods):
@@ -256,17 +255,20 @@ def run_vu_foreign_info_multi_period_from_mappings(
     if not isinstance(period_scenarios, list):
         raise ValueError("VU foreign-info multi-period run requires a list of period scenarios")
 
+    loaded_scenarios = [load_scenario_from_mapping(period_scenario) for period_scenario in period_scenarios]
+    processed_periods = _validate_strictly_increasing_periods(
+        [loaded.context.period for loaded in loaded_scenarios]
+    )
+
     period_results: list[VUForeignInfoPeriodRunResult] = []
     carryovers: list[VUForeignInfoCarryover] = []
-    for period_scenario in period_scenarios:
-        loaded = load_scenario_from_mapping(period_scenario)
+    for loaded in loaded_scenarios:
         if carry_forward_insurer_state and period_results:
             carryover = _apply_carryover(period_results[-1], loaded)
             if carryover is not None:
                 carryovers.append(carryover)
         period_results.append(run_loaded_vu_foreign_info_period(loaded))
 
-    processed_periods = _validate_strictly_increasing_periods(period_results)
     return VUForeignInfoMultiPeriodRunResult(
         period_results=period_results,
         processed_periods=processed_periods,
