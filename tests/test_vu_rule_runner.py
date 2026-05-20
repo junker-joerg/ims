@@ -7,6 +7,7 @@ from ims.engine.vu_rule_runner import (
     VUForeignInfoCarryover,
     VUForeignInfoMultiPeriodRunResult,
     VUForeignInfoPeriodRunResult,
+    run_loaded_vu_foreign_info_period,
     run_vu_foreign_info_multi_period_from_fixture,
     run_vu_foreign_info_multi_period_from_mappings,
     run_vu_foreign_info_period_from_fixture,
@@ -613,6 +614,24 @@ def test_vu_rule_runner_rejects_duplicate_snapshot_targets() -> None:
         run_vu_foreign_info_period_from_mapping(scenario)
 
     assert len(loaded.vu_foreign_info_rule_snapshots) == 3
+
+
+def test_vu_rule_runner_validates_snapshot_targets_before_foreign_info_state() -> None:
+    scenario = _scenario_for_period(2)
+    scenario["vu_reserve_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "reserve_thresholds": [55.0, 55.0],
+            "parameters": _reserve_markup_parameters(),
+        }
+    ]
+    loaded = load_scenario_from_mapping(scenario)
+
+    with pytest.raises(ValueError, match="disjoint insurers"):
+        run_loaded_vu_foreign_info_period(loaded)
+
+    assert loaded.bav.service_state.computation_meta.foreign_info_available is False
+    assert loaded.bav.service_state.insurer.dp == [0.0, 0.0]
 
 
 def test_vu_rule_multi_period_runner_processes_increasing_period_scenarios() -> None:
