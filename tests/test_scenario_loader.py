@@ -61,6 +61,36 @@ def test_scenario_loader_rejects_duplicate_policyholder_entity_ids() -> None:
         )
 
 
+def test_scenario_loader_rejects_unknown_policyholder_insurer_reference() -> None:
+    with pytest.raises(ScenarioValidationError, match="policyholder insurer_id references unknown insurers: 99"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": [{"entity_id": 10, "name": "VU-10"}],
+                "policyholders": [
+                    {"entity_id": 20, "name": "VN-20", "insurer_id": 99},
+                ],
+            }
+        )
+
+
+def test_scenario_loader_allows_unassigned_policyholder() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [{"entity_id": 10, "name": "VU-10"}],
+            "policyholders": [
+                {"entity_id": 20, "name": "VN-20", "insurer_id": None},
+            ],
+        }
+    )
+
+    assert scenario.policyholders[0].insurer_id is None
+    assert scenario.policyholders[0].chosen_insurer_current is None
+
+
 def test_scenario_loader_reads_sector_specific_previous_frmdinf_inputs() -> None:
     scenario = load_scenario_from_mapping(
         {

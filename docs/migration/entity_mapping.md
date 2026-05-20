@@ -23,3 +23,7 @@ Der Szenario-Loader weist inzwischen doppelte `entity_id`-Werte innerhalb der
 VU- und VN-Listen frueh ab. Damit werden stille Ueberschreibungen in den
 bereits portierten regel- und aggregatnahen Pfaden vermieden, ohne daraus eine
 vollstaendige relationale Szenariopruefung abzuleiten.
+
+Zusaetzlich wird eine gesetzte VN-`insurer_id` gegen die geladenen VU-IDs
+geprueft. Nicht zugeordnete VN mit `insurer_id: null` bleiben gueltig; nur
+Verweise auf nicht vorhandene Versicherer werden abgelehnt.
