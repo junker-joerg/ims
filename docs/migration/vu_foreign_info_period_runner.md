@@ -93,6 +93,7 @@ Die Tests pruefen:
 - Mehrperioden-Fixtures funktionieren als Liste und als Objekt mit `periods`
 - doppelte oder unsortierte Perioden werden abgelehnt
 - die Periodenfolge wird vor Regelanwendung und Carryover validiert
+- VU-Snapshot-Zielkonflikte werden vor der BAV-Frmdinf-Berechnung validiert
 - optionaler Carryover schreibt passende Versichererwerte in die Folgeperiode
 - nicht passende Versicherer werden beim Carryover ignoriert
 - explizite Vrvu01-/Zufall-I-Snapshots koennen im Periodenrunner angewendet werden

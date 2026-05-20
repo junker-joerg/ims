@@ -72,13 +72,13 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
     Snapshots an. Er ist kein Scheduler und keine vollstaendige historische Simulation.
     """
 
+    _validate_disjoint_vu_rule_snapshot_targets(loaded)
     foreign_info = compute_extended_foreign_info(
         loaded.context,
         loaded.bav,
         loaded.insurers,
         loaded.policyholders,
     )
-    _validate_disjoint_vu_rule_snapshot_targets(loaded)
     rule_applications = apply_vu_foreign_info_rule_snapshots(
         loaded.insurers,
         loaded.bav,
@@ -139,8 +139,8 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
     )
 
 
-def _snapshot_insurer_ids(snapshots: object) -> set[int]:
-    return {int(snapshot.insurer_id) for snapshot in snapshots}
+def _snapshot_insurer_ids(snapshots: object) -> list[int]:
+    return [int(snapshot.insurer_id) for snapshot in snapshots]
 
 
 def _validate_disjoint_vu_rule_snapshot_targets(loaded: LoadedScenario) -> None:
@@ -154,14 +154,23 @@ def _validate_disjoint_vu_rule_snapshot_targets(loaded: LoadedScenario) -> None:
         ("vu_market_share_markup_rule_snapshots", _snapshot_insurer_ids(loaded.vu_market_share_markup_rule_snapshots)),
     ]
     seen: dict[int, str] = {}
+    duplicates: list[str] = []
     conflicts: list[str] = []
     for rule_set_name, insurer_ids in rule_sets:
+        seen_in_rule_set: set[int] = set()
         for insurer_id in sorted(insurer_ids):
+            if insurer_id in seen_in_rule_set:
+                duplicates.append(f"insurer {insurer_id}: {rule_set_name}")
+                continue
+            seen_in_rule_set.add(insurer_id)
             previous_rule_set = seen.get(insurer_id)
             if previous_rule_set is not None:
                 conflicts.append(f"insurer {insurer_id}: {previous_rule_set} and {rule_set_name}")
             else:
                 seen[insurer_id] = rule_set_name
+    if duplicates:
+        details = "; ".join(duplicates)
+        raise ValueError(f"VU rule snapshot sets reject duplicate insurer targets per period: {details}")
     if conflicts:
         details = "; ".join(conflicts)
         raise ValueError(f"VU rule snapshot sets must target disjoint insurers per period: {details}")
