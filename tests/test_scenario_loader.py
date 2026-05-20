@@ -169,6 +169,53 @@ def test_scenario_loader_reads_optional_vu_foreign_info_rule_snapshots() -> None
     assert snapshot.parameters.premium_factor_normal == [0.5, 0.25]
 
 
+def test_scenario_loader_reads_optional_vu_random_rule_snapshots() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [{"entity_id": 10, "name": "VU"}, {"entity_id": 11, "name": "VU-11"}],
+            "policyholders": [],
+            "vu_random_uniform_rule_snapshots": [
+                {
+                    "insurer_id": 10,
+                    "random_draws": [0.1, 0.2, 0.3, 0.4],
+                    "interest_rate": 0.04,
+                    "change_shock": True,
+                    "parameters": {
+                        "premium_factor_normal": [10.0, 20.0],
+                        "advertising_factor_normal": [30.0, 40.0],
+                        "premium_factor_shock": [50.0, 60.0],
+                        "advertising_factor_shock": [70.0, 80.0],
+                    },
+                }
+            ],
+            "vu_random_normal_rule_snapshots": [
+                {
+                    "insurer_id": 11,
+                    "normal_draws": [0.1, -0.2, 0.3, -0.4],
+                    "parameters": {
+                        "premium_intercept_normal": [1.0, 2.0],
+                        "premium_factor_normal": [10.0, 20.0],
+                        "advertising_intercept_normal": [3.0, 4.0],
+                        "advertising_factor_normal": [30.0, 40.0],
+                        "premium_intercept_shock": [5.0, 6.0],
+                        "premium_factor_shock": [50.0, 60.0],
+                        "advertising_intercept_shock": [7.0, 8.0],
+                        "advertising_factor_shock": [70.0, 80.0],
+                    },
+                }
+            ],
+        }
+    )
+
+    assert len(scenario.vu_random_uniform_rule_snapshots) == 1
+    assert scenario.vu_random_uniform_rule_snapshots[0].random_draws == [0.1, 0.2, 0.3, 0.4]
+    assert scenario.vu_random_uniform_rule_snapshots[0].change_shock is True
+    assert len(scenario.vu_random_normal_rule_snapshots) == 1
+    assert scenario.vu_random_normal_rule_snapshots[0].normal_draws == [0.1, -0.2, 0.3, -0.4]
+
+
 def test_scenario_loader_reads_optional_vu_market_share_markup_rule_snapshots() -> None:
     scenario = load_scenario_from_mapping(
         {

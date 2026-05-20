@@ -17,7 +17,7 @@ Der fachliche Bezug bleibt eng:
 
 - `legacy_c/IMS.E`: `Vrvu07`, `Vrvu08`, `Vrvu09`
 - bereits portierte BAV-Frmdinf-Vektoren fuer Versicherer
-- bereits portierter linearer VU-Frmdinf-Rechenkern
+- bereits portierte VU-Regelkerne fuer Zufall, Mark-Up, Erwartungsschaden und Frmdinf
 
 Dieser Schritt portiert keine neue historische Regelentscheidung. Er haengt nur die schon portierten Bausteine in einer kontrollierten Reihenfolge zusammen.
 
@@ -40,6 +40,8 @@ Der Runner nutzt:
 
 - `compute_extended_foreign_info`
 - `apply_vu_foreign_info_rule_snapshots`
+- `apply_vu_random_uniform_rule_snapshots`
+- `apply_vu_random_normal_rule_snapshots`
 - `apply_vu_reserve_markup_rule_snapshots`
 - `apply_vu_net_switcher_markup_rule_snapshots`
 - `apply_vu_expected_claim_rule_snapshots`
@@ -56,6 +58,11 @@ Optional kann `carry_forward_insurer_state=True` gesetzt werden. Dann schreibt d
 - Vorperiodenaktivitaet
 
 Dieser Carryover ist bewusst eng und diagnostiziert die betroffenen Versicherer ueber `VUForeignInfoCarryover`.
+
+Explizite `vu_random_uniform_rule_snapshots` und `vu_random_normal_rule_snapshots` bilden die
+portierten `Vrvu01`-/Zufall-I- und `Vrvu02`-/Zufall-II-Regelkerne ab. Die Zufallswerte werden in
+diesem Pfad als explizite Draw-Vektoren uebergeben. Details und Grenzen stehen in
+`vu_random_rule_kernels.md`.
 
 Zusaetzlich kann ein Szenario explizite `vu_reserve_markup_rule_snapshots` enthalten. Diese Snapshots
 bilden den portierten `Vrvu03`-/Mark-Up-I-Regelkern ab und werden nach den Frmdinf-Snapshots
@@ -87,6 +94,8 @@ Die Tests pruefen:
 - doppelte oder unsortierte Perioden werden abgelehnt
 - optionaler Carryover schreibt passende Versichererwerte in die Folgeperiode
 - nicht passende Versicherer werden beim Carryover ignoriert
+- explizite Vrvu01-/Zufall-I-Snapshots koennen im Periodenrunner angewendet werden
+- explizite Vrvu02-/Zufall-II-Snapshots koennen im Periodenrunner angewendet werden
 - explizite Vrvu03-/Mark-Up-I-Snapshots koennen im Periodenrunner angewendet werden
 - explizite Vrvu04-/Mark-Up-II-Snapshots koennen im Periodenrunner angewendet werden
 - explizite Vrvu06-/Erwartungsschaden-Snapshots koennen im Periodenrunner angewendet werden

@@ -260,6 +260,14 @@ def test_core_placeholders_import() -> None:
         VUNetSwitcherMarkupRuleParameters,
         VUNetSwitcherMarkupRuleResult,
         VUNetSwitcherMarkupRuleSnapshot,
+        VURandomNormalRuleApplication,
+        VURandomNormalRuleParameters,
+        VURandomNormalRuleResult,
+        VURandomNormalRuleSnapshot,
+        VURandomUniformRuleApplication,
+        VURandomUniformRuleParameters,
+        VURandomUniformRuleResult,
+        VURandomUniformRuleSnapshot,
         VUReserveMarkupRuleApplication,
         VUReserveMarkupRuleParameters,
         VUReserveMarkupRuleResult,
@@ -276,6 +284,12 @@ def test_core_placeholders_import() -> None:
         apply_vu_net_switcher_markup_rule,
         apply_vu_net_switcher_markup_rule_snapshots,
         apply_vu_net_switcher_markup_rule_to_insurer,
+        apply_vu_random_normal_rule,
+        apply_vu_random_normal_rule_snapshots,
+        apply_vu_random_normal_rule_to_insurer,
+        apply_vu_random_uniform_rule,
+        apply_vu_random_uniform_rule_snapshots,
+        apply_vu_random_uniform_rule_to_insurer,
         apply_vu_reserve_markup_rule,
         apply_vu_reserve_markup_rule_snapshots,
         apply_vu_reserve_markup_rule_to_insurer,
@@ -283,6 +297,8 @@ def test_core_placeholders_import() -> None:
         load_vu_foreign_info_rule_snapshots_from_mapping,
         load_vu_market_share_markup_rule_snapshots_from_mapping,
         load_vu_net_switcher_markup_rule_snapshots_from_mapping,
+        load_vu_random_normal_rule_snapshots_from_mapping,
+        load_vu_random_uniform_rule_snapshots_from_mapping,
         load_vu_reserve_markup_rule_snapshots_from_mapping,
         vu_expected_claim_rule_parameters_from_mapping,
         vu_expected_claim_rule_snapshot_from_mapping,
@@ -292,6 +308,10 @@ def test_core_placeholders_import() -> None:
         vu_market_share_markup_rule_snapshot_from_mapping,
         vu_net_switcher_markup_rule_parameters_from_mapping,
         vu_net_switcher_markup_rule_snapshot_from_mapping,
+        vu_random_normal_rule_parameters_from_mapping,
+        vu_random_normal_rule_snapshot_from_mapping,
+        vu_random_uniform_rule_parameters_from_mapping,
+        vu_random_uniform_rule_snapshot_from_mapping,
         vu_reserve_markup_rule_parameters_from_mapping,
         vu_reserve_markup_rule_snapshot_from_mapping,
     )
@@ -551,6 +571,14 @@ def test_core_placeholders_import() -> None:
     assert VUNetSwitcherMarkupRuleParameters is not None
     assert VUNetSwitcherMarkupRuleResult is not None
     assert VUNetSwitcherMarkupRuleSnapshot is not None
+    assert VURandomNormalRuleApplication is not None
+    assert VURandomNormalRuleParameters is not None
+    assert VURandomNormalRuleResult is not None
+    assert VURandomNormalRuleSnapshot is not None
+    assert VURandomUniformRuleApplication is not None
+    assert VURandomUniformRuleParameters is not None
+    assert VURandomUniformRuleResult is not None
+    assert VURandomUniformRuleSnapshot is not None
     assert VUExpectedClaimRuleApplication is not None
     assert VUExpectedClaimRuleParameters is not None
     assert VUExpectedClaimRuleResult is not None
@@ -571,6 +599,12 @@ def test_core_placeholders_import() -> None:
     assert apply_vu_net_switcher_markup_rule is not None
     assert apply_vu_net_switcher_markup_rule_snapshots is not None
     assert apply_vu_net_switcher_markup_rule_to_insurer is not None
+    assert apply_vu_random_normal_rule is not None
+    assert apply_vu_random_normal_rule_snapshots is not None
+    assert apply_vu_random_normal_rule_to_insurer is not None
+    assert apply_vu_random_uniform_rule is not None
+    assert apply_vu_random_uniform_rule_snapshots is not None
+    assert apply_vu_random_uniform_rule_to_insurer is not None
     assert apply_vu_reserve_markup_rule is not None
     assert apply_vu_reserve_markup_rule_snapshots is not None
     assert apply_vu_reserve_markup_rule_to_insurer is not None
@@ -578,6 +612,8 @@ def test_core_placeholders_import() -> None:
     assert load_vu_foreign_info_rule_snapshots_from_mapping is not None
     assert load_vu_market_share_markup_rule_snapshots_from_mapping is not None
     assert load_vu_net_switcher_markup_rule_snapshots_from_mapping is not None
+    assert load_vu_random_normal_rule_snapshots_from_mapping is not None
+    assert load_vu_random_uniform_rule_snapshots_from_mapping is not None
     assert load_vu_reserve_markup_rule_snapshots_from_mapping is not None
     assert vu_expected_claim_rule_parameters_from_mapping is not None
     assert vu_expected_claim_rule_snapshot_from_mapping is not None
@@ -587,5 +623,9 @@ def test_core_placeholders_import() -> None:
     assert vu_market_share_markup_rule_snapshot_from_mapping is not None
     assert vu_net_switcher_markup_rule_parameters_from_mapping is not None
     assert vu_net_switcher_markup_rule_snapshot_from_mapping is not None
+    assert vu_random_normal_rule_parameters_from_mapping is not None
+    assert vu_random_normal_rule_snapshot_from_mapping is not None
+    assert vu_random_uniform_rule_parameters_from_mapping is not None
+    assert vu_random_uniform_rule_snapshot_from_mapping is not None
     assert vu_reserve_markup_rule_parameters_from_mapping is not None
     assert vu_reserve_markup_rule_snapshot_from_mapping is not None

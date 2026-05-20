@@ -56,6 +56,88 @@ class VUForeignInfoRuleApplication:
 
 
 @dataclass(slots=True)
+class VURandomUniformRuleParameters:
+    """Parameter fuer den portierten Vrvu01-Zufall-I-Ausschnitt."""
+
+    premium_factor_normal: list[float]
+    advertising_factor_normal: list[float]
+    premium_factor_shock: list[float]
+    advertising_factor_shock: list[float]
+
+
+@dataclass(slots=True)
+class VURandomUniformRuleResult:
+    """Berechneter VU-Zielzustand fuer Vrvu01 / Zufall I."""
+
+    premiums_current_sector: list[float]
+    advertising_current_sector: list[float]
+    reserves_current: list[float]
+    random_draws: list[float]
+
+
+@dataclass(slots=True)
+class VURandomUniformRuleSnapshot:
+    """Expliziter Draw- und Parameter-Snapshot fuer Vrvu01 / Zufall I."""
+
+    insurer_id: int
+    parameters: VURandomUniformRuleParameters
+    random_draws: list[float]
+    interest_rate: float = 0.0
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VURandomUniformRuleApplication:
+    """Diagnose eines angewendeten Vrvu01-Zufall-I-Snapshots."""
+
+    insurer_id: int
+    result: VURandomUniformRuleResult
+
+
+@dataclass(slots=True)
+class VURandomNormalRuleParameters:
+    """Parameter fuer den portierten Vrvu02-Zufall-II-Ausschnitt."""
+
+    premium_intercept_normal: list[float]
+    premium_factor_normal: list[float]
+    advertising_intercept_normal: list[float]
+    advertising_factor_normal: list[float]
+    premium_intercept_shock: list[float]
+    premium_factor_shock: list[float]
+    advertising_intercept_shock: list[float]
+    advertising_factor_shock: list[float]
+
+
+@dataclass(slots=True)
+class VURandomNormalRuleResult:
+    """Berechneter VU-Zielzustand fuer Vrvu02 / Zufall II."""
+
+    premiums_current_sector: list[float]
+    advertising_current_sector: list[float]
+    reserves_current: list[float]
+    normal_draws: list[float]
+
+
+@dataclass(slots=True)
+class VURandomNormalRuleSnapshot:
+    """Expliziter Draw- und Parameter-Snapshot fuer Vrvu02 / Zufall II."""
+
+    insurer_id: int
+    parameters: VURandomNormalRuleParameters
+    normal_draws: list[float]
+    interest_rate: float = 0.0
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VURandomNormalRuleApplication:
+    """Diagnose eines angewendeten Vrvu02-Zufall-II-Snapshots."""
+
+    insurer_id: int
+    result: VURandomNormalRuleResult
+
+
+@dataclass(slots=True)
 class VUReserveMarkupRuleParameters:
     """Multiplikatoren fuer den portierten Vrvu03-Mark-Up-I-Ausschnitt."""
 
@@ -316,6 +398,104 @@ def load_vu_foreign_info_rule_snapshots_from_mapping(value: object) -> list[VUFo
     return [vu_foreign_info_rule_snapshot_from_mapping(item) for item in value]
 
 
+def _draw_values(value: object, key: str) -> list[float]:
+    if not isinstance(value, list) or len(value) != 4:
+        raise ValueError(f"VU random rule snapshot requires four-value list field: {key}")
+    return [float(item) for item in value]
+
+
+def _four_draws(mapping: dict[str, object], key: str) -> list[float]:
+    return _draw_values(mapping.get(key), key)
+
+
+def vu_random_uniform_rule_parameters_from_mapping(mapping: dict[str, object]) -> VURandomUniformRuleParameters:
+    """Laedt den Vrvu01-Zufall-I-Parameterblock aus einer Mapping-Struktur."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU random-uniform rule parameters must be an object")
+    return VURandomUniformRuleParameters(
+        premium_factor_normal=_required_list(mapping, "premium_factor_normal"),
+        advertising_factor_normal=_required_list(mapping, "advertising_factor_normal"),
+        premium_factor_shock=_required_list(mapping, "premium_factor_shock"),
+        advertising_factor_shock=_required_list(mapping, "advertising_factor_shock"),
+    )
+
+
+def vu_random_uniform_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VURandomUniformRuleSnapshot:
+    """Laedt einen expliziten Vrvu01-Zufall-I-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU random-uniform rule snapshot must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VU random-uniform rule snapshot requires field: insurer_id")
+    parameters = mapping.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ValueError("VU random-uniform rule snapshot requires object field: parameters")
+    return VURandomUniformRuleSnapshot(
+        insurer_id=int(mapping["insurer_id"]),
+        parameters=vu_random_uniform_rule_parameters_from_mapping(parameters),
+        random_draws=_four_draws(mapping, "random_draws"),
+        interest_rate=float(mapping.get("interest_rate", 0.0)),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vu_random_uniform_rule_snapshots_from_mapping(value: object) -> list[VURandomUniformRuleSnapshot]:
+    """Laedt mehrere explizite Vrvu01-Zufall-I-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VU random-uniform rule snapshots must be a list")
+    return [vu_random_uniform_rule_snapshot_from_mapping(item) for item in value]
+
+
+def vu_random_normal_rule_parameters_from_mapping(mapping: dict[str, object]) -> VURandomNormalRuleParameters:
+    """Laedt den Vrvu02-Zufall-II-Parameterblock aus einer Mapping-Struktur."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU random-normal rule parameters must be an object")
+    return VURandomNormalRuleParameters(
+        premium_intercept_normal=_required_list(mapping, "premium_intercept_normal"),
+        premium_factor_normal=_required_list(mapping, "premium_factor_normal"),
+        advertising_intercept_normal=_required_list(mapping, "advertising_intercept_normal"),
+        advertising_factor_normal=_required_list(mapping, "advertising_factor_normal"),
+        premium_intercept_shock=_required_list(mapping, "premium_intercept_shock"),
+        premium_factor_shock=_required_list(mapping, "premium_factor_shock"),
+        advertising_intercept_shock=_required_list(mapping, "advertising_intercept_shock"),
+        advertising_factor_shock=_required_list(mapping, "advertising_factor_shock"),
+    )
+
+
+def vu_random_normal_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VURandomNormalRuleSnapshot:
+    """Laedt einen expliziten Vrvu02-Zufall-II-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU random-normal rule snapshot must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VU random-normal rule snapshot requires field: insurer_id")
+    parameters = mapping.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ValueError("VU random-normal rule snapshot requires object field: parameters")
+    return VURandomNormalRuleSnapshot(
+        insurer_id=int(mapping["insurer_id"]),
+        parameters=vu_random_normal_rule_parameters_from_mapping(parameters),
+        normal_draws=_four_draws(mapping, "normal_draws"),
+        interest_rate=float(mapping.get("interest_rate", 0.0)),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vu_random_normal_rule_snapshots_from_mapping(value: object) -> list[VURandomNormalRuleSnapshot]:
+    """Laedt mehrere explizite Vrvu02-Zufall-II-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VU random-normal rule snapshots must be a list")
+    return [vu_random_normal_rule_snapshot_from_mapping(item) for item in value]
+
+
 def vu_reserve_markup_rule_parameters_from_mapping(mapping: dict[str, object]) -> VUReserveMarkupRuleParameters:
     """Laedt den Vrvu03-Mark-Up-I-Parameterblock aus einer Mapping-Struktur."""
 
@@ -505,6 +685,220 @@ def load_vu_market_share_markup_rule_snapshots_from_mapping(value: object) -> li
     if not isinstance(value, list):
         raise ValueError("VU market-share-markup rule snapshots must be a list")
     return [vu_market_share_markup_rule_snapshot_from_mapping(item) for item in value]
+
+
+def apply_vu_random_uniform_rule(
+    insurer: Insurer,
+    parameters: VURandomUniformRuleParameters,
+    *,
+    period: int,
+    random_draws: list[float],
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VURandomUniformRuleResult:
+    """
+    Portiert den deterministischen Rechenkern von Vrvu01 / Zufall I.
+
+    Die historische Regel nutzt `myrndf()` viermal. Dieser Slice nimmt diese
+    Zufallswerte explizit als Snapshot entgegen, damit die Portierung ohne
+    vorgezogene Aussage zur historischen RNG-Gleichheit testbar bleibt.
+    """
+
+    previous_premiums = _two_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
+    previous_advertising = _two_values(insurer.advertising_current_sector, fallback=insurer.advertising_current)
+    previous_reserves = _two_values(insurer.reserves_current, fallback=0.0)
+    draws = _draw_values(random_draws, "random_draws")
+
+    if period <= 1:
+        return VURandomUniformRuleResult(
+            premiums_current_sector=previous_premiums,
+            advertising_current_sector=previous_advertising,
+            reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+            random_draws=draws,
+        )
+
+    if change_shock:
+        premium_factors = _parameter_values(parameters.premium_factor_shock)
+        advertising_factors = _parameter_values(parameters.advertising_factor_shock)
+    else:
+        premium_factors = _parameter_values(parameters.premium_factor_normal)
+        advertising_factors = _parameter_values(parameters.advertising_factor_normal)
+
+    return VURandomUniformRuleResult(
+        premiums_current_sector=[premium_factors[index] * draws[index] for index in range(2)],
+        advertising_current_sector=[advertising_factors[index] * draws[index + 2] for index in range(2)],
+        reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+        random_draws=draws,
+    )
+
+
+def apply_vu_random_uniform_rule_to_insurer(
+    insurer: Insurer,
+    parameters: VURandomUniformRuleParameters,
+    *,
+    period: int,
+    random_draws: list[float],
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VURandomUniformRuleResult:
+    """Berechnet Vrvu01 / Zufall I und schreibt den aktuellen VU-Snapshot fort."""
+
+    result = apply_vu_random_uniform_rule(
+        insurer,
+        parameters,
+        period=period,
+        random_draws=random_draws,
+        interest_rate=interest_rate,
+        change_shock=change_shock,
+    )
+    insurer.premiums_current_sector = result.premiums_current_sector
+    insurer.advertising_current_sector = result.advertising_current_sector
+    insurer.premiums_current = result.premiums_current_sector[0]
+    insurer.advertising_current = result.advertising_current_sector[0]
+    insurer.reserves_current = result.reserves_current
+    return result
+
+
+def apply_vu_random_uniform_rule_snapshots(
+    insurers: list[Insurer],
+    snapshots: list[VURandomUniformRuleSnapshot],
+    *,
+    period: int,
+) -> list[VURandomUniformRuleApplication]:
+    """Wendet explizite Vrvu01-Zufall-I-Snapshots deterministisch auf passende Versicherer an."""
+
+    insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
+    applications: list[VURandomUniformRuleApplication] = []
+    seen_insurer_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.insurer_id in seen_insurer_ids:
+            raise ValueError(f"duplicate VU random-uniform rule snapshot for insurer: {snapshot.insurer_id}")
+        seen_insurer_ids.add(snapshot.insurer_id)
+        insurer = insurers_by_id.get(snapshot.insurer_id)
+        if insurer is None:
+            raise ValueError(f"VU random-uniform rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        result = apply_vu_random_uniform_rule_to_insurer(
+            insurer,
+            snapshot.parameters,
+            period=period,
+            random_draws=snapshot.random_draws,
+            interest_rate=snapshot.interest_rate,
+            change_shock=snapshot.change_shock,
+        )
+        applications.append(VURandomUniformRuleApplication(insurer_id=snapshot.insurer_id, result=result))
+    return applications
+
+
+def apply_vu_random_normal_rule(
+    insurer: Insurer,
+    parameters: VURandomNormalRuleParameters,
+    *,
+    period: int,
+    normal_draws: list[float],
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VURandomNormalRuleResult:
+    """
+    Portiert den deterministischen Rechenkern von Vrvu02 / Zufall II.
+
+    Die historischen `normal()`-Ziehungen werden hier explizit uebergeben. Damit
+    ist die fachliche Formel portiert, ohne den historischen Normalverteilungs-
+    Generator in diesem PR vorwegzunehmen.
+    """
+
+    previous_premiums = _two_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
+    previous_advertising = _two_values(insurer.advertising_current_sector, fallback=insurer.advertising_current)
+    previous_reserves = _two_values(insurer.reserves_current, fallback=0.0)
+    draws = _draw_values(normal_draws, "normal_draws")
+
+    if period <= 1:
+        return VURandomNormalRuleResult(
+            premiums_current_sector=previous_premiums,
+            advertising_current_sector=previous_advertising,
+            reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+            normal_draws=draws,
+        )
+
+    if change_shock:
+        premium_intercepts = _parameter_values(parameters.premium_intercept_shock)
+        premium_factors = _parameter_values(parameters.premium_factor_shock)
+        advertising_intercepts = _parameter_values(parameters.advertising_intercept_shock)
+        advertising_factors = _parameter_values(parameters.advertising_factor_shock)
+    else:
+        premium_intercepts = _parameter_values(parameters.premium_intercept_normal)
+        premium_factors = _parameter_values(parameters.premium_factor_normal)
+        advertising_intercepts = _parameter_values(parameters.advertising_intercept_normal)
+        advertising_factors = _parameter_values(parameters.advertising_factor_normal)
+
+    return VURandomNormalRuleResult(
+        premiums_current_sector=[
+            premium_intercepts[index] + premium_factors[index] * draws[index]
+            for index in range(2)
+        ],
+        advertising_current_sector=[
+            advertising_intercepts[index] + advertising_factors[index] * draws[index + 2]
+            for index in range(2)
+        ],
+        reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+        normal_draws=draws,
+    )
+
+
+def apply_vu_random_normal_rule_to_insurer(
+    insurer: Insurer,
+    parameters: VURandomNormalRuleParameters,
+    *,
+    period: int,
+    normal_draws: list[float],
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VURandomNormalRuleResult:
+    """Berechnet Vrvu02 / Zufall II und schreibt den aktuellen VU-Snapshot fort."""
+
+    result = apply_vu_random_normal_rule(
+        insurer,
+        parameters,
+        period=period,
+        normal_draws=normal_draws,
+        interest_rate=interest_rate,
+        change_shock=change_shock,
+    )
+    insurer.premiums_current_sector = result.premiums_current_sector
+    insurer.advertising_current_sector = result.advertising_current_sector
+    insurer.premiums_current = result.premiums_current_sector[0]
+    insurer.advertising_current = result.advertising_current_sector[0]
+    insurer.reserves_current = result.reserves_current
+    return result
+
+
+def apply_vu_random_normal_rule_snapshots(
+    insurers: list[Insurer],
+    snapshots: list[VURandomNormalRuleSnapshot],
+    *,
+    period: int,
+) -> list[VURandomNormalRuleApplication]:
+    """Wendet explizite Vrvu02-Zufall-II-Snapshots deterministisch auf passende Versicherer an."""
+
+    insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
+    applications: list[VURandomNormalRuleApplication] = []
+    seen_insurer_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.insurer_id in seen_insurer_ids:
+            raise ValueError(f"duplicate VU random-normal rule snapshot for insurer: {snapshot.insurer_id}")
+        seen_insurer_ids.add(snapshot.insurer_id)
+        insurer = insurers_by_id.get(snapshot.insurer_id)
+        if insurer is None:
+            raise ValueError(f"VU random-normal rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        result = apply_vu_random_normal_rule_to_insurer(
+            insurer,
+            snapshot.parameters,
+            period=period,
+            normal_draws=snapshot.normal_draws,
+            interest_rate=snapshot.interest_rate,
+            change_shock=snapshot.change_shock,
+        )
+        applications.append(VURandomNormalRuleApplication(insurer_id=snapshot.insurer_id, result=result))
+    return applications
 
 
 def apply_vu_foreign_info_rule(
