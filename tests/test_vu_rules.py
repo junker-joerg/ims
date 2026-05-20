@@ -580,6 +580,24 @@ def test_vu_random_uniform_rule_rejects_bad_draw_count() -> None:
         )
 
 
+def test_vu_random_uniform_rule_snapshots_reject_unknown_and_duplicate_targets() -> None:
+    snapshots = load_vu_random_uniform_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "random_draws": [0.1, 0.2, 0.3, 0.4],
+                "parameters": _random_uniform_parameter_mapping(),
+            }
+        ]
+    )
+
+    with pytest.raises(ValueError, match="unknown insurer"):
+        apply_vu_random_uniform_rule_snapshots([], snapshots, period=2)
+
+    with pytest.raises(ValueError, match="duplicate"):
+        apply_vu_random_uniform_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=2)
+
+
 def test_vu_random_normal_rule_uses_explicit_draws() -> None:
     insurer = Insurer(
         entity_id=7,
@@ -665,6 +683,24 @@ def test_vu_random_normal_rule_rejects_bad_draw_count() -> None:
             normal_draws=[0.1],
             interest_rate=0.0,
         )
+
+
+def test_vu_random_normal_rule_snapshots_reject_unknown_and_duplicate_targets() -> None:
+    snapshots = load_vu_random_normal_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "normal_draws": [0.1, -0.2, 0.3, -0.4],
+                "parameters": _random_normal_parameter_mapping(),
+            }
+        ]
+    )
+
+    with pytest.raises(ValueError, match="unknown insurer"):
+        apply_vu_random_normal_rule_snapshots([], snapshots, period=2)
+
+    with pytest.raises(ValueError, match="duplicate"):
+        apply_vu_random_normal_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=2)
 
 
 def test_vu_reserve_markup_rule_uses_reserve_thresholds_for_normal_case() -> None:
