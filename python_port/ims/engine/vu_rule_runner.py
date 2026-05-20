@@ -9,9 +9,11 @@ from ims.model.entities import BAV, Insurer, Policyholder
 from ims.model.vu_rules import (
     VUExpectedClaimRuleApplication,
     VUForeignInfoRuleApplication,
+    VUMarketShareMarkupRuleApplication,
     VUReserveMarkupRuleApplication,
     apply_vu_expected_claim_rule_snapshots,
     apply_vu_foreign_info_rule_snapshots,
+    apply_vu_market_share_markup_rule_snapshots,
     apply_vu_reserve_markup_rule_snapshots,
 )
 
@@ -29,6 +31,7 @@ class VUForeignInfoPeriodRunResult:
     rule_applications: list[VUForeignInfoRuleApplication]
     reserve_markup_applications: list[VUReserveMarkupRuleApplication]
     expected_claim_applications: list[VUExpectedClaimRuleApplication]
+    market_share_markup_applications: list[VUMarketShareMarkupRuleApplication]
     aggregate_snapshot: AggregateSnapshot
 
 
@@ -82,6 +85,11 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         loaded.vu_expected_claim_rule_snapshots,
         period=loaded.context.period,
     )
+    market_share_markup_applications = apply_vu_market_share_markup_rule_snapshots(
+        loaded.insurers,
+        loaded.vu_market_share_markup_rule_snapshots,
+        period=loaded.context.period,
+    )
     aggregate_snapshot = collect_basic_aggregates(
         context=loaded.context,
         bav=loaded.bav,
@@ -98,6 +106,7 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         rule_applications=rule_applications,
         reserve_markup_applications=reserve_markup_applications,
         expected_claim_applications=expected_claim_applications,
+        market_share_markup_applications=market_share_markup_applications,
         aggregate_snapshot=aggregate_snapshot,
     )
 
@@ -114,7 +123,14 @@ def run_vu_foreign_info_period_from_fixture(path: str | Path) -> VUForeignInfoPe
     return run_loaded_vu_foreign_info_period(load_scenario(path))
 
 
-def _set_two_sector_state(insurer: Insurer, *, premiums: list[float], advertising: list[float], reserves: list[float]) -> None:
+def _set_two_sector_state(
+    insurer: Insurer,
+    *,
+    premiums: list[float],
+    advertising: list[float],
+    reserves: list[float],
+    policyholders: list[float],
+) -> None:
     insurer.premiums_prev_sector = list(premiums)
     insurer.premiums_prev = float(premiums[0]) if premiums else 0.0
     insurer.premiums_current_sector = list(premiums)
@@ -126,6 +142,8 @@ def _set_two_sector_state(insurer: Insurer, *, premiums: list[float], advertisin
     insurer.reserves_prev_sector = list(reserves)
     insurer.reserves_prev = float(reserves[0]) if reserves else 0.0
     insurer.reserves_current = list(reserves)
+    insurer.policyholders_current_sector = list(policyholders)
+    insurer.policyholders_current = float(policyholders[0]) if policyholders else 0.0
 
 
 def _apply_carryover(
@@ -143,6 +161,11 @@ def _apply_carryover(
             premiums=previous.premiums_current_sector,
             advertising=previous.advertising_current_sector,
             reserves=previous.reserves_current,
+            policyholders=(
+                previous.policyholders_current_sector
+                if previous.policyholders_current_sector
+                else [previous.policyholders_current, previous.policyholders_current]
+            ),
         )
         insurer.active_prev = previous.active
         carried_ids.append(insurer.entity_id)
@@ -195,6 +218,7 @@ def run_vu_foreign_info_multi_period_from_mappings(
             len(result.rule_applications)
             + len(result.reserve_markup_applications)
             + len(result.expected_claim_applications)
+            + len(result.market_share_markup_applications)
             for result in period_results
         ),
         carryovers=carryovers,

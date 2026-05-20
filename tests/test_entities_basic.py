@@ -10,4 +10,5 @@ def test_entities_can_be_instantiated_with_minimal_fields() -> None:
     assert base.active is True
     assert bav.name == "Basis-BAV"
     assert insurer.entity_id == 20
+    assert insurer.policyholders_current_sector == []
     assert policyholder.insurer_id == 20
