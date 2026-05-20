@@ -98,6 +98,48 @@ class VUReserveMarkupRuleApplication:
     result: VUReserveMarkupRuleResult
 
 
+@dataclass(slots=True)
+class VUExpectedClaimRuleParameters:
+    """Multiplikatoren fuer den portierten Vrvu06-Erwartungsschaden-Ausschnitt."""
+
+    premium_below_normal: list[float]
+    premium_above_normal: list[float]
+    advertising_below_normal: list[float]
+    advertising_above_normal: list[float]
+    premium_below_shock: list[float]
+    premium_above_shock: list[float]
+    advertising_below_shock: list[float]
+    advertising_above_shock: list[float]
+
+
+@dataclass(slots=True)
+class VUExpectedClaimRuleResult:
+    """Berechneter VU-Zielzustand fuer Vrvu06 / Erwartungsschaden."""
+
+    premiums_current_sector: list[float]
+    advertising_current_sector: list[float]
+    reserves_current: list[float]
+    expected_claim_values: list[float]
+
+
+@dataclass(slots=True)
+class VUExpectedClaimRuleSnapshot:
+    """Expliziter Parameter-Snapshot fuer den Vrvu06-Erwartungsschaden-Ausschnitt."""
+
+    insurer_id: int
+    parameters: VUExpectedClaimRuleParameters
+    interest_rate: float = 0.0
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VUExpectedClaimRuleApplication:
+    """Diagnose eines angewendeten Vrvu06-Erwartungsschaden-Snapshots."""
+
+    insurer_id: int
+    result: VUExpectedClaimRuleResult
+
+
 def _two_values(values: object, *, fallback: float) -> list[float]:
     if values is None:
         return [float(fallback), float(fallback)]
@@ -230,6 +272,51 @@ def load_vu_reserve_markup_rule_snapshots_from_mapping(value: object) -> list[VU
     if not isinstance(value, list):
         raise ValueError("VU reserve-markup rule snapshots must be a list")
     return [vu_reserve_markup_rule_snapshot_from_mapping(item) for item in value]
+
+
+def vu_expected_claim_rule_parameters_from_mapping(mapping: dict[str, object]) -> VUExpectedClaimRuleParameters:
+    """Laedt den Vrvu06-Erwartungsschaden-Parameterblock aus einer Mapping-Struktur."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU expected-claim rule parameters must be an object")
+    return VUExpectedClaimRuleParameters(
+        premium_below_normal=_required_list(mapping, "premium_below_normal"),
+        premium_above_normal=_required_list(mapping, "premium_above_normal"),
+        advertising_below_normal=_required_list(mapping, "advertising_below_normal"),
+        advertising_above_normal=_required_list(mapping, "advertising_above_normal"),
+        premium_below_shock=_required_list(mapping, "premium_below_shock"),
+        premium_above_shock=_required_list(mapping, "premium_above_shock"),
+        advertising_below_shock=_required_list(mapping, "advertising_below_shock"),
+        advertising_above_shock=_required_list(mapping, "advertising_above_shock"),
+    )
+
+
+def vu_expected_claim_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VUExpectedClaimRuleSnapshot:
+    """Laedt einen expliziten Vrvu06-Erwartungsschaden-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU expected-claim rule snapshot must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VU expected-claim rule snapshot requires field: insurer_id")
+    parameters = mapping.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ValueError("VU expected-claim rule snapshot requires object field: parameters")
+    return VUExpectedClaimRuleSnapshot(
+        insurer_id=int(mapping["insurer_id"]),
+        parameters=vu_expected_claim_rule_parameters_from_mapping(parameters),
+        interest_rate=float(mapping.get("interest_rate", 0.0)),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vu_expected_claim_rule_snapshots_from_mapping(value: object) -> list[VUExpectedClaimRuleSnapshot]:
+    """Laedt mehrere explizite Vrvu06-Erwartungsschaden-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VU expected-claim rule snapshots must be a list")
+    return [vu_expected_claim_rule_snapshot_from_mapping(item) for item in value]
 
 
 def apply_vu_foreign_info_rule(
@@ -473,4 +560,128 @@ def apply_vu_reserve_markup_rule_snapshots(
             change_shock=snapshot.change_shock,
         )
         applications.append(VUReserveMarkupRuleApplication(insurer_id=snapshot.insurer_id, result=result))
+    return applications
+
+
+def _expected_claim_values(claim_counts: list[int], claim_sums: list[float]) -> list[float]:
+    counts = _two_values(claim_counts, fallback=0.0)
+    sums = _two_values(claim_sums, fallback=0.0)
+    return [
+        sums[index] / counts[index] if counts[index] != 0 else 0.0
+        for index in range(2)
+    ]
+
+
+def apply_vu_expected_claim_rule(
+    insurer: Insurer,
+    parameters: VUExpectedClaimRuleParameters,
+    *,
+    period: int,
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUExpectedClaimRuleResult:
+    """
+    Portiert den deterministischen Kern von Vrvu06 / Erwartungsschaden.
+
+    Die historische Regel berechnet je Sparte `Sh / Sa` mit Nullschutz und
+    vergleicht die Vorperiodenpraemie gegen diesen erwarteten Schadenwert.
+    """
+
+    previous_premiums = _two_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
+    previous_advertising = _two_values(insurer.advertising_current_sector, fallback=insurer.advertising_current)
+    previous_reserves = _two_values(insurer.reserves_current, fallback=0.0)
+    expected_claims = _expected_claim_values(insurer.claims_count_current, insurer.claims_sum_current)
+
+    if period <= 1:
+        return VUExpectedClaimRuleResult(
+            premiums_current_sector=previous_premiums,
+            advertising_current_sector=previous_advertising,
+            reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+            expected_claim_values=expected_claims,
+        )
+
+    if change_shock:
+        premium_below = _parameter_values(parameters.premium_below_shock)
+        premium_above = _parameter_values(parameters.premium_above_shock)
+        advertising_below = _parameter_values(parameters.advertising_below_shock)
+        advertising_above = _parameter_values(parameters.advertising_above_shock)
+    else:
+        premium_below = _parameter_values(parameters.premium_below_normal)
+        premium_above = _parameter_values(parameters.premium_above_normal)
+        advertising_below = _parameter_values(parameters.advertising_below_normal)
+        advertising_above = _parameter_values(parameters.advertising_above_normal)
+
+    premium_multipliers = [
+        premium_below[index] if previous_premiums[index] <= expected_claims[index] else premium_above[index]
+        for index in range(2)
+    ]
+    advertising_multipliers = [
+        advertising_below[index] if previous_premiums[index] <= expected_claims[index] else advertising_above[index]
+        for index in range(2)
+    ]
+    return VUExpectedClaimRuleResult(
+        premiums_current_sector=[
+            premium_multipliers[index] * previous_premiums[index]
+            for index in range(2)
+        ],
+        advertising_current_sector=[
+            advertising_multipliers[index] * previous_advertising[index]
+            for index in range(2)
+        ],
+        reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+        expected_claim_values=expected_claims,
+    )
+
+
+def apply_vu_expected_claim_rule_to_insurer(
+    insurer: Insurer,
+    parameters: VUExpectedClaimRuleParameters,
+    *,
+    period: int,
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUExpectedClaimRuleResult:
+    """Berechnet Vrvu06 / Erwartungsschaden und schreibt den aktuellen VU-Snapshot fort."""
+
+    result = apply_vu_expected_claim_rule(
+        insurer,
+        parameters,
+        period=period,
+        interest_rate=interest_rate,
+        change_shock=change_shock,
+    )
+    insurer.premiums_current_sector = result.premiums_current_sector
+    insurer.advertising_current_sector = result.advertising_current_sector
+    insurer.premiums_current = result.premiums_current_sector[0]
+    insurer.advertising_current = result.advertising_current_sector[0]
+    insurer.reserves_current = result.reserves_current
+    return result
+
+
+def apply_vu_expected_claim_rule_snapshots(
+    insurers: list[Insurer],
+    snapshots: list[VUExpectedClaimRuleSnapshot],
+    *,
+    period: int,
+) -> list[VUExpectedClaimRuleApplication]:
+    """Wendet explizite Vrvu06-Erwartungsschaden-Snapshots deterministisch auf passende Versicherer an."""
+
+    insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
+    applications: list[VUExpectedClaimRuleApplication] = []
+    seen_insurer_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.insurer_id in seen_insurer_ids:
+            raise ValueError(f"duplicate VU expected-claim rule snapshot for insurer: {snapshot.insurer_id}")
+        seen_insurer_ids.add(snapshot.insurer_id)
+        insurer = insurers_by_id.get(snapshot.insurer_id)
+        if insurer is None:
+            raise ValueError(f"VU expected-claim rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        result = apply_vu_expected_claim_rule_to_insurer(
+            insurer,
+            snapshot.parameters,
+            period=period,
+            interest_rate=snapshot.interest_rate,
+            change_shock=snapshot.change_shock,
+        )
+        applications.append(VUExpectedClaimRuleApplication(insurer_id=snapshot.insurer_id, result=result))
     return applications

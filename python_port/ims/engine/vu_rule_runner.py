@@ -7,8 +7,10 @@ from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_
 from ims.model.bav_service import BAVForeignInfoResult, compute_extended_foreign_info
 from ims.model.entities import BAV, Insurer, Policyholder
 from ims.model.vu_rules import (
+    VUExpectedClaimRuleApplication,
     VUForeignInfoRuleApplication,
     VUReserveMarkupRuleApplication,
+    apply_vu_expected_claim_rule_snapshots,
     apply_vu_foreign_info_rule_snapshots,
     apply_vu_reserve_markup_rule_snapshots,
 )
@@ -26,6 +28,7 @@ class VUForeignInfoPeriodRunResult:
     foreign_info: BAVForeignInfoResult
     rule_applications: list[VUForeignInfoRuleApplication]
     reserve_markup_applications: list[VUReserveMarkupRuleApplication]
+    expected_claim_applications: list[VUExpectedClaimRuleApplication]
     aggregate_snapshot: AggregateSnapshot
 
 
@@ -74,6 +77,11 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         loaded.vu_reserve_markup_rule_snapshots,
         period=loaded.context.period,
     )
+    expected_claim_applications = apply_vu_expected_claim_rule_snapshots(
+        loaded.insurers,
+        loaded.vu_expected_claim_rule_snapshots,
+        period=loaded.context.period,
+    )
     aggregate_snapshot = collect_basic_aggregates(
         context=loaded.context,
         bav=loaded.bav,
@@ -89,6 +97,7 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         foreign_info=foreign_info,
         rule_applications=rule_applications,
         reserve_markup_applications=reserve_markup_applications,
+        expected_claim_applications=expected_claim_applications,
         aggregate_snapshot=aggregate_snapshot,
     )
 
@@ -183,7 +192,9 @@ def run_vu_foreign_info_multi_period_from_mappings(
         period_results=period_results,
         processed_periods=processed_periods,
         total_rule_applications=sum(
-            len(result.rule_applications) + len(result.reserve_markup_applications)
+            len(result.rule_applications)
+            + len(result.reserve_markup_applications)
+            + len(result.expected_claim_applications)
             for result in period_results
         ),
         carryovers=carryovers,
