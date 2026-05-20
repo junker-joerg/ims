@@ -449,3 +449,75 @@ def test_scenario_loader_reads_optional_vu_free_linear_rule_snapshots() -> None:
     assert snapshot.interest_rate == 0.04
     assert snapshot.change_shock is True
     assert snapshot.parameters.premium_factor_normal == [0.5, 0.25]
+
+
+def test_scenario_loader_reads_optional_vn_settlement_snapshots() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [{"entity_id": 10, "name": "VU"}],
+            "policyholders": [{"entity_id": 20, "name": "VN"}],
+            "vn_settlement_snapshots": [
+                {
+                    "policyholder_id": 20,
+                    "previous_wealth": 100.0,
+                    "previous_wealth_sector": [60.0, 40.0],
+                    "decisions": [
+                        {"sector_index": 0, "insured": True, "insurer_id": 10, "premium": 5.0, "damage": 2.0},
+                        {"sector_index": 1, "insured": False, "damage": 3.0},
+                    ],
+                }
+            ],
+        }
+    )
+
+    assert len(scenario.vn_settlement_snapshots) == 1
+    snapshot = scenario.vn_settlement_snapshots[0]
+    assert snapshot.policyholder_id == 20
+    assert snapshot.previous_wealth == 100.0
+    assert snapshot.previous_wealth_sector == [60.0, 40.0]
+    assert snapshot.decisions[0].insurer_id == 10
+    assert snapshot.decisions[1].insured is False
+
+
+def test_scenario_loader_rejects_unknown_vn_settlement_references() -> None:
+    with pytest.raises(ScenarioValidationError, match="unknown insurers: 99"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": [{"entity_id": 10, "name": "VU"}],
+                "policyholders": [{"entity_id": 20, "name": "VN"}],
+                "vn_settlement_snapshots": [
+                    {
+                        "policyholder_id": 20,
+                        "previous_wealth": 100.0,
+                        "decisions": [
+                            {"sector_index": 0, "insured": True, "insurer_id": 99, "damage": 2.0},
+                            {"sector_index": 1, "insured": False, "damage": 3.0},
+                        ],
+                    }
+                ],
+            }
+        )
+
+    with pytest.raises(ScenarioValidationError, match="unknown policyholders: 21"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": [{"entity_id": 10, "name": "VU"}],
+                "policyholders": [{"entity_id": 20, "name": "VN"}],
+                "vn_settlement_snapshots": [
+                    {
+                        "policyholder_id": 21,
+                        "previous_wealth": 100.0,
+                        "decisions": [
+                            {"sector_index": 0, "insured": False, "damage": 2.0},
+                            {"sector_index": 1, "insured": False, "damage": 3.0},
+                        ],
+                    }
+                ],
+            }
+        )
