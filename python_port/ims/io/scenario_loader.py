@@ -7,12 +7,14 @@ from ims.model.entities import BAV, Insurer, Policyholder
 from ims.model.vu_rules import (
     VUForeignInfoRuleSnapshot,
     VUExpectedClaimRuleSnapshot,
+    VUFreeLinearRuleSnapshot,
     VUNetSwitcherMarkupRuleSnapshot,
     VURandomNormalRuleSnapshot,
     VURandomUniformRuleSnapshot,
     VUReserveMarkupRuleSnapshot,
     VUMarketShareMarkupRuleSnapshot,
     load_vu_expected_claim_rule_snapshots_from_mapping,
+    load_vu_free_linear_rule_snapshots_from_mapping,
     load_vu_foreign_info_rule_snapshots_from_mapping,
     load_vu_market_share_markup_rule_snapshots_from_mapping,
     load_vu_net_switcher_markup_rule_snapshots_from_mapping,
@@ -37,6 +39,7 @@ class LoadedScenario:
     vu_net_switcher_markup_rule_snapshots: list[VUNetSwitcherMarkupRuleSnapshot] = field(default_factory=list)
     vu_expected_claim_rule_snapshots: list[VUExpectedClaimRuleSnapshot] = field(default_factory=list)
     vu_market_share_markup_rule_snapshots: list[VUMarketShareMarkupRuleSnapshot] = field(default_factory=list)
+    vu_free_linear_rule_snapshots: list[VUFreeLinearRuleSnapshot] = field(default_factory=list)
 
 
 class ScenarioValidationError(ValueError):
@@ -287,6 +290,9 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         ),
         vu_market_share_markup_rule_snapshots=load_vu_market_share_markup_rule_snapshots_from_mapping(
             data.get("vu_market_share_markup_rule_snapshots")
+        ),
+        vu_free_linear_rule_snapshots=load_vu_free_linear_rule_snapshots_from_mapping(
+            data.get("vu_free_linear_rule_snapshots")
         ),
     )
 

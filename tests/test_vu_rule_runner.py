@@ -65,6 +65,19 @@ def _random_normal_parameters() -> dict[str, list[float]]:
     }
 
 
+def _free_linear_parameters() -> dict[str, list[float]]:
+    return {
+        "premium_intercept_normal": [1.0, 2.0],
+        "premium_factor_normal": [10.0, 20.0],
+        "advertising_intercept_normal": [3.0, 4.0],
+        "advertising_factor_normal": [30.0, 40.0],
+        "premium_intercept_shock": [5.0, 6.0],
+        "premium_factor_shock": [50.0, 60.0],
+        "advertising_intercept_shock": [7.0, 8.0],
+        "advertising_factor_shock": [70.0, 80.0],
+    }
+
+
 def _expected_claim_parameters() -> dict[str, list[float]]:
     return {
         "premium_below_normal": [1.1, 1.2],
@@ -446,6 +459,32 @@ def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules(
     assert insurer.reserves_current == pytest.approx([52.5, 63.0])
 
 
+def test_vu_rule_runner_applies_free_linear_snapshots_after_prior_rules() -> None:
+    scenario = _scenario()
+    scenario["vu_foreign_info_rule_snapshots"] = []
+    scenario["vu_free_linear_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "interest_rate": 0.05,
+            "parameters": _free_linear_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    assert result.rule_applications == []
+    assert result.reserve_markup_applications == []
+    assert result.net_switcher_markup_applications == []
+    assert result.expected_claim_applications == []
+    assert result.market_share_markup_applications == []
+    assert len(result.free_linear_applications) == 1
+    assert result.free_linear_applications[0].insurer_id == 10
+    insurer = result.insurers[0]
+    assert insurer.premiums_current_sector == pytest.approx([1.0, 2.0])
+    assert insurer.advertising_current_sector == pytest.approx([3.0, 4.0])
+    assert insurer.reserves_current == pytest.approx([52.5, 63.0])
+
+
 def test_vu_rule_runner_counts_all_five_loaded_vu_rule_application_types() -> None:
     scenario = _scenario_for_period(2)
     scenario["insurers"].extend(
@@ -489,6 +528,7 @@ def test_vu_rule_runner_counts_all_five_loaded_vu_rule_application_types() -> No
     assert len(result.period_results[0].net_switcher_markup_applications) == 1
     assert len(result.period_results[0].expected_claim_applications) == 1
     assert len(result.period_results[0].market_share_markup_applications) == 1
+    assert result.period_results[0].free_linear_applications == []
 
 
 def test_vu_rule_runner_counts_all_loaded_vu_rule_application_types_with_random_rules() -> None:
@@ -501,6 +541,7 @@ def test_vu_rule_runner_counts_all_loaded_vu_rule_application_types_with_random_
             _additional_insurer(14),
             _additional_insurer(15),
             _additional_insurer(16),
+            _additional_insurer(17),
         ]
     )
     scenario["vu_random_uniform_rule_snapshots"] = [
@@ -546,10 +587,16 @@ def test_vu_rule_runner_counts_all_loaded_vu_rule_application_types_with_random_
             "parameters": _market_share_markup_parameters(),
         }
     ]
+    scenario["vu_free_linear_rule_snapshots"] = [
+        {
+            "insurer_id": 17,
+            "parameters": _free_linear_parameters(),
+        }
+    ]
 
     result = run_vu_foreign_info_multi_period_from_mappings([scenario])
 
-    assert result.total_rule_applications == 7
+    assert result.total_rule_applications == 8
     assert len(result.period_results[0].rule_applications) == 1
     assert len(result.period_results[0].random_uniform_applications) == 1
     assert len(result.period_results[0].random_normal_applications) == 1
@@ -557,6 +604,7 @@ def test_vu_rule_runner_counts_all_loaded_vu_rule_application_types_with_random_
     assert len(result.period_results[0].net_switcher_markup_applications) == 1
     assert len(result.period_results[0].expected_claim_applications) == 1
     assert len(result.period_results[0].market_share_markup_applications) == 1
+    assert len(result.period_results[0].free_linear_applications) == 1
 
 
 def test_vu_rule_runner_rejects_overlapping_targets_across_rule_sets() -> None:

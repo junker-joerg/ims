@@ -3,6 +3,7 @@ import pytest
 from ims.model.entities import BAV, Insurer
 from ims.model.vu_rules import (
     VUExpectedClaimRuleParameters,
+    VUFreeLinearRuleParameters,
     VUForeignInfoRuleKind,
     VUForeignInfoRuleParameters,
     VUMarketShareMarkupRuleParameters,
@@ -13,6 +14,9 @@ from ims.model.vu_rules import (
     apply_vu_expected_claim_rule,
     apply_vu_expected_claim_rule_snapshots,
     apply_vu_expected_claim_rule_to_insurer,
+    apply_vu_free_linear_rule,
+    apply_vu_free_linear_rule_snapshots,
+    apply_vu_free_linear_rule_to_insurer,
     apply_vu_foreign_info_rule_snapshots,
     apply_vu_foreign_info_rule,
     apply_vu_foreign_info_rule_to_insurer,
@@ -32,6 +36,7 @@ from ims.model.vu_rules import (
     apply_vu_reserve_markup_rule_snapshots,
     apply_vu_reserve_markup_rule_to_insurer,
     load_vu_expected_claim_rule_snapshots_from_mapping,
+    load_vu_free_linear_rule_snapshots_from_mapping,
     load_vu_foreign_info_rule_snapshots_from_mapping,
     load_vu_market_share_markup_rule_snapshots_from_mapping,
     load_vu_net_switcher_markup_rule_snapshots_from_mapping,
@@ -119,6 +124,32 @@ def _random_normal_parameter_mapping() -> dict[str, list[float]]:
         "premium_factor_shock": [50.0, 60.0],
         "advertising_intercept_shock": [7.0, 8.0],
         "advertising_factor_shock": [70.0, 80.0],
+    }
+
+
+def _free_linear_parameters() -> VUFreeLinearRuleParameters:
+    return VUFreeLinearRuleParameters(
+        premium_intercept_normal=[1.0, 2.0],
+        premium_factor_normal=[0.5, 0.25],
+        advertising_intercept_normal=[3.0, 4.0],
+        advertising_factor_normal=[0.1, 0.2],
+        premium_intercept_shock=[10.0, 20.0],
+        premium_factor_shock=[1.0, 2.0],
+        advertising_intercept_shock=[30.0, 40.0],
+        advertising_factor_shock=[3.0, 4.0],
+    )
+
+
+def _free_linear_parameter_mapping() -> dict[str, list[float]]:
+    return {
+        "premium_intercept_normal": [1.0, 2.0],
+        "premium_factor_normal": [0.5, 0.25],
+        "advertising_intercept_normal": [3.0, 4.0],
+        "advertising_factor_normal": [0.1, 0.2],
+        "premium_intercept_shock": [10.0, 20.0],
+        "premium_factor_shock": [1.0, 2.0],
+        "advertising_intercept_shock": [30.0, 40.0],
+        "advertising_factor_shock": [3.0, 4.0],
     }
 
 
@@ -1372,3 +1403,109 @@ def test_vu_market_share_markup_rule_snapshots_require_active_policyholder_count
                 }
             ]
         )
+
+
+def test_vu_free_linear_rule_applies_normal_parameters_to_previous_values() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[1000.0, 2000.0],
+    )
+
+    result = apply_vu_free_linear_rule(
+        insurer,
+        _free_linear_parameters(),
+        period=2,
+        interest_rate=0.05,
+    )
+
+    assert result.premiums_current_sector == [51.0, 52.0]
+    assert result.advertising_current_sector == [4.0, 8.0]
+    assert result.reserves_current == [1050.0, 2100.0]
+
+
+def test_vu_free_linear_rule_supports_change_shock_and_start_period() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[100.0, 200.0],
+    )
+
+    shock = apply_vu_free_linear_rule(
+        insurer,
+        _free_linear_parameters(),
+        period=3,
+        interest_rate=0.1,
+        change_shock=True,
+    )
+    start = apply_vu_free_linear_rule(
+        insurer,
+        _free_linear_parameters(),
+        period=1,
+        interest_rate=0.1,
+        change_shock=True,
+    )
+
+    assert shock.premiums_current_sector == [110.0, 420.0]
+    assert shock.advertising_current_sector == [60.0, 120.0]
+    assert shock.reserves_current == pytest.approx([110.0, 220.0])
+    assert start.premiums_current_sector == [100.0, 200.0]
+    assert start.advertising_current_sector == [10.0, 20.0]
+    assert start.reserves_current == pytest.approx([110.0, 220.0])
+
+
+def test_vu_free_linear_rule_to_insurer_updates_snapshot() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[1000.0, 2000.0],
+    )
+
+    result = apply_vu_free_linear_rule_to_insurer(
+        insurer,
+        _free_linear_parameters(),
+        period=2,
+        interest_rate=0.05,
+    )
+
+    assert result.premiums_current_sector == [51.0, 52.0]
+    assert insurer.premiums_current_sector == [51.0, 52.0]
+    assert insurer.advertising_current_sector == [4.0, 8.0]
+    assert insurer.premiums_current == 51.0
+    assert insurer.advertising_current == 4.0
+    assert insurer.reserves_current == [1050.0, 2100.0]
+
+
+def test_vu_free_linear_rule_snapshots_load_and_apply() -> None:
+    insurers = [Insurer(entity_id=7, premiums_current=100.0, advertising_current=10.0, reserves_current=[5.0, 6.0])]
+    snapshots = load_vu_free_linear_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "interest_rate": 0.1,
+                "parameters": _free_linear_parameter_mapping(),
+            }
+        ]
+    )
+
+    applications = apply_vu_free_linear_rule_snapshots(insurers, snapshots, period=2)
+
+    assert len(applications) == 1
+    assert applications[0].insurer_id == 7
+    assert insurers[0].premiums_current_sector == [51.0, 27.0]
+    assert insurers[0].advertising_current_sector == [4.0, 6.0]
+    assert insurers[0].reserves_current == pytest.approx([5.5, 6.6000000000000005])
+
+
+def test_vu_free_linear_rule_snapshots_reject_unknown_or_duplicate_insurer() -> None:
+    snapshots = load_vu_free_linear_rule_snapshots_from_mapping(
+        [{"insurer_id": 7, "parameters": _free_linear_parameter_mapping()}]
+    )
+
+    with pytest.raises(ValueError, match="unknown insurer"):
+        apply_vu_free_linear_rule_snapshots([], snapshots, period=2)
+    with pytest.raises(ValueError, match="duplicate"):
+        apply_vu_free_linear_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=2)
