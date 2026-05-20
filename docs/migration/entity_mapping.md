@@ -16,3 +16,10 @@ Es bereitet wenige Zustandscontainer und ein kleines JSON-Szenario vor, ohne ber
 - Aggregatbildung, UI oder Ergebnisverarbeitung
 - umfangreiche Szenariovalidierung oder komplexe Relationen
 - Ableitungen aus detaillierten historischen Datenstrukturen
+
+## Spaetere Loader-Haertung
+
+Der Szenario-Loader weist inzwischen doppelte `entity_id`-Werte innerhalb der
+VU- und VN-Listen frueh ab. Damit werden stille Ueberschreibungen in den
+bereits portierten regel- und aggregatnahen Pfaden vermieden, ohne daraus eine
+vollstaendige relationale Szenariopruefung abzuleiten.
