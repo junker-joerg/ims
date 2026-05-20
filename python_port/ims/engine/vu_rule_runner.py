@@ -10,10 +10,12 @@ from ims.model.vu_rules import (
     VUExpectedClaimRuleApplication,
     VUForeignInfoRuleApplication,
     VUMarketShareMarkupRuleApplication,
+    VUNetSwitcherMarkupRuleApplication,
     VUReserveMarkupRuleApplication,
     apply_vu_expected_claim_rule_snapshots,
     apply_vu_foreign_info_rule_snapshots,
     apply_vu_market_share_markup_rule_snapshots,
+    apply_vu_net_switcher_markup_rule_snapshots,
     apply_vu_reserve_markup_rule_snapshots,
 )
 
@@ -30,6 +32,7 @@ class VUForeignInfoPeriodRunResult:
     foreign_info: BAVForeignInfoResult
     rule_applications: list[VUForeignInfoRuleApplication]
     reserve_markup_applications: list[VUReserveMarkupRuleApplication]
+    net_switcher_markup_applications: list[VUNetSwitcherMarkupRuleApplication]
     expected_claim_applications: list[VUExpectedClaimRuleApplication]
     market_share_markup_applications: list[VUMarketShareMarkupRuleApplication]
     aggregate_snapshot: AggregateSnapshot
@@ -81,6 +84,11 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         loaded.vu_reserve_markup_rule_snapshots,
         period=loaded.context.period,
     )
+    net_switcher_markup_applications = apply_vu_net_switcher_markup_rule_snapshots(
+        loaded.insurers,
+        loaded.vu_net_switcher_markup_rule_snapshots,
+        period=loaded.context.period,
+    )
     expected_claim_applications = apply_vu_expected_claim_rule_snapshots(
         loaded.insurers,
         loaded.vu_expected_claim_rule_snapshots,
@@ -106,6 +114,7 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         foreign_info=foreign_info,
         rule_applications=rule_applications,
         reserve_markup_applications=reserve_markup_applications,
+        net_switcher_markup_applications=net_switcher_markup_applications,
         expected_claim_applications=expected_claim_applications,
         market_share_markup_applications=market_share_markup_applications,
         aggregate_snapshot=aggregate_snapshot,
@@ -120,6 +129,7 @@ def _validate_disjoint_vu_rule_snapshot_targets(loaded: LoadedScenario) -> None:
     rule_sets = [
         ("vu_foreign_info_rule_snapshots", _snapshot_insurer_ids(loaded.vu_foreign_info_rule_snapshots)),
         ("vu_reserve_markup_rule_snapshots", _snapshot_insurer_ids(loaded.vu_reserve_markup_rule_snapshots)),
+        ("vu_net_switcher_markup_rule_snapshots", _snapshot_insurer_ids(loaded.vu_net_switcher_markup_rule_snapshots)),
         ("vu_expected_claim_rule_snapshots", _snapshot_insurer_ids(loaded.vu_expected_claim_rule_snapshots)),
         ("vu_market_share_markup_rule_snapshots", _snapshot_insurer_ids(loaded.vu_market_share_markup_rule_snapshots)),
     ]
@@ -243,6 +253,7 @@ def run_vu_foreign_info_multi_period_from_mappings(
         total_rule_applications=sum(
             len(result.rule_applications)
             + len(result.reserve_markup_applications)
+            + len(result.net_switcher_markup_applications)
             + len(result.expected_claim_applications)
             + len(result.market_share_markup_applications)
             for result in period_results

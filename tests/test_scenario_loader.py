@@ -205,3 +205,41 @@ def test_scenario_loader_reads_optional_vu_market_share_markup_rule_snapshots() 
     assert snapshot.active_policyholder_count == 100
     assert snapshot.interest_rate == 0.04
     assert snapshot.change_shock is True
+
+
+def test_scenario_loader_reads_optional_vu_net_switcher_markup_rule_snapshots() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 3, "max_periods": 4},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [{"entity_id": 10, "name": "VU"}],
+            "policyholders": [],
+            "vu_net_switcher_markup_rule_snapshots": [
+                {
+                    "insurer_id": 10,
+                    "net_switcher_thresholds": [5.0, 10.0],
+                    "previous_policyholders_sector": [20.0, 75.0],
+                    "interest_rate": 0.04,
+                    "change_shock": True,
+                    "parameters": {
+                        "premium_below_normal": [1.1, 1.2],
+                        "premium_above_normal": [0.9, 0.8],
+                        "advertising_below_normal": [1.3, 1.4],
+                        "advertising_above_normal": [0.7, 0.6],
+                        "premium_below_shock": [2.1, 2.2],
+                        "premium_above_shock": [1.9, 1.8],
+                        "advertising_below_shock": [2.3, 2.4],
+                        "advertising_above_shock": [1.7, 1.6],
+                    },
+                }
+            ],
+        }
+    )
+
+    assert len(scenario.vu_net_switcher_markup_rule_snapshots) == 1
+    snapshot = scenario.vu_net_switcher_markup_rule_snapshots[0]
+    assert snapshot.insurer_id == 10
+    assert snapshot.net_switcher_thresholds == [5.0, 10.0]
+    assert snapshot.previous_policyholders_sector == [20.0, 75.0]
+    assert snapshot.interest_rate == 0.04
+    assert snapshot.change_shock is True

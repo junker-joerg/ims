@@ -99,6 +99,50 @@ class VUReserveMarkupRuleApplication:
 
 
 @dataclass(slots=True)
+class VUNetSwitcherMarkupRuleParameters:
+    """Multiplikatoren fuer den portierten Vrvu04-Mark-Up-II-Ausschnitt."""
+
+    premium_below_normal: list[float]
+    premium_above_normal: list[float]
+    advertising_below_normal: list[float]
+    advertising_above_normal: list[float]
+    premium_below_shock: list[float]
+    premium_above_shock: list[float]
+    advertising_below_shock: list[float]
+    advertising_above_shock: list[float]
+
+
+@dataclass(slots=True)
+class VUNetSwitcherMarkupRuleResult:
+    """Berechneter VU-Zielzustand fuer Vrvu04 / Mark-Up II."""
+
+    premiums_current_sector: list[float]
+    advertising_current_sector: list[float]
+    reserves_current: list[float]
+    net_switcher_values: list[float]
+
+
+@dataclass(slots=True)
+class VUNetSwitcherMarkupRuleSnapshot:
+    """Expliziter Parameter-Snapshot fuer den Vrvu04-Mark-Up-II-Ausschnitt."""
+
+    insurer_id: int
+    parameters: VUNetSwitcherMarkupRuleParameters
+    net_switcher_thresholds: list[float]
+    previous_policyholders_sector: list[float]
+    interest_rate: float = 0.0
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VUNetSwitcherMarkupRuleApplication:
+    """Diagnose eines angewendeten Vrvu04-Mark-Up-II-Snapshots."""
+
+    insurer_id: int
+    result: VUNetSwitcherMarkupRuleResult
+
+
+@dataclass(slots=True)
 class VUExpectedClaimRuleParameters:
     """Multiplikatoren fuer den portierten Vrvu06-Erwartungsschaden-Ausschnitt."""
 
@@ -316,6 +360,57 @@ def load_vu_reserve_markup_rule_snapshots_from_mapping(value: object) -> list[VU
     if not isinstance(value, list):
         raise ValueError("VU reserve-markup rule snapshots must be a list")
     return [vu_reserve_markup_rule_snapshot_from_mapping(item) for item in value]
+
+
+def vu_net_switcher_markup_rule_parameters_from_mapping(mapping: dict[str, object]) -> VUNetSwitcherMarkupRuleParameters:
+    """Laedt den Vrvu04-Mark-Up-II-Parameterblock aus einer Mapping-Struktur."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU net-switcher-markup rule parameters must be an object")
+    return VUNetSwitcherMarkupRuleParameters(
+        premium_below_normal=_required_list(mapping, "premium_below_normal"),
+        premium_above_normal=_required_list(mapping, "premium_above_normal"),
+        advertising_below_normal=_required_list(mapping, "advertising_below_normal"),
+        advertising_above_normal=_required_list(mapping, "advertising_above_normal"),
+        premium_below_shock=_required_list(mapping, "premium_below_shock"),
+        premium_above_shock=_required_list(mapping, "premium_above_shock"),
+        advertising_below_shock=_required_list(mapping, "advertising_below_shock"),
+        advertising_above_shock=_required_list(mapping, "advertising_above_shock"),
+    )
+
+
+def vu_net_switcher_markup_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VUNetSwitcherMarkupRuleSnapshot:
+    """Laedt einen expliziten Vrvu04-Mark-Up-II-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU net-switcher-markup rule snapshot must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VU net-switcher-markup rule snapshot requires field: insurer_id")
+    if "previous_policyholders_sector" not in mapping:
+        raise ValueError("VU net-switcher-markup rule snapshot requires field: previous_policyholders_sector")
+    parameters = mapping.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ValueError("VU net-switcher-markup rule snapshot requires object field: parameters")
+    return VUNetSwitcherMarkupRuleSnapshot(
+        insurer_id=int(mapping["insurer_id"]),
+        parameters=vu_net_switcher_markup_rule_parameters_from_mapping(parameters),
+        net_switcher_thresholds=_two_values(mapping.get("net_switcher_thresholds"), fallback=0.0),
+        previous_policyholders_sector=_two_values(mapping["previous_policyholders_sector"], fallback=0.0),
+        interest_rate=float(mapping.get("interest_rate", 0.0)),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vu_net_switcher_markup_rule_snapshots_from_mapping(
+    value: object,
+) -> list[VUNetSwitcherMarkupRuleSnapshot]:
+    """Laedt mehrere explizite Vrvu04-Mark-Up-II-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VU net-switcher-markup rule snapshots must be a list")
+    return [vu_net_switcher_markup_rule_snapshot_from_mapping(item) for item in value]
 
 
 def vu_expected_claim_rule_parameters_from_mapping(mapping: dict[str, object]) -> VUExpectedClaimRuleParameters:
@@ -653,6 +748,139 @@ def apply_vu_reserve_markup_rule_snapshots(
             change_shock=snapshot.change_shock,
         )
         applications.append(VUReserveMarkupRuleApplication(insurer_id=snapshot.insurer_id, result=result))
+    return applications
+
+
+def _net_switcher_values(current_policyholders: list[float], previous_policyholders: list[float]) -> list[float]:
+    current_values = _two_values(current_policyholders, fallback=0.0)
+    previous_values = _two_values(previous_policyholders, fallback=0.0)
+    return [
+        current_values[index] - previous_values[index]
+        for index in range(2)
+    ]
+
+
+def apply_vu_net_switcher_markup_rule(
+    insurer: Insurer,
+    parameters: VUNetSwitcherMarkupRuleParameters,
+    *,
+    period: int,
+    net_switcher_thresholds: list[float],
+    previous_policyholders_sector: list[float],
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUNetSwitcherMarkupRuleResult:
+    """
+    Portiert den deterministischen Kern von Vrvu04 / Mark-Up II.
+
+    Die historische Regel vergleicht je Sparte `Vn(t-1) - Vn(t-2)` mit
+    einem Anspruchsniveau fuer Nettowechsler.
+    """
+
+    previous_premiums = _two_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
+    previous_advertising = _two_values(insurer.advertising_current_sector, fallback=insurer.advertising_current)
+    previous_reserves = _two_values(insurer.reserves_current, fallback=0.0)
+    net_switchers = _net_switcher_values(insurer.policyholders_current_sector, previous_policyholders_sector)
+
+    if period < 3:
+        return VUNetSwitcherMarkupRuleResult(
+            premiums_current_sector=previous_premiums,
+            advertising_current_sector=previous_advertising,
+            reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+            net_switcher_values=net_switchers,
+        )
+
+    if change_shock:
+        premium_below = _parameter_values(parameters.premium_below_shock)
+        premium_above = _parameter_values(parameters.premium_above_shock)
+        advertising_below = _parameter_values(parameters.advertising_below_shock)
+        advertising_above = _parameter_values(parameters.advertising_above_shock)
+    else:
+        premium_below = _parameter_values(parameters.premium_below_normal)
+        premium_above = _parameter_values(parameters.premium_above_normal)
+        advertising_below = _parameter_values(parameters.advertising_below_normal)
+        advertising_above = _parameter_values(parameters.advertising_above_normal)
+
+    thresholds = _two_values(net_switcher_thresholds, fallback=0.0)
+    premium_multipliers = [
+        premium_below[index] if net_switchers[index] <= thresholds[index] else premium_above[index]
+        for index in range(2)
+    ]
+    advertising_multipliers = [
+        advertising_below[index] if net_switchers[index] <= thresholds[index] else advertising_above[index]
+        for index in range(2)
+    ]
+    return VUNetSwitcherMarkupRuleResult(
+        premiums_current_sector=[
+            premium_multipliers[index] * previous_premiums[index]
+            for index in range(2)
+        ],
+        advertising_current_sector=[
+            advertising_multipliers[index] * previous_advertising[index]
+            for index in range(2)
+        ],
+        reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+        net_switcher_values=net_switchers,
+    )
+
+
+def apply_vu_net_switcher_markup_rule_to_insurer(
+    insurer: Insurer,
+    parameters: VUNetSwitcherMarkupRuleParameters,
+    *,
+    period: int,
+    net_switcher_thresholds: list[float],
+    previous_policyholders_sector: list[float],
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUNetSwitcherMarkupRuleResult:
+    """Berechnet Vrvu04 / Mark-Up II und schreibt den aktuellen VU-Snapshot fort."""
+
+    result = apply_vu_net_switcher_markup_rule(
+        insurer,
+        parameters,
+        period=period,
+        net_switcher_thresholds=net_switcher_thresholds,
+        previous_policyholders_sector=previous_policyholders_sector,
+        interest_rate=interest_rate,
+        change_shock=change_shock,
+    )
+    insurer.premiums_current_sector = result.premiums_current_sector
+    insurer.advertising_current_sector = result.advertising_current_sector
+    insurer.premiums_current = result.premiums_current_sector[0]
+    insurer.advertising_current = result.advertising_current_sector[0]
+    insurer.reserves_current = result.reserves_current
+    return result
+
+
+def apply_vu_net_switcher_markup_rule_snapshots(
+    insurers: list[Insurer],
+    snapshots: list[VUNetSwitcherMarkupRuleSnapshot],
+    *,
+    period: int,
+) -> list[VUNetSwitcherMarkupRuleApplication]:
+    """Wendet explizite Vrvu04-Mark-Up-II-Snapshots deterministisch auf passende Versicherer an."""
+
+    insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
+    applications: list[VUNetSwitcherMarkupRuleApplication] = []
+    seen_insurer_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.insurer_id in seen_insurer_ids:
+            raise ValueError(f"duplicate VU net-switcher-markup rule snapshot for insurer: {snapshot.insurer_id}")
+        seen_insurer_ids.add(snapshot.insurer_id)
+        insurer = insurers_by_id.get(snapshot.insurer_id)
+        if insurer is None:
+            raise ValueError(f"VU net-switcher-markup rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        result = apply_vu_net_switcher_markup_rule_to_insurer(
+            insurer,
+            snapshot.parameters,
+            period=period,
+            net_switcher_thresholds=snapshot.net_switcher_thresholds,
+            previous_policyholders_sector=snapshot.previous_policyholders_sector,
+            interest_rate=snapshot.interest_rate,
+            change_shock=snapshot.change_shock,
+        )
+        applications.append(VUNetSwitcherMarkupRuleApplication(insurer_id=snapshot.insurer_id, result=result))
     return applications
 
 
