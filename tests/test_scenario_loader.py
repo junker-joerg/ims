@@ -132,6 +132,46 @@ def test_scenario_loader_duplicates_scalar_current_policyholders_for_compatibili
     assert scenario.insurers[0].policyholders_current_sector == [12.0, 12.0]
 
 
+def test_scenario_loader_reads_sector_specific_current_policyholder_status() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [],
+            "policyholders": [
+                {
+                    "entity_id": 20,
+                    "name": "VN",
+                    "insured_current": 0.5,
+                    "insured_current_sector": [1.0, 0.0],
+                }
+            ],
+        }
+    )
+
+    assert scenario.policyholders[0].insured_current == 0.5
+    assert scenario.policyholders[0].insured_current_sector == [1.0, 0.0]
+
+
+def test_scenario_loader_duplicates_scalar_current_policyholder_status_for_compatibility() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [],
+            "policyholders": [
+                {
+                    "entity_id": 20,
+                    "name": "VN",
+                    "insured_current": 0.5,
+                }
+            ],
+        }
+    )
+
+    assert scenario.policyholders[0].insured_current_sector == [0.5, 0.5]
+
+
 def test_scenario_loader_reads_optional_vu_foreign_info_rule_snapshots() -> None:
     scenario = load_scenario_from_mapping(
         {

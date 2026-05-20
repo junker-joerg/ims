@@ -34,6 +34,11 @@ Wenn keine sektorgetrennte Auswahl angegeben ist, fällt der Code auf den
 bisherigen skalaren `chosen_insurer_current` zurück. Bestehende Szenarien bleiben
 damit ladbar.
 
+Ergaenzend wird `Vs1`/`Vs2` als `insured_current_sector: list[float]`
+abgebildet. Fehlt dieser sektorgetrennte aktuelle Status im Szenario, wird
+weiterhin der bisherige skalare Wert `insured_current` auf beide Sparten
+gespiegelt.
+
 ## Grenzen
 
 - Keine Vollvalidierung aller VN-Dateien.

@@ -88,6 +88,23 @@ def test_export_tables_contain_expected_stage_ii_to_iv_values() -> None:
     assert policyholder_all_table.rows[0].values == [26, 201, (0.2 + 0.6 + 0.8) / 3.0, 3.0, 0.0, 0.7000000000000001, 201, (0.2 + 0.6 + 0.8) / 3.0, 4.0, 0.0, 0.7999999999999999, 20.0]
 
 
+def test_export_tables_use_policyholder_sector_status_values() -> None:
+    context, bav, insurers, policyholders = _build_export_sample()
+    policyholders[0].insured_current_sector = [1.0, 0.0]
+    policyholders[1].insured_current_sector = [0.0, 1.0]
+    result = collect_extended_agrsich_records(context, bav, insurers, policyholders)
+    tables = build_agrsich_export_tables(context, result)
+    by_filename = {table.spec.filename: table for table in tables}
+
+    policyholder_rule_table = by_filename["imsvnr05.dat"]
+    assert policyholder_rule_table.rows[0].values[2] == 0.5
+    assert policyholder_rule_table.rows[0].values[7] == 0.5
+
+    policyholder_single_table = by_filename["imsvn300.dat"]
+    assert policyholder_single_table.rows[0].values[2] == 1.0
+    assert policyholder_single_table.rows[0].values[7] == 0.0
+
+
 def test_scenario_loader_reads_extended_export_metrics(minimal_scenario_path: Path) -> None:
     from ims.io.scenario_loader import load_scenario
 
