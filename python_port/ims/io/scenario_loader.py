@@ -194,6 +194,10 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
             rule_id=int(item["rule_id"]) if item.get("rule_id") is not None else None,
             rule_class=int(item["rule_class"]) if item.get("rule_class") is not None else None,
             insured_current=float(item.get("insured_current", item.get("insured_prev", 0.0))),
+            insured_current_sector=_two_float_vector(
+                item.get("insured_current_sector"),
+                fallback=float(item.get("insured_current", item.get("insured_prev", 0.0))),
+            ),
             chosen_insurer_current=(
                 int(item["chosen_insurer_current"])
                 if item.get("chosen_insurer_current") is not None

@@ -197,6 +197,23 @@ def test_collect_basic_agrsich_records_policyholder_uses_mean_and_mode_with_tieb
     assert stage_iv_all.metrics["chosen_insurer_1"] == 201
 
 
+def test_collect_basic_agrsich_records_policyholder_uses_sector_status_vectors() -> None:
+    context, bav, insurers, policyholders = _build_agrsich_sample()
+    policyholders[0].insured_current_sector = [1.0, 0.0]
+    policyholders[1].insured_current_sector = [0.0, 1.0]
+
+    result = collect_basic_agrsich_records(context, bav, insurers, policyholders)
+    policyholder_records = {(record.aggregate_level, record.aggregate_key): record for record in result.policyholder_records}
+
+    stage_i_300 = policyholder_records[("I", 300)]
+    assert stage_i_300.metrics["coverage_1"] == 1.0
+    assert stage_i_300.metrics["coverage_2"] == 0.0
+
+    stage_ii_rule_5 = policyholder_records[("II", 5)]
+    assert stage_ii_rule_5.metrics["coverage_1"] == 0.5
+    assert stage_ii_rule_5.metrics["coverage_2"] == 0.5
+
+
 def test_collect_basic_agrsich_records_updates_bav_aggregate_state() -> None:
     context, bav, insurers, policyholders = _build_agrsich_sample()
 

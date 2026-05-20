@@ -153,6 +153,7 @@ class Policyholder(BaseEntity):
     rule_id: int | None = None
     rule_class: int | None = None
     insured_current: float = 0.0
+    insured_current_sector: list[float] = field(default_factory=list)
     chosen_insurer_current: int | None = None
     chosen_insurer_sector_current: list[int | None] = field(default_factory=lambda: [None, None])
     paid_premium_current: list[float] = field(default_factory=lambda: [0.0, 0.0])

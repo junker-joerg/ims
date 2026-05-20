@@ -80,6 +80,15 @@ def _chosen_insurer_sector(item: Policyholder, index: int) -> int | None:
     return item.chosen_insurer_current
 
 
+def _insured_sector(item: Policyholder, index: int) -> float:
+    values = item.insured_current_sector
+    if len(values) > index:
+        return float(values[index])
+    if values:
+        return float(values[-1])
+    return float(item.insured_current)
+
+
 def _reserve_sector(item: Insurer, index: int) -> float:
     reserves = item.reserves_current
     if isinstance(reserves, list):
@@ -181,12 +190,12 @@ def _policyholder_metrics(items: list[Policyholder], *, average: bool) -> dict[s
         return {
             "paid_premium_1": _mean([item.paid_premium_current[0] for item in items]),
             "self_damage_1": _mean([item.self_damage_current[0] for item in items]),
-            "coverage_1": _mean([item.insured_current for item in items]),
+            "coverage_1": _mean([_insured_sector(item, 0) for item in items]),
             "chosen_insurer_1": _mode_smallest([_chosen_insurer_sector(item, 0) for item in items]),
             "claim_sum_1": _mean([item.claim_sum_current[0] for item in items]),
             "paid_premium_2": _mean([item.paid_premium_current[1] for item in items]),
             "self_damage_2": _mean([item.self_damage_current[1] for item in items]),
-            "coverage_2": _mean([item.insured_current for item in items]),
+            "coverage_2": _mean([_insured_sector(item, 1) for item in items]),
             "chosen_insurer_2": _mode_smallest([_chosen_insurer_sector(item, 1) for item in items]),
             "claim_sum_2": _mean([item.claim_sum_current[1] for item in items]),
             "end_wealth_1": _mean([item.end_wealth_sector_current[0] for item in items]),
@@ -197,12 +206,12 @@ def _policyholder_metrics(items: list[Policyholder], *, average: bool) -> dict[s
     return {
         "paid_premium_1": item.paid_premium_current[0],
         "self_damage_1": item.self_damage_current[0],
-        "coverage_1": item.insured_current,
+        "coverage_1": _insured_sector(item, 0),
         "chosen_insurer_1": _chosen_insurer_sector(item, 0),
         "claim_sum_1": item.claim_sum_current[0],
         "paid_premium_2": item.paid_premium_current[1],
         "self_damage_2": item.self_damage_current[1],
-        "coverage_2": item.insured_current,
+        "coverage_2": _insured_sector(item, 1),
         "chosen_insurer_2": _chosen_insurer_sector(item, 1),
         "claim_sum_2": item.claim_sum_current[1],
         "end_wealth_1": item.end_wealth_sector_current[0],

@@ -440,6 +440,7 @@ def test_core_placeholders_import() -> None:
     assert policyholder.active_prev is True
     assert policyholder.rule_id is None
     assert policyholder.rule_class is None
+    assert policyholder.insured_current_sector == []
     assert policyholder.chosen_insurer_current is None
     assert policyholder.chosen_insurer_sector_current == [None, None]
     assert policyholder.paid_premium_current == [0.0, 0.0]
