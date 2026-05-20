@@ -1174,7 +1174,11 @@ def apply_vu_net_switcher_markup_rule(
     previous_premiums = _two_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
     previous_advertising = _two_values(insurer.advertising_current_sector, fallback=insurer.advertising_current)
     previous_reserves = _two_values(insurer.reserves_current, fallback=0.0)
-    net_switchers = _net_switcher_values(insurer.policyholders_current_sector, previous_policyholders_sector)
+    current_policyholders = _two_values(
+        insurer.policyholders_current_sector,
+        fallback=insurer.policyholders_current,
+    )
+    net_switchers = _net_switcher_values(current_policyholders, previous_policyholders_sector)
 
     if period < 3:
         return VUNetSwitcherMarkupRuleResult(

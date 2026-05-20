@@ -868,6 +868,29 @@ def test_vu_net_switcher_markup_rule_keeps_values_for_first_two_periods() -> Non
     assert result.reserves_current == pytest.approx([55.0, 165.0])
 
 
+def test_vu_net_switcher_markup_rule_falls_back_to_scalar_policyholders() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+        policyholders_current=30.0,
+    )
+
+    result = apply_vu_net_switcher_markup_rule(
+        insurer,
+        _net_switcher_markup_parameters(),
+        period=3,
+        net_switcher_thresholds=[5.0, 5.0],
+        previous_policyholders_sector=[20.0, 20.0],
+        interest_rate=0.0,
+    )
+
+    assert result.net_switcher_values == pytest.approx([10.0, 10.0])
+    assert result.premiums_current_sector == pytest.approx([90.0, 160.0])
+    assert result.advertising_current_sector == pytest.approx([7.0, 12.0])
+
+
 def test_vu_net_switcher_markup_rule_uses_shock_parameters_when_requested() -> None:
     insurer = Insurer(
         entity_id=7,

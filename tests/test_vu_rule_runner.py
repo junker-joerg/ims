@@ -395,6 +395,29 @@ def test_vu_rule_runner_applies_net_switcher_markup_snapshots_after_prior_rules(
     assert insurer.reserves_current == pytest.approx([52.5, 63.0])
 
 
+def test_vu_rule_runner_uses_scalar_policyholders_for_net_switcher_snapshots() -> None:
+    scenario = _scenario()
+    scenario["vu_foreign_info_rule_snapshots"] = []
+    scenario["insurers"][0].pop("policyholders_current_sector")
+    scenario["insurers"][0]["policyholders_current"] = 30.0
+    scenario["vu_net_switcher_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "net_switcher_thresholds": [5.0, 5.0],
+            "previous_policyholders_sector": [20.0, 20.0],
+            "parameters": _net_switcher_markup_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    application = result.net_switcher_markup_applications[0]
+    assert application.result.net_switcher_values == pytest.approx([10.0, 10.0])
+    insurer = result.insurers[0]
+    assert insurer.premiums_current_sector == pytest.approx([0.0, 0.0])
+    assert insurer.advertising_current_sector == pytest.approx([0.0, 0.0])
+
+
 def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules() -> None:
     scenario = _scenario()
     scenario["vu_foreign_info_rule_snapshots"] = []
