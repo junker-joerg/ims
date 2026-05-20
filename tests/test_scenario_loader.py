@@ -76,8 +76,10 @@ def test_scenario_loader_reads_sector_specific_current_vu_rule_inputs() -> None:
                     "name": "VU",
                     "premiums_current": 99.0,
                     "advertising_current": 88.0,
+                    "policyholders_current": 77.0,
                     "premiums_current_sector": [11.0, 22.0],
                     "advertising_current_sector": [3.0, 4.0],
+                    "policyholders_current_sector": [5.0, 6.0],
                 }
             ],
             "policyholders": [],
@@ -86,6 +88,7 @@ def test_scenario_loader_reads_sector_specific_current_vu_rule_inputs() -> None:
 
     assert scenario.insurers[0].premiums_current_sector == [11.0, 22.0]
     assert scenario.insurers[0].advertising_current_sector == [3.0, 4.0]
+    assert scenario.insurers[0].policyholders_current_sector == [5.0, 6.0]
 
 
 def test_scenario_loader_duplicates_scalar_current_vu_rule_inputs_for_compatibility() -> None:
@@ -107,6 +110,26 @@ def test_scenario_loader_duplicates_scalar_current_vu_rule_inputs_for_compatibil
 
     assert scenario.insurers[0].premiums_current_sector == [12.0, 12.0]
     assert scenario.insurers[0].advertising_current_sector == [5.0, 5.0]
+    assert scenario.insurers[0].policyholders_current_sector == [0.0, 0.0]
+
+
+def test_scenario_loader_duplicates_scalar_current_policyholders_for_compatibility() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [
+                {
+                    "entity_id": 10,
+                    "name": "VU",
+                    "policyholders_current": 12.0,
+                }
+            ],
+            "policyholders": [],
+        }
+    )
+
+    assert scenario.insurers[0].policyholders_current_sector == [12.0, 12.0]
 
 
 def test_scenario_loader_reads_optional_vu_foreign_info_rule_snapshots() -> None:
@@ -144,3 +167,41 @@ def test_scenario_loader_reads_optional_vu_foreign_info_rule_snapshots() -> None
     assert snapshot.interest_rate == 0.04
     assert snapshot.change_shock is True
     assert snapshot.parameters.premium_factor_normal == [0.5, 0.25]
+
+
+def test_scenario_loader_reads_optional_vu_market_share_markup_rule_snapshots() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [{"entity_id": 10, "name": "VU"}],
+            "policyholders": [],
+            "vu_market_share_markup_rule_snapshots": [
+                {
+                    "insurer_id": 10,
+                    "market_share_thresholds": [0.4, 0.7],
+                    "active_policyholder_count": 100,
+                    "interest_rate": 0.04,
+                    "change_shock": True,
+                    "parameters": {
+                        "premium_below_normal": [1.1, 1.2],
+                        "premium_above_normal": [0.9, 0.8],
+                        "advertising_below_normal": [1.3, 1.4],
+                        "advertising_above_normal": [0.7, 0.6],
+                        "premium_below_shock": [2.1, 2.2],
+                        "premium_above_shock": [1.9, 1.8],
+                        "advertising_below_shock": [2.3, 2.4],
+                        "advertising_above_shock": [1.7, 1.6],
+                    },
+                }
+            ],
+        }
+    )
+
+    assert len(scenario.vu_market_share_markup_rule_snapshots) == 1
+    snapshot = scenario.vu_market_share_markup_rule_snapshots[0]
+    assert snapshot.insurer_id == 10
+    assert snapshot.market_share_thresholds == [0.4, 0.7]
+    assert snapshot.active_policyholder_count == 100
+    assert snapshot.interest_rate == 0.04
+    assert snapshot.change_shock is True

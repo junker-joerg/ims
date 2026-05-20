@@ -8,8 +8,10 @@ from ims.model.vu_rules import (
     VUForeignInfoRuleSnapshot,
     VUExpectedClaimRuleSnapshot,
     VUReserveMarkupRuleSnapshot,
+    VUMarketShareMarkupRuleSnapshot,
     load_vu_expected_claim_rule_snapshots_from_mapping,
     load_vu_foreign_info_rule_snapshots_from_mapping,
+    load_vu_market_share_markup_rule_snapshots_from_mapping,
     load_vu_reserve_markup_rule_snapshots_from_mapping,
 )
 
@@ -25,6 +27,7 @@ class LoadedScenario:
     vu_foreign_info_rule_snapshots: list[VUForeignInfoRuleSnapshot] = field(default_factory=list)
     vu_reserve_markup_rule_snapshots: list[VUReserveMarkupRuleSnapshot] = field(default_factory=list)
     vu_expected_claim_rule_snapshots: list[VUExpectedClaimRuleSnapshot] = field(default_factory=list)
+    vu_market_share_markup_rule_snapshots: list[VUMarketShareMarkupRuleSnapshot] = field(default_factory=list)
 
 
 class ScenarioValidationError(ValueError):
@@ -158,6 +161,10 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
             ),
             reserves_current=_insurer_reserves_vector(item),
             policyholders_current=float(item.get("policyholders_current", 0.0)),
+            policyholders_current_sector=_two_float_vector(
+                item.get("policyholders_current_sector"),
+                fallback=float(item.get("policyholders_current", 0.0)),
+            ),
             claims_count_current=_int_list(item.get("claims_count_current"), default=[0, 0]),
             claims_sum_current=_float_list(item.get("claims_sum_current"), default=[0.0, 0.0]),
         )
@@ -205,6 +212,9 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         ),
         vu_expected_claim_rule_snapshots=load_vu_expected_claim_rule_snapshots_from_mapping(
             data.get("vu_expected_claim_rule_snapshots")
+        ),
+        vu_market_share_markup_rule_snapshots=load_vu_market_share_markup_rule_snapshots_from_mapping(
+            data.get("vu_market_share_markup_rule_snapshots")
         ),
     )
 

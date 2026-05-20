@@ -140,6 +140,50 @@ class VUExpectedClaimRuleApplication:
     result: VUExpectedClaimRuleResult
 
 
+@dataclass(slots=True)
+class VUMarketShareMarkupRuleParameters:
+    """Multiplikatoren fuer den portierten Vrvu05-Mark-Up-III-Ausschnitt."""
+
+    premium_below_normal: list[float]
+    premium_above_normal: list[float]
+    advertising_below_normal: list[float]
+    advertising_above_normal: list[float]
+    premium_below_shock: list[float]
+    premium_above_shock: list[float]
+    advertising_below_shock: list[float]
+    advertising_above_shock: list[float]
+
+
+@dataclass(slots=True)
+class VUMarketShareMarkupRuleResult:
+    """Berechneter VU-Zielzustand fuer Vrvu05 / Mark-Up III."""
+
+    premiums_current_sector: list[float]
+    advertising_current_sector: list[float]
+    reserves_current: list[float]
+    market_share_values: list[float]
+
+
+@dataclass(slots=True)
+class VUMarketShareMarkupRuleSnapshot:
+    """Expliziter Parameter-Snapshot fuer den Vrvu05-Mark-Up-III-Ausschnitt."""
+
+    insurer_id: int
+    parameters: VUMarketShareMarkupRuleParameters
+    market_share_thresholds: list[float]
+    active_policyholder_count: int
+    interest_rate: float = 0.0
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VUMarketShareMarkupRuleApplication:
+    """Diagnose eines angewendeten Vrvu05-Mark-Up-III-Snapshots."""
+
+    insurer_id: int
+    result: VUMarketShareMarkupRuleResult
+
+
 def _two_values(values: object, *, fallback: float) -> list[float]:
     if values is None:
         return [float(fallback), float(fallback)]
@@ -317,6 +361,53 @@ def load_vu_expected_claim_rule_snapshots_from_mapping(value: object) -> list[VU
     if not isinstance(value, list):
         raise ValueError("VU expected-claim rule snapshots must be a list")
     return [vu_expected_claim_rule_snapshot_from_mapping(item) for item in value]
+
+
+def vu_market_share_markup_rule_parameters_from_mapping(mapping: dict[str, object]) -> VUMarketShareMarkupRuleParameters:
+    """Laedt den Vrvu05-Mark-Up-III-Parameterblock aus einer Mapping-Struktur."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU market-share-markup rule parameters must be an object")
+    return VUMarketShareMarkupRuleParameters(
+        premium_below_normal=_required_list(mapping, "premium_below_normal"),
+        premium_above_normal=_required_list(mapping, "premium_above_normal"),
+        advertising_below_normal=_required_list(mapping, "advertising_below_normal"),
+        advertising_above_normal=_required_list(mapping, "advertising_above_normal"),
+        premium_below_shock=_required_list(mapping, "premium_below_shock"),
+        premium_above_shock=_required_list(mapping, "premium_above_shock"),
+        advertising_below_shock=_required_list(mapping, "advertising_below_shock"),
+        advertising_above_shock=_required_list(mapping, "advertising_above_shock"),
+    )
+
+
+def vu_market_share_markup_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VUMarketShareMarkupRuleSnapshot:
+    """Laedt einen expliziten Vrvu05-Mark-Up-III-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU market-share-markup rule snapshot must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VU market-share-markup rule snapshot requires field: insurer_id")
+    parameters = mapping.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ValueError("VU market-share-markup rule snapshot requires object field: parameters")
+    return VUMarketShareMarkupRuleSnapshot(
+        insurer_id=int(mapping["insurer_id"]),
+        parameters=vu_market_share_markup_rule_parameters_from_mapping(parameters),
+        market_share_thresholds=_two_values(mapping.get("market_share_thresholds"), fallback=0.0),
+        active_policyholder_count=int(mapping.get("active_policyholder_count", 0)),
+        interest_rate=float(mapping.get("interest_rate", 0.0)),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vu_market_share_markup_rule_snapshots_from_mapping(value: object) -> list[VUMarketShareMarkupRuleSnapshot]:
+    """Laedt mehrere explizite Vrvu05-Mark-Up-III-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VU market-share-markup rule snapshots must be a list")
+    return [vu_market_share_markup_rule_snapshot_from_mapping(item) for item in value]
 
 
 def apply_vu_foreign_info_rule(
@@ -684,4 +775,136 @@ def apply_vu_expected_claim_rule_snapshots(
             change_shock=snapshot.change_shock,
         )
         applications.append(VUExpectedClaimRuleApplication(insurer_id=snapshot.insurer_id, result=result))
+    return applications
+
+
+def _market_share_values(policyholders: list[float], active_policyholder_count: int) -> list[float]:
+    values = _two_values(policyholders, fallback=0.0)
+    if active_policyholder_count == 0:
+        return [0.0, 0.0]
+    return [value / float(active_policyholder_count) for value in values]
+
+
+def apply_vu_market_share_markup_rule(
+    insurer: Insurer,
+    parameters: VUMarketShareMarkupRuleParameters,
+    *,
+    period: int,
+    market_share_thresholds: list[float],
+    active_policyholder_count: int,
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUMarketShareMarkupRuleResult:
+    """
+    Portiert den deterministischen Kern von Vrvu05 / Mark-Up III.
+
+    Die historische Regel berechnet je Sparte den Marktanteil `Vn / akvn`
+    mit Nullschutz und vergleicht ihn gegen ein Anspruchsniveau.
+    """
+
+    previous_premiums = _two_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
+    previous_advertising = _two_values(insurer.advertising_current_sector, fallback=insurer.advertising_current)
+    previous_reserves = _two_values(insurer.reserves_current, fallback=0.0)
+    previous_policyholders = _two_values(insurer.policyholders_current_sector, fallback=insurer.policyholders_current)
+    market_shares = _market_share_values(previous_policyholders, active_policyholder_count)
+
+    if period <= 1:
+        return VUMarketShareMarkupRuleResult(
+            premiums_current_sector=previous_premiums,
+            advertising_current_sector=previous_advertising,
+            reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+            market_share_values=market_shares,
+        )
+
+    if change_shock:
+        premium_below = _parameter_values(parameters.premium_below_shock)
+        premium_above = _parameter_values(parameters.premium_above_shock)
+        advertising_below = _parameter_values(parameters.advertising_below_shock)
+        advertising_above = _parameter_values(parameters.advertising_above_shock)
+    else:
+        premium_below = _parameter_values(parameters.premium_below_normal)
+        premium_above = _parameter_values(parameters.premium_above_normal)
+        advertising_below = _parameter_values(parameters.advertising_below_normal)
+        advertising_above = _parameter_values(parameters.advertising_above_normal)
+
+    thresholds = _two_values(market_share_thresholds, fallback=0.0)
+    premium_multipliers = [
+        premium_below[index] if market_shares[index] <= thresholds[index] else premium_above[index]
+        for index in range(2)
+    ]
+    advertising_multipliers = [
+        advertising_below[index] if market_shares[index] <= thresholds[index] else advertising_above[index]
+        for index in range(2)
+    ]
+    return VUMarketShareMarkupRuleResult(
+        premiums_current_sector=[
+            premium_multipliers[index] * previous_premiums[index]
+            for index in range(2)
+        ],
+        advertising_current_sector=[
+            advertising_multipliers[index] * previous_advertising[index]
+            for index in range(2)
+        ],
+        reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+        market_share_values=market_shares,
+    )
+
+
+def apply_vu_market_share_markup_rule_to_insurer(
+    insurer: Insurer,
+    parameters: VUMarketShareMarkupRuleParameters,
+    *,
+    period: int,
+    market_share_thresholds: list[float],
+    active_policyholder_count: int,
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUMarketShareMarkupRuleResult:
+    """Berechnet Vrvu05 / Mark-Up III und schreibt den aktuellen VU-Snapshot fort."""
+
+    result = apply_vu_market_share_markup_rule(
+        insurer,
+        parameters,
+        period=period,
+        market_share_thresholds=market_share_thresholds,
+        active_policyholder_count=active_policyholder_count,
+        interest_rate=interest_rate,
+        change_shock=change_shock,
+    )
+    insurer.premiums_current_sector = result.premiums_current_sector
+    insurer.advertising_current_sector = result.advertising_current_sector
+    insurer.premiums_current = result.premiums_current_sector[0]
+    insurer.advertising_current = result.advertising_current_sector[0]
+    insurer.reserves_current = result.reserves_current
+    return result
+
+
+def apply_vu_market_share_markup_rule_snapshots(
+    insurers: list[Insurer],
+    snapshots: list[VUMarketShareMarkupRuleSnapshot],
+    *,
+    period: int,
+) -> list[VUMarketShareMarkupRuleApplication]:
+    """Wendet explizite Vrvu05-Mark-Up-III-Snapshots deterministisch auf passende Versicherer an."""
+
+    insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
+    applications: list[VUMarketShareMarkupRuleApplication] = []
+    seen_insurer_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.insurer_id in seen_insurer_ids:
+            raise ValueError(f"duplicate VU market-share-markup rule snapshot for insurer: {snapshot.insurer_id}")
+        seen_insurer_ids.add(snapshot.insurer_id)
+        insurer = insurers_by_id.get(snapshot.insurer_id)
+        if insurer is None:
+            raise ValueError(f"VU market-share-markup rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        result = apply_vu_market_share_markup_rule_to_insurer(
+            insurer,
+            snapshot.parameters,
+            period=period,
+            market_share_thresholds=snapshot.market_share_thresholds,
+            active_policyholder_count=snapshot.active_policyholder_count,
+            interest_rate=snapshot.interest_rate,
+            change_shock=snapshot.change_shock,
+        )
+        applications.append(VUMarketShareMarkupRuleApplication(insurer_id=snapshot.insurer_id, result=result))
     return applications

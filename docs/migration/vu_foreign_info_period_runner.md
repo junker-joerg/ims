@@ -42,6 +42,7 @@ Der Runner nutzt:
 - `apply_vu_foreign_info_rule_snapshots`
 - `apply_vu_reserve_markup_rule_snapshots`
 - `apply_vu_expected_claim_rule_snapshots`
+- `apply_vu_market_share_markup_rule_snapshots`
 - `collect_basic_aggregates`
 
 Der Mehrperiodenpfad verarbeitet eine Liste expliziter Periodenszenarien oder ein Fixture mit dem Feld `periods`. Die Periodennummern muessen eindeutig und streng steigend sein. Das ist eine Reproduzierbarkeitspruefung, keine historische Ablaufherleitung.
@@ -63,6 +64,10 @@ Explizite `vu_expected_claim_rule_snapshots` bilden den portierten `Vrvu06`-/Erw
 Regelkern ab. Sie werden nach den Frmdinf- und Mark-Up-I-Snapshots angewendet. Details und Grenzen
 stehen in `vu_expected_claim_rule.md`.
 
+Explizite `vu_market_share_markup_rule_snapshots` bilden den portierten `Vrvu05`-/Mark-Up-III-
+Regelkern ab. Sie werden nach den Frmdinf-, Mark-Up-I- und Erwartungsschaden-Snapshots angewendet.
+Details und Grenzen stehen in `vu_market_share_markup_rule.md`.
+
 ## Validierung
 
 Die Tests pruefen:
@@ -78,6 +83,7 @@ Die Tests pruefen:
 - nicht passende Versicherer werden beim Carryover ignoriert
 - explizite Vrvu03-/Mark-Up-I-Snapshots koennen im Periodenrunner angewendet werden
 - explizite Vrvu06-/Erwartungsschaden-Snapshots koennen im Periodenrunner angewendet werden
+- explizite Vrvu05-/Mark-Up-III-Snapshots koennen im Periodenrunner angewendet werden
 - doppelte Snapshot-Ziele werden abgelehnt
 - ein Szenario ohne Snapshots bleibt gueltig und berechnet nur BAV-Frmdinf
 
