@@ -149,6 +149,13 @@ def _scenario_for_period(period: int, *, insurer_id: int = 10) -> dict:
     return scenario
 
 
+def _additional_insurer(insurer_id: int) -> dict:
+    insurer = dict(_scenario()["insurers"][0])
+    insurer["entity_id"] = insurer_id
+    insurer["name"] = f"VU-{insurer_id}"
+    return insurer
+
+
 def test_vu_rule_runner_computes_bav_foreign_info_before_applying_snapshots() -> None:
     result = run_vu_foreign_info_period_from_mapping(_scenario())
 
@@ -207,9 +214,10 @@ def test_vu_rule_runner_applies_reserve_markup_snapshots_after_foreign_info() ->
 
 def test_vu_rule_runner_counts_foreign_info_and_reserve_markup_applications() -> None:
     scenario = _scenario_for_period(2)
+    scenario["insurers"].append(_additional_insurer(11))
     scenario["vu_reserve_markup_rule_snapshots"] = [
         {
-            "insurer_id": 10,
+            "insurer_id": 11,
             "reserve_thresholds": [55.0, 55.0],
             "parameters": _reserve_markup_parameters(),
         }
@@ -247,16 +255,17 @@ def test_vu_rule_runner_applies_expected_claim_snapshots_after_prior_rules() -> 
 
 def test_vu_rule_runner_counts_all_loaded_vu_rule_application_types() -> None:
     scenario = _scenario_for_period(2)
+    scenario["insurers"].extend([_additional_insurer(11), _additional_insurer(12)])
     scenario["vu_reserve_markup_rule_snapshots"] = [
         {
-            "insurer_id": 10,
+            "insurer_id": 11,
             "reserve_thresholds": [55.0, 55.0],
             "parameters": _reserve_markup_parameters(),
         }
     ]
     scenario["vu_expected_claim_rule_snapshots"] = [
         {
-            "insurer_id": 10,
+            "insurer_id": 12,
             "parameters": _expected_claim_parameters(),
         }
     ]
@@ -297,22 +306,23 @@ def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules(
 
 def test_vu_rule_runner_counts_all_four_loaded_vu_rule_application_types() -> None:
     scenario = _scenario_for_period(2)
+    scenario["insurers"].extend([_additional_insurer(11), _additional_insurer(12), _additional_insurer(13)])
     scenario["vu_reserve_markup_rule_snapshots"] = [
         {
-            "insurer_id": 10,
+            "insurer_id": 11,
             "reserve_thresholds": [55.0, 55.0],
             "parameters": _reserve_markup_parameters(),
         }
     ]
     scenario["vu_expected_claim_rule_snapshots"] = [
         {
-            "insurer_id": 10,
+            "insurer_id": 12,
             "parameters": _expected_claim_parameters(),
         }
     ]
     scenario["vu_market_share_markup_rule_snapshots"] = [
         {
-            "insurer_id": 10,
+            "insurer_id": 13,
             "market_share_thresholds": [0.4, 0.7],
             "active_policyholder_count": 100,
             "parameters": _market_share_markup_parameters(),
@@ -326,6 +336,20 @@ def test_vu_rule_runner_counts_all_four_loaded_vu_rule_application_types() -> No
     assert len(result.period_results[0].reserve_markup_applications) == 1
     assert len(result.period_results[0].expected_claim_applications) == 1
     assert len(result.period_results[0].market_share_markup_applications) == 1
+
+
+def test_vu_rule_runner_rejects_overlapping_targets_across_rule_sets() -> None:
+    scenario = _scenario_for_period(2)
+    scenario["vu_reserve_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "reserve_thresholds": [55.0, 55.0],
+            "parameters": _reserve_markup_parameters(),
+        }
+    ]
+
+    with pytest.raises(ValueError, match="disjoint insurers"):
+        run_vu_foreign_info_period_from_mapping(scenario)
 
 
 def test_vu_rule_runner_collects_basic_aggregate_after_period_step() -> None:

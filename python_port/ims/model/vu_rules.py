@@ -390,11 +390,13 @@ def vu_market_share_markup_rule_snapshot_from_mapping(mapping: dict[str, object]
     parameters = mapping.get("parameters")
     if not isinstance(parameters, dict):
         raise ValueError("VU market-share-markup rule snapshot requires object field: parameters")
+    if "active_policyholder_count" not in mapping:
+        raise ValueError("VU market-share-markup rule snapshot requires field: active_policyholder_count")
     return VUMarketShareMarkupRuleSnapshot(
         insurer_id=int(mapping["insurer_id"]),
         parameters=vu_market_share_markup_rule_parameters_from_mapping(parameters),
         market_share_thresholds=_two_values(mapping.get("market_share_thresholds"), fallback=0.0),
-        active_policyholder_count=int(mapping.get("active_policyholder_count", 0)),
+        active_policyholder_count=int(mapping["active_policyholder_count"]),
         interest_rate=float(mapping.get("interest_rate", 0.0)),
         change_shock=bool(mapping.get("change_shock", False)),
     )
