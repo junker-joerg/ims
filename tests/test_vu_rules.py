@@ -857,3 +857,15 @@ def test_vu_market_share_markup_rule_snapshots_reject_unknown_and_duplicate_targ
 
     with pytest.raises(ValueError, match="duplicate"):
         apply_vu_market_share_markup_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=2)
+
+
+def test_vu_market_share_markup_rule_snapshots_require_active_policyholder_count() -> None:
+    with pytest.raises(ValueError, match="active_policyholder_count"):
+        load_vu_market_share_markup_rule_snapshots_from_mapping(
+            [
+                {
+                    "insurer_id": 7,
+                    "parameters": _market_share_markup_parameter_mapping(),
+                }
+            ]
+        )

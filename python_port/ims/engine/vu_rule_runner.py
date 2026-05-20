@@ -69,6 +69,7 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         loaded.insurers,
         loaded.policyholders,
     )
+    _validate_disjoint_vu_rule_snapshot_targets(loaded)
     rule_applications = apply_vu_foreign_info_rule_snapshots(
         loaded.insurers,
         loaded.bav,
@@ -109,6 +110,31 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         market_share_markup_applications=market_share_markup_applications,
         aggregate_snapshot=aggregate_snapshot,
     )
+
+
+def _snapshot_insurer_ids(snapshots: object) -> set[int]:
+    return {int(snapshot.insurer_id) for snapshot in snapshots}
+
+
+def _validate_disjoint_vu_rule_snapshot_targets(loaded: LoadedScenario) -> None:
+    rule_sets = [
+        ("vu_foreign_info_rule_snapshots", _snapshot_insurer_ids(loaded.vu_foreign_info_rule_snapshots)),
+        ("vu_reserve_markup_rule_snapshots", _snapshot_insurer_ids(loaded.vu_reserve_markup_rule_snapshots)),
+        ("vu_expected_claim_rule_snapshots", _snapshot_insurer_ids(loaded.vu_expected_claim_rule_snapshots)),
+        ("vu_market_share_markup_rule_snapshots", _snapshot_insurer_ids(loaded.vu_market_share_markup_rule_snapshots)),
+    ]
+    seen: dict[int, str] = {}
+    conflicts: list[str] = []
+    for rule_set_name, insurer_ids in rule_sets:
+        for insurer_id in sorted(insurer_ids):
+            previous_rule_set = seen.get(insurer_id)
+            if previous_rule_set is not None:
+                conflicts.append(f"insurer {insurer_id}: {previous_rule_set} and {rule_set_name}")
+            else:
+                seen[insurer_id] = rule_set_name
+    if conflicts:
+        details = "; ".join(conflicts)
+        raise ValueError(f"VU rule snapshot sets must target disjoint insurers per period: {details}")
 
 
 def run_vu_foreign_info_period_from_mapping(data: dict) -> VUForeignInfoPeriodRunResult:
