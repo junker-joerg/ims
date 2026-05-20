@@ -29,6 +29,19 @@ def _parameters() -> dict[str, list[float]]:
     }
 
 
+def _reserve_markup_parameters() -> dict[str, list[float]]:
+    return {
+        "premium_below_normal": [1.1, 1.2],
+        "premium_above_normal": [0.9, 0.8],
+        "advertising_below_normal": [1.3, 1.4],
+        "advertising_above_normal": [0.7, 0.6],
+        "premium_below_shock": [2.1, 2.2],
+        "premium_above_shock": [1.9, 1.8],
+        "advertising_below_shock": [2.3, 2.4],
+        "advertising_above_shock": [1.7, 1.6],
+    }
+
+
 def _scenario() -> dict:
     return {
         "context": {"period": 2, "logtime": 3, "max_periods": 12, "run_index": 1},
@@ -130,6 +143,47 @@ def test_vu_rule_runner_updates_targeted_insurers_and_returns_diagnostics() -> N
     assert [application.insurer_id for application in result.rule_applications] == [10, 11]
     assert result.rule_applications[0].rule_kind == VUForeignInfoRuleKind.AVERAGE
     assert result.rule_applications[1].rule_kind == VUForeignInfoRuleKind.ATTACK
+    assert result.reserve_markup_applications == []
+
+
+def test_vu_rule_runner_applies_reserve_markup_snapshots_after_foreign_info() -> None:
+    scenario = _scenario()
+    scenario["vu_foreign_info_rule_snapshots"] = []
+    scenario["vu_reserve_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "reserve_thresholds": [55.0, 55.0],
+            "interest_rate": 0.05,
+            "parameters": _reserve_markup_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    assert result.rule_applications == []
+    assert len(result.reserve_markup_applications) == 1
+    assert result.reserve_markup_applications[0].insurer_id == 10
+    insurer = result.insurers[0]
+    assert insurer.premiums_current_sector == [0.0, 0.0]
+    assert insurer.advertising_current_sector == [0.0, 0.0]
+    assert insurer.reserves_current == pytest.approx([52.5, 63.0])
+
+
+def test_vu_rule_runner_counts_foreign_info_and_reserve_markup_applications() -> None:
+    scenario = _scenario_for_period(2)
+    scenario["vu_reserve_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "reserve_thresholds": [55.0, 55.0],
+            "parameters": _reserve_markup_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_multi_period_from_mappings([scenario])
+
+    assert result.total_rule_applications == 2
+    assert len(result.period_results[0].rule_applications) == 1
+    assert len(result.period_results[0].reserve_markup_applications) == 1
 
 
 def test_vu_rule_runner_collects_basic_aggregate_after_period_step() -> None:

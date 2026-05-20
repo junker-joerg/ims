@@ -248,12 +248,22 @@ def test_core_placeholders_import() -> None:
         VUForeignInfoRuleParameters,
         VUForeignInfoRuleResult,
         VUForeignInfoRuleSnapshot,
+        VUReserveMarkupRuleApplication,
+        VUReserveMarkupRuleParameters,
+        VUReserveMarkupRuleResult,
+        VUReserveMarkupRuleSnapshot,
         apply_vu_foreign_info_rule,
         apply_vu_foreign_info_rule_snapshots,
         apply_vu_foreign_info_rule_to_insurer,
+        apply_vu_reserve_markup_rule,
+        apply_vu_reserve_markup_rule_snapshots,
+        apply_vu_reserve_markup_rule_to_insurer,
         load_vu_foreign_info_rule_snapshots_from_mapping,
+        load_vu_reserve_markup_rule_snapshots_from_mapping,
         vu_foreign_info_rule_parameters_from_mapping,
         vu_foreign_info_rule_snapshot_from_mapping,
+        vu_reserve_markup_rule_parameters_from_mapping,
+        vu_reserve_markup_rule_snapshot_from_mapping,
     )
 
     ctx = SimulationContext()
@@ -503,9 +513,19 @@ def test_core_placeholders_import() -> None:
     assert VUForeignInfoRuleResult is not None
     assert VUForeignInfoRuleSnapshot is not None
     assert VUForeignInfoRuleApplication is not None
+    assert VUReserveMarkupRuleApplication is not None
+    assert VUReserveMarkupRuleParameters is not None
+    assert VUReserveMarkupRuleResult is not None
+    assert VUReserveMarkupRuleSnapshot is not None
     assert apply_vu_foreign_info_rule is not None
     assert apply_vu_foreign_info_rule_snapshots is not None
     assert apply_vu_foreign_info_rule_to_insurer is not None
+    assert apply_vu_reserve_markup_rule is not None
+    assert apply_vu_reserve_markup_rule_snapshots is not None
+    assert apply_vu_reserve_markup_rule_to_insurer is not None
     assert load_vu_foreign_info_rule_snapshots_from_mapping is not None
+    assert load_vu_reserve_markup_rule_snapshots_from_mapping is not None
     assert vu_foreign_info_rule_parameters_from_mapping is not None
     assert vu_foreign_info_rule_snapshot_from_mapping is not None
+    assert vu_reserve_markup_rule_parameters_from_mapping is not None
+    assert vu_reserve_markup_rule_snapshot_from_mapping is not None
