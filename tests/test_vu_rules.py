@@ -6,6 +6,7 @@ from ims.model.vu_rules import (
     VUForeignInfoRuleKind,
     VUForeignInfoRuleParameters,
     VUMarketShareMarkupRuleParameters,
+    VUNetSwitcherMarkupRuleParameters,
     VUReserveMarkupRuleParameters,
     apply_vu_expected_claim_rule,
     apply_vu_expected_claim_rule_snapshots,
@@ -16,12 +17,16 @@ from ims.model.vu_rules import (
     apply_vu_market_share_markup_rule,
     apply_vu_market_share_markup_rule_snapshots,
     apply_vu_market_share_markup_rule_to_insurer,
+    apply_vu_net_switcher_markup_rule,
+    apply_vu_net_switcher_markup_rule_snapshots,
+    apply_vu_net_switcher_markup_rule_to_insurer,
     apply_vu_reserve_markup_rule,
     apply_vu_reserve_markup_rule_snapshots,
     apply_vu_reserve_markup_rule_to_insurer,
     load_vu_expected_claim_rule_snapshots_from_mapping,
     load_vu_foreign_info_rule_snapshots_from_mapping,
     load_vu_market_share_markup_rule_snapshots_from_mapping,
+    load_vu_net_switcher_markup_rule_snapshots_from_mapping,
     load_vu_reserve_markup_rule_snapshots_from_mapping,
 )
 
@@ -103,6 +108,32 @@ def _market_share_markup_parameters() -> VUMarketShareMarkupRuleParameters:
 
 
 def _market_share_markup_parameter_mapping() -> dict[str, list[float]]:
+    return {
+        "premium_below_normal": [1.1, 1.2],
+        "premium_above_normal": [0.9, 0.8],
+        "advertising_below_normal": [1.3, 1.4],
+        "advertising_above_normal": [0.7, 0.6],
+        "premium_below_shock": [2.1, 2.2],
+        "premium_above_shock": [1.9, 1.8],
+        "advertising_below_shock": [2.3, 2.4],
+        "advertising_above_shock": [1.7, 1.6],
+    }
+
+
+def _net_switcher_markup_parameters() -> VUNetSwitcherMarkupRuleParameters:
+    return VUNetSwitcherMarkupRuleParameters(
+        premium_below_normal=[1.1, 1.2],
+        premium_above_normal=[0.9, 0.8],
+        advertising_below_normal=[1.3, 1.4],
+        advertising_above_normal=[0.7, 0.6],
+        premium_below_shock=[2.1, 2.2],
+        premium_above_shock=[1.9, 1.8],
+        advertising_below_shock=[2.3, 2.4],
+        advertising_above_shock=[1.7, 1.6],
+    )
+
+
+def _net_switcher_markup_parameter_mapping() -> dict[str, list[float]]:
     return {
         "premium_below_normal": [1.1, 1.2],
         "premium_above_normal": [0.9, 0.8],
@@ -526,6 +557,158 @@ def test_vu_reserve_markup_rule_snapshots_reject_unknown_and_duplicate_targets()
 
     with pytest.raises(ValueError, match="duplicate"):
         apply_vu_reserve_markup_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=2)
+
+
+def test_vu_net_switcher_markup_rule_uses_net_switcher_thresholds_for_normal_case() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+        policyholders_current_sector=[30.0, 80.0],
+    )
+
+    result = apply_vu_net_switcher_markup_rule(
+        insurer,
+        _net_switcher_markup_parameters(),
+        period=3,
+        net_switcher_thresholds=[5.0, 10.0],
+        previous_policyholders_sector=[20.0, 75.0],
+        interest_rate=0.05,
+    )
+
+    assert result.net_switcher_values == pytest.approx([10.0, 5.0])
+    assert result.premiums_current_sector == pytest.approx([90.0, 240.0])
+    assert result.advertising_current_sector == pytest.approx([7.0, 28.0])
+    assert result.reserves_current == pytest.approx([52.5, 157.5])
+
+
+def test_vu_net_switcher_markup_rule_keeps_values_for_first_two_periods() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+        policyholders_current_sector=[30.0, 80.0],
+    )
+
+    result = apply_vu_net_switcher_markup_rule(
+        insurer,
+        _net_switcher_markup_parameters(),
+        period=2,
+        net_switcher_thresholds=[0.0, 0.0],
+        previous_policyholders_sector=[20.0, 75.0],
+        interest_rate=0.1,
+    )
+
+    assert result.net_switcher_values == pytest.approx([10.0, 5.0])
+    assert result.premiums_current_sector == [100.0, 200.0]
+    assert result.advertising_current_sector == [10.0, 20.0]
+    assert result.reserves_current == pytest.approx([55.0, 165.0])
+
+
+def test_vu_net_switcher_markup_rule_uses_shock_parameters_when_requested() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+        policyholders_current_sector=[30.0, 80.0],
+    )
+
+    result = apply_vu_net_switcher_markup_rule(
+        insurer,
+        _net_switcher_markup_parameters(),
+        period=3,
+        net_switcher_thresholds=[5.0, 10.0],
+        previous_policyholders_sector=[20.0, 75.0],
+        interest_rate=0.0,
+        change_shock=True,
+    )
+
+    assert result.net_switcher_values == pytest.approx([10.0, 5.0])
+    assert result.premiums_current_sector == pytest.approx([190.0, 440.0])
+    assert result.advertising_current_sector == pytest.approx([17.0, 48.0])
+
+
+def test_vu_net_switcher_markup_rule_can_update_insurer_snapshot() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+        policyholders_current_sector=[30.0, 80.0],
+    )
+
+    result = apply_vu_net_switcher_markup_rule_to_insurer(
+        insurer,
+        _net_switcher_markup_parameters(),
+        period=3,
+        net_switcher_thresholds=[5.0, 10.0],
+        previous_policyholders_sector=[20.0, 75.0],
+        interest_rate=0.05,
+    )
+
+    assert insurer.premiums_current_sector == result.premiums_current_sector
+    assert insurer.advertising_current_sector == result.advertising_current_sector
+    assert insurer.premiums_current == pytest.approx(90.0)
+    assert insurer.advertising_current == pytest.approx(7.0)
+    assert insurer.reserves_current == pytest.approx([52.5, 157.5])
+
+
+def test_vu_net_switcher_markup_rule_snapshots_load_and_apply_to_matching_insurers() -> None:
+    insurers = [
+        Insurer(
+            entity_id=7,
+            premiums_current_sector=[100.0, 200.0],
+            advertising_current_sector=[10.0, 20.0],
+            reserves_current=[50.0, 150.0],
+            policyholders_current_sector=[30.0, 80.0],
+        ),
+        Insurer(entity_id=8),
+    ]
+    snapshots = load_vu_net_switcher_markup_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "net_switcher_thresholds": [5.0, 10.0],
+                "previous_policyholders_sector": [20.0, 75.0],
+                "interest_rate": 0.05,
+                "parameters": _net_switcher_markup_parameter_mapping(),
+            }
+        ]
+    )
+
+    applications = apply_vu_net_switcher_markup_rule_snapshots(insurers, snapshots, period=3)
+
+    assert len(applications) == 1
+    assert applications[0].insurer_id == 7
+    assert insurers[0].premiums_current_sector == pytest.approx([90.0, 240.0])
+    assert insurers[0].advertising_current_sector == pytest.approx([7.0, 28.0])
+    assert insurers[1].premiums_current_sector == []
+
+
+def test_vu_net_switcher_markup_rule_snapshots_reject_unknown_duplicate_and_missing_previous_targets() -> None:
+    snapshots = load_vu_net_switcher_markup_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "previous_policyholders_sector": [20.0, 75.0],
+                "parameters": _net_switcher_markup_parameter_mapping(),
+            }
+        ]
+    )
+
+    with pytest.raises(ValueError, match="unknown insurer"):
+        apply_vu_net_switcher_markup_rule_snapshots([], snapshots, period=3)
+
+    with pytest.raises(ValueError, match="duplicate"):
+        apply_vu_net_switcher_markup_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=3)
+
+    with pytest.raises(ValueError, match="previous_policyholders_sector"):
+        load_vu_net_switcher_markup_rule_snapshots_from_mapping(
+            [{"insurer_id": 7, "parameters": _net_switcher_markup_parameter_mapping()}]
+        )
 
 
 def test_vu_expected_claim_rule_uses_average_claim_values_for_normal_case() -> None:

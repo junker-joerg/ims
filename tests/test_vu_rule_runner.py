@@ -68,6 +68,19 @@ def _market_share_markup_parameters() -> dict[str, list[float]]:
     }
 
 
+def _net_switcher_markup_parameters() -> dict[str, list[float]]:
+    return {
+        "premium_below_normal": [1.1, 1.2],
+        "premium_above_normal": [0.9, 0.8],
+        "advertising_below_normal": [1.3, 1.4],
+        "advertising_above_normal": [0.7, 0.6],
+        "premium_below_shock": [2.1, 2.2],
+        "premium_above_shock": [1.9, 1.8],
+        "advertising_below_shock": [2.3, 2.4],
+        "advertising_above_shock": [1.7, 1.6],
+    }
+
+
 def _scenario() -> dict:
     return {
         "context": {"period": 2, "logtime": 3, "max_periods": 12, "run_index": 1},
@@ -185,6 +198,7 @@ def test_vu_rule_runner_updates_targeted_insurers_and_returns_diagnostics() -> N
     assert result.rule_applications[0].rule_kind == VUForeignInfoRuleKind.AVERAGE
     assert result.rule_applications[1].rule_kind == VUForeignInfoRuleKind.ATTACK
     assert result.reserve_markup_applications == []
+    assert result.net_switcher_markup_applications == []
     assert result.expected_claim_applications == []
     assert result.market_share_markup_applications == []
 
@@ -245,6 +259,7 @@ def test_vu_rule_runner_applies_expected_claim_snapshots_after_prior_rules() -> 
 
     assert result.rule_applications == []
     assert result.reserve_markup_applications == []
+    assert result.net_switcher_markup_applications == []
     assert len(result.expected_claim_applications) == 1
     assert result.expected_claim_applications[0].insurer_id == 10
     insurer = result.insurers[0]
@@ -255,7 +270,7 @@ def test_vu_rule_runner_applies_expected_claim_snapshots_after_prior_rules() -> 
 
 def test_vu_rule_runner_counts_all_loaded_vu_rule_application_types() -> None:
     scenario = _scenario_for_period(2)
-    scenario["insurers"].extend([_additional_insurer(11), _additional_insurer(12)])
+    scenario["insurers"].extend([_additional_insurer(11), _additional_insurer(12), _additional_insurer(13)])
     scenario["vu_reserve_markup_rule_snapshots"] = [
         {
             "insurer_id": 11,
@@ -269,13 +284,49 @@ def test_vu_rule_runner_counts_all_loaded_vu_rule_application_types() -> None:
             "parameters": _expected_claim_parameters(),
         }
     ]
+    scenario["vu_net_switcher_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 13,
+            "net_switcher_thresholds": [5.0, 10.0],
+            "previous_policyholders_sector": [20.0, 75.0],
+            "parameters": _net_switcher_markup_parameters(),
+        }
+    ]
 
     result = run_vu_foreign_info_multi_period_from_mappings([scenario])
 
-    assert result.total_rule_applications == 3
+    assert result.total_rule_applications == 4
     assert len(result.period_results[0].rule_applications) == 1
     assert len(result.period_results[0].reserve_markup_applications) == 1
+    assert len(result.period_results[0].net_switcher_markup_applications) == 1
     assert len(result.period_results[0].expected_claim_applications) == 1
+
+
+def test_vu_rule_runner_applies_net_switcher_markup_snapshots_after_prior_rules() -> None:
+    scenario = _scenario()
+    scenario["vu_foreign_info_rule_snapshots"] = []
+    scenario["vu_net_switcher_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "net_switcher_thresholds": [5.0, 10.0],
+            "previous_policyholders_sector": [20.0, 75.0],
+            "interest_rate": 0.05,
+            "parameters": _net_switcher_markup_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    assert result.rule_applications == []
+    assert result.reserve_markup_applications == []
+    assert len(result.net_switcher_markup_applications) == 1
+    assert result.net_switcher_markup_applications[0].insurer_id == 10
+    assert result.expected_claim_applications == []
+    assert result.market_share_markup_applications == []
+    insurer = result.insurers[0]
+    assert insurer.premiums_current_sector == pytest.approx([0.0, 0.0])
+    assert insurer.advertising_current_sector == pytest.approx([0.0, 0.0])
+    assert insurer.reserves_current == pytest.approx([52.5, 63.0])
 
 
 def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules() -> None:
@@ -295,6 +346,7 @@ def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules(
 
     assert result.rule_applications == []
     assert result.reserve_markup_applications == []
+    assert result.net_switcher_markup_applications == []
     assert result.expected_claim_applications == []
     assert len(result.market_share_markup_applications) == 1
     assert result.market_share_markup_applications[0].insurer_id == 10
@@ -304,9 +356,11 @@ def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules(
     assert insurer.reserves_current == pytest.approx([52.5, 63.0])
 
 
-def test_vu_rule_runner_counts_all_four_loaded_vu_rule_application_types() -> None:
+def test_vu_rule_runner_counts_all_five_loaded_vu_rule_application_types() -> None:
     scenario = _scenario_for_period(2)
-    scenario["insurers"].extend([_additional_insurer(11), _additional_insurer(12), _additional_insurer(13)])
+    scenario["insurers"].extend(
+        [_additional_insurer(11), _additional_insurer(12), _additional_insurer(13), _additional_insurer(14)]
+    )
     scenario["vu_reserve_markup_rule_snapshots"] = [
         {
             "insurer_id": 11,
@@ -320,9 +374,17 @@ def test_vu_rule_runner_counts_all_four_loaded_vu_rule_application_types() -> No
             "parameters": _expected_claim_parameters(),
         }
     ]
-    scenario["vu_market_share_markup_rule_snapshots"] = [
+    scenario["vu_net_switcher_markup_rule_snapshots"] = [
         {
             "insurer_id": 13,
+            "net_switcher_thresholds": [5.0, 10.0],
+            "previous_policyholders_sector": [20.0, 75.0],
+            "parameters": _net_switcher_markup_parameters(),
+        }
+    ]
+    scenario["vu_market_share_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 14,
             "market_share_thresholds": [0.4, 0.7],
             "active_policyholder_count": 100,
             "parameters": _market_share_markup_parameters(),
@@ -331,9 +393,10 @@ def test_vu_rule_runner_counts_all_four_loaded_vu_rule_application_types() -> No
 
     result = run_vu_foreign_info_multi_period_from_mappings([scenario])
 
-    assert result.total_rule_applications == 4
+    assert result.total_rule_applications == 5
     assert len(result.period_results[0].rule_applications) == 1
     assert len(result.period_results[0].reserve_markup_applications) == 1
+    assert len(result.period_results[0].net_switcher_markup_applications) == 1
     assert len(result.period_results[0].expected_claim_applications) == 1
     assert len(result.period_results[0].market_share_markup_applications) == 1
 
