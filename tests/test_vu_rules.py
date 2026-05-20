@@ -7,6 +7,8 @@ from ims.model.vu_rules import (
     VUForeignInfoRuleParameters,
     VUMarketShareMarkupRuleParameters,
     VUNetSwitcherMarkupRuleParameters,
+    VURandomNormalRuleParameters,
+    VURandomUniformRuleParameters,
     VUReserveMarkupRuleParameters,
     apply_vu_expected_claim_rule,
     apply_vu_expected_claim_rule_snapshots,
@@ -20,6 +22,12 @@ from ims.model.vu_rules import (
     apply_vu_net_switcher_markup_rule,
     apply_vu_net_switcher_markup_rule_snapshots,
     apply_vu_net_switcher_markup_rule_to_insurer,
+    apply_vu_random_normal_rule,
+    apply_vu_random_normal_rule_snapshots,
+    apply_vu_random_normal_rule_to_insurer,
+    apply_vu_random_uniform_rule,
+    apply_vu_random_uniform_rule_snapshots,
+    apply_vu_random_uniform_rule_to_insurer,
     apply_vu_reserve_markup_rule,
     apply_vu_reserve_markup_rule_snapshots,
     apply_vu_reserve_markup_rule_to_insurer,
@@ -27,6 +35,8 @@ from ims.model.vu_rules import (
     load_vu_foreign_info_rule_snapshots_from_mapping,
     load_vu_market_share_markup_rule_snapshots_from_mapping,
     load_vu_net_switcher_markup_rule_snapshots_from_mapping,
+    load_vu_random_normal_rule_snapshots_from_mapping,
+    load_vu_random_uniform_rule_snapshots_from_mapping,
     load_vu_reserve_markup_rule_snapshots_from_mapping,
 )
 
@@ -66,6 +76,50 @@ def _reserve_markup_parameters() -> VUReserveMarkupRuleParameters:
         advertising_below_shock=[2.3, 2.4],
         advertising_above_shock=[1.7, 1.6],
     )
+
+
+def _random_uniform_parameters() -> VURandomUniformRuleParameters:
+    return VURandomUniformRuleParameters(
+        premium_factor_normal=[10.0, 20.0],
+        advertising_factor_normal=[30.0, 40.0],
+        premium_factor_shock=[50.0, 60.0],
+        advertising_factor_shock=[70.0, 80.0],
+    )
+
+
+def _random_uniform_parameter_mapping() -> dict[str, list[float]]:
+    return {
+        "premium_factor_normal": [10.0, 20.0],
+        "advertising_factor_normal": [30.0, 40.0],
+        "premium_factor_shock": [50.0, 60.0],
+        "advertising_factor_shock": [70.0, 80.0],
+    }
+
+
+def _random_normal_parameters() -> VURandomNormalRuleParameters:
+    return VURandomNormalRuleParameters(
+        premium_intercept_normal=[1.0, 2.0],
+        premium_factor_normal=[10.0, 20.0],
+        advertising_intercept_normal=[3.0, 4.0],
+        advertising_factor_normal=[30.0, 40.0],
+        premium_intercept_shock=[5.0, 6.0],
+        premium_factor_shock=[50.0, 60.0],
+        advertising_intercept_shock=[7.0, 8.0],
+        advertising_factor_shock=[70.0, 80.0],
+    )
+
+
+def _random_normal_parameter_mapping() -> dict[str, list[float]]:
+    return {
+        "premium_intercept_normal": [1.0, 2.0],
+        "premium_factor_normal": [10.0, 20.0],
+        "advertising_intercept_normal": [3.0, 4.0],
+        "advertising_factor_normal": [30.0, 40.0],
+        "premium_intercept_shock": [5.0, 6.0],
+        "premium_factor_shock": [50.0, 60.0],
+        "advertising_intercept_shock": [7.0, 8.0],
+        "advertising_factor_shock": [70.0, 80.0],
+    }
 
 
 def _expected_claim_parameters() -> VUExpectedClaimRuleParameters:
@@ -403,6 +457,213 @@ def test_vu_foreign_info_rule_snapshots_reject_bad_rule_kind() -> None:
                     },
                 }
             ]
+        )
+
+
+def test_vu_random_uniform_rule_uses_explicit_draws() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[11.0, 22.0],
+        advertising_current_sector=[33.0, 44.0],
+        reserves_current=[100.0, 200.0],
+    )
+
+    result = apply_vu_random_uniform_rule(
+        insurer,
+        _random_uniform_parameters(),
+        period=2,
+        random_draws=[0.1, 0.2, 0.3, 0.4],
+        interest_rate=0.05,
+    )
+
+    assert result.premiums_current_sector == pytest.approx([1.0, 4.0])
+    assert result.advertising_current_sector == pytest.approx([9.0, 16.0])
+    assert result.reserves_current == pytest.approx([105.0, 210.0])
+    assert result.random_draws == [0.1, 0.2, 0.3, 0.4]
+
+
+def test_vu_random_uniform_rule_uses_shock_factors() -> None:
+    insurer = Insurer(entity_id=7, reserves_current=[100.0, 200.0])
+
+    result = apply_vu_random_uniform_rule(
+        insurer,
+        _random_uniform_parameters(),
+        period=2,
+        random_draws=[0.1, 0.2, 0.3, 0.4],
+        interest_rate=0.0,
+        change_shock=True,
+    )
+
+    assert result.premiums_current_sector == pytest.approx([5.0, 12.0])
+    assert result.advertising_current_sector == pytest.approx([21.0, 32.0])
+
+
+def test_vu_random_uniform_rule_keeps_start_values_for_first_period() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[11.0, 22.0],
+        advertising_current_sector=[33.0, 44.0],
+        reserves_current=[100.0, 200.0],
+    )
+
+    result = apply_vu_random_uniform_rule(
+        insurer,
+        _random_uniform_parameters(),
+        period=1,
+        random_draws=[0.1, 0.2, 0.3, 0.4],
+        interest_rate=0.1,
+    )
+
+    assert result.premiums_current_sector == [11.0, 22.0]
+    assert result.advertising_current_sector == [33.0, 44.0]
+    assert result.reserves_current == pytest.approx([110.0, 220.0])
+
+
+def test_vu_random_uniform_rule_can_update_insurer_snapshot() -> None:
+    insurer = Insurer(entity_id=7, reserves_current=[100.0, 200.0])
+
+    result = apply_vu_random_uniform_rule_to_insurer(
+        insurer,
+        _random_uniform_parameters(),
+        period=2,
+        random_draws=[0.1, 0.2, 0.3, 0.4],
+        interest_rate=0.05,
+    )
+
+    assert insurer.premiums_current_sector == result.premiums_current_sector
+    assert insurer.advertising_current_sector == result.advertising_current_sector
+    assert insurer.premiums_current == pytest.approx(1.0)
+    assert insurer.advertising_current == pytest.approx(9.0)
+    assert insurer.reserves_current == pytest.approx([105.0, 210.0])
+
+
+def test_vu_random_uniform_rule_snapshots_load_and_apply_to_matching_insurers() -> None:
+    insurers = [Insurer(entity_id=7, reserves_current=[100.0, 200.0]), Insurer(entity_id=8)]
+    snapshots = load_vu_random_uniform_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "random_draws": [0.1, 0.2, 0.3, 0.4],
+                "interest_rate": 0.05,
+                "parameters": _random_uniform_parameter_mapping(),
+            }
+        ]
+    )
+
+    applications = apply_vu_random_uniform_rule_snapshots(insurers, snapshots, period=2)
+
+    assert len(applications) == 1
+    assert applications[0].insurer_id == 7
+    assert applications[0].result.premiums_current_sector == pytest.approx([1.0, 4.0])
+    assert insurers[1].premiums_current_sector == []
+
+
+def test_vu_random_uniform_rule_rejects_bad_draw_count() -> None:
+    with pytest.raises(ValueError, match="four-value list"):
+        apply_vu_random_uniform_rule(
+            Insurer(entity_id=7),
+            _random_uniform_parameters(),
+            period=2,
+            random_draws=[0.1, 0.2],
+            interest_rate=0.0,
+        )
+
+    with pytest.raises(ValueError, match="four-value list"):
+        load_vu_random_uniform_rule_snapshots_from_mapping(
+            [
+                {
+                    "insurer_id": 7,
+                    "random_draws": [0.1, 0.2],
+                    "parameters": _random_uniform_parameter_mapping(),
+                }
+            ]
+        )
+
+
+def test_vu_random_normal_rule_uses_explicit_draws() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[11.0, 22.0],
+        advertising_current_sector=[33.0, 44.0],
+        reserves_current=[100.0, 200.0],
+    )
+
+    result = apply_vu_random_normal_rule(
+        insurer,
+        _random_normal_parameters(),
+        period=2,
+        normal_draws=[0.1, -0.2, 0.3, -0.4],
+        interest_rate=0.05,
+    )
+
+    assert result.premiums_current_sector == pytest.approx([2.0, -2.0])
+    assert result.advertising_current_sector == pytest.approx([12.0, -12.0])
+    assert result.reserves_current == pytest.approx([105.0, 210.0])
+    assert result.normal_draws == [0.1, -0.2, 0.3, -0.4]
+
+
+def test_vu_random_normal_rule_uses_shock_parameters() -> None:
+    insurer = Insurer(entity_id=7, reserves_current=[100.0, 200.0])
+
+    result = apply_vu_random_normal_rule(
+        insurer,
+        _random_normal_parameters(),
+        period=2,
+        normal_draws=[0.1, -0.2, 0.3, -0.4],
+        interest_rate=0.0,
+        change_shock=True,
+    )
+
+    assert result.premiums_current_sector == pytest.approx([10.0, -6.0])
+    assert result.advertising_current_sector == pytest.approx([28.0, -24.0])
+
+
+def test_vu_random_normal_rule_can_update_insurer_snapshot() -> None:
+    insurer = Insurer(entity_id=7, reserves_current=[100.0, 200.0])
+
+    result = apply_vu_random_normal_rule_to_insurer(
+        insurer,
+        _random_normal_parameters(),
+        period=2,
+        normal_draws=[0.1, -0.2, 0.3, -0.4],
+        interest_rate=0.05,
+    )
+
+    assert insurer.premiums_current_sector == result.premiums_current_sector
+    assert insurer.advertising_current_sector == result.advertising_current_sector
+    assert insurer.premiums_current == pytest.approx(2.0)
+    assert insurer.advertising_current == pytest.approx(12.0)
+    assert insurer.reserves_current == pytest.approx([105.0, 210.0])
+
+
+def test_vu_random_normal_rule_snapshots_load_and_apply_to_matching_insurers() -> None:
+    insurers = [Insurer(entity_id=7, reserves_current=[100.0, 200.0])]
+    snapshots = load_vu_random_normal_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "normal_draws": [0.1, -0.2, 0.3, -0.4],
+                "interest_rate": 0.05,
+                "parameters": _random_normal_parameter_mapping(),
+            }
+        ]
+    )
+
+    applications = apply_vu_random_normal_rule_snapshots(insurers, snapshots, period=2)
+
+    assert len(applications) == 1
+    assert applications[0].insurer_id == 7
+    assert applications[0].result.premiums_current_sector == pytest.approx([2.0, -2.0])
+
+
+def test_vu_random_normal_rule_rejects_bad_draw_count() -> None:
+    with pytest.raises(ValueError, match="four-value list"):
+        apply_vu_random_normal_rule(
+            Insurer(entity_id=7),
+            _random_normal_parameters(),
+            period=2,
+            normal_draws=[0.1],
+            interest_rate=0.0,
         )
 
 

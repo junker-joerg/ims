@@ -8,12 +8,16 @@ from ims.model.vu_rules import (
     VUForeignInfoRuleSnapshot,
     VUExpectedClaimRuleSnapshot,
     VUNetSwitcherMarkupRuleSnapshot,
+    VURandomNormalRuleSnapshot,
+    VURandomUniformRuleSnapshot,
     VUReserveMarkupRuleSnapshot,
     VUMarketShareMarkupRuleSnapshot,
     load_vu_expected_claim_rule_snapshots_from_mapping,
     load_vu_foreign_info_rule_snapshots_from_mapping,
     load_vu_market_share_markup_rule_snapshots_from_mapping,
     load_vu_net_switcher_markup_rule_snapshots_from_mapping,
+    load_vu_random_normal_rule_snapshots_from_mapping,
+    load_vu_random_uniform_rule_snapshots_from_mapping,
     load_vu_reserve_markup_rule_snapshots_from_mapping,
 )
 
@@ -27,6 +31,8 @@ class LoadedScenario:
     insurers: list[Insurer]
     policyholders: list[Policyholder]
     vu_foreign_info_rule_snapshots: list[VUForeignInfoRuleSnapshot] = field(default_factory=list)
+    vu_random_uniform_rule_snapshots: list[VURandomUniformRuleSnapshot] = field(default_factory=list)
+    vu_random_normal_rule_snapshots: list[VURandomNormalRuleSnapshot] = field(default_factory=list)
     vu_reserve_markup_rule_snapshots: list[VUReserveMarkupRuleSnapshot] = field(default_factory=list)
     vu_net_switcher_markup_rule_snapshots: list[VUNetSwitcherMarkupRuleSnapshot] = field(default_factory=list)
     vu_expected_claim_rule_snapshots: list[VUExpectedClaimRuleSnapshot] = field(default_factory=list)
@@ -209,6 +215,12 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         policyholders=policyholders,
         vu_foreign_info_rule_snapshots=load_vu_foreign_info_rule_snapshots_from_mapping(
             data.get("vu_foreign_info_rule_snapshots")
+        ),
+        vu_random_uniform_rule_snapshots=load_vu_random_uniform_rule_snapshots_from_mapping(
+            data.get("vu_random_uniform_rule_snapshots")
+        ),
+        vu_random_normal_rule_snapshots=load_vu_random_normal_rule_snapshots_from_mapping(
+            data.get("vu_random_normal_rule_snapshots")
         ),
         vu_reserve_markup_rule_snapshots=load_vu_reserve_markup_rule_snapshots_from_mapping(
             data.get("vu_reserve_markup_rule_snapshots")
