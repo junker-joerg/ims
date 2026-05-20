@@ -31,6 +31,36 @@ def test_scenario_loader_raises_for_invalid_top_level_shape(tmp_path: Path) -> N
         load_scenario(invalid_path)
 
 
+def test_scenario_loader_rejects_duplicate_insurer_entity_ids() -> None:
+    with pytest.raises(ScenarioValidationError, match="duplicate insurer entity_id values: 10"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": [
+                    {"entity_id": 10, "name": "VU-10-a"},
+                    {"entity_id": 10, "name": "VU-10-b"},
+                ],
+                "policyholders": [],
+            }
+        )
+
+
+def test_scenario_loader_rejects_duplicate_policyholder_entity_ids() -> None:
+    with pytest.raises(ScenarioValidationError, match="duplicate policyholder entity_id values: 20"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": [],
+                "policyholders": [
+                    {"entity_id": 20, "name": "VN-20-a"},
+                    {"entity_id": 20, "name": "VN-20-b"},
+                ],
+            }
+        )
+
+
 def test_scenario_loader_reads_sector_specific_previous_frmdinf_inputs() -> None:
     scenario = load_scenario_from_mapping(
         {

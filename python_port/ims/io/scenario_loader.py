@@ -104,6 +104,22 @@ def _policyholder_chosen_insurer_vector(item: dict[str, object]) -> list[int | N
     return [value, value]
 
 
+def _validate_unique_entity_ids(items: list[object], *, label: str) -> None:
+    seen: set[int] = set()
+    duplicates: set[int] = set()
+    for item in items:
+        if not isinstance(item, dict) or "entity_id" not in item:
+            continue
+        entity_id = int(item["entity_id"])
+        if entity_id in seen:
+            duplicates.add(entity_id)
+        else:
+            seen.add(entity_id)
+    if duplicates:
+        values = ", ".join(str(entity_id) for entity_id in sorted(duplicates))
+        raise ScenarioValidationError(f"duplicate {label} entity_id values: {values}")
+
+
 def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     if not isinstance(data, dict):
         raise ScenarioValidationError("scenario must be a JSON object")
@@ -122,6 +138,8 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         raise ScenarioValidationError("bav must be an object")
     if not isinstance(insurer_items, list) or not isinstance(policyholder_items, list):
         raise ScenarioValidationError("insurers and policyholders must be lists")
+    _validate_unique_entity_ids(insurer_items, label="insurer")
+    _validate_unique_entity_ids(policyholder_items, label="policyholder")
 
     context = SimulationContext(
         period=int(context_data.get("period", 0)),
