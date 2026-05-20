@@ -243,6 +243,10 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
     )
     from ims.model.vu_rules import (
+        VUExpectedClaimRuleApplication,
+        VUExpectedClaimRuleParameters,
+        VUExpectedClaimRuleResult,
+        VUExpectedClaimRuleSnapshot,
         VUForeignInfoRuleApplication,
         VUForeignInfoRuleKind,
         VUForeignInfoRuleParameters,
@@ -252,14 +256,20 @@ def test_core_placeholders_import() -> None:
         VUReserveMarkupRuleParameters,
         VUReserveMarkupRuleResult,
         VUReserveMarkupRuleSnapshot,
+        apply_vu_expected_claim_rule,
+        apply_vu_expected_claim_rule_snapshots,
+        apply_vu_expected_claim_rule_to_insurer,
         apply_vu_foreign_info_rule,
         apply_vu_foreign_info_rule_snapshots,
         apply_vu_foreign_info_rule_to_insurer,
         apply_vu_reserve_markup_rule,
         apply_vu_reserve_markup_rule_snapshots,
         apply_vu_reserve_markup_rule_to_insurer,
+        load_vu_expected_claim_rule_snapshots_from_mapping,
         load_vu_foreign_info_rule_snapshots_from_mapping,
         load_vu_reserve_markup_rule_snapshots_from_mapping,
+        vu_expected_claim_rule_parameters_from_mapping,
+        vu_expected_claim_rule_snapshot_from_mapping,
         vu_foreign_info_rule_parameters_from_mapping,
         vu_foreign_info_rule_snapshot_from_mapping,
         vu_reserve_markup_rule_parameters_from_mapping,
@@ -513,18 +523,28 @@ def test_core_placeholders_import() -> None:
     assert VUForeignInfoRuleResult is not None
     assert VUForeignInfoRuleSnapshot is not None
     assert VUForeignInfoRuleApplication is not None
+    assert VUExpectedClaimRuleApplication is not None
+    assert VUExpectedClaimRuleParameters is not None
+    assert VUExpectedClaimRuleResult is not None
+    assert VUExpectedClaimRuleSnapshot is not None
     assert VUReserveMarkupRuleApplication is not None
     assert VUReserveMarkupRuleParameters is not None
     assert VUReserveMarkupRuleResult is not None
     assert VUReserveMarkupRuleSnapshot is not None
+    assert apply_vu_expected_claim_rule is not None
+    assert apply_vu_expected_claim_rule_snapshots is not None
+    assert apply_vu_expected_claim_rule_to_insurer is not None
     assert apply_vu_foreign_info_rule is not None
     assert apply_vu_foreign_info_rule_snapshots is not None
     assert apply_vu_foreign_info_rule_to_insurer is not None
     assert apply_vu_reserve_markup_rule is not None
     assert apply_vu_reserve_markup_rule_snapshots is not None
     assert apply_vu_reserve_markup_rule_to_insurer is not None
+    assert load_vu_expected_claim_rule_snapshots_from_mapping is not None
     assert load_vu_foreign_info_rule_snapshots_from_mapping is not None
     assert load_vu_reserve_markup_rule_snapshots_from_mapping is not None
+    assert vu_expected_claim_rule_parameters_from_mapping is not None
+    assert vu_expected_claim_rule_snapshot_from_mapping is not None
     assert vu_foreign_info_rule_parameters_from_mapping is not None
     assert vu_foreign_info_rule_snapshot_from_mapping is not None
     assert vu_reserve_markup_rule_parameters_from_mapping is not None
