@@ -4,10 +4,15 @@ from ims.model.entities import BAV, Insurer
 from ims.model.vu_rules import (
     VUForeignInfoRuleKind,
     VUForeignInfoRuleParameters,
+    VUReserveMarkupRuleParameters,
     apply_vu_foreign_info_rule_snapshots,
     apply_vu_foreign_info_rule,
     apply_vu_foreign_info_rule_to_insurer,
+    apply_vu_reserve_markup_rule,
+    apply_vu_reserve_markup_rule_snapshots,
+    apply_vu_reserve_markup_rule_to_insurer,
     load_vu_foreign_info_rule_snapshots_from_mapping,
+    load_vu_reserve_markup_rule_snapshots_from_mapping,
 )
 
 
@@ -33,6 +38,19 @@ def _bav_with_foreign_info() -> BAV:
     bav.service_state.insurer.mp = [500.0, 600.0]
     bav.service_state.insurer.mw = [50.0, 60.0]
     return bav
+
+
+def _reserve_markup_parameters() -> VUReserveMarkupRuleParameters:
+    return VUReserveMarkupRuleParameters(
+        premium_below_normal=[1.1, 1.2],
+        premium_above_normal=[0.9, 0.8],
+        advertising_below_normal=[1.3, 1.4],
+        advertising_above_normal=[0.7, 0.6],
+        premium_below_shock=[2.1, 2.2],
+        premium_above_shock=[1.9, 1.8],
+        advertising_below_shock=[2.3, 2.4],
+        advertising_above_shock=[1.7, 1.6],
+    )
 
 
 def test_vu_foreign_info_rule_uses_dumping_frmdinf_vectors() -> None:
@@ -293,3 +311,156 @@ def test_vu_foreign_info_rule_snapshots_reject_bad_rule_kind() -> None:
                 }
             ]
         )
+
+
+def test_vu_reserve_markup_rule_uses_reserve_thresholds_for_normal_case() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+    )
+
+    result = apply_vu_reserve_markup_rule(
+        insurer,
+        _reserve_markup_parameters(),
+        period=2,
+        reserve_thresholds=[75.0, 100.0],
+        interest_rate=0.05,
+    )
+
+    assert result.premiums_current_sector == pytest.approx([110.0, 160.0])
+    assert result.advertising_current_sector == pytest.approx([13.0, 12.0])
+    assert result.reserves_current == pytest.approx([52.5, 157.5])
+    assert result.threshold_comparison_values == [75.0, 100.0]
+
+
+def test_vu_reserve_markup_rule_uses_zero_threshold_for_change_shock() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[-1.0, 150.0],
+    )
+
+    result = apply_vu_reserve_markup_rule(
+        insurer,
+        _reserve_markup_parameters(),
+        period=2,
+        reserve_thresholds=[999.0, 999.0],
+        interest_rate=0.0,
+        change_shock=True,
+    )
+
+    assert result.premiums_current_sector == [210.0, 360.0]
+    assert result.advertising_current_sector == [23.0, 32.0]
+    assert result.threshold_comparison_values == [0.0, 0.0]
+
+
+def test_vu_reserve_markup_rule_keeps_start_values_for_first_period() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+    )
+
+    result = apply_vu_reserve_markup_rule(
+        insurer,
+        _reserve_markup_parameters(),
+        period=1,
+        reserve_thresholds=[0.0, 0.0],
+        interest_rate=0.1,
+    )
+
+    assert result.premiums_current_sector == [100.0, 200.0]
+    assert result.advertising_current_sector == [10.0, 20.0]
+    assert result.reserves_current == pytest.approx([55.0, 165.0])
+
+
+def test_vu_reserve_markup_rule_can_update_insurer_snapshot() -> None:
+    insurer = Insurer(
+        entity_id=7,
+        premiums_current_sector=[100.0, 200.0],
+        advertising_current_sector=[10.0, 20.0],
+        reserves_current=[50.0, 150.0],
+    )
+
+    result = apply_vu_reserve_markup_rule_to_insurer(
+        insurer,
+        _reserve_markup_parameters(),
+        period=2,
+        reserve_thresholds=[75.0, 100.0],
+        interest_rate=0.05,
+    )
+
+    assert insurer.premiums_current_sector == result.premiums_current_sector
+    assert insurer.advertising_current_sector == result.advertising_current_sector
+    assert insurer.premiums_current == pytest.approx(110.0)
+    assert insurer.advertising_current == pytest.approx(13.0)
+    assert insurer.reserves_current == pytest.approx([52.5, 157.5])
+
+
+def test_vu_reserve_markup_rule_snapshots_load_and_apply_to_matching_insurers() -> None:
+    insurers = [
+        Insurer(
+            entity_id=7,
+            premiums_current_sector=[100.0, 200.0],
+            advertising_current_sector=[10.0, 20.0],
+            reserves_current=[50.0, 150.0],
+        ),
+        Insurer(entity_id=8),
+    ]
+    snapshots = load_vu_reserve_markup_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "reserve_thresholds": [75.0, 100.0],
+                "interest_rate": 0.05,
+                "parameters": {
+                    "premium_below_normal": [1.1, 1.2],
+                    "premium_above_normal": [0.9, 0.8],
+                    "advertising_below_normal": [1.3, 1.4],
+                    "advertising_above_normal": [0.7, 0.6],
+                    "premium_below_shock": [2.1, 2.2],
+                    "premium_above_shock": [1.9, 1.8],
+                    "advertising_below_shock": [2.3, 2.4],
+                    "advertising_above_shock": [1.7, 1.6],
+                },
+            }
+        ]
+    )
+
+    applications = apply_vu_reserve_markup_rule_snapshots(insurers, snapshots, period=2)
+
+    assert len(applications) == 1
+    assert applications[0].insurer_id == 7
+    assert insurers[0].premiums_current_sector == pytest.approx([110.0, 160.0])
+    assert insurers[0].advertising_current_sector == pytest.approx([13.0, 12.0])
+    assert insurers[1].premiums_current_sector == []
+
+
+def test_vu_reserve_markup_rule_snapshots_reject_unknown_and_duplicate_targets() -> None:
+    snapshots = load_vu_reserve_markup_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "parameters": {
+                    "premium_below_normal": [1.1, 1.2],
+                    "premium_above_normal": [0.9, 0.8],
+                    "advertising_below_normal": [1.3, 1.4],
+                    "advertising_above_normal": [0.7, 0.6],
+                    "premium_below_shock": [2.1, 2.2],
+                    "premium_above_shock": [1.9, 1.8],
+                    "advertising_below_shock": [2.3, 2.4],
+                    "advertising_above_shock": [1.7, 1.6],
+                },
+            }
+        ]
+    )
+
+    with pytest.raises(ValueError, match="unknown insurer"):
+        apply_vu_reserve_markup_rule_snapshots([], snapshots, period=2)
+
+    with pytest.raises(ValueError, match="duplicate"):
+        apply_vu_reserve_markup_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=2)

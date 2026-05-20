@@ -4,7 +4,12 @@ from pathlib import Path
 
 from ims.engine.context import SimulationContext
 from ims.model.entities import BAV, Insurer, Policyholder
-from ims.model.vu_rules import VUForeignInfoRuleSnapshot, load_vu_foreign_info_rule_snapshots_from_mapping
+from ims.model.vu_rules import (
+    VUForeignInfoRuleSnapshot,
+    VUReserveMarkupRuleSnapshot,
+    load_vu_foreign_info_rule_snapshots_from_mapping,
+    load_vu_reserve_markup_rule_snapshots_from_mapping,
+)
 
 
 @dataclass(slots=True)
@@ -16,6 +21,7 @@ class LoadedScenario:
     insurers: list[Insurer]
     policyholders: list[Policyholder]
     vu_foreign_info_rule_snapshots: list[VUForeignInfoRuleSnapshot] = field(default_factory=list)
+    vu_reserve_markup_rule_snapshots: list[VUReserveMarkupRuleSnapshot] = field(default_factory=list)
 
 
 class ScenarioValidationError(ValueError):
@@ -190,6 +196,9 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         policyholders=policyholders,
         vu_foreign_info_rule_snapshots=load_vu_foreign_info_rule_snapshots_from_mapping(
             data.get("vu_foreign_info_rule_snapshots")
+        ),
+        vu_reserve_markup_rule_snapshots=load_vu_reserve_markup_rule_snapshots_from_mapping(
+            data.get("vu_reserve_markup_rule_snapshots")
         ),
     )
 

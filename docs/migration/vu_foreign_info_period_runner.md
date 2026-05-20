@@ -40,6 +40,7 @@ Der Runner nutzt:
 
 - `compute_extended_foreign_info`
 - `apply_vu_foreign_info_rule_snapshots`
+- `apply_vu_reserve_markup_rule_snapshots`
 - `collect_basic_aggregates`
 
 Der Mehrperiodenpfad verarbeitet eine Liste expliziter Periodenszenarien oder ein Fixture mit dem Feld `periods`. Die Periodennummern muessen eindeutig und streng steigend sein. Das ist eine Reproduzierbarkeitspruefung, keine historische Ablaufherleitung.
@@ -52,6 +53,10 @@ Optional kann `carry_forward_insurer_state=True` gesetzt werden. Dann schreibt d
 - Vorperiodenaktivitaet
 
 Dieser Carryover ist bewusst eng und diagnostiziert die betroffenen Versicherer ueber `VUForeignInfoCarryover`.
+
+Zusaetzlich kann ein Szenario explizite `vu_reserve_markup_rule_snapshots` enthalten. Diese Snapshots
+bilden den portierten `Vrvu03`-/Mark-Up-I-Regelkern ab und werden nach den Frmdinf-Snapshots
+angewendet. Die Details und Grenzen stehen in `vu_markup_reserve_rule.md`.
 
 ## Validierung
 
@@ -66,6 +71,7 @@ Die Tests pruefen:
 - doppelte oder unsortierte Perioden werden abgelehnt
 - optionaler Carryover schreibt passende Versichererwerte in die Folgeperiode
 - nicht passende Versicherer werden beim Carryover ignoriert
+- explizite Vrvu03-/Mark-Up-I-Snapshots koennen im Periodenrunner angewendet werden
 - doppelte Snapshot-Ziele werden abgelehnt
 - ein Szenario ohne Snapshots bleibt gueltig und berechnet nur BAV-Frmdinf
 
