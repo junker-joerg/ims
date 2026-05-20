@@ -61,6 +61,7 @@ def test_core_placeholders_import() -> None:
         run_vu_foreign_info_period_from_fixture,
         run_vu_foreign_info_period_from_mapping,
     )
+    from ims.engine.vn_rule_runner import VNSettlementPeriodRunResult, run_vn_settlement_period
     from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
     from ims.model.agrsich_export import (
         ExportFileSpec,
@@ -241,6 +242,17 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_acceptance_verdict_json,
         write_legacy_validation_acceptance_run_manifest,
         write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
+    )
+    from ims.model.vn_rules import (
+        VNSectorSettlementDecision,
+        VNSettlementApplication,
+        VNSettlementResult,
+        VNSettlementSnapshot,
+        apply_vn_settlement_snapshot,
+        apply_vn_settlement_snapshots,
+        load_vn_settlement_snapshots_from_mapping,
+        vn_sector_settlement_decision_from_mapping,
+        vn_settlement_snapshot_from_mapping,
     )
     from ims.model.vu_rules import (
         VUExpectedClaimRuleApplication,
@@ -435,11 +447,13 @@ def test_core_placeholders_import() -> None:
     assert VUForeignInfoCarryover is not None
     assert VUForeignInfoMultiPeriodRunResult is not None
     assert VUForeignInfoPeriodRunResult is not None
+    assert VNSettlementPeriodRunResult is not None
     assert run_loaded_vu_foreign_info_period is not None
     assert run_vu_foreign_info_multi_period_from_fixture is not None
     assert run_vu_foreign_info_multi_period_from_mappings is not None
     assert run_vu_foreign_info_period_from_fixture is not None
     assert run_vu_foreign_info_period_from_mapping is not None
+    assert run_vn_settlement_period is not None
     assert insurer.active_prev is True
     assert insurer.rule_id is None
     assert insurer.rule_class is None
@@ -569,6 +583,15 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_acceptance_verdict_json is not None
     assert write_legacy_validation_acceptance_run_manifest is not None
     assert write_legacy_validation_acceptance_run_artifacts_from_summary_directory is not None
+    assert VNSectorSettlementDecision is not None
+    assert VNSettlementApplication is not None
+    assert VNSettlementResult is not None
+    assert VNSettlementSnapshot is not None
+    assert apply_vn_settlement_snapshot is not None
+    assert apply_vn_settlement_snapshots is not None
+    assert load_vn_settlement_snapshots_from_mapping is not None
+    assert vn_sector_settlement_decision_from_mapping is not None
+    assert vn_settlement_snapshot_from_mapping is not None
     assert VUForeignInfoRuleKind is not None
     assert VUForeignInfoRuleParameters is not None
     assert VUForeignInfoRuleResult is not None

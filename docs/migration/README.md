@@ -35,4 +35,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vu_foreign_info_rule_core.md`: kleiner VU-Regelkern fuer Dumping-, Durchschnitts- und Angriffslogik auf BAV-Frmdinf-Vektoren
 - `vu_foreign_info_period_runner.md`: kleiner deterministischer Periodenschritt fuer BAV-Frmdinf plus explizite VU-Regelparameter-Snapshots
 - `vu_free_linear_rule.md`: Vrvu10-Slice fuer frei definierbare lineare VU-Fortschreibung
+- `vn_settlement_core.md`: deterministischer VN-Abrechnungskern nach expliziten Entscheidungen
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

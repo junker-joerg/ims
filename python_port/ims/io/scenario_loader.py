@@ -4,6 +4,10 @@ from pathlib import Path
 
 from ims.engine.context import SimulationContext
 from ims.model.entities import BAV, Insurer, Policyholder
+from ims.model.vn_rules import (
+    VNSettlementSnapshot,
+    load_vn_settlement_snapshots_from_mapping,
+)
 from ims.model.vu_rules import (
     VUForeignInfoRuleSnapshot,
     VUExpectedClaimRuleSnapshot,
@@ -40,6 +44,7 @@ class LoadedScenario:
     vu_expected_claim_rule_snapshots: list[VUExpectedClaimRuleSnapshot] = field(default_factory=list)
     vu_market_share_markup_rule_snapshots: list[VUMarketShareMarkupRuleSnapshot] = field(default_factory=list)
     vu_free_linear_rule_snapshots: list[VUFreeLinearRuleSnapshot] = field(default_factory=list)
+    vn_settlement_snapshots: list[VNSettlementSnapshot] = field(default_factory=list)
 
 
 class ScenarioValidationError(ValueError):
@@ -152,6 +157,46 @@ def _validate_policyholder_insurer_references(
         raise ScenarioValidationError(f"policyholder insurer_id references unknown insurers: {values}")
 
 
+def _validate_vn_settlement_snapshot_references(
+    insurer_items: list[object],
+    policyholder_items: list[object],
+    snapshots: list[VNSettlementSnapshot],
+) -> None:
+    insurer_ids = {
+        int(item["entity_id"])
+        for item in insurer_items
+        if isinstance(item, dict) and "entity_id" in item
+    }
+    policyholder_ids = {
+        int(item["entity_id"])
+        for item in policyholder_items
+        if isinstance(item, dict) and "entity_id" in item
+    }
+    unknown_policyholder_ids: set[int] = set()
+    unknown_insurer_ids: set[int] = set()
+    duplicate_policyholder_ids: set[int] = set()
+    seen_policyholder_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.policyholder_id in seen_policyholder_ids:
+            duplicate_policyholder_ids.add(snapshot.policyholder_id)
+        else:
+            seen_policyholder_ids.add(snapshot.policyholder_id)
+        if snapshot.policyholder_id not in policyholder_ids:
+            unknown_policyholder_ids.add(snapshot.policyholder_id)
+        for decision in snapshot.decisions:
+            if decision.insurer_id is not None and decision.insurer_id not in insurer_ids:
+                unknown_insurer_ids.add(decision.insurer_id)
+    if duplicate_policyholder_ids:
+        values = ", ".join(str(policyholder_id) for policyholder_id in sorted(duplicate_policyholder_ids))
+        raise ScenarioValidationError(f"duplicate VN settlement snapshot policyholder_id values: {values}")
+    if unknown_policyholder_ids:
+        values = ", ".join(str(policyholder_id) for policyholder_id in sorted(unknown_policyholder_ids))
+        raise ScenarioValidationError(f"VN settlement snapshots reference unknown policyholders: {values}")
+    if unknown_insurer_ids:
+        values = ", ".join(str(insurer_id) for insurer_id in sorted(unknown_insurer_ids))
+        raise ScenarioValidationError(f"VN settlement snapshots reference unknown insurers: {values}")
+
+
 def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     if not isinstance(data, dict):
         raise ScenarioValidationError("scenario must be a JSON object")
@@ -175,6 +220,8 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     _validate_unique_entity_ids(insurer_items, label="insurer")
     _validate_unique_entity_ids(policyholder_items, label="policyholder")
     _validate_policyholder_insurer_references(insurer_items, policyholder_items)
+    vn_settlement_snapshots = load_vn_settlement_snapshots_from_mapping(data.get("vn_settlement_snapshots"))
+    _validate_vn_settlement_snapshot_references(insurer_items, policyholder_items, vn_settlement_snapshots)
 
     context = SimulationContext(
         period=int(context_data.get("period", 0)),
@@ -294,6 +341,7 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
         vu_free_linear_rule_snapshots=load_vu_free_linear_rule_snapshots_from_mapping(
             data.get("vu_free_linear_rule_snapshots")
         ),
+        vn_settlement_snapshots=vn_settlement_snapshots,
     )
 
 
