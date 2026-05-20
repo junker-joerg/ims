@@ -247,6 +247,10 @@ def test_core_placeholders_import() -> None:
         VUExpectedClaimRuleParameters,
         VUExpectedClaimRuleResult,
         VUExpectedClaimRuleSnapshot,
+        VUFreeLinearRuleApplication,
+        VUFreeLinearRuleParameters,
+        VUFreeLinearRuleResult,
+        VUFreeLinearRuleSnapshot,
         VUForeignInfoRuleApplication,
         VUForeignInfoRuleKind,
         VUForeignInfoRuleParameters,
@@ -275,6 +279,9 @@ def test_core_placeholders_import() -> None:
         apply_vu_expected_claim_rule,
         apply_vu_expected_claim_rule_snapshots,
         apply_vu_expected_claim_rule_to_insurer,
+        apply_vu_free_linear_rule,
+        apply_vu_free_linear_rule_snapshots,
+        apply_vu_free_linear_rule_to_insurer,
         apply_vu_foreign_info_rule,
         apply_vu_foreign_info_rule_snapshots,
         apply_vu_foreign_info_rule_to_insurer,
@@ -294,6 +301,7 @@ def test_core_placeholders_import() -> None:
         apply_vu_reserve_markup_rule_snapshots,
         apply_vu_reserve_markup_rule_to_insurer,
         load_vu_expected_claim_rule_snapshots_from_mapping,
+        load_vu_free_linear_rule_snapshots_from_mapping,
         load_vu_foreign_info_rule_snapshots_from_mapping,
         load_vu_market_share_markup_rule_snapshots_from_mapping,
         load_vu_net_switcher_markup_rule_snapshots_from_mapping,
@@ -302,6 +310,8 @@ def test_core_placeholders_import() -> None:
         load_vu_reserve_markup_rule_snapshots_from_mapping,
         vu_expected_claim_rule_parameters_from_mapping,
         vu_expected_claim_rule_snapshot_from_mapping,
+        vu_free_linear_rule_parameters_from_mapping,
+        vu_free_linear_rule_snapshot_from_mapping,
         vu_foreign_info_rule_parameters_from_mapping,
         vu_foreign_info_rule_snapshot_from_mapping,
         vu_market_share_markup_rule_parameters_from_mapping,
@@ -584,6 +594,10 @@ def test_core_placeholders_import() -> None:
     assert VUExpectedClaimRuleParameters is not None
     assert VUExpectedClaimRuleResult is not None
     assert VUExpectedClaimRuleSnapshot is not None
+    assert VUFreeLinearRuleApplication is not None
+    assert VUFreeLinearRuleParameters is not None
+    assert VUFreeLinearRuleResult is not None
+    assert VUFreeLinearRuleSnapshot is not None
     assert VUReserveMarkupRuleApplication is not None
     assert VUReserveMarkupRuleParameters is not None
     assert VUReserveMarkupRuleResult is not None
@@ -591,6 +605,9 @@ def test_core_placeholders_import() -> None:
     assert apply_vu_expected_claim_rule is not None
     assert apply_vu_expected_claim_rule_snapshots is not None
     assert apply_vu_expected_claim_rule_to_insurer is not None
+    assert apply_vu_free_linear_rule is not None
+    assert apply_vu_free_linear_rule_snapshots is not None
+    assert apply_vu_free_linear_rule_to_insurer is not None
     assert apply_vu_foreign_info_rule is not None
     assert apply_vu_foreign_info_rule_snapshots is not None
     assert apply_vu_foreign_info_rule_to_insurer is not None
@@ -610,6 +627,7 @@ def test_core_placeholders_import() -> None:
     assert apply_vu_reserve_markup_rule_snapshots is not None
     assert apply_vu_reserve_markup_rule_to_insurer is not None
     assert load_vu_expected_claim_rule_snapshots_from_mapping is not None
+    assert load_vu_free_linear_rule_snapshots_from_mapping is not None
     assert load_vu_foreign_info_rule_snapshots_from_mapping is not None
     assert load_vu_market_share_markup_rule_snapshots_from_mapping is not None
     assert load_vu_net_switcher_markup_rule_snapshots_from_mapping is not None
@@ -618,6 +636,8 @@ def test_core_placeholders_import() -> None:
     assert load_vu_reserve_markup_rule_snapshots_from_mapping is not None
     assert vu_expected_claim_rule_parameters_from_mapping is not None
     assert vu_expected_claim_rule_snapshot_from_mapping is not None
+    assert vu_free_linear_rule_parameters_from_mapping is not None
+    assert vu_free_linear_rule_snapshot_from_mapping is not None
     assert vu_foreign_info_rule_parameters_from_mapping is not None
     assert vu_foreign_info_rule_snapshot_from_mapping is not None
     assert vu_market_share_markup_rule_parameters_from_mapping is not None

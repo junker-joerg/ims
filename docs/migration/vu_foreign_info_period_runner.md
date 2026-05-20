@@ -81,6 +81,10 @@ Explizite `vu_market_share_markup_rule_snapshots` bilden den portierten `Vrvu05`
 Regelkern ab. Sie werden nach den Frmdinf-, Mark-Up-I- und Erwartungsschaden-Snapshots angewendet.
 Details und Grenzen stehen in `vu_market_share_markup_rule.md`.
 
+Explizite `vu_free_linear_rule_snapshots` bilden den portierten `Vrvu10`-/frei-definierbar-
+Regelkern ab. Sie werden als weiterer expliziter VU-Regelpfad im Periodenrunner angewendet.
+Details und Grenzen stehen in `vu_free_linear_rule.md`.
+
 ## Validierung
 
 Die Tests pruefen:
@@ -102,6 +106,7 @@ Die Tests pruefen:
 - explizite Vrvu04-/Mark-Up-II-Snapshots koennen im Periodenrunner angewendet werden
 - explizite Vrvu06-/Erwartungsschaden-Snapshots koennen im Periodenrunner angewendet werden
 - explizite Vrvu05-/Mark-Up-III-Snapshots koennen im Periodenrunner angewendet werden
+- explizite Vrvu10-/frei-definierbar-Snapshots koennen im Periodenrunner angewendet werden
 - doppelte Snapshot-Ziele werden abgelehnt
 - ein Szenario ohne Snapshots bleibt gueltig und berechnet nur BAV-Frmdinf
 

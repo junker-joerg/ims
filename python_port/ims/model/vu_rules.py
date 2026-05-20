@@ -310,6 +310,47 @@ class VUMarketShareMarkupRuleApplication:
     result: VUMarketShareMarkupRuleResult
 
 
+@dataclass(slots=True)
+class VUFreeLinearRuleParameters:
+    """Parameter fuer den portierten Vrvu10-Ausschnitt der frei definierbaren Regel."""
+
+    premium_intercept_normal: list[float]
+    premium_factor_normal: list[float]
+    advertising_intercept_normal: list[float]
+    advertising_factor_normal: list[float]
+    premium_intercept_shock: list[float]
+    premium_factor_shock: list[float]
+    advertising_intercept_shock: list[float]
+    advertising_factor_shock: list[float]
+
+
+@dataclass(slots=True)
+class VUFreeLinearRuleResult:
+    """Berechneter VU-Zielzustand fuer Vrvu10 / frei definierbar."""
+
+    premiums_current_sector: list[float]
+    advertising_current_sector: list[float]
+    reserves_current: list[float]
+
+
+@dataclass(slots=True)
+class VUFreeLinearRuleSnapshot:
+    """Expliziter Parameter-Snapshot fuer den Vrvu10-Ausschnitt."""
+
+    insurer_id: int
+    parameters: VUFreeLinearRuleParameters
+    interest_rate: float = 0.0
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VUFreeLinearRuleApplication:
+    """Diagnose eines angewendeten Vrvu10-Snapshots."""
+
+    insurer_id: int
+    result: VUFreeLinearRuleResult
+
+
 def _two_values(values: object, *, fallback: float) -> list[float]:
     if values is None:
         return [float(fallback), float(fallback)]
@@ -685,6 +726,51 @@ def load_vu_market_share_markup_rule_snapshots_from_mapping(value: object) -> li
     if not isinstance(value, list):
         raise ValueError("VU market-share-markup rule snapshots must be a list")
     return [vu_market_share_markup_rule_snapshot_from_mapping(item) for item in value]
+
+
+def vu_free_linear_rule_parameters_from_mapping(mapping: dict[str, object]) -> VUFreeLinearRuleParameters:
+    """Laedt den Vrvu10-Parameterblock aus einer Mapping-Struktur."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU free-linear rule parameters must be an object")
+    return VUFreeLinearRuleParameters(
+        premium_intercept_normal=_required_list(mapping, "premium_intercept_normal"),
+        premium_factor_normal=_required_list(mapping, "premium_factor_normal"),
+        advertising_intercept_normal=_required_list(mapping, "advertising_intercept_normal"),
+        advertising_factor_normal=_required_list(mapping, "advertising_factor_normal"),
+        premium_intercept_shock=_required_list(mapping, "premium_intercept_shock"),
+        premium_factor_shock=_required_list(mapping, "premium_factor_shock"),
+        advertising_intercept_shock=_required_list(mapping, "advertising_intercept_shock"),
+        advertising_factor_shock=_required_list(mapping, "advertising_factor_shock"),
+    )
+
+
+def vu_free_linear_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VUFreeLinearRuleSnapshot:
+    """Laedt einen expliziten Vrvu10-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VU free-linear rule snapshot must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VU free-linear rule snapshot requires field: insurer_id")
+    parameters = mapping.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ValueError("VU free-linear rule snapshot requires object field: parameters")
+    return VUFreeLinearRuleSnapshot(
+        insurer_id=int(mapping["insurer_id"]),
+        parameters=vu_free_linear_rule_parameters_from_mapping(parameters),
+        interest_rate=float(mapping.get("interest_rate", 0.0)),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vu_free_linear_rule_snapshots_from_mapping(value: object) -> list[VUFreeLinearRuleSnapshot]:
+    """Laedt mehrere explizite Vrvu10-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VU free-linear rule snapshots must be a list")
+    return [vu_free_linear_rule_snapshot_from_mapping(item) for item in value]
 
 
 def apply_vu_random_uniform_rule(
@@ -1535,4 +1621,108 @@ def apply_vu_market_share_markup_rule_snapshots(
             change_shock=snapshot.change_shock,
         )
         applications.append(VUMarketShareMarkupRuleApplication(insurer_id=snapshot.insurer_id, result=result))
+    return applications
+
+
+def apply_vu_free_linear_rule(
+    insurer: Insurer,
+    parameters: VUFreeLinearRuleParameters,
+    *,
+    period: int,
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUFreeLinearRuleResult:
+    """
+    Portiert den deterministischen Kern von Vrvu10 / frei definierbar.
+
+    Die historische Regel bietet eine freie lineare Eingriffsstelle. Dieser Slice
+    bildet die vorhandene lineare Form kontrolliert mit expliziten Parametern ab.
+    """
+
+    previous_premiums = _two_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
+    previous_advertising = _two_values(insurer.advertising_current_sector, fallback=insurer.advertising_current)
+    previous_reserves = _two_values(insurer.reserves_current, fallback=0.0)
+
+    if period <= 1:
+        return VUFreeLinearRuleResult(
+            premiums_current_sector=previous_premiums,
+            advertising_current_sector=previous_advertising,
+            reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+        )
+
+    if change_shock:
+        premium_intercepts = _parameter_values(parameters.premium_intercept_shock)
+        premium_factors = _parameter_values(parameters.premium_factor_shock)
+        advertising_intercepts = _parameter_values(parameters.advertising_intercept_shock)
+        advertising_factors = _parameter_values(parameters.advertising_factor_shock)
+    else:
+        premium_intercepts = _parameter_values(parameters.premium_intercept_normal)
+        premium_factors = _parameter_values(parameters.premium_factor_normal)
+        advertising_intercepts = _parameter_values(parameters.advertising_intercept_normal)
+        advertising_factors = _parameter_values(parameters.advertising_factor_normal)
+
+    return VUFreeLinearRuleResult(
+        premiums_current_sector=[
+            premium_intercepts[index] + premium_factors[index] * previous_premiums[index]
+            for index in range(2)
+        ],
+        advertising_current_sector=[
+            advertising_intercepts[index] + advertising_factors[index] * previous_advertising[index]
+            for index in range(2)
+        ],
+        reserves_current=[(1.0 + interest_rate) * value for value in previous_reserves],
+    )
+
+
+def apply_vu_free_linear_rule_to_insurer(
+    insurer: Insurer,
+    parameters: VUFreeLinearRuleParameters,
+    *,
+    period: int,
+    interest_rate: float,
+    change_shock: bool = False,
+) -> VUFreeLinearRuleResult:
+    """Berechnet Vrvu10 / frei definierbar und schreibt den aktuellen VU-Snapshot fort."""
+
+    result = apply_vu_free_linear_rule(
+        insurer,
+        parameters,
+        period=period,
+        interest_rate=interest_rate,
+        change_shock=change_shock,
+    )
+    insurer.premiums_current_sector = result.premiums_current_sector
+    insurer.advertising_current_sector = result.advertising_current_sector
+    insurer.premiums_current = result.premiums_current_sector[0]
+    insurer.advertising_current = result.advertising_current_sector[0]
+    insurer.reserves_current = result.reserves_current
+    return result
+
+
+def apply_vu_free_linear_rule_snapshots(
+    insurers: list[Insurer],
+    snapshots: list[VUFreeLinearRuleSnapshot],
+    *,
+    period: int,
+) -> list[VUFreeLinearRuleApplication]:
+    """Wendet explizite Vrvu10-Snapshots deterministisch auf passende Versicherer an."""
+
+    insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
+    applications: list[VUFreeLinearRuleApplication] = []
+    seen_insurer_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.insurer_id in seen_insurer_ids:
+            raise ValueError(f"duplicate VU free-linear rule snapshot for insurer: {snapshot.insurer_id}")
+        seen_insurer_ids.add(snapshot.insurer_id)
+        insurer = insurers_by_id.get(snapshot.insurer_id)
+        if insurer is None:
+            raise ValueError(f"VU free-linear rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        result = apply_vu_free_linear_rule_to_insurer(
+            insurer,
+            snapshot.parameters,
+            period=period,
+            interest_rate=snapshot.interest_rate,
+            change_shock=snapshot.change_shock,
+        )
+        applications.append(VUFreeLinearRuleApplication(insurer_id=snapshot.insurer_id, result=result))
     return applications
