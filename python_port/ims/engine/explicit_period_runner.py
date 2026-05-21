@@ -78,6 +78,8 @@ class ExplicitMultiPeriodRunResult:
     """Ergebnis eines deterministischen expliziten VU/VN-Mehrperiodenlaufs."""
 
     processed_periods: list[int]
+    processed_local_periods: list[int]
+    processed_global_periods: list[int]
     period_results: list[ExplicitPeriodRunResult]
     written_files: list[Path]
     total_vu_rule_applications: int
@@ -296,7 +298,7 @@ def run_explicit_multi_period_from_mappings(
         raise ValueError("explicit VU/VN multi-period run requires a list of period scenarios")
 
     loaded_scenarios = [load_scenario_from_mapping(period_scenario) for period_scenario in period_scenarios]
-    processed_periods = _validate_strictly_increasing_periods(
+    processed_global_periods = _validate_strictly_increasing_periods(
         [compute_global_period(loaded.context) for loaded in loaded_scenarios]
     )
     output_path = Path(output_dir) if output_dir is not None else None
@@ -345,7 +347,9 @@ def run_explicit_multi_period_from_mappings(
     )
 
     return ExplicitMultiPeriodRunResult(
-        processed_periods=processed_periods,
+        processed_periods=processed_global_periods,
+        processed_local_periods=[loaded.context.period for loaded in loaded_scenarios],
+        processed_global_periods=processed_global_periods,
         period_results=period_results,
         written_files=_deduplicate_paths(written_files),
         total_vu_rule_applications=sum(_vu_rule_application_count(result.vu_result) for result in period_results),

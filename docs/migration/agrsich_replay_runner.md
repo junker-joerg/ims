@@ -22,6 +22,9 @@ Fixture das streng als JSON-Boolean validierte Feld
 `carry_forward_insurer_state`. Bei aktivem Carryover muessen die Replay-
 Perioden strikt steigen; doppelte oder rueckwaerts angeordnete Perioden werden
 vor dem ersten VU-Schritt und vor jeder Dateiausgabe abgelehnt.
+Der Runner berichtet die lokale und globale Periodenfolge getrennt:
+`processed_local_periods` enthaelt die lokalen `context.period`-Werte,
+`processed_global_periods` die Export- und Validierungsachse.
 
 ## Anschluss an die bestehende Legacy-Validierung
 
@@ -35,6 +38,8 @@ End-to-End-Pfad aus geladenem Domaenenzustand:
 - Exporttabellen mit vorhandenem Exportpfad schreiben
 - geschriebenes Fenster gegen Legacy-Dateien vergleichen
 - optional mehrere geschriebene Exporttabellen gegen Legacy-Ziele vergleichen
+- lokale und globale Periodendiagnosen fuer mehrlaeufige Replay-Fixtures
+  bereitstellen
 
 Die neuen Fixtures `replay_vu14_window.json` und `replay_vusk1_window.json` sind bewusst
 explizite Validierungszustande. Sie reproduzieren kleine zusammenhaengende Fenster aus

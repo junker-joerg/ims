@@ -21,9 +21,9 @@ def _damage_parameters() -> dict:
     }
 
 
-def _period_scenario(period: int, *, policyholder_id: int = 21) -> dict:
+def _period_scenario(period: int, *, policyholder_id: int = 21, run_index: int = 0) -> dict:
     return {
-        "context": {"period": period, "max_periods": 12, "run_index": 0},
+        "context": {"period": period, "max_periods": 12, "run_index": run_index},
         "bav": {"entity_id": 1, "name": "BAV"},
         "insurers": [
             {
@@ -79,6 +79,8 @@ def test_vn_agrsich_replay_runs_periods_and_writes_mutated_exports(tmp_path: Pat
     assert isinstance(result, VNAgrsichReplayRunResult)
     assert isinstance(result.period_results[0], VNAgrsichReplayPeriodResult)
     assert result.processed_periods == [1, 2]
+    assert result.processed_local_periods == [1, 2]
+    assert result.processed_global_periods == [1, 2]
     assert result.total_damage_settlement_applications == 2
     assert result.total_settlement_applications == 2
     assert result.carryovers == []
@@ -151,6 +153,24 @@ def test_vn_agrsich_replay_can_carry_state_into_followup_export(tmp_path: Path) 
     ]
 
 
+def test_vn_agrsich_replay_reports_local_and_global_periods_across_runs(tmp_path: Path) -> None:
+    result = run_vn_agrsich_replay_from_mappings(
+        [_period_scenario(1, run_index=0), _period_scenario(1, run_index=1)],
+        tmp_path,
+        carry_forward_vn_state=True,
+    )
+
+    assert result.processed_periods == [1, 13]
+    assert result.processed_local_periods == [1, 1]
+    assert result.processed_global_periods == [1, 13]
+    assert [period_result.period for period_result in result.period_results] == [1, 1]
+    assert [period_result.global_period for period_result in result.period_results] == [1, 13]
+    assert result.carryovers[0].from_period == 1
+    assert result.carryovers[0].to_period == 1
+    assert result.carryovers[0].from_global_period == 1
+    assert result.carryovers[0].to_global_period == 13
+
+
 def test_vn_agrsich_replay_loads_fixture(tmp_path: Path) -> None:
     fixture_path = tmp_path / "vn_agrsich_periods.json"
     fixture_path.write_text(
@@ -161,6 +181,8 @@ def test_vn_agrsich_replay_loads_fixture(tmp_path: Path) -> None:
     result = run_vn_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
 
     assert result.processed_periods == [1, 2]
+    assert result.processed_local_periods == [1, 2]
+    assert result.processed_global_periods == [1, 2]
     assert (tmp_path / "out" / "imsvu011.dat").exists()
 
 

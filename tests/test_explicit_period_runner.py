@@ -133,6 +133,8 @@ def test_explicit_multi_period_counts_vu_and_vn_applications(tmp_path: Path) -> 
 
     assert isinstance(result, ExplicitMultiPeriodRunResult)
     assert result.processed_periods == [2, 3]
+    assert result.processed_local_periods == [2, 3]
+    assert result.processed_global_periods == [2, 3]
     assert result.total_vu_rule_applications == 2
     assert result.total_vn_settlement_applications == 2
     assert result.total_vn_damage_settlement_applications == 2
@@ -164,6 +166,8 @@ def test_explicit_multi_period_carryover_reports_global_periods() -> None:
     )
 
     assert result.processed_periods == [2, 14]
+    assert result.processed_local_periods == [2, 2]
+    assert result.processed_global_periods == [2, 14]
     assert len(result.carryovers) == 1
     carryover = result.carryovers[0]
     assert carryover.from_period == 2

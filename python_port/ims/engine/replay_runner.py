@@ -74,6 +74,8 @@ class ReplayPeriodResult:
 @dataclass(slots=True)
 class ReplayRunResult:
     processed_periods: list[int]
+    processed_local_periods: list[int]
+    processed_global_periods: list[int]
     written_files: list[Path]
     period_results: list[ReplayPeriodResult]
     vu_period_results: list[VUForeignInfoPeriodRunResult]
@@ -324,6 +326,8 @@ def run_agrsich_replay_from_mapping(
 
     return ReplayRunResult(
         processed_periods=[snapshot.global_period for snapshot in snapshots],
+        processed_local_periods=[snapshot.scenario.context.period for snapshot in snapshots],
+        processed_global_periods=[snapshot.global_period for snapshot in snapshots],
         written_files=_deduplicate_paths(all_written_files),
         period_results=period_results,
         vu_period_results=vu_period_results,

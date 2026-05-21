@@ -38,9 +38,14 @@ def _vu_rule_parameters() -> dict[str, list[float]]:
     }
 
 
-def _vu_rule_snapshot(period: int) -> dict:
+def _vu_rule_snapshot(period: int, *, max_periods: int = 0, run_index: int = 0) -> dict:
     return {
-        "context": {"period": period, "logtime": period + 10, "max_periods": 0, "run_index": 0},
+        "context": {
+            "period": period,
+            "logtime": period + 10,
+            "max_periods": max_periods,
+            "run_index": run_index,
+        },
         "bav": {"entity_id": 1, "name": "BAV"},
         "insurers": [
             {
@@ -91,6 +96,8 @@ def test_replay_runner_appends_vu14_window_and_matches_legacy(tmp_path: Path) ->
 
     assert isinstance(result, ReplayRunResult)
     assert result.processed_periods == [1, 2, 3, 4]
+    assert result.processed_local_periods == [1, 2, 3, 4]
+    assert result.processed_global_periods == [1, 2, 3, 4]
     assert export_path in result.written_files
     assert lines[0].startswith("#t Pr1")
     assert sum(1 for line in lines if line.startswith("#t ")) == 1
@@ -111,6 +118,8 @@ def test_replay_runner_appends_vusk1_window_and_matches_legacy(tmp_path: Path) -
     lines = _non_empty_lines(export_path)
 
     assert result.processed_periods == [101, 102, 103, 104]
+    assert result.processed_local_periods == [1, 2, 3, 4]
+    assert result.processed_global_periods == [101, 102, 103, 104]
     assert export_path in result.written_files
     assert sum(1 for line in lines if line.startswith("#t ")) == 1
     assert [int(line.split()[0]) for line in lines[1:]] == [101, 102, 103, 104]
@@ -287,6 +296,29 @@ def test_replay_runner_can_carry_vu_state_into_followup_export(tmp_path: Path) -
         "4",
         "600.0",
     ]
+
+
+def test_replay_runner_reports_local_and_global_periods_across_runs(tmp_path: Path) -> None:
+    result = run_agrsich_replay_from_mapping(
+        {
+            "snapshots": [
+                _vu_rule_snapshot(2, max_periods=12, run_index=0),
+                _vu_rule_snapshot(2, max_periods=12, run_index=1),
+            ]
+        },
+        tmp_path,
+        carry_forward_insurer_state=True,
+    )
+
+    assert result.processed_periods == [2, 14]
+    assert result.processed_local_periods == [2, 2]
+    assert result.processed_global_periods == [2, 14]
+    assert [period_result.period for period_result in result.period_results] == [2, 2]
+    assert [period_result.global_period for period_result in result.period_results] == [2, 14]
+    assert result.carryovers[0].from_period == 2
+    assert result.carryovers[0].to_period == 2
+    assert result.carryovers[0].from_global_period == 2
+    assert result.carryovers[0].to_global_period == 14
 
 
 def test_replay_runner_fixture_supports_vu_carryover(tmp_path: Path) -> None:
