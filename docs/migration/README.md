@@ -37,6 +37,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `explicit_vu_vn_period_runner.md`: gemeinsame explizite Periodenstrecke fuer VU-Regeln und VN-Schaden-/Abrechnung
 - `explicit_period_legacy_targets.md`: optionale Legacy-Ziele fuer gemeinsame explizite VU/VN-Periodenlaeufe
 - `explicit_vu_vn_period_plan.md`: deterministischer Periodenplan fuer gemeinsame explizite VU/VN-Laeufe
+- `explicit_period_plan_legacy_targets.md`: Legacy-Ziele im deterministischen expliziten VU/VN-Periodenplan
 - `period_plan_input_validation.md`: kontrollierte Validierung von Entity-Update-Listen in Periodenplaenen
 - `vu_free_linear_rule.md`: Vrvu10-Slice fuer frei definierbare lineare VU-Fortschreibung
 - `vn_damage_core.md`: gemeinsamer VN-Schadenerzeugungskern aus Vrvn01 bis Vrvn03
