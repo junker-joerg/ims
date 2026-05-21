@@ -55,6 +55,7 @@ def test_core_placeholders_import() -> None:
         VUForeignInfoCarryover,
         VUForeignInfoMultiPeriodRunResult,
         VUForeignInfoPeriodRunResult,
+        apply_vu_foreign_info_carryover,
         run_loaded_vu_foreign_info_period,
         run_vu_foreign_info_multi_period_from_fixture,
         run_vu_foreign_info_multi_period_from_mappings,
@@ -475,6 +476,7 @@ def test_core_placeholders_import() -> None:
     assert VUForeignInfoCarryover is not None
     assert VUForeignInfoMultiPeriodRunResult is not None
     assert VUForeignInfoPeriodRunResult is not None
+    assert apply_vu_foreign_info_carryover is not None
     assert VNAgrsichLegacyTarget is not None
     assert VNAgrsichReplayPeriodResult is not None
     assert VNAgrsichReplayRunResult is not None

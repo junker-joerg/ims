@@ -3,6 +3,12 @@ import json
 from pathlib import Path
 
 from ims.io.scenario_loader import LoadedScenario, load_scenario_from_mapping
+from ims.engine.vu_rule_runner import (
+    VUForeignInfoCarryover,
+    VUForeignInfoPeriodRunResult,
+    apply_vu_foreign_info_carryover,
+    run_loaded_vu_foreign_info_period,
+)
 from ims.model.agrsich_export import ExportTable, build_agrsich_export_tables, compute_global_period
 from ims.model.agrsich_service import collect_extended_agrsich_records
 from ims.model.agrsich_writer import write_agrsich_export_tables
@@ -46,6 +52,8 @@ class ReplayRunResult:
     processed_periods: list[int]
     written_files: list[Path]
     period_results: list[ReplayPeriodResult]
+    vu_period_results: list[VUForeignInfoPeriodRunResult]
+    carryovers: list[VUForeignInfoCarryover]
     legacy_comparison: LegacyWindowComparison | None
     validation_report: LegacyValidationReport | None
 
@@ -100,6 +108,13 @@ def _tables_for_snapshot(snapshot: ReplaySnapshot) -> list[ExportTable]:
     return build_agrsich_export_tables(scenario.context, agrsich_result)
 
 
+def _carry_forward_insurer_state_from_fixture_payload(payload: dict) -> bool:
+    value = payload.get("carry_forward_insurer_state", False)
+    if not isinstance(value, bool):
+        raise ValueError("replay fixture field carry_forward_insurer_state must be a boolean")
+    return value
+
+
 def _deduplicate_paths(paths: list[Path]) -> list[Path]:
     seen: set[Path] = set()
     result: list[Path] = []
@@ -117,17 +132,27 @@ def run_agrsich_replay_from_mapping(
     output_dir: str | Path,
     *,
     fixture_base_path: str | Path = ".",
+    carry_forward_insurer_state: bool = False,
 ) -> ReplayRunResult:
     if not isinstance(data, dict):
         raise ValueError("replay fixture must be a JSON object")
 
     snapshots = _load_snapshots(data)
     target = _load_target(data, Path(fixture_base_path).resolve())
+    fixture_carry_forward_insurer_state = _carry_forward_insurer_state_from_fixture_payload(data)
 
     output_path = Path(output_dir)
     all_written_files: list[Path] = []
     period_results: list[ReplayPeriodResult] = []
+    vu_period_results: list[VUForeignInfoPeriodRunResult] = []
+    carryovers: list[VUForeignInfoCarryover] = []
     for snapshot in snapshots:
+        if (carry_forward_insurer_state or fixture_carry_forward_insurer_state) and vu_period_results:
+            carryover = apply_vu_foreign_info_carryover(vu_period_results[-1], snapshot.scenario)
+            if carryover is not None:
+                carryovers.append(carryover)
+        vu_period_result = run_loaded_vu_foreign_info_period(snapshot.scenario)
+        vu_period_results.append(vu_period_result)
         tables = _tables_for_snapshot(snapshot)
         written_files = write_agrsich_export_tables(output_path, tables, append=True)
         all_written_files.extend(written_files)
@@ -156,12 +181,19 @@ def run_agrsich_replay_from_mapping(
         processed_periods=[snapshot.global_period for snapshot in snapshots],
         written_files=_deduplicate_paths(all_written_files),
         period_results=period_results,
+        vu_period_results=vu_period_results,
+        carryovers=carryovers,
         legacy_comparison=legacy_comparison,
         validation_report=validation_report,
     )
 
 
-def run_agrsich_replay_from_fixture(path: str | Path, output_dir: str | Path) -> ReplayRunResult:
+def run_agrsich_replay_from_fixture(
+    path: str | Path,
+    output_dir: str | Path,
+    *,
+    carry_forward_insurer_state: bool = False,
+) -> ReplayRunResult:
     fixture_path = Path(path).resolve()
     with fixture_path.open("r", encoding="utf-8") as handle:
         data = json.load(handle)
@@ -170,4 +202,5 @@ def run_agrsich_replay_from_fixture(path: str | Path, output_dir: str | Path) ->
         data,
         output_dir,
         fixture_base_path=fixture_path.parent,
+        carry_forward_insurer_state=carry_forward_insurer_state,
     )

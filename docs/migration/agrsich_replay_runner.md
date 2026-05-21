@@ -9,6 +9,14 @@ fuehrt die vorhandene BAV-/Agrsich-Record-Erzeugung sowie den bestehenden Export
 Der Runner schreibt dadurch ueber mehrere Perioden dieselben Exportdateien fort und kann ein
 kleines Fenster gegen vorhandene echte Legacy-Versichererdateien vergleichen.
 
+Vor der Exportbildung fuehrt der Runner je Snapshot den bereits portierten
+VU-Periodenschritt aus. Dadurch werden explizite VU-Regel-Snapshots aus dem
+Fixture in den Agrsich-Exportzustand uebernommen, ohne eine automatische
+historische Regelauswahl zu behaupten. Optional kann
+`carry_forward_insurer_state=True` gesetzt werden; alternativ akzeptiert das
+Fixture das streng als JSON-Boolean validierte Feld
+`carry_forward_insurer_state`.
+
 ## Anschluss an die bestehende Legacy-Validierung
 
 Die bisherigen Legacy-Vergleiche pruefen einzelne echte Referenzzeilen und kleine tabellenweite
@@ -16,6 +24,7 @@ Vergleiche. Der Replay-Runner verbindet diesen Referenzpfad nun mit einem reprod
 End-to-End-Pfad aus geladenem Domaenenzustand:
 
 - Snapshot laden
+- expliziten VU-Periodenschritt anwenden
 - Agrsich-Records mit vorhandener Modelllogik erzeugen
 - Exporttabellen mit vorhandenem Exportpfad schreiben
 - geschriebenes Fenster gegen Legacy-Dateien vergleichen
@@ -34,6 +43,7 @@ des Modells.
 Bewusst nicht enthalten sind:
 
 - automatische Herleitung der Periodenzustande aus echter Regellogik
+- automatische historische Auswahl von VU-Regeln
 - lange historische Vollsimulationen
 - neue fachliche Agrsich-Semantik
 - UI oder ein konkurrierender Exportpfad
