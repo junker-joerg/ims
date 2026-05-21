@@ -4,6 +4,7 @@ from pathlib import Path
 
 from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
 from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
+from ims.model.agrsich_export import compute_global_period
 from ims.model.bav_service import BAVForeignInfoResult, compute_extended_foreign_info
 from ims.model.entities import BAV, Insurer, Policyholder
 from ims.model.vu_rules import (
@@ -31,6 +32,7 @@ class VUForeignInfoPeriodRunResult:
     """Ergebnis eines kleinen deterministischen VU-Frmdinf-Periodenschritts."""
 
     context_period: int
+    context_global_period: int
     context_logtime: int
     bav: BAV
     insurers: list[Insurer]
@@ -53,6 +55,8 @@ class VUForeignInfoCarryover:
 
     from_period: int
     to_period: int
+    from_global_period: int
+    to_global_period: int
     insurer_ids: list[int]
 
 
@@ -131,6 +135,7 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
     )
     return VUForeignInfoPeriodRunResult(
         context_period=loaded.context.period,
+        context_global_period=compute_global_period(loaded.context),
         context_logtime=loaded.context.logtime,
         bav=loaded.bav,
         insurers=loaded.insurers,
@@ -252,6 +257,8 @@ def apply_vu_foreign_info_carryover(
     return VUForeignInfoCarryover(
         from_period=previous_result.context_period,
         to_period=loaded.context.period,
+        from_global_period=previous_result.context_global_period,
+        to_global_period=compute_global_period(loaded.context),
         insurer_ids=carried_ids,
     )
 
@@ -277,8 +284,8 @@ def run_vu_foreign_info_multi_period_from_mappings(
         raise ValueError("VU foreign-info multi-period run requires a list of period scenarios")
 
     loaded_scenarios = [load_scenario_from_mapping(period_scenario) for period_scenario in period_scenarios]
-    processed_periods = _validate_strictly_increasing_periods(
-        [loaded.context.period for loaded in loaded_scenarios]
+    _validate_strictly_increasing_periods(
+        [compute_global_period(loaded.context) for loaded in loaded_scenarios]
     )
 
     period_results: list[VUForeignInfoPeriodRunResult] = []
@@ -292,7 +299,7 @@ def run_vu_foreign_info_multi_period_from_mappings(
 
     return VUForeignInfoMultiPeriodRunResult(
         period_results=period_results,
-        processed_periods=processed_periods,
+        processed_periods=[loaded.context.period for loaded in loaded_scenarios],
         total_rule_applications=sum(
             len(result.rule_applications)
             + len(result.random_uniform_applications)

@@ -50,6 +50,10 @@ Der Runner nutzt:
 
 Der Mehrperiodenpfad verarbeitet eine Liste expliziter Periodenszenarien oder ein Fixture mit dem Feld `periods`. Die Periodennummern muessen eindeutig und streng steigend sein. Das ist eine Reproduzierbarkeitspruefung, keine historische Ablaufherleitung.
 
+Die Reihenfolge wird ueber die globale Periodennummer validiert und im Periodenergebnis berichtet:
+`run_index * max_periods + period`, sofern `max_periods > 0` gesetzt ist.
+Die lokale `context.period` bleibt im einzelnen Periodenergebnis und in `processed_periods` erhalten.
+
 Optional kann `carry_forward_insurer_state=True` gesetzt werden. Dann schreibt der Runner fuer Versicherer, die in zwei aufeinanderfolgenden Periodenszenarien dieselbe `entity_id` haben, die berechneten aktuellen VU-Werte der Vorperiode kontrolliert in die Vorperioden- und Startwerte der naechsten Periode:
 
 - Praemienvektor
@@ -100,7 +104,7 @@ Die Tests pruefen:
 - Szenarioausfuehrung funktioniert aus Mapping und Fixture-Datei
 - Mehrperioden-Fixtures funktionieren als Liste und als Objekt mit `periods`
 - Objekt-Fixtures koennen Carryover ueber ein strikt validiertes Boolean-Feld aktivieren
-- doppelte oder unsortierte Perioden werden abgelehnt
+- doppelte oder unsortierte globale Perioden werden abgelehnt
 - die Periodenfolge wird vor Regelanwendung und Carryover validiert
 - VU-Snapshot-Zielkonflikte werden vor der BAV-Frmdinf-Berechnung validiert
 - optionaler Carryover schreibt passende Versichererwerte in die Folgeperiode
