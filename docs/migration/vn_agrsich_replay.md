@@ -41,12 +41,18 @@ Der Ablauf pro Periode ist:
 - Die bestehenden Szenario- und VN-Snapshot-Validierungen bleiben vorgeschaltet.
 - Tests pruefen, dass exportierte VU-/VN-Zeilen aus dem nach Regelanwendung
   veraenderten Zustand stammen.
+- Optional kann `carry_forward_vn_state=True` gesetzt werden. Dann wird derselbe
+  kontrollierte VN-State-Carryover wie im expliziten VN-Mehrperiodenrunner vor
+  dem Folgeperiodenlauf angewendet und als `VNAgrsichReplayRunResult.carryovers`
+  diagnostiziert.
+- Das Fixture-Feld `carry_forward_vn_state` muss ein JSON-Boolean sein.
 - Optional angegebene Legacy-Ziele werden gegen die ueber alle Perioden
   zusammengefuehrten Exporttabellen verglichen.
 
 ## Annahmen und Grenzen
 
-- Keine automatische Zustandsfortschreibung zwischen Perioden.
+- Keine automatische Zustandsfortschreibung zwischen Perioden ohne explizites
+  Carryover-Opt-in.
 - Keine Portierung der historischen Versichererwahl, Praeferenzbildung oder
   Pflichtversicherungslogik.
 - Keine versteckte RNG-Nutzung.

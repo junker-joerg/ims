@@ -225,10 +225,12 @@ def _carry_policyholder_state(previous: Policyholder, current: Policyholder) -> 
     current.end_wealth_current = float(previous.end_wealth_current)
 
 
-def _apply_vn_state_carryover(
+def apply_vn_state_carryover(
     previous_result: VNSettlementPeriodRunResult,
     loaded: LoadedScenario,
 ) -> VNStateCarryover | None:
+    """Schreibt mutierte VN-/VU-Aktuellwerte in ein geladenes Folgeperiodenszenario."""
+
     previous_insurers = {insurer.entity_id: insurer for insurer in previous_result.insurers}
     previous_policyholders = {
         policyholder.entity_id: policyholder
@@ -279,7 +281,7 @@ def run_vn_settlement_multi_period_from_mappings(
     carryovers: list[VNStateCarryover] = []
     for loaded in loaded_scenarios:
         if carry_forward_vn_state and period_results:
-            carryover = _apply_vn_state_carryover(period_results[-1], loaded)
+            carryover = apply_vn_state_carryover(period_results[-1], loaded)
             if carryover is not None:
                 carryovers.append(carryover)
         period_results.append(run_loaded_vn_settlement_period(loaded))
