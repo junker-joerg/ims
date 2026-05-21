@@ -28,6 +28,10 @@ Wichtige Typen und Funktionen:
 - `run_vn_agrsich_replay_from_mappings`
 - `run_vn_agrsich_replay_from_fixture`
 
+Das Laufergebnis trennt lokale und globale Periodendiagnosen:
+`processed_local_periods` enthaelt die lokalen `context.period`-Werte,
+`processed_global_periods` enthaelt die validierte globale Zeitachse.
+
 Der Ablauf pro Periode ist:
 
 1. Szenario laden und validieren.
@@ -38,6 +42,8 @@ Der Ablauf pro Periode ist:
 ## Validierungen
 
 - Die globalen Perioden muessen nichtleer, eindeutig und streng steigend sein.
+- Lokale Perioden duerfen in unterschiedlichen Runs erneut auftreten, solange
+  die globale Periodenfolge eindeutig und steigend bleibt.
 - Die bestehenden Szenario- und VN-Snapshot-Validierungen bleiben vorgeschaltet.
 - Tests pruefen, dass exportierte VU-/VN-Zeilen aus dem nach Regelanwendung
   veraenderten Zustand stammen.

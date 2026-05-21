@@ -24,6 +24,9 @@ historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
   an.
 - `run_explicit_multi_period_from_mappings` fuehrt mehrere explizite Perioden mit
   strikt steigender Periodenfolge aus.
+- Das Mehrperiodenergebnis weist die lokale und globale Periodenfolge getrennt
+  aus: `processed_local_periods` enthaelt `context.period`,
+  `processed_global_periods` enthaelt die validierte globale Zeitachse.
 - Optionale Flags `carry_forward_vu_state` und `carry_forward_vn_state` aktivieren
   die bereits vorhandenen kontrollierten Carryover-Bausteine.
 - `ExplicitPeriodCarryover` weist lokale und globale Quell-/Zielperioden aus,

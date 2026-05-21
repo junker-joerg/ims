@@ -59,6 +59,8 @@ class VNAgrsichReplayRunResult:
     """Ergebnis eines deterministischen VN-Agrsich-Replay-Laufs."""
 
     processed_periods: list[int]
+    processed_local_periods: list[int]
+    processed_global_periods: list[int]
     period_results: list[VNAgrsichReplayPeriodResult]
     written_files: list[Path]
     total_settlement_applications: int
@@ -212,7 +214,7 @@ def run_vn_agrsich_replay_from_mappings(
         raise ValueError("VN Agrsich replay requires a list of period scenarios")
 
     loaded_scenarios = [load_scenario_from_mapping(period_scenario) for period_scenario in period_scenarios]
-    processed_periods = _validate_strictly_increasing_periods(
+    processed_global_periods = _validate_strictly_increasing_periods(
         [compute_global_period(loaded.context) for loaded in loaded_scenarios]
     )
 
@@ -258,7 +260,9 @@ def run_vn_agrsich_replay_from_mappings(
     )
 
     return VNAgrsichReplayRunResult(
-        processed_periods=processed_periods,
+        processed_periods=processed_global_periods,
+        processed_local_periods=[loaded.context.period for loaded in loaded_scenarios],
+        processed_global_periods=processed_global_periods,
         period_results=period_results,
         written_files=_deduplicate_paths(all_written_files),
         total_settlement_applications=sum(
