@@ -240,6 +240,21 @@ def _validate_vn_damage_settlement_snapshot_references(
         raise ScenarioValidationError(f"VN damage settlement snapshots reference unknown insurers: {values}")
 
 
+def _validate_disjoint_vn_snapshot_targets(
+    damage_settlement_snapshots: list[VNDamageSettlementSnapshot],
+    settlement_snapshots: list[VNSettlementSnapshot],
+) -> None:
+    damage_targets = {snapshot.policyholder_id for snapshot in damage_settlement_snapshots}
+    settlement_targets = {snapshot.policyholder_id for snapshot in settlement_snapshots}
+    conflicts = sorted(damage_targets & settlement_targets)
+    if conflicts:
+        values = ", ".join(str(policyholder_id) for policyholder_id in conflicts)
+        raise ScenarioValidationError(
+            "VN damage settlement snapshots and VN settlement snapshots "
+            f"must target disjoint policyholders: {values}"
+        )
+
+
 def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     if not isinstance(data, dict):
         raise ScenarioValidationError("scenario must be a JSON object")
@@ -273,6 +288,7 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     )
     vn_settlement_snapshots = load_vn_settlement_snapshots_from_mapping(data.get("vn_settlement_snapshots"))
     _validate_vn_settlement_snapshot_references(insurer_items, policyholder_items, vn_settlement_snapshots)
+    _validate_disjoint_vn_snapshot_targets(vn_damage_settlement_snapshots, vn_settlement_snapshots)
 
     context = SimulationContext(
         period=int(context_data.get("period", 0)),

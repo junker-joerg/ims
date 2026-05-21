@@ -38,7 +38,8 @@ Periodenszenarien enthalten oder ein Objekt mit dem Feld `periods`.
 - Periodennummern muessen eindeutig und streng steigend sein.
 - Innerhalb einer Periode darf ein VN nicht gleichzeitig ueber
   `vn_damage_settlement_snapshots` und `vn_settlement_snapshots` adressiert
-  werden.
+  werden. Diese Regel gilt schon beim Laden eines Szenarios und nochmals beim
+  direkten Runner-Aufruf mit bereits konstruierten Snapshots.
 - Doppelte VN-Ziele innerhalb einer Snapshot-Liste werden vor Regelanwendung
   abgelehnt.
 

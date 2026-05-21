@@ -37,6 +37,7 @@ Szenario-Loader prueft dabei frueh:
 - unbekannte VN-Ziele
 - unbekannte VU-Referenzen in versicherten Entscheidungen
 - doppelte VN-Ziele innerhalb der expliziten Schaden-Abrechnungs-Snapshots
+- Ueberlappungen mit direkten `vn_settlement_snapshots`
 
 ## Normalisierung
 
@@ -51,7 +52,6 @@ Abrechnungskern zu einem `IndexError`.
 - Versichererwahl, Praeferenzbildung und Pflichtversicherung bleiben
   ausserhalb dieses Slices.
 - Explizite Settlement-Snapshots und explizite Schaden-Abrechnungs-Snapshots
-  koennen im selben Periodenlauf genutzt werden; eine fachliche
-  Doppelbelegung desselben VN ueber beide Listen wird noch nicht als
-  historische Regel interpretiert.
+  koennen im selben Periodenlauf genutzt werden, muessen aber disjunkte VN
+  adressieren.
 - Keine Vollsimulation und keine Behauptung historischer Vollgleichheit.
