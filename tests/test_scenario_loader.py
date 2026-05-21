@@ -596,6 +596,49 @@ def test_scenario_loader_rejects_unknown_vn_damage_settlement_references() -> No
             }
         )
 
+
+def test_scenario_loader_rejects_overlapping_vn_snapshot_targets() -> None:
+    with pytest.raises(ScenarioValidationError, match="must target disjoint policyholders: 20"):
+        load_scenario_from_mapping(
+            {
+                "context": {"period": 2, "max_periods": 3},
+                "bav": {"entity_id": 1, "name": "BAV"},
+                "insurers": [{"entity_id": 10, "name": "VU"}],
+                "policyholders": [{"entity_id": 20, "name": "VN"}],
+                "vn_damage_settlement_snapshots": [
+                    {
+                        "policyholder_id": 20,
+                        "previous_wealth": 100.0,
+                        "damage_thresholds": [0.7, 0.4],
+                        "parameters": {
+                            "damage_intercept_normal": [1.0, 2.0],
+                            "damage_factor_normal": [3.0, 4.0],
+                            "damage_intercept_shock": [5.0, 6.0],
+                            "damage_factor_shock": [7.0, 8.0],
+                        },
+                        "draws": {
+                            "trigger_draws": [0.1, 0.2],
+                            "amount_draws": [0.3, 0.4],
+                        },
+                        "insurance_decisions": [
+                            {"sector_index": 0, "insured": True, "insurer_id": 10},
+                            {"sector_index": 1, "insured": False},
+                        ],
+                    }
+                ],
+                "vn_settlement_snapshots": [
+                    {
+                        "policyholder_id": 20,
+                        "previous_wealth": 100.0,
+                        "decisions": [
+                            {"sector_index": 0, "insured": False, "damage": 1.0},
+                            {"sector_index": 1, "insured": False, "damage": 2.0},
+                        ],
+                    }
+                ],
+            }
+        )
+
     with pytest.raises(ScenarioValidationError, match="unknown policyholders: 21"):
         load_scenario_from_mapping(
             {

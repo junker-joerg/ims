@@ -40,4 +40,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_damage_settlement_link.md`: explizite Kopplung von VN-Schadenerzeugung und VN-Abrechnung
 - `vn_explicit_damage_period.md`: expliziter Periodenpfad fuer VN-Schaden plus VN-Abrechnung
 - `vn_multi_period_runner.md`: deterministischer Mehrperiodenrunner fuer explizite VN-Szenarien
+- `vn_snapshot_target_integrity.md`: Integritaetsvalidierung fuer disjunkte VN-Snapshot-Ziele
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
