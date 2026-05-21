@@ -770,6 +770,59 @@ def test_vu_rule_multi_period_runner_fixture_supports_carryover(tmp_path: Path) 
     assert result.period_results[1].foreign_info.insurer.dp == [51.0, 52.0]
 
 
+def test_vu_rule_multi_period_runner_object_fixture_supports_carryover_flag(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_multi_period_carry_object.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_insurer_state": True,
+                "periods": [_scenario_for_period(2), _scenario_for_period(3)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vu_foreign_info_multi_period_from_fixture(fixture_path)
+
+    assert result.carryovers[0].insurer_ids == [10]
+    assert result.period_results[1].foreign_info.insurer.dp == [51.0, 52.0]
+
+
+def test_vu_rule_multi_period_runner_fixture_rejects_non_boolean_carryover_flag(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_multi_period_bad_carry.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_insurer_state": "false",
+                "periods": [_scenario_for_period(2), _scenario_for_period(3)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="carry_forward_insurer_state must be a boolean"):
+        run_vu_foreign_info_multi_period_from_fixture(fixture_path)
+
+
+def test_vu_rule_multi_period_runner_fixture_validates_bad_flag_before_override(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_multi_period_bad_carry_override.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_insurer_state": "false",
+                "periods": [_scenario_for_period(2), _scenario_for_period(3)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="carry_forward_insurer_state must be a boolean"):
+        run_vu_foreign_info_multi_period_from_fixture(
+            fixture_path,
+            carry_forward_insurer_state=True,
+        )
+
+
 def test_vu_rule_multi_period_runner_rejects_duplicate_periods() -> None:
     with pytest.raises(ValueError, match="duplicate periods"):
         run_vu_foreign_info_multi_period_from_mappings(
