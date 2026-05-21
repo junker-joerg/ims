@@ -19,6 +19,10 @@ Regellogik. Er nutzt weiterhin:
 
 Es wird keine neue Versicherungslogik eingefuehrt. Die Updates sind explizit und dienen nur
 dazu, die Snapshot-Erzeugung reproduzierbar aus einem Startzustand zu machen.
+Optional kann ein Plan `carry_forward_insurer_state` als JSON-Boolean setzen.
+Das Feld wird in das erzeugte Replay-Fixture uebernommen und aktiviert dort den
+bereits portierten, kontrollierten VU-State-Carryover vor der Folgeperiode.
+Andere Feldtypen werden frueh abgelehnt.
 
 Aktuell ist dieser Pfad fuer zwei kleine Legacy-Fenster abgesichert:
 
@@ -30,6 +34,8 @@ Aktuell ist dieser Pfad fuer zwei kleine Legacy-Fenster abgesichert:
 Dieser Schritt ist noch kein historischer Simulationslauf. Die Updates werden nicht aus
 wirtschaftlichem Verhalten, Scheduling oder portierten VU-Regeln berechnet. Er behauptet daher
 keine historische Vollgleichheit.
+Auch mit aktiviertem Carryover bleiben Periodenupdates und Regel-Snapshots
+explizite Eingaben.
 
 ## Anschluss
 

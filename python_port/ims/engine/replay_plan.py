@@ -19,6 +19,7 @@ class ReplayPeriodUpdate:
 class ReplayPlan:
     metadata: dict
     legacy_window: dict | None
+    carry_forward_insurer_state: bool
     base_snapshot: dict
     period_updates: list[ReplayPeriodUpdate]
 
@@ -59,9 +60,14 @@ def _load_plan(data: dict) -> ReplayPlan:
     if not isinstance(metadata, dict):
         raise ValueError("metadata must be an object")
 
+    carry_forward_insurer_state = data.get("carry_forward_insurer_state", False)
+    if not isinstance(carry_forward_insurer_state, bool):
+        raise ValueError("replay plan field carry_forward_insurer_state must be a boolean")
+
     return ReplayPlan(
         metadata=metadata,
         legacy_window=legacy_window,
+        carry_forward_insurer_state=carry_forward_insurer_state,
         base_snapshot=base_snapshot,
         period_updates=period_updates,
     )
@@ -100,6 +106,7 @@ def build_replay_fixture_from_period_plan(data: dict) -> dict:
 
     replay_fixture: dict = {
         "metadata": dict(plan.metadata),
+        "carry_forward_insurer_state": plan.carry_forward_insurer_state,
         "snapshots": snapshots,
     }
     if plan.legacy_window is not None:

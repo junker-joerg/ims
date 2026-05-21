@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from ims.engine.replay_plan import (
     ReplayPlan,
     ReplayPeriodUpdate,
@@ -16,12 +18,68 @@ def _non_empty_lines(path: Path) -> list[str]:
     return [line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+def _vu_rule_parameters() -> dict[str, list[float]]:
+    return {
+        "premium_intercept_normal": [1.0, 2.0],
+        "premium_factor_normal": [0.5, 0.25],
+        "advertising_intercept_normal": [3.0, 4.0],
+        "advertising_factor_normal": [0.1, 0.2],
+        "premium_intercept_shock": [10.0, 20.0],
+        "premium_factor_shock": [1.0, 2.0],
+        "advertising_intercept_shock": [30.0, 40.0],
+        "advertising_factor_shock": [3.0, 4.0],
+    }
+
+
+def _vu_rule_period_plan(*, carry_forward_insurer_state: object = True) -> dict:
+    return {
+        "metadata": {"purpose": "small rule-driven carryover plan"},
+        "carry_forward_insurer_state": carry_forward_insurer_state,
+        "base_snapshot": {
+            "context": {"period": 0, "logtime": 0, "max_periods": 0, "run_index": 0, "rng_seed": 9000},
+            "bav": {"entity_id": 1, "name": "Plan-BAV"},
+            "insurers": [
+                {
+                    "entity_id": 10,
+                    "name": "VU-10",
+                    "active": True,
+                    "active_prev": True,
+                    "rule_id": 1,
+                    "rule_class": 1,
+                    "premiums_prev_sector": [100.0, 200.0],
+                    "advertising_prev_sector": [10.0, 20.0],
+                    "reserves_prev_sector": [1000.0, 100.0],
+                    "reserves_current": [50.0, 60.0],
+                    "policyholders_current": 30.0,
+                    "policyholders_current_sector": [30.0, 80.0],
+                    "claims_count_current": [2, 4],
+                    "claims_sum_current": [250.0, 600.0],
+                }
+            ],
+            "policyholders": [],
+            "vu_foreign_info_rule_snapshots": [
+                {
+                    "insurer_id": 10,
+                    "rule_kind": "average",
+                    "interest_rate": 0.05,
+                    "parameters": _vu_rule_parameters(),
+                }
+            ],
+        },
+        "period_updates": [
+            {"context": {"period": 2, "run_index": 0, "rng_seed": 9002}, "insurers": [], "policyholders": []},
+            {"context": {"period": 3, "run_index": 0, "rng_seed": 9003}, "insurers": [], "policyholders": []},
+        ],
+    }
+
+
 def test_period_plan_builds_replay_snapshots_from_start_state() -> None:
     data = json.loads((FIXTURE_DIR / "replay_vu14_period_plan.json").read_text(encoding="utf-8"))
 
     replay_fixture = build_replay_fixture_from_period_plan(data)
 
     assert replay_fixture["legacy_window"]["start_period"] == 1
+    assert replay_fixture["carry_forward_insurer_state"] is False
     assert [snapshot["context"]["period"] for snapshot in replay_fixture["snapshots"]] == [1, 2, 3, 4]
     assert [snapshot["insurers"][0]["premiums_current"] for snapshot in replay_fixture["snapshots"]] == [
         101.0,
@@ -78,6 +136,48 @@ def test_period_plan_replay_detects_bad_update(tmp_path: Path) -> None:
     bad_rows = [row for row in result.legacy_comparison.row_comparisons if not row.matches]
     assert [row.global_period for row in bad_rows] == [2]
     assert any(field.name == "Rs1" and field.matches is False for field in bad_rows[0].field_comparisons)
+
+
+def test_period_plan_can_enable_vu_carryover_in_replay_fixture() -> None:
+    replay_fixture = build_replay_fixture_from_period_plan(_vu_rule_period_plan())
+
+    assert replay_fixture["carry_forward_insurer_state"] is True
+    assert [snapshot["context"]["period"] for snapshot in replay_fixture["snapshots"]] == [2, 3]
+
+
+def test_period_plan_replay_carries_rule_state_between_periods(tmp_path: Path) -> None:
+    plan_path = tmp_path / "vu_rule_carry_plan.json"
+    plan_path.write_text(json.dumps(_vu_rule_period_plan()), encoding="utf-8")
+
+    result = run_agrsich_replay_from_period_plan_fixture(plan_path, tmp_path / "out")
+    lines = _non_empty_lines(tmp_path / "out" / "imsvu010.dat")
+
+    assert result.processed_periods == [2, 3]
+    assert len(result.carryovers) == 1
+    assert result.carryovers[0].insurer_ids == [10]
+    assert len(result.vu_period_results[1].rule_applications) == 1
+    assert lines[2].split() == [
+        "3",
+        "26.5",
+        "3.4",
+        "55.125",
+        "30.0",
+        "2",
+        "250.0",
+        "15.0",
+        "5.6",
+        "66.15",
+        "30.0",
+        "4",
+        "600.0",
+    ]
+
+
+def test_period_plan_rejects_non_boolean_vu_carryover_flag() -> None:
+    with pytest.raises(ValueError, match="carry_forward_insurer_state must be a boolean"):
+        build_replay_fixture_from_period_plan(
+            _vu_rule_period_plan(carry_forward_insurer_state="false")
+        )
 
 
 def test_period_plan_api_import_shapes() -> None:
