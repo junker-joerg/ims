@@ -51,6 +51,15 @@ def test_core_placeholders_import() -> None:
         run_two_prioritized_bav_updates,
         run_two_scheduled_bav_updates,
     )
+    from ims.engine.explicit_period_runner import (
+        ExplicitMultiPeriodRunResult,
+        ExplicitPeriodCarryover,
+        ExplicitPeriodRunResult,
+        run_explicit_multi_period_from_fixture,
+        run_explicit_multi_period_from_mappings,
+        run_explicit_period_from_mapping,
+        run_loaded_explicit_period,
+    )
     from ims.engine.vu_rule_runner import (
         VUForeignInfoCarryover,
         VUForeignInfoMultiPeriodRunResult,
@@ -479,6 +488,13 @@ def test_core_placeholders_import() -> None:
     assert run_two_bav_update_steps is not None
     assert run_two_scheduled_bav_updates is not None
     assert run_two_prioritized_bav_updates is not None
+    assert ExplicitMultiPeriodRunResult is not None
+    assert ExplicitPeriodCarryover is not None
+    assert ExplicitPeriodRunResult is not None
+    assert run_loaded_explicit_period is not None
+    assert run_explicit_period_from_mapping is not None
+    assert run_explicit_multi_period_from_mappings is not None
+    assert run_explicit_multi_period_from_fixture is not None
     assert VUForeignInfoCarryover is not None
     assert VUForeignInfoMultiPeriodRunResult is not None
     assert VUForeignInfoPeriodRunResult is not None
