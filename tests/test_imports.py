@@ -60,6 +60,12 @@ def test_core_placeholders_import() -> None:
         run_explicit_period_from_mapping,
         run_loaded_explicit_period,
     )
+    from ims.engine.explicit_period_plan import (
+        ExplicitPeriodPlan,
+        ExplicitPeriodPlanUpdate,
+        build_explicit_period_fixture_from_plan,
+        run_explicit_multi_period_from_plan_fixture,
+    )
     from ims.engine.vu_rule_runner import (
         VUForeignInfoCarryover,
         VUForeignInfoMultiPeriodRunResult,
@@ -491,6 +497,10 @@ def test_core_placeholders_import() -> None:
     assert ExplicitMultiPeriodRunResult is not None
     assert ExplicitPeriodCarryover is not None
     assert ExplicitPeriodRunResult is not None
+    assert ExplicitPeriodPlan is not None
+    assert ExplicitPeriodPlanUpdate is not None
+    assert build_explicit_period_fixture_from_plan is not None
+    assert run_explicit_multi_period_from_plan_fixture is not None
     assert run_loaded_explicit_period is not None
     assert run_explicit_period_from_mapping is not None
     assert run_explicit_multi_period_from_mappings is not None
