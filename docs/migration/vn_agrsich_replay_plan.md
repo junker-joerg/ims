@@ -1,0 +1,36 @@
+# VN-Agrsich-Periodenplan
+
+## Ziel
+
+Der VN-Agrsich-Periodenplan macht wiederholbare VN-Replay-Laeufe aus einem
+gemeinsamen Basissnapshot plus expliziten Periodenupdates moeglich. Damit koennen
+kleine fachliche Mehrperioden-Slices fuer VN-Schaden, VN-Abrechnung und optionalen
+VN-State-Carryover ohne duplizierte Vollsnapshots beschrieben werden.
+
+## Ursprung im Altcode
+
+Der fachliche Anschluss liegt bei den VN-Periodenwirkungen aus `Vrvn01` bis
+`Vrvn03` sowie bei den historischen Agrsich-Ausgaben `IMSVNR*.DAT` und
+`IMSVU*.DAT`. Dieser Slice portiert keinen historischen Scheduler, sondern
+strukturiert explizite Python-Snapshots fuer den bereits portierten VN-Replay-Pfad.
+
+## Python-Abbildung
+
+- `VNAgrsichReplayPlan` beschreibt Metadaten, Startzustand, Carryover-Flag und
+  Periodenupdates.
+- `VNAgrsichReplayPeriodUpdate` beschreibt Periode, Laufindex, RNG-Seed,
+  Entitaetsupdates und optionale VN-Snapshotlisten.
+- `build_vn_agrsich_replay_fixture_from_period_plan` erzeugt daraus das bestehende
+  VN-Agrsich-Replay-Fixture mit `periods`.
+- `run_vn_agrsich_replay_from_period_plan_fixture` fuehrt den erzeugten
+  Periodenlauf mit dem bestehenden VN-Agrsich-Runner aus.
+
+## Annahmen und Grenzen
+
+- Alle Schadens- und Versicherungsentscheidungen liegen weiterhin explizit im Plan
+  oder im Basissnapshot vor.
+- Das `carry_forward_vn_state`-Flag muss ein Boolean sein.
+- Entitaetsupdates duerfen nur vorhandene `entity_id`-Werte des Basissnapshots
+  ueberschreiben.
+- Legacy-Zielvergleiche und Validierungsreports bleiben im bestehenden
+  VN-Agrsich-Replay-Fixture-Pfad verdrahtet.
