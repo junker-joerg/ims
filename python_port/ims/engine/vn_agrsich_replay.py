@@ -2,7 +2,12 @@ from dataclasses import dataclass, field
 import json
 from pathlib import Path
 
-from ims.engine.vn_rule_runner import VNSettlementPeriodRunResult, run_loaded_vn_settlement_period
+from ims.engine.vn_rule_runner import (
+    VNSettlementPeriodRunResult,
+    VNStateCarryover,
+    apply_vn_state_carryover,
+    run_loaded_vn_settlement_period,
+)
 from ims.io.scenario_loader import load_scenario_from_mapping
 from ims.model.agrsich_export import ExportTable, build_agrsich_export_tables, compute_global_period
 from ims.model.agrsich_service import collect_extended_agrsich_records
@@ -58,6 +63,7 @@ class VNAgrsichReplayRunResult:
     written_files: list[Path]
     total_settlement_applications: int
     total_damage_settlement_applications: int
+    carryovers: list[VNStateCarryover] = field(default_factory=list)
     legacy_comparison: MultiPeriodLegacyComparison | None = None
     legacy_report: LegacyValidationReport | None = None
     written_legacy_report_files: list[Path] = field(default_factory=list)
@@ -177,12 +183,22 @@ def _write_legacy_report_files(
     ]
 
 
+def _carry_forward_vn_state_from_fixture_payload(payload: object) -> bool:
+    if not isinstance(payload, dict) or "carry_forward_vn_state" not in payload:
+        return False
+    value = payload["carry_forward_vn_state"]
+    if not isinstance(value, bool):
+        raise ValueError("VN Agrsich replay fixture field carry_forward_vn_state must be a boolean")
+    return value
+
+
 def run_vn_agrsich_replay_from_mappings(
     period_scenarios: list[dict],
     output_dir: str | Path,
     *,
     legacy_targets: list[VNAgrsichLegacyTarget] | None = None,
     legacy_report_name: str | None = None,
+    carry_forward_vn_state: bool = False,
 ) -> VNAgrsichReplayRunResult:
     """
     Fuehrt explizite VN-Periodenszenarien aus und schreibt danach Agrsich-Exports.
@@ -202,8 +218,13 @@ def run_vn_agrsich_replay_from_mappings(
 
     output_path = Path(output_dir)
     period_results: list[VNAgrsichReplayPeriodResult] = []
+    carryovers: list[VNStateCarryover] = []
     all_written_files: list[Path] = []
     for loaded in loaded_scenarios:
+        if carry_forward_vn_state and period_results:
+            carryover = apply_vn_state_carryover(period_results[-1].settlement_result, loaded)
+            if carryover is not None:
+                carryovers.append(carryover)
         settlement_result = run_loaded_vn_settlement_period(loaded)
         agrsich_result = collect_extended_agrsich_records(
             loaded.context,
@@ -246,6 +267,7 @@ def run_vn_agrsich_replay_from_mappings(
         total_damage_settlement_applications=sum(
             result.settlement_result.total_damage_settlement_applications for result in period_results
         ),
+        carryovers=carryovers,
         legacy_comparison=legacy_comparison,
         legacy_report=legacy_report,
         written_legacy_report_files=written_legacy_report_files,
@@ -276,10 +298,12 @@ def run_vn_agrsich_replay_from_fixture(
         if isinstance(payload, dict)
         else []
     )
+    fixture_carry_forward_vn_state = _carry_forward_vn_state_from_fixture_payload(payload)
     return run_vn_agrsich_replay_from_mappings(
         _period_scenarios_from_fixture_payload(payload),
         output_dir,
         legacy_targets=legacy_targets,
+        carry_forward_vn_state=fixture_carry_forward_vn_state,
         legacy_report_name=(
             str(payload["legacy_report_name"])
             if isinstance(payload, dict) and payload.get("legacy_report_name") is not None

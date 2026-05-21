@@ -81,6 +81,7 @@ def test_vn_agrsich_replay_runs_periods_and_writes_mutated_exports(tmp_path: Pat
     assert result.processed_periods == [1, 2]
     assert result.total_damage_settlement_applications == 2
     assert result.total_settlement_applications == 2
+    assert result.carryovers == []
     assert {path.name for path in result.written_files} >= {"imsvu011.dat", "imsvnr05.dat"}
 
     insurer_lines = _non_empty_lines(tmp_path / "imsvu011.dat")
@@ -119,6 +120,37 @@ def test_vn_agrsich_replay_runs_periods_and_writes_mutated_exports(tmp_path: Pat
     ]
 
 
+def test_vn_agrsich_replay_can_carry_state_into_followup_export(tmp_path: Path) -> None:
+    result = run_vn_agrsich_replay_from_mappings(
+        [_period_scenario(1), _period_scenario(2)],
+        tmp_path,
+        carry_forward_vn_state=True,
+    )
+
+    assert len(result.carryovers) == 1
+    assert result.carryovers[0].from_period == 1
+    assert result.carryovers[0].to_period == 2
+    assert result.carryovers[0].insurer_ids == [11]
+    assert result.carryovers[0].policyholder_ids == [21]
+
+    insurer_lines = _non_empty_lines(tmp_path / "imsvu011.dat")
+    assert insurer_lines[2].split() == [
+        "2",
+        "4.0",
+        "0.0",
+        "30.0",
+        "5.0",
+        "2",
+        "18.0",
+        "6.0",
+        "0.0",
+        "60.0",
+        "5.0",
+        "0",
+        "0.0",
+    ]
+
+
 def test_vn_agrsich_replay_loads_fixture(tmp_path: Path) -> None:
     fixture_path = tmp_path / "vn_agrsich_periods.json"
     fixture_path.write_text(
@@ -130,6 +162,41 @@ def test_vn_agrsich_replay_loads_fixture(tmp_path: Path) -> None:
 
     assert result.processed_periods == [1, 2]
     assert (tmp_path / "out" / "imsvu011.dat").exists()
+
+
+def test_vn_agrsich_replay_fixture_supports_carryover(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vn_agrsich_periods_with_carryover.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_vn_state": True,
+                "periods": [_period_scenario(1), _period_scenario(2)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vn_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
+
+    assert len(result.carryovers) == 1
+    assert result.carryovers[0].policyholder_ids == [21]
+    assert _non_empty_lines(tmp_path / "out" / "imsvu011.dat")[2].split()[3] == "30.0"
+
+
+def test_vn_agrsich_replay_fixture_rejects_non_boolean_carryover_flag(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vn_agrsich_periods_with_bad_carryover.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_vn_state": "false",
+                "periods": [_period_scenario(1), _period_scenario(2)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="carry_forward_vn_state must be a boolean"):
+        run_vn_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
 
 
 def test_vn_agrsich_replay_compares_policyholder_legacy_target(tmp_path: Path) -> None:

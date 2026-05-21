@@ -72,6 +72,7 @@ def test_core_placeholders_import() -> None:
         VNSettlementMultiPeriodRunResult,
         VNSettlementPeriodRunResult,
         VNStateCarryover,
+        apply_vn_state_carryover,
         run_loaded_vn_settlement_period,
         run_vn_settlement_multi_period_from_fixture,
         run_vn_settlement_multi_period_from_mappings,
@@ -480,6 +481,7 @@ def test_core_placeholders_import() -> None:
     assert VNSettlementMultiPeriodRunResult is not None
     assert VNSettlementPeriodRunResult is not None
     assert VNStateCarryover is not None
+    assert apply_vn_state_carryover is not None
     assert run_loaded_vu_foreign_info_period is not None
     assert run_vu_foreign_info_multi_period_from_fixture is not None
     assert run_vu_foreign_info_multi_period_from_mappings is not None
