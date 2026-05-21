@@ -38,4 +38,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_damage_core.md`: gemeinsamer VN-Schadenerzeugungskern aus Vrvn01 bis Vrvn03
 - `vn_settlement_core.md`: deterministischer VN-Abrechnungskern nach expliziten Entscheidungen
 - `vn_damage_settlement_link.md`: explizite Kopplung von VN-Schadenerzeugung und VN-Abrechnung
+- `vn_explicit_damage_period.md`: expliziter Periodenpfad fuer VN-Schaden plus VN-Abrechnung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
