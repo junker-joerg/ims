@@ -42,6 +42,8 @@ Versichererwechseln keine alte Carryover-Zuordnung behaelt.
 Das Fixture-Feld `carry_forward_vn_state` muss ein JSON-Boolean sein. Andere
 Werte wie `"false"` werden zurueckgewiesen, damit Experimente nicht durch
 Truthiness-Casts unbemerkt in den Carryover-Modus wechseln.
+Diese Validierung laeuft auch dann, wenn der Aufrufer Carryover extern per
+Funktionsparameter aktiviert.
 
 ## Annahmen und Grenzen
 

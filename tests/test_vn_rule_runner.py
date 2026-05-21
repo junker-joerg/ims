@@ -318,6 +318,28 @@ def test_vn_rule_multi_period_runner_fixture_rejects_non_boolean_carryover_flag(
         run_vn_settlement_multi_period_from_fixture(fixture_path)
 
 
+def test_vn_rule_multi_period_runner_fixture_validates_bad_flag_before_override(tmp_path) -> None:
+    fixture_path = tmp_path / "vn_periods_with_bad_carryover_override.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_vn_state": "false",
+                "periods": [
+                    _vn_period_scenario(5, policyholder_id=21, insurer_id=11),
+                    _vn_period_scenario(6, policyholder_id=21, insurer_id=11),
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="carry_forward_vn_state must be a boolean"):
+        run_vn_settlement_multi_period_from_fixture(
+            fixture_path,
+            carry_forward_vn_state=True,
+        )
+
+
 def test_vn_rule_multi_period_runner_rejects_duplicate_or_unsorted_periods() -> None:
     with pytest.raises(ValueError, match="duplicate periods"):
         run_vn_settlement_multi_period_from_mappings(
