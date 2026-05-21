@@ -152,6 +152,30 @@ def test_explicit_multi_period_can_carry_forward_vn_state() -> None:
     assert result.period_results[1].vn_result.insurers[0].policyholders_current_sector == pytest.approx([3.0, 2.0])
 
 
+def test_explicit_multi_period_carryover_reports_global_periods() -> None:
+    first = _scenario(2)
+    second = _scenario(2)
+    second["context"]["run_index"] = 1
+
+    result = run_explicit_multi_period_from_mappings(
+        [first, second],
+        carry_forward_vu_state=True,
+        carry_forward_vn_state=True,
+    )
+
+    assert result.processed_periods == [2, 14]
+    assert len(result.carryovers) == 1
+    carryover = result.carryovers[0]
+    assert carryover.from_period == 2
+    assert carryover.to_period == 2
+    assert carryover.from_global_period == 2
+    assert carryover.to_global_period == 14
+    assert carryover.vu_carryover is not None
+    assert carryover.vu_carryover.from_global_period == 2
+    assert carryover.vu_carryover.to_global_period == 14
+    assert carryover.vn_carryover is not None
+
+
 def test_explicit_multi_period_rejects_duplicate_or_unsorted_periods() -> None:
     with pytest.raises(ValueError, match="duplicate periods"):
         run_explicit_multi_period_from_mappings([_scenario(2), _scenario(2, policyholder_id=22)])

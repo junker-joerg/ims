@@ -67,6 +67,8 @@ class ExplicitPeriodCarryover:
 
     from_period: int
     to_period: int
+    from_global_period: int
+    to_global_period: int
     vu_carryover: VUForeignInfoCarryover | None = None
     vn_carryover: VNStateCarryover | None = None
 
@@ -320,6 +322,8 @@ def run_explicit_multi_period_from_mappings(
                     ExplicitPeriodCarryover(
                         from_period=previous.period,
                         to_period=loaded.context.period,
+                        from_global_period=previous.global_period,
+                        to_global_period=compute_global_period(loaded.context),
                         vu_carryover=vu_carryover,
                         vn_carryover=vn_carryover,
                     )
