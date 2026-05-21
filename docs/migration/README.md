@@ -51,4 +51,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_agrsich_replay.md`: Agrsich-Export aus expliziten VN-Periodenlaeufen
 - `vn_agrsich_legacy_targets.md`: optionale Legacy-Ziele fuer VN-Agrsich-Replay
 - `vn_agrsich_replay_plan.md`: deterministische VN-Replay-Snapshot-Erzeugung aus Startzustand plus expliziten Periodenupdates
+- `vn_period_plan_legacy_targets.md`: Legacy-Ziele im deterministischen VN-Agrsich-Periodenplan
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
