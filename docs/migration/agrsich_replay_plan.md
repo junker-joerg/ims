@@ -16,6 +16,7 @@ Regellogik. Er nutzt weiterhin:
 - den vorhandenen Agrsich-Record-Pfad
 - den vorhandenen Export-Writer
 - den vorhandenen Legacy-Fenstervergleich
+- die vorhandene Legacy-Ziel- und Reportvalidierung im Replay-Runner
 
 Es wird keine neue Versicherungslogik eingefuehrt. Die Updates sind explizit und dienen nur
 dazu, die Snapshot-Erzeugung reproduzierbar aus einem Startzustand zu machen.
@@ -25,6 +26,9 @@ bereits portierten, kontrollierten VU-State-Carryover vor der Folgeperiode.
 Andere Feldtypen werden frueh abgelehnt.
 Periodenupdates koennen ausserdem `context.logtime` und `context.max_periods`
 explizit setzen. Fehlen diese Felder, bleibt der Basiskontext massgeblich.
+Optional koennen `legacy_targets` und `legacy_report_name` gesetzt werden. Sie
+werden in das erzeugte Replay-Fixture uebernommen; relative Legacy-Pfade werden
+vom Runner am Plan-Fixture-Verzeichnis aufgeloest.
 
 Aktuell ist dieser Pfad fuer zwei kleine Legacy-Fenster abgesichert:
 
@@ -38,6 +42,8 @@ wirtschaftlichem Verhalten, Scheduling oder portierten VU-Regeln berechnet. Er b
 keine historische Vollgleichheit.
 Auch mit aktiviertem Carryover bleiben Periodenupdates und Regel-Snapshots
 explizite Eingaben.
+Mehrzielige Legacy-Vergleiche validieren nur die erzeugten Exportfenster; sie
+ersetzen keine historische Vollsimulation.
 
 ## Anschluss
 

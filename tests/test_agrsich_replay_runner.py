@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from ims.engine.replay_runner import (
+    ReplayLegacyTarget,
     ReplayRunResult,
     run_agrsich_replay_from_fixture,
     run_agrsich_replay_from_mapping,
@@ -177,6 +178,84 @@ def test_replay_runner_applies_vu_rule_snapshots_before_export(tmp_path: Path) -
         "4",
         "600.0",
     ]
+
+
+def test_replay_runner_compares_legacy_targets_and_writes_report(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "reference_imsvu010.dat"
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
+                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 30.0 4 600.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_agrsich_replay_from_mapping(
+        {"snapshots": [_vu_rule_snapshot(2)]},
+        tmp_path / "out",
+        legacy_targets=[
+            ReplayLegacyTarget(
+                legacy_path=legacy_path,
+                export_filename="imsvu010.dat",
+                subject_type="insurer",
+            )
+        ],
+        legacy_report_name="vu_replay_validation",
+    )
+
+    assert result.legacy_target_comparison is not None
+    assert result.legacy_target_comparison.matches is True
+    assert result.validation_report is not None
+    assert result.validation_report.matches is True
+    assert [path.name for path in result.written_legacy_report_files] == [
+        "vu_replay_validation.json",
+        "vu_replay_validation.csv",
+        "vu_replay_validation_fields.csv",
+        "vu_replay_validation_groups.csv",
+        "vu_replay_validation_periods.csv",
+        "vu_replay_validation_deviations.csv",
+    ]
+
+
+def test_replay_runner_fixture_loads_legacy_targets(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "legacy" / "reference_imsvu010.dat"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
+                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 30.0 4 600.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    fixture_path = tmp_path / "vu_replay_with_legacy_targets.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "snapshots": [_vu_rule_snapshot(2)],
+                "legacy_report_name": "fixture_vu_report",
+                "legacy_targets": [
+                    {
+                        "legacy_path": "legacy/reference_imsvu010.dat",
+                        "export_filename": "imsvu010.dat",
+                        "subject_type": "insurer",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
+
+    assert result.legacy_target_comparison is not None
+    assert result.legacy_target_comparison.matches is True
+    assert (tmp_path / "out" / "fixture_vu_report.json").exists()
 
 
 def test_replay_runner_can_carry_vu_state_into_followup_export(tmp_path: Path) -> None:
