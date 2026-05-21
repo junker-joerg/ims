@@ -8,6 +8,10 @@ fuehrt die vorhandene BAV-/Agrsich-Record-Erzeugung sowie den bestehenden Export
 
 Der Runner schreibt dadurch ueber mehrere Perioden dieselben Exportdateien fort und kann ein
 kleines Fenster gegen vorhandene echte Legacy-Versichererdateien vergleichen.
+Neben dem aelteren Einzelziel `legacy_window` kann der Runner auch mehrere
+`legacy_targets` fuer Versicherer- oder VN-Exporttabellen vergleichen und bei
+gesetztem `legacy_report_name` denselben JSON-/CSV-Reportpfad wie die neueren
+VN- und expliziten VU/VN-Laeufe schreiben.
 
 Vor der Exportbildung fuehrt der Runner je Snapshot den bereits portierten
 VU-Periodenschritt aus. Dadurch werden explizite VU-Regel-Snapshots aus dem
@@ -30,6 +34,7 @@ End-to-End-Pfad aus geladenem Domaenenzustand:
 - Agrsich-Records mit vorhandener Modelllogik erzeugen
 - Exporttabellen mit vorhandenem Exportpfad schreiben
 - geschriebenes Fenster gegen Legacy-Dateien vergleichen
+- optional mehrere geschriebene Exporttabellen gegen Legacy-Ziele vergleichen
 
 Die neuen Fixtures `replay_vu14_window.json` und `replay_vusk1_window.json` sind bewusst
 explizite Validierungszustande. Sie reproduzieren kleine zusammenhaengende Fenster aus

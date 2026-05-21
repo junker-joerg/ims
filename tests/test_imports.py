@@ -23,6 +23,7 @@ def test_core_placeholders_import() -> None:
     )
     from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
     from ims.engine.replay_runner import (
+        ReplayLegacyTarget,
         ReplayPeriodResult,
         ReplayRunResult,
         ReplaySnapshot,
@@ -556,6 +557,7 @@ def test_core_placeholders_import() -> None:
     assert rand_uniform_0_1(rng) >= 0.0
     assert rand_int_inclusive(rng, 1, 1) == 1
     assert ReplaySnapshot is not None
+    assert ReplayLegacyTarget is not None
     assert ReplayWindowTarget is not None
     assert ReplayPeriodResult is not None
     assert ReplayRunResult is not None

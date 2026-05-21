@@ -21,6 +21,8 @@ class ReplayPeriodUpdate:
 class ReplayPlan:
     metadata: dict
     legacy_window: dict | None
+    legacy_targets: list[dict]
+    legacy_report_name: str | None
     carry_forward_insurer_state: bool
     base_snapshot: dict
     period_updates: list[ReplayPeriodUpdate]
@@ -68,6 +70,13 @@ def _load_plan(data: dict) -> ReplayPlan:
     if legacy_window is not None and not isinstance(legacy_window, dict):
         raise ValueError("legacy_window must be an object")
 
+    legacy_targets = data.get("legacy_targets", [])
+    if not isinstance(legacy_targets, list):
+        raise ValueError("replay plan field legacy_targets must be a list")
+
+    legacy_report_name_value = data.get("legacy_report_name")
+    legacy_report_name = str(legacy_report_name_value) if legacy_report_name_value is not None else None
+
     metadata = data.get("metadata", {})
     if not isinstance(metadata, dict):
         raise ValueError("metadata must be an object")
@@ -79,6 +88,8 @@ def _load_plan(data: dict) -> ReplayPlan:
     return ReplayPlan(
         metadata=metadata,
         legacy_window=legacy_window,
+        legacy_targets=list(legacy_targets),
+        legacy_report_name=legacy_report_name,
         carry_forward_insurer_state=carry_forward_insurer_state,
         base_snapshot=base_snapshot,
         period_updates=period_updates,
@@ -134,6 +145,10 @@ def build_replay_fixture_from_period_plan(data: dict) -> dict:
     }
     if plan.legacy_window is not None:
         replay_fixture["legacy_window"] = dict(plan.legacy_window)
+    if plan.legacy_targets:
+        replay_fixture["legacy_targets"] = deepcopy(plan.legacy_targets)
+    if plan.legacy_report_name is not None:
+        replay_fixture["legacy_report_name"] = plan.legacy_report_name
     return replay_fixture
 
 
@@ -147,4 +162,9 @@ def run_agrsich_replay_from_period_plan_fixture(path: str | Path, output_dir: st
         replay_fixture,
         output_dir,
         fixture_base_path=plan_path.parent,
+        legacy_report_name=(
+            str(replay_fixture["legacy_report_name"])
+            if replay_fixture.get("legacy_report_name") is not None
+            else None
+        ),
     )
