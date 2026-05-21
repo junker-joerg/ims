@@ -22,6 +22,7 @@ Der neue Runner liegt in `python_port/ims/engine/vn_agrsich_replay.py`.
 
 Wichtige Typen und Funktionen:
 
+- `VNAgrsichLegacyTarget`
 - `VNAgrsichReplayPeriodResult`
 - `VNAgrsichReplayRunResult`
 - `run_vn_agrsich_replay_from_mappings`
@@ -40,6 +41,8 @@ Der Ablauf pro Periode ist:
 - Die bestehenden Szenario- und VN-Snapshot-Validierungen bleiben vorgeschaltet.
 - Tests pruefen, dass exportierte VU-/VN-Zeilen aus dem nach Regelanwendung
   veraenderten Zustand stammen.
+- Optional angegebene Legacy-Ziele werden gegen die ueber alle Perioden
+  zusammengefuehrten Exporttabellen verglichen.
 
 ## Annahmen und Grenzen
 

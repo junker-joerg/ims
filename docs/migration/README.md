@@ -42,4 +42,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_multi_period_runner.md`: deterministischer Mehrperiodenrunner fuer explizite VN-Szenarien
 - `vn_snapshot_target_integrity.md`: Integritaetsvalidierung fuer disjunkte VN-Snapshot-Ziele
 - `vn_agrsich_replay.md`: Agrsich-Export aus expliziten VN-Periodenlaeufen
+- `vn_agrsich_legacy_targets.md`: optionale Legacy-Ziele fuer VN-Agrsich-Replay
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

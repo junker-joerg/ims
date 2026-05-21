@@ -62,6 +62,7 @@ def test_core_placeholders_import() -> None:
         run_vu_foreign_info_period_from_mapping,
     )
     from ims.engine.vn_agrsich_replay import (
+        VNAgrsichLegacyTarget,
         VNAgrsichReplayPeriodResult,
         VNAgrsichReplayRunResult,
         run_vn_agrsich_replay_from_fixture,
@@ -472,6 +473,7 @@ def test_core_placeholders_import() -> None:
     assert VUForeignInfoCarryover is not None
     assert VUForeignInfoMultiPeriodRunResult is not None
     assert VUForeignInfoPeriodRunResult is not None
+    assert VNAgrsichLegacyTarget is not None
     assert VNAgrsichReplayPeriodResult is not None
     assert VNAgrsichReplayRunResult is not None
     assert VNSettlementMultiPeriodRunResult is not None
