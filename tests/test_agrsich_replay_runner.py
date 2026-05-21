@@ -1,9 +1,12 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from ims.engine.replay_runner import (
     ReplayRunResult,
     run_agrsich_replay_from_fixture,
+    run_agrsich_replay_from_mapping,
 )
 from ims.io.scenario_loader import load_scenario_from_mapping
 from ims.model.legacy_agrsich_reference import (
@@ -19,6 +22,53 @@ REFERENCE_DIR = Path("tests/references/legacy_agrsich")
 
 def _non_empty_lines(path: Path) -> list[str]:
     return [line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def _vu_rule_parameters() -> dict[str, list[float]]:
+    return {
+        "premium_intercept_normal": [1.0, 2.0],
+        "premium_factor_normal": [0.5, 0.25],
+        "advertising_intercept_normal": [3.0, 4.0],
+        "advertising_factor_normal": [0.1, 0.2],
+        "premium_intercept_shock": [10.0, 20.0],
+        "premium_factor_shock": [1.0, 2.0],
+        "advertising_intercept_shock": [30.0, 40.0],
+        "advertising_factor_shock": [3.0, 4.0],
+    }
+
+
+def _vu_rule_snapshot(period: int) -> dict:
+    return {
+        "context": {"period": period, "logtime": period + 10, "max_periods": 0, "run_index": 0},
+        "bav": {"entity_id": 1, "name": "BAV"},
+        "insurers": [
+            {
+                "entity_id": 10,
+                "name": "VU-10",
+                "active": True,
+                "active_prev": True,
+                "rule_id": 1,
+                "rule_class": 1,
+                "premiums_prev_sector": [100.0, 200.0],
+                "advertising_prev_sector": [10.0, 20.0],
+                "reserves_prev_sector": [1000.0, 100.0],
+                "reserves_current": [50.0, 60.0],
+                "policyholders_current": 30.0,
+                "policyholders_current_sector": [30.0, 80.0],
+                "claims_count_current": [2, 4],
+                "claims_sum_current": [250.0, 600.0],
+            }
+        ],
+        "policyholders": [],
+        "vu_foreign_info_rule_snapshots": [
+            {
+                "insurer_id": 10,
+                "rule_kind": "average",
+                "interest_rate": 0.05,
+                "parameters": _vu_rule_parameters(),
+            }
+        ],
+    }
 
 
 def test_load_scenario_from_mapping_matches_file_loader_shape() -> None:
@@ -50,6 +100,8 @@ def test_replay_runner_appends_vu14_window_and_matches_legacy(tmp_path: Path) ->
     assert result.validation_report is not None
     assert result.validation_report.matches is True
     assert result.validation_report.total_rows == 4
+    assert result.carryovers == []
+    assert len(result.vu_period_results) == 4
 
 
 def test_replay_runner_appends_vusk1_window_and_matches_legacy(tmp_path: Path) -> None:
@@ -100,3 +152,93 @@ def test_compare_export_file_to_legacy_window_rejects_duplicate_period(tmp_path:
 
     assert comparison.matches is False
     assert comparison.row_comparisons[-1].field_comparisons[0].expected == "unique global period"
+
+
+def test_replay_runner_applies_vu_rule_snapshots_before_export(tmp_path: Path) -> None:
+    result = run_agrsich_replay_from_mapping({"snapshots": [_vu_rule_snapshot(2)]}, tmp_path)
+    export_path = tmp_path / "imsvu010.dat"
+    lines = _non_empty_lines(export_path)
+
+    assert result.carryovers == []
+    assert len(result.vu_period_results) == 1
+    assert len(result.vu_period_results[0].rule_applications) == 1
+    assert lines[1].split() == [
+        "2",
+        "51.0",
+        "4.0",
+        "52.5",
+        "30.0",
+        "2",
+        "250.0",
+        "52.0",
+        "8.0",
+        "63.0",
+        "30.0",
+        "4",
+        "600.0",
+    ]
+
+
+def test_replay_runner_can_carry_vu_state_into_followup_export(tmp_path: Path) -> None:
+    result = run_agrsich_replay_from_mapping(
+        {"snapshots": [_vu_rule_snapshot(2), _vu_rule_snapshot(3)]},
+        tmp_path,
+        carry_forward_insurer_state=True,
+    )
+    export_path = tmp_path / "imsvu010.dat"
+    lines = _non_empty_lines(export_path)
+
+    assert len(result.carryovers) == 1
+    assert result.carryovers[0].from_period == 2
+    assert result.carryovers[0].to_period == 3
+    assert result.carryovers[0].insurer_ids == [10]
+    assert len(result.vu_period_results[1].rule_applications) == 1
+    assert lines[2].split() == [
+        "3",
+        "26.5",
+        "3.4",
+        "55.125",
+        "30.0",
+        "2",
+        "250.0",
+        "15.0",
+        "5.6",
+        "66.15",
+        "30.0",
+        "4",
+        "600.0",
+    ]
+
+
+def test_replay_runner_fixture_supports_vu_carryover(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "vu_replay_carry.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_insurer_state": True,
+                "snapshots": [_vu_rule_snapshot(2), _vu_rule_snapshot(3)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
+
+    assert result.carryovers[0].insurer_ids == [10]
+    assert result.vu_period_results[1].foreign_info.insurer.dp == [51.0, 52.0]
+
+
+def test_replay_runner_fixture_rejects_non_boolean_vu_carryover_flag(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "bad_vu_replay_carry.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_insurer_state": "false",
+                "snapshots": [_vu_rule_snapshot(2)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="carry_forward_insurer_state must be a boolean"):
+        run_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")

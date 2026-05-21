@@ -221,10 +221,12 @@ def _set_two_sector_state(
     insurer.policyholders_current = float(policyholders[0]) if policyholders else 0.0
 
 
-def _apply_carryover(
+def apply_vu_foreign_info_carryover(
     previous_result: VUForeignInfoPeriodRunResult,
     loaded: LoadedScenario,
 ) -> VUForeignInfoCarryover | None:
+    """Schreibt berechnete aktuelle VU-Werte kontrolliert in das Folgeszenario."""
+
     previous_insurers = {insurer.entity_id: insurer for insurer in previous_result.insurers}
     carried_ids: list[int] = []
     for insurer in loaded.insurers:
@@ -283,7 +285,7 @@ def run_vu_foreign_info_multi_period_from_mappings(
     carryovers: list[VUForeignInfoCarryover] = []
     for loaded in loaded_scenarios:
         if carry_forward_insurer_state and period_results:
-            carryover = _apply_carryover(period_results[-1], loaded)
+            carryover = apply_vu_foreign_info_carryover(period_results[-1], loaded)
             if carryover is not None:
                 carryovers.append(carryover)
         period_results.append(run_loaded_vu_foreign_info_period(loaded))
