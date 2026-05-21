@@ -26,6 +26,9 @@ historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
   strikt steigender Periodenfolge aus.
 - Optionale Flags `carry_forward_vu_state` und `carry_forward_vn_state` aktivieren
   die bereits vorhandenen kontrollierten Carryover-Bausteine.
+- `ExplicitPeriodCarryover` weist lokale und globale Quell-/Zielperioden aus,
+  damit Plaene mit `run_index * max_periods + period` dieselbe Zeitachse wie
+  die VU- und Agrsich-Runner diagnostizieren.
 
 ## Annahmen und Grenzen
 
@@ -35,3 +38,5 @@ historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
   Carryover-Bausteine ausgefuehrt; der VN-Carryover enthaelt dabei auch
   Versicherer-Aktuellwerte nach der VN-Abrechnung.
 - Der Runner ist kein Ersatz fuer einen historischen PlanVN-/PlanVU-Scheduler.
+- Die globale Carryover-Diagnose fuehrt keine neue Fortschreibungslogik ein,
+  sondern beschreibt nur den bereits validierten Zustandstransfer eindeutiger.
