@@ -1,11 +1,15 @@
 import pytest
 
 from ims.model.entities import Insurer, Policyholder
+from ims.model.vn_damage_rules import VNDamageRuleResult
 from ims.model.vn_rules import (
+    VNInsuranceDecision,
     VNSectorSettlementDecision,
     VNSettlementSnapshot,
     apply_vn_settlement_snapshot,
     apply_vn_settlement_snapshots,
+    build_vn_settlement_snapshot_from_damage_result,
+    load_vn_insurance_decisions_from_mapping,
     load_vn_settlement_snapshots_from_mapping,
 )
 
@@ -101,6 +105,64 @@ def test_vn_settlement_uses_explicit_premium_and_counts_no_zero_damage_claim() -
     assert insurer.claims_sum_current == [0.0, 3.0]
 
 
+def test_vn_settlement_preserves_scalar_policyholder_count_when_sector_vector_absent() -> None:
+    insurer = Insurer(
+        entity_id=12,
+        premiums_current_sector=[7.0, 9.0],
+        reserves_current=[20.0, 30.0],
+        policyholders_current=5.0,
+        claims_count_current=[0, 0],
+        claims_sum_current=[0.0, 0.0],
+    )
+    policyholder = Policyholder(entity_id=32)
+    snapshot = VNSettlementSnapshot(
+        policyholder_id=32,
+        previous_wealth=100.0,
+        decisions=[
+            VNSectorSettlementDecision(
+                sector_index=0,
+                insured=True,
+                insurer_id=12,
+                damage=2.0,
+            ),
+            VNSectorSettlementDecision(sector_index=1, insured=False, damage=0.0),
+        ],
+    )
+
+    apply_vn_settlement_snapshot(policyholder, [insurer], snapshot)
+
+    assert insurer.policyholders_current_sector == [6.0, 0.0]
+    assert insurer.policyholders_current == 6.0
+
+
+def test_vn_settlement_snapshot_can_be_built_from_damage_result_and_insurance_decisions() -> None:
+    snapshot = build_vn_settlement_snapshot_from_damage_result(
+        policyholder_id=33,
+        previous_wealth=200.0,
+        previous_wealth_sector=[120.0, 80.0],
+        insurance_decisions=[
+            VNInsuranceDecision(sector_index=1, insured=False),
+            VNInsuranceDecision(sector_index=0, insured=True, insurer_id=13, premium=11.0),
+        ],
+        damage_result=VNDamageRuleResult(
+            damages=[4.0, 6.0],
+            triggered=[True, True],
+            trigger_draws=[0.1, 0.2],
+            amount_draws=[0.3, 0.4],
+        ),
+    )
+
+    assert snapshot.policyholder_id == 33
+    assert snapshot.previous_wealth_sector == [120.0, 80.0]
+    assert [decision.sector_index for decision in snapshot.decisions] == [0, 1]
+    assert snapshot.decisions[0].insured is True
+    assert snapshot.decisions[0].insurer_id == 13
+    assert snapshot.decisions[0].premium == 11.0
+    assert snapshot.decisions[0].damage == 4.0
+    assert snapshot.decisions[1].insured is False
+    assert snapshot.decisions[1].damage == 6.0
+
+
 def test_vn_settlement_snapshots_reject_duplicate_or_unknown_targets() -> None:
     policyholders = [Policyholder(entity_id=40)]
     insurers = [Insurer(entity_id=50)]
@@ -168,5 +230,28 @@ def test_vn_settlement_loader_validates_required_shape() -> None:
                         {"sector_index": 0, "insured": False, "damage": 2.0},
                     ],
                 }
+            ]
+        )
+
+
+def test_vn_insurance_decision_loader_validates_required_shape() -> None:
+    decisions = load_vn_insurance_decisions_from_mapping(
+        [
+            {"sector_index": 0, "insured": True, "insurer_id": 70, "premium": 3.0},
+            {"sector_index": 1, "insured": False},
+        ]
+    )
+
+    assert decisions[0].sector_index == 0
+    assert decisions[0].insured is True
+    assert decisions[0].insurer_id == 70
+    assert decisions[0].premium == 3.0
+    assert decisions[1].insured is False
+
+    with pytest.raises(ValueError, match="require exactly one decision"):
+        load_vn_insurance_decisions_from_mapping(
+            [
+                {"sector_index": 0, "insured": False},
+                {"sector_index": 0, "insured": False},
             ]
         )

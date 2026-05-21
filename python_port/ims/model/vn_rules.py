@@ -1,6 +1,17 @@
 from dataclasses import dataclass
 
 from ims.model.entities import Insurer, Policyholder
+from ims.model.vn_damage_rules import VNDamageRuleResult
+
+
+@dataclass(slots=True)
+class VNInsuranceDecision:
+    """Explizite VN-Versicherungsentscheidung fuer eine Sparte ohne Schadenhoehe."""
+
+    sector_index: int
+    insured: bool
+    insurer_id: int | None = None
+    premium: float | None = None
 
 
 @dataclass(slots=True)
@@ -83,10 +94,56 @@ def _decision_list(value: object) -> list[VNSectorSettlementDecision]:
     return decisions
 
 
+def _insurance_decision_list(value: object) -> list[VNInsuranceDecision]:
+    if not isinstance(value, list):
+        raise ValueError("VN insurance decisions require a list")
+    decisions = [
+        item if isinstance(item, VNInsuranceDecision) else vn_insurance_decision_from_mapping(item)
+        for item in value
+    ]
+    sectors = [decision.sector_index for decision in decisions]
+    if sorted(sectors) != [0, 1]:
+        raise ValueError("VN insurance decisions require exactly one decision for sector_index 0 and 1")
+    return decisions
+
+
 def _optional_two_float_values(value: object) -> list[float] | None:
     if value is None:
         return None
     return _two_float_values(value, fallback=0.0)
+
+
+def vn_insurance_decision_from_mapping(mapping: dict[str, object]) -> VNInsuranceDecision:
+    """Laedt eine explizite VN-Versicherungsentscheidung ohne Schadenhoehe."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN insurance decision must be an object")
+    if "sector_index" not in mapping:
+        raise ValueError("VN insurance decision requires field: sector_index")
+    if "insured" not in mapping:
+        raise ValueError("VN insurance decision requires field: insured")
+
+    sector_index = int(mapping["sector_index"])
+    if sector_index not in (0, 1):
+        raise ValueError(f"VN insurance decision has unsupported sector_index: {sector_index}")
+
+    premium = None if mapping.get("premium") is None else float(mapping["premium"])
+    if premium is not None and premium < 0.0:
+        raise ValueError("VN insurance decision premium must be non-negative")
+
+    insurer_id = None if mapping.get("insurer_id") is None else int(mapping["insurer_id"])
+    insured = bool(mapping["insured"])
+    if insured and insurer_id is None:
+        raise ValueError("insured VN insurance decision requires insurer_id")
+    if not insured and insurer_id is not None:
+        raise ValueError("uninsured VN insurance decision must not reference insurer_id")
+
+    return VNInsuranceDecision(
+        sector_index=sector_index,
+        insured=insured,
+        insurer_id=insurer_id,
+        premium=premium,
+    )
 
 
 def vn_sector_settlement_decision_from_mapping(mapping: dict[str, object]) -> VNSectorSettlementDecision:
@@ -156,14 +213,65 @@ def load_vn_settlement_snapshots_from_mapping(value: object) -> list[VNSettlemen
     return [vn_settlement_snapshot_from_mapping(item) for item in value]
 
 
+def build_vn_settlement_snapshot_from_damage_result(
+    *,
+    policyholder_id: int,
+    previous_wealth: float,
+    insurance_decisions: list[VNInsuranceDecision],
+    damage_result: VNDamageRuleResult,
+    previous_wealth_sector: list[float] | None = None,
+) -> VNSettlementSnapshot:
+    """
+    Verbindet explizite VN-Versicherungsentscheidungen mit portierten Schaeden.
+
+    Das bleibt bewusst ein reiner Kopplungsschritt: Versichererwahl, Praeferenzlogik
+    und die historischen Normalziehungen muessen bereits ausserhalb feststehen.
+    """
+
+    decisions = _insurance_decision_list(insurance_decisions)
+    damages = _two_float_values(damage_result.damages, fallback=0.0)
+    return VNSettlementSnapshot(
+        policyholder_id=int(policyholder_id),
+        previous_wealth=float(previous_wealth),
+        previous_wealth_sector=previous_wealth_sector,
+        decisions=[
+            VNSectorSettlementDecision(
+                sector_index=decision.sector_index,
+                insured=decision.insured,
+                insurer_id=decision.insurer_id,
+                premium=decision.premium,
+                damage=damages[decision.sector_index],
+            )
+            for decision in sorted(decisions, key=lambda item: item.sector_index)
+        ],
+    )
+
+
+def load_vn_insurance_decisions_from_mapping(value: object) -> list[VNInsuranceDecision]:
+    """Laedt mehrere explizite VN-Versicherungsentscheidungen aus In-Memory-Daten."""
+
+    return _insurance_decision_list(value)
+
+
 def _current_sector_premium(insurer: Insurer, sector_index: int) -> float:
     premiums = _two_float_values(insurer.premiums_current_sector, fallback=insurer.premiums_current)
     return premiums[sector_index]
 
 
-def _insurer_vectors(insurer: Insurer) -> tuple[list[float], list[float], list[int], list[float]]:
+def _policyholder_vector_for_sector(insurer: Insurer, sector_index: int) -> list[float]:
+    if insurer.policyholders_current_sector:
+        return _two_float_values(
+            insurer.policyholders_current_sector,
+            fallback=insurer.policyholders_current,
+        )
+    policyholders = [0.0, 0.0]
+    policyholders[sector_index] = float(insurer.policyholders_current)
+    return policyholders
+
+
+def _insurer_vectors(insurer: Insurer, sector_index: int) -> tuple[list[float], list[float], list[int], list[float]]:
     reserves = _two_float_values(insurer.reserves_current, fallback=0.0)
-    policyholders = _two_float_values(insurer.policyholders_current_sector, fallback=0.0)
+    policyholders = _policyholder_vector_for_sector(insurer, sector_index)
     claim_counts = _two_int_values(insurer.claims_count_current, fallback=0)
     claim_sums = _two_float_values(insurer.claims_sum_current, fallback=0.0)
     return reserves, policyholders, claim_counts, claim_sums
@@ -176,7 +284,7 @@ def _apply_insured_sector(
     premium: float,
     damage: float,
 ) -> None:
-    reserves, policyholders, claim_counts, claim_sums = _insurer_vectors(insurer)
+    reserves, policyholders, claim_counts, claim_sums = _insurer_vectors(insurer, sector_index)
     reserves[sector_index] = reserves[sector_index] + premium - damage
     policyholders[sector_index] = policyholders[sector_index] + 1.0
     if damage > 0.0:
