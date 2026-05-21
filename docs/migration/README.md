@@ -41,4 +41,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_explicit_damage_period.md`: expliziter Periodenpfad fuer VN-Schaden plus VN-Abrechnung
 - `vn_multi_period_runner.md`: deterministischer Mehrperiodenrunner fuer explizite VN-Szenarien
 - `vn_snapshot_target_integrity.md`: Integritaetsvalidierung fuer disjunkte VN-Snapshot-Ziele
+- `vn_agrsich_replay.md`: Agrsich-Export aus expliziten VN-Periodenlaeufen
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
