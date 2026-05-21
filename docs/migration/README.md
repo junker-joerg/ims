@@ -35,6 +35,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vu_foreign_info_rule_core.md`: kleiner VU-Regelkern fuer Dumping-, Durchschnitts- und Angriffslogik auf BAV-Frmdinf-Vektoren
 - `vu_foreign_info_period_runner.md`: kleiner deterministischer Periodenschritt fuer BAV-Frmdinf plus explizite VU-Regelparameter-Snapshots
 - `explicit_vu_vn_period_runner.md`: gemeinsame explizite Periodenstrecke fuer VU-Regeln und VN-Schaden-/Abrechnung
+- `explicit_period_legacy_targets.md`: optionale Legacy-Ziele fuer gemeinsame explizite VU/VN-Periodenlaeufe
 - `explicit_vu_vn_period_plan.md`: deterministischer Periodenplan fuer gemeinsame explizite VU/VN-Laeufe
 - `period_plan_input_validation.md`: kontrollierte Validierung von Entity-Update-Listen in Periodenplaenen
 - `vu_free_linear_rule.md`: Vrvu10-Slice fuer frei definierbare lineare VU-Fortschreibung

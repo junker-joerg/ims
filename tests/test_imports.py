@@ -52,6 +52,7 @@ def test_core_placeholders_import() -> None:
         run_two_scheduled_bav_updates,
     )
     from ims.engine.explicit_period_runner import (
+        ExplicitLegacyTarget,
         ExplicitMultiPeriodRunResult,
         ExplicitPeriodCarryover,
         ExplicitPeriodRunResult,
@@ -497,6 +498,7 @@ def test_core_placeholders_import() -> None:
     assert ExplicitMultiPeriodRunResult is not None
     assert ExplicitPeriodCarryover is not None
     assert ExplicitPeriodRunResult is not None
+    assert ExplicitLegacyTarget is not None
     assert ExplicitPeriodPlan is not None
     assert ExplicitPeriodPlanUpdate is not None
     assert build_explicit_period_fixture_from_plan is not None
