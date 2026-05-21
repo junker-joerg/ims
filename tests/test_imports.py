@@ -71,6 +71,7 @@ def test_core_placeholders_import() -> None:
     from ims.engine.vn_rule_runner import (
         VNSettlementMultiPeriodRunResult,
         VNSettlementPeriodRunResult,
+        VNStateCarryover,
         run_loaded_vn_settlement_period,
         run_vn_settlement_multi_period_from_fixture,
         run_vn_settlement_multi_period_from_mappings,
@@ -478,6 +479,7 @@ def test_core_placeholders_import() -> None:
     assert VNAgrsichReplayRunResult is not None
     assert VNSettlementMultiPeriodRunResult is not None
     assert VNSettlementPeriodRunResult is not None
+    assert VNStateCarryover is not None
     assert run_loaded_vu_foreign_info_period is not None
     assert run_vu_foreign_info_multi_period_from_fixture is not None
     assert run_vu_foreign_info_multi_period_from_mappings is not None

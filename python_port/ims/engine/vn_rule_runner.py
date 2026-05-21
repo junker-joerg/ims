@@ -20,6 +20,8 @@ class VNSettlementPeriodRunResult:
     """Kleines Ergebnis eines expliziten VN-Periodenschritts."""
 
     period: int
+    insurers: list[Insurer] = field(default_factory=list)
+    policyholders: list[Policyholder] = field(default_factory=list)
     damage_settlement_applications: list[VNDamageSettlementApplication] = field(default_factory=list)
     settlement_applications: list[VNSettlementApplication] = field(default_factory=list)
 
@@ -33,6 +35,16 @@ class VNSettlementPeriodRunResult:
 
 
 @dataclass(slots=True)
+class VNStateCarryover:
+    """Diagnose der kontrollierten Fortschreibung von VN-/VU-Aktuellwerten."""
+
+    from_period: int
+    to_period: int
+    insurer_ids: list[int]
+    policyholder_ids: list[int]
+
+
+@dataclass(slots=True)
 class VNSettlementMultiPeriodRunResult:
     """Ergebnis eines kleinen deterministischen VN-Mehrperiodenlaufs."""
 
@@ -40,6 +52,7 @@ class VNSettlementMultiPeriodRunResult:
     processed_periods: list[int]
     total_settlement_applications: int
     total_damage_settlement_applications: int
+    carryovers: list[VNStateCarryover] = field(default_factory=list)
 
 
 def _validate_disjoint_vn_snapshot_targets(
@@ -105,6 +118,8 @@ def run_vn_settlement_period(
     )
     return VNSettlementPeriodRunResult(
         period=context.period,
+        insurers=insurers,
+        policyholders=policyholders,
         damage_settlement_applications=damage_settlement_applications,
         settlement_applications=applications,
     )
@@ -144,8 +159,112 @@ def _validate_strictly_increasing_periods(processed_periods: list[int]) -> list[
     return processed_periods
 
 
+def _two_float_values(values: list[float], fallback: float = 0.0) -> list[float]:
+    if len(values) >= 2:
+        return [float(values[0]), float(values[1])]
+    if len(values) == 1:
+        return [float(values[0]), float(values[0])]
+    return [float(fallback), float(fallback)]
+
+
+def _two_int_values(values: list[int], fallback: int = 0) -> list[int]:
+    if len(values) >= 2:
+        return [int(values[0]), int(values[1])]
+    if len(values) == 1:
+        return [int(values[0]), int(values[0])]
+    return [int(fallback), int(fallback)]
+
+
+def _carry_insurer_state(previous: Insurer, current: Insurer) -> None:
+    premiums = _two_float_values(previous.premiums_current_sector, fallback=previous.premiums_current)
+    advertising = _two_float_values(previous.advertising_current_sector, fallback=previous.advertising_current)
+    reserves = _two_float_values(previous.reserves_current, fallback=0.0)
+    policyholders = _two_float_values(
+        previous.policyholders_current_sector,
+        fallback=previous.policyholders_current,
+    )
+    claims_count = _two_int_values(previous.claims_count_current, fallback=0)
+    claims_sum = _two_float_values(previous.claims_sum_current, fallback=0.0)
+
+    current.premiums_prev_sector = list(premiums)
+    current.premiums_prev = float(premiums[0])
+    current.premiums_current_sector = list(premiums)
+    current.premiums_current = float(premiums[0])
+    current.advertising_prev_sector = list(advertising)
+    current.advertising_prev = float(advertising[0])
+    current.advertising_current_sector = list(advertising)
+    current.advertising_current = float(advertising[0])
+    current.reserves_prev_sector = list(reserves)
+    current.reserves_prev = float(reserves[0])
+    current.reserves_current = list(reserves)
+    current.policyholders_current_sector = list(policyholders)
+    current.policyholders_current = float(policyholders[0])
+    current.claims_count_current = list(claims_count)
+    current.claims_sum_current = list(claims_sum)
+    current.active_prev = previous.active
+
+
+def _carry_policyholder_state(previous: Policyholder, current: Policyholder) -> None:
+    insured = _two_float_values(previous.insured_current_sector, fallback=previous.insured_current)
+    current.insured_prev_sector = list(insured)
+    current.insured_prev = float(previous.insured_current)
+    current.insured_current_sector = list(insured)
+    current.insured_current = float(previous.insured_current)
+    current.active_prev = previous.active
+    current.insurer_id = (
+        previous.chosen_insurer_current
+        if previous.chosen_insurer_current is not None
+        else previous.insurer_id
+    )
+    current.chosen_insurer_current = previous.chosen_insurer_current
+    current.chosen_insurer_sector_current = list(previous.chosen_insurer_sector_current)
+    current.paid_premium_current = _two_float_values(previous.paid_premium_current, fallback=0.0)
+    current.self_damage_current = _two_float_values(previous.self_damage_current, fallback=0.0)
+    current.claim_sum_current = _two_float_values(previous.claim_sum_current, fallback=0.0)
+    current.end_wealth_sector_current = _two_float_values(previous.end_wealth_sector_current, fallback=0.0)
+    current.end_wealth_current = float(previous.end_wealth_current)
+
+
+def _apply_vn_state_carryover(
+    previous_result: VNSettlementPeriodRunResult,
+    loaded: LoadedScenario,
+) -> VNStateCarryover | None:
+    previous_insurers = {insurer.entity_id: insurer for insurer in previous_result.insurers}
+    previous_policyholders = {
+        policyholder.entity_id: policyholder
+        for policyholder in previous_result.policyholders
+    }
+    carried_insurer_ids: list[int] = []
+    carried_policyholder_ids: list[int] = []
+
+    for insurer in loaded.insurers:
+        previous = previous_insurers.get(insurer.entity_id)
+        if previous is None:
+            continue
+        _carry_insurer_state(previous, insurer)
+        carried_insurer_ids.append(insurer.entity_id)
+
+    for policyholder in loaded.policyholders:
+        previous = previous_policyholders.get(policyholder.entity_id)
+        if previous is None:
+            continue
+        _carry_policyholder_state(previous, policyholder)
+        carried_policyholder_ids.append(policyholder.entity_id)
+
+    if not carried_insurer_ids and not carried_policyholder_ids:
+        return None
+    return VNStateCarryover(
+        from_period=previous_result.period,
+        to_period=loaded.context.period,
+        insurer_ids=carried_insurer_ids,
+        policyholder_ids=carried_policyholder_ids,
+    )
+
+
 def run_vn_settlement_multi_period_from_mappings(
     period_scenarios: list[dict],
+    *,
+    carry_forward_vn_state: bool = False,
 ) -> VNSettlementMultiPeriodRunResult:
     """Fuehrt mehrere explizite VN-Periodenszenarien deterministisch aus."""
 
@@ -156,7 +275,15 @@ def run_vn_settlement_multi_period_from_mappings(
     processed_periods = _validate_strictly_increasing_periods(
         [loaded.context.period for loaded in loaded_scenarios]
     )
-    period_results = [run_loaded_vn_settlement_period(loaded) for loaded in loaded_scenarios]
+    period_results: list[VNSettlementPeriodRunResult] = []
+    carryovers: list[VNStateCarryover] = []
+    for loaded in loaded_scenarios:
+        if carry_forward_vn_state and period_results:
+            carryover = _apply_vn_state_carryover(period_results[-1], loaded)
+            if carryover is not None:
+                carryovers.append(carryover)
+        period_results.append(run_loaded_vn_settlement_period(loaded))
+
     return VNSettlementMultiPeriodRunResult(
         period_results=period_results,
         processed_periods=processed_periods,
@@ -164,6 +291,7 @@ def run_vn_settlement_multi_period_from_mappings(
         total_damage_settlement_applications=sum(
             result.total_damage_settlement_applications for result in period_results
         ),
+        carryovers=carryovers,
     )
 
 
@@ -177,10 +305,22 @@ def _period_scenarios_from_fixture_payload(payload: object) -> list[dict]:
     raise ValueError("VN settlement multi-period fixture requires a list or object field: periods")
 
 
-def run_vn_settlement_multi_period_from_fixture(path: str | Path) -> VNSettlementMultiPeriodRunResult:
+def run_vn_settlement_multi_period_from_fixture(
+    path: str | Path,
+    *,
+    carry_forward_vn_state: bool = False,
+) -> VNSettlementMultiPeriodRunResult:
     """Laedt ein Mehrperioden-Fixture und fuehrt den expliziten VN-Lauf aus."""
 
     fixture_path = Path(path)
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
-    return run_vn_settlement_multi_period_from_mappings(_period_scenarios_from_fixture_payload(payload))
+    payload_carryover = (
+        bool(payload.get("carry_forward_vn_state"))
+        if isinstance(payload, dict)
+        else False
+    )
+    return run_vn_settlement_multi_period_from_mappings(
+        _period_scenarios_from_fixture_payload(payload),
+        carry_forward_vn_state=carry_forward_vn_state or payload_carryover,
+    )

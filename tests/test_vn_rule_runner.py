@@ -6,6 +6,7 @@ from ims.engine.context import SimulationContext
 from ims.engine.vn_rule_runner import (
     VNSettlementMultiPeriodRunResult,
     VNSettlementPeriodRunResult,
+    VNStateCarryover,
     run_vn_settlement_multi_period_from_fixture,
     run_vn_settlement_multi_period_from_mappings,
     run_vn_settlement_period,
@@ -180,6 +181,63 @@ def test_vn_rule_multi_period_runner_processes_increasing_periods() -> None:
     assert result.total_damage_settlement_applications == 2
     assert result.total_settlement_applications == 2
     assert [period_result.period for period_result in result.period_results] == [5, 6]
+    assert result.carryovers == []
+
+
+def test_vn_rule_multi_period_runner_can_carry_state_forward() -> None:
+    result = run_vn_settlement_multi_period_from_mappings(
+        [
+            _vn_period_scenario(5, policyholder_id=21, insurer_id=11),
+            _vn_period_scenario(6, policyholder_id=21, insurer_id=11),
+        ],
+        carry_forward_vn_state=True,
+    )
+
+    assert len(result.carryovers) == 1
+    assert isinstance(result.carryovers[0], VNStateCarryover)
+    assert result.carryovers[0].from_period == 5
+    assert result.carryovers[0].to_period == 6
+    assert result.carryovers[0].insurer_ids == [11]
+    assert result.carryovers[0].policyholder_ids == [21]
+
+    second_insurer = result.period_results[1].insurers[0]
+    assert second_insurer.reserves_current == [30.0, 60.0]
+    assert second_insurer.policyholders_current_sector == [3.0, 2.0]
+    assert second_insurer.claims_count_current == [2, 0]
+    assert second_insurer.claims_sum_current == [18.0, 0.0]
+
+    second_policyholder = result.period_results[1].policyholders[0]
+    assert second_policyholder.insured_prev_sector == [1.0, 0.0]
+    assert second_policyholder.insurer_id == 11
+    assert second_policyholder.end_wealth_current == 87.0
+
+
+def test_vn_rule_multi_period_runner_without_carryover_keeps_explicit_period_state() -> None:
+    result = run_vn_settlement_multi_period_from_mappings(
+        [
+            _vn_period_scenario(5, policyholder_id=21, insurer_id=11),
+            _vn_period_scenario(6, policyholder_id=21, insurer_id=11),
+        ],
+        carry_forward_vn_state=False,
+    )
+
+    assert result.carryovers == []
+    assert result.period_results[1].insurers[0].reserves_current == [35.0, 60.0]
+    assert result.period_results[1].insurers[0].policyholders_current_sector == [2.0, 2.0]
+
+
+def test_vn_rule_multi_period_runner_skips_carryover_for_missing_followup_entities() -> None:
+    result = run_vn_settlement_multi_period_from_mappings(
+        [
+            _vn_period_scenario(5, policyholder_id=21, insurer_id=11),
+            _vn_period_scenario(6, policyholder_id=22, insurer_id=12),
+        ],
+        carry_forward_vn_state=True,
+    )
+
+    assert result.carryovers == []
+    assert result.period_results[1].insurers[0].entity_id == 12
+    assert result.period_results[1].policyholders[0].entity_id == 22
 
 
 def test_vn_rule_multi_period_runner_loads_fixture(tmp_path) -> None:
@@ -193,6 +251,28 @@ def test_vn_rule_multi_period_runner_loads_fixture(tmp_path) -> None:
 
     assert result.processed_periods == [5, 6]
     assert result.total_damage_settlement_applications == 2
+
+
+def test_vn_rule_multi_period_runner_fixture_supports_carryover(tmp_path) -> None:
+    fixture_path = tmp_path / "vn_periods_with_carryover.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_vn_state": True,
+                "periods": [
+                    _vn_period_scenario(5, policyholder_id=21, insurer_id=11),
+                    _vn_period_scenario(6, policyholder_id=21, insurer_id=11),
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vn_settlement_multi_period_from_fixture(fixture_path)
+
+    assert len(result.carryovers) == 1
+    assert result.carryovers[0].policyholder_ids == [21]
+    assert result.period_results[1].insurers[0].reserves_current == [30.0, 60.0]
 
 
 def test_vn_rule_multi_period_runner_rejects_duplicate_or_unsorted_periods() -> None:
