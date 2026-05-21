@@ -153,6 +153,20 @@ def test_vn_period_plan_rejects_unknown_entity_update() -> None:
         build_vn_agrsich_replay_fixture_from_period_plan(data)
 
 
+def test_vn_period_plan_rejects_non_list_entity_updates() -> None:
+    data = _period_plan()
+    data["period_updates"][0]["insurers"] = None
+
+    with pytest.raises(ValueError, match="field insurers must be a list"):
+        build_vn_agrsich_replay_fixture_from_period_plan(data)
+
+    data = _period_plan()
+    data["period_updates"][0]["policyholders"] = {"entity_id": 21}
+
+    with pytest.raises(ValueError, match="field policyholders must be a list"):
+        build_vn_agrsich_replay_fixture_from_period_plan(data)
+
+
 def test_vn_period_plan_rejects_non_list_snapshots() -> None:
     data = _period_plan()
     data["period_updates"][0]["vn_damage_settlement_snapshots"] = {"policyholder_id": 21}

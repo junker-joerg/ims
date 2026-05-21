@@ -54,6 +54,13 @@ def _optional_snapshot_updates(item: dict) -> dict[str, list[dict]]:
     return updates
 
 
+def _period_update_list(item: dict, key: str) -> list[dict]:
+    value = item.get(key, [])
+    if not isinstance(value, list):
+        raise ValueError(f"explicit VU/VN period plan field {key} must be a list")
+    return list(value)
+
+
 def _load_plan(data: dict) -> ExplicitPeriodPlan:
     if not isinstance(data, dict):
         raise ValueError("explicit VU/VN period plan must be a JSON object")
@@ -73,8 +80,8 @@ def _load_plan(data: dict) -> ExplicitPeriodPlan:
                 period=int(context_data["period"]),
                 run_index=int(context_data.get("run_index", 0)),
                 rng_seed=int(context_data.get("rng_seed", 0)),
-                insurer_updates=list(item.get("insurers", [])),
-                policyholder_updates=list(item.get("policyholders", [])),
+                insurer_updates=_period_update_list(item, "insurers"),
+                policyholder_updates=_period_update_list(item, "policyholders"),
                 snapshot_updates=_optional_snapshot_updates(item),
             )
         )

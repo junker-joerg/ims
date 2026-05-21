@@ -164,6 +164,20 @@ def test_explicit_period_plan_rejects_unknown_entity_update() -> None:
         build_explicit_period_fixture_from_plan(data)
 
 
+def test_explicit_period_plan_rejects_non_list_entity_updates() -> None:
+    data = _period_plan()
+    data["period_updates"][0]["insurers"] = None
+
+    with pytest.raises(ValueError, match="field insurers must be a list"):
+        build_explicit_period_fixture_from_plan(data)
+
+    data = _period_plan()
+    data["period_updates"][0]["policyholders"] = {"entity_id": 21}
+
+    with pytest.raises(ValueError, match="field policyholders must be a list"):
+        build_explicit_period_fixture_from_plan(data)
+
+
 def test_explicit_period_plan_rejects_non_list_snapshot_updates() -> None:
     data = _period_plan()
     data["period_updates"][0]["vu_free_linear_rule_snapshots"] = {"insurer_id": 11}
