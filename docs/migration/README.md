@@ -40,6 +40,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_damage_settlement_link.md`: explizite Kopplung von VN-Schadenerzeugung und VN-Abrechnung
 - `vn_explicit_damage_period.md`: expliziter Periodenpfad fuer VN-Schaden plus VN-Abrechnung
 - `vn_multi_period_runner.md`: deterministischer Mehrperiodenrunner fuer explizite VN-Szenarien
+- `vn_state_carryover.md`: optionaler Zustandstransfer fuer explizite VN-Mehrperiodenlaeufe
 - `vn_snapshot_target_integrity.md`: Integritaetsvalidierung fuer disjunkte VN-Snapshot-Ziele
 - `vn_agrsich_replay.md`: Agrsich-Export aus expliziten VN-Periodenlaeufen
 - `vn_agrsich_legacy_targets.md`: optionale Legacy-Ziele fuer VN-Agrsich-Replay
