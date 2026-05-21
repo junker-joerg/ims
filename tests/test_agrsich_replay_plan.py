@@ -145,6 +145,26 @@ def test_period_plan_can_enable_vu_carryover_in_replay_fixture() -> None:
     assert [snapshot["context"]["period"] for snapshot in replay_fixture["snapshots"]] == [2, 3]
 
 
+def test_period_plan_applies_context_overrides() -> None:
+    data = _vu_rule_period_plan()
+    data["period_updates"][0]["context"] = {
+        "period": 2,
+        "logtime": 5,
+        "max_periods": 100,
+        "run_index": 1,
+        "rng_seed": 9102,
+    }
+
+    replay_fixture = build_replay_fixture_from_period_plan(data)
+    context = replay_fixture["snapshots"][0]["context"]
+
+    assert context["period"] == 2
+    assert context["logtime"] == 5
+    assert context["max_periods"] == 100
+    assert context["run_index"] == 1
+    assert context["rng_seed"] == 9102
+
+
 def test_period_plan_replay_carries_rule_state_between_periods(tmp_path: Path) -> None:
     plan_path = tmp_path / "vu_rule_carry_plan.json"
     plan_path.write_text(json.dumps(_vu_rule_period_plan()), encoding="utf-8")

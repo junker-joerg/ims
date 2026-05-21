@@ -39,6 +39,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `explicit_vu_vn_period_plan.md`: deterministischer Periodenplan fuer gemeinsame explizite VU/VN-Laeufe
 - `explicit_period_plan_legacy_targets.md`: Legacy-Ziele im deterministischen expliziten VU/VN-Periodenplan
 - `period_plan_input_validation.md`: kontrollierte Validierung von Entity-Update-Listen in Periodenplaenen
+- `period_plan_context_overrides.md`: explizite Kontext-Overrides fuer Periodenplaene
 - `vu_free_linear_rule.md`: Vrvu10-Slice fuer frei definierbare lineare VU-Fortschreibung
 - `vn_damage_core.md`: gemeinsamer VN-Schadenerzeugungskern aus Vrvn01 bis Vrvn03
 - `vn_settlement_core.md`: deterministischer VN-Abrechnungskern nach expliziten Entscheidungen

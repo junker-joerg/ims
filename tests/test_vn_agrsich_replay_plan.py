@@ -138,6 +138,26 @@ def test_vn_period_plan_can_override_entity_fields() -> None:
     assert replay_fixture["periods"][1]["policyholders"][0]["name"] == "VN-21-Updated"
 
 
+def test_vn_period_plan_applies_context_overrides() -> None:
+    data = _period_plan()
+    data["period_updates"][0]["context"] = {
+        "period": 1,
+        "logtime": 4,
+        "max_periods": 100,
+        "run_index": 1,
+        "rng_seed": 1901,
+    }
+
+    replay_fixture = build_vn_agrsich_replay_fixture_from_period_plan(data)
+    context = replay_fixture["periods"][0]["context"]
+
+    assert context["period"] == 1
+    assert context["logtime"] == 4
+    assert context["max_periods"] == 100
+    assert context["run_index"] == 1
+    assert context["rng_seed"] == 1901
+
+
 def test_vn_period_plan_rejects_non_boolean_carryover_flag() -> None:
     with pytest.raises(ValueError, match="carry_forward_vn_state must be a boolean"):
         build_vn_agrsich_replay_fixture_from_period_plan(

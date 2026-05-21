@@ -12,6 +12,8 @@ from ims.engine.vn_agrsich_replay import (
 @dataclass(slots=True)
 class VNAgrsichReplayPeriodUpdate:
     period: int
+    logtime: int | None
+    max_periods: int | None
     run_index: int
     rng_seed: int
     insurer_updates: list[dict]
@@ -61,6 +63,16 @@ def _load_plan(data: dict) -> VNAgrsichReplayPlan:
         period_updates.append(
             VNAgrsichReplayPeriodUpdate(
                 period=int(context_data["period"]),
+                logtime=(
+                    int(context_data["logtime"])
+                    if context_data.get("logtime") is not None
+                    else None
+                ),
+                max_periods=(
+                    int(context_data["max_periods"])
+                    if context_data.get("max_periods") is not None
+                    else None
+                ),
                 run_index=int(context_data.get("run_index", 0)),
                 rng_seed=int(context_data.get("rng_seed", 0)),
                 insurer_updates=_period_update_list(item, "insurers"),
@@ -117,6 +129,10 @@ def build_vn_agrsich_replay_fixture_from_period_plan(data: dict) -> dict:
         if not isinstance(context, dict):
             raise ValueError("VN Agrsich replay base_snapshot context must be an object")
         context["period"] = update.period
+        if update.logtime is not None:
+            context["logtime"] = update.logtime
+        if update.max_periods is not None:
+            context["max_periods"] = update.max_periods
         context["run_index"] = update.run_index
         context["rng_seed"] = update.rng_seed
 

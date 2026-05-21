@@ -140,6 +140,26 @@ def test_explicit_period_plan_preserves_legacy_targets_in_fixture() -> None:
     assert fixture["legacy_targets"] == data["legacy_targets"]
 
 
+def test_explicit_period_plan_applies_context_overrides() -> None:
+    data = _period_plan()
+    data["period_updates"][0]["context"] = {
+        "period": 2,
+        "logtime": 7,
+        "max_periods": 100,
+        "run_index": 1,
+        "rng_seed": 1202,
+    }
+
+    fixture = build_explicit_period_fixture_from_plan(data)
+    context = fixture["periods"][0]["context"]
+
+    assert context["period"] == 2
+    assert context["logtime"] == 7
+    assert context["max_periods"] == 100
+    assert context["run_index"] == 1
+    assert context["rng_seed"] == 1202
+
+
 def test_explicit_period_plan_runs_combined_vu_vn_path(tmp_path: Path) -> None:
     plan_path = tmp_path / "explicit_period_plan.json"
     plan_path.write_text(json.dumps(_period_plan()), encoding="utf-8")
