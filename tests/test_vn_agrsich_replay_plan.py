@@ -101,6 +101,23 @@ def test_vn_period_plan_builds_replay_periods_from_start_state() -> None:
     assert replay_fixture["periods"][1]["vn_damage_settlement_snapshots"][0]["policyholder_id"] == 21
 
 
+def test_vn_period_plan_preserves_legacy_targets_in_fixture() -> None:
+    data = _period_plan()
+    data["legacy_report_name"] = "vn_plan_validation"
+    data["legacy_targets"] = [
+        {
+            "legacy_path": "legacy/reference_imsvnr05.dat",
+            "export_filename": "imsvnr05.dat",
+            "subject_type": "policyholder",
+        }
+    ]
+
+    replay_fixture = build_vn_agrsich_replay_fixture_from_period_plan(data)
+
+    assert replay_fixture["legacy_report_name"] == "vn_plan_validation"
+    assert replay_fixture["legacy_targets"] == data["legacy_targets"]
+
+
 def test_vn_period_plan_replay_carries_state_between_periods(tmp_path: Path) -> None:
     plan_path = tmp_path / "vn_agrsich_period_plan.json"
     plan_path.write_text(json.dumps(_period_plan()), encoding="utf-8")
@@ -125,6 +142,48 @@ def test_vn_period_plan_replay_carries_state_between_periods(tmp_path: Path) -> 
         "5.0",
         "0",
         "0.0",
+    ]
+
+
+def test_vn_period_plan_runs_legacy_targets_and_writes_report(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "legacy" / "reference_imsvnr05.dat"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm",
+                "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "2 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    data = _period_plan()
+    data["legacy_report_name"] = "vn_plan_validation"
+    data["legacy_targets"] = [
+        {
+            "legacy_path": "legacy/reference_imsvnr05.dat",
+            "export_filename": "imsvnr05.dat",
+            "subject_type": "policyholder",
+        }
+    ]
+    plan_path = tmp_path / "vn_agrsich_period_plan_with_legacy.json"
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
+
+    result = run_vn_agrsich_replay_from_period_plan_fixture(plan_path, tmp_path / "out")
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is True
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is True
+    assert [path.name for path in result.written_legacy_report_files] == [
+        "vn_plan_validation.json",
+        "vn_plan_validation.csv",
+        "vn_plan_validation_fields.csv",
+        "vn_plan_validation_groups.csv",
+        "vn_plan_validation_periods.csv",
+        "vn_plan_validation_deviations.csv",
     ]
 
 
@@ -163,6 +222,14 @@ def test_vn_period_plan_rejects_non_boolean_carryover_flag() -> None:
         build_vn_agrsich_replay_fixture_from_period_plan(
             _period_plan(carry_forward_vn_state="false")
         )
+
+
+def test_vn_period_plan_rejects_non_list_legacy_targets() -> None:
+    data = _period_plan()
+    data["legacy_targets"] = {"legacy_path": "reference.dat"}
+
+    with pytest.raises(ValueError, match="legacy_targets must be a list"):
+        build_vn_agrsich_replay_fixture_from_period_plan(data)
 
 
 def test_vn_period_plan_rejects_unknown_entity_update() -> None:
