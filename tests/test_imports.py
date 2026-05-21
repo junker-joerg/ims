@@ -61,7 +61,16 @@ def test_core_placeholders_import() -> None:
         run_vu_foreign_info_period_from_fixture,
         run_vu_foreign_info_period_from_mapping,
     )
-    from ims.engine.vn_rule_runner import VNSettlementPeriodRunResult, run_vn_settlement_period
+    from ims.engine.vn_rule_runner import (
+        VNSettlementMultiPeriodRunResult,
+        VNSettlementPeriodRunResult,
+        run_loaded_vn_settlement_period,
+        run_vn_settlement_multi_period_from_fixture,
+        run_vn_settlement_multi_period_from_mappings,
+        run_vn_settlement_period,
+        run_vn_settlement_period_from_fixture,
+        run_vn_settlement_period_from_mapping,
+    )
     from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
     from ims.model.agrsich_export import (
         ExportFileSpec,
@@ -457,13 +466,19 @@ def test_core_placeholders_import() -> None:
     assert VUForeignInfoCarryover is not None
     assert VUForeignInfoMultiPeriodRunResult is not None
     assert VUForeignInfoPeriodRunResult is not None
+    assert VNSettlementMultiPeriodRunResult is not None
     assert VNSettlementPeriodRunResult is not None
     assert run_loaded_vu_foreign_info_period is not None
     assert run_vu_foreign_info_multi_period_from_fixture is not None
     assert run_vu_foreign_info_multi_period_from_mappings is not None
     assert run_vu_foreign_info_period_from_fixture is not None
     assert run_vu_foreign_info_period_from_mapping is not None
+    assert run_loaded_vn_settlement_period is not None
+    assert run_vn_settlement_multi_period_from_fixture is not None
+    assert run_vn_settlement_multi_period_from_mappings is not None
     assert run_vn_settlement_period is not None
+    assert run_vn_settlement_period_from_fixture is not None
+    assert run_vn_settlement_period_from_mapping is not None
     assert insurer.active_prev is True
     assert insurer.rule_id is None
     assert insurer.rule_class is None
