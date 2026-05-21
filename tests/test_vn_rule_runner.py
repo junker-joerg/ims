@@ -31,18 +31,26 @@ def _damage_parameters_mapping() -> dict:
     }
 
 
-def _vn_period_scenario(period: int, *, policyholder_id: int = 21, insurer_id: int = 11) -> dict:
+def _vn_period_scenario(
+    period: int,
+    *,
+    policyholder_id: int = 21,
+    insurer_id: int = 11,
+    insurer_ids: list[int] | None = None,
+) -> dict:
+    ids = insurer_ids if insurer_ids is not None else [insurer_id]
     return {
         "context": {"period": period, "max_periods": 6},
         "bav": {"entity_id": 1, "name": "BAV"},
         "insurers": [
             {
-                "entity_id": insurer_id,
-                "name": f"VU-{insurer_id}",
+                "entity_id": current_insurer_id,
+                "name": f"VU-{current_insurer_id}",
                 "premiums_current_sector": [4.0, 6.0],
                 "reserves_current": [40.0, 60.0],
                 "policyholders_current_sector": [1.0, 2.0],
             }
+            for current_insurer_id in ids
         ],
         "policyholders": [{"entity_id": policyholder_id, "name": f"VN-{policyholder_id}"}],
         "vn_damage_settlement_snapshots": [
@@ -149,6 +157,7 @@ def test_vn_rule_runner_loads_period_from_mapping() -> None:
     assert result.total_settlement_applications == 1
     assert result.damage_settlement_applications[0].damage_result.damages == [9.0, 0.0]
     assert result.damage_settlement_applications[0].settlement_result.end_wealth_current == 87.0
+    assert result.policyholders[0].insurer_id == 11
 
 
 def test_vn_rule_runner_rejects_conflicting_policyholder_targets_per_period() -> None:
@@ -212,6 +221,21 @@ def test_vn_rule_multi_period_runner_can_carry_state_forward() -> None:
     assert second_policyholder.end_wealth_current == 87.0
 
 
+def test_vn_rule_multi_period_runner_keeps_insurer_id_consistent_after_changed_decision() -> None:
+    result = run_vn_settlement_multi_period_from_mappings(
+        [
+            _vn_period_scenario(5, policyholder_id=21, insurer_id=11),
+            _vn_period_scenario(6, policyholder_id=21, insurer_id=12, insurer_ids=[11, 12]),
+        ],
+        carry_forward_vn_state=True,
+    )
+
+    second_policyholder = result.period_results[1].policyholders[0]
+    assert second_policyholder.insurer_id == 12
+    assert second_policyholder.chosen_insurer_current == 12
+    assert second_policyholder.chosen_insurer_sector_current == [12, None]
+
+
 def test_vn_rule_multi_period_runner_without_carryover_keeps_explicit_period_state() -> None:
     result = run_vn_settlement_multi_period_from_mappings(
         [
@@ -273,6 +297,25 @@ def test_vn_rule_multi_period_runner_fixture_supports_carryover(tmp_path) -> Non
     assert len(result.carryovers) == 1
     assert result.carryovers[0].policyholder_ids == [21]
     assert result.period_results[1].insurers[0].reserves_current == [30.0, 60.0]
+
+
+def test_vn_rule_multi_period_runner_fixture_rejects_non_boolean_carryover_flag(tmp_path) -> None:
+    fixture_path = tmp_path / "vn_periods_with_bad_carryover.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_vn_state": "false",
+                "periods": [
+                    _vn_period_scenario(5, policyholder_id=21, insurer_id=11),
+                    _vn_period_scenario(6, policyholder_id=21, insurer_id=11),
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="carry_forward_vn_state must be a boolean"):
+        run_vn_settlement_multi_period_from_fixture(fixture_path)
 
 
 def test_vn_rule_multi_period_runner_rejects_duplicate_or_unsorted_periods() -> None:

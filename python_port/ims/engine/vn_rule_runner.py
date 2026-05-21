@@ -305,6 +305,15 @@ def _period_scenarios_from_fixture_payload(payload: object) -> list[dict]:
     raise ValueError("VN settlement multi-period fixture requires a list or object field: periods")
 
 
+def _carry_forward_vn_state_from_fixture_payload(payload: object) -> bool:
+    if not isinstance(payload, dict) or "carry_forward_vn_state" not in payload:
+        return False
+    value = payload["carry_forward_vn_state"]
+    if not isinstance(value, bool):
+        raise ValueError("VN settlement multi-period fixture field carry_forward_vn_state must be a boolean")
+    return value
+
+
 def run_vn_settlement_multi_period_from_fixture(
     path: str | Path,
     *,
@@ -315,12 +324,7 @@ def run_vn_settlement_multi_period_from_fixture(
     fixture_path = Path(path)
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
-    payload_carryover = (
-        bool(payload.get("carry_forward_vn_state"))
-        if isinstance(payload, dict)
-        else False
-    )
     return run_vn_settlement_multi_period_from_mappings(
         _period_scenarios_from_fixture_payload(payload),
-        carry_forward_vn_state=carry_forward_vn_state or payload_carryover,
+        carry_forward_vn_state=carry_forward_vn_state or _carry_forward_vn_state_from_fixture_payload(payload),
     )

@@ -35,6 +35,13 @@ Bei Versicherern werden aktuelle Praemien, Werbung, Reserven,
 Versichertenzaehler und Schadenaggregate weitergereicht. Bei
 Versicherungsnehmern werden die aktuellen Versicherungs-, Praemien-, Schaden-
 und Vermoegensfelder sowie der zuletzt gewaehlte Versicherer weitergereicht.
+Nach Anwendung der expliziten Folgeperioden-Entscheidungen wird `insurer_id`
+erneut aus `chosen_insurer_current` synchronisiert, damit ein VN bei
+Versichererwechseln keine alte Carryover-Zuordnung behaelt.
+
+Das Fixture-Feld `carry_forward_vn_state` muss ein JSON-Boolean sein. Andere
+Werte wie `"false"` werden zurueckgewiesen, damit Experimente nicht durch
+Truthiness-Casts unbemerkt in den Carryover-Modus wechseln.
 
 ## Annahmen und Grenzen
 
