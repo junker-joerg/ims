@@ -37,6 +37,13 @@ def _optional_snapshot_list(item: dict, key: str) -> list[dict] | None:
     return list(value)
 
 
+def _period_update_list(item: dict, key: str) -> list[dict]:
+    value = item.get(key, [])
+    if not isinstance(value, list):
+        raise ValueError(f"VN Agrsich replay plan field {key} must be a list")
+    return list(value)
+
+
 def _load_plan(data: dict) -> VNAgrsichReplayPlan:
     if not isinstance(data, dict):
         raise ValueError("VN Agrsich replay plan must be a JSON object")
@@ -56,8 +63,8 @@ def _load_plan(data: dict) -> VNAgrsichReplayPlan:
                 period=int(context_data["period"]),
                 run_index=int(context_data.get("run_index", 0)),
                 rng_seed=int(context_data.get("rng_seed", 0)),
-                insurer_updates=list(item.get("insurers", [])),
-                policyholder_updates=list(item.get("policyholders", [])),
+                insurer_updates=_period_update_list(item, "insurers"),
+                policyholder_updates=_period_update_list(item, "policyholders"),
                 vn_settlement_snapshots=_optional_snapshot_list(item, "vn_settlement_snapshots"),
                 vn_damage_settlement_snapshots=_optional_snapshot_list(
                     item,

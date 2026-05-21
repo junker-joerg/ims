@@ -180,6 +180,20 @@ def test_period_plan_rejects_non_boolean_vu_carryover_flag() -> None:
         )
 
 
+def test_period_plan_rejects_non_list_entity_updates() -> None:
+    data = _vu_rule_period_plan()
+    data["period_updates"][0]["insurers"] = None
+
+    with pytest.raises(ValueError, match="field insurers must be a list"):
+        build_replay_fixture_from_period_plan(data)
+
+    data = _vu_rule_period_plan()
+    data["period_updates"][0]["policyholders"] = {"entity_id": 1}
+
+    with pytest.raises(ValueError, match="field policyholders must be a list"):
+        build_replay_fixture_from_period_plan(data)
+
+
 def test_period_plan_api_import_shapes() -> None:
     assert ReplayPlan is not None
     assert ReplayPeriodUpdate is not None

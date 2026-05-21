@@ -36,6 +36,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vu_foreign_info_period_runner.md`: kleiner deterministischer Periodenschritt fuer BAV-Frmdinf plus explizite VU-Regelparameter-Snapshots
 - `explicit_vu_vn_period_runner.md`: gemeinsame explizite Periodenstrecke fuer VU-Regeln und VN-Schaden-/Abrechnung
 - `explicit_vu_vn_period_plan.md`: deterministischer Periodenplan fuer gemeinsame explizite VU/VN-Laeufe
+- `period_plan_input_validation.md`: kontrollierte Validierung von Entity-Update-Listen in Periodenplaenen
 - `vu_free_linear_rule.md`: Vrvu10-Slice fuer frei definierbare lineare VU-Fortschreibung
 - `vn_damage_core.md`: gemeinsamer VN-Schadenerzeugungskern aus Vrvn01 bis Vrvn03
 - `vn_settlement_core.md`: deterministischer VN-Abrechnungskern nach expliziten Entscheidungen

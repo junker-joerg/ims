@@ -43,8 +43,8 @@ def _load_plan(data: dict) -> ReplayPlan:
                 period=int(context_data["period"]),
                 run_index=int(context_data.get("run_index", 0)),
                 rng_seed=int(context_data.get("rng_seed", 0)),
-                insurer_updates=list(item.get("insurers", [])),
-                policyholder_updates=list(item.get("policyholders", [])),
+                insurer_updates=_period_update_list(item, "insurers"),
+                policyholder_updates=_period_update_list(item, "policyholders"),
             )
         )
 
@@ -71,6 +71,13 @@ def _load_plan(data: dict) -> ReplayPlan:
         base_snapshot=base_snapshot,
         period_updates=period_updates,
     )
+
+
+def _period_update_list(item: dict, key: str) -> list[dict]:
+    value = item.get(key, [])
+    if not isinstance(value, list):
+        raise ValueError(f"replay plan field {key} must be a list")
+    return list(value)
 
 
 def _apply_entity_updates(snapshot: dict, entity_key: str, updates: list[dict]) -> None:
