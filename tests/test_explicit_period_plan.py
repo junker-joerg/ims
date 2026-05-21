@@ -123,6 +123,23 @@ def test_explicit_period_plan_builds_runner_fixture_from_base_snapshot() -> None
     assert fixture["periods"][1]["vn_damage_settlement_snapshots"][0]["policyholder_id"] == 21
 
 
+def test_explicit_period_plan_preserves_legacy_targets_in_fixture() -> None:
+    data = _period_plan()
+    data["legacy_report_name"] = "plan_validation"
+    data["legacy_targets"] = [
+        {
+            "legacy_path": "legacy/reference_imsvu011.dat",
+            "export_filename": "imsvu011.dat",
+            "subject_type": "insurer",
+        }
+    ]
+
+    fixture = build_explicit_period_fixture_from_plan(data)
+
+    assert fixture["legacy_report_name"] == "plan_validation"
+    assert fixture["legacy_targets"] == data["legacy_targets"]
+
+
 def test_explicit_period_plan_runs_combined_vu_vn_path(tmp_path: Path) -> None:
     plan_path = tmp_path / "explicit_period_plan.json"
     plan_path.write_text(json.dumps(_period_plan()), encoding="utf-8")
@@ -137,6 +154,48 @@ def test_explicit_period_plan_runs_combined_vu_vn_path(tmp_path: Path) -> None:
     assert result.carryovers[0].vn_carryover is not None
     assert insurer_lines[1].split()[1:4] == ["8.0", "1.0", "39.0"]
     assert insurer_lines[2].split()[1:4] == ["16.0", "1.0", "46.0"]
+
+
+def test_explicit_period_plan_runs_legacy_targets_and_writes_report(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "legacy" / "reference_imsvu011.dat"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
+                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "3 16.0 1.0 46.0 5.0 2 18.0 24.0 1.0 60.0 5.0 0 0.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    data = _period_plan()
+    data["legacy_report_name"] = "plan_validation"
+    data["legacy_targets"] = [
+        {
+            "legacy_path": "legacy/reference_imsvu011.dat",
+            "export_filename": "imsvu011.dat",
+            "subject_type": "insurer",
+        }
+    ]
+    plan_path = tmp_path / "explicit_period_plan_with_legacy.json"
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
+
+    result = run_explicit_multi_period_from_plan_fixture(plan_path, output_dir=tmp_path / "out")
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is True
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is True
+    assert [path.name for path in result.written_legacy_report_files] == [
+        "plan_validation.json",
+        "plan_validation.csv",
+        "plan_validation_fields.csv",
+        "plan_validation_groups.csv",
+        "plan_validation_periods.csv",
+        "plan_validation_deviations.csv",
+    ]
 
 
 def test_explicit_period_plan_can_override_entity_fields() -> None:
@@ -154,6 +213,14 @@ def test_explicit_period_plan_rejects_non_boolean_flags() -> None:
         build_explicit_period_fixture_from_plan(_period_plan(carry_forward_vu_state="false"))
     with pytest.raises(ValueError, match="carry_forward_vn_state must be a boolean"):
         build_explicit_period_fixture_from_plan(_period_plan(carry_forward_vn_state="false"))
+
+
+def test_explicit_period_plan_rejects_non_list_legacy_targets() -> None:
+    data = _period_plan()
+    data["legacy_targets"] = {"legacy_path": "reference.dat"}
+
+    with pytest.raises(ValueError, match="legacy_targets must be a list"):
+        build_explicit_period_fixture_from_plan(data)
 
 
 def test_explicit_period_plan_rejects_unknown_entity_update() -> None:

@@ -23,6 +23,9 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
   mit `periods`.
 - `run_explicit_multi_period_from_plan_fixture` fuehrt das erzeugte Fixture ueber
   den kombinierten expliziten VU/VN-Runner aus.
+- Optional koennen `legacy_targets` und `legacy_report_name` gesetzt werden. Sie
+  werden an den kombinierten Runner weitergereicht; relative Legacy-Pfade werden
+  am Plan-Fixture-Verzeichnis aufgeloest.
 
 ## Annahmen und Grenzen
 
