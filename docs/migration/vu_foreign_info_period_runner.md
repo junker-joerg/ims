@@ -58,6 +58,10 @@ Optional kann `carry_forward_insurer_state=True` gesetzt werden. Dann schreibt d
 - Vorperiodenaktivitaet
 
 Dieser Carryover ist bewusst eng und diagnostiziert die betroffenen Versicherer ueber `VUForeignInfoCarryover`.
+Objekt-Fixtures koennen denselben Carryover ueber das Feld
+`carry_forward_insurer_state` aktivieren. Das Feld muss ein JSON-Boolean sein;
+andere Werte werden auch dann abgelehnt, wenn der Aufrufer Carryover
+zusaetzlich per Funktionsparameter aktiviert.
 
 Explizite `vu_random_uniform_rule_snapshots` und `vu_random_normal_rule_snapshots` bilden die
 portierten `Vrvu01`-/Zufall-I- und `Vrvu02`-/Zufall-II-Regelkerne ab. Die Zufallswerte werden in
@@ -95,6 +99,7 @@ Die Tests pruefen:
 - Diagnoseobjekte halten die angewendeten Regeln fest
 - Szenarioausfuehrung funktioniert aus Mapping und Fixture-Datei
 - Mehrperioden-Fixtures funktionieren als Liste und als Objekt mit `periods`
+- Objekt-Fixtures koennen Carryover ueber ein strikt validiertes Boolean-Feld aktivieren
 - doppelte oder unsortierte Perioden werden abgelehnt
 - die Periodenfolge wird vor Regelanwendung und Carryover validiert
 - VU-Snapshot-Zielkonflikte werden vor der BAV-Frmdinf-Berechnung validiert

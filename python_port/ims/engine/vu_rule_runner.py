@@ -318,6 +318,15 @@ def _period_scenarios_from_fixture_payload(payload: object) -> list[dict]:
     raise ValueError("VU foreign-info multi-period fixture requires a list or object field: periods")
 
 
+def _carry_forward_insurer_state_from_fixture_payload(payload: object) -> bool:
+    if not isinstance(payload, dict) or "carry_forward_insurer_state" not in payload:
+        return False
+    value = payload["carry_forward_insurer_state"]
+    if not isinstance(value, bool):
+        raise ValueError("VU foreign-info multi-period fixture field carry_forward_insurer_state must be a boolean")
+    return value
+
+
 def run_vu_foreign_info_multi_period_from_fixture(
     path: str | Path,
     *,
@@ -328,7 +337,8 @@ def run_vu_foreign_info_multi_period_from_fixture(
     fixture_path = Path(path)
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
+    fixture_carry_forward_insurer_state = _carry_forward_insurer_state_from_fixture_payload(payload)
     return run_vu_foreign_info_multi_period_from_mappings(
         _period_scenarios_from_fixture_payload(payload),
-        carry_forward_insurer_state=carry_forward_insurer_state,
+        carry_forward_insurer_state=carry_forward_insurer_state or fixture_carry_forward_insurer_state,
     )
