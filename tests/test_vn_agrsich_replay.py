@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from ims.engine.vn_agrsich_replay import (
+    VNAgrsichLegacyTarget,
     VNAgrsichReplayPeriodResult,
     VNAgrsichReplayRunResult,
     run_vn_agrsich_replay_from_fixture,
@@ -129,6 +130,95 @@ def test_vn_agrsich_replay_loads_fixture(tmp_path: Path) -> None:
 
     assert result.processed_periods == [1, 2]
     assert (tmp_path / "out" / "imsvu011.dat").exists()
+
+
+def test_vn_agrsich_replay_compares_policyholder_legacy_target(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "reference_imsvnr05.dat"
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm",
+                "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "2 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vn_agrsich_replay_from_mappings(
+        [_period_scenario(1), _period_scenario(2, policyholder_id=22)],
+        tmp_path / "out",
+        legacy_targets=[
+            VNAgrsichLegacyTarget(
+                legacy_path=legacy_path,
+                export_filename="imsvnr05.dat",
+                subject_type="policyholder",
+            )
+        ],
+    )
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is True
+    assert result.legacy_comparison.table_comparisons[0].filename == "imsvnr05.dat"
+
+
+def test_vn_agrsich_replay_fixture_loads_legacy_targets(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "legacy" / "reference_imsvnr05.dat"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm",
+                "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    fixture_path = tmp_path / "vn_agrsich_with_legacy.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "periods": [_period_scenario(1)],
+                "legacy_targets": [
+                    {
+                        "legacy_path": "legacy/reference_imsvnr05.dat",
+                        "export_filename": "imsvnr05.dat",
+                        "subject_type": "policyholder",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vn_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is True
+
+
+def test_vn_agrsich_replay_rejects_unknown_legacy_export_target(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "reference_imsvnr05.dat"
+    legacy_path.write_text(
+        "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm\n"
+        "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="export was not written"):
+        run_vn_agrsich_replay_from_mappings(
+            [_period_scenario(1)],
+            tmp_path / "out",
+            legacy_targets=[
+                VNAgrsichLegacyTarget(
+                    legacy_path=legacy_path,
+                    export_filename="missing.dat",
+                    subject_type="policyholder",
+                )
+            ],
+        )
 
 
 def test_vn_agrsich_replay_rejects_duplicate_or_unsorted_periods(tmp_path: Path) -> None:

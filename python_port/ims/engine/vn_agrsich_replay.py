@@ -7,6 +7,25 @@ from ims.io.scenario_loader import load_scenario_from_mapping
 from ims.model.agrsich_export import ExportTable, build_agrsich_export_tables, compute_global_period
 from ims.model.agrsich_service import collect_extended_agrsich_records
 from ims.model.agrsich_writer import write_agrsich_export_tables
+from ims.model.legacy_agrsich_multi_period import (
+    LegacyTableComparison,
+    MultiPeriodLegacyComparison,
+    build_multi_period_legacy_comparison,
+    compare_insurer_export_table_to_legacy,
+    compare_policyholder_export_table_to_legacy,
+)
+from ims.model.legacy_agrsich_reference import parse_legacy_insurer_dat
+from ims.model.legacy_vn_reference import parse_legacy_policyholder_dat
+
+
+@dataclass(slots=True)
+class VNAgrsichLegacyTarget:
+    """Explizites Legacy-Ziel fuer einen geschriebenen VN-Agrsich-Replay-Export."""
+
+    legacy_path: Path
+    export_filename: str
+    subject_type: str
+    tolerance: float = 0.05
 
 
 @dataclass(slots=True)
@@ -29,6 +48,7 @@ class VNAgrsichReplayRunResult:
     written_files: list[Path]
     total_settlement_applications: int
     total_damage_settlement_applications: int
+    legacy_comparison: MultiPeriodLegacyComparison | None = None
 
 
 def _deduplicate_paths(paths: list[Path]) -> list[Path]:
@@ -53,9 +73,86 @@ def _validate_strictly_increasing_periods(processed_periods: list[int]) -> list[
     return processed_periods
 
 
+def _load_legacy_targets(value: object, *, fixture_base_path: Path) -> list[VNAgrsichLegacyTarget]:
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VN Agrsich replay legacy_targets must be a list")
+
+    targets: list[VNAgrsichLegacyTarget] = []
+    for item in value:
+        if not isinstance(item, dict):
+            raise ValueError("VN Agrsich replay legacy target must be an object")
+        legacy_path = Path(str(item["legacy_path"]))
+        if not legacy_path.is_absolute():
+            legacy_path = fixture_base_path / legacy_path
+        subject_type = str(item.get("subject_type", "policyholder"))
+        if subject_type not in ("insurer", "policyholder"):
+            raise ValueError(f"unsupported VN Agrsich replay legacy target subject_type: {subject_type}")
+        targets.append(
+            VNAgrsichLegacyTarget(
+                legacy_path=legacy_path,
+                export_filename=str(item["export_filename"]),
+                subject_type=subject_type,
+                tolerance=float(item.get("tolerance", 0.05)),
+            )
+        )
+    return targets
+
+
+def _merge_tables_by_filename(period_results: list[VNAgrsichReplayPeriodResult]) -> dict[str, ExportTable]:
+    tables_by_filename: dict[str, ExportTable] = {}
+    for period_result in period_results:
+        for table in period_result.export_tables:
+            existing = tables_by_filename.get(table.spec.filename)
+            if existing is None:
+                tables_by_filename[table.spec.filename] = ExportTable(
+                    spec=table.spec,
+                    header=table.header,
+                    rows=list(table.rows),
+                )
+            else:
+                existing.rows.extend(table.rows)
+    return tables_by_filename
+
+
+def _compare_legacy_targets(
+    period_results: list[VNAgrsichReplayPeriodResult],
+    legacy_targets: list[VNAgrsichLegacyTarget],
+) -> MultiPeriodLegacyComparison | None:
+    if not legacy_targets:
+        return None
+
+    tables_by_filename = _merge_tables_by_filename(period_results)
+    table_comparisons: list[LegacyTableComparison] = []
+    for target in legacy_targets:
+        export_table = tables_by_filename.get(target.export_filename)
+        if export_table is None:
+            raise ValueError(f"VN Agrsich replay legacy target export was not written: {target.export_filename}")
+        if target.subject_type == "insurer":
+            table_comparisons.append(
+                compare_insurer_export_table_to_legacy(
+                    export_table,
+                    parse_legacy_insurer_dat(target.legacy_path),
+                    tolerance=target.tolerance,
+                )
+            )
+        else:
+            table_comparisons.append(
+                compare_policyholder_export_table_to_legacy(
+                    export_table,
+                    parse_legacy_policyholder_dat(target.legacy_path),
+                    tolerance=target.tolerance,
+                )
+            )
+    return build_multi_period_legacy_comparison(table_comparisons)
+
+
 def run_vn_agrsich_replay_from_mappings(
     period_scenarios: list[dict],
     output_dir: str | Path,
+    *,
+    legacy_targets: list[VNAgrsichLegacyTarget] | None = None,
 ) -> VNAgrsichReplayRunResult:
     """
     Fuehrt explizite VN-Periodenszenarien aus und schreibt danach Agrsich-Exports.
@@ -107,6 +204,7 @@ def run_vn_agrsich_replay_from_mappings(
         total_damage_settlement_applications=sum(
             result.settlement_result.total_damage_settlement_applications for result in period_results
         ),
+        legacy_comparison=_compare_legacy_targets(period_results, legacy_targets or []),
     )
 
 
@@ -126,7 +224,16 @@ def run_vn_agrsich_replay_from_fixture(
 ) -> VNAgrsichReplayRunResult:
     """Laedt ein Mehrperioden-Fixture und schreibt Agrsich-Exports nach VN-Regelanwendung."""
 
-    fixture_path = Path(path)
+    fixture_path = Path(path).resolve()
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
-    return run_vn_agrsich_replay_from_mappings(_period_scenarios_from_fixture_payload(payload), output_dir)
+    legacy_targets = (
+        _load_legacy_targets(payload.get("legacy_targets"), fixture_base_path=fixture_path.parent)
+        if isinstance(payload, dict)
+        else []
+    )
+    return run_vn_agrsich_replay_from_mappings(
+        _period_scenarios_from_fixture_payload(payload),
+        output_dir,
+        legacy_targets=legacy_targets,
+    )
