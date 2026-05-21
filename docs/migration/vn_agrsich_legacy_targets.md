@@ -40,6 +40,13 @@ nutzt denselben strukturierten Reportpfad wie die bestehenden Agrsich-
 Validierungslaeufe: Datei-, Feld-, Gruppen-, Perioden- und Abweichungssummaries
 werden nur aus den bereits berechneten Vergleichsobjekten abgeleitet.
 
+Der VN-Replay-Pfad verlangt fuer Legacy-Ziele vollstaendige Periodenabdeckung:
+Jede Periode aus der angegebenen Legacy-Datei muss im geschriebenen Replay-Export
+vorkommen. Fehlt eine Replay-Periode, wird sie als Abweichung mit
+`missing export row` in den Tabellenvergleich und den Report aufgenommen. Damit
+koennen kurze Replay-Fenster nicht versehentlich gegen laengere Legacy-Dateien
+als erfolgreich gelten.
+
 Ein `legacy_report_name` schreibt die zugehoerigen JSON-/CSV-Dateien in das
 Replay-Ausgabeverzeichnis. Ohne diesen Namen bleibt der Report bewusst nur im
 Rueckgabeobjekt und erzeugt keine zusaetzlichen Dateien.
@@ -52,3 +59,5 @@ Rueckgabeobjekt und erzeugt keine zusaetzlichen Dateien.
 - Keine neue VN-Wahl-, Praeferenz- oder RNG-Logik.
 - Der Report berechnet keine neuen Fachwerte; er strukturiert nur vorhandene
   Legacy-Zielvergleiche.
+- Legacy-Zieldateien sollten deshalb passend zum explizit wiedergegebenen
+  Periodenfenster zugeschnitten sein.

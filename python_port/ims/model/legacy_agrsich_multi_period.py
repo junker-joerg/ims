@@ -70,6 +70,34 @@ def _missing_policyholder_row_comparison(global_period: int) -> LegacyPolicyhold
     )
 
 
+def _missing_insurer_export_row_comparison(global_period: int) -> LegacyComparison:
+    return LegacyComparison(
+        matches=False,
+        field_comparisons=[
+            LegacyFieldComparison(
+                name="global_period",
+                actual="missing export row",
+                expected=global_period,
+                matches=False,
+            )
+        ],
+    )
+
+
+def _missing_policyholder_export_row_comparison(global_period: int) -> LegacyPolicyholderComparison:
+    return LegacyPolicyholderComparison(
+        matches=False,
+        field_comparisons=[
+            LegacyPolicyholderFieldComparison(
+                name="global_period",
+                actual="missing export row",
+                expected=global_period,
+                matches=False,
+            )
+        ],
+    )
+
+
 def _duplicate_insurer_row_comparison(global_period: int) -> LegacyComparison:
     return LegacyComparison(
         matches=False,
@@ -103,6 +131,7 @@ def compare_insurer_export_table_to_legacy(
     legacy_table: LegacyInsurerTable,
     *,
     tolerance: float = 0.05,
+    require_complete_legacy_periods: bool = False,
 ) -> LegacyTableComparison:
     row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison] = []
     seen_global_periods: set[int] = set()
@@ -125,6 +154,11 @@ def compare_insurer_export_table_to_legacy(
             )
         )
 
+    if require_complete_legacy_periods:
+        for row in legacy_table.rows:
+            if row.global_period not in seen_global_periods:
+                row_comparisons.append(_missing_insurer_export_row_comparison(row.global_period))
+
     return LegacyTableComparison(
         filename=export_table.spec.filename,
         subject_type="insurer",
@@ -141,6 +175,7 @@ def compare_policyholder_export_table_to_legacy(
     legacy_table: LegacyPolicyholderTable,
     *,
     tolerance: float = 0.05,
+    require_complete_legacy_periods: bool = False,
 ) -> LegacyTableComparison:
     row_comparisons: list[LegacyComparison | LegacyPolicyholderComparison] = []
     seen_global_periods: set[int] = set()
@@ -162,6 +197,11 @@ def compare_policyholder_export_table_to_legacy(
                 tolerance=tolerance,
             )
         )
+
+    if require_complete_legacy_periods:
+        for row in legacy_table.rows:
+            if row.global_period not in seen_global_periods:
+                row_comparisons.append(_missing_policyholder_export_row_comparison(row.global_period))
 
     return LegacyTableComparison(
         filename=export_table.spec.filename,

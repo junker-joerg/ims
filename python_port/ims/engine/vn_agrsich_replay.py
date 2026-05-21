@@ -147,6 +147,7 @@ def _compare_legacy_targets(
                     export_table,
                     parse_legacy_insurer_dat(target.legacy_path),
                     tolerance=target.tolerance,
+                    require_complete_legacy_periods=True,
                 )
             )
         else:
@@ -155,6 +156,7 @@ def _compare_legacy_targets(
                     export_table,
                     parse_legacy_policyholder_dat(target.legacy_path),
                     tolerance=target.tolerance,
+                    require_complete_legacy_periods=True,
                 )
             )
     return build_multi_period_legacy_comparison(table_comparisons)

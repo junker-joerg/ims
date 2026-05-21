@@ -168,6 +168,47 @@ def test_vn_agrsich_replay_compares_policyholder_legacy_target(tmp_path: Path) -
     assert result.legacy_report.group_summaries[0].subject_type == "policyholder"
 
 
+def test_vn_agrsich_replay_flags_missing_replay_periods_in_legacy_target(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "reference_imsvnr05.dat"
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm",
+                "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "2 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vn_agrsich_replay_from_mappings(
+        [_period_scenario(1)],
+        tmp_path / "out",
+        legacy_targets=[
+            VNAgrsichLegacyTarget(
+                legacy_path=legacy_path,
+                export_filename="imsvnr05.dat",
+                subject_type="policyholder",
+            )
+        ],
+        legacy_report_name="vn_replay_validation",
+    )
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is False
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is False
+    assert result.legacy_report.mismatched_rows == 1
+    assert result.legacy_report.period_summaries[-1].global_period == 2
+    assert result.legacy_report.deviation_index[0].actual == "missing export row"
+
+    payload = json.loads((tmp_path / "out" / "vn_replay_validation.json").read_text(encoding="utf-8"))
+    assert payload["matches"] is False
+    assert payload["deviation_index"][0]["global_period"] == 2
+    assert payload["deviation_index"][0]["actual"] == "missing export row"
+
+
 def test_vn_agrsich_replay_fixture_loads_legacy_targets(tmp_path: Path) -> None:
     legacy_path = tmp_path / "legacy" / "reference_imsvnr05.dat"
     legacy_path.parent.mkdir()
