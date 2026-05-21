@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from ims.engine.explicit_period_runner import (
+    ExplicitLegacyTarget,
     ExplicitMultiPeriodRunResult,
     ExplicitPeriodCarryover,
     ExplicitPeriodRunResult,
@@ -186,3 +187,117 @@ def test_explicit_multi_period_fixture_rejects_non_boolean_carryover_flags(tmp_p
 
     with pytest.raises(ValueError, match="carry_forward_vu_state must be a boolean"):
         run_explicit_multi_period_from_fixture(fixture_path)
+
+
+def test_explicit_multi_period_compares_insurer_legacy_target(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "reference_imsvu011.dat"
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
+                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "3 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_explicit_multi_period_from_mappings(
+        [_scenario(2), _scenario(3, policyholder_id=22)],
+        output_dir=tmp_path / "out",
+        legacy_targets=[
+            ExplicitLegacyTarget(
+                legacy_path=legacy_path,
+                export_filename="imsvu011.dat",
+                subject_type="insurer",
+            )
+        ],
+    )
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is True
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is True
+
+
+def test_explicit_multi_period_flags_missing_legacy_period(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "reference_imsvu011.dat"
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
+                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "3 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_explicit_multi_period_from_mappings(
+        [_scenario(2)],
+        output_dir=tmp_path / "out",
+        legacy_targets=[
+            ExplicitLegacyTarget(
+                legacy_path=legacy_path,
+                export_filename="imsvu011.dat",
+                subject_type="insurer",
+            )
+        ],
+    )
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is False
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is False
+    assert result.legacy_report.deviation_index[0].global_period == 3
+    assert result.legacy_report.deviation_index[0].actual == "missing export row"
+
+
+def test_explicit_multi_period_fixture_loads_legacy_targets_and_writes_report(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "legacy" / "reference_imsvu011.dat"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
+                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    fixture_path = tmp_path / "explicit_with_legacy.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "periods": [_scenario(2)],
+                "legacy_report_name": "explicit_validation",
+                "legacy_targets": [
+                    {
+                        "legacy_path": "legacy/reference_imsvu011.dat",
+                        "export_filename": "imsvu011.dat",
+                        "subject_type": "insurer",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_explicit_multi_period_from_fixture(fixture_path, output_dir=tmp_path / "out")
+
+    assert result.legacy_comparison is not None
+    assert result.legacy_comparison.matches is True
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is True
+    assert [path.name for path in result.written_legacy_report_files] == [
+        "explicit_validation.json",
+        "explicit_validation.csv",
+        "explicit_validation_fields.csv",
+        "explicit_validation_groups.csv",
+        "explicit_validation_periods.csv",
+        "explicit_validation_deviations.csv",
+    ]
+    assert (tmp_path / "out" / "explicit_validation.json").exists()
