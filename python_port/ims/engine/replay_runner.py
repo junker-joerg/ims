@@ -115,6 +115,14 @@ def _carry_forward_insurer_state_from_fixture_payload(payload: dict) -> bool:
     return value
 
 
+def _validate_carryover_replay_period_order(snapshots: list[ReplaySnapshot]) -> None:
+    periods = [snapshot.global_period for snapshot in snapshots]
+    if len(set(periods)) != len(periods):
+        raise ValueError("Agrsich replay carryover rejects duplicate replay periods")
+    if periods != sorted(periods):
+        raise ValueError("Agrsich replay carryover requires increasing replay periods")
+
+
 def _deduplicate_paths(paths: list[Path]) -> list[Path]:
     seen: set[Path] = set()
     result: list[Path] = []
@@ -140,6 +148,9 @@ def run_agrsich_replay_from_mapping(
     snapshots = _load_snapshots(data)
     target = _load_target(data, Path(fixture_base_path).resolve())
     fixture_carry_forward_insurer_state = _carry_forward_insurer_state_from_fixture_payload(data)
+    should_carry_forward_insurer_state = carry_forward_insurer_state or fixture_carry_forward_insurer_state
+    if should_carry_forward_insurer_state:
+        _validate_carryover_replay_period_order(snapshots)
 
     output_path = Path(output_dir)
     all_written_files: list[Path] = []
@@ -147,7 +158,7 @@ def run_agrsich_replay_from_mapping(
     vu_period_results: list[VUForeignInfoPeriodRunResult] = []
     carryovers: list[VUForeignInfoCarryover] = []
     for snapshot in snapshots:
-        if (carry_forward_insurer_state or fixture_carry_forward_insurer_state) and vu_period_results:
+        if should_carry_forward_insurer_state and vu_period_results:
             carryover = apply_vu_foreign_info_carryover(vu_period_results[-1], snapshot.scenario)
             if carryover is not None:
                 carryovers.append(carryover)

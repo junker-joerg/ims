@@ -15,7 +15,9 @@ Fixture in den Agrsich-Exportzustand uebernommen, ohne eine automatische
 historische Regelauswahl zu behaupten. Optional kann
 `carry_forward_insurer_state=True` gesetzt werden; alternativ akzeptiert das
 Fixture das streng als JSON-Boolean validierte Feld
-`carry_forward_insurer_state`.
+`carry_forward_insurer_state`. Bei aktivem Carryover muessen die Replay-
+Perioden strikt steigen; doppelte oder rueckwaerts angeordnete Perioden werden
+vor dem ersten VU-Schritt und vor jeder Dateiausgabe abgelehnt.
 
 ## Anschluss an die bestehende Legacy-Validierung
 

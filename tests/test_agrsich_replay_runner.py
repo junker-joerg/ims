@@ -242,3 +242,45 @@ def test_replay_runner_fixture_rejects_non_boolean_vu_carryover_flag(tmp_path: P
 
     with pytest.raises(ValueError, match="carry_forward_insurer_state must be a boolean"):
         run_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
+
+
+def test_replay_runner_rejects_unsorted_periods_before_vu_carryover(tmp_path: Path) -> None:
+    output_dir = tmp_path / "out"
+
+    with pytest.raises(ValueError, match="increasing replay periods"):
+        run_agrsich_replay_from_mapping(
+            {"snapshots": [_vu_rule_snapshot(5), _vu_rule_snapshot(3)]},
+            output_dir,
+            carry_forward_insurer_state=True,
+        )
+
+    assert not output_dir.exists()
+
+
+def test_replay_runner_rejects_duplicate_periods_before_vu_carryover(tmp_path: Path) -> None:
+    output_dir = tmp_path / "out"
+
+    with pytest.raises(ValueError, match="duplicate replay periods"):
+        run_agrsich_replay_from_mapping(
+            {"snapshots": [_vu_rule_snapshot(3), _vu_rule_snapshot(3)]},
+            output_dir,
+            carry_forward_insurer_state=True,
+        )
+
+    assert not output_dir.exists()
+
+
+def test_replay_runner_fixture_carryover_rejects_unsorted_periods(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "unsorted_vu_replay_carry.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_insurer_state": True,
+                "snapshots": [_vu_rule_snapshot(5), _vu_rule_snapshot(3)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="increasing replay periods"):
+        run_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
