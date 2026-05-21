@@ -324,7 +324,8 @@ def run_vn_settlement_multi_period_from_fixture(
     fixture_path = Path(path)
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
+    fixture_carry_forward_vn_state = _carry_forward_vn_state_from_fixture_payload(payload)
     return run_vn_settlement_multi_period_from_mappings(
         _period_scenarios_from_fixture_payload(payload),
-        carry_forward_vn_state=carry_forward_vn_state or _carry_forward_vn_state_from_fixture_payload(payload),
+        carry_forward_vn_state=carry_forward_vn_state or fixture_carry_forward_vn_state,
     )
