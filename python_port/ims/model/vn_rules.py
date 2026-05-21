@@ -486,6 +486,7 @@ def apply_vn_settlement_snapshot(
     )
     policyholder.chosen_insurer_sector_current = result.chosen_insurer_sector_current
     policyholder.chosen_insurer_current = result.chosen_insurer_sector_current[0]
+    policyholder.insurer_id = result.chosen_insurer_sector_current[0]
     policyholder.insured_current_sector = result.insured_current_sector
     policyholder.insured_current = result.insured_current_sector[0]
     policyholder.paid_premium_current = result.paid_premium_current
