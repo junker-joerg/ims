@@ -1,7 +1,14 @@
 from dataclasses import dataclass
 
 from ims.model.entities import Insurer, Policyholder
-from ims.model.vn_damage_rules import VNDamageRuleResult
+from ims.model.vn_damage_rules import (
+    VNDamageRuleDraws,
+    VNDamageRuleParameters,
+    VNDamageRuleResult,
+    apply_vn_damage_rule,
+    vn_damage_rule_draws_from_mapping,
+    vn_damage_rule_parameters_from_mapping,
+)
 
 
 @dataclass(slots=True)
@@ -54,6 +61,29 @@ class VNSettlementApplication:
 
     policyholder_id: int
     result: VNSettlementResult
+
+
+@dataclass(slots=True)
+class VNDamageSettlementSnapshot:
+    """Expliziter VN-Periodensnapshot fuer Schadenkern plus Abrechnung."""
+
+    policyholder_id: int
+    parameters: VNDamageRuleParameters
+    damage_thresholds: list[float]
+    draws: VNDamageRuleDraws
+    insurance_decisions: list[VNInsuranceDecision]
+    previous_wealth: float
+    previous_wealth_sector: list[float] | None = None
+    change_shock: bool = False
+
+
+@dataclass(slots=True)
+class VNDamageSettlementApplication:
+    """Diagnose eines angewendeten expliziten VN-Schaden-Abrechnungs-Snapshots."""
+
+    policyholder_id: int
+    damage_result: VNDamageRuleResult
+    settlement_result: VNSettlementResult
 
 
 def _two_float_values(values: object, *, fallback: float) -> list[float]:
@@ -213,6 +243,36 @@ def load_vn_settlement_snapshots_from_mapping(value: object) -> list[VNSettlemen
     return [vn_settlement_snapshot_from_mapping(item) for item in value]
 
 
+def vn_damage_settlement_snapshot_from_mapping(mapping: dict[str, object]) -> VNDamageSettlementSnapshot:
+    """Laedt einen expliziten VN-Schaden-Abrechnungs-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN damage settlement snapshot must be an object")
+    for key in ("policyholder_id", "previous_wealth", "parameters", "damage_thresholds", "draws", "insurance_decisions"):
+        if key not in mapping:
+            raise ValueError(f"VN damage settlement snapshot requires field: {key}")
+    return VNDamageSettlementSnapshot(
+        policyholder_id=int(mapping["policyholder_id"]),
+        parameters=vn_damage_rule_parameters_from_mapping(mapping["parameters"]),
+        damage_thresholds=_two_float_values(mapping["damage_thresholds"], fallback=0.0),
+        draws=vn_damage_rule_draws_from_mapping(mapping["draws"]),
+        insurance_decisions=load_vn_insurance_decisions_from_mapping(mapping["insurance_decisions"]),
+        previous_wealth=float(mapping["previous_wealth"]),
+        previous_wealth_sector=_optional_two_float_values(mapping.get("previous_wealth_sector")),
+        change_shock=bool(mapping.get("change_shock", False)),
+    )
+
+
+def load_vn_damage_settlement_snapshots_from_mapping(value: object) -> list[VNDamageSettlementSnapshot]:
+    """Laedt explizite VN-Schaden-Abrechnungs-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VN damage settlement snapshots must be a list")
+    return [vn_damage_settlement_snapshot_from_mapping(item) for item in value]
+
+
 def build_vn_settlement_snapshot_from_damage_result(
     *,
     policyholder_id: int,
@@ -233,7 +293,7 @@ def build_vn_settlement_snapshot_from_damage_result(
     return VNSettlementSnapshot(
         policyholder_id=int(policyholder_id),
         previous_wealth=float(previous_wealth),
-        previous_wealth_sector=previous_wealth_sector,
+        previous_wealth_sector=_optional_two_float_values(previous_wealth_sector),
         decisions=[
             VNSectorSettlementDecision(
                 sector_index=decision.sector_index,
@@ -251,6 +311,67 @@ def load_vn_insurance_decisions_from_mapping(value: object) -> list[VNInsuranceD
     """Laedt mehrere explizite VN-Versicherungsentscheidungen aus In-Memory-Daten."""
 
     return _insurance_decision_list(value)
+
+
+def apply_vn_damage_settlement_snapshot(
+    policyholder: Policyholder,
+    insurers: list[Insurer],
+    snapshot: VNDamageSettlementSnapshot,
+) -> VNDamageSettlementApplication:
+    """
+    Wendet einen expliziten VN-Schaden-Abrechnungs-Snapshot an.
+
+    Der Snapshot enthaelt Parameter, Schwellen, Normalziehungen und
+    Versicherungsentscheidungen bereits explizit; historische Wahl- und
+    RNG-Logik bleiben ausserhalb dieses Slices.
+    """
+
+    if policyholder.entity_id != snapshot.policyholder_id:
+        raise ValueError(
+            "VN damage settlement snapshot policyholder_id does not match policyholder: "
+            f"{snapshot.policyholder_id} != {policyholder.entity_id}"
+        )
+    damage_result = apply_vn_damage_rule(
+        snapshot.parameters,
+        damage_thresholds=snapshot.damage_thresholds,
+        draws=snapshot.draws,
+        change_shock=snapshot.change_shock,
+    )
+    settlement_snapshot = build_vn_settlement_snapshot_from_damage_result(
+        policyholder_id=snapshot.policyholder_id,
+        previous_wealth=snapshot.previous_wealth,
+        previous_wealth_sector=snapshot.previous_wealth_sector,
+        insurance_decisions=snapshot.insurance_decisions,
+        damage_result=damage_result,
+    )
+    settlement_result = apply_vn_settlement_snapshot(policyholder, insurers, settlement_snapshot)
+    return VNDamageSettlementApplication(
+        policyholder_id=snapshot.policyholder_id,
+        damage_result=damage_result,
+        settlement_result=settlement_result,
+    )
+
+
+def apply_vn_damage_settlement_snapshots(
+    policyholders: list[Policyholder],
+    insurers: list[Insurer],
+    snapshots: list[VNDamageSettlementSnapshot],
+) -> list[VNDamageSettlementApplication]:
+    """Wendet explizite VN-Schaden-Abrechnungs-Snapshots auf passende VNs an."""
+
+    policyholders_by_id = {policyholder.entity_id: policyholder for policyholder in policyholders}
+    applications: list[VNDamageSettlementApplication] = []
+    seen_policyholder_ids: set[int] = set()
+    for snapshot in snapshots:
+        if snapshot.policyholder_id in seen_policyholder_ids:
+            raise ValueError(f"duplicate VN damage settlement snapshot for policyholder: {snapshot.policyholder_id}")
+        seen_policyholder_ids.add(snapshot.policyholder_id)
+        policyholder = policyholders_by_id.get(snapshot.policyholder_id)
+        if policyholder is None:
+            raise ValueError(f"VN damage settlement snapshot references unknown policyholder: {snapshot.policyholder_id}")
+        application = apply_vn_damage_settlement_snapshot(policyholder, insurers, snapshot)
+        applications.append(application)
+    return applications
 
 
 def _current_sector_premium(insurer: Insurer, sector_index: int) -> float:

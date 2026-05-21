@@ -1,14 +1,17 @@
 import pytest
 
 from ims.model.entities import Insurer, Policyholder
-from ims.model.vn_damage_rules import VNDamageRuleResult
+from ims.model.vn_damage_rules import VNDamageRuleDraws, VNDamageRuleParameters, VNDamageRuleResult
 from ims.model.vn_rules import (
+    VNDamageSettlementSnapshot,
     VNInsuranceDecision,
     VNSectorSettlementDecision,
     VNSettlementSnapshot,
+    apply_vn_damage_settlement_snapshot,
     apply_vn_settlement_snapshot,
     apply_vn_settlement_snapshots,
     build_vn_settlement_snapshot_from_damage_result,
+    load_vn_damage_settlement_snapshots_from_mapping,
     load_vn_insurance_decisions_from_mapping,
     load_vn_settlement_snapshots_from_mapping,
 )
@@ -163,6 +166,71 @@ def test_vn_settlement_snapshot_can_be_built_from_damage_result_and_insurance_de
     assert snapshot.decisions[1].damage == 6.0
 
 
+def test_vn_settlement_snapshot_builder_normalizes_previous_wealth_sector() -> None:
+    snapshot = build_vn_settlement_snapshot_from_damage_result(
+        policyholder_id=34,
+        previous_wealth=200.0,
+        previous_wealth_sector=[120.0],
+        insurance_decisions=[
+            VNInsuranceDecision(sector_index=0, insured=False),
+            VNInsuranceDecision(sector_index=1, insured=False),
+        ],
+        damage_result=VNDamageRuleResult(
+            damages=[4.0, 6.0],
+            triggered=[True, True],
+            trigger_draws=[0.1, 0.2],
+            amount_draws=[0.3, 0.4],
+        ),
+    )
+    policyholder = Policyholder(entity_id=34)
+
+    result = apply_vn_settlement_snapshot(policyholder, [], snapshot)
+
+    assert snapshot.previous_wealth_sector == [120.0, 120.0]
+    assert result.end_wealth_sector_current == [116.0, 114.0]
+
+
+def test_vn_damage_settlement_snapshot_applies_damage_rule_and_settlement() -> None:
+    insurer = Insurer(
+        entity_id=14,
+        premiums_current_sector=[8.0, 9.0],
+        reserves_current=[100.0, 200.0],
+        policyholders_current_sector=[2.0, 3.0],
+        claims_count_current=[0, 1],
+        claims_sum_current=[0.0, 5.0],
+    )
+    policyholder = Policyholder(entity_id=35)
+    snapshot = VNDamageSettlementSnapshot(
+        policyholder_id=35,
+        parameters=VNDamageRuleParameters(
+            damage_intercept_normal=[10.0, 20.0],
+            damage_factor_normal=[2.0, 3.0],
+            damage_intercept_shock=[100.0, 200.0],
+            damage_factor_shock=[4.0, 5.0],
+        ),
+        damage_thresholds=[0.7, 0.4],
+        draws=VNDamageRuleDraws(trigger_draws=[0.6, 0.5], amount_draws=[1.5, 2.0]),
+        insurance_decisions=[
+            VNInsuranceDecision(sector_index=0, insured=True, insurer_id=14),
+            VNInsuranceDecision(sector_index=1, insured=False),
+        ],
+        previous_wealth=1000.0,
+        previous_wealth_sector=[600.0, 400.0],
+    )
+
+    application = apply_vn_damage_settlement_snapshot(policyholder, [insurer], snapshot)
+
+    assert application.policyholder_id == 35
+    assert application.damage_result.damages == [13.0, 0.0]
+    assert application.settlement_result.paid_premium_current == [8.0, 0.0]
+    assert application.settlement_result.end_wealth_current == 979.0
+    assert policyholder.claim_sum_current == [13.0, 0.0]
+    assert insurer.reserves_current == [95.0, 200.0]
+    assert insurer.policyholders_current_sector == [3.0, 3.0]
+    assert insurer.claims_count_current == [1, 1]
+    assert insurer.claims_sum_current == [13.0, 5.0]
+
+
 def test_vn_settlement_snapshots_reject_duplicate_or_unknown_targets() -> None:
     policyholders = [Policyholder(entity_id=40)]
     insurers = [Insurer(entity_id=50)]
@@ -255,3 +323,39 @@ def test_vn_insurance_decision_loader_validates_required_shape() -> None:
                 {"sector_index": 0, "insured": False},
             ]
         )
+
+
+def test_vn_damage_settlement_loader_reads_explicit_snapshot() -> None:
+    snapshots = load_vn_damage_settlement_snapshots_from_mapping(
+        [
+            {
+                "policyholder_id": 80,
+                "previous_wealth": 300.0,
+                "previous_wealth_sector": [180.0],
+                "damage_thresholds": [0.7, 0.4],
+                "change_shock": True,
+                "parameters": {
+                    "damage_intercept_normal": [1.0, 2.0],
+                    "damage_factor_normal": [3.0, 4.0],
+                    "damage_intercept_shock": [5.0, 6.0],
+                    "damage_factor_shock": [7.0, 8.0],
+                },
+                "draws": {
+                    "trigger_draws": [0.1, 0.2],
+                    "amount_draws": [0.3, 0.4],
+                },
+                "insurance_decisions": [
+                    {"sector_index": 0, "insured": True, "insurer_id": 90, "premium": 3.0},
+                    {"sector_index": 1, "insured": False},
+                ],
+            }
+        ]
+    )
+
+    assert snapshots[0].policyholder_id == 80
+    assert snapshots[0].previous_wealth_sector == [180.0, 180.0]
+    assert snapshots[0].damage_thresholds == [0.7, 0.4]
+    assert snapshots[0].change_shock is True
+    assert snapshots[0].parameters.damage_factor_shock == [7.0, 8.0]
+    assert snapshots[0].draws.amount_draws == [0.3, 0.4]
+    assert snapshots[0].insurance_decisions[0].insurer_id == 90

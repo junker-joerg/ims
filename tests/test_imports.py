@@ -244,16 +244,22 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
     )
     from ims.model.vn_rules import (
+        VNDamageSettlementApplication,
+        VNDamageSettlementSnapshot,
         VNInsuranceDecision,
         VNSectorSettlementDecision,
         VNSettlementApplication,
         VNSettlementResult,
         VNSettlementSnapshot,
+        apply_vn_damage_settlement_snapshot,
+        apply_vn_damage_settlement_snapshots,
         apply_vn_settlement_snapshot,
         apply_vn_settlement_snapshots,
         build_vn_settlement_snapshot_from_damage_result,
+        load_vn_damage_settlement_snapshots_from_mapping,
         load_vn_insurance_decisions_from_mapping,
         load_vn_settlement_snapshots_from_mapping,
+        vn_damage_settlement_snapshot_from_mapping,
         vn_insurance_decision_from_mapping,
         vn_sector_settlement_decision_from_mapping,
         vn_settlement_snapshot_from_mapping,
@@ -587,16 +593,22 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_acceptance_verdict_json is not None
     assert write_legacy_validation_acceptance_run_manifest is not None
     assert write_legacy_validation_acceptance_run_artifacts_from_summary_directory is not None
+    assert VNDamageSettlementApplication is not None
+    assert VNDamageSettlementSnapshot is not None
     assert VNInsuranceDecision is not None
     assert VNSectorSettlementDecision is not None
     assert VNSettlementApplication is not None
     assert VNSettlementResult is not None
     assert VNSettlementSnapshot is not None
+    assert apply_vn_damage_settlement_snapshot is not None
+    assert apply_vn_damage_settlement_snapshots is not None
     assert apply_vn_settlement_snapshot is not None
     assert apply_vn_settlement_snapshots is not None
     assert build_vn_settlement_snapshot_from_damage_result is not None
+    assert load_vn_damage_settlement_snapshots_from_mapping is not None
     assert load_vn_insurance_decisions_from_mapping is not None
     assert load_vn_settlement_snapshots_from_mapping is not None
+    assert vn_damage_settlement_snapshot_from_mapping is not None
     assert vn_insurance_decision_from_mapping is not None
     assert vn_sector_settlement_decision_from_mapping is not None
     assert vn_settlement_snapshot_from_mapping is not None
