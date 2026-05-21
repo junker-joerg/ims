@@ -4,6 +4,7 @@ from pathlib import Path
 
 from ims.engine.context import SimulationContext
 from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
+from ims.model.agrsich_export import compute_global_period
 from ims.model.entities import Insurer, Policyholder
 from ims.model.vn_rules import (
     VNDamageSettlementApplication,
@@ -20,6 +21,7 @@ class VNSettlementPeriodRunResult:
     """Kleines Ergebnis eines expliziten VN-Periodenschritts."""
 
     period: int
+    global_period: int
     insurers: list[Insurer] = field(default_factory=list)
     policyholders: list[Policyholder] = field(default_factory=list)
     damage_settlement_applications: list[VNDamageSettlementApplication] = field(default_factory=list)
@@ -40,6 +42,8 @@ class VNStateCarryover:
 
     from_period: int
     to_period: int
+    from_global_period: int
+    to_global_period: int
     insurer_ids: list[int]
     policyholder_ids: list[int]
 
@@ -50,6 +54,7 @@ class VNSettlementMultiPeriodRunResult:
 
     period_results: list[VNSettlementPeriodRunResult]
     processed_periods: list[int]
+    processed_global_periods: list[int]
     total_settlement_applications: int
     total_damage_settlement_applications: int
     carryovers: list[VNStateCarryover] = field(default_factory=list)
@@ -118,6 +123,7 @@ def run_vn_settlement_period(
     )
     return VNSettlementPeriodRunResult(
         period=context.period,
+        global_period=compute_global_period(context),
         insurers=insurers,
         policyholders=policyholders,
         damage_settlement_applications=damage_settlement_applications,
@@ -258,6 +264,8 @@ def apply_vn_state_carryover(
     return VNStateCarryover(
         from_period=previous_result.period,
         to_period=loaded.context.period,
+        from_global_period=previous_result.global_period,
+        to_global_period=compute_global_period(loaded.context),
         insurer_ids=carried_insurer_ids,
         policyholder_ids=carried_policyholder_ids,
     )
@@ -274,8 +282,8 @@ def run_vn_settlement_multi_period_from_mappings(
         raise ValueError("VN settlement multi-period run requires a list of period scenarios")
 
     loaded_scenarios = [load_scenario_from_mapping(period_scenario) for period_scenario in period_scenarios]
-    processed_periods = _validate_strictly_increasing_periods(
-        [loaded.context.period for loaded in loaded_scenarios]
+    processed_global_periods = _validate_strictly_increasing_periods(
+        [compute_global_period(loaded.context) for loaded in loaded_scenarios]
     )
     period_results: list[VNSettlementPeriodRunResult] = []
     carryovers: list[VNStateCarryover] = []
@@ -288,7 +296,8 @@ def run_vn_settlement_multi_period_from_mappings(
 
     return VNSettlementMultiPeriodRunResult(
         period_results=period_results,
-        processed_periods=processed_periods,
+        processed_periods=[loaded.context.period for loaded in loaded_scenarios],
+        processed_global_periods=processed_global_periods,
         total_settlement_applications=sum(result.total_settlement_applications for result in period_results),
         total_damage_settlement_applications=sum(
             result.total_damage_settlement_applications for result in period_results

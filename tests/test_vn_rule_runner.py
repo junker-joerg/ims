@@ -37,10 +37,11 @@ def _vn_period_scenario(
     policyholder_id: int = 21,
     insurer_id: int = 11,
     insurer_ids: list[int] | None = None,
+    run_index: int = 0,
 ) -> dict:
     ids = insurer_ids if insurer_ids is not None else [insurer_id]
     return {
-        "context": {"period": period, "max_periods": 6},
+        "context": {"period": period, "max_periods": 6, "run_index": run_index},
         "bav": {"entity_id": 1, "name": "BAV"},
         "insurers": [
             {
@@ -99,6 +100,7 @@ def test_vn_rule_runner_applies_explicit_settlement_snapshots() -> None:
 
     assert isinstance(result, VNSettlementPeriodRunResult)
     assert result.period == 4
+    assert result.global_period == 4
     assert result.total_settlement_applications == 1
     assert result.settlement_applications[0].policyholder_id == 20
     assert policyholder.paid_premium_current == [7.0, 0.0]
@@ -140,6 +142,7 @@ def test_vn_rule_runner_applies_explicit_damage_settlement_snapshots() -> None:
     )
 
     assert result.period == 5
+    assert result.global_period == 5
     assert result.total_damage_settlement_applications == 1
     assert result.total_settlement_applications == 1
     assert result.damage_settlement_applications[0].damage_result.damages == [9.0, 0.0]
@@ -153,6 +156,7 @@ def test_vn_rule_runner_loads_period_from_mapping() -> None:
 
     assert isinstance(result, VNSettlementPeriodRunResult)
     assert result.period == 5
+    assert result.global_period == 5
     assert result.total_damage_settlement_applications == 1
     assert result.total_settlement_applications == 1
     assert result.damage_settlement_applications[0].damage_result.damages == [9.0, 0.0]
@@ -187,6 +191,7 @@ def test_vn_rule_multi_period_runner_processes_increasing_periods() -> None:
 
     assert isinstance(result, VNSettlementMultiPeriodRunResult)
     assert result.processed_periods == [5, 6]
+    assert result.processed_global_periods == [5, 6]
     assert result.total_damage_settlement_applications == 2
     assert result.total_settlement_applications == 2
     assert [period_result.period for period_result in result.period_results] == [5, 6]
@@ -206,6 +211,8 @@ def test_vn_rule_multi_period_runner_can_carry_state_forward() -> None:
     assert isinstance(result.carryovers[0], VNStateCarryover)
     assert result.carryovers[0].from_period == 5
     assert result.carryovers[0].to_period == 6
+    assert result.carryovers[0].from_global_period == 5
+    assert result.carryovers[0].to_global_period == 6
     assert result.carryovers[0].insurer_ids == [11]
     assert result.carryovers[0].policyholder_ids == [21]
 
@@ -234,6 +241,24 @@ def test_vn_rule_multi_period_runner_keeps_insurer_id_consistent_after_changed_d
     assert second_policyholder.insurer_id == 12
     assert second_policyholder.chosen_insurer_current == 12
     assert second_policyholder.chosen_insurer_sector_current == [12, None]
+
+
+def test_vn_rule_multi_period_runner_orders_by_global_periods_across_runs() -> None:
+    result = run_vn_settlement_multi_period_from_mappings(
+        [
+            _vn_period_scenario(5, policyholder_id=21, insurer_id=11, run_index=0),
+            _vn_period_scenario(5, policyholder_id=21, insurer_id=11, run_index=1),
+        ],
+        carry_forward_vn_state=True,
+    )
+
+    assert result.processed_periods == [5, 5]
+    assert result.processed_global_periods == [5, 11]
+    assert [period_result.global_period for period_result in result.period_results] == [5, 11]
+    assert result.carryovers[0].from_period == 5
+    assert result.carryovers[0].to_period == 5
+    assert result.carryovers[0].from_global_period == 5
+    assert result.carryovers[0].to_global_period == 11
 
 
 def test_vn_rule_multi_period_runner_without_carryover_keeps_explicit_period_state() -> None:
@@ -274,6 +299,7 @@ def test_vn_rule_multi_period_runner_loads_fixture(tmp_path) -> None:
     result = run_vn_settlement_multi_period_from_fixture(fixture_path)
 
     assert result.processed_periods == [5, 6]
+    assert result.processed_global_periods == [5, 6]
     assert result.total_damage_settlement_applications == 2
 
 
@@ -351,6 +377,14 @@ def test_vn_rule_multi_period_runner_rejects_duplicate_or_unsorted_periods() -> 
             [_vn_period_scenario(6), _vn_period_scenario(5, policyholder_id=22)]
         )
 
+    with pytest.raises(ValueError, match="increasing periods"):
+        run_vn_settlement_multi_period_from_mappings(
+            [
+                _vn_period_scenario(1, run_index=1),
+                _vn_period_scenario(6, policyholder_id=22, run_index=0),
+            ]
+        )
+
 
 def test_vn_rule_runner_allows_empty_snapshot_list() -> None:
     result = run_vn_settlement_period(
@@ -360,6 +394,7 @@ def test_vn_rule_runner_allows_empty_snapshot_list() -> None:
     )
 
     assert result.period == 2
+    assert result.global_period == 2
     assert result.total_settlement_applications == 0
     assert result.total_damage_settlement_applications == 0
     assert result.damage_settlement_applications == []
