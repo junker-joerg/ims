@@ -26,7 +26,9 @@ Neue bzw. erweiterte Elemente:
 - `VNStateCarryover`
 - `VNSettlementPeriodRunResult.insurers`
 - `VNSettlementPeriodRunResult.policyholders`
+- `VNSettlementPeriodRunResult.global_period`
 - `VNSettlementMultiPeriodRunResult.carryovers`
+- `VNSettlementMultiPeriodRunResult.processed_global_periods`
 - `run_vn_settlement_multi_period_from_mappings(..., carry_forward_vn_state=True)`
 - Fixture-Feld `carry_forward_vn_state`
 
@@ -38,6 +40,11 @@ und Vermoegensfelder sowie der zuletzt gewaehlte Versicherer weitergereicht.
 Nach Anwendung der expliziten Folgeperioden-Entscheidungen wird `insurer_id`
 erneut aus `chosen_insurer_current` synchronisiert, damit ein VN bei
 Versichererwechseln keine alte Carryover-Zuordnung behaelt.
+
+Die Carryover-Diagnose enthaelt lokale Quell-/Zielperioden und zusaetzlich
+globale Quell-/Zielperioden. Dadurch bleiben Folgeperioden ueber mehrere
+Laeufe hinweg nachvollziehbar, auch wenn die lokale Periodennummer im naechsten
+Run erneut bei demselben Wert liegt.
 
 Das Fixture-Feld `carry_forward_vn_state` muss ein JSON-Boolean sein. Andere
 Werte wie `"false"` werden zurueckgewiesen, damit Experimente nicht durch
