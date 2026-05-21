@@ -18,8 +18,9 @@ strukturiert explizite Python-Snapshots fuer den bereits portierten VN-Replay-Pf
 
 - `VNAgrsichReplayPlan` beschreibt Metadaten, Startzustand, Carryover-Flag und
   Periodenupdates.
-- `VNAgrsichReplayPeriodUpdate` beschreibt Periode, Laufindex, RNG-Seed,
-  Entitaetsupdates und optionale VN-Snapshotlisten.
+- `VNAgrsichReplayPeriodUpdate` beschreibt Periode, optionale
+  `logtime`-/`max_periods`-Overrides, Laufindex, RNG-Seed, Entitaetsupdates und
+  optionale VN-Snapshotlisten.
 - `build_vn_agrsich_replay_fixture_from_period_plan` erzeugt daraus das bestehende
   VN-Agrsich-Replay-Fixture mit `periods`.
 - `run_vn_agrsich_replay_from_period_plan_fixture` fuehrt den erzeugten
@@ -30,6 +31,8 @@ strukturiert explizite Python-Snapshots fuer den bereits portierten VN-Replay-Pf
 - Alle Schadens- und Versicherungsentscheidungen liegen weiterhin explizit im Plan
   oder im Basissnapshot vor.
 - Das `carry_forward_vn_state`-Flag muss ein Boolean sein.
+- Fehlen `logtime` oder `max_periods` im Periodenupdate, bleibt der
+  Basissnapshot massgeblich.
 - Entitaetsupdates duerfen nur vorhandene `entity_id`-Werte des Basissnapshots
   ueberschreiben.
 - Legacy-Zielvergleiche und Validierungsreports bleiben im bestehenden

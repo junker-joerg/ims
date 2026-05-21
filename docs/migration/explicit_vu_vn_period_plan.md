@@ -17,8 +17,9 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
 ## Python-Abbildung
 
 - `ExplicitPeriodPlan` beschreibt Metadaten, Basissnapshot und Carryover-Flags.
-- `ExplicitPeriodPlanUpdate` beschreibt Periode, Laufindex, RNG-Seed,
-  Entity-Updates und explizite VU/VN-Snapshotlisten.
+- `ExplicitPeriodPlanUpdate` beschreibt Periode, optionale
+  `logtime`-/`max_periods`-Overrides, Laufindex, RNG-Seed, Entity-Updates und
+  explizite VU/VN-Snapshotlisten.
 - `build_explicit_period_fixture_from_plan` erzeugt daraus das Objekt-Fixture
   mit `periods`.
 - `run_explicit_multi_period_from_plan_fixture` fuehrt das erzeugte Fixture ueber
@@ -31,6 +32,8 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
 
 - Alle VU-Regelparameter, VN-Schadenziehungen und VN-Versicherungsentscheidungen
   muessen explizit im Plan oder im Basissnapshot vorliegen.
+- Fehlen `logtime` oder `max_periods` im Periodenupdate, bleibt der
+  Basissnapshot massgeblich.
 - Carryover-Flags muessen JSON-Booleans sein.
 - Entity-Updates duerfen nur vorhandene `entity_id`-Werte des Basissnapshots
   ueberschreiben.

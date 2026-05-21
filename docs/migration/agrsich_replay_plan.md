@@ -23,6 +23,8 @@ Optional kann ein Plan `carry_forward_insurer_state` als JSON-Boolean setzen.
 Das Feld wird in das erzeugte Replay-Fixture uebernommen und aktiviert dort den
 bereits portierten, kontrollierten VU-State-Carryover vor der Folgeperiode.
 Andere Feldtypen werden frueh abgelehnt.
+Periodenupdates koennen ausserdem `context.logtime` und `context.max_periods`
+explizit setzen. Fehlen diese Felder, bleibt der Basiskontext massgeblich.
 
 Aktuell ist dieser Pfad fuer zwei kleine Legacy-Fenster abgesichert:
 
