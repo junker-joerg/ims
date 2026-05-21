@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 from pathlib import Path
 
@@ -15,6 +15,16 @@ from ims.model.legacy_agrsich_multi_period import (
     compare_policyholder_export_table_to_legacy,
 )
 from ims.model.legacy_agrsich_reference import parse_legacy_insurer_dat
+from ims.model.legacy_validation_report import (
+    LegacyValidationReport,
+    build_legacy_validation_report_from_multi_period_comparison,
+    write_legacy_validation_deviation_index_csv,
+    write_legacy_validation_field_summary_csv,
+    write_legacy_validation_group_summary_csv,
+    write_legacy_validation_period_summary_csv,
+    write_legacy_validation_report_csv,
+    write_legacy_validation_report_json,
+)
 from ims.model.legacy_vn_reference import parse_legacy_policyholder_dat
 
 
@@ -49,6 +59,8 @@ class VNAgrsichReplayRunResult:
     total_settlement_applications: int
     total_damage_settlement_applications: int
     legacy_comparison: MultiPeriodLegacyComparison | None = None
+    legacy_report: LegacyValidationReport | None = None
+    written_legacy_report_files: list[Path] = field(default_factory=list)
 
 
 def _deduplicate_paths(paths: list[Path]) -> list[Path]:
@@ -148,11 +160,27 @@ def _compare_legacy_targets(
     return build_multi_period_legacy_comparison(table_comparisons)
 
 
+def _write_legacy_report_files(
+    report: LegacyValidationReport,
+    output_dir: Path,
+    report_name: str,
+) -> list[Path]:
+    return [
+        write_legacy_validation_report_json(report, output_dir / f"{report_name}.json"),
+        write_legacy_validation_report_csv(report, output_dir / f"{report_name}.csv"),
+        write_legacy_validation_field_summary_csv(report, output_dir / f"{report_name}_fields.csv"),
+        write_legacy_validation_group_summary_csv(report, output_dir / f"{report_name}_groups.csv"),
+        write_legacy_validation_period_summary_csv(report, output_dir / f"{report_name}_periods.csv"),
+        write_legacy_validation_deviation_index_csv(report, output_dir / f"{report_name}_deviations.csv"),
+    ]
+
+
 def run_vn_agrsich_replay_from_mappings(
     period_scenarios: list[dict],
     output_dir: str | Path,
     *,
     legacy_targets: list[VNAgrsichLegacyTarget] | None = None,
+    legacy_report_name: str | None = None,
 ) -> VNAgrsichReplayRunResult:
     """
     Fuehrt explizite VN-Periodenszenarien aus und schreibt danach Agrsich-Exports.
@@ -194,6 +222,18 @@ def run_vn_agrsich_replay_from_mappings(
             )
         )
 
+    legacy_comparison = _compare_legacy_targets(period_results, legacy_targets or [])
+    legacy_report = (
+        build_legacy_validation_report_from_multi_period_comparison(legacy_comparison)
+        if legacy_comparison is not None
+        else None
+    )
+    written_legacy_report_files = (
+        _write_legacy_report_files(legacy_report, output_path, legacy_report_name)
+        if legacy_report is not None and legacy_report_name is not None
+        else []
+    )
+
     return VNAgrsichReplayRunResult(
         processed_periods=processed_periods,
         period_results=period_results,
@@ -204,7 +244,9 @@ def run_vn_agrsich_replay_from_mappings(
         total_damage_settlement_applications=sum(
             result.settlement_result.total_damage_settlement_applications for result in period_results
         ),
-        legacy_comparison=_compare_legacy_targets(period_results, legacy_targets or []),
+        legacy_comparison=legacy_comparison,
+        legacy_report=legacy_report,
+        written_legacy_report_files=written_legacy_report_files,
     )
 
 
@@ -236,4 +278,9 @@ def run_vn_agrsich_replay_from_fixture(
         _period_scenarios_from_fixture_payload(payload),
         output_dir,
         legacy_targets=legacy_targets,
+        legacy_report_name=(
+            str(payload["legacy_report_name"])
+            if isinstance(payload, dict) and payload.get("legacy_report_name") is not None
+            else None
+        ),
     )

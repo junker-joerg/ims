@@ -161,6 +161,11 @@ def test_vn_agrsich_replay_compares_policyholder_legacy_target(tmp_path: Path) -
     assert result.legacy_comparison is not None
     assert result.legacy_comparison.matches is True
     assert result.legacy_comparison.table_comparisons[0].filename == "imsvnr05.dat"
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is True
+    assert result.legacy_report.total_files == 1
+    assert result.legacy_report.total_rows == 2
+    assert result.legacy_report.group_summaries[0].subject_type == "policyholder"
 
 
 def test_vn_agrsich_replay_fixture_loads_legacy_targets(tmp_path: Path) -> None:
@@ -197,6 +202,91 @@ def test_vn_agrsich_replay_fixture_loads_legacy_targets(tmp_path: Path) -> None:
 
     assert result.legacy_comparison is not None
     assert result.legacy_comparison.matches is True
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is True
+
+
+def test_vn_agrsich_replay_writes_legacy_report_files(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "reference_imsvnr05.dat"
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm",
+                "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vn_agrsich_replay_from_mappings(
+        [_period_scenario(1)],
+        tmp_path / "out",
+        legacy_targets=[
+            VNAgrsichLegacyTarget(
+                legacy_path=legacy_path,
+                export_filename="imsvnr05.dat",
+                subject_type="policyholder",
+            )
+        ],
+        legacy_report_name="vn_replay_validation",
+    )
+
+    assert result.legacy_report is not None
+    assert [path.name for path in result.written_legacy_report_files] == [
+        "vn_replay_validation.json",
+        "vn_replay_validation.csv",
+        "vn_replay_validation_fields.csv",
+        "vn_replay_validation_groups.csv",
+        "vn_replay_validation_periods.csv",
+        "vn_replay_validation_deviations.csv",
+    ]
+    for path in result.written_legacy_report_files:
+        assert path.exists()
+
+    payload = json.loads((tmp_path / "out" / "vn_replay_validation.json").read_text(encoding="utf-8"))
+    assert payload["matches"] is True
+    assert payload["total_files"] == 1
+    assert payload["files"][0]["subject_type"] == "policyholder"
+
+
+def test_vn_agrsich_replay_fixture_writes_named_legacy_report(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "legacy" / "reference_imsvnr05.dat"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm",
+                "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    fixture_path = tmp_path / "vn_agrsich_with_report.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "periods": [_period_scenario(1)],
+                "legacy_report_name": "fixture_vn_report",
+                "legacy_targets": [
+                    {
+                        "legacy_path": "legacy/reference_imsvnr05.dat",
+                        "export_filename": "imsvnr05.dat",
+                        "subject_type": "policyholder",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_vn_agrsich_replay_from_fixture(fixture_path, tmp_path / "out")
+
+    assert result.legacy_report is not None
+    assert result.legacy_report.matches is True
+    assert (tmp_path / "out" / "fixture_vn_report.json").exists()
+    assert len(result.written_legacy_report_files) == 6
 
 
 def test_vn_agrsich_replay_rejects_unknown_legacy_export_target(tmp_path: Path) -> None:
