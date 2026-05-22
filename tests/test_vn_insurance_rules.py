@@ -28,6 +28,7 @@ def test_vn_random_insurance_rule_uses_vrvn02_thresholds_and_active_insurers() -
 
     assert result.insured == [True, False]
     assert result.chosen_insurer_ids == [12, None]
+    assert result.selected_insurer_ids == [12, 11]
     assert result.decisions[0].sector_index == 0
     assert result.decisions[0].insured is True
     assert result.decisions[0].insurer_id == 12
@@ -52,38 +53,42 @@ def test_vn_random_insurance_rule_uses_shock_thresholds() -> None:
 
     assert result.insured == [True, False]
     assert result.chosen_insurer_ids == [7, None]
+    assert result.selected_insurer_ids == [7, 9]
 
 
-def test_vn_random_insurance_rule_rejects_missing_active_insurers_when_insured() -> None:
+def test_vn_random_insurance_rule_rejects_missing_active_insurers_before_status_branch() -> None:
     with pytest.raises(ValueError, match="active insurers"):
         apply_vn_random_insurance_rule(
             VNRandomInsuranceRuleParameters(
-                insurance_thresholds_normal=[0.1, 0.9],
-                insurance_thresholds_shock=[0.1, 0.9],
+                insurance_thresholds_normal=[0.9, 0.9],
+                insurance_thresholds_shock=[0.9, 0.9],
             ),
             active_insurer_ids=[],
             draws=VNRandomInsuranceRuleDraws(
-                status_draws=[0.5, 0.5],
+                status_draws=[0.1, 0.2],
                 insurer_choice_draws=[0.0, 0.0],
             ),
         )
 
 
-def test_vn_random_insurance_rule_allows_no_active_insurers_when_uninsured() -> None:
+def test_vn_random_insurance_rule_keeps_uninsured_decisions_without_insurer_reference() -> None:
     result = apply_vn_random_insurance_rule(
         VNRandomInsuranceRuleParameters(
             insurance_thresholds_normal=[0.9, 0.9],
             insurance_thresholds_shock=[0.9, 0.9],
         ),
-        active_insurer_ids=[],
+        active_insurer_ids=[11, 12],
         draws=VNRandomInsuranceRuleDraws(
             status_draws=[0.1, 0.2],
-            insurer_choice_draws=[0.0, 0.0],
+            insurer_choice_draws=[0.0, 0.99],
         ),
     )
 
     assert result.insured == [False, False]
     assert result.chosen_insurer_ids == [None, None]
+    assert result.selected_insurer_ids == [11, 12]
+    assert result.decisions[0].insurer_id is None
+    assert result.decisions[1].insurer_id is None
 
 
 def test_vn_random_insurance_rule_loaders_validate_shape() -> None:
@@ -160,6 +165,7 @@ def test_vn_random_insurance_decisions_feed_damage_settlement_path() -> None:
     )
 
     assert random_result.chosen_insurer_ids == [12, None]
+    assert random_result.selected_insurer_ids == [12, 11]
     assert application.damage_result.damages == [9.0, 0.0]
     assert application.settlement_result.paid_premium_current == [4.0, 0.0]
     assert application.settlement_result.end_wealth_current == 87.0

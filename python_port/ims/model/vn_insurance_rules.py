@@ -26,6 +26,7 @@ class VNRandomInsuranceRuleResult:
     decisions: list[VNInsuranceDecision]
     insured: list[bool]
     chosen_insurer_ids: list[int | None]
+    selected_insurer_ids: list[int]
     status_draws: list[float]
     insurer_choice_draws: list[float]
 
@@ -68,7 +69,7 @@ def _active_insurer_ids(value: object) -> list[int]:
 
 def _choose_insurer(active_insurer_ids: list[int], draw: float) -> int:
     if not active_insurer_ids:
-        raise ValueError("VN random insurance rule requires active insurers for insured sectors")
+        raise ValueError("VN random insurance rule requires active insurers for insurer selection")
     index = min(int(draw * len(active_insurer_ids)), len(active_insurer_ids) - 1)
     return active_insurer_ids[index]
 
@@ -140,13 +141,11 @@ def apply_vn_random_insurance_rule(
     decisions: list[VNInsuranceDecision] = []
     insured_values: list[bool] = []
     chosen_insurer_ids: list[int | None] = []
+    selected_insurer_ids: list[int] = []
     for sector_index in range(2):
         insured = thresholds[sector_index] <= status_draws[sector_index]
-        insurer_id = (
-            _choose_insurer(active_ids, insurer_choice_draws[sector_index])
-            if insured
-            else None
-        )
+        selected_insurer_id = _choose_insurer(active_ids, insurer_choice_draws[sector_index])
+        insurer_id = selected_insurer_id if insured else None
         decisions.append(
             VNInsuranceDecision(
                 sector_index=sector_index,
@@ -156,11 +155,13 @@ def apply_vn_random_insurance_rule(
         )
         insured_values.append(insured)
         chosen_insurer_ids.append(insurer_id)
+        selected_insurer_ids.append(selected_insurer_id)
 
     return VNRandomInsuranceRuleResult(
         decisions=decisions,
         insured=insured_values,
         chosen_insurer_ids=chosen_insurer_ids,
+        selected_insurer_ids=selected_insurer_ids,
         status_draws=status_draws,
         insurer_choice_draws=insurer_choice_draws,
     )

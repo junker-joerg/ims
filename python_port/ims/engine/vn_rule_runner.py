@@ -1,6 +1,8 @@
+from collections.abc import Callable
 from dataclasses import dataclass, field
 import json
 from pathlib import Path
+import random
 
 from ims.engine.context import SimulationContext, ensure_context_rng
 from ims.engine.rng import rand_normal_standard
@@ -63,8 +65,7 @@ class VNSettlementMultiPeriodRunResult:
     carryovers: list[VNStateCarryover] = field(default_factory=list)
 
 
-def _draw_vn_damage_rule_draws(context: SimulationContext) -> VNDamageRuleDraws:
-    rng = ensure_context_rng(context)
+def _draw_vn_damage_rule_draws_from_rng(rng: random.Random) -> VNDamageRuleDraws:
     first_trigger = rand_normal_standard(rng)
     first_amount = rand_normal_standard(rng)
     second_trigger = rand_normal_standard(rng)
@@ -73,6 +74,10 @@ def _draw_vn_damage_rule_draws(context: SimulationContext) -> VNDamageRuleDraws:
         trigger_draws=[first_trigger, second_trigger],
         amount_draws=[first_amount, second_amount],
     )
+
+
+def _draw_vn_damage_rule_draws(context: SimulationContext) -> VNDamageRuleDraws:
+    return _draw_vn_damage_rule_draws_from_rng(ensure_context_rng(context))
 
 
 def _validate_disjoint_vn_snapshot_targets(
@@ -111,6 +116,7 @@ def run_vn_settlement_period(
     *,
     damage_settlement_snapshots: list[VNDamageSettlementSnapshot] | None = None,
     settlement_snapshots: list[VNSettlementSnapshot] | None = None,
+    damage_draw_provider: Callable[[], VNDamageRuleDraws] | None = None,
 ) -> VNSettlementPeriodRunResult:
     """
     Wendet explizite VN-Schaden- und Settlement-Snapshots fuer eine Periode an.
@@ -130,7 +136,11 @@ def run_vn_settlement_period(
         policyholders,
         insurers,
         damage_settlement_snapshots,
-        damage_draw_provider=lambda: _draw_vn_damage_rule_draws(context),
+        damage_draw_provider=(
+            damage_draw_provider
+            if damage_draw_provider is not None
+            else lambda: _draw_vn_damage_rule_draws(context)
+        ),
     )
     applications = apply_vn_settlement_snapshots(
         policyholders,
@@ -147,7 +157,11 @@ def run_vn_settlement_period(
     )
 
 
-def run_loaded_vn_settlement_period(loaded: LoadedScenario) -> VNSettlementPeriodRunResult:
+def run_loaded_vn_settlement_period(
+    loaded: LoadedScenario,
+    *,
+    damage_draw_provider: Callable[[], VNDamageRuleDraws] | None = None,
+) -> VNSettlementPeriodRunResult:
     """Fuehrt den expliziten VN-Periodenschritt fuer ein geladenes Szenario aus."""
 
     return run_vn_settlement_period(
@@ -156,6 +170,7 @@ def run_loaded_vn_settlement_period(loaded: LoadedScenario) -> VNSettlementPerio
         loaded.policyholders,
         damage_settlement_snapshots=loaded.vn_damage_settlement_snapshots,
         settlement_snapshots=loaded.vn_settlement_snapshots,
+        damage_draw_provider=damage_draw_provider,
     )
 
 
@@ -303,12 +318,19 @@ def run_vn_settlement_multi_period_from_mappings(
     )
     period_results: list[VNSettlementPeriodRunResult] = []
     carryovers: list[VNStateCarryover] = []
+    shared_rng = ensure_context_rng(loaded_scenarios[0].context)
+    shared_damage_draw_provider = lambda: _draw_vn_damage_rule_draws_from_rng(shared_rng)
     for loaded in loaded_scenarios:
         if carry_forward_vn_state and period_results:
             carryover = apply_vn_state_carryover(period_results[-1], loaded)
             if carryover is not None:
                 carryovers.append(carryover)
-        period_results.append(run_loaded_vn_settlement_period(loaded))
+        period_results.append(
+            run_loaded_vn_settlement_period(
+                loaded,
+                damage_draw_provider=shared_damage_draw_provider,
+            )
+        )
 
     return VNSettlementMultiPeriodRunResult(
         period_results=period_results,

@@ -1,7 +1,10 @@
 import pytest
 
 from ims.engine.rng import create_rng, rand_normal_standard
-from ims.engine.vn_rule_runner import run_vn_settlement_period_from_mapping
+from ims.engine.vn_rule_runner import (
+    run_vn_settlement_multi_period_from_mappings,
+    run_vn_settlement_period_from_mapping,
+)
 from ims.io.scenario_loader import load_scenario_from_mapping
 from ims.model.entities import Insurer, Policyholder
 from ims.model.vn_damage_rules import VNDamageRuleDraws, VNDamageRuleParameters
@@ -23,9 +26,9 @@ def _damage_parameters_mapping() -> dict:
     }
 
 
-def _vn_period_scenario() -> dict:
+def _vn_period_scenario(period: int = 5, *, policyholder_id: int = 21, rng_seed: int = 123) -> dict:
     return {
-        "context": {"period": 5, "max_periods": 6, "rng_seed": 123},
+        "context": {"period": period, "max_periods": 6, "rng_seed": rng_seed},
         "bav": {"entity_id": 1, "name": "BAV"},
         "insurers": [
             {
@@ -36,10 +39,10 @@ def _vn_period_scenario() -> dict:
                 "policyholders_current_sector": [1.0, 2.0],
             }
         ],
-        "policyholders": [{"entity_id": 21, "name": "VN-21"}],
+        "policyholders": [{"entity_id": policyholder_id, "name": f"VN-{policyholder_id}"}],
         "vn_damage_settlement_snapshots": [
             {
-                "policyholder_id": 21,
+                "policyholder_id": policyholder_id,
                 "previous_wealth": 100.0,
                 "damage_thresholds": [0.8, 0.2],
                 "parameters": _damage_parameters_mapping(),
@@ -158,4 +161,36 @@ def test_vn_rule_runner_draws_missing_damage_settlement_normals_from_context() -
     assert application.damage_result.damages == [
         5.0 + 2.0 * first_amount if 0.8 > first_trigger else 0.0,
         7.0 + 3.0 * second_amount if 0.2 > second_trigger else 0.0,
+    ]
+
+
+def test_vn_multi_period_runner_continues_missing_damage_draw_stream() -> None:
+    rng = create_rng(123)
+    first_period_draws = [rand_normal_standard(rng) for _ in range(4)]
+    second_period_draws = [rand_normal_standard(rng) for _ in range(4)]
+
+    result = run_vn_settlement_multi_period_from_mappings(
+        [
+            _vn_period_scenario(5, policyholder_id=21, rng_seed=123),
+            _vn_period_scenario(6, policyholder_id=22, rng_seed=123),
+        ]
+    )
+
+    first_application = result.period_results[0].damage_settlement_applications[0]
+    second_application = result.period_results[1].damage_settlement_applications[0]
+    assert first_application.damage_result.trigger_draws == [
+        first_period_draws[0],
+        first_period_draws[2],
+    ]
+    assert first_application.damage_result.amount_draws == [
+        first_period_draws[1],
+        first_period_draws[3],
+    ]
+    assert second_application.damage_result.trigger_draws == [
+        second_period_draws[0],
+        second_period_draws[2],
+    ]
+    assert second_application.damage_result.amount_draws == [
+        second_period_draws[1],
+        second_period_draws[3],
     ]

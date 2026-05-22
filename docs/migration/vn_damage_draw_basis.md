@@ -25,6 +25,10 @@ Schadeneintritt und eine fuer die Schadenhoehe.
     `rand_normal_standard` erzeugt.
   - die Ziehungsreihenfolge ist Trigger Sparte 0, Hoehe Sparte 0, Trigger
     Sparte 1, Hoehe Sparte 1.
+  - Mehrperiodenlaeufe verwenden fuer fehlende Draws einen gemeinsamen
+    RNG-Strom aus dem ersten Periodenkontext. Dadurch starten Szenarien mit
+    gleichem `rng_seed` nicht in jeder Periode wieder bei derselben
+    Normalfolge.
 
 ## Validierung
 
@@ -33,6 +37,7 @@ Die Tests decken ab:
 - Laden von VN-Schaden-/Abrechnungs-Snapshots ohne explizite Draws.
 - Direkte Anwendung mit expliziter Draw-Quelle.
 - Runner-Anwendung mit reproduzierbaren Draws aus `rng_seed`.
+- Mehrperioden-Runner mit fortlaufendem Draw-Strom ueber Periodengrenzen.
 
 ## Grenzen
 

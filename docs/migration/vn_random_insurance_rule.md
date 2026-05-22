@@ -16,9 +16,11 @@ In Perioden nach der Startperiode bestimmt Vrvn02 den Versicherungsstatus mit:
 - `vr2 = (f <= myrndf())`
 
 Anschliessend wird fuer jede Sparte ein aktiver Versicherer zufaellig
-ausgewaehlt. Bei nicht versicherten Sparten wird die Auswahl im Python-Ergebnis
-nicht als `insurer_id` weitergereicht, weil der bestehende Abrechnungspfad
-unversicherte Entscheidungen ohne Versicherer erwartet.
+ausgewaehlt, bevor die Versicherungszweige ausgewertet werden. Der Python-Kern
+erzwingt diese Auswahl deshalb auch fuer unversicherte Sparten und legt sie in
+`selected_insurer_ids` offen. Bei nicht versicherten Sparten wird sie nicht als
+`insurer_id` an den Abrechnungspfad weitergereicht, weil dieser unversicherte
+Entscheidungen ohne Versicherer erwartet.
 
 ## Python-Abbildung
 
@@ -44,7 +46,8 @@ Die Tests decken ab:
 
 - Normal- und Schockschwellen
 - Randfall `threshold == draw`, der wie im Altcode als versichert gilt
-- aktive Versichererauswahl und Validierung leerer aktiver Mengen
+- aktive Versichererauswahl vor dem Statuszweig und Validierung leerer aktiver
+  Mengen
 - Loader-Normalisierung und Draw-Validierung
 - direkte Weitergabe der erzeugten Entscheidungen in den bestehenden
   VN-Schaden-/Abrechnungspfad
