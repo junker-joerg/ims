@@ -83,6 +83,7 @@ class ExplicitMultiPeriodRunResult:
     period_results: list[ExplicitPeriodRunResult]
     written_files: list[Path]
     total_vu_rule_applications: int
+    total_vn_insurance_rule_applications: int
     total_vn_settlement_applications: int
     total_vn_damage_settlement_applications: int
     carryovers: list[ExplicitPeriodCarryover] = field(default_factory=list)
@@ -353,6 +354,9 @@ def run_explicit_multi_period_from_mappings(
         period_results=period_results,
         written_files=_deduplicate_paths(written_files),
         total_vu_rule_applications=sum(_vu_rule_application_count(result.vu_result) for result in period_results),
+        total_vn_insurance_rule_applications=sum(
+            len(result.vn_result.insurance_rule_applications) for result in period_results
+        ),
         total_vn_settlement_applications=sum(
             result.vn_result.total_settlement_applications for result in period_results
         ),

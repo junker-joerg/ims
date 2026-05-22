@@ -126,8 +126,27 @@ def test_explicit_period_applies_vu_before_vn_and_writes_export(tmp_path: Path) 
 
 
 def test_explicit_multi_period_counts_vu_and_vn_applications(tmp_path: Path) -> None:
+    first = _scenario(2)
+    second = _scenario(3, policyholder_id=22)
+    first["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [11],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+    second["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 22,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [11],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+
     result = run_explicit_multi_period_from_mappings(
-        [_scenario(2), _scenario(3, policyholder_id=22)],
+        [first, second],
         output_dir=tmp_path,
     )
 
@@ -136,6 +155,11 @@ def test_explicit_multi_period_counts_vu_and_vn_applications(tmp_path: Path) -> 
     assert result.processed_local_periods == [2, 3]
     assert result.processed_global_periods == [2, 3]
     assert result.total_vu_rule_applications == 2
+    assert result.total_vn_insurance_rule_applications == 2
+    assert [
+        len(period_result.vn_result.insurance_rule_applications)
+        for period_result in result.period_results
+    ] == [1, 1]
     assert result.total_vn_settlement_applications == 2
     assert result.total_vn_damage_settlement_applications == 2
     assert {path.name for path in result.written_files} >= {"imsvu011.dat", "imsvnr05.dat"}

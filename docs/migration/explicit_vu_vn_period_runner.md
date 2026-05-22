@@ -11,7 +11,7 @@ wirken.
 ## Ursprung im Altcode
 
 Der fachliche Anschluss liegt bei den VU-Regelwirkungen aus den portierten
-`Vrvu*`-Slices und den VN-Periodenwirkungen aus `Vrvn01` bis `Vrvn03`. Dieser
+`Vrvu*`-Slices und den VN-Periodenwirkungen aus `Vrvn01` bis `Vrvn06`. Dieser
 Slice bildet nur die explizite Reihenfolge der bereits migrierten Kernlogik ab;
 historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
 
@@ -29,14 +29,17 @@ historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
   `processed_global_periods` enthaelt die validierte globale Zeitachse.
 - Optionale Flags `carry_forward_vu_state` und `carry_forward_vn_state` aktivieren
   die bereits vorhandenen kontrollierten Carryover-Bausteine.
+- Das Mehrperiodenergebnis zaehlt VN-Versicherungsregelanwendungen separat als
+  `total_vn_insurance_rule_applications`.
 - `ExplicitPeriodCarryover` weist lokale und globale Quell-/Zielperioden aus,
   damit Plaene mit `run_index * max_periods + period` dieselbe Zeitachse wie
   die VU- und Agrsich-Runner diagnostizieren.
 
 ## Annahmen und Grenzen
 
-- Alle VU-Regelparameter, Schadenziehungen und VN-Versicherungsentscheidungen
-  muessen als explizite Snapshots im Szenario vorliegen.
+- Alle VU-Regelparameter, VN-Versicherungsregel-Snapshots, Schadenziehungen und
+  VN-Versicherungsentscheidungen muessen als explizite Snapshots im Szenario
+  vorliegen.
 - Bei gleichzeitig aktiviertem VU- und VN-Carryover werden beide bestehenden
   Carryover-Bausteine ausgefuehrt; der VN-Carryover enthaelt dabei auch
   Versicherer-Aktuellwerte nach der VN-Abrechnung.

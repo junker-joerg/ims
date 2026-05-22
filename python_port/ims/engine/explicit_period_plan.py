@@ -19,6 +19,7 @@ _SNAPSHOT_KEYS = (
     "vu_expected_claim_rule_snapshots",
     "vu_market_share_markup_rule_snapshots",
     "vu_free_linear_rule_snapshots",
+    "vn_insurance_rule_snapshots",
     "vn_damage_settlement_snapshots",
     "vn_settlement_snapshots",
 )
