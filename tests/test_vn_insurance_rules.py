@@ -4,6 +4,7 @@ from ims.model.entities import Insurer, Policyholder
 from ims.model.vn_damage_rules import VNDamageRuleDraws, VNDamageRuleParameters
 from ims.model.vn_insurance_rules import (
     VNCompulsoryInsuranceRuleDraws,
+    VNBestInfoInsuranceRuleParameters,
     VNPreferenceInsuranceRuleDraws,
     VNPreferenceInsuranceRuleParameters,
     VNPreferenceInsurerInput,
@@ -14,6 +15,7 @@ from ims.model.vn_insurance_rules import (
     VNSampleSearchInsurerInput,
     VNSearchInsuranceRuleDraws,
     VNSearchInsuranceRuleParameters,
+    apply_vn_best_info_insurance_rule,
     apply_vn_compulsory_insurance_rule,
     apply_vn_preference_insurance_rule,
     apply_vn_random_insurance_rule,
@@ -24,6 +26,7 @@ from ims.model.vn_insurance_rules import (
     load_vn_sample_search_insurer_inputs_from_mapping,
     load_vn_search_insurance_history_from_mapping,
     vn_compulsory_insurance_rule_draws_from_mapping,
+    vn_best_info_insurance_rule_parameters_from_mapping,
     vn_preference_insurance_rule_draws_from_mapping,
     vn_preference_insurance_rule_parameters_from_mapping,
     vn_random_insurance_rule_draws_from_mapping,
@@ -855,6 +858,32 @@ def test_vn_sample_search_insurance_rule_samples_active_current_premiums() -> No
     assert result.decisions[1].premium == 4.0
 
 
+def test_vn_sample_search_insurance_rule_accepts_high_premium_scale() -> None:
+    result = apply_vn_sample_search_insurance_rule(
+        VNSampleSearchInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.9, 0.9],
+            insurance_thresholds_shock=[0.9, 0.9],
+            sample_sizes_normal=[2, 1],
+            sample_sizes_shock=[1, 1],
+        ),
+        period=2,
+        market_damage_indicator=0.1,
+        insurer_inputs=[
+            {"insurer_id": 10, "premiums_current_sector": [1500.0, 2500.0]},
+            {"insurer_id": 20, "premiums_current_sector": [1200.0, 2200.0]},
+        ],
+        draws=VNSampleSearchInsuranceRuleDraws(
+            insurer_choice_draws_by_sector=[
+                [0.0, 0.99],
+                [0.99],
+            ]
+        ),
+    )
+
+    assert result.selected_insurer_ids == [20, 20]
+    assert result.selected_premiums == [1200.0, 2200.0]
+
+
 def test_vn_sample_search_insurance_rule_keeps_selection_diagnostics_when_uninsured() -> None:
     result = apply_vn_sample_search_insurance_rule(
         VNSampleSearchInsuranceRuleParameters(
@@ -1094,6 +1123,201 @@ def test_vn_sample_search_insurance_decisions_feed_damage_settlement_path() -> N
 
     assert sample_search_result.chosen_insurer_ids == [12, None]
     assert sample_search_result.selected_insurer_ids == [12, 11]
+    assert application.damage_result.damages == [9.0, 0.0]
+    assert application.settlement_result.paid_premium_current == [4.0, 0.0]
+    assert application.settlement_result.end_wealth_current == 87.0
+
+
+def test_vn_best_info_insurance_rule_uses_initial_decisions_in_first_period() -> None:
+    result = apply_vn_best_info_insurance_rule(
+        VNBestInfoInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.2, 0.3],
+            insurance_thresholds_shock=[0.4, 0.5],
+        ),
+        period=1,
+        market_damage_indicator=0.0,
+        insurer_inputs=[],
+        initial_decisions=[
+            {"sector_index": 1, "insured": True, "insurer_id": 13, "premium": 5.0},
+            {"sector_index": 0, "insured": False},
+        ],
+    )
+
+    assert result.insured == [False, True]
+    assert result.chosen_insurer_ids == [None, 13]
+    assert result.selected_insurer_ids == [None, 13]
+    assert result.selected_premiums == [None, 5.0]
+    assert result.considered_insurer_ids == [[], []]
+    assert result.information_cost == 0.0
+
+
+def test_vn_best_info_insurance_rule_selects_best_active_current_premiums() -> None:
+    result = apply_vn_best_info_insurance_rule(
+        VNBestInfoInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.5, 0.5],
+            insurance_thresholds_shock=[0.1, 0.1],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 30, "premiums_current_sector": [9.0, 4.0]},
+            {"insurer_id": 10, "premiums_current_sector": [5.0, 7.0]},
+            {"insurer_id": 20, "premiums_current_sector": [3.0, 8.0]},
+        ],
+        information_cost_per_insurer=1.5,
+    )
+
+    assert result.insured == [True, True]
+    assert result.selected_insurer_ids == [20, 30]
+    assert result.chosen_insurer_ids == [20, 30]
+    assert result.selected_premiums == [3.0, 4.0]
+    assert result.considered_insurer_ids == [[10, 20, 30], [10, 20, 30]]
+    assert result.information_cost == 9.0
+    assert result.decisions[0].premium == 3.0
+    assert result.decisions[1].premium == 4.0
+
+
+def test_vn_best_info_insurance_rule_keeps_selection_diagnostics_when_uninsured() -> None:
+    result = apply_vn_best_info_insurance_rule(
+        VNBestInfoInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.2, 0.8],
+            insurance_thresholds_shock=[0.8, 0.8],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 10, "premiums_current_sector": [5.0, 7.0]},
+            {"insurer_id": 20, "premiums_current_sector": [3.0, 6.0]},
+        ],
+    )
+
+    assert result.insured == [False, True]
+    assert result.selected_insurer_ids == [20, 20]
+    assert result.chosen_insurer_ids == [None, 20]
+    assert result.decisions[0].insurer_id is None
+    assert result.decisions[0].premium is None
+    assert result.decisions[1].premium == 6.0
+
+
+def test_vn_best_info_insurance_rule_uses_shock_thresholds() -> None:
+    result = apply_vn_best_info_insurance_rule(
+        VNBestInfoInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.1, 0.1],
+            insurance_thresholds_shock=[0.6, 0.4],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 10, "premiums_current_sector": [5.0, 7.0]},
+            {"insurer_id": 20, "premiums_current_sector": [3.0, 6.0]},
+        ],
+        change_shock=True,
+    )
+
+    assert result.insured == [True, False]
+    assert result.selected_insurer_ids == [20, 20]
+    assert result.chosen_insurer_ids == [20, None]
+
+
+def test_vn_best_info_insurance_rule_validates_inputs() -> None:
+    parameters = VNBestInfoInsuranceRuleParameters(
+        insurance_thresholds_normal=[0.1, 0.1],
+        insurance_thresholds_shock=[0.1, 0.1],
+    )
+
+    with pytest.raises(ValueError, match="period must be at least 1"):
+        apply_vn_best_info_insurance_rule(
+            parameters,
+            period=0,
+            market_damage_indicator=0.1,
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="initial_decisions"):
+        apply_vn_best_info_insurance_rule(
+            parameters,
+            period=1,
+            market_damage_indicator=0.1,
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="active insurer inputs"):
+        apply_vn_best_info_insurance_rule(
+            parameters,
+            period=2,
+            market_damage_indicator=0.1,
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="information cost"):
+        apply_vn_best_info_insurance_rule(
+            parameters,
+            period=2,
+            market_damage_indicator=0.1,
+            insurer_inputs=[{"insurer_id": 10, "premiums_current_sector": [1.0, 1.0]}],
+            information_cost_per_insurer=-1.0,
+        )
+
+
+def test_vn_best_info_insurance_rule_loader_validates_shape() -> None:
+    parameters = vn_best_info_insurance_rule_parameters_from_mapping(
+        {
+            "insurance_thresholds_normal": [0.2],
+            "insurance_thresholds_shock": [0.3, 0.4],
+        }
+    )
+
+    assert parameters.insurance_thresholds_normal == [0.2, 0.2]
+    assert parameters.insurance_thresholds_shock == [0.3, 0.4]
+
+    with pytest.raises(ValueError, match="parameters must be an object"):
+        vn_best_info_insurance_rule_parameters_from_mapping([])
+
+
+def test_vn_best_info_insurance_decisions_feed_damage_settlement_path() -> None:
+    best_info_result = apply_vn_best_info_insurance_rule(
+        VNBestInfoInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.5, 0.1],
+            insurance_thresholds_shock=[0.5, 0.1],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 11, "premiums_current_sector": [6.0, 5.0]},
+            {"insurer_id": 12, "premiums_current_sector": [4.0, 7.0]},
+        ],
+    )
+    insurer = Insurer(
+        entity_id=12,
+        premiums_current_sector=[4.0, 6.0],
+        reserves_current=[40.0, 60.0],
+        policyholders_current_sector=[1.0, 2.0],
+    )
+    snapshot = VNDamageSettlementSnapshot(
+        policyholder_id=21,
+        previous_wealth=100.0,
+        damage_thresholds=[0.8, 0.2],
+        parameters=VNDamageRuleParameters(
+            damage_intercept_normal=[5.0, 7.0],
+            damage_factor_normal=[2.0, 3.0],
+            damage_intercept_shock=[50.0, 70.0],
+            damage_factor_shock=[20.0, 30.0],
+        ),
+        draws=VNDamageRuleDraws(
+            trigger_draws=[0.1, 0.5],
+            amount_draws=[2.0, 3.0],
+        ),
+        insurance_decisions=best_info_result.decisions,
+    )
+
+    application = apply_vn_damage_settlement_snapshot(
+        Policyholder(entity_id=21),
+        [insurer],
+        snapshot,
+    )
+
+    assert best_info_result.chosen_insurer_ids == [12, None]
+    assert best_info_result.selected_insurer_ids == [12, 11]
     assert application.damage_result.damages == [9.0, 0.0]
     assert application.settlement_result.paid_premium_current == [4.0, 0.0]
     assert application.settlement_result.end_wealth_current == 87.0

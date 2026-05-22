@@ -161,6 +161,27 @@ class VNSampleSearchInsuranceRuleResult:
     information_cost: float
 
 
+@dataclass(slots=True)
+class VNBestInfoInsuranceRuleParameters:
+    """Versicherungsstatus-Schwellen fuer Vrvn06 / Beste Information."""
+
+    insurance_thresholds_normal: list[float]
+    insurance_thresholds_shock: list[float]
+
+
+@dataclass(slots=True)
+class VNBestInfoInsuranceRuleResult:
+    """Aus Vrvn06 abgeleitete Versicherungsentscheidungen je Sparte."""
+
+    decisions: list[VNInsuranceDecision]
+    insured: list[bool]
+    chosen_insurer_ids: list[int | None]
+    selected_insurer_ids: list[int | None]
+    selected_premiums: list[float | None]
+    considered_insurer_ids: list[list[int]]
+    information_cost: float
+
+
 def _two_float_values(values: object, *, fallback: float) -> list[float]:
     if values is None:
         return [float(fallback), float(fallback)]
@@ -326,6 +347,27 @@ def vn_sample_search_insurance_rule_parameters_from_mapping(
     if any(value < 0 for value in parameters.sample_sizes_normal + parameters.sample_sizes_shock):
         raise ValueError("VN sample search insurance rule sample sizes must be non-negative")
     return parameters
+
+
+def vn_best_info_insurance_rule_parameters_from_mapping(
+    mapping: dict[str, object],
+) -> VNBestInfoInsuranceRuleParameters:
+    """Laedt den Vrvn06-Schwellenblock fuer die beste Information."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN best info insurance rule parameters must be an object")
+    return VNBestInfoInsuranceRuleParameters(
+        insurance_thresholds_normal=_required_two_float_values(
+            mapping,
+            "insurance_thresholds_normal",
+            rule_name="VN best info insurance rule",
+        ),
+        insurance_thresholds_shock=_required_two_float_values(
+            mapping,
+            "insurance_thresholds_shock",
+            rule_name="VN best info insurance rule",
+        ),
+    )
 
 
 def vn_random_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> VNRandomInsuranceRuleDraws:
@@ -681,7 +723,7 @@ def _select_sampled_insurer(
         sampled_ids.append(insurer_id)
         sampled_premiums[insurer_id] = by_id[insurer_id].premiums_current_sector[sector_index]
     selected_id = 0
-    selected_premium = 1000.0
+    selected_premium = float("inf")
     for insurer_id in ids:
         premium = sampled_premiums.get(insurer_id)
         if premium is not None and premium < selected_premium:
@@ -690,6 +732,27 @@ def _select_sampled_insurer(
     if selected_id == 0:
         raise ValueError("VN sample search insurance rule sample size must be positive")
     return selected_id, selected_premium, sampled_ids
+
+
+def _select_best_info_insurer(
+    *,
+    insurer_inputs: list[VNSampleSearchInsurerInput],
+    sector_index: int,
+) -> tuple[int, float, list[int]]:
+    if not insurer_inputs:
+        raise ValueError("VN best info insurance rule requires active insurer inputs")
+    selected_id = 0
+    selected_premium = float("inf")
+    considered_ids: list[int] = []
+    for insurer_input in insurer_inputs:
+        considered_ids.append(insurer_input.insurer_id)
+        premium = insurer_input.premiums_current_sector[sector_index]
+        if premium < selected_premium:
+            selected_id = insurer_input.insurer_id
+            selected_premium = premium
+    if selected_id == 0:
+        raise ValueError("VN best info insurance rule requires active insurer inputs")
+    return selected_id, selected_premium, considered_ids
 
 
 def apply_vn_compulsory_insurance_rule(
@@ -1031,6 +1094,93 @@ def apply_vn_sample_search_insurance_rule(
         sampled_insurer_ids=sampled_insurer_ids,
         used_insurer_choice_draws_by_sector=draw_lists,
         information_cost=float(sum(sample_sizes)) * information_cost_per_sample,
+    )
+
+
+def apply_vn_best_info_insurance_rule(
+    parameters: VNBestInfoInsuranceRuleParameters,
+    *,
+    period: int,
+    market_damage_indicator: float,
+    insurer_inputs: object,
+    initial_decisions: object = None,
+    change_shock: bool = False,
+    information_cost_per_insurer: float = 0.0,
+) -> VNBestInfoInsuranceRuleResult:
+    """
+    Portiert den Versicherungsentscheidungsanteil aus Vrvn06.
+
+    In Periode 1 verwendet der Altcode die initialen VN-Status-/VU-Werte. Ab
+    Periode 2 folgt der Status aus dem globalen Schadenindikator; die
+    VU-Auswahl betrachtet alle aktiven Versicherer und nimmt den niedrigsten
+    aktuellen Praemienwert je Sparte.
+    """
+
+    if period < 1:
+        raise ValueError("VN best info insurance rule period must be at least 1")
+    if information_cost_per_insurer < 0.0:
+        raise ValueError("VN best info insurance rule information cost must be non-negative")
+    if period == 1:
+        if initial_decisions is None:
+            raise ValueError("VN best info insurance rule period 1 requires initial_decisions")
+        decisions = sorted(
+            load_vn_insurance_decisions_from_mapping(initial_decisions),
+            key=lambda item: item.sector_index,
+        )
+        selected_insurer_ids = [decision.insurer_id for decision in decisions]
+        return VNBestInfoInsuranceRuleResult(
+            decisions=decisions,
+            insured=[decision.insured for decision in decisions],
+            chosen_insurer_ids=selected_insurer_ids,
+            selected_insurer_ids=selected_insurer_ids,
+            selected_premiums=[decision.premium for decision in decisions],
+            considered_insurer_ids=[[], []],
+            information_cost=0.0,
+        )
+
+    thresholds = _two_float_values(
+        parameters.insurance_thresholds_shock if change_shock else parameters.insurance_thresholds_normal,
+        fallback=0.0,
+    )
+    active_inputs = load_vn_sample_search_insurer_inputs_from_mapping(insurer_inputs)
+    indicator = float(market_damage_indicator)
+
+    decisions: list[VNInsuranceDecision] = []
+    insured_values: list[bool] = []
+    chosen_insurer_ids: list[int | None] = []
+    selected_insurer_ids: list[int | None] = []
+    selected_premiums: list[float | None] = []
+    considered_insurer_ids: list[list[int]] = []
+    for sector_index in range(2):
+        selected_id, selected_premium, sector_considered_ids = _select_best_info_insurer(
+            insurer_inputs=active_inputs,
+            sector_index=sector_index,
+        )
+        insured = indicator <= thresholds[sector_index]
+        insurer_id = selected_id if insured else None
+        premium = selected_premium if insured else None
+        decisions.append(
+            VNInsuranceDecision(
+                sector_index=sector_index,
+                insured=insured,
+                insurer_id=insurer_id,
+                premium=premium,
+            )
+        )
+        insured_values.append(insured)
+        chosen_insurer_ids.append(insurer_id)
+        selected_insurer_ids.append(selected_id)
+        selected_premiums.append(selected_premium)
+        considered_insurer_ids.append(sector_considered_ids)
+
+    return VNBestInfoInsuranceRuleResult(
+        decisions=decisions,
+        insured=insured_values,
+        chosen_insurer_ids=chosen_insurer_ids,
+        selected_insurer_ids=selected_insurer_ids,
+        selected_premiums=selected_premiums,
+        considered_insurer_ids=considered_insurer_ids,
+        information_cost=float(len(active_inputs) * 2) * information_cost_per_insurer,
     )
 
 
