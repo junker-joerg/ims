@@ -37,8 +37,9 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
   Plan-Runner verankert.
 - Das Event nutzt `context.period` und `context.logtime` aus dem geladenen
   Szenario. Mehrperiodige Events verwenden `run_index * max_periods + period`
-  als Scheduler-Periode. Die fachliche Wirkung bleibt vollstaendig im
-  expliziten Runner.
+  als Scheduler-Periode. Mapping-, Fixture- und Plan-Wrapper fuehren die
+  expliziten Perioden in genau dieser geplanten Event-Reihenfolge aus. Die
+  fachliche Wirkung bleibt vollstaendig im expliziten Runner.
 - Der Pfad kann VN-Schaden-/Abrechnungs-Snapshots ohne direkte
   `insurance_decisions` aus passenden `vn_insurance_rule_snapshots` speisen.
 

@@ -207,6 +207,22 @@ def test_scheduled_explicit_vu_vn_periods_run_global_period_sequence(tmp_path: P
     assert [line.split()[0] for line in lines[1:]] == ["2", "14"]
 
 
+def test_scheduled_explicit_vu_vn_periods_execute_in_scheduler_order(tmp_path: Path) -> None:
+    result = run_scheduled_explicit_vu_vn_periods_from_mappings(
+        [
+            _scenario(period=3, policyholder_id=23),
+            _scenario(period=2, policyholder_id=22),
+        ],
+        output_dir=tmp_path,
+    )
+
+    assert [(event.period, event.payload["input_index"]) for event in result.planned_events] == [(2, 1), (3, 0)]
+    assert result.explicit_multi_period.processed_periods == [2, 3]
+    assert [period_result.period for period_result in result.explicit_multi_period.period_results] == [2, 3]
+    lines = _non_empty_lines(tmp_path / "imsvu011.dat")
+    assert [line.split()[0] for line in lines[1:]] == ["2", "3"]
+
+
 def test_scheduled_explicit_vu_vn_periods_can_carry_state_between_events() -> None:
     result = run_scheduled_explicit_vu_vn_periods_from_mappings(
         [_scenario(period=2), _scenario(period=3)],
@@ -248,6 +264,21 @@ def test_scheduled_explicit_vu_vn_periods_fixture_uses_fixture_flags(tmp_path: P
     assert [line.split()[0] for line in lines[1:]] == ["2", "3"]
 
 
+def test_scheduled_explicit_vu_vn_periods_fixture_executes_in_scheduler_order(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "scheduled_explicit_periods_unsorted.json"
+    fixture_path.write_text(
+        json.dumps({"periods": [_scenario(period=3), _scenario(period=2)]}),
+        encoding="utf-8",
+    )
+
+    result = run_scheduled_explicit_vu_vn_periods_from_fixture(fixture_path, output_dir=tmp_path / "out")
+
+    assert [(event.period, event.payload["input_index"]) for event in result.planned_events] == [(2, 1), (3, 0)]
+    assert result.explicit_multi_period.processed_periods == [2, 3]
+    lines = _non_empty_lines(tmp_path / "out" / "imsvu011.dat")
+    assert [line.split()[0] for line in lines[1:]] == ["2", "3"]
+
+
 def test_scheduled_explicit_vu_vn_periods_fixture_rejects_missing_periods(tmp_path: Path) -> None:
     fixture_path = tmp_path / "bad_scheduled_explicit_periods.json"
     fixture_path.write_text(json.dumps({"metadata": {"purpose": "missing periods"}}), encoding="utf-8")
@@ -275,6 +306,21 @@ def test_scheduled_explicit_vu_vn_periods_plan_fixture_runs_plan_path(tmp_path: 
     assert result.explicit_multi_period.period_results[1].vn_result.policyholders[0].end_wealth_current == pytest.approx(
         51.0
     )
+
+
+def test_scheduled_explicit_vu_vn_periods_plan_fixture_executes_in_scheduler_order(tmp_path: Path) -> None:
+    data = _period_plan()
+    data["carry_forward_vn_state"] = False
+    data["period_updates"] = [data["period_updates"][1], data["period_updates"][0]]
+    plan_path = tmp_path / "scheduled_explicit_period_plan_unsorted.json"
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
+
+    result = run_scheduled_explicit_vu_vn_periods_from_plan_fixture(plan_path, output_dir=tmp_path / "out")
+
+    assert [(event.period, event.payload["input_index"]) for event in result.planned_events] == [(2, 1), (3, 0)]
+    assert result.explicit_multi_period.processed_periods == [2, 3]
+    lines = _non_empty_lines(tmp_path / "out" / "imsvu011.dat")
+    assert [line.split()[0] for line in lines[1:]] == ["2", "3"]
 
 
 def test_scheduled_explicit_vu_vn_periods_plan_fixture_preserves_legacy_targets(tmp_path: Path) -> None:
