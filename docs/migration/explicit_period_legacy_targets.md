@@ -20,7 +20,7 @@ Dieser Schritt portiert keine neue historische Ablaufsteuerung.
 - `run_explicit_multi_period_from_mappings` kann optionale Legacy-Ziele
   entgegennehmen und vergleicht die zusammengefuehrten Exporttabellen.
 - `run_explicit_multi_period_from_fixture` laedt relative `legacy_targets` aus
-  dem Fixture-Verzeichnis.
+  dem aufgeloesten Fixture-Verzeichnis.
 - Optional werden die vorhandenen Legacy-Validierungsreports geschrieben, wenn
   `legacy_report_name` und `output_dir` gesetzt sind.
 

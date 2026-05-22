@@ -379,7 +379,7 @@ def run_explicit_multi_period_from_fixture(
 ) -> ExplicitMultiPeriodRunResult:
     """Laedt ein explizites VU/VN-Mehrperioden-Fixture und fuehrt es aus."""
 
-    fixture_path = Path(path)
+    fixture_path = Path(path).resolve()
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
     fixture_carry_forward_vu_state = _boolean_fixture_flag(payload, "carry_forward_vu_state")

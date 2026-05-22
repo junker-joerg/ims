@@ -280,6 +280,42 @@ def test_scheduled_explicit_vu_vn_periods_fixture_executes_in_scheduler_order(tm
     assert [line.split()[0] for line in lines[1:]] == ["2", "3"]
 
 
+def test_scheduled_explicit_vu_vn_periods_fixture_passes_resolved_legacy_base_path(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    real_dir = tmp_path / "real"
+    real_dir.mkdir()
+    fixture_path = real_dir / "scheduled_explicit_periods.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "periods": [_scenario(period=2)],
+                "legacy_targets": [
+                    {
+                        "legacy_path": "legacy/reference_imsvu011.dat",
+                        "export_filename": "imsvu011.dat",
+                        "subject_type": "insurer",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    captured_base_paths: list[Path] = []
+
+    def _capture_legacy_base_path(value: object, *, fixture_base_path: Path) -> list:
+        captured_base_paths.append(fixture_base_path)
+        return []
+
+    monkeypatch.setattr(simulation, "_load_legacy_targets", _capture_legacy_base_path)
+    indirect_path = tmp_path / "unused" / ".." / "real" / fixture_path.name
+
+    run_scheduled_explicit_vu_vn_periods_from_fixture(indirect_path, output_dir=tmp_path / "out")
+
+    assert captured_base_paths == [fixture_path.resolve().parent]
+
+
 def test_scheduled_explicit_vu_vn_periods_fixture_rejects_missing_periods(tmp_path: Path) -> None:
     fixture_path = tmp_path / "bad_scheduled_explicit_periods.json"
     fixture_path.write_text(json.dumps({"metadata": {"purpose": "missing periods"}}), encoding="utf-8")

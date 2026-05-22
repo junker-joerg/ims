@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 
+import ims.engine.explicit_period_runner as explicit_period_runner
 from ims.engine.explicit_period_runner import (
     ExplicitLegacyTarget,
     ExplicitMultiPeriodRunResult,
@@ -382,3 +383,39 @@ def test_explicit_multi_period_fixture_loads_legacy_targets_and_writes_report(tm
         "explicit_validation_deviations.csv",
     ]
     assert (tmp_path / "out" / "explicit_validation.json").exists()
+
+
+def test_explicit_multi_period_fixture_passes_resolved_legacy_base_path(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    real_dir = tmp_path / "real"
+    real_dir.mkdir()
+    fixture_path = real_dir / "explicit_with_legacy.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "periods": [_scenario(2)],
+                "legacy_targets": [
+                    {
+                        "legacy_path": "legacy/reference_imsvu011.dat",
+                        "export_filename": "imsvu011.dat",
+                        "subject_type": "insurer",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    captured_base_paths: list[Path] = []
+
+    def _capture_legacy_base_path(value: object, *, fixture_base_path: Path) -> list:
+        captured_base_paths.append(fixture_base_path)
+        return []
+
+    monkeypatch.setattr(explicit_period_runner, "_load_legacy_targets", _capture_legacy_base_path)
+    indirect_path = tmp_path / "unused" / ".." / "real" / fixture_path.name
+
+    run_explicit_multi_period_from_fixture(indirect_path, output_dir=tmp_path / "out")
+
+    assert captured_base_paths == [fixture_path.resolve().parent]
