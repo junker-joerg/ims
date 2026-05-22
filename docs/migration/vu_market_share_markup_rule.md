@@ -47,6 +47,12 @@ Szenarien koennen optional das Feld `vu_market_share_markup_rule_snapshots` enth
 Der bestehende VU-Periodenrunner laedt diese Snapshots und wendet sie nach den bereits
 vorhandenen Frmdinf-, Mark-Up-I- und Erwartungsschaden-Snapshots an.
 
+`active_policyholder_count` kann im Snapshot weiterhin explizit angegeben werden. Fehlt
+der Wert, verwendet der VU-Periodenrunner den zuvor ueber `compute_extended_foreign_info`
+aktualisierten BAV-Aktivitaetszaehler als kontrollierte `akvn`-Basis. Die direkte
+Snapshot-Anwendung ausserhalb des Runners verlangt weiterhin eine solche Zaehlerquelle,
+damit kein impliziter Nenner entsteht.
+
 ## Grenzen
 
 Bewusst nicht enthalten sind:
@@ -54,7 +60,7 @@ Bewusst nicht enthalten sind:
 - keine automatische historische Auswahl von Regelarten
 - kein Scheduler-Anschluss
 - keine Parameterherleitung aus historischen Initialdaten
-- keine automatische Herleitung von `akvn`
+- keine automatische Herleitung von `akvn` ausserhalb des BAV-Aktivitaetszustands
 - keine Vrvu01-/Vrvu02-Zufallsregeln
 - keine Vrvu04-Portierung
 - keine Vollsimulation

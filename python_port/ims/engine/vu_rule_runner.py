@@ -123,6 +123,7 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         loaded.insurers,
         loaded.vu_market_share_markup_rule_snapshots,
         period=loaded.context.period,
+        active_policyholder_count=loaded.bav.service_state.activity_state.active_policyholder_count_current,
     )
     free_linear_applications = apply_vu_free_linear_rule_snapshots(
         loaded.insurers,

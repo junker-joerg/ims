@@ -1417,16 +1417,51 @@ def test_vu_market_share_markup_rule_snapshots_reject_unknown_and_duplicate_targ
         apply_vu_market_share_markup_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=2)
 
 
-def test_vu_market_share_markup_rule_snapshots_require_active_policyholder_count() -> None:
-    with pytest.raises(ValueError, match="active_policyholder_count"):
-        load_vu_market_share_markup_rule_snapshots_from_mapping(
-            [
-                {
-                    "insurer_id": 7,
-                    "parameters": _market_share_markup_parameter_mapping(),
-                }
-            ]
+def test_vu_market_share_markup_rule_snapshots_can_use_runner_active_policyholder_count() -> None:
+    insurers = [
+        Insurer(
+            entity_id=7,
+            premiums_current_sector=[100.0, 200.0],
+            advertising_current_sector=[10.0, 20.0],
+            policyholders_current_sector=[30.0, 80.0],
         )
+    ]
+    snapshots = load_vu_market_share_markup_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "market_share_thresholds": [0.4, 0.7],
+                "parameters": _market_share_markup_parameter_mapping(),
+            }
+        ]
+    )
+
+    assert snapshots[0].active_policyholder_count is None
+
+    applications = apply_vu_market_share_markup_rule_snapshots(
+        insurers,
+        snapshots,
+        period=2,
+        active_policyholder_count=100,
+    )
+
+    assert len(applications) == 1
+    assert insurers[0].premiums_current_sector == pytest.approx([110.0, 160.0])
+    assert insurers[0].advertising_current_sector == pytest.approx([13.0, 12.0])
+
+
+def test_vu_market_share_markup_rule_snapshots_require_active_policyholder_count_source() -> None:
+    snapshots = load_vu_market_share_markup_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "parameters": _market_share_markup_parameter_mapping(),
+            }
+        ]
+    )
+
+    with pytest.raises(ValueError, match="active_policyholder_count"):
+        apply_vu_market_share_markup_rule_snapshots([Insurer(entity_id=7)], snapshots, period=2)
 
 
 def test_vu_free_linear_rule_applies_normal_parameters_to_previous_values() -> None:
