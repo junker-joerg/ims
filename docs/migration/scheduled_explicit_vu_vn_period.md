@@ -30,6 +30,11 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
   Scheduler-Diagnose fuer gespeicherte JSON-Fixtures und delegiert die
   Ausfuehrung an `run_explicit_multi_period_from_fixture`, inklusive der dort
   vorhandenen Carryover- und Legacy-Ziel-Verarbeitung.
+- `run_scheduled_explicit_vu_vn_periods_from_plan_fixture` erzeugt aus einem
+  expliziten Periodenplan dasselbe Runner-Fixture fuer die Scheduler-Diagnose
+  und delegiert die Ausfuehrung an `run_explicit_multi_period_from_plan_fixture`.
+  Damit bleiben Plan-Overrides, Carryover und Legacy-Ziele im bestehenden
+  Plan-Runner verankert.
 - Das Event nutzt `context.period` und `context.logtime` aus dem geladenen
   Szenario. Mehrperiodige Events verwenden `run_index * max_periods + period`
   als Scheduler-Periode. Die fachliche Wirkung bleibt vollstaendig im
