@@ -19,3 +19,9 @@ def rand_int_inclusive(rng: random.Random, low: int, high: int) -> int:
     if low > high:
         raise ValueError("low must be less than or equal to high")
     return rng.randint(low, high)
+
+
+def rand_normal_standard(rng: random.Random) -> float:
+    """Return a deterministic standard-normal draw from the provided RNG."""
+
+    return rng.normalvariate(0.0, 1.0)

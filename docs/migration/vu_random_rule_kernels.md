@@ -29,16 +29,17 @@ Der Python-Port fuehrt explizite Snapshot-Typen ein:
 - `VURandomNormalRuleResult`
 - `VURandomNormalRuleApplication`
 
-Die Zufallswerte werden in diesem PR bewusst als explizite Draw-Vektoren im
-Szenario uebergeben. Damit ist der Regelkern deterministisch testbar, ohne
-bereits historische RNG-Gleichheit oder Scheduler-Kopplung zu behaupten.
+Die Zufallswerte koennen als explizite Draw-Vektoren im Szenario uebergeben
+werden. Fehlen sie, kann der VU-Periodenrunner reproduzierbare Python-Draws
+aus dem `SimulationContext` erzeugen. Der Regelkern selbst bleibt
+deterministisch und erhaelt weiterhin konkrete Draw-Vektoren.
 
 ## Grenzen
 
 - keine Portierung des historischen `myrndf()`-Generators
 - keine Portierung des historischen `normal()`-Generators
 - keine automatische Regelwahl durch den Scheduler
-- keine Herleitung der Draws aus Seeds
+- keine historische Herleitung der Draws aus Seeds
 - keine vollstaendige historische Simulation
 - keine Behauptung historischer Vollgleichheit
 

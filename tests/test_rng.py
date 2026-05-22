@@ -1,5 +1,5 @@
 from ims.engine.context import SimulationContext, ensure_context_rng
-from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
+from ims.engine.rng import create_rng, rand_int_inclusive, rand_normal_standard, rand_uniform_0_1
 
 import pytest
 
@@ -46,3 +46,13 @@ def test_context_can_carry_rng_from_seed() -> None:
 
     assert context.rng is rng
     assert rand_uniform_0_1(rng) == rand_uniform_0_1(create_rng(77))
+
+
+def test_standard_normal_draws_are_deterministic_for_same_seed() -> None:
+    rng_a = create_rng(123)
+    rng_b = create_rng(123)
+
+    assert [rand_normal_standard(rng_a) for _ in range(3)] == [
+        rand_normal_standard(rng_b)
+        for _ in range(3)
+    ]

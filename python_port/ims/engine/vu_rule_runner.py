@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 
 from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
+from ims.engine.context import ensure_context_rng
+from ims.engine.rng import rand_normal_standard, rand_uniform_0_1
 from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
 from ims.model.agrsich_export import compute_global_period
 from ims.model.bav_service import BAVForeignInfoResult, compute_extended_foreign_info
@@ -98,11 +100,13 @@ def run_loaded_vu_foreign_info_period(loaded: LoadedScenario) -> VUForeignInfoPe
         loaded.insurers,
         loaded.vu_random_uniform_rule_snapshots,
         period=loaded.context.period,
+        random_draw_provider=lambda: [rand_uniform_0_1(ensure_context_rng(loaded.context)) for _ in range(4)],
     )
     random_normal_applications = apply_vu_random_normal_rule_snapshots(
         loaded.insurers,
         loaded.vu_random_normal_rule_snapshots,
         period=loaded.context.period,
+        normal_draw_provider=lambda: [rand_normal_standard(ensure_context_rng(loaded.context)) for _ in range(4)],
     )
     reserve_markup_applications = apply_vu_reserve_markup_rule_snapshots(
         loaded.insurers,

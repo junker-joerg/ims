@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import StrEnum
 
@@ -81,7 +82,7 @@ class VURandomUniformRuleSnapshot:
 
     insurer_id: int
     parameters: VURandomUniformRuleParameters
-    random_draws: list[float]
+    random_draws: list[float] | None = None
     interest_rate: float = 0.0
     change_shock: bool = False
 
@@ -124,7 +125,7 @@ class VURandomNormalRuleSnapshot:
 
     insurer_id: int
     parameters: VURandomNormalRuleParameters
-    normal_draws: list[float]
+    normal_draws: list[float] | None = None
     interest_rate: float = 0.0
     change_shock: bool = False
 
@@ -449,6 +450,12 @@ def _four_draws(mapping: dict[str, object], key: str) -> list[float]:
     return _draw_values(mapping.get(key), key)
 
 
+def _optional_four_draws(mapping: dict[str, object], key: str) -> list[float] | None:
+    if key not in mapping:
+        return None
+    return _draw_values(mapping.get(key), key)
+
+
 def vu_random_uniform_rule_parameters_from_mapping(mapping: dict[str, object]) -> VURandomUniformRuleParameters:
     """Laedt den Vrvu01-Zufall-I-Parameterblock aus einer Mapping-Struktur."""
 
@@ -475,7 +482,7 @@ def vu_random_uniform_rule_snapshot_from_mapping(mapping: dict[str, object]) -> 
     return VURandomUniformRuleSnapshot(
         insurer_id=int(mapping["insurer_id"]),
         parameters=vu_random_uniform_rule_parameters_from_mapping(parameters),
-        random_draws=_four_draws(mapping, "random_draws"),
+        random_draws=_optional_four_draws(mapping, "random_draws"),
         interest_rate=float(mapping.get("interest_rate", 0.0)),
         change_shock=bool(mapping.get("change_shock", False)),
     )
@@ -521,7 +528,7 @@ def vu_random_normal_rule_snapshot_from_mapping(mapping: dict[str, object]) -> V
     return VURandomNormalRuleSnapshot(
         insurer_id=int(mapping["insurer_id"]),
         parameters=vu_random_normal_rule_parameters_from_mapping(parameters),
-        normal_draws=_four_draws(mapping, "normal_draws"),
+        normal_draws=_optional_four_draws(mapping, "normal_draws"),
         interest_rate=float(mapping.get("interest_rate", 0.0)),
         change_shock=bool(mapping.get("change_shock", False)),
     )
@@ -855,6 +862,7 @@ def apply_vu_random_uniform_rule_snapshots(
     snapshots: list[VURandomUniformRuleSnapshot],
     *,
     period: int,
+    random_draw_provider: Callable[[], list[float]] | None = None,
 ) -> list[VURandomUniformRuleApplication]:
     """Wendet explizite Vrvu01-Zufall-I-Snapshots deterministisch auf passende Versicherer an."""
 
@@ -868,11 +876,16 @@ def apply_vu_random_uniform_rule_snapshots(
         insurer = insurers_by_id.get(snapshot.insurer_id)
         if insurer is None:
             raise ValueError(f"VU random-uniform rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        random_draws = snapshot.random_draws
+        if random_draws is None:
+            if random_draw_provider is None:
+                raise ValueError("VU random-uniform rule snapshot requires random_draws or runner draw source")
+            random_draws = random_draw_provider()
         result = apply_vu_random_uniform_rule_to_insurer(
             insurer,
             snapshot.parameters,
             period=period,
-            random_draws=snapshot.random_draws,
+            random_draws=random_draws,
             interest_rate=snapshot.interest_rate,
             change_shock=snapshot.change_shock,
         )
@@ -967,6 +980,7 @@ def apply_vu_random_normal_rule_snapshots(
     snapshots: list[VURandomNormalRuleSnapshot],
     *,
     period: int,
+    normal_draw_provider: Callable[[], list[float]] | None = None,
 ) -> list[VURandomNormalRuleApplication]:
     """Wendet explizite Vrvu02-Zufall-II-Snapshots deterministisch auf passende Versicherer an."""
 
@@ -980,11 +994,16 @@ def apply_vu_random_normal_rule_snapshots(
         insurer = insurers_by_id.get(snapshot.insurer_id)
         if insurer is None:
             raise ValueError(f"VU random-normal rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        normal_draws = snapshot.normal_draws
+        if normal_draws is None:
+            if normal_draw_provider is None:
+                raise ValueError("VU random-normal rule snapshot requires normal_draws or runner draw source")
+            normal_draws = normal_draw_provider()
         result = apply_vu_random_normal_rule_to_insurer(
             insurer,
             snapshot.parameters,
             period=period,
-            normal_draws=snapshot.normal_draws,
+            normal_draws=normal_draws,
             interest_rate=snapshot.interest_rate,
             change_shock=snapshot.change_shock,
         )

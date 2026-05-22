@@ -589,6 +589,34 @@ def test_vu_random_uniform_rule_snapshots_load_and_apply_to_matching_insurers() 
     assert insurers[1].premiums_current_sector == []
 
 
+def test_vu_random_uniform_rule_snapshots_can_use_runner_draw_source() -> None:
+    insurers = [Insurer(entity_id=7, reserves_current=[100.0, 200.0])]
+    snapshots = load_vu_random_uniform_rule_snapshots_from_mapping(
+        [{"insurer_id": 7, "parameters": _random_uniform_parameter_mapping()}]
+    )
+
+    assert snapshots[0].random_draws is None
+
+    applications = apply_vu_random_uniform_rule_snapshots(
+        insurers,
+        snapshots,
+        period=2,
+        random_draw_provider=lambda: [0.1, 0.2, 0.3, 0.4],
+    )
+
+    assert applications[0].result.random_draws == [0.1, 0.2, 0.3, 0.4]
+    assert applications[0].result.premiums_current_sector == pytest.approx([1.0, 4.0])
+
+
+def test_vu_random_uniform_rule_snapshots_require_draw_source() -> None:
+    snapshots = load_vu_random_uniform_rule_snapshots_from_mapping(
+        [{"insurer_id": 7, "parameters": _random_uniform_parameter_mapping()}]
+    )
+
+    with pytest.raises(ValueError, match="random_draws"):
+        apply_vu_random_uniform_rule_snapshots([Insurer(entity_id=7)], snapshots, period=2)
+
+
 def test_vu_random_uniform_rule_rejects_bad_draw_count() -> None:
     with pytest.raises(ValueError, match="four-value list"):
         apply_vu_random_uniform_rule(
@@ -703,6 +731,34 @@ def test_vu_random_normal_rule_snapshots_load_and_apply_to_matching_insurers() -
     assert len(applications) == 1
     assert applications[0].insurer_id == 7
     assert applications[0].result.premiums_current_sector == pytest.approx([2.0, -2.0])
+
+
+def test_vu_random_normal_rule_snapshots_can_use_runner_draw_source() -> None:
+    insurers = [Insurer(entity_id=7, reserves_current=[100.0, 200.0])]
+    snapshots = load_vu_random_normal_rule_snapshots_from_mapping(
+        [{"insurer_id": 7, "parameters": _random_normal_parameter_mapping()}]
+    )
+
+    assert snapshots[0].normal_draws is None
+
+    applications = apply_vu_random_normal_rule_snapshots(
+        insurers,
+        snapshots,
+        period=2,
+        normal_draw_provider=lambda: [0.1, -0.2, 0.3, -0.4],
+    )
+
+    assert applications[0].result.normal_draws == [0.1, -0.2, 0.3, -0.4]
+    assert applications[0].result.premiums_current_sector == pytest.approx([2.0, -2.0])
+
+
+def test_vu_random_normal_rule_snapshots_require_draw_source() -> None:
+    snapshots = load_vu_random_normal_rule_snapshots_from_mapping(
+        [{"insurer_id": 7, "parameters": _random_normal_parameter_mapping()}]
+    )
+
+    with pytest.raises(ValueError, match="normal_draws"):
+        apply_vu_random_normal_rule_snapshots([Insurer(entity_id=7)], snapshots, period=2)
 
 
 def test_vu_random_normal_rule_rejects_bad_draw_count() -> None:
