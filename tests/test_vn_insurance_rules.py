@@ -3,14 +3,134 @@ import pytest
 from ims.model.entities import Insurer, Policyholder
 from ims.model.vn_damage_rules import VNDamageRuleDraws, VNDamageRuleParameters
 from ims.model.vn_insurance_rules import (
+    VNCompulsoryInsuranceRuleDraws,
     VNRandomInsuranceRuleDraws,
     VNRandomInsuranceRuleParameters,
+    apply_vn_compulsory_insurance_rule,
     apply_vn_random_insurance_rule,
     load_active_insurer_ids_from_mapping,
+    vn_compulsory_insurance_rule_draws_from_mapping,
     vn_random_insurance_rule_draws_from_mapping,
     vn_random_insurance_rule_parameters_from_mapping,
 )
 from ims.model.vn_rules import VNDamageSettlementSnapshot, apply_vn_damage_settlement_snapshot
+
+
+def test_vn_compulsory_insurance_rule_uses_initial_decisions_in_first_period() -> None:
+    result = apply_vn_compulsory_insurance_rule(
+        period=1,
+        active_insurer_ids=[],
+        initial_decisions=[
+            {"sector_index": 1, "insured": False},
+            {"sector_index": 0, "insured": True, "insurer_id": 12},
+        ],
+    )
+
+    assert result.selected_insurer_ids == [12, None]
+    assert result.insurer_choice_draws is None
+    assert [decision.sector_index for decision in result.decisions] == [0, 1]
+    assert result.decisions[0].insured is True
+    assert result.decisions[0].insurer_id == 12
+    assert result.decisions[1].insured is False
+    assert result.decisions[1].insurer_id is None
+
+
+def test_vn_compulsory_insurance_rule_selects_active_insurers_after_first_period() -> None:
+    result = apply_vn_compulsory_insurance_rule(
+        period=2,
+        active_insurer_ids=[13, 11, 12],
+        draws=VNCompulsoryInsuranceRuleDraws(insurer_choice_draws=[0.0, 0.99]),
+    )
+
+    assert result.selected_insurer_ids == [11, 13]
+    assert result.insurer_choice_draws == [0.0, 0.99]
+    assert [decision.insured for decision in result.decisions] == [True, True]
+    assert [decision.insurer_id for decision in result.decisions] == [11, 13]
+
+
+def test_vn_compulsory_insurance_rule_validates_start_and_draw_inputs() -> None:
+    with pytest.raises(ValueError, match="period must be at least 1"):
+        apply_vn_compulsory_insurance_rule(
+            period=0,
+            active_insurer_ids=[11],
+        )
+
+    with pytest.raises(ValueError, match="initial_decisions"):
+        apply_vn_compulsory_insurance_rule(
+            period=1,
+            active_insurer_ids=[11],
+        )
+
+    with pytest.raises(ValueError, match="insurer choice draws"):
+        apply_vn_compulsory_insurance_rule(
+            period=2,
+            active_insurer_ids=[11],
+        )
+
+    with pytest.raises(ValueError, match="active insurers"):
+        apply_vn_compulsory_insurance_rule(
+            period=2,
+            active_insurer_ids=[],
+            draws=VNCompulsoryInsuranceRuleDraws(insurer_choice_draws=[0.0, 0.1]),
+        )
+
+
+def test_vn_compulsory_insurance_rule_draw_loader_validates_shape() -> None:
+    draws = vn_compulsory_insurance_rule_draws_from_mapping(
+        {"insurer_choice_draws": [0.25]}
+    )
+
+    assert draws.insurer_choice_draws == [0.25, 0.25]
+
+    with pytest.raises(ValueError, match="insurer_choice_draws"):
+        vn_compulsory_insurance_rule_draws_from_mapping({"insurer_choice_draws": [1.0, 0.2]})
+
+
+def test_vn_compulsory_insurance_decisions_feed_damage_settlement_path() -> None:
+    compulsory_result = apply_vn_compulsory_insurance_rule(
+        period=2,
+        active_insurer_ids=[11, 12],
+        draws=VNCompulsoryInsuranceRuleDraws(insurer_choice_draws=[0.75, 0.0]),
+    )
+    insurer_11 = Insurer(
+        entity_id=11,
+        premiums_current_sector=[3.0, 5.0],
+        reserves_current=[30.0, 50.0],
+        policyholders_current_sector=[0.0, 1.0],
+    )
+    insurer_12 = Insurer(
+        entity_id=12,
+        premiums_current_sector=[4.0, 6.0],
+        reserves_current=[40.0, 60.0],
+        policyholders_current_sector=[1.0, 2.0],
+    )
+    snapshot = VNDamageSettlementSnapshot(
+        policyholder_id=21,
+        previous_wealth=100.0,
+        damage_thresholds=[0.8, 0.2],
+        parameters=VNDamageRuleParameters(
+            damage_intercept_normal=[5.0, 7.0],
+            damage_factor_normal=[2.0, 3.0],
+            damage_intercept_shock=[50.0, 70.0],
+            damage_factor_shock=[20.0, 30.0],
+        ),
+        draws=VNDamageRuleDraws(
+            trigger_draws=[0.1, 0.1],
+            amount_draws=[2.0, 3.0],
+        ),
+        insurance_decisions=compulsory_result.decisions,
+    )
+
+    application = apply_vn_damage_settlement_snapshot(
+        Policyholder(entity_id=21),
+        [insurer_11, insurer_12],
+        snapshot,
+    )
+
+    assert compulsory_result.selected_insurer_ids == [12, 11]
+    assert application.damage_result.damages == [9.0, 16.0]
+    assert application.settlement_result.paid_premium_current == [4.0, 5.0]
+    assert application.settlement_result.end_wealth_current == 66.0
 
 
 def test_vn_random_insurance_rule_uses_vrvn02_thresholds_and_active_insurers() -> None:
