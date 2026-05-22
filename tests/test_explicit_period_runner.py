@@ -113,13 +113,13 @@ def test_explicit_period_applies_vu_before_vn_and_writes_export(tmp_path: Path) 
         "8.0",
         "1.0",
         "39.0",
-        "4.0",
+        "2.0",
         "1",
         "9.0",
         "12.0",
         "1.0",
         "60.0",
-        "4.0",
+        "2.0",
         "0",
         "0.0",
     ]
@@ -223,8 +223,8 @@ def test_explicit_multi_period_compares_insurer_legacy_target(tmp_path: Path) ->
         "\n".join(
             [
                 "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
-                "3 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "2 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 60.0 2.0 0 0.0",
+                "3 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 60.0 2.0 0 0.0",
                 "",
             ]
         ),
@@ -255,8 +255,8 @@ def test_explicit_multi_period_flags_missing_legacy_period(tmp_path: Path) -> No
         "\n".join(
             [
                 "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
-                "3 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "2 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 60.0 2.0 0 0.0",
+                "3 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 60.0 2.0 0 0.0",
                 "",
             ]
         ),
@@ -290,7 +290,7 @@ def test_explicit_multi_period_fixture_loads_legacy_targets_and_writes_report(tm
         "\n".join(
             [
                 "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
+                "2 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 60.0 2.0 0 0.0",
                 "",
             ]
         ),
