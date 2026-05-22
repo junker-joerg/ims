@@ -1,6 +1,22 @@
 from dataclasses import dataclass
 
-from ims.model.vn_rules import VNInsuranceDecision
+from ims.model.vn_rules import VNInsuranceDecision, load_vn_insurance_decisions_from_mapping
+
+
+@dataclass(slots=True)
+class VNCompulsoryInsuranceRuleDraws:
+    """Explizite Gleichverteilungsziehungen fuer Vrvn01-VU-Auswahl."""
+
+    insurer_choice_draws: list[float]
+
+
+@dataclass(slots=True)
+class VNCompulsoryInsuranceRuleResult:
+    """Aus Vrvn01 abgeleitete Pflichtversicherungsentscheidungen je Sparte."""
+
+    decisions: list[VNInsuranceDecision]
+    selected_insurer_ids: list[int | None]
+    insurer_choice_draws: list[float] | None = None
 
 
 @dataclass(slots=True)
@@ -107,10 +123,76 @@ def vn_random_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> V
     return draws
 
 
+def vn_compulsory_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> VNCompulsoryInsuranceRuleDraws:
+    """Laedt explizite Vrvn01-Gleichverteilungsziehungen fuer die VU-Auswahl."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN compulsory insurance rule draws must be an object")
+    draws = VNCompulsoryInsuranceRuleDraws(
+        insurer_choice_draws=_required_two_float_values(mapping, "insurer_choice_draws"),
+    )
+    _validate_unit_interval(draws.insurer_choice_draws, field_name="insurer_choice_draws")
+    return draws
+
+
 def load_active_insurer_ids_from_mapping(value: object) -> list[int]:
     """Laedt die aktive VU-Auswahlbasis fuer den Vrvn02-Zufallspfad."""
 
     return _active_insurer_ids(value)
+
+
+def apply_vn_compulsory_insurance_rule(
+    *,
+    period: int,
+    active_insurer_ids: list[int],
+    draws: VNCompulsoryInsuranceRuleDraws | None = None,
+    initial_decisions: object = None,
+) -> VNCompulsoryInsuranceRuleResult:
+    """
+    Portiert den Versicherungsentscheidungsanteil aus Vrvn01.
+
+    In Periode 1 verwendet der Altcode die initialen VN-Status-/VU-Werte. Ab
+    Periode 2 sind beide Sparten pflichtversichert und waehlen je einen aktiven
+    Versicherer. Die Auswahl nutzt hier explizite Draws; historische
+    Modulo-RNG-Gleichheit wird nicht behauptet.
+    """
+
+    if period < 1:
+        raise ValueError("VN compulsory insurance rule period must be at least 1")
+    if period == 1:
+        if initial_decisions is None:
+            raise ValueError("VN compulsory insurance rule period 1 requires initial_decisions")
+        decisions = sorted(
+            load_vn_insurance_decisions_from_mapping(initial_decisions),
+            key=lambda item: item.sector_index,
+        )
+        selected_insurer_ids = [decision.insurer_id for decision in decisions]
+        return VNCompulsoryInsuranceRuleResult(
+            decisions=decisions,
+            selected_insurer_ids=selected_insurer_ids,
+        )
+
+    if draws is None:
+        raise ValueError("VN compulsory insurance rule periods after 1 require insurer choice draws")
+    insurer_choice_draws = _two_float_values(draws.insurer_choice_draws, fallback=0.0)
+    _validate_unit_interval(insurer_choice_draws, field_name="insurer_choice_draws")
+    active_ids = _active_insurer_ids(active_insurer_ids)
+    selected_insurer_ids = [
+        _choose_insurer(active_ids, insurer_choice_draws[sector_index])
+        for sector_index in range(2)
+    ]
+    return VNCompulsoryInsuranceRuleResult(
+        decisions=[
+            VNInsuranceDecision(
+                sector_index=sector_index,
+                insured=True,
+                insurer_id=selected_insurer_ids[sector_index],
+            )
+            for sector_index in range(2)
+        ],
+        selected_insurer_ids=selected_insurer_ids,
+        insurer_choice_draws=insurer_choice_draws,
+    )
 
 
 def apply_vn_random_insurance_rule(
