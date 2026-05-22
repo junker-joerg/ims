@@ -31,15 +31,21 @@ historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
   die bereits vorhandenen kontrollierten Carryover-Bausteine.
 - Das Mehrperiodenergebnis zaehlt VN-Versicherungsregelanwendungen separat als
   `total_vn_insurance_rule_applications`.
+- Schaden-/Abrechnungs-Snapshots duerfen ihre `insurance_decisions` aus einem
+  passenden `vn_insurance_rule_snapshots`-Eintrag derselben VN ableiten. Damit
+  kann der explizite VU/VN-Lauf die portierten VN-Versicherungsregeln direkt in
+  die anschliessende VN-Schadenabrechnung einspeisen.
 - `ExplicitPeriodCarryover` weist lokale und globale Quell-/Zielperioden aus,
   damit Plaene mit `run_index * max_periods + period` dieselbe Zeitachse wie
   die VU- und Agrsich-Runner diagnostizieren.
 
 ## Annahmen und Grenzen
 
-- Alle VU-Regelparameter, VN-Versicherungsregel-Snapshots, Schadenziehungen und
-  VN-Versicherungsentscheidungen muessen als explizite Snapshots im Szenario
-  vorliegen.
+- Alle VU-Regelparameter, VN-Versicherungsregel-Snapshots und Schadenziehungen
+  muessen als explizite Snapshots im Szenario vorliegen. VN-
+  Versicherungsentscheidungen koennen entweder direkt am Schaden-/Abrechnungs-
+  Snapshot stehen oder aus einem passenden VN-Versicherungsregel-Snapshot der
+  Periode stammen.
 - Bei gleichzeitig aktiviertem VU- und VN-Carryover werden beide bestehenden
   Carryover-Bausteine ausgefuehrt; der VN-Carryover enthaelt dabei auch
   Versicherer-Aktuellwerte nach der VN-Abrechnung.

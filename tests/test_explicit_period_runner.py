@@ -36,6 +36,15 @@ def _damage_parameters() -> dict[str, list[float]]:
     }
 
 
+def _compulsory_insurance_rule_snapshot(*, policyholder_id: int = 21) -> dict:
+    return {
+        "policyholder_id": policyholder_id,
+        "rule_kind": "compulsory",
+        "active_insurer_ids": [11],
+        "draws": {"insurer_choice_draws": [0.0, 0.0]},
+    }
+
+
 def _scenario(period: int, *, policyholder_id: int = 21) -> dict:
     return {
         "context": {"period": period, "max_periods": 12, "run_index": 0, "rng_seed": 1000 + period},
@@ -125,25 +134,45 @@ def test_explicit_period_applies_vu_before_vn_and_writes_export(tmp_path: Path) 
     ]
 
 
+def test_explicit_period_uses_vn_rule_dispatch_for_damage_settlement(tmp_path: Path) -> None:
+    scenario = _scenario(2)
+    scenario["vn_insurance_rule_snapshots"] = [_compulsory_insurance_rule_snapshot()]
+    del scenario["vn_damage_settlement_snapshots"][0]["insurance_decisions"]
+
+    result = run_explicit_period_from_mapping(scenario, output_dir=tmp_path)
+
+    assert len(result.vn_result.insurance_rule_applications) == 1
+    assert result.vn_result.total_damage_settlement_applications == 1
+    insurer = result.vn_result.insurers[0]
+    policyholder = result.vn_result.policyholders[0]
+    assert insurer.reserves_current == pytest.approx([39.0, 72.0])
+    assert insurer.policyholders_current_sector == pytest.approx([2.0, 3.0])
+    assert policyholder.paid_premium_current == pytest.approx([8.0, 12.0])
+    assert policyholder.end_wealth_current == pytest.approx(71.0)
+
+    lines = _non_empty_lines(tmp_path / "imsvu011.dat")
+    assert lines[1].split() == [
+        "2",
+        "8.0",
+        "1.0",
+        "39.0",
+        "2.0",
+        "1",
+        "9.0",
+        "12.0",
+        "1.0",
+        "72.0",
+        "3.0",
+        "0",
+        "0.0",
+    ]
+
+
 def test_explicit_multi_period_counts_vu_and_vn_applications(tmp_path: Path) -> None:
     first = _scenario(2)
     second = _scenario(3, policyholder_id=22)
-    first["vn_insurance_rule_snapshots"] = [
-        {
-            "policyholder_id": 21,
-            "rule_kind": "compulsory",
-            "active_insurer_ids": [11],
-            "draws": {"insurer_choice_draws": [0.0, 0.0]},
-        }
-    ]
-    second["vn_insurance_rule_snapshots"] = [
-        {
-            "policyholder_id": 22,
-            "rule_kind": "compulsory",
-            "active_insurer_ids": [11],
-            "draws": {"insurer_choice_draws": [0.0, 0.0]},
-        }
-    ]
+    first["vn_insurance_rule_snapshots"] = [_compulsory_insurance_rule_snapshot(policyholder_id=21)]
+    second["vn_insurance_rule_snapshots"] = [_compulsory_insurance_rule_snapshot(policyholder_id=22)]
 
     result = run_explicit_multi_period_from_mappings(
         [first, second],

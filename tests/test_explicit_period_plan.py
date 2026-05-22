@@ -33,8 +33,8 @@ def _damage_parameters() -> dict[str, list[float]]:
     }
 
 
-def _damage_snapshot(*, policyholder_id: int = 21) -> dict:
-    return {
+def _damage_snapshot(*, policyholder_id: int = 21, include_insurance_decisions: bool = True) -> dict:
+    snapshot = {
         "policyholder_id": policyholder_id,
         "previous_wealth": 100.0,
         "damage_thresholds": [0.8, 0.2],
@@ -43,11 +43,13 @@ def _damage_snapshot(*, policyholder_id: int = 21) -> dict:
             "trigger_draws": [0.1, 0.5],
             "amount_draws": [2.0, 3.0],
         },
-        "insurance_decisions": [
+    }
+    if include_insurance_decisions:
+        snapshot["insurance_decisions"] = [
             {"sector_index": 0, "insured": True, "insurer_id": 11},
             {"sector_index": 1, "insured": False},
-        ],
-    }
+        ]
+    return snapshot
 
 
 def _insurance_rule_snapshot(*, policyholder_id: int = 21) -> dict:
@@ -187,6 +189,41 @@ def test_explicit_period_plan_runs_combined_vu_vn_path(tmp_path: Path) -> None:
     assert result.carryovers[0].vn_carryover is not None
     assert insurer_lines[1].split()[1:4] == ["8.0", "1.0", "39.0"]
     assert insurer_lines[2].split()[1:4] == ["16.0", "1.0", "46.0"]
+
+
+def test_explicit_period_plan_uses_vn_rule_dispatch_for_damage_settlement(tmp_path: Path) -> None:
+    data = _period_plan(carry_forward_vn_state=False)
+    data["period_updates"] = data["period_updates"][:1]
+    data["period_updates"][0]["vn_damage_settlement_snapshots"] = [
+        _damage_snapshot(include_insurance_decisions=False)
+    ]
+    plan_path = tmp_path / "explicit_dispatch_period_plan.json"
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
+
+    result = run_explicit_multi_period_from_plan_fixture(plan_path, output_dir=tmp_path / "out")
+    insurer_lines = _non_empty_lines(tmp_path / "out" / "imsvu011.dat")
+
+    assert result.processed_periods == [2]
+    assert result.total_vn_insurance_rule_applications == 1
+    assert result.total_vn_damage_settlement_applications == 1
+    policyholder = result.period_results[0].vn_result.policyholders[0]
+    assert policyholder.paid_premium_current == pytest.approx([8.0, 12.0])
+    assert policyholder.end_wealth_current == pytest.approx(71.0)
+    assert insurer_lines[1].split() == [
+        "2",
+        "8.0",
+        "1.0",
+        "39.0",
+        "2.0",
+        "1",
+        "9.0",
+        "12.0",
+        "1.0",
+        "72.0",
+        "3.0",
+        "0",
+        "0.0",
+    ]
 
 
 def test_explicit_period_plan_runs_legacy_targets_and_writes_report(tmp_path: Path) -> None:
