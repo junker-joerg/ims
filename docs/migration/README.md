@@ -44,6 +44,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `period_plan_context_overrides.md`: explizite Kontext-Overrides fuer Periodenplaene
 - `vu_free_linear_rule.md`: Vrvu10-Slice fuer frei definierbare lineare VU-Fortschreibung
 - `vn_damage_core.md`: gemeinsamer VN-Schadenerzeugungskern aus Vrvn01 bis Vrvn03
+- `vn_damage_draw_basis.md`: reproduzierbare Python-Draw-Basis fuer VN-Schadensnapshots ohne explizite Draws
+- `vn_random_insurance_rule.md`: Vrvn02-Baustein fuer zufaelligen VN-Versicherungsstatus und aktive VU-Auswahl
 - `vn_settlement_core.md`: deterministischer VN-Abrechnungskern nach expliziten Entscheidungen
 - `vn_damage_settlement_link.md`: explizite Kopplung von VN-Schadenerzeugung und VN-Abrechnung
 - `vn_explicit_damage_period.md`: expliziter Periodenpfad fuer VN-Schaden plus VN-Abrechnung
