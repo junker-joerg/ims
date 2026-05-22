@@ -631,7 +631,7 @@ def run_scheduled_explicit_vu_vn_periods_from_plan_fixture(
     Periodenereignisse und fuehrt den validierten Plan-Runner aus.
     """
 
-    plan_path = Path(path)
+    plan_path = Path(path).resolve()
     with plan_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
 
