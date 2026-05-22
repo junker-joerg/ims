@@ -359,3 +359,41 @@ def test_vn_damage_settlement_loader_reads_explicit_snapshot() -> None:
     assert snapshots[0].parameters.damage_factor_shock == [7.0, 8.0]
     assert snapshots[0].draws.amount_draws == [0.3, 0.4]
     assert snapshots[0].insurance_decisions[0].insurer_id == 90
+
+
+def test_vn_damage_settlement_loader_allows_decisions_from_rule_dispatch() -> None:
+    snapshots = load_vn_damage_settlement_snapshots_from_mapping(
+        [
+            {
+                "policyholder_id": 80,
+                "previous_wealth": 300.0,
+                "damage_thresholds": [0.7, 0.4],
+                "parameters": {
+                    "damage_intercept_normal": [1.0, 2.0],
+                    "damage_factor_normal": [3.0, 4.0],
+                    "damage_intercept_shock": [5.0, 6.0],
+                    "damage_factor_shock": [7.0, 8.0],
+                },
+            }
+        ]
+    )
+
+    assert snapshots[0].insurance_decisions is None
+
+
+def test_vn_damage_settlement_snapshot_requires_decisions_before_direct_application() -> None:
+    snapshot = VNDamageSettlementSnapshot(
+        policyholder_id=80,
+        previous_wealth=300.0,
+        damage_thresholds=[0.7, 0.4],
+        parameters=VNDamageRuleParameters(
+            damage_intercept_normal=[1.0, 2.0],
+            damage_factor_normal=[3.0, 4.0],
+            damage_intercept_shock=[5.0, 6.0],
+            damage_factor_shock=[7.0, 8.0],
+        ),
+        draws=VNDamageRuleDraws(trigger_draws=[0.1, 0.2], amount_draws=[0.3, 0.4]),
+    )
+
+    with pytest.raises(ValueError, match="requires insurance decisions"):
+        apply_vn_damage_settlement_snapshot(Policyholder(entity_id=80), [], snapshot)

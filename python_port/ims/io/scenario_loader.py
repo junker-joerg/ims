@@ -236,9 +236,10 @@ def _validate_vn_damage_settlement_snapshot_references(
             seen_policyholder_ids.add(snapshot.policyholder_id)
         if snapshot.policyholder_id not in policyholder_ids:
             unknown_policyholder_ids.add(snapshot.policyholder_id)
-        for decision in snapshot.insurance_decisions:
-            if decision.insurer_id is not None and decision.insurer_id not in insurer_ids:
-                unknown_insurer_ids.add(decision.insurer_id)
+        if snapshot.insurance_decisions is not None:
+            for decision in snapshot.insurance_decisions:
+                if decision.insurer_id is not None and decision.insurer_id not in insurer_ids:
+                    unknown_insurer_ids.add(decision.insurer_id)
     if duplicate_policyholder_ids:
         values = ", ".join(str(policyholder_id) for policyholder_id in sorted(duplicate_policyholder_ids))
         raise ScenarioValidationError(f"duplicate VN damage settlement snapshot policyholder_id values: {values}")

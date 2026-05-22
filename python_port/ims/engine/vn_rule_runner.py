@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 import json
 from pathlib import Path
 import random
@@ -116,6 +116,31 @@ def _validate_disjoint_vn_snapshot_targets(
         raise ValueError(f"VN snapshot sets must target disjoint policyholders per period: {values}")
 
 
+def _resolve_damage_settlement_snapshots_from_rule_applications(
+    damage_settlement_snapshots: list[VNDamageSettlementSnapshot],
+    insurance_rule_applications: list[VNInsuranceRuleApplication],
+) -> list[VNDamageSettlementSnapshot]:
+    applications_by_policyholder = {
+        application.policyholder_id: application
+        for application in insurance_rule_applications
+    }
+    resolved_snapshots: list[VNDamageSettlementSnapshot] = []
+    for snapshot in damage_settlement_snapshots:
+        if snapshot.insurance_decisions is not None:
+            resolved_snapshots.append(snapshot)
+            continue
+        application = applications_by_policyholder.get(snapshot.policyholder_id)
+        if application is None:
+            raise ValueError(
+                "VN damage settlement snapshot requires insurance decisions or "
+                f"matching VN insurance rule snapshot for policyholder: {snapshot.policyholder_id}"
+            )
+        resolved_snapshots.append(
+            replace(snapshot, insurance_decisions=list(application.decisions))
+        )
+    return resolved_snapshots
+
+
 def run_vn_settlement_period(
     context: SimulationContext,
     insurers: list[Insurer],
@@ -141,6 +166,14 @@ def run_vn_settlement_period(
         damage_settlement_snapshots=damage_settlement_snapshots,
         settlement_snapshots=settlement_snapshots,
     )
+    insurance_rule_applications = apply_vn_insurance_rule_snapshots(
+        insurance_rule_snapshots,
+        period=context.period,
+    )
+    damage_settlement_snapshots = _resolve_damage_settlement_snapshots_from_rule_applications(
+        damage_settlement_snapshots,
+        insurance_rule_applications,
+    )
     damage_settlement_applications = apply_vn_damage_settlement_snapshots(
         policyholders,
         insurers,
@@ -155,10 +188,6 @@ def run_vn_settlement_period(
         policyholders,
         insurers,
         settlement_snapshots,
-    )
-    insurance_rule_applications = apply_vn_insurance_rule_snapshots(
-        insurance_rule_snapshots,
-        period=context.period,
     )
     return VNSettlementPeriodRunResult(
         period=context.period,

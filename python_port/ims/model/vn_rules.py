@@ -71,8 +71,8 @@ class VNDamageSettlementSnapshot:
     policyholder_id: int
     parameters: VNDamageRuleParameters
     damage_thresholds: list[float]
-    insurance_decisions: list[VNInsuranceDecision]
     previous_wealth: float
+    insurance_decisions: list[VNInsuranceDecision] | None = None
     draws: VNDamageRuleDraws | None = None
     previous_wealth_sector: list[float] | None = None
     change_shock: bool = False
@@ -249,7 +249,7 @@ def vn_damage_settlement_snapshot_from_mapping(mapping: dict[str, object]) -> VN
 
     if not isinstance(mapping, dict):
         raise ValueError("VN damage settlement snapshot must be an object")
-    for key in ("policyholder_id", "previous_wealth", "parameters", "damage_thresholds", "insurance_decisions"):
+    for key in ("policyholder_id", "previous_wealth", "parameters", "damage_thresholds"):
         if key not in mapping:
             raise ValueError(f"VN damage settlement snapshot requires field: {key}")
     return VNDamageSettlementSnapshot(
@@ -261,7 +261,11 @@ def vn_damage_settlement_snapshot_from_mapping(mapping: dict[str, object]) -> VN
             if "draws" in mapping
             else None
         ),
-        insurance_decisions=load_vn_insurance_decisions_from_mapping(mapping["insurance_decisions"]),
+        insurance_decisions=(
+            load_vn_insurance_decisions_from_mapping(mapping["insurance_decisions"])
+            if "insurance_decisions" in mapping
+            else None
+        ),
         previous_wealth=float(mapping["previous_wealth"]),
         previous_wealth_sector=_optional_two_float_values(mapping.get("previous_wealth_sector")),
         change_shock=bool(mapping.get("change_shock", False)),
@@ -339,6 +343,8 @@ def apply_vn_damage_settlement_snapshot(
             "VN damage settlement snapshot policyholder_id does not match policyholder: "
             f"{snapshot.policyholder_id} != {policyholder.entity_id}"
         )
+    if snapshot.insurance_decisions is None:
+        raise ValueError("VN damage settlement snapshot requires insurance decisions")
     draws = snapshot.draws
     if draws is None:
         if damage_draw_provider is None:
