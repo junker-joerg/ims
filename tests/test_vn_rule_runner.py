@@ -165,7 +165,7 @@ def test_vn_rule_runner_loads_period_from_mapping() -> None:
 
 
 def test_vn_rule_runner_applies_explicit_insurance_rule_snapshots() -> None:
-    scenario = _vn_period_scenario(5)
+    scenario = _vn_period_scenario(5, insurer_ids=[11, 12])
     scenario["vn_insurance_rule_snapshots"] = [
         {
             "policyholder_id": 21,
@@ -231,6 +231,82 @@ def test_vn_rule_runner_rejects_unknown_insurance_rule_policyholder() -> None:
     ]
 
     with pytest.raises(ValueError, match="unknown policyholders"):
+        run_vn_settlement_period_from_mapping(scenario)
+
+
+def test_vn_rule_runner_rejects_unknown_insurance_rule_active_insurer() -> None:
+    scenario = _vn_period_scenario(5)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [99],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+
+    with pytest.raises(ValueError, match="unknown insurers: 99"):
+        run_vn_settlement_period_from_mapping(scenario)
+
+
+def test_vn_rule_runner_rejects_unknown_insurance_rule_initial_decision_insurer() -> None:
+    scenario = _vn_period_scenario(1)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "random",
+            "initial_decisions": [
+                {"sector_index": 0, "insured": True, "insurer_id": 99},
+                {"sector_index": 1, "insured": False},
+            ],
+        }
+    ]
+
+    with pytest.raises(ValueError, match="unknown insurers: 99"):
+        run_vn_settlement_period_from_mapping(scenario)
+
+
+def test_vn_rule_runner_rejects_unknown_insurance_rule_input_insurer() -> None:
+    scenario = _vn_period_scenario(5)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "best_info",
+            "parameters": {
+                "insurance_thresholds_normal": [0.5, 0.1],
+                "insurance_thresholds_shock": [0.5, 0.1],
+            },
+            "market_damage_indicator": 0.5,
+            "insurer_inputs": [
+                {"insurer_id": 99, "premiums_current_sector": [4.0, 7.0]},
+            ],
+        }
+    ]
+
+    with pytest.raises(ValueError, match="unknown insurers: 99"):
+        run_vn_settlement_period_from_mapping(scenario)
+
+
+def test_vn_rule_runner_rejects_unknown_insurance_rule_history_insurer() -> None:
+    scenario = _vn_period_scenario(5)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "search_history",
+            "parameters": {
+                "insurance_thresholds_normal": [0.5, 0.1],
+                "insurance_thresholds_shock": [0.5, 0.1],
+            },
+            "damage_probabilities": [0.6, 0.0],
+            "active_insurer_ids": [11],
+            "history": [
+                {"period": 4, "sector_index": 0, "insured": True, "premium": 5.0, "insurer_id": 99},
+                {"period": 4, "sector_index": 1, "insured": False, "premium": 0.0},
+            ],
+        }
+    ]
+
+    with pytest.raises(ValueError, match="unknown insurers: 99"):
         run_vn_settlement_period_from_mapping(scenario)
 
 
