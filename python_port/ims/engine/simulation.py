@@ -15,13 +15,14 @@ from ims.engine.event_builders import (
 from ims.engine.explicit_period_runner import (
     ExplicitMultiPeriodRunResult,
     ExplicitPeriodRunResult,
-    run_explicit_multi_period_from_fixture,
+    _boolean_fixture_flag,
+    _load_legacy_targets,
     run_explicit_multi_period_from_mappings,
     run_loaded_explicit_period,
 )
 from ims.engine.explicit_period_plan import (
+    _load_legacy_targets_from_plan_fixture,
     build_explicit_period_fixture_from_plan,
-    run_explicit_multi_period_from_plan_fixture,
 )
 from ims.engine.scheduler import Event, Scheduler
 from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
@@ -98,6 +99,12 @@ class ScheduledExplicitMultiPeriodResult:
 
     planned_events: list[Event]
     explicit_multi_period: ExplicitMultiPeriodRunResult
+
+
+@dataclass(slots=True)
+class _ScheduledExplicitPeriodPlan:
+    planned_events: list[Event]
+    ordered_period_scenarios: list[dict]
 
 
 @dataclass(slots=True)
@@ -501,7 +508,7 @@ def run_scheduled_explicit_vu_vn_period_from_mapping(
     )
 
 
-def _planned_explicit_vu_vn_period_events(period_scenarios: list[dict]) -> list[Event]:
+def _plan_explicit_vu_vn_periods(period_scenarios: list[dict]) -> _ScheduledExplicitPeriodPlan:
     scheduler = Scheduler()
     for index, period_scenario in enumerate(period_scenarios):
         loaded = load_scenario_from_mapping(period_scenario)
@@ -522,12 +529,17 @@ def _planned_explicit_vu_vn_period_events(period_scenarios: list[dict]) -> list[
         )
 
     planned_events: list[Event] = []
+    ordered_period_scenarios: list[dict] = []
     while not scheduler.empty():
         event = scheduler.pop()
         if event.action != "explicit_vu_vn_period":
             raise ValueError(f"unsupported explicit period event action: {event.action}")
         planned_events.append(event)
-    return planned_events
+        ordered_period_scenarios.append(period_scenarios[int(event.payload["input_index"])])
+    return _ScheduledExplicitPeriodPlan(
+        planned_events=planned_events,
+        ordered_period_scenarios=ordered_period_scenarios,
+    )
 
 
 def run_scheduled_explicit_vu_vn_periods_from_mappings(
@@ -545,11 +557,11 @@ def run_scheduled_explicit_vu_vn_periods_from_mappings(
     if not isinstance(period_scenarios, list):
         raise ValueError("scheduled explicit VU/VN run requires a list of period scenarios")
 
-    planned_events = _planned_explicit_vu_vn_period_events(period_scenarios)
+    scheduled_plan = _plan_explicit_vu_vn_periods(period_scenarios)
     return ScheduledExplicitMultiPeriodResult(
-        planned_events=planned_events,
+        planned_events=scheduled_plan.planned_events,
         explicit_multi_period=run_explicit_multi_period_from_mappings(
-            period_scenarios,
+            scheduled_plan.ordered_period_scenarios,
             output_dir=output_dir,
             carry_forward_vu_state=carry_forward_vu_state,
             carry_forward_vn_state=carry_forward_vn_state,
@@ -584,14 +596,27 @@ def run_scheduled_explicit_vu_vn_periods_from_fixture(
         payload = json.load(handle)
 
     period_scenarios = _period_scenarios_from_scheduled_fixture_payload(payload)
-    planned_events = _planned_explicit_vu_vn_period_events(period_scenarios)
+    scheduled_plan = _plan_explicit_vu_vn_periods(period_scenarios)
+    fixture_carry_forward_vu_state = _boolean_fixture_flag(payload, "carry_forward_vu_state")
+    fixture_carry_forward_vn_state = _boolean_fixture_flag(payload, "carry_forward_vn_state")
+    legacy_targets = (
+        _load_legacy_targets(payload.get("legacy_targets"), fixture_base_path=fixture_path.parent)
+        if isinstance(payload, dict)
+        else []
+    )
     return ScheduledExplicitMultiPeriodResult(
-        planned_events=planned_events,
-        explicit_multi_period=run_explicit_multi_period_from_fixture(
-            fixture_path,
+        planned_events=scheduled_plan.planned_events,
+        explicit_multi_period=run_explicit_multi_period_from_mappings(
+            scheduled_plan.ordered_period_scenarios,
             output_dir=output_dir,
-            carry_forward_vu_state=carry_forward_vu_state,
-            carry_forward_vn_state=carry_forward_vn_state,
+            carry_forward_vu_state=carry_forward_vu_state or fixture_carry_forward_vu_state,
+            carry_forward_vn_state=carry_forward_vn_state or fixture_carry_forward_vn_state,
+            legacy_targets=legacy_targets,
+            legacy_report_name=(
+                str(payload["legacy_report_name"])
+                if isinstance(payload, dict) and payload.get("legacy_report_name") is not None
+                else None
+            ),
         ),
     )
 
@@ -611,12 +636,20 @@ def run_scheduled_explicit_vu_vn_periods_from_plan_fixture(
         payload = json.load(handle)
 
     fixture = build_explicit_period_fixture_from_plan(payload)
-    planned_events = _planned_explicit_vu_vn_period_events(fixture["periods"])
+    scheduled_plan = _plan_explicit_vu_vn_periods(fixture["periods"])
     return ScheduledExplicitMultiPeriodResult(
-        planned_events=planned_events,
-        explicit_multi_period=run_explicit_multi_period_from_plan_fixture(
-            plan_path,
+        planned_events=scheduled_plan.planned_events,
+        explicit_multi_period=run_explicit_multi_period_from_mappings(
+            scheduled_plan.ordered_period_scenarios,
             output_dir=output_dir,
+            carry_forward_vu_state=bool(fixture["carry_forward_vu_state"]),
+            carry_forward_vn_state=bool(fixture["carry_forward_vn_state"]),
+            legacy_targets=_load_legacy_targets_from_plan_fixture(fixture, plan_base_path=plan_path.parent),
+            legacy_report_name=(
+                str(fixture["legacy_report_name"])
+                if fixture.get("legacy_report_name") is not None
+                else None
+            ),
         ),
     )
 
