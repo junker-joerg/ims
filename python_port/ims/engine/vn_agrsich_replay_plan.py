@@ -19,6 +19,7 @@ class VNAgrsichReplayPeriodUpdate:
     rng_seed: int
     insurer_updates: list[dict]
     policyholder_updates: list[dict]
+    vn_insurance_rule_snapshots: list[dict] | None
     vn_settlement_snapshots: list[dict] | None
     vn_damage_settlement_snapshots: list[dict] | None
 
@@ -80,6 +81,7 @@ def _load_plan(data: dict) -> VNAgrsichReplayPlan:
                 rng_seed=int(context_data.get("rng_seed", 0)),
                 insurer_updates=_period_update_list(item, "insurers"),
                 policyholder_updates=_period_update_list(item, "policyholders"),
+                vn_insurance_rule_snapshots=_optional_snapshot_list(item, "vn_insurance_rule_snapshots"),
                 vn_settlement_snapshots=_optional_snapshot_list(item, "vn_settlement_snapshots"),
                 vn_damage_settlement_snapshots=_optional_snapshot_list(
                     item,
@@ -150,6 +152,8 @@ def build_vn_agrsich_replay_fixture_from_period_plan(data: dict) -> dict:
 
         _apply_entity_updates(snapshot, "insurers", update.insurer_updates)
         _apply_entity_updates(snapshot, "policyholders", update.policyholder_updates)
+        if update.vn_insurance_rule_snapshots is not None:
+            snapshot["vn_insurance_rule_snapshots"] = deepcopy(update.vn_insurance_rule_snapshots)
         if update.vn_settlement_snapshots is not None:
             snapshot["vn_settlement_snapshots"] = deepcopy(update.vn_settlement_snapshots)
         if update.vn_damage_settlement_snapshots is not None:

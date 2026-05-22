@@ -10,6 +10,8 @@ Agrsich-Tabellen geschrieben.
 - `IMS.E`, `act Vrvn01`
 - `IMS.E`, `act Vrvn02`
 - `IMS.E`, `act Vrvn03`
+- `IMS.E`, `act Vrvn04` bis `act Vrvn06` als Quelle der inzwischen
+  explizit dispatchbaren VN-Versicherungsentscheidungen
 - historische VN-Agrsich-Ausgaben wie `IMSVNR*.DAT` und `IMSVNSK1.DAT`
 
 Die historischen VN-Aktionen erzeugen Periodenzustaende, die in Agrsich-Dateien
@@ -35,7 +37,7 @@ Das Laufergebnis trennt lokale und globale Periodendiagnosen:
 Der Ablauf pro Periode ist:
 
 1. Szenario laden und validieren.
-2. Explizite VN-Schaden-/Settlement-Snapshots anwenden.
+2. Explizite VN-Versicherungsregel-, Schaden- und Settlement-Snapshots anwenden.
 3. Agrsich-Records aus dem mutierten Python-Zustand sammeln.
 4. Agrsich-Exporttabellen schreiben.
 
@@ -47,6 +49,10 @@ Der Ablauf pro Periode ist:
 - Die bestehenden Szenario- und VN-Snapshot-Validierungen bleiben vorgeschaltet.
 - Tests pruefen, dass exportierte VU-/VN-Zeilen aus dem nach Regelanwendung
   veraenderten Zustand stammen.
+- `total_insurance_rule_applications` zaehlt angewendete
+  VN-Versicherungsregel-Snapshots separat von Schaden-/Settlement-Anwendungen.
+- Schaden-Abrechnungs-Snapshots koennen ihre `insurance_decisions` aus einer
+  passenden VN-Versicherungsregel-Anwendung beziehen.
 - Optional kann `carry_forward_vn_state=True` gesetzt werden. Dann wird derselbe
   kontrollierte VN-State-Carryover wie im expliziten VN-Mehrperiodenrunner vor
   dem Folgeperiodenlauf angewendet und als `VNAgrsichReplayRunResult.carryovers`
@@ -59,7 +65,6 @@ Der Ablauf pro Periode ist:
 
 - Keine automatische Zustandsfortschreibung zwischen Perioden ohne explizites
   Carryover-Opt-in.
-- Keine Portierung der historischen Versichererwahl, Praeferenzbildung oder
-  Pflichtversicherungslogik.
+- Keine automatische historische Scheduler- oder Regelwahl.
 - Keine versteckte RNG-Nutzung.
 - Keine Legacy-Gleichheitsbehauptung und keine Vollsimulation.
