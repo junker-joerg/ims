@@ -122,6 +122,8 @@ class Insurer(BaseEntity):
     premiums_prev_sector: list[float] = field(default_factory=list)
     advertising_prev_sector: list[float] = field(default_factory=list)
     reserves_prev_sector: list[float] = field(default_factory=list)
+    policyholders_prev: float = 0.0
+    policyholders_prev_sector: list[float] = field(default_factory=list)
     active_prev: bool = True
     rule_id: int | None = None
     rule_class: int | None = None

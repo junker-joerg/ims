@@ -211,7 +211,7 @@ class VUNetSwitcherMarkupRuleSnapshot:
     insurer_id: int
     parameters: VUNetSwitcherMarkupRuleParameters
     net_switcher_thresholds: list[float]
-    previous_policyholders_sector: list[float]
+    previous_policyholders_sector: list[float] | None = None
     interest_rate: float = 0.0
     change_shock: bool = False
 
@@ -607,8 +607,6 @@ def vu_net_switcher_markup_rule_snapshot_from_mapping(mapping: dict[str, object]
         raise ValueError("VU net-switcher-markup rule snapshot must be an object")
     if "insurer_id" not in mapping:
         raise ValueError("VU net-switcher-markup rule snapshot requires field: insurer_id")
-    if "previous_policyholders_sector" not in mapping:
-        raise ValueError("VU net-switcher-markup rule snapshot requires field: previous_policyholders_sector")
     parameters = mapping.get("parameters")
     if not isinstance(parameters, dict):
         raise ValueError("VU net-switcher-markup rule snapshot requires object field: parameters")
@@ -616,7 +614,11 @@ def vu_net_switcher_markup_rule_snapshot_from_mapping(mapping: dict[str, object]
         insurer_id=int(mapping["insurer_id"]),
         parameters=vu_net_switcher_markup_rule_parameters_from_mapping(parameters),
         net_switcher_thresholds=_two_values(mapping.get("net_switcher_thresholds"), fallback=0.0),
-        previous_policyholders_sector=_two_values(mapping["previous_policyholders_sector"], fallback=0.0),
+        previous_policyholders_sector=(
+            _two_values(mapping["previous_policyholders_sector"], fallback=0.0)
+            if "previous_policyholders_sector" in mapping
+            else None
+        ),
         interest_rate=float(mapping.get("interest_rate", 0.0)),
         change_shock=bool(mapping.get("change_shock", False)),
     )
@@ -1355,12 +1357,17 @@ def apply_vu_net_switcher_markup_rule_snapshots(
         insurer = insurers_by_id.get(snapshot.insurer_id)
         if insurer is None:
             raise ValueError(f"VU net-switcher-markup rule snapshot references unknown insurer: {snapshot.insurer_id}")
+        previous_policyholders_sector = (
+            snapshot.previous_policyholders_sector
+            if snapshot.previous_policyholders_sector is not None
+            else _two_values(insurer.policyholders_prev_sector, fallback=insurer.policyholders_prev)
+        )
         result = apply_vu_net_switcher_markup_rule_to_insurer(
             insurer,
             snapshot.parameters,
             period=period,
             net_switcher_thresholds=snapshot.net_switcher_thresholds,
-            previous_policyholders_sector=snapshot.previous_policyholders_sector,
+            previous_policyholders_sector=previous_policyholders_sector,
             interest_rate=snapshot.interest_rate,
             change_shock=snapshot.change_shock,
         )

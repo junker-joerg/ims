@@ -1039,7 +1039,36 @@ def test_vu_net_switcher_markup_rule_snapshots_load_and_apply_to_matching_insure
     assert insurers[1].premiums_current_sector == []
 
 
-def test_vu_net_switcher_markup_rule_snapshots_reject_unknown_duplicate_and_missing_previous_targets() -> None:
+def test_vu_net_switcher_markup_rule_snapshot_can_use_insurer_previous_policyholders() -> None:
+    insurers = [
+        Insurer(
+            entity_id=7,
+            premiums_current_sector=[100.0, 200.0],
+            advertising_current_sector=[10.0, 20.0],
+            reserves_current=[50.0, 150.0],
+            policyholders_current_sector=[30.0, 80.0],
+            policyholders_prev_sector=[20.0, 75.0],
+        )
+    ]
+    snapshots = load_vu_net_switcher_markup_rule_snapshots_from_mapping(
+        [
+            {
+                "insurer_id": 7,
+                "net_switcher_thresholds": [5.0, 10.0],
+                "interest_rate": 0.05,
+                "parameters": _net_switcher_markup_parameter_mapping(),
+            }
+        ]
+    )
+
+    applications = apply_vu_net_switcher_markup_rule_snapshots(insurers, snapshots, period=3)
+
+    assert applications[0].result.net_switcher_values == pytest.approx([10.0, 5.0])
+    assert insurers[0].premiums_current_sector == pytest.approx([90.0, 240.0])
+    assert insurers[0].advertising_current_sector == pytest.approx([7.0, 28.0])
+
+
+def test_vu_net_switcher_markup_rule_snapshots_reject_unknown_and_duplicate_targets() -> None:
     snapshots = load_vu_net_switcher_markup_rule_snapshots_from_mapping(
         [
             {
@@ -1055,11 +1084,6 @@ def test_vu_net_switcher_markup_rule_snapshots_reject_unknown_duplicate_and_miss
 
     with pytest.raises(ValueError, match="duplicate"):
         apply_vu_net_switcher_markup_rule_snapshots([Insurer(entity_id=7)], snapshots + snapshots, period=3)
-
-    with pytest.raises(ValueError, match="previous_policyholders_sector"):
-        load_vu_net_switcher_markup_rule_snapshots_from_mapping(
-            [{"insurer_id": 7, "parameters": _net_switcher_markup_parameter_mapping()}]
-        )
 
 
 def test_vu_expected_claim_rule_uses_average_claim_values_for_normal_case() -> None:

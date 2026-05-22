@@ -131,6 +131,8 @@ def _scenario() -> dict:
                 "advertising_prev_sector": [10.0, 20.0],
                 "reserves_prev_sector": [1000.0, 100.0],
                 "reserves_current": [50.0, 60.0],
+                "policyholders_prev": 20.0,
+                "policyholders_prev_sector": [20.0, 75.0],
                 "policyholders_current": 30.0,
                 "policyholders_current_sector": [30.0, 80.0],
                 "claims_count_current": [2, 4],
@@ -435,6 +437,26 @@ def test_vu_rule_runner_uses_scalar_policyholders_for_net_switcher_snapshots() -
     assert insurer.advertising_current_sector == pytest.approx([0.0, 0.0])
 
 
+def test_vu_rule_runner_can_derive_net_switcher_previous_policyholders_from_insurer_state() -> None:
+    scenario = _scenario_for_period(3)
+    scenario["vu_foreign_info_rule_snapshots"] = []
+    scenario["insurers"][0]["premiums_current_sector"] = [100.0, 200.0]
+    scenario["insurers"][0]["advertising_current_sector"] = [10.0, 20.0]
+    scenario["vu_net_switcher_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "net_switcher_thresholds": [5.0, 10.0],
+            "parameters": _net_switcher_markup_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    application = result.net_switcher_markup_applications[0]
+    assert application.result.net_switcher_values == pytest.approx([10.0, 5.0])
+    assert result.insurers[0].premiums_current_sector == pytest.approx([90.0, 240.0])
+
+
 def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules() -> None:
     scenario = _scenario()
     scenario["vu_foreign_info_rule_snapshots"] = []
@@ -721,6 +743,29 @@ def test_vu_rule_multi_period_runner_can_carry_current_insurer_state_forward() -
     assert second.insurers[0].advertising_current_sector == [3.4, 5.6]
     assert second.insurers[0].reserves_current == pytest.approx([55.125, 66.15])
     assert second.insurers[0].policyholders_current_sector == [30.0, 80.0]
+    assert second.insurers[0].policyholders_prev_sector == [20.0, 75.0]
+
+
+def test_vu_rule_multi_period_carryover_keeps_net_switcher_previous_basis() -> None:
+    first = _scenario_for_period(2)
+    second = _scenario_for_period(3)
+    second["vu_foreign_info_rule_snapshots"] = []
+    second["vu_net_switcher_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "net_switcher_thresholds": [5.0, 10.0],
+            "parameters": _net_switcher_markup_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_multi_period_from_mappings(
+        [first, second],
+        carry_forward_insurer_state=True,
+    )
+
+    application = result.period_results[1].net_switcher_markup_applications[0]
+    assert application.result.net_switcher_values == pytest.approx([10.0, 5.0])
+    assert result.period_results[1].insurers[0].policyholders_prev_sector == [20.0, 75.0]
 
 
 def test_vu_rule_multi_period_runner_only_carries_matching_insurers() -> None:

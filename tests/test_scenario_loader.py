@@ -127,9 +127,11 @@ def test_scenario_loader_reads_sector_specific_previous_frmdinf_inputs() -> None
                     "premiums_prev": 99.0,
                     "advertising_prev": 99.0,
                     "reserves_prev": 99.0,
+                    "policyholders_prev": 77.0,
                     "premiums_prev_sector": [11.0, 22.0],
                     "advertising_prev_sector": [3.0, 4.0],
                     "reserves_prev_sector": [50.0, 60.0],
+                    "policyholders_prev_sector": [7.0, 8.0],
                 }
             ],
             "policyholders": [
@@ -146,6 +148,8 @@ def test_scenario_loader_reads_sector_specific_previous_frmdinf_inputs() -> None
     assert scenario.insurers[0].premiums_prev_sector == [11.0, 22.0]
     assert scenario.insurers[0].advertising_prev_sector == [3.0, 4.0]
     assert scenario.insurers[0].reserves_prev_sector == [50.0, 60.0]
+    assert scenario.insurers[0].policyholders_prev == 77.0
+    assert scenario.insurers[0].policyholders_prev_sector == [7.0, 8.0]
     assert scenario.policyholders[0].insured_prev_sector == [1.0, 0.0]
 
 
@@ -414,6 +418,42 @@ def test_scenario_loader_reads_optional_vu_net_switcher_markup_rule_snapshots() 
     assert snapshot.previous_policyholders_sector == [20.0, 75.0]
     assert snapshot.interest_rate == 0.04
     assert snapshot.change_shock is True
+
+
+def test_scenario_loader_allows_vu_net_switcher_snapshot_without_explicit_previous_policyholders() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 3, "max_periods": 4},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [
+                {
+                    "entity_id": 10,
+                    "name": "VU",
+                    "policyholders_prev_sector": [20.0, 75.0],
+                    "policyholders_current_sector": [30.0, 80.0],
+                }
+            ],
+            "policyholders": [],
+            "vu_net_switcher_markup_rule_snapshots": [
+                {
+                    "insurer_id": 10,
+                    "net_switcher_thresholds": [5.0, 10.0],
+                    "parameters": {
+                        "premium_below_normal": [1.1, 1.2],
+                        "premium_above_normal": [0.9, 0.8],
+                        "advertising_below_normal": [1.3, 1.4],
+                        "advertising_above_normal": [0.7, 0.6],
+                        "premium_below_shock": [2.1, 2.2],
+                        "premium_above_shock": [1.9, 1.8],
+                        "advertising_below_shock": [2.3, 2.4],
+                        "advertising_above_shock": [1.7, 1.6],
+                    },
+                }
+            ],
+        }
+    )
+
+    assert scenario.vu_net_switcher_markup_rule_snapshots[0].previous_policyholders_sector is None
 
 
 def test_scenario_loader_reads_optional_vu_free_linear_rule_snapshots() -> None:
