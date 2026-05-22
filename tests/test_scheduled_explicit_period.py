@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pytest
@@ -6,6 +7,7 @@ from ims.engine.simulation import (
     ScheduledExplicitMultiPeriodResult,
     ScheduledExplicitPeriodResult,
     run_scheduled_explicit_vu_vn_period_from_mapping,
+    run_scheduled_explicit_vu_vn_periods_from_fixture,
     run_scheduled_explicit_vu_vn_periods_from_mappings,
 )
 
@@ -183,3 +185,35 @@ def test_scheduled_explicit_vu_vn_periods_can_carry_state_between_events() -> No
     assert result.explicit_multi_period.period_results[1].vn_result.policyholders[0].end_wealth_current == pytest.approx(
         51.0
     )
+
+
+def test_scheduled_explicit_vu_vn_periods_fixture_uses_fixture_flags(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "scheduled_explicit_periods.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "carry_forward_vn_state": True,
+                "periods": [_scenario(period=2), _scenario(period=3)],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_scheduled_explicit_vu_vn_periods_from_fixture(fixture_path, output_dir=tmp_path / "out")
+
+    assert [(event.period, event.logtime) for event in result.planned_events] == [(2, 4), (3, 4)]
+    assert len(result.explicit_multi_period.carryovers) == 1
+    assert result.explicit_multi_period.carryovers[0].vn_carryover is not None
+    assert result.explicit_multi_period.period_results[1].vn_result.policyholders[0].end_wealth_current == pytest.approx(
+        51.0
+    )
+    lines = _non_empty_lines(tmp_path / "out" / "imsvu011.dat")
+    assert [line.split()[0] for line in lines[1:]] == ["2", "3"]
+
+
+def test_scheduled_explicit_vu_vn_periods_fixture_rejects_missing_periods(tmp_path: Path) -> None:
+    fixture_path = tmp_path / "bad_scheduled_explicit_periods.json"
+    fixture_path.write_text(json.dumps({"metadata": {"purpose": "missing periods"}}), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="requires a list or object field: periods"):
+        run_scheduled_explicit_vu_vn_periods_from_fixture(fixture_path)
