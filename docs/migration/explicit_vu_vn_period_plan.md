@@ -10,7 +10,7 @@ Periodenrunner.
 ## Ursprung im Altcode
 
 Der fachliche Anschluss bleibt bei den bereits portierten VU-Regelwirkungen aus
-den `Vrvu*`-Slices und den VN-Periodenwirkungen aus `Vrvn01` bis `Vrvn03`. Der
+den `Vrvu*`-Slices und den VN-Periodenwirkungen aus `Vrvn01` bis `Vrvn06`. Der
 Plan beschreibt explizite Python-Eingaben fuer diese portierten Kernpfade; er
 portiert keinen historischen PlanVU-/PlanVN-Scheduler.
 
@@ -20,6 +20,8 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
 - `ExplicitPeriodPlanUpdate` beschreibt Periode, optionale
   `logtime`-/`max_periods`-Overrides, Laufindex, RNG-Seed, Entity-Updates und
   explizite VU/VN-Snapshotlisten.
+- Periodenupdates koennen nun auch `vn_insurance_rule_snapshots` enthalten; sie
+  werden wie die anderen Snapshotlisten in das erzeugte Fixture durchgereicht.
 - `build_explicit_period_fixture_from_plan` erzeugt daraus das Objekt-Fixture
   mit `periods`.
 - `run_explicit_multi_period_from_plan_fixture` fuehrt das erzeugte Fixture ueber
@@ -30,8 +32,9 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
 
 ## Annahmen und Grenzen
 
-- Alle VU-Regelparameter, VN-Schadenziehungen und VN-Versicherungsentscheidungen
-  muessen explizit im Plan oder im Basissnapshot vorliegen.
+- Alle VU-Regelparameter, VN-Versicherungsregel-Snapshots,
+  VN-Schadenziehungen und VN-Versicherungsentscheidungen muessen explizit im
+  Plan oder im Basissnapshot vorliegen.
 - Fehlen `logtime` oder `max_periods` im Periodenupdate, bleibt der
   Basissnapshot massgeblich.
 - Carryover-Flags muessen JSON-Booleans sein.

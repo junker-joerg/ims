@@ -50,6 +50,15 @@ def _damage_snapshot(*, policyholder_id: int = 21) -> dict:
     }
 
 
+def _insurance_rule_snapshot(*, policyholder_id: int = 21) -> dict:
+    return {
+        "policyholder_id": policyholder_id,
+        "rule_kind": "compulsory",
+        "active_insurer_ids": [11],
+        "draws": {"insurer_choice_draws": [0.0, 0.0]},
+    }
+
+
 def _base_snapshot() -> dict:
     return {
         "context": {"period": 0, "max_periods": 12, "run_index": 0, "rng_seed": 0},
@@ -96,6 +105,7 @@ def _period_plan(*, carry_forward_vu_state: object = False, carry_forward_vn_sta
                 "insurers": [],
                 "policyholders": [],
                 "vu_free_linear_rule_snapshots": [free_linear_snapshot],
+                "vn_insurance_rule_snapshots": [_insurance_rule_snapshot()],
                 "vn_damage_settlement_snapshots": [_damage_snapshot()],
             },
             {
@@ -103,6 +113,7 @@ def _period_plan(*, carry_forward_vu_state: object = False, carry_forward_vn_sta
                 "insurers": [],
                 "policyholders": [],
                 "vu_free_linear_rule_snapshots": [free_linear_snapshot],
+                "vn_insurance_rule_snapshots": [_insurance_rule_snapshot()],
                 "vn_damage_settlement_snapshots": [_damage_snapshot()],
             },
         ],
@@ -120,6 +131,7 @@ def test_explicit_period_plan_builds_runner_fixture_from_base_snapshot() -> None
     assert fixture["carry_forward_vu_state"] is False
     assert [period["context"]["period"] for period in fixture["periods"]] == [2, 3]
     assert fixture["periods"][0]["vu_free_linear_rule_snapshots"][0]["insurer_id"] == 11
+    assert fixture["periods"][0]["vn_insurance_rule_snapshots"][0]["rule_kind"] == "compulsory"
     assert fixture["periods"][1]["vn_damage_settlement_snapshots"][0]["policyholder_id"] == 21
 
 
@@ -169,6 +181,7 @@ def test_explicit_period_plan_runs_combined_vu_vn_path(tmp_path: Path) -> None:
 
     assert result.processed_periods == [2, 3]
     assert result.total_vu_rule_applications == 2
+    assert result.total_vn_insurance_rule_applications == 2
     assert result.total_vn_damage_settlement_applications == 2
     assert len(result.carryovers) == 1
     assert result.carryovers[0].vn_carryover is not None
