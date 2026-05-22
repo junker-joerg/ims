@@ -484,6 +484,37 @@ def test_vu_rule_runner_applies_market_share_markup_snapshots_after_prior_rules(
     assert insurer.reserves_current == pytest.approx([52.5, 63.0])
 
 
+def test_vu_rule_runner_uses_bav_active_count_for_market_share_markup_snapshots() -> None:
+    scenario = _scenario()
+    scenario["insurers"] = [scenario["insurers"][0]]
+    scenario["insurers"][0]["premiums_current_sector"] = [100.0, 200.0]
+    scenario["insurers"][0]["advertising_current_sector"] = [10.0, 20.0]
+    scenario["insurers"][0]["policyholders_current_sector"] = [1.0, 0.0]
+    scenario["policyholders"] = [
+        {"entity_id": 20, "name": "VN-20", "active": True, "active_prev": True, "insurer_id": 10},
+        {"entity_id": 21, "name": "VN-21", "active": True, "active_prev": False, "insurer_id": 10},
+    ]
+    scenario["vu_foreign_info_rule_snapshots"] = []
+    scenario["vu_market_share_markup_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "market_share_thresholds": [0.5, 0.5],
+            "interest_rate": 0.05,
+            "parameters": _market_share_markup_parameters(),
+        }
+    ]
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    assert result.bav.service_state.activity_state.active_policyholder_count_current == 2
+    application = result.market_share_markup_applications[0]
+    assert application.result.market_share_values == pytest.approx([0.5, 0.0])
+    insurer = result.insurers[0]
+    assert insurer.premiums_current_sector == pytest.approx([110.0, 240.0])
+    assert insurer.advertising_current_sector == pytest.approx([13.0, 28.0])
+    assert insurer.reserves_current == pytest.approx([52.5, 63.0])
+
+
 def test_vu_rule_runner_applies_free_linear_snapshots_after_prior_rules() -> None:
     scenario = _scenario()
     scenario["vu_foreign_info_rule_snapshots"] = []

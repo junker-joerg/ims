@@ -382,6 +382,34 @@ def test_scenario_loader_reads_optional_vu_market_share_markup_rule_snapshots() 
     assert snapshot.change_shock is True
 
 
+def test_scenario_loader_allows_vu_market_share_markup_without_explicit_active_count() -> None:
+    scenario = load_scenario_from_mapping(
+        {
+            "context": {"period": 2, "max_periods": 3},
+            "bav": {"entity_id": 1, "name": "BAV"},
+            "insurers": [{"entity_id": 10, "name": "VU"}],
+            "policyholders": [],
+            "vu_market_share_markup_rule_snapshots": [
+                {
+                    "insurer_id": 10,
+                    "parameters": {
+                        "premium_below_normal": [1.1, 1.2],
+                        "premium_above_normal": [0.9, 0.8],
+                        "advertising_below_normal": [1.3, 1.4],
+                        "advertising_above_normal": [0.7, 0.6],
+                        "premium_below_shock": [2.1, 2.2],
+                        "premium_above_shock": [1.9, 1.8],
+                        "advertising_below_shock": [2.3, 2.4],
+                        "advertising_above_shock": [1.7, 1.6],
+                    },
+                }
+            ],
+        }
+    )
+
+    assert scenario.vu_market_share_markup_rule_snapshots[0].active_policyholder_count is None
+
+
 def test_scenario_loader_reads_optional_vu_net_switcher_markup_rule_snapshots() -> None:
     scenario = load_scenario_from_mapping(
         {
