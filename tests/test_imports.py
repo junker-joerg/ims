@@ -52,6 +52,7 @@ def test_core_placeholders_import() -> None:
         run_scheduled_explicit_vu_vn_period_from_mapping,
         run_scheduled_explicit_vu_vn_periods_from_fixture,
         run_scheduled_explicit_vu_vn_periods_from_mappings,
+        run_scheduled_explicit_vu_vn_periods_from_plan_fixture,
         run_single_bav_update_step,
         run_two_bav_update_steps,
         run_two_prioritized_bav_updates,
@@ -502,6 +503,7 @@ def test_core_placeholders_import() -> None:
     assert run_scheduled_explicit_vu_vn_period_from_mapping is not None
     assert run_scheduled_explicit_vu_vn_periods_from_fixture is not None
     assert run_scheduled_explicit_vu_vn_periods_from_mappings is not None
+    assert run_scheduled_explicit_vu_vn_periods_from_plan_fixture is not None
     assert run_single_bav_update_step is not None
     assert run_two_bav_update_steps is not None
     assert run_two_scheduled_bav_updates is not None

@@ -9,6 +9,7 @@ from ims.engine.simulation import (
     run_scheduled_explicit_vu_vn_period_from_mapping,
     run_scheduled_explicit_vu_vn_periods_from_fixture,
     run_scheduled_explicit_vu_vn_periods_from_mappings,
+    run_scheduled_explicit_vu_vn_periods_from_plan_fixture,
 )
 
 
@@ -92,6 +93,42 @@ def _scenario(*, period: int = 2, run_index: int = 0, policyholder_id: int = 21)
                     "amount_draws": [2.0, 3.0],
                 },
             }
+        ],
+    }
+
+
+def _period_plan() -> dict:
+    base_snapshot = _scenario(period=0)
+    for key in (
+        "vu_free_linear_rule_snapshots",
+        "vn_insurance_rule_snapshots",
+        "vn_damage_settlement_snapshots",
+    ):
+        del base_snapshot[key]
+
+    first = _scenario(period=2)
+    second = _scenario(period=3)
+    return {
+        "metadata": {"purpose": "scheduled explicit VU/VN period plan"},
+        "carry_forward_vn_state": True,
+        "base_snapshot": base_snapshot,
+        "period_updates": [
+            {
+                "context": {"period": 2, "run_index": 0, "rng_seed": 1002},
+                "insurers": [],
+                "policyholders": [],
+                "vu_free_linear_rule_snapshots": first["vu_free_linear_rule_snapshots"],
+                "vn_insurance_rule_snapshots": first["vn_insurance_rule_snapshots"],
+                "vn_damage_settlement_snapshots": first["vn_damage_settlement_snapshots"],
+            },
+            {
+                "context": {"period": 3, "run_index": 0, "rng_seed": 1003},
+                "insurers": [],
+                "policyholders": [],
+                "vu_free_linear_rule_snapshots": second["vu_free_linear_rule_snapshots"],
+                "vn_insurance_rule_snapshots": second["vn_insurance_rule_snapshots"],
+                "vn_damage_settlement_snapshots": second["vn_damage_settlement_snapshots"],
+            },
         ],
     }
 
@@ -217,3 +254,66 @@ def test_scheduled_explicit_vu_vn_periods_fixture_rejects_missing_periods(tmp_pa
 
     with pytest.raises(ValueError, match="requires a list or object field: periods"):
         run_scheduled_explicit_vu_vn_periods_from_fixture(fixture_path)
+
+
+def test_scheduled_explicit_vu_vn_periods_plan_fixture_runs_plan_path(tmp_path: Path) -> None:
+    plan_path = tmp_path / "scheduled_explicit_period_plan.json"
+    plan_path.write_text(json.dumps(_period_plan()), encoding="utf-8")
+
+    result = run_scheduled_explicit_vu_vn_periods_from_plan_fixture(plan_path, output_dir=tmp_path / "out")
+
+    assert [(event.period, event.logtime) for event in result.planned_events] == [(2, 4), (3, 4)]
+    assert result.explicit_multi_period.processed_periods == [2, 3]
+    assert len(result.explicit_multi_period.carryovers) == 1
+    assert result.explicit_multi_period.carryovers[0].vn_carryover is not None
+    assert result.explicit_multi_period.total_vu_rule_applications == 2
+    assert result.explicit_multi_period.total_vn_insurance_rule_applications == 2
+    assert result.explicit_multi_period.total_vn_damage_settlement_applications == 2
+
+    lines = _non_empty_lines(tmp_path / "out" / "imsvu011.dat")
+    assert [line.split()[0] for line in lines[1:]] == ["2", "3"]
+    assert result.explicit_multi_period.period_results[1].vn_result.policyholders[0].end_wealth_current == pytest.approx(
+        51.0
+    )
+
+
+def test_scheduled_explicit_vu_vn_periods_plan_fixture_preserves_legacy_targets(tmp_path: Path) -> None:
+    legacy_path = tmp_path / "legacy" / "reference_imsvu011.dat"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text(
+        "\n".join(
+            [
+                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
+                "2 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 72.0 3.0 0 0.0",
+                "3 16.0 1.0 46.0 3.0 2 18.0 24.0 1.0 96.0 4.0 0 0.0",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    data = _period_plan()
+    data["legacy_report_name"] = "scheduled_plan_validation"
+    data["legacy_targets"] = [
+        {
+            "legacy_path": "legacy/reference_imsvu011.dat",
+            "export_filename": "imsvu011.dat",
+            "subject_type": "insurer",
+        }
+    ]
+    plan_path = tmp_path / "scheduled_explicit_period_plan_with_legacy.json"
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
+
+    result = run_scheduled_explicit_vu_vn_periods_from_plan_fixture(plan_path, output_dir=tmp_path / "out")
+
+    assert result.explicit_multi_period.legacy_comparison is not None
+    assert result.explicit_multi_period.legacy_comparison.matches is True
+    assert result.explicit_multi_period.legacy_report is not None
+    assert result.explicit_multi_period.legacy_report.matches is True
+    assert [path.name for path in result.explicit_multi_period.written_legacy_report_files] == [
+        "scheduled_plan_validation.json",
+        "scheduled_plan_validation.csv",
+        "scheduled_plan_validation_fields.csv",
+        "scheduled_plan_validation_groups.csv",
+        "scheduled_plan_validation_periods.csv",
+        "scheduled_plan_validation_deviations.csv",
+    ]

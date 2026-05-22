@@ -19,6 +19,10 @@ from ims.engine.explicit_period_runner import (
     run_explicit_multi_period_from_mappings,
     run_loaded_explicit_period,
 )
+from ims.engine.explicit_period_plan import (
+    build_explicit_period_fixture_from_plan,
+    run_explicit_multi_period_from_plan_fixture,
+)
 from ims.engine.scheduler import Event, Scheduler
 from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
 from ims.model.agrsich_export import compute_global_period
@@ -588,6 +592,31 @@ def run_scheduled_explicit_vu_vn_periods_from_fixture(
             output_dir=output_dir,
             carry_forward_vu_state=carry_forward_vu_state,
             carry_forward_vn_state=carry_forward_vn_state,
+        ),
+    )
+
+
+def run_scheduled_explicit_vu_vn_periods_from_plan_fixture(
+    path: str | Path,
+    *,
+    output_dir: str | Path | None = None,
+) -> ScheduledExplicitMultiPeriodResult:
+    """
+    Laedt ein explizites VU/VN-Periodenplan-Fixture, plant die erzeugten
+    Periodenereignisse und fuehrt den validierten Plan-Runner aus.
+    """
+
+    plan_path = Path(path)
+    with plan_path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+
+    fixture = build_explicit_period_fixture_from_plan(payload)
+    planned_events = _planned_explicit_vu_vn_period_events(fixture["periods"])
+    return ScheduledExplicitMultiPeriodResult(
+        planned_events=planned_events,
+        explicit_multi_period=run_explicit_multi_period_from_plan_fixture(
+            plan_path,
+            output_dir=output_dir,
         ),
     )
 
