@@ -48,6 +48,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_compulsory_insurance_rule.md`: Vrvn01-Baustein fuer Pflichtversicherung und Startentscheidungen
 - `vn_random_insurance_rule.md`: Vrvn02-Baustein fuer zufaelligen VN-Versicherungsstatus und aktive VU-Auswahl
 - `vn_preference_insurance_rule.md`: Vrvn03-Baustein fuer Praeferenzwahl nach aktiver VU-Werbung
+- `vn_search_insurance_rule.md`: Vrvn04-Baustein fuer Suchwahl nach frueheren VN-Praemien
 - `vn_settlement_core.md`: deterministischer VN-Abrechnungskern nach expliziten Entscheidungen
 - `vn_damage_settlement_link.md`: explizite Kopplung von VN-Schadenerzeugung und VN-Abrechnung
 - `vn_explicit_damage_period.md`: expliziter Periodenpfad fuer VN-Schaden plus VN-Abrechnung

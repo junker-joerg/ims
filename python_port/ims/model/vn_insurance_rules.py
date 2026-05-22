@@ -83,6 +83,45 @@ class VNPreferenceInsuranceRuleResult:
     fallback_insurer_choice_draws: list[float] | None = None
 
 
+@dataclass(slots=True)
+class VNSearchInsuranceRuleParameters:
+    """Versicherungsstatus-Schwellen fuer Vrvn04 / Suche."""
+
+    insurance_thresholds_normal: list[float]
+    insurance_thresholds_shock: list[float]
+
+
+@dataclass(slots=True)
+class VNSearchInsuranceRuleDraws:
+    """Explizite Gleichverteilungsziehungen fuer Vrvn04-Fallbackauswahl."""
+
+    fallback_insurer_choice_draws: list[float]
+
+
+@dataclass(slots=True)
+class VNSearchInsuranceHistoryEntry:
+    """Historische VN-Versicherungsentscheidung fuer die Vrvn04-Suche."""
+
+    period: int
+    sector_index: int
+    insured: bool
+    premium: float
+    insurer_id: int | None = None
+
+
+@dataclass(slots=True)
+class VNSearchInsuranceRuleResult:
+    """Aus Vrvn04 abgeleitete Versicherungsentscheidungen je Sparte."""
+
+    decisions: list[VNInsuranceDecision]
+    insured: list[bool]
+    chosen_insurer_ids: list[int | None]
+    selected_insurer_ids: list[int | None]
+    selected_history_periods: list[int | None]
+    used_fallback: list[bool]
+    fallback_insurer_choice_draws: list[float] | None = None
+
+
 def _two_float_values(values: object, *, fallback: float) -> list[float]:
     if values is None:
         return [float(fallback), float(fallback)]
@@ -97,10 +136,15 @@ def _two_float_values(values: object, *, fallback: float) -> list[float]:
     return normalized
 
 
-def _required_two_float_values(mapping: dict[str, object], key: str) -> list[float]:
+def _required_two_float_values(
+    mapping: dict[str, object],
+    key: str,
+    *,
+    rule_name: str = "VN random insurance rule",
+) -> list[float]:
     value = mapping.get(key)
     if not isinstance(value, list):
-        raise ValueError(f"VN random insurance rule requires list field: {key}")
+        raise ValueError(f"{rule_name} requires list field: {key}")
     return _two_float_values(value, fallback=0.0)
 
 
@@ -164,6 +208,27 @@ def vn_preference_insurance_rule_parameters_from_mapping(
     )
 
 
+def vn_search_insurance_rule_parameters_from_mapping(
+    mapping: dict[str, object],
+) -> VNSearchInsuranceRuleParameters:
+    """Laedt den Vrvn04-Schwellenblock fuer Suchentscheidungen."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN search insurance rule parameters must be an object")
+    return VNSearchInsuranceRuleParameters(
+        insurance_thresholds_normal=_required_two_float_values(
+            mapping,
+            "insurance_thresholds_normal",
+            rule_name="VN search insurance rule",
+        ),
+        insurance_thresholds_shock=_required_two_float_values(
+            mapping,
+            "insurance_thresholds_shock",
+            rule_name="VN search insurance rule",
+        ),
+    )
+
+
 def vn_random_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> VNRandomInsuranceRuleDraws:
     """Laedt explizite Vrvn02-Gleichverteilungsziehungen."""
 
@@ -185,6 +250,22 @@ def vn_preference_insurance_rule_draws_from_mapping(mapping: dict[str, object]) 
         raise ValueError("VN preference insurance rule draws must be an object")
     draws = VNPreferenceInsuranceRuleDraws(
         fallback_insurer_choice_draws=_required_two_float_values(mapping, "fallback_insurer_choice_draws"),
+    )
+    _validate_unit_interval(draws.fallback_insurer_choice_draws, field_name="fallback_insurer_choice_draws")
+    return draws
+
+
+def vn_search_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> VNSearchInsuranceRuleDraws:
+    """Laedt explizite Vrvn04-Gleichverteilungsziehungen fuer die Fallbackauswahl."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN search insurance rule draws must be an object")
+    draws = VNSearchInsuranceRuleDraws(
+        fallback_insurer_choice_draws=_required_two_float_values(
+            mapping,
+            "fallback_insurer_choice_draws",
+            rule_name="VN search insurance rule",
+        ),
     )
     _validate_unit_interval(draws.fallback_insurer_choice_draws, field_name="fallback_insurer_choice_draws")
     return draws
@@ -227,21 +308,116 @@ def vn_preference_insurer_input_from_mapping(mapping: dict[str, object]) -> VNPr
     )
 
 
+def _normalize_preference_insurer_input(value: object) -> VNPreferenceInsurerInput:
+    if not isinstance(value, VNPreferenceInsurerInput):
+        return vn_preference_insurer_input_from_mapping(value)
+    insurer_id = int(value.insurer_id)
+    if insurer_id <= 0:
+        raise ValueError("VN preference insurer input insurer_id must be positive")
+    advertising = _two_float_values(value.advertising_current_sector, fallback=0.0)
+    if any(item < 0.0 for item in advertising):
+        raise ValueError("VN preference insurer input advertising must be non-negative")
+    return VNPreferenceInsurerInput(
+        insurer_id=insurer_id,
+        advertising_current_sector=advertising,
+    )
+
+
 def load_vn_preference_insurer_inputs_from_mapping(value: object) -> list[VNPreferenceInsurerInput]:
     """Laedt aktive VU-Werbebloecke fuer Vrvn03 aus In-Memory-Daten."""
 
     if not isinstance(value, list):
         raise ValueError("VN preference insurer inputs must be a list")
-    inputs = [
-        item if isinstance(item, VNPreferenceInsurerInput) else vn_preference_insurer_input_from_mapping(item)
-        for item in value
-    ]
+    inputs = [_normalize_preference_insurer_input(item) for item in value]
     insurer_ids = [item.insurer_id for item in inputs]
     duplicate_ids = sorted(insurer_id for insurer_id in set(insurer_ids) if insurer_ids.count(insurer_id) > 1)
     if duplicate_ids:
         values = ", ".join(str(insurer_id) for insurer_id in duplicate_ids)
         raise ValueError(f"VN preference insurer inputs reject duplicate insurer_ids: {values}")
     return sorted(inputs, key=lambda item: item.insurer_id)
+
+
+def vn_search_insurance_history_entry_from_mapping(mapping: dict[str, object]) -> VNSearchInsuranceHistoryEntry:
+    """Laedt einen historischen VN-Versicherungsstand fuer die Vrvn04-Suche."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN search insurance history entry must be an object")
+    for key in ("period", "sector_index", "insured", "premium"):
+        if key not in mapping:
+            raise ValueError(f"VN search insurance history entry requires field: {key}")
+    period = int(mapping["period"])
+    if period < 1:
+        raise ValueError("VN search insurance history period must be at least 1")
+    sector_index = int(mapping["sector_index"])
+    if sector_index not in (0, 1):
+        raise ValueError(f"VN search insurance history has unsupported sector_index: {sector_index}")
+    if not isinstance(mapping["insured"], bool):
+        raise ValueError("VN search insurance history insured must be a boolean")
+    insured = mapping["insured"]
+    premium = float(mapping["premium"])
+    if premium < 0.0:
+        raise ValueError("VN search insurance history premium must be non-negative")
+    insurer_id = None if mapping.get("insurer_id") is None else int(mapping["insurer_id"])
+    if insured and insurer_id is None:
+        raise ValueError("insured VN search insurance history requires insurer_id")
+    if not insured and insurer_id is not None:
+        raise ValueError("uninsured VN search insurance history must not reference insurer_id")
+    if insurer_id is not None and insurer_id <= 0:
+        raise ValueError("VN search insurance history insurer_id must be positive")
+    return VNSearchInsuranceHistoryEntry(
+        period=period,
+        sector_index=sector_index,
+        insured=insured,
+        premium=premium,
+        insurer_id=insurer_id,
+    )
+
+
+def load_vn_search_insurance_history_from_mapping(value: object) -> list[VNSearchInsuranceHistoryEntry]:
+    """Laedt historische VN-Versicherungsstaende fuer Vrvn04 aus In-Memory-Daten."""
+
+    if not isinstance(value, list):
+        raise ValueError("VN search insurance history must be a list")
+    history = [
+        item if isinstance(item, VNSearchInsuranceHistoryEntry) else vn_search_insurance_history_entry_from_mapping(item)
+        for item in value
+    ]
+    normalized: list[VNSearchInsuranceHistoryEntry] = []
+    keys: set[tuple[int, int]] = set()
+    for item in history:
+        period = int(item.period)
+        if period < 1:
+            raise ValueError("VN search insurance history period must be at least 1")
+        sector_index = int(item.sector_index)
+        if sector_index not in (0, 1):
+            raise ValueError(f"VN search insurance history has unsupported sector_index: {sector_index}")
+        if not isinstance(item.insured, bool):
+            raise ValueError("VN search insurance history insured must be a boolean")
+        insured = item.insured
+        premium = float(item.premium)
+        if premium < 0.0:
+            raise ValueError("VN search insurance history premium must be non-negative")
+        insurer_id = None if item.insurer_id is None else int(item.insurer_id)
+        if insured and insurer_id is None:
+            raise ValueError("insured VN search insurance history requires insurer_id")
+        if not insured and insurer_id is not None:
+            raise ValueError("uninsured VN search insurance history must not reference insurer_id")
+        if insurer_id is not None and insurer_id <= 0:
+            raise ValueError("VN search insurance history insurer_id must be positive")
+        key = (period, sector_index)
+        if key in keys:
+            raise ValueError("VN search insurance history rejects duplicate period/sector entries")
+        keys.add(key)
+        normalized.append(
+            VNSearchInsuranceHistoryEntry(
+                period=period,
+                sector_index=sector_index,
+                insured=insured,
+                premium=premium,
+                insurer_id=insurer_id,
+            )
+        )
+    return sorted(normalized, key=lambda item: (item.period, item.sector_index))
 
 
 def _preference_scores_for_sector(
@@ -281,6 +457,27 @@ def _select_preferred_insurer(
     if fallback_draw is None:
         raise ValueError("VN preference insurance rule requires fallback draws when no active advertising exists")
     return _choose_insurer([item.insurer_id for item in insurer_inputs], fallback_draw), scores, True
+
+
+def _select_searched_insurer(
+    *,
+    history: list[VNSearchInsuranceHistoryEntry],
+    sector_index: int,
+    active_insurer_ids: list[int],
+    fallback_draw: float | None,
+    period: int,
+) -> tuple[int, int | None, bool]:
+    selected_history: VNSearchInsuranceHistoryEntry | None = None
+    for item in history:
+        if item.period >= period or item.sector_index != sector_index or not item.insured:
+            continue
+        if selected_history is None or item.premium < selected_history.premium:
+            selected_history = item
+    if selected_history is not None and selected_history.insurer_id is not None:
+        return selected_history.insurer_id, selected_history.period, False
+    if fallback_draw is None:
+        raise ValueError("VN search insurance rule requires fallback draws when no prior insured period exists")
+    return _choose_insurer(active_insurer_ids, fallback_draw), None, True
 
 
 def apply_vn_compulsory_insurance_rule(
@@ -424,6 +621,102 @@ def apply_vn_preference_insurance_rule(
         chosen_insurer_ids=chosen_insurer_ids,
         selected_insurer_ids=selected_insurer_ids,
         preference_scores=preference_scores,
+        used_fallback=used_fallback,
+        fallback_insurer_choice_draws=fallback_draws,
+    )
+
+
+def apply_vn_search_insurance_rule(
+    parameters: VNSearchInsuranceRuleParameters,
+    *,
+    period: int,
+    damage_probabilities: list[float],
+    history: object,
+    active_insurer_ids: list[int],
+    draws: VNSearchInsuranceRuleDraws | None = None,
+    initial_decisions: object = None,
+    change_shock: bool = False,
+) -> VNSearchInsuranceRuleResult:
+    """
+    Portiert den Versicherungsentscheidungsanteil aus Vrvn04.
+
+    In Periode 1 verwendet der Altcode die initialen VN-Status-/VU-Werte. Ab
+    Periode 2 folgt der Status aus subjektiven Schadenwahrscheinlichkeiten;
+    die VU-Auswahl sucht je Sparte den guenstigsten frueheren Versicherer und
+    faellt nur ohne versicherte Historie auf eine aktive Zufallsauswahl zurueck.
+    """
+
+    if period < 1:
+        raise ValueError("VN search insurance rule period must be at least 1")
+    if period == 1:
+        if initial_decisions is None:
+            raise ValueError("VN search insurance rule period 1 requires initial_decisions")
+        decisions = sorted(
+            load_vn_insurance_decisions_from_mapping(initial_decisions),
+            key=lambda item: item.sector_index,
+        )
+        selected_insurer_ids = [decision.insurer_id for decision in decisions]
+        return VNSearchInsuranceRuleResult(
+            decisions=decisions,
+            insured=[decision.insured for decision in decisions],
+            chosen_insurer_ids=selected_insurer_ids,
+            selected_insurer_ids=selected_insurer_ids,
+            selected_history_periods=[None, None],
+            used_fallback=[False, False],
+        )
+
+    thresholds = _two_float_values(
+        parameters.insurance_thresholds_shock if change_shock else parameters.insurance_thresholds_normal,
+        fallback=0.0,
+    )
+    probabilities = _two_float_values(damage_probabilities, fallback=0.0)
+    if any(value < 0.0 for value in probabilities):
+        raise ValueError("VN search insurance rule damage probabilities must be non-negative")
+    history_entries = load_vn_search_insurance_history_from_mapping(history)
+    fallback_draws = (
+        _two_float_values(draws.fallback_insurer_choice_draws, fallback=0.0)
+        if draws is not None
+        else None
+    )
+    if fallback_draws is not None:
+        _validate_unit_interval(fallback_draws, field_name="fallback_insurer_choice_draws")
+    active_ids = _active_insurer_ids(active_insurer_ids)
+
+    decisions: list[VNInsuranceDecision] = []
+    insured_values: list[bool] = []
+    chosen_insurer_ids: list[int | None] = []
+    selected_insurer_ids: list[int | None] = []
+    selected_history_periods: list[int | None] = []
+    used_fallback: list[bool] = []
+    for sector_index in range(2):
+        selected_id, selected_period, fallback_used = _select_searched_insurer(
+            history=history_entries,
+            sector_index=sector_index,
+            active_insurer_ids=active_ids,
+            fallback_draw=(fallback_draws[sector_index] if fallback_draws is not None else None),
+            period=period,
+        )
+        insured = probabilities[sector_index] > thresholds[sector_index]
+        insurer_id = selected_id if insured else None
+        decisions.append(
+            VNInsuranceDecision(
+                sector_index=sector_index,
+                insured=insured,
+                insurer_id=insurer_id,
+            )
+        )
+        insured_values.append(insured)
+        chosen_insurer_ids.append(insurer_id)
+        selected_insurer_ids.append(selected_id)
+        selected_history_periods.append(selected_period)
+        used_fallback.append(fallback_used)
+
+    return VNSearchInsuranceRuleResult(
+        decisions=decisions,
+        insured=insured_values,
+        chosen_insurer_ids=chosen_insurer_ids,
+        selected_insurer_ids=selected_insurer_ids,
+        selected_history_periods=selected_history_periods,
         used_fallback=used_fallback,
         fallback_insurer_choice_draws=fallback_draws,
     )
