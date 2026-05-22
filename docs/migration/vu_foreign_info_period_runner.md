@@ -63,6 +63,8 @@ Optional kann `carry_forward_insurer_state=True` gesetzt werden. Dann schreibt d
 - Werbevektor
 - Reservenvektor
 - Vorperiodenaktivitaet
+- Vrvu04-Nettowechslerbasis aus den zuletzt bekannten aktuellen
+  Versicherungsnehmerzahlen
 
 Dieser Carryover ist bewusst eng und diagnostiziert die betroffenen Versicherer ueber `VUForeignInfoCarryover`.
 Objekt-Fixtures koennen denselben Carryover ueber das Feld
@@ -80,9 +82,11 @@ bilden den portierten `Vrvu03`-/Mark-Up-I-Regelkern ab und werden nach den Frmdi
 angewendet. Die Details und Grenzen stehen in `vu_markup_reserve_rule.md`.
 
 Explizite `vu_net_switcher_markup_rule_snapshots` bilden den portierten `Vrvu04`-/Mark-Up-II-
-Regelkern ab. Sie werden nach den Mark-Up-I-Snapshots angewendet und benoetigen die
-Versicherungsnehmerzahlen der zweiten Vorperiode explizit im Snapshot. Details und Grenzen stehen
-in `vu_net_switcher_markup_rule.md`.
+Regelkern ab. Sie werden nach den Mark-Up-I-Snapshots angewendet. Die
+Versicherungsnehmerzahlen der zweiten Vorperiode koennen explizit im Snapshot
+stehen oder aus dem Versichererzustand kommen; bei aktiviertem Carryover wird
+dieser Zustand aus der letzten aktuellen Periode weitergerollt. Details und
+Grenzen stehen in `vu_net_switcher_markup_rule.md`.
 
 Explizite `vu_expected_claim_rule_snapshots` bilden den portierten `Vrvu06`-/Erwartungsschaden-
 Regelkern ab. Sie werden nach den Frmdinf- und Mark-Up-I-Snapshots angewendet. Details und Grenzen

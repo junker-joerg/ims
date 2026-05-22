@@ -18,8 +18,9 @@ explizite Versicherer-Zustandsbasis fuer `Vn(t-2)`.
   expliziter Override moeglich.
 - Wenn der Snapshot keinen eigenen Wert setzt, verwendet
   `apply_vu_net_switcher_markup_rule_snapshots` den Versichererzustand.
-- `apply_vu_foreign_info_carryover` bewahrt diese Basis beim kontrollierten
-  Fortschreiben ueber Perioden hinweg.
+- `apply_vu_foreign_info_carryover` rollt diese Basis beim kontrollierten
+  Fortschreiben aus den zuletzt bekannten aktuellen Versicherungsnehmerzahlen
+  in die Folgeperiode weiter.
 
 ## Validierung
 
@@ -27,7 +28,7 @@ explizite Versicherer-Zustandsbasis fuer `Vn(t-2)`.
 - VU-Periodenrunner-Test fuer Snapshot ohne explizites
   `previous_policyholders_sector`
 - Mehrperioden-Test, der bestaetigt, dass Carryover die Nettowechslerbasis
-  fuer den Folgeperiodenlauf erhaelt
+  fuer den Folgeperiodenlauf aus `Vn(t-1)` weiterrollt
 - Szenario-Loader-Test fuer die neuen Vorperiodenfelder
 
 ## Grenzen

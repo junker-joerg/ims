@@ -254,9 +254,9 @@ def apply_vu_foreign_info_carryover(
             advertising=previous.advertising_current_sector,
             reserves=previous.reserves_current,
             policyholders_prev=(
-                previous.policyholders_prev_sector
-                if previous.policyholders_prev_sector
-                else [previous.policyholders_prev, previous.policyholders_prev]
+                previous.policyholders_current_sector
+                if previous.policyholders_current_sector
+                else [previous.policyholders_current, previous.policyholders_current]
             ),
             policyholders=(
                 previous.policyholders_current_sector
