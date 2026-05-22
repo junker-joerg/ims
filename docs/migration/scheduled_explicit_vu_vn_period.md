@@ -3,9 +3,9 @@
 ## Ziel
 
 Dieser Slice verbindet den technischen Scheduler mit dem bereits portierten
-expliziten VU/VN-Periodenrunner. Ein einzelnes geplantes Event fuehrt die
-kontrollierte Reihenfolge aus: zuerst VU-Regeln, danach VN-Versicherungsregel,
-VN-Schaden und VN-Abrechnung.
+expliziten VU/VN-Periodenrunner. Geplante Events fuehren die kontrollierte
+Reihenfolge aus: zuerst VU-Regeln, danach VN-Versicherungsregel, VN-Schaden und
+VN-Abrechnung.
 
 ## Ursprung im Altcode
 
@@ -18,11 +18,18 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
 
 - `ScheduledExplicitPeriodResult` haelt das geplante Event und das Ergebnis des
   expliziten Periodenrunners zusammen.
+- `ScheduledExplicitMultiPeriodResult` haelt die geplanten Events und das
+  Ergebnis des validierten expliziten Mehrperiodenrunners zusammen.
 - `run_scheduled_explicit_vu_vn_period_from_mapping` laedt ein In-Memory-
   Szenario, plant ein einzelnes `explicit_vu_vn_period`-Event und fuehrt danach
   `run_loaded_explicit_period` aus.
+- `run_scheduled_explicit_vu_vn_periods_from_mappings` plant fuer mehrere
+  Periodenszenarien `explicit_vu_vn_period`-Events auf globaler Zeitachse und
+  delegiert die fachliche Ausfuehrung an `run_explicit_multi_period_from_mappings`.
 - Das Event nutzt `context.period` und `context.logtime` aus dem geladenen
-  Szenario. Die fachliche Wirkung bleibt vollstaendig im expliziten Runner.
+  Szenario. Mehrperiodige Events verwenden `run_index * max_periods + period`
+  als Scheduler-Periode. Die fachliche Wirkung bleibt vollstaendig im
+  expliziten Runner.
 - Der Pfad kann VN-Schaden-/Abrechnungs-Snapshots ohne direkte
   `insurance_decisions` aus passenden `vn_insurance_rule_snapshots` speisen.
 
@@ -30,6 +37,8 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
 
 - Der Baustein ist ein kontrollierter Orchestrierungsanschluss, keine
   historische Vollsimulation.
-- Es wird genau ein explizites VU/VN-Periodenereignis geplant.
+- Es werden nur explizite VU/VN-Periodenereignisse geplant; die validierte
+  Periodenfolge, Carryover und Legacy-Vergleiche bleiben im bestehenden
+  expliziten Runner verankert.
 - Keine automatische historische Regelwahl, kein Dialog- oder UI-Pfad.
 - Keine Behauptung historischer Vollgleichheit.
