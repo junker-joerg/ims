@@ -34,6 +34,7 @@ def test_core_placeholders_import() -> None:
     from ims.engine.simulation import (
         ControlledLoopResult,
         DispatchedEventResult,
+        ScheduledExplicitPeriodResult,
         ScheduledSequenceResult,
         SimulationStepResult,
         TwoStepSimulationResult,
@@ -47,6 +48,7 @@ def test_core_placeholders_import() -> None:
         run_progressed_bav_event_loop,
         run_progressed_mixed_controlled_bav_event_loop,
         run_scheduled_bav_update,
+        run_scheduled_explicit_vu_vn_period_from_mapping,
         run_single_bav_update_step,
         run_two_bav_update_steps,
         run_two_prioritized_bav_updates,
@@ -484,6 +486,7 @@ def test_core_placeholders_import() -> None:
     assert _load_initialized_scenario is not None
     assert ControlledLoopResult is not None
     assert DispatchedEventResult is not None
+    assert ScheduledExplicitPeriodResult is not None
     assert ScheduledSequenceResult is not None
     assert dispatch_event is not None
     assert run_controlled_bav_event_loop is not None
@@ -492,6 +495,7 @@ def test_core_placeholders_import() -> None:
     assert run_progressed_bav_event_loop is not None
     assert run_progressed_mixed_controlled_bav_event_loop is not None
     assert run_scheduled_bav_update is not None
+    assert run_scheduled_explicit_vu_vn_period_from_mapping is not None
     assert run_single_bav_update_step is not None
     assert run_two_bav_update_steps is not None
     assert run_two_scheduled_bav_updates is not None

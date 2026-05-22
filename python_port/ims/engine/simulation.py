@@ -11,8 +11,9 @@ from ims.engine.event_builders import (
     build_progressed_mixed_bav_events,
     build_sequenced_bav_events,
 )
+from ims.engine.explicit_period_runner import ExplicitPeriodRunResult, run_loaded_explicit_period
 from ims.engine.scheduler import Event, Scheduler
-from ims.io.scenario_loader import LoadedScenario, load_scenario
+from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
 from ims.model.bav_updates import BAVUpdateResult, update_bav_central_state
 from ims.model.entities import BAV, Insurer, Policyholder
 
@@ -65,6 +66,16 @@ class ScheduledSequenceResult:
     initial_context: SimulationContext
     planned_events: list[Event]
     dispatched_results: list[DispatchedEventResult]
+
+
+@dataclass(slots=True)
+class ScheduledExplicitPeriodResult:
+    """
+    Ergebnis eines geplanten expliziten VU/VN-Periodenereignisses.
+    """
+
+    event: Event
+    explicit_period: ExplicitPeriodRunResult
 
 
 @dataclass(slots=True)
@@ -431,6 +442,41 @@ def run_scheduled_bav_update(
         planned_events=[event],
     )
     return dispatch_run.dispatched_results[0]
+
+
+def run_scheduled_explicit_vu_vn_period_from_mapping(
+    data: dict,
+    *,
+    output_dir: str | Path | None = None,
+    priority: int = 0,
+) -> ScheduledExplicitPeriodResult:
+    """
+    Plant genau einen expliziten VU/VN-Periodenschritt und fuehrt ihn aus.
+
+    Dieser Baustein ist bewusst nur ein kontrollierter Anschluss des bereits
+    portierten expliziten Periodenrunners an den technischen Scheduler. Er
+    ersetzt keine historische PlanVU-/PlanVN-Ablaufsteuerung.
+    """
+
+    loaded = load_scenario_from_mapping(data)
+    event = Event(
+        period=loaded.context.period,
+        logtime=loaded.context.logtime,
+        priority=priority,
+        subject_type="scenario",
+        subject_id="explicit-vu-vn",
+        action="explicit_vu_vn_period",
+        payload={},
+    )
+    scheduler = Scheduler()
+    scheduler.plan(event)
+    planned_event = scheduler.pop()
+    if planned_event.action != "explicit_vu_vn_period":
+        raise ValueError(f"unsupported explicit period event action: {planned_event.action}")
+    return ScheduledExplicitPeriodResult(
+        event=planned_event,
+        explicit_period=run_loaded_explicit_period(loaded, output_dir=output_dir),
+    )
 
 
 
