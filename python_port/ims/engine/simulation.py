@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
 from pathlib import Path
 
 from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
@@ -14,6 +15,7 @@ from ims.engine.event_builders import (
 from ims.engine.explicit_period_runner import (
     ExplicitMultiPeriodRunResult,
     ExplicitPeriodRunResult,
+    run_explicit_multi_period_from_fixture,
     run_explicit_multi_period_from_mappings,
     run_loaded_explicit_period,
 )
@@ -544,6 +546,45 @@ def run_scheduled_explicit_vu_vn_periods_from_mappings(
         planned_events=planned_events,
         explicit_multi_period=run_explicit_multi_period_from_mappings(
             period_scenarios,
+            output_dir=output_dir,
+            carry_forward_vu_state=carry_forward_vu_state,
+            carry_forward_vn_state=carry_forward_vn_state,
+        ),
+    )
+
+
+def _period_scenarios_from_scheduled_fixture_payload(payload: object) -> list[dict]:
+    if isinstance(payload, list):
+        return payload
+    if isinstance(payload, dict):
+        period_scenarios = payload.get("periods")
+        if isinstance(period_scenarios, list):
+            return period_scenarios
+    raise ValueError("scheduled explicit VU/VN fixture requires a list or object field: periods")
+
+
+def run_scheduled_explicit_vu_vn_periods_from_fixture(
+    path: str | Path,
+    *,
+    output_dir: str | Path | None = None,
+    carry_forward_vu_state: bool = False,
+    carry_forward_vn_state: bool = False,
+) -> ScheduledExplicitMultiPeriodResult:
+    """
+    Laedt ein explizites VU/VN-Mehrperioden-Fixture, plant die Periodenereignisse
+    und fuehrt den validierten Fixture-Runner aus.
+    """
+
+    fixture_path = Path(path)
+    with fixture_path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+
+    period_scenarios = _period_scenarios_from_scheduled_fixture_payload(payload)
+    planned_events = _planned_explicit_vu_vn_period_events(period_scenarios)
+    return ScheduledExplicitMultiPeriodResult(
+        planned_events=planned_events,
+        explicit_multi_period=run_explicit_multi_period_from_fixture(
+            fixture_path,
             output_dir=output_dir,
             carry_forward_vu_state=carry_forward_vu_state,
             carry_forward_vn_state=carry_forward_vn_state,

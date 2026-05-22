@@ -50,6 +50,7 @@ def test_core_placeholders_import() -> None:
         run_progressed_mixed_controlled_bav_event_loop,
         run_scheduled_bav_update,
         run_scheduled_explicit_vu_vn_period_from_mapping,
+        run_scheduled_explicit_vu_vn_periods_from_fixture,
         run_scheduled_explicit_vu_vn_periods_from_mappings,
         run_single_bav_update_step,
         run_two_bav_update_steps,
@@ -499,6 +500,7 @@ def test_core_placeholders_import() -> None:
     assert run_progressed_mixed_controlled_bav_event_loop is not None
     assert run_scheduled_bav_update is not None
     assert run_scheduled_explicit_vu_vn_period_from_mapping is not None
+    assert run_scheduled_explicit_vu_vn_periods_from_fixture is not None
     assert run_scheduled_explicit_vu_vn_periods_from_mappings is not None
     assert run_single_bav_update_step is not None
     assert run_two_bav_update_steps is not None

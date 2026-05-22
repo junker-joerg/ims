@@ -26,6 +26,10 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
 - `run_scheduled_explicit_vu_vn_periods_from_mappings` plant fuer mehrere
   Periodenszenarien `explicit_vu_vn_period`-Events auf globaler Zeitachse und
   delegiert die fachliche Ausfuehrung an `run_explicit_multi_period_from_mappings`.
+- `run_scheduled_explicit_vu_vn_periods_from_fixture` nutzt dieselbe
+  Scheduler-Diagnose fuer gespeicherte JSON-Fixtures und delegiert die
+  Ausfuehrung an `run_explicit_multi_period_from_fixture`, inklusive der dort
+  vorhandenen Carryover- und Legacy-Ziel-Verarbeitung.
 - Das Event nutzt `context.period` und `context.logtime` aus dem geladenen
   Szenario. Mehrperiodige Events verwenden `run_index * max_periods + period`
   als Scheduler-Periode. Die fachliche Wirkung bleibt vollstaendig im
