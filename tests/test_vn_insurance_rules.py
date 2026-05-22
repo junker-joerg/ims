@@ -4,12 +4,18 @@ from ims.model.entities import Insurer, Policyholder
 from ims.model.vn_damage_rules import VNDamageRuleDraws, VNDamageRuleParameters
 from ims.model.vn_insurance_rules import (
     VNCompulsoryInsuranceRuleDraws,
+    VNPreferenceInsuranceRuleDraws,
+    VNPreferenceInsuranceRuleParameters,
     VNRandomInsuranceRuleDraws,
     VNRandomInsuranceRuleParameters,
     apply_vn_compulsory_insurance_rule,
+    apply_vn_preference_insurance_rule,
     apply_vn_random_insurance_rule,
     load_active_insurer_ids_from_mapping,
+    load_vn_preference_insurer_inputs_from_mapping,
     vn_compulsory_insurance_rule_draws_from_mapping,
+    vn_preference_insurance_rule_draws_from_mapping,
+    vn_preference_insurance_rule_parameters_from_mapping,
     vn_random_insurance_rule_draws_from_mapping,
     vn_random_insurance_rule_parameters_from_mapping,
 )
@@ -128,6 +134,233 @@ def test_vn_compulsory_insurance_decisions_feed_damage_settlement_path() -> None
     )
 
     assert compulsory_result.selected_insurer_ids == [12, 11]
+    assert application.damage_result.damages == [9.0, 16.0]
+    assert application.settlement_result.paid_premium_current == [4.0, 5.0]
+    assert application.settlement_result.end_wealth_current == 66.0
+
+
+def test_vn_preference_insurance_rule_uses_initial_decisions_in_first_period() -> None:
+    result = apply_vn_preference_insurance_rule(
+        VNPreferenceInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.2, 0.3],
+            insurance_thresholds_shock=[0.4, 0.5],
+        ),
+        period=1,
+        damage_probabilities=[0.0, 0.0],
+        insurer_inputs=[],
+        initial_decisions=[
+            {"sector_index": 1, "insured": True, "insurer_id": 13},
+            {"sector_index": 0, "insured": False},
+        ],
+    )
+
+    assert result.insured == [False, True]
+    assert result.chosen_insurer_ids == [None, 13]
+    assert result.selected_insurer_ids == [None, 13]
+    assert result.preference_scores == [{}, {}]
+    assert result.used_fallback == [False, False]
+
+
+def test_vn_preference_insurance_rule_uses_thresholds_and_max_advertising() -> None:
+    result = apply_vn_preference_insurance_rule(
+        VNPreferenceInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.25, 0.75],
+            insurance_thresholds_shock=[0.9, 0.9],
+        ),
+        period=2,
+        damage_probabilities=[0.25, 0.8],
+        insurer_inputs=[
+            {"insurer_id": 12, "advertising_current_sector": [10.0, 5.0]},
+            {"insurer_id": 11, "advertising_current_sector": [10.0, 30.0]},
+            {"insurer_id": 13, "advertising_current_sector": [5.0, 30.0]},
+        ],
+    )
+
+    assert result.insured == [False, True]
+    assert result.chosen_insurer_ids == [None, 11]
+    assert result.selected_insurer_ids == [11, 11]
+    assert result.preference_scores[0] == {11: 0.4, 12: 0.4, 13: 0.2}
+    assert result.preference_scores[1] == {11: 30.0 / 65.0, 12: 5.0 / 65.0, 13: 30.0 / 65.0}
+    assert result.used_fallback == [False, False]
+
+
+def test_vn_preference_insurance_rule_uses_shock_thresholds() -> None:
+    result = apply_vn_preference_insurance_rule(
+        VNPreferenceInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.9, 0.9],
+            insurance_thresholds_shock=[0.2, 0.8],
+        ),
+        period=2,
+        damage_probabilities=[0.2, 0.81],
+        insurer_inputs=[{"insurer_id": 7, "advertising_current_sector": [1.0, 1.0]}],
+        change_shock=True,
+    )
+
+    assert result.insured == [False, True]
+    assert result.chosen_insurer_ids == [None, 7]
+    assert result.selected_insurer_ids == [7, 7]
+
+
+def test_vn_preference_insurance_rule_uses_fallback_draws_without_active_advertising() -> None:
+    result = apply_vn_preference_insurance_rule(
+        VNPreferenceInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.1, 0.1],
+            insurance_thresholds_shock=[0.1, 0.1],
+        ),
+        period=2,
+        damage_probabilities=[0.5, 0.5],
+        insurer_inputs=[
+            {"insurer_id": 10, "advertising_current_sector": [0.0, 0.0]},
+            {"insurer_id": 20, "advertising_current_sector": [0.0, 0.0]},
+            {"insurer_id": 30, "advertising_current_sector": [0.0, 0.0]},
+        ],
+        draws=VNPreferenceInsuranceRuleDraws(fallback_insurer_choice_draws=[0.0, 0.99]),
+    )
+
+    assert result.insured == [True, True]
+    assert result.chosen_insurer_ids == [10, 30]
+    assert result.selected_insurer_ids == [10, 30]
+    assert result.preference_scores == [{10: 0.0, 20: 0.0, 30: 0.0}, {10: 0.0, 20: 0.0, 30: 0.0}]
+    assert result.used_fallback == [True, True]
+    assert result.fallback_insurer_choice_draws == [0.0, 0.99]
+
+
+def test_vn_preference_insurance_rule_validates_inputs() -> None:
+    parameters = VNPreferenceInsuranceRuleParameters(
+        insurance_thresholds_normal=[0.1, 0.1],
+        insurance_thresholds_shock=[0.1, 0.1],
+    )
+
+    with pytest.raises(ValueError, match="period must be at least 1"):
+        apply_vn_preference_insurance_rule(
+            parameters,
+            period=0,
+            damage_probabilities=[0.1, 0.2],
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="initial_decisions"):
+        apply_vn_preference_insurance_rule(
+            parameters,
+            period=1,
+            damage_probabilities=[0.1, 0.2],
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="non-negative"):
+        apply_vn_preference_insurance_rule(
+            parameters,
+            period=2,
+            damage_probabilities=[-0.1, 0.2],
+            insurer_inputs=[{"insurer_id": 10, "advertising_current_sector": [1.0, 0.0]}],
+        )
+
+    with pytest.raises(ValueError, match="active insurer inputs"):
+        apply_vn_preference_insurance_rule(
+            parameters,
+            period=2,
+            damage_probabilities=[0.5, 0.5],
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="fallback draws"):
+        apply_vn_preference_insurance_rule(
+            parameters,
+            period=2,
+            damage_probabilities=[0.5, 0.5],
+            insurer_inputs=[{"insurer_id": 10, "advertising_current_sector": [0.0, 0.0]}],
+        )
+
+
+def test_vn_preference_insurance_rule_loaders_validate_shape() -> None:
+    parameters = vn_preference_insurance_rule_parameters_from_mapping(
+        {
+            "insurance_thresholds_normal": [0.2],
+            "insurance_thresholds_shock": [0.3, 0.4],
+        }
+    )
+    draws = vn_preference_insurance_rule_draws_from_mapping(
+        {"fallback_insurer_choice_draws": [0.25]}
+    )
+    inputs = load_vn_preference_insurer_inputs_from_mapping(
+        [
+            {"insurer_id": 12, "advertising_current_sector": [2.0]},
+            {"insurer_id": 11, "advertising_current_sector": [1.0, 3.0]},
+        ]
+    )
+
+    assert parameters.insurance_thresholds_normal == [0.2, 0.2]
+    assert parameters.insurance_thresholds_shock == [0.3, 0.4]
+    assert draws.fallback_insurer_choice_draws == [0.25, 0.25]
+    assert [item.insurer_id for item in inputs] == [11, 12]
+    assert inputs[1].advertising_current_sector == [2.0, 2.0]
+
+    with pytest.raises(ValueError, match="duplicate insurer_ids"):
+        load_vn_preference_insurer_inputs_from_mapping(
+            [
+                {"insurer_id": 11, "advertising_current_sector": [1.0, 2.0]},
+                {"insurer_id": 11, "advertising_current_sector": [3.0, 4.0]},
+            ]
+        )
+
+    with pytest.raises(ValueError, match="non-negative"):
+        load_vn_preference_insurer_inputs_from_mapping(
+            [{"insurer_id": 11, "advertising_current_sector": [-1.0, 0.0]}]
+        )
+
+    with pytest.raises(ValueError, match="fallback_insurer_choice_draws"):
+        vn_preference_insurance_rule_draws_from_mapping({"fallback_insurer_choice_draws": [1.0, 0.0]})
+
+
+def test_vn_preference_insurance_decisions_feed_damage_settlement_path() -> None:
+    preference_result = apply_vn_preference_insurance_rule(
+        VNPreferenceInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.1, 0.2],
+            insurance_thresholds_shock=[0.1, 0.2],
+        ),
+        period=2,
+        damage_probabilities=[0.5, 0.8],
+        insurer_inputs=[
+            {"insurer_id": 11, "advertising_current_sector": [1.0, 9.0]},
+            {"insurer_id": 12, "advertising_current_sector": [9.0, 1.0]},
+        ],
+    )
+    insurer_11 = Insurer(
+        entity_id=11,
+        premiums_current_sector=[3.0, 5.0],
+        reserves_current=[30.0, 50.0],
+        policyholders_current_sector=[0.0, 1.0],
+    )
+    insurer_12 = Insurer(
+        entity_id=12,
+        premiums_current_sector=[4.0, 6.0],
+        reserves_current=[40.0, 60.0],
+        policyholders_current_sector=[1.0, 2.0],
+    )
+    snapshot = VNDamageSettlementSnapshot(
+        policyholder_id=21,
+        previous_wealth=100.0,
+        damage_thresholds=[0.8, 0.2],
+        parameters=VNDamageRuleParameters(
+            damage_intercept_normal=[5.0, 7.0],
+            damage_factor_normal=[2.0, 3.0],
+            damage_intercept_shock=[50.0, 70.0],
+            damage_factor_shock=[20.0, 30.0],
+        ),
+        draws=VNDamageRuleDraws(
+            trigger_draws=[0.1, 0.1],
+            amount_draws=[2.0, 3.0],
+        ),
+        insurance_decisions=preference_result.decisions,
+    )
+
+    application = apply_vn_damage_settlement_snapshot(
+        Policyholder(entity_id=21),
+        [insurer_11, insurer_12],
+        snapshot,
+    )
+
+    assert preference_result.selected_insurer_ids == [12, 11]
     assert application.damage_result.damages == [9.0, 16.0]
     assert application.settlement_result.paid_premium_current == [4.0, 5.0]
     assert application.settlement_result.end_wealth_current == 66.0
