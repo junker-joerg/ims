@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 
+from ims.engine.rng import create_rng, rand_normal_standard, rand_uniform_0_1
 from ims.engine.vu_rule_runner import (
     VUForeignInfoCarryover,
     VUForeignInfoMultiPeriodRunResult,
@@ -323,6 +324,42 @@ def test_vu_rule_runner_applies_random_rule_snapshots_after_foreign_info() -> No
     assert insurer_by_id[11].premiums_current_sector == pytest.approx([2.0, -2.0])
     assert insurer_by_id[11].advertising_current_sector == pytest.approx([12.0, -12.0])
     assert insurer_by_id[11].reserves_current == pytest.approx([77.0, 88.0])
+
+
+def test_vu_rule_runner_can_draw_random_rule_values_from_context_rng() -> None:
+    scenario = _scenario()
+    scenario["context"]["rng_seed"] = 123
+    scenario["vu_foreign_info_rule_snapshots"] = []
+    scenario["vu_random_uniform_rule_snapshots"] = [
+        {
+            "insurer_id": 10,
+            "interest_rate": 0.05,
+            "parameters": _random_uniform_parameters(),
+        }
+    ]
+    scenario["vu_random_normal_rule_snapshots"] = [
+        {
+            "insurer_id": 11,
+            "interest_rate": 0.1,
+            "parameters": _random_normal_parameters(),
+        }
+    ]
+    rng = create_rng(123)
+    expected_uniform_draws = [rand_uniform_0_1(rng) for _ in range(4)]
+    expected_normal_draws = [rand_normal_standard(rng) for _ in range(4)]
+
+    result = run_vu_foreign_info_period_from_mapping(scenario)
+
+    uniform_application = result.random_uniform_applications[0]
+    normal_application = result.random_normal_applications[0]
+    assert uniform_application.result.random_draws == expected_uniform_draws
+    assert normal_application.result.normal_draws == expected_normal_draws
+    assert uniform_application.result.premiums_current_sector == pytest.approx(
+        [10.0 * expected_uniform_draws[0], 20.0 * expected_uniform_draws[1]]
+    )
+    assert normal_application.result.premiums_current_sector == pytest.approx(
+        [1.0 + 10.0 * expected_normal_draws[0], 2.0 + 20.0 * expected_normal_draws[1]]
+    )
 
 
 def test_vu_rule_runner_applies_expected_claim_snapshots_after_prior_rules() -> None:

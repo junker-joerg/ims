@@ -21,7 +21,7 @@ def test_core_placeholders_import() -> None:
         build_progressed_mixed_bav_events,
         build_sequenced_bav_events,
     )
-    from ims.engine.rng import create_rng, rand_int_inclusive, rand_uniform_0_1
+    from ims.engine.rng import create_rng, rand_int_inclusive, rand_normal_standard, rand_uniform_0_1
     from ims.engine.replay_runner import (
         ReplayLegacyTarget,
         ReplayPeriodResult,
@@ -555,6 +555,7 @@ def test_core_placeholders_import() -> None:
     assert policyholder.end_wealth_sector_current == [0.0, 0.0]
     assert policyholder.end_wealth_current == 0.0
     assert rand_uniform_0_1(rng) >= 0.0
+    assert isinstance(rand_normal_standard(rng), float)
     assert rand_int_inclusive(rng, 1, 1) == 1
     assert ReplaySnapshot is not None
     assert ReplayLegacyTarget is not None
