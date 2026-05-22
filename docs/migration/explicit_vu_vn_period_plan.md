@@ -22,6 +22,9 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
   explizite VU/VN-Snapshotlisten.
 - Periodenupdates koennen nun auch `vn_insurance_rule_snapshots` enthalten; sie
   werden wie die anderen Snapshotlisten in das erzeugte Fixture durchgereicht.
+- Fehlen `insurance_decisions` in einem VN-Schaden-/Abrechnungs-Snapshot, kann
+  der kombinierte Runner die Entscheidungen aus einem passenden
+  `vn_insurance_rule_snapshots`-Eintrag derselben Periode beziehen.
 - `build_explicit_period_fixture_from_plan` erzeugt daraus das Objekt-Fixture
   mit `periods`.
 - `run_explicit_multi_period_from_plan_fixture` fuehrt das erzeugte Fixture ueber
@@ -32,9 +35,11 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
 
 ## Annahmen und Grenzen
 
-- Alle VU-Regelparameter, VN-Versicherungsregel-Snapshots,
-  VN-Schadenziehungen und VN-Versicherungsentscheidungen muessen explizit im
-  Plan oder im Basissnapshot vorliegen.
+- Alle VU-Regelparameter, VN-Versicherungsregel-Snapshots und
+  VN-Schadenziehungen muessen explizit im Plan oder im Basissnapshot vorliegen.
+  VN-Versicherungsentscheidungen koennen direkt am Schaden-/Abrechnungs-
+  Snapshot stehen oder aus einem passenden VN-Versicherungsregel-Snapshot
+  stammen.
 - Fehlen `logtime` oder `max_periods` im Periodenupdate, bleibt der
   Basissnapshot massgeblich.
 - Carryover-Flags muessen JSON-Booleans sein.
