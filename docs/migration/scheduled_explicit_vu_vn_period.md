@@ -22,7 +22,7 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
   Ergebnis des validierten expliziten Mehrperiodenrunners zusammen.
 - `run_scheduled_explicit_vu_vn_period_from_mapping` laedt ein In-Memory-
   Szenario, plant ein einzelnes `explicit_vu_vn_period`-Event und fuehrt danach
-  `run_loaded_explicit_period` aus.
+  denselben `dispatch_event`-Pfad aus wie gemischte geplante Eventfolgen.
 - `run_scheduled_explicit_vu_vn_periods_from_mappings` plant fuer mehrere
   Periodenszenarien `explicit_vu_vn_period`-Events auf globaler Zeitachse und
   delegiert die fachliche Ausfuehrung an `run_explicit_multi_period_from_mappings`.

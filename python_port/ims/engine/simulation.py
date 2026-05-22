@@ -305,6 +305,7 @@ def dispatch_event(
     insurers: list[Insurer],
     policyholders: list[Policyholder],
     loaded: LoadedScenario | None = None,
+    output_dir: str | Path | None = None,
 ) -> DispatchedEventResult:
     """
     Führt genau eine kleine unterstützte Event-Art aus.
@@ -336,7 +337,7 @@ def dispatch_event(
             insurers=insurers,
             policyholders=policyholders,
         )
-        explicit_period = run_loaded_explicit_period(loaded)
+        explicit_period = run_loaded_explicit_period(loaded, output_dir=output_dir)
         bav_update = None
     else:
         raise ValueError(f"unsupported event action: {event.action}")
@@ -543,9 +544,20 @@ def run_scheduled_explicit_vu_vn_period_from_mapping(
     planned_event = scheduler.pop()
     if planned_event.action != "explicit_vu_vn_period":
         raise ValueError(f"unsupported explicit period event action: {planned_event.action}")
+    dispatched = dispatch_event(
+        planned_event,
+        context=loaded.context,
+        bav=loaded.bav,
+        insurers=loaded.insurers,
+        policyholders=loaded.policyholders,
+        loaded=loaded,
+        output_dir=output_dir,
+    )
+    if dispatched.explicit_period is None:
+        raise ValueError("explicit_vu_vn_period dispatch did not produce an explicit period result")
     return ScheduledExplicitPeriodResult(
         event=planned_event,
-        explicit_period=run_loaded_explicit_period(loaded, output_dir=output_dir),
+        explicit_period=dispatched.explicit_period,
     )
 
 
