@@ -37,6 +37,25 @@ def _damage_snapshot(*, policyholder_id: int = 21) -> dict:
     }
 
 
+def _damage_snapshot_without_decisions(*, policyholder_id: int = 21) -> dict:
+    snapshot = _damage_snapshot(policyholder_id=policyholder_id)
+    del snapshot["insurance_decisions"]
+    return snapshot
+
+
+def _insurance_rule_snapshot(*, policyholder_id: int = 21) -> dict:
+    return {
+        "policyholder_id": policyholder_id,
+        "rule_kind": "compulsory",
+        "active_insurer_ids": [11],
+        "initial_decisions": [
+            {"sector_index": 0, "insured": True, "insurer_id": 11},
+            {"sector_index": 1, "insured": True, "insurer_id": 11},
+        ],
+        "draws": {"insurer_choice_draws": [0.0, 0.0]},
+    }
+
+
 def _base_snapshot(*, policyholder_id: int = 21) -> dict:
     return {
         "context": {"period": 0, "max_periods": 12, "run_index": 0, "rng_seed": 0},
@@ -76,13 +95,15 @@ def _period_plan(*, carry_forward_vn_state: object = True) -> dict:
                 "context": {"period": 1, "run_index": 0, "rng_seed": 901},
                 "insurers": [],
                 "policyholders": [],
-                "vn_damage_settlement_snapshots": [_damage_snapshot()],
+                "vn_insurance_rule_snapshots": [_insurance_rule_snapshot()],
+                "vn_damage_settlement_snapshots": [_damage_snapshot_without_decisions()],
             },
             {
                 "context": {"period": 2, "run_index": 0, "rng_seed": 902},
                 "insurers": [],
                 "policyholders": [],
-                "vn_damage_settlement_snapshots": [_damage_snapshot()],
+                "vn_insurance_rule_snapshots": [_insurance_rule_snapshot()],
+                "vn_damage_settlement_snapshots": [_damage_snapshot_without_decisions()],
             },
         ],
     }
@@ -98,6 +119,8 @@ def test_vn_period_plan_builds_replay_periods_from_start_state() -> None:
     assert replay_fixture["carry_forward_vn_state"] is True
     assert [period["context"]["period"] for period in replay_fixture["periods"]] == [1, 2]
     assert replay_fixture["periods"][0]["context"]["rng_seed"] == 901
+    assert replay_fixture["periods"][0]["vn_insurance_rule_snapshots"][0]["rule_kind"] == "compulsory"
+    assert "insurance_decisions" not in replay_fixture["periods"][0]["vn_damage_settlement_snapshots"][0]
     assert replay_fixture["periods"][1]["vn_damage_settlement_snapshots"][0]["policyholder_id"] == 21
 
 
@@ -126,6 +149,7 @@ def test_vn_period_plan_replay_carries_state_between_periods(tmp_path: Path) -> 
     insurer_lines = _non_empty_lines(tmp_path / "out" / "imsvu011.dat")
 
     assert result.processed_periods == [1, 2]
+    assert result.total_insurance_rule_applications == 2
     assert len(result.carryovers) == 1
     assert result.carryovers[0].policyholder_ids == [21]
     assert insurer_lines[2].split() == [
@@ -138,8 +162,8 @@ def test_vn_period_plan_replay_carries_state_between_periods(tmp_path: Path) -> 
         "18.0",
         "6.0",
         "0.0",
-        "60.0",
-        "2.0",
+        "72.0",
+        "4.0",
         "0",
         "0.0",
     ]
@@ -152,8 +176,8 @@ def test_vn_period_plan_runs_legacy_targets_and_writes_report(tmp_path: Path) ->
         "\n".join(
             [
                 "#t Vu1 Vs1 Vp1 Ev1 Sh1 Vu2 Vs2 Vp2 Ev2 Sh2 Vm",
-                "1 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
-                "2 11 1.0 4.0 87.0 9.0 11 0.0 0.0 100.0 0.0 87.0",
+                "1 11 1.0 4.0 87.0 9.0 11 1.0 6.0 94.0 0.0 81.0",
+                "2 11 1.0 4.0 87.0 9.0 11 1.0 6.0 94.0 0.0 81.0",
                 "",
             ]
         ),
@@ -255,6 +279,12 @@ def test_vn_period_plan_rejects_non_list_entity_updates() -> None:
 
 
 def test_vn_period_plan_rejects_non_list_snapshots() -> None:
+    data = _period_plan()
+    data["period_updates"][0]["vn_insurance_rule_snapshots"] = {"policyholder_id": 21}
+
+    with pytest.raises(ValueError, match="vn_insurance_rule_snapshots must be a list"):
+        build_vn_agrsich_replay_fixture_from_period_plan(data)
+
     data = _period_plan()
     data["period_updates"][0]["vn_damage_settlement_snapshots"] = {"policyholder_id": 21}
 

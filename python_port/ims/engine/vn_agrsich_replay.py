@@ -63,6 +63,7 @@ class VNAgrsichReplayRunResult:
     processed_global_periods: list[int]
     period_results: list[VNAgrsichReplayPeriodResult]
     written_files: list[Path]
+    total_insurance_rule_applications: int
     total_settlement_applications: int
     total_damage_settlement_applications: int
     carryovers: list[VNStateCarryover] = field(default_factory=list)
@@ -265,6 +266,9 @@ def run_vn_agrsich_replay_from_mappings(
         processed_global_periods=processed_global_periods,
         period_results=period_results,
         written_files=_deduplicate_paths(all_written_files),
+        total_insurance_rule_applications=sum(
+            len(result.settlement_result.insurance_rule_applications) for result in period_results
+        ),
         total_settlement_applications=sum(
             result.settlement_result.total_settlement_applications for result in period_results
         ),

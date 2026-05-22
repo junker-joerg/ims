@@ -66,6 +66,24 @@ def _period_scenario(period: int, *, policyholder_id: int = 21, run_index: int =
     }
 
 
+def _period_scenario_with_rule_dispatch(period: int, *, policyholder_id: int = 21) -> dict:
+    scenario = _period_scenario(period, policyholder_id=policyholder_id)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": policyholder_id,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [11],
+            "initial_decisions": [
+                {"sector_index": 0, "insured": True, "insurer_id": 11},
+                {"sector_index": 1, "insured": True, "insurer_id": 11},
+            ],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+    del scenario["vn_damage_settlement_snapshots"][0]["insurance_decisions"]
+    return scenario
+
+
 def _non_empty_lines(path: Path) -> list[str]:
     return [line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
@@ -81,6 +99,7 @@ def test_vn_agrsich_replay_runs_periods_and_writes_mutated_exports(tmp_path: Pat
     assert result.processed_periods == [1, 2]
     assert result.processed_local_periods == [1, 2]
     assert result.processed_global_periods == [1, 2]
+    assert result.total_insurance_rule_applications == 0
     assert result.total_damage_settlement_applications == 2
     assert result.total_settlement_applications == 2
     assert result.carryovers == []
@@ -119,6 +138,36 @@ def test_vn_agrsich_replay_runs_periods_and_writes_mutated_exports(tmp_path: Pat
         "100.0",
         "0.0",
         "87.0",
+    ]
+
+
+def test_vn_agrsich_replay_uses_rule_dispatch_for_damage_settlement(tmp_path: Path) -> None:
+    result = run_vn_agrsich_replay_from_mappings(
+        [_period_scenario_with_rule_dispatch(1), _period_scenario_with_rule_dispatch(2, policyholder_id=22)],
+        tmp_path,
+    )
+
+    assert result.total_insurance_rule_applications == 2
+    assert result.total_damage_settlement_applications == 2
+    assert [
+        len(period_result.settlement_result.insurance_rule_applications)
+        for period_result in result.period_results
+    ] == [1, 1]
+
+    policyholder_lines = _non_empty_lines(tmp_path / "imsvnr05.dat")
+    assert policyholder_lines[1].split() == [
+        "1",
+        "11",
+        "1.0",
+        "4.0",
+        "87.0",
+        "9.0",
+        "11",
+        "1.0",
+        "6.0",
+        "94.0",
+        "0.0",
+        "81.0",
     ]
 
 

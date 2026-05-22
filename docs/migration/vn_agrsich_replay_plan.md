@@ -10,7 +10,7 @@ VN-State-Carryover ohne duplizierte Vollsnapshots beschrieben werden.
 ## Ursprung im Altcode
 
 Der fachliche Anschluss liegt bei den VN-Periodenwirkungen aus `Vrvn01` bis
-`Vrvn03` sowie bei den historischen Agrsich-Ausgaben `IMSVNR*.DAT` und
+`Vrvn06` sowie bei den historischen Agrsich-Ausgaben `IMSVNR*.DAT` und
 `IMSVU*.DAT`. Dieser Slice portiert keinen historischen Scheduler, sondern
 strukturiert explizite Python-Snapshots fuer den bereits portierten VN-Replay-Pfad.
 
@@ -22,6 +22,9 @@ strukturiert explizite Python-Snapshots fuer den bereits portierten VN-Replay-Pf
 - `VNAgrsichReplayPeriodUpdate` beschreibt Periode, optionale
   `logtime`-/`max_periods`-Overrides, Laufindex, RNG-Seed, Entitaetsupdates und
   optionale VN-Snapshotlisten.
+- Periodenupdates koennen `vn_insurance_rule_snapshots` enthalten. Diese werden
+  in das erzeugte Replay-Fixture durchgereicht und koennen fehlende
+  `insurance_decisions` passender Schaden-Abrechnungs-Snapshots speisen.
 - `build_vn_agrsich_replay_fixture_from_period_plan` erzeugt daraus das bestehende
   VN-Agrsich-Replay-Fixture mit `periods`.
 - `run_vn_agrsich_replay_from_period_plan_fixture` fuehrt den erzeugten
@@ -31,8 +34,8 @@ strukturiert explizite Python-Snapshots fuer den bereits portierten VN-Replay-Pf
 
 ## Annahmen und Grenzen
 
-- Alle Schadens- und Versicherungsentscheidungen liegen weiterhin explizit im Plan
-  oder im Basissnapshot vor.
+- Alle VN-Versicherungsregel-, Schadens- und Abrechnungsinformationen liegen
+  weiterhin explizit im Plan oder im Basissnapshot vor.
 - Das `carry_forward_vn_state`-Flag muss ein Boolean sein.
 - Fehlen `logtime` oder `max_periods` im Periodenupdate, bleibt der
   Basissnapshot massgeblich.
