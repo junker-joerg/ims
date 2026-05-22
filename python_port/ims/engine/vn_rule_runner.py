@@ -2,10 +2,12 @@ from dataclasses import dataclass, field
 import json
 from pathlib import Path
 
-from ims.engine.context import SimulationContext
+from ims.engine.context import SimulationContext, ensure_context_rng
+from ims.engine.rng import rand_normal_standard
 from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
 from ims.model.agrsich_export import compute_global_period
 from ims.model.entities import Insurer, Policyholder
+from ims.model.vn_damage_rules import VNDamageRuleDraws
 from ims.model.vn_rules import (
     VNDamageSettlementApplication,
     VNDamageSettlementSnapshot,
@@ -59,6 +61,18 @@ class VNSettlementMultiPeriodRunResult:
     total_settlement_applications: int
     total_damage_settlement_applications: int
     carryovers: list[VNStateCarryover] = field(default_factory=list)
+
+
+def _draw_vn_damage_rule_draws(context: SimulationContext) -> VNDamageRuleDraws:
+    rng = ensure_context_rng(context)
+    first_trigger = rand_normal_standard(rng)
+    first_amount = rand_normal_standard(rng)
+    second_trigger = rand_normal_standard(rng)
+    second_amount = rand_normal_standard(rng)
+    return VNDamageRuleDraws(
+        trigger_draws=[first_trigger, second_trigger],
+        amount_draws=[first_amount, second_amount],
+    )
 
 
 def _validate_disjoint_vn_snapshot_targets(
@@ -116,6 +130,7 @@ def run_vn_settlement_period(
         policyholders,
         insurers,
         damage_settlement_snapshots,
+        damage_draw_provider=lambda: _draw_vn_damage_rule_draws(context),
     )
     applications = apply_vn_settlement_snapshots(
         policyholders,
