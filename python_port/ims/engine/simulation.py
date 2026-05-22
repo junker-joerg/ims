@@ -591,7 +591,7 @@ def run_scheduled_explicit_vu_vn_periods_from_fixture(
     und fuehrt den validierten Fixture-Runner aus.
     """
 
-    fixture_path = Path(path)
+    fixture_path = Path(path).resolve()
     with fixture_path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
 
