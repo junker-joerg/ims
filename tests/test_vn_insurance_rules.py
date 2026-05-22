@@ -8,6 +8,7 @@ from ims.model.vn_insurance_rules import (
     VNPreferenceInsuranceRuleDraws,
     VNPreferenceInsuranceRuleParameters,
     VNPreferenceInsurerInput,
+    VNInsuranceRuleKind,
     VNRandomInsuranceRuleDraws,
     VNRandomInsuranceRuleParameters,
     VNSampleSearchInsuranceRuleDraws,
@@ -17,11 +18,13 @@ from ims.model.vn_insurance_rules import (
     VNSearchInsuranceRuleParameters,
     apply_vn_best_info_insurance_rule,
     apply_vn_compulsory_insurance_rule,
+    apply_vn_insurance_rule_snapshots,
     apply_vn_preference_insurance_rule,
     apply_vn_random_insurance_rule,
     apply_vn_sample_search_insurance_rule,
     apply_vn_search_insurance_rule,
     load_active_insurer_ids_from_mapping,
+    load_vn_insurance_rule_snapshots_from_mapping,
     load_vn_preference_insurer_inputs_from_mapping,
     load_vn_sample_search_insurer_inputs_from_mapping,
     load_vn_search_insurance_history_from_mapping,
@@ -1321,3 +1324,88 @@ def test_vn_best_info_insurance_decisions_feed_damage_settlement_path() -> None:
     assert application.damage_result.damages == [9.0, 0.0]
     assert application.settlement_result.paid_premium_current == [4.0, 0.0]
     assert application.settlement_result.end_wealth_current == 87.0
+
+
+def test_vn_insurance_rule_dispatch_applies_mixed_rule_snapshots() -> None:
+    snapshots = load_vn_insurance_rule_snapshots_from_mapping(
+        [
+            {
+                "policyholder_id": 21,
+                "rule_kind": "random",
+                "parameters": {
+                    "insurance_thresholds_normal": [0.2, 0.8],
+                    "insurance_thresholds_shock": [0.2, 0.8],
+                },
+                "active_insurer_ids": [11, 12],
+                "draws": {
+                    "status_draws": [0.2, 0.1],
+                    "insurer_choice_draws": [0.99, 0.0],
+                },
+            },
+            {
+                "policyholder_id": 22,
+                "rule_kind": "best_info",
+                "parameters": {
+                    "insurance_thresholds_normal": [0.5, 0.1],
+                    "insurance_thresholds_shock": [0.5, 0.1],
+                },
+                "market_damage_indicator": 0.5,
+                "insurer_inputs": [
+                    {"insurer_id": 11, "premiums_current_sector": [6.0, 5.0]},
+                    {"insurer_id": 12, "premiums_current_sector": [4.0, 7.0]},
+                ],
+                "information_cost_per_insurer": 1.0,
+            },
+        ]
+    )
+
+    applications = apply_vn_insurance_rule_snapshots(snapshots, period=2)
+
+    assert [application.policyholder_id for application in applications] == [21, 22]
+    assert applications[0].rule_kind is VNInsuranceRuleKind.RANDOM
+    assert [decision.insurer_id for decision in applications[0].decisions] == [12, None]
+    assert applications[1].rule_kind is VNInsuranceRuleKind.BEST_INFO
+    assert [decision.insurer_id for decision in applications[1].decisions] == [12, None]
+    assert applications[1].result.information_cost == 4.0
+
+
+def test_vn_insurance_rule_dispatch_uses_initial_decisions_in_first_period() -> None:
+    snapshots = load_vn_insurance_rule_snapshots_from_mapping(
+        [
+            {
+                "policyholder_id": 21,
+                "rule_kind": "random",
+                "initial_decisions": [
+                    {"sector_index": 0, "insured": True, "insurer_id": 11},
+                    {"sector_index": 1, "insured": False},
+                ],
+            }
+        ]
+    )
+
+    applications = apply_vn_insurance_rule_snapshots(snapshots, period=1)
+
+    assert applications[0].result is None
+    assert [decision.insurer_id for decision in applications[0].decisions] == [11, None]
+
+
+def test_vn_insurance_rule_dispatch_validates_snapshot_shape() -> None:
+    with pytest.raises(ValueError, match="duplicate policyholder_ids"):
+        load_vn_insurance_rule_snapshots_from_mapping(
+            [
+                {"policyholder_id": 21, "rule_kind": "random"},
+                {"policyholder_id": 21, "rule_kind": "best_info"},
+            ]
+        )
+
+    with pytest.raises(ValueError, match="change_shock must be a boolean"):
+        load_vn_insurance_rule_snapshots_from_mapping(
+            [{"policyholder_id": 21, "rule_kind": "random", "change_shock": "false"}]
+        )
+
+    snapshots = load_vn_insurance_rule_snapshots_from_mapping(
+        [{"policyholder_id": 21, "rule_kind": "random"}]
+    )
+
+    with pytest.raises(ValueError, match="requires parameters"):
+        apply_vn_insurance_rule_snapshots(snapshots, period=2)

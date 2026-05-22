@@ -164,6 +164,76 @@ def test_vn_rule_runner_loads_period_from_mapping() -> None:
     assert result.policyholders[0].insurer_id == 11
 
 
+def test_vn_rule_runner_applies_explicit_insurance_rule_snapshots() -> None:
+    scenario = _vn_period_scenario(5)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "best_info",
+            "parameters": {
+                "insurance_thresholds_normal": [0.5, 0.1],
+                "insurance_thresholds_shock": [0.5, 0.1],
+            },
+            "market_damage_indicator": 0.5,
+            "insurer_inputs": [
+                {"insurer_id": 11, "premiums_current_sector": [6.0, 5.0]},
+                {"insurer_id": 12, "premiums_current_sector": [4.0, 7.0]},
+            ],
+            "information_cost_per_insurer": 1.0,
+        }
+    ]
+
+    result = run_vn_settlement_period_from_mapping(scenario)
+
+    assert len(result.insurance_rule_applications) == 1
+    application = result.insurance_rule_applications[0]
+    assert application.policyholder_id == 21
+    assert [decision.insurer_id for decision in application.decisions] == [12, None]
+    assert application.result.information_cost == 4.0
+    assert result.total_settlement_applications == 1
+
+
+def test_vn_rule_multi_period_runner_counts_insurance_rule_applications() -> None:
+    first = _vn_period_scenario(5, policyholder_id=21)
+    second = _vn_period_scenario(6, policyholder_id=22)
+    first["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [11],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+    second["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 22,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [11],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+
+    result = run_vn_settlement_multi_period_from_mappings([first, second])
+
+    assert result.total_insurance_rule_applications == 2
+    assert [len(period.insurance_rule_applications) for period in result.period_results] == [1, 1]
+
+
+def test_vn_rule_runner_rejects_unknown_insurance_rule_policyholder() -> None:
+    scenario = _vn_period_scenario(5)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 999,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [11],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+
+    with pytest.raises(ValueError, match="unknown policyholders"):
+        run_vn_settlement_period_from_mapping(scenario)
+
+
 def test_vn_rule_runner_rejects_conflicting_policyholder_targets_per_period() -> None:
     scenario = _vn_period_scenario(5)
     scenario["vn_settlement_snapshots"] = [
