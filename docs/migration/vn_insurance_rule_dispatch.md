@@ -59,6 +59,9 @@ Die Tests decken ab:
 - Startperioden-Dispatch ueber explizite Initialentscheidungen
 - kontrollierte Fehler fuer unvollstaendige Snapshots
 - Scenario-Loader-Referenzvalidierung fuer unbekannte VN
+- Scenario-Loader-Referenzvalidierung fuer unbekannte VU in
+  `active_insurer_ids`, `initial_decisions`, `insurer_inputs` und
+  Suchhistorien
 - Anwendung und Zaehlen der Dispatch-Ergebnisse im VN-Periodenrunner
 
 ## Grenzen

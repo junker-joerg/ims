@@ -7,12 +7,17 @@ from ims.model.entities import BAV, Insurer, Policyholder
 from ims.model.vn_rules import (
     VNDamageSettlementSnapshot,
     VNSettlementSnapshot,
+    load_vn_insurance_decisions_from_mapping,
     load_vn_damage_settlement_snapshots_from_mapping,
     load_vn_settlement_snapshots_from_mapping,
 )
 from ims.model.vn_insurance_rules import (
+    VNInsuranceRuleKind,
     VNInsuranceRuleSnapshot,
     load_vn_insurance_rule_snapshots_from_mapping,
+    load_vn_preference_insurer_inputs_from_mapping,
+    load_vn_sample_search_insurer_inputs_from_mapping,
+    load_vn_search_insurance_history_from_mapping,
 )
 from ims.model.vu_rules import (
     VUForeignInfoRuleSnapshot,
@@ -246,15 +251,22 @@ def _validate_vn_damage_settlement_snapshot_references(
 
 
 def _validate_vn_insurance_rule_snapshot_references(
+    insurer_items: list[object],
     policyholder_items: list[object],
     snapshots: list[VNInsuranceRuleSnapshot],
 ) -> None:
+    insurer_ids = {
+        int(item["entity_id"])
+        for item in insurer_items
+        if isinstance(item, dict) and "entity_id" in item
+    }
     policyholder_ids = {
         int(item["entity_id"])
         for item in policyholder_items
         if isinstance(item, dict) and "entity_id" in item
     }
     unknown_policyholder_ids: set[int] = set()
+    unknown_insurer_ids: set[int] = set()
     duplicate_policyholder_ids: set[int] = set()
     seen_policyholder_ids: set[int] = set()
     for snapshot in snapshots:
@@ -264,12 +276,42 @@ def _validate_vn_insurance_rule_snapshot_references(
             seen_policyholder_ids.add(snapshot.policyholder_id)
         if snapshot.policyholder_id not in policyholder_ids:
             unknown_policyholder_ids.add(snapshot.policyholder_id)
+        if snapshot.active_insurer_ids is not None:
+            unknown_insurer_ids.update(
+                insurer_id for insurer_id in snapshot.active_insurer_ids if insurer_id not in insurer_ids
+            )
+        if snapshot.initial_decisions is not None:
+            decisions = load_vn_insurance_decisions_from_mapping(snapshot.initial_decisions)
+            unknown_insurer_ids.update(
+                decision.insurer_id
+                for decision in decisions
+                if decision.insurer_id is not None and decision.insurer_id not in insurer_ids
+            )
+        if snapshot.rule_kind is VNInsuranceRuleKind.PREFERENCE and snapshot.insurer_inputs is not None:
+            inputs = load_vn_preference_insurer_inputs_from_mapping(snapshot.insurer_inputs)
+            unknown_insurer_ids.update(item.insurer_id for item in inputs if item.insurer_id not in insurer_ids)
+        if snapshot.rule_kind in (
+            VNInsuranceRuleKind.SAMPLE_SEARCH,
+            VNInsuranceRuleKind.BEST_INFO,
+        ) and snapshot.insurer_inputs is not None:
+            inputs = load_vn_sample_search_insurer_inputs_from_mapping(snapshot.insurer_inputs)
+            unknown_insurer_ids.update(item.insurer_id for item in inputs if item.insurer_id not in insurer_ids)
+        if snapshot.rule_kind is VNInsuranceRuleKind.SEARCH_HISTORY and snapshot.history is not None:
+            history = load_vn_search_insurance_history_from_mapping(snapshot.history)
+            unknown_insurer_ids.update(
+                entry.insurer_id
+                for entry in history
+                if entry.insurer_id is not None and entry.insurer_id not in insurer_ids
+            )
     if duplicate_policyholder_ids:
         values = ", ".join(str(policyholder_id) for policyholder_id in sorted(duplicate_policyholder_ids))
         raise ScenarioValidationError(f"duplicate VN insurance rule snapshot policyholder_id values: {values}")
     if unknown_policyholder_ids:
         values = ", ".join(str(policyholder_id) for policyholder_id in sorted(unknown_policyholder_ids))
         raise ScenarioValidationError(f"VN insurance rule snapshots reference unknown policyholders: {values}")
+    if unknown_insurer_ids:
+        values = ", ".join(str(insurer_id) for insurer_id in sorted(unknown_insurer_ids))
+        raise ScenarioValidationError(f"VN insurance rule snapshots reference unknown insurers: {values}")
 
 
 def _validate_disjoint_vn_snapshot_targets(
@@ -324,7 +366,11 @@ def load_scenario_from_mapping(data: dict) -> LoadedScenario:
     vn_insurance_rule_snapshots = load_vn_insurance_rule_snapshots_from_mapping(
         data.get("vn_insurance_rule_snapshots")
     )
-    _validate_vn_insurance_rule_snapshot_references(policyholder_items, vn_insurance_rule_snapshots)
+    _validate_vn_insurance_rule_snapshot_references(
+        insurer_items,
+        policyholder_items,
+        vn_insurance_rule_snapshots,
+    )
 
     context = SimulationContext(
         period=int(context_data.get("period", 0)),
