@@ -10,6 +10,11 @@ from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_
 from ims.model.agrsich_export import compute_global_period
 from ims.model.entities import Insurer, Policyholder
 from ims.model.vn_damage_rules import VNDamageRuleDraws
+from ims.model.vn_insurance_rules import (
+    VNInsuranceRuleApplication,
+    VNInsuranceRuleSnapshot,
+    apply_vn_insurance_rule_snapshots,
+)
 from ims.model.vn_rules import (
     VNDamageSettlementApplication,
     VNDamageSettlementSnapshot,
@@ -28,6 +33,7 @@ class VNSettlementPeriodRunResult:
     global_period: int
     insurers: list[Insurer] = field(default_factory=list)
     policyholders: list[Policyholder] = field(default_factory=list)
+    insurance_rule_applications: list[VNInsuranceRuleApplication] = field(default_factory=list)
     damage_settlement_applications: list[VNDamageSettlementApplication] = field(default_factory=list)
     settlement_applications: list[VNSettlementApplication] = field(default_factory=list)
 
@@ -62,6 +68,7 @@ class VNSettlementMultiPeriodRunResult:
     processed_global_periods: list[int]
     total_settlement_applications: int
     total_damage_settlement_applications: int
+    total_insurance_rule_applications: int = 0
     carryovers: list[VNStateCarryover] = field(default_factory=list)
 
 
@@ -114,6 +121,7 @@ def run_vn_settlement_period(
     insurers: list[Insurer],
     policyholders: list[Policyholder],
     *,
+    insurance_rule_snapshots: list[VNInsuranceRuleSnapshot] | None = None,
     damage_settlement_snapshots: list[VNDamageSettlementSnapshot] | None = None,
     settlement_snapshots: list[VNSettlementSnapshot] | None = None,
     damage_draw_provider: Callable[[], VNDamageRuleDraws] | None = None,
@@ -128,6 +136,7 @@ def run_vn_settlement_period(
 
     damage_settlement_snapshots = damage_settlement_snapshots or []
     settlement_snapshots = settlement_snapshots or []
+    insurance_rule_snapshots = insurance_rule_snapshots or []
     _validate_disjoint_vn_snapshot_targets(
         damage_settlement_snapshots=damage_settlement_snapshots,
         settlement_snapshots=settlement_snapshots,
@@ -147,11 +156,16 @@ def run_vn_settlement_period(
         insurers,
         settlement_snapshots,
     )
+    insurance_rule_applications = apply_vn_insurance_rule_snapshots(
+        insurance_rule_snapshots,
+        period=context.period,
+    )
     return VNSettlementPeriodRunResult(
         period=context.period,
         global_period=compute_global_period(context),
         insurers=insurers,
         policyholders=policyholders,
+        insurance_rule_applications=insurance_rule_applications,
         damage_settlement_applications=damage_settlement_applications,
         settlement_applications=applications,
     )
@@ -168,6 +182,7 @@ def run_loaded_vn_settlement_period(
         loaded.context,
         loaded.insurers,
         loaded.policyholders,
+        insurance_rule_snapshots=loaded.vn_insurance_rule_snapshots,
         damage_settlement_snapshots=loaded.vn_damage_settlement_snapshots,
         settlement_snapshots=loaded.vn_settlement_snapshots,
         damage_draw_provider=damage_draw_provider,
@@ -350,6 +365,9 @@ def run_vn_settlement_multi_period_from_mappings(
         total_settlement_applications=sum(result.total_settlement_applications for result in period_results),
         total_damage_settlement_applications=sum(
             result.total_damage_settlement_applications for result in period_results
+        ),
+        total_insurance_rule_applications=sum(
+            len(result.insurance_rule_applications) for result in period_results
         ),
         carryovers=carryovers,
     )

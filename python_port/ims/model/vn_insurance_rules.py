@@ -1,6 +1,18 @@
 from dataclasses import dataclass
+from enum import StrEnum
 
 from ims.model.vn_rules import VNInsuranceDecision, load_vn_insurance_decisions_from_mapping
+
+
+class VNInsuranceRuleKind(StrEnum):
+    """Portierte VN-Versicherungsregeln fuer explizite Dispatch-Snapshots."""
+
+    COMPULSORY = "compulsory"
+    RANDOM = "random"
+    PREFERENCE = "preference"
+    SEARCH_HISTORY = "search_history"
+    SAMPLE_SEARCH = "sample_search"
+    BEST_INFO = "best_info"
 
 
 @dataclass(slots=True)
@@ -180,6 +192,35 @@ class VNBestInfoInsuranceRuleResult:
     selected_premiums: list[float | None]
     considered_insurer_ids: list[list[int]]
     information_cost: float
+
+
+@dataclass(slots=True)
+class VNInsuranceRuleSnapshot:
+    """Expliziter Snapshot fuer einen portierten VN-Versicherungsregelkern."""
+
+    policyholder_id: int
+    rule_kind: VNInsuranceRuleKind
+    parameters: object = None
+    draws: object = None
+    active_insurer_ids: list[int] | None = None
+    initial_decisions: object = None
+    damage_probabilities: list[float] | None = None
+    insurer_inputs: object = None
+    history: object = None
+    market_damage_indicator: float | None = None
+    change_shock: bool = False
+    information_cost_per_sample: float = 0.0
+    information_cost_per_insurer: float = 0.0
+
+
+@dataclass(slots=True)
+class VNInsuranceRuleApplication:
+    """Diagnose eines angewendeten expliziten VN-Versicherungsregel-Snapshots."""
+
+    policyholder_id: int
+    rule_kind: VNInsuranceRuleKind
+    decisions: list[VNInsuranceDecision]
+    result: object | None = None
 
 
 def _two_float_values(values: object, *, fallback: float) -> list[float]:
@@ -450,6 +491,26 @@ def load_active_insurer_ids_from_mapping(value: object) -> list[int]:
     """Laedt die aktive VU-Auswahlbasis fuer den Vrvn02-Zufallspfad."""
 
     return _active_insurer_ids(value)
+
+
+def _optional_active_insurer_ids(value: object) -> list[int] | None:
+    if value is None:
+        return None
+    return _active_insurer_ids(value)
+
+
+def _rule_kind_from_mapping(value: object) -> VNInsuranceRuleKind:
+    try:
+        return value if isinstance(value, VNInsuranceRuleKind) else VNInsuranceRuleKind(str(value))
+    except ValueError as exc:
+        raise ValueError(f"unsupported VN insurance rule kind: {value}") from exc
+
+
+def _optional_bool_from_mapping(mapping: dict[str, object], key: str) -> bool:
+    value = mapping.get(key, False)
+    if not isinstance(value, bool):
+        raise ValueError(f"VN insurance rule snapshot field {key} must be a boolean")
+    return value
 
 
 def vn_preference_insurer_input_from_mapping(mapping: dict[str, object]) -> VNPreferenceInsurerInput:
@@ -753,6 +814,298 @@ def _select_best_info_insurer(
     if selected_id == 0:
         raise ValueError("VN best info insurance rule requires active insurer inputs")
     return selected_id, selected_premium, considered_ids
+
+
+def _vn_insurance_rule_snapshot_parameters(
+    rule_kind: VNInsuranceRuleKind,
+    mapping: dict[str, object],
+) -> object:
+    value = mapping.get("parameters")
+    if value is None:
+        return None
+    if rule_kind is VNInsuranceRuleKind.RANDOM:
+        return (
+            value
+            if isinstance(value, VNRandomInsuranceRuleParameters)
+            else vn_random_insurance_rule_parameters_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.PREFERENCE:
+        return (
+            value
+            if isinstance(value, VNPreferenceInsuranceRuleParameters)
+            else vn_preference_insurance_rule_parameters_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.SEARCH_HISTORY:
+        return (
+            value
+            if isinstance(value, VNSearchInsuranceRuleParameters)
+            else vn_search_insurance_rule_parameters_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.SAMPLE_SEARCH:
+        return (
+            value
+            if isinstance(value, VNSampleSearchInsuranceRuleParameters)
+            else vn_sample_search_insurance_rule_parameters_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.BEST_INFO:
+        return (
+            value
+            if isinstance(value, VNBestInfoInsuranceRuleParameters)
+            else vn_best_info_insurance_rule_parameters_from_mapping(value)
+        )
+    return value
+
+
+def _vn_insurance_rule_snapshot_draws(
+    rule_kind: VNInsuranceRuleKind,
+    mapping: dict[str, object],
+) -> object:
+    value = mapping.get("draws")
+    if value is None:
+        return None
+    if rule_kind is VNInsuranceRuleKind.COMPULSORY:
+        return (
+            value
+            if isinstance(value, VNCompulsoryInsuranceRuleDraws)
+            else vn_compulsory_insurance_rule_draws_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.RANDOM:
+        return (
+            value
+            if isinstance(value, VNRandomInsuranceRuleDraws)
+            else vn_random_insurance_rule_draws_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.PREFERENCE:
+        return (
+            value
+            if isinstance(value, VNPreferenceInsuranceRuleDraws)
+            else vn_preference_insurance_rule_draws_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.SEARCH_HISTORY:
+        return (
+            value
+            if isinstance(value, VNSearchInsuranceRuleDraws)
+            else vn_search_insurance_rule_draws_from_mapping(value)
+        )
+    if rule_kind is VNInsuranceRuleKind.SAMPLE_SEARCH:
+        return (
+            value
+            if isinstance(value, VNSampleSearchInsuranceRuleDraws)
+            else vn_sample_search_insurance_rule_draws_from_mapping(value)
+        )
+    return value
+
+
+def vn_insurance_rule_snapshot_from_mapping(mapping: dict[str, object]) -> VNInsuranceRuleSnapshot:
+    """Laedt einen expliziten VN-Versicherungsregel-Snapshot."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN insurance rule snapshot must be an object")
+    for key in ("policyholder_id", "rule_kind"):
+        if key not in mapping:
+            raise ValueError(f"VN insurance rule snapshot requires field: {key}")
+    rule_kind = _rule_kind_from_mapping(mapping["rule_kind"])
+    policyholder_id = int(mapping["policyholder_id"])
+    if policyholder_id <= 0:
+        raise ValueError("VN insurance rule snapshot policyholder_id must be positive")
+    return VNInsuranceRuleSnapshot(
+        policyholder_id=policyholder_id,
+        rule_kind=rule_kind,
+        parameters=_vn_insurance_rule_snapshot_parameters(rule_kind, mapping),
+        draws=_vn_insurance_rule_snapshot_draws(rule_kind, mapping),
+        active_insurer_ids=_optional_active_insurer_ids(mapping.get("active_insurer_ids")),
+        initial_decisions=mapping.get("initial_decisions"),
+        damage_probabilities=(
+            _two_float_values(mapping.get("damage_probabilities"), fallback=0.0)
+            if mapping.get("damage_probabilities") is not None
+            else None
+        ),
+        insurer_inputs=mapping.get("insurer_inputs"),
+        history=mapping.get("history"),
+        market_damage_indicator=(
+            float(mapping["market_damage_indicator"])
+            if mapping.get("market_damage_indicator") is not None
+            else None
+        ),
+        change_shock=_optional_bool_from_mapping(mapping, "change_shock"),
+        information_cost_per_sample=float(mapping.get("information_cost_per_sample", 0.0)),
+        information_cost_per_insurer=float(mapping.get("information_cost_per_insurer", 0.0)),
+    )
+
+
+def load_vn_insurance_rule_snapshots_from_mapping(value: object) -> list[VNInsuranceRuleSnapshot]:
+    """Laedt explizite VN-Versicherungsregel-Snapshots aus In-Memory-Daten."""
+
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("VN insurance rule snapshots must be a list")
+    snapshots = [
+        item if isinstance(item, VNInsuranceRuleSnapshot) else vn_insurance_rule_snapshot_from_mapping(item)
+        for item in value
+    ]
+    policyholder_ids = [snapshot.policyholder_id for snapshot in snapshots]
+    duplicate_ids = sorted(
+        policyholder_id
+        for policyholder_id in set(policyholder_ids)
+        if policyholder_ids.count(policyholder_id) > 1
+    )
+    if duplicate_ids:
+        values = ", ".join(str(policyholder_id) for policyholder_id in duplicate_ids)
+        raise ValueError(f"VN insurance rule snapshots reject duplicate policyholder_ids: {values}")
+    return snapshots
+
+
+def _require_parameters(snapshot: VNInsuranceRuleSnapshot, expected_type: type) -> object:
+    if not isinstance(snapshot.parameters, expected_type):
+        raise ValueError(f"VN insurance rule snapshot {snapshot.rule_kind} requires parameters")
+    return snapshot.parameters
+
+
+def _require_draws(snapshot: VNInsuranceRuleSnapshot, expected_type: type) -> object:
+    if not isinstance(snapshot.draws, expected_type):
+        raise ValueError(f"VN insurance rule snapshot {snapshot.rule_kind} requires draws")
+    return snapshot.draws
+
+
+def _require_damage_probabilities(snapshot: VNInsuranceRuleSnapshot) -> list[float]:
+    if snapshot.damage_probabilities is None:
+        raise ValueError(f"VN insurance rule snapshot {snapshot.rule_kind} requires damage_probabilities")
+    return snapshot.damage_probabilities
+
+
+def _require_active_insurer_ids(snapshot: VNInsuranceRuleSnapshot) -> list[int]:
+    if snapshot.active_insurer_ids is None:
+        raise ValueError(f"VN insurance rule snapshot {snapshot.rule_kind} requires active_insurer_ids")
+    return snapshot.active_insurer_ids
+
+
+def _require_market_damage_indicator(snapshot: VNInsuranceRuleSnapshot) -> float:
+    if snapshot.market_damage_indicator is None:
+        raise ValueError(f"VN insurance rule snapshot {snapshot.rule_kind} requires market_damage_indicator")
+    return snapshot.market_damage_indicator
+
+
+def _initial_decision_application(snapshot: VNInsuranceRuleSnapshot) -> VNInsuranceRuleApplication:
+    if snapshot.initial_decisions is None:
+        raise ValueError(f"VN insurance rule snapshot {snapshot.rule_kind} period 1 requires initial_decisions")
+    decisions = sorted(
+        load_vn_insurance_decisions_from_mapping(snapshot.initial_decisions),
+        key=lambda item: item.sector_index,
+    )
+    return VNInsuranceRuleApplication(
+        policyholder_id=snapshot.policyholder_id,
+        rule_kind=snapshot.rule_kind,
+        decisions=decisions,
+    )
+
+
+def apply_vn_insurance_rule_snapshot(
+    snapshot: VNInsuranceRuleSnapshot,
+    *,
+    period: int,
+) -> VNInsuranceRuleApplication:
+    """Wendet einen expliziten VN-Versicherungsregel-Snapshot ohne Settlement an."""
+
+    if period < 1:
+        raise ValueError("VN insurance rule snapshot period must be at least 1")
+    if period == 1:
+        return _initial_decision_application(snapshot)
+
+    if snapshot.rule_kind is VNInsuranceRuleKind.COMPULSORY:
+        result = apply_vn_compulsory_insurance_rule(
+            period=period,
+            active_insurer_ids=_require_active_insurer_ids(snapshot),
+            draws=(
+                snapshot.draws
+                if isinstance(snapshot.draws, VNCompulsoryInsuranceRuleDraws)
+                else None
+            ),
+            initial_decisions=snapshot.initial_decisions,
+        )
+    elif snapshot.rule_kind is VNInsuranceRuleKind.RANDOM:
+        result = apply_vn_random_insurance_rule(
+            _require_parameters(snapshot, VNRandomInsuranceRuleParameters),
+            active_insurer_ids=_require_active_insurer_ids(snapshot),
+            draws=_require_draws(snapshot, VNRandomInsuranceRuleDraws),
+            change_shock=snapshot.change_shock,
+        )
+    elif snapshot.rule_kind is VNInsuranceRuleKind.PREFERENCE:
+        result = apply_vn_preference_insurance_rule(
+            _require_parameters(snapshot, VNPreferenceInsuranceRuleParameters),
+            period=period,
+            damage_probabilities=_require_damage_probabilities(snapshot),
+            insurer_inputs=snapshot.insurer_inputs,
+            draws=(
+                snapshot.draws
+                if isinstance(snapshot.draws, VNPreferenceInsuranceRuleDraws)
+                else None
+            ),
+            initial_decisions=snapshot.initial_decisions,
+            change_shock=snapshot.change_shock,
+        )
+    elif snapshot.rule_kind is VNInsuranceRuleKind.SEARCH_HISTORY:
+        result = apply_vn_search_insurance_rule(
+            _require_parameters(snapshot, VNSearchInsuranceRuleParameters),
+            period=period,
+            damage_probabilities=_require_damage_probabilities(snapshot),
+            history=snapshot.history,
+            active_insurer_ids=_require_active_insurer_ids(snapshot),
+            draws=(
+                snapshot.draws
+                if isinstance(snapshot.draws, VNSearchInsuranceRuleDraws)
+                else None
+            ),
+            initial_decisions=snapshot.initial_decisions,
+            change_shock=snapshot.change_shock,
+        )
+    elif snapshot.rule_kind is VNInsuranceRuleKind.SAMPLE_SEARCH:
+        result = apply_vn_sample_search_insurance_rule(
+            _require_parameters(snapshot, VNSampleSearchInsuranceRuleParameters),
+            period=period,
+            market_damage_indicator=_require_market_damage_indicator(snapshot),
+            insurer_inputs=snapshot.insurer_inputs,
+            draws=(
+                snapshot.draws
+                if isinstance(snapshot.draws, VNSampleSearchInsuranceRuleDraws)
+                else None
+            ),
+            initial_decisions=snapshot.initial_decisions,
+            change_shock=snapshot.change_shock,
+            information_cost_per_sample=snapshot.information_cost_per_sample,
+        )
+    elif snapshot.rule_kind is VNInsuranceRuleKind.BEST_INFO:
+        result = apply_vn_best_info_insurance_rule(
+            _require_parameters(snapshot, VNBestInfoInsuranceRuleParameters),
+            period=period,
+            market_damage_indicator=_require_market_damage_indicator(snapshot),
+            insurer_inputs=snapshot.insurer_inputs,
+            initial_decisions=snapshot.initial_decisions,
+            change_shock=snapshot.change_shock,
+            information_cost_per_insurer=snapshot.information_cost_per_insurer,
+        )
+    else:
+        raise ValueError(f"unsupported VN insurance rule kind: {snapshot.rule_kind}")
+
+    return VNInsuranceRuleApplication(
+        policyholder_id=snapshot.policyholder_id,
+        rule_kind=snapshot.rule_kind,
+        decisions=result.decisions,
+        result=result,
+    )
+
+
+def apply_vn_insurance_rule_snapshots(
+    snapshots: list[VNInsuranceRuleSnapshot],
+    *,
+    period: int,
+) -> list[VNInsuranceRuleApplication]:
+    """Wendet mehrere explizite VN-Versicherungsregel-Snapshots an."""
+
+    return [
+        apply_vn_insurance_rule_snapshot(snapshot, period=period)
+        for snapshot in snapshots
+    ]
 
 
 def apply_vn_compulsory_insurance_rule(

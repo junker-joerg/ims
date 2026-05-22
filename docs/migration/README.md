@@ -51,6 +51,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_search_insurance_rule.md`: Vrvn04-Baustein fuer Suchwahl nach frueheren VN-Praemien
 - `vn_sample_search_insurance_rule.md`: Vrvn05-Baustein fuer Stichprobensuche nach aktuellen VU-Praemien
 - `vn_best_info_insurance_rule.md`: Vrvn06-Baustein fuer beste Information ueber aktive aktuelle VU-Praemien
+- `vn_insurance_rule_dispatch.md`: expliziter Dispatch fuer portierte VN-Versicherungsregel-Snapshots
 - `vn_settlement_core.md`: deterministischer VN-Abrechnungskern nach expliziten Entscheidungen
 - `vn_damage_settlement_link.md`: explizite Kopplung von VN-Schadenerzeugung und VN-Abrechnung
 - `vn_explicit_damage_period.md`: expliziter Periodenpfad fuer VN-Schaden plus VN-Abrechnung
