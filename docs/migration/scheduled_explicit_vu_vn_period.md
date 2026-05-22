@@ -38,6 +38,8 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
   `explicit_vu_vn_period`, wenn ein geladenes Szenario uebergeben wird. Damit
   ist der Fach-Event nicht nur separat planbar, sondern auch kontrolliert
   dispatchbar.
+- Dispatcher-Ergebnis und Aggregatdiagnose stammen dabei aus demselben geladenen
+  Szenariozustand; abweichend uebergebene Objektgraphen werden zurueckgewiesen.
 - Das Event nutzt `context.period` und `context.logtime` aus dem geladenen
   Szenario. Mehrperiodige Events verwenden `run_index * max_periods + period`
   als Scheduler-Periode. Mapping-, Fixture- und Plan-Wrapper fuehren die
@@ -54,6 +56,7 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
   Periodenfolge, Carryover und Legacy-Vergleiche bleiben im bestehenden
   expliziten Runner verankert.
 - Der Dispatcher-Anschluss erwartet ein bereits geladenes Szenario mit
-  expliziten Snapshotlisten; er erzeugt keine historische Regelwahl.
+  expliziten Snapshotlisten und einheitlicher Zustandsbasis; er erzeugt keine
+  historische Regelwahl.
 - Keine automatische historische Regelwahl, kein Dialog- oder UI-Pfad.
 - Keine Behauptung historischer Vollgleichheit.

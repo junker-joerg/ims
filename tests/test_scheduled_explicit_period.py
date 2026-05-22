@@ -222,6 +222,21 @@ def test_dispatch_event_requires_loaded_scenario_for_explicit_vu_vn_period() -> 
         )
 
 
+def test_dispatch_event_rejects_mixed_explicit_vu_vn_state() -> None:
+    loaded = load_scenario_from_mapping(_scenario())
+    other_loaded = load_scenario_from_mapping(_scenario())
+
+    with pytest.raises(ValueError, match="one shared loaded scenario state"):
+        simulation.dispatch_event(
+            Event(2, 4, 0, "scenario", "explicit-vu-vn", "explicit_vu_vn_period"),
+            context=loaded.context,
+            bav=other_loaded.bav,
+            insurers=other_loaded.insurers,
+            policyholders=other_loaded.policyholders,
+            loaded=loaded,
+        )
+
+
 def test_scheduled_explicit_vu_vn_periods_run_global_period_sequence(tmp_path: Path) -> None:
     result = run_scheduled_explicit_vu_vn_periods_from_mappings(
         [

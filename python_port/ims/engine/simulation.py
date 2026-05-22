@@ -276,6 +276,26 @@ def _build_controlled_loop_result(
     )
 
 
+def _require_loaded_dispatch_state(
+    *,
+    loaded: LoadedScenario | None,
+    context: SimulationContext,
+    bav: BAV,
+    insurers: list[Insurer],
+    policyholders: list[Policyholder],
+) -> LoadedScenario:
+    if loaded is None:
+        raise ValueError("explicit_vu_vn_period dispatch requires a loaded scenario")
+    if (
+        loaded.bav is not bav
+        or loaded.insurers is not insurers
+        or loaded.policyholders is not policyholders
+    ):
+        raise ValueError("explicit_vu_vn_period dispatch requires one shared loaded scenario state")
+    loaded.context = context
+    return loaded
+
+
 
 def dispatch_event(
     event: Event,
@@ -309,19 +329,28 @@ def dispatch_event(
     elif event.action == "bav_snapshot":
         bav_update = None
     elif event.action == "explicit_vu_vn_period":
-        if loaded is None:
-            raise ValueError("explicit_vu_vn_period dispatch requires a loaded scenario")
-        loaded.context = context
+        loaded = _require_loaded_dispatch_state(
+            loaded=loaded,
+            context=context,
+            bav=bav,
+            insurers=insurers,
+            policyholders=policyholders,
+        )
         explicit_period = run_loaded_explicit_period(loaded)
         bav_update = None
     else:
         raise ValueError(f"unsupported event action: {event.action}")
 
+    aggregate_bav = loaded.bav if explicit_period is not None and loaded is not None else bav
+    aggregate_insurers = loaded.insurers if explicit_period is not None and loaded is not None else insurers
+    aggregate_policyholders = (
+        loaded.policyholders if explicit_period is not None and loaded is not None else policyholders
+    )
     aggregate_snapshot = collect_basic_aggregates(
         context=context,
-        bav=bav,
-        insurers=insurers,
-        policyholders=policyholders,
+        bav=aggregate_bav,
+        insurers=aggregate_insurers,
+        policyholders=aggregate_policyholders,
     )
 
     return DispatchedEventResult(
