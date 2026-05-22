@@ -9,20 +9,27 @@ from ims.model.vn_insurance_rules import (
     VNPreferenceInsurerInput,
     VNRandomInsuranceRuleDraws,
     VNRandomInsuranceRuleParameters,
+    VNSampleSearchInsuranceRuleDraws,
+    VNSampleSearchInsuranceRuleParameters,
+    VNSampleSearchInsurerInput,
     VNSearchInsuranceRuleDraws,
     VNSearchInsuranceRuleParameters,
     apply_vn_compulsory_insurance_rule,
     apply_vn_preference_insurance_rule,
     apply_vn_random_insurance_rule,
+    apply_vn_sample_search_insurance_rule,
     apply_vn_search_insurance_rule,
     load_active_insurer_ids_from_mapping,
     load_vn_preference_insurer_inputs_from_mapping,
+    load_vn_sample_search_insurer_inputs_from_mapping,
     load_vn_search_insurance_history_from_mapping,
     vn_compulsory_insurance_rule_draws_from_mapping,
     vn_preference_insurance_rule_draws_from_mapping,
     vn_preference_insurance_rule_parameters_from_mapping,
     vn_random_insurance_rule_draws_from_mapping,
     vn_random_insurance_rule_parameters_from_mapping,
+    vn_sample_search_insurance_rule_draws_from_mapping,
+    vn_sample_search_insurance_rule_parameters_from_mapping,
     vn_search_insurance_rule_draws_from_mapping,
     vn_search_insurance_rule_parameters_from_mapping,
 )
@@ -783,6 +790,310 @@ def test_vn_search_insurance_decisions_feed_damage_settlement_path() -> None:
 
     assert search_result.chosen_insurer_ids == [12, None]
     assert search_result.selected_insurer_ids == [12, 11]
+    assert application.damage_result.damages == [9.0, 0.0]
+    assert application.settlement_result.paid_premium_current == [4.0, 0.0]
+    assert application.settlement_result.end_wealth_current == 87.0
+
+
+def test_vn_sample_search_insurance_rule_uses_initial_decisions_in_first_period() -> None:
+    result = apply_vn_sample_search_insurance_rule(
+        VNSampleSearchInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.2, 0.3],
+            insurance_thresholds_shock=[0.4, 0.5],
+            sample_sizes_normal=[1, 2],
+            sample_sizes_shock=[3, 4],
+        ),
+        period=1,
+        market_damage_indicator=0.0,
+        insurer_inputs=[],
+        initial_decisions=[
+            {"sector_index": 1, "insured": True, "insurer_id": 13, "premium": 5.0},
+            {"sector_index": 0, "insured": False},
+        ],
+    )
+
+    assert result.insured == [False, True]
+    assert result.chosen_insurer_ids == [None, 13]
+    assert result.selected_insurer_ids == [None, 13]
+    assert result.selected_premiums == [None, 5.0]
+    assert result.sampled_insurer_ids == [[], []]
+    assert result.information_cost == 0.0
+
+
+def test_vn_sample_search_insurance_rule_samples_active_current_premiums() -> None:
+    result = apply_vn_sample_search_insurance_rule(
+        VNSampleSearchInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.5, 0.5],
+            insurance_thresholds_shock=[0.1, 0.1],
+            sample_sizes_normal=[3, 2],
+            sample_sizes_shock=[1, 1],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 30, "premiums_current_sector": [9.0, 4.0]},
+            {"insurer_id": 10, "premiums_current_sector": [5.0, 7.0]},
+            {"insurer_id": 20, "premiums_current_sector": [3.0, 8.0]},
+        ],
+        draws=VNSampleSearchInsuranceRuleDraws(
+            insurer_choice_draws_by_sector=[
+                [0.99, 0.34, 0.01],
+                [0.0, 0.99],
+            ]
+        ),
+        information_cost_per_sample=2.5,
+    )
+
+    assert result.insured == [True, True]
+    assert result.sampled_insurer_ids == [[30, 20, 10], [10, 30]]
+    assert result.selected_insurer_ids == [20, 30]
+    assert result.chosen_insurer_ids == [20, 30]
+    assert result.selected_premiums == [3.0, 4.0]
+    assert result.used_insurer_choice_draws_by_sector == [[0.99, 0.34, 0.01], [0.0, 0.99]]
+    assert result.information_cost == 12.5
+    assert result.decisions[0].premium == 3.0
+    assert result.decisions[1].premium == 4.0
+
+
+def test_vn_sample_search_insurance_rule_keeps_selection_diagnostics_when_uninsured() -> None:
+    result = apply_vn_sample_search_insurance_rule(
+        VNSampleSearchInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.2, 0.8],
+            insurance_thresholds_shock=[0.8, 0.8],
+            sample_sizes_normal=[1, 1],
+            sample_sizes_shock=[1, 1],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 10, "premiums_current_sector": [5.0, 7.0]},
+            {"insurer_id": 20, "premiums_current_sector": [3.0, 6.0]},
+        ],
+        draws=VNSampleSearchInsuranceRuleDraws(
+            insurer_choice_draws_by_sector=[
+                [0.99],
+                [0.99],
+            ]
+        ),
+    )
+
+    assert result.insured == [False, True]
+    assert result.selected_insurer_ids == [20, 20]
+    assert result.chosen_insurer_ids == [None, 20]
+    assert result.decisions[0].insurer_id is None
+    assert result.decisions[0].premium is None
+    assert result.decisions[1].premium == 6.0
+
+
+def test_vn_sample_search_insurance_rule_uses_shock_thresholds_and_sample_sizes() -> None:
+    result = apply_vn_sample_search_insurance_rule(
+        VNSampleSearchInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.1, 0.1],
+            insurance_thresholds_shock=[0.6, 0.4],
+            sample_sizes_normal=[1, 1],
+            sample_sizes_shock=[2, 1],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 10, "premiums_current_sector": [5.0, 7.0]},
+            {"insurer_id": 20, "premiums_current_sector": [3.0, 6.0]},
+        ],
+        draws=VNSampleSearchInsuranceRuleDraws(
+            insurer_choice_draws_by_sector=[
+                [0.0, 0.99],
+                [0.0, 0.99],
+            ]
+        ),
+        change_shock=True,
+    )
+
+    assert result.insured == [True, False]
+    assert result.sampled_insurer_ids == [[10, 20], [10]]
+    assert result.selected_insurer_ids == [20, 10]
+    assert result.chosen_insurer_ids == [20, None]
+    assert result.used_insurer_choice_draws_by_sector == [[0.0, 0.99], [0.0]]
+
+
+def test_vn_sample_search_insurance_rule_validates_inputs() -> None:
+    parameters = VNSampleSearchInsuranceRuleParameters(
+        insurance_thresholds_normal=[0.1, 0.1],
+        insurance_thresholds_shock=[0.1, 0.1],
+        sample_sizes_normal=[1, 1],
+        sample_sizes_shock=[1, 1],
+    )
+
+    with pytest.raises(ValueError, match="period must be at least 1"):
+        apply_vn_sample_search_insurance_rule(
+            parameters,
+            period=0,
+            market_damage_indicator=0.1,
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="initial_decisions"):
+        apply_vn_sample_search_insurance_rule(
+            parameters,
+            period=1,
+            market_damage_indicator=0.1,
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="insurer choice draws"):
+        apply_vn_sample_search_insurance_rule(
+            parameters,
+            period=2,
+            market_damage_indicator=0.1,
+            insurer_inputs=[],
+        )
+
+    with pytest.raises(ValueError, match="active insurer inputs"):
+        apply_vn_sample_search_insurance_rule(
+            parameters,
+            period=2,
+            market_damage_indicator=0.1,
+            insurer_inputs=[],
+            draws=VNSampleSearchInsuranceRuleDraws(insurer_choice_draws_by_sector=[[0.0], [0.0]]),
+        )
+
+    with pytest.raises(ValueError, match="sample sizes must be positive"):
+        apply_vn_sample_search_insurance_rule(
+            VNSampleSearchInsuranceRuleParameters(
+                insurance_thresholds_normal=[0.1, 0.1],
+                insurance_thresholds_shock=[0.1, 0.1],
+                sample_sizes_normal=[0, 1],
+                sample_sizes_shock=[1, 1],
+            ),
+            period=2,
+            market_damage_indicator=0.1,
+            insurer_inputs=[{"insurer_id": 10, "premiums_current_sector": [1.0, 1.0]}],
+            draws=VNSampleSearchInsuranceRuleDraws(insurer_choice_draws_by_sector=[[], [0.0]]),
+        )
+
+    with pytest.raises(ValueError, match="enough insurer choice draws"):
+        apply_vn_sample_search_insurance_rule(
+            VNSampleSearchInsuranceRuleParameters(
+                insurance_thresholds_normal=[0.1, 0.1],
+                insurance_thresholds_shock=[0.1, 0.1],
+                sample_sizes_normal=[2, 1],
+                sample_sizes_shock=[1, 1],
+            ),
+            period=2,
+            market_damage_indicator=0.1,
+            insurer_inputs=[{"insurer_id": 10, "premiums_current_sector": [1.0, 1.0]}],
+            draws=VNSampleSearchInsuranceRuleDraws(insurer_choice_draws_by_sector=[[0.0], [0.0]]),
+        )
+
+
+def test_vn_sample_search_insurance_rule_loaders_validate_shape() -> None:
+    parameters = vn_sample_search_insurance_rule_parameters_from_mapping(
+        {
+            "insurance_thresholds_normal": [0.2],
+            "insurance_thresholds_shock": [0.3, 0.4],
+            "sample_sizes_normal": [2],
+            "sample_sizes_shock": [3, 4],
+        }
+    )
+    draws = vn_sample_search_insurance_rule_draws_from_mapping(
+        {"insurer_choice_draws_by_sector": [[0.0, 0.5], [0.99]]}
+    )
+    inputs = load_vn_sample_search_insurer_inputs_from_mapping(
+        [
+            {"insurer_id": 12, "premiums_current_sector": [2.0]},
+            VNSampleSearchInsurerInput(insurer_id=11, premiums_current_sector=[]),
+        ]
+    )
+
+    assert parameters.insurance_thresholds_normal == [0.2, 0.2]
+    assert parameters.insurance_thresholds_shock == [0.3, 0.4]
+    assert parameters.sample_sizes_normal == [2, 2]
+    assert parameters.sample_sizes_shock == [3, 4]
+    assert draws.insurer_choice_draws_by_sector == [[0.0, 0.5], [0.99]]
+    assert [item.insurer_id for item in inputs] == [11, 12]
+    assert inputs[0].premiums_current_sector == [0.0, 0.0]
+    assert inputs[1].premiums_current_sector == [2.0, 2.0]
+
+    with pytest.raises(ValueError, match="non-negative"):
+        vn_sample_search_insurance_rule_parameters_from_mapping(
+            {
+                "insurance_thresholds_normal": [0.2, 0.2],
+                "insurance_thresholds_shock": [0.2, 0.2],
+                "sample_sizes_normal": [-1, 1],
+                "sample_sizes_shock": [1, 1],
+            }
+        )
+
+    with pytest.raises(ValueError, match="two draw lists"):
+        vn_sample_search_insurance_rule_draws_from_mapping(
+            {"insurer_choice_draws_by_sector": [[0.0]]}
+        )
+
+    with pytest.raises(ValueError, match="duplicate insurer_ids"):
+        load_vn_sample_search_insurer_inputs_from_mapping(
+            [
+                {"insurer_id": 12, "premiums_current_sector": [1.0, 1.0]},
+                {"insurer_id": 12, "premiums_current_sector": [2.0, 2.0]},
+            ]
+        )
+
+    with pytest.raises(ValueError, match="premiums"):
+        load_vn_sample_search_insurer_inputs_from_mapping(
+            [{"insurer_id": 12, "premiums_current_sector": [-1.0, 1.0]}]
+        )
+
+
+def test_vn_sample_search_insurance_decisions_feed_damage_settlement_path() -> None:
+    sample_search_result = apply_vn_sample_search_insurance_rule(
+        VNSampleSearchInsuranceRuleParameters(
+            insurance_thresholds_normal=[0.5, 0.1],
+            insurance_thresholds_shock=[0.5, 0.1],
+            sample_sizes_normal=[2, 1],
+            sample_sizes_shock=[2, 1],
+        ),
+        period=2,
+        market_damage_indicator=0.5,
+        insurer_inputs=[
+            {"insurer_id": 11, "premiums_current_sector": [6.0, 5.0]},
+            {"insurer_id": 12, "premiums_current_sector": [4.0, 7.0]},
+        ],
+        draws=VNSampleSearchInsuranceRuleDraws(
+            insurer_choice_draws_by_sector=[
+                [0.0, 0.99],
+                [0.0],
+            ]
+        ),
+    )
+    insurer = Insurer(
+        entity_id=12,
+        premiums_current_sector=[4.0, 6.0],
+        reserves_current=[40.0, 60.0],
+        policyholders_current_sector=[1.0, 2.0],
+    )
+    snapshot = VNDamageSettlementSnapshot(
+        policyholder_id=21,
+        previous_wealth=100.0,
+        damage_thresholds=[0.8, 0.2],
+        parameters=VNDamageRuleParameters(
+            damage_intercept_normal=[5.0, 7.0],
+            damage_factor_normal=[2.0, 3.0],
+            damage_intercept_shock=[50.0, 70.0],
+            damage_factor_shock=[20.0, 30.0],
+        ),
+        draws=VNDamageRuleDraws(
+            trigger_draws=[0.1, 0.5],
+            amount_draws=[2.0, 3.0],
+        ),
+        insurance_decisions=sample_search_result.decisions,
+    )
+
+    application = apply_vn_damage_settlement_snapshot(
+        Policyholder(entity_id=21),
+        [insurer],
+        snapshot,
+    )
+
+    assert sample_search_result.chosen_insurer_ids == [12, None]
+    assert sample_search_result.selected_insurer_ids == [12, 11]
     assert application.damage_result.damages == [9.0, 0.0]
     assert application.settlement_result.paid_premium_current == [4.0, 0.0]
     assert application.settlement_result.end_wealth_current == 87.0
