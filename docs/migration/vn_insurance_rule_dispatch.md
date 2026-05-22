@@ -38,6 +38,12 @@ Der VN-Periodenrunner wendet diese Snapshots an und gibt die Anwendungen in
 Laeufe zaehlen diese Anwendungen ueber
 `VNSettlementMultiPeriodRunResult.total_insurance_rule_applications`.
 
+Wenn ein `vn_damage_settlement_snapshot` desselben VN keine expliziten
+`insurance_decisions` enthaelt, kann der VN-Periodenrunner die Entscheidungen
+aus der passenden Insurance-Rule-Anwendung einsetzen. Das bleibt eine
+kontrollierte Runner-Kopplung; der reine Schaden-/Abrechnungsadapter verlangt
+weiterhin konkrete Entscheidungen.
+
 ## Unterstuetzte Regelarten
 
 - `compulsory`: Vrvn01 / Pflichtversicherung
@@ -66,8 +72,9 @@ Die Tests decken ab:
 
 ## Grenzen
 
-- Der Dispatch erzeugt Entscheidungen, bucht sie aber nicht automatisch in
-  `vn_damage_settlement_snapshots` ein.
+- Der Dispatch erzeugt Entscheidungen. Der VN-Periodenrunner kann diese fuer
+  passende `vn_damage_settlement_snapshots` ohne eigene Entscheidungen nutzen,
+  erzeugt aber keine Schadens- oder Settlement-Snapshots selbst.
 - Informationskosten aus Vrvn05/Vrvn06 bleiben diagnostisch und werden noch
   nicht automatisch im Settlement-Vermoegenspfad verrechnet.
 - Keine automatische historische Scheduler- oder Regelwahl.

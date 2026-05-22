@@ -193,6 +193,38 @@ def test_vn_rule_runner_applies_explicit_insurance_rule_snapshots() -> None:
     assert result.total_settlement_applications == 1
 
 
+def test_vn_rule_runner_feeds_insurance_rule_decisions_into_damage_settlement() -> None:
+    scenario = _vn_period_scenario(5)
+    scenario["vn_insurance_rule_snapshots"] = [
+        {
+            "policyholder_id": 21,
+            "rule_kind": "compulsory",
+            "active_insurer_ids": [11],
+            "draws": {"insurer_choice_draws": [0.0, 0.0]},
+        }
+    ]
+    del scenario["vn_damage_settlement_snapshots"][0]["insurance_decisions"]
+
+    result = run_vn_settlement_period_from_mapping(scenario)
+
+    assert len(result.insurance_rule_applications) == 1
+    assert result.total_damage_settlement_applications == 1
+    application = result.damage_settlement_applications[0]
+    assert application.damage_result.damages == [9.0, 0.0]
+    assert application.settlement_result.chosen_insurer_sector_current == [11, 11]
+    assert result.policyholders[0].paid_premium_current == [4.0, 6.0]
+    assert result.policyholders[0].end_wealth_current == 81.0
+    assert result.insurers[0].policyholders_current_sector == [2.0, 3.0]
+
+
+def test_vn_rule_runner_rejects_unresolved_damage_settlement_decisions() -> None:
+    scenario = _vn_period_scenario(5)
+    del scenario["vn_damage_settlement_snapshots"][0]["insurance_decisions"]
+
+    with pytest.raises(ValueError, match="matching VN insurance rule snapshot"):
+        run_vn_settlement_period_from_mapping(scenario)
+
+
 def test_vn_rule_multi_period_runner_counts_insurance_rule_applications() -> None:
     first = _vn_period_scenario(5, policyholder_id=21)
     second = _vn_period_scenario(6, policyholder_id=22)

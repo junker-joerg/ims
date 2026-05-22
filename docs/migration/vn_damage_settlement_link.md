@@ -31,6 +31,15 @@ Wichtige Typen und Funktionen:
 Versicherungsentscheidungen. Daraus entsteht ein `VNSettlementSnapshot`, der
 vom bestehenden Abrechnungskern verarbeitet werden kann.
 
+## Regeldispatch-Anschluss
+
+`VNDamageSettlementSnapshot.insurance_decisions` darf im Scenario-Loader nun
+fehlen. Direkte Modellaufrufe bleiben streng und verlangen weiterhin
+Versicherungsentscheidungen. Der VN-Periodenrunner kann fehlende Entscheidungen
+kontrolliert aus einer passenden `VNInsuranceRuleApplication` desselben
+`policyholder_id` einsetzen. Fehlt dieser passende Regeldispatch ebenfalls,
+bricht der Runner mit einem Validierungsfehler ab.
+
 ## Zaehler-Fallback
 
 Wenn ein Versicherer nur den skalaren `policyholders_current` besitzt und noch
@@ -46,8 +55,9 @@ betroffenen Sektor eingetragen, damit der Gesamtzaehler erhalten bleibt.
 ## Annahmen und Grenzen
 
 - Versichererwahl, Praeferenzwahl und Pflichtversicherungslogik bleiben
-  ausserhalb dieses Slices.
+  ausserhalb des reinen Modelladapters; der VN-Periodenrunner kann ihre
+  expliziten Dispatch-Ergebnisse kontrolliert einspeisen.
 - Die historischen Normalziehungen werden nicht versteckt erzeugt; sie muessen
   weiterhin explizit im `VNDamageRuleResult` vorliegen.
-- Keine automatische Szenario- oder Scheduler-Kopplung.
+- Keine historische Scheduler- oder Regelwahl.
 - Keine Vollsimulation und keine Behauptung historischer Vollgleichheit.
