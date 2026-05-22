@@ -194,3 +194,36 @@ def test_vn_multi_period_runner_continues_missing_damage_draw_stream() -> None:
         second_period_draws[1],
         second_period_draws[3],
     ]
+
+
+def test_vn_multi_period_runner_preserves_distinct_period_rng_seeds() -> None:
+    first_rng = create_rng(123)
+    second_rng = create_rng(987)
+    first_period_draws = [rand_normal_standard(first_rng) for _ in range(4)]
+    second_period_draws = [rand_normal_standard(second_rng) for _ in range(4)]
+
+    result = run_vn_settlement_multi_period_from_mappings(
+        [
+            _vn_period_scenario(5, policyholder_id=21, rng_seed=123),
+            _vn_period_scenario(6, policyholder_id=22, rng_seed=987),
+        ]
+    )
+
+    first_application = result.period_results[0].damage_settlement_applications[0]
+    second_application = result.period_results[1].damage_settlement_applications[0]
+    assert first_application.damage_result.trigger_draws == [
+        first_period_draws[0],
+        first_period_draws[2],
+    ]
+    assert first_application.damage_result.amount_draws == [
+        first_period_draws[1],
+        first_period_draws[3],
+    ]
+    assert second_application.damage_result.trigger_draws == [
+        second_period_draws[0],
+        second_period_draws[2],
+    ]
+    assert second_application.damage_result.amount_draws == [
+        second_period_draws[1],
+        second_period_draws[3],
+    ]

@@ -302,6 +302,17 @@ def apply_vn_state_carryover(
     )
 
 
+def _damage_draw_provider_for_loaded_scenarios(
+    loaded_scenarios: list[LoadedScenario],
+) -> Callable[[LoadedScenario], Callable[[], VNDamageRuleDraws]]:
+    seeds = [loaded.context.rng_seed for loaded in loaded_scenarios]
+    if len(set(seeds)) == 1:
+        shared_rng = ensure_context_rng(loaded_scenarios[0].context)
+        shared_damage_draw_provider = lambda: _draw_vn_damage_rule_draws_from_rng(shared_rng)
+        return lambda loaded: shared_damage_draw_provider
+    return lambda loaded: lambda: _draw_vn_damage_rule_draws(loaded.context)
+
+
 def run_vn_settlement_multi_period_from_mappings(
     period_scenarios: list[dict],
     *,
@@ -318,8 +329,7 @@ def run_vn_settlement_multi_period_from_mappings(
     )
     period_results: list[VNSettlementPeriodRunResult] = []
     carryovers: list[VNStateCarryover] = []
-    shared_rng = ensure_context_rng(loaded_scenarios[0].context)
-    shared_damage_draw_provider = lambda: _draw_vn_damage_rule_draws_from_rng(shared_rng)
+    damage_draw_provider_for_loaded = _damage_draw_provider_for_loaded_scenarios(loaded_scenarios)
     for loaded in loaded_scenarios:
         if carry_forward_vn_state and period_results:
             carryover = apply_vn_state_carryover(period_results[-1], loaded)
@@ -328,7 +338,7 @@ def run_vn_settlement_multi_period_from_mappings(
         period_results.append(
             run_loaded_vn_settlement_period(
                 loaded,
-                damage_draw_provider=shared_damage_draw_provider,
+                damage_draw_provider=damage_draw_provider_for_loaded(loaded),
             )
         )
 
