@@ -39,9 +39,10 @@ Ergaenzt wurden:
 - `load_vu_net_switcher_markup_rule_snapshots_from_mapping`
 
 Szenarien koennen optional das Feld `vu_net_switcher_markup_rule_snapshots` enthalten.
-Der Snapshot muss `previous_policyholders_sector` explizit enthalten, weil der kleine
-Replay-/Regelpfad die zweite Vorperiode noch nicht automatisch aus einem vollstaendigen
-historischen Zustandslauf herleitet.
+Der Snapshot kann `previous_policyholders_sector` explizit enthalten. Fehlt das
+Feld, nutzt der Snapshot-Anwender den Versichererzustand
+`policyholders_prev_sector` beziehungsweise den skalaren Fallback
+`policyholders_prev` als `Vn(t-2)`-Basis.
 
 ## Grenzen
 
@@ -49,7 +50,9 @@ Bewusst nicht enthalten sind:
 
 - keine automatische historische Auswahl von Regelarten
 - kein Scheduler-Anschluss
-- keine automatische Herleitung von `Vn(t-2)`
+- keine automatische Herleitung von `Vn(t-2)` aus einem vollstaendigen
+  historischen Scheduler; die Basis muss weiter explizit im Versichererzustand
+  oder im Snapshot stehen
 - keine Parameterherleitung aus historischen Initialdaten
 - keine Vrvu01-/Vrvu02-Zufallsregeln
 - keine Vollsimulation

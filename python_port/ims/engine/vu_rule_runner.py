@@ -211,6 +211,7 @@ def _set_two_sector_state(
     premiums: list[float],
     advertising: list[float],
     reserves: list[float],
+    policyholders_prev: list[float],
     policyholders: list[float],
 ) -> None:
     insurer.premiums_prev_sector = list(premiums)
@@ -224,6 +225,8 @@ def _set_two_sector_state(
     insurer.reserves_prev_sector = list(reserves)
     insurer.reserves_prev = float(reserves[0]) if reserves else 0.0
     insurer.reserves_current = list(reserves)
+    insurer.policyholders_prev_sector = list(policyholders_prev)
+    insurer.policyholders_prev = float(policyholders_prev[0]) if policyholders_prev else 0.0
     insurer.policyholders_current_sector = list(policyholders)
     insurer.policyholders_current = float(policyholders[0]) if policyholders else 0.0
 
@@ -245,6 +248,11 @@ def apply_vu_foreign_info_carryover(
             premiums=previous.premiums_current_sector,
             advertising=previous.advertising_current_sector,
             reserves=previous.reserves_current,
+            policyholders_prev=(
+                previous.policyholders_prev_sector
+                if previous.policyholders_prev_sector
+                else [previous.policyholders_prev, previous.policyholders_prev]
+            ),
             policyholders=(
                 previous.policyholders_current_sector
                 if previous.policyholders_current_sector
