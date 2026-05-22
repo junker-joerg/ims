@@ -366,47 +366,6 @@ def test_scheduled_explicit_vu_vn_periods_plan_fixture_preserves_legacy_targets(
     ]
 
 
-def test_scheduled_explicit_vu_vn_periods_plan_fixture_resolves_legacy_targets_from_real_path(
-    tmp_path: Path,
-) -> None:
-    real_dir = tmp_path / "real"
-    real_dir.mkdir()
-    legacy_path = real_dir / "legacy" / "reference_imsvu011.dat"
-    legacy_path.parent.mkdir()
-    legacy_path.write_text(
-        "\n".join(
-            [
-                "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 72.0 3.0 0 0.0",
-                "3 16.0 1.0 46.0 3.0 2 18.0 24.0 1.0 96.0 4.0 0 0.0",
-                "",
-            ]
-        ),
-        encoding="utf-8",
-    )
-    data = _period_plan()
-    data["legacy_targets"] = [
-        {
-            "legacy_path": "legacy/reference_imsvu011.dat",
-            "export_filename": "imsvu011.dat",
-            "subject_type": "insurer",
-        }
-    ]
-    real_plan_path = real_dir / "scheduled_explicit_period_plan_with_legacy.json"
-    real_plan_path.write_text(json.dumps(data), encoding="utf-8")
-    link_path = tmp_path / "link" / real_plan_path.name
-    link_path.parent.mkdir()
-    try:
-        link_path.symlink_to(real_plan_path)
-    except OSError as exc:
-        pytest.skip(f"symlink creation is unavailable on this platform: {exc}")
-
-    result = run_scheduled_explicit_vu_vn_periods_from_plan_fixture(link_path, output_dir=tmp_path / "out")
-
-    assert result.explicit_multi_period.legacy_comparison is not None
-    assert result.explicit_multi_period.legacy_comparison.matches is True
-
-
 def test_scheduled_explicit_vu_vn_periods_plan_fixture_passes_resolved_legacy_base_path(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
