@@ -100,6 +100,15 @@ def _reserve_sector(item: Insurer, index: int) -> float:
     return float(reserves)
 
 
+def _policyholders_sector(item: Insurer, index: int) -> float:
+    values = item.policyholders_current_sector
+    if len(values) > index:
+        return float(values[index])
+    if values:
+        return float(values[-1])
+    return float(item.policyholders_current)
+
+
 def _premium_sector(item: Insurer, index: int) -> float:
     premiums = item.premiums_current_sector
     if len(premiums) > index:
@@ -140,13 +149,13 @@ def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float 
             "premium_1": _mean([_premium_sector(item, 0) for item in items]),
             "advertising_1": _mean([_advertising_sector(item, 0) for item in items]),
             "reserves_1": _mean([_reserve_sector(item, 0) for item in items]),
-            "policyholders_1": _mean([item.policyholders_current for item in items]),
+            "policyholders_1": _mean([_policyholders_sector(item, 0) for item in items]),
             "claims_count_1": _mean([item.claims_count_current[0] for item in items]),
             "claims_sum_1": _mean([item.claims_sum_current[0] for item in items]),
             "premium_2": _mean([_premium_sector(item, 1) for item in items]),
             "advertising_2": _mean([_advertising_sector(item, 1) for item in items]),
             "reserves_2": _mean([_reserve_sector(item, 1) for item in items]),
-            "policyholders_2": _mean([item.policyholders_current for item in items]),
+            "policyholders_2": _mean([_policyholders_sector(item, 1) for item in items]),
             "claims_count_2": _mean([item.claims_count_current[1] for item in items]),
             "claims_sum_2": _mean([item.claims_sum_current[1] for item in items]),
             "reserves": _mean([_reserve_sector(item, 0) for item in items]),
@@ -156,13 +165,13 @@ def _insurer_metrics(items: list[Insurer], *, average: bool) -> dict[str, float 
         "premium_1": _premium_sector(item, 0),
         "advertising_1": _advertising_sector(item, 0),
         "reserves_1": _reserve_sector(item, 0),
-        "policyholders_1": item.policyholders_current,
+        "policyholders_1": _policyholders_sector(item, 0),
         "claims_count_1": item.claims_count_current[0],
         "claims_sum_1": item.claims_sum_current[0],
         "premium_2": _premium_sector(item, 1),
         "advertising_2": _advertising_sector(item, 1),
         "reserves_2": _reserve_sector(item, 1),
-        "policyholders_2": item.policyholders_current,
+        "policyholders_2": _policyholders_sector(item, 1),
         "claims_count_2": item.claims_count_current[1],
         "claims_sum_2": item.claims_sum_current[1],
         "reserves": _reserve_sector(item, 0),

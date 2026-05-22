@@ -183,7 +183,7 @@ def test_replay_runner_applies_vu_rule_snapshots_before_export(tmp_path: Path) -
         "52.0",
         "8.0",
         "63.0",
-        "30.0",
+        "80.0",
         "4",
         "600.0",
     ]
@@ -195,7 +195,7 @@ def test_replay_runner_compares_legacy_targets_and_writes_report(tmp_path: Path)
         "\n".join(
             [
                 "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 30.0 4 600.0",
+                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 80.0 4 600.0",
                 "",
             ]
         ),
@@ -236,7 +236,7 @@ def test_replay_runner_fixture_loads_legacy_targets(tmp_path: Path) -> None:
         "\n".join(
             [
                 "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 30.0 4 600.0",
+                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 80.0 4 600.0",
                 "",
             ]
         ),
@@ -292,7 +292,7 @@ def test_replay_runner_can_carry_vu_state_into_followup_export(tmp_path: Path) -
         "15.0",
         "5.6",
         "66.15",
-        "30.0",
+        "80.0",
         "4",
         "600.0",
     ]

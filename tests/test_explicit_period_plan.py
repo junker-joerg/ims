@@ -183,8 +183,8 @@ def test_explicit_period_plan_runs_legacy_targets_and_writes_report(tmp_path: Pa
         "\n".join(
             [
                 "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 8.0 1.0 39.0 4.0 1 9.0 12.0 1.0 60.0 4.0 0 0.0",
-                "3 16.0 1.0 46.0 5.0 2 18.0 24.0 1.0 60.0 5.0 0 0.0",
+                "2 8.0 1.0 39.0 2.0 1 9.0 12.0 1.0 60.0 2.0 0 0.0",
+                "3 16.0 1.0 46.0 3.0 2 18.0 24.0 1.0 60.0 2.0 0 0.0",
                 "",
             ]
         ),

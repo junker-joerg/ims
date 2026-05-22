@@ -204,7 +204,7 @@ def test_period_plan_replay_carries_rule_state_between_periods(tmp_path: Path) -
         "15.0",
         "5.6",
         "66.15",
-        "30.0",
+        "80.0",
         "4",
         "600.0",
     ]
@@ -217,8 +217,8 @@ def test_period_plan_replay_runs_legacy_targets_and_writes_report(tmp_path: Path
         "\n".join(
             [
                 "#t Pr1 Wer1 Rs1 Vn1 Sc1 Sh1 Pr2 Wer2 Rs2 Vn2 Sc2 Sh2",
-                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 30.0 4 600.0",
-                "3 26.5 3.4 55.125 30.0 2 250.0 15.0 5.6 66.15 30.0 4 600.0",
+                "2 51.0 4.0 52.5 30.0 2 250.0 52.0 8.0 63.0 80.0 4 600.0",
+                "3 26.5 3.4 55.125 30.0 2 250.0 15.0 5.6 66.15 80.0 4 600.0",
                 "",
             ]
         ),
