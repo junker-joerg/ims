@@ -122,6 +122,45 @@ class VNSearchInsuranceRuleResult:
     fallback_insurer_choice_draws: list[float] | None = None
 
 
+@dataclass(slots=True)
+class VNSampleSearchInsuranceRuleParameters:
+    """Versicherungsstatus- und Stichprobengroessen fuer Vrvn05 / Suche."""
+
+    insurance_thresholds_normal: list[float]
+    insurance_thresholds_shock: list[float]
+    sample_sizes_normal: list[int]
+    sample_sizes_shock: list[int]
+
+
+@dataclass(slots=True)
+class VNSampleSearchInsuranceRuleDraws:
+    """Explizite Gleichverteilungsziehungen fuer die Vrvn05-Stichprobensuche."""
+
+    insurer_choice_draws_by_sector: list[list[float]]
+
+
+@dataclass(slots=True)
+class VNSampleSearchInsurerInput:
+    """Aktiver VU-Praemienblock fuer die Vrvn05-Stichprobensuche."""
+
+    insurer_id: int
+    premiums_current_sector: list[float]
+
+
+@dataclass(slots=True)
+class VNSampleSearchInsuranceRuleResult:
+    """Aus Vrvn05 abgeleitete Versicherungsentscheidungen je Sparte."""
+
+    decisions: list[VNInsuranceDecision]
+    insured: list[bool]
+    chosen_insurer_ids: list[int | None]
+    selected_insurer_ids: list[int | None]
+    selected_premiums: list[float | None]
+    sampled_insurer_ids: list[list[int]]
+    used_insurer_choice_draws_by_sector: list[list[float]]
+    information_cost: float
+
+
 def _two_float_values(values: object, *, fallback: float) -> list[float]:
     if values is None:
         return [float(fallback), float(fallback)]
@@ -146,6 +185,32 @@ def _required_two_float_values(
     if not isinstance(value, list):
         raise ValueError(f"{rule_name} requires list field: {key}")
     return _two_float_values(value, fallback=0.0)
+
+
+def _two_int_values(values: object, *, fallback: int) -> list[int]:
+    if values is None:
+        return [int(fallback), int(fallback)]
+    if not isinstance(values, list):
+        value = int(values)
+        return [value, value]
+    if not values:
+        return [int(fallback), int(fallback)]
+    normalized = [int(value) for value in values[:2]]
+    if len(normalized) == 1:
+        return [normalized[0], normalized[0]]
+    return normalized
+
+
+def _required_two_int_values(
+    mapping: dict[str, object],
+    key: str,
+    *,
+    rule_name: str,
+) -> list[int]:
+    value = mapping.get(key)
+    if not isinstance(value, list):
+        raise ValueError(f"{rule_name} requires list field: {key}")
+    return _two_int_values(value, fallback=0)
 
 
 def _validate_unit_interval(values: list[float], *, field_name: str) -> None:
@@ -229,6 +294,40 @@ def vn_search_insurance_rule_parameters_from_mapping(
     )
 
 
+def vn_sample_search_insurance_rule_parameters_from_mapping(
+    mapping: dict[str, object],
+) -> VNSampleSearchInsuranceRuleParameters:
+    """Laedt den Vrvn05-Schwellen- und Stichprobenblock."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN sample search insurance rule parameters must be an object")
+    parameters = VNSampleSearchInsuranceRuleParameters(
+        insurance_thresholds_normal=_required_two_float_values(
+            mapping,
+            "insurance_thresholds_normal",
+            rule_name="VN sample search insurance rule",
+        ),
+        insurance_thresholds_shock=_required_two_float_values(
+            mapping,
+            "insurance_thresholds_shock",
+            rule_name="VN sample search insurance rule",
+        ),
+        sample_sizes_normal=_required_two_int_values(
+            mapping,
+            "sample_sizes_normal",
+            rule_name="VN sample search insurance rule",
+        ),
+        sample_sizes_shock=_required_two_int_values(
+            mapping,
+            "sample_sizes_shock",
+            rule_name="VN sample search insurance rule",
+        ),
+    )
+    if any(value < 0 for value in parameters.sample_sizes_normal + parameters.sample_sizes_shock):
+        raise ValueError("VN sample search insurance rule sample sizes must be non-negative")
+    return parameters
+
+
 def vn_random_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> VNRandomInsuranceRuleDraws:
     """Laedt explizite Vrvn02-Gleichverteilungsziehungen."""
 
@@ -269,6 +368,28 @@ def vn_search_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> V
     )
     _validate_unit_interval(draws.fallback_insurer_choice_draws, field_name="fallback_insurer_choice_draws")
     return draws
+
+
+def vn_sample_search_insurance_rule_draws_from_mapping(
+    mapping: dict[str, object],
+) -> VNSampleSearchInsuranceRuleDraws:
+    """Laedt explizite Vrvn05-Gleichverteilungsziehungen fuer Stichproben."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN sample search insurance rule draws must be an object")
+    value = mapping.get("insurer_choice_draws_by_sector")
+    if not isinstance(value, list) or len(value) != 2:
+        raise ValueError("VN sample search insurance rule requires two draw lists")
+    draw_lists: list[list[float]] = []
+    for sector_index, item in enumerate(value):
+        if not isinstance(item, list):
+            raise ValueError("VN sample search insurance rule draw sectors must be lists")
+        draws = [float(draw) for draw in item]
+        _validate_unit_interval(draws, field_name=f"insurer_choice_draws_by_sector[{sector_index}]")
+        draw_lists.append(draws)
+    return VNSampleSearchInsuranceRuleDraws(
+        insurer_choice_draws_by_sector=draw_lists,
+    )
 
 
 def vn_compulsory_insurance_rule_draws_from_mapping(mapping: dict[str, object]) -> VNCompulsoryInsuranceRuleDraws:
@@ -420,6 +541,54 @@ def load_vn_search_insurance_history_from_mapping(value: object) -> list[VNSearc
     return sorted(normalized, key=lambda item: (item.period, item.sector_index))
 
 
+def vn_sample_search_insurer_input_from_mapping(mapping: dict[str, object]) -> VNSampleSearchInsurerInput:
+    """Laedt einen aktiven VU-Praemienblock fuer die Vrvn05-Stichprobe."""
+
+    if not isinstance(mapping, dict):
+        raise ValueError("VN sample search insurer input must be an object")
+    if "insurer_id" not in mapping:
+        raise ValueError("VN sample search insurer input requires field: insurer_id")
+    insurer_id = int(mapping["insurer_id"])
+    if insurer_id <= 0:
+        raise ValueError("VN sample search insurer input insurer_id must be positive")
+    premiums = _two_float_values(mapping.get("premiums_current_sector"), fallback=0.0)
+    if any(value < 0.0 for value in premiums):
+        raise ValueError("VN sample search insurer input premiums must be non-negative")
+    return VNSampleSearchInsurerInput(
+        insurer_id=insurer_id,
+        premiums_current_sector=premiums,
+    )
+
+
+def _normalize_sample_search_insurer_input(value: object) -> VNSampleSearchInsurerInput:
+    if not isinstance(value, VNSampleSearchInsurerInput):
+        return vn_sample_search_insurer_input_from_mapping(value)
+    insurer_id = int(value.insurer_id)
+    if insurer_id <= 0:
+        raise ValueError("VN sample search insurer input insurer_id must be positive")
+    premiums = _two_float_values(value.premiums_current_sector, fallback=0.0)
+    if any(item < 0.0 for item in premiums):
+        raise ValueError("VN sample search insurer input premiums must be non-negative")
+    return VNSampleSearchInsurerInput(
+        insurer_id=insurer_id,
+        premiums_current_sector=premiums,
+    )
+
+
+def load_vn_sample_search_insurer_inputs_from_mapping(value: object) -> list[VNSampleSearchInsurerInput]:
+    """Laedt aktive VU-Praemienbloecke fuer Vrvn05 aus In-Memory-Daten."""
+
+    if not isinstance(value, list):
+        raise ValueError("VN sample search insurer inputs must be a list")
+    inputs = [_normalize_sample_search_insurer_input(item) for item in value]
+    insurer_ids = [item.insurer_id for item in inputs]
+    duplicate_ids = sorted(insurer_id for insurer_id in set(insurer_ids) if insurer_ids.count(insurer_id) > 1)
+    if duplicate_ids:
+        values = ", ".join(str(insurer_id) for insurer_id in duplicate_ids)
+        raise ValueError(f"VN sample search insurer inputs reject duplicate insurer_ids: {values}")
+    return sorted(inputs, key=lambda item: item.insurer_id)
+
+
 def _preference_scores_for_sector(
     insurer_inputs: list[VNPreferenceInsurerInput],
     sector_index: int,
@@ -478,6 +647,49 @@ def _select_searched_insurer(
     if fallback_draw is None:
         raise ValueError("VN search insurance rule requires fallback draws when no prior insured period exists")
     return _choose_insurer(active_insurer_ids, fallback_draw), None, True
+
+
+def _draw_lists_by_sector(value: list[list[float]], *, sample_sizes: list[int]) -> list[list[float]]:
+    if len(value) != 2:
+        raise ValueError("VN sample search insurance rule requires two draw lists")
+    normalized: list[list[float]] = []
+    for sector_index, item in enumerate(value):
+        if not isinstance(item, list):
+            raise ValueError("VN sample search insurance rule draw sectors must be lists")
+        draws = [float(draw) for draw in item]
+        _validate_unit_interval(draws, field_name=f"insurer_choice_draws_by_sector[{sector_index}]")
+        if len(draws) < sample_sizes[sector_index]:
+            raise ValueError("VN sample search insurance rule requires enough insurer choice draws")
+        normalized.append(draws[: sample_sizes[sector_index]])
+    return normalized
+
+
+def _select_sampled_insurer(
+    *,
+    insurer_inputs: list[VNSampleSearchInsurerInput],
+    sector_index: int,
+    draws: list[float],
+) -> tuple[int, float, list[int]]:
+    if not insurer_inputs:
+        raise ValueError("VN sample search insurance rule requires active insurer inputs")
+    ids = [item.insurer_id for item in insurer_inputs]
+    by_id = {item.insurer_id: item for item in insurer_inputs}
+    sampled_ids: list[int] = []
+    sampled_premiums: dict[int, float] = {}
+    for draw in draws:
+        insurer_id = _choose_insurer(ids, draw)
+        sampled_ids.append(insurer_id)
+        sampled_premiums[insurer_id] = by_id[insurer_id].premiums_current_sector[sector_index]
+    selected_id = 0
+    selected_premium = 1000.0
+    for insurer_id in ids:
+        premium = sampled_premiums.get(insurer_id)
+        if premium is not None and premium < selected_premium:
+            selected_id = insurer_id
+            selected_premium = premium
+    if selected_id == 0:
+        raise ValueError("VN sample search insurance rule sample size must be positive")
+    return selected_id, selected_premium, sampled_ids
 
 
 def apply_vn_compulsory_insurance_rule(
@@ -719,6 +931,106 @@ def apply_vn_search_insurance_rule(
         selected_history_periods=selected_history_periods,
         used_fallback=used_fallback,
         fallback_insurer_choice_draws=fallback_draws,
+    )
+
+
+def apply_vn_sample_search_insurance_rule(
+    parameters: VNSampleSearchInsuranceRuleParameters,
+    *,
+    period: int,
+    market_damage_indicator: float,
+    insurer_inputs: object,
+    draws: VNSampleSearchInsuranceRuleDraws | None = None,
+    initial_decisions: object = None,
+    change_shock: bool = False,
+    information_cost_per_sample: float = 0.0,
+) -> VNSampleSearchInsuranceRuleResult:
+    """
+    Portiert den Versicherungsentscheidungsanteil aus Vrvn05.
+
+    In Periode 1 verwendet der Altcode die initialen VN-Status-/VU-Werte. Ab
+    Periode 2 folgt der Status aus dem globalen Schadenindikator; die
+    VU-Auswahl zieht je Sparte eine Stichprobe aktiver Versicherer und nimmt
+    den niedrigsten beobachteten aktuellen Praemienwert.
+    """
+
+    if period < 1:
+        raise ValueError("VN sample search insurance rule period must be at least 1")
+    if information_cost_per_sample < 0.0:
+        raise ValueError("VN sample search insurance rule information cost must be non-negative")
+    if period == 1:
+        if initial_decisions is None:
+            raise ValueError("VN sample search insurance rule period 1 requires initial_decisions")
+        decisions = sorted(
+            load_vn_insurance_decisions_from_mapping(initial_decisions),
+            key=lambda item: item.sector_index,
+        )
+        selected_insurer_ids = [decision.insurer_id for decision in decisions]
+        return VNSampleSearchInsuranceRuleResult(
+            decisions=decisions,
+            insured=[decision.insured for decision in decisions],
+            chosen_insurer_ids=selected_insurer_ids,
+            selected_insurer_ids=selected_insurer_ids,
+            selected_premiums=[decision.premium for decision in decisions],
+            sampled_insurer_ids=[[], []],
+            used_insurer_choice_draws_by_sector=[[], []],
+            information_cost=0.0,
+        )
+
+    if draws is None:
+        raise ValueError("VN sample search insurance rule periods after 1 require insurer choice draws")
+    thresholds = _two_float_values(
+        parameters.insurance_thresholds_shock if change_shock else parameters.insurance_thresholds_normal,
+        fallback=0.0,
+    )
+    sample_sizes = _two_int_values(
+        parameters.sample_sizes_shock if change_shock else parameters.sample_sizes_normal,
+        fallback=0,
+    )
+    if any(value <= 0 for value in sample_sizes):
+        raise ValueError("VN sample search insurance rule sample sizes must be positive")
+    active_inputs = load_vn_sample_search_insurer_inputs_from_mapping(insurer_inputs)
+    draw_lists = _draw_lists_by_sector(draws.insurer_choice_draws_by_sector, sample_sizes=sample_sizes)
+    indicator = float(market_damage_indicator)
+
+    decisions: list[VNInsuranceDecision] = []
+    insured_values: list[bool] = []
+    chosen_insurer_ids: list[int | None] = []
+    selected_insurer_ids: list[int | None] = []
+    selected_premiums: list[float | None] = []
+    sampled_insurer_ids: list[list[int]] = []
+    for sector_index in range(2):
+        selected_id, selected_premium, sector_sampled_ids = _select_sampled_insurer(
+            insurer_inputs=active_inputs,
+            sector_index=sector_index,
+            draws=draw_lists[sector_index],
+        )
+        insured = indicator <= thresholds[sector_index]
+        insurer_id = selected_id if insured else None
+        premium = selected_premium if insured else None
+        decisions.append(
+            VNInsuranceDecision(
+                sector_index=sector_index,
+                insured=insured,
+                insurer_id=insurer_id,
+                premium=premium,
+            )
+        )
+        insured_values.append(insured)
+        chosen_insurer_ids.append(insurer_id)
+        selected_insurer_ids.append(selected_id)
+        selected_premiums.append(selected_premium)
+        sampled_insurer_ids.append(sector_sampled_ids)
+
+    return VNSampleSearchInsuranceRuleResult(
+        decisions=decisions,
+        insured=insured_values,
+        chosen_insurer_ids=chosen_insurer_ids,
+        selected_insurer_ids=selected_insurer_ids,
+        selected_premiums=selected_premiums,
+        sampled_insurer_ids=sampled_insurer_ids,
+        used_insurer_choice_draws_by_sector=draw_lists,
+        information_cost=float(sum(sample_sizes)) * information_cost_per_sample,
     )
 
 
