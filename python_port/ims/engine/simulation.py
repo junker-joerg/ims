@@ -11,9 +11,15 @@ from ims.engine.event_builders import (
     build_progressed_mixed_bav_events,
     build_sequenced_bav_events,
 )
-from ims.engine.explicit_period_runner import ExplicitPeriodRunResult, run_loaded_explicit_period
+from ims.engine.explicit_period_runner import (
+    ExplicitMultiPeriodRunResult,
+    ExplicitPeriodRunResult,
+    run_explicit_multi_period_from_mappings,
+    run_loaded_explicit_period,
+)
 from ims.engine.scheduler import Event, Scheduler
 from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
+from ims.model.agrsich_export import compute_global_period
 from ims.model.bav_updates import BAVUpdateResult, update_bav_central_state
 from ims.model.entities import BAV, Insurer, Policyholder
 
@@ -76,6 +82,16 @@ class ScheduledExplicitPeriodResult:
 
     event: Event
     explicit_period: ExplicitPeriodRunResult
+
+
+@dataclass(slots=True)
+class ScheduledExplicitMultiPeriodResult:
+    """
+    Ergebnis mehrerer geplanter expliziter VU/VN-Periodenereignisse.
+    """
+
+    planned_events: list[Event]
+    explicit_multi_period: ExplicitMultiPeriodRunResult
 
 
 @dataclass(slots=True)
@@ -476,6 +492,62 @@ def run_scheduled_explicit_vu_vn_period_from_mapping(
     return ScheduledExplicitPeriodResult(
         event=planned_event,
         explicit_period=run_loaded_explicit_period(loaded, output_dir=output_dir),
+    )
+
+
+def _planned_explicit_vu_vn_period_events(period_scenarios: list[dict]) -> list[Event]:
+    scheduler = Scheduler()
+    for index, period_scenario in enumerate(period_scenarios):
+        loaded = load_scenario_from_mapping(period_scenario)
+        scheduler.plan(
+            Event(
+                period=compute_global_period(loaded.context),
+                logtime=loaded.context.logtime,
+                priority=index,
+                subject_type="scenario",
+                subject_id=f"explicit-vu-vn-{index}",
+                action="explicit_vu_vn_period",
+                payload={
+                    "input_index": index,
+                    "context_period": loaded.context.period,
+                    "run_index": loaded.context.run_index,
+                },
+            )
+        )
+
+    planned_events: list[Event] = []
+    while not scheduler.empty():
+        event = scheduler.pop()
+        if event.action != "explicit_vu_vn_period":
+            raise ValueError(f"unsupported explicit period event action: {event.action}")
+        planned_events.append(event)
+    return planned_events
+
+
+def run_scheduled_explicit_vu_vn_periods_from_mappings(
+    period_scenarios: list[dict],
+    *,
+    output_dir: str | Path | None = None,
+    carry_forward_vu_state: bool = False,
+    carry_forward_vn_state: bool = False,
+) -> ScheduledExplicitMultiPeriodResult:
+    """
+    Plant mehrere explizite VU/VN-Periodenschritte und fuehrt den validierten
+    Mehrperiodenrunner aus.
+    """
+
+    if not isinstance(period_scenarios, list):
+        raise ValueError("scheduled explicit VU/VN run requires a list of period scenarios")
+
+    planned_events = _planned_explicit_vu_vn_period_events(period_scenarios)
+    return ScheduledExplicitMultiPeriodResult(
+        planned_events=planned_events,
+        explicit_multi_period=run_explicit_multi_period_from_mappings(
+            period_scenarios,
+            output_dir=output_dir,
+            carry_forward_vu_state=carry_forward_vu_state,
+            carry_forward_vn_state=carry_forward_vn_state,
+        ),
     )
 
 
