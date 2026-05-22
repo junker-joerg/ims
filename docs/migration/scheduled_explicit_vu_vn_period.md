@@ -27,14 +27,17 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
   Periodenszenarien `explicit_vu_vn_period`-Events auf globaler Zeitachse und
   delegiert die fachliche Ausfuehrung an `run_explicit_multi_period_from_mappings`.
 - `run_scheduled_explicit_vu_vn_periods_from_fixture` nutzt dieselbe
-  Scheduler-Diagnose fuer gespeicherte JSON-Fixtures und delegiert die
-  Ausfuehrung an `run_explicit_multi_period_from_fixture`, inklusive der dort
-  vorhandenen Carryover- und Legacy-Ziel-Verarbeitung.
+  Scheduler-Diagnose fuer gespeicherte JSON-Fixtures und fuehrt die geplante
+  Reihenfolge ueber den expliziten Mehrperiodenrunner aus, inklusive
+  Carryover- und Legacy-Ziel-Verarbeitung.
 - `run_scheduled_explicit_vu_vn_periods_from_plan_fixture` erzeugt aus einem
   expliziten Periodenplan dasselbe Runner-Fixture fuer die Scheduler-Diagnose
-  und delegiert die Ausfuehrung an `run_explicit_multi_period_from_plan_fixture`.
-  Damit bleiben Plan-Overrides, Carryover und Legacy-Ziele im bestehenden
-  Plan-Runner verankert.
+  und fuehrt die geplante Reihenfolge ueber den expliziten Mehrperiodenrunner
+  aus. Damit bleiben Plan-Overrides, Carryover und Legacy-Ziele erhalten.
+- Der allgemeine `dispatch_event`-Pfad akzeptiert nun ebenfalls
+  `explicit_vu_vn_period`, wenn ein geladenes Szenario uebergeben wird. Damit
+  ist der Fach-Event nicht nur separat planbar, sondern auch kontrolliert
+  dispatchbar.
 - Das Event nutzt `context.period` und `context.logtime` aus dem geladenen
   Szenario. Mehrperiodige Events verwenden `run_index * max_periods + period`
   als Scheduler-Periode. Mapping-, Fixture- und Plan-Wrapper fuehren die
@@ -50,5 +53,7 @@ Slice portiert diese historische Scheduler-Semantik noch nicht.
 - Es werden nur explizite VU/VN-Periodenereignisse geplant; die validierte
   Periodenfolge, Carryover und Legacy-Vergleiche bleiben im bestehenden
   expliziten Runner verankert.
+- Der Dispatcher-Anschluss erwartet ein bereits geladenes Szenario mit
+  expliziten Snapshotlisten; er erzeugt keine historische Regelwahl.
 - Keine automatische historische Regelwahl, kein Dialog- oder UI-Pfad.
 - Keine Behauptung historischer Vollgleichheit.

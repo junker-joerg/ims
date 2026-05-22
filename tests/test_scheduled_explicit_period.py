@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 import ims.engine.simulation as simulation
+from ims.engine.scheduler import Event
 from ims.engine.simulation import (
     ScheduledExplicitMultiPeriodResult,
     ScheduledExplicitPeriodResult,
@@ -12,6 +13,7 @@ from ims.engine.simulation import (
     run_scheduled_explicit_vu_vn_periods_from_mappings,
     run_scheduled_explicit_vu_vn_periods_from_plan_fixture,
 )
+from ims.io.scenario_loader import load_scenario_from_mapping
 
 
 def _free_linear_parameters() -> dict[str, list[float]]:
@@ -181,6 +183,43 @@ def test_scheduled_explicit_vu_vn_period_preserves_priority() -> None:
 
     assert result.event.priority == 7
     assert result.explicit_period.vn_result.policyholders[0].end_wealth_current == pytest.approx(71.0)
+
+
+def test_dispatch_event_executes_explicit_vu_vn_period() -> None:
+    loaded = load_scenario_from_mapping(_scenario())
+    event = Event(
+        period=loaded.context.period,
+        logtime=loaded.context.logtime,
+        priority=0,
+        subject_type="scenario",
+        subject_id="explicit-vu-vn",
+        action="explicit_vu_vn_period",
+    )
+
+    result = simulation.dispatch_event(
+        event,
+        context=loaded.context,
+        bav=loaded.bav,
+        insurers=loaded.insurers,
+        policyholders=loaded.policyholders,
+        loaded=loaded,
+    )
+
+    assert result.bav_update is None
+    assert result.explicit_period is not None
+    assert result.explicit_period.vn_result.policyholders[0].end_wealth_current == pytest.approx(71.0)
+    assert result.aggregate_snapshot.assigned_policyholders == 1
+
+
+def test_dispatch_event_requires_loaded_scenario_for_explicit_vu_vn_period() -> None:
+    with pytest.raises(ValueError, match="requires a loaded scenario"):
+        simulation.dispatch_event(
+            Event(2, 4, 0, "scenario", "explicit-vu-vn", "explicit_vu_vn_period"),
+            context=simulation.SimulationContext(period=2, logtime=4),
+            bav=simulation.BAV(entity_id=1, name="BAV"),
+            insurers=[],
+            policyholders=[],
+        )
 
 
 def test_scheduled_explicit_vu_vn_periods_run_global_period_sequence(tmp_path: Path) -> None:

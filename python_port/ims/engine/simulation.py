@@ -68,6 +68,7 @@ class DispatchedEventResult:
     context: SimulationContext
     bav_update: BAVUpdateResult | None
     aggregate_snapshot: AggregateSnapshot
+    explicit_period: ExplicitPeriodRunResult | None = None
 
 
 @dataclass(slots=True)
@@ -231,6 +232,7 @@ def _dispatch_planned_events(
                 bav=loaded.bav,
                 insurers=loaded.insurers,
                 policyholders=loaded.policyholders,
+                loaded=loaded,
             )
         )
 
@@ -282,6 +284,7 @@ def dispatch_event(
     bav: BAV,
     insurers: list[Insurer],
     policyholders: list[Policyholder],
+    loaded: LoadedScenario | None = None,
 ) -> DispatchedEventResult:
     """
     Führt genau eine kleine unterstützte Event-Art aus.
@@ -289,8 +292,10 @@ def dispatch_event(
     Unterstützt in diesem PR nur:
     - action == "bav_update"
     - action == "bav_snapshot"
+    - action == "explicit_vu_vn_period"
     """
 
+    explicit_period = None
     if event.action == "bav_update":
         bav_update = update_bav_central_state(
             context=context,
@@ -302,6 +307,12 @@ def dispatch_event(
             else False,
         )
     elif event.action == "bav_snapshot":
+        bav_update = None
+    elif event.action == "explicit_vu_vn_period":
+        if loaded is None:
+            raise ValueError("explicit_vu_vn_period dispatch requires a loaded scenario")
+        loaded.context = context
+        explicit_period = run_loaded_explicit_period(loaded)
         bav_update = None
     else:
         raise ValueError(f"unsupported event action: {event.action}")
@@ -318,6 +329,7 @@ def dispatch_event(
         context=context,
         bav_update=bav_update,
         aggregate_snapshot=aggregate_snapshot,
+        explicit_period=explicit_period,
     )
 
 
