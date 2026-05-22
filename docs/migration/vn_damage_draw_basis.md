@@ -26,9 +26,12 @@ Schadeneintritt und eine fuer die Schadenhoehe.
   - die Ziehungsreihenfolge ist Trigger Sparte 0, Hoehe Sparte 0, Trigger
     Sparte 1, Hoehe Sparte 1.
   - Mehrperiodenlaeufe verwenden fuer fehlende Draws einen gemeinsamen
-    RNG-Strom aus dem ersten Periodenkontext. Dadurch starten Szenarien mit
-    gleichem `rng_seed` nicht in jeder Periode wieder bei derselben
-    Normalfolge.
+    RNG-Strom, wenn alle geladenen Perioden denselben `rng_seed` tragen.
+    Dadurch starten solche Szenarien nicht in jeder Periode wieder bei
+    derselben Normalfolge.
+  - Wenn Periodenkontexte unterschiedliche `rng_seed`-Werte tragen, bleibt der
+    jeweilige Perioden-Seed erhalten und die fehlenden Draws werden aus dem
+    lokalen Periodenkontext erzeugt.
 
 ## Validierung
 
@@ -37,7 +40,10 @@ Die Tests decken ab:
 - Laden von VN-Schaden-/Abrechnungs-Snapshots ohne explizite Draws.
 - Direkte Anwendung mit expliziter Draw-Quelle.
 - Runner-Anwendung mit reproduzierbaren Draws aus `rng_seed`.
-- Mehrperioden-Runner mit fortlaufendem Draw-Strom ueber Periodengrenzen.
+- Mehrperioden-Runner mit fortlaufendem Draw-Strom ueber Periodengrenzen bei
+  gleichem Seed.
+- Mehrperioden-Runner mit periodenspezifischen Draws bei unterschiedlichen
+  Seeds.
 
 ## Grenzen
 
