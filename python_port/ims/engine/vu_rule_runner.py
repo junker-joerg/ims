@@ -66,6 +66,8 @@ class VUForeignInfoMultiPeriodRunResult:
 
     period_results: list[VUForeignInfoPeriodRunResult]
     processed_periods: list[int]
+    processed_local_periods: list[int]
+    processed_global_periods: list[int]
     total_rule_applications: int
     carryovers: list[VUForeignInfoCarryover]
 
@@ -284,7 +286,7 @@ def run_vu_foreign_info_multi_period_from_mappings(
         raise ValueError("VU foreign-info multi-period run requires a list of period scenarios")
 
     loaded_scenarios = [load_scenario_from_mapping(period_scenario) for period_scenario in period_scenarios]
-    _validate_strictly_increasing_periods(
+    processed_global_periods = _validate_strictly_increasing_periods(
         [compute_global_period(loaded.context) for loaded in loaded_scenarios]
     )
 
@@ -300,6 +302,8 @@ def run_vu_foreign_info_multi_period_from_mappings(
     return VUForeignInfoMultiPeriodRunResult(
         period_results=period_results,
         processed_periods=[loaded.context.period for loaded in loaded_scenarios],
+        processed_local_periods=[loaded.context.period for loaded in loaded_scenarios],
+        processed_global_periods=processed_global_periods,
         total_rule_applications=sum(
             len(result.rule_applications)
             + len(result.random_uniform_applications)

@@ -54,6 +54,7 @@ class VNSettlementMultiPeriodRunResult:
 
     period_results: list[VNSettlementPeriodRunResult]
     processed_periods: list[int]
+    processed_local_periods: list[int]
     processed_global_periods: list[int]
     total_settlement_applications: int
     total_damage_settlement_applications: int
@@ -297,6 +298,7 @@ def run_vn_settlement_multi_period_from_mappings(
     return VNSettlementMultiPeriodRunResult(
         period_results=period_results,
         processed_periods=[loaded.context.period for loaded in loaded_scenarios],
+        processed_local_periods=[loaded.context.period for loaded in loaded_scenarios],
         processed_global_periods=processed_global_periods,
         total_settlement_applications=sum(result.total_settlement_applications for result in period_results),
         total_damage_settlement_applications=sum(

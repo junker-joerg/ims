@@ -39,9 +39,9 @@ Periodenszenarien enthalten oder ein Objekt mit dem Feld `periods`.
   globale Position wird aus `run_index`, `max_periods` und `period` berechnet,
   damit mehrere Laeufe mit gleicher lokaler Periodennummer sauber auf einer
   gemeinsamen Zeitachse validiert werden koennen.
-- `processed_periods` enthaelt weiterhin die lokalen Periodennummern der
-  Eingabeszenarien; `processed_global_periods` enthaelt die validierte globale
-  Reihenfolge.
+- `processed_periods` und `processed_local_periods` enthalten weiterhin die
+  lokalen Periodennummern der Eingabeszenarien; `processed_global_periods`
+  enthaelt die validierte globale Reihenfolge.
 - Innerhalb einer Periode darf ein VN nicht gleichzeitig ueber
   `vn_damage_settlement_snapshots` und `vn_settlement_snapshots` adressiert
   werden. Diese Regel gilt schon beim Laden eines Szenarios und nochmals beim

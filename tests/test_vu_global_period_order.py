@@ -56,6 +56,8 @@ def test_vu_multi_period_runner_validates_global_period_order() -> None:
     result = run_vu_foreign_info_multi_period_from_mappings([first, second])
 
     assert result.processed_periods == [2, 2]
+    assert result.processed_local_periods == [2, 2]
+    assert result.processed_global_periods == [2, 14]
     assert [period.context_global_period for period in result.period_results] == [2, 14]
 
 
