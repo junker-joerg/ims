@@ -23,7 +23,9 @@ Zeitachse der kontrollierten Python-Mehrperiodenlaeufe.
   `context_global_period`.
 - `VUForeignInfoCarryover` dokumentiert lokale und globale Quell-/Zielperioden.
 - `run_vu_foreign_info_multi_period_from_mappings` validiert strikt steigende
-  globale Perioden; `processed_periods` bleibt der lokale Periodenindex.
+  globale Perioden; `processed_periods` und `processed_local_periods` bleiben
+  lokale Periodenindizes, `processed_global_periods` enthaelt die validierte
+  globale Reihenfolge.
 
 ## Annahmen und Grenzen
 

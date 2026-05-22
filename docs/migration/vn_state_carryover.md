@@ -28,6 +28,7 @@ Neue bzw. erweiterte Elemente:
 - `VNSettlementPeriodRunResult.policyholders`
 - `VNSettlementPeriodRunResult.global_period`
 - `VNSettlementMultiPeriodRunResult.carryovers`
+- `VNSettlementMultiPeriodRunResult.processed_local_periods`
 - `VNSettlementMultiPeriodRunResult.processed_global_periods`
 - `run_vn_settlement_multi_period_from_mappings(..., carry_forward_vn_state=True)`
 - Fixture-Feld `carry_forward_vn_state`

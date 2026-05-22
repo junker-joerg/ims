@@ -282,6 +282,9 @@ def test_vu_rule_runner_counts_foreign_info_and_reserve_markup_applications() ->
     assert result.total_rule_applications == 2
     assert len(result.period_results[0].rule_applications) == 1
     assert len(result.period_results[0].reserve_markup_applications) == 1
+    assert result.processed_periods == [2]
+    assert result.processed_local_periods == [2]
+    assert result.processed_global_periods == [14]
 
 
 def test_vu_rule_runner_applies_random_rule_snapshots_after_foreign_info() -> None:

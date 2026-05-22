@@ -191,6 +191,7 @@ def test_vn_rule_multi_period_runner_processes_increasing_periods() -> None:
 
     assert isinstance(result, VNSettlementMultiPeriodRunResult)
     assert result.processed_periods == [5, 6]
+    assert result.processed_local_periods == [5, 6]
     assert result.processed_global_periods == [5, 6]
     assert result.total_damage_settlement_applications == 2
     assert result.total_settlement_applications == 2
@@ -253,6 +254,7 @@ def test_vn_rule_multi_period_runner_orders_by_global_periods_across_runs() -> N
     )
 
     assert result.processed_periods == [5, 5]
+    assert result.processed_local_periods == [5, 5]
     assert result.processed_global_periods == [5, 11]
     assert [period_result.global_period for period_result in result.period_results] == [5, 11]
     assert result.carryovers[0].from_period == 5

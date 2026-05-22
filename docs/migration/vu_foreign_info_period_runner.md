@@ -52,7 +52,10 @@ Der Mehrperiodenpfad verarbeitet eine Liste expliziter Periodenszenarien oder ei
 
 Die Reihenfolge wird ueber die globale Periodennummer validiert und im Periodenergebnis berichtet:
 `run_index * max_periods + period`, sofern `max_periods > 0` gesetzt ist.
-Die lokale `context.period` bleibt im einzelnen Periodenergebnis und in `processed_periods` erhalten.
+Die lokale `context.period` bleibt im einzelnen Periodenergebnis und in
+`processed_periods` erhalten. Fuer Diagnose- und Orchestrierungspfade weist das
+Mehrperiodenergebnis zusaetzlich `processed_local_periods` und
+`processed_global_periods` aus.
 
 Optional kann `carry_forward_insurer_state=True` gesetzt werden. Dann schreibt der Runner fuer Versicherer, die in zwei aufeinanderfolgenden Periodenszenarien dieselbe `entity_id` haben, die berechneten aktuellen VU-Werte der Vorperiode kontrolliert in die Vorperioden- und Startwerte der naechsten Periode:
 
@@ -103,6 +106,7 @@ Die Tests pruefen:
 - Diagnoseobjekte halten die angewendeten Regeln fest
 - Szenarioausfuehrung funktioniert aus Mapping und Fixture-Datei
 - Mehrperioden-Fixtures funktionieren als Liste und als Objekt mit `periods`
+- Mehrperiodenergebnisse berichten lokale und globale Periodenachsen getrennt
 - Objekt-Fixtures koennen Carryover ueber ein strikt validiertes Boolean-Feld aktivieren
 - doppelte oder unsortierte globale Perioden werden abgelehnt
 - die Periodenfolge wird vor Regelanwendung und Carryover validiert
