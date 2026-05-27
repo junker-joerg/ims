@@ -74,6 +74,8 @@ type CapabilityState = {
   reason: string;
 };
 
+type DetailState = "idle" | "loading" | "ready" | "error";
+
 const statusItems: StatusItem[] = [
   { label: "Backend", value: "bereit", tone: "ready" },
   { label: "Fachlogik", value: "abgegrenzt", tone: "quiet" },
@@ -90,6 +92,12 @@ function App() {
   const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
   const [runs, setRuns] = useState<RunMetadata[]>([]);
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
+  const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
+  const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
+  const [scenarioDetail, setScenarioDetail] = useState<ScenarioMetadata | null>(null);
+  const [runDetail, setRunDetail] = useState<RunMetadata | null>(null);
+  const [detailState, setDetailState] = useState<DetailState>("idle");
+  const [detailError, setDetailError] = useState<string | null>(null);
   const [metadataState, setMetadataState] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
@@ -114,6 +122,8 @@ function App() {
           setScenarios(scenarioPayload.items);
           setRuns(runPayload.items);
           setCapabilities(capabilityPayload);
+          setSelectedScenarioId((current) => current ?? scenarioPayload.items[0]?.id ?? null);
+          setSelectedRunId((current) => current ?? runPayload.items[0]?.id ?? null);
           setMetadataState("ready");
         }
       } catch {
@@ -129,9 +139,55 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadDetails() {
+      if (!selectedScenarioId || !selectedRunId) {
+        return;
+      }
+      setDetailState("loading");
+      setDetailError(null);
+      try {
+        const [scenarioResponse, runResponse] = await Promise.all([
+          fetch(`/api/scenarios/${encodeURIComponent(selectedScenarioId)}`),
+          fetch(`/api/runs/${encodeURIComponent(selectedRunId)}`)
+        ]);
+        if (scenarioResponse.status === 404 || runResponse.status === 404) {
+          throw new Error("Metadaten nicht gefunden");
+        }
+        if (!scenarioResponse.ok || !runResponse.ok) {
+          throw new Error("Detaildaten nicht erreichbar");
+        }
+        const [scenarioPayload, runPayload] = await Promise.all([
+          scenarioResponse.json() as Promise<ScenarioMetadata>,
+          runResponse.json() as Promise<RunMetadata>
+        ]);
+        if (active) {
+          setScenarioDetail(scenarioPayload);
+          setRunDetail(runPayload);
+          setDetailState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setScenarioDetail(null);
+          setRunDetail(null);
+          setDetailError(error instanceof Error ? error.message : "Detaildaten nicht erreichbar");
+          setDetailState("error");
+        }
+      }
+    }
+
+    loadDetails();
+    return () => {
+      active = false;
+    };
+  }, [selectedScenarioId, selectedRunId]);
+
   const primaryScenario = scenarios[0];
   const primaryRun = runs[0];
   const writeLabel = capabilities?.writes.scenario_metadata.enabled ? "aktiv" : "gesperrt";
+  const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
 
   return (
     <main className="shell">
@@ -204,10 +260,15 @@ function App() {
             </p>
             <div className="metadata-list" aria-label="Szenario-Metadaten">
               {scenarios.map((scenario) => (
-                <div className="metadata-row" key={scenario.id}>
+                <button
+                  className={`metadata-row selectable ${scenario.id === selectedScenarioId ? "selected" : ""}`}
+                  key={scenario.id}
+                  type="button"
+                  onClick={() => setSelectedScenarioId(scenario.id)}
+                >
                   <span>{scenario.display_name}</span>
                   <strong>{scenario.status}</strong>
-                </div>
+                </button>
               ))}
             </div>
           </article>
@@ -228,13 +289,71 @@ function App() {
             </p>
             <div className="metadata-list compact" aria-label="Run-Metadaten">
               {runs.map((run) => (
-                <div className="metadata-row" key={run.id}>
+                <button
+                  className={`metadata-row selectable ${run.id === selectedRunId ? "selected" : ""}`}
+                  key={run.id}
+                  type="button"
+                  onClick={() => setSelectedRunId(run.id)}
+                >
                   <span>{run.period_window}</span>
                   <strong>{run.status}</strong>
-                </div>
+                </button>
               ))}
             </div>
           </article>
+        </section>
+
+        <section className="panel detail-panel" aria-label="Metadaten-Details">
+          <div className="panel-heading">
+            <FileText size={20} aria-hidden="true" />
+            <h2>Metadaten-Detail</h2>
+          </div>
+          <div className="detail-status">
+            <span>Quelle</span>
+            <strong>{detailStatusLabel}</strong>
+          </div>
+          {detailState === "error" ? (
+            <p className="muted">{detailError}</p>
+          ) : (
+            <div className="detail-grid">
+              <article>
+                <span>Szenario</span>
+                <strong>{scenarioDetail?.display_name ?? "wird geladen"}</strong>
+                <dl>
+                  <div>
+                    <dt>ID</dt>
+                    <dd>{scenarioDetail?.id ?? "-"}</dd>
+                  </div>
+                  <div>
+                    <dt>Umfang</dt>
+                    <dd>{scenarioDetail?.domain_scope ?? "-"}</dd>
+                  </div>
+                  <div>
+                    <dt>Validierung</dt>
+                    <dd>{scenarioDetail?.validation.scope ?? "-"}</dd>
+                  </div>
+                </dl>
+              </article>
+              <article>
+                <span>Run</span>
+                <strong>{runDetail?.display_name ?? "wird geladen"}</strong>
+                <dl>
+                  <div>
+                    <dt>ID</dt>
+                    <dd>{runDetail?.id ?? "-"}</dd>
+                  </div>
+                  <div>
+                    <dt>Fenster</dt>
+                    <dd>{runDetail?.period_window ?? "-"}</dd>
+                  </div>
+                  <div>
+                    <dt>Ausfuehrung</dt>
+                    <dd>{runDetail?.execution_enabled ? "aktiv" : "gesperrt"}</dd>
+                  </div>
+                </dl>
+              </article>
+            </div>
+          )}
         </section>
 
         <section className="panel validation-panel" id="validation">
