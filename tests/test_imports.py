@@ -122,6 +122,13 @@ def test_core_placeholders_import() -> None:
         run_metadata_response,
         scenario_metadata_response,
     )
+    from ims.api.metadata_repository import (
+        WorkbenchMetadataRepository,
+        build_seeded_metadata_repository,
+        connect_metadata_db,
+        initialize_metadata_schema,
+        seed_metadata,
+    )
     from ims.model.agrsich_export import (
         ExportFileSpec,
         ExportRow,
@@ -452,6 +459,11 @@ def test_core_placeholders_import() -> None:
     assert metadata_response_to_dict is not None
     assert list_scenario_metadata()["items"][0]["id"] == "agrsich-reference-window"
     assert list_run_metadata()["items"][0]["id"] == "baseline-python-tests"
+    assert WorkbenchMetadataRepository is not None
+    assert build_seeded_metadata_repository is not None
+    assert connect_metadata_db is not None
+    assert initialize_metadata_schema is not None
+    assert seed_metadata is not None
     assert AggregateSnapshot is not None
     assert collect_basic_aggregates is not None
     assert ExportFileSpec is not None

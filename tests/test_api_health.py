@@ -1,6 +1,7 @@
 from starlette.testclient import TestClient
 
 from ims.api.app import APP_VERSION, create_app
+from ims.api.metadata_repository import build_seeded_metadata_repository
 
 
 def test_health_endpoint_reports_backend_ready(tmp_path):
@@ -72,3 +73,14 @@ def test_run_metadata_endpoint_has_no_execution_control(tmp_path):
     assert runs[0]["execution_enabled"] is False
     assert runs[1]["period_window"] == "keine Simulation"
     assert runs[1]["execution_enabled"] is False
+
+
+def test_api_can_read_metadata_from_sqlite_repository(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/scenarios")
+
+    assert response.status_code == 200
+    assert response.json()["items"][0]["id"] == "agrsich-reference-window"
