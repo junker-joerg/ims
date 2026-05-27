@@ -1,75 +1,167 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Literal
+from typing import Generic, Literal, TypeVar
 
+
+METADATA_SCHEMA_VERSION = "ims.workbench.metadata.v1"
+METADATA_GENERATED_AT = "2026-05-27T00:00:00Z"
 
 ScenarioState = Literal["reference", "draft", "planned"]
 RunState = Literal["validated", "prepared", "planned"]
+ValidationStatus = Literal["validated", "not_claimed", "planned"]
+SourceKind = Literal["fixture", "in_memory", "derived"]
+
+T = TypeVar("T")
+
+
+@dataclass(frozen=True)
+class MetadataSource:
+    kind: SourceKind
+    label: str
+    path: str | None = None
+
+
+@dataclass(frozen=True)
+class ValidationSummary:
+    status: ValidationStatus
+    scope: str
+    claim: str
 
 
 @dataclass(frozen=True)
 class ScenarioMetadata:
     id: str
-    name: str
-    scope: str
-    state: ScenarioState
-    source: str
+    display_name: str
+    status: ScenarioState
+    domain_scope: str
+    source: MetadataSource
+    validation: ValidationSummary
+    updated_at: str
     notes: str
 
 
 @dataclass(frozen=True)
 class RunMetadata:
     id: str
-    label: str
+    display_name: str
     scenario_id: str
-    state: RunState
+    status: RunState
+    source: MetadataSource
+    validation: ValidationSummary
     period_window: str
-    validation_scope: str
+    execution_enabled: bool
+    updated_at: str
+
+
+@dataclass(frozen=True)
+class MetadataResponse(Generic[T]):
+    schema_version: str
+    generated_at: str
+    items: tuple[T, ...]
 
 
 SCENARIOS: tuple[ScenarioMetadata, ...] = (
     ScenarioMetadata(
         id="agrsich-reference-window",
-        name="Agrsich Referenzfenster",
-        scope="VU/VN-Agrsich",
-        state="reference",
-        source="tests/fixtures",
-        notes="Portierte Pfade mit begrenzten Legacy-Fenstern; keine Vollgleichheitsbehauptung.",
+        display_name="Agrsich Referenzfenster",
+        status="reference",
+        domain_scope="VU/VN-Agrsich",
+        source=MetadataSource(
+            kind="fixture",
+            label="Portierte Referenzfixtures",
+            path="tests/fixtures",
+        ),
+        validation=ValidationSummary(
+            status="validated",
+            scope="portierte Referenzfenster",
+            claim="Validiert nur konkret portierte Pfade; keine historische Vollgleichheit.",
+        ),
+        updated_at="2026-05-27T00:00:00Z",
+        notes="Portierte Pfade mit begrenzten Legacy-Fenstern.",
     ),
     ScenarioMetadata(
         id="local-workbench-draft",
-        name="Lokaler Workbench-Entwurf",
-        scope="Metadaten",
-        state="draft",
-        source="in-memory",
-        notes="Vorbereitung fuer spaetere lokale Szenarioverwaltung.",
+        display_name="Lokaler Workbench-Entwurf",
+        status="draft",
+        domain_scope="Metadaten",
+        source=MetadataSource(
+            kind="in_memory",
+            label="Statische Workbench-Metadaten",
+        ),
+        validation=ValidationSummary(
+            status="planned",
+            scope="keine Fachvalidierung",
+            claim="Vorbereitung fuer spaetere lokale Szenarioverwaltung.",
+        ),
+        updated_at="2026-05-27T00:00:00Z",
+        notes="Noch keine Persistenz und keine Schreibendpunkte.",
     ),
 )
 
 RUNS: tuple[RunMetadata, ...] = (
     RunMetadata(
         id="baseline-python-tests",
-        label="Python-Regressionssuite",
+        display_name="Python-Regressionssuite",
         scenario_id="agrsich-reference-window",
-        state="validated",
+        status="validated",
+        source=MetadataSource(
+            kind="derived",
+            label="Lokaler Testlauf",
+        ),
+        validation=ValidationSummary(
+            status="validated",
+            scope="548 Tests",
+            claim="Regressionssuite fuer portierte Pfade und Workbench-Adapter.",
+        ),
         period_window="portierte Referenzfenster",
-        validation_scope="548 Tests",
+        execution_enabled=False,
+        updated_at="2026-05-27T00:00:00Z",
     ),
     RunMetadata(
         id="workbench-shell-preview",
-        label="Workbench-Shell Vorschau",
+        display_name="Workbench-Shell Vorschau",
         scenario_id="local-workbench-draft",
-        state="prepared",
+        status="prepared",
+        source=MetadataSource(
+            kind="in_memory",
+            label="Lokale Browser-Vorschau",
+        ),
+        validation=ValidationSummary(
+            status="planned",
+            scope="Health/API/UI-Shell",
+            claim="Keine Simulation und keine Persistenz.",
+        ),
         period_window="keine Simulation",
-        validation_scope="Health/API/UI-Shell",
+        execution_enabled=False,
+        updated_at="2026-05-27T00:00:00Z",
     ),
 )
 
 
-def list_scenario_metadata() -> list[dict[str, str]]:
-    return [asdict(scenario) for scenario in SCENARIOS]
+def scenario_metadata_response() -> MetadataResponse[ScenarioMetadata]:
+    return MetadataResponse(
+        schema_version=METADATA_SCHEMA_VERSION,
+        generated_at=METADATA_GENERATED_AT,
+        items=SCENARIOS,
+    )
 
 
-def list_run_metadata() -> list[dict[str, str]]:
-    return [asdict(run) for run in RUNS]
+def run_metadata_response() -> MetadataResponse[RunMetadata]:
+    return MetadataResponse(
+        schema_version=METADATA_SCHEMA_VERSION,
+        generated_at=METADATA_GENERATED_AT,
+        items=RUNS,
+    )
+
+
+def metadata_response_to_dict(response: MetadataResponse[T]) -> dict[str, object]:
+    return asdict(response)
+
+
+def list_scenario_metadata() -> dict[str, object]:
+    return metadata_response_to_dict(scenario_metadata_response())
+
+
+def list_run_metadata() -> dict[str, object]:
+    return metadata_response_to_dict(run_metadata_response())

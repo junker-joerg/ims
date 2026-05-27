@@ -21,20 +21,43 @@ type StatusItem = {
 
 type ScenarioMetadata = {
   id: string;
-  name: string;
-  scope: string;
-  state: string;
-  source: string;
+  display_name: string;
+  status: string;
+  domain_scope: string;
+  source: MetadataSource;
+  validation: ValidationSummary;
+  updated_at: string;
   notes: string;
 };
 
 type RunMetadata = {
   id: string;
-  label: string;
+  display_name: string;
   scenario_id: string;
-  state: string;
+  status: string;
+  source: MetadataSource;
+  validation: ValidationSummary;
   period_window: string;
-  validation_scope: string;
+  execution_enabled: boolean;
+  updated_at: string;
+};
+
+type MetadataSource = {
+  kind: string;
+  label: string;
+  path?: string | null;
+};
+
+type ValidationSummary = {
+  status: string;
+  scope: string;
+  claim: string;
+};
+
+type MetadataResponse<T> = {
+  schema_version: string;
+  generated_at: string;
+  items: T[];
 };
 
 const statusItems: StatusItem[] = [
@@ -67,12 +90,12 @@ function App() {
           throw new Error("metadata request failed");
         }
         const [scenarioPayload, runPayload] = await Promise.all([
-          scenarioResponse.json() as Promise<ScenarioMetadata[]>,
-          runResponse.json() as Promise<RunMetadata[]>
+          scenarioResponse.json() as Promise<MetadataResponse<ScenarioMetadata>>,
+          runResponse.json() as Promise<MetadataResponse<RunMetadata>>
         ]);
         if (active) {
-          setScenarios(scenarioPayload);
-          setRuns(runPayload);
+          setScenarios(scenarioPayload.items);
+          setRuns(runPayload.items);
           setMetadataState("ready");
         }
       } catch {
@@ -148,7 +171,7 @@ function App() {
             <div className="scenario-strip">
               <div>
                 <span>Referenzfenster</span>
-                <strong>{primaryScenario?.scope ?? "wird geladen"}</strong>
+                <strong>{primaryScenario?.domain_scope ?? "wird geladen"}</strong>
               </div>
               <div>
                 <span>Steuerung</span>
@@ -156,15 +179,15 @@ function App() {
               </div>
             </div>
             <p className="muted">
-              {primaryScenario?.notes ??
+              {primaryScenario?.validation.claim ??
                 "Diese Ansicht bereitet Bedienflaechen fuer lokale Szenario- und Run-Metadaten vor."}
               {" "}Der Simulationskern bleibt in diesem Schritt unveraendert.
             </p>
             <div className="metadata-list" aria-label="Szenario-Metadaten">
               {scenarios.map((scenario) => (
                 <div className="metadata-row" key={scenario.id}>
-                  <span>{scenario.name}</span>
-                  <strong>{scenario.state}</strong>
+                  <span>{scenario.display_name}</span>
+                  <strong>{scenario.status}</strong>
                 </div>
               ))}
             </div>
@@ -181,14 +204,14 @@ function App() {
             <p className="metric">SQLite-Vorbereitung</p>
             <p className="muted">
               {primaryRun
-                ? `${primaryRun.label}: ${primaryRun.validation_scope}.`
+                ? `${primaryRun.display_name}: ${primaryRun.validation.scope}.`
                 : "Run- und Szenario-Metadaten werden spaeter lokal persistiert."}
             </p>
             <div className="metadata-list compact" aria-label="Run-Metadaten">
               {runs.map((run) => (
                 <div className="metadata-row" key={run.id}>
                   <span>{run.period_window}</span>
-                  <strong>{run.state}</strong>
+                  <strong>{run.status}</strong>
                 </div>
               ))}
             </div>

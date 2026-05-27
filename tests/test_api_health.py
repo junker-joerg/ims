@@ -48,10 +48,14 @@ def test_scenario_metadata_endpoint_is_adapter_only(tmp_path):
     response = client.get("/api/scenarios")
 
     assert response.status_code == 200
-    scenarios = response.json()
+    payload = response.json()
+    scenarios = payload["items"]
+    assert payload["schema_version"] == "ims.workbench.metadata.v1"
+    assert payload["generated_at"] == "2026-05-27T00:00:00Z"
     assert scenarios[0]["id"] == "agrsich-reference-window"
-    assert scenarios[0]["source"] == "tests/fixtures"
-    assert "Vollgleichheitsbehauptung" in scenarios[0]["notes"]
+    assert scenarios[0]["display_name"] == "Agrsich Referenzfenster"
+    assert scenarios[0]["source"]["path"] == "tests/fixtures"
+    assert "Vollgleichheit" in scenarios[0]["validation"]["claim"]
 
 
 def test_run_metadata_endpoint_has_no_execution_control(tmp_path):
@@ -61,6 +65,10 @@ def test_run_metadata_endpoint_has_no_execution_control(tmp_path):
     response = client.get("/api/runs")
 
     assert response.status_code == 200
-    runs = response.json()
+    payload = response.json()
+    runs = payload["items"]
+    assert payload["schema_version"] == "ims.workbench.metadata.v1"
     assert runs[0]["id"] == "baseline-python-tests"
+    assert runs[0]["execution_enabled"] is False
     assert runs[1]["period_window"] == "keine Simulation"
+    assert runs[1]["execution_enabled"] is False

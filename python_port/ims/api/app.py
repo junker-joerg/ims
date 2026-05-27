@@ -78,11 +78,11 @@ def create_app(frontend_dist: Path | None = None) -> Any:
             return _version_payload()
 
         @app.get("/api/scenarios")
-        def scenarios() -> list[dict[str, str]]:
+        def scenarios() -> dict[str, object]:
             return list_scenario_metadata()
 
         @app.get("/api/runs")
-        def runs() -> list[dict[str, str]]:
+        def runs() -> dict[str, object]:
             return list_run_metadata()
 
         if (dist_dir / "assets").is_dir():

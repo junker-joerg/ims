@@ -118,6 +118,9 @@ def test_core_placeholders_import() -> None:
         ScenarioMetadata,
         list_run_metadata,
         list_scenario_metadata,
+        metadata_response_to_dict,
+        run_metadata_response,
+        scenario_metadata_response,
     )
     from ims.model.agrsich_export import (
         ExportFileSpec,
@@ -444,8 +447,11 @@ def test_core_placeholders_import() -> None:
     assert load_scenario_from_mapping is not None
     assert ScenarioMetadata is not None
     assert RunMetadata is not None
-    assert list_scenario_metadata()[0]["id"] == "agrsich-reference-window"
-    assert list_run_metadata()[0]["id"] == "baseline-python-tests"
+    assert scenario_metadata_response().schema_version == "ims.workbench.metadata.v1"
+    assert run_metadata_response().schema_version == "ims.workbench.metadata.v1"
+    assert metadata_response_to_dict is not None
+    assert list_scenario_metadata()["items"][0]["id"] == "agrsich-reference-window"
+    assert list_run_metadata()["items"][0]["id"] == "baseline-python-tests"
     assert AggregateSnapshot is not None
     assert collect_basic_aggregates is not None
     assert ExportFileSpec is not None
