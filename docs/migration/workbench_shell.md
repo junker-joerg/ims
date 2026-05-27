@@ -67,12 +67,15 @@ Die Workbench nutzt diese Endpunkte fuer eine kompakte Detailansicht zu ausgewae
   "schema_version": "ims.workbench.metadata.v1",
   "storage_kind": "memory",
   "configured": false,
+  "injected": false,
   "writes_enabled": false,
   "execution_enabled": false
 }
 ```
 
-Wenn `IMS_METADATA_DB` gesetzt ist, meldet der Endpunkt `storage_kind = "sqlite"`, `configured = true` und den aufgeloesten Pfad. Diese Antwort wird aus der Konfiguration abgeleitet und erzeugt beim reinen Import oder Quellenabruf keine SQLite-Datei. Die Workbench zeigt diese Information in der lokalen Ablage als reine Diagnose an. `writes_enabled` und `execution_enabled` bleiben dort bewusst `false`.
+Wenn `IMS_METADATA_DB` gesetzt ist, meldet der Endpunkt `storage_kind = "sqlite"`, `configured = true` und den aufgeloesten Pfad. Wenn `create_app(metadata_repository=...)` ein Repository erhaelt, kommt die Quellenbeschreibung aus genau diesem Repository; fuer eine injizierte SQLite-Ablage wird deshalb ebenfalls `storage_kind = "sqlite"` mit `injected = true` gemeldet. Dadurch beschreibt die Diagnose die Datenquelle, aus der die API tatsaechlich liest.
+
+Diese Antwort erzeugt beim reinen Import oder Quellenabruf keine SQLite-Datei. Die Workbench zeigt diese Information in der lokalen Ablage als reine Diagnose an. `writes_enabled` und `execution_enabled` bleiben dort bewusst `false`.
 
 ## Smoke-Tests
 
