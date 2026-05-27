@@ -156,7 +156,9 @@ def run_metadata_response() -> MetadataResponse[RunMetadata]:
 
 
 def metadata_response_to_dict(response: MetadataResponse[T]) -> dict[str, object]:
-    return asdict(response)
+    payload = asdict(response)
+    payload["items"] = list(payload["items"])
+    return payload
 
 
 def list_scenario_metadata() -> dict[str, object]:

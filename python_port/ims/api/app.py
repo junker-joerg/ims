@@ -9,7 +9,7 @@ from starlette.responses import FileResponse, JSONResponse
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from ims.api.metadata import list_run_metadata, list_scenario_metadata
+from ims.api.metadata_repository import WorkbenchMetadataRepository, build_seeded_metadata_repository
 
 try:
     from fastapi import FastAPI
@@ -31,6 +31,13 @@ def _frontend_dist_dir() -> Path:
     return _repo_root() / "frontend" / "dist"
 
 
+def _metadata_db_path() -> Path | str:
+    configured = os.environ.get("IMS_METADATA_DB")
+    if configured:
+        return Path(configured).expanduser().resolve()
+    return ":memory:"
+
+
 def _version_payload() -> dict[str, str]:
     return {
         "name": APP_NAME,
@@ -39,8 +46,12 @@ def _version_payload() -> dict[str, str]:
     }
 
 
-def create_app(frontend_dist: Path | None = None) -> Any:
+def create_app(
+    frontend_dist: Path | None = None,
+    metadata_repository: WorkbenchMetadataRepository | None = None,
+) -> Any:
     dist_dir = frontend_dist or _frontend_dist_dir()
+    repository = metadata_repository or build_seeded_metadata_repository(_metadata_db_path())
 
     def health_payload() -> dict[str, Any]:
         return {
@@ -79,11 +90,11 @@ def create_app(frontend_dist: Path | None = None) -> Any:
 
         @app.get("/api/scenarios")
         def scenarios() -> dict[str, object]:
-            return list_scenario_metadata()
+            return repository.list_scenarios()
 
         @app.get("/api/runs")
         def runs() -> dict[str, object]:
-            return list_run_metadata()
+            return repository.list_runs()
 
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
@@ -97,8 +108,8 @@ def create_app(frontend_dist: Path | None = None) -> Any:
     routes: list[Any] = [
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
-        Route("/api/scenarios", lambda request: JSONResponse(list_scenario_metadata())),
-        Route("/api/runs", lambda request: JSONResponse(list_run_metadata())),
+        Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),
+        Route("/api/runs", lambda request: JSONResponse(repository.list_runs())),
         Route("/", lambda request: index_response()),
     ]
     if (dist_dir / "assets").is_dir():

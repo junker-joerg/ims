@@ -23,6 +23,9 @@ frontend/dist/
 frontend/.npm-cache/
 frontend/tsconfig.tsbuildinfo
 
+# Local workbench data
+.ims_workbench/
+
 # OS / editors
 .DS_Store
 .vscode/
