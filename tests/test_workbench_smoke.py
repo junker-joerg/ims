@@ -57,3 +57,11 @@ def test_workbench_static_frontend_smoke(tmp_path: Path):
     assert "__IMS_WORKBENCH_SMOKE__" in asset.text
     assert health.json()["frontend_available"] is True
 
+
+def test_workbench_frontend_source_exposes_import_preview_without_upload():
+    source = (Path(__file__).resolve().parent.parent / "frontend" / "src" / "main.tsx").read_text(encoding="utf-8")
+
+    assert "Importvorschau" in source
+    assert "Import aktuell nur ueber Python-Adapter" in source
+    assert "Browser schreibt keine Metadaten" in source
+    assert 'type="file"' not in source
