@@ -25,7 +25,13 @@ class MetadataRepositoryReader(Protocol):
     def list_scenarios(self) -> dict[str, object]:
         ...
 
+    def get_scenario(self, scenario_id: str) -> dict[str, object] | None:
+        ...
+
     def list_runs(self) -> dict[str, object]:
+        ...
+
+    def get_run(self, run_id: str) -> dict[str, object] | None:
         ...
 
 
@@ -52,6 +58,17 @@ def _version_payload() -> dict[str, str]:
         "name": APP_NAME,
         "version": APP_VERSION,
         "api": "ims.api",
+    }
+
+
+def _not_found_payload(resource: str, item_id: str) -> dict[str, object]:
+    return {
+        "error": {
+            "code": "metadata_not_found",
+            "resource": resource,
+            "id": item_id,
+            "message": f"{resource} metadata not found",
+        }
     }
 
 
@@ -82,6 +99,18 @@ def create_app(
             status_code=503,
         )
 
+    def scenario_detail_response(scenario_id: str) -> JSONResponse:
+        scenario = repository.get_scenario(scenario_id)
+        if scenario is None:
+            return JSONResponse(_not_found_payload("scenario", scenario_id), status_code=404)
+        return JSONResponse(scenario)
+
+    def run_detail_response(run_id: str) -> JSONResponse:
+        run = repository.get_run(run_id)
+        if run is None:
+            return JSONResponse(_not_found_payload("run", run_id), status_code=404)
+        return JSONResponse(run)
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -101,9 +130,23 @@ def create_app(
         def scenarios() -> dict[str, object]:
             return repository.list_scenarios()
 
+        @app.get("/api/scenarios/{scenario_id}")
+        def scenario_detail(scenario_id: str) -> dict[str, object] | JSONResponse:
+            scenario = repository.get_scenario(scenario_id)
+            if scenario is None:
+                return JSONResponse(_not_found_payload("scenario", scenario_id), status_code=404)
+            return scenario
+
         @app.get("/api/runs")
         def runs() -> dict[str, object]:
             return repository.list_runs()
+
+        @app.get("/api/runs/{run_id}")
+        def run_detail(run_id: str) -> dict[str, object] | JSONResponse:
+            run = repository.get_run(run_id)
+            if run is None:
+                return JSONResponse(_not_found_payload("run", run_id), status_code=404)
+            return run
 
         @app.get("/api/metadata/capabilities")
         def capabilities() -> dict[str, object]:
@@ -122,7 +165,15 @@ def create_app(
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),
+        Route(
+            "/api/scenarios/{scenario_id}",
+            lambda request: scenario_detail_response(request.path_params["scenario_id"]),
+        ),
         Route("/api/runs", lambda request: JSONResponse(repository.list_runs())),
+        Route(
+            "/api/runs/{run_id}",
+            lambda request: run_detail_response(request.path_params["run_id"]),
+        ),
         Route("/api/metadata/capabilities", lambda request: JSONResponse(metadata_capabilities())),
         Route("/", lambda request: index_response()),
     ]

@@ -180,6 +180,31 @@ class WorkbenchMetadataRepository:
             "items": [_scenario_row_to_dict(row) for row in rows],
         }
 
+    def get_scenario(self, scenario_id: str) -> dict[str, object] | None:
+        row = self._connection.execute(
+            """
+            SELECT
+                id,
+                display_name,
+                status,
+                domain_scope,
+                source_kind,
+                source_label,
+                source_path,
+                validation_status,
+                validation_scope,
+                validation_claim,
+                updated_at,
+                notes
+            FROM scenarios
+            WHERE id = ?
+            """,
+            (scenario_id,),
+        ).fetchone()
+        if row is None:
+            return None
+        return _scenario_row_to_dict(row)
+
     def list_runs(self) -> dict[str, object]:
         rows = self._connection.execute(
             """
@@ -207,8 +232,40 @@ class WorkbenchMetadataRepository:
             "items": [_run_row_to_dict(row) for row in rows],
         }
 
-    def upsert_scenario(self, scenario: ScenarioMetadata) -> None:
+    def get_run(self, run_id: str) -> dict[str, object] | None:
+        row = self._connection.execute(
+            """
+            SELECT
+                id,
+                display_name,
+                scenario_id,
+                status,
+                source_kind,
+                source_label,
+                source_path,
+                validation_status,
+                validation_scope,
+                validation_claim,
+                period_window,
+                execution_enabled,
+                updated_at
+            FROM runs
+            WHERE id = ?
+            """,
+            (run_id,),
+        ).fetchone()
+        if row is None:
+            return None
+        return _run_row_to_dict(row)
+
+    def validate_scenario(self, scenario: ScenarioMetadata) -> None:
         _validate_scenario_metadata(scenario)
+
+    def validate_run(self, run: RunMetadata) -> None:
+        _validate_run_metadata(run)
+
+    def upsert_scenario(self, scenario: ScenarioMetadata) -> None:
+        self.validate_scenario(scenario)
         with self._connection:
             self._connection.execute(
                 """
@@ -244,7 +301,7 @@ class WorkbenchMetadataRepository:
             )
 
     def upsert_run(self, run: RunMetadata) -> None:
-        _validate_run_metadata(run)
+        self.validate_run(run)
         with self._connection:
             self._connection.execute(
                 """
@@ -302,8 +359,14 @@ class LazyWorkbenchMetadataRepository:
     def list_scenarios(self) -> dict[str, object]:
         return self._get_repository().list_scenarios()
 
+    def get_scenario(self, scenario_id: str) -> dict[str, object] | None:
+        return self._get_repository().get_scenario(scenario_id)
+
     def list_runs(self) -> dict[str, object]:
         return self._get_repository().list_runs()
+
+    def get_run(self, run_id: str) -> dict[str, object] | None:
+        return self._get_repository().get_run(run_id)
 
 
 def _scenario_row_to_dict(row: sqlite3.Row) -> dict[str, object]:

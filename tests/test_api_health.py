@@ -61,6 +61,37 @@ def test_scenario_metadata_endpoint_is_adapter_only(tmp_path):
     assert "Vollgleichheit" in scenarios[0]["validation"]["claim"]
 
 
+def test_scenario_metadata_detail_endpoint_reads_by_id(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/scenarios/agrsich-reference-window")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["id"] == "agrsich-reference-window"
+    assert payload["display_name"] == "Agrsich Referenzfenster"
+    assert payload["validation"]["status"] == "validated"
+
+
+def test_scenario_metadata_detail_endpoint_returns_stable_404(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/scenarios/missing-scenario")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "error": {
+            "code": "metadata_not_found",
+            "resource": "scenario",
+            "id": "missing-scenario",
+            "message": "scenario metadata not found",
+        }
+    }
+
+
 def test_run_metadata_endpoint_has_no_execution_control(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)
@@ -75,6 +106,37 @@ def test_run_metadata_endpoint_has_no_execution_control(tmp_path):
     assert runs[0]["execution_enabled"] is False
     assert runs[1]["period_window"] == "keine Simulation"
     assert runs[1]["execution_enabled"] is False
+
+
+def test_run_metadata_detail_endpoint_reads_by_id(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/runs/baseline-python-tests")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["id"] == "baseline-python-tests"
+    assert payload["scenario_id"] == "agrsich-reference-window"
+    assert payload["execution_enabled"] is False
+
+
+def test_run_metadata_detail_endpoint_returns_stable_404(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/runs/missing-run")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "error": {
+            "code": "metadata_not_found",
+            "resource": "run",
+            "id": "missing-run",
+            "message": "run metadata not found",
+        }
+    }
 
 
 def test_api_can_read_metadata_from_sqlite_repository(tmp_path):

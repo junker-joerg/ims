@@ -35,6 +35,26 @@ def test_sqlite_schema_can_be_seeded_explicitly(tmp_path):
     assert runs["items"][1]["period_window"] == "keine Simulation"
 
 
+def test_repository_reads_single_scenario_and_run_by_id(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+
+    scenario = repository.get_scenario("agrsich-reference-window")
+    run = repository.get_run("baseline-python-tests")
+
+    assert scenario is not None
+    assert scenario["display_name"] == "Agrsich Referenzfenster"
+    assert run is not None
+    assert run["scenario_id"] == "agrsich-reference-window"
+    assert run["execution_enabled"] is False
+
+
+def test_repository_returns_none_for_missing_metadata_ids(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+
+    assert repository.get_scenario("missing-scenario") is None
+    assert repository.get_run("missing-run") is None
+
+
 def test_repository_creates_parent_directory_for_local_db(tmp_path):
     db_path = tmp_path / "nested" / "metadata.sqlite"
 

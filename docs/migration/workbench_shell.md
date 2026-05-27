@@ -9,6 +9,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/version` meldet Name und Version der Workbench-Shell.
 - `/api/scenarios` liefert lokale Szenario-Metadaten als versionierte, statische Adapterdaten.
 - `/api/runs` liefert lokale Run-Metadaten als versionierte, statische Adapterdaten.
+- `/api/scenarios/{scenario_id}` und `/api/runs/{run_id}` liefern einzelne Metadatensaetze per ID.
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
@@ -35,6 +36,19 @@ Die Workbench-Metadaten sind beschreibende DTOs an der API-Grenze. Jede Antwort 
 - `items` mit Szenario- oder Run-Eintraegen.
 
 Szenario-Eintraege enthalten ID, Anzeigename, Status, fachlichen Umfang, Quelle, Validierungszusammenfassung, Aktualisierungszeitpunkt und Notiz. Run-Eintraege enthalten zusaetzlich das zugehoerige Szenario, ein Periodenfenster und `execution_enabled`. Dieses Feld bleibt aktuell immer `false`, weil die Workbench noch keine echten Laeufe startet.
+
+Die Detail-Endpunkte geben dieselbe Einzelform zurueck, die auch in den Listen unter `items` steht. Nicht gefundene IDs liefern stabil:
+
+```json
+{
+  "error": {
+    "code": "metadata_not_found",
+    "resource": "scenario",
+    "id": "missing-scenario",
+    "message": "scenario metadata not found"
+  }
+}
+```
 
 ## SQLite-Vorbereitung
 
@@ -120,6 +134,8 @@ Der Import validiert:
 - `schema_version` muss zur aktuellen Metadatenform passen.
 - Run-Eintraege duerfen nur auf vorhandene oder im selben Import enthaltene Szenarien verweisen.
 - `execution_enabled` muss `false` bleiben.
+
+Import-Bundles werden vor dem ersten Schreibzugriff vollstaendig gegen die Repository-Grenzen validiert. Wenn ein spaeterer Run-Eintrag ungueltig ist, bleiben vorher im Bundle enthaltene neue Szenarien deshalb ungeschrieben.
 
 ## Lokaler Start
 
