@@ -10,6 +10,7 @@ from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
 from ims.api.metadata import metadata_capabilities
+from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 
 try:
@@ -118,6 +119,13 @@ def create_app(
             return JSONResponse(_not_found_payload("run", run_id), status_code=404)
         return JSONResponse(run)
 
+    def consistency_payload() -> dict[str, object]:
+        return metadata_consistency_payload(
+            repository.list_scenarios(),
+            repository.list_runs(),
+            metadata_capabilities(),
+        )
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -163,6 +171,10 @@ def create_app(
         def source() -> dict[str, object]:
             return metadata_source
 
+        @app.get("/api/metadata/consistency")
+        def consistency() -> dict[str, object]:
+            return consistency_payload()
+
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
 
@@ -187,6 +199,7 @@ def create_app(
         ),
         Route("/api/metadata/capabilities", lambda request: JSONResponse(metadata_capabilities())),
         Route("/api/metadata/source", lambda request: JSONResponse(metadata_source)),
+        Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
         Route("/", lambda request: index_response()),
     ]
     if (dist_dir / "assets").is_dir():

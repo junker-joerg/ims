@@ -139,6 +139,7 @@ def test_core_placeholders_import() -> None:
         import_metadata_to_db,
         main as metadata_import_cli_main,
     )
+    from ims.api.metadata_consistency import metadata_consistency_payload
     from ims.api.metadata_repository import (
         LazyWorkbenchMetadataRepository,
         MetadataValidationError,
@@ -480,6 +481,7 @@ def test_core_placeholders_import() -> None:
     assert list_scenario_metadata()["items"][0]["id"] == "agrsich-reference-window"
     assert list_run_metadata()["items"][0]["id"] == "baseline-python-tests"
     assert metadata_capabilities()["writes"]["run_metadata"]["enabled"] is False
+    assert metadata_consistency_payload(list_scenario_metadata(), list_run_metadata(), metadata_capabilities())["status"] == "ok"
     assert MetadataImportBundle is not None
     assert MetadataImportError is not None
     assert MetadataImportResult is not None

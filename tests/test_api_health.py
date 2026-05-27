@@ -173,6 +173,24 @@ def test_metadata_capabilities_keep_write_paths_disabled(tmp_path):
     assert payload["simulation_execution"]["enabled"] is False
 
 
+def test_metadata_consistency_endpoint_keeps_readonly_boundaries_visible(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/metadata/consistency")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["scenario_count"] == 2
+    assert payload["run_count"] == 2
+    assert payload["runs_with_known_scenario"] == 2
+    assert payload["runs_with_missing_scenario"] == []
+    assert payload["runs_with_execution_enabled"] == []
+    assert payload["writes_enabled"] is False
+    assert payload["simulation_enabled"] is False
+
+
 def test_metadata_source_reports_in_memory_default(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)
