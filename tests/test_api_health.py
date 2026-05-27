@@ -75,6 +75,16 @@ def test_scenario_metadata_detail_endpoint_reads_by_id(tmp_path):
     assert payload["validation"]["status"] == "validated"
 
 
+def test_fastapi_app_starts_with_detail_route_annotations(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/scenarios/agrsich-reference-window")
+
+    assert response.status_code == 200
+    assert response.json()["id"] == "agrsich-reference-window"
+
+
 def test_scenario_metadata_detail_endpoint_returns_stable_404(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)

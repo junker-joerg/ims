@@ -275,6 +275,19 @@ h2 {
   color: #143b2d;
 }
 
+.metadata-row.selectable {
+  width: 100%;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.metadata-row.selectable:hover,
+.metadata-row.selectable.selected {
+  border-color: #9fb7aa;
+  background: #eef5f1;
+}
+
 .meter {
   height: 10px;
   overflow: hidden;
@@ -320,6 +333,71 @@ h2 {
   color: #143b2d;
 }
 
+.detail-panel {
+  margin-bottom: 18px;
+}
+
+.detail-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+  margin-bottom: 14px;
+  color: #66736c;
+}
+
+.detail-status strong {
+  color: #143b2d;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.detail-grid article {
+  min-width: 0;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  padding: 14px;
+  background: #fbfcfb;
+}
+
+.detail-grid article > span,
+.detail-grid dt {
+  color: #66736c;
+}
+
+.detail-grid article > strong {
+  display: block;
+  margin-top: 5px;
+  color: #143b2d;
+}
+
+.detail-grid dl {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+}
+
+.detail-grid div {
+  display: grid;
+  grid-template-columns: minmax(82px, 0.35fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.detail-grid dt,
+.detail-grid dd {
+  min-width: 0;
+  margin: 0;
+}
+
+.detail-grid dd {
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 1120px) {
   .topbar {
     align-items: flex-start;
@@ -347,6 +425,7 @@ h2 {
 
   .status-grid,
   .work-grid,
+  .detail-grid,
   .scenario-strip,
   .validation-row {
     grid-template-columns: 1fr;

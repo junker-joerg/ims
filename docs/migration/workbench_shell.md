@@ -14,7 +14,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
-- `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die diese Metadaten liest.
+- `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
 - `python_port[dev]` enthaelt die Web-Testabhaengigkeiten, damit die Standardtests die API-Tests ohne separate manuelle Web-Installation sammeln koennen.
 
 ## Grenzen
@@ -25,6 +25,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - SQLite wird aktuell nur als lesende, deterministisch geseedete Repository-Schicht an der API genutzt.
 - Interne Repository-Schreibmethoden sind vorbereitet und validiert, aber nicht als API- oder UI-Schreibpfade freigeschaltet.
 - Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
+- Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
 
 ## Metadatenmodell
@@ -49,6 +50,8 @@ Die Detail-Endpunkte geben dieselbe Einzelform zurueck, die auch in den Listen u
   }
 }
 ```
+
+Die Workbench nutzt diese Endpunkte fuer eine kompakte Detailansicht zu ausgewaehltem Szenario und Run. Fehler beim Detailabruf werden knapp angezeigt; daraus entsteht kein Editor- oder Start-Workflow.
 
 ## SQLite-Vorbereitung
 

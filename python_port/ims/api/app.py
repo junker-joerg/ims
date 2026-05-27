@@ -130,7 +130,7 @@ def create_app(
         def scenarios() -> dict[str, object]:
             return repository.list_scenarios()
 
-        @app.get("/api/scenarios/{scenario_id}")
+        @app.get("/api/scenarios/{scenario_id}", response_model=None)
         def scenario_detail(scenario_id: str) -> dict[str, object] | JSONResponse:
             scenario = repository.get_scenario(scenario_id)
             if scenario is None:
@@ -141,7 +141,7 @@ def create_app(
         def runs() -> dict[str, object]:
             return repository.list_runs()
 
-        @app.get("/api/runs/{run_id}")
+        @app.get("/api/runs/{run_id}", response_model=None)
         def run_detail(run_id: str) -> dict[str, object] | JSONResponse:
             run = repository.get_run(run_id)
             if run is None:
