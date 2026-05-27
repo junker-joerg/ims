@@ -60,14 +60,28 @@ type MetadataResponse<T> = {
   items: T[];
 };
 
+type MetadataCapabilities = {
+  writes: {
+    scenario_metadata: CapabilityState;
+    run_metadata: CapabilityState;
+  };
+  simulation_execution: CapabilityState;
+};
+
+type CapabilityState = {
+  enabled: boolean;
+  boundary?: string;
+  reason: string;
+};
+
 const statusItems: StatusItem[] = [
   { label: "Backend", value: "bereit", tone: "ready" },
   { label: "Fachlogik", value: "abgegrenzt", tone: "quiet" },
-  { label: "Persistenz", value: "geplant", tone: "warn" }
+  { label: "Persistenz", value: "vorbereitet", tone: "quiet" }
 ];
 
 const validationRows = [
-  ["Simulationskern", "548 Tests", "gruen"],
+  ["Simulationskern", "560 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -75,6 +89,7 @@ const validationRows = [
 function App() {
   const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
   const [runs, setRuns] = useState<RunMetadata[]>([]);
+  const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
   const [metadataState, setMetadataState] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
@@ -82,20 +97,23 @@ function App() {
 
     async function loadMetadata() {
       try {
-        const [scenarioResponse, runResponse] = await Promise.all([
+        const [scenarioResponse, runResponse, capabilityResponse] = await Promise.all([
           fetch("/api/scenarios"),
-          fetch("/api/runs")
+          fetch("/api/runs"),
+          fetch("/api/metadata/capabilities")
         ]);
-        if (!scenarioResponse.ok || !runResponse.ok) {
+        if (!scenarioResponse.ok || !runResponse.ok || !capabilityResponse.ok) {
           throw new Error("metadata request failed");
         }
-        const [scenarioPayload, runPayload] = await Promise.all([
+        const [scenarioPayload, runPayload, capabilityPayload] = await Promise.all([
           scenarioResponse.json() as Promise<MetadataResponse<ScenarioMetadata>>,
-          runResponse.json() as Promise<MetadataResponse<RunMetadata>>
+          runResponse.json() as Promise<MetadataResponse<RunMetadata>>,
+          capabilityResponse.json() as Promise<MetadataCapabilities>
         ]);
         if (active) {
           setScenarios(scenarioPayload.items);
           setRuns(runPayload.items);
+          setCapabilities(capabilityPayload);
           setMetadataState("ready");
         }
       } catch {
@@ -113,6 +131,7 @@ function App() {
 
   const primaryScenario = scenarios[0];
   const primaryRun = runs[0];
+  const writeLabel = capabilities?.writes.scenario_metadata.enabled ? "aktiv" : "gesperrt";
 
   return (
     <main className="shell">
@@ -174,8 +193,8 @@ function App() {
                 <strong>{primaryScenario?.domain_scope ?? "wird geladen"}</strong>
               </div>
               <div>
-                <span>Steuerung</span>
-                <strong>{metadataState === "error" ? "API nicht erreichbar" : "noch nicht aktiv"}</strong>
+                <span>Schreiben</span>
+                <strong>{metadataState === "error" ? "API nicht erreichbar" : writeLabel}</strong>
               </div>
             </div>
             <p className="muted">
@@ -204,7 +223,7 @@ function App() {
             <p className="metric">SQLite-Vorbereitung</p>
             <p className="muted">
               {primaryRun
-                ? `${primaryRun.display_name}: ${primaryRun.validation.scope}.`
+                ? `${primaryRun.display_name}: ${primaryRun.validation.scope}. Schreibpfade bleiben kontrolliert gesperrt.`
                 : "Run- und Szenario-Metadaten werden spaeter lokal persistiert."}
             </p>
             <div className="metadata-list compact" aria-label="Run-Metadaten">
