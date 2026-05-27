@@ -365,6 +365,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.scenario-overview-panel {
+  margin-bottom: 18px;
+}
+
 .run-overview-panel {
   margin-bottom: 18px;
 }
@@ -519,9 +523,24 @@ code {
   overflow-wrap: anywhere;
 }
 
+.scenario-overview-table,
 .run-overview-table {
   display: grid;
   gap: 8px;
+}
+
+.scenario-overview-head,
+.scenario-overview-row {
+  display: grid;
+  grid-template-columns:
+    minmax(170px, 1.2fr)
+    minmax(130px, 0.85fr)
+    minmax(130px, 0.85fr)
+    minmax(150px, 1fr)
+    minmax(150px, 0.9fr)
+    minmax(98px, 0.55fr);
+  gap: 10px;
+  align-items: center;
 }
 
 .run-overview-head,
@@ -537,6 +556,7 @@ code {
   align-items: center;
 }
 
+.scenario-overview-head,
 .run-overview-head {
   min-height: 28px;
   padding: 0 10px;
@@ -544,6 +564,7 @@ code {
   font-size: 0.88rem;
 }
 
+.scenario-overview-row,
 .run-overview-row {
   width: 100%;
   min-height: 52px;
@@ -556,26 +577,33 @@ code {
   cursor: pointer;
 }
 
+.scenario-overview-row:hover,
+.scenario-overview-row.selected,
 .run-overview-row:hover,
 .run-overview-row.selected {
   border-color: #9fb7aa;
   background: #eef5f1;
 }
 
+.scenario-overview-row span,
 .run-overview-row span {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
+.scenario-overview-row strong,
+.scenario-overview-row small,
 .run-overview-row strong,
 .run-overview-row small {
   display: block;
 }
 
+.scenario-overview-row strong,
 .run-overview-row strong {
   color: #143b2d;
 }
 
+.scenario-overview-row small,
 .run-overview-row small {
   margin-top: 3px;
   color: #66736c;
@@ -612,6 +640,8 @@ code {
   .import-grid,
   .diagnosis-grid,
   .diagnosis-row,
+  .scenario-overview-head,
+  .scenario-overview-row,
   .run-overview-head,
   .run-overview-row,
   .scenario-strip,
