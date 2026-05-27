@@ -61,6 +61,20 @@ def test_import_keeps_execution_enabled_forbidden(tmp_path):
         import_metadata_file(import_path, repository)
 
 
+def test_import_validation_failure_does_not_write_partial_metadata(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+    payload = _valid_import_payload()
+    payload["runs"][0]["execution_enabled"] = True
+    import_path = tmp_path / "metadata_import.json"
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(MetadataImportError, match="execution_enabled"):
+        import_metadata_file(import_path, repository)
+
+    assert repository.get_scenario("local-imported-scenario") is None
+    assert repository.get_run("local-imported-run") is None
+
+
 def test_import_rejects_unknown_schema_version():
     payload = _valid_import_payload()
     payload["schema_version"] = "ims.workbench.metadata.v2"

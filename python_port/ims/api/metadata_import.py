@@ -76,6 +76,10 @@ def import_metadata_bundle(
 
     try:
         for scenario in bundle.scenarios:
+            repository.validate_scenario(scenario)
+        for run in bundle.runs:
+            repository.validate_run(run)
+        for scenario in bundle.scenarios:
             repository.upsert_scenario(scenario)
         for run in bundle.runs:
             repository.upsert_run(run)
