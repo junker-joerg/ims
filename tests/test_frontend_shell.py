@@ -71,6 +71,9 @@ def test_frontend_shell_declares_readonly_operations_diagnosis():
 def test_frontend_shell_declares_readonly_run_overview():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 
+    assert "const selectRun = (run: RunMetadata)" in source
+    assert "setSelectedRunId(run.id)" in source
+    assert "setSelectedScenarioId(run.scenario_id)" in source
     assert "Run-Uebersicht" in source
     assert "run-overview-row" in source
     assert "period_window" in source

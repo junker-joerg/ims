@@ -74,6 +74,8 @@ Die Ausfuehrungsgrenze kommt aus `/api/metadata/capabilities` und bleibt als ges
 
 Die Workbench zeigt die vorhandenen Run-Metadaten in einer kompakten Uebersicht. Sie nutzt weiterhin nur die bestehenden Listen- und Detaildaten aus `/api/runs` und `/api/runs/{run_id}` sowie bereits geladene Szenario-Metadaten fuer Anzeigenamen. Sichtbar sind Run-Anzeigename, Status, Szenario-Bezug, Periodenfenster, Quelle und die Ausfuehrungsgrenze.
 
+Wenn ein Run ausgewaehlt wird, setzt die Workbench auch das zugehoerige Szenario aus `scenario_id` als Auswahl. Dadurch bleibt die lesende Detailansicht konsistent, auch wenn die Metadaten Runs aus mehreren Szenarien enthalten.
+
 `execution_enabled` bleibt eine reine Grenze und wird als gesperrt angezeigt. Die Uebersicht bietet keine Start-Schaltflaeche, keinen Editor und keinen Schreibpfad.
 
 ## Metadatenquelle

@@ -242,6 +242,10 @@ function App() {
   const storagePath = metadataSource?.path ?? "nicht konfiguriert";
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
   const scenarioNameById = new Map(scenarios.map((scenario) => [scenario.id, scenario.display_name]));
+  const selectRun = (run: RunMetadata) => {
+    setSelectedRunId(run.id);
+    setSelectedScenarioId(run.scenario_id);
+  };
   const diagnosisRows = [
     ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
     ["Version", versionInfo ? `${versionInfo.name} ${versionInfo.version}` : "laedt"],
@@ -370,7 +374,7 @@ function App() {
                   className={`metadata-row selectable ${run.id === selectedRunId ? "selected" : ""}`}
                   key={run.id}
                   type="button"
-                  onClick={() => setSelectedRunId(run.id)}
+                  onClick={() => selectRun(run)}
                 >
                   <span>{run.period_window}</span>
                   <strong>{run.status}</strong>
@@ -486,7 +490,7 @@ function App() {
                 className={`run-overview-row ${run.id === selectedRunId ? "selected" : ""}`}
                 key={run.id}
                 type="button"
-                onClick={() => setSelectedRunId(run.id)}
+                onClick={() => selectRun(run)}
               >
                 <span>
                   <strong>{run.display_name}</strong>
