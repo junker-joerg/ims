@@ -17,6 +17,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     runs = client.get("/api/runs")
     source = client.get("/api/metadata/source")
     capabilities = client.get("/api/metadata/capabilities")
+    consistency = client.get("/api/metadata/consistency")
     missing = client.get("/api/scenarios/missing-scenario")
 
     assert health.status_code == 200
@@ -34,6 +35,12 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert capabilities.json()["writes"]["scenario_metadata"]["enabled"] is False
     assert capabilities.json()["writes"]["run_metadata"]["enabled"] is False
     assert capabilities.json()["simulation_execution"]["enabled"] is False
+    assert consistency.status_code == 200
+    assert consistency.json()["status"] == "ok"
+    assert consistency.json()["runs_with_missing_scenario"] == []
+    assert consistency.json()["runs_with_execution_enabled"] == []
+    assert consistency.json()["writes_enabled"] is False
+    assert consistency.json()["simulation_enabled"] is False
 
     scenario_id = scenarios.json()["items"][0]["id"]
     run_id = runs.json()["items"][0]["id"]
@@ -87,8 +94,10 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
 
     assert "Importvorschau" in source
     assert "Betriebsdiagnose" in source
+    assert "Metadaten-Konsistenz" in source
     assert "Szenario-Uebersicht" in source
     assert "Run-Uebersicht" in source
+    assert "/api/metadata/consistency" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Browser schreibt keine Metadaten" in source
     assert "Metadatenquelle" in source

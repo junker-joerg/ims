@@ -381,6 +381,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.consistency-panel {
+  margin-bottom: 18px;
+}
+
 .detail-status {
   display: flex;
   align-items: center;
@@ -501,6 +505,21 @@ code {
   gap: 8px;
 }
 
+.consistency-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  margin-bottom: 12px;
+  color: #143b2d;
+}
+
+.consistency-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .diagnosis-row {
   display: grid;
   grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1fr);
@@ -513,11 +532,32 @@ code {
   background: #fbfcfb;
 }
 
+.consistency-row {
+  min-height: 68px;
+  padding: 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
 .diagnosis-row span {
   color: #66736c;
 }
 
+.consistency-row span {
+  display: block;
+  margin-bottom: 7px;
+  color: #66736c;
+}
+
 .diagnosis-row strong {
+  min-width: 0;
+  color: #143b2d;
+  overflow-wrap: anywhere;
+}
+
+.consistency-row strong {
+  display: block;
   min-width: 0;
   color: #143b2d;
   overflow-wrap: anywhere;
@@ -639,6 +679,7 @@ code {
   .detail-grid,
   .import-grid,
   .diagnosis-grid,
+  .consistency-grid,
   .diagnosis-row,
   .scenario-overview-head,
   .scenario-overview-row,

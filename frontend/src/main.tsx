@@ -93,6 +93,20 @@ type MetadataSourceStatus = {
   execution_enabled: boolean;
 };
 
+type MetadataConsistency = {
+  schema_version: string;
+  generated_at: string;
+  status: "ok" | "warning";
+  scenario_count: number;
+  run_count: number;
+  runs_with_known_scenario: number;
+  runs_with_missing_scenario: string[];
+  runs_with_execution_enabled: string[];
+  writes_enabled: boolean;
+  simulation_enabled: boolean;
+  issue_count: number;
+};
+
 type CapabilityState = {
   enabled: boolean;
   boundary?: string;
@@ -108,7 +122,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "593 Tests", "gruen"],
+  ["Simulationskern", "597 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -124,6 +138,7 @@ function App() {
   const [runs, setRuns] = useState<RunMetadata[]>([]);
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
   const [metadataSource, setMetadataSource] = useState<MetadataSourceStatus | null>(null);
+  const [metadataConsistency, setMetadataConsistency] = useState<MetadataConsistency | null>(null);
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
@@ -139,11 +154,20 @@ function App() {
 
     async function loadMetadata() {
       try {
-        const [scenarioResponse, runResponse, capabilityResponse, sourceResponse, healthResponse, versionResponse] = await Promise.all([
+        const [
+          scenarioResponse,
+          runResponse,
+          capabilityResponse,
+          sourceResponse,
+          consistencyResponse,
+          healthResponse,
+          versionResponse
+        ] = await Promise.all([
           fetch("/api/scenarios"),
           fetch("/api/runs"),
           fetch("/api/metadata/capabilities"),
           fetch("/api/metadata/source"),
+          fetch("/api/metadata/consistency"),
           fetch("/api/health"),
           fetch("/api/version")
         ]);
@@ -152,16 +176,26 @@ function App() {
           !runResponse.ok ||
           !capabilityResponse.ok ||
           !sourceResponse.ok ||
+          !consistencyResponse.ok ||
           !healthResponse.ok ||
           !versionResponse.ok
         ) {
           throw new Error("metadata request failed");
         }
-        const [scenarioPayload, runPayload, capabilityPayload, sourcePayload, healthPayload, versionPayload] = await Promise.all([
+        const [
+          scenarioPayload,
+          runPayload,
+          capabilityPayload,
+          sourcePayload,
+          consistencyPayload,
+          healthPayload,
+          versionPayload
+        ] = await Promise.all([
           scenarioResponse.json() as Promise<MetadataResponse<ScenarioMetadata>>,
           runResponse.json() as Promise<MetadataResponse<RunMetadata>>,
           capabilityResponse.json() as Promise<MetadataCapabilities>,
           sourceResponse.json() as Promise<MetadataSourceStatus>,
+          consistencyResponse.json() as Promise<MetadataConsistency>,
           healthResponse.json() as Promise<HealthStatus>,
           versionResponse.json() as Promise<VersionInfo>
         ]);
@@ -170,6 +204,7 @@ function App() {
           setRuns(runPayload.items);
           setCapabilities(capabilityPayload);
           setMetadataSource(sourcePayload);
+          setMetadataConsistency(consistencyPayload);
           setHealthStatus(healthPayload);
           setVersionInfo(versionPayload);
           setSelectedScenarioId((current) => current ?? scenarioPayload.items[0]?.id ?? null);
@@ -246,6 +281,22 @@ function App() {
     setSelectedRunId(run.id);
     setSelectedScenarioId(run.scenario_id);
   };
+  const missingScenarioLabel = metadataConsistency?.runs_with_missing_scenario.length
+    ? metadataConsistency.runs_with_missing_scenario.join(", ")
+    : "keine";
+  const executionEnabledLabel = metadataConsistency?.runs_with_execution_enabled.length
+    ? metadataConsistency.runs_with_execution_enabled.join(", ")
+    : "keine";
+  const consistencyRows = [
+    ["Szenarien", String(metadataConsistency?.scenario_count ?? scenarios.length)],
+    ["Runs", String(metadataConsistency?.run_count ?? runs.length)],
+    ["Run-Bezuege", `${metadataConsistency?.runs_with_known_scenario ?? 0} bekannt`],
+    ["Fehlende Bezuege", missingScenarioLabel],
+    ["Aktive Ausfuehrung", executionEnabledLabel],
+    ["Schreibpfade", metadataConsistency?.writes_enabled ? "aktiv" : "gesperrt"],
+    ["Simulation", metadataConsistency?.simulation_enabled ? "aktiv" : "gesperrt"],
+    ["Status", metadataConsistency?.status === "warning" ? "Warnung" : "ok"]
+  ];
   const diagnosisRows = [
     ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
     ["Version", versionInfo ? `${versionInfo.name} ${versionInfo.version}` : "laedt"],
@@ -541,6 +592,25 @@ function App() {
           <div className="diagnosis-grid">
             {diagnosisRows.map(([label, value]) => (
               <div className="diagnosis-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel consistency-panel" aria-label="Metadaten-Konsistenz">
+          <div className="panel-heading">
+            <ShieldCheck size={20} aria-hidden="true" />
+            <h2>Metadaten-Konsistenz</h2>
+          </div>
+          <div className="consistency-summary">
+            <span className={`status-dot ${metadataConsistency?.status === "warning" ? "warn" : "ready"}`} />
+            <strong>{metadataConsistency?.issue_count ?? 0} offene Hinweise</strong>
+          </div>
+          <div className="consistency-grid">
+            {consistencyRows.map(([label, value]) => (
+              <div className="consistency-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>

@@ -68,6 +68,19 @@ def test_frontend_shell_declares_readonly_operations_diagnosis():
     assert 'type="file"' not in source
 
 
+def test_frontend_shell_declares_readonly_metadata_consistency_diagnosis():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+
+    assert "Metadaten-Konsistenz" in source
+    assert "/api/metadata/consistency" in source
+    assert "runs_with_missing_scenario" in source
+    assert "runs_with_execution_enabled" in source
+    assert "Schreibpfade" in source
+    assert "Simulation" in source
+    assert "issue_count" in source
+    assert "repair" not in source
+
+
 def test_frontend_shell_declares_readonly_run_overview():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

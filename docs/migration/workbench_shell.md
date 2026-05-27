@@ -12,7 +12,9 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/scenarios/{scenario_id}` und `/api/runs/{run_id}` liefern einzelne Metadatensaetze per ID.
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `/api/metadata/source` beschreibt lesend, ob die Metadatenquelle in-memory oder als SQLite-Datei konfiguriert ist.
+- `/api/metadata/consistency` beschreibt lesend einfache Konsistenzkennzahlen der aktuellen Szenario- und Run-Metadaten.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
+- Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
 - Die Workbench zeigt Szenario-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
@@ -36,6 +38,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
+- Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
 - Die Importvorschau ist rein informativ und enthaelt keinen Upload, Editor oder Browser-Schreibpfad.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
 
@@ -97,12 +100,28 @@ Wenn `IMS_METADATA_DB` gesetzt ist, meldet der Endpunkt `storage_kind = "sqlite"
 
 Diese Antwort erzeugt beim reinen Import oder Quellenabruf keine SQLite-Datei. Die Workbench zeigt diese Information in der lokalen Ablage als reine Diagnose an. `writes_enabled` und `execution_enabled` bleiben dort bewusst `false`.
 
+## Metadaten-Konsistenz
+
+`/api/metadata/consistency` liefert eine stabile, rein lesende Diagnoseform fuer die aktuell geladenen Szenario- und Run-Metadaten. Der Endpunkt nutzt die bestehenden Repository-Listen und Capabilities und startet keine Simulation.
+
+Die Antwort enthaelt:
+
+- Anzahl Szenarien und Runs.
+- Anzahl Runs mit bekannter Szenario-Referenz.
+- Run-IDs mit fehlender Szenario-Referenz.
+- Run-IDs mit `execution_enabled = true`.
+- Status der Schreib- und Simulationsgrenzen.
+- `issue_count` und einen einfachen Status `ok` oder `warning`.
+
+Die Workbench stellt diese Werte als kompakte Diagnose dar. Warnungen sind Hinweise auf Metadatenform oder Betriebsgrenzen; sie oeffnen keinen Reparaturdialog, keinen Import, keinen Editor und keinen Schreibpfad.
+
 ## Smoke-Tests
 
 Die Workbench-Shell ist mit kleinen Smoke-Tests abgesichert:
 
 - API-Health muss erreichbar sein.
 - Version, Metadatenquelle und Capabilities muessen gemeinsam lesbar sein.
+- Die Metadaten-Konsistenz muss lesbar sein und fuer Seed-Daten keine offenen Hinweise melden.
 - Szenario- und Run-Listen muessen lesbar sein.
 - Szenario- und Run-Details muessen fuer IDs aus den Listen lesbar sein.
 - Fehlende Metadaten-IDs muessen die stabile `metadata_not_found`-Fehlerform liefern.
