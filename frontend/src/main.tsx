@@ -108,7 +108,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "592 Tests", "gruen"],
+  ["Simulationskern", "593 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -237,6 +237,7 @@ function App() {
   const primaryScenario = scenarios[0];
   const primaryRun = runs[0];
   const writeLabel = capabilities?.writes.scenario_metadata.enabled ? "aktiv" : "gesperrt";
+  const executionLabel = capabilities?.simulation_execution.enabled ? "aktiv" : "gesperrt";
   const storageLabel = metadataSource?.storage_kind === "sqlite" ? "SQLite-Datei" : "Memory";
   const storagePath = metadataSource?.path ?? "nicht konfiguriert";
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
@@ -430,6 +431,41 @@ function App() {
               </article>
             </div>
           )}
+        </section>
+
+        <section className="panel scenario-overview-panel" aria-label="Szenario-Uebersicht">
+          <div className="panel-heading">
+            <FileText size={20} aria-hidden="true" />
+            <h2>Szenario-Uebersicht</h2>
+          </div>
+          <div className="scenario-overview-table">
+            <div className="scenario-overview-head" aria-hidden="true">
+              <span>Szenario</span>
+              <span>Umfang</span>
+              <span>Quelle</span>
+              <span>Validierung</span>
+              <span>Aktualisiert</span>
+              <span>Ausfuehrung</span>
+            </div>
+            {scenarios.map((scenario) => (
+              <button
+                className={`scenario-overview-row ${scenario.id === selectedScenarioId ? "selected" : ""}`}
+                key={scenario.id}
+                type="button"
+                onClick={() => setSelectedScenarioId(scenario.id)}
+              >
+                <span>
+                  <strong>{scenario.display_name}</strong>
+                  <small>{scenario.status}</small>
+                </span>
+                <span>{scenario.domain_scope}</span>
+                <span>{scenario.source.label}</span>
+                <span>{scenario.validation.scope}</span>
+                <span>{scenario.updated_at}</span>
+                <span>{executionLabel}</span>
+              </button>
+            ))}
+          </div>
         </section>
 
         <section className="panel run-overview-panel" aria-label="Run-Uebersicht">

@@ -78,3 +78,15 @@ def test_frontend_shell_declares_readonly_run_overview():
     assert "execution_enabled" in source
     assert "gesperrt" in source
     assert "startRun" not in source
+
+
+def test_frontend_shell_declares_readonly_scenario_overview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+
+    assert "Szenario-Uebersicht" in source
+    assert "scenario-overview-row" in source
+    assert "domain_scope" in source
+    assert "updated_at" in source
+    assert "validation.scope" in source
+    assert "executionLabel" in source
+    assert "startScenario" not in source

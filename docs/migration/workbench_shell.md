@@ -13,6 +13,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `/api/metadata/source` beschreibt lesend, ob die Metadatenquelle in-memory oder als SQLite-Datei konfiguriert ist.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
+- Die Workbench zeigt Szenario-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
@@ -31,6 +32,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
 - Der lokale CLI-Adapter schreibt nur, wenn ein SQLite-Zielpfad explizit angegeben wird.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
+- Die Szenario-Uebersicht ist rein lesend und enthaelt keine Start-, Upload- oder Editierkontrollen.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
@@ -61,6 +63,12 @@ Die Detail-Endpunkte geben dieselbe Einzelform zurueck, die auch in den Listen u
 ```
 
 Die Workbench nutzt diese Endpunkte fuer eine kompakte Detailansicht zu ausgewaehltem Szenario und Run. Fehler beim Detailabruf werden knapp angezeigt; daraus entsteht kein Editor- oder Start-Workflow.
+
+## Szenario-Uebersicht
+
+Die Workbench zeigt die vorhandenen Szenario-Metadaten in einer kompakten Uebersicht. Sie nutzt weiterhin nur die bestehenden Listen- und Detaildaten aus `/api/scenarios` und `/api/scenarios/{scenario_id}`. Sichtbar sind Szenario-Anzeigename, Status, fachlicher Umfang, Quelle, Validierungsumfang, Aktualisierungszeitpunkt und die globale Ausfuehrungsgrenze.
+
+Die Ausfuehrungsgrenze kommt aus `/api/metadata/capabilities` und bleibt als gesperrt sichtbar. Die Uebersicht bietet keine Start-Schaltflaeche, keinen Editor, keinen Upload und keinen Schreibpfad.
 
 ## Run-Uebersicht
 
@@ -98,6 +106,7 @@ Die Workbench-Shell ist mit kleinen Smoke-Tests abgesichert:
 - Fehlende Metadaten-IDs muessen die stabile `metadata_not_found`-Fehlerform liefern.
 - Eine gebaute Frontend-Struktur aus `index.html` und `/assets` muss statisch ausgeliefert werden.
 - Die Frontend-Shell muss die Detail-, Importvorschau- und Betriebsdiagnose-Vertraege im Quelltext enthalten.
+- Die Szenario-Uebersicht muss Szenario-Daten weiterhin lesend darstellen und die globale Ausfuehrungsgrenze als gesperrt behandeln.
 - Die Run-Uebersicht muss Run-Daten weiterhin lesend darstellen und `execution_enabled` als gesperrte Grenze behandeln.
 
 Das ist bewusst kein vollstaendiger Browser-End-to-End-Test. Interaktion, Layout und echte Browserereignisse werden weiterhin lokal ueber die Vorschau geprueft; der automatisierte Smoke-Test bleibt ohne zusaetzliche Browser-Testabhaengigkeiten.
