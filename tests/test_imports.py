@@ -132,6 +132,12 @@ def test_core_placeholders_import() -> None:
         load_metadata_import,
         parse_metadata_import_payload,
     )
+    from ims.api.metadata_import_cli import (
+        MetadataImportCliResult,
+        check_metadata_import,
+        import_metadata_to_db,
+        main as metadata_import_cli_main,
+    )
     from ims.api.metadata_repository import (
         LazyWorkbenchMetadataRepository,
         MetadataValidationError,
@@ -479,6 +485,10 @@ def test_core_placeholders_import() -> None:
     assert import_metadata_file is not None
     assert load_metadata_import is not None
     assert parse_metadata_import_payload is not None
+    assert MetadataImportCliResult is not None
+    assert check_metadata_import is not None
+    assert import_metadata_to_db is not None
+    assert metadata_import_cli_main is not None
     assert WorkbenchMetadataRepository is not None
     assert LazyWorkbenchMetadataRepository is not None
     assert MetadataValidationError is not None

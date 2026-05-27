@@ -13,6 +13,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
+- `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
 - `python_port[dev]` enthaelt die Web-Testabhaengigkeiten, damit die Standardtests die API-Tests ohne separate manuelle Web-Installation sammeln koennen.
@@ -25,6 +26,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - SQLite wird aktuell nur als lesende, deterministisch geseedete Repository-Schicht an der API genutzt.
 - Interne Repository-Schreibmethoden sind vorbereitet und validiert, aber nicht als API- oder UI-Schreibpfade freigeschaltet.
 - Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
+- Der lokale CLI-Adapter schreibt nur, wenn ein SQLite-Zielpfad explizit angegeben wird.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Importvorschau ist rein informativ und enthaelt keinen Upload, Editor oder Browser-Schreibpfad.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
@@ -97,6 +99,20 @@ Der Capabilities-Endpunkt meldet deshalb weiterhin:
 `ims.api.metadata_import` definiert einen kleinen Importpfad fuer lokale JSON-Dateien. Der Import schreibt nur in die SQLite-Metadatenablage und verwendet die bestehenden Repository-Upserts. Er startet keine Simulation und veraendert keine Fachlogik.
 
 Die Workbench zeigt das erwartete Importformat als lesende Vorschau. Sie erklaert die Top-Level-Felder `schema_version`, `scenarios` und `runs`, verweist auf den Python-Adapter und haelt sichtbar fest, dass `execution_enabled` weiter `false` bleiben muss. Es gibt keinen File-Upload, keinen Browser-Editor und keinen HTTP-Schreibpfad.
+
+Der lokale CLI-Adapter kann dieselbe Datei zuerst nur pruefen:
+
+```powershell
+python -m ims.api.metadata_import_cli check .\metadata_import.json
+```
+
+Ein Import schreibt nur in eine ausdruecklich angegebene SQLite-Datei:
+
+```powershell
+python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
+```
+
+Die Ausgabe ist eine knappe JSON-Statuszeile. Fehler liefern ebenfalls eine stabile JSON-Form mit `status = "error"` und einer kurzen Meldung. Der Adapter liest weder `IMS_METADATA_DB` als implizites Schreibziel noch oeffnet er einen HTTP-Endpunkt. Die API- und UI-Schreibpfade bleiben gesperrt.
 
 Das Importformat ist bewusst nahe an der API-DTO-Form:
 
@@ -171,4 +187,4 @@ Danach ist die Workbench unter `http://localhost:8000/` erreichbar.
 
 ## Anschluss
 
-Der naechste Modernisierungsschritt kann entscheiden, ob zuerst ein kleiner Szenario-Metadaten-Editor oder ein expliziter HTTP-Schreibpfad fuer diese Importgrenze sinnvoller ist. Dabei sollte die bestehende DTO-Grenze erhalten bleiben, ohne den Fachlogikkern direkt mit UI-Zustaenden zu vermischen.
+Der naechste Modernisierungsschritt kann die lokale Metadatenablage sichtbarer machen, etwa durch eine lesende Anzeige der aktiven SQLite-Quelle und der Import-/Seed-Herkunft. Schreibende API- oder UI-Pfade sollten weiterhin separat und explizit entworfen werden. Dabei sollte die bestehende DTO-Grenze erhalten bleiben, ohne den Fachlogikkern direkt mit UI-Zustaenden zu vermischen.
