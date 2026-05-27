@@ -53,6 +53,19 @@ Die Detail-Endpunkte geben dieselbe Einzelform zurueck, die auch in den Listen u
 
 Die Workbench nutzt diese Endpunkte fuer eine kompakte Detailansicht zu ausgewaehltem Szenario und Run. Fehler beim Detailabruf werden knapp angezeigt; daraus entsteht kein Editor- oder Start-Workflow.
 
+## Smoke-Tests
+
+Die Workbench-Shell ist mit kleinen Smoke-Tests abgesichert:
+
+- API-Health muss erreichbar sein.
+- Szenario- und Run-Listen muessen lesbar sein.
+- Szenario- und Run-Details muessen fuer IDs aus den Listen lesbar sein.
+- Fehlende Metadaten-IDs muessen die stabile `metadata_not_found`-Fehlerform liefern.
+- Eine gebaute Frontend-Struktur aus `index.html` und `/assets` muss statisch ausgeliefert werden.
+- Die Frontend-Shell muss die Detail-Endpunkt-Vertraege im Quelltext enthalten.
+
+Das ist bewusst kein vollstaendiger Browser-End-to-End-Test. Interaktion, Layout und echte Browserereignisse werden weiterhin lokal ueber die Vorschau geprueft; der automatisierte Smoke-Test bleibt ohne zusaetzliche Browser-Testabhaengigkeiten.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
