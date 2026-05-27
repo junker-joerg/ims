@@ -11,6 +11,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/runs` liefert lokale Run-Metadaten als versionierte, statische Adapterdaten.
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
+- `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die diese Metadaten liest.
 - `python_port[dev]` enthaelt die Web-Testabhaengigkeiten, damit die Standardtests die API-Tests ohne separate manuelle Web-Installation sammeln koennen.
@@ -22,6 +23,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Keine neue historische Validierungsbehauptung.
 - SQLite wird aktuell nur als lesende, deterministisch geseedete Repository-Schicht an der API genutzt.
 - Interne Repository-Schreibmethoden sind vorbereitet und validiert, aber nicht als API- oder UI-Schreibpfade freigeschaltet.
+- Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
 
 ## Metadatenmodell
@@ -59,6 +61,66 @@ Der Capabilities-Endpunkt meldet deshalb weiterhin:
 - Run-Metadaten-Schreiben: vorbereitet, aber API-seitig deaktiviert.
 - Simulation ausfuehren: deaktiviert.
 
+## Lokaler Metadatenimport
+
+`ims.api.metadata_import` definiert einen kleinen Importpfad fuer lokale JSON-Dateien. Der Import schreibt nur in die SQLite-Metadatenablage und verwendet die bestehenden Repository-Upserts. Er startet keine Simulation und veraendert keine Fachlogik.
+
+Das Importformat ist bewusst nahe an der API-DTO-Form:
+
+```json
+{
+  "schema_version": "ims.workbench.metadata.v1",
+  "scenarios": [
+    {
+      "id": "local-imported-scenario",
+      "display_name": "Lokal importiertes Szenario",
+      "status": "draft",
+      "domain_scope": "Metadaten",
+      "source": {
+        "kind": "fixture",
+        "label": "Lokale Importdatei",
+        "path": "local/metadata.json"
+      },
+      "validation": {
+        "status": "planned",
+        "scope": "keine Fachvalidierung",
+        "claim": "Importiert nur Workbench-Metadaten."
+      },
+      "updated_at": "2026-05-27T00:00:00Z",
+      "notes": "Lokaler Metadatenimport ohne Simulationssteuerung."
+    }
+  ],
+  "runs": [
+    {
+      "id": "local-imported-run",
+      "display_name": "Importierter Metadatenlauf",
+      "scenario_id": "local-imported-scenario",
+      "status": "planned",
+      "source": {
+        "kind": "fixture",
+        "label": "Lokale Importdatei",
+        "path": "local/metadata.json"
+      },
+      "validation": {
+        "status": "planned",
+        "scope": "keine Simulation",
+        "claim": "Beschreibender Run-Metadatensatz."
+      },
+      "period_window": "keine Simulation",
+      "execution_enabled": false,
+      "updated_at": "2026-05-27T00:00:00Z"
+    }
+  ]
+}
+```
+
+Der Import validiert:
+
+- Pflichtfelder muessen vorhanden und nicht leer sein.
+- `schema_version` muss zur aktuellen Metadatenform passen.
+- Run-Eintraege duerfen nur auf vorhandene oder im selben Import enthaltene Szenarien verweisen.
+- `execution_enabled` muss `false` bleiben.
+
 ## Lokaler Start
 
 ```powershell
@@ -74,4 +136,4 @@ Danach ist die Workbench unter `http://localhost:8000/` erreichbar.
 
 ## Anschluss
 
-Der naechste Modernisierungsschritt kann entscheiden, ob zuerst ein kleiner Szenario-Metadaten-Editor oder ein expliziter Importpfad fuer lokale Metadaten sinnvoller ist. Dabei sollte die bestehende DTO-Grenze erhalten bleiben, ohne den Fachlogikkern direkt mit UI-Zustaenden zu vermischen.
+Der naechste Modernisierungsschritt kann entscheiden, ob zuerst ein kleiner Szenario-Metadaten-Editor oder ein expliziter HTTP-Schreibpfad fuer diese Importgrenze sinnvoller ist. Dabei sollte die bestehende DTO-Grenze erhalten bleiben, ohne den Fachlogikkern direkt mit UI-Zustaenden zu vermischen.
