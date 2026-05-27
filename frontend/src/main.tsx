@@ -108,7 +108,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "591 Tests", "gruen"],
+  ["Simulationskern", "592 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -240,6 +240,7 @@ function App() {
   const storageLabel = metadataSource?.storage_kind === "sqlite" ? "SQLite-Datei" : "Memory";
   const storagePath = metadataSource?.path ?? "nicht konfiguriert";
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
+  const scenarioNameById = new Map(scenarios.map((scenario) => [scenario.id, scenario.display_name]));
   const diagnosisRows = [
     ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
     ["Version", versionInfo ? `${versionInfo.name} ${versionInfo.version}` : "laedt"],
@@ -429,6 +430,39 @@ function App() {
               </article>
             </div>
           )}
+        </section>
+
+        <section className="panel run-overview-panel" aria-label="Run-Uebersicht">
+          <div className="panel-heading">
+            <Archive size={20} aria-hidden="true" />
+            <h2>Run-Uebersicht</h2>
+          </div>
+          <div className="run-overview-table">
+            <div className="run-overview-head" aria-hidden="true">
+              <span>Run</span>
+              <span>Szenario</span>
+              <span>Fenster</span>
+              <span>Quelle</span>
+              <span>Ausfuehrung</span>
+            </div>
+            {runs.map((run) => (
+              <button
+                className={`run-overview-row ${run.id === selectedRunId ? "selected" : ""}`}
+                key={run.id}
+                type="button"
+                onClick={() => setSelectedRunId(run.id)}
+              >
+                <span>
+                  <strong>{run.display_name}</strong>
+                  <small>{run.status}</small>
+                </span>
+                <span>{scenarioNameById.get(run.scenario_id) ?? run.scenario_id}</span>
+                <span>{run.period_window}</span>
+                <span>{run.source.label}</span>
+                <span>{run.execution_enabled ? "aktiv" : "gesperrt"}</span>
+              </button>
+            ))}
+          </div>
         </section>
 
         <section className="panel import-panel" aria-label="Importvorschau">

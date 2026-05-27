@@ -365,6 +365,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.run-overview-panel {
+  margin-bottom: 18px;
+}
+
 .import-panel {
   margin-bottom: 18px;
 }
@@ -515,6 +519,68 @@ code {
   overflow-wrap: anywhere;
 }
 
+.run-overview-table {
+  display: grid;
+  gap: 8px;
+}
+
+.run-overview-head,
+.run-overview-row {
+  display: grid;
+  grid-template-columns:
+    minmax(170px, 1.25fr)
+    minmax(150px, 1fr)
+    minmax(120px, 0.8fr)
+    minmax(130px, 0.8fr)
+    minmax(98px, 0.55fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.run-overview-head {
+  min-height: 28px;
+  padding: 0 10px;
+  color: #66736c;
+  font-size: 0.88rem;
+}
+
+.run-overview-row {
+  width: 100%;
+  min-height: 52px;
+  padding: 9px 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.run-overview-row:hover,
+.run-overview-row.selected {
+  border-color: #9fb7aa;
+  background: #eef5f1;
+}
+
+.run-overview-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.run-overview-row strong,
+.run-overview-row small {
+  display: block;
+}
+
+.run-overview-row strong {
+  color: #143b2d;
+}
+
+.run-overview-row small {
+  margin-top: 3px;
+  color: #66736c;
+}
+
 @media (max-width: 1120px) {
   .topbar {
     align-items: flex-start;
@@ -546,6 +612,8 @@ code {
   .import-grid,
   .diagnosis-grid,
   .diagnosis-row,
+  .run-overview-head,
+  .run-overview-row,
   .scenario-strip,
   .validation-row {
     grid-template-columns: 1fr;

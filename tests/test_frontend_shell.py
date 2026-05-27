@@ -66,3 +66,15 @@ def test_frontend_shell_declares_readonly_operations_diagnosis():
     assert "/api/metadata/capabilities" in source
     assert "lokal per CLI" in source
     assert 'type="file"' not in source
+
+
+def test_frontend_shell_declares_readonly_run_overview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+
+    assert "Run-Uebersicht" in source
+    assert "run-overview-row" in source
+    assert "period_window" in source
+    assert "scenario_id" in source
+    assert "execution_enabled" in source
+    assert "gesperrt" in source
+    assert "startRun" not in source

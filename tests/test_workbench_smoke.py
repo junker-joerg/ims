@@ -37,6 +37,11 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
 
     scenario_id = scenarios.json()["items"][0]["id"]
     run_id = runs.json()["items"][0]["id"]
+    assert runs.json()["items"][0]["display_name"]
+    assert runs.json()["items"][0]["scenario_id"]
+    assert runs.json()["items"][0]["period_window"]
+    assert runs.json()["items"][0]["source"]["label"]
+    assert runs.json()["items"][0]["execution_enabled"] is False
     scenario_detail = client.get(f"/api/scenarios/{scenario_id}")
     run_detail = client.get(f"/api/runs/{run_id}")
 
@@ -77,8 +82,10 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
 
     assert "Importvorschau" in source
     assert "Betriebsdiagnose" in source
+    assert "Run-Uebersicht" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Browser schreibt keine Metadaten" in source
     assert "Metadatenquelle" in source
     assert "lokal per CLI" in source
+    assert "run-overview-row" in source
     assert 'type="file"' not in source
