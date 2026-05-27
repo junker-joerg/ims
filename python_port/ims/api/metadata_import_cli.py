@@ -39,6 +39,39 @@ class MetadataImportCliResult:
         return payload
 
 
+@dataclass(frozen=True)
+class MetadataImportPreviewResult:
+    mode: str
+    scenario_count: int
+    run_count: int
+    scenario_ids: tuple[str, ...]
+    run_ids: tuple[str, ...]
+    existing_scenario_ids: tuple[str, ...]
+    existing_run_ids: tuple[str, ...]
+    new_scenario_ids: tuple[str, ...]
+    new_run_ids: tuple[str, ...]
+    runs_with_missing_scenario: tuple[str, ...]
+    runs_with_execution_enabled: tuple[str, ...]
+    writes_performed: bool = False
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "mode": self.mode,
+            "scenario_count": self.scenario_count,
+            "run_count": self.run_count,
+            "scenario_ids": list(self.scenario_ids),
+            "run_ids": list(self.run_ids),
+            "existing_scenario_ids": list(self.existing_scenario_ids),
+            "existing_run_ids": list(self.existing_run_ids),
+            "new_scenario_ids": list(self.new_scenario_ids),
+            "new_run_ids": list(self.new_run_ids),
+            "runs_with_missing_scenario": list(self.runs_with_missing_scenario),
+            "runs_with_execution_enabled": list(self.runs_with_execution_enabled),
+            "writes_performed": self.writes_performed,
+        }
+
+
 def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
     bundle = load_metadata_import(path)
     validate_metadata_bundle(bundle, build_seeded_metadata_repository())
@@ -48,6 +81,35 @@ def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
         run_count=len(bundle.runs),
         scenario_ids=tuple(scenario.id for scenario in bundle.scenarios),
         run_ids=tuple(run.id for run in bundle.runs),
+    )
+
+
+def preview_metadata_import(path: Path | str) -> MetadataImportPreviewResult:
+    bundle = load_metadata_import(path)
+    repository = build_seeded_metadata_repository()
+    existing_scenario_ids = _repository_ids(repository.list_scenarios())
+    existing_run_ids = _repository_ids(repository.list_runs())
+    scenario_ids = tuple(scenario.id for scenario in bundle.scenarios)
+    run_ids = tuple(run.id for run in bundle.runs)
+    known_scenario_ids = set(existing_scenario_ids) | set(scenario_ids)
+    runs_with_missing_scenario = tuple(
+        run.id for run in bundle.runs if run.scenario_id not in known_scenario_ids
+    )
+    runs_with_execution_enabled = tuple(run.id for run in bundle.runs if run.execution_enabled)
+
+    validate_metadata_bundle(bundle, repository)
+    return MetadataImportPreviewResult(
+        mode="preview",
+        scenario_count=len(bundle.scenarios),
+        run_count=len(bundle.runs),
+        scenario_ids=scenario_ids,
+        run_ids=run_ids,
+        existing_scenario_ids=tuple(scenario_id for scenario_id in scenario_ids if scenario_id in existing_scenario_ids),
+        existing_run_ids=tuple(run_id for run_id in run_ids if run_id in existing_run_ids),
+        new_scenario_ids=tuple(scenario_id for scenario_id in scenario_ids if scenario_id not in existing_scenario_ids),
+        new_run_ids=tuple(run_id for run_id in run_ids if run_id not in existing_run_ids),
+        runs_with_missing_scenario=runs_with_missing_scenario,
+        runs_with_execution_enabled=runs_with_execution_enabled,
     )
 
 
@@ -63,6 +125,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         if args.command == "check":
             _print_json(check_metadata_import(args.path).to_dict())
+        elif args.command == "preview":
+            _print_json(preview_metadata_import(args.path).to_dict())
         elif args.command == "import":
             _print_json(import_metadata_to_db(args.path, args.db).to_dict())
         else:
@@ -84,6 +148,17 @@ def _cli_result_from_import(result: MetadataImportResult, db_path: Path | str) -
     )
 
 
+def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
+    items = payload.get("items", [])
+    if not isinstance(items, list):
+        return ()
+    return tuple(
+        item["id"]
+        for item in items
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    )
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m ims.api.metadata_import_cli",
@@ -93,6 +168,9 @@ def _build_parser() -> argparse.ArgumentParser:
 
     check_parser = subparsers.add_parser("check", help="JSON-Metadaten pruefen, ohne zu schreiben.")
     check_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")
+
+    preview_parser = subparsers.add_parser("preview", help="JSON-Metadaten pruefen und Importvorschau ausgeben.")
+    preview_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")
 
     import_parser = subparsers.add_parser("import", help="JSON-Metadaten in eine explizite SQLite-Datei importieren.")
     import_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")
