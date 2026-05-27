@@ -369,6 +369,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.diagnosis-panel {
+  margin-bottom: 18px;
+}
+
 .detail-status {
   display: flex;
   align-items: center;
@@ -483,6 +487,34 @@ code {
   line-height: 1.45;
 }
 
+.diagnosis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.diagnosis-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
+.diagnosis-row span {
+  color: #66736c;
+}
+
+.diagnosis-row strong {
+  min-width: 0;
+  color: #143b2d;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 1120px) {
   .topbar {
     align-items: flex-start;
@@ -512,6 +544,8 @@ code {
   .work-grid,
   .detail-grid,
   .import-grid,
+  .diagnosis-grid,
+  .diagnosis-row,
   .scenario-strip,
   .validation-row {
     grid-template-columns: 1fr;

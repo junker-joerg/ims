@@ -12,6 +12,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/scenarios/{scenario_id}` und `/api/runs/{run_id}` liefern einzelne Metadatensaetze per ID.
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `/api/metadata/source` beschreibt lesend, ob die Metadatenquelle in-memory oder als SQLite-Datei konfiguriert ist.
+- Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -30,6 +31,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale CLI-Adapter schreibt nur, wenn ein SQLite-Zielpfad explizit angegeben wird.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
+- Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Importvorschau ist rein informativ und enthaelt keinen Upload, Editor oder Browser-Schreibpfad.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
 
@@ -82,13 +84,25 @@ Diese Antwort erzeugt beim reinen Import oder Quellenabruf keine SQLite-Datei. D
 Die Workbench-Shell ist mit kleinen Smoke-Tests abgesichert:
 
 - API-Health muss erreichbar sein.
+- Version, Metadatenquelle und Capabilities muessen gemeinsam lesbar sein.
 - Szenario- und Run-Listen muessen lesbar sein.
 - Szenario- und Run-Details muessen fuer IDs aus den Listen lesbar sein.
 - Fehlende Metadaten-IDs muessen die stabile `metadata_not_found`-Fehlerform liefern.
 - Eine gebaute Frontend-Struktur aus `index.html` und `/assets` muss statisch ausgeliefert werden.
-- Die Frontend-Shell muss die Detail-Endpunkt-Vertraege im Quelltext enthalten.
+- Die Frontend-Shell muss die Detail-, Importvorschau- und Betriebsdiagnose-Vertraege im Quelltext enthalten.
 
 Das ist bewusst kein vollstaendiger Browser-End-to-End-Test. Interaktion, Layout und echte Browserereignisse werden weiterhin lokal ueber die Vorschau geprueft; der automatisierte Smoke-Test bleibt ohne zusaetzliche Browser-Testabhaengigkeiten.
+
+## Betriebsdiagnose
+
+Die Workbench zeigt eine kompakte Betriebsdiagnose aus bestehenden Endpunkten:
+
+- `/api/health` fuer Backend-Status und gebautes Frontend.
+- `/api/version` fuer Name und Version der Workbench-Shell.
+- `/api/metadata/source` fuer die aktuelle Metadatenquelle.
+- `/api/metadata/capabilities` fuer gesperrte Schreib- und Ausfuehrungsgrenzen.
+
+Diese Diagnose ist rein lesend. Sie bestaetigt, dass Schreibpfade, Simulation und Browser-Import weiter gesperrt sind, und verweist fuer den Import nur auf den lokalen CLI-Adapter. Sie ist kein Editor, kein Upload-Workflow und kein Startpunkt fuer echte Simulationen.
 
 ## SQLite-Vorbereitung
 
