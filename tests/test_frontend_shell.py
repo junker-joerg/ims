@@ -45,3 +45,12 @@ def test_frontend_shell_declares_readonly_import_preview():
     assert "execution_enabled" in source
     assert "Browser schreibt keine Metadaten" in source
     assert 'type="file"' not in source
+
+
+def test_frontend_shell_declares_metadata_source_status():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+
+    assert "/api/metadata/source" in source
+    assert "Metadatenquelle" in source
+    assert "storage_kind" in source
+    assert "writes_enabled" in source
