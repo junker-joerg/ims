@@ -9,7 +9,7 @@ from starlette.responses import FileResponse, JSONResponse
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
+from ims.api.metadata import metadata_capabilities
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 
 try:
@@ -34,6 +34,9 @@ class MetadataRepositoryReader(Protocol):
     def get_run(self, run_id: str) -> dict[str, object] | None:
         ...
 
+    def metadata_source(self) -> dict[str, object]:
+        ...
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
@@ -51,20 +54,6 @@ def _metadata_db_path() -> Path | str:
     if configured:
         return Path(configured).expanduser().resolve()
     return ":memory:"
-
-
-def _metadata_source_payload(metadata_db_path: Path | str) -> dict[str, object]:
-    configured = metadata_db_path != ":memory:"
-    payload: dict[str, object] = {
-        "schema_version": METADATA_SCHEMA_VERSION,
-        "storage_kind": "sqlite" if configured else "memory",
-        "configured": configured,
-        "writes_enabled": False,
-        "execution_enabled": False,
-    }
-    if configured:
-        payload["path"] = str(metadata_db_path)
-    return payload
 
 
 def _version_payload() -> dict[str, str]:
@@ -93,7 +82,9 @@ def create_app(
     dist_dir = frontend_dist or _frontend_dist_dir()
     metadata_db_path = _metadata_db_path()
     repository = metadata_repository or LazyWorkbenchMetadataRepository(metadata_db_path)
-    metadata_source = _metadata_source_payload(metadata_db_path)
+    metadata_source = repository.metadata_source()
+    if metadata_repository is not None:
+        metadata_source = {**metadata_source, "injected": True}
 
     def health_payload() -> dict[str, Any]:
         return {

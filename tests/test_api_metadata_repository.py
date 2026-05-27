@@ -48,6 +48,34 @@ def test_repository_reads_single_scenario_and_run_by_id(tmp_path):
     assert run["execution_enabled"] is False
 
 
+def test_repository_reports_metadata_source_from_connection(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+
+    assert repository.metadata_source() == {
+        "schema_version": "ims.workbench.metadata.v1",
+        "storage_kind": "sqlite",
+        "configured": True,
+        "injected": False,
+        "path": str(db_path.resolve()),
+        "writes_enabled": False,
+        "execution_enabled": False,
+    }
+
+
+def test_repository_reports_in_memory_metadata_source():
+    repository = build_seeded_metadata_repository()
+
+    assert repository.metadata_source() == {
+        "schema_version": "ims.workbench.metadata.v1",
+        "storage_kind": "memory",
+        "configured": False,
+        "injected": False,
+        "writes_enabled": False,
+        "execution_enabled": False,
+    }
+
+
 def test_repository_returns_none_for_missing_metadata_ids(tmp_path):
     repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
 

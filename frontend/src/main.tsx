@@ -73,6 +73,7 @@ type MetadataSourceStatus = {
   schema_version: string;
   storage_kind: "memory" | "sqlite";
   configured: boolean;
+  injected: boolean;
   path?: string;
   writes_enabled: boolean;
   execution_enabled: boolean;
@@ -93,7 +94,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "587 Tests", "gruen"],
+  ["Simulationskern", "590 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];

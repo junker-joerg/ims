@@ -146,6 +146,7 @@ def test_core_placeholders_import() -> None:
         build_seeded_metadata_repository,
         connect_metadata_db,
         initialize_metadata_schema,
+        metadata_source_payload,
         seed_metadata,
     )
     from ims.model.agrsich_export import (
@@ -497,6 +498,7 @@ def test_core_placeholders_import() -> None:
     assert build_seeded_metadata_repository is not None
     assert connect_metadata_db is not None
     assert initialize_metadata_schema is not None
+    assert metadata_source_payload(":memory:")["storage_kind"] == "memory"
     assert seed_metadata is not None
     assert AggregateSnapshot is not None
     assert collect_basic_aggregates is not None

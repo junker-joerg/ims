@@ -154,6 +154,9 @@ class WorkbenchMetadataRepository:
     def __init__(self, connection: sqlite3.Connection) -> None:
         self._connection = connection
 
+    def metadata_source(self) -> dict[str, object]:
+        return metadata_source_payload(_metadata_connection_path(self._connection))
+
     def list_scenarios(self) -> dict[str, object]:
         rows = self._connection.execute(
             """
@@ -356,6 +359,9 @@ class LazyWorkbenchMetadataRepository:
             self._repository = build_seeded_metadata_repository(self._path)
         return self._repository
 
+    def metadata_source(self) -> dict[str, object]:
+        return metadata_source_payload(self._path)
+
     def list_scenarios(self) -> dict[str, object]:
         return self._get_repository().list_scenarios()
 
@@ -450,6 +456,32 @@ def _run_values(run: RunMetadata) -> tuple[object, ...]:
         int(run.execution_enabled),
         run.updated_at,
     )
+
+
+def metadata_source_payload(path: Path | str, *, injected: bool = False) -> dict[str, object]:
+    configured = path != ":memory:"
+    resolved_path = Path(path).expanduser().resolve() if configured else None
+    payload: dict[str, object] = {
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "storage_kind": "sqlite" if configured else "memory",
+        "configured": configured,
+        "injected": injected,
+        "writes_enabled": False,
+        "execution_enabled": False,
+    }
+    if configured:
+        payload["path"] = str(resolved_path)
+    return payload
+
+
+def _metadata_connection_path(connection: sqlite3.Connection) -> Path | str:
+    rows = connection.execute("PRAGMA database_list").fetchall()
+    for row in rows:
+        if row["name"] == "main":
+            file_path = row["file"]
+            if file_path:
+                return Path(file_path).resolve()
+    return ":memory:"
 
 
 def _validate_scenario_metadata(scenario: ScenarioMetadata) -> None:
