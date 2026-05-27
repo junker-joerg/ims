@@ -14,10 +14,14 @@ dependencies = []
 dev = [
     "pytest>=8.0",
 ]
+web = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 addopts = "-q ../tests"
 
 [tool.setuptools]
-packages = ["ims", "ims.model", "ims.engine", "ims.io", "ims.analysis"]
+packages = ["ims", "ims.analysis", "ims.api", "ims.model", "ims.engine", "ims.io"]
