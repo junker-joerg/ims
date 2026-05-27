@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import {
   Activity,
   Archive,
+  Braces,
   CheckCircle2,
   CircleDot,
   Database,
@@ -83,9 +84,15 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "560 Tests", "gruen"],
+  ["Simulationskern", "578 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
+];
+
+const importShapeRows = [
+  ["schema_version", "ims.workbench.metadata.v1"],
+  ["scenarios", "Szenario-Metadaten"],
+  ["runs", "Run-Metadaten"]
 ];
 
 function App() {
@@ -354,6 +361,34 @@ function App() {
               </article>
             </div>
           )}
+        </section>
+
+        <section className="panel import-panel" aria-label="Importvorschau">
+          <div className="panel-heading">
+            <Braces size={20} aria-hidden="true" />
+            <h2>Importvorschau</h2>
+          </div>
+          <div className="import-grid">
+            <article>
+              <span>JSON-Struktur</span>
+              <div className="shape-list">
+                {importShapeRows.map(([field, meaning]) => (
+                  <div className="shape-row" key={field}>
+                    <code>{field}</code>
+                    <strong>{meaning}</strong>
+                  </div>
+                ))}
+              </div>
+            </article>
+            <article>
+              <span>Grenzen</span>
+              <ul className="boundary-list">
+                <li>Import aktuell nur ueber Python-Adapter</li>
+                <li><code>execution_enabled</code> bleibt <code>false</code></li>
+                <li>Browser schreibt keine Metadaten</li>
+              </ul>
+            </article>
+          </div>
         </section>
 
         <section className="panel validation-panel" id="validation">

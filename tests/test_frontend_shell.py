@@ -35,3 +35,13 @@ def test_frontend_shell_declares_detail_metadata_contract():
     assert "/api/runs/${encodeURIComponent(selectedRunId)}" in source
     assert "Metadaten-Detail" in source
     assert "Detaildaten nicht erreichbar" in source
+
+
+def test_frontend_shell_declares_readonly_import_preview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+
+    assert "Importvorschau" in source
+    assert "schema_version" in source
+    assert "execution_enabled" in source
+    assert "Browser schreibt keine Metadaten" in source
+    assert 'type="file"' not in source
