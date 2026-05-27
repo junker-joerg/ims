@@ -26,3 +26,12 @@ def test_frontend_shell_sources_exist():
     assert (FRONTEND_DIR / "index.html").is_file()
     assert (FRONTEND_DIR / "src" / "main.tsx").is_file()
     assert (FRONTEND_DIR / "src" / "styles.css").is_file()
+
+
+def test_frontend_shell_declares_detail_metadata_contract():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+
+    assert "/api/scenarios/${encodeURIComponent(selectedScenarioId)}" in source
+    assert "/api/runs/${encodeURIComponent(selectedRunId)}" in source
+    assert "Metadaten-Detail" in source
+    assert "Detaildaten nicht erreichbar" in source
