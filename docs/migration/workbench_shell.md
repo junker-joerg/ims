@@ -9,6 +9,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/version` meldet Name und Version der Workbench-Shell.
 - `/api/scenarios` liefert lokale Szenario-Metadaten als versionierte, statische Adapterdaten.
 - `/api/runs` liefert lokale Run-Metadaten als versionierte, statische Adapterdaten.
+- `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die diese Metadaten liest.
@@ -19,7 +20,8 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Keine Steuerung echter Fachlogiklaeufe.
 - Keine Aenderung am Simulationskern.
 - Keine neue historische Validierungsbehauptung.
-- SQLite wird aktuell nur als lesende, deterministisch geseedete Repository-Schicht vorbereitet.
+- SQLite wird aktuell nur als lesende, deterministisch geseedete Repository-Schicht an der API genutzt.
+- Interne Repository-Schreibmethoden sind vorbereitet und validiert, aber nicht als API- oder UI-Schreibpfade freigeschaltet.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
 
 ## Metadatenmodell
@@ -34,7 +36,9 @@ Szenario-Eintraege enthalten ID, Anzeigename, Status, fachlichen Umfang, Quelle,
 
 ## SQLite-Vorbereitung
 
-Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
+Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
+
+Die Default-App baut die SQLite-Verbindung lazy beim ersten Metadatenzugriff auf. Ein reiner Import von `ims.api.app` darf dadurch keine konfigurierte `IMS_METADATA_DB` anlegen oder veraendern.
 
 Ohne weitere Konfiguration verwendet die Backend-Shell eine in-memory-Datenbank. Fuer lokale Dateiablage kann `IMS_METADATA_DB` gesetzt werden:
 
@@ -44,6 +48,16 @@ python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 
 ```
 
 Auch mit Dateiablage bleibt dieser Schritt lesend aus Sicht der API: Es gibt keine UI-Schreibpfade und keine Endpunkte zum Anlegen oder Veraendern von Metadaten.
+
+## Schreibgrenzen
+
+Die Repository-Schicht kennt vorbereitete Upsert-Methoden fuer Szenario- und Run-Metadaten. Diese Methoden validieren die minimale Metadatenform und lehnen `execution_enabled = true` fuer Runs ab. Damit wird verhindert, dass Metadatenpflege versehentlich als Run-Steuerung verstanden wird.
+
+Der Capabilities-Endpunkt meldet deshalb weiterhin:
+
+- Szenario-Metadaten-Schreiben: vorbereitet, aber API-seitig deaktiviert.
+- Run-Metadaten-Schreiben: vorbereitet, aber API-seitig deaktiviert.
+- Simulation ausfuehren: deaktiviert.
 
 ## Lokaler Start
 
@@ -60,4 +74,4 @@ Danach ist die Workbench unter `http://localhost:8000/` erreichbar.
 
 ## Anschluss
 
-Der naechste Modernisierungsschritt kann kontrollierte Metadaten-Schreibpfade entwerfen. Dabei sollte die bestehende DTO-Grenze erhalten bleiben, ohne den Fachlogikkern direkt mit UI-Zustaenden zu vermischen.
+Der naechste Modernisierungsschritt kann entscheiden, ob zuerst ein kleiner Szenario-Metadaten-Editor oder ein expliziter Importpfad fuer lokale Metadaten sinnvoller ist. Dabei sollte die bestehende DTO-Grenze erhalten bleiben, ohne den Fachlogikkern direkt mit UI-Zustaenden zu vermischen.

@@ -1,4 +1,4 @@
-from ims.api.metadata import list_run_metadata, list_scenario_metadata
+from ims.api.metadata import list_run_metadata, list_scenario_metadata, metadata_capabilities
 
 
 def test_scenario_metadata_schema_is_stable():
@@ -40,4 +40,13 @@ def test_run_metadata_schema_keeps_execution_disabled():
         "updated_at",
     }
     assert run["execution_enabled"] is False
-    assert run["validation"]["scope"] == "548 Tests"
+    assert run["validation"]["scope"] == "560 Tests"
+
+
+def test_metadata_capabilities_document_disabled_write_boundary():
+    payload = metadata_capabilities()
+
+    assert payload["schema_version"] == "ims.workbench.metadata.v1"
+    assert payload["writes"]["scenario_metadata"]["enabled"] is False
+    assert payload["writes"]["run_metadata"]["enabled"] is False
+    assert payload["simulation_execution"]["enabled"] is False

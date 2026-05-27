@@ -52,6 +52,10 @@ SCHEMA_STATEMENTS = (
 )
 
 
+class MetadataValidationError(ValueError):
+    pass
+
+
 def connect_metadata_db(path: Path | str) -> sqlite3.Connection:
     if path != ":memory:":
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -77,7 +81,7 @@ def seed_metadata(
         for scenario in scenarios:
             connection.execute(
                 """
-                INSERT OR REPLACE INTO scenarios (
+                INSERT OR IGNORE INTO scenarios (
                     id,
                     display_name,
                     status,
@@ -111,7 +115,7 @@ def seed_metadata(
         for run in runs:
             connection.execute(
                 """
-                INSERT OR REPLACE INTO runs (
+                INSERT OR IGNORE INTO runs (
                     id,
                     display_name,
                     scenario_id,
@@ -203,12 +207,103 @@ class WorkbenchMetadataRepository:
             "items": [_run_row_to_dict(row) for row in rows],
         }
 
+    def upsert_scenario(self, scenario: ScenarioMetadata) -> None:
+        _validate_scenario_metadata(scenario)
+        with self._connection:
+            self._connection.execute(
+                """
+                INSERT INTO scenarios (
+                    id,
+                    display_name,
+                    status,
+                    domain_scope,
+                    source_kind,
+                    source_label,
+                    source_path,
+                    validation_status,
+                    validation_scope,
+                    validation_claim,
+                    updated_at,
+                    notes
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id) DO UPDATE SET
+                    display_name = excluded.display_name,
+                    status = excluded.status,
+                    domain_scope = excluded.domain_scope,
+                    source_kind = excluded.source_kind,
+                    source_label = excluded.source_label,
+                    source_path = excluded.source_path,
+                    validation_status = excluded.validation_status,
+                    validation_scope = excluded.validation_scope,
+                    validation_claim = excluded.validation_claim,
+                    updated_at = excluded.updated_at,
+                    notes = excluded.notes
+                """,
+                _scenario_values(scenario),
+            )
+
+    def upsert_run(self, run: RunMetadata) -> None:
+        _validate_run_metadata(run)
+        with self._connection:
+            self._connection.execute(
+                """
+                INSERT INTO runs (
+                    id,
+                    display_name,
+                    scenario_id,
+                    status,
+                    source_kind,
+                    source_label,
+                    source_path,
+                    validation_status,
+                    validation_scope,
+                    validation_claim,
+                    period_window,
+                    execution_enabled,
+                    updated_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id) DO UPDATE SET
+                    display_name = excluded.display_name,
+                    scenario_id = excluded.scenario_id,
+                    status = excluded.status,
+                    source_kind = excluded.source_kind,
+                    source_label = excluded.source_label,
+                    source_path = excluded.source_path,
+                    validation_status = excluded.validation_status,
+                    validation_scope = excluded.validation_scope,
+                    validation_claim = excluded.validation_claim,
+                    period_window = excluded.period_window,
+                    execution_enabled = excluded.execution_enabled,
+                    updated_at = excluded.updated_at
+                """,
+                _run_values(run),
+            )
+
 
 def build_seeded_metadata_repository(path: Path | str = ":memory:") -> WorkbenchMetadataRepository:
     connection = connect_metadata_db(path)
     initialize_metadata_schema(connection)
     seed_metadata(connection)
     return WorkbenchMetadataRepository(connection)
+
+
+class LazyWorkbenchMetadataRepository:
+    def __init__(self, path: Path | str) -> None:
+        self._path = path
+        self._repository: WorkbenchMetadataRepository | None = None
+
+    def _get_repository(self) -> WorkbenchMetadataRepository:
+        if self._repository is None:
+            self._repository = build_seeded_metadata_repository(self._path)
+        return self._repository
+
+    def list_scenarios(self) -> dict[str, object]:
+        return self._get_repository().list_scenarios()
+
+    def list_runs(self) -> dict[str, object]:
+        return self._get_repository().list_runs()
 
 
 def _scenario_row_to_dict(row: sqlite3.Row) -> dict[str, object]:
@@ -257,3 +352,66 @@ def _run_row_to_dict(row: sqlite3.Row) -> dict[str, object]:
 def seeded_metadata_as_dicts() -> tuple[dict[str, object], dict[str, object]]:
     repository = build_seeded_metadata_repository()
     return repository.list_scenarios(), repository.list_runs()
+
+
+def _scenario_values(scenario: ScenarioMetadata) -> tuple[object, ...]:
+    return (
+        scenario.id,
+        scenario.display_name,
+        scenario.status,
+        scenario.domain_scope,
+        scenario.source.kind,
+        scenario.source.label,
+        scenario.source.path,
+        scenario.validation.status,
+        scenario.validation.scope,
+        scenario.validation.claim,
+        scenario.updated_at,
+        scenario.notes,
+    )
+
+
+def _run_values(run: RunMetadata) -> tuple[object, ...]:
+    return (
+        run.id,
+        run.display_name,
+        run.scenario_id,
+        run.status,
+        run.source.kind,
+        run.source.label,
+        run.source.path,
+        run.validation.status,
+        run.validation.scope,
+        run.validation.claim,
+        run.period_window,
+        int(run.execution_enabled),
+        run.updated_at,
+    )
+
+
+def _validate_scenario_metadata(scenario: ScenarioMetadata) -> None:
+    _require_text(scenario.id, "scenario.id")
+    _require_text(scenario.display_name, "scenario.display_name")
+    _require_text(scenario.domain_scope, "scenario.domain_scope")
+    _require_text(scenario.updated_at, "scenario.updated_at")
+    _require_text(scenario.source.label, "scenario.source.label")
+    _require_text(scenario.validation.scope, "scenario.validation.scope")
+    _require_text(scenario.validation.claim, "scenario.validation.claim")
+
+
+def _validate_run_metadata(run: RunMetadata) -> None:
+    _require_text(run.id, "run.id")
+    _require_text(run.display_name, "run.display_name")
+    _require_text(run.scenario_id, "run.scenario_id")
+    _require_text(run.period_window, "run.period_window")
+    _require_text(run.updated_at, "run.updated_at")
+    _require_text(run.source.label, "run.source.label")
+    _require_text(run.validation.scope, "run.validation.scope")
+    _require_text(run.validation.claim, "run.validation.claim")
+    if run.execution_enabled:
+        raise MetadataValidationError("run.execution_enabled must remain false until run control exists")
+
+
+def _require_text(value: str, field_name: str) -> None:
+    if not value.strip():
+        raise MetadataValidationError(f"{field_name} must not be empty")

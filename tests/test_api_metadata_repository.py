@@ -1,5 +1,10 @@
-from ims.api.metadata import list_run_metadata, list_scenario_metadata
+from dataclasses import replace
+
+import pytest
+
+from ims.api.metadata import RUNS, SCENARIOS, list_run_metadata, list_scenario_metadata
 from ims.api.metadata_repository import (
+    MetadataValidationError,
     WorkbenchMetadataRepository,
     build_seeded_metadata_repository,
     connect_metadata_db,
@@ -36,4 +41,35 @@ def test_repository_creates_parent_directory_for_local_db(tmp_path):
     repository = build_seeded_metadata_repository(db_path)
 
     assert db_path.is_file()
-    assert repository.list_runs()["items"][0]["validation"]["scope"] == "548 Tests"
+    assert repository.list_runs()["items"][0]["validation"]["scope"] == "560 Tests"
+
+
+def test_seed_metadata_does_not_overwrite_existing_local_rows(tmp_path):
+    connection = connect_metadata_db(tmp_path / "metadata.sqlite")
+    initialize_metadata_schema(connection)
+    seed_metadata(connection)
+    repository = WorkbenchMetadataRepository(connection)
+
+    edited = replace(SCENARIOS[0], display_name="Lokale Bearbeitung")
+    repository.upsert_scenario(edited)
+    seed_metadata(connection)
+
+    scenarios = repository.list_scenarios()["items"]
+    assert scenarios[0]["id"] == "agrsich-reference-window"
+    assert scenarios[0]["display_name"] == "Lokale Bearbeitung"
+
+
+def test_repository_upsert_run_keeps_execution_control_disabled(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+    unsafe_run = replace(RUNS[0], execution_enabled=True)
+
+    with pytest.raises(MetadataValidationError, match="execution_enabled"):
+        repository.upsert_run(unsafe_run)
+
+
+def test_repository_rejects_empty_metadata_fields(tmp_path):
+    repository = build_seeded_metadata_repository(tmp_path / "metadata.sqlite")
+    invalid_scenario = replace(SCENARIOS[0], display_name=" ")
+
+    with pytest.raises(MetadataValidationError, match="display_name"):
+        repository.upsert_scenario(invalid_scenario)

@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from starlette.applications import Starlette
 from starlette.responses import FileResponse, JSONResponse
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from ims.api.metadata_repository import WorkbenchMetadataRepository, build_seeded_metadata_repository
+from ims.api.metadata import metadata_capabilities
+from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 
 try:
     from fastapi import FastAPI
@@ -18,6 +19,14 @@ except ModuleNotFoundError:  # pragma: no cover - exercised implicitly when Fast
 
 APP_NAME = "IMS Workbench"
 APP_VERSION = "0.1.0"
+
+
+class MetadataRepositoryReader(Protocol):
+    def list_scenarios(self) -> dict[str, object]:
+        ...
+
+    def list_runs(self) -> dict[str, object]:
+        ...
 
 
 def _repo_root() -> Path:
@@ -48,10 +57,10 @@ def _version_payload() -> dict[str, str]:
 
 def create_app(
     frontend_dist: Path | None = None,
-    metadata_repository: WorkbenchMetadataRepository | None = None,
+    metadata_repository: MetadataRepositoryReader | None = None,
 ) -> Any:
     dist_dir = frontend_dist or _frontend_dist_dir()
-    repository = metadata_repository or build_seeded_metadata_repository(_metadata_db_path())
+    repository = metadata_repository or LazyWorkbenchMetadataRepository(_metadata_db_path())
 
     def health_payload() -> dict[str, Any]:
         return {
@@ -96,6 +105,10 @@ def create_app(
         def runs() -> dict[str, object]:
             return repository.list_runs()
 
+        @app.get("/api/metadata/capabilities")
+        def capabilities() -> dict[str, object]:
+            return metadata_capabilities()
+
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
 
@@ -110,6 +123,7 @@ def create_app(
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),
         Route("/api/runs", lambda request: JSONResponse(repository.list_runs())),
+        Route("/api/metadata/capabilities", lambda request: JSONResponse(metadata_capabilities())),
         Route("/", lambda request: index_response()),
     ]
     if (dist_dir / "assets").is_dir():

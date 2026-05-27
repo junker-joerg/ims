@@ -1,3 +1,5 @@
+import importlib
+
 from starlette.testclient import TestClient
 
 from ims.api.app import APP_VERSION, create_app
@@ -84,3 +86,29 @@ def test_api_can_read_metadata_from_sqlite_repository(tmp_path):
 
     assert response.status_code == 200
     assert response.json()["items"][0]["id"] == "agrsich-reference-window"
+
+
+def test_metadata_capabilities_keep_write_paths_disabled(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/metadata/capabilities")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["writes"]["scenario_metadata"]["enabled"] is False
+    assert payload["writes"]["run_metadata"]["enabled"] is False
+    assert payload["simulation_execution"]["enabled"] is False
+
+
+def test_importing_default_app_does_not_create_metadata_db(tmp_path, monkeypatch):
+    db_path = tmp_path / "metadata.sqlite"
+    monkeypatch.setenv("IMS_METADATA_DB", str(db_path))
+
+    import ims.api.app as app_module
+
+    importlib.reload(app_module)
+
+    assert db_path.exists() is False
+    monkeypatch.delenv("IMS_METADATA_DB")
+    importlib.reload(app_module)

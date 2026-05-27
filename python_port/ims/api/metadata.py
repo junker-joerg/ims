@@ -111,7 +111,7 @@ RUNS: tuple[RunMetadata, ...] = (
         ),
         validation=ValidationSummary(
             status="validated",
-            scope="548 Tests",
+            scope="560 Tests",
             claim="Regressionssuite fuer portierte Pfade und Workbench-Adapter.",
         ),
         period_window="portierte Referenzfenster",
@@ -167,3 +167,26 @@ def list_scenario_metadata() -> dict[str, object]:
 
 def list_run_metadata() -> dict[str, object]:
     return metadata_response_to_dict(run_metadata_response())
+
+
+def metadata_capabilities() -> dict[str, object]:
+    return {
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "generated_at": METADATA_GENERATED_AT,
+        "writes": {
+            "scenario_metadata": {
+                "enabled": False,
+                "boundary": "repository-prepared",
+                "reason": "API-Schreibpfade werden erst nach stabiler Metadatenvalidierung freigeschaltet.",
+            },
+            "run_metadata": {
+                "enabled": False,
+                "boundary": "repository-prepared",
+                "reason": "Run-Metadaten duerfen keine Simulation starten.",
+            },
+        },
+        "simulation_execution": {
+            "enabled": False,
+            "reason": "Die Workbench steuert in diesem Schritt keine Fachlogiklaeufe.",
+        },
+    }
