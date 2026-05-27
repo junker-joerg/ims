@@ -69,6 +69,15 @@ type MetadataCapabilities = {
   simulation_execution: CapabilityState;
 };
 
+type MetadataSourceStatus = {
+  schema_version: string;
+  storage_kind: "memory" | "sqlite";
+  configured: boolean;
+  path?: string;
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+};
+
 type CapabilityState = {
   enabled: boolean;
   boundary?: string;
@@ -84,7 +93,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "578 Tests", "gruen"],
+  ["Simulationskern", "587 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -99,6 +108,7 @@ function App() {
   const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
   const [runs, setRuns] = useState<RunMetadata[]>([]);
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
+  const [metadataSource, setMetadataSource] = useState<MetadataSourceStatus | null>(null);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
   const [scenarioDetail, setScenarioDetail] = useState<ScenarioMetadata | null>(null);
@@ -112,23 +122,26 @@ function App() {
 
     async function loadMetadata() {
       try {
-        const [scenarioResponse, runResponse, capabilityResponse] = await Promise.all([
+        const [scenarioResponse, runResponse, capabilityResponse, sourceResponse] = await Promise.all([
           fetch("/api/scenarios"),
           fetch("/api/runs"),
-          fetch("/api/metadata/capabilities")
+          fetch("/api/metadata/capabilities"),
+          fetch("/api/metadata/source")
         ]);
-        if (!scenarioResponse.ok || !runResponse.ok || !capabilityResponse.ok) {
+        if (!scenarioResponse.ok || !runResponse.ok || !capabilityResponse.ok || !sourceResponse.ok) {
           throw new Error("metadata request failed");
         }
-        const [scenarioPayload, runPayload, capabilityPayload] = await Promise.all([
+        const [scenarioPayload, runPayload, capabilityPayload, sourcePayload] = await Promise.all([
           scenarioResponse.json() as Promise<MetadataResponse<ScenarioMetadata>>,
           runResponse.json() as Promise<MetadataResponse<RunMetadata>>,
-          capabilityResponse.json() as Promise<MetadataCapabilities>
+          capabilityResponse.json() as Promise<MetadataCapabilities>,
+          sourceResponse.json() as Promise<MetadataSourceStatus>
         ]);
         if (active) {
           setScenarios(scenarioPayload.items);
           setRuns(runPayload.items);
           setCapabilities(capabilityPayload);
+          setMetadataSource(sourcePayload);
           setSelectedScenarioId((current) => current ?? scenarioPayload.items[0]?.id ?? null);
           setSelectedRunId((current) => current ?? runPayload.items[0]?.id ?? null);
           setMetadataState("ready");
@@ -194,6 +207,8 @@ function App() {
   const primaryScenario = scenarios[0];
   const primaryRun = runs[0];
   const writeLabel = capabilities?.writes.scenario_metadata.enabled ? "aktiv" : "gesperrt";
+  const storageLabel = metadataSource?.storage_kind === "sqlite" ? "SQLite-Datei" : "Memory";
+  const storagePath = metadataSource?.path ?? "nicht konfiguriert";
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
 
   return (
@@ -294,6 +309,20 @@ function App() {
                 ? `${primaryRun.display_name}: ${primaryRun.validation.scope}. Schreibpfade bleiben kontrolliert gesperrt.`
                 : "Run- und Szenario-Metadaten werden spaeter lokal persistiert."}
             </p>
+            <div className="source-status" aria-label="Metadatenquelle">
+              <div>
+                <span>Ablage</span>
+                <strong>{metadataState === "error" ? "nicht erreichbar" : storageLabel}</strong>
+              </div>
+              <div>
+                <span>Pfad</span>
+                <strong>{storagePath}</strong>
+              </div>
+              <div>
+                <span>Schreiben</span>
+                <strong>{metadataSource?.writes_enabled ? "aktiv" : "gesperrt"}</strong>
+              </div>
+            </div>
             <div className="metadata-list compact" aria-label="Run-Metadaten">
               {runs.map((run) => (
                 <button

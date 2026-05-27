@@ -11,6 +11,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/runs` liefert lokale Run-Metadaten als versionierte, statische Adapterdaten.
 - `/api/scenarios/{scenario_id}` und `/api/runs/{run_id}` liefern einzelne Metadatensaetze per ID.
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
+- `/api/metadata/source` beschreibt lesend, ob die Metadatenquelle in-memory oder als SQLite-Datei konfiguriert ist.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -28,6 +29,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
 - Der lokale CLI-Adapter schreibt nur, wenn ein SQLite-Zielpfad explizit angegeben wird.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
+- Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Importvorschau ist rein informativ und enthaelt keinen Upload, Editor oder Browser-Schreibpfad.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
 
@@ -55,6 +57,22 @@ Die Detail-Endpunkte geben dieselbe Einzelform zurueck, die auch in den Listen u
 ```
 
 Die Workbench nutzt diese Endpunkte fuer eine kompakte Detailansicht zu ausgewaehltem Szenario und Run. Fehler beim Detailabruf werden knapp angezeigt; daraus entsteht kein Editor- oder Start-Workflow.
+
+## Metadatenquelle
+
+`/api/metadata/source` liefert eine kleine, stabile Statusform fuer die lokale Metadatenquelle:
+
+```json
+{
+  "schema_version": "ims.workbench.metadata.v1",
+  "storage_kind": "memory",
+  "configured": false,
+  "writes_enabled": false,
+  "execution_enabled": false
+}
+```
+
+Wenn `IMS_METADATA_DB` gesetzt ist, meldet der Endpunkt `storage_kind = "sqlite"`, `configured = true` und den aufgeloesten Pfad. Diese Antwort wird aus der Konfiguration abgeleitet und erzeugt beim reinen Import oder Quellenabruf keine SQLite-Datei. Die Workbench zeigt diese Information in der lokalen Ablage als reine Diagnose an. `writes_enabled` und `execution_enabled` bleiben dort bewusst `false`.
 
 ## Smoke-Tests
 
@@ -170,7 +188,7 @@ Der Import validiert:
 - Run-Eintraege duerfen nur auf vorhandene oder im selben Import enthaltene Szenarien verweisen.
 - `execution_enabled` muss `false` bleiben.
 
-Import-Bundles werden vor dem ersten Schreibzugriff vollstaendig gegen die Repository-Grenzen validiert. Wenn ein spaeterer Run-Eintrag ungueltig ist, bleiben vorher im Bundle enthaltene neue Szenarien deshalb ungeschrieben.
+Import-Bundles werden vor dem ersten Schreibzugriff vollstaendig gegen die Repository-Grenzen validiert. Wenn ein spaeterer Run-Eintrag ungueltig ist, bleiben vorher im Bundle enthaltene neue Szenarien deshalb ungeschrieben. Der lokale CLI-Check nutzt dieselbe Referenzvalidierung gegen die geseedeten Metadaten und die Szenarien aus der Importdatei, damit ein Check keine Datei akzeptiert, die der direkte Import wegen unbekannter `scenario_id` ablehnen wuerde.
 
 ## Lokaler Start
 

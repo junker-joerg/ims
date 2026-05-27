@@ -65,10 +65,10 @@ def import_metadata_file(path: Path | str, repository: WorkbenchMetadataReposito
     return import_metadata_bundle(load_metadata_import(path), repository)
 
 
-def import_metadata_bundle(
+def validate_metadata_bundle(
     bundle: MetadataImportBundle,
     repository: WorkbenchMetadataRepository,
-) -> MetadataImportResult:
+) -> None:
     scenario_ids = _repository_scenario_ids(repository) | {scenario.id for scenario in bundle.scenarios}
     for run in bundle.runs:
         if run.scenario_id not in scenario_ids:
@@ -79,6 +79,17 @@ def import_metadata_bundle(
             repository.validate_scenario(scenario)
         for run in bundle.runs:
             repository.validate_run(run)
+    except MetadataValidationError as exc:
+        raise MetadataImportError(str(exc)) from exc
+
+
+def import_metadata_bundle(
+    bundle: MetadataImportBundle,
+    repository: WorkbenchMetadataRepository,
+) -> MetadataImportResult:
+    validate_metadata_bundle(bundle, repository)
+
+    try:
         for scenario in bundle.scenarios:
             repository.upsert_scenario(scenario)
         for run in bundle.runs:

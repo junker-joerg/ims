@@ -36,6 +36,20 @@ def test_metadata_import_cli_reports_invalid_format(tmp_path, capsys):
     assert "display_name" in output["message"]
 
 
+def test_metadata_import_cli_check_rejects_unknown_run_scenario_reference(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    payload = _valid_import_payload()
+    payload["runs"][0]["scenario_id"] = "missing-scenario"
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["check", str(import_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "unknown scenario_id" in output["message"]
+
+
 def test_metadata_import_cli_import_requires_explicit_db_path(tmp_path):
     import_path = tmp_path / "metadata_import.json"
     import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")

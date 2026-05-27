@@ -254,6 +254,34 @@ h2 {
   margin-top: 14px;
 }
 
+.source-status {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.source-status div {
+  display: grid;
+  grid-template-columns: minmax(76px, 0.35fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 32px;
+  padding: 7px 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
+.source-status span {
+  color: #66736c;
+}
+
+.source-status strong {
+  min-width: 0;
+  color: #143b2d;
+  overflow-wrap: anywhere;
+}
+
 .metadata-row {
   display: flex;
   align-items: center;

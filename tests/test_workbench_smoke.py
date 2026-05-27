@@ -14,12 +14,15 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     health = client.get("/api/health")
     scenarios = client.get("/api/scenarios")
     runs = client.get("/api/runs")
+    source = client.get("/api/metadata/source")
     missing = client.get("/api/scenarios/missing-scenario")
 
     assert health.status_code == 200
     assert health.json()["status"] == "ok"
     assert scenarios.status_code == 200
     assert runs.status_code == 200
+    assert source.status_code == 200
+    assert source.json()["writes_enabled"] is False
 
     scenario_id = scenarios.json()["items"][0]["id"]
     run_id = runs.json()["items"][0]["id"]
@@ -64,4 +67,5 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Importvorschau" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Browser schreibt keine Metadaten" in source
+    assert "Metadatenquelle" in source
     assert 'type="file"' not in source

@@ -173,6 +173,42 @@ def test_metadata_capabilities_keep_write_paths_disabled(tmp_path):
     assert payload["simulation_execution"]["enabled"] is False
 
 
+def test_metadata_source_reports_in_memory_default(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/metadata/source")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "schema_version": "ims.workbench.metadata.v1",
+        "storage_kind": "memory",
+        "configured": False,
+        "writes_enabled": False,
+        "execution_enabled": False,
+    }
+
+
+def test_metadata_source_reports_explicit_sqlite_path(tmp_path, monkeypatch):
+    db_path = tmp_path / "metadata.sqlite"
+    monkeypatch.setenv("IMS_METADATA_DB", str(db_path))
+
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+    response = client.get("/api/metadata/source")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "schema_version": "ims.workbench.metadata.v1",
+        "storage_kind": "sqlite",
+        "configured": True,
+        "path": str(db_path.resolve()),
+        "writes_enabled": False,
+        "execution_enabled": False,
+    }
+    assert db_path.exists() is False
+
+
 def test_importing_default_app_does_not_create_metadata_db(tmp_path, monkeypatch):
     db_path = tmp_path / "metadata.sqlite"
     monkeypatch.setenv("IMS_METADATA_DB", str(db_path))

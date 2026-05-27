@@ -11,6 +11,7 @@ from ims.api.metadata_import import (
     MetadataImportResult,
     import_metadata_file,
     load_metadata_import,
+    validate_metadata_bundle,
 )
 from ims.api.metadata_repository import build_seeded_metadata_repository
 
@@ -40,6 +41,7 @@ class MetadataImportCliResult:
 
 def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
     bundle = load_metadata_import(path)
+    validate_metadata_bundle(bundle, build_seeded_metadata_repository())
     return MetadataImportCliResult(
         mode="check",
         scenario_count=len(bundle.scenarios),

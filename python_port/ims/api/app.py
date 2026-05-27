@@ -9,7 +9,7 @@ from starlette.responses import FileResponse, JSONResponse
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from ims.api.metadata import metadata_capabilities
+from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 
 try:
@@ -53,6 +53,20 @@ def _metadata_db_path() -> Path | str:
     return ":memory:"
 
 
+def _metadata_source_payload(metadata_db_path: Path | str) -> dict[str, object]:
+    configured = metadata_db_path != ":memory:"
+    payload: dict[str, object] = {
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "storage_kind": "sqlite" if configured else "memory",
+        "configured": configured,
+        "writes_enabled": False,
+        "execution_enabled": False,
+    }
+    if configured:
+        payload["path"] = str(metadata_db_path)
+    return payload
+
+
 def _version_payload() -> dict[str, str]:
     return {
         "name": APP_NAME,
@@ -77,7 +91,9 @@ def create_app(
     metadata_repository: MetadataRepositoryReader | None = None,
 ) -> Any:
     dist_dir = frontend_dist or _frontend_dist_dir()
-    repository = metadata_repository or LazyWorkbenchMetadataRepository(_metadata_db_path())
+    metadata_db_path = _metadata_db_path()
+    repository = metadata_repository or LazyWorkbenchMetadataRepository(metadata_db_path)
+    metadata_source = _metadata_source_payload(metadata_db_path)
 
     def health_payload() -> dict[str, Any]:
         return {
@@ -152,6 +168,10 @@ def create_app(
         def capabilities() -> dict[str, object]:
             return metadata_capabilities()
 
+        @app.get("/api/metadata/source")
+        def source() -> dict[str, object]:
+            return metadata_source
+
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
 
@@ -175,6 +195,7 @@ def create_app(
             lambda request: run_detail_response(request.path_params["run_id"]),
         ),
         Route("/api/metadata/capabilities", lambda request: JSONResponse(metadata_capabilities())),
+        Route("/api/metadata/source", lambda request: JSONResponse(metadata_source)),
         Route("/", lambda request: index_response()),
     ]
     if (dist_dir / "assets").is_dir():
