@@ -2,7 +2,7 @@ from pathlib import Path
 
 from starlette.testclient import TestClient
 
-from ims.api.app import create_app
+from ims.api.app import APP_VERSION, create_app
 from ims.api.metadata_repository import build_seeded_metadata_repository
 
 
@@ -12,17 +12,28 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     client = TestClient(app)
 
     health = client.get("/api/health")
+    version = client.get("/api/version")
     scenarios = client.get("/api/scenarios")
     runs = client.get("/api/runs")
     source = client.get("/api/metadata/source")
+    capabilities = client.get("/api/metadata/capabilities")
     missing = client.get("/api/scenarios/missing-scenario")
 
     assert health.status_code == 200
     assert health.json()["status"] == "ok"
+    assert health.json()["frontend_available"] is False
+    assert version.status_code == 200
+    assert version.json()["version"] == APP_VERSION
     assert scenarios.status_code == 200
     assert runs.status_code == 200
     assert source.status_code == 200
+    assert source.json()["storage_kind"] == "sqlite"
+    assert source.json()["injected"] is True
+    assert capabilities.status_code == 200
     assert source.json()["writes_enabled"] is False
+    assert capabilities.json()["writes"]["scenario_metadata"]["enabled"] is False
+    assert capabilities.json()["writes"]["run_metadata"]["enabled"] is False
+    assert capabilities.json()["simulation_execution"]["enabled"] is False
 
     scenario_id = scenarios.json()["items"][0]["id"]
     run_id = runs.json()["items"][0]["id"]
@@ -65,7 +76,9 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     source = (Path(__file__).resolve().parent.parent / "frontend" / "src" / "main.tsx").read_text(encoding="utf-8")
 
     assert "Importvorschau" in source
+    assert "Betriebsdiagnose" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Browser schreibt keine Metadaten" in source
     assert "Metadatenquelle" in source
+    assert "lokal per CLI" in source
     assert 'type="file"' not in source

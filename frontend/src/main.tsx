@@ -10,6 +10,7 @@ import {
   FileText,
   GitBranch,
   Play,
+  ServerCog,
   ShieldCheck
 } from "lucide-react";
 import "./styles.css";
@@ -69,6 +70,19 @@ type MetadataCapabilities = {
   simulation_execution: CapabilityState;
 };
 
+type HealthStatus = {
+  status: string;
+  service: string;
+  version: string;
+  frontend_available: boolean;
+};
+
+type VersionInfo = {
+  name: string;
+  version: string;
+  api: string;
+};
+
 type MetadataSourceStatus = {
   schema_version: string;
   storage_kind: "memory" | "sqlite";
@@ -94,7 +108,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "590 Tests", "gruen"],
+  ["Simulationskern", "591 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -110,6 +124,8 @@ function App() {
   const [runs, setRuns] = useState<RunMetadata[]>([]);
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
   const [metadataSource, setMetadataSource] = useState<MetadataSourceStatus | null>(null);
+  const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
+  const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
   const [scenarioDetail, setScenarioDetail] = useState<ScenarioMetadata | null>(null);
@@ -123,26 +139,39 @@ function App() {
 
     async function loadMetadata() {
       try {
-        const [scenarioResponse, runResponse, capabilityResponse, sourceResponse] = await Promise.all([
+        const [scenarioResponse, runResponse, capabilityResponse, sourceResponse, healthResponse, versionResponse] = await Promise.all([
           fetch("/api/scenarios"),
           fetch("/api/runs"),
           fetch("/api/metadata/capabilities"),
-          fetch("/api/metadata/source")
+          fetch("/api/metadata/source"),
+          fetch("/api/health"),
+          fetch("/api/version")
         ]);
-        if (!scenarioResponse.ok || !runResponse.ok || !capabilityResponse.ok || !sourceResponse.ok) {
+        if (
+          !scenarioResponse.ok ||
+          !runResponse.ok ||
+          !capabilityResponse.ok ||
+          !sourceResponse.ok ||
+          !healthResponse.ok ||
+          !versionResponse.ok
+        ) {
           throw new Error("metadata request failed");
         }
-        const [scenarioPayload, runPayload, capabilityPayload, sourcePayload] = await Promise.all([
+        const [scenarioPayload, runPayload, capabilityPayload, sourcePayload, healthPayload, versionPayload] = await Promise.all([
           scenarioResponse.json() as Promise<MetadataResponse<ScenarioMetadata>>,
           runResponse.json() as Promise<MetadataResponse<RunMetadata>>,
           capabilityResponse.json() as Promise<MetadataCapabilities>,
-          sourceResponse.json() as Promise<MetadataSourceStatus>
+          sourceResponse.json() as Promise<MetadataSourceStatus>,
+          healthResponse.json() as Promise<HealthStatus>,
+          versionResponse.json() as Promise<VersionInfo>
         ]);
         if (active) {
           setScenarios(scenarioPayload.items);
           setRuns(runPayload.items);
           setCapabilities(capabilityPayload);
           setMetadataSource(sourcePayload);
+          setHealthStatus(healthPayload);
+          setVersionInfo(versionPayload);
           setSelectedScenarioId((current) => current ?? scenarioPayload.items[0]?.id ?? null);
           setSelectedRunId((current) => current ?? runPayload.items[0]?.id ?? null);
           setMetadataState("ready");
@@ -211,6 +240,15 @@ function App() {
   const storageLabel = metadataSource?.storage_kind === "sqlite" ? "SQLite-Datei" : "Memory";
   const storagePath = metadataSource?.path ?? "nicht konfiguriert";
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
+  const diagnosisRows = [
+    ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
+    ["Version", versionInfo ? `${versionInfo.name} ${versionInfo.version}` : "laedt"],
+    ["Frontend", healthStatus?.frontend_available ? "gebaut" : "nicht gebaut"],
+    ["Metadatenquelle", storageLabel],
+    ["Schreibpfade", capabilities?.writes.scenario_metadata.enabled || capabilities?.writes.run_metadata.enabled ? "aktiv" : "gesperrt"],
+    ["Simulation", capabilities?.simulation_execution.enabled ? "aktiv" : "gesperrt"],
+    ["Import", "lokal per CLI"]
+  ];
 
   return (
     <main className="shell">
@@ -418,6 +456,21 @@ function App() {
                 <li>Browser schreibt keine Metadaten</li>
               </ul>
             </article>
+          </div>
+        </section>
+
+        <section className="panel diagnosis-panel" aria-label="Betriebsdiagnose">
+          <div className="panel-heading">
+            <ServerCog size={20} aria-hidden="true" />
+            <h2>Betriebsdiagnose</h2>
+          </div>
+          <div className="diagnosis-grid">
+            {diagnosisRows.map(([label, value]) => (
+              <div className="diagnosis-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
           </div>
         </section>
 
