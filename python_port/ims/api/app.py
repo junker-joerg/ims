@@ -9,6 +9,8 @@ from starlette.responses import FileResponse, JSONResponse
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
+from ims.api.metadata import list_run_metadata, list_scenario_metadata
+
 try:
     from fastapi import FastAPI
 except ModuleNotFoundError:  # pragma: no cover - exercised implicitly when FastAPI is absent.
@@ -75,6 +77,14 @@ def create_app(frontend_dist: Path | None = None) -> Any:
         def version() -> dict[str, str]:
             return _version_payload()
 
+        @app.get("/api/scenarios")
+        def scenarios() -> list[dict[str, str]]:
+            return list_scenario_metadata()
+
+        @app.get("/api/runs")
+        def runs() -> list[dict[str, str]]:
+            return list_run_metadata()
+
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
 
@@ -87,6 +97,8 @@ def create_app(frontend_dist: Path | None = None) -> Any:
     routes: list[Any] = [
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
+        Route("/api/scenarios", lambda request: JSONResponse(list_scenario_metadata())),
+        Route("/api/runs", lambda request: JSONResponse(list_run_metadata())),
         Route("/", lambda request: index_response()),
     ]
     if (dist_dir / "assets").is_dir():

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity,
@@ -19,6 +19,24 @@ type StatusItem = {
   tone: "ready" | "quiet" | "warn";
 };
 
+type ScenarioMetadata = {
+  id: string;
+  name: string;
+  scope: string;
+  state: string;
+  source: string;
+  notes: string;
+};
+
+type RunMetadata = {
+  id: string;
+  label: string;
+  scenario_id: string;
+  state: string;
+  period_window: string;
+  validation_scope: string;
+};
+
 const statusItems: StatusItem[] = [
   { label: "Backend", value: "bereit", tone: "ready" },
   { label: "Fachlogik", value: "abgegrenzt", tone: "quiet" },
@@ -26,12 +44,53 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "540 Tests", "gruen"],
+  ["Simulationskern", "548 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
 
 function App() {
+  const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
+  const [runs, setRuns] = useState<RunMetadata[]>([]);
+  const [metadataState, setMetadataState] = useState<"loading" | "ready" | "error">("loading");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadMetadata() {
+      try {
+        const [scenarioResponse, runResponse] = await Promise.all([
+          fetch("/api/scenarios"),
+          fetch("/api/runs")
+        ]);
+        if (!scenarioResponse.ok || !runResponse.ok) {
+          throw new Error("metadata request failed");
+        }
+        const [scenarioPayload, runPayload] = await Promise.all([
+          scenarioResponse.json() as Promise<ScenarioMetadata[]>,
+          runResponse.json() as Promise<RunMetadata[]>
+        ]);
+        if (active) {
+          setScenarios(scenarioPayload);
+          setRuns(runPayload);
+          setMetadataState("ready");
+        }
+      } catch {
+        if (active) {
+          setMetadataState("error");
+        }
+      }
+    }
+
+    loadMetadata();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const primaryScenario = scenarios[0];
+  const primaryRun = runs[0];
+
   return (
     <main className="shell">
       <aside className="sidebar" aria-label="Workbench Navigation">
@@ -89,17 +148,26 @@ function App() {
             <div className="scenario-strip">
               <div>
                 <span>Referenzfenster</span>
-                <strong>Agrsich / VN / VU</strong>
+                <strong>{primaryScenario?.scope ?? "wird geladen"}</strong>
               </div>
               <div>
                 <span>Steuerung</span>
-                <strong>noch nicht aktiv</strong>
+                <strong>{metadataState === "error" ? "API nicht erreichbar" : "noch nicht aktiv"}</strong>
               </div>
             </div>
             <p className="muted">
-              Diese Ansicht bereitet Bedienflaechen fuer lokale Szenario- und Run-Metadaten vor.
-              Der Simulationskern bleibt in diesem Schritt unveraendert.
+              {primaryScenario?.notes ??
+                "Diese Ansicht bereitet Bedienflaechen fuer lokale Szenario- und Run-Metadaten vor."}
+              {" "}Der Simulationskern bleibt in diesem Schritt unveraendert.
             </p>
+            <div className="metadata-list" aria-label="Szenario-Metadaten">
+              {scenarios.map((scenario) => (
+                <div className="metadata-row" key={scenario.id}>
+                  <span>{scenario.name}</span>
+                  <strong>{scenario.state}</strong>
+                </div>
+              ))}
+            </div>
           </article>
 
           <article className="panel" id="runs">
@@ -111,7 +179,19 @@ function App() {
               <span style={{ width: "18%" }} />
             </div>
             <p className="metric">SQLite-Vorbereitung</p>
-            <p className="muted">Run- und Szenario-Metadaten werden spaeter lokal persistiert.</p>
+            <p className="muted">
+              {primaryRun
+                ? `${primaryRun.label}: ${primaryRun.validation_scope}.`
+                : "Run- und Szenario-Metadaten werden spaeter lokal persistiert."}
+            </p>
+            <div className="metadata-list compact" aria-label="Run-Metadaten">
+              {runs.map((run) => (
+                <div className="metadata-row" key={run.id}>
+                  <span>{run.period_window}</span>
+                  <strong>{run.state}</strong>
+                </div>
+              ))}
+            </div>
           </article>
         </section>
 

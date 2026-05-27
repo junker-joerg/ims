@@ -4,12 +4,14 @@ def test_package_imports() -> None:
     import ims.engine
     import ims.io
     import ims.analysis
+    import ims.api
 
     assert ims is not None
     assert ims.model is not None
     assert ims.engine is not None
     assert ims.io is not None
     assert ims.analysis is not None
+    assert ims.api is not None
 
 
 def test_core_placeholders_import() -> None:
@@ -111,6 +113,12 @@ def test_core_placeholders_import() -> None:
         run_vn_settlement_period_from_mapping,
     )
     from ims.io.scenario_loader import LoadedScenario, load_scenario, load_scenario_from_mapping
+    from ims.api.metadata import (
+        RunMetadata,
+        ScenarioMetadata,
+        list_run_metadata,
+        list_scenario_metadata,
+    )
     from ims.model.agrsich_export import (
         ExportFileSpec,
         ExportRow,
@@ -434,6 +442,10 @@ def test_core_placeholders_import() -> None:
     assert LoadedScenario is not None
     assert load_scenario is not None
     assert load_scenario_from_mapping is not None
+    assert ScenarioMetadata is not None
+    assert RunMetadata is not None
+    assert list_scenario_metadata()[0]["id"] == "agrsich-reference-window"
+    assert list_run_metadata()[0]["id"] == "baseline-python-tests"
     assert AggregateSnapshot is not None
     assert collect_basic_aggregates is not None
     assert ExportFileSpec is not None

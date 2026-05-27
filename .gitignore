@@ -21,6 +21,7 @@ build/
 frontend/node_modules/
 frontend/dist/
 frontend/.npm-cache/
+frontend/tsconfig.tsbuildinfo
 
 # OS / editors
 .DS_Store

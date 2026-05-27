@@ -244,6 +244,37 @@ h2 {
   line-height: 1.6;
 }
 
+.metadata-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.metadata-list.compact {
+  margin-top: 14px;
+}
+
+.metadata-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
+.metadata-row span {
+  min-width: 0;
+}
+
+.metadata-row strong {
+  flex: 0 0 auto;
+  color: #143b2d;
+}
+
 .meter {
   height: 10px;
   overflow: hidden;
