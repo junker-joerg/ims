@@ -43,6 +43,7 @@ def test_frontend_shell_declares_readonly_import_preview():
     assert "Importvorschau" in source
     assert "schema_version" in source
     assert "execution_enabled" in source
+    assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Browser schreibt keine Metadaten" in source
     assert 'type="file"' not in source
 
