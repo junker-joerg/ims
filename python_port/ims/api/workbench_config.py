@@ -43,6 +43,15 @@ class WorkbenchConfigLoadResult:
         return field_name in self.provided_fields
 
 
+def resolve_workbench_config_path(config_result: WorkbenchConfigLoadResult, value: Path | str) -> Path:
+    candidate = Path(value).expanduser()
+    if candidate.is_absolute():
+        return candidate.resolve()
+    if config_result.path is not None:
+        return (config_result.path.parent / candidate).resolve()
+    return candidate.resolve()
+
+
 def load_workbench_config(path: Path | str | None = None) -> WorkbenchLocalConfig:
     return load_workbench_config_result(path).config
 

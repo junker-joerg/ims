@@ -26,3 +26,9 @@ Optional kann die Diagnose eine explizite lokale Konfigurationsdatei lesen:
 ```powershell
 python -m ims.api.workbench_diagnostics --config .\workbench.local.json
 ```
+
+Ein rein beschreibender Startplan kann dieselben lokalen Werte als JSON zusammenfassen, ohne den Server zu starten:
+
+```powershell
+python -m ims.api.workbench_start_plan --config .\workbench.local.json
+```
