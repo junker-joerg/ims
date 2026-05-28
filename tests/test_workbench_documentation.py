@@ -12,6 +12,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist" in readme
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
+    assert "python -m ims.api.metadata_write_contracts" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
     assert "npm.cmd run build" in readme
     assert "keine HTTP-/UI-Schreibpfade" in readme
@@ -26,6 +27,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.workbench_diagnostics --config .\\workbench.local.json" in doc
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
+    assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_import_cli check .\\metadata_import.json" in doc
     assert "python -m ims.api.metadata_import_cli preview .\\metadata_import.json" in doc
     assert "python -m ims.api.metadata_import_cli snapshot --db .\\.ims_workbench\\metadata.sqlite" in doc
@@ -47,3 +49,6 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die Runfilter arbeiten nur auf bereits gelesenen Metadaten" in doc
     assert "Die Auswahlzusammenfassung ist rein lesend" in doc
     assert "zur aktuellen Auswahl passende Detaildaten" in doc
+    assert "Der lokale Schreibvertrag ist rein beschreibend" in doc
+    assert "execution_enabled=true" in doc
+    assert "8-14 reviewbare PRs" in doc

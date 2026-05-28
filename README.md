@@ -38,3 +38,9 @@ Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne
 ```powershell
 python -m ims.api.workbench_cli_overview
 ```
+
+Ein lokaler Schreibvertrag beschreibt die vorbereiteten Metadaten-Schreibgrenzen, ohne einen Schreibpfad zu oeffnen:
+
+```powershell
+python -m ims.api.metadata_write_contracts
+```
