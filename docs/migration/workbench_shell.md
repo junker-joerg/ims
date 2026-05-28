@@ -15,6 +15,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/metadata/consistency` beschreibt lesend einfache Konsistenzkennzahlen der aktuellen Szenario- und Run-Metadaten.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
+- Die Workbench zeigt die aktuelle Szenario-/Run-Auswahl in einer kompakten, rein lesenden Auswahlzusammenfassung.
 - Die Workbench zeigt Szenario-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - Die Szenario-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Quelle und Umfang.
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
@@ -45,6 +46,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Startplan ist rein beschreibend. Er gibt empfohlene Kommandos und aufgeloeste Pfade aus, startet aber keinen Server und erzeugt keine Dateien.
 - Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
+- Die Auswahlzusammenfassung ist rein lesend und fuehrt keine Start-, Schreib-, Import- oder Editieraktion aus.
 - Die Szenario-Uebersicht ist rein lesend und enthaelt keine Start-, Upload- oder Editierkontrollen.
 - Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
@@ -79,6 +81,12 @@ Die Detail-Endpunkte geben dieselbe Einzelform zurueck, die auch in den Listen u
 ```
 
 Die Workbench nutzt diese Endpunkte fuer eine kompakte Detailansicht zu ausgewaehltem Szenario und Run. Fehler beim Detailabruf werden knapp angezeigt; daraus entsteht kein Editor- oder Start-Workflow.
+
+## Auswahlzusammenfassung
+
+Die Workbench buendelt die aktuell ausgewaehlte Szenario-/Run-Kombination in einer kompakten Auswahlzusammenfassung. Sie nutzt nur bereits geladene Listen, Detaildaten, Capabilities und die Metadatenquelle. Sichtbar sind ausgewaehltes Szenario, ausgewaehlter Run, Periodenfenster, Metadatenquelle, Schreibgrenze, Ausfuehrungsgrenze und ein Hinweis, ob die Auswahl durch aktive Filter gerade nicht in den Listen sichtbar ist.
+
+Die Auswahlzusammenfassung ist rein lesend. Sie startet keine Simulation, schreibt keine Metadaten, oeffnet keinen Import und ersetzt keinen Szenario-Editor.
 
 ## Szenario-Uebersicht
 
@@ -144,6 +152,7 @@ Die Workbench-Shell ist mit kleinen Smoke-Tests abgesichert:
 - Fehlende Metadaten-IDs muessen die stabile `metadata_not_found`-Fehlerform liefern.
 - Eine gebaute Frontend-Struktur aus `index.html` und `/assets` muss statisch ausgeliefert werden.
 - Die Frontend-Shell muss die Detail-, Importvorschau- und Betriebsdiagnose-Vertraege im Quelltext enthalten.
+- Die Auswahlzusammenfassung muss die aktive Szenario-/Run-Kombination, Filterhinweise und gesperrte Grenzen rein lesend deklarieren.
 - Die Szenario-Uebersicht muss Szenario-Daten weiterhin lesend darstellen und die globale Ausfuehrungsgrenze als gesperrt behandeln.
 - Die Szenariofilter muessen als clientseitige, lesende Filter in der Frontend-Shell deklariert sein.
 - Die Run-Uebersicht muss Run-Daten weiterhin lesend darstellen und `execution_enabled` als gesperrte Grenze behandeln.

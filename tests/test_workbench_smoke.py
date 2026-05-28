@@ -95,6 +95,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Importvorschau" in source
     assert "Betriebsdiagnose" in source
     assert "Metadaten-Konsistenz" in source
+    assert "Auswahlzusammenfassung" in source
     assert "Szenario-Uebersicht" in source
     assert "Run-Uebersicht" in source
     assert "Szenariofilter" in source
@@ -111,4 +112,5 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "scenario-overview-row" in source
     assert "run-overview-row" in source
     assert "filteredRuns.map" in source
+    assert "Auswahl durch Filter aktuell nicht in den Listen sichtbar" in source
     assert 'type="file"' not in source

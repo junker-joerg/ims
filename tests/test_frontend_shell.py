@@ -147,3 +147,25 @@ def test_frontend_shell_declares_readonly_run_filters():
     assert "run-filter-count" in styles
     assert "execution_enabled" in source
     assert 'type="file"' not in source
+
+
+def test_frontend_shell_declares_readonly_selection_summary():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "Auswahlzusammenfassung" in source
+    assert "selectionRows" in source
+    assert "selectedScenarioHidden" in source
+    assert "selectedRunHidden" in source
+    assert "Auswahl durch Filter aktuell nicht in den Listen sichtbar" in source
+    assert "Auswahl in den Listen sichtbar" in source
+    assert "Periodenfenster" in source
+    assert "Metadatenquelle" in source
+    assert "Schreibpfade" in source
+    assert "Ausfuehrung" in source
+    assert "selection-summary-panel" in styles
+    assert "selection-summary-grid" in styles
+    assert "selection-summary-row" in styles
+    assert "startRun" not in source
+    assert "startScenario" not in source
+    assert 'type="file"' not in source
