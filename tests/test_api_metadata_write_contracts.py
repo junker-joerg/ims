@@ -42,6 +42,7 @@ def test_metadata_write_contract_lists_allowed_and_forbidden_metadata_areas():
     assert areas["run_metadata"]["http_enabled"] is False
     assert areas["run_metadata"]["ui_enabled"] is False
     assert "period_window" in areas["run_metadata"]["allowed_fields"]
+    assert "execution_enabled" in areas["run_metadata"]["allowed_fields"]
     assert "execution_enabled=true" in areas["run_metadata"]["forbidden_fields"]
     assert "execution_enabled=true" in payload["forbidden_boundaries"]
     assert "simulation_execution" in payload["forbidden_boundaries"]

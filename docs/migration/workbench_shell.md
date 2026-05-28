@@ -259,7 +259,7 @@ Der Capabilities-Endpunkt meldet deshalb weiterhin:
 - Run-Metadaten-Schreiben: vorbereitet, aber API-seitig deaktiviert.
 - Simulation ausfuehren: deaktiviert.
 
-`ims.api.metadata_write_contracts` beschreibt diese Grenze als lokalen Vertrag. Der Vertrag erlaubt fuer spaetere lokale Adapter nur Szenario- und Run-Metadaten, markiert `execution_enabled=true`, Simulation, Fachlogikdaten, HTTP-Schreibendpunkte, UI-Schreibworkflows und historische Vollgleichheitsbehauptungen als verboten und nennt als aktuell einzigen lokalen Schreibweg den expliziten Import `metadata_import_cli import --db`.
+`ims.api.metadata_write_contracts` beschreibt diese Grenze als lokalen Vertrag. Der Vertrag erlaubt fuer spaetere lokale Adapter nur Szenario- und Run-Metadaten, einschliesslich des im Importformat erforderlichen Run-Felds `execution_enabled` mit dem Wert `false`. `execution_enabled=true`, Simulation, Fachlogikdaten, HTTP-Schreibendpunkte, UI-Schreibworkflows und historische Vollgleichheitsbehauptungen bleiben verboten. Als aktuell einziger lokaler Schreibweg ist der explizite Import `metadata_import_cli import --db` genannt.
 
 Der Vertrag ist selbst kein Schreibpfad. `python -m ims.api.metadata_write_contracts` gibt nur JSON aus, startet keinen Server, erzeugt keine SQLite-Datei, migriert keine Datenbank und schreibt keine Metadaten.
 

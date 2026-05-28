@@ -50,5 +50,6 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die Auswahlzusammenfassung ist rein lesend" in doc
     assert "zur aktuellen Auswahl passende Detaildaten" in doc
     assert "Der lokale Schreibvertrag ist rein beschreibend" in doc
+    assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
     assert "8-14 reviewbare PRs" in doc
