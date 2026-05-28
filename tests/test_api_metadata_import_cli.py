@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from ims.api.metadata import METADATA_SCHEMA_VERSION
+from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata_import_cli import (
     check_metadata_roundtrip,
     check_metadata_import,
@@ -302,6 +303,44 @@ def test_metadata_import_cli_export_writes_only_to_explicit_out_path(tmp_path):
     assert output["schema_version"] == METADATA_SCHEMA_VERSION
     assert output["runs"][0]["execution_enabled"] is False
     assert not db_path.exists()
+
+
+def test_metadata_import_cli_export_rejects_out_path_equal_to_source_db(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    assert repository.get_run("baseline-python-tests") is not None
+
+    with pytest.raises(MetadataImportError, match="must differ"):
+        export_metadata_import_bundle_to_file(db_path, db_path)
+
+    preserved_repository = build_seeded_metadata_repository(db_path)
+    assert preserved_repository.get_run("baseline-python-tests") is not None
+
+
+def test_metadata_import_cli_export_rejects_relative_out_path_equal_to_source_db(tmp_path, monkeypatch):
+    db_path = tmp_path / "workbench.sqlite"
+    build_seeded_metadata_repository(db_path)
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(MetadataImportError, match="must differ"):
+        export_metadata_import_bundle_to_file(Path(".") / "workbench.sqlite", Path("workbench.sqlite"))
+
+    preserved_repository = build_seeded_metadata_repository(db_path)
+    assert preserved_repository.get_scenario("agrsich-reference-window") is not None
+
+
+def test_metadata_import_cli_export_cli_rejects_source_overwrite(tmp_path, capsys):
+    db_path = tmp_path / "workbench.sqlite"
+    build_seeded_metadata_repository(db_path)
+
+    exit_code = main(["export", "--db", str(db_path), "--out", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    preserved_repository = build_seeded_metadata_repository(db_path)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "must differ" in output["message"]
+    assert preserved_repository.get_run("baseline-python-tests") is not None
 
 
 def test_metadata_import_cli_export_prints_status_when_out_is_explicit(tmp_path, capsys):
