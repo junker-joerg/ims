@@ -24,6 +24,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar, als Dry-Run vorab vergleichbar, als Snapshot lesbar und im Importformat exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
 - `ims.api.metadata_write_contracts` beschreibt die vorbereiteten lokalen Schreibgrenzen, ohne selbst zu schreiben.
+- `ims.api.run_control_contracts` beschreibt die spaetere Run-Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - `ims.api.workbench_start_plan` beschreibt den lokalen Start aus Defaults oder Konfiguration, startet aber keinen Server.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
@@ -44,6 +45,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale CLI-Preview-Modus schreibt keine Metadaten und nutzt `IMS_METADATA_DB` nicht als implizites Ziel.
 - Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet und beruecksichtigen den aktuellen WAL-Zustand.
 - Der lokale Schreibvertrag ist rein beschreibend. Er oeffnet keinen HTTP- oder UI-Schreibpfad und erzeugt keine SQLite-Datei.
+- Der lokale Run-Control-Vertrag ist rein beschreibend. Er startet keinen Lauf und schaltet keine API- oder UI-Steuerung frei.
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
 - Der lokale Startplan ist rein beschreibend. Er gibt empfohlene Kommandos und aufgeloeste Pfade aus, startet aber keinen Server und erzeugt keine Dateien.
 - Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
@@ -231,11 +233,12 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 - `metadata_import_cli export`
 - `metadata_import_cli roundtrip`
 - `metadata_import_cli dry-run`
+- `run_control_contracts`
 - `metadata_import_cli import --db`
 
 Die Uebersicht fuehrt diese Befehle nicht aus. Sie startet keinen Server, liest keinen Snapshot, importiert keine Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Nur der bereits bestehende Importpfad `metadata_import_cli import --db` und der explizite Datei-Export `metadata_import_cli export --out` sind als schreibende Befehle markiert; alle anderen aufgefuehrten Kommandos bleiben lesend oder rein beschreibend.
 
-Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 5-9 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind kontrollierte lokale Schreibpfade, eine spaetere Run-Steuerungsgrenze ohne echte Simulation sowie v1-Haertung mit Doku und Smoke-/Preview-Checks. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 4-8 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind das Abschliessen kontrollierter lokaler Schreibpfade, eine spaetere Run-Steuerungsgrenze ohne echte Simulation sowie v1-Haertung mit Doku und Smoke-/Preview-Checks. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
 
 ## SQLite-Vorbereitung
 
@@ -265,6 +268,18 @@ Der Capabilities-Endpunkt meldet deshalb weiterhin:
 `ims.api.metadata_write_contracts` beschreibt diese Grenze als lokalen Vertrag. Der Vertrag erlaubt fuer spaetere lokale Adapter nur Szenario- und Run-Metadaten, einschliesslich des im Importformat erforderlichen Run-Felds `execution_enabled` mit dem Wert `false`. `execution_enabled=true`, Simulation, Fachlogikdaten, HTTP-Schreibendpunkte, UI-Schreibworkflows und historische Vollgleichheitsbehauptungen bleiben verboten. Als aktuell einziger lokaler Schreibweg ist der explizite Import `metadata_import_cli import --db` genannt.
 
 Der Vertrag ist selbst kein Schreibpfad. `python -m ims.api.metadata_write_contracts` gibt nur JSON aus, startet keinen Server, erzeugt keine SQLite-Datei, migriert keine Datenbank und schreibt keine Metadaten. Mit `python -m ims.api.metadata_write_contracts check .\metadata_import.json` kann eine lokale Importdatei zusaetzlich gegen diesen Vertrag geprueft werden. Diese Schreibvertragspruefung schreibt nicht, importiert nicht und lehnt `execution_enabled=true` sowie Fachlogik- oder Simulationsergebnisfelder ab.
+
+## Run-Steuerungsgrenze
+
+`ims.api.run_control_contracts` beschreibt den naechsten vorbereiteten Vertrag fuer spaetere Run-Steuerung:
+
+```powershell
+python -m ims.api.run_control_contracts
+```
+
+Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrte HTTP-, UI- und Ausfuehrungsgrenzen, zukuenftig erwartbare Eingaben wie `run_id`, `scenario_id`, `metadata_db`, `requested_by` und `created_at` sowie verbotene Grenzen wie Simulation, Fachlogikmutation, Browser-Upload, HTTP-Schreibendpunkt und historische Vollgleichheitsbehauptung.
+
+Der Run-Control-Vertrag ist rein beschreibend. Er startet keinen Lauf, schreibt keine Metadaten, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und schaltet keinen UI-Startbutton frei. `execution_enabled` und `execution_performed` bleiben `false`.
 
 ## Lokaler Start
 
@@ -322,6 +337,7 @@ Die lokalen CLI-Kommandos sind absichtlich getrennt:
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 | `python -m ims.api.metadata_write_contracts` | Vorbereitete Schreibgrenzen beschreibend ausgeben | schreibt nicht |
 | `python -m ims.api.metadata_write_contracts check .\metadata_import.json` | Importdatei gegen den Schreibvertrag pruefen | schreibt nicht |
+| `python -m ims.api.run_control_contracts` | Spaetere Run-Steuerungsgrenze ohne Ausfuehrung beschreiben | schreibt nicht |
 | `python -m ims.api.metadata_import_cli check .\metadata_import.json` | Importformat knapp validieren | schreibt nicht |
 | `python -m ims.api.metadata_import_cli preview .\metadata_import.json` | Importdatei zusammenfassen und Konsistenzhinweise zeigen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli snapshot` | geseedete In-Memory-Metadaten als Diagnose lesen | schreibt nicht |
