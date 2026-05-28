@@ -30,6 +30,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
     assert "npm.cmd run build" in readme
+    assert "Lokaler Workbench-v1 Abschlussstatus" in readme
+    assert "expliziten Importbericht und Run-Control-Preflight" in readme
     assert "keine HTTP-/UI-Schreibpfade" in readme
 
 
@@ -39,6 +41,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "## Lokale CLI-Grenzen" in doc
     assert "## Lokale Konfiguration" in doc
     assert "## Lokale Workbench-v1 Ablauf" in doc
+    assert "## Lokaler Workbench-v1 Abschlussstatus" in doc
     assert "python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_diagnostics --config .\\workbench.local.json" in doc
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in doc
@@ -97,5 +100,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
     assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
-    assert "0-2 reviewbare PRs" in doc
+    assert "0-1 reviewbare PRs" in doc
     assert "Die lokale Bedienreihenfolge fuer v1 ist" in doc
+    assert "Die lokale Workbench-v1 ist als rein lokale Browser-Workbench konsolidiert" in doc
+    assert "Nicht enthalten sind weiterhin Fachlogikaenderungen" in doc

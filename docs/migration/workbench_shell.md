@@ -90,6 +90,14 @@ Die lokale Bedienreihenfolge fuer v1 ist:
 4. Backend lokal starten.
 5. Workbench im Browser oeffnen.
 
+## Lokaler Workbench-v1 Abschlussstatus
+
+Die lokale Workbench-v1 ist als rein lokale Browser-Workbench konsolidiert. Sie liefert Backend-Health und Version, statische Frontend-Auslieferung, lesende Szenario- und Run-Metadaten, Detailansichten, Filter, Auswahlzusammenfassung, Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose und Readiness.
+
+Die lokalen CLI-Adapter decken Startdiagnose, Startplan, Readiness, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal und starten keine Simulation. Nur `metadata_import_cli import --db` schreibt Metadaten, und nur in den explizit angegebenen SQLite-Zielpfad; `metadata_import_cli export --out` schreibt nur in den expliziten JSON-Zielpfad.
+
+Nicht enthalten sind weiterhin Fachlogikaenderungen, echte Run-Ausfuehrung, neue HTTP-Endpunkte, HTTP- oder UI-Schreibpfade, Browser-Upload, Browser-Download, funktionaler Run-Start, Szenario-Editor, SQLite-Migration und historische Vollgleichheitsbehauptung.
+
 ## Metadatenmodell
 
 Die Workbench-Metadaten sind beschreibende DTOs an der API-Grenze. Jede Antwort enthaelt:
@@ -269,7 +277,7 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 
 Die Uebersicht fuehrt diese Befehle nicht aus. Sie startet keinen Server, liest keinen Snapshot, importiert keine Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Nur der bereits bestehende Importpfad `metadata_import_cli import --db` und der explizite Datei-Export `metadata_import_cli export --out` sind als schreibende Befehle markiert; alle anderen aufgefuehrten Kommandos bleiben lesend oder rein beschreibend.
 
-Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 0-2 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind v1-Smoke-/Readiness-Haertung sowie eine kleine Abschluss- oder Release-Konsolidierung. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 0-1 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Der naechste Block ist nur noch eine moegliche Abschluss- oder Release-Konsolidierung. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
 
 ## v1-Bereitschaftspruefung
 
