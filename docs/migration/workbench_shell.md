@@ -22,6 +22,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar und als Snapshot lesend exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
 - `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - `ims.api.workbench_start_plan` beschreibt den lokalen Start aus Defaults oder Konfiguration, startet aber keinen Server.
+- `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
 - `python_port[dev]` enthaelt die Web-Testabhaengigkeiten, damit die Standardtests die API-Tests ohne separate manuelle Web-Installation sammeln koennen.
@@ -40,6 +41,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet und beruecksichtigen den aktuellen WAL-Zustand.
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
 - Der lokale Startplan ist rein beschreibend. Er gibt empfohlene Kommandos und aufgeloeste Pfade aus, startet aber keinen Server und erzeugt keine Dateien.
+- Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Szenario-Uebersicht ist rein lesend und enthaelt keine Start-, Upload- oder Editierkontrollen.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
@@ -190,6 +192,27 @@ Die Ausgabe enthaelt `status`, `mode = "start_plan"`, `host`, `port`, `frontend_
 
 Der Startplan startet keinen Server, erzeugt keine Konfigurationsdatei, initialisiert keine SQLite-Datei, migriert keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation. Er ist eine lesende Orientierung fuer lokale Startwerkzeuge und Betriebssupport, nicht der eigentliche Workbench-Start.
 
+## Lokale CLI-Uebersicht
+
+Die lokale CLI-Uebersicht buendelt die vorhandenen Workbench-Befehle und ihre Grenzen in einer stabilen JSON-Form:
+
+```powershell
+python -m ims.api.workbench_cli_overview
+```
+
+Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries` und `rest_plan`. Aufgefuehrt werden:
+
+- `workbench_diagnostics`
+- `workbench_start_plan`
+- `metadata_import_cli check`
+- `metadata_import_cli preview`
+- `metadata_import_cli snapshot`
+- `metadata_import_cli import --db`
+
+Die Uebersicht fuehrt diese Befehle nicht aus. Sie startet keinen Server, liest keinen Snapshot, importiert keine Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Nur der bereits bestehende Importpfad `metadata_import_cli import --db` ist als schreibender Befehl markiert; alle anderen aufgefuehrten Kommandos bleiben lesend oder rein beschreibend.
+
+Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 12-18 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind lokale Start-/Konfigurationsnutzung, lesende Szenario-/Run-Arbeitsflaechen, kontrollierte lokale Schreibpfade, eine spaetere Run-Steuerungsgrenze ohne echte Simulation sowie v1-Haertung mit Doku und Smoke-/Preview-Checks. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
@@ -268,6 +291,7 @@ Die lokalen CLI-Kommandos sind absichtlich getrennt:
 | `python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist` | Startbedingungen pruefen | schreibt nicht |
 | `python -m ims.api.workbench_diagnostics --config .\workbench.local.json` | Startbedingungen aus expliziter Konfiguration pruefen | schreibt nicht |
 | `python -m ims.api.workbench_start_plan --config .\workbench.local.json` | Lokalen Start beschreibend zusammenfassen | schreibt nicht |
+| `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 | `python -m ims.api.metadata_import_cli check .\metadata_import.json` | Importformat knapp validieren | schreibt nicht |
 | `python -m ims.api.metadata_import_cli preview .\metadata_import.json` | Importdatei zusammenfassen und Konsistenzhinweise zeigen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli snapshot` | geseedete In-Memory-Metadaten als Diagnose lesen | schreibt nicht |
