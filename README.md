@@ -46,6 +46,12 @@ python -m ims.api.metadata_write_contracts
 python -m ims.api.metadata_write_contracts check .\metadata_import.json
 ```
 
+Ein lokaler Run-Control-Vertrag beschreibt die spaetere Steuerungsgrenze, ohne einen Lauf zu starten:
+
+```powershell
+python -m ims.api.run_control_contracts
+```
+
 Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:
 
 ```powershell
