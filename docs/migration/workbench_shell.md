@@ -18,6 +18,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Workbench zeigt Szenario-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - Die Szenario-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Quelle und Umfang.
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
+- Die Run-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Szenario und Quelle.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar und als Snapshot lesend exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -47,6 +48,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Szenario-Uebersicht ist rein lesend und enthaelt keine Start-, Upload- oder Editierkontrollen.
 - Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
+- Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
@@ -89,6 +91,8 @@ Die Ausfuehrungsgrenze kommt aus `/api/metadata/capabilities` und bleibt als ges
 ## Run-Uebersicht
 
 Die Workbench zeigt die vorhandenen Run-Metadaten in einer kompakten Uebersicht. Sie nutzt weiterhin nur die bestehenden Listen- und Detaildaten aus `/api/runs` und `/api/runs/{run_id}` sowie bereits geladene Szenario-Metadaten fuer Anzeigenamen. Sichtbar sind Run-Anzeigename, Status, Szenario-Bezug, Periodenfenster, Quelle und die Ausfuehrungsgrenze.
+
+Die Uebersicht kann clientseitig nach Anzeigename oder ID suchen und nach Status, Szenario sowie Quelle filtern. Die Filter verwenden ausschliesslich die bereits gelesenen Run-Metadaten aus `/api/runs` und Szenario-Anzeigenamen aus `/api/scenarios`; es gibt dafuer keinen neuen API-Endpunkt und keinen Schreibpfad. Wenn kein Treffer uebrig bleibt, zeigt die Workbench einen knappen leeren Zustand.
 
 Wenn ein Run ausgewaehlt wird, setzt die Workbench auch das zugehoerige Szenario aus `scenario_id` als Auswahl. Dadurch bleibt die lesende Detailansicht konsistent, auch wenn die Metadaten Runs aus mehreren Szenarien enthalten.
 
@@ -143,6 +147,7 @@ Die Workbench-Shell ist mit kleinen Smoke-Tests abgesichert:
 - Die Szenario-Uebersicht muss Szenario-Daten weiterhin lesend darstellen und die globale Ausfuehrungsgrenze als gesperrt behandeln.
 - Die Szenariofilter muessen als clientseitige, lesende Filter in der Frontend-Shell deklariert sein.
 - Die Run-Uebersicht muss Run-Daten weiterhin lesend darstellen und `execution_enabled` als gesperrte Grenze behandeln.
+- Die Runfilter muessen als clientseitige, lesende Filter in der Frontend-Shell deklariert sein.
 
 Das ist bewusst kein vollstaendiger Browser-End-to-End-Test. Interaktion, Layout und echte Browserereignisse werden weiterhin lokal ueber die Vorschau geprueft; der automatisierte Smoke-Test bleibt ohne zusaetzliche Browser-Testabhaengigkeiten.
 

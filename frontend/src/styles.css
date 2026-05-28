@@ -369,7 +369,8 @@ h2 {
   margin-bottom: 18px;
 }
 
-.scenario-filterbar {
+.scenario-filterbar,
+.run-filterbar {
   display: grid;
   grid-template-columns:
     minmax(220px, 1.4fr)
@@ -380,7 +381,8 @@ h2 {
   margin-bottom: 10px;
 }
 
-.scenario-filterbar label {
+.scenario-filterbar label,
+.run-filterbar label {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -392,13 +394,16 @@ h2 {
   background: #fbfcfb;
 }
 
-.scenario-filterbar label > span {
+.scenario-filterbar label > span,
+.run-filterbar label > span {
   flex: 0 0 auto;
   color: #66736c;
 }
 
 .scenario-filterbar input,
-.scenario-filterbar select {
+.scenario-filterbar select,
+.run-filterbar input,
+.run-filterbar select {
   width: 100%;
   min-width: 0;
   border: 0;
@@ -407,11 +412,13 @@ h2 {
   outline: none;
 }
 
-.scenario-filterbar select {
+.scenario-filterbar select,
+.run-filterbar select {
   cursor: pointer;
 }
 
-.scenario-filter-count {
+.scenario-filter-count,
+.run-filter-count {
   margin-bottom: 12px;
   color: #66736c;
   font-size: 0.9rem;
@@ -740,6 +747,7 @@ code {
   .consistency-grid,
   .diagnosis-row,
   .scenario-filterbar,
+  .run-filterbar,
   .scenario-overview-head,
   .scenario-overview-row,
   .run-overview-head,

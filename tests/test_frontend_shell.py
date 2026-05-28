@@ -128,3 +128,22 @@ def test_frontend_shell_declares_readonly_scenario_filters():
     assert "scenario-filterbar" in styles
     assert "scenario-filter-count" in styles
     assert 'type="file"' not in source
+
+
+def test_frontend_shell_declares_readonly_run_filters():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "filterRuns" in source
+    assert "Runfilter" in source
+    assert "Runsuche" in source
+    assert "Run-Statusfilter" in source
+    assert "Run-Szenariofilter" in source
+    assert "Run-Quellenfilter" in source
+    assert "filteredRuns.map" in source
+    assert "Keine Runs fuer diesen Filter" in source
+    assert "selectRun(run)" in source
+    assert "run-filterbar" in styles
+    assert "run-filter-count" in styles
+    assert "execution_enabled" in source
+    assert 'type="file"' not in source
