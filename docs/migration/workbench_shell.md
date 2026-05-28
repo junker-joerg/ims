@@ -28,6 +28,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.run_control_preflight` prueft vorhandene Run-Metadaten lokal gegen diese gesperrte Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - `ims.api.workbench_start_plan` beschreibt den lokalen Start aus Defaults oder Konfiguration, startet aber keinen Server.
+- `ims.api.workbench_readiness` buendelt lokale v1-Bereitschaft aus Diagnose, Metadatenquelle, CLI-Grenzen und Run-Control-Preflight, ohne den Server zu starten.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
@@ -50,6 +51,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Run-Control-Preflight ist rein lesend. Er prueft Run- und Szenario-Metadaten, startet aber keine Simulation und schreibt keine Metadaten.
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
 - Der lokale Startplan ist rein beschreibend. Er gibt empfohlene Kommandos und aufgeloeste Pfade aus, startet aber keinen Server und erzeugt keine Dateien.
+- Die lokale Readiness-Pruefung ist rein beschreibend. Sie startet keinen Server, baut kein Frontend, schreibt keine Metadaten und startet keine Simulation.
 - Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Auswahlzusammenfassung ist rein lesend und fuehrt keine Start-, Schreib-, Import- oder Editieraktion aus.
@@ -229,6 +231,7 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 
 - `workbench_diagnostics`
 - `workbench_start_plan`
+- `workbench_readiness`
 - `metadata_import_cli check`
 - `metadata_import_cli preview`
 - `metadata_import_cli snapshot`
@@ -241,7 +244,25 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 
 Die Uebersicht fuehrt diese Befehle nicht aus. Sie startet keinen Server, liest keinen Snapshot, importiert keine Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Nur der bereits bestehende Importpfad `metadata_import_cli import --db` und der explizite Datei-Export `metadata_import_cli export --out` sind als schreibende Befehle markiert; alle anderen aufgefuehrten Kommandos bleiben lesend oder rein beschreibend.
 
-Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 3-7 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind die weitere Run-Steuerungsgrenze ohne echte Simulation sowie v1-Haertung mit Doku und Smoke-/Preview-Checks. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 2-5 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind v1-Haertung mit Doku und Smoke-/Preview-Checks sowie eine kleine Abschluss- oder Release-Konsolidierung. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+
+## v1-Bereitschaftspruefung
+
+Die lokale Readiness-Pruefung buendelt die bestehenden lokalen Grenzen:
+
+```powershell
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist
+```
+
+Optional koennen eine explizite SQLite-Metadatenquelle und eine Run-ID fuer den Run-Control-Preflight angegeben werden:
+
+```powershell
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite --run-id baseline-python-tests
+```
+
+Die Ausgabe enthaelt `mode = "workbench_readiness"`, Einzelstatus fuer Backend, Frontend, Metadaten, CLI und Run-Control, eine `checks`-Liste, `issues`, `writes_enabled = false` und `execution_enabled = false`.
+
+Die Readiness-Pruefung startet keinen Server, baut kein Frontend, erzeugt keine SQLite-Datei, schreibt keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation. Sie ist eine lokale Betriebs- und Härtungspruefung fuer die Workbench-v1, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
 
 ## SQLite-Vorbereitung
 
@@ -351,6 +372,7 @@ Die lokalen CLI-Kommandos sind absichtlich getrennt:
 | `python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist` | Startbedingungen pruefen | schreibt nicht |
 | `python -m ims.api.workbench_diagnostics --config .\workbench.local.json` | Startbedingungen aus expliziter Konfiguration pruefen | schreibt nicht |
 | `python -m ims.api.workbench_start_plan --config .\workbench.local.json` | Lokalen Start beschreibend zusammenfassen | schreibt nicht |
+| `python -m ims.api.workbench_readiness --frontend-dist frontend/dist` | Lokale Workbench-v1-Bereitschaft buendeln | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 | `python -m ims.api.metadata_write_contracts` | Vorbereitete Schreibgrenzen beschreibend ausgeben | schreibt nicht |
 | `python -m ims.api.metadata_write_contracts check .\metadata_import.json` | Importdatei gegen den Schreibvertrag pruefen | schreibt nicht |

@@ -114,6 +114,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Roundtrip lokal per CLI ohne Schreiben" in source
     assert "Dry-Run lokal per CLI ohne Import" in source
     assert "Importbericht lokal per CLI nach explizitem Schreiben" in source
+    assert "Readiness lokal per CLI ohne Serverstart" in source
     assert "Browser schreibt keine Metadaten" in source
     assert "Metadatenquelle" in source
     assert "lokal per CLI" in source

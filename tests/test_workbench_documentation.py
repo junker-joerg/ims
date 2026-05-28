@@ -11,6 +11,7 @@ def test_readme_documents_local_workbench_start_commands():
 
     assert "python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist" in readme
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in readme
+    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
     assert "python -m ims.api.metadata_write_contracts" in readme
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in readme
@@ -36,6 +37,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_diagnostics --config .\\workbench.local.json" in doc
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in doc
+    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
@@ -60,6 +62,10 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "keine Konfigurationsdatei automatisch" in doc
     assert "relativ zum Speicherort der Konfigurationsdatei" in doc
     assert "Der Startplan startet keinen Server" in doc
+    assert "## v1-Bereitschaftspruefung" in doc
+    assert "Die Readiness-Pruefung startet keinen Server" in doc
+    assert "writes_enabled = false" in doc
+    assert "execution_enabled = false" in doc
     assert "Die Uebersicht fuehrt diese Befehle nicht aus" in doc
     assert "Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten" in doc
     assert "Die Runfilter arbeiten nur auf bereits gelesenen Metadaten" in doc
@@ -83,4 +89,4 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
     assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
-    assert "3-7 reviewbare PRs" in doc
+    assert "2-5 reviewbare PRs" in doc

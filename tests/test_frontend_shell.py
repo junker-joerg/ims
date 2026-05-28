@@ -47,6 +47,7 @@ def test_frontend_shell_declares_readonly_import_preview():
     assert "Snapshot lokal per CLI ohne Browser-Export" in source
     assert "Startdiagnose lokal per CLI ohne Serverstart" in source
     assert "Startplan lokal per CLI nur beschreibend" in source
+    assert "Readiness lokal per CLI ohne Serverstart" in source
     assert "CLI-Uebersicht lokal per CLI ohne Seiteneffekte" in source
     assert "Schreibvertrag lokal per CLI nur beschreibend" in source
     assert "Schreibvertragspruefung lokal per CLI ohne Import" in source
