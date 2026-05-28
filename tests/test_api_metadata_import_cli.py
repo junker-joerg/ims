@@ -1,4 +1,6 @@
 import json
+import sqlite3
+from pathlib import Path
 
 import pytest
 
@@ -10,7 +12,11 @@ from ims.api.metadata_import_cli import (
     main,
     preview_metadata_import,
 )
-from ims.api.metadata_repository import build_seeded_metadata_repository
+from ims.api.metadata_repository import (
+    build_seeded_metadata_repository,
+    initialize_metadata_schema,
+    seed_metadata,
+)
 
 
 def test_metadata_import_cli_check_validates_without_writing(tmp_path):
@@ -185,6 +191,21 @@ def test_metadata_import_cli_snapshot_reads_explicit_sqlite_file(tmp_path):
     assert payload["consistency"]["issue_count"] == 0
 
 
+def test_metadata_import_cli_snapshot_reads_explicit_sqlite_without_sidecars(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    wal_path = Path(f"{db_path}-wal")
+    shm_path = Path(f"{db_path}-shm")
+    _create_seeded_wal_database(db_path)
+    wal_path.unlink(missing_ok=True)
+    shm_path.unlink(missing_ok=True)
+
+    result = export_metadata_snapshot(db_path)
+
+    assert result.to_dict()["status"] == "ok"
+    assert not wal_path.exists()
+    assert not shm_path.exists()
+
+
 def test_metadata_import_cli_snapshot_rejects_missing_explicit_db(tmp_path, capsys):
     db_path = tmp_path / "missing.sqlite"
 
@@ -195,6 +216,18 @@ def test_metadata_import_cli_snapshot_rejects_missing_explicit_db(tmp_path, caps
     assert output["status"] == "error"
     assert "does not exist" in output["message"]
     assert not db_path.exists()
+
+
+def test_metadata_import_cli_snapshot_reports_unreadable_explicit_db(tmp_path, capsys):
+    db_path = tmp_path / "broken.sqlite"
+    db_path.write_text("not sqlite", encoding="utf-8")
+
+    exit_code = main(["snapshot", "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "not readable" in output["message"]
 
 
 def test_metadata_import_cli_snapshot_prints_stable_json(capsys):
@@ -303,3 +336,13 @@ def _valid_import_payload():
             }
         ],
     }
+
+
+def _create_seeded_wal_database(db_path):
+    connection = sqlite3.connect(db_path)
+    connection.row_factory = sqlite3.Row
+    initialize_metadata_schema(connection)
+    seed_metadata(connection)
+    connection.execute("PRAGMA journal_mode=WAL").fetchone()
+    connection.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchall()
+    connection.close()
