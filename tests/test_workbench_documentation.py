@@ -13,6 +13,10 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in readme
     assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
+    assert "Kurzstart fuer die lokale Browser-Workbench" in readme
+    assert "Start und Diagnose" in readme
+    assert "Vertraege und Run-Control-Grenzen" in readme
+    assert "Metadaten-CLI" in readme
     assert "python -m ims.api.metadata_write_contracts" in readme
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in readme
     assert "python -m ims.api.run_control_contracts" in readme
@@ -34,6 +38,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
 
     assert "## Lokale CLI-Grenzen" in doc
     assert "## Lokale Konfiguration" in doc
+    assert "## Lokale Workbench-v1 Ablauf" in doc
     assert "python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_diagnostics --config .\\workbench.local.json" in doc
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in doc
@@ -50,6 +55,9 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.metadata_import_cli roundtrip --db .\\.ims_workbench\\metadata.sqlite" in doc
     assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in doc
     assert "python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "Start und Diagnose:" in doc
+    assert "Vertraege und Grenzen:" in doc
+    assert "Metadaten:" in doc
 
 
 def test_workbench_doc_keeps_modernization_boundaries_conservative():
@@ -89,4 +97,5 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
     assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
-    assert "2-5 reviewbare PRs" in doc
+    assert "1-3 reviewbare PRs" in doc
+    assert "Die lokale Bedienreihenfolge fuer v1 ist" in doc

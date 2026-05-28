@@ -65,6 +65,31 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Importvorschau ist rein informativ und enthaelt keinen Upload, Editor oder Browser-Schreibpfad.
 - Noch keine Schreibendpunkte fuer Szenario- oder Run-Metadaten.
 
+## Lokale Workbench-v1 Ablauf
+
+Der lokale v1-Ablauf ist kurz und reproduzierbar:
+
+```powershell
+python -m pip install -e .\python_port[dev]
+cd frontend
+npm.cmd install
+npm.cmd run build
+cd ..
+python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist
+python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
+```
+
+Danach ist die Workbench unter `http://127.0.0.1:8000/` erreichbar. Diagnose und Readiness sind lokale Vorabpruefungen; sie starten keinen Server, bauen kein Frontend, schreiben keine Metadaten und starten keine Simulation.
+
+Die lokale Bedienreihenfolge fuer v1 ist:
+
+1. Frontend-Abhaengigkeiten installieren und bauen.
+2. Startdiagnose ausfuehren.
+3. Readiness-Pruefung ausfuehren.
+4. Backend lokal starten.
+5. Workbench im Browser oeffnen.
+
 ## Metadatenmodell
 
 Die Workbench-Metadaten sind beschreibende DTOs an der API-Grenze. Jede Antwort enthaelt:
@@ -244,7 +269,7 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 
 Die Uebersicht fuehrt diese Befehle nicht aus. Sie startet keinen Server, liest keinen Snapshot, importiert keine Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Nur der bereits bestehende Importpfad `metadata_import_cli import --db` und der explizite Datei-Export `metadata_import_cli export --out` sind als schreibende Befehle markiert; alle anderen aufgefuehrten Kommandos bleiben lesend oder rein beschreibend.
 
-Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 2-5 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind v1-Haertung mit Doku und Smoke-/Preview-Checks sowie eine kleine Abschluss- oder Release-Konsolidierung. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 1-3 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind v1-Haertung mit Doku und Smoke-/Preview-Checks sowie eine kleine Abschluss- oder Release-Konsolidierung. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
 
 ## v1-Bereitschaftspruefung
 
@@ -367,6 +392,8 @@ Die Konfigurationsdatei ersetzt die bestehenden Umgebungsvariablen nicht. `IMS_M
 
 Die lokalen CLI-Kommandos sind absichtlich getrennt:
 
+Start und Diagnose:
+
 | Kommando | Zweck | Schreibverhalten |
 | --- | --- | --- |
 | `python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist` | Startbedingungen pruefen | schreibt nicht |
@@ -374,10 +401,20 @@ Die lokalen CLI-Kommandos sind absichtlich getrennt:
 | `python -m ims.api.workbench_start_plan --config .\workbench.local.json` | Lokalen Start beschreibend zusammenfassen | schreibt nicht |
 | `python -m ims.api.workbench_readiness --frontend-dist frontend/dist` | Lokale Workbench-v1-Bereitschaft buendeln | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
+
+Vertraege und Grenzen:
+
+| Kommando | Zweck | Schreibverhalten |
+| --- | --- | --- |
 | `python -m ims.api.metadata_write_contracts` | Vorbereitete Schreibgrenzen beschreibend ausgeben | schreibt nicht |
 | `python -m ims.api.metadata_write_contracts check .\metadata_import.json` | Importdatei gegen den Schreibvertrag pruefen | schreibt nicht |
 | `python -m ims.api.run_control_contracts` | Spaetere Run-Steuerungsgrenze ohne Ausfuehrung beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_preflight --run-id baseline-python-tests` | Run-Metadaten lokal gegen die gesperrte Steuerungsgrenze pruefen | schreibt nicht |
+
+Metadaten:
+
+| Kommando | Zweck | Schreibverhalten |
+| --- | --- | --- |
 | `python -m ims.api.metadata_import_cli check .\metadata_import.json` | Importformat knapp validieren | schreibt nicht |
 | `python -m ims.api.metadata_import_cli preview .\metadata_import.json` | Importdatei zusammenfassen und Konsistenzhinweise zeigen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli snapshot` | geseedete In-Memory-Metadaten als Diagnose lesen | schreibt nicht |
