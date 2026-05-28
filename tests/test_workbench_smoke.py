@@ -3,7 +3,11 @@ from pathlib import Path
 from starlette.testclient import TestClient
 
 from ims.api.app import APP_VERSION, create_app
+from ims.api.metadata_import_cli import check_metadata_roundtrip
 from ims.api.metadata_repository import build_seeded_metadata_repository
+from ims.api.run_control_preflight import preflight_run_control
+from ims.api.workbench_cli_overview import build_workbench_cli_overview
+from ims.api.workbench_readiness import build_workbench_readiness
 
 
 def test_workbench_api_metadata_smoke(tmp_path: Path):
@@ -89,6 +93,56 @@ def test_workbench_static_frontend_smoke(tmp_path: Path):
     assert health.json()["frontend_available"] is True
 
 
+def test_workbench_v1_readiness_smoke_keeps_local_boundaries(tmp_path: Path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    frontend_dist = tmp_path / "dist"
+    frontend_dist.mkdir()
+    (frontend_dist / "index.html").write_text("<!doctype html><title>IMS Workbench</title>", encoding="utf-8")
+
+    readiness = build_workbench_readiness(
+        frontend_dist=frontend_dist,
+        run_id="baseline-python-tests",
+    ).to_dict()
+    overview = build_workbench_cli_overview().to_dict()
+    roundtrip = check_metadata_roundtrip().to_dict()
+    preflight = preflight_run_control("baseline-python-tests").to_dict()
+
+    assert readiness["status"] == "ok"
+    assert readiness["backend_ready"] is True
+    assert readiness["frontend_ready"] is True
+    assert readiness["metadata_ready"] is True
+    assert readiness["cli_ready"] is True
+    assert readiness["run_control_ready"] is True
+    assert readiness["writes_enabled"] is False
+    assert readiness["execution_enabled"] is False
+    assert [check["name"] for check in readiness["checks"]] == [
+        "backend",
+        "frontend",
+        "metadata",
+        "cli",
+        "run_control",
+    ]
+
+    assert overview["boundaries"]["writes_enabled"] is False
+    assert overview["boundaries"]["execution_enabled"] is False
+    assert overview["boundaries"]["starts_server"] is False
+    assert overview["boundaries"]["creates_sqlite_file"] is False
+    assert overview["boundaries"]["write_commands"] == ["metadata_import_cli export", "metadata_import_cli import --db"]
+    assert all(command["starts_server"] is False for command in overview["commands"])
+    assert all(command["starts_simulation"] is False for command in overview["commands"])
+
+    assert roundtrip["import_valid"] is True
+    assert roundtrip["write_contract_valid"] is True
+    assert roundtrip["writes_performed"] is False
+    assert roundtrip["execution_performed"] is False
+    assert preflight["run_found"] is True
+    assert preflight["scenario_found"] is True
+    assert preflight["execution_allowed"] is False
+    assert preflight["writes_performed"] is False
+    assert preflight["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_workbench_frontend_source_exposes_import_preview_without_upload():
     source = (Path(__file__).resolve().parent.parent / "frontend" / "src" / "main.tsx").read_text(encoding="utf-8")
 
@@ -115,6 +169,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Dry-Run lokal per CLI ohne Import" in source
     assert "Importbericht lokal per CLI nach explizitem Schreiben" in source
     assert "Readiness lokal per CLI ohne Serverstart" in source
+    assert "v1-Readiness als lokaler Abschluss-Smoke" in source
     assert "Browser schreibt keine Metadaten" in source
     assert "Metadatenquelle" in source
     assert "lokal per CLI" in source
