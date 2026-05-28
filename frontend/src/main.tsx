@@ -122,7 +122,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "631 Tests", "gruen"],
+  ["Simulationskern", "637 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -580,6 +580,7 @@ function App() {
                 <li>Preview lokal per CLI ohne Schreiben</li>
                 <li>Snapshot lokal per CLI ohne Browser-Export</li>
                 <li>Startdiagnose lokal per CLI ohne Serverstart</li>
+                <li>Startplan lokal per CLI nur beschreibend</li>
                 <li><code>execution_enabled</code> bleibt <code>false</code></li>
                 <li>Browser schreibt keine Metadaten</li>
               </ul>

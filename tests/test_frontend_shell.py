@@ -46,6 +46,7 @@ def test_frontend_shell_declares_readonly_import_preview():
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source
     assert "Startdiagnose lokal per CLI ohne Serverstart" in source
+    assert "Startplan lokal per CLI nur beschreibend" in source
     assert "Browser schreibt keine Metadaten" in source
     assert 'type="file"' not in source
 

@@ -149,12 +149,18 @@ def test_core_placeholders_import() -> None:
         WorkbenchLocalConfig,
         load_workbench_config,
         load_workbench_config_result,
+        resolve_workbench_config_path,
     )
     from ims.api.workbench_diagnostics import (
         WorkbenchDiagnosticIssue,
         WorkbenchDiagnosticsResult,
         build_workbench_diagnostics,
         main as workbench_diagnostics_main,
+    )
+    from ims.api.workbench_start_plan import (
+        WorkbenchStartPlanResult,
+        build_workbench_start_plan,
+        main as workbench_start_plan_main,
     )
     from ims.api.metadata_consistency import metadata_consistency_payload
     from ims.api.metadata_repository import (
@@ -520,10 +526,14 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchLocalConfig is not None
     assert load_workbench_config is not None
     assert load_workbench_config_result is not None
+    assert resolve_workbench_config_path is not None
     assert WorkbenchDiagnosticIssue is not None
     assert WorkbenchDiagnosticsResult is not None
     assert build_workbench_diagnostics is not None
     assert workbench_diagnostics_main is not None
+    assert WorkbenchStartPlanResult is not None
+    assert build_workbench_start_plan is not None
+    assert workbench_start_plan_main is not None
     assert WorkbenchMetadataRepository is not None
     assert LazyWorkbenchMetadataRepository is not None
     assert MetadataValidationError is not None

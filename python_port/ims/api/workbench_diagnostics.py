@@ -13,6 +13,7 @@ from ims.api.workbench_config import (
     WorkbenchConfigError,
     WorkbenchConfigLoadResult,
     load_workbench_config_result,
+    resolve_workbench_config_path,
 )
 
 
@@ -184,12 +185,7 @@ def _effective_metadata_db(
 
 
 def _resolve_config_relative_path(config_result: WorkbenchConfigLoadResult, value: Path | str) -> Path:
-    candidate = Path(value).expanduser()
-    if candidate.is_absolute():
-        return candidate.resolve()
-    if config_result.path is not None:
-        return (config_result.path.parent / candidate).resolve()
-    return candidate.resolve()
+    return resolve_workbench_config_path(config_result, value)
 
 
 def _diagnostic_metadata_source(db_path: Path | str | None) -> dict[str, object]:
