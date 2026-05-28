@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Sequence
 
 from ims.api.metadata import metadata_capabilities
+from ims.api.metadata import METADATA_SCHEMA_VERSION
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_import import (
     MetadataImportError,
@@ -101,6 +102,31 @@ class MetadataSnapshotResult:
         }
 
 
+@dataclass(frozen=True)
+class MetadataExportResult:
+    mode: str
+    scenario_count: int
+    run_count: int
+    scenario_ids: tuple[str, ...]
+    run_ids: tuple[str, ...]
+    out_path: str
+    writes_performed: bool = True
+    execution_performed: bool = False
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "mode": self.mode,
+            "scenario_count": self.scenario_count,
+            "run_count": self.run_count,
+            "scenario_ids": list(self.scenario_ids),
+            "run_ids": list(self.run_ids),
+            "out_path": self.out_path,
+            "writes_performed": self.writes_performed,
+            "execution_performed": self.execution_performed,
+        }
+
+
 def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
     bundle = load_metadata_import(path)
     validate_metadata_bundle(bundle, build_seeded_metadata_repository())
@@ -114,7 +140,7 @@ def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
 
 
 def export_metadata_snapshot(db_path: Path | str | None = None) -> MetadataSnapshotResult:
-    repository = _snapshot_repository(db_path)
+    repository = _metadata_read_repository(db_path, mode="snapshot")
     try:
         scenarios = repository.list_scenarios()
         runs = repository.list_runs()
@@ -127,6 +153,42 @@ def export_metadata_snapshot(db_path: Path | str | None = None) -> MetadataSnaps
         scenarios=scenarios,
         runs=runs,
         consistency=consistency,
+    )
+
+
+def export_metadata_import_bundle(db_path: Path | str | None = None) -> dict[str, object]:
+    repository = _metadata_read_repository(db_path, mode="export")
+    try:
+        scenarios = repository.list_scenarios()
+        runs = repository.list_runs()
+    except sqlite3.DatabaseError as exc:
+        raise MetadataImportError(f"metadata export database is not readable: {exc}") from exc
+    return {
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "scenarios": scenarios.get("items", []),
+        "runs": runs.get("items", []),
+    }
+
+
+def export_metadata_import_bundle_to_file(
+    out_path: Path | str,
+    db_path: Path | str | None = None,
+) -> MetadataExportResult:
+    payload = export_metadata_import_bundle(db_path)
+    resolved_out_path = Path(out_path).expanduser().resolve()
+    try:
+        resolved_out_path.write_text(_json_line(payload, indent=2), encoding="utf-8")
+    except OSError as exc:
+        raise MetadataImportError(f"metadata export output is not writable: {exc}") from exc
+    scenarios = payload["scenarios"] if isinstance(payload["scenarios"], list) else []
+    runs = payload["runs"] if isinstance(payload["runs"], list) else []
+    return MetadataExportResult(
+        mode="export",
+        scenario_count=len(scenarios),
+        run_count=len(runs),
+        scenario_ids=_metadata_item_ids(scenarios),
+        run_ids=_metadata_item_ids(runs),
+        out_path=str(resolved_out_path),
     )
 
 
@@ -175,6 +237,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             _print_json(preview_metadata_import(args.path).to_dict())
         elif args.command == "snapshot":
             _print_json(export_metadata_snapshot(args.db).to_dict())
+        elif args.command == "export":
+            if args.out is None:
+                _print_json(export_metadata_import_bundle(args.db))
+            else:
+                _print_json(export_metadata_import_bundle_to_file(args.out, args.db).to_dict())
         elif args.command == "import":
             _print_json(import_metadata_to_db(args.path, args.db).to_dict())
         else:
@@ -196,12 +263,12 @@ def _cli_result_from_import(result: MetadataImportResult, db_path: Path | str) -
     )
 
 
-def _snapshot_repository(db_path: Path | str | None) -> WorkbenchMetadataRepository:
+def _metadata_read_repository(db_path: Path | str | None, *, mode: str) -> WorkbenchMetadataRepository:
     if db_path is None:
         return build_seeded_metadata_repository()
     resolved_path = Path(db_path).expanduser().resolve()
     if not resolved_path.is_file():
-        raise MetadataImportError(f"metadata snapshot database does not exist: {resolved_path}")
+        raise MetadataImportError(f"metadata {mode} database does not exist: {resolved_path}")
     return WorkbenchMetadataRepository(_connect_snapshot_db_readonly(resolved_path))
 
 
@@ -230,6 +297,10 @@ def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
     )
 
 
+def _metadata_item_ids(items: list[object]) -> tuple[str, ...]:
+    return tuple(item["id"] for item in items if isinstance(item, dict) and isinstance(item.get("id"), str))
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m ims.api.metadata_import_cli",
@@ -246,6 +317,10 @@ def _build_parser() -> argparse.ArgumentParser:
     snapshot_parser = subparsers.add_parser("snapshot", help="Workbench-Metadaten lokal lesen und als JSON-Snapshot ausgeben.")
     snapshot_parser.add_argument("--db", type=Path, help="Expliziter SQLite-Quellpfad.")
 
+    export_parser = subparsers.add_parser("export", help="Workbench-Metadaten im lokalen Importformat exportieren.")
+    export_parser.add_argument("--db", type=Path, help="Expliziter SQLite-Quellpfad.")
+    export_parser.add_argument("--out", type=Path, help="Expliziter JSON-Zielpfad. Ohne --out wird das Bundle ausgegeben.")
+
     import_parser = subparsers.add_parser("import", help="JSON-Metadaten in eine explizite SQLite-Datei importieren.")
     import_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")
     import_parser.add_argument("--db", required=True, type=Path, help="Expliziter SQLite-Zielpfad.")
@@ -253,7 +328,11 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def _print_json(payload: dict[str, object]) -> None:
-    print(json.dumps(payload, ensure_ascii=True, sort_keys=True))
+    print(_json_line(payload))
+
+
+def _json_line(payload: dict[str, object], *, indent: int | None = None) -> str:
+    return json.dumps(payload, ensure_ascii=True, indent=indent, sort_keys=True) + ("\n" if indent is not None else "")
 
 
 if __name__ == "__main__":

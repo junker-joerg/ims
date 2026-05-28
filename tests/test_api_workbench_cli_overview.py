@@ -21,11 +21,12 @@ def test_workbench_cli_overview_reports_stable_json_shape():
     assert payload["mode"] == "cli_overview"
     assert isinstance(payload["commands"], list)
     assert payload["boundaries"]["writes_enabled"] is False
+    assert payload["boundaries"]["export_requires_explicit_out"] is True
     assert payload["boundaries"]["import_requires_explicit_db"] is True
     assert payload["boundaries"]["execution_enabled"] is False
     assert payload["boundaries"]["starts_server"] is False
     assert payload["boundaries"]["creates_sqlite_file"] is False
-    assert payload["rest_plan"]["remaining_prs_estimate"] == "8-14"
+    assert payload["rest_plan"]["remaining_prs_estimate"] == "6-12"
 
 
 def test_workbench_cli_overview_contains_expected_commands():
@@ -38,6 +39,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "metadata_import_cli check",
         "metadata_import_cli preview",
         "metadata_import_cli snapshot",
+        "metadata_import_cli export",
         "metadata_write_contracts",
         "metadata_write_contracts check",
         "metadata_import_cli import --db",
@@ -46,12 +48,12 @@ def test_workbench_cli_overview_contains_expected_commands():
     assert all(command["starts_simulation"] is False for command in commands)
 
 
-def test_workbench_cli_overview_marks_only_explicit_import_as_writing():
+def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing():
     commands = build_workbench_cli_overview().to_dict()["commands"]
     writing_commands = [command["name"] for command in commands if command["writes_enabled"]]
     read_only_commands = [command["name"] for command in commands if not command["writes_enabled"]]
 
-    assert writing_commands == ["metadata_import_cli import --db"]
+    assert writing_commands == ["metadata_import_cli export", "metadata_import_cli import --db"]
     assert "metadata_import_cli import --db" not in build_workbench_cli_overview().to_dict()["boundaries"][
         "read_only_commands"
     ]

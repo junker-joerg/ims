@@ -45,3 +45,10 @@ Ein lokaler Schreibvertrag beschreibt die vorbereiteten Metadaten-Schreibgrenzen
 python -m ims.api.metadata_write_contracts
 python -m ims.api.metadata_write_contracts check .\metadata_import.json
 ```
+
+Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:
+
+```powershell
+python -m ims.api.metadata_import_cli export
+python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json
+```
