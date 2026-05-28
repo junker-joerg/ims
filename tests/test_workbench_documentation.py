@@ -46,3 +46,4 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten" in doc
     assert "Die Runfilter arbeiten nur auf bereits gelesenen Metadaten" in doc
     assert "Die Auswahlzusammenfassung ist rein lesend" in doc
+    assert "zur aktuellen Auswahl passende Detaildaten" in doc

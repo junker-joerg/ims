@@ -155,6 +155,8 @@ def test_frontend_shell_declares_readonly_selection_summary():
 
     assert "Auswahlzusammenfassung" in source
     assert "selectionRows" in source
+    assert "scenarioDetail?.id === selectedScenarioId" in source
+    assert "runDetail?.id === selectedRunId" in source
     assert "selectedScenarioHidden" in source
     assert "selectedRunHidden" in source
     assert "Auswahl durch Filter aktuell nicht in den Listen sichtbar" in source

@@ -84,7 +84,7 @@ Die Workbench nutzt diese Endpunkte fuer eine kompakte Detailansicht zu ausgewae
 
 ## Auswahlzusammenfassung
 
-Die Workbench buendelt die aktuell ausgewaehlte Szenario-/Run-Kombination in einer kompakten Auswahlzusammenfassung. Sie nutzt nur bereits geladene Listen, Detaildaten, Capabilities und die Metadatenquelle. Sichtbar sind ausgewaehltes Szenario, ausgewaehlter Run, Periodenfenster, Metadatenquelle, Schreibgrenze, Ausfuehrungsgrenze und ein Hinweis, ob die Auswahl durch aktive Filter gerade nicht in den Listen sichtbar ist.
+Die Workbench buendelt die aktuell ausgewaehlte Szenario-/Run-Kombination in einer kompakten Auswahlzusammenfassung. Sie nutzt nur bereits geladene Listen, zur aktuellen Auswahl passende Detaildaten, Capabilities und die Metadatenquelle. Sichtbar sind ausgewaehltes Szenario, ausgewaehlter Run, Periodenfenster, Metadatenquelle, Schreibgrenze, Ausfuehrungsgrenze und ein Hinweis, ob die Auswahl durch aktive Filter gerade nicht in den Listen sichtbar ist.
 
 Die Auswahlzusammenfassung ist rein lesend. Sie startet keine Simulation, schreibt keine Metadaten, oeffnet keinen Import und ersetzt keinen Szenario-Editor.
 
