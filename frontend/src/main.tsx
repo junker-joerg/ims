@@ -353,8 +353,14 @@ function App() {
     scenario: runScenarioFilter,
     source: runSourceFilter
   });
-  const selectedScenario = scenarioDetail ?? scenarios.find((scenario) => scenario.id === selectedScenarioId) ?? null;
-  const selectedRun = runDetail ?? runs.find((run) => run.id === selectedRunId) ?? null;
+  const selectedScenario =
+    scenarioDetail?.id === selectedScenarioId
+      ? scenarioDetail
+      : scenarios.find((scenario) => scenario.id === selectedScenarioId) ?? null;
+  const selectedRun =
+    runDetail?.id === selectedRunId
+      ? runDetail
+      : runs.find((run) => run.id === selectedRunId) ?? null;
   const selectedScenarioHidden =
     selectedScenarioId !== null && !filteredScenarios.some((scenario) => scenario.id === selectedScenarioId);
   const selectedRunHidden = selectedRunId !== null && !filteredRuns.some((run) => run.id === selectedRunId);
