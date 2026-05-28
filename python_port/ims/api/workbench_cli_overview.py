@@ -166,11 +166,13 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "creates_sqlite_file": False,
         },
         rest_plan={
-            "remaining_prs_estimate": "0-1",
-            "next_blocks": [
-                "Abschluss-/Release-Konsolidierung fuer lokale Workbench-v1: 0-1 PRs",
-            ],
+            "remaining_prs_estimate": "0",
+            "next_blocks": [],
             "deferred_blocks": [
+                "kontrollierte echte Run-Steuerung",
+                "UI-/HTTP-Schreibpfade",
+                "Szenario-Editor",
+                "SQLite-Migration",
                 "Fachvalidierung",
                 "historische Vollgleichheit",
             ],

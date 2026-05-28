@@ -92,7 +92,7 @@ Die lokale Bedienreihenfolge fuer v1 ist:
 
 ## Lokaler Workbench-v1 Abschlussstatus
 
-Die lokale Workbench-v1 ist als rein lokale Browser-Workbench konsolidiert. Sie liefert Backend-Health und Version, statische Frontend-Auslieferung, lesende Szenario- und Run-Metadaten, Detailansichten, Filter, Auswahlzusammenfassung, Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose und Readiness.
+Die lokale Workbench-v1 ist als rein lokale Browser-Workbench und Modernisierungs-Meilenstein abgeschlossen. Dieser Abschluss ist kein Release-Tag, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung. Sie liefert Backend-Health und Version, statische Frontend-Auslieferung, lesende Szenario- und Run-Metadaten, Detailansichten, Filter, Auswahlzusammenfassung, Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose und Readiness.
 
 Die lokalen CLI-Adapter decken Startdiagnose, Startplan, Readiness, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal und starten keine Simulation. Nur `metadata_import_cli import --db` schreibt Metadaten, und nur in den explizit angegebenen SQLite-Zielpfad; `metadata_import_cli export --out` schreibt nur in den expliziten JSON-Zielpfad.
 
@@ -277,7 +277,7 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 
 Die Uebersicht fuehrt diese Befehle nicht aus. Sie startet keinen Server, liest keinen Snapshot, importiert keine Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Nur der bereits bestehende Importpfad `metadata_import_cli import --db` und der explizite Datei-Export `metadata_import_cli export --out` sind als schreibende Befehle markiert; alle anderen aufgefuehrten Kommandos bleiben lesend oder rein beschreibend.
 
-Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 0-1 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Der naechste Block ist nur noch eine moegliche Abschluss- oder Release-Konsolidierung. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit 0 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Die lokale Workbench-v1 ist abgeschlossen; Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
 
 ## v1-Bereitschaftspruefung
 
@@ -581,6 +581,6 @@ Der Import validiert:
 
 Import-Bundles werden vor dem ersten Schreibzugriff vollstaendig gegen die Repository-Grenzen validiert. Wenn ein spaeterer Run-Eintrag ungueltig ist, bleiben vorher im Bundle enthaltene neue Szenarien deshalb ungeschrieben. Der lokale CLI-Check nutzt dieselbe Referenzvalidierung gegen die geseedeten Metadaten und die Szenarien aus der Importdatei, damit ein Check keine Datei akzeptiert, die der direkte Import wegen unbekannter `scenario_id` ablehnen wuerde.
 
-## Anschluss
+## Spaetere Bloecke
 
-Der naechste Modernisierungsschritt kann die lokale Metadatenablage sichtbarer machen, etwa durch eine lesende Anzeige der aktiven SQLite-Quelle und der Import-/Seed-Herkunft. Schreibende API- oder UI-Pfade sollten weiterhin separat und explizit entworfen werden. Dabei sollte die bestehende DTO-Grenze erhalten bleiben, ohne den Fachlogikkern direkt mit UI-Zustaenden zu vermischen.
+Nach der lokalen Workbench-v1 bleiben groessere Bloecke bewusst separat: kontrollierte echte Run-Steuerung, moegliche UI- oder HTTP-Schreibpfade, ein Szenario-Editor, SQLite-Migrationen sowie zusaetzliche Fachvalidierung und historische Vollgleichheit. Diese Themen sollen jeweils eigene reviewbare Plaene und PRs bekommen und duerfen nicht als stiller Nebeneffekt der lokalen Workbench-v1 verstanden werden.
