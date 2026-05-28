@@ -7,7 +7,12 @@ from pathlib import Path
 from typing import Sequence
 
 from ims.api.metadata import METADATA_GENERATED_AT, METADATA_SCHEMA_VERSION, metadata_capabilities
-from ims.api.metadata_import import MetadataImportError, load_metadata_import, validate_metadata_bundle
+from ims.api.metadata_import import (
+    MetadataImportError,
+    load_metadata_import,
+    parse_metadata_import_payload,
+    validate_metadata_bundle,
+)
 from ims.api.metadata_repository import build_seeded_metadata_repository
 
 
@@ -168,14 +173,18 @@ def build_metadata_write_contract() -> WorkbenchMetadataWriteContract:
 
 def validate_metadata_write_contract(path: Path | str) -> MetadataWriteContractValidationResult:
     raw_payload = _load_raw_payload(path)
+    return validate_metadata_write_contract_payload(raw_payload)
+
+
+def validate_metadata_write_contract_payload(payload: object) -> MetadataWriteContractValidationResult:
     contract = build_metadata_write_contract()
     accepted_fields = _accepted_fields_by_area(contract)
-    rejected_fields = _rejected_contract_fields(raw_payload, accepted_fields)
+    rejected_fields = _rejected_contract_fields(payload, accepted_fields)
     if rejected_fields:
         rejected_list = ", ".join(rejected_fields)
         raise MetadataImportError(f"metadata write contract rejected fields: {rejected_list}")
 
-    bundle = load_metadata_import(path)
+    bundle = parse_metadata_import_payload(payload)
     validate_metadata_bundle(bundle, build_seeded_metadata_repository())
     return MetadataWriteContractValidationResult(
         mode="write_contract_check",

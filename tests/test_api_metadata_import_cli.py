@@ -6,6 +6,7 @@ import pytest
 
 from ims.api.metadata import METADATA_SCHEMA_VERSION
 from ims.api.metadata_import_cli import (
+    check_metadata_roundtrip,
     check_metadata_import,
     export_metadata_import_bundle,
     export_metadata_import_bundle_to_file,
@@ -327,6 +328,82 @@ def test_metadata_import_cli_export_rejects_missing_explicit_db(tmp_path, capsys
     assert output["status"] == "error"
     assert "does not exist" in output["message"]
     assert not db_path.exists()
+
+
+def test_metadata_import_cli_roundtrip_reads_seeded_memory_without_writing(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    export_path = tmp_path / "metadata_export.json"
+
+    result = check_metadata_roundtrip()
+    payload = result.to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "roundtrip"
+    assert payload["source"]["storage_kind"] == "memory"
+    assert payload["scenario_count"] == 2
+    assert payload["run_count"] == 2
+    assert payload["scenario_ids"][0] == "agrsich-reference-window"
+    assert payload["run_ids"][0] == "baseline-python-tests"
+    assert payload["import_valid"] is True
+    assert payload["write_contract_valid"] is True
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not db_path.exists()
+    assert not export_path.exists()
+
+
+def test_metadata_import_cli_roundtrip_reads_explicit_sqlite_file(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    assert repository.get_scenario("agrsich-reference-window") is not None
+
+    result = check_metadata_roundtrip(db_path)
+    payload = result.to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["source"]["storage_kind"] == "sqlite"
+    assert payload["source"]["path"] == str(db_path.resolve())
+    assert payload["import_valid"] is True
+    assert payload["write_contract_valid"] is True
+    assert payload["writes_performed"] is False
+
+
+def test_metadata_import_cli_roundtrip_prints_stable_json(capsys):
+    exit_code = main(["roundtrip"])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert output["status"] == "ok"
+    assert output["mode"] == "roundtrip"
+    assert output["source"]["storage_kind"] == "memory"
+    assert output["import_valid"] is True
+    assert output["write_contract_valid"] is True
+    assert output["writes_performed"] is False
+    assert output["execution_performed"] is False
+
+
+def test_metadata_import_cli_roundtrip_rejects_missing_explicit_db(tmp_path, capsys):
+    db_path = tmp_path / "missing.sqlite"
+
+    exit_code = main(["roundtrip", "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "does not exist" in output["message"]
+    assert not db_path.exists()
+
+
+def test_metadata_import_cli_roundtrip_reports_unreadable_explicit_db(tmp_path, capsys):
+    db_path = tmp_path / "broken.sqlite"
+    db_path.write_text("not sqlite", encoding="utf-8")
+
+    exit_code = main(["roundtrip", "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "not readable" in output["message"]
 
 
 def test_metadata_import_cli_import_requires_explicit_db_path(tmp_path):
