@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import dataclass
 from typing import Sequence
 
@@ -123,7 +124,8 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    if argv:
+    effective_argv = tuple(sys.argv[1:] if argv is None else argv)
+    if effective_argv:
         raise SystemExit("workbench_cli_overview does not accept arguments")
     print(json.dumps(build_workbench_cli_overview().to_dict(), ensure_ascii=True, sort_keys=True))
     return 0

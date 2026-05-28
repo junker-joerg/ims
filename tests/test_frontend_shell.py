@@ -111,3 +111,20 @@ def test_frontend_shell_declares_readonly_scenario_overview():
     assert "validation.scope" in source
     assert "executionLabel" in source
     assert "startScenario" not in source
+
+
+def test_frontend_shell_declares_readonly_scenario_filters():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "filterScenarios" in source
+    assert "Szenariofilter" in source
+    assert "Szenariosuche" in source
+    assert "Szenario-Statusfilter" in source
+    assert "Szenario-Quellenfilter" in source
+    assert "Szenario-Scopefilter" in source
+    assert "filteredScenarios.map" in source
+    assert "Keine Szenarien fuer diesen Filter" in source
+    assert "scenario-filterbar" in styles
+    assert "scenario-filter-count" in styles
+    assert 'type="file"' not in source

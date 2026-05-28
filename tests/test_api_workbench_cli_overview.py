@@ -1,4 +1,8 @@
 import json
+import os
+import subprocess
+import sys
+from pathlib import Path
 
 import pytest
 
@@ -84,3 +88,19 @@ def test_workbench_cli_overview_rejects_arguments(capsys):
     assert capsys.readouterr().out == ""
     assert WorkbenchCliCommand is not None
     assert WorkbenchCliOverviewResult is not None
+
+
+def test_workbench_cli_overview_module_entrypoint_rejects_arguments():
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(Path(__file__).resolve().parent.parent / "python_port")
+    completed = subprocess.run(
+        [sys.executable, "-m", "ims.api.workbench_cli_overview", "--db", "metadata.sqlite"],
+        capture_output=True,
+        check=False,
+        env=env,
+        text=True,
+    )
+
+    assert completed.returncode != 0
+    assert "does not accept arguments" in completed.stderr
+    assert completed.stdout == ""

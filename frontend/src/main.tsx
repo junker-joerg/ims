@@ -10,6 +10,7 @@ import {
   FileText,
   GitBranch,
   Play,
+  Search,
   ServerCog,
   ShieldCheck
 } from "lucide-react";
@@ -115,6 +116,13 @@ type CapabilityState = {
 
 type DetailState = "idle" | "loading" | "ready" | "error";
 
+type ScenarioFilters = {
+  query: string;
+  status: string;
+  source: string;
+  scope: string;
+};
+
 const statusItems: StatusItem[] = [
   { label: "Backend", value: "bereit", tone: "ready" },
   { label: "Fachlogik", value: "abgegrenzt", tone: "quiet" },
@@ -122,7 +130,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "643 Tests", "gruen"],
+  ["Simulationskern", "645 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -132,6 +140,26 @@ const importShapeRows = [
   ["scenarios", "Szenario-Metadaten"],
   ["runs", "Run-Metadaten"]
 ];
+
+const ALL_SCENARIO_FILTERS = "alle";
+
+export function filterScenarios(scenarios: ScenarioMetadata[], filters: ScenarioFilters): ScenarioMetadata[] {
+  const query = filters.query.trim().toLocaleLowerCase();
+  return scenarios.filter((scenario) => {
+    const matchesQuery =
+      !query ||
+      scenario.display_name.toLocaleLowerCase().includes(query) ||
+      scenario.id.toLocaleLowerCase().includes(query);
+    const matchesStatus = filters.status === ALL_SCENARIO_FILTERS || scenario.status === filters.status;
+    const matchesSource = filters.source === ALL_SCENARIO_FILTERS || scenario.source.label === filters.source;
+    const matchesScope = filters.scope === ALL_SCENARIO_FILTERS || scenario.domain_scope === filters.scope;
+    return matchesQuery && matchesStatus && matchesSource && matchesScope;
+  });
+}
+
+function uniqueSorted(values: string[]): string[] {
+  return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
+}
 
 function App() {
   const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
@@ -148,6 +176,10 @@ function App() {
   const [detailState, setDetailState] = useState<DetailState>("idle");
   const [detailError, setDetailError] = useState<string | null>(null);
   const [metadataState, setMetadataState] = useState<"loading" | "ready" | "error">("loading");
+  const [scenarioQuery, setScenarioQuery] = useState("");
+  const [scenarioStatusFilter, setScenarioStatusFilter] = useState(ALL_SCENARIO_FILTERS);
+  const [scenarioSourceFilter, setScenarioSourceFilter] = useState(ALL_SCENARIO_FILTERS);
+  const [scenarioScopeFilter, setScenarioScopeFilter] = useState(ALL_SCENARIO_FILTERS);
 
   useEffect(() => {
     let active = true;
@@ -277,6 +309,15 @@ function App() {
   const storagePath = metadataSource?.path ?? "nicht konfiguriert";
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
   const scenarioNameById = new Map(scenarios.map((scenario) => [scenario.id, scenario.display_name]));
+  const scenarioStatusOptions = uniqueSorted(scenarios.map((scenario) => scenario.status));
+  const scenarioSourceOptions = uniqueSorted(scenarios.map((scenario) => scenario.source.label));
+  const scenarioScopeOptions = uniqueSorted(scenarios.map((scenario) => scenario.domain_scope));
+  const filteredScenarios = filterScenarios(scenarios, {
+    query: scenarioQuery,
+    status: scenarioStatusFilter,
+    source: scenarioSourceFilter,
+    scope: scenarioScopeFilter
+  });
   const selectRun = (run: RunMetadata) => {
     setSelectedRunId(run.id);
     setSelectedScenarioId(run.scenario_id);
@@ -493,6 +534,67 @@ function App() {
             <FileText size={20} aria-hidden="true" />
             <h2>Szenario-Uebersicht</h2>
           </div>
+          <div className="scenario-filterbar" aria-label="Szenariofilter">
+            <label className="scenario-search">
+              <Search size={17} aria-hidden="true" />
+              <span>Suche</span>
+              <input
+                aria-label="Szenariosuche"
+                onChange={(event) => setScenarioQuery(event.target.value)}
+                placeholder="Name oder ID"
+                type="search"
+                value={scenarioQuery}
+              />
+            </label>
+            <label>
+              <span>Status</span>
+              <select
+                aria-label="Szenario-Statusfilter"
+                onChange={(event) => setScenarioStatusFilter(event.target.value)}
+                value={scenarioStatusFilter}
+              >
+                <option value={ALL_SCENARIO_FILTERS}>alle</option>
+                {scenarioStatusOptions.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Quelle</span>
+              <select
+                aria-label="Szenario-Quellenfilter"
+                onChange={(event) => setScenarioSourceFilter(event.target.value)}
+                value={scenarioSourceFilter}
+              >
+                <option value={ALL_SCENARIO_FILTERS}>alle</option>
+                {scenarioSourceOptions.map((source) => (
+                  <option key={source} value={source}>
+                    {source}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Umfang</span>
+              <select
+                aria-label="Szenario-Scopefilter"
+                onChange={(event) => setScenarioScopeFilter(event.target.value)}
+                value={scenarioScopeFilter}
+              >
+                <option value={ALL_SCENARIO_FILTERS}>alle</option>
+                {scenarioScopeOptions.map((scope) => (
+                  <option key={scope} value={scope}>
+                    {scope}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <p className="scenario-filter-count">
+            {filteredScenarios.length} von {scenarios.length} Szenarien sichtbar
+          </p>
           <div className="scenario-overview-table">
             <div className="scenario-overview-head" aria-hidden="true">
               <span>Szenario</span>
@@ -502,7 +604,7 @@ function App() {
               <span>Aktualisiert</span>
               <span>Ausfuehrung</span>
             </div>
-            {scenarios.map((scenario) => (
+            {filteredScenarios.map((scenario) => (
               <button
                 className={`scenario-overview-row ${scenario.id === selectedScenarioId ? "selected" : ""}`}
                 key={scenario.id}
@@ -521,6 +623,9 @@ function App() {
               </button>
             ))}
           </div>
+          {filteredScenarios.length === 0 ? (
+            <div className="empty-state">Keine Szenarien fuer diesen Filter.</div>
+          ) : null}
         </section>
 
         <section className="panel run-overview-panel" aria-label="Run-Uebersicht">
