@@ -123,6 +123,13 @@ type ScenarioFilters = {
   scope: string;
 };
 
+type RunFilters = {
+  query: string;
+  status: string;
+  scenario: string;
+  source: string;
+};
+
 const statusItems: StatusItem[] = [
   { label: "Backend", value: "bereit", tone: "ready" },
   { label: "Fachlogik", value: "abgegrenzt", tone: "quiet" },
@@ -130,7 +137,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "645 Tests", "gruen"],
+  ["Simulationskern", "646 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -142,6 +149,7 @@ const importShapeRows = [
 ];
 
 const ALL_SCENARIO_FILTERS = "alle";
+const ALL_RUN_FILTERS = "alle";
 
 export function filterScenarios(scenarios: ScenarioMetadata[], filters: ScenarioFilters): ScenarioMetadata[] {
   const query = filters.query.trim().toLocaleLowerCase();
@@ -154,6 +162,20 @@ export function filterScenarios(scenarios: ScenarioMetadata[], filters: Scenario
     const matchesSource = filters.source === ALL_SCENARIO_FILTERS || scenario.source.label === filters.source;
     const matchesScope = filters.scope === ALL_SCENARIO_FILTERS || scenario.domain_scope === filters.scope;
     return matchesQuery && matchesStatus && matchesSource && matchesScope;
+  });
+}
+
+export function filterRuns(runs: RunMetadata[], filters: RunFilters): RunMetadata[] {
+  const query = filters.query.trim().toLocaleLowerCase();
+  return runs.filter((run) => {
+    const matchesQuery =
+      !query ||
+      run.display_name.toLocaleLowerCase().includes(query) ||
+      run.id.toLocaleLowerCase().includes(query);
+    const matchesStatus = filters.status === ALL_RUN_FILTERS || run.status === filters.status;
+    const matchesScenario = filters.scenario === ALL_RUN_FILTERS || run.scenario_id === filters.scenario;
+    const matchesSource = filters.source === ALL_RUN_FILTERS || run.source.label === filters.source;
+    return matchesQuery && matchesStatus && matchesScenario && matchesSource;
   });
 }
 
@@ -180,6 +202,10 @@ function App() {
   const [scenarioStatusFilter, setScenarioStatusFilter] = useState(ALL_SCENARIO_FILTERS);
   const [scenarioSourceFilter, setScenarioSourceFilter] = useState(ALL_SCENARIO_FILTERS);
   const [scenarioScopeFilter, setScenarioScopeFilter] = useState(ALL_SCENARIO_FILTERS);
+  const [runQuery, setRunQuery] = useState("");
+  const [runStatusFilter, setRunStatusFilter] = useState(ALL_RUN_FILTERS);
+  const [runScenarioFilter, setRunScenarioFilter] = useState(ALL_RUN_FILTERS);
+  const [runSourceFilter, setRunSourceFilter] = useState(ALL_RUN_FILTERS);
 
   useEffect(() => {
     let active = true;
@@ -312,11 +338,20 @@ function App() {
   const scenarioStatusOptions = uniqueSorted(scenarios.map((scenario) => scenario.status));
   const scenarioSourceOptions = uniqueSorted(scenarios.map((scenario) => scenario.source.label));
   const scenarioScopeOptions = uniqueSorted(scenarios.map((scenario) => scenario.domain_scope));
+  const runStatusOptions = uniqueSorted(runs.map((run) => run.status));
+  const runScenarioOptions = uniqueSorted(runs.map((run) => run.scenario_id));
+  const runSourceOptions = uniqueSorted(runs.map((run) => run.source.label));
   const filteredScenarios = filterScenarios(scenarios, {
     query: scenarioQuery,
     status: scenarioStatusFilter,
     source: scenarioSourceFilter,
     scope: scenarioScopeFilter
+  });
+  const filteredRuns = filterRuns(runs, {
+    query: runQuery,
+    status: runStatusFilter,
+    scenario: runScenarioFilter,
+    source: runSourceFilter
   });
   const selectRun = (run: RunMetadata) => {
     setSelectedRunId(run.id);
@@ -633,6 +668,67 @@ function App() {
             <Archive size={20} aria-hidden="true" />
             <h2>Run-Uebersicht</h2>
           </div>
+          <div className="run-filterbar" aria-label="Runfilter">
+            <label className="run-search">
+              <Search size={17} aria-hidden="true" />
+              <span>Suche</span>
+              <input
+                aria-label="Runsuche"
+                onChange={(event) => setRunQuery(event.target.value)}
+                placeholder="Name oder ID"
+                type="search"
+                value={runQuery}
+              />
+            </label>
+            <label>
+              <span>Status</span>
+              <select
+                aria-label="Run-Statusfilter"
+                onChange={(event) => setRunStatusFilter(event.target.value)}
+                value={runStatusFilter}
+              >
+                <option value={ALL_RUN_FILTERS}>alle</option>
+                {runStatusOptions.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Szenario</span>
+              <select
+                aria-label="Run-Szenariofilter"
+                onChange={(event) => setRunScenarioFilter(event.target.value)}
+                value={runScenarioFilter}
+              >
+                <option value={ALL_RUN_FILTERS}>alle</option>
+                {runScenarioOptions.map((scenarioId) => (
+                  <option key={scenarioId} value={scenarioId}>
+                    {scenarioNameById.get(scenarioId) ?? scenarioId}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Quelle</span>
+              <select
+                aria-label="Run-Quellenfilter"
+                onChange={(event) => setRunSourceFilter(event.target.value)}
+                value={runSourceFilter}
+              >
+                <option value={ALL_RUN_FILTERS}>alle</option>
+                {runSourceOptions.map((source) => (
+                  <option key={source} value={source}>
+                    {source}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <p className="run-filter-count">
+            {filteredRuns.length} von {runs.length} Runs sichtbar
+          </p>
           <div className="run-overview-table">
             <div className="run-overview-head" aria-hidden="true">
               <span>Run</span>
@@ -641,7 +737,7 @@ function App() {
               <span>Quelle</span>
               <span>Ausfuehrung</span>
             </div>
-            {runs.map((run) => (
+            {filteredRuns.map((run) => (
               <button
                 className={`run-overview-row ${run.id === selectedRunId ? "selected" : ""}`}
                 key={run.id}
@@ -659,6 +755,9 @@ function App() {
               </button>
             ))}
           </div>
+          {filteredRuns.length === 0 ? (
+            <div className="empty-state">Keine Runs fuer diesen Filter.</div>
+          ) : null}
         </section>
 
         <section className="panel import-panel" aria-label="Importvorschau">

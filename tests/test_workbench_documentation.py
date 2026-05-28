@@ -44,3 +44,4 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der Startplan startet keinen Server" in doc
     assert "Die Uebersicht fuehrt diese Befehle nicht aus" in doc
     assert "Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten" in doc
+    assert "Die Runfilter arbeiten nur auf bereits gelesenen Metadaten" in doc

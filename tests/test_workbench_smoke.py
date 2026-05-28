@@ -98,6 +98,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Szenario-Uebersicht" in source
     assert "Run-Uebersicht" in source
     assert "Szenariofilter" in source
+    assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
@@ -109,4 +110,5 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "lokal per CLI" in source
     assert "scenario-overview-row" in source
     assert "run-overview-row" in source
+    assert "filteredRuns.map" in source
     assert 'type="file"' not in source
