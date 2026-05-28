@@ -24,6 +24,8 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die ak
 
 Lokaler Workbench-v1 Abschlussstatus:
 
+Die lokale Workbench-v1 ist als Modernisierungs-Meilenstein abgeschlossen. Dieser Abschluss ist kein Release-Tag, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
+
 - Backend-Health und Version sind lokal verfuegbar.
 - Das gebaute Frontend wird statisch ausgeliefert.
 - Szenario- und Run-Metadaten sind lesend als Listen, Details, Filter und Auswahlzusammenfassung verfuegbar.
