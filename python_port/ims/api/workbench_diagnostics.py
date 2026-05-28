@@ -9,7 +9,11 @@ from pathlib import Path
 from typing import Sequence
 
 from ims.api.metadata_repository import metadata_source_payload
-from ims.api.workbench_config import WorkbenchConfigError, load_workbench_config
+from ims.api.workbench_config import (
+    WorkbenchConfigError,
+    WorkbenchConfigLoadResult,
+    load_workbench_config_result,
+)
 
 
 @dataclass(frozen=True)
@@ -59,10 +63,10 @@ def build_workbench_diagnostics(
     config_path: Path | str | None = None,
 ) -> WorkbenchDiagnosticsResult:
     issues: list[WorkbenchDiagnosticIssue] = []
-    config = None
+    config_result: WorkbenchConfigLoadResult | None = None
     if config_path is not None:
         try:
-            config = load_workbench_config(config_path)
+            config_result = load_workbench_config_result(config_path)
         except WorkbenchConfigError as exc:
             issues.append(
                 WorkbenchDiagnosticIssue(
@@ -75,8 +79,8 @@ def build_workbench_diagnostics(
     starlette_available = _module_available("starlette")
     uvicorn_available = _module_available("uvicorn")
     web_dependencies_available = starlette_available and uvicorn_available
-    effective_frontend_dist = frontend_dist or (config.frontend_dist if config is not None else None)
-    effective_db_path = db_path if db_path is not None else (config.metadata_db if config is not None else None)
+    effective_frontend_dist = _effective_frontend_dist(frontend_dist, config_result)
+    effective_db_path = _effective_metadata_db(db_path, config_result)
     dist_dir = _resolve_frontend_dist(effective_frontend_dist)
     frontend_dist_available = (dist_dir / "index.html").is_file()
     metadata_source = _diagnostic_metadata_source(effective_db_path)
@@ -151,6 +155,41 @@ def _resolve_frontend_dist(frontend_dist: Path | str | None) -> Path:
     if frontend_dist is not None:
         return Path(frontend_dist).expanduser().resolve()
     return Path(__file__).resolve().parents[3] / "frontend" / "dist"
+
+
+def _effective_frontend_dist(
+    frontend_dist: Path | str | None,
+    config_result: WorkbenchConfigLoadResult | None,
+) -> Path | str | None:
+    if frontend_dist is not None:
+        return frontend_dist
+    if config_result is not None and config_result.has_field("frontend_dist"):
+        return _resolve_config_relative_path(config_result, config_result.config.frontend_dist)
+    return None
+
+
+def _effective_metadata_db(
+    db_path: Path | str | None,
+    config_result: WorkbenchConfigLoadResult | None,
+) -> Path | str | None:
+    if db_path is not None:
+        return db_path
+    if (
+        config_result is not None
+        and config_result.has_field("metadata_db")
+        and config_result.config.metadata_db is not None
+    ):
+        return _resolve_config_relative_path(config_result, config_result.config.metadata_db)
+    return None
+
+
+def _resolve_config_relative_path(config_result: WorkbenchConfigLoadResult, value: Path | str) -> Path:
+    candidate = Path(value).expanduser()
+    if candidate.is_absolute():
+        return candidate.resolve()
+    if config_result.path is not None:
+        return (config_result.path.parent / candidate).resolve()
+    return candidate.resolve()
 
 
 def _diagnostic_metadata_source(db_path: Path | str | None) -> dict[str, object]:

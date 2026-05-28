@@ -33,9 +33,23 @@ class WorkbenchLocalConfig:
         }
 
 
+@dataclass(frozen=True)
+class WorkbenchConfigLoadResult:
+    config: WorkbenchLocalConfig
+    path: Path | None = None
+    provided_fields: tuple[str, ...] = ()
+
+    def has_field(self, field_name: str) -> bool:
+        return field_name in self.provided_fields
+
+
 def load_workbench_config(path: Path | str | None = None) -> WorkbenchLocalConfig:
+    return load_workbench_config_result(path).config
+
+
+def load_workbench_config_result(path: Path | str | None = None) -> WorkbenchConfigLoadResult:
     if path is None:
-        return WorkbenchLocalConfig()
+        return WorkbenchConfigLoadResult(config=WorkbenchLocalConfig())
 
     config_path = Path(path).expanduser().resolve()
     if not config_path.is_file():
@@ -53,7 +67,11 @@ def load_workbench_config(path: Path | str | None = None) -> WorkbenchLocalConfi
     if unknown_fields:
         raise WorkbenchConfigError(f"unknown workbench config field: {unknown_fields[0]}")
 
-    return _config_from_mapping(payload)
+    return WorkbenchConfigLoadResult(
+        config=_config_from_mapping(payload),
+        path=config_path,
+        provided_fields=tuple(sorted(payload)),
+    )
 
 
 def _config_from_mapping(payload: dict[str, Any]) -> WorkbenchLocalConfig:

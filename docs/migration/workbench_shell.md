@@ -232,7 +232,9 @@ Beispiel:
 }
 ```
 
-Ohne Datei gelten die Defaults `host = "127.0.0.1"`, `port = 8000`, `frontend_dist = "frontend/dist"` und `metadata_db = null`. Die Felder `host`, `port`, `frontend_dist` und `metadata_db` sind die gesamte aktuelle Konfigurationsflaeche; unbekannte Felder werden abgelehnt, damit Tippfehler nicht still ignoriert werden. `metadata_db` bleibt optional. Ein fehlender expliziter DB-Pfad wird als Diagnosehinweis gemeldet, aber nicht angelegt.
+Ohne Datei gelten die Defaults `host = "127.0.0.1"`, `port = 8000`, `frontend_dist = "frontend/dist"` und `metadata_db = null`. Fehlt `frontend_dist` in einer explizit uebergebenen Konfigurationsdatei, nutzt die Diagnose denselben repo-relativen Frontend-Default wie ohne Konfiguration. Explizit gesetzte relative Pfade in `frontend_dist` und `metadata_db` werden relativ zum Speicherort der Konfigurationsdatei aufgeloest, damit der Diagnosebefehl auch aus einem anderen Arbeitsverzeichnis stabil bleibt.
+
+Die Felder `host`, `port`, `frontend_dist` und `metadata_db` sind die gesamte aktuelle Konfigurationsflaeche; unbekannte Felder werden abgelehnt, damit Tippfehler nicht still ignoriert werden. `metadata_db` bleibt optional. Ein fehlender expliziter DB-Pfad wird als Diagnosehinweis gemeldet, aber nicht angelegt.
 
 Die Konfigurationsdatei ersetzt die bestehenden Umgebungsvariablen nicht. `IMS_METADATA_DB` und `IMS_FRONTEND_DIST` bleiben fuer den eigentlichen Backend-Start verfuegbar. Die lokale Konfiguration bereitet zunaechst nur eine explizite, testbare Grenze fuer Diagnose und spaetere Startwerkzeuge vor.
 
