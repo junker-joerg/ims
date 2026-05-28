@@ -122,7 +122,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "614 Tests", "gruen"],
+  ["Simulationskern", "618 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];

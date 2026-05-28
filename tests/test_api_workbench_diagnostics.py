@@ -48,6 +48,21 @@ def test_workbench_diagnostics_reports_missing_frontend_dist_as_issue(tmp_path):
     assert payload["issues"][0]["severity"] == "warning"
 
 
+def test_workbench_diagnostics_requires_uvicorn_for_documented_start(tmp_path, monkeypatch):
+    frontend_dist = _frontend_dist(tmp_path)
+
+    def module_available(module_name):
+        return module_name != "uvicorn"
+
+    monkeypatch.setattr("ims.api.workbench_diagnostics._module_available", module_available)
+
+    payload = build_workbench_diagnostics(frontend_dist=frontend_dist).to_dict()
+
+    assert payload["status"] == "error"
+    assert payload["web_dependencies_available"] is False
+    assert any(issue["code"] == "uvicorn_unavailable" for issue in payload["issues"])
+
+
 def test_workbench_diagnostics_does_not_create_missing_explicit_db(tmp_path):
     frontend_dist = _frontend_dist(tmp_path)
     db_path = tmp_path / "missing.sqlite"
