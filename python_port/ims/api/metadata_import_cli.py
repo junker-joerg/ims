@@ -216,7 +216,7 @@ def _connect_snapshot_db_readonly(path: Path) -> sqlite3.Connection:
 
 
 def _readonly_sqlite_uri(path: Path) -> str:
-    return f"{path.as_uri()}?mode=ro&immutable=1"
+    return f"{path.as_uri()}?mode=ro"
 
 
 def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
