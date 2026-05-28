@@ -232,7 +232,7 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 
 Die Uebersicht fuehrt diese Befehle nicht aus. Sie startet keinen Server, liest keinen Snapshot, importiert keine Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Nur der bereits bestehende Importpfad `metadata_import_cli import --db` ist als schreibender Befehl markiert; alle anderen aufgefuehrten Kommandos bleiben lesend oder rein beschreibend.
 
-Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 6-12 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind lokale Start-/Konfigurationsnutzung, lesende Szenario-/Run-Arbeitsflaechen, kontrollierte lokale Schreibpfade, eine spaetere Run-Steuerungsgrenze ohne echte Simulation sowie v1-Haertung mit Doku und Smoke-/Preview-Checks. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
+Die Restplanung in dieser Uebersicht ist bewusst grob: erwartet bleiben derzeit etwa 5-11 reviewbare PRs bis zur lokalen Workbench-v1 fuer Backend und Frontend. Naechste Bloecke sind lokale Start-/Konfigurationsnutzung, lesende Szenario-/Run-Arbeitsflaechen, kontrollierte lokale Schreibpfade, eine spaetere Run-Steuerungsgrenze ohne echte Simulation sowie v1-Haertung mit Doku und Smoke-/Preview-Checks. Fachvalidierung und historische Vollgleichheit bleiben separate spaetere Bloecke.
 
 ## SQLite-Vorbereitung
 
@@ -325,6 +325,8 @@ Die lokalen CLI-Kommandos sind absichtlich getrennt:
 | `python -m ims.api.metadata_import_cli snapshot --db .\.ims_workbench\metadata.sqlite` | explizite SQLite-Metadaten read-only lesen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli export` | geseedete In-Memory-Metadaten im Importformat auf stdout ausgeben | schreibt nicht |
 | `python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json` | explizite SQLite-Metadaten im Importformat exportieren | schreibt nur in den expliziten Zielpfad |
+| `python -m ims.api.metadata_import_cli roundtrip` | Seed-Metadaten exportieren und im Speicher gegen Importformat und Schreibvertrag pruefen | schreibt nicht |
+| `python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite` | explizite SQLite-Metadaten read-only roundtrip-pruefen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite` | validierte Metadaten lokal importieren | schreibt nur in den expliziten DB-Pfad |
 
 Keines dieser Kommandos startet eine Simulation. Es gibt weiterhin keinen HTTP-Schreibpfad, keinen Browser-Upload und keinen Szenario-Editor.
@@ -377,13 +379,27 @@ python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqli
 
 Der Export startet keine Simulation, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und ist kein Browser-Download. Fehlt eine explizite SQLite-Quelle, wird sie nicht angelegt.
 
+Ein lokaler Roundtrip-Check exportiert die aktuell lesbaren Metadaten im Speicher und prueft dieses Bundle direkt wieder gegen Importparser, Repository-Validierung und Schreibvertrag:
+
+```powershell
+python -m ims.api.metadata_import_cli roundtrip
+```
+
+Mit expliziter SQLite-Quelle wird diese read-only gelesen:
+
+```powershell
+python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite
+```
+
+Der Roundtrip schreibt keine Exportdatei, erzeugt keine SQLite-Datei, importiert keine Metadaten und startet keine Simulation. Er ist eine lokale Adapterpruefung fuer Metadatenformen, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
+
 Ein Import schreibt nur in eine ausdruecklich angegebene SQLite-Datei:
 
 ```powershell
 python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
 ```
 
-Die Ausgabe ist eine knappe JSON-Statuszeile. Fehler liefern ebenfalls eine stabile JSON-Form mit `status = "error"` und einer kurzen Meldung. Der Preview-Modus liefert zusaetzlich `existing_scenario_ids`, `existing_run_ids`, `new_scenario_ids`, `new_run_ids`, `runs_with_missing_scenario`, `runs_with_execution_enabled` und `writes_performed = false`. Der Snapshot-Modus liefert `source`, `scenarios`, `runs`, `consistency`, `writes_performed = false` und `execution_performed = false`. Der Export-Modus ohne `--out` liefert direkt `schema_version`, `scenarios` und `runs`; mit `--out` liefert er eine Statuszeile mit `mode = "export"`. Er exportiert keine Fachlogikdaten, startet keine Simulation und nutzt eine read-only Verbindung fuer explizite Snapshot-/Export-Datenbanken, damit auch committed Live-WAL-Metadaten sichtbar bleiben. Der Adapter liest weder `IMS_METADATA_DB` als implizites Schreibziel noch oeffnet er einen HTTP-Endpunkt. Die API- und UI-Schreibpfade bleiben gesperrt.
+Die Ausgabe ist eine knappe JSON-Statuszeile. Fehler liefern ebenfalls eine stabile JSON-Form mit `status = "error"` und einer kurzen Meldung. Der Preview-Modus liefert zusaetzlich `existing_scenario_ids`, `existing_run_ids`, `new_scenario_ids`, `new_run_ids`, `runs_with_missing_scenario`, `runs_with_execution_enabled` und `writes_performed = false`. Der Snapshot-Modus liefert `source`, `scenarios`, `runs`, `consistency`, `writes_performed = false` und `execution_performed = false`. Der Export-Modus ohne `--out` liefert direkt `schema_version`, `scenarios` und `runs`; mit `--out` liefert er eine Statuszeile mit `mode = "export"`. Der Roundtrip-Modus liefert `source`, Zaehler und IDs sowie `import_valid = true`, `write_contract_valid = true`, `writes_performed = false` und `execution_performed = false`. Er exportiert keine Fachlogikdaten, startet keine Simulation und nutzt eine read-only Verbindung fuer explizite Snapshot-/Export-/Roundtrip-Datenbanken, damit auch committed Live-WAL-Metadaten sichtbar bleiben. Der Adapter liest weder `IMS_METADATA_DB` als implizites Schreibziel noch oeffnet er einen HTTP-Endpunkt. Die API- und UI-Schreibpfade bleiben gesperrt.
 
 Das Importformat ist bewusst nahe an der API-DTO-Form:
 

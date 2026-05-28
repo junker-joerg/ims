@@ -134,9 +134,11 @@ def test_core_placeholders_import() -> None:
         validate_metadata_bundle,
     )
     from ims.api.metadata_import_cli import (
+        check_metadata_roundtrip,
         MetadataImportCliResult,
         MetadataImportPreviewResult,
         MetadataExportResult,
+        MetadataRoundtripResult,
         MetadataSnapshotResult,
         check_metadata_import,
         export_metadata_import_bundle,
@@ -153,6 +155,7 @@ def test_core_placeholders_import() -> None:
         build_metadata_write_contract,
         main as metadata_write_contracts_main,
         validate_metadata_write_contract,
+        validate_metadata_write_contract_payload,
     )
     from ims.api.workbench_config import (
         WorkbenchConfigError,
@@ -533,8 +536,10 @@ def test_core_placeholders_import() -> None:
     assert MetadataImportCliResult is not None
     assert MetadataImportPreviewResult is not None
     assert MetadataExportResult is not None
+    assert MetadataRoundtripResult is not None
     assert MetadataSnapshotResult is not None
     assert check_metadata_import is not None
+    assert check_metadata_roundtrip is not None
     assert preview_metadata_import is not None
     assert export_metadata_import_bundle is not None
     assert export_metadata_import_bundle_to_file is not None
@@ -545,6 +550,7 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchMetadataWriteContract is not None
     assert build_metadata_write_contract is not None
     assert validate_metadata_write_contract is not None
+    assert validate_metadata_write_contract_payload is not None
     assert MetadataWriteContractValidationResult is not None
     assert metadata_write_contracts_main is not None
     assert WorkbenchConfigError is not None

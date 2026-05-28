@@ -52,3 +52,10 @@ Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausg
 python -m ims.api.metadata_import_cli export
 python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json
 ```
+
+Ein lokaler Roundtrip-Check prueft Export, Importformat und Schreibvertrag gemeinsam, ohne Dateien zu schreiben:
+
+```powershell
+python -m ims.api.metadata_import_cli roundtrip
+python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite
+```

@@ -15,12 +15,14 @@ from ims.api.metadata_import import (
     MetadataImportResult,
     import_metadata_file,
     load_metadata_import,
+    parse_metadata_import_payload,
     validate_metadata_bundle,
 )
 from ims.api.metadata_repository import (
     WorkbenchMetadataRepository,
     build_seeded_metadata_repository,
 )
+from ims.api.metadata_write_contracts import validate_metadata_write_contract_payload
 
 
 @dataclass(frozen=True)
@@ -127,6 +129,35 @@ class MetadataExportResult:
         }
 
 
+@dataclass(frozen=True)
+class MetadataRoundtripResult:
+    mode: str
+    source: dict[str, object]
+    scenario_count: int
+    run_count: int
+    scenario_ids: tuple[str, ...]
+    run_ids: tuple[str, ...]
+    import_valid: bool
+    write_contract_valid: bool
+    writes_performed: bool = False
+    execution_performed: bool = False
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "mode": self.mode,
+            "source": self.source,
+            "scenario_count": self.scenario_count,
+            "run_count": self.run_count,
+            "scenario_ids": list(self.scenario_ids),
+            "run_ids": list(self.run_ids),
+            "import_valid": self.import_valid,
+            "write_contract_valid": self.write_contract_valid,
+            "writes_performed": self.writes_performed,
+            "execution_performed": self.execution_performed,
+        }
+
+
 def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
     bundle = load_metadata_import(path)
     validate_metadata_bundle(bundle, build_seeded_metadata_repository())
@@ -158,16 +189,42 @@ def export_metadata_snapshot(db_path: Path | str | None = None) -> MetadataSnaps
 
 def export_metadata_import_bundle(db_path: Path | str | None = None) -> dict[str, object]:
     repository = _metadata_read_repository(db_path, mode="export")
+    return _export_metadata_import_bundle_from_repository(repository, mode="export")
+
+
+def _export_metadata_import_bundle_from_repository(
+    repository: WorkbenchMetadataRepository,
+    *,
+    mode: str,
+) -> dict[str, object]:
     try:
         scenarios = repository.list_scenarios()
         runs = repository.list_runs()
     except sqlite3.DatabaseError as exc:
-        raise MetadataImportError(f"metadata export database is not readable: {exc}") from exc
+        raise MetadataImportError(f"metadata {mode} database is not readable: {exc}") from exc
     return {
         "schema_version": METADATA_SCHEMA_VERSION,
         "scenarios": scenarios.get("items", []),
         "runs": runs.get("items", []),
     }
+
+
+def check_metadata_roundtrip(db_path: Path | str | None = None) -> MetadataRoundtripResult:
+    repository = _metadata_read_repository(db_path, mode="roundtrip")
+    payload = _export_metadata_import_bundle_from_repository(repository, mode="roundtrip")
+    bundle = parse_metadata_import_payload(payload)
+    validate_metadata_bundle(bundle, build_seeded_metadata_repository())
+    validate_metadata_write_contract_payload(payload)
+    return MetadataRoundtripResult(
+        mode="roundtrip",
+        source=repository.metadata_source(),
+        scenario_count=len(bundle.scenarios),
+        run_count=len(bundle.runs),
+        scenario_ids=tuple(scenario.id for scenario in bundle.scenarios),
+        run_ids=tuple(run.id for run in bundle.runs),
+        import_valid=True,
+        write_contract_valid=True,
+    )
 
 
 def export_metadata_import_bundle_to_file(
@@ -242,6 +299,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 _print_json(export_metadata_import_bundle(args.db))
             else:
                 _print_json(export_metadata_import_bundle_to_file(args.out, args.db).to_dict())
+        elif args.command == "roundtrip":
+            _print_json(check_metadata_roundtrip(args.db).to_dict())
         elif args.command == "import":
             _print_json(import_metadata_to_db(args.path, args.db).to_dict())
         else:
@@ -320,6 +379,9 @@ def _build_parser() -> argparse.ArgumentParser:
     export_parser = subparsers.add_parser("export", help="Workbench-Metadaten im lokalen Importformat exportieren.")
     export_parser.add_argument("--db", type=Path, help="Expliziter SQLite-Quellpfad.")
     export_parser.add_argument("--out", type=Path, help="Expliziter JSON-Zielpfad. Ohne --out wird das Bundle ausgegeben.")
+
+    roundtrip_parser = subparsers.add_parser("roundtrip", help="Export-/Importformat lokal pruefen, ohne zu schreiben.")
+    roundtrip_parser.add_argument("--db", type=Path, help="Expliziter SQLite-Quellpfad.")
 
     import_parser = subparsers.add_parser("import", help="JSON-Metadaten in eine explizite SQLite-Datei importieren.")
     import_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")

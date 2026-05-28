@@ -14,6 +14,7 @@ from ims.api.metadata_write_contracts import (
     build_metadata_write_contract,
     main,
     validate_metadata_write_contract,
+    validate_metadata_write_contract_payload,
 )
 
 
@@ -87,6 +88,16 @@ def test_metadata_write_contract_check_accepts_valid_bundle_without_writing(tmp_
     assert payload["execution_performed"] is False
     assert not db_path.exists()
     assert MetadataWriteContractValidationResult is not None
+
+
+def test_metadata_write_contract_check_accepts_payload_without_writing(tmp_path):
+    result = validate_metadata_write_contract_payload(_valid_import_payload())
+
+    assert result.mode == "write_contract_check"
+    assert result.scenario_ids == ("local-imported-scenario",)
+    assert result.run_ids == ("local-imported-run",)
+    assert result.writes_performed is False
+    assert not (tmp_path / "metadata.sqlite").exists()
 
 
 def test_metadata_write_contract_check_rejects_execution_enabled_true(tmp_path, capsys):

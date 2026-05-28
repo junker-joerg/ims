@@ -87,6 +87,13 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             requires_explicit_db=True,
         ),
         WorkbenchCliCommand(
+            name="metadata_import_cli roundtrip",
+            command="python -m ims.api.metadata_import_cli roundtrip --db .\\.ims_workbench\\metadata.sqlite",
+            purpose="Export-/Import-/Schreibvertragsgrenzen ohne Schreiben pruefen.",
+            writes_enabled=False,
+            requires_explicit_db=True,
+        ),
+        WorkbenchCliCommand(
             name="metadata_write_contracts",
             command="python -m ims.api.metadata_write_contracts",
             purpose="Vorbereitete Workbench-Schreibgrenzen beschreibend ausgeben.",
@@ -118,6 +125,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",
+                "metadata_import_cli roundtrip",
                 "metadata_write_contracts",
                 "metadata_write_contracts check",
             ],
@@ -129,7 +137,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "creates_sqlite_file": False,
         },
         rest_plan={
-            "remaining_prs_estimate": "6-12",
+            "remaining_prs_estimate": "5-11",
             "next_blocks": [
                 "Lokale Start-/Konfigurationsnutzung konsolidieren: 0-1 PRs",
                 "Lesende Szenario-/Run-Arbeitsflaechen abrunden: 0-1 PRs",
