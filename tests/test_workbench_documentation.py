@@ -63,7 +63,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der lokale Schreibvertrag ist rein beschreibend" in doc
     assert "Diese Schreibvertragspruefung schreibt nicht" in doc
     assert "Der Export startet keine Simulation" in doc
-    assert "gleiche aufgeloeste `--db`- und `--out`-Pfade werden abgelehnt" in doc
+    assert "gleiche aufgeloeste `--db`- und `--out`-Pfade" in doc
+    assert "Hardlink- oder Datei-Alias" in doc
+    assert "dieselbe Dateiidentitaet" in doc
     assert "Der Roundtrip schreibt keine Exportdatei" in doc
     assert "Der Dry-Run schreibt keine Metadaten" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
