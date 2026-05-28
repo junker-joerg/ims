@@ -22,6 +22,15 @@ python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 
 
 Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die aktuelle Workbench ist weiterhin rein lesend: keine Simulation, kein Browser-Upload und keine HTTP-/UI-Schreibpfade.
 
+Lokaler Workbench-v1 Abschlussstatus:
+
+- Backend-Health und Version sind lokal verfuegbar.
+- Das gebaute Frontend wird statisch ausgeliefert.
+- Szenario- und Run-Metadaten sind lesend als Listen, Details, Filter und Auswahlzusammenfassung verfuegbar.
+- Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose, Readiness und lokale CLI-Grenzen sind dokumentiert und getestet.
+- Lokale CLI-Adapter decken Diagnose, Import-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht und Run-Control-Preflight ab.
+- Keine Fachlogikaenderung, keine Simulation, keine HTTP-/UI-Schreibpfade und keine historische Vollgleichheitsbehauptung.
+
 Start und Diagnose:
 
 Optional kann die Diagnose eine explizite lokale Konfigurationsdatei lesen:

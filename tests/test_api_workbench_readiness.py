@@ -1,5 +1,6 @@
 import json
 
+import ims.api.workbench_readiness as readiness_module
 from ims.api.metadata_repository import build_seeded_metadata_repository
 from ims.api.workbench_readiness import WorkbenchReadinessCheck, WorkbenchReadinessResult, build_workbench_readiness, main
 
@@ -84,6 +85,24 @@ def test_workbench_readiness_marks_unreadable_explicit_metadata_db_not_ready(tmp
     assert any(check["name"] == "metadata" and check["status"] == "warning" for check in payload["checks"])
     assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
+
+
+def test_workbench_readiness_marks_raw_sqlite_open_failure_as_metadata_not_ready(tmp_path, monkeypatch):
+    frontend_dist = _frontend_dist(tmp_path)
+    db_path = tmp_path / "metadata.sqlite"
+    db_path.write_text("", encoding="utf-8")
+
+    def fail_preflight(run_id, db_path=None):
+        raise OSError("unable to open database file")
+
+    monkeypatch.setattr(readiness_module, "preflight_run_control", fail_preflight)
+
+    payload = build_workbench_readiness(frontend_dist=frontend_dist, db_path=db_path).to_dict()
+
+    assert payload["status"] == "error"
+    assert payload["metadata_ready"] is False
+    assert payload["run_control_ready"] is False
+    assert any(issue["message"] == "unable to open database file" for issue in payload["issues"])
 
 
 def test_workbench_readiness_does_not_create_missing_explicit_db(tmp_path):

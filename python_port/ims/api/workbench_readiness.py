@@ -193,11 +193,16 @@ def _metadata_ready(issues: Sequence[WorkbenchDiagnosticIssue]) -> bool:
     metadata_issue_codes = {"metadata_db_missing", "metadata_db_unreadable"}
     return not any(
         issue.code in metadata_issue_codes
-        or (
-            issue.code == "run_control_preflight_failed"
-            and issue.message.startswith("metadata run-control-preflight database ")
-        )
+        or _is_metadata_preflight_failure(issue)
         for issue in issues
+    )
+
+
+def _is_metadata_preflight_failure(issue: WorkbenchDiagnosticIssue) -> bool:
+    if issue.code != "run_control_preflight_failed":
+        return False
+    return issue.message.startswith("metadata run-control-preflight database ") or (
+        "unable to open database file" in issue.message
     )
 
 
