@@ -49,6 +49,35 @@ class MetadataImportCliResult:
 
 
 @dataclass(frozen=True)
+class MetadataImportReportResult:
+    mode: str
+    input_path: str
+    db_path: str
+    scenario_count: int
+    run_count: int
+    scenario_ids: tuple[str, ...]
+    run_ids: tuple[str, ...]
+    consistency: dict[str, object]
+    writes_performed: bool = True
+    execution_performed: bool = False
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "mode": self.mode,
+            "input_path": self.input_path,
+            "db_path": self.db_path,
+            "scenario_count": self.scenario_count,
+            "run_count": self.run_count,
+            "scenario_ids": list(self.scenario_ids),
+            "run_ids": list(self.run_ids),
+            "consistency": self.consistency,
+            "writes_performed": self.writes_performed,
+            "execution_performed": self.execution_performed,
+        }
+
+
+@dataclass(frozen=True)
 class MetadataImportPreviewResult:
     mode: str
     scenario_count: int
@@ -338,10 +367,35 @@ def dry_run_metadata_import(
     )
 
 
-def import_metadata_to_db(path: Path | str, db_path: Path | str) -> MetadataImportCliResult:
+def import_metadata_to_db(path: Path | str, db_path: Path | str) -> MetadataImportReportResult:
+    resolved_input_path = Path(path).expanduser().resolve()
+    resolved_db_path = Path(db_path).expanduser().resolve()
     repository = build_seeded_metadata_repository(db_path)
     result = import_metadata_file(path, repository)
-    return _cli_result_from_import(result, db_path)
+    return build_metadata_import_report(result, repository, resolved_input_path, resolved_db_path)
+
+
+def build_metadata_import_report(
+    result: MetadataImportResult,
+    repository: WorkbenchMetadataRepository,
+    input_path: Path,
+    db_path: Path,
+) -> MetadataImportReportResult:
+    consistency = metadata_consistency_payload(
+        repository.list_scenarios(),
+        repository.list_runs(),
+        metadata_capabilities(),
+    )
+    return MetadataImportReportResult(
+        mode="import",
+        input_path=str(input_path),
+        db_path=str(db_path),
+        scenario_count=result.scenario_count,
+        run_count=result.run_count,
+        scenario_ids=result.scenario_ids,
+        run_ids=result.run_ids,
+        consistency=consistency,
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -371,17 +425,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         _print_json({"status": "error", "message": str(exc)})
         return 2
     return 0
-
-
-def _cli_result_from_import(result: MetadataImportResult, db_path: Path | str) -> MetadataImportCliResult:
-    return MetadataImportCliResult(
-        mode="import",
-        scenario_count=result.scenario_count,
-        run_count=result.run_count,
-        scenario_ids=result.scenario_ids,
-        run_ids=result.run_ids,
-        db_path=str(db_path),
-    )
 
 
 def _metadata_read_repository(db_path: Path | str | None, *, mode: str) -> WorkbenchMetadataRepository:

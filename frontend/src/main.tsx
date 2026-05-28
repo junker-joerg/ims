@@ -824,6 +824,7 @@ function App() {
                 <li>Export lokal per CLI nur mit explizitem Zielpfad</li>
                 <li>Roundtrip lokal per CLI ohne Schreiben</li>
                 <li>Dry-Run lokal per CLI ohne Import</li>
+                <li>Importbericht lokal per CLI nach explizitem Schreiben</li>
                 <li>Startdiagnose lokal per CLI ohne Serverstart</li>
                 <li>Startplan lokal per CLI nur beschreibend</li>
                 <li>CLI-Uebersicht lokal per CLI ohne Seiteneffekte</li>

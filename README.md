@@ -66,3 +66,9 @@ Ein lokaler Import-Trockenlauf zeigt vor einem expliziten Import, welche Szenari
 python -m ims.api.metadata_import_cli dry-run .\metadata_import.json
 python -m ims.api.metadata_import_cli dry-run .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
 ```
+
+Der explizite lokale Import schreibt nur in den angegebenen SQLite-Pfad und gibt danach einen kleinen Importbericht mit geschriebenen IDs und Konsistenzstatus aus:
+
+```powershell
+python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
+```
