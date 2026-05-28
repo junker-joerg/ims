@@ -26,7 +26,7 @@ def test_workbench_cli_overview_reports_stable_json_shape():
     assert payload["boundaries"]["execution_enabled"] is False
     assert payload["boundaries"]["starts_server"] is False
     assert payload["boundaries"]["creates_sqlite_file"] is False
-    assert payload["rest_plan"]["remaining_prs_estimate"] == "1-3"
+    assert payload["rest_plan"]["remaining_prs_estimate"] == "0-2"
 
 
 def test_workbench_cli_overview_contains_expected_commands():

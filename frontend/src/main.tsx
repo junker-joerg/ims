@@ -828,6 +828,7 @@ function App() {
                 <li>Startdiagnose lokal per CLI ohne Serverstart</li>
                 <li>Startplan lokal per CLI nur beschreibend</li>
                 <li>Readiness lokal per CLI ohne Serverstart</li>
+                <li>v1-Readiness als lokaler Abschluss-Smoke</li>
                 <li>CLI-Uebersicht lokal per CLI ohne Seiteneffekte</li>
                 <li>Schreibvertrag lokal per CLI nur beschreibend</li>
                 <li>Schreibvertragspruefung lokal per CLI ohne Import</li>

@@ -97,5 +97,5 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
     assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
-    assert "1-3 reviewbare PRs" in doc
+    assert "0-2 reviewbare PRs" in doc
     assert "Die lokale Bedienreihenfolge fuer v1 ist" in doc
