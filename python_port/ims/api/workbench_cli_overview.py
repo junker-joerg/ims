@@ -94,6 +94,13 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             requires_explicit_db=True,
         ),
         WorkbenchCliCommand(
+            name="metadata_import_cli dry-run",
+            command="python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite",
+            purpose="Importwirkung gegen eine explizite Metadatenquelle pruefen, ohne zu schreiben.",
+            writes_enabled=False,
+            requires_explicit_db=True,
+        ),
+        WorkbenchCliCommand(
             name="metadata_write_contracts",
             command="python -m ims.api.metadata_write_contracts",
             purpose="Vorbereitete Workbench-Schreibgrenzen beschreibend ausgeben.",
@@ -126,6 +133,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",
                 "metadata_import_cli roundtrip",
+                "metadata_import_cli dry-run",
                 "metadata_write_contracts",
                 "metadata_write_contracts check",
             ],

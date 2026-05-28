@@ -9,11 +9,13 @@ from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata_import_cli import (
     check_metadata_roundtrip,
     check_metadata_import,
+    dry_run_metadata_import,
     export_metadata_import_bundle,
     export_metadata_import_bundle_to_file,
     export_metadata_snapshot,
     import_metadata_to_db,
     main,
+    MetadataImportDryRunResult,
     preview_metadata_import,
 )
 from ims.api.metadata_repository import (
@@ -438,6 +440,188 @@ def test_metadata_import_cli_roundtrip_reports_unreadable_explicit_db(tmp_path, 
     db_path.write_text("not sqlite", encoding="utf-8")
 
     exit_code = main(["roundtrip", "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "not readable" in output["message"]
+
+
+def test_metadata_import_cli_dry_run_reports_new_ids_without_writing(tmp_path):
+    import_path = tmp_path / "metadata_import.json"
+    db_path = tmp_path / "metadata.sqlite"
+    import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+
+    result = dry_run_metadata_import(import_path)
+    payload = result.to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "dry_run"
+    assert payload["source"]["storage_kind"] == "memory"
+    assert payload["scenario_count"] == 1
+    assert payload["run_count"] == 1
+    assert payload["new_scenario_ids"] == ["local-imported-scenario"]
+    assert payload["replaced_scenario_ids"] == []
+    assert payload["new_run_ids"] == ["local-imported-run"]
+    assert payload["replaced_run_ids"] == []
+    assert payload["issues"] == []
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not db_path.exists()
+    assert MetadataImportDryRunResult is not None
+
+
+def test_metadata_import_cli_dry_run_reports_replaced_ids_for_explicit_db(tmp_path):
+    import_path = tmp_path / "metadata_import.json"
+    db_path = tmp_path / "workbench.sqlite"
+    build_seeded_metadata_repository(db_path)
+    payload = _valid_import_payload()
+    payload["scenarios"][0]["id"] = "agrsich-reference-window"
+    payload["runs"][0]["id"] = "baseline-python-tests"
+    payload["runs"][0]["scenario_id"] = "agrsich-reference-window"
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    result = dry_run_metadata_import(import_path, db_path)
+    output = result.to_dict()
+
+    assert output["source"]["storage_kind"] == "sqlite"
+    assert output["source"]["path"] == str(db_path.resolve())
+    assert output["new_scenario_ids"] == []
+    assert output["replaced_scenario_ids"] == ["agrsich-reference-window"]
+    assert output["new_run_ids"] == []
+    assert output["replaced_run_ids"] == ["baseline-python-tests"]
+    assert output["writes_performed"] is False
+    assert build_seeded_metadata_repository(db_path).get_run("baseline-python-tests") is not None
+
+
+def test_metadata_import_cli_dry_run_uses_explicit_db_for_known_run_scenario(tmp_path):
+    scenario_path = tmp_path / "scenario_import.json"
+    dry_run_path = tmp_path / "dry_run.json"
+    db_path = tmp_path / "workbench.sqlite"
+    scenario_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+    import_metadata_to_db(scenario_path, db_path)
+    payload = _valid_import_payload()
+    payload["scenarios"] = []
+    payload["runs"][0]["id"] = "second-local-run"
+    payload["runs"][0]["scenario_id"] = "local-imported-scenario"
+    dry_run_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    result = dry_run_metadata_import(dry_run_path, db_path)
+
+    assert result.new_scenario_ids == ()
+    assert result.new_run_ids == ("second-local-run",)
+    assert result.replaced_run_ids == ()
+
+
+def test_metadata_import_cli_dry_run_prints_stable_json(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert output["status"] == "ok"
+    assert output["mode"] == "dry_run"
+    assert output["new_scenario_ids"] == ["local-imported-scenario"]
+    assert output["new_run_ids"] == ["local-imported-run"]
+    assert output["writes_performed"] is False
+    assert output["execution_performed"] is False
+
+
+def test_metadata_import_cli_dry_run_reports_invalid_format(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    payload = _valid_import_payload()
+    del payload["runs"][0]["execution_enabled"]
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "execution_enabled" in output["message"]
+
+
+def test_metadata_import_cli_dry_run_rejects_execution_enabled_true(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    db_path = tmp_path / "workbench.sqlite"
+    payload = _valid_import_payload()
+    payload["runs"][0]["execution_enabled"] = True
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path), "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "does not exist" in output["message"]
+    assert not db_path.exists()
+
+
+def test_metadata_import_cli_dry_run_rejects_execution_enabled_true_without_db(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    payload = _valid_import_payload()
+    payload["runs"][0]["execution_enabled"] = True
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "execution_enabled" in output["message"]
+
+
+def test_metadata_import_cli_dry_run_rejects_unknown_run_scenario_reference(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    payload = _valid_import_payload()
+    payload["runs"][0]["scenario_id"] = "missing-scenario"
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "unknown scenario_id" in output["message"]
+
+
+def test_metadata_import_cli_dry_run_rejects_forbidden_fachlogik_field(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    payload = _valid_import_payload()
+    payload["runs"][0]["simulation_result"] = {"blocked": True}
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "simulation_result" in output["message"]
+
+
+def test_metadata_import_cli_dry_run_rejects_missing_explicit_db(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    db_path = tmp_path / "missing.sqlite"
+    import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path), "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "does not exist" in output["message"]
+    assert not db_path.exists()
+
+
+def test_metadata_import_cli_dry_run_reports_unreadable_explicit_db(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    db_path = tmp_path / "broken.sqlite"
+    import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+    db_path.write_text("not sqlite", encoding="utf-8")
+
+    exit_code = main(["dry-run", str(import_path), "--db", str(db_path)])
 
     output = json.loads(capsys.readouterr().out)
     assert exit_code == 2

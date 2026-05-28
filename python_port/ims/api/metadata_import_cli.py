@@ -158,6 +158,37 @@ class MetadataRoundtripResult:
         }
 
 
+@dataclass(frozen=True)
+class MetadataImportDryRunResult:
+    mode: str
+    source: dict[str, object]
+    scenario_count: int
+    run_count: int
+    new_scenario_ids: tuple[str, ...]
+    replaced_scenario_ids: tuple[str, ...]
+    new_run_ids: tuple[str, ...]
+    replaced_run_ids: tuple[str, ...]
+    issues: tuple[str, ...] = ()
+    writes_performed: bool = False
+    execution_performed: bool = False
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "mode": self.mode,
+            "source": self.source,
+            "scenario_count": self.scenario_count,
+            "run_count": self.run_count,
+            "new_scenario_ids": list(self.new_scenario_ids),
+            "replaced_scenario_ids": list(self.replaced_scenario_ids),
+            "new_run_ids": list(self.new_run_ids),
+            "replaced_run_ids": list(self.replaced_run_ids),
+            "issues": list(self.issues),
+            "writes_performed": self.writes_performed,
+            "execution_performed": self.execution_performed,
+        }
+
+
 def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
     bundle = load_metadata_import(path)
     validate_metadata_bundle(bundle, build_seeded_metadata_repository())
@@ -279,6 +310,34 @@ def preview_metadata_import(path: Path | str) -> MetadataImportPreviewResult:
     )
 
 
+def dry_run_metadata_import(
+    path: Path | str,
+    db_path: Path | str | None = None,
+) -> MetadataImportDryRunResult:
+    raw_payload = _load_raw_import_payload(path)
+    bundle = parse_metadata_import_payload(raw_payload)
+    repository = _metadata_read_repository(db_path, mode="dry-run")
+    try:
+        existing_scenario_ids = _repository_ids(repository.list_scenarios())
+        existing_run_ids = _repository_ids(repository.list_runs())
+        validate_metadata_write_contract_payload(raw_payload, repository)
+    except sqlite3.DatabaseError as exc:
+        raise MetadataImportError(f"metadata dry-run database is not readable: {exc}") from exc
+
+    scenario_ids = tuple(scenario.id for scenario in bundle.scenarios)
+    run_ids = tuple(run.id for run in bundle.runs)
+    return MetadataImportDryRunResult(
+        mode="dry_run",
+        source=repository.metadata_source(),
+        scenario_count=len(bundle.scenarios),
+        run_count=len(bundle.runs),
+        new_scenario_ids=tuple(scenario_id for scenario_id in scenario_ids if scenario_id not in existing_scenario_ids),
+        replaced_scenario_ids=tuple(scenario_id for scenario_id in scenario_ids if scenario_id in existing_scenario_ids),
+        new_run_ids=tuple(run_id for run_id in run_ids if run_id not in existing_run_ids),
+        replaced_run_ids=tuple(run_id for run_id in run_ids if run_id in existing_run_ids),
+    )
+
+
 def import_metadata_to_db(path: Path | str, db_path: Path | str) -> MetadataImportCliResult:
     repository = build_seeded_metadata_repository(db_path)
     result = import_metadata_file(path, repository)
@@ -302,6 +361,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 _print_json(export_metadata_import_bundle_to_file(args.out, args.db).to_dict())
         elif args.command == "roundtrip":
             _print_json(check_metadata_roundtrip(args.db).to_dict())
+        elif args.command == "dry-run":
+            _print_json(dry_run_metadata_import(args.path, args.db).to_dict())
         elif args.command == "import":
             _print_json(import_metadata_to_db(args.path, args.db).to_dict())
         else:
@@ -338,6 +399,15 @@ def _reject_export_source_overwrite(resolved_out_path: Path, db_path: Path | str
     resolved_db_path = Path(db_path).expanduser().resolve()
     if resolved_db_path == resolved_out_path:
         raise MetadataImportError("metadata export output path must differ from the source database path")
+
+
+def _load_raw_import_payload(path: Path | str) -> object:
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise MetadataImportError(f"metadata import JSON is invalid: {exc.msg}") from exc
+    except OSError as exc:
+        raise MetadataImportError(f"metadata import JSON is not readable: {exc}") from exc
 
 
 def _connect_snapshot_db_readonly(path: Path) -> sqlite3.Connection:
@@ -391,6 +461,10 @@ def _build_parser() -> argparse.ArgumentParser:
 
     roundtrip_parser = subparsers.add_parser("roundtrip", help="Export-/Importformat lokal pruefen, ohne zu schreiben.")
     roundtrip_parser.add_argument("--db", type=Path, help="Expliziter SQLite-Quellpfad.")
+
+    dry_run_parser = subparsers.add_parser("dry-run", help="Importwirkung pruefen, ohne zu schreiben.")
+    dry_run_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")
+    dry_run_parser.add_argument("--db", type=Path, help="Expliziter SQLite-Quellpfad fuer Bestandsabgleich.")
 
     import_parser = subparsers.add_parser("import", help="JSON-Metadaten in eine explizite SQLite-Datei importieren.")
     import_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")

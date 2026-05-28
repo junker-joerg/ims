@@ -59,3 +59,10 @@ Ein lokaler Roundtrip-Check prueft Export, Importformat und Schreibvertrag gemei
 python -m ims.api.metadata_import_cli roundtrip
 python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite
 ```
+
+Ein lokaler Import-Trockenlauf zeigt vor einem expliziten Import, welche Szenario- und Run-Metadaten neu waeren oder bestehende IDs ersetzen wuerden. Er schreibt nicht:
+
+```powershell
+python -m ims.api.metadata_import_cli dry-run .\metadata_import.json
+python -m ims.api.metadata_import_cli dry-run .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
+```

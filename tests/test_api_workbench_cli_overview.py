@@ -41,6 +41,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "metadata_import_cli snapshot",
         "metadata_import_cli export",
         "metadata_import_cli roundtrip",
+        "metadata_import_cli dry-run",
         "metadata_write_contracts",
         "metadata_write_contracts check",
         "metadata_import_cli import --db",
@@ -65,6 +66,7 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
         "metadata_import_cli preview",
         "metadata_import_cli snapshot",
         "metadata_import_cli roundtrip",
+        "metadata_import_cli dry-run",
         "metadata_write_contracts",
         "metadata_write_contracts check",
     ]

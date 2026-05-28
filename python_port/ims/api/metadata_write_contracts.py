@@ -13,7 +13,7 @@ from ims.api.metadata_import import (
     parse_metadata_import_payload,
     validate_metadata_bundle,
 )
-from ims.api.metadata_repository import build_seeded_metadata_repository
+from ims.api.metadata_repository import WorkbenchMetadataRepository, build_seeded_metadata_repository
 
 
 TOP_LEVEL_IMPORT_FIELDS = frozenset(("schema_version", "scenarios", "runs"))
@@ -176,7 +176,10 @@ def validate_metadata_write_contract(path: Path | str) -> MetadataWriteContractV
     return validate_metadata_write_contract_payload(raw_payload)
 
 
-def validate_metadata_write_contract_payload(payload: object) -> MetadataWriteContractValidationResult:
+def validate_metadata_write_contract_payload(
+    payload: object,
+    repository: WorkbenchMetadataRepository | None = None,
+) -> MetadataWriteContractValidationResult:
     contract = build_metadata_write_contract()
     accepted_fields = _accepted_fields_by_area(contract)
     rejected_fields = _rejected_contract_fields(payload, accepted_fields)
@@ -185,7 +188,7 @@ def validate_metadata_write_contract_payload(payload: object) -> MetadataWriteCo
         raise MetadataImportError(f"metadata write contract rejected fields: {rejected_list}")
 
     bundle = parse_metadata_import_payload(payload)
-    validate_metadata_bundle(bundle, build_seeded_metadata_repository())
+    validate_metadata_bundle(bundle, repository or build_seeded_metadata_repository())
     return MetadataWriteContractValidationResult(
         mode="write_contract_check",
         scenario_count=len(bundle.scenarios),
