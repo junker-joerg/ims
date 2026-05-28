@@ -17,6 +17,7 @@ from ims.api.metadata_import_cli import (
     import_metadata_to_db,
     main,
     MetadataImportDryRunResult,
+    MetadataImportReportResult,
     preview_metadata_import,
 )
 from ims.api.metadata_repository import (
@@ -713,12 +714,40 @@ def test_metadata_import_cli_import_writes_to_explicit_db_path(tmp_path):
     imported_scenario = repository.get_scenario("local-imported-scenario")
     imported_run = repository.get_run("local-imported-run")
     assert result.mode == "import"
-    assert result.db_path == str(db_path)
+    assert result.input_path == str(import_path.resolve())
+    assert result.db_path == str(db_path.resolve())
+    assert result.writes_performed is True
+    assert result.execution_performed is False
+    assert result.consistency["status"] == "ok"
     assert db_path.exists()
     assert imported_scenario is not None
     assert imported_scenario["display_name"] == "Lokal importiertes Szenario"
     assert imported_run is not None
     assert imported_run["execution_enabled"] is False
+    assert MetadataImportReportResult is not None
+
+
+def test_metadata_import_cli_import_prints_stable_report_json(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    db_path = tmp_path / "workbench.sqlite"
+    import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+
+    exit_code = main(["import", str(import_path), "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert output["status"] == "ok"
+    assert output["mode"] == "import"
+    assert output["input_path"] == str(import_path.resolve())
+    assert output["db_path"] == str(db_path.resolve())
+    assert output["scenario_count"] == 1
+    assert output["run_count"] == 1
+    assert output["scenario_ids"] == ["local-imported-scenario"]
+    assert output["run_ids"] == ["local-imported-run"]
+    assert output["consistency"]["status"] == "ok"
+    assert output["consistency"]["runs_with_execution_enabled"] == []
+    assert output["writes_performed"] is True
+    assert output["execution_performed"] is False
 
 
 def test_metadata_import_cli_keeps_execution_enabled_forbidden(tmp_path, capsys):

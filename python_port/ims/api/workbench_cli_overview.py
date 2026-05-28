@@ -115,7 +115,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
         WorkbenchCliCommand(
             name="metadata_import_cli import --db",
             command="python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite",
-            purpose="Validierte Metadaten in eine explizite SQLite-Datei importieren.",
+            purpose="Validierte Metadaten in eine explizite SQLite-Datei importieren und Importbericht ausgeben.",
             writes_enabled=True,
             requires_explicit_db=True,
         ),
@@ -145,13 +145,11 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "creates_sqlite_file": False,
         },
         rest_plan={
-            "remaining_prs_estimate": "5-11",
+            "remaining_prs_estimate": "5-9",
             "next_blocks": [
-                "Lokale Start-/Konfigurationsnutzung konsolidieren: 0-1 PRs",
-                "Lesende Szenario-/Run-Arbeitsflaechen abrunden: 0-1 PRs",
-                "Kontrollierte lokale Schreibpfade vorbereiten: 2-4 PRs",
+                "Kontrollierte lokale Schreibpfade vorbereiten: 1-2 PRs",
                 "Spaetere Run-Steuerungsgrenze entwerfen, noch ohne echte Simulation: 2-3 PRs",
-                "v1-Haertung, Doku, Smoke-/Preview-Checks: 3-4 PRs",
+                "v1-Haertung, Doku, Smoke-/Preview-Checks: 2-4 PRs",
             ],
             "deferred_blocks": [
                 "Fachvalidierung",

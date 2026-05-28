@@ -137,6 +137,7 @@ def test_core_placeholders_import() -> None:
         check_metadata_roundtrip,
         MetadataImportCliResult,
         MetadataImportDryRunResult,
+        MetadataImportReportResult,
         MetadataImportPreviewResult,
         MetadataExportResult,
         MetadataRoundtripResult,
@@ -543,6 +544,7 @@ def test_core_placeholders_import() -> None:
     assert check_metadata_import is not None
     assert check_metadata_roundtrip is not None
     assert MetadataImportDryRunResult is not None
+    assert MetadataImportReportResult is not None
     assert dry_run_metadata_import is not None
     assert preview_metadata_import is not None
     assert export_metadata_import_bundle is not None

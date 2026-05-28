@@ -20,6 +20,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.metadata_import_cli roundtrip --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json" in readme
     assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in readme
+    assert "python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
     assert "npm.cmd run build" in readme
     assert "keine HTTP-/UI-Schreibpfade" in readme
@@ -68,7 +69,10 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "dieselbe Dateiidentitaet" in doc
     assert "Der Roundtrip schreibt keine Exportdatei" in doc
     assert "Der Dry-Run schreibt keine Metadaten" in doc
+    assert "Importbericht" in doc
+    assert "writes_performed = true" in doc
+    assert "execution_performed = false" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
     assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
-    assert "5-11 reviewbare PRs" in doc
+    assert "5-9 reviewbare PRs" in doc
