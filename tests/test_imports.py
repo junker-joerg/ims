@@ -143,6 +143,11 @@ def test_core_placeholders_import() -> None:
         main as metadata_import_cli_main,
         preview_metadata_import,
     )
+    from ims.api.workbench_config import (
+        WorkbenchConfigError,
+        WorkbenchLocalConfig,
+        load_workbench_config,
+    )
     from ims.api.workbench_diagnostics import (
         WorkbenchDiagnosticIssue,
         WorkbenchDiagnosticsResult,
@@ -508,6 +513,9 @@ def test_core_placeholders_import() -> None:
     assert export_metadata_snapshot is not None
     assert import_metadata_to_db is not None
     assert metadata_import_cli_main is not None
+    assert WorkbenchConfigError is not None
+    assert WorkbenchLocalConfig is not None
+    assert load_workbench_config is not None
     assert WorkbenchDiagnosticIssue is not None
     assert WorkbenchDiagnosticsResult is not None
     assert build_workbench_diagnostics is not None

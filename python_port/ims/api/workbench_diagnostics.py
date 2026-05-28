@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Sequence
 
 from ims.api.metadata_repository import metadata_source_payload
+from ims.api.workbench_config import WorkbenchConfigError, load_workbench_config
 
 
 @dataclass(frozen=True)
@@ -55,15 +56,30 @@ def build_workbench_diagnostics(
     *,
     frontend_dist: Path | str | None = None,
     db_path: Path | str | None = None,
+    config_path: Path | str | None = None,
 ) -> WorkbenchDiagnosticsResult:
     issues: list[WorkbenchDiagnosticIssue] = []
+    config = None
+    if config_path is not None:
+        try:
+            config = load_workbench_config(config_path)
+        except WorkbenchConfigError as exc:
+            issues.append(
+                WorkbenchDiagnosticIssue(
+                    code="workbench_config_invalid",
+                    severity="error",
+                    message=str(exc),
+                )
+            )
     api_importable = _module_importable("ims.api.app")
     starlette_available = _module_available("starlette")
     uvicorn_available = _module_available("uvicorn")
     web_dependencies_available = starlette_available and uvicorn_available
-    dist_dir = _resolve_frontend_dist(frontend_dist)
+    effective_frontend_dist = frontend_dist or (config.frontend_dist if config is not None else None)
+    effective_db_path = db_path if db_path is not None else (config.metadata_db if config is not None else None)
+    dist_dir = _resolve_frontend_dist(effective_frontend_dist)
     frontend_dist_available = (dist_dir / "index.html").is_file()
-    metadata_source = _diagnostic_metadata_source(db_path)
+    metadata_source = _diagnostic_metadata_source(effective_db_path)
 
     if not api_importable:
         issues.append(
@@ -97,12 +113,12 @@ def build_workbench_diagnostics(
                 message=f"Frontend-Build nicht gefunden: {dist_dir}",
             )
         )
-    if db_path is not None and not Path(db_path).expanduser().resolve().is_file():
+    if effective_db_path is not None and not Path(effective_db_path).expanduser().resolve().is_file():
         issues.append(
             WorkbenchDiagnosticIssue(
                 code="metadata_db_missing",
                 severity="warning",
-                message=f"Explizite Metadaten-Datenbank nicht gefunden: {Path(db_path).expanduser().resolve()}",
+                message=f"Explizite Metadaten-Datenbank nicht gefunden: {Path(effective_db_path).expanduser().resolve()}",
             )
         )
 
@@ -125,6 +141,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     result = build_workbench_diagnostics(
         frontend_dist=args.frontend_dist,
         db_path=args.db,
+        config_path=args.config,
     )
     print(json.dumps(result.to_dict(), ensure_ascii=True, sort_keys=True))
     return 1 if result.status == "error" else 0
@@ -169,6 +186,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--db", type=Path, help="Expliziter SQLite-Metadatenpfad fuer die Diagnose.")
     parser.add_argument("--frontend-dist", type=Path, help="Expliziter Frontend-Build-Pfad fuer die Diagnose.")
+    parser.add_argument("--config", type=Path, help="Explizite lokale Workbench-Konfigurationsdatei.")
     return parser
 
 

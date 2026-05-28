@@ -162,6 +162,12 @@ Optional kann ein expliziter SQLite-Metadatenpfad geprueft werden:
 python -m ims.api.workbench_diagnostics --db .\.ims_workbench\metadata.sqlite
 ```
 
+Alternativ kann die Diagnose eine explizite lokale Konfigurationsdatei lesen:
+
+```powershell
+python -m ims.api.workbench_diagnostics --config .\workbench.local.json
+```
+
 Die Ausgabe ist eine stabile JSON-Zeile mit `status`, `mode = "diagnostics"`, Importierbarkeit der API, verfuegbaren Web-Abhaengigkeiten, Frontend-Build-Status, Metadatenquelle, gesperrten Schreib- und Ausfuehrungsgrenzen sowie `issues`. Die Web-Abhaengigkeiten umfassen die lokale ASGI-Startbasis inklusive `uvicorn`, weil das dokumentierte Startkommando darueber laeuft. Fehlende Frontend-Builds oder fehlende explizite SQLite-Dateien werden als Diagnosehinweise gemeldet. Der Adapter initialisiert keine Datenbank, migriert keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation.
 
 ## SQLite-Vorbereitung
@@ -211,6 +217,25 @@ python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist --db .\.im
 
 Die Diagnose ist ein Preflight fuer lokale Betriebsbedingungen. Sie ist kein Serverstart, kein Import und kein Schreibpfad.
 
+## Lokale Konfiguration
+
+Eine lokale JSON-Konfigurationsdatei kann zentrale Betriebswerte beschreibend buendeln. Sie wird nur gelesen, wenn sie explizit uebergeben wird; die Workbench erzeugt keine Konfigurationsdatei automatisch.
+
+Beispiel:
+
+```json
+{
+  "host": "127.0.0.1",
+  "port": 8000,
+  "frontend_dist": "frontend/dist",
+  "metadata_db": ".ims_workbench/metadata.sqlite"
+}
+```
+
+Ohne Datei gelten die Defaults `host = "127.0.0.1"`, `port = 8000`, `frontend_dist = "frontend/dist"` und `metadata_db = null`. Die Felder `host`, `port`, `frontend_dist` und `metadata_db` sind die gesamte aktuelle Konfigurationsflaeche; unbekannte Felder werden abgelehnt, damit Tippfehler nicht still ignoriert werden. `metadata_db` bleibt optional. Ein fehlender expliziter DB-Pfad wird als Diagnosehinweis gemeldet, aber nicht angelegt.
+
+Die Konfigurationsdatei ersetzt die bestehenden Umgebungsvariablen nicht. `IMS_METADATA_DB` und `IMS_FRONTEND_DIST` bleiben fuer den eigentlichen Backend-Start verfuegbar. Die lokale Konfiguration bereitet zunaechst nur eine explizite, testbare Grenze fuer Diagnose und spaetere Startwerkzeuge vor.
+
 ## Lokale CLI-Grenzen
 
 Die lokalen CLI-Kommandos sind absichtlich getrennt:
@@ -218,6 +243,7 @@ Die lokalen CLI-Kommandos sind absichtlich getrennt:
 | Kommando | Zweck | Schreibverhalten |
 | --- | --- | --- |
 | `python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist` | Startbedingungen pruefen | schreibt nicht |
+| `python -m ims.api.workbench_diagnostics --config .\workbench.local.json` | Startbedingungen aus expliziter Konfiguration pruefen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli check .\metadata_import.json` | Importformat knapp validieren | schreibt nicht |
 | `python -m ims.api.metadata_import_cli preview .\metadata_import.json` | Importdatei zusammenfassen und Konsistenzhinweise zeigen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli snapshot` | geseedete In-Memory-Metadaten als Diagnose lesen | schreibt nicht |

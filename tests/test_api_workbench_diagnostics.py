@@ -90,6 +90,65 @@ def test_workbench_diagnostics_cli_prints_stable_json(tmp_path, capsys):
     assert payload["execution_enabled"] is False
 
 
+def test_workbench_diagnostics_uses_explicit_config(tmp_path):
+    frontend_dist = _frontend_dist(tmp_path)
+    db_path = tmp_path / "metadata.sqlite"
+    config_path = tmp_path / "workbench.local.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "host": "127.0.0.1",
+                "port": 8010,
+                "frontend_dist": str(frontend_dist),
+                "metadata_db": str(db_path),
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    payload = build_workbench_diagnostics(config_path=config_path).to_dict()
+
+    assert payload["status"] == "warning"
+    assert payload["frontend_dist_available"] is True
+    assert payload["metadata_source"]["storage_kind"] == "sqlite"
+    assert payload["metadata_source"]["path"] == str(db_path.resolve())
+    assert any(issue["code"] == "metadata_db_missing" for issue in payload["issues"])
+    assert db_path.exists() is False
+
+
+def test_workbench_diagnostics_reports_invalid_config(tmp_path):
+    config_path = tmp_path / "workbench.local.json"
+    config_path.write_text(json.dumps({"port": 0}), encoding="utf-8")
+
+    payload = build_workbench_diagnostics(config_path=config_path).to_dict()
+
+    assert payload["status"] == "error"
+    assert any(issue["code"] == "workbench_config_invalid" for issue in payload["issues"])
+
+
+def test_workbench_diagnostics_does_not_create_missing_config(tmp_path):
+    config_path = tmp_path / "missing.json"
+
+    payload = build_workbench_diagnostics(config_path=config_path).to_dict()
+
+    assert payload["status"] == "error"
+    assert any(issue["code"] == "workbench_config_invalid" for issue in payload["issues"])
+    assert config_path.exists() is False
+
+
+def test_workbench_diagnostics_cli_accepts_config(tmp_path, capsys):
+    frontend_dist = _frontend_dist(tmp_path)
+    config_path = tmp_path / "workbench.local.json"
+    config_path.write_text(json.dumps({"frontend_dist": str(frontend_dist)}), encoding="utf-8")
+
+    exit_code = main(["--config", str(config_path)])
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["status"] == "ok"
+    assert payload["frontend_dist_available"] is True
+
+
 def _frontend_dist(tmp_path):
     dist_dir = tmp_path / "dist"
     dist_dir.mkdir()

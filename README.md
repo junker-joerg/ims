@@ -20,3 +20,9 @@ python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 
 ```
 
 Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die aktuelle Workbench ist weiterhin rein lesend: keine Simulation, kein Browser-Upload und keine HTTP-/UI-Schreibpfade.
+
+Optional kann die Diagnose eine explizite lokale Konfigurationsdatei lesen:
+
+```powershell
+python -m ims.api.workbench_diagnostics --config .\workbench.local.json
+```
