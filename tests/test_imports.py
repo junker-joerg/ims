@@ -143,6 +143,12 @@ def test_core_placeholders_import() -> None:
         main as metadata_import_cli_main,
         preview_metadata_import,
     )
+    from ims.api.metadata_write_contracts import (
+        WorkbenchMetadataWriteArea,
+        WorkbenchMetadataWriteContract,
+        build_metadata_write_contract,
+        main as metadata_write_contracts_main,
+    )
     from ims.api.workbench_config import (
         WorkbenchConfigError,
         WorkbenchConfigLoadResult,
@@ -527,6 +533,10 @@ def test_core_placeholders_import() -> None:
     assert export_metadata_snapshot is not None
     assert import_metadata_to_db is not None
     assert metadata_import_cli_main is not None
+    assert WorkbenchMetadataWriteArea is not None
+    assert WorkbenchMetadataWriteContract is not None
+    assert build_metadata_write_contract is not None
+    assert metadata_write_contracts_main is not None
     assert WorkbenchConfigError is not None
     assert WorkbenchConfigLoadResult is not None
     assert WorkbenchLocalConfig is not None

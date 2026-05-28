@@ -80,6 +80,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             requires_explicit_db=True,
         ),
         WorkbenchCliCommand(
+            name="metadata_write_contracts",
+            command="python -m ims.api.metadata_write_contracts",
+            purpose="Vorbereitete Workbench-Schreibgrenzen beschreibend ausgeben.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli import --db",
             command="python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite",
             purpose="Validierte Metadaten in eine explizite SQLite-Datei importieren.",
@@ -99,6 +105,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",
+                "metadata_write_contracts",
             ],
             "write_commands": ["metadata_import_cli import --db"],
             "import_requires_explicit_db": True,
@@ -107,10 +114,10 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "creates_sqlite_file": False,
         },
         rest_plan={
-            "remaining_prs_estimate": "12-18",
+            "remaining_prs_estimate": "8-14",
             "next_blocks": [
-                "Lokale Start-/Konfigurationsnutzung konsolidieren: 1-2 PRs",
-                "Lesende Szenario-/Run-Arbeitsflaechen abrunden: 3-4 PRs",
+                "Lokale Start-/Konfigurationsnutzung konsolidieren: 0-1 PRs",
+                "Lesende Szenario-/Run-Arbeitsflaechen abrunden: 0-1 PRs",
                 "Kontrollierte lokale Schreibpfade vorbereiten: 3-5 PRs",
                 "Spaetere Run-Steuerungsgrenze entwerfen, noch ohne echte Simulation: 2-3 PRs",
                 "v1-Haertung, Doku, Smoke-/Preview-Checks: 3-4 PRs",
