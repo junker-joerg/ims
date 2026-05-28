@@ -397,8 +397,17 @@ def _reject_export_source_overwrite(resolved_out_path: Path, db_path: Path | str
     if db_path is None:
         return
     resolved_db_path = Path(db_path).expanduser().resolve()
-    if resolved_db_path == resolved_out_path:
+    if resolved_db_path == resolved_out_path or _paths_reference_same_existing_file(resolved_db_path, resolved_out_path):
         raise MetadataImportError("metadata export output path must differ from the source database path")
+
+
+def _paths_reference_same_existing_file(left: Path, right: Path) -> bool:
+    if not left.exists() or not right.exists():
+        return False
+    try:
+        return left.samefile(right)
+    except OSError:
+        return False
 
 
 def _load_raw_import_payload(path: Path | str) -> object:

@@ -1,4 +1,5 @@
 import json
+import os
 import sqlite3
 from pathlib import Path
 
@@ -329,6 +330,67 @@ def test_metadata_import_cli_export_rejects_relative_out_path_equal_to_source_db
 
     preserved_repository = build_seeded_metadata_repository(db_path)
     assert preserved_repository.get_scenario("agrsich-reference-window") is not None
+
+
+def test_metadata_import_cli_export_rejects_hardlinked_out_path_to_source_db(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    out_path = tmp_path / "metadata_export.json"
+    _create_seeded_sqlite_database(db_path)
+    try:
+        os.link(db_path, out_path)
+    except (OSError, NotImplementedError) as exc:
+        pytest.skip(f"hard links are not available on this filesystem: {exc}")
+
+    with pytest.raises(MetadataImportError, match="must differ"):
+        export_metadata_import_bundle_to_file(out_path, db_path)
+
+    assert out_path.samefile(db_path)
+    assert db_path.read_bytes().startswith(b"SQLite format 3")
+    preserved_payload = export_metadata_import_bundle(db_path)
+    assert preserved_payload["runs"][0]["id"] == "baseline-python-tests"
+
+
+def test_metadata_import_cli_export_allows_missing_out_path_with_explicit_db(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    out_path = tmp_path / "metadata_export.json"
+    build_seeded_metadata_repository(db_path)
+
+    result = export_metadata_import_bundle_to_file(out_path, db_path)
+
+    assert result.out_path == str(out_path.resolve())
+    assert out_path.exists()
+    assert json.loads(out_path.read_text(encoding="utf-8"))["schema_version"] == METADATA_SCHEMA_VERSION
+
+
+def test_metadata_import_cli_export_allows_existing_different_out_path(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    out_path = tmp_path / "metadata_export.json"
+    build_seeded_metadata_repository(db_path)
+    out_path.write_text("replace me", encoding="utf-8")
+
+    result = export_metadata_import_bundle_to_file(out_path, db_path)
+
+    output = json.loads(out_path.read_text(encoding="utf-8"))
+    assert result.mode == "export"
+    assert output["runs"][0]["id"] == "baseline-python-tests"
+
+
+def test_metadata_import_cli_export_cli_rejects_hardlinked_source_overwrite(tmp_path, capsys):
+    db_path = tmp_path / "workbench.sqlite"
+    out_path = tmp_path / "metadata_export.json"
+    _create_seeded_sqlite_database(db_path)
+    try:
+        os.link(db_path, out_path)
+    except (OSError, NotImplementedError) as exc:
+        pytest.skip(f"hard links are not available on this filesystem: {exc}")
+
+    exit_code = main(["export", "--db", str(db_path), "--out", str(out_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "must differ" in output["message"]
+    assert db_path.read_bytes().startswith(b"SQLite format 3")
 
 
 def test_metadata_import_cli_export_cli_rejects_source_overwrite(tmp_path, capsys):
@@ -732,3 +794,11 @@ def _create_seeded_wal_database_with_open_writer(db_path):
     seed_metadata(connection)
     connection.commit()
     return connection
+
+
+def _create_seeded_sqlite_database(db_path):
+    connection = sqlite3.connect(db_path)
+    connection.row_factory = sqlite3.Row
+    initialize_metadata_schema(connection)
+    seed_metadata(connection)
+    connection.close()

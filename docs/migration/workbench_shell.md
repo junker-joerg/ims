@@ -382,7 +382,7 @@ Mit expliziter SQLite-Quelle und explizitem Zielpfad wird nur dieser Zielpfad ge
 python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json
 ```
 
-Der Export startet keine Simulation, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und ist kein Browser-Download. Fehlt eine explizite SQLite-Quelle, wird sie nicht angelegt. Der explizite Export-Zielpfad darf nicht identisch mit der SQLite-Quelle sein; gleiche aufgeloeste `--db`- und `--out`-Pfade werden abgelehnt, bevor geschrieben wird.
+Der Export startet keine Simulation, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und ist kein Browser-Download. Fehlt eine explizite SQLite-Quelle, wird sie nicht angelegt. Der explizite Export-Zielpfad darf weder identisch mit der SQLite-Quelle sein noch ueber Hardlink- oder Datei-Alias auf dieselbe Datei zeigen; gleiche aufgeloeste `--db`- und `--out`-Pfade sowie dieselbe Dateiidentitaet werden abgelehnt, bevor geschrieben wird.
 
 Ein lokaler Roundtrip-Check exportiert die aktuell lesbaren Metadaten im Speicher und prueft dieses Bundle direkt wieder gegen Importparser, Repository-Validierung und Schreibvertrag:
 
