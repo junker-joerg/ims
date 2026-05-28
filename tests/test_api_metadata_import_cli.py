@@ -191,19 +191,24 @@ def test_metadata_import_cli_snapshot_reads_explicit_sqlite_file(tmp_path):
     assert payload["consistency"]["issue_count"] == 0
 
 
-def test_metadata_import_cli_snapshot_reads_explicit_sqlite_without_sidecars(tmp_path):
+def test_metadata_import_cli_snapshot_reads_live_wal_data_from_open_writer(tmp_path):
     db_path = tmp_path / "workbench.sqlite"
     wal_path = Path(f"{db_path}-wal")
-    shm_path = Path(f"{db_path}-shm")
-    _create_seeded_wal_database(db_path)
-    wal_path.unlink(missing_ok=True)
-    shm_path.unlink(missing_ok=True)
 
-    result = export_metadata_snapshot(db_path)
+    connection = _create_seeded_wal_database_with_open_writer(db_path)
+    try:
+        assert wal_path.exists()
 
-    assert result.to_dict()["status"] == "ok"
-    assert not wal_path.exists()
-    assert not shm_path.exists()
+        result = export_metadata_snapshot(db_path)
+    finally:
+        connection.close()
+
+    payload = result.to_dict()
+    assert payload["status"] == "ok"
+    assert payload["scenarios"]["items"][0]["id"] == "agrsich-reference-window"
+    assert payload["runs"]["items"][0]["id"] == "baseline-python-tests"
+    assert payload["writes_performed"] is False
+    assert db_path.exists()
 
 
 def test_metadata_import_cli_snapshot_rejects_missing_explicit_db(tmp_path, capsys):
@@ -338,11 +343,11 @@ def _valid_import_payload():
     }
 
 
-def _create_seeded_wal_database(db_path):
+def _create_seeded_wal_database_with_open_writer(db_path):
     connection = sqlite3.connect(db_path)
     connection.row_factory = sqlite3.Row
+    connection.execute("PRAGMA journal_mode=WAL").fetchone()
     initialize_metadata_schema(connection)
     seed_metadata(connection)
-    connection.execute("PRAGMA journal_mode=WAL").fetchone()
-    connection.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchall()
-    connection.close()
+    connection.commit()
+    return connection

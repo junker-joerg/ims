@@ -34,7 +34,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
 - Der lokale CLI-Adapter schreibt nur im `import`-Modus und nur, wenn ein SQLite-Zielpfad explizit angegeben wird.
 - Der lokale CLI-Preview-Modus schreibt keine Metadaten und nutzt `IMS_METADATA_DB` nicht als implizites Ziel.
-- Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet.
+- Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet und beruecksichtigen den aktuellen WAL-Zustand.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Szenario-Uebersicht ist rein lesend und enthaelt keine Start-, Upload- oder Editierkontrollen.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
@@ -200,7 +200,7 @@ Mit expliziter SQLite-Datei liest der Befehl nur diese Datei:
 python -m ims.api.metadata_import_cli snapshot --db .\.ims_workbench\metadata.sqlite
 ```
 
-Der explizite Snapshot-Pfad oeffnet die SQLite-Datei read-only und immutable. Er initialisiert oder migriert keine Datenbank und legt keine WAL-/SHM-Sidecar-Dateien fuer den Lesezugriff an. Fehlt die Datei oder ist sie keine lesbare Workbench-SQLite-Ablage, liefert der CLI-Adapter eine stabile JSON-Fehlerform.
+Der explizite Snapshot-Pfad oeffnet die SQLite-Datei read-only. Er initialisiert oder migriert keine Datenbank und schreibt keine Workbench-Metadaten. SQLite-WAL-/SHM-Dateien koennen bei einer Live-WAL-Datenbank vorhanden sein; sie bedeuten keinen Import- oder Snapshot-Schreibpfad. Fehlt die Datei oder ist sie keine lesbare Workbench-SQLite-Ablage, liefert der CLI-Adapter eine stabile JSON-Fehlerform.
 
 Ein Import schreibt nur in eine ausdruecklich angegebene SQLite-Datei:
 
@@ -208,7 +208,7 @@ Ein Import schreibt nur in eine ausdruecklich angegebene SQLite-Datei:
 python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
 ```
 
-Die Ausgabe ist eine knappe JSON-Statuszeile. Fehler liefern ebenfalls eine stabile JSON-Form mit `status = "error"` und einer kurzen Meldung. Der Preview-Modus liefert zusaetzlich `existing_scenario_ids`, `existing_run_ids`, `new_scenario_ids`, `new_run_ids`, `runs_with_missing_scenario`, `runs_with_execution_enabled` und `writes_performed = false`. Der Snapshot-Modus liefert `source`, `scenarios`, `runs`, `consistency`, `writes_performed = false` und `execution_performed = false`. Er exportiert keine Fachlogikdaten, startet keine Simulation und nutzt keine schreibfaehige Verbindung fuer explizite Snapshot-Datenbanken. Der Adapter liest weder `IMS_METADATA_DB` als implizites Schreibziel noch oeffnet er einen HTTP-Endpunkt. Die API- und UI-Schreibpfade bleiben gesperrt.
+Die Ausgabe ist eine knappe JSON-Statuszeile. Fehler liefern ebenfalls eine stabile JSON-Form mit `status = "error"` und einer kurzen Meldung. Der Preview-Modus liefert zusaetzlich `existing_scenario_ids`, `existing_run_ids`, `new_scenario_ids`, `new_run_ids`, `runs_with_missing_scenario`, `runs_with_execution_enabled` und `writes_performed = false`. Der Snapshot-Modus liefert `source`, `scenarios`, `runs`, `consistency`, `writes_performed = false` und `execution_performed = false`. Er exportiert keine Fachlogikdaten, startet keine Simulation und nutzt eine read-only Verbindung fuer explizite Snapshot-Datenbanken, damit auch committed Live-WAL-Metadaten sichtbar bleiben. Der Adapter liest weder `IMS_METADATA_DB` als implizites Schreibziel noch oeffnet er einen HTTP-Endpunkt. Die API- und UI-Schreibpfade bleiben gesperrt.
 
 Das Importformat ist bewusst nahe an der API-DTO-Form:
 
