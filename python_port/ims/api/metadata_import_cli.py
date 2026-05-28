@@ -233,6 +233,7 @@ def export_metadata_import_bundle_to_file(
 ) -> MetadataExportResult:
     payload = export_metadata_import_bundle(db_path)
     resolved_out_path = Path(out_path).expanduser().resolve()
+    _reject_export_source_overwrite(resolved_out_path, db_path)
     try:
         resolved_out_path.write_text(_json_line(payload, indent=2), encoding="utf-8")
     except OSError as exc:
@@ -329,6 +330,14 @@ def _metadata_read_repository(db_path: Path | str | None, *, mode: str) -> Workb
     if not resolved_path.is_file():
         raise MetadataImportError(f"metadata {mode} database does not exist: {resolved_path}")
     return WorkbenchMetadataRepository(_connect_snapshot_db_readonly(resolved_path))
+
+
+def _reject_export_source_overwrite(resolved_out_path: Path, db_path: Path | str | None) -> None:
+    if db_path is None:
+        return
+    resolved_db_path = Path(db_path).expanduser().resolve()
+    if resolved_db_path == resolved_out_path:
+        raise MetadataImportError("metadata export output path must differ from the source database path")
 
 
 def _connect_snapshot_db_readonly(path: Path) -> sqlite3.Connection:
