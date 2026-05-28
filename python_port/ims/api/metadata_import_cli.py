@@ -19,7 +19,6 @@ from ims.api.metadata_import import (
 from ims.api.metadata_repository import (
     WorkbenchMetadataRepository,
     build_seeded_metadata_repository,
-    connect_metadata_db,
 )
 
 
@@ -203,7 +202,21 @@ def _snapshot_repository(db_path: Path | str | None) -> WorkbenchMetadataReposit
     resolved_path = Path(db_path).expanduser().resolve()
     if not resolved_path.is_file():
         raise MetadataImportError(f"metadata snapshot database does not exist: {resolved_path}")
-    return WorkbenchMetadataRepository(connect_metadata_db(resolved_path))
+    return WorkbenchMetadataRepository(_connect_snapshot_db_readonly(resolved_path))
+
+
+def _connect_snapshot_db_readonly(path: Path) -> sqlite3.Connection:
+    connection = sqlite3.connect(
+        _readonly_sqlite_uri(path),
+        uri=True,
+        check_same_thread=False,
+    )
+    connection.row_factory = sqlite3.Row
+    return connection
+
+
+def _readonly_sqlite_uri(path: Path) -> str:
+    return f"{path.as_uri()}?mode=ro&immutable=1"
 
 
 def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
