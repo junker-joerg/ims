@@ -30,6 +30,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Keine Steuerung echter Fachlogiklaeufe.
 - Keine Aenderung am Simulationskern.
 - Keine neue historische Validierungsbehauptung.
+- Keine Behauptung historischer Vollgleichheit.
 - SQLite wird aktuell nur als lesende, deterministisch geseedete Repository-Schicht an der API genutzt.
 - Interne Repository-Schreibmethoden sind vorbereitet und validiert, aber nicht als API- oder UI-Schreibpfade freigeschaltet.
 - Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
@@ -161,7 +162,7 @@ Optional kann ein expliziter SQLite-Metadatenpfad geprueft werden:
 python -m ims.api.workbench_diagnostics --db .\.ims_workbench\metadata.sqlite
 ```
 
-Die Ausgabe ist eine stabile JSON-Zeile mit `status`, `mode = "diagnostics"`, Importierbarkeit der API, verfuegbaren Web-Abhaengigkeiten, Frontend-Build-Status, Metadatenquelle, gesperrten Schreib- und Ausfuehrungsgrenzen sowie `issues`. Fehlende Frontend-Builds oder fehlende explizite SQLite-Dateien werden als Diagnosehinweise gemeldet. Der Adapter initialisiert keine Datenbank, migriert keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation.
+Die Ausgabe ist eine stabile JSON-Zeile mit `status`, `mode = "diagnostics"`, Importierbarkeit der API, verfuegbaren Web-Abhaengigkeiten, Frontend-Build-Status, Metadatenquelle, gesperrten Schreib- und Ausfuehrungsgrenzen sowie `issues`. Die Web-Abhaengigkeiten umfassen die lokale ASGI-Startbasis inklusive `uvicorn`, weil das dokumentierte Startkommando darueber laeuft. Fehlende Frontend-Builds oder fehlende explizite SQLite-Dateien werden als Diagnosehinweise gemeldet. Der Adapter initialisiert keine Datenbank, migriert keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation.
 
 ## SQLite-Vorbereitung
 
@@ -187,6 +188,43 @@ Der Capabilities-Endpunkt meldet deshalb weiterhin:
 - Szenario-Metadaten-Schreiben: vorbereitet, aber API-seitig deaktiviert.
 - Run-Metadaten-Schreiben: vorbereitet, aber API-seitig deaktiviert.
 - Simulation ausfuehren: deaktiviert.
+
+## Lokaler Start
+
+Der lokale Standardablauf ist bewusst kurz und reproduzierbar:
+
+```powershell
+python -m pip install -e .\python_port[dev]
+cd frontend
+npm.cmd install
+npm.cmd run build
+cd ..
+python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist
+python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
+```
+
+Danach ist die Workbench unter `http://127.0.0.1:8000/` erreichbar. Optional kann vor dem Start eine explizite Metadatenquelle fuer die Diagnose angegeben werden:
+
+```powershell
+python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite
+```
+
+Die Diagnose ist ein Preflight fuer lokale Betriebsbedingungen. Sie ist kein Serverstart, kein Import und kein Schreibpfad.
+
+## Lokale CLI-Grenzen
+
+Die lokalen CLI-Kommandos sind absichtlich getrennt:
+
+| Kommando | Zweck | Schreibverhalten |
+| --- | --- | --- |
+| `python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist` | Startbedingungen pruefen | schreibt nicht |
+| `python -m ims.api.metadata_import_cli check .\metadata_import.json` | Importformat knapp validieren | schreibt nicht |
+| `python -m ims.api.metadata_import_cli preview .\metadata_import.json` | Importdatei zusammenfassen und Konsistenzhinweise zeigen | schreibt nicht |
+| `python -m ims.api.metadata_import_cli snapshot` | geseedete In-Memory-Metadaten als Diagnose lesen | schreibt nicht |
+| `python -m ims.api.metadata_import_cli snapshot --db .\.ims_workbench\metadata.sqlite` | explizite SQLite-Metadaten read-only lesen | schreibt nicht |
+| `python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite` | validierte Metadaten lokal importieren | schreibt nur in den expliziten DB-Pfad |
+
+Keines dieser Kommandos startet eine Simulation. Es gibt weiterhin keinen HTTP-Schreibpfad, keinen Browser-Upload und keinen Szenario-Editor.
 
 ## Lokaler Metadatenimport
 
@@ -287,19 +325,6 @@ Der Import validiert:
 - `execution_enabled` muss `false` bleiben.
 
 Import-Bundles werden vor dem ersten Schreibzugriff vollstaendig gegen die Repository-Grenzen validiert. Wenn ein spaeterer Run-Eintrag ungueltig ist, bleiben vorher im Bundle enthaltene neue Szenarien deshalb ungeschrieben. Der lokale CLI-Check nutzt dieselbe Referenzvalidierung gegen die geseedeten Metadaten und die Szenarien aus der Importdatei, damit ein Check keine Datei akzeptiert, die der direkte Import wegen unbekannter `scenario_id` ablehnen wuerde.
-
-## Lokaler Start
-
-```powershell
-python -m pip install -e .\python_port[dev]
-cd frontend
-npm.cmd install
-npm.cmd run build
-cd ..
-python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
-```
-
-Danach ist die Workbench unter `http://localhost:8000/` erreichbar.
 
 ## Anschluss
 

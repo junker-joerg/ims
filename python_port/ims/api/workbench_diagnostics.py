@@ -59,7 +59,8 @@ def build_workbench_diagnostics(
     issues: list[WorkbenchDiagnosticIssue] = []
     api_importable = _module_importable("ims.api.app")
     starlette_available = _module_available("starlette")
-    web_dependencies_available = starlette_available
+    uvicorn_available = _module_available("uvicorn")
+    web_dependencies_available = starlette_available and uvicorn_available
     dist_dir = _resolve_frontend_dist(frontend_dist)
     frontend_dist_available = (dist_dir / "index.html").is_file()
     metadata_source = _diagnostic_metadata_source(db_path)
@@ -78,6 +79,14 @@ def build_workbench_diagnostics(
                 code="starlette_unavailable",
                 severity="error",
                 message="Starlette ist fuer die lokale Workbench nicht verfuegbar.",
+            )
+        )
+    if not uvicorn_available:
+        issues.append(
+            WorkbenchDiagnosticIssue(
+                code="uvicorn_unavailable",
+                severity="error",
+                message="Uvicorn ist fuer das dokumentierte lokale Startkommando nicht verfuegbar.",
             )
         )
     if not frontend_dist_available:
