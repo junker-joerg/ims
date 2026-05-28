@@ -86,6 +86,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="metadata_write_contracts check",
+            command="python -m ims.api.metadata_write_contracts check .\\metadata_import.json",
+            purpose="Importdatei gegen den lokalen Schreibvertrag pruefen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli import --db",
             command="python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite",
             purpose="Validierte Metadaten in eine explizite SQLite-Datei importieren.",
@@ -106,6 +112,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",
                 "metadata_write_contracts",
+                "metadata_write_contracts check",
             ],
             "write_commands": ["metadata_import_cli import --db"],
             "import_requires_explicit_db": True,

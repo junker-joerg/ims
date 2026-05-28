@@ -39,6 +39,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "metadata_import_cli preview",
         "metadata_import_cli snapshot",
         "metadata_write_contracts",
+        "metadata_write_contracts check",
         "metadata_import_cli import --db",
     ]
     assert all(command["starts_server"] is False for command in commands)
@@ -61,6 +62,7 @@ def test_workbench_cli_overview_marks_only_explicit_import_as_writing():
         "metadata_import_cli preview",
         "metadata_import_cli snapshot",
         "metadata_write_contracts",
+        "metadata_write_contracts check",
     ]
 
 

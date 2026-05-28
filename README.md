@@ -43,4 +43,5 @@ Ein lokaler Schreibvertrag beschreibt die vorbereiteten Metadaten-Schreibgrenzen
 
 ```powershell
 python -m ims.api.metadata_write_contracts
+python -m ims.api.metadata_write_contracts check .\metadata_import.json
 ```

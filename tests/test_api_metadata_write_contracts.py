@@ -6,11 +6,14 @@ from pathlib import Path
 
 import pytest
 
+from ims.api.metadata import METADATA_SCHEMA_VERSION
 from ims.api.metadata_write_contracts import (
+    MetadataWriteContractValidationResult,
     WorkbenchMetadataWriteArea,
     WorkbenchMetadataWriteContract,
     build_metadata_write_contract,
     main,
+    validate_metadata_write_contract,
 )
 
 
@@ -63,6 +66,96 @@ def test_metadata_write_contract_cli_prints_json_without_writing(tmp_path, monke
     assert WorkbenchMetadataWriteContract is not None
 
 
+def test_metadata_write_contract_check_accepts_valid_bundle_without_writing(tmp_path):
+    import_path = tmp_path / "metadata_import.json"
+    db_path = tmp_path / "metadata.sqlite"
+    import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+
+    result = validate_metadata_write_contract(import_path)
+    payload = result.to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "write_contract_check"
+    assert payload["scenario_count"] == 1
+    assert payload["run_count"] == 1
+    assert payload["scenario_ids"] == ["local-imported-scenario"]
+    assert payload["run_ids"] == ["local-imported-run"]
+    assert "execution_enabled" in payload["accepted_fields"]["run_metadata"]
+    assert payload["rejected_fields"] == []
+    assert payload["issues"] == []
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not db_path.exists()
+    assert MetadataWriteContractValidationResult is not None
+
+
+def test_metadata_write_contract_check_rejects_execution_enabled_true(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    payload = _valid_import_payload()
+    payload["runs"][0]["execution_enabled"] = True
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["check", str(import_path)])
+    output = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert output["mode"] == "write_contract_check"
+    assert "execution_enabled" in output["message"]
+    assert output["writes_performed"] is False
+    assert output["execution_performed"] is False
+
+
+def test_metadata_write_contract_check_rejects_forbidden_fachlogik_field(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    payload = _valid_import_payload()
+    payload["runs"][0]["fachlogik_state"] = {"internal": "blocked"}
+    import_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    exit_code = main(["check", str(import_path)])
+    output = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "runs[0].fachlogik_state" in output["message"]
+    assert output["writes_performed"] is False
+
+
+def test_metadata_write_contract_check_prints_stable_json(tmp_path, capsys):
+    import_path = tmp_path / "metadata_import.json"
+    import_path.write_text(json.dumps(_valid_import_payload()), encoding="utf-8")
+
+    exit_code = main(["check", str(import_path)])
+    output = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert output["status"] == "ok"
+    assert output["mode"] == "write_contract_check"
+    assert output["accepted_fields"]["scenario_metadata"] == [
+        "id",
+        "display_name",
+        "status",
+        "domain_scope",
+        "source",
+        "validation",
+        "updated_at",
+        "notes",
+    ]
+    assert output["accepted_fields"]["run_metadata"] == [
+        "id",
+        "display_name",
+        "scenario_id",
+        "status",
+        "source",
+        "validation",
+        "period_window",
+        "execution_enabled",
+        "updated_at",
+    ]
+    assert output["rejected_fields"] == []
+    assert output["writes_performed"] is False
+
+
 def test_metadata_write_contract_cli_rejects_arguments(capsys):
     with pytest.raises(SystemExit):
         main(["--db", "metadata.sqlite"])
@@ -82,5 +175,52 @@ def test_metadata_write_contract_module_entrypoint_rejects_arguments():
     )
 
     assert completed.returncode != 0
-    assert "does not accept arguments" in completed.stderr
+    assert "accepts no arguments except" in completed.stderr
     assert completed.stdout == ""
+
+
+def _valid_import_payload():
+    return {
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "scenarios": [
+            {
+                "id": "local-imported-scenario",
+                "display_name": "Lokal importiertes Szenario",
+                "status": "draft",
+                "domain_scope": "Metadaten",
+                "source": {
+                    "kind": "fixture",
+                    "label": "Lokale Importdatei",
+                    "path": "local/metadata.json",
+                },
+                "validation": {
+                    "status": "planned",
+                    "scope": "keine Fachvalidierung",
+                    "claim": "Importiert nur Workbench-Metadaten.",
+                },
+                "updated_at": "2026-05-27T00:00:00Z",
+                "notes": "Lokaler Metadatenimport ohne Simulationssteuerung.",
+            }
+        ],
+        "runs": [
+            {
+                "id": "local-imported-run",
+                "display_name": "Importierter Metadatenlauf",
+                "scenario_id": "local-imported-scenario",
+                "status": "planned",
+                "source": {
+                    "kind": "fixture",
+                    "label": "Lokale Importdatei",
+                    "path": "local/metadata.json",
+                },
+                "validation": {
+                    "status": "planned",
+                    "scope": "keine Simulation",
+                    "claim": "Beschreibender Run-Metadatensatz.",
+                },
+                "period_window": "keine Simulation",
+                "execution_enabled": False,
+                "updated_at": "2026-05-27T00:00:00Z",
+            }
+        ],
+    }
