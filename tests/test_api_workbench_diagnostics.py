@@ -116,6 +116,78 @@ def test_workbench_diagnostics_uses_explicit_config(tmp_path):
     assert db_path.exists() is False
 
 
+def test_workbench_diagnostics_keeps_repo_frontend_default_when_config_omits_field(
+    tmp_path, monkeypatch
+):
+    config_path = tmp_path / "config" / "workbench.local.json"
+    config_path.parent.mkdir()
+    config_path.write_text(json.dumps({"port": 8010}), encoding="utf-8")
+    other_cwd = tmp_path / "other-cwd"
+    other_cwd.mkdir()
+    seen_frontend_values = []
+    frontend_dist = _frontend_dist(tmp_path)
+
+    def resolve_frontend_dist(frontend_dist_value):
+        seen_frontend_values.append(frontend_dist_value)
+        return frontend_dist
+
+    monkeypatch.chdir(other_cwd)
+    monkeypatch.setattr("ims.api.workbench_diagnostics._resolve_frontend_dist", resolve_frontend_dist)
+
+    payload = build_workbench_diagnostics(config_path=config_path).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["frontend_dist_available"] is True
+    assert seen_frontend_values == [None]
+
+
+def test_workbench_diagnostics_resolves_config_relative_frontend_dist(tmp_path, monkeypatch):
+    config_dir = tmp_path / "local-config"
+    config_dir.mkdir()
+    frontend_dist = _frontend_dist(config_dir)
+    config_path = config_dir / "workbench.local.json"
+    config_path.write_text(json.dumps({"frontend_dist": "dist"}), encoding="utf-8")
+    other_cwd = tmp_path / "other-cwd"
+    other_cwd.mkdir()
+
+    monkeypatch.chdir(other_cwd)
+
+    payload = build_workbench_diagnostics(config_path=config_path).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["frontend_dist_available"] is True
+
+
+def test_workbench_diagnostics_resolves_config_relative_metadata_db(tmp_path, monkeypatch):
+    config_dir = tmp_path / "local-config"
+    config_dir.mkdir()
+    frontend_dist = _frontend_dist(config_dir)
+    db_path = config_dir / ".ims_workbench" / "metadata.sqlite"
+    db_path.parent.mkdir()
+    build_seeded_metadata_repository(db_path)
+    config_path = config_dir / "workbench.local.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "frontend_dist": "dist",
+                "metadata_db": ".ims_workbench/metadata.sqlite",
+            }
+        ),
+        encoding="utf-8",
+    )
+    other_cwd = tmp_path / "other-cwd"
+    other_cwd.mkdir()
+
+    monkeypatch.chdir(other_cwd)
+
+    payload = build_workbench_diagnostics(config_path=config_path).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["frontend_dist_available"] is True
+    assert payload["metadata_source"]["storage_kind"] == "sqlite"
+    assert payload["metadata_source"]["path"] == str(db_path.resolve())
+
+
 def test_workbench_diagnostics_reports_invalid_config(tmp_path):
     config_path = tmp_path / "workbench.local.json"
     config_path.write_text(json.dumps({"port": 0}), encoding="utf-8")

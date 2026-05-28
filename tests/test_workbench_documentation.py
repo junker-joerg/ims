@@ -36,3 +36,4 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Vollgleichheit" in doc
     assert "Keines dieser Kommandos startet eine Simulation" in doc
     assert "keine Konfigurationsdatei automatisch" in doc
+    assert "relativ zum Speicherort der Konfigurationsdatei" in doc

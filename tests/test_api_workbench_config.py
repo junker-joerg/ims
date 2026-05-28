@@ -2,7 +2,13 @@ import json
 
 import pytest
 
-from ims.api.workbench_config import WorkbenchConfigError, WorkbenchLocalConfig, load_workbench_config
+from ims.api.workbench_config import (
+    WorkbenchConfigError,
+    WorkbenchConfigLoadResult,
+    WorkbenchLocalConfig,
+    load_workbench_config,
+    load_workbench_config_result,
+)
 
 
 def test_workbench_config_uses_defaults_without_file():
@@ -42,6 +48,28 @@ def test_workbench_config_reads_explicit_json(tmp_path):
     assert config.port == 8010
     assert config.frontend_dist == "custom/dist"
     assert config.metadata_db == ".ims_workbench/metadata.sqlite"
+
+
+def test_workbench_config_result_tracks_explicit_fields(tmp_path):
+    config_path = tmp_path / "workbench.local.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "port": 8010,
+                "metadata_db": ".ims_workbench/metadata.sqlite",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = load_workbench_config_result(config_path)
+
+    assert isinstance(result, WorkbenchConfigLoadResult)
+    assert result.config.port == 8010
+    assert result.path == config_path.resolve()
+    assert result.provided_fields == ("metadata_db", "port")
+    assert result.has_field("metadata_db") is True
+    assert result.has_field("frontend_dist") is False
 
 
 def test_workbench_config_rejects_invalid_port(tmp_path):
