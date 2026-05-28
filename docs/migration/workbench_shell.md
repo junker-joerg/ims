@@ -285,7 +285,7 @@ Optional koennen eine explizite SQLite-Metadatenquelle und eine Run-ID fuer den 
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite --run-id baseline-python-tests
 ```
 
-Die Ausgabe enthaelt `mode = "workbench_readiness"`, Einzelstatus fuer Backend, Frontend, Metadaten, CLI und Run-Control, eine `checks`-Liste, `issues`, `writes_enabled = false` und `execution_enabled = false`.
+Die Ausgabe enthaelt `mode = "workbench_readiness"`, Einzelstatus fuer Backend, Frontend, Metadaten, CLI und Run-Control, eine `checks`-Liste, `issues`, `writes_enabled = false` und `execution_enabled = false`. Eine fehlende oder unlesbare explizite SQLite-Metadatenquelle setzt `metadata_ready = false`; eine unbekannte Run-ID bleibt dagegen ein Run-Control-Hinweis.
 
 Die Readiness-Pruefung startet keinen Server, baut kein Frontend, erzeugt keine SQLite-Datei, schreibt keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation. Sie ist eine lokale Betriebs- und Härtungspruefung fuer die Workbench-v1, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
 

@@ -63,8 +63,26 @@ def test_workbench_readiness_reports_unknown_run_as_issue(tmp_path):
     payload = build_workbench_readiness(frontend_dist=frontend_dist, run_id="missing-run").to_dict()
 
     assert payload["status"] == "warning"
+    assert payload["metadata_ready"] is True
     assert payload["run_control_ready"] is False
     assert any("run metadata not found: missing-run" in issue["message"] for issue in payload["issues"])
+    assert payload["execution_enabled"] is False
+
+
+def test_workbench_readiness_marks_unreadable_explicit_metadata_db_not_ready(tmp_path):
+    frontend_dist = _frontend_dist(tmp_path)
+    db_path = tmp_path / "metadata.sqlite"
+    db_path.write_text("not a sqlite database", encoding="utf-8")
+
+    payload = build_workbench_readiness(frontend_dist=frontend_dist, db_path=db_path).to_dict()
+
+    assert payload["status"] == "error"
+    assert payload["metadata_ready"] is False
+    assert payload["run_control_ready"] is False
+    assert any(issue["code"] == "run_control_preflight_failed" for issue in payload["issues"])
+    assert any("metadata run-control-preflight database is not readable" in issue["message"] for issue in payload["issues"])
+    assert any(check["name"] == "metadata" and check["status"] == "warning" for check in payload["checks"])
+    assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
 
 

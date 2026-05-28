@@ -74,7 +74,7 @@ def build_workbench_readiness(
 
     backend_ready = bool(diagnostic_payload["api_importable"] and diagnostic_payload["web_dependencies_available"])
     frontend_ready = bool(diagnostic_payload["frontend_dist_available"])
-    metadata_ready = not any(issue.code in {"metadata_db_missing", "metadata_db_unreadable"} for issue in issues)
+    metadata_ready = _metadata_ready(issues)
     cli_ready = _cli_overview_ready(overview)
     run_control_ready = bool(
         preflight_payload["run_found"]
@@ -186,6 +186,18 @@ def _cli_overview_ready(payload: dict[str, object]) -> bool:
         and "run_control_preflight" in names
         and isinstance(boundaries, dict)
         and boundaries.get("execution_enabled") is False
+    )
+
+
+def _metadata_ready(issues: Sequence[WorkbenchDiagnosticIssue]) -> bool:
+    metadata_issue_codes = {"metadata_db_missing", "metadata_db_unreadable"}
+    return not any(
+        issue.code in metadata_issue_codes
+        or (
+            issue.code == "run_control_preflight_failed"
+            and issue.message.startswith("metadata run-control-preflight database ")
+        )
+        for issue in issues
     )
 
 
