@@ -166,9 +166,9 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "creates_sqlite_file": False,
         },
         rest_plan={
-            "remaining_prs_estimate": "2-5",
+            "remaining_prs_estimate": "1-3",
             "next_blocks": [
-                "v1-Haertung, Doku, Smoke-/Preview-Checks: 2-4 PRs",
+                "v1-Haertung, Doku, Smoke-/Preview-Checks: 1-2 PRs",
                 "Abschluss-/Release-Konsolidierung fuer lokale Workbench-v1: 0-1 PRs",
             ],
             "deferred_blocks": [

@@ -5,9 +5,9 @@ Weitere Hinweise stehen unter `docs/migration/README.md`.
 
 ## Lokale Workbench
 
-Eine erste lokale Backend-/Frontend-Shell ist unter `docs/migration/workbench_shell.md` beschrieben.
+Die lokale Workbench-v1 ist unter `docs/migration/workbench_shell.md` beschrieben. Sie laeuft zuerst lokal im Browser und bleibt bewusst von der Fachlogik getrennt.
 
-Kurzstart:
+Kurzstart fuer die lokale Browser-Workbench:
 
 ```powershell
 python -m pip install -e .\python_port[dev]
@@ -16,10 +16,13 @@ npm.cmd install
 npm.cmd run build
 cd ..
 python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
 Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die aktuelle Workbench ist weiterhin rein lesend: keine Simulation, kein Browser-Upload und keine HTTP-/UI-Schreibpfade.
+
+Start und Diagnose:
 
 Optional kann die Diagnose eine explizite lokale Konfigurationsdatei lesen:
 
@@ -45,6 +48,8 @@ Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne
 python -m ims.api.workbench_cli_overview
 ```
 
+Vertraege und Run-Control-Grenzen:
+
 Ein lokaler Schreibvertrag beschreibt die vorbereiteten Metadaten-Schreibgrenzen, ohne einen Schreibpfad zu oeffnen:
 
 ```powershell
@@ -63,6 +68,8 @@ Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese ge
 ```powershell
 python -m ims.api.run_control_preflight --run-id baseline-python-tests
 ```
+
+Metadaten-CLI:
 
 Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:
 
