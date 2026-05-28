@@ -165,6 +165,11 @@ def test_core_placeholders_import() -> None:
         build_run_control_contract,
         main as run_control_contracts_main,
     )
+    from ims.api.run_control_preflight import (
+        WorkbenchRunControlPreflightResult,
+        main as run_control_preflight_main,
+        preflight_run_control,
+    )
     from ims.api.workbench_config import (
         WorkbenchConfigError,
         WorkbenchConfigLoadResult,
@@ -567,6 +572,9 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchRunControlContract is not None
     assert build_run_control_contract is not None
     assert run_control_contracts_main is not None
+    assert WorkbenchRunControlPreflightResult is not None
+    assert preflight_run_control is not None
+    assert run_control_preflight_main is not None
     assert WorkbenchConfigError is not None
     assert WorkbenchConfigLoadResult is not None
     assert WorkbenchLocalConfig is not None

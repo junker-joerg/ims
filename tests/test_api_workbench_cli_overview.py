@@ -26,7 +26,7 @@ def test_workbench_cli_overview_reports_stable_json_shape():
     assert payload["boundaries"]["execution_enabled"] is False
     assert payload["boundaries"]["starts_server"] is False
     assert payload["boundaries"]["creates_sqlite_file"] is False
-    assert payload["rest_plan"]["remaining_prs_estimate"] == "4-8"
+    assert payload["rest_plan"]["remaining_prs_estimate"] == "3-7"
 
 
 def test_workbench_cli_overview_contains_expected_commands():
@@ -45,6 +45,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "metadata_write_contracts",
         "metadata_write_contracts check",
         "run_control_contracts",
+        "run_control_preflight",
         "metadata_import_cli import --db",
     ]
     assert all(command["starts_server"] is False for command in commands)
@@ -72,6 +73,7 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
         "metadata_write_contracts",
         "metadata_write_contracts check",
         "run_control_contracts",
+        "run_control_preflight",
     ]
 
 

@@ -52,6 +52,12 @@ Ein lokaler Run-Control-Vertrag beschreibt die spaetere Steuerungsgrenze, ohne e
 python -m ims.api.run_control_contracts
 ```
 
+Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese gesperrte Steuerungsgrenze, ohne einen Lauf zu starten:
+
+```powershell
+python -m ims.api.run_control_preflight --run-id baseline-python-tests
+```
+
 Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:
 
 ```powershell

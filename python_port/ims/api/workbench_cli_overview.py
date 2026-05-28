@@ -119,6 +119,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="run_control_preflight",
+            command="python -m ims.api.run_control_preflight --run-id baseline-python-tests",
+            purpose="Run-Metadaten lokal gegen die gesperrte Steuerungsgrenze pruefen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli import --db",
             command="python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite",
             purpose="Validierte Metadaten in eine explizite SQLite-Datei importieren und Importbericht ausgeben.",
@@ -143,6 +149,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "metadata_write_contracts",
                 "metadata_write_contracts check",
                 "run_control_contracts",
+                "run_control_preflight",
             ],
             "write_commands": ["metadata_import_cli export", "metadata_import_cli import --db"],
             "export_requires_explicit_out": True,
@@ -152,10 +159,10 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "creates_sqlite_file": False,
         },
         rest_plan={
-            "remaining_prs_estimate": "4-8",
+            "remaining_prs_estimate": "3-7",
             "next_blocks": [
                 "Kontrollierte lokale Schreibpfade abschliessen: 0-1 PRs",
-                "Spaetere Run-Steuerungsgrenze entwerfen, noch ohne echte Simulation: 2-3 PRs",
+                "Run-Steuerungsgrenze ohne echte Ausfuehrung weiter vorbereiten: 1-2 PRs",
                 "v1-Haertung, Doku, Smoke-/Preview-Checks: 2-4 PRs",
             ],
             "deferred_blocks": [

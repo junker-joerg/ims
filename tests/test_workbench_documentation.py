@@ -15,6 +15,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.metadata_write_contracts" in readme
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in readme
     assert "python -m ims.api.run_control_contracts" in readme
+    assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in readme
     assert "python -m ims.api.metadata_import_cli export" in readme
     assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in readme
     assert "python -m ims.api.metadata_import_cli roundtrip" in readme
@@ -39,6 +40,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
     assert "python -m ims.api.run_control_contracts" in doc
+    assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in doc
     assert "python -m ims.api.metadata_import_cli check .\\metadata_import.json" in doc
     assert "python -m ims.api.metadata_import_cli preview .\\metadata_import.json" in doc
     assert "python -m ims.api.metadata_import_cli snapshot --db .\\.ims_workbench\\metadata.sqlite" in doc
@@ -76,8 +78,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "execution_performed = false" in doc
     assert "## Run-Steuerungsgrenze" in doc
     assert "Der Run-Control-Vertrag ist rein beschreibend" in doc
+    assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
     assert "schaltet keinen UI-Startbutton frei" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
     assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
-    assert "4-8 reviewbare PRs" in doc
+    assert "3-7 reviewbare PRs" in doc
