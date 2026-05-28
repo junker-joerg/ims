@@ -122,7 +122,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "609 Tests", "gruen"],
+  ["Simulationskern", "614 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -579,6 +579,7 @@ function App() {
                 <li>Import aktuell nur ueber Python-Adapter</li>
                 <li>Preview lokal per CLI ohne Schreiben</li>
                 <li>Snapshot lokal per CLI ohne Browser-Export</li>
+                <li>Startdiagnose lokal per CLI ohne Serverstart</li>
                 <li><code>execution_enabled</code> bleibt <code>false</code></li>
                 <li>Browser schreibt keine Metadaten</li>
               </ul>
