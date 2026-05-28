@@ -107,6 +107,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Startplan lokal per CLI nur beschreibend" in source
     assert "CLI-Uebersicht lokal per CLI ohne Seiteneffekte" in source
     assert "Schreibvertrag lokal per CLI nur beschreibend" in source
+    assert "Schreibvertragspruefung lokal per CLI ohne Import" in source
     assert "Browser schreibt keine Metadaten" in source
     assert "Metadatenquelle" in source
     assert "lokal per CLI" in source

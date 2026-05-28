@@ -261,7 +261,7 @@ Der Capabilities-Endpunkt meldet deshalb weiterhin:
 
 `ims.api.metadata_write_contracts` beschreibt diese Grenze als lokalen Vertrag. Der Vertrag erlaubt fuer spaetere lokale Adapter nur Szenario- und Run-Metadaten, einschliesslich des im Importformat erforderlichen Run-Felds `execution_enabled` mit dem Wert `false`. `execution_enabled=true`, Simulation, Fachlogikdaten, HTTP-Schreibendpunkte, UI-Schreibworkflows und historische Vollgleichheitsbehauptungen bleiben verboten. Als aktuell einziger lokaler Schreibweg ist der explizite Import `metadata_import_cli import --db` genannt.
 
-Der Vertrag ist selbst kein Schreibpfad. `python -m ims.api.metadata_write_contracts` gibt nur JSON aus, startet keinen Server, erzeugt keine SQLite-Datei, migriert keine Datenbank und schreibt keine Metadaten.
+Der Vertrag ist selbst kein Schreibpfad. `python -m ims.api.metadata_write_contracts` gibt nur JSON aus, startet keinen Server, erzeugt keine SQLite-Datei, migriert keine Datenbank und schreibt keine Metadaten. Mit `python -m ims.api.metadata_write_contracts check .\metadata_import.json` kann eine lokale Importdatei zusaetzlich gegen diesen Vertrag geprueft werden. Diese Schreibvertragspruefung schreibt nicht, importiert nicht und lehnt `execution_enabled=true` sowie Fachlogik- oder Simulationsergebnisfelder ab.
 
 ## Lokaler Start
 
@@ -318,6 +318,7 @@ Die lokalen CLI-Kommandos sind absichtlich getrennt:
 | `python -m ims.api.workbench_start_plan --config .\workbench.local.json` | Lokalen Start beschreibend zusammenfassen | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 | `python -m ims.api.metadata_write_contracts` | Vorbereitete Schreibgrenzen beschreibend ausgeben | schreibt nicht |
+| `python -m ims.api.metadata_write_contracts check .\metadata_import.json` | Importdatei gegen den Schreibvertrag pruefen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli check .\metadata_import.json` | Importformat knapp validieren | schreibt nicht |
 | `python -m ims.api.metadata_import_cli preview .\metadata_import.json` | Importdatei zusammenfassen und Konsistenzhinweise zeigen | schreibt nicht |
 | `python -m ims.api.metadata_import_cli snapshot` | geseedete In-Memory-Metadaten als Diagnose lesen | schreibt nicht |
