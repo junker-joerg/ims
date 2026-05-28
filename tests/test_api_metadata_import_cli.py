@@ -3,7 +3,13 @@ import json
 import pytest
 
 from ims.api.metadata import METADATA_SCHEMA_VERSION
-from ims.api.metadata_import_cli import check_metadata_import, import_metadata_to_db, main, preview_metadata_import
+from ims.api.metadata_import_cli import (
+    check_metadata_import,
+    export_metadata_snapshot,
+    import_metadata_to_db,
+    main,
+    preview_metadata_import,
+)
 from ims.api.metadata_repository import build_seeded_metadata_repository
 
 
@@ -145,6 +151,63 @@ def test_metadata_import_cli_preview_prints_stable_json(tmp_path, capsys):
     assert output["runs_with_missing_scenario"] == []
     assert output["runs_with_execution_enabled"] == []
     assert output["writes_performed"] is False
+
+
+def test_metadata_import_cli_snapshot_reads_seeded_memory_without_writing(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+
+    result = export_metadata_snapshot()
+    payload = result.to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "snapshot"
+    assert payload["source"]["storage_kind"] == "memory"
+    assert payload["scenarios"]["items"][0]["id"] == "agrsich-reference-window"
+    assert payload["runs"]["items"][0]["id"] == "baseline-python-tests"
+    assert payload["consistency"]["status"] == "ok"
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not db_path.exists()
+
+
+def test_metadata_import_cli_snapshot_reads_explicit_sqlite_file(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    assert repository.get_scenario("agrsich-reference-window") is not None
+
+    result = export_metadata_snapshot(db_path)
+    payload = result.to_dict()
+
+    assert payload["source"]["storage_kind"] == "sqlite"
+    assert payload["source"]["path"] == str(db_path.resolve())
+    assert payload["scenarios"]["items"][0]["id"] == "agrsich-reference-window"
+    assert payload["runs"]["items"][0]["execution_enabled"] is False
+    assert payload["consistency"]["issue_count"] == 0
+
+
+def test_metadata_import_cli_snapshot_rejects_missing_explicit_db(tmp_path, capsys):
+    db_path = tmp_path / "missing.sqlite"
+
+    exit_code = main(["snapshot", "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "does not exist" in output["message"]
+    assert not db_path.exists()
+
+
+def test_metadata_import_cli_snapshot_prints_stable_json(capsys):
+    exit_code = main(["snapshot"])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert output["status"] == "ok"
+    assert output["mode"] == "snapshot"
+    assert output["source"]["storage_kind"] == "memory"
+    assert output["consistency"]["status"] == "ok"
+    assert output["writes_performed"] is False
+    assert output["execution_performed"] is False
 
 
 def test_metadata_import_cli_import_requires_explicit_db_path(tmp_path):

@@ -19,7 +19,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
-- `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar und als Preview zusammenfassbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
+- `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar und als Snapshot lesend exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
 - `python_port[dev]` enthaelt die Web-Testabhaengigkeiten, damit die Standardtests die API-Tests ohne separate manuelle Web-Installation sammeln koennen.
@@ -34,6 +34,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Importpfad ist eine Python-Adapterfunktion, kein HTTP- oder UI-Schreibpfad.
 - Der lokale CLI-Adapter schreibt nur im `import`-Modus und nur, wenn ein SQLite-Zielpfad explizit angegeben wird.
 - Der lokale CLI-Preview-Modus schreibt keine Metadaten und nutzt `IMS_METADATA_DB` nicht als implizites Ziel.
+- Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Szenario-Uebersicht ist rein lesend und enthaelt keine Start-, Upload- oder Editierkontrollen.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
@@ -187,13 +188,25 @@ Eine ausfuehrlichere lokale Vorschau liefert dieselben Grunddaten plus neue/beka
 python -m ims.api.metadata_import_cli preview .\metadata_import.json
 ```
 
+Ein lokaler Snapshot gibt die aktuell lesbaren Workbench-Metadaten als Diagnoseartefakt aus. Ohne `--db` nutzt der Befehl die geseedeten In-Memory-Metadaten:
+
+```powershell
+python -m ims.api.metadata_import_cli snapshot
+```
+
+Mit expliziter SQLite-Datei liest der Befehl nur diese Datei:
+
+```powershell
+python -m ims.api.metadata_import_cli snapshot --db .\.ims_workbench\metadata.sqlite
+```
+
 Ein Import schreibt nur in eine ausdruecklich angegebene SQLite-Datei:
 
 ```powershell
 python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
 ```
 
-Die Ausgabe ist eine knappe JSON-Statuszeile. Fehler liefern ebenfalls eine stabile JSON-Form mit `status = "error"` und einer kurzen Meldung. Der Preview-Modus liefert zusaetzlich `existing_scenario_ids`, `existing_run_ids`, `new_scenario_ids`, `new_run_ids`, `runs_with_missing_scenario`, `runs_with_execution_enabled` und `writes_performed = false`. Der Adapter liest weder `IMS_METADATA_DB` als implizites Schreibziel noch oeffnet er einen HTTP-Endpunkt. Die API- und UI-Schreibpfade bleiben gesperrt.
+Die Ausgabe ist eine knappe JSON-Statuszeile. Fehler liefern ebenfalls eine stabile JSON-Form mit `status = "error"` und einer kurzen Meldung. Der Preview-Modus liefert zusaetzlich `existing_scenario_ids`, `existing_run_ids`, `new_scenario_ids`, `new_run_ids`, `runs_with_missing_scenario`, `runs_with_execution_enabled` und `writes_performed = false`. Der Snapshot-Modus liefert `source`, `scenarios`, `runs`, `consistency`, `writes_performed = false` und `execution_performed = false`. Er exportiert keine Fachlogikdaten und startet keine Simulation. Der Adapter liest weder `IMS_METADATA_DB` als implizites Schreibziel noch oeffnet er einen HTTP-Endpunkt. Die API- und UI-Schreibpfade bleiben gesperrt.
 
 Das Importformat ist bewusst nahe an der API-DTO-Form:
 

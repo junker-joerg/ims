@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import sqlite3
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
 
+from ims.api.metadata import metadata_capabilities
+from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_import import (
     MetadataImportError,
     MetadataImportResult,
@@ -13,7 +16,11 @@ from ims.api.metadata_import import (
     load_metadata_import,
     validate_metadata_bundle,
 )
-from ims.api.metadata_repository import build_seeded_metadata_repository
+from ims.api.metadata_repository import (
+    WorkbenchMetadataRepository,
+    build_seeded_metadata_repository,
+    connect_metadata_db,
+)
 
 
 @dataclass(frozen=True)
@@ -72,6 +79,29 @@ class MetadataImportPreviewResult:
         }
 
 
+@dataclass(frozen=True)
+class MetadataSnapshotResult:
+    mode: str
+    source: dict[str, object]
+    scenarios: dict[str, object]
+    runs: dict[str, object]
+    consistency: dict[str, object]
+    writes_performed: bool = False
+    execution_performed: bool = False
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "mode": self.mode,
+            "source": self.source,
+            "scenarios": self.scenarios,
+            "runs": self.runs,
+            "consistency": self.consistency,
+            "writes_performed": self.writes_performed,
+            "execution_performed": self.execution_performed,
+        }
+
+
 def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
     bundle = load_metadata_import(path)
     validate_metadata_bundle(bundle, build_seeded_metadata_repository())
@@ -81,6 +111,23 @@ def check_metadata_import(path: Path | str) -> MetadataImportCliResult:
         run_count=len(bundle.runs),
         scenario_ids=tuple(scenario.id for scenario in bundle.scenarios),
         run_ids=tuple(run.id for run in bundle.runs),
+    )
+
+
+def export_metadata_snapshot(db_path: Path | str | None = None) -> MetadataSnapshotResult:
+    repository = _snapshot_repository(db_path)
+    try:
+        scenarios = repository.list_scenarios()
+        runs = repository.list_runs()
+        consistency = metadata_consistency_payload(scenarios, runs, metadata_capabilities())
+    except sqlite3.DatabaseError as exc:
+        raise MetadataImportError(f"metadata snapshot database is not readable: {exc}") from exc
+    return MetadataSnapshotResult(
+        mode="snapshot",
+        source=repository.metadata_source(),
+        scenarios=scenarios,
+        runs=runs,
+        consistency=consistency,
     )
 
 
@@ -127,6 +174,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             _print_json(check_metadata_import(args.path).to_dict())
         elif args.command == "preview":
             _print_json(preview_metadata_import(args.path).to_dict())
+        elif args.command == "snapshot":
+            _print_json(export_metadata_snapshot(args.db).to_dict())
         elif args.command == "import":
             _print_json(import_metadata_to_db(args.path, args.db).to_dict())
         else:
@@ -146,6 +195,15 @@ def _cli_result_from_import(result: MetadataImportResult, db_path: Path | str) -
         run_ids=result.run_ids,
         db_path=str(db_path),
     )
+
+
+def _snapshot_repository(db_path: Path | str | None) -> WorkbenchMetadataRepository:
+    if db_path is None:
+        return build_seeded_metadata_repository()
+    resolved_path = Path(db_path).expanduser().resolve()
+    if not resolved_path.is_file():
+        raise MetadataImportError(f"metadata snapshot database does not exist: {resolved_path}")
+    return WorkbenchMetadataRepository(connect_metadata_db(resolved_path))
 
 
 def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
@@ -171,6 +229,9 @@ def _build_parser() -> argparse.ArgumentParser:
 
     preview_parser = subparsers.add_parser("preview", help="JSON-Metadaten pruefen und Importvorschau ausgeben.")
     preview_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")
+
+    snapshot_parser = subparsers.add_parser("snapshot", help="Workbench-Metadaten lokal lesen und als JSON-Snapshot ausgeben.")
+    snapshot_parser.add_argument("--db", type=Path, help="Expliziter SQLite-Quellpfad.")
 
     import_parser = subparsers.add_parser("import", help="JSON-Metadaten in eine explizite SQLite-Datei importieren.")
     import_parser.add_argument("path", type=Path, help="Pfad zur JSON-Importdatei.")
