@@ -1,0 +1,86 @@
+import json
+
+import pytest
+
+from ims.api.workbench_cli_overview import (
+    WorkbenchCliCommand,
+    WorkbenchCliOverviewResult,
+    build_workbench_cli_overview,
+    main,
+)
+
+
+def test_workbench_cli_overview_reports_stable_json_shape():
+    payload = build_workbench_cli_overview().to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "cli_overview"
+    assert isinstance(payload["commands"], list)
+    assert payload["boundaries"]["writes_enabled"] is False
+    assert payload["boundaries"]["import_requires_explicit_db"] is True
+    assert payload["boundaries"]["execution_enabled"] is False
+    assert payload["boundaries"]["starts_server"] is False
+    assert payload["boundaries"]["creates_sqlite_file"] is False
+    assert payload["rest_plan"]["remaining_prs_estimate"] == "12-18"
+
+
+def test_workbench_cli_overview_contains_expected_commands():
+    commands = build_workbench_cli_overview().to_dict()["commands"]
+    names = [command["name"] for command in commands]
+
+    assert names == [
+        "workbench_diagnostics",
+        "workbench_start_plan",
+        "metadata_import_cli check",
+        "metadata_import_cli preview",
+        "metadata_import_cli snapshot",
+        "metadata_import_cli import --db",
+    ]
+    assert all(command["starts_server"] is False for command in commands)
+    assert all(command["starts_simulation"] is False for command in commands)
+
+
+def test_workbench_cli_overview_marks_only_explicit_import_as_writing():
+    commands = build_workbench_cli_overview().to_dict()["commands"]
+    writing_commands = [command["name"] for command in commands if command["writes_enabled"]]
+    read_only_commands = [command["name"] for command in commands if not command["writes_enabled"]]
+
+    assert writing_commands == ["metadata_import_cli import --db"]
+    assert "metadata_import_cli import --db" not in build_workbench_cli_overview().to_dict()["boundaries"][
+        "read_only_commands"
+    ]
+    assert read_only_commands == [
+        "workbench_diagnostics",
+        "workbench_start_plan",
+        "metadata_import_cli check",
+        "metadata_import_cli preview",
+        "metadata_import_cli snapshot",
+    ]
+
+
+def test_workbench_cli_overview_cli_prints_stable_json(capsys):
+    exit_code = main([])
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "cli_overview"
+    assert payload["commands"][0]["name"] == "workbench_diagnostics"
+
+
+def test_workbench_cli_overview_does_not_create_sqlite_file(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    payload = build_workbench_cli_overview().to_dict()
+
+    assert payload["status"] == "ok"
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
+def test_workbench_cli_overview_rejects_arguments(capsys):
+    with pytest.raises(SystemExit):
+        main(["--db", "metadata.sqlite"])
+
+    assert capsys.readouterr().out == ""
+    assert WorkbenchCliCommand is not None
+    assert WorkbenchCliOverviewResult is not None

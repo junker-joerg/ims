@@ -32,3 +32,9 @@ Ein rein beschreibender Startplan kann dieselben lokalen Werte als JSON zusammen
 ```powershell
 python -m ims.api.workbench_start_plan --config .\workbench.local.json
 ```
+
+Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
+
+```powershell
+python -m ims.api.workbench_cli_overview
+```
