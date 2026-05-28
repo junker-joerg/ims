@@ -109,6 +109,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Schreibvertrag lokal per CLI nur beschreibend" in source
     assert "Schreibvertragspruefung lokal per CLI ohne Import" in source
     assert "Run-Control-Vertrag lokal per CLI ohne Ausfuehrung" in source
+    assert "Run-Control-Preflight lokal per CLI ohne Ausfuehrung" in source
     assert "Export lokal per CLI nur mit explizitem Zielpfad" in source
     assert "Roundtrip lokal per CLI ohne Schreiben" in source
     assert "Dry-Run lokal per CLI ohne Import" in source

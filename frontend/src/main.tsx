@@ -831,6 +831,7 @@ function App() {
                 <li>Schreibvertrag lokal per CLI nur beschreibend</li>
                 <li>Schreibvertragspruefung lokal per CLI ohne Import</li>
                 <li>Run-Control-Vertrag lokal per CLI ohne Ausfuehrung</li>
+                <li>Run-Control-Preflight lokal per CLI ohne Ausfuehrung</li>
                 <li><code>execution_enabled</code> bleibt <code>false</code></li>
                 <li>Browser schreibt keine Metadaten</li>
               </ul>
