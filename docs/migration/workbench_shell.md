@@ -20,6 +20,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar und als Snapshot lesend exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
+- `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
 - `python_port[dev]` enthaelt die Web-Testabhaengigkeiten, damit die Standardtests die API-Tests ohne separate manuelle Web-Installation sammeln koennen.
@@ -35,6 +36,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale CLI-Adapter schreibt nur im `import`-Modus und nur, wenn ein SQLite-Zielpfad explizit angegeben wird.
 - Der lokale CLI-Preview-Modus schreibt keine Metadaten und nutzt `IMS_METADATA_DB` nicht als implizites Ziel.
 - Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet und beruecksichtigen den aktuellen WAL-Zustand.
+- Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Szenario-Uebersicht ist rein lesend und enthaelt keine Start-, Upload- oder Editierkontrollen.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
@@ -145,6 +147,22 @@ Die Workbench zeigt eine kompakte Betriebsdiagnose aus bestehenden Endpunkten:
 
 Diese Diagnose ist rein lesend. Sie bestaetigt, dass Schreibpfade, Simulation und Browser-Import weiter gesperrt sind, und verweist fuer den Import nur auf den lokalen CLI-Adapter. Sie ist kein Editor, kein Upload-Workflow und kein Startpunkt fuer echte Simulationen.
 
+## Lokale Startdiagnose
+
+Der lokale Diagnoseadapter prueft Startbedingungen, ohne einen Server dauerhaft zu starten:
+
+```powershell
+python -m ims.api.workbench_diagnostics
+```
+
+Optional kann ein expliziter SQLite-Metadatenpfad geprueft werden:
+
+```powershell
+python -m ims.api.workbench_diagnostics --db .\.ims_workbench\metadata.sqlite
+```
+
+Die Ausgabe ist eine stabile JSON-Zeile mit `status`, `mode = "diagnostics"`, Importierbarkeit der API, verfuegbaren Web-Abhaengigkeiten, Frontend-Build-Status, Metadatenquelle, gesperrten Schreib- und Ausfuehrungsgrenzen sowie `issues`. Fehlende Frontend-Builds oder fehlende explizite SQLite-Dateien werden als Diagnosehinweise gemeldet. Der Adapter initialisiert keine Datenbank, migriert keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
@@ -175,6 +193,8 @@ Der Capabilities-Endpunkt meldet deshalb weiterhin:
 `ims.api.metadata_import` definiert einen kleinen Importpfad fuer lokale JSON-Dateien. Der Import schreibt nur in die SQLite-Metadatenablage und verwendet die bestehenden Repository-Upserts. Er startet keine Simulation und veraendert keine Fachlogik.
 
 Die Workbench zeigt das erwartete Importformat als lesende Vorschau. Sie erklaert die Top-Level-Felder `schema_version`, `scenarios` und `runs`, verweist auf den Python-Adapter und haelt sichtbar fest, dass `execution_enabled` weiter `false` bleiben muss. Es gibt keinen File-Upload, keinen Browser-Editor und keinen HTTP-Schreibpfad.
+
+Die Vorschau verweist zusaetzlich auf die lokale Startdiagnose. Diese bleibt ein CLI-Adapter und ist kein Browser-Export, kein Startbutton und kein Schreibpfad.
 
 Der lokale CLI-Adapter kann dieselbe Datei zuerst nur pruefen:
 

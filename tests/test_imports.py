@@ -143,6 +143,12 @@ def test_core_placeholders_import() -> None:
         main as metadata_import_cli_main,
         preview_metadata_import,
     )
+    from ims.api.workbench_diagnostics import (
+        WorkbenchDiagnosticIssue,
+        WorkbenchDiagnosticsResult,
+        build_workbench_diagnostics,
+        main as workbench_diagnostics_main,
+    )
     from ims.api.metadata_consistency import metadata_consistency_payload
     from ims.api.metadata_repository import (
         LazyWorkbenchMetadataRepository,
@@ -502,6 +508,10 @@ def test_core_placeholders_import() -> None:
     assert export_metadata_snapshot is not None
     assert import_metadata_to_db is not None
     assert metadata_import_cli_main is not None
+    assert WorkbenchDiagnosticIssue is not None
+    assert WorkbenchDiagnosticsResult is not None
+    assert build_workbench_diagnostics is not None
+    assert workbench_diagnostics_main is not None
     assert WorkbenchMetadataRepository is not None
     assert LazyWorkbenchMetadataRepository is not None
     assert MetadataValidationError is not None
