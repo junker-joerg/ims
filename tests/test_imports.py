@@ -136,11 +136,13 @@ def test_core_placeholders_import() -> None:
     from ims.api.metadata_import_cli import (
         check_metadata_roundtrip,
         MetadataImportCliResult,
+        MetadataImportDryRunResult,
         MetadataImportPreviewResult,
         MetadataExportResult,
         MetadataRoundtripResult,
         MetadataSnapshotResult,
         check_metadata_import,
+        dry_run_metadata_import,
         export_metadata_import_bundle,
         export_metadata_import_bundle_to_file,
         export_metadata_snapshot,
@@ -540,6 +542,8 @@ def test_core_placeholders_import() -> None:
     assert MetadataSnapshotResult is not None
     assert check_metadata_import is not None
     assert check_metadata_roundtrip is not None
+    assert MetadataImportDryRunResult is not None
+    assert dry_run_metadata_import is not None
     assert preview_metadata_import is not None
     assert export_metadata_import_bundle is not None
     assert export_metadata_import_bundle_to_file is not None

@@ -18,6 +18,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in readme
     assert "python -m ims.api.metadata_import_cli roundtrip" in readme
     assert "python -m ims.api.metadata_import_cli roundtrip --db .\\.ims_workbench\\metadata.sqlite" in readme
+    assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json" in readme
+    assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
     assert "npm.cmd run build" in readme
     assert "keine HTTP-/UI-Schreibpfade" in readme
@@ -39,6 +41,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.metadata_import_cli snapshot --db .\\.ims_workbench\\metadata.sqlite" in doc
     assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in doc
     assert "python -m ims.api.metadata_import_cli roundtrip --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in doc
     assert "python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in doc
 
 
@@ -62,6 +65,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der Export startet keine Simulation" in doc
     assert "gleiche aufgeloeste `--db`- und `--out`-Pfade werden abgelehnt" in doc
     assert "Der Roundtrip schreibt keine Exportdatei" in doc
+    assert "Der Dry-Run schreibt keine Metadaten" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
     assert "Run-Felds `execution_enabled` mit dem Wert `false`" in doc
     assert "execution_enabled=true" in doc
