@@ -97,6 +97,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Metadaten-Konsistenz" in source
     assert "Szenario-Uebersicht" in source
     assert "Run-Uebersicht" in source
+    assert "Szenariofilter" in source
     assert "/api/metadata/consistency" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source

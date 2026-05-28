@@ -369,6 +369,64 @@ h2 {
   margin-bottom: 18px;
 }
 
+.scenario-filterbar {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1.4fr)
+    minmax(130px, 0.7fr)
+    minmax(160px, 0.8fr)
+    minmax(160px, 0.8fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.scenario-filterbar label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
+.scenario-filterbar label > span {
+  flex: 0 0 auto;
+  color: #66736c;
+}
+
+.scenario-filterbar input,
+.scenario-filterbar select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  color: #143b2d;
+  background: transparent;
+  outline: none;
+}
+
+.scenario-filterbar select {
+  cursor: pointer;
+}
+
+.scenario-filter-count {
+  margin-bottom: 12px;
+  color: #66736c;
+  font-size: 0.9rem;
+}
+
+.empty-state {
+  min-height: 42px;
+  margin-top: 10px;
+  padding: 11px 12px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  color: #66736c;
+  background: #fbfcfb;
+}
+
 .run-overview-panel {
   margin-bottom: 18px;
 }
@@ -681,6 +739,7 @@ code {
   .diagnosis-grid,
   .consistency-grid,
   .diagnosis-row,
+  .scenario-filterbar,
   .scenario-overview-head,
   .scenario-overview-row,
   .run-overview-head,
