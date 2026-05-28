@@ -137,7 +137,7 @@ const statusItems: StatusItem[] = [
 ];
 
 const validationRows = [
-  ["Simulationskern", "646 Tests", "gruen"],
+  ["Simulationskern", "647 Tests", "gruen"],
   ["Legacy-Fenster", "portierte Pfade", "abgedeckt"],
   ["Historische Vollgleichheit", "nicht behauptet", "offen"]
 ];
@@ -353,6 +353,23 @@ function App() {
     scenario: runScenarioFilter,
     source: runSourceFilter
   });
+  const selectedScenario = scenarioDetail ?? scenarios.find((scenario) => scenario.id === selectedScenarioId) ?? null;
+  const selectedRun = runDetail ?? runs.find((run) => run.id === selectedRunId) ?? null;
+  const selectedScenarioHidden =
+    selectedScenarioId !== null && !filteredScenarios.some((scenario) => scenario.id === selectedScenarioId);
+  const selectedRunHidden = selectedRunId !== null && !filteredRuns.some((run) => run.id === selectedRunId);
+  const filterNotice = selectedScenarioHidden || selectedRunHidden
+    ? "Auswahl durch Filter aktuell nicht in den Listen sichtbar"
+    : "Auswahl in den Listen sichtbar";
+  const selectionRows = [
+    ["Szenario", selectedScenario?.display_name ?? "wird geladen"],
+    ["Run", selectedRun?.display_name ?? "wird geladen"],
+    ["Periodenfenster", selectedRun?.period_window ?? "-"],
+    ["Metadatenquelle", storageLabel],
+    ["Schreibpfade", capabilities?.writes.scenario_metadata.enabled || capabilities?.writes.run_metadata.enabled ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", capabilities?.simulation_execution.enabled || selectedRun?.execution_enabled ? "aktiv" : "gesperrt"],
+    ["Filterzustand", filterNotice]
+  ];
   const selectRun = (run: RunMetadata) => {
     setSelectedRunId(run.id);
     setSelectedScenarioId(run.scenario_id);
@@ -562,6 +579,21 @@ function App() {
               </article>
             </div>
           )}
+        </section>
+
+        <section className="panel selection-summary-panel" aria-label="Auswahlzusammenfassung">
+          <div className="panel-heading">
+            <CircleDot size={20} aria-hidden="true" />
+            <h2>Auswahlzusammenfassung</h2>
+          </div>
+          <div className="selection-summary-grid">
+            {selectionRows.map(([label, value]) => (
+              <div className="selection-summary-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="panel scenario-overview-panel" aria-label="Szenario-Uebersicht">
