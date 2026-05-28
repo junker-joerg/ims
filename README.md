@@ -33,6 +33,12 @@ Ein rein beschreibender Startplan kann dieselben lokalen Werte als JSON zusammen
 python -m ims.api.workbench_start_plan --config .\workbench.local.json
 ```
 
+Eine lokale v1-Bereitschaftspruefung buendelt Diagnose, Metadatenquelle, CLI-Grenzen und Run-Control-Preflight, ohne den Server zu starten:
+
+```powershell
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist
+```
+
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
 
 ```powershell

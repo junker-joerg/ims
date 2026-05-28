@@ -61,6 +61,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="workbench_readiness",
+            command="python -m ims.api.workbench_readiness --frontend-dist frontend/dist",
+            purpose="Lokale Workbench-v1-Bereitschaft buendeln.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -141,6 +147,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "read_only_commands": [
                 "workbench_diagnostics",
                 "workbench_start_plan",
+                "workbench_readiness",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",
@@ -159,11 +166,10 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             "creates_sqlite_file": False,
         },
         rest_plan={
-            "remaining_prs_estimate": "3-7",
+            "remaining_prs_estimate": "2-5",
             "next_blocks": [
-                "Kontrollierte lokale Schreibpfade abschliessen: 0-1 PRs",
-                "Run-Steuerungsgrenze ohne echte Ausfuehrung weiter vorbereiten: 1-2 PRs",
                 "v1-Haertung, Doku, Smoke-/Preview-Checks: 2-4 PRs",
+                "Abschluss-/Release-Konsolidierung fuer lokale Workbench-v1: 0-1 PRs",
             ],
             "deferred_blocks": [
                 "Fachvalidierung",
