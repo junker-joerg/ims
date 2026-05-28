@@ -103,6 +103,7 @@ def build_metadata_write_contract() -> WorkbenchMetadataWriteContract:
                     "source",
                     "validation",
                     "period_window",
+                    "execution_enabled",
                     "updated_at",
                 ),
                 forbidden_fields=("execution_enabled=true", "simulation_result", "fachlogik_state"),
