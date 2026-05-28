@@ -136,8 +136,11 @@ def test_core_placeholders_import() -> None:
     from ims.api.metadata_import_cli import (
         MetadataImportCliResult,
         MetadataImportPreviewResult,
+        MetadataExportResult,
         MetadataSnapshotResult,
         check_metadata_import,
+        export_metadata_import_bundle,
+        export_metadata_import_bundle_to_file,
         export_metadata_snapshot,
         import_metadata_to_db,
         main as metadata_import_cli_main,
@@ -529,9 +532,12 @@ def test_core_placeholders_import() -> None:
     assert validate_metadata_bundle is not None
     assert MetadataImportCliResult is not None
     assert MetadataImportPreviewResult is not None
+    assert MetadataExportResult is not None
     assert MetadataSnapshotResult is not None
     assert check_metadata_import is not None
     assert preview_metadata_import is not None
+    assert export_metadata_import_bundle is not None
+    assert export_metadata_import_bundle_to_file is not None
     assert export_metadata_snapshot is not None
     assert import_metadata_to_db is not None
     assert metadata_import_cli_main is not None

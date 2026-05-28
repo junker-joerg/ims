@@ -7,6 +7,8 @@ import pytest
 from ims.api.metadata import METADATA_SCHEMA_VERSION
 from ims.api.metadata_import_cli import (
     check_metadata_import,
+    export_metadata_import_bundle,
+    export_metadata_import_bundle_to_file,
     export_metadata_snapshot,
     import_metadata_to_db,
     main,
@@ -246,6 +248,85 @@ def test_metadata_import_cli_snapshot_prints_stable_json(capsys):
     assert output["consistency"]["status"] == "ok"
     assert output["writes_performed"] is False
     assert output["execution_performed"] is False
+
+
+def test_metadata_import_cli_export_reads_seeded_memory_without_writing(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+
+    payload = export_metadata_import_bundle()
+
+    assert payload["schema_version"] == METADATA_SCHEMA_VERSION
+    assert payload["scenarios"][0]["id"] == "agrsich-reference-window"
+    assert payload["runs"][0]["id"] == "baseline-python-tests"
+    assert payload["runs"][0]["execution_enabled"] is False
+    assert not db_path.exists()
+
+
+def test_metadata_import_cli_export_prints_import_bundle_to_stdout(capsys):
+    exit_code = main(["export"])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert output["schema_version"] == METADATA_SCHEMA_VERSION
+    assert "status" not in output
+    assert output["scenarios"][0]["id"] == "agrsich-reference-window"
+    assert output["runs"][0]["execution_enabled"] is False
+
+
+def test_metadata_import_cli_export_reads_explicit_sqlite_file(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    assert repository.get_run("baseline-python-tests") is not None
+
+    payload = export_metadata_import_bundle(db_path)
+
+    assert payload["schema_version"] == METADATA_SCHEMA_VERSION
+    assert payload["scenarios"][0]["id"] == "agrsich-reference-window"
+    assert payload["runs"][0]["id"] == "baseline-python-tests"
+
+
+def test_metadata_import_cli_export_writes_only_to_explicit_out_path(tmp_path):
+    out_path = tmp_path / "metadata_export.json"
+    db_path = tmp_path / "metadata.sqlite"
+
+    result = export_metadata_import_bundle_to_file(out_path)
+    output = json.loads(out_path.read_text(encoding="utf-8"))
+
+    assert result.mode == "export"
+    assert result.scenario_count == 2
+    assert result.run_count == 2
+    assert result.out_path == str(out_path.resolve())
+    assert result.writes_performed is True
+    assert result.execution_performed is False
+    assert output["schema_version"] == METADATA_SCHEMA_VERSION
+    assert output["runs"][0]["execution_enabled"] is False
+    assert not db_path.exists()
+
+
+def test_metadata_import_cli_export_prints_status_when_out_is_explicit(tmp_path, capsys):
+    out_path = tmp_path / "metadata_export.json"
+
+    exit_code = main(["export", "--out", str(out_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert output["status"] == "ok"
+    assert output["mode"] == "export"
+    assert output["out_path"] == str(out_path.resolve())
+    assert output["writes_performed"] is True
+    assert out_path.exists()
+
+
+def test_metadata_import_cli_export_rejects_missing_explicit_db(tmp_path, capsys):
+    db_path = tmp_path / "missing.sqlite"
+
+    exit_code = main(["export", "--db", str(db_path)])
+
+    output = json.loads(capsys.readouterr().out)
+    assert exit_code == 2
+    assert output["status"] == "error"
+    assert "does not exist" in output["message"]
+    assert not db_path.exists()
 
 
 def test_metadata_import_cli_import_requires_explicit_db_path(tmp_path):
