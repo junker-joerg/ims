@@ -133,6 +133,36 @@ def test_run_control_queue_read_commands_do_not_create_wal_sidecars(tmp_path):
     assert not shm_path.exists()
 
 
+def test_run_control_queue_list_rejects_lone_wal_sidecar_without_creating_shm(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    wal_path = Path(f"{db_path}-wal")
+    shm_path = Path(f"{db_path}-shm")
+    request_path = _write_request(tmp_path)
+    enqueue_run_control_request(request_path, db_path=db_path)
+    wal_path.write_bytes(b"stale wal placeholder")
+
+    with pytest.raises(MetadataImportError, match="incomplete WAL sidecar state"):
+        list_run_control_queue(db_path)
+
+    assert wal_path.exists()
+    assert not shm_path.exists()
+
+
+def test_run_control_queue_show_rejects_lone_shm_sidecar(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    wal_path = Path(f"{db_path}-wal")
+    shm_path = Path(f"{db_path}-shm")
+    request_path = _write_request(tmp_path)
+    enqueue_run_control_request(request_path, db_path=db_path)
+    shm_path.write_bytes(b"stale shm placeholder")
+
+    with pytest.raises(MetadataImportError, match="incomplete WAL sidecar state"):
+        get_run_control_queue_entry("baseline-python-tests", db_path=db_path)
+
+    assert not wal_path.exists()
+    assert shm_path.exists()
+
+
 def test_run_control_queue_rejects_execution_enabled_true(tmp_path):
     db_path = tmp_path / "metadata.sqlite"
     payload = _valid_request_payload()
