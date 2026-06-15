@@ -125,6 +125,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="run_control_requests check",
+            command="python -m ims.api.run_control_requests check .\\run_control_request.json",
+            purpose="Lokalen Run-Control-Request gegen die gesperrte Ausfuehrungsgrenze pruefen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="run_control_preflight",
             command="python -m ims.api.run_control_preflight --run-id baseline-python-tests",
             purpose="Run-Metadaten lokal gegen die gesperrte Steuerungsgrenze pruefen.",
@@ -156,6 +162,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "metadata_write_contracts",
                 "metadata_write_contracts check",
                 "run_control_contracts",
+                "run_control_requests check",
                 "run_control_preflight",
             ],
             "write_commands": ["metadata_import_cli export", "metadata_import_cli import --db"],

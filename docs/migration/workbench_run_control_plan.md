@@ -52,7 +52,7 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 ## Erwartete PR-Roadmap fuer den Workbench-Ausbau
 
 1. PR 1: Run-Control-Plan und Roadmap.
-2. PR 2: Run-Control-Request-DTO und lokale Validierung.
+2. PR 2: Run-Control-Request-DTO und lokale Validierung. Dieser Schritt fuehrt nur ein lokales Request-Format und einen Check ein; er startet keine Ausfuehrung.
 3. PR 3: Run-Control-Queue/Repository in SQLite, ohne Ausfuehrung.
 4. PR 4: CLI-Dry-Run fuer Run-Control-Requests.
 5. PR 5: Gesperrte HTTP-Vertraege fuer Run-Control.
@@ -66,7 +66,7 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 
 ## API- und DTO-Grenzen
 
-Run-Control-DTOs sollen nur Metadaten und Absichten beschreiben. Erwartbare Felder sind `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at`, Status, Quelle und Validierungs-/Preflight-Ergebnis. Fachlogikdaten, Simulationsergebnisse und Legacy-Vergleichsdaten gehoeren nicht in diese DTOs.
+Run-Control-DTOs sollen nur Metadaten und Absichten beschreiben. Erwartbare Felder sind `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at`, `execution_enabled=false`, Status, Quelle und Validierungs-/Preflight-Ergebnis. Fachlogikdaten, Simulationsergebnisse und Legacy-Vergleichsdaten gehoeren nicht in diese DTOs.
 
 HTTP-Vertraege duerfen erst eingefuehrt werden, wenn ihre Schreib- und Ausfuehrungsgrenzen testbar sind. Zunaechst muessen sie gesperrt oder reine Dry-Run-Vertraege bleiben. Fehlerformen sollen stabil, knapp und maschinenlesbar sein.
 
