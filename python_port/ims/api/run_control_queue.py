@@ -279,12 +279,22 @@ def _queue_repository(db_path: Path | str, *, create: bool) -> WorkbenchRunContr
 
 def _connect_queue_db_readonly(path: Path) -> sqlite3.Connection:
     connection = sqlite3.connect(
-        f"{path.as_uri()}?mode=ro",
+        _readonly_queue_sqlite_uri(path),
         uri=True,
         check_same_thread=False,
     )
     connection.row_factory = sqlite3.Row
     return connection
+
+
+def _readonly_queue_sqlite_uri(path: Path) -> str:
+    if _sqlite_sidecar_exists(path):
+        return f"{path.as_uri()}?mode=ro"
+    return f"{path.as_uri()}?mode=ro&immutable=1"
+
+
+def _sqlite_sidecar_exists(path: Path) -> bool:
+    return Path(f"{path}-wal").exists() or Path(f"{path}-shm").exists()
 
 
 def _validate_queue_status(status: str) -> None:
