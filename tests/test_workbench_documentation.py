@@ -4,6 +4,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 README = REPO_ROOT / "README.md"
 WORKBENCH_DOC = REPO_ROOT / "docs" / "migration" / "workbench_shell.md"
+RUN_CONTROL_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_run_control_plan.md"
 
 
 def test_readme_documents_local_workbench_start_commands():
@@ -35,6 +36,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "kein Release-Tag, keine Fachvalidierung" in readme
     assert "expliziten Importbericht und Run-Control-Preflight" in readme
     assert "keine HTTP-/UI-Schreibpfade" in readme
+    assert "docs/migration/workbench_run_control_plan.md" in readme
 
 
 def test_workbench_doc_groups_local_cli_boundaries():
@@ -109,3 +111,25 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "## Spaetere Bloecke" in doc
     assert "kontrollierte echte Run-Steuerung" in doc
     assert "eigene reviewbare Plaene und PRs" in doc
+
+
+def test_workbench_run_control_plan_documents_next_modernization_block():
+    plan = RUN_CONTROL_PLAN.read_text(encoding="utf-8")
+
+    assert RUN_CONTROL_PLAN.is_file()
+    assert "Workbench Run-Control Plan nach v1" in plan
+    assert "33-50+" in plan
+    assert "Realistische Mitte: ca. `44` PRs" in plan
+    assert "Packaging und Bereitstellung" in plan
+    assert "Fachvalidierung und historische Vollgleichheit" in plan
+    assert "Phase 1: Rein lokale Run-Control-Requests" in plan
+    assert "Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung" in plan
+    assert "PR 1: Run-Control-Plan und Roadmap" in plan
+    assert "PR 13-15: Haertung, Doku, Smoke-/E2E-Checks und Abschluss" in plan
+    assert "3-5 Puffer-PRs" in plan
+    assert "`execution_enabled` bleibt bis zur expliziten Ausfuehrungsfreigabe `false`" in plan
+    assert "Keine Fachlogikaenderung" in plan
+    assert "Keine Simulation starten" in plan
+    assert "Keine neuen HTTP-Endpunkte" in plan
+    assert "Kein Packaging in diesem PR" in plan
+    assert "Keine historische Vollgleichheitsbehauptung" in plan
