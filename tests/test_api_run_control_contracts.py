@@ -32,6 +32,7 @@ def test_run_control_contract_declares_future_inputs_and_forbidden_boundaries():
         "metadata_db",
         "requested_by",
         "created_at",
+        "execution_enabled",
     ]
     assert payload["forbidden_boundaries"] == [
         "simulation_execution",

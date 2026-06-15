@@ -48,6 +48,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "metadata_write_contracts",
         "metadata_write_contracts check",
         "run_control_contracts",
+        "run_control_requests check",
         "run_control_preflight",
         "metadata_import_cli import --db",
     ]
@@ -77,6 +78,7 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
         "metadata_write_contracts",
         "metadata_write_contracts check",
         "run_control_contracts",
+        "run_control_requests check",
         "run_control_preflight",
     ]
 

@@ -21,6 +21,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.metadata_write_contracts" in readme
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in readme
     assert "python -m ims.api.run_control_contracts" in readme
+    assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in readme
     assert "python -m ims.api.metadata_import_cli export" in readme
     assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in readme
@@ -54,6 +55,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
     assert "python -m ims.api.run_control_contracts" in doc
+    assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in doc
     assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in doc
     assert "python -m ims.api.metadata_import_cli check .\\metadata_import.json" in doc
     assert "python -m ims.api.metadata_import_cli preview .\\metadata_import.json" in doc
@@ -99,6 +101,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "execution_performed = false" in doc
     assert "## Run-Steuerungsgrenze" in doc
     assert "Der Run-Control-Vertrag ist rein beschreibend" in doc
+    assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
     assert "schaltet keinen UI-Startbutton frei" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
@@ -125,8 +128,10 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Phase 1: Rein lokale Run-Control-Requests" in plan
     assert "Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung" in plan
     assert "PR 1: Run-Control-Plan und Roadmap" in plan
+    assert "PR 2: Run-Control-Request-DTO und lokale Validierung" in plan
     assert "PR 13-15: Haertung, Doku, Smoke-/E2E-Checks und Abschluss" in plan
     assert "3-5 Puffer-PRs" in plan
+    assert "execution_enabled=false" in plan
     assert "`execution_enabled` bleibt bis zur expliziten Ausfuehrungsfreigabe `false`" in plan
     assert "Keine Fachlogikaenderung" in plan
     assert "Keine Simulation starten" in plan

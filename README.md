@@ -76,6 +76,12 @@ Ein lokaler Run-Control-Vertrag beschreibt die spaetere Steuerungsgrenze, ohne e
 python -m ims.api.run_control_contracts
 ```
 
+Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
+
+```powershell
+python -m ims.api.run_control_requests check .\run_control_request.json
+```
+
 Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese gesperrte Steuerungsgrenze, ohne einen Lauf zu starten:
 
 ```powershell

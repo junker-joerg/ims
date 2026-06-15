@@ -45,6 +45,7 @@ def build_run_control_contract() -> WorkbenchRunControlContract:
             "metadata_db",
             "requested_by",
             "created_at",
+            "execution_enabled",
         ),
         forbidden_boundaries=(
             "simulation_execution",

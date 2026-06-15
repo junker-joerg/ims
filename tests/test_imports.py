@@ -170,6 +170,14 @@ def test_core_placeholders_import() -> None:
         main as run_control_preflight_main,
         preflight_run_control,
     )
+    from ims.api.run_control_requests import (
+        WorkbenchRunControlRequest,
+        WorkbenchRunControlRequestValidationResult,
+        main as run_control_requests_main,
+        parse_run_control_request_payload,
+        validate_run_control_request,
+        validate_run_control_request_payload,
+    )
     from ims.api.workbench_config import (
         WorkbenchConfigError,
         WorkbenchConfigLoadResult,
@@ -581,6 +589,12 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchRunControlPreflightResult is not None
     assert preflight_run_control is not None
     assert run_control_preflight_main is not None
+    assert WorkbenchRunControlRequest is not None
+    assert WorkbenchRunControlRequestValidationResult is not None
+    assert parse_run_control_request_payload is not None
+    assert validate_run_control_request is not None
+    assert validate_run_control_request_payload is not None
+    assert run_control_requests_main is not None
     assert WorkbenchConfigError is not None
     assert WorkbenchConfigLoadResult is not None
     assert WorkbenchLocalConfig is not None
