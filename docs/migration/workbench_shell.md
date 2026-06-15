@@ -331,7 +331,7 @@ Fuer eine spaetere portable Ordnerstruktur:
 python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
 ```
 
-Die Ausgabe enthaelt `mode = "workbench_portable_readiness"`, den erkannten oder expliziten Layouttyp, Einzelchecks fuer `python_port`, `frontend_dist`, `start_script`, `check_script`, optionale lokale Daten-/Logordner, `writes_enabled = false` und `execution_enabled = false`. Der Check erzeugt keine fehlenden Ordner, keine SQLite-Datei, kein ZIP, keinen Installer, oeffnet keinen Schreibpfad und startet keine Simulation.
+Die Ausgabe enthaelt `mode = "workbench_portable_readiness"`, den erkannten oder expliziten Layouttyp, Einzelchecks fuer `python_port`, `frontend_dist`, `start_script`, `check_script`, optionale lokale Daten-/Logordner, den erwarteten und tatsaechlichen Pfadtyp, `writes_enabled = false` und `execution_enabled = false`. Der Check erzeugt keine fehlenden Ordner, keine SQLite-Datei, kein ZIP, keinen Installer, oeffnet keinen Schreibpfad und startet keine Simulation.
 
 ## Build-Snapshot
 

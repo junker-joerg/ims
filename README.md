@@ -72,6 +72,8 @@ Eine lokale Strukturpruefung prueft die heutige Repo-Struktur oder eine spaetere
 python -m ims.api.workbench_portable_readiness --root . --layout repo
 ```
 
+Die Strukturpruefung validiert dabei auch, ob erwartete Dateien und Ordner den richtigen Pfadtyp haben.
+
 Ein lokaler Build-Snapshot fasst vorhandene Frontend-/Backend-Artefakte zusammen, ohne Dateien zu kopieren oder ein ZIP zu erzeugen:
 
 ```powershell

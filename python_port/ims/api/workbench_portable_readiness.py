@@ -8,6 +8,7 @@ from typing import Literal, Sequence
 
 
 WorkbenchPortableLayout = Literal["auto", "repo", "portable"]
+WorkbenchPortablePathType = Literal["directory", "file"]
 
 
 @dataclass(frozen=True)
@@ -30,6 +31,9 @@ class WorkbenchPortableReadinessCheck:
     ready: bool
     required: bool
     path: str
+    expected_type: str
+    exists: bool
+    actual_type: str
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -37,6 +41,9 @@ class WorkbenchPortableReadinessCheck:
             "ready": self.ready,
             "required": self.required,
             "path": self.path,
+            "expected_type": self.expected_type,
+            "exists": self.exists,
+            "actual_type": self.actual_type,
         }
 
 
@@ -159,30 +166,66 @@ def _layout_score(root: Path, layout: str) -> int:
 def _layout_checks(root: Path, layout: str) -> tuple[WorkbenchPortableReadinessCheck, ...]:
     if layout == "portable":
         return (
-            _check("python_port", root / "app" / "python_port", required=True),
-            _check("frontend_dist", root / "app" / "frontend" / "dist" / "index.html", required=True),
-            _check("start_script", root / "start-workbench.cmd", required=True),
-            _check("check_script", root / "check-workbench.cmd", required=True),
-            _check("metadata_dir", root / "data" / ".ims_workbench", required=False),
-            _check("logs_dir", root / "logs", required=False),
+            _check("python_port", root / "app" / "python_port", expected_type="directory", required=True),
+            _check(
+                "frontend_dist",
+                root / "app" / "frontend" / "dist" / "index.html",
+                expected_type="file",
+                required=True,
+            ),
+            _check("start_script", root / "start-workbench.cmd", expected_type="file", required=True),
+            _check("check_script", root / "check-workbench.cmd", expected_type="file", required=True),
+            _check("metadata_dir", root / "data" / ".ims_workbench", expected_type="directory", required=False),
+            _check("logs_dir", root / "logs", expected_type="directory", required=False),
         )
     return (
-        _check("python_port", root / "python_port", required=True),
-        _check("frontend_dist", root / "frontend" / "dist" / "index.html", required=True),
-        _check("start_script", root / "scripts" / "workbench" / "start-workbench.cmd", required=True),
-        _check("check_script", root / "scripts" / "workbench" / "check-workbench.cmd", required=True),
-        _check("metadata_dir", root / ".ims_workbench", required=False),
-        _check("logs_dir", root / "logs", required=False),
+        _check("python_port", root / "python_port", expected_type="directory", required=True),
+        _check("frontend_dist", root / "frontend" / "dist" / "index.html", expected_type="file", required=True),
+        _check(
+            "start_script",
+            root / "scripts" / "workbench" / "start-workbench.cmd",
+            expected_type="file",
+            required=True,
+        ),
+        _check(
+            "check_script",
+            root / "scripts" / "workbench" / "check-workbench.cmd",
+            expected_type="file",
+            required=True,
+        ),
+        _check("metadata_dir", root / ".ims_workbench", expected_type="directory", required=False),
+        _check("logs_dir", root / "logs", expected_type="directory", required=False),
     )
 
 
-def _check(name: str, path: Path, *, required: bool) -> WorkbenchPortableReadinessCheck:
+def _check(
+    name: str,
+    path: Path,
+    *,
+    expected_type: WorkbenchPortablePathType,
+    required: bool,
+) -> WorkbenchPortableReadinessCheck:
+    exists = path.exists()
+    actual_type = _actual_path_type(path)
     return WorkbenchPortableReadinessCheck(
         name=name,
-        ready=path.exists(),
+        ready=exists and actual_type == expected_type,
         required=required,
         path=str(path),
+        expected_type=expected_type,
+        exists=exists,
+        actual_type=actual_type,
     )
+
+
+def _actual_path_type(path: Path) -> str:
+    if path.is_file():
+        return "file"
+    if path.is_dir():
+        return "directory"
+    if path.exists():
+        return "other"
+    return "missing"
 
 
 def _issues_from_checks(
@@ -191,13 +234,27 @@ def _issues_from_checks(
 ) -> list[WorkbenchPortableReadinessIssue]:
     issues: list[WorkbenchPortableReadinessIssue] = []
     for check in checks:
-        if check.ready or not check.required:
+        if check.ready:
+            continue
+        if not check.exists:
+            if not check.required:
+                continue
+            issues.append(
+                WorkbenchPortableReadinessIssue(
+                    code=f"{check.name}_missing",
+                    severity="error",
+                    message=f"{layout} workbench path is missing: {check.path}",
+                )
+            )
             continue
         issues.append(
             WorkbenchPortableReadinessIssue(
-                code=f"{check.name}_missing",
-                severity="error",
-                message=f"{layout} workbench path is missing: {check.path}",
+                code=f"{check.name}_wrong_type",
+                severity="error" if check.required else "warning",
+                message=(
+                    f"{layout} workbench path has wrong type: {check.path}; "
+                    f"expected {check.expected_type}, got {check.actual_type}"
+                ),
             )
         )
     return issues

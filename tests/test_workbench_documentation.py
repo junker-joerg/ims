@@ -18,6 +18,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.workbench_start_plan --config .\\workbench.local.json" in readme
     assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist" in readme
     assert "python -m ims.api.workbench_portable_readiness --root . --layout repo" in readme
+    assert "erwartete Dateien und Ordner den richtigen Pfadtyp haben" in readme
     assert "python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
     assert "Kurzstart fuer die lokale Browser-Workbench" in readme
@@ -97,6 +98,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die Readiness-Pruefung startet keinen Server" in doc
     assert "Die lokale portable Strukturpruefung ist rein beschreibend" in doc
     assert "Der Check erzeugt keine fehlenden Ordner" in doc
+    assert "erwarteten und tatsaechlichen Pfadtyp" in doc
     assert "Der lokale Build-Snapshot ist rein beschreibend" in doc
     assert "Der Build-Snapshot baut kein Frontend" in doc
     assert "writes_enabled = false" in doc

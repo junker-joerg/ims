@@ -77,6 +77,57 @@ def test_portable_readiness_reports_missing_required_paths(tmp_path):
     assert not (tmp_path / ".ims_workbench").exists()
 
 
+def test_portable_readiness_rejects_python_port_file(tmp_path):
+    _touch(tmp_path / "python_port")
+    _touch(tmp_path / "frontend" / "dist" / "index.html")
+    _touch(tmp_path / "scripts" / "workbench" / "start-workbench.cmd")
+    _touch(tmp_path / "scripts" / "workbench" / "check-workbench.cmd")
+
+    payload = build_workbench_portable_readiness(tmp_path, layout="repo").to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+    python_port_check = _check_by_name(payload, "python_port")
+
+    assert payload["status"] == "error"
+    assert payload["python_port_available"] is False
+    assert "python_port_wrong_type" in issue_codes
+    assert python_port_check["expected_type"] == "directory"
+    assert python_port_check["actual_type"] == "file"
+
+
+def test_portable_readiness_rejects_frontend_index_directory(tmp_path):
+    _touch(tmp_path / "python_port" / "__init__.py")
+    (tmp_path / "frontend" / "dist" / "index.html").mkdir(parents=True)
+    _touch(tmp_path / "scripts" / "workbench" / "start-workbench.cmd")
+    _touch(tmp_path / "scripts" / "workbench" / "check-workbench.cmd")
+
+    payload = build_workbench_portable_readiness(tmp_path, layout="repo").to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+    frontend_check = _check_by_name(payload, "frontend_dist")
+
+    assert payload["status"] == "error"
+    assert payload["frontend_dist_available"] is False
+    assert "frontend_dist_wrong_type" in issue_codes
+    assert frontend_check["expected_type"] == "file"
+    assert frontend_check["actual_type"] == "directory"
+
+
+def test_portable_readiness_rejects_start_script_directory(tmp_path):
+    _touch(tmp_path / "app" / "python_port" / "__init__.py")
+    _touch(tmp_path / "app" / "frontend" / "dist" / "index.html")
+    (tmp_path / "start-workbench.cmd").mkdir()
+    _touch(tmp_path / "check-workbench.cmd")
+
+    payload = build_workbench_portable_readiness(tmp_path, layout="portable").to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+    start_script_check = _check_by_name(payload, "start_script")
+
+    assert payload["status"] == "error"
+    assert payload["start_script_available"] is False
+    assert "start_script_wrong_type" in issue_codes
+    assert start_script_check["expected_type"] == "file"
+    assert start_script_check["actual_type"] == "directory"
+
+
 def test_portable_readiness_does_not_create_missing_root(tmp_path):
     missing_root = tmp_path / "missing-workbench"
 
@@ -141,3 +192,12 @@ def test_portable_readiness_module_entrypoint_prints_json(tmp_path):
 def _touch(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("", encoding="utf-8")
+
+
+def _check_by_name(payload: dict[str, object], name: str) -> dict[str, object]:
+    checks = payload["checks"]
+    assert isinstance(checks, list)
+    for check in checks:
+        if isinstance(check, dict) and check.get("name") == name:
+            return check
+    raise AssertionError(f"missing check: {name}")
