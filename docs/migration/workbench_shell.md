@@ -93,6 +93,15 @@ Die lokale Bedienreihenfolge fuer v1 ist:
 4. Backend lokal starten.
 5. Workbench im Browser oeffnen.
 
+Erste lokale Windows-Skripte kapseln diese Bedienung fuer den Packaging-Block:
+
+```powershell
+scripts\workbench\check-workbench.cmd
+scripts\workbench\start-workbench.cmd
+```
+
+`check-workbench.cmd` prueft das vorhandene `frontend/dist`, Startdiagnose und Readiness. Es startet keinen dauerhaften Server, schreibt keine Metadaten und startet keine Simulation. `start-workbench.cmd` startet nur den lokalen Backend-Server auf `127.0.0.1:8000`; es fuehrt keinen Import, keine Queue-Schreiboperation und keinen Run aus.
+
 ## Lokaler Workbench-v1 Abschlussstatus
 
 Die lokale Workbench-v1 ist als rein lokale Browser-Workbench und Modernisierungs-Meilenstein abgeschlossen. Dieser Abschluss ist kein Release-Tag, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung. Sie liefert Backend-Health und Version, statische Frontend-Auslieferung, lesende Szenario- und Run-Metadaten, Detailansichten, Filter, Auswahlzusammenfassung, Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose und Readiness.

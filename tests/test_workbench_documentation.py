@@ -6,6 +6,9 @@ README = REPO_ROOT / "README.md"
 WORKBENCH_DOC = REPO_ROOT / "docs" / "migration" / "workbench_shell.md"
 RUN_CONTROL_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_run_control_plan.md"
 PACKAGING_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_packaging_plan.md"
+CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
+START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
+SCRIPT_README = REPO_ROOT / "scripts" / "workbench" / "README.md"
 
 
 def test_readme_documents_local_workbench_start_commands():
@@ -41,6 +44,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "keine HTTP-/UI-Schreibpfade" in readme
     assert "docs/migration/workbench_run_control_plan.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
+    assert "scripts\\workbench\\check-workbench.cmd" in readme
+    assert "scripts\\workbench\\start-workbench.cmd" in readme
 
 
 def test_workbench_doc_groups_local_cli_boundaries():
@@ -121,6 +126,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "kontrollierte echte Run-Steuerung" in doc
     assert "eigene reviewbare Plaene und PRs" in doc
     assert "docs/migration/workbench_packaging_plan.md" in doc
+    assert "scripts\\workbench\\check-workbench.cmd" in doc
+    assert "scripts\\workbench\\start-workbench.cmd" in doc
 
 
 def test_workbench_run_control_plan_documents_next_modernization_block():
@@ -162,10 +169,11 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP- und Release-Artefakte" in plan
     assert "Backup" in plan
     assert "Update" in plan
-    assert "8-14" in plan
-    assert "30-47+" in plan
+    assert "7-13" in plan
+    assert "29-46+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
+    assert "Lokale Startskripte fuer Windows, ohne Installer: vorbereitet" in plan
     assert "Keine Fachlogikaenderung" in plan
     assert "Keine Simulation starten" in plan
     assert "Keine neuen HTTP-Endpunkte" in plan
@@ -177,3 +185,34 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Kein ZIP- oder Release-Artefakt in diesem PR" in plan
     assert "Keine historische Vollgleichheitsbehauptung" in plan
     assert "lauffaehiges Paket ist kein fachlicher Gleichheitsnachweis" in plan
+
+
+def test_workbench_start_scripts_are_readonly_packaging_helpers():
+    check_script = CHECK_SCRIPT.read_text(encoding="utf-8")
+    start_script = START_SCRIPT.read_text(encoding="utf-8")
+    script_readme = SCRIPT_README.read_text(encoding="utf-8")
+    combined_scripts = f"{check_script}\n{start_script}".lower()
+
+    assert CHECK_SCRIPT.is_file()
+    assert START_SCRIPT.is_file()
+    assert SCRIPT_README.is_file()
+    assert "python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist" in check_script
+    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist" in check_script
+    assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in start_script
+    assert "frontend\\dist\\index.html" in check_script
+    assert "frontend\\dist\\index.html" in start_script
+    assert "startet keinen dauerhaften Server" in script_readme
+    assert "startet nur den lokalen Backend-Server" in script_readme
+
+    forbidden_fragments = (
+        "metadata_import_cli import",
+        "run_control_queue enqueue",
+        "run_control_queue init",
+        "run_control_preflight --run-id",
+        "run_control_requests check",
+        "npm.cmd install",
+        "npm.cmd run build",
+        "sqlite3 ",
+    )
+    for fragment in forbidden_fragments:
+        assert fragment not in combined_scripts

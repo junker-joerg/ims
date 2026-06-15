@@ -22,6 +22,15 @@ python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 
 
 Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die aktuelle Workbench ist weiterhin rein lesend: keine Simulation, kein Browser-Upload und keine HTTP-/UI-Schreibpfade.
 
+Alternativ stehen erste lokale Windows-Skripte bereit:
+
+```powershell
+scripts\workbench\check-workbench.cmd
+scripts\workbench\start-workbench.cmd
+```
+
+Die Skripte setzen ein gebautes `frontend/dist` voraus. Das Check-Skript fuehrt Diagnose und Readiness aus, startet aber keinen dauerhaften Server. Das Start-Skript startet nur den lokalen Backend-Server.
+
 Lokaler Workbench-v1 Abschlussstatus:
 
 Die lokale Workbench-v1 ist als Modernisierungs-Meilenstein abgeschlossen. Dieser Abschluss ist kein Release-Tag, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
