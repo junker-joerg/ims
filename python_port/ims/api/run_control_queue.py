@@ -273,8 +273,18 @@ def _queue_repository(db_path: Path | str, *, create: bool) -> WorkbenchRunContr
     resolved_path = Path(db_path).expanduser().resolve()
     if not create and not resolved_path.is_file():
         raise MetadataImportError(f"run control queue database does not exist: {resolved_path}")
-    connection = connect_metadata_db(resolved_path)
+    connection = connect_metadata_db(resolved_path) if create else _connect_queue_db_readonly(resolved_path)
     return WorkbenchRunControlQueueRepository(connection)
+
+
+def _connect_queue_db_readonly(path: Path) -> sqlite3.Connection:
+    connection = sqlite3.connect(
+        f"{path.as_uri()}?mode=ro",
+        uri=True,
+        check_same_thread=False,
+    )
+    connection.row_factory = sqlite3.Row
+    return connection
 
 
 def _validate_queue_status(status: str) -> None:
