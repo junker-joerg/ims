@@ -67,6 +67,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="workbench_portable_readiness",
+            command="python -m ims.api.workbench_portable_readiness --root . --layout repo",
+            purpose="Lokale oder portable Workbench-Ordnerstruktur pruefen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -175,6 +181,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "workbench_diagnostics",
                 "workbench_start_plan",
                 "workbench_readiness",
+                "workbench_portable_readiness",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",
