@@ -31,6 +31,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - `ims.api.workbench_start_plan` beschreibt den lokalen Start aus Defaults oder Konfiguration, startet aber keinen Server.
 - `ims.api.workbench_readiness` buendelt lokale v1-Bereitschaft aus Diagnose, Metadatenquelle, CLI-Grenzen und Run-Control-Preflight, ohne den Server zu starten.
+- `ims.api.workbench_portable_readiness` prueft die heutige Repo-Struktur oder eine spaetere portable Workbench-Ordnerstruktur, ohne Dateien zu erzeugen.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
@@ -55,6 +56,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
 - Der lokale Startplan ist rein beschreibend. Er gibt empfohlene Kommandos und aufgeloeste Pfade aus, startet aber keinen Server und erzeugt keine Dateien.
 - Die lokale Readiness-Pruefung ist rein beschreibend. Sie startet keinen Server, baut kein Frontend, schreibt keine Metadaten und startet keine Simulation.
+- Die lokale portable Strukturpruefung ist rein beschreibend. Sie erkennt Repo- und portable Zielstruktur, erzeugt aber keine fehlenden Ordner, keine SQLite-Datei und kein Release-Artefakt.
 - Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Auswahlzusammenfassung ist rein lesend und fuehrt keine Start-, Schreib-, Import- oder Editieraktion aus.
@@ -80,6 +82,7 @@ npm.cmd run build
 cd ..
 python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist
+python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
@@ -277,6 +280,7 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 - `workbench_diagnostics`
 - `workbench_start_plan`
 - `workbench_readiness`
+- `workbench_portable_readiness`
 - `metadata_import_cli check`
 - `metadata_import_cli preview`
 - `metadata_import_cli snapshot`
@@ -308,6 +312,22 @@ python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_
 Die Ausgabe enthaelt `mode = "workbench_readiness"`, Einzelstatus fuer Backend, Frontend, Metadaten, CLI und Run-Control, eine `checks`-Liste, `issues`, `writes_enabled = false` und `execution_enabled = false`. Eine fehlende oder unlesbare explizite SQLite-Metadatenquelle setzt `metadata_ready = false`; eine unbekannte Run-ID bleibt dagegen ein Run-Control-Hinweis.
 
 Die Readiness-Pruefung startet keinen Server, baut kein Frontend, erzeugt keine SQLite-Datei, schreibt keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation. Sie ist eine lokale Betriebs- und Härtungspruefung fuer die Workbench-v1, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
+
+## Portable Strukturpruefung
+
+Der lokale portable Readiness-Check prueft, ob die fuer den Packaging-Block erwartete Struktur vorhanden ist. Fuer die heutige Repo-Struktur:
+
+```powershell
+python -m ims.api.workbench_portable_readiness --root . --layout repo
+```
+
+Fuer eine spaetere portable Ordnerstruktur:
+
+```powershell
+python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+```
+
+Die Ausgabe enthaelt `mode = "workbench_portable_readiness"`, den erkannten oder expliziten Layouttyp, Einzelchecks fuer `python_port`, `frontend_dist`, `start_script`, `check_script`, optionale lokale Daten-/Logordner, `writes_enabled = false` und `execution_enabled = false`. Der Check erzeugt keine fehlenden Ordner, keine SQLite-Datei, kein ZIP, keinen Installer, oeffnet keinen Schreibpfad und startet keine Simulation.
 
 ## SQLite-Vorbereitung
 
@@ -438,6 +458,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_diagnostics --config .\workbench.local.json` | Startbedingungen aus expliziter Konfiguration pruefen | schreibt nicht |
 | `python -m ims.api.workbench_start_plan --config .\workbench.local.json` | Lokalen Start beschreibend zusammenfassen | schreibt nicht |
 | `python -m ims.api.workbench_readiness --frontend-dist frontend/dist` | Lokale Workbench-v1-Bereitschaft buendeln | schreibt nicht |
+| `python -m ims.api.workbench_portable_readiness --root . --layout repo` | Repo- oder portable Workbench-Struktur pruefen | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:

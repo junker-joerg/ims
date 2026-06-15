@@ -17,6 +17,7 @@ npm.cmd run build
 cd ..
 python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist
+python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
@@ -62,6 +63,12 @@ Eine lokale v1-Bereitschaftspruefung buendelt Diagnose, Metadatenquelle, CLI-Gre
 
 ```powershell
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist
+```
+
+Eine lokale Strukturpruefung prueft die heutige Repo-Struktur oder eine spaetere portable Workbench-Ordnerstruktur, ohne Dateien zu erzeugen:
+
+```powershell
+python -m ims.api.workbench_portable_readiness --root . --layout repo
 ```
 
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
