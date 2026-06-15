@@ -127,7 +127,12 @@ def test_workbench_v1_readiness_smoke_keeps_local_boundaries(tmp_path: Path, mon
     assert overview["boundaries"]["execution_enabled"] is False
     assert overview["boundaries"]["starts_server"] is False
     assert overview["boundaries"]["creates_sqlite_file"] is False
-    assert overview["boundaries"]["write_commands"] == ["metadata_import_cli export", "metadata_import_cli import --db"]
+    assert overview["boundaries"]["write_commands"] == [
+        "metadata_import_cli export",
+        "run_control_queue init",
+        "run_control_queue enqueue",
+        "metadata_import_cli import --db",
+    ]
     assert all(command["starts_server"] is False for command in overview["commands"])
     assert all(command["starts_simulation"] is False for command in overview["commands"])
 

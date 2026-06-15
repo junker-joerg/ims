@@ -26,6 +26,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.metadata_write_contracts` beschreibt die vorbereiteten lokalen Schreibgrenzen, ohne selbst zu schreiben.
 - `ims.api.run_control_contracts` beschreibt die spaetere Run-Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.run_control_requests` validiert lokale Run-Control-Request-DTOs, ohne Ausfuehrung zu erlauben.
+- `ims.api.run_control_queue` speichert validierte Run-Control-Requests lokal in einer expliziten SQLite-Queue, ohne Ausfuehrung zu erlauben.
 - `ims.api.run_control_preflight` prueft vorhandene Run-Metadaten lokal gegen diese gesperrte Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - `ims.api.workbench_start_plan` beschreibt den lokalen Start aus Defaults oder Konfiguration, startet aber keinen Server.
@@ -49,6 +50,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet und beruecksichtigen den aktuellen WAL-Zustand.
 - Der lokale Schreibvertrag ist rein beschreibend. Er oeffnet keinen HTTP- oder UI-Schreibpfad und erzeugt keine SQLite-Datei.
 - Der lokale Run-Control-Vertrag ist rein beschreibend. Er startet keinen Lauf und schaltet keine API- oder UI-Steuerung frei.
+- Die lokale Run-Control-Queue schreibt nur ueber explizite CLI-Befehle mit `--db`. Sie startet keine Simulation, keinen Worker und keinen Scheduler.
 - Der lokale Run-Control-Preflight ist rein lesend. Er prueft Run- und Szenario-Metadaten, startet aber keine Simulation und schreibt keine Metadaten.
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
 - Der lokale Startplan ist rein beschreibend. Er gibt empfohlene Kommandos und aufgeloeste Pfade aus, startet aber keinen Server und erzeugt keine Dateien.
@@ -95,7 +97,7 @@ Die lokale Bedienreihenfolge fuer v1 ist:
 
 Die lokale Workbench-v1 ist als rein lokale Browser-Workbench und Modernisierungs-Meilenstein abgeschlossen. Dieser Abschluss ist kein Release-Tag, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung. Sie liefert Backend-Health und Version, statische Frontend-Auslieferung, lesende Szenario- und Run-Metadaten, Detailansichten, Filter, Auswahlzusammenfassung, Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose und Readiness.
 
-Die lokalen CLI-Adapter decken Startdiagnose, Startplan, Readiness, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag, Run-Control-Request-Check und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal und starten keine Simulation. Nur `metadata_import_cli import --db` schreibt Metadaten, und nur in den explizit angegebenen SQLite-Zielpfad; `metadata_import_cli export --out` schreibt nur in den expliziten JSON-Zielpfad.
+Die lokalen CLI-Adapter decken Startdiagnose, Startplan, Readiness, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag, Run-Control-Request-Check, Run-Control-Queue und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal und starten keine Simulation. Nur `metadata_import_cli import --db` schreibt Metadaten, `run_control_queue init/enqueue --db` schreibt Queue-Metadaten in eine explizite SQLite-Datei und `metadata_import_cli export --out` schreibt nur in den expliziten JSON-Zielpfad.
 
 Nicht enthalten sind weiterhin Fachlogikaenderungen, echte Run-Ausfuehrung, neue HTTP-Endpunkte, HTTP- oder UI-Schreibpfade, Browser-Upload, Browser-Download, funktionaler Run-Start, Szenario-Editor, SQLite-Migration und historische Vollgleichheitsbehauptung.
 
@@ -347,6 +349,16 @@ python -m ims.api.run_control_requests check .\run_control_request.json
 
 Das Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at` und das Pflichtfeld `execution_enabled` mit dem Wert `false`. Der Check lehnt `execution_enabled=true`, Fachlogikdaten, Simulationsergebnisfelder und unbekannte Felder ab. Er schreibt keine Metadaten, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und startet keine Simulation.
 
+`ims.api.run_control_queue` kann validierte Requests lokal vormerken:
+
+```powershell
+python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite
+```
+
+Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen. Erlaubte Statuswerte sind `planned`, `blocked` und `validated`. `init` und `enqueue` schreiben nur in den expliziten SQLite-Pfad; `list` und `show` lesen eine bestehende Queue. Kein Queue-Befehl startet eine Simulation, einen Worker, einen Scheduler, einen HTTP-Endpunkt oder einen UI-Schreibpfad. `execution_enabled` und `execution_performed` bleiben `false`.
+
 Ein lokaler Preflight kann vorhandene Run-Metadaten gegen diese Grenze pruefen:
 
 ```powershell
@@ -427,6 +439,9 @@ Vertraege und Grenzen:
 | `python -m ims.api.metadata_write_contracts check .\metadata_import.json` | Importdatei gegen den Schreibvertrag pruefen | schreibt nicht |
 | `python -m ims.api.run_control_contracts` | Spaetere Run-Steuerungsgrenze ohne Ausfuehrung beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_requests check .\run_control_request.json` | Lokalen Run-Control-Request ohne Ausfuehrung validieren | schreibt nicht |
+| `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |
+| `python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite` | Validierten Request ohne Ausfuehrung vormerken | schreibt Queue-Metadaten |
+| `python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite` | Queue lesend auflisten | schreibt nicht |
 | `python -m ims.api.run_control_preflight --run-id baseline-python-tests` | Run-Metadaten lokal gegen die gesperrte Steuerungsgrenze pruefen | schreibt nicht |
 
 Metadaten:

@@ -82,6 +82,14 @@ Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage 
 python -m ims.api.run_control_requests check .\run_control_request.json
 ```
 
+Eine lokale Run-Control-Queue kann solche Requests in einer expliziten SQLite-Datei vormerken, ohne Ausfuehrung, Worker oder Scheduler zu starten:
+
+```powershell
+python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite
+```
+
 Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese gesperrte Steuerungsgrenze, ohne einen Lauf zu starten:
 
 ```powershell

@@ -49,6 +49,9 @@ def test_workbench_cli_overview_contains_expected_commands():
         "metadata_write_contracts check",
         "run_control_contracts",
         "run_control_requests check",
+        "run_control_queue init",
+        "run_control_queue enqueue",
+        "run_control_queue list",
         "run_control_preflight",
         "metadata_import_cli import --db",
     ]
@@ -61,7 +64,12 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
     writing_commands = [command["name"] for command in commands if command["writes_enabled"]]
     read_only_commands = [command["name"] for command in commands if not command["writes_enabled"]]
 
-    assert writing_commands == ["metadata_import_cli export", "metadata_import_cli import --db"]
+    assert writing_commands == [
+        "metadata_import_cli export",
+        "run_control_queue init",
+        "run_control_queue enqueue",
+        "metadata_import_cli import --db",
+    ]
     assert "Importbericht" in commands[-1]["purpose"]
     assert "metadata_import_cli import --db" not in build_workbench_cli_overview().to_dict()["boundaries"][
         "read_only_commands"
@@ -79,6 +87,7 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
         "metadata_write_contracts check",
         "run_control_contracts",
         "run_control_requests check",
+        "run_control_queue list",
         "run_control_preflight",
     ]
 

@@ -170,6 +170,16 @@ def test_core_placeholders_import() -> None:
         main as run_control_preflight_main,
         preflight_run_control,
     )
+    from ims.api.run_control_queue import (
+        WorkbenchRunControlQueueEntry,
+        WorkbenchRunControlQueueRepository,
+        WorkbenchRunControlQueueResult,
+        enqueue_run_control_request,
+        get_run_control_queue_entry,
+        initialize_run_control_queue,
+        list_run_control_queue,
+        main as run_control_queue_main,
+    )
     from ims.api.run_control_requests import (
         WorkbenchRunControlRequest,
         WorkbenchRunControlRequestValidationResult,
@@ -589,6 +599,14 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchRunControlPreflightResult is not None
     assert preflight_run_control is not None
     assert run_control_preflight_main is not None
+    assert WorkbenchRunControlQueueEntry is not None
+    assert WorkbenchRunControlQueueRepository is not None
+    assert WorkbenchRunControlQueueResult is not None
+    assert initialize_run_control_queue is not None
+    assert enqueue_run_control_request is not None
+    assert list_run_control_queue is not None
+    assert get_run_control_queue_entry is not None
+    assert run_control_queue_main is not None
     assert WorkbenchRunControlRequest is not None
     assert WorkbenchRunControlRequestValidationResult is not None
     assert parse_run_control_request_payload is not None
