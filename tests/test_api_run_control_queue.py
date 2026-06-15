@@ -108,6 +108,31 @@ def test_run_control_queue_read_commands_use_readonly_wal_connection(tmp_path):
         writer_connection.close()
 
 
+def test_run_control_queue_read_commands_do_not_create_wal_sidecars(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    wal_path = Path(f"{db_path}-wal")
+    shm_path = Path(f"{db_path}-shm")
+    request = parse_run_control_request_payload(_valid_request_payload())
+    writer_connection = connect_metadata_db(db_path)
+    try:
+        writer_connection.execute("PRAGMA journal_mode=WAL")
+        repository = WorkbenchRunControlQueueRepository(writer_connection)
+        repository.enqueue(request)
+        writer_connection.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+    finally:
+        writer_connection.close()
+    wal_path.unlink(missing_ok=True)
+    shm_path.unlink(missing_ok=True)
+
+    list_payload = list_run_control_queue(db_path).to_dict()
+    show_payload = get_run_control_queue_entry("baseline-python-tests", db_path=db_path).to_dict()
+
+    assert list_payload["entries"][0]["queue_id"] == "baseline-python-tests"
+    assert show_payload["entry"]["queue_id"] == "baseline-python-tests"
+    assert not wal_path.exists()
+    assert not shm_path.exists()
+
+
 def test_run_control_queue_rejects_execution_enabled_true(tmp_path):
     db_path = tmp_path / "metadata.sqlite"
     payload = _valid_request_payload()
