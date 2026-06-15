@@ -609,3 +609,5 @@ Import-Bundles werden vor dem ersten Schreibzugriff vollstaendig gegen die Repos
 ## Spaetere Bloecke
 
 Nach der lokalen Workbench-v1 bleiben groessere Bloecke bewusst separat: kontrollierte echte Run-Steuerung, moegliche UI- oder HTTP-Schreibpfade, ein Szenario-Editor, SQLite-Migrationen sowie zusaetzliche Fachvalidierung und historische Vollgleichheit. Diese Themen sollen jeweils eigene reviewbare Plaene und PRs bekommen und duerfen nicht als stiller Nebeneffekt der lokalen Workbench-v1 verstanden werden.
+
+Der Packaging- und Bereitstellungsblock ist separat unter `docs/migration/workbench_packaging_plan.md` geplant. Dieser Plan beschreibt portable lokale Startbarkeit, Startskripte, Artefaktstruktur, ZIP-/Release-Ideen sowie Backup-/Update-Grenzen, erzeugt aber kein Paket und startet keine Simulation.

@@ -5,6 +5,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 README = REPO_ROOT / "README.md"
 WORKBENCH_DOC = REPO_ROOT / "docs" / "migration" / "workbench_shell.md"
 RUN_CONTROL_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_run_control_plan.md"
+PACKAGING_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_packaging_plan.md"
 
 
 def test_readme_documents_local_workbench_start_commands():
@@ -39,6 +40,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "expliziten Importbericht und Run-Control-Preflight" in readme
     assert "keine HTTP-/UI-Schreibpfade" in readme
     assert "docs/migration/workbench_run_control_plan.md" in readme
+    assert "docs/migration/workbench_packaging_plan.md" in readme
 
 
 def test_workbench_doc_groups_local_cli_boundaries():
@@ -118,6 +120,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "## Spaetere Bloecke" in doc
     assert "kontrollierte echte Run-Steuerung" in doc
     assert "eigene reviewbare Plaene und PRs" in doc
+    assert "docs/migration/workbench_packaging_plan.md" in doc
 
 
 def test_workbench_run_control_plan_documents_next_modernization_block():
@@ -144,3 +147,33 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Keine neuen HTTP-Endpunkte" in plan
     assert "Kein Packaging in diesem PR" in plan
     assert "Keine historische Vollgleichheitsbehauptung" in plan
+
+
+def test_workbench_packaging_plan_documents_portable_delivery_block():
+    plan = PACKAGING_PLAN.read_text(encoding="utf-8")
+
+    assert PACKAGING_PLAN.is_file()
+    assert "Workbench Packaging- und Bereitstellungsplan" in plan
+    assert "portable IMS Workbench" in plan
+    assert "start-workbench.cmd" in plan
+    assert "check-workbench.cmd" in plan
+    assert ".ims_workbench/" in plan
+    assert "metadata.sqlite" in plan
+    assert "ZIP- und Release-Artefakte" in plan
+    assert "Backup" in plan
+    assert "Update" in plan
+    assert "8-14" in plan
+    assert "30-47+" in plan
+    assert "Fachvalidierung und historische Vollgleichheit" in plan
+    assert "Packaging und Bereitstellung" in plan
+    assert "Keine Fachlogikaenderung" in plan
+    assert "Keine Simulation starten" in plan
+    assert "Keine neuen HTTP-Endpunkte" in plan
+    assert "Kein HTTP-Schreibpfad" in plan
+    assert "Kein Browser-Upload" in plan
+    assert "Kein Browser-Download" in plan
+    assert "Keine UI-Schreibpfade" in plan
+    assert "Kein Installer" in plan
+    assert "Kein ZIP- oder Release-Artefakt in diesem PR" in plan
+    assert "Keine historische Vollgleichheitsbehauptung" in plan
+    assert "lauffaehiges Paket ist kein fachlicher Gleichheitsnachweis" in plan
