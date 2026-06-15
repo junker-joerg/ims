@@ -90,7 +90,7 @@ python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.i
 python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite
 ```
 
-`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list` und `show` lesen die Queue-Datenbank read-only und vermeiden neue WAL-/SHM-Sidecars.
+`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list` und `show` lesen die Queue-Datenbank read-only, vermeiden neue WAL-/SHM-Sidecars und lehnen unvollstaendige Sidecar-Zustaende ab.
 
 Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese gesperrte Steuerungsgrenze, ohne einen Lauf zu starten:
 
