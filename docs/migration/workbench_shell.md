@@ -33,6 +33,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.workbench_readiness` buendelt lokale v1-Bereitschaft aus Diagnose, Metadatenquelle, CLI-Grenzen und Run-Control-Preflight, ohne den Server zu starten.
 - `ims.api.workbench_portable_readiness` prueft die heutige Repo-Struktur oder eine spaetere portable Workbench-Ordnerstruktur, ohne Dateien zu erzeugen.
 - `ims.api.workbench_build_snapshot` fasst vorhandene lokale Build-Artefakte zusammen, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
+- `ims.api.workbench_artifact_manifest` beschreibt Ein- und Ausschlusspfade fuer ein spaeteres portables Artefakt, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
@@ -59,6 +60,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die lokale Readiness-Pruefung ist rein beschreibend. Sie startet keinen Server, baut kein Frontend, schreibt keine Metadaten und startet keine Simulation.
 - Die lokale portable Strukturpruefung ist rein beschreibend. Sie erkennt Repo- und portable Zielstruktur, erzeugt aber keine fehlenden Ordner, keine SQLite-Datei und kein Release-Artefakt.
 - Der lokale Build-Snapshot ist rein beschreibend. Er zaehlt vorhandene Frontend-Dist-Dateien und prueft lokale App-/Skriptpfade, kopiert aber keine Dateien und erzeugt kein ZIP.
+- Das lokale Artefaktmanifest ist rein beschreibend. Es listet geplante Einschlusspfade und ausgeschlossene lokale Daten/Caches, kopiert aber keine Dateien und erzeugt kein ZIP.
 - Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Auswahlzusammenfassung ist rein lesend und fuehrt keine Start-, Schreib-, Import- oder Editieraktion aus.
@@ -86,6 +88,7 @@ python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist
 python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist
+python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
@@ -285,6 +288,7 @@ Die Ausgabe enthaelt `status`, `mode = "cli_overview"`, `commands`, `boundaries`
 - `workbench_readiness`
 - `workbench_portable_readiness`
 - `workbench_build_snapshot`
+- `workbench_artifact_manifest`
 - `metadata_import_cli check`
 - `metadata_import_cli preview`
 - `metadata_import_cli snapshot`
@@ -344,6 +348,20 @@ python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dis
 Die Ausgabe enthaelt `mode = "workbench_build_snapshot"`, den Root-Pfad, den Frontend-Dist-Pfad, `frontend_index_available`, Anzahl und Groesse der vorhandenen Frontend-Dist-Dateien, Verfuegbarkeit von `python_port`, Start-/Check-Skripten, eine Liste bewusst ausgeschlossener lokaler Pfade, `writes_enabled = false` und `execution_enabled = false`.
 
 Der Build-Snapshot baut kein Frontend, kopiert keine Dateien, erzeugt kein Artefaktmanifest, kein ZIP, keinen Installer, keine SQLite-Datei, startet keinen Server und startet keine Simulation. Er ist eine Vorstufe fuer spaetere Artefaktmanifest- und ZIP-Schritte, keine Bereitstellung selbst.
+
+## Artefaktmanifest
+
+Das lokale Artefaktmanifest beschreibt, welche vorhandenen Pfade spaeter in ein portables Workbench-Artefakt aufgenommen werden sollen und welche lokalen Pfade ausgeschlossen bleiben:
+
+```powershell
+python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
+```
+
+Die Ausgabe enthaelt `mode = "workbench_artifact_manifest"`, `included_paths`, `excluded_paths`, `missing_required_paths`, `file_count`, `total_bytes`, `writes_enabled = false` und `execution_enabled = false`.
+
+Eingeschlossen werden unter anderem `python_port`, `frontend/dist`, die lokalen Start-/Check-Skripte, die Skript-Doku, README und Workbench-/Packaging-Doku. Ausgeschlossen bleiben lokale Daten und Caches wie `.git`, `.ims_workbench`, `logs`, `frontend/node_modules`, `frontend/.npm-cache`, Python-/Test-Caches und lokale SQLite-Dateien.
+
+Das Artefaktmanifest schreibt keine Datei, kopiert keine Dateien, erzeugt kein ZIP, keinen Installer, keine SQLite-Datei, oeffnet keinen Schreibpfad und startet keine Simulation. Es ist nur die naechste pruefbare Grenze vor spaeteren ZIP-/Release-Schritten.
 
 ## SQLite-Vorbereitung
 
@@ -476,6 +494,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_readiness --frontend-dist frontend/dist` | Lokale Workbench-v1-Bereitschaft buendeln | schreibt nicht |
 | `python -m ims.api.workbench_portable_readiness --root . --layout repo` | Repo- oder portable Workbench-Struktur pruefen | schreibt nicht |
 | `python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist` | Vorhandene lokale Build-Artefakte zusammenfassen | schreibt nicht |
+| `python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist` | Ein- und Ausschlusspfade fuer spaeteres Artefakt beschreiben | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:

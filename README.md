@@ -19,6 +19,7 @@ python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist
 python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist
+python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
@@ -78,6 +79,12 @@ Ein lokaler Build-Snapshot fasst vorhandene Frontend-/Backend-Artefakte zusammen
 
 ```powershell
 python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist
+```
+
+Ein lokales Artefaktmanifest beschreibt Ein- und Ausschlusspfade fuer ein spaeteres portables Artefakt, erzeugt aber noch kein ZIP:
+
+```powershell
+python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
 ```
 
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:

@@ -79,6 +79,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="workbench_artifact_manifest",
+            command="python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist",
+            purpose="Lokale Workbench-Artefaktgrenze als Manifest zusammenfassen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -189,6 +195,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "workbench_readiness",
                 "workbench_portable_readiness",
                 "workbench_build_snapshot",
+                "workbench_artifact_manifest",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",

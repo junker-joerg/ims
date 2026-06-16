@@ -78,6 +78,7 @@ Erste lokale Windows-Skripte sind unter `scripts/workbench/` vorbereitet:
 - `python -m ims.api.workbench_portable_readiness --root . --layout repo` prueft die heutige Repo-Struktur.
 - `python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable` prueft eine spaetere portable Zielstruktur.
 - `python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist` fasst vorhandene lokale Build-Artefakte zusammen.
+- `python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist` beschreibt Ein- und Ausschlusspfade fuer ein spaeteres Artefakt.
 
 Diese Skripte kapseln nur lokale Betriebsablaeufe:
 
@@ -135,13 +136,13 @@ Bis dahin gibt es keine automatische Migration und keinen automatischen Updater.
 
 ## Erwartete PR-Roadmap
 
-Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `5-11` reviewbaren PRs nach diesem Schritt:
+Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `4-10` reviewbaren PRs nach diesem Schritt:
 
 1. Packaging- und Bereitstellungsplan: erledigt.
 2. Lokale Startskripte fuer Windows, ohne Installer: vorbereitet.
 3. Readiness-Check fuer portable Ordnerstruktur: vorbereitet.
 4. Build-Snapshot fuer Frontend- und Backend-Artefakte: vorbereitet.
-5. Artefaktmanifest und Ausschluss lokaler Caches/Nutzerdaten.
+5. Artefaktmanifest und Ausschluss lokaler Caches/Nutzerdaten: vorbereitet.
 6. ZIP-Erzeugung als expliziter lokaler Build-Schritt.
 7. ZIP-Smoke-Test ohne Simulation.
 8. Backup-/Restore-Doku fuer lokale Metadaten.
@@ -157,10 +158,10 @@ Die grobe Gesamtplanung bis "wirklich alles fertig" bleibt:
 
 - Workbench-Ausbau nach v1: ca. `9-17` PRs.
 - Fachvalidierung und historische Vollgleichheit: ca. `10-18` PRs.
-- Packaging und Bereitstellung: ca. `5-11` PRs.
+- Packaging und Bereitstellung: ca. `4-10` PRs.
 - Integrations- und Review-Reserve: ca. `3-5` PRs.
 
-Erwartet bleiben damit weiterhin grob ca. `27-44+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
+Erwartet bleiben damit weiterhin grob ca. `26-43+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
 
 ## Teststrategie
 
@@ -172,6 +173,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - Readiness-Checks gegen explizite Artefaktpfade,
 - portable Strukturpruefung fuer Repo- und Zielstruktur,
 - Build-Snapshots fuer vorhandene Frontend-/Backend-Artefakte,
+- Artefaktmanifest fuer Ein- und Ausschlusspfade,
 - Smoke-Start des Backend ohne Simulation,
 - ZIP-Inhaltspruefung, sobald ZIP-Erzeugung umgesetzt wird.
 
