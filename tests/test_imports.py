@@ -203,6 +203,7 @@ def test_core_placeholders_import() -> None:
         main as workbench_cli_overview_main,
     )
     from ims.api.workbench_artifact_manifest import (
+        WorkbenchArtifactManifestFile,
         WorkbenchArtifactManifestIssue,
         WorkbenchArtifactManifestPath,
         WorkbenchArtifactManifestResult,
@@ -644,6 +645,7 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchCliOverviewResult is not None
     assert build_workbench_cli_overview is not None
     assert workbench_cli_overview_main is not None
+    assert WorkbenchArtifactManifestFile is not None
     assert WorkbenchArtifactManifestIssue is not None
     assert WorkbenchArtifactManifestPath is not None
     assert WorkbenchArtifactManifestResult is not None
