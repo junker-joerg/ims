@@ -35,6 +35,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.workbench_build_snapshot` fasst vorhandene lokale Build-Artefakte zusammen, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_artifact_manifest` beschreibt Ein- und Ausschlusspfade fuer ein spaeteres portables Artefakt, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_bundle_plan` plant ein spaeteres lokales Workbench-Bundle auf Basis des Artefaktmanifests, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
+- `ims.api.workbench_bundle_build` erzeugt nur bei explizitem `--out` ein lokales ZIP aus dem Bundle-Plan.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
@@ -63,6 +64,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Build-Snapshot ist rein beschreibend. Er zaehlt vorhandene Frontend-Dist-Dateien und prueft lokale App-/Skriptpfade, kopiert aber keine Dateien und erzeugt kein ZIP.
 - Das lokale Artefaktmanifest ist rein beschreibend. Es listet geplante Einschlusspfade und ausgeschlossene lokale Daten/Caches, kopiert aber keine Dateien und erzeugt kein ZIP.
 - Der lokale Bundle-Trockenlauf ist rein beschreibend. Er nutzt das Artefaktmanifest als Dateiliste und Checksummengrundlage, kopiert aber keine Dateien und erzeugt kein ZIP.
+- Der lokale ZIP-Build schreibt nur in einen expliziten `--out`-Pfad. Er startet keine Simulation und ist kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis.
 - Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Auswahlzusammenfassung ist rein lesend und fuehrt keine Start-, Schreib-, Import- oder Editieraktion aus.
@@ -378,6 +380,18 @@ Die Ausgabe enthaelt `mode = "workbench_bundle_plan"`, den Root-Pfad, den Fronte
 
 Der Bundle-Trockenlauf schreibt keine Datei, kopiert keine Dateien, erzeugt kein ZIP, keinen Installer, keine SQLite-Datei, oeffnet keinen Schreibpfad und startet keine Simulation. Er ist ein pruefbarer Packaging-Zwischenschritt vor einer spaeteren expliziten ZIP-Erzeugung.
 
+## Lokaler ZIP-Build
+
+Der lokale ZIP-Build erzeugt aus dem Bundle-Plan ein explizit angegebenes ZIP:
+
+```powershell
+python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
+```
+
+Die Ausgabe enthaelt `mode = "workbench_bundle_build"`, den Root-Pfad, den Frontend-Dist-Pfad, `out_path`, `entries`, `file_count`, `total_bytes`, `zip_bytes`, `zip_sha256`, `writes_performed = true`, `archive_created = true` und `execution_performed = false`.
+
+Der ZIP-Build schreibt ausschliesslich den expliziten ZIP-Zielpfad. Er kopiert keine Dateien ausserhalb dieses Archivs, erzeugt keine SQLite-Datei, oeffnet keinen HTTP- oder UI-Schreibpfad und startet keine Simulation. Bei Bundle-Plan-Fehlern, fehlendem Ausgabeordner, nicht-`.zip`-Ziel oder Ausgabe in ausgeschlossenen Pfaden wird kein ZIP erzeugt. Das ZIP ist ein lokales Bereitstellungsartefakt, kein Installer, kein Release-Tag und keine Fachvalidierung oder historische Vollgleichheitsbehauptung.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
@@ -511,6 +525,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist` | Vorhandene lokale Build-Artefakte zusammenfassen | schreibt nicht |
 | `python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist` | Ein- und Ausschlusspfade fuer spaeteres Artefakt beschreiben | schreibt nicht |
 | `python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist` | Spaeteres Workbench-Bundle auf Basis des Manifests planen | schreibt nicht |
+| `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip` | Explizites lokales ZIP aus dem Bundle-Plan erzeugen | schreibt nur den expliziten ZIP-Zielpfad |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:

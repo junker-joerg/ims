@@ -24,6 +24,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "SHA-256-Pruefsummen" in readme
     assert "python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist" in readme
     assert "ohne Dateien zu kopieren oder ein Archiv zu erzeugen" in readme
+    assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in readme
+    assert "kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
     assert "Kurzstart fuer die lokale Browser-Workbench" in readme
     assert "Start und Diagnose" in readme
@@ -71,6 +73,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist" in doc
+    assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
@@ -114,6 +117,10 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der lokale Bundle-Trockenlauf ist rein beschreibend" in doc
     assert "archive_created = false" in doc
     assert "Er ist ein pruefbarer Packaging-Zwischenschritt" in doc
+    assert "## Lokaler ZIP-Build" in doc
+    assert "writes_performed = true" in doc
+    assert "archive_created = true" in doc
+    assert "schreibt ausschliesslich den expliziten ZIP-Zielpfad" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
     assert "Die Uebersicht fuehrt diese Befehle nicht aus" in doc
@@ -193,8 +200,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP- und Release-Artefakte" in plan
     assert "Backup" in plan
     assert "Update" in plan
-    assert "2-8" in plan
-    assert "24-41+" in plan
+    assert "1-7" in plan
+    assert "23-40+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Lokale Startskripte fuer Windows, ohne Installer: vorbereitet" in plan
@@ -202,15 +209,18 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Build-Snapshot fuer Frontend- und Backend-Artefakte: vorbereitet" in plan
     assert "Artefaktmanifest, Checksummen und Ausschluss lokaler Caches/Nutzerdaten: vorbereitet" in plan
     assert "Bundle-Trockenlauf auf Basis des Artefaktmanifests: vorbereitet" in plan
+    assert "ZIP-Erzeugung als expliziter lokaler Build-Schritt: vorbereitet" in plan
     assert "workbench_portable_readiness --root . --layout repo" in plan
     assert "workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "workbench_build_snapshot --root . --frontend-dist frontend/dist" in plan
     assert "workbench_artifact_manifest --root . --frontend-dist frontend/dist" in plan
     assert "workbench_bundle_plan --root . --frontend-dist frontend/dist" in plan
+    assert "workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in plan
     assert "portable Strukturpruefung fuer Repo- und Zielstruktur" in plan
     assert "Build-Snapshots fuer vorhandene Frontend-/Backend-Artefakte" in plan
     assert "Artefaktmanifest fuer Ein- und Ausschlusspfade inklusive Groessen und SHA-256-Pruefsummen" in plan
     assert "Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung" in plan
+    assert "ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles" in plan
     assert "Keine Fachlogikaenderung" in plan
     assert "Keine Simulation starten" in plan
     assert "Keine neuen HTTP-Endpunkte" in plan

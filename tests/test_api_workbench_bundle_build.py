@@ -1,0 +1,188 @@
+import json
+import os
+import subprocess
+import sys
+import zipfile
+from pathlib import Path
+
+import pytest
+
+from ims.api.workbench_bundle_build import (
+    WorkbenchBundleBuildIssue,
+    WorkbenchBundleBuildResult,
+    build_workbench_bundle_zip,
+    main,
+)
+
+
+def test_workbench_bundle_build_writes_explicit_zip(tmp_path):
+    _build_repo_fixture(tmp_path)
+    _touch(tmp_path / "frontend" / "dist" / "assets" / "app.js", "bundle")
+    out_path = tmp_path / "dist" / "ims-workbench-local.zip"
+    out_path.parent.mkdir()
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "workbench_bundle_build"
+    assert payload["out_path"] == str(out_path.resolve())
+    assert payload["archive_created"] is True
+    assert payload["writes_performed"] is True
+    assert payload["execution_performed"] is False
+    assert payload["zip_bytes"] > 0
+    assert len(payload["zip_sha256"]) == 64
+    assert out_path.is_file()
+    with zipfile.ZipFile(out_path) as archive:
+        names = archive.namelist()
+    assert names == payload["entries"]
+    assert "frontend/dist/index.html" in names
+    assert "frontend/dist/assets/app.js" in names
+
+
+def test_workbench_bundle_build_excludes_local_runtime_paths(tmp_path):
+    _build_repo_fixture(tmp_path)
+    _touch(tmp_path / ".ims_workbench" / "metadata.sqlite", "local")
+    _touch(tmp_path / "logs" / "workbench.log", "log")
+    _touch(tmp_path / "frontend" / "node_modules" / "pkg" / "ignored.js", "ignored")
+    _touch(tmp_path / "python_port" / "ims" / "__pycache__" / "ignored.pyc", "cache")
+    out_path = tmp_path / "bundle.zip"
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+
+    with zipfile.ZipFile(out_path) as archive:
+        names = archive.namelist()
+    assert payload["status"] == "ok"
+    assert ".ims_workbench/metadata.sqlite" not in names
+    assert "logs/workbench.log" not in names
+    assert "frontend/node_modules/pkg/ignored.js" not in names
+    assert "python_port/ims/__pycache__/ignored.pyc" not in names
+
+
+def test_workbench_bundle_build_preserves_external_frontend_paths(tmp_path):
+    repo_root = tmp_path / "repo"
+    external_dist = tmp_path / "external dist"
+    _build_repo_fixture(repo_root, include_frontend=False)
+    _touch(external_dist / "assets" / "app.js", "asset")
+    _touch(external_dist / "nested" / "app.js", "nested")
+    out_path = tmp_path / "bundle.zip"
+
+    payload = build_workbench_bundle_zip(root=repo_root, frontend_dist=external_dist, out_path=out_path).to_dict()
+
+    with zipfile.ZipFile(out_path) as archive:
+        names = archive.namelist()
+    assert payload["status"] == "ok"
+    assert "frontend_dist/assets/app.js" in names
+    assert "frontend_dist/nested/app.js" in names
+    assert len(names) == len(set(names))
+
+
+def test_workbench_bundle_build_does_not_write_on_plan_error(tmp_path):
+    _build_repo_fixture(tmp_path, include_frontend=False)
+    out_path = tmp_path / "bundle.zip"
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert "frontend_dist_missing" in issue_codes
+    assert payload["archive_created"] is False
+    assert payload["writes_performed"] is False
+    assert not out_path.exists()
+
+
+def test_workbench_bundle_build_rejects_missing_output_parent(tmp_path):
+    _build_repo_fixture(tmp_path)
+    out_path = tmp_path / "missing" / "bundle.zip"
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert "out_parent_missing" in issue_codes
+    assert not out_path.exists()
+
+
+def test_workbench_bundle_build_rejects_output_inside_excluded_path(tmp_path):
+    _build_repo_fixture(tmp_path)
+    out_path = tmp_path / "logs" / "bundle.zip"
+    out_path.parent.mkdir()
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert "out_path_excluded" in issue_codes
+    assert not out_path.exists()
+
+
+def test_workbench_bundle_build_cli_requires_out(tmp_path, capsys):
+    _build_repo_fixture(tmp_path)
+
+    with pytest.raises(SystemExit):
+        main(["--root", str(tmp_path)])
+
+    assert capsys.readouterr().out == ""
+
+
+def test_workbench_bundle_build_cli_prints_stable_json(tmp_path, capsys):
+    _build_repo_fixture(tmp_path)
+    out_path = tmp_path / "bundle.zip"
+
+    exit_code = main(["--root", str(tmp_path), "--frontend-dist", "frontend/dist", "--out", str(out_path)])
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "workbench_bundle_build"
+    assert payload["archive_created"] is True
+
+
+def test_workbench_bundle_build_module_entrypoint_prints_json(tmp_path):
+    _build_repo_fixture(tmp_path)
+    out_path = tmp_path / "bundle.zip"
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(Path(__file__).resolve().parent.parent / "python_port")
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "ims.api.workbench_bundle_build",
+            "--root",
+            str(tmp_path),
+            "--frontend-dist",
+            "frontend/dist",
+            "--out",
+            str(out_path),
+        ],
+        capture_output=True,
+        check=True,
+        env=env,
+        text=True,
+    )
+
+    payload = json.loads(completed.stdout)
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "workbench_bundle_build"
+
+
+def test_workbench_bundle_build_public_types_importable():
+    assert WorkbenchBundleBuildIssue is not None
+    assert WorkbenchBundleBuildResult is not None
+
+
+def _build_repo_fixture(tmp_path: Path, *, include_frontend: bool = True) -> None:
+    _touch(tmp_path / "python_port" / "__init__.py")
+    _touch(tmp_path / "scripts" / "workbench" / "check-workbench.cmd", "check")
+    _touch(tmp_path / "scripts" / "workbench" / "start-workbench.cmd", "start")
+    _touch(tmp_path / "scripts" / "workbench" / "README.md", "scripts")
+    _touch(tmp_path / "README.md", "readme")
+    _touch(tmp_path / "docs" / "migration" / "workbench_shell.md", "workbench doc")
+    _touch(tmp_path / "docs" / "migration" / "workbench_packaging_plan.md", "packaging plan")
+    if include_frontend:
+        _touch(tmp_path / "frontend" / "dist" / "index.html", "<html></html>")
+
+
+def _touch(path: Path, content: str = "") -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
