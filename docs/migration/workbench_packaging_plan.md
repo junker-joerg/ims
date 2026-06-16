@@ -80,6 +80,7 @@ Erste lokale Windows-Skripte sind unter `scripts/workbench/` vorbereitet:
 - `python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist` fasst vorhandene lokale Build-Artefakte zusammen.
 - `python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist` beschreibt Ein- und Ausschlusspfade sowie Datei-Groessen und SHA-256-Pruefsummen fuer ein spaeteres Artefakt.
 - `python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist` plant ein spaeteres Bundle auf Basis des Manifests, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
+- `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip` erzeugt ein explizites lokales ZIP aus dem Bundle-Plan.
 
 Diese Skripte kapseln nur lokale Betriebsablaeufe:
 
@@ -137,7 +138,7 @@ Bis dahin gibt es keine automatische Migration und keinen automatischen Updater.
 
 ## Erwartete PR-Roadmap
 
-Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `2-8` reviewbaren PRs nach diesem Schritt:
+Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `1-7` reviewbaren PRs nach diesem Schritt:
 
 1. Packaging- und Bereitstellungsplan: erledigt.
 2. Lokale Startskripte fuer Windows, ohne Installer: vorbereitet.
@@ -145,7 +146,7 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `2-8` reviewbaren PRs na
 4. Build-Snapshot fuer Frontend- und Backend-Artefakte: vorbereitet.
 5. Artefaktmanifest, Checksummen und Ausschluss lokaler Caches/Nutzerdaten: vorbereitet.
 6. Bundle-Trockenlauf auf Basis des Artefaktmanifests: vorbereitet.
-7. ZIP-Erzeugung als expliziter lokaler Build-Schritt.
+7. ZIP-Erzeugung als expliziter lokaler Build-Schritt: vorbereitet.
 8. ZIP-Smoke-Test ohne Simulation.
 9. Backup-/Restore-Doku fuer lokale Metadaten.
 10. Update-/Rollback-Doku.
@@ -160,10 +161,10 @@ Die grobe Gesamtplanung bis "wirklich alles fertig" bleibt:
 
 - Workbench-Ausbau nach v1: ca. `9-17` PRs.
 - Fachvalidierung und historische Vollgleichheit: ca. `10-18` PRs.
-- Packaging und Bereitstellung: ca. `2-8` PRs.
+- Packaging und Bereitstellung: ca. `1-7` PRs.
 - Integrations- und Review-Reserve: ca. `3-5` PRs.
 
-Erwartet bleiben damit weiterhin grob ca. `24-41+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
+Erwartet bleiben damit weiterhin grob ca. `23-40+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
 
 ## Teststrategie
 
@@ -177,6 +178,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - Build-Snapshots fuer vorhandene Frontend-/Backend-Artefakte,
 - Artefaktmanifest fuer Ein- und Ausschlusspfade inklusive Groessen und SHA-256-Pruefsummen,
 - Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung,
+- ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles,
 - Smoke-Start des Backend ohne Simulation,
 - ZIP-Inhaltspruefung, sobald ZIP-Erzeugung umgesetzt wird.
 

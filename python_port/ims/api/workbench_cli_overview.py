@@ -91,6 +91,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="workbench_bundle_build",
+            command="python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip",
+            purpose="Explizites lokales Workbench-ZIP aus dem Bundle-Plan erzeugen.",
+            writes_enabled=True,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -217,11 +223,13 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             ],
             "write_commands": [
                 "metadata_import_cli export",
+                "workbench_bundle_build",
                 "run_control_queue init",
                 "run_control_queue enqueue",
                 "metadata_import_cli import --db",
             ],
             "export_requires_explicit_out": True,
+            "bundle_build_requires_explicit_out": True,
             "import_requires_explicit_db": True,
             "execution_enabled": False,
             "starts_server": False,

@@ -129,6 +129,7 @@ def test_workbench_v1_readiness_smoke_keeps_local_boundaries(tmp_path: Path, mon
     assert overview["boundaries"]["creates_sqlite_file"] is False
     assert overview["boundaries"]["write_commands"] == [
         "metadata_import_cli export",
+        "workbench_bundle_build",
         "run_control_queue init",
         "run_control_queue enqueue",
         "metadata_import_cli import --db",

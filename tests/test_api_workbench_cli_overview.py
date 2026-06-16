@@ -22,6 +22,7 @@ def test_workbench_cli_overview_reports_stable_json_shape():
     assert isinstance(payload["commands"], list)
     assert payload["boundaries"]["writes_enabled"] is False
     assert payload["boundaries"]["export_requires_explicit_out"] is True
+    assert payload["boundaries"]["bundle_build_requires_explicit_out"] is True
     assert payload["boundaries"]["import_requires_explicit_db"] is True
     assert payload["boundaries"]["execution_enabled"] is False
     assert payload["boundaries"]["starts_server"] is False
@@ -43,6 +44,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "workbench_build_snapshot",
         "workbench_artifact_manifest",
         "workbench_bundle_plan",
+        "workbench_bundle_build",
         "metadata_import_cli check",
         "metadata_import_cli preview",
         "metadata_import_cli snapshot",
@@ -69,6 +71,7 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
     read_only_commands = [command["name"] for command in commands if not command["writes_enabled"]]
 
     assert writing_commands == [
+        "workbench_bundle_build",
         "metadata_import_cli export",
         "run_control_queue init",
         "run_control_queue enqueue",
