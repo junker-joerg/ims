@@ -34,6 +34,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.workbench_portable_readiness` prueft die heutige Repo-Struktur oder eine spaetere portable Workbench-Ordnerstruktur, ohne Dateien zu erzeugen.
 - `ims.api.workbench_build_snapshot` fasst vorhandene lokale Build-Artefakte zusammen, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_artifact_manifest` beschreibt Ein- und Ausschlusspfade fuer ein spaeteres portables Artefakt, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
+- `ims.api.workbench_bundle_plan` plant ein spaeteres lokales Workbench-Bundle auf Basis des Artefaktmanifests, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
@@ -61,6 +62,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die lokale portable Strukturpruefung ist rein beschreibend. Sie erkennt Repo- und portable Zielstruktur, erzeugt aber keine fehlenden Ordner, keine SQLite-Datei und kein Release-Artefakt.
 - Der lokale Build-Snapshot ist rein beschreibend. Er zaehlt vorhandene Frontend-Dist-Dateien und prueft lokale App-/Skriptpfade, kopiert aber keine Dateien und erzeugt kein ZIP.
 - Das lokale Artefaktmanifest ist rein beschreibend. Es listet geplante Einschlusspfade und ausgeschlossene lokale Daten/Caches, kopiert aber keine Dateien und erzeugt kein ZIP.
+- Der lokale Bundle-Trockenlauf ist rein beschreibend. Er nutzt das Artefaktmanifest als Dateiliste und Checksummengrundlage, kopiert aber keine Dateien und erzeugt kein ZIP.
 - Die lokale CLI-Uebersicht ist rein beschreibend. Sie startet keinen Adapter, liest keinen Snapshot, importiert keine Metadaten und erzeugt keine SQLite-Datei.
 - Die Frontend-Detailansicht ist rein lesend und nutzt nur die Detail-Endpunkte.
 - Die Auswahlzusammenfassung ist rein lesend und fuehrt keine Start-, Schreib-, Import- oder Editieraktion aus.
@@ -89,6 +91,7 @@ python -m ims.api.workbench_readiness --frontend-dist frontend/dist
 python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist
 python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
+python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
@@ -363,6 +366,18 @@ Eingeschlossen werden unter anderem `python_port`, `frontend/dist`, die lokalen 
 
 Das Artefaktmanifest schreibt keine Datei, kopiert keine Dateien, erzeugt kein ZIP, keinen Installer, keine SQLite-Datei, oeffnet keinen Schreibpfad und startet keine Simulation. Es ist nur die naechste pruefbare Grenze vor spaeteren ZIP-/Release-Schritten; die Checksummen dienen diesen spaeteren Smoke- und Release-Pruefungen.
 
+## Bundle-Trockenlauf
+
+Der lokale Bundle-Trockenlauf beschreibt auf Basis des Artefaktmanifests, welche Dateien in ein spaeteres Workbench-Bundle eingehen wuerden:
+
+```powershell
+python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist
+```
+
+Die Ausgabe enthaelt `mode = "workbench_bundle_plan"`, den Root-Pfad, den Frontend-Dist-Pfad, `recommended_bundle_name`, `files`, `file_count`, `total_bytes`, `excluded_paths`, `writes_performed = false`, `archive_created = false` und `execution_performed = false`. Die `files`-Liste uebernimmt relative Pfade, Quellpfade, Groessen, SHA-256-Pruefsummen und Gruppen aus dem Artefaktmanifest.
+
+Der Bundle-Trockenlauf schreibt keine Datei, kopiert keine Dateien, erzeugt kein ZIP, keinen Installer, keine SQLite-Datei, oeffnet keinen Schreibpfad und startet keine Simulation. Er ist ein pruefbarer Packaging-Zwischenschritt vor einer spaeteren expliziten ZIP-Erzeugung.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
@@ -495,6 +510,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_portable_readiness --root . --layout repo` | Repo- oder portable Workbench-Struktur pruefen | schreibt nicht |
 | `python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist` | Vorhandene lokale Build-Artefakte zusammenfassen | schreibt nicht |
 | `python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist` | Ein- und Ausschlusspfade fuer spaeteres Artefakt beschreiben | schreibt nicht |
+| `python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist` | Spaeteres Workbench-Bundle auf Basis des Manifests planen | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:
