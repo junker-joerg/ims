@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -44,6 +45,24 @@ class WorkbenchArtifactManifestPath:
 
 
 @dataclass(frozen=True)
+class WorkbenchArtifactManifestFile:
+    relative_path: str
+    source_path: str
+    size_bytes: int
+    sha256: str
+    group: str
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "relative_path": self.relative_path,
+            "source_path": self.source_path,
+            "size_bytes": self.size_bytes,
+            "sha256": self.sha256,
+            "group": self.group,
+        }
+
+
+@dataclass(frozen=True)
 class WorkbenchArtifactManifestResult:
     status: str
     mode: str
@@ -52,6 +71,7 @@ class WorkbenchArtifactManifestResult:
     included_paths: tuple[WorkbenchArtifactManifestPath, ...]
     excluded_paths: tuple[str, ...]
     missing_required_paths: tuple[str, ...]
+    files: tuple[WorkbenchArtifactManifestFile, ...]
     file_count: int
     total_bytes: int
     writes_enabled: bool
@@ -67,6 +87,7 @@ class WorkbenchArtifactManifestResult:
             "included_paths": [path.to_dict() for path in self.included_paths],
             "excluded_paths": list(self.excluded_paths),
             "missing_required_paths": list(self.missing_required_paths),
+            "files": [file.to_dict() for file in self.files],
             "file_count": self.file_count,
             "total_bytes": self.total_bytes,
             "writes_enabled": self.writes_enabled,
@@ -86,6 +107,7 @@ def build_workbench_artifact_manifest(
     included_paths = _included_paths(resolved_root, resolved_frontend_dist, excluded_paths)
     missing_required = tuple(path.name for path in included_paths if path.required and not path.exists)
     issues = _issues_for_missing_paths(included_paths)
+    files = _manifest_files(resolved_root, included_paths, excluded_paths)
     return WorkbenchArtifactManifestResult(
         status=_status_from_issues(issues),
         mode="workbench_artifact_manifest",
@@ -94,8 +116,9 @@ def build_workbench_artifact_manifest(
         included_paths=included_paths,
         excluded_paths=excluded_paths,
         missing_required_paths=missing_required,
-        file_count=sum(path.file_count for path in included_paths),
-        total_bytes=sum(path.total_bytes for path in included_paths),
+        files=files,
+        file_count=len(files),
+        total_bytes=sum(file.size_bytes for file in files),
         writes_enabled=False,
         execution_enabled=False,
         issues=tuple(issues),
@@ -191,11 +214,57 @@ def _path_summary(path: Path, excluded_paths: Sequence[str]) -> tuple[int, int]:
     size = 0
     excluded = {Path(item) for item in excluded_paths}
     for child in sorted(path.rglob("*")):
-        if not child.is_file() or _is_under_any(child, excluded):
+        if not child.is_file() or _is_excluded_file(child, excluded):
             continue
         count += 1
         size += child.stat().st_size
     return count, size
+
+
+def _manifest_files(
+    root: Path,
+    included_paths: Sequence[WorkbenchArtifactManifestPath],
+    excluded_paths: Sequence[str],
+) -> tuple[WorkbenchArtifactManifestFile, ...]:
+    excluded = {Path(item) for item in excluded_paths}
+    files: list[WorkbenchArtifactManifestFile] = []
+    for included_path in included_paths:
+        source = Path(included_path.path)
+        if not included_path.exists:
+            continue
+        if source.is_file():
+            candidates = (source,)
+        else:
+            candidates = tuple(path for path in sorted(source.rglob("*")) if path.is_file())
+        for candidate in candidates:
+            if _is_excluded_file(candidate, excluded):
+                continue
+            files.append(
+                WorkbenchArtifactManifestFile(
+                    relative_path=_relative_manifest_path(root, candidate),
+                    source_path=str(candidate),
+                    size_bytes=candidate.stat().st_size,
+                    sha256=_sha256(candidate),
+                    group=included_path.name,
+                )
+            )
+    return tuple(sorted(files, key=lambda file: file.relative_path))
+
+
+def _relative_manifest_path(root: Path, path: Path) -> str:
+    try:
+        relative = path.relative_to(root)
+    except ValueError:
+        relative = Path(path.name)
+    return relative.as_posix()
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as file:
+        for chunk in iter(lambda: file.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _is_under_any(path: Path, candidates: set[Path]) -> bool:
@@ -206,6 +275,10 @@ def _is_under_any(path: Path, candidates: set[Path]) -> bool:
         except ValueError:
             continue
     return False
+
+
+def _is_excluded_file(path: Path, candidates: set[Path]) -> bool:
+    return _is_under_any(path, candidates) or "__pycache__" in path.parts or path.suffix in {".pyc", ".pyo"}
 
 
 def _issues_for_missing_paths(

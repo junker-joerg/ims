@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import sys
+import hashlib
 from pathlib import Path
 
 from ims.api.workbench_artifact_manifest import (
@@ -30,6 +31,7 @@ def test_workbench_artifact_manifest_reports_included_and_excluded_paths(tmp_pat
     assert payload["missing_required_paths"] == []
     assert payload["file_count"] >= 9
     assert payload["total_bytes"] > 0
+    assert len(payload["files"]) == payload["file_count"]
     assert included_names == [
         "python_port",
         "frontend_dist",
@@ -43,6 +45,41 @@ def test_workbench_artifact_manifest_reports_included_and_excluded_paths(tmp_pat
     assert str(tmp_path / "frontend" / "node_modules") in payload["excluded_paths"]
     assert str(tmp_path / ".ims_workbench") in payload["excluded_paths"]
     assert str(tmp_path / "logs") in payload["excluded_paths"]
+
+
+def test_workbench_artifact_manifest_files_are_sorted_and_hashed(tmp_path):
+    _build_repo_fixture(tmp_path)
+    _touch(tmp_path / "frontend" / "dist" / "z.js", "z")
+    _touch(tmp_path / "frontend" / "dist" / "a.js", "alpha")
+
+    payload = build_workbench_artifact_manifest(root=tmp_path).to_dict()
+    files = payload["files"]
+    relative_paths = [file["relative_path"] for file in files]
+    alpha_entry = _file_by_relative_path(payload, "frontend/dist/a.js")
+
+    assert relative_paths == sorted(relative_paths)
+    assert alpha_entry["size_bytes"] == len("alpha")
+    assert alpha_entry["sha256"] == hashlib.sha256(b"alpha").hexdigest()
+    assert alpha_entry["group"] == "frontend_dist"
+    assert Path(alpha_entry["source_path"]).is_file()
+
+
+def test_workbench_artifact_manifest_excludes_cache_and_db_files_from_file_entries(tmp_path):
+    _build_repo_fixture(tmp_path)
+    _touch(tmp_path / "frontend" / "node_modules" / "pkg" / "ignored.js", "ignored")
+    _touch(tmp_path / ".ims_workbench" / "metadata.sqlite", "local")
+    _touch(tmp_path / "logs" / "workbench.log", "log")
+    _touch(tmp_path / ".pytest_cache" / "ignored", "cache")
+    _touch(tmp_path / "python_port" / "ims" / "__pycache__" / "ignored.pyc", "cache")
+
+    payload = build_workbench_artifact_manifest(root=tmp_path).to_dict()
+    relative_paths = [file["relative_path"] for file in payload["files"]]
+
+    assert "frontend/node_modules/pkg/ignored.js" not in relative_paths
+    assert ".ims_workbench/metadata.sqlite" not in relative_paths
+    assert "logs/workbench.log" not in relative_paths
+    assert ".pytest_cache/ignored" not in relative_paths
+    assert "python_port/ims/__pycache__/ignored.pyc" not in relative_paths
 
 
 def test_workbench_artifact_manifest_resolves_relative_frontend_dist_against_root(tmp_path, monkeypatch):
@@ -133,3 +170,12 @@ def _build_repo_fixture(
 def _touch(path: Path, content: str = "") -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def _file_by_relative_path(payload: dict[str, object], relative_path: str) -> dict[str, object]:
+    files = payload["files"]
+    assert isinstance(files, list)
+    for file in files:
+        if isinstance(file, dict) and file.get("relative_path") == relative_path:
+            return file
+    raise AssertionError(f"missing file: {relative_path}")

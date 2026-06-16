@@ -357,11 +357,11 @@ Das lokale Artefaktmanifest beschreibt, welche vorhandenen Pfade spaeter in ein 
 python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
 ```
 
-Die Ausgabe enthaelt `mode = "workbench_artifact_manifest"`, `included_paths`, `excluded_paths`, `missing_required_paths`, `file_count`, `total_bytes`, `writes_enabled = false` und `execution_enabled = false`.
+Die Ausgabe enthaelt `mode = "workbench_artifact_manifest"`, `included_paths`, `excluded_paths`, `missing_required_paths`, `files`, `file_count`, `total_bytes`, `writes_enabled = false` und `execution_enabled = false`. Die `files`-Liste ist deterministisch nach relativen Pfaden sortiert und enthaelt pro Datei relativen Pfad, Quellpfad, Groesse und SHA-256-Pruefsumme.
 
 Eingeschlossen werden unter anderem `python_port`, `frontend/dist`, die lokalen Start-/Check-Skripte, die Skript-Doku, README und Workbench-/Packaging-Doku. Ausgeschlossen bleiben lokale Daten und Caches wie `.git`, `.ims_workbench`, `logs`, `frontend/node_modules`, `frontend/.npm-cache`, Python-/Test-Caches und lokale SQLite-Dateien.
 
-Das Artefaktmanifest schreibt keine Datei, kopiert keine Dateien, erzeugt kein ZIP, keinen Installer, keine SQLite-Datei, oeffnet keinen Schreibpfad und startet keine Simulation. Es ist nur die naechste pruefbare Grenze vor spaeteren ZIP-/Release-Schritten.
+Das Artefaktmanifest schreibt keine Datei, kopiert keine Dateien, erzeugt kein ZIP, keinen Installer, keine SQLite-Datei, oeffnet keinen Schreibpfad und startet keine Simulation. Es ist nur die naechste pruefbare Grenze vor spaeteren ZIP-/Release-Schritten; die Checksummen dienen diesen spaeteren Smoke- und Release-Pruefungen.
 
 ## SQLite-Vorbereitung
 

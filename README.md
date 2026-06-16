@@ -87,6 +87,8 @@ Ein lokales Artefaktmanifest beschreibt Ein- und Ausschlusspfade fuer ein spaete
 python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
 ```
 
+Das Manifest enthaelt fuer eingeschlossene Dateien relative Pfade, Groesse und SHA-256-Pruefsummen.
+
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
 
 ```powershell

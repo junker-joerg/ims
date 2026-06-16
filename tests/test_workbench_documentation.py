@@ -21,6 +21,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "erwartete Dateien und Ordner den richtigen Pfadtyp haben" in readme
     assert "python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist" in readme
     assert "python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist" in readme
+    assert "SHA-256-Pruefsummen" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
     assert "Kurzstart fuer die lokale Browser-Workbench" in readme
     assert "Start und Diagnose" in readme
@@ -105,6 +106,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der Build-Snapshot baut kein Frontend" in doc
     assert "Das lokale Artefaktmanifest ist rein beschreibend" in doc
     assert "Ausgeschlossen bleiben lokale Daten und Caches" in doc
+    assert "deterministisch nach relativen Pfaden sortiert" in doc
+    assert "SHA-256-Pruefsumme" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
     assert "Die Uebersicht fuehrt diese Befehle nicht aus" in doc
@@ -184,21 +187,21 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP- und Release-Artefakte" in plan
     assert "Backup" in plan
     assert "Update" in plan
-    assert "4-10" in plan
-    assert "26-43+" in plan
+    assert "3-9" in plan
+    assert "25-42+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Lokale Startskripte fuer Windows, ohne Installer: vorbereitet" in plan
     assert "Readiness-Check fuer portable Ordnerstruktur: vorbereitet" in plan
     assert "Build-Snapshot fuer Frontend- und Backend-Artefakte: vorbereitet" in plan
-    assert "Artefaktmanifest und Ausschluss lokaler Caches/Nutzerdaten: vorbereitet" in plan
+    assert "Artefaktmanifest, Checksummen und Ausschluss lokaler Caches/Nutzerdaten: vorbereitet" in plan
     assert "workbench_portable_readiness --root . --layout repo" in plan
     assert "workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "workbench_build_snapshot --root . --frontend-dist frontend/dist" in plan
     assert "workbench_artifact_manifest --root . --frontend-dist frontend/dist" in plan
     assert "portable Strukturpruefung fuer Repo- und Zielstruktur" in plan
     assert "Build-Snapshots fuer vorhandene Frontend-/Backend-Artefakte" in plan
-    assert "Artefaktmanifest fuer Ein- und Ausschlusspfade" in plan
+    assert "Artefaktmanifest fuer Ein- und Ausschlusspfade inklusive Groessen und SHA-256-Pruefsummen" in plan
     assert "Keine Fachlogikaenderung" in plan
     assert "Keine Simulation starten" in plan
     assert "Keine neuen HTTP-Endpunkte" in plan
