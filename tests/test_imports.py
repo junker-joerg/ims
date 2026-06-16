@@ -217,6 +217,12 @@ def test_core_placeholders_import() -> None:
         build_workbench_build_snapshot,
         main as workbench_build_snapshot_main,
     )
+    from ims.api.workbench_bundle_plan import (
+        WorkbenchBundlePlanIssue,
+        WorkbenchBundlePlanResult,
+        build_workbench_bundle_plan,
+        main as workbench_bundle_plan_main,
+    )
     from ims.api.workbench_diagnostics import (
         WorkbenchDiagnosticIssue,
         WorkbenchDiagnosticsResult,
@@ -656,6 +662,10 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchBuildSnapshotResult is not None
     assert build_workbench_build_snapshot is not None
     assert workbench_build_snapshot_main is not None
+    assert WorkbenchBundlePlanIssue is not None
+    assert WorkbenchBundlePlanResult is not None
+    assert build_workbench_bundle_plan is not None
+    assert workbench_bundle_plan_main is not None
     assert WorkbenchDiagnosticIssue is not None
     assert WorkbenchDiagnosticsResult is not None
     assert build_workbench_diagnostics is not None

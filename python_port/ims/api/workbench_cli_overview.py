@@ -85,6 +85,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="workbench_bundle_plan",
+            command="python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist",
+            purpose="Lokales Workbench-Bundle ohne Kopie oder ZIP planen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -196,6 +202,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "workbench_portable_readiness",
                 "workbench_build_snapshot",
                 "workbench_artifact_manifest",
+                "workbench_bundle_plan",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",

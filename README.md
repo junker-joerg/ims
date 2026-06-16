@@ -20,6 +20,7 @@ python -m ims.api.workbench_readiness --frontend-dist frontend/dist
 python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m ims.api.workbench_build_snapshot --root . --frontend-dist frontend/dist
 python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist
+python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
@@ -88,6 +89,12 @@ python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/
 ```
 
 Das Manifest enthaelt fuer eingeschlossene Dateien relative Pfade, Groesse und SHA-256-Pruefsummen.
+
+Ein lokaler Bundle-Trockenlauf nutzt dieses Manifest und beschreibt ein spaeteres ZIP-Bundle, ohne Dateien zu kopieren oder ein Archiv zu erzeugen:
+
+```powershell
+python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist
+```
 
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
 
