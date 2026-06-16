@@ -74,12 +74,29 @@ def test_workbench_artifact_manifest_excludes_cache_and_db_files_from_file_entri
 
     payload = build_workbench_artifact_manifest(root=tmp_path).to_dict()
     relative_paths = [file["relative_path"] for file in payload["files"]]
+    python_port_summary = _included_path_by_name(payload, "python_port")
 
     assert "frontend/node_modules/pkg/ignored.js" not in relative_paths
     assert ".ims_workbench/metadata.sqlite" not in relative_paths
     assert "logs/workbench.log" not in relative_paths
     assert ".pytest_cache/ignored" not in relative_paths
     assert "python_port/ims/__pycache__/ignored.pyc" not in relative_paths
+    assert python_port_summary["file_count"] == 1
+
+
+def test_workbench_artifact_manifest_preserves_external_frontend_dist_paths(tmp_path):
+    repo_root = tmp_path / "repo"
+    external_dist = tmp_path / "external dist"
+    _build_repo_fixture(repo_root, include_frontend=False)
+    _touch(external_dist / "assets" / "app.js", "asset")
+    _touch(external_dist / "nested" / "app.js", "nested")
+
+    payload = build_workbench_artifact_manifest(root=repo_root, frontend_dist=external_dist).to_dict()
+    relative_paths = [file["relative_path"] for file in payload["files"]]
+
+    assert "frontend_dist/assets/app.js" in relative_paths
+    assert "frontend_dist/nested/app.js" in relative_paths
+    assert len(relative_paths) == len(set(relative_paths))
 
 
 def test_workbench_artifact_manifest_resolves_relative_frontend_dist_against_root(tmp_path, monkeypatch):
@@ -179,3 +196,12 @@ def _file_by_relative_path(payload: dict[str, object], relative_path: str) -> di
         if isinstance(file, dict) and file.get("relative_path") == relative_path:
             return file
     raise AssertionError(f"missing file: {relative_path}")
+
+
+def _included_path_by_name(payload: dict[str, object], name: str) -> dict[str, object]:
+    paths = payload["included_paths"]
+    assert isinstance(paths, list)
+    for path in paths:
+        if isinstance(path, dict) and path.get("name") == name:
+            return path
+    raise AssertionError(f"missing included path: {name}")

@@ -241,7 +241,7 @@ def _manifest_files(
                 continue
             files.append(
                 WorkbenchArtifactManifestFile(
-                    relative_path=_relative_manifest_path(root, candidate),
+                    relative_path=_relative_manifest_path(root, source, candidate, included_path.name),
                     source_path=str(candidate),
                     size_bytes=candidate.stat().st_size,
                     sha256=_sha256(candidate),
@@ -251,12 +251,17 @@ def _manifest_files(
     return tuple(sorted(files, key=lambda file: file.relative_path))
 
 
-def _relative_manifest_path(root: Path, path: Path) -> str:
+def _relative_manifest_path(root: Path, source: Path, path: Path, group: str) -> str:
     try:
         relative = path.relative_to(root)
+        return relative.as_posix()
     except ValueError:
-        relative = Path(path.name)
-    return relative.as_posix()
+        pass
+    try:
+        relative_to_source = path.relative_to(source if source.is_dir() else source.parent)
+    except ValueError:
+        relative_to_source = Path(path.name)
+    return (Path(group) / relative_to_source).as_posix()
 
 
 def _sha256(path: Path) -> str:
