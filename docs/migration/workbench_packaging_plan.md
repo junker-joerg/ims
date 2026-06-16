@@ -120,7 +120,9 @@ Ein spaeteres ZIP-Artefakt sollte erst nach einem eigenen reviewbaren Schritt en
 - keine `frontend/node_modules/`,
 - keine `frontend/dist` versionieren, sondern reproduzierbar bauen und dann ins Artefakt kopieren,
 - keine privaten lokalen Datenbanken oder Nutzerdaten aufnehmen,
-- Checksummen oder Manifest fuer Artefaktinhalt pruefen.
+- Checksummen oder Manifest fuer Artefaktinhalt pruefen,
+- den ZIP-Zielpfad nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist` erlauben,
+- ZIP-Eintraege mit stabilen Zeitstempeln und Dateirechten schreiben, damit die ZIP-Pruefsumme bei identischem Inhalt reproduzierbar bleibt.
 
 Das ZIP ist ein Bereitstellungsartefakt, kein Installer und kein fachlicher Validierungsbericht.
 
@@ -179,6 +181,8 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - Artefaktmanifest fuer Ein- und Ausschlusspfade inklusive Groessen und SHA-256-Pruefsummen,
 - Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung,
 - ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles,
+- reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,
+- Ablehnung von ZIP-Zielpfaden unter eingeschlossenen Quellbaeumen,
 - Smoke-Start des Backend ohne Simulation,
 - ZIP-Inhaltspruefung, sobald ZIP-Erzeugung umgesetzt wird.
 

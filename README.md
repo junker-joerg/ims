@@ -103,6 +103,7 @@ python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist 
 ```
 
 Dieses ZIP ist ein lokales Bereitstellungsartefakt, kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis.
+Der ZIP-Zielpfad darf nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist` liegen. ZIP-Eintraege werden mit stabilen Metadaten geschrieben, damit die `zip_sha256`-Pruefsumme bei identischem Inhalt reproduzierbar bleibt.
 
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
 
