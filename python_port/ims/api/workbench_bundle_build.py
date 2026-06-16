@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -163,9 +162,8 @@ def _output_issues(out_path: Path, plan) -> list[WorkbenchBundleBuildIssue]:
                 )
             )
             break
-    for file in plan.files:
-        source = Path(file.source_path)
-        if file.group in {"python_port", "frontend_dist"} and _is_under(out_path, _group_source_root(plan.files, file.group)):
+    for source_root in _included_source_roots(plan):
+        if _is_under(out_path, source_root):
             issues.append(
                 WorkbenchBundleBuildIssue(
                     code="out_path_inside_included_source",
@@ -174,6 +172,8 @@ def _output_issues(out_path: Path, plan) -> list[WorkbenchBundleBuildIssue]:
                 )
             )
             break
+    for file in plan.files:
+        source = Path(file.source_path)
         if source == out_path or (out_path.exists() and _samefile(out_path, source)):
             issues.append(
                 WorkbenchBundleBuildIssue(
@@ -192,20 +192,14 @@ def _write_zip(out_path: Path, files) -> None:
             source = Path(file.source_path)
             info = zipfile.ZipInfo(file.relative_path, date_time=(1980, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 3
             info.external_attr = 0o644 << 16
             archive.writestr(info, source.read_bytes())
 
 
-def _group_source_root(files, group: str) -> Path:
-    group_paths = [Path(file.source_path) for file in files if file.group == group]
-    if not group_paths:
-        return Path()
-    parent_strings = [str(path.parent) for path in group_paths]
-    return Path(_common_path(parent_strings))
-
-
-def _common_path(paths: Sequence[str]) -> str:
-    return os.path.commonpath(paths)
+def _included_source_roots(plan) -> tuple[Path, ...]:
+    root = Path(plan.root)
+    return (root / "python_port", Path(plan.frontend_dist))
 
 
 def _sha256(path: Path) -> str:

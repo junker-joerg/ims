@@ -127,6 +127,19 @@ def test_workbench_bundle_build_rejects_output_inside_included_frontend_dist(tmp
     assert not out_path.exists()
 
 
+def test_workbench_bundle_build_rejects_output_inside_frontend_dist_with_only_nested_files(tmp_path):
+    _build_repo_fixture(tmp_path, include_frontend=False)
+    _touch(tmp_path / "frontend" / "dist" / "assets" / "app.js", "bundle")
+    out_path = tmp_path / "frontend" / "dist" / "workbench.zip"
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert "out_path_inside_included_source" in issue_codes
+    assert not out_path.exists()
+
+
 def test_workbench_bundle_build_rejects_output_inside_python_port(tmp_path):
     _build_repo_fixture(tmp_path)
     out_path = tmp_path / "python_port" / "workbench.zip"
@@ -156,6 +169,7 @@ def test_workbench_bundle_build_uses_stable_zip_entry_metadata(tmp_path):
     with zipfile.ZipFile(first_out) as archive:
         info = archive.getinfo("frontend/dist/index.html")
     assert info.date_time == (1980, 1, 1, 0, 0, 0)
+    assert info.create_system == 3
     assert info.external_attr >> 16 == 0o644
 
 
