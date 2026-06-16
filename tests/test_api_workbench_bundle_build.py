@@ -115,6 +115,50 @@ def test_workbench_bundle_build_rejects_output_inside_excluded_path(tmp_path):
     assert not out_path.exists()
 
 
+def test_workbench_bundle_build_rejects_output_inside_included_frontend_dist(tmp_path):
+    _build_repo_fixture(tmp_path)
+    out_path = tmp_path / "frontend" / "dist" / "workbench.zip"
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert "out_path_inside_included_source" in issue_codes
+    assert not out_path.exists()
+
+
+def test_workbench_bundle_build_rejects_output_inside_python_port(tmp_path):
+    _build_repo_fixture(tmp_path)
+    out_path = tmp_path / "python_port" / "workbench.zip"
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert "out_path_inside_included_source" in issue_codes
+    assert not out_path.exists()
+
+
+def test_workbench_bundle_build_uses_stable_zip_entry_metadata(tmp_path):
+    _build_repo_fixture(tmp_path)
+    source = tmp_path / "frontend" / "dist" / "index.html"
+    first_out = tmp_path / "first.zip"
+    second_out = tmp_path / "second.zip"
+
+    os.utime(source, (1_700_000_000, 1_700_000_000))
+    first_payload = build_workbench_bundle_zip(root=tmp_path, out_path=first_out).to_dict()
+    os.utime(source, (1_800_000_000, 1_800_000_000))
+    second_payload = build_workbench_bundle_zip(root=tmp_path, out_path=second_out).to_dict()
+
+    assert first_payload["status"] == "ok"
+    assert second_payload["status"] == "ok"
+    assert first_payload["zip_sha256"] == second_payload["zip_sha256"]
+    with zipfile.ZipFile(first_out) as archive:
+        info = archive.getinfo("frontend/dist/index.html")
+    assert info.date_time == (1980, 1, 1, 0, 0, 0)
+    assert info.external_attr >> 16 == 0o644
+
+
 def test_workbench_bundle_build_cli_requires_out(tmp_path, capsys):
     _build_repo_fixture(tmp_path)
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -164,6 +165,15 @@ def _output_issues(out_path: Path, plan) -> list[WorkbenchBundleBuildIssue]:
             break
     for file in plan.files:
         source = Path(file.source_path)
+        if file.group in {"python_port", "frontend_dist"} and _is_under(out_path, _group_source_root(plan.files, file.group)):
+            issues.append(
+                WorkbenchBundleBuildIssue(
+                    code="out_path_inside_included_source",
+                    severity="error",
+                    message=f"workbench bundle output path is inside an included source tree: {out_path}",
+                )
+            )
+            break
         if source == out_path or (out_path.exists() and _samefile(out_path, source)):
             issues.append(
                 WorkbenchBundleBuildIssue(
@@ -179,7 +189,23 @@ def _output_issues(out_path: Path, plan) -> list[WorkbenchBundleBuildIssue]:
 def _write_zip(out_path: Path, files) -> None:
     with zipfile.ZipFile(out_path, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
         for file in sorted(files, key=lambda item: item.relative_path):
-            archive.write(file.source_path, arcname=file.relative_path)
+            source = Path(file.source_path)
+            info = zipfile.ZipInfo(file.relative_path, date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o644 << 16
+            archive.writestr(info, source.read_bytes())
+
+
+def _group_source_root(files, group: str) -> Path:
+    group_paths = [Path(file.source_path) for file in files if file.group == group]
+    if not group_paths:
+        return Path()
+    parent_strings = [str(path.parent) for path in group_paths]
+    return Path(_common_path(parent_strings))
+
+
+def _common_path(paths: Sequence[str]) -> str:
+    return os.path.commonpath(paths)
 
 
 def _sha256(path: Path) -> str:

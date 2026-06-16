@@ -390,7 +390,7 @@ python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist 
 
 Die Ausgabe enthaelt `mode = "workbench_bundle_build"`, den Root-Pfad, den Frontend-Dist-Pfad, `out_path`, `entries`, `file_count`, `total_bytes`, `zip_bytes`, `zip_sha256`, `writes_performed = true`, `archive_created = true` und `execution_performed = false`.
 
-Der ZIP-Build schreibt ausschliesslich den expliziten ZIP-Zielpfad. Er kopiert keine Dateien ausserhalb dieses Archivs, erzeugt keine SQLite-Datei, oeffnet keinen HTTP- oder UI-Schreibpfad und startet keine Simulation. Bei Bundle-Plan-Fehlern, fehlendem Ausgabeordner, nicht-`.zip`-Ziel oder Ausgabe in ausgeschlossenen Pfaden wird kein ZIP erzeugt. Das ZIP ist ein lokales Bereitstellungsartefakt, kein Installer, kein Release-Tag und keine Fachvalidierung oder historische Vollgleichheitsbehauptung.
+Der ZIP-Build schreibt ausschliesslich den expliziten ZIP-Zielpfad. Er kopiert keine Dateien ausserhalb dieses Archivs, erzeugt keine SQLite-Datei, oeffnet keinen HTTP- oder UI-Schreibpfad und startet keine Simulation. Bei Bundle-Plan-Fehlern, fehlendem Ausgabeordner, nicht-`.zip`-Ziel, Ausgabe in ausgeschlossenen Pfaden oder Ausgabe unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist` wird kein ZIP erzeugt. ZIP-Eintraege nutzen stabile Zeitstempel und Dateirechte, damit `zip_sha256` fuer identische Inhalte reproduzierbar bleibt. Das ZIP ist ein lokales Bereitstellungsartefakt, kein Installer, kein Release-Tag und keine Fachvalidierung oder historische Vollgleichheitsbehauptung.
 
 ## SQLite-Vorbereitung
 

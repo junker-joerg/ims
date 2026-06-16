@@ -26,6 +26,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "ohne Dateien zu kopieren oder ein Archiv zu erzeugen" in readme
     assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in readme
     assert "kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis" in readme
+    assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in readme
+    assert "`zip_sha256`-Pruefsumme bei identischem Inhalt reproduzierbar" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
     assert "Kurzstart fuer die lokale Browser-Workbench" in readme
     assert "Start und Diagnose" in readme
@@ -121,6 +123,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "writes_performed = true" in doc
     assert "archive_created = true" in doc
     assert "schreibt ausschliesslich den expliziten ZIP-Zielpfad" in doc
+    assert "Ausgabe unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in doc
+    assert "ZIP-Eintraege nutzen stabile Zeitstempel und Dateirechte" in doc
+    assert "`zip_sha256` fuer identische Inhalte reproduzierbar bleibt" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
     assert "Die Uebersicht fuehrt diese Befehle nicht aus" in doc
@@ -221,6 +226,10 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Artefaktmanifest fuer Ein- und Ausschlusspfade inklusive Groessen und SHA-256-Pruefsummen" in plan
     assert "Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung" in plan
     assert "ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles" in plan
+    assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
+    assert "stabilen Zeitstempeln und Dateirechten" in plan
+    assert "reproduzierbare ZIP-Pruefsummen bei identischem Inhalt" in plan
+    assert "Ablehnung von ZIP-Zielpfaden unter eingeschlossenen Quellbaeumen" in plan
     assert "Keine Fachlogikaenderung" in plan
     assert "Keine Simulation starten" in plan
     assert "Keine neuen HTTP-Endpunkte" in plan
