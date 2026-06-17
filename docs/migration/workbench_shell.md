@@ -233,7 +233,7 @@ $exportPath = Join-Path $oldRoot "metadata_export.json"
 
 python -m ims.api.metadata_import_cli export --db $metadataDb --out $exportPath
 python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable
-python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\dist") --db $metadataDb
+python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "app\frontend\dist") --db $metadataDb
 python -m ims.api.metadata_import_cli roundtrip --db $metadataDb
 ```
 
@@ -242,6 +242,7 @@ mit dem neuen Repo-Pfad geprueft:
 
 ```powershell
 python -m ims.api.workbench_portable_readiness --root $newRoot --layout repo
+python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\dist") --db $metadataDb
 ```
 
 Die neue Version wird damit gegen die bestehende Metadatenquelle geprueft. Sie

@@ -170,7 +170,7 @@ $exportPath = Join-Path $oldRoot "metadata_export.json"
 
 python -m ims.api.metadata_import_cli export --db $metadataDb --out $exportPath
 python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable
-python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\dist") --db $metadataDb
+python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "app\frontend\dist") --db $metadataDb
 ```
 
 5. Optional die Metadatenquelle zusaetzlich pruefen:
@@ -182,9 +182,15 @@ python -m ims.api.metadata_import_cli roundtrip --db $metadataDb
 6. Neue Version erst starten, wenn die Checks erwartbar gruen sind.
 
 Bei einem neuen Repo-Checkout wird statt `--layout portable` entsprechend
-`--layout repo` mit `$newRoot` als neuem Repo-Pfad verwendet. Der neue
-Anwendungspfad und der bestehende Metadatenpfad duerfen dabei nicht implizit
-aus dem aktuellen Arbeitsverzeichnis geraten.
+`--layout repo` mit `$newRoot` als neuem Repo-Pfad verwendet:
+
+```powershell
+python -m ims.api.workbench_portable_readiness --root $newRoot --layout repo
+python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\dist") --db $metadataDb
+```
+
+Der neue Anwendungspfad und der bestehende Metadatenpfad duerfen dabei nicht
+implizit aus dem aktuellen Arbeitsverzeichnis geraten.
 
 Rollback heisst entsprechend: neue Workbench stoppen, alte Version wieder
 starten und bei Bedarf die zuvor gesicherte Metadatenquelle zuruecklegen. Der
