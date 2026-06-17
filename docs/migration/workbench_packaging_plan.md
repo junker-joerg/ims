@@ -220,25 +220,29 @@ Ein lokales ZIP- oder Ordnerartefakt soll vor einer Weitergabe mit einer kurzen
 Checkliste geprueft werden:
 
 1. Frontend wurde gebaut: `npm.cmd run build`.
-2. ZIP-Build nutzt einen expliziten Zielpfad:
+2. ZIP-Ausgabeordner wurde explizit vorbereitet:
+   `New-Item -ItemType Directory .\dist -Force`.
+3. ZIP-Build nutzt einen expliziten Zielpfad:
    `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip`.
-3. Der ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen wie
+4. Der ZIP-Build erzeugt den Output-Parent nicht automatisch; ein fehlender
+   Ausgabeordner bleibt ein Fehler.
+5. Der ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen wie
    `python_port` oder `frontend/dist`.
-4. Bundle-Plan und ZIP-Smoke wurden gegen das geplante Artefakt geprueft.
-5. Portable Strukturpruefung laeuft gegen das Zielartefakt mit
+6. Bundle-Plan und ZIP-Smoke wurden gegen das geplante Artefakt geprueft.
+7. Portable Strukturpruefung laeuft gegen das Zielartefakt mit
    `workbench_portable_readiness --layout portable`.
-6. Readiness nutzt im portablen Artefakt den Frontend-Pfad
+8. Readiness nutzt im portablen Artefakt den Frontend-Pfad
    `app\frontend\dist`.
-7. Repo-Side-by-Side-Checks setzen `PYTHONPATH` auf den neuen
+9. Repo-Side-by-Side-Checks setzen `PYTHONPATH` auf den neuen
    `python_port`-Pfad oder installieren die neue Version explizit in die
    verwendete virtuelle Umgebung.
-8. Bestehende Metadatenquelle wird explizit als `--db` uebergeben.
-9. Vor dem Update gibt es Backup oder JSON-Export der Metadatenquelle.
-10. `metadata_import_cli roundtrip --db <metadata.sqlite>` prueft die
+10. Bestehende Metadatenquelle wird explizit als `--db` uebergeben.
+11. Vor dem Update gibt es Backup oder JSON-Export der Metadatenquelle.
+12. `metadata_import_cli roundtrip --db <metadata.sqlite>` prueft die
     bestehende Metadatenquelle.
-11. Rollback-Pfad ist vorbereitet: alte Version, gesicherte Metadatenquelle und
+13. Rollback-Pfad ist vorbereitet: alte Version, gesicherte Metadatenquelle und
     Startkommando sind bekannt.
-12. Es gibt weiterhin keine Simulation, keinen HTTP- oder UI-Schreibpfad, keinen
+14. Es gibt weiterhin keine Simulation, keinen HTTP- oder UI-Schreibpfad, keinen
     automatischen Updater, keine automatische SQLite-Migration und keine
     historische Vollgleichheitsbehauptung.
 
