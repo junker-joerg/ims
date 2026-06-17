@@ -54,6 +54,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "neben der bisherigen Version in einen eigenen Ordner" in readme
     assert "explizitem neuem Anwendungspfad und explizitem bestehendem Metadatenpfad" in readme
     assert "workbench_readiness --db <alter-metadata-pfad>" in readme
+    assert "PYTHONPATH` auf den neuen `python_port`-Pfad" in readme
+    assert "explizite Installation aus dem neuen Checkout" in readme
     assert "workbench_portable_readiness" in readme
     assert "keinen automatischen Updater, keine In-place-Aktualisierung" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
@@ -189,9 +191,12 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "python -m ims.api.metadata_import_cli roundtrip --db $metadataDb" in doc
     assert "im Kontext der neuen portablen Workbench-Version" in doc
     assert "Push-Location $newRoot" in doc
+    assert '$env:PYTHONPATH = Join-Path $newRoot "python_port"' in doc
     assert "python -m ims.api.workbench_portable_readiness --root . --layout repo" in doc
     assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb" in doc
     assert "Pop-Location" in doc
+    assert "`Push-Location` allein setzt den Python-Modulkontext nicht" in doc
+    assert "keinen alten editable install" in doc
     assert "gegen die bestehende Metadatenquelle geprueft" in doc
     assert "keine frische `.ims_workbench` als Ersatz" in doc
     assert "Rollback heisst" in doc
@@ -262,9 +267,13 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "python -m ims.api.metadata_import_cli roundtrip --db $metadataDb" in plan
     assert "im Kontext der neuen portablen Workbench-Version" in plan
     assert "Push-Location $newRoot" in plan
+    assert '$env:PYTHONPATH = Join-Path $newRoot "python_port"' in plan
     assert "python -m ims.api.workbench_portable_readiness --root . --layout repo" in plan
     assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb" in plan
     assert "Pop-Location" in plan
+    assert "Push-Location` allein" in plan
+    assert "alten" in plan
+    assert "Backend-/Adaptercode" in plan
     assert "Der neue" in plan
     assert "Anwendungspfad und der bestehende Metadatenpfad" in plan
     assert "Rollback heisst" in plan
@@ -283,6 +292,17 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP-Smoke-Test ohne Simulation: vorbereitet" in plan
     assert "Backup-/Restore-Doku fuer lokale Metadaten: vorbereitet" in plan
     assert "Update-/Rollback-Doku fuer lokale Workbench-Versionen: vorbereitet" in plan
+    assert "Release-Checkliste fuer lokale ZIP-Artefakte" in plan
+    assert "Frontend wurde gebaut: `npm.cmd run build`" in plan
+    assert "workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in plan
+    assert "ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen" in plan
+    assert "Bundle-Plan und ZIP-Smoke" in plan
+    assert "workbench_portable_readiness --layout portable" in plan
+    assert "app\\frontend\\dist" in plan
+    assert "Repo-Side-by-Side-Checks setzen `PYTHONPATH`" in plan
+    assert "Bestehende Metadatenquelle wird explizit als `--db` uebergeben" in plan
+    assert "Backup oder JSON-Export der Metadatenquelle" in plan
+    assert "Rollback-Pfad ist vorbereitet" in plan
     assert "workbench_portable_readiness --root . --layout repo" in plan
     assert "workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "workbench_build_snapshot --root . --frontend-dist frontend/dist" in plan

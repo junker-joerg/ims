@@ -242,14 +242,21 @@ werden, damit neuer Backend-/Adaptercode, neues Frontend und bestehende
 Metadatenquelle gemeinsam geprueft werden.
 
 Fuer einen Repo-Checkout statt eines portablen Zielordners wird in den neuen
-Checkout gewechselt, damit `python -m ...` die neue Version nutzt:
+Checkout gewechselt und dessen `python_port` explizit auf `PYTHONPATH` gesetzt,
+damit `python -m ...` die neue Version nutzt:
 
 ```powershell
 Push-Location $newRoot
+$env:PYTHONPATH = Join-Path $newRoot "python_port"
 python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb
 Pop-Location
 ```
+
+`Push-Location` allein setzt den Python-Modulkontext nicht. Alternativ kann die
+neue Version aus `$newRoot\python_port` in die verwendete virtuelle Umgebung
+installiert werden. Wichtig ist, dass der Check keinen alten editable install
+aus einer bisherigen Workbench-Version nutzt.
 
 Die neue Version wird damit gegen die bestehende Metadatenquelle geprueft. Sie
 legt keine frische `.ims_workbench` als Ersatz an und migriert die SQLite-Datei

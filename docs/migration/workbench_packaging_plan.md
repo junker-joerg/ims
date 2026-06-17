@@ -183,14 +183,21 @@ python -m ims.api.metadata_import_cli roundtrip --db $metadataDb
 
 Die Befehle muessen im Kontext der neuen portablen Workbench-Version laufen.
 Bei einem neuen Repo-Checkout wird deshalb in den neuen Checkout gewechselt und
-`--layout repo` relativ zu diesem Checkout verwendet:
+dessen `python_port` explizit auf `PYTHONPATH` gesetzt. `Push-Location` allein
+reicht nicht aus, weil `python -m ...` sonst einen alten editable install oder
+gar kein `ims`-Modul verwenden kann:
 
 ```powershell
 Push-Location $newRoot
+$env:PYTHONPATH = Join-Path $newRoot "python_port"
 python -m ims.api.workbench_portable_readiness --root . --layout repo
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb
 Pop-Location
 ```
+
+Alternativ kann die neue Version aus `$newRoot\python_port` in die verwendete
+virtuelle Umgebung installiert werden. Der Check darf nicht still alten
+Backend-/Adaptercode aus der bisherigen Workbench-Version nutzen.
 
 Der neue Anwendungspfad und der bestehende Metadatenpfad duerfen dabei nicht
 implizit aus dem aktuellen Arbeitsverzeichnis geraten.
@@ -206,6 +213,34 @@ Dieser Plan ergaenzt keinen automatischen Updater, keine In-place-Aktualisierung
 keine automatische SQLite-Migration, keinen Installer, keine Simulation und
 keine Fachvalidierung. Ein lokales Update oder Rollback ist kein fachlicher
 Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung.
+
+## Release-Checkliste fuer lokale ZIP-Artefakte
+
+Ein lokales ZIP- oder Ordnerartefakt soll vor einer Weitergabe mit einer kurzen
+Checkliste geprueft werden:
+
+1. Frontend wurde gebaut: `npm.cmd run build`.
+2. ZIP-Build nutzt einen expliziten Zielpfad:
+   `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip`.
+3. Der ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen wie
+   `python_port` oder `frontend/dist`.
+4. Bundle-Plan und ZIP-Smoke wurden gegen das geplante Artefakt geprueft.
+5. Portable Strukturpruefung laeuft gegen das Zielartefakt mit
+   `workbench_portable_readiness --layout portable`.
+6. Readiness nutzt im portablen Artefakt den Frontend-Pfad
+   `app\frontend\dist`.
+7. Repo-Side-by-Side-Checks setzen `PYTHONPATH` auf den neuen
+   `python_port`-Pfad oder installieren die neue Version explizit in die
+   verwendete virtuelle Umgebung.
+8. Bestehende Metadatenquelle wird explizit als `--db` uebergeben.
+9. Vor dem Update gibt es Backup oder JSON-Export der Metadatenquelle.
+10. `metadata_import_cli roundtrip --db <metadata.sqlite>` prueft die
+    bestehende Metadatenquelle.
+11. Rollback-Pfad ist vorbereitet: alte Version, gesicherte Metadatenquelle und
+    Startkommando sind bekannt.
+12. Es gibt weiterhin keine Simulation, keinen HTTP- oder UI-Schreibpfad, keinen
+    automatischen Updater, keine automatische SQLite-Migration und keine
+    historische Vollgleichheitsbehauptung.
 
 ## Erwartete PR-Roadmap
 
