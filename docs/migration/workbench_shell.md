@@ -192,6 +192,31 @@ Wenn `IMS_METADATA_DB` gesetzt ist, meldet der Endpunkt `storage_kind = "sqlite"
 
 Diese Antwort erzeugt beim reinen Import oder Quellenabruf keine SQLite-Datei. Die Workbench zeigt diese Information in der lokalen Ablage als reine Diagnose an. `writes_enabled` und `execution_enabled` bleiben dort bewusst `false`.
 
+## Backup und Restore lokaler Metadaten
+
+Die lokale Workbench speichert aktuell nur Workbench-Metadaten in einer expliziten SQLite-Ablage wie `.ims_workbench/metadata.sqlite`. Diese Datei ist lokale Betriebsablage, keine Fachlogikdatenbank und kein historischer Gleichheitsnachweis.
+
+Fuer ein konservatives Backup gilt:
+
+- Workbench vor einem Datei-Backup stoppen.
+- `metadata.sqlite` sichern.
+- Falls SQLite-WAL aktiv ist, vorhandene `metadata.sqlite-wal` und `metadata.sqlite-shm` bewusst mit behandeln oder vorher einen stabilen Shutdown-/Checkpoint-Pfad nutzen.
+- Optional zusaetzlich ein explizites JSON-Bundle erzeugen:
+
+```powershell
+python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json
+```
+
+Vor und nach einem Restore koennen vorhandene lokale Lesechecks genutzt werden:
+
+```powershell
+python -m ims.api.metadata_import_cli snapshot --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite
+```
+
+Ein Restore ist aktuell manuell und explizit: Workbench stoppen, bestehende Metadatenquelle sichern oder ersetzen, wiederhergestellte Datei pruefen und erst danach die Workbench neu starten. Es gibt keine automatische Backup-Funktion, keine SQLite-Migration, keinen Updater, keinen HTTP- oder UI-Schreibpfad und keine Simulation. Backup und Restore enthalten keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
+
 ## Metadaten-Konsistenz
 
 `/api/metadata/consistency` liefert eine stabile, rein lesende Diagnoseform fuer die aktuell geladenen Szenario- und Run-Metadaten. Der Endpunkt nutzt die bestehenden Repository-Listen und Capabilities und startet keine Simulation.

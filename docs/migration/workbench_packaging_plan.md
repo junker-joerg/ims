@@ -126,13 +126,25 @@ Ein spaeteres ZIP-Artefakt sollte erst nach einem eigenen reviewbaren Schritt en
 
 Das ZIP ist ein Bereitstellungsartefakt, kein Installer und kein fachlicher Validierungsbericht.
 
-## Update und Backup
+## Backup und Restore lokaler Metadaten
 
-Update- und Backup-Doku soll spaeter getrennt beschrieben werden:
+Die lokale Workbench-Datenablage enthaelt aktuell nur Workbench-Metadaten. Ein Backup fuer diese Metadaten behandelt ausschliesslich die explizite SQLite-Ablage und optionale exportierte JSON-Bundles:
+
+- `metadata.sqlite` ist die lokale Metadatenquelle.
+- `metadata.sqlite-wal` und `metadata.sqlite-shm` koennen bei SQLite-WAL-Betrieb vorhanden sein und muessen bei einem Datei-Backup bewusst behandelt werden.
+- `python -m ims.api.metadata_import_cli snapshot --db .\.ims_workbench\metadata.sqlite` liest die Metadatenquelle als Diagnose, schreibt aber kein Backup.
+- `python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json` erzeugt ein explizites JSON-Bundle im Importformat.
+- `python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite` prueft die Lesbarkeit und Importvertragsnaehe, schreibt aber nicht.
+- `python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite` prueft eine wiederhergestellte Metadatenquelle vor der lokalen Nutzung.
+
+Ein Restore bleibt zunaechst ein manueller, expliziter Betriebsablauf: Workbench stoppen, bestehende Metadatenquelle sichern oder ersetzen, wiederhergestellte Datei mit Readiness und Roundtrip pruefen, dann Workbench neu starten. Dieser Plan ergaenzt keine automatische Backup-Funktion, keine SQLite-Migration, keinen Updater, keine Simulation und keine Fachvalidierung. Ein Backup enthaelt keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
+
+## Update und Rollback
+
+Update- und Rollback-Doku soll spaeter getrennt beschrieben werden:
 
 - welche Dateien zur Anwendung gehoeren,
 - welche Dateien lokale Daten sind,
-- wie `metadata.sqlite` gesichert wird,
 - wie eine neue Workbench-Version neben einer alten Version getestet wird,
 - wie ein Rollback ohne Datenverlust aussieht.
 
@@ -150,7 +162,7 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `1-7` reviewbaren PRs na
 6. Bundle-Trockenlauf auf Basis des Artefaktmanifests: vorbereitet.
 7. ZIP-Erzeugung als expliziter lokaler Build-Schritt: vorbereitet.
 8. ZIP-Smoke-Test ohne Simulation: vorbereitet.
-9. Backup-/Restore-Doku fuer lokale Metadaten.
+9. Backup-/Restore-Doku fuer lokale Metadaten: vorbereitet.
 10. Update-/Rollback-Doku.
 11. Windows-Pfadhaertung und Leerzeichenpfade.
 12. Release-Checkliste.
@@ -182,6 +194,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung,
 - ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles,
 - ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten,
+- Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness,
 - reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,
 - Ablehnung von ZIP-Zielpfaden unter eingeschlossenen Quellbaeumen,
 - Smoke-Start des Backend ohne Simulation,

@@ -176,3 +176,5 @@ Der explizite lokale Import schreibt nur in den angegebenen SQLite-Pfad und gibt
 ```powershell
 python -m ims.api.metadata_import_cli import .\metadata_import.json --db .\.ims_workbench\metadata.sqlite
 ```
+
+Backup und Restore lokaler Workbench-Metadaten bleiben explizite Betriebsablaeufe. Die Doku beschreibt das Sichern von `.ims_workbench\metadata.sqlite`, den bewussten Umgang mit WAL-/SHM-Dateien sowie pruefende CLI-Kommandos wie `snapshot`, `roundtrip`, `export` und `workbench_readiness`. Es gibt keine automatische Backup-Funktion, keine SQLite-Migration und keine Simulation.

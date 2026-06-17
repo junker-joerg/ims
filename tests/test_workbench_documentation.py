@@ -46,6 +46,10 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json" in readme
     assert "python -m ims.api.metadata_import_cli dry-run .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.metadata_import_cli import .\\metadata_import.json --db .\\.ims_workbench\\metadata.sqlite" in readme
+    assert "Backup und Restore lokaler Workbench-Metadaten" in readme
+    assert ".ims_workbench\\metadata.sqlite" in readme
+    assert "WAL-/SHM-Dateien" in readme
+    assert "keine automatische Backup-Funktion, keine SQLite-Migration und keine Simulation" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
     assert "npm.cmd run build" in readme
     assert "Lokaler Workbench-v1 Abschlussstatus" in readme
@@ -160,6 +164,15 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die lokale Bedienreihenfolge fuer v1 ist" in doc
     assert "Die lokale Workbench-v1 ist als rein lokale Browser-Workbench und Modernisierungs-Meilenstein abgeschlossen" in doc
     assert "Nicht enthalten sind weiterhin Fachlogikaenderungen" in doc
+    assert "## Backup und Restore lokaler Metadaten" in doc
+    assert "metadata.sqlite-wal" in doc
+    assert "metadata.sqlite-shm" in doc
+    assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in doc
+    assert "python -m ims.api.metadata_import_cli snapshot --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "keine automatische Backup-Funktion" in doc
+    assert "keine SQLite-Migration" in doc
+    assert "keine Fachlogikdaten, keine Simulationsergebnisse" in doc
     assert "## Spaetere Bloecke" in doc
     assert "kontrollierte echte Run-Steuerung" in doc
     assert "eigene reviewbare Plaene und PRs" in doc
@@ -205,7 +218,16 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert ".ims_workbench/" in plan
     assert "metadata.sqlite" in plan
     assert "ZIP- und Release-Artefakte" in plan
-    assert "Backup" in plan
+    assert "Backup und Restore lokaler Metadaten" in plan
+    assert "metadata.sqlite-wal" in plan
+    assert "metadata.sqlite-shm" in plan
+    assert "snapshot --db .\\.ims_workbench\\metadata.sqlite" in plan
+    assert "export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in plan
+    assert "roundtrip --db .\\.ims_workbench\\metadata.sqlite" in plan
+    assert "workbench_readiness --frontend-dist frontend/dist --db .\\.ims_workbench\\metadata.sqlite" in plan
+    assert "keine automatische Backup-Funktion" in plan
+    assert "keine SQLite-Migration" in plan
+    assert "keine Fachlogikdaten, keine Simulationsergebnisse" in plan
     assert "Update" in plan
     assert "1-7" in plan
     assert "23-40+" in plan
@@ -218,6 +240,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Bundle-Trockenlauf auf Basis des Artefaktmanifests: vorbereitet" in plan
     assert "ZIP-Erzeugung als expliziter lokaler Build-Schritt: vorbereitet" in plan
     assert "ZIP-Smoke-Test ohne Simulation: vorbereitet" in plan
+    assert "Backup-/Restore-Doku fuer lokale Metadaten: vorbereitet" in plan
     assert "workbench_portable_readiness --root . --layout repo" in plan
     assert "workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "workbench_build_snapshot --root . --frontend-dist frontend/dist" in plan
@@ -230,6 +253,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung" in plan
     assert "ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles" in plan
     assert "ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten" in plan
+    assert "Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
     assert "reproduzierbare ZIP-Pruefsummen bei identischem Inhalt" in plan
