@@ -187,8 +187,11 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable" in doc
     assert 'python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "app\\frontend\\dist") --db $metadataDb' in doc
     assert "python -m ims.api.metadata_import_cli roundtrip --db $metadataDb" in doc
-    assert "python -m ims.api.workbench_portable_readiness --root $newRoot --layout repo" in doc
-    assert 'python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\\dist") --db $metadataDb' in doc
+    assert "im Kontext der neuen portablen Workbench-Version" in doc
+    assert "Push-Location $newRoot" in doc
+    assert "python -m ims.api.workbench_portable_readiness --root . --layout repo" in doc
+    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb" in doc
+    assert "Pop-Location" in doc
     assert "gegen die bestehende Metadatenquelle geprueft" in doc
     assert "keine frische `.ims_workbench` als Ersatz" in doc
     assert "Rollback heisst" in doc
@@ -257,8 +260,11 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable" in plan
     assert 'python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "app\\frontend\\dist") --db $metadataDb' in plan
     assert "python -m ims.api.metadata_import_cli roundtrip --db $metadataDb" in plan
-    assert "python -m ims.api.workbench_portable_readiness --root $newRoot --layout repo" in plan
-    assert 'python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\\dist") --db $metadataDb' in plan
+    assert "im Kontext der neuen portablen Workbench-Version" in plan
+    assert "Push-Location $newRoot" in plan
+    assert "python -m ims.api.workbench_portable_readiness --root . --layout repo" in plan
+    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb" in plan
+    assert "Pop-Location" in plan
     assert "Der neue" in plan
     assert "Anwendungspfad und der bestehende Metadatenpfad" in plan
     assert "Rollback heisst" in plan

@@ -237,12 +237,18 @@ python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "app\f
 python -m ims.api.metadata_import_cli roundtrip --db $metadataDb
 ```
 
-Fuer einen Repo-Checkout statt eines portablen Zielordners wird dieselbe Grenze
-mit dem neuen Repo-Pfad geprueft:
+Die Befehle muessen im Kontext der neuen portablen Workbench-Version ausgefuehrt
+werden, damit neuer Backend-/Adaptercode, neues Frontend und bestehende
+Metadatenquelle gemeinsam geprueft werden.
+
+Fuer einen Repo-Checkout statt eines portablen Zielordners wird in den neuen
+Checkout gewechselt, damit `python -m ...` die neue Version nutzt:
 
 ```powershell
-python -m ims.api.workbench_portable_readiness --root $newRoot --layout repo
-python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\dist") --db $metadataDb
+Push-Location $newRoot
+python -m ims.api.workbench_portable_readiness --root . --layout repo
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb
+Pop-Location
 ```
 
 Die neue Version wird damit gegen die bestehende Metadatenquelle geprueft. Sie
