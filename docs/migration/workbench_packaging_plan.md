@@ -181,12 +181,15 @@ python -m ims.api.metadata_import_cli roundtrip --db $metadataDb
 
 6. Neue Version erst starten, wenn die Checks erwartbar gruen sind.
 
-Bei einem neuen Repo-Checkout wird statt `--layout portable` entsprechend
-`--layout repo` mit `$newRoot` als neuem Repo-Pfad verwendet:
+Die Befehle muessen im Kontext der neuen portablen Workbench-Version laufen.
+Bei einem neuen Repo-Checkout wird deshalb in den neuen Checkout gewechselt und
+`--layout repo` relativ zu diesem Checkout verwendet:
 
 ```powershell
-python -m ims.api.workbench_portable_readiness --root $newRoot --layout repo
-python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\dist") --db $metadataDb
+Push-Location $newRoot
+python -m ims.api.workbench_portable_readiness --root . --layout repo
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db $metadataDb
+Pop-Location
 ```
 
 Der neue Anwendungspfad und der bestehende Metadatenpfad duerfen dabei nicht
