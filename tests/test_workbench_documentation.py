@@ -25,6 +25,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist" in readme
     assert "ohne Dateien zu kopieren oder ein Archiv zu erzeugen" in readme
     assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in readme
+    assert "New-Item -ItemType Directory .\\dist -Force" in readme
+    assert "fehlende Output-Parents nicht automatisch" in readme
     assert "kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis" in readme
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in readme
     assert "`zip_sha256`-Pruefsumme bei identischem Inhalt reproduzierbar" in readme
@@ -88,6 +90,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in doc
+    assert "New-Item -ItemType Directory .\\dist -Force" in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
@@ -135,6 +138,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "writes_performed = true" in doc
     assert "archive_created = true" in doc
     assert "schreibt ausschliesslich den expliziten ZIP-Zielpfad" in doc
+    assert "fehlende" in doc
+    assert "Output-Parent-Verzeichnisse lehnt der ZIP-Build ab" in doc
     assert "Ausgabe unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in doc
     assert "ZIP-Eintraege nutzen stabile Zeitstempel und Dateirechte" in doc
     assert "`zip_sha256` fuer identische Inhalte reproduzierbar bleibt" in doc
@@ -294,7 +299,11 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Update-/Rollback-Doku fuer lokale Workbench-Versionen: vorbereitet" in plan
     assert "Release-Checkliste fuer lokale ZIP-Artefakte" in plan
     assert "Frontend wurde gebaut: `npm.cmd run build`" in plan
+    assert "New-Item -ItemType Directory .\\dist -Force" in plan
     assert "workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in plan
+    assert "ZIP-Build erzeugt den Output-Parent nicht automatisch" in plan
+    assert "fehlender" in plan
+    assert "Ausgabeordner bleibt ein Fehler" in plan
     assert "ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen" in plan
     assert "Bundle-Plan und ZIP-Smoke" in plan
     assert "workbench_portable_readiness --layout portable" in plan

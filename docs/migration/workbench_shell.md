@@ -457,8 +457,13 @@ Der Bundle-Trockenlauf schreibt keine Datei, kopiert keine Dateien, erzeugt kein
 Der lokale ZIP-Build erzeugt aus dem Bundle-Plan ein explizit angegebenes ZIP:
 
 ```powershell
+New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 ```
+
+Der Ausgabeordner wird bewusst vorher angelegt; fehlende
+Output-Parent-Verzeichnisse lehnt der ZIP-Build ab, statt sie implizit zu
+erzeugen.
 
 Die Ausgabe enthaelt `mode = "workbench_bundle_build"`, den Root-Pfad, den Frontend-Dist-Pfad, `out_path`, `entries`, `file_count`, `total_bytes`, `zip_bytes`, `zip_sha256`, `writes_performed = true`, `archive_created = true` und `execution_performed = false`.
 

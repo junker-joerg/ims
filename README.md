@@ -96,9 +96,10 @@ Ein lokaler Bundle-Trockenlauf nutzt dieses Manifest und beschreibt ein spaetere
 python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist
 ```
 
-Ein expliziter lokaler ZIP-Build kann daraus ein ZIP in einen angegebenen Zielpfad schreiben:
+Ein expliziter lokaler ZIP-Build kann daraus ein ZIP in einen angegebenen Zielpfad schreiben. Der Ausgabeordner wird vorher explizit angelegt, weil der ZIP-Build fehlende Output-Parents nicht automatisch erzeugt:
 
 ```powershell
+New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 ```
 
