@@ -126,6 +126,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Ausgabe unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in doc
     assert "ZIP-Eintraege nutzen stabile Zeitstempel und Dateirechte" in doc
     assert "`zip_sha256` fuer identische Inhalte reproduzierbar bleibt" in doc
+    assert "automatisierter ZIP-Smoke prueft fuer erzeugte lokale Bundles" in doc
+    assert "Dieser Smoke startet keine Simulation" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
     assert "Die Uebersicht fuehrt diese Befehle nicht aus" in doc
@@ -215,6 +217,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Artefaktmanifest, Checksummen und Ausschluss lokaler Caches/Nutzerdaten: vorbereitet" in plan
     assert "Bundle-Trockenlauf auf Basis des Artefaktmanifests: vorbereitet" in plan
     assert "ZIP-Erzeugung als expliziter lokaler Build-Schritt: vorbereitet" in plan
+    assert "ZIP-Smoke-Test ohne Simulation: vorbereitet" in plan
     assert "workbench_portable_readiness --root . --layout repo" in plan
     assert "workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "workbench_build_snapshot --root . --frontend-dist frontend/dist" in plan
@@ -226,6 +229,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Artefaktmanifest fuer Ein- und Ausschlusspfade inklusive Groessen und SHA-256-Pruefsummen" in plan
     assert "Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung" in plan
     assert "ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles" in plan
+    assert "ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
     assert "reproduzierbare ZIP-Pruefsummen bei identischem Inhalt" in plan

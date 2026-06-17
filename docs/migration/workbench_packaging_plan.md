@@ -149,7 +149,7 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `1-7` reviewbaren PRs na
 5. Artefaktmanifest, Checksummen und Ausschluss lokaler Caches/Nutzerdaten: vorbereitet.
 6. Bundle-Trockenlauf auf Basis des Artefaktmanifests: vorbereitet.
 7. ZIP-Erzeugung als expliziter lokaler Build-Schritt: vorbereitet.
-8. ZIP-Smoke-Test ohne Simulation.
+8. ZIP-Smoke-Test ohne Simulation: vorbereitet.
 9. Backup-/Restore-Doku fuer lokale Metadaten.
 10. Update-/Rollback-Doku.
 11. Windows-Pfadhaertung und Leerzeichenpfade.
@@ -181,6 +181,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - Artefaktmanifest fuer Ein- und Ausschlusspfade inklusive Groessen und SHA-256-Pruefsummen,
 - Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung,
 - ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles,
+- ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten,
 - reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,
 - Ablehnung von ZIP-Zielpfaden unter eingeschlossenen Quellbaeumen,
 - Smoke-Start des Backend ohne Simulation,
