@@ -52,6 +52,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "keine automatische Backup-Funktion, keine SQLite-Migration und keine Simulation" in readme
     assert "Update und Rollback lokaler Workbench-Versionen" in readme
     assert "neben der bisherigen Version in einen eigenen Ordner" in readme
+    assert "explizitem neuem Anwendungspfad und explizitem bestehendem Metadatenpfad" in readme
+    assert "workbench_readiness --db <alter-metadata-pfad>" in readme
     assert "workbench_portable_readiness" in readme
     assert "keinen automatischen Updater, keine In-place-Aktualisierung" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
@@ -179,8 +181,14 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "keine Fachlogikdaten, keine Simulationsergebnisse" in doc
     assert "## Update und Rollback lokaler Workbench-Versionen" in doc
     assert "neben der bisherigen Version in einen eigenen Ordner" in doc
-    assert "python -m ims.api.workbench_portable_readiness --root . --layout repo" in doc
-    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert '$oldRoot = "C:\\ims-workbench-old"' in doc
+    assert '$newRoot = "C:\\ims-workbench-new"' in doc
+    assert '$metadataDb = Join-Path $oldRoot ".ims_workbench\\metadata.sqlite"' in doc
+    assert "python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable" in doc
+    assert 'python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\\dist") --db $metadataDb' in doc
+    assert "python -m ims.api.metadata_import_cli roundtrip --db $metadataDb" in doc
+    assert "gegen die bestehende Metadatenquelle geprueft" in doc
+    assert "keine frische `.ims_workbench` als Ersatz" in doc
     assert "Rollback heisst" in doc
     assert "keinen automatischen Updater" in doc
     assert "keine In-place-Aktualisierung" in doc
@@ -241,6 +249,14 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "keine Fachlogikdaten, keine Simulationsergebnisse" in plan
     assert "Update und Rollback lokaler Workbench-Versionen" in plan
     assert "neben der bisherigen Version in einen eigenen" in plan
+    assert '$oldRoot = "C:\\ims-workbench-old"' in plan
+    assert '$newRoot = "C:\\ims-workbench-new"' in plan
+    assert '$metadataDb = Join-Path $oldRoot ".ims_workbench\\metadata.sqlite"' in plan
+    assert "python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable" in plan
+    assert 'python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\\dist") --db $metadataDb' in plan
+    assert "python -m ims.api.metadata_import_cli roundtrip --db $metadataDb" in plan
+    assert "Der neue" in plan
+    assert "Anwendungspfad und der bestehende Metadatenpfad" in plan
     assert "Rollback heisst" in plan
     assert "kein fachlicher" in plan
     assert "Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung" in plan
