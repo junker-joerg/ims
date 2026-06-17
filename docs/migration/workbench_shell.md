@@ -392,6 +392,8 @@ Die Ausgabe enthaelt `mode = "workbench_bundle_build"`, den Root-Pfad, den Front
 
 Der ZIP-Build schreibt ausschliesslich den expliziten ZIP-Zielpfad. Er kopiert keine Dateien ausserhalb dieses Archivs, erzeugt keine SQLite-Datei, oeffnet keinen HTTP- oder UI-Schreibpfad und startet keine Simulation. Bei Bundle-Plan-Fehlern, fehlendem Ausgabeordner, nicht-`.zip`-Ziel, Ausgabe in ausgeschlossenen Pfaden oder Ausgabe unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist` wird kein ZIP erzeugt. ZIP-Eintraege nutzen stabile Zeitstempel und Dateirechte, damit `zip_sha256` fuer identische Inhalte reproduzierbar bleibt. Das ZIP ist ein lokales Bereitstellungsartefakt, kein Installer, kein Release-Tag und keine Fachvalidierung oder historische Vollgleichheitsbehauptung.
 
+Ein automatisierter ZIP-Smoke prueft fuer erzeugte lokale Bundles erwartete Workbench-Dateien, ausgeschlossene lokale Daten und Caches sowie stabile ZIP-Metadaten. Dieser Smoke startet keine Simulation und ist kein Installer- oder Release-Test.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.

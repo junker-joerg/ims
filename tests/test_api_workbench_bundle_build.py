@@ -39,6 +39,46 @@ def test_workbench_bundle_build_writes_explicit_zip(tmp_path):
     assert "frontend/dist/assets/app.js" in names
 
 
+def test_workbench_bundle_build_zip_smoke_covers_expected_bundle_boundaries(tmp_path):
+    _build_repo_fixture(tmp_path)
+    _touch(tmp_path / "python_port" / "ims" / "api" / "app.py", "app")
+    _touch(tmp_path / "python_port" / "ims" / "__pycache__" / "ignored.pyc", "cache")
+    _touch(tmp_path / "frontend" / "dist" / "assets" / "app.js", "bundle")
+    _touch(tmp_path / "frontend" / "node_modules" / "pkg" / "ignored.js", "ignored")
+    _touch(tmp_path / ".ims_workbench" / "metadata.sqlite", "local")
+    _touch(tmp_path / "logs" / "workbench.log", "log")
+    out_path = tmp_path / "dist" / "ims-workbench-local.zip"
+    out_path.parent.mkdir()
+
+    payload = build_workbench_bundle_zip(root=tmp_path, out_path=out_path).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["archive_created"] is True
+    assert payload["writes_performed"] is True
+    assert payload["execution_performed"] is False
+    with zipfile.ZipFile(out_path) as archive:
+        names = archive.namelist()
+        metadata_by_name = {info.filename: info for info in archive.infolist()}
+    assert names == payload["entries"]
+    assert "python_port/__init__.py" in names
+    assert "python_port/ims/api/app.py" in names
+    assert "frontend/dist/index.html" in names
+    assert "frontend/dist/assets/app.js" in names
+    assert "scripts/workbench/check-workbench.cmd" in names
+    assert "scripts/workbench/start-workbench.cmd" in names
+    assert "scripts/workbench/README.md" in names
+    assert "README.md" in names
+    assert "docs/migration/workbench_shell.md" in names
+    assert "docs/migration/workbench_packaging_plan.md" in names
+    assert "python_port/ims/__pycache__/ignored.pyc" not in names
+    assert "frontend/node_modules/pkg/ignored.js" not in names
+    assert ".ims_workbench/metadata.sqlite" not in names
+    assert "logs/workbench.log" not in names
+    assert metadata_by_name["frontend/dist/index.html"].date_time == (1980, 1, 1, 0, 0, 0)
+    assert metadata_by_name["frontend/dist/index.html"].create_system == 3
+    assert metadata_by_name["frontend/dist/index.html"].external_attr >> 16 == 0o644
+
+
 def test_workbench_bundle_build_excludes_local_runtime_paths(tmp_path):
     _build_repo_fixture(tmp_path)
     _touch(tmp_path / ".ims_workbench" / "metadata.sqlite", "local")
