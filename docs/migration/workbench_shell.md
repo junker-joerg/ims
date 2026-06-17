@@ -217,6 +217,27 @@ python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_
 
 Ein Restore ist aktuell manuell und explizit: Workbench stoppen, bestehende Metadatenquelle sichern oder ersetzen, wiederhergestellte Datei pruefen und erst danach die Workbench neu starten. Es gibt keine automatische Backup-Funktion, keine SQLite-Migration, keinen Updater, keinen HTTP- oder UI-Schreibpfad und keine Simulation. Backup und Restore enthalten keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
 
+## Update und Rollback lokaler Workbench-Versionen
+
+Lokale Workbench-Versionen werden bis auf Weiteres manuell aktualisiert. Eine neue Version soll neben der bisherigen Version in einen eigenen Ordner gelegt werden, nicht direkt ueber eine bestehende Installation. Die Anwendung und die lokalen Metadaten bleiben getrennt: Repo- oder ZIP-Inhalt, `python_port`, `frontend/dist` und Startskripte gehoeren zur Anwendung; `.ims_workbench` enthaelt die lokale Metadatenablage.
+
+Ein konservativer Update-Test ist:
+
+```powershell
+python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json
+python -m ims.api.workbench_portable_readiness --root . --layout repo
+python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite
+```
+
+Fuer ein spaeteres portables Ziel wird dieselbe Grenze mit der Zielstruktur geprueft:
+
+```powershell
+python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+```
+
+Rollback heisst: neue Workbench stoppen, alte Version wieder starten und bei Bedarf die zuvor gesicherte Metadatenquelle zuruecklegen. Es gibt keinen automatischen Updater, keine In-place-Aktualisierung, keine automatische SQLite-Migration, keinen Installer, keinen HTTP- oder UI-Schreibpfad und keine Simulation. Update und Rollback enthalten keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
+
 ## Metadaten-Konsistenz
 
 `/api/metadata/consistency` liefert eine stabile, rein lesende Diagnoseform fuer die aktuell geladenen Szenario- und Run-Metadaten. Der Endpunkt nutzt die bestehenden Repository-Listen und Capabilities und startet keine Simulation.

@@ -50,6 +50,10 @@ def test_readme_documents_local_workbench_start_commands():
     assert ".ims_workbench\\metadata.sqlite" in readme
     assert "WAL-/SHM-Dateien" in readme
     assert "keine automatische Backup-Funktion, keine SQLite-Migration und keine Simulation" in readme
+    assert "Update und Rollback lokaler Workbench-Versionen" in readme
+    assert "neben der bisherigen Version in einen eigenen Ordner" in readme
+    assert "workbench_portable_readiness" in readme
+    assert "keinen automatischen Updater, keine In-place-Aktualisierung" in readme
     assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in readme
     assert "npm.cmd run build" in readme
     assert "Lokaler Workbench-v1 Abschlussstatus" in readme
@@ -173,6 +177,13 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "keine automatische Backup-Funktion" in doc
     assert "keine SQLite-Migration" in doc
     assert "keine Fachlogikdaten, keine Simulationsergebnisse" in doc
+    assert "## Update und Rollback lokaler Workbench-Versionen" in doc
+    assert "neben der bisherigen Version in einen eigenen Ordner" in doc
+    assert "python -m ims.api.workbench_portable_readiness --root . --layout repo" in doc
+    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "Rollback heisst" in doc
+    assert "keinen automatischen Updater" in doc
+    assert "keine In-place-Aktualisierung" in doc
     assert "## Spaetere Bloecke" in doc
     assert "kontrollierte echte Run-Steuerung" in doc
     assert "eigene reviewbare Plaene und PRs" in doc
@@ -228,9 +239,13 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "keine automatische Backup-Funktion" in plan
     assert "keine SQLite-Migration" in plan
     assert "keine Fachlogikdaten, keine Simulationsergebnisse" in plan
-    assert "Update" in plan
-    assert "1-7" in plan
-    assert "23-40+" in plan
+    assert "Update und Rollback lokaler Workbench-Versionen" in plan
+    assert "neben der bisherigen Version in einen eigenen" in plan
+    assert "Rollback heisst" in plan
+    assert "kein fachlicher" in plan
+    assert "Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung" in plan
+    assert "1-3" in plan
+    assert "20-40+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Lokale Startskripte fuer Windows, ohne Installer: vorbereitet" in plan
@@ -241,6 +256,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP-Erzeugung als expliziter lokaler Build-Schritt: vorbereitet" in plan
     assert "ZIP-Smoke-Test ohne Simulation: vorbereitet" in plan
     assert "Backup-/Restore-Doku fuer lokale Metadaten: vorbereitet" in plan
+    assert "Update-/Rollback-Doku fuer lokale Workbench-Versionen: vorbereitet" in plan
     assert "workbench_portable_readiness --root . --layout repo" in plan
     assert "workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "workbench_build_snapshot --root . --frontend-dist frontend/dist" in plan
@@ -254,6 +270,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles" in plan
     assert "ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten" in plan
     assert "Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness" in plan
+    assert "Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
     assert "reproduzierbare ZIP-Pruefsummen bei identischem Inhalt" in plan
