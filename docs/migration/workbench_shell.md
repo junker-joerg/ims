@@ -221,20 +221,32 @@ Ein Restore ist aktuell manuell und explizit: Workbench stoppen, bestehende Meta
 
 Lokale Workbench-Versionen werden bis auf Weiteres manuell aktualisiert. Eine neue Version soll neben der bisherigen Version in einen eigenen Ordner gelegt werden, nicht direkt ueber eine bestehende Installation. Die Anwendung und die lokalen Metadaten bleiben getrennt: Repo- oder ZIP-Inhalt, `python_port`, `frontend/dist` und Startskripte gehoeren zur Anwendung; `.ims_workbench` enthaelt die lokale Metadatenablage.
 
-Ein konservativer Update-Test ist:
+Ein konservativer Update-Test trennt alte Datenquelle und neue Anwendung
+explizit. Die Werte sind Beispielpfade; wichtig ist, dass `$metadataDb` auf die
+bestehende Metadatenquelle zeigt und `$newRoot` auf die neue Workbench-Version:
 
 ```powershell
-python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json
-python -m ims.api.workbench_portable_readiness --root . --layout repo
-python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite
-python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite
+$oldRoot = "C:\ims-workbench-old"
+$newRoot = "C:\ims-workbench-new"
+$metadataDb = Join-Path $oldRoot ".ims_workbench\metadata.sqlite"
+$exportPath = Join-Path $oldRoot "metadata_export.json"
+
+python -m ims.api.metadata_import_cli export --db $metadataDb --out $exportPath
+python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable
+python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "frontend\dist") --db $metadataDb
+python -m ims.api.metadata_import_cli roundtrip --db $metadataDb
 ```
 
-Fuer ein spaeteres portables Ziel wird dieselbe Grenze mit der Zielstruktur geprueft:
+Fuer einen Repo-Checkout statt eines portablen Zielordners wird dieselbe Grenze
+mit dem neuen Repo-Pfad geprueft:
 
 ```powershell
-python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+python -m ims.api.workbench_portable_readiness --root $newRoot --layout repo
 ```
+
+Die neue Version wird damit gegen die bestehende Metadatenquelle geprueft. Sie
+legt keine frische `.ims_workbench` als Ersatz an und migriert die SQLite-Datei
+nicht automatisch.
 
 Rollback heisst: neue Workbench stoppen, alte Version wieder starten und bei Bedarf die zuvor gesicherte Metadatenquelle zuruecklegen. Es gibt keinen automatischen Updater, keine In-place-Aktualisierung, keine automatische SQLite-Migration, keinen Installer, keinen HTTP- oder UI-Schreibpfad und keine Simulation. Update und Rollback enthalten keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
 
