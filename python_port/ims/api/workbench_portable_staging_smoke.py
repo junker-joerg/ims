@@ -145,6 +145,7 @@ def _backend_import_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssu
             [sys.executable, "-c", f"import {module}"],
             capture_output=True,
             check=False,
+            cwd=root,
             env=env,
             text=True,
         )

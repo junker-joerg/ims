@@ -279,7 +279,7 @@ CRC-Pruefung.
 Das Staging ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`,
 WAL-/SHM-Dateien oder Logs und fuehrt keine SQLite-Migration aus.
 Der Staging-Smoke prueft nach dem Staging die zentrale Backend-Modulstruktur,
-deren Importfaehigkeit ueber `app\python_port`, `app\frontend\dist` und die
+deren Importfaehigkeit aus dem gestagten Workbench-Root ueber `app\python_port`, `app\frontend\dist` und die
 portablen Startskriptgrenzen rein lesend.
 
 Die Grenzen bleiben getrennt:

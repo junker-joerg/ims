@@ -72,6 +72,22 @@ def test_portable_staging_smoke_reports_missing_backend_import_dependency(tmp_pa
     assert not (root / "app" / "python_port" / "ims" / "api" / "__pycache__").exists()
 
 
+def test_portable_staging_smoke_import_probe_ignores_caller_cwd_shadowing(tmp_path, monkeypatch):
+    root = _stage_valid_bundle(tmp_path)
+    shadowing_cwd = tmp_path / "shadowing-cwd"
+    shadowing_cwd.mkdir()
+    (shadowing_cwd / "ims.py").write_text("raise RuntimeError('ambient cwd shadowed ims')\n", encoding="utf-8")
+    (shadowing_cwd / "starlette.py").write_text("raise RuntimeError('ambient cwd shadowed starlette')\n", encoding="utf-8")
+    monkeypatch.chdir(shadowing_cwd)
+
+    payload = smoke_workbench_portable_staging(root).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["backend_ready"] is True
+    assert payload["issues"] == []
+    assert not (root / "app" / "python_port" / "ims" / "api" / "__pycache__").exists()
+
+
 def test_portable_staging_smoke_reports_repo_scripts(tmp_path):
     root = _stage_valid_bundle(tmp_path)
     (root / "start-workbench.cmd").write_text(
