@@ -321,6 +321,21 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "erzeugt keine portable" in plan
     assert "Portable Zielstruktur: erst nach separatem" in plan
     assert "Readiness `app\\frontend\\dist`" in plan
+    assert "Portables Staging fuer ZIP-Artefakte" in plan
+    assert "Repo-Layout-Eintraege wie" in plan
+    assert "noch kein fertig gestagter portabler" in plan
+    assert "Quelle ist entweder ein geprueftes Repo-Layout-ZIP" in plan
+    assert "Ziel ist ein explizit angegebener, neuer oder leerer Staging-Ordner" in plan
+    assert "ims-workbench/app/python_port" in plan
+    assert "ims-workbench/app/frontend/dist" in plan
+    assert "ims-workbench/start-workbench.cmd" in plan
+    assert "ims-workbench/check-workbench.cmd" in plan
+    assert "ims-workbench/data/.ims_workbench" in plan
+    assert "ims-workbench/logs" in plan
+    assert "Lokale Nutzerdaten werden nicht ueberschrieben" in plan
+    assert "Staging, ZIP-Build und ZIP-Smoke getrennte Grenzen bleiben" in plan
+    assert "Ein spaeterer" in plan
+    assert "Implementierungs-PR muss Dateikopien" in plan
     assert "Frontend wurde gebaut: `npm.cmd run build`" in plan
     assert "New-Item -ItemType Directory .\\dist -Force" in plan
     assert "workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in plan
@@ -353,6 +368,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness" in plan
     assert "Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback" in plan
     assert "Lokale Release-Bereitstellung: konsolidiert" in plan
+    assert "Portables Staging fuer ZIP-Artefakte: geplant" in plan
+    assert "Optionaler Staging-Adapter mit Smoke-Checks" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
     assert "reproduzierbare ZIP-Pruefsummen bei identischem Inhalt" in plan
