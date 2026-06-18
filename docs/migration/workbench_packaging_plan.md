@@ -279,7 +279,8 @@ CRC-Pruefung.
 Das Staging ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`,
 WAL-/SHM-Dateien oder Logs und fuehrt keine SQLite-Migration aus.
 Der Staging-Smoke prueft nach dem Staging die zentrale Backend-Modulstruktur,
-`app\frontend\dist` und die portablen Startskriptgrenzen rein lesend.
+deren Importfaehigkeit ueber `app\python_port`, `app\frontend\dist` und die
+portablen Startskriptgrenzen rein lesend.
 
 Die Grenzen bleiben getrennt:
 
@@ -376,7 +377,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten,
 - ZIP-Payload-/CRC-Pruefung fuer beschaedigte Eintragsbytes,
 - portables Staging aus einem geprueften ZIP in eine leere Zielstruktur,
-- Staging-Smoke fuer zentrale Backend-Module, Frontend-Dist und portable Startskriptgrenzen,
+- Staging-Smoke fuer zentrale Backend-Module, Backend-Importfaehigkeit, Frontend-Dist und portable Startskriptgrenzen,
 - Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness,
 - Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback,
 - reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,
