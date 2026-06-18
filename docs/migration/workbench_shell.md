@@ -36,6 +36,9 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.workbench_artifact_manifest` beschreibt Ein- und Ausschlusspfade fuer ein spaeteres portables Artefakt, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_bundle_plan` plant ein spaeteres lokales Workbench-Bundle auf Basis des Artefaktmanifests, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_bundle_build` erzeugt nur bei explizitem `--out` ein lokales ZIP aus dem Bundle-Plan.
+- `ims.api.workbench_bundle_smoke` prueft ein erzeugtes ZIP auf erwartete Eintraege, Ausschluesse, stabile Metadaten und lesbare Payloads.
+- `ims.api.workbench_portable_staging` staged ein geprueftes ZIP in eine portable Zielstruktur.
+- `ims.api.workbench_portable_staging_smoke` prueft eine gestagte portable Zielstruktur und ihre Startskriptgrenzen rein lesend.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
@@ -482,6 +485,7 @@ New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
+python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench
 python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
 ```
 
@@ -490,7 +494,10 @@ explizit in eine portable Zielstruktur unter `.\ims-workbench`. Eine portable
 Readiness mit `app\frontend\dist` ist erst nach diesem Staging-Schritt sinnvoll;
 Repo-Checks nutzen weiterhin `frontend/dist`. Das portable Staging erwartet
 einen fehlenden oder leeren Zielordner und ueberschreibt keine lokalen
-Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Das ZIP bleibt ein lokales
+Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Der
+Staging-Smoke liest die gestagte portable Zielstruktur, prueft zentrale
+Backend-Module, `app\frontend\dist` und die portablen Startskripte, schreibt
+nichts und startet keine Simulation. Das ZIP bleibt ein lokales
 Bereitstellungsartefakt: Es ist kein Installer, kein automatischer Updater,
 keine SQLite-Migration, keine Fachvalidierung und keine historische
 Vollgleichheitsbehauptung.
@@ -631,6 +638,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip` | Explizites lokales ZIP aus dem Bundle-Plan erzeugen | schreibt nur den expliziten ZIP-Zielpfad |
 | `python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip` | Explizit erzeugtes ZIP direkt pruefen | schreibt nicht |
 | `python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench` | Geprueftes ZIP in eine portable Zielstruktur stagen | schreibt nur in den expliziten leeren Zielordner |
+| `python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench` | Gestagte portable Struktur und Startskriptgrenzen pruefen | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:

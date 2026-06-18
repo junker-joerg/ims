@@ -120,6 +120,7 @@ Erste lokale Windows-Skripte sind unter `scripts/workbench/` vorbereitet:
 - `python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist` plant ein spaeteres Bundle auf Basis des Manifests, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip` erzeugt ein explizites lokales ZIP aus dem Bundle-Plan.
 - `python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench` staged ein geprueftes ZIP in eine portable Zielstruktur.
+- `python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench` prueft die gestagte portable Struktur und Startskriptgrenzen rein lesend.
 
 Diese Skripte kapseln nur lokale Betriebsablaeufe:
 
@@ -265,6 +266,7 @@ New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
+python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench
 python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
 ```
 
@@ -276,6 +278,8 @@ stabile ZIP-Metadaten sowie die Lesbarkeit der ZIP-Payloads inklusive
 CRC-Pruefung.
 Das Staging ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`,
 WAL-/SHM-Dateien oder Logs und fuehrt keine SQLite-Migration aus.
+Der Staging-Smoke prueft nach dem Staging die zentrale Backend-Modulstruktur,
+`app\frontend\dist` und die portablen Startskriptgrenzen rein lesend.
 
 Die Grenzen bleiben getrennt:
 
@@ -341,7 +345,7 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `0-2` reviewbaren PRs na
 12. Release-Checkliste: vorbereitet.
 13. Lokale Release-Bereitstellung: konsolidiert.
 14. Portables Staging fuer ZIP-Artefakte: vorbereitet.
-15. Optionaler Staging-Smoke und weitere Plattformhaertung.
+15. Staging-Smoke fuer portable Zielstruktur und Startskriptgrenzen: vorbereitet.
 16. Abschlusskonsolidierung.
 17. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
 
@@ -351,10 +355,10 @@ Die grobe Gesamtplanung bis "wirklich alles fertig" bleibt:
 
 - Workbench-Ausbau nach v1: ca. `8-15` PRs.
 - Fachvalidierung und historische Vollgleichheit: ca. `10-18` PRs.
-- Packaging und Bereitstellung: ca. `0-1` PRs.
+- Packaging und Bereitstellung: ca. `0` PRs, abgesehen von Review-Fixes.
 - Integrations- und Review-Reserve: ca. `1-3` PRs.
 
-Erwartet bleiben damit weiterhin grob ca. `18-37+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
+Erwartet bleiben damit weiterhin grob ca. `18-36+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
 
 ## Teststrategie
 
@@ -372,6 +376,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten,
 - ZIP-Payload-/CRC-Pruefung fuer beschaedigte Eintragsbytes,
 - portables Staging aus einem geprueften ZIP in eine leere Zielstruktur,
+- Staging-Smoke fuer zentrale Backend-Module, Frontend-Dist und portable Startskriptgrenzen,
 - Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness,
 - Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback,
 - reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,

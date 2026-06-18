@@ -242,6 +242,12 @@ def test_core_placeholders_import() -> None:
         main as workbench_portable_staging_main,
         stage_workbench_portable_bundle,
     )
+    from ims.api.workbench_portable_staging_smoke import (
+        WorkbenchPortableStagingSmokeIssue,
+        WorkbenchPortableStagingSmokeResult,
+        main as workbench_portable_staging_smoke_main,
+        smoke_workbench_portable_staging,
+    )
     from ims.api.workbench_diagnostics import (
         WorkbenchDiagnosticIssue,
         WorkbenchDiagnosticsResult,
@@ -698,6 +704,10 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchPortableStagingResult is not None
     assert stage_workbench_portable_bundle is not None
     assert workbench_portable_staging_main is not None
+    assert WorkbenchPortableStagingSmokeIssue is not None
+    assert WorkbenchPortableStagingSmokeResult is not None
+    assert smoke_workbench_portable_staging is not None
+    assert workbench_portable_staging_smoke_main is not None
     assert WorkbenchDiagnosticIssue is not None
     assert WorkbenchDiagnosticsResult is not None
     assert build_workbench_diagnostics is not None

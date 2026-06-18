@@ -124,6 +124,50 @@ def test_portable_staging_rejects_entry_that_escapes_output_target(tmp_path):
     assert not (tmp_path / "outside.txt").exists()
 
 
+def test_portable_staging_rejects_backslash_traversal_entry(tmp_path):
+    zip_path = tmp_path / "dist" / "ims-workbench-local.zip"
+    zip_path.parent.mkdir()
+    out_path = tmp_path / "ims-workbench"
+    entries = _valid_bundle_entries()
+    entries["python_port/..\\..\\data\\.ims_workbench\\metadata.sqlite"] = "escape"
+    _write_zip(zip_path, entries)
+
+    payload = stage_workbench_portable_bundle(zip_path=zip_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert payload["writes_performed"] is False
+    assert "zip_entry_escapes_out_path" in issue_codes
+    assert not (tmp_path / "data" / ".ims_workbench" / "metadata.sqlite").exists()
+
+
+def test_portable_staging_rejects_truncated_backend_tree(tmp_path):
+    zip_path = tmp_path / "dist" / "ims-workbench-local.zip"
+    zip_path.parent.mkdir()
+    out_path = tmp_path / "ims-workbench"
+    _write_zip(
+        zip_path,
+        {
+            "README.md": "readme",
+            "python_port/__init__.py": "python",
+            "frontend/dist/index.html": "<html></html>",
+            "scripts/workbench/check-workbench.cmd": "check",
+            "scripts/workbench/start-workbench.cmd": "start",
+            "scripts/workbench/README.md": "scripts",
+            "docs/migration/workbench_shell.md": "workbench doc",
+            "docs/migration/workbench_packaging_plan.md": "packaging plan",
+        },
+    )
+
+    payload = stage_workbench_portable_bundle(zip_path=zip_path, out_path=out_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert payload["writes_performed"] is False
+    assert "backend_entry_missing" in issue_codes
+    assert not out_path.exists()
+
+
 def test_portable_staging_cli_prints_stable_json(tmp_path, capsys):
     repo_root = tmp_path / "repo"
     _build_repo_fixture(repo_root)
@@ -181,6 +225,11 @@ def test_portable_staging_public_types_importable():
 
 def _build_repo_fixture(root: Path) -> None:
     _touch(root / "python_port" / "__init__.py", "python")
+    _touch(root / "python_port" / "ims" / "__init__.py", "ims")
+    _touch(root / "python_port" / "ims" / "api" / "__init__.py", "api")
+    _touch(root / "python_port" / "ims" / "api" / "app.py", "app")
+    _touch(root / "python_port" / "ims" / "api" / "workbench_diagnostics.py", "diagnostics")
+    _touch(root / "python_port" / "ims" / "api" / "workbench_readiness.py", "readiness")
     _touch(root / "frontend" / "dist" / "index.html", "<html></html>")
     _touch(root / "scripts" / "workbench" / "check-workbench.cmd", "check")
     _touch(root / "scripts" / "workbench" / "start-workbench.cmd", "start")
@@ -203,3 +252,21 @@ def _write_zip(path: Path, entries: dict[str, str]) -> None:
             info.create_system = 3
             info.external_attr = 0o644 << 16
             archive.writestr(info, content)
+
+
+def _valid_bundle_entries() -> dict[str, str]:
+    return {
+        "README.md": "readme",
+        "python_port/__init__.py": "python",
+        "python_port/ims/__init__.py": "ims",
+        "python_port/ims/api/__init__.py": "api",
+        "python_port/ims/api/app.py": "app",
+        "python_port/ims/api/workbench_diagnostics.py": "diagnostics",
+        "python_port/ims/api/workbench_readiness.py": "readiness",
+        "frontend/dist/index.html": "<html></html>",
+        "scripts/workbench/check-workbench.cmd": "check",
+        "scripts/workbench/start-workbench.cmd": "start",
+        "scripts/workbench/README.md": "scripts",
+        "docs/migration/workbench_shell.md": "workbench doc",
+        "docs/migration/workbench_packaging_plan.md": "packaging plan",
+    }

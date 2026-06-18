@@ -12,6 +12,15 @@ from ims.api.workbench_bundle_smoke import smoke_workbench_bundle_zip
 from ims.api.workbench_portable_readiness import build_workbench_portable_readiness
 
 
+REQUIRED_BACKEND_ENTRIES = (
+    "python_port/ims/__init__.py",
+    "python_port/ims/api/__init__.py",
+    "python_port/ims/api/app.py",
+    "python_port/ims/api/workbench_diagnostics.py",
+    "python_port/ims/api/workbench_readiness.py",
+)
+
+
 @dataclass(frozen=True)
 class WorkbenchPortableStagingIssue:
     code: str
@@ -79,6 +88,8 @@ def stage_workbench_portable_bundle(
         issues.extend(_issues_from_smoke(smoke))
     if not issues:
         issues.extend(_staging_entry_issues(resolved_zip_path, resolved_out_path))
+    if not issues:
+        issues.extend(_backend_entry_issues(resolved_zip_path))
     status = _status_from_issues(issues)
     if status == "error":
         return _result(
@@ -221,24 +232,42 @@ def _staging_entry_issues(zip_path: Path, out_path: Path) -> list[WorkbenchPorta
     return issues
 
 
+def _backend_entry_issues(zip_path: Path) -> list[WorkbenchPortableStagingIssue]:
+    with zipfile.ZipFile(zip_path) as archive:
+        names = set(archive.namelist())
+    return [
+        WorkbenchPortableStagingIssue(
+            code="backend_entry_missing",
+            severity="error",
+            message=f"portable staging ZIP is missing backend entry required by generated scripts: {entry}",
+        )
+        for entry in REQUIRED_BACKEND_ENTRIES
+        if entry not in names
+    ]
+
+
 def _target_path_for_entry(out_path: Path, entry_name: str) -> Path | None:
+    if "\\" in entry_name:
+        raise ValueError(f"portable staging entry contains backslash path separator: {entry_name}")
     entry = PurePosixPath(entry_name)
     parts = entry.parts
     if ".." in parts:
         raise ValueError(f"portable staging entry contains parent path segment: {entry_name}")
     if parts[:1] == ("python_port",):
-        return _safe_target(out_path, Path("app", *parts))
+        return _safe_target(out_path, Path("app", *parts), allowed_root=Path("app", "python_port"))
     if parts[:2] == ("frontend", "dist"):
-        return _safe_target(out_path, Path("app", *parts))
+        return _safe_target(out_path, Path("app", *parts), allowed_root=Path("app", "frontend", "dist"))
     if parts == ("README.md",):
         return _safe_target(out_path, Path("README.md"))
     return None
 
 
-def _safe_target(out_path: Path, relative_path: Path) -> Path:
+def _safe_target(out_path: Path, relative_path: Path, *, allowed_root: Path | None = None) -> Path:
     target_path = (out_path / relative_path).resolve()
     if not _is_under(target_path, out_path):
         raise ValueError(f"portable staging entry escapes output directory: {relative_path}")
+    if allowed_root is not None and not _is_under(target_path, (out_path / allowed_root).resolve()):
+        raise ValueError(f"portable staging entry escapes mapped subtree: {relative_path}")
     return target_path
 
 
