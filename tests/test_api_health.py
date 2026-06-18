@@ -1,5 +1,6 @@
 import importlib
 import json
+import sqlite3
 
 from starlette.testclient import TestClient
 
@@ -244,6 +245,29 @@ def test_run_control_queue_overview_reads_injected_sqlite_queue(tmp_path):
     assert payload["entries"][0]["execution_performed"] is False
     assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
+
+
+def test_run_control_queue_overview_reports_malformed_queue_schema(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    with sqlite3.connect(db_path) as connection:
+        connection.execute("CREATE TABLE run_control_queue (queue_id TEXT PRIMARY KEY)")
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/queue")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "warning"
+    assert payload["queue_count"] == 0
+    assert payload["entries"] == []
+    assert payload["issues"][0]["code"] == "run_control_queue_unreadable"
+    assert payload["issues"][0]["severity"] == "warning"
+    assert "no such column" in payload["issues"][0]["message"]
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["execution_performed"] is False
 
 
 def test_run_control_queue_detail_reads_injected_sqlite_queue_entry(tmp_path):

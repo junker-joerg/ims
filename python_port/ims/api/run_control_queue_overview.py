@@ -100,16 +100,17 @@ def build_run_control_queue_overview(metadata_source: dict[str, object]) -> RunC
     try:
         queue_result = list_run_control_queue(db_path).to_dict()
     except MetadataImportError as exc:
+        is_uninitialized = _is_uninitialized_queue(str(exc))
         return RunControlQueueOverview(
-            status="ok" if _is_uninitialized_queue(str(exc)) else "warning",
+            status="ok" if is_uninitialized else "warning",
             source=source,
             entries=(),
             issues=(
                 RunControlQueueOverviewIssue(
                     code="run_control_queue_not_initialized"
-                    if _is_uninitialized_queue(str(exc))
+                    if is_uninitialized
                     else "run_control_queue_unreadable",
-                    severity="info" if _is_uninitialized_queue(str(exc)) else "warning",
+                    severity="info" if is_uninitialized else "warning",
                     message=str(exc),
                 ),
             ),
@@ -142,4 +143,4 @@ def build_run_control_queue_detail(metadata_source: dict[str, object], queue_id:
 
 
 def _is_uninitialized_queue(message: str) -> bool:
-    return "not readable or initialized" in message or "no such table: run_control_queue" in message
+    return "no such table: run_control_queue" in message
