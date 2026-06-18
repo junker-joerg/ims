@@ -143,6 +143,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der Startplan startet keinen Server" in doc
     assert "## v1-Bereitschaftspruefung" in doc
     assert "Die Readiness-Pruefung startet keinen Server" in doc
+    assert "Run-Control-Queue-Diagnose als eigenen Bereitschaftsbereich" in doc
+    assert "run_control_queue_ready = false" in doc
     assert "Die lokale portable Strukturpruefung ist rein beschreibend" in doc
     assert "Der Check erzeugt keine fehlenden Ordner" in doc
     assert "erwarteten und tatsaechlichen Pfadtyp" in doc

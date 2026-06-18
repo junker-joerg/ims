@@ -33,7 +33,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.run_control_preflight` prueft vorhandene Run-Metadaten lokal gegen diese gesperrte Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - `ims.api.workbench_start_plan` beschreibt den lokalen Start aus Defaults oder Konfiguration, startet aber keinen Server.
-- `ims.api.workbench_readiness` buendelt lokale v1-Bereitschaft aus Diagnose, Metadatenquelle, CLI-Grenzen und Run-Control-Preflight, ohne den Server zu starten.
+- `ims.api.workbench_readiness` buendelt lokale v1-Bereitschaft aus Diagnose, Metadatenquelle, CLI-Grenzen, Run-Control-Preflight und optionaler Run-Control-Queue-Diagnose, ohne den Server zu starten.
 - `ims.api.workbench_portable_readiness` prueft die heutige Repo-Struktur oder eine spaetere portable Workbench-Ordnerstruktur, ohne Dateien zu erzeugen.
 - `ims.api.workbench_build_snapshot` fasst vorhandene lokale Build-Artefakte zusammen, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `ims.api.workbench_artifact_manifest` beschreibt Ein- und Ausschlusspfade fuer ein spaeteres portables Artefakt, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
@@ -65,7 +65,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale Run-Control-Preflight ist rein lesend. Er prueft Run- und Szenario-Metadaten, startet aber keine Simulation und schreibt keine Metadaten.
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
 - Der lokale Startplan ist rein beschreibend. Er gibt empfohlene Kommandos und aufgeloeste Pfade aus, startet aber keinen Server und erzeugt keine Dateien.
-- Die lokale Readiness-Pruefung ist rein beschreibend. Sie startet keinen Server, baut kein Frontend, schreibt keine Metadaten und startet keine Simulation.
+- Die lokale Readiness-Pruefung ist rein beschreibend. Sie startet keinen Server, baut kein Frontend, schreibt keine Metadaten und startet keine Simulation. Bei expliziter SQLite-Quelle bezieht sie die Run-Control-Queue-Diagnose als eigenen Bereitschaftsbereich ein, ohne die Queue zu initialisieren.
 - Die lokale portable Strukturpruefung ist rein beschreibend. Sie erkennt Repo- und portable Zielstruktur, erzeugt aber keine fehlenden Ordner, keine SQLite-Datei und kein Release-Artefakt.
 - Der lokale Build-Snapshot ist rein beschreibend. Er zaehlt vorhandene Frontend-Dist-Dateien und prueft lokale App-/Skriptpfade, kopiert aber keine Dateien und erzeugt kein ZIP.
 - Das lokale Artefaktmanifest ist rein beschreibend. Es listet geplante Einschlusspfade und ausgeschlossene lokale Daten/Caches, kopiert aber keine Dateien und erzeugt kein ZIP.
@@ -401,7 +401,7 @@ Optional koennen eine explizite SQLite-Metadatenquelle und eine Run-ID fuer den 
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite --run-id baseline-python-tests
 ```
 
-Die Ausgabe enthaelt `mode = "workbench_readiness"`, Einzelstatus fuer Backend, Frontend, Metadaten, CLI und Run-Control, eine `checks`-Liste, `issues`, `writes_enabled = false` und `execution_enabled = false`. Eine fehlende oder unlesbare explizite SQLite-Metadatenquelle setzt `metadata_ready = false`; eine unbekannte Run-ID bleibt dagegen ein Run-Control-Hinweis.
+Die Ausgabe enthaelt `mode = "workbench_readiness"`, Einzelstatus fuer Backend, Frontend, Metadaten, CLI, Run-Control und Run-Control-Queue, eine `checks`-Liste, `issues`, `writes_enabled = false` und `execution_enabled = false`. Eine fehlende oder unlesbare explizite SQLite-Metadatenquelle setzt `metadata_ready = false`; eine unbekannte Run-ID bleibt dagegen ein Run-Control-Hinweis. Eine nicht initialisierte Queue bleibt zulaessig, unlesbare Queue-Schemas oder aktivierte Ausfuehrungsflags setzen `run_control_queue_ready = false`.
 
 Die Readiness-Pruefung startet keinen Server, baut kein Frontend, erzeugt keine SQLite-Datei, schreibt keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation. Sie ist eine lokale Betriebs- und Härtungspruefung fuer die Workbench-v1, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
 
