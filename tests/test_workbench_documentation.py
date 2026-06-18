@@ -82,6 +82,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "keine HTTP-/UI-Schreibpfade" in readme
     assert "docs/migration/workbench_run_control_plan.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
+    assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
     assert "scripts\\workbench\\check-workbench.cmd" in readme
     assert "scripts\\workbench\\start-workbench.cmd" in readme
 
@@ -239,6 +240,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "kontrollierte echte Run-Steuerung" in doc
     assert "eigene reviewbare Plaene und PRs" in doc
     assert "docs/migration/workbench_packaging_plan.md" in doc
+    assert "Packaging- und Bereitstellungsblock ist separat" in doc
+    assert "ZIP-/Staging-Grenzen" in doc
     assert "scripts\\workbench\\check-workbench.cmd" in doc
     assert "scripts\\workbench\\start-workbench.cmd" in doc
 
@@ -274,6 +277,9 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
 
     assert PACKAGING_PLAN.is_file()
     assert "Workbench Packaging- und Bereitstellungsplan" in plan
+    assert "## Abschlussstatus" in plan
+    assert "Packaging-/Bereitstellungsblock ist fuer die lokale Workbench-v1 abgeschlossen" in plan
+    assert "Der lokale ZIP-/Staging-Ablauf ist als manuelle, pruefbare Bereitstellungsgrenze vorbereitet" in plan
     assert "portable IMS Workbench" in plan
     assert "start-workbench.cmd" in plan
     assert "check-workbench.cmd" in plan
@@ -388,6 +394,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Staging-Smoke fuer zentrale Backend-Module" in plan
     assert "Backend-Importfaehigkeit" in plan
     assert "Importfaehigkeit aus dem gestagten Workbench-Root" in plan
+    assert "Abschlusskonsolidierung: erledigt" in plan
+    assert "0` geplanten PRs" in plan
     assert "portables Staging aus einem geprueften ZIP in eine leere Zielstruktur" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
