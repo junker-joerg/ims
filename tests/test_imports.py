@@ -229,6 +229,12 @@ def test_core_placeholders_import() -> None:
         build_workbench_bundle_zip,
         main as workbench_bundle_build_main,
     )
+    from ims.api.workbench_bundle_smoke import (
+        WorkbenchBundleSmokeIssue,
+        WorkbenchBundleSmokeResult,
+        main as workbench_bundle_smoke_main,
+        smoke_workbench_bundle_zip,
+    )
     from ims.api.workbench_diagnostics import (
         WorkbenchDiagnosticIssue,
         WorkbenchDiagnosticsResult,
@@ -676,6 +682,10 @@ def test_core_placeholders_import() -> None:
     assert WorkbenchBundleBuildResult is not None
     assert build_workbench_bundle_zip is not None
     assert workbench_bundle_build_main is not None
+    assert WorkbenchBundleSmokeIssue is not None
+    assert WorkbenchBundleSmokeResult is not None
+    assert smoke_workbench_bundle_zip is not None
+    assert workbench_bundle_smoke_main is not None
     assert WorkbenchDiagnosticIssue is not None
     assert WorkbenchDiagnosticsResult is not None
     assert build_workbench_diagnostics is not None
