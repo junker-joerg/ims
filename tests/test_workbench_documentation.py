@@ -37,6 +37,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "fehlenden oder leeren Zielordner" in readme
     assert "ueberschreibt keine lokalen Nutzerdaten" in readme
     assert "Staging-Smoke prueft danach die gestagte Backend-/Frontend-Struktur" in readme
+    assert "Backend-Importfaehigkeit" in readme
     assert "lokaler Bereitstellungscheck" in readme
     assert "kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis" in readme
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in readme
@@ -169,6 +170,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "diesem Staging-Schritt" in doc
     assert "Staging-Smoke liest die gestagte portable Zielstruktur" in doc
     assert "Backend-Module" in doc
+    assert "Importfaehigkeit ueber `app\\python_port`" in doc
     assert "app\\frontend\\dist" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
@@ -383,6 +385,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Portables Staging fuer ZIP-Artefakte: vorbereitet" in plan
     assert "Staging-Smoke fuer portable Zielstruktur und Startskriptgrenzen: vorbereitet" in plan
     assert "Staging-Smoke fuer zentrale Backend-Module" in plan
+    assert "Backend-Importfaehigkeit" in plan
     assert "portables Staging aus einem geprueften ZIP in eine leere Zielstruktur" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan

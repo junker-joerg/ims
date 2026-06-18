@@ -2,12 +2,22 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
 
 from ims.api.workbench_portable_readiness import build_workbench_portable_readiness
 from ims.api.workbench_portable_staging import REQUIRED_BACKEND_ENTRIES
+
+
+BACKEND_IMPORT_MODULES = (
+    "ims.api.app",
+    "ims.api.workbench_diagnostics",
+    "ims.api.workbench_readiness",
+)
 
 
 @dataclass(frozen=True)
@@ -61,6 +71,7 @@ def smoke_workbench_portable_staging(root: Path | str) -> WorkbenchPortableStagi
     portable_readiness = build_workbench_portable_readiness(resolved_root, layout="portable").to_dict()
     issues = _issues_from_readiness(portable_readiness)
     issues.extend(_backend_issues(resolved_root))
+    issues.extend(_backend_import_issues(resolved_root))
     issues.extend(_script_issues(resolved_root))
     status = _status_from_issues(issues)
     return WorkbenchPortableStagingSmokeResult(
@@ -70,7 +81,7 @@ def smoke_workbench_portable_staging(root: Path | str) -> WorkbenchPortableStagi
         portable_layout_ready=bool(portable_readiness.get("portable_layout_ready") is True),
         frontend_dist_available=bool(portable_readiness.get("frontend_dist_available") is True),
         python_port_available=bool(portable_readiness.get("python_port_available") is True),
-        backend_ready=not any(issue.code == "backend_entry_missing" for issue in issues),
+        backend_ready=not any(issue.code in {"backend_entry_missing", "backend_import_failed"} for issue in issues),
         scripts_ready=not any(issue.code.startswith("portable_script_") for issue in issues),
         writes_performed=False,
         execution_performed=False,
@@ -115,6 +126,36 @@ def _backend_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssue]:
                     code="backend_entry_missing",
                     severity="error",
                     message=f"portable staged backend is missing required entry: {expected_path}",
+                )
+            )
+    return issues
+
+
+def _backend_import_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssue]:
+    python_port = root / "app" / "python_port"
+    if not python_port.is_dir():
+        return []
+
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(python_port)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    issues: list[WorkbenchPortableStagingSmokeIssue] = []
+    for module in BACKEND_IMPORT_MODULES:
+        completed = subprocess.run(
+            [sys.executable, "-c", f"import {module}"],
+            capture_output=True,
+            check=False,
+            env=env,
+            text=True,
+        )
+        if completed.returncode != 0:
+            details = (completed.stderr or completed.stdout or "backend import failed").strip().splitlines()
+            message = details[-1] if details else "backend import failed"
+            issues.append(
+                WorkbenchPortableStagingSmokeIssue(
+                    code="backend_import_failed",
+                    severity="error",
+                    message=f"portable staged backend cannot import {module}: {message}",
                 )
             )
     return issues

@@ -496,8 +496,9 @@ Repo-Checks nutzen weiterhin `frontend/dist`. Das portable Staging erwartet
 einen fehlenden oder leeren Zielordner und ueberschreibt keine lokalen
 Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Der
 Staging-Smoke liest die gestagte portable Zielstruktur, prueft zentrale
-Backend-Module, `app\frontend\dist` und die portablen Startskripte, schreibt
-nichts und startet keine Simulation. Das ZIP bleibt ein lokales
+Backend-Module, deren Importfaehigkeit ueber `app\python_port`,
+`app\frontend\dist` und die portablen Startskripte, schreibt nichts und startet
+keine Simulation. Das ZIP bleibt ein lokales
 Bereitstellungsartefakt: Es ist kein Installer, kein automatischer Updater,
 keine SQLite-Migration, keine Fachvalidierung und keine historische
 Vollgleichheitsbehauptung.

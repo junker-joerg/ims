@@ -56,6 +56,22 @@ def test_portable_staging_smoke_reports_missing_backend_module(tmp_path):
     assert "backend_entry_missing" in issue_codes
 
 
+def test_portable_staging_smoke_reports_missing_backend_import_dependency(tmp_path):
+    root = _stage_valid_bundle(tmp_path)
+    (root / "app" / "python_port" / "ims" / "api" / "workbench_diagnostics.py").write_text(
+        "import ims.api.metadata_repository\n",
+        encoding="utf-8",
+    )
+
+    payload = smoke_workbench_portable_staging(root).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert payload["backend_ready"] is False
+    assert "backend_import_failed" in issue_codes
+    assert not (root / "app" / "python_port" / "ims" / "api" / "__pycache__").exists()
+
+
 def test_portable_staging_smoke_reports_repo_scripts(tmp_path):
     root = _stage_valid_bundle(tmp_path)
     (root / "start-workbench.cmd").write_text(
@@ -136,11 +152,11 @@ def _stage_valid_bundle(tmp_path: Path) -> Path:
 
 def _build_repo_fixture(root: Path) -> None:
     _touch(root / "python_port" / "__init__.py", "python")
-    _touch(root / "python_port" / "ims" / "__init__.py", "ims")
-    _touch(root / "python_port" / "ims" / "api" / "__init__.py", "api")
-    _touch(root / "python_port" / "ims" / "api" / "app.py", "app")
-    _touch(root / "python_port" / "ims" / "api" / "workbench_diagnostics.py", "diagnostics")
-    _touch(root / "python_port" / "ims" / "api" / "workbench_readiness.py", "readiness")
+    _touch(root / "python_port" / "ims" / "__init__.py", "# ims\n")
+    _touch(root / "python_port" / "ims" / "api" / "__init__.py", "# api\n")
+    _touch(root / "python_port" / "ims" / "api" / "app.py", "# app\n")
+    _touch(root / "python_port" / "ims" / "api" / "workbench_diagnostics.py", "# diagnostics\n")
+    _touch(root / "python_port" / "ims" / "api" / "workbench_readiness.py", "# readiness\n")
     _touch(root / "frontend" / "dist" / "index.html", "<html></html>")
     _touch(root / "scripts" / "workbench" / "check-workbench.cmd", "check")
     _touch(root / "scripts" / "workbench" / "start-workbench.cmd", "start")
