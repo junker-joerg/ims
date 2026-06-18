@@ -197,6 +197,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
     assert "Kein Queue-Befehl startet eine Simulation" in doc
+    assert "GET /api/run-control/queue" in doc
+    assert "Run-Control-Uebersicht" in doc
+    assert "initialisiert aber keine Queue" in doc
     assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
     assert "schaltet keinen UI-Startbutton frei" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc

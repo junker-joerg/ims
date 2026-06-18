@@ -22,6 +22,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     source = client.get("/api/metadata/source")
     capabilities = client.get("/api/metadata/capabilities")
     consistency = client.get("/api/metadata/consistency")
+    run_control_queue = client.get("/api/run-control/queue")
     missing = client.get("/api/scenarios/missing-scenario")
 
     assert health.status_code == 200
@@ -45,6 +46,11 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert consistency.json()["runs_with_execution_enabled"] == []
     assert consistency.json()["writes_enabled"] is False
     assert consistency.json()["simulation_enabled"] is False
+    assert run_control_queue.status_code == 200
+    assert run_control_queue.json()["mode"] == "run_control_queue_overview"
+    assert run_control_queue.json()["writes_enabled"] is False
+    assert run_control_queue.json()["execution_enabled"] is False
+    assert run_control_queue.json()["execution_performed"] is False
 
     scenario_id = scenarios.json()["items"][0]["id"]
     run_id = runs.json()["items"][0]["id"]
@@ -159,9 +165,11 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Auswahlzusammenfassung" in source
     assert "Szenario-Uebersicht" in source
     assert "Run-Uebersicht" in source
+    assert "Run-Control-Uebersicht" in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
+    assert "/api/run-control/queue" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source

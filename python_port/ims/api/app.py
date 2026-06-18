@@ -12,6 +12,7 @@ from starlette.staticfiles import StaticFiles
 from ims.api.metadata import metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
+from ims.api.run_control_queue_overview import run_control_queue_overview_payload
 
 try:
     from fastapi import FastAPI
@@ -126,6 +127,9 @@ def create_app(
             metadata_capabilities(),
         )
 
+    def queue_overview_payload() -> dict[str, object]:
+        return run_control_queue_overview_payload(metadata_source)
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -175,6 +179,10 @@ def create_app(
         def consistency() -> dict[str, object]:
             return consistency_payload()
 
+        @app.get("/api/run-control/queue")
+        def run_control_queue() -> dict[str, object]:
+            return queue_overview_payload()
+
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
 
@@ -200,6 +208,7 @@ def create_app(
         Route("/api/metadata/capabilities", lambda request: JSONResponse(metadata_capabilities())),
         Route("/api/metadata/source", lambda request: JSONResponse(metadata_source)),
         Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
+        Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
         Route("/", lambda request: index_response()),
     ]
     if (dist_dir / "assets").is_dir():
