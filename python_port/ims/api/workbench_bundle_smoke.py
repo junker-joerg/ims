@@ -102,6 +102,7 @@ def smoke_workbench_bundle_zip(zip_path: Path | str) -> WorkbenchBundleSmokeResu
                 names = tuple(sorted(archive.namelist()))
                 issues.extend(_entry_issues(names))
                 metadata_stable = _metadata_is_stable(archive.infolist(), issues)
+                issues.extend(_payload_issues(archive))
         except zipfile.BadZipFile as exc:
             issues.append(
                 WorkbenchBundleSmokeIssue(
@@ -187,6 +188,28 @@ def _metadata_is_stable(
                 )
             )
     return stable
+
+
+def _payload_issues(archive: zipfile.ZipFile) -> list[WorkbenchBundleSmokeIssue]:
+    try:
+        corrupt_entry = archive.testzip()
+    except (OSError, RuntimeError, zipfile.BadZipFile) as exc:
+        return [
+            WorkbenchBundleSmokeIssue(
+                code="zip_payload_corrupt",
+                severity="error",
+                message=f"workbench bundle ZIP payload is not readable: {exc}",
+            )
+        ]
+    if corrupt_entry is None:
+        return []
+    return [
+        WorkbenchBundleSmokeIssue(
+            code="zip_payload_corrupt",
+            severity="error",
+            message=f"workbench bundle ZIP payload failed CRC check: {corrupt_entry}",
+        )
+    ]
 
 
 def _status_from_issues(issues: Sequence[WorkbenchBundleSmokeIssue]) -> str:

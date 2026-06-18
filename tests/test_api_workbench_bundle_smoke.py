@@ -86,6 +86,35 @@ def test_workbench_bundle_smoke_reports_unstable_zip_metadata(tmp_path):
     assert "unstable_zip_entry_metadata" in issue_codes
 
 
+def test_workbench_bundle_smoke_reports_corrupt_payload(tmp_path):
+    zip_path = tmp_path / "bundle.zip"
+    corrupt_entry = "frontend/dist/index.html"
+    corrupt_payload = "frontend payload"
+    _write_zip(
+        zip_path,
+        {
+            "README.md": "readme",
+            "python_port/__init__.py": "python",
+            corrupt_entry: corrupt_payload,
+            "scripts/workbench/check-workbench.cmd": "check",
+            "scripts/workbench/start-workbench.cmd": "start",
+            "scripts/workbench/README.md": "scripts",
+            "docs/migration/workbench_shell.md": "workbench doc",
+            "docs/migration/workbench_packaging_plan.md": "packaging plan",
+        },
+        compression=zipfile.ZIP_STORED,
+    )
+    zip_path.write_bytes(zip_path.read_bytes().replace(corrupt_payload.encode("utf-8"), b"damaged! payload", 1))
+
+    payload = smoke_workbench_bundle_zip(zip_path).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+    issue_messages = "\n".join(str(issue["message"]) for issue in payload["issues"])
+
+    assert payload["status"] == "error"
+    assert "zip_payload_corrupt" in issue_codes
+    assert corrupt_entry in issue_messages
+
+
 def test_workbench_bundle_smoke_reports_missing_zip(tmp_path):
     zip_path = tmp_path / "missing.zip"
 
@@ -161,15 +190,21 @@ def _touch(path: Path, content: str = "") -> None:
     path.write_text(content, encoding="utf-8")
 
 
-def _write_zip(path: Path, entries: dict[str, str]) -> None:
-    with zipfile.ZipFile(path, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
+def _write_zip(path: Path, entries: dict[str, str], *, compression: int = zipfile.ZIP_DEFLATED) -> None:
+    with zipfile.ZipFile(path, mode="w", compression=compression) as archive:
         for name, content in entries.items():
-            _write_stable_entry(archive, name, content)
+            _write_stable_entry(archive, name, content, compression=compression)
 
 
-def _write_stable_entry(archive: zipfile.ZipFile, name: str, content: str) -> None:
+def _write_stable_entry(
+    archive: zipfile.ZipFile,
+    name: str,
+    content: str,
+    *,
+    compression: int = zipfile.ZIP_DEFLATED,
+) -> None:
     info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
-    info.compress_type = zipfile.ZIP_DEFLATED
+    info.compress_type = compression
     info.create_system = 3
     info.external_attr = 0o644 << 16
     archive.writestr(info, content)
