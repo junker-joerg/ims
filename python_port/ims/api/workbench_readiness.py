@@ -8,6 +8,7 @@ from typing import Sequence
 
 from ims.api.run_control_contracts import build_run_control_contract
 from ims.api.run_control_preflight import preflight_run_control
+from ims.api.run_control_queue_diagnostics import diagnose_run_control_queue
 from ims.api.workbench_cli_overview import build_workbench_cli_overview
 from ims.api.workbench_diagnostics import WorkbenchDiagnosticIssue, build_workbench_diagnostics
 
@@ -37,6 +38,7 @@ class WorkbenchReadinessResult:
     metadata_ready: bool
     cli_ready: bool
     run_control_ready: bool
+    run_control_queue_ready: bool
     writes_enabled: bool
     execution_enabled: bool
     issues: tuple[WorkbenchDiagnosticIssue, ...]
@@ -51,6 +53,7 @@ class WorkbenchReadinessResult:
             "metadata_ready": self.metadata_ready,
             "cli_ready": self.cli_ready,
             "run_control_ready": self.run_control_ready,
+            "run_control_queue_ready": self.run_control_queue_ready,
             "writes_enabled": self.writes_enabled,
             "execution_enabled": self.execution_enabled,
             "issues": [issue.to_dict() for issue in self.issues],
@@ -71,6 +74,7 @@ def build_workbench_readiness(
 
     issues: list[WorkbenchDiagnosticIssue] = list(diagnostics.issues)
     preflight_payload = _preflight_payload(run_id, db_path, issues)
+    queue_payload = _queue_diagnostics_payload(db_path, issues)
 
     backend_ready = bool(diagnostic_payload["api_importable"] and diagnostic_payload["web_dependencies_available"])
     frontend_ready = bool(diagnostic_payload["frontend_dist_available"])
@@ -82,6 +86,7 @@ def build_workbench_readiness(
         and preflight_payload["execution_allowed"] is False
         and contract["execution_enabled"] is False
     )
+    run_control_queue_ready = _queue_ready(queue_payload)
     writes_enabled = False
     execution_enabled = False
     checks = (
@@ -115,6 +120,12 @@ def build_workbench_readiness(
             status="ok" if run_control_ready else "warning",
             detail=f"Run-Control-Preflight fuer {run_id}; Ausfuehrung bleibt gesperrt.",
         ),
+        WorkbenchReadinessCheck(
+            name="run_control_queue",
+            ready=run_control_queue_ready,
+            status="ok" if run_control_queue_ready else _queue_check_status(queue_payload),
+            detail=_queue_check_detail(queue_payload),
+        ),
     )
     return WorkbenchReadinessResult(
         status=_readiness_status(issues, checks),
@@ -124,6 +135,7 @@ def build_workbench_readiness(
         metadata_ready=metadata_ready,
         cli_ready=cli_ready,
         run_control_ready=run_control_ready,
+        run_control_queue_ready=run_control_queue_ready,
         writes_enabled=writes_enabled,
         execution_enabled=execution_enabled,
         issues=tuple(issues),
@@ -175,6 +187,51 @@ def _preflight_payload(
     return payload
 
 
+def _queue_diagnostics_payload(
+    db_path: Path | str | None,
+    issues: list[WorkbenchDiagnosticIssue],
+) -> dict[str, object]:
+    if db_path is None:
+        return {
+            "configured": False,
+            "status": "ok",
+            "queue_initialized": False,
+            "queue_readable": True,
+            "queue_count": 0,
+            "issues": [],
+        }
+    try:
+        payload = diagnose_run_control_queue(db_path).to_dict()
+    except Exception as exc:
+        issues.append(
+            WorkbenchDiagnosticIssue(
+                code="run_control_queue_diagnostics_failed",
+                severity="error",
+                message=str(exc),
+            )
+        )
+        return {
+            "configured": True,
+            "status": "error",
+            "queue_initialized": False,
+            "queue_readable": False,
+            "queue_count": 0,
+            "issues": [str(exc)],
+        }
+    for issue in payload.get("issues", []):
+        if not isinstance(issue, dict) or issue.get("severity") == "info":
+            continue
+        issues.append(
+            WorkbenchDiagnosticIssue(
+                code=str(issue.get("code", "run_control_queue_diagnostics_issue")),
+                severity=str(issue.get("severity", "warning")),
+                message=str(issue.get("message", "run control queue diagnostics issue")),
+            )
+        )
+    payload["configured"] = True
+    return payload
+
+
 def _cli_overview_ready(payload: dict[str, object]) -> bool:
     commands = payload.get("commands", [])
     if not isinstance(commands, list):
@@ -187,6 +244,26 @@ def _cli_overview_ready(payload: dict[str, object]) -> bool:
         and isinstance(boundaries, dict)
         and boundaries.get("execution_enabled") is False
     )
+
+
+def _queue_ready(payload: dict[str, object]) -> bool:
+    if payload.get("configured") is False:
+        return True
+    return payload.get("status") == "ok"
+
+
+def _queue_check_status(payload: dict[str, object]) -> str:
+    if payload.get("status") == "error":
+        return "error"
+    return "warning"
+
+
+def _queue_check_detail(payload: dict[str, object]) -> str:
+    if payload.get("configured") is False:
+        return "Keine explizite Queue-Metadatenquelle konfiguriert."
+    if payload.get("queue_initialized") is False:
+        return "Run-Control-Queue ist nicht initialisiert; das ist fuer rein lesende Workbench-Nutzung zulaessig."
+    return f"Run-Control-Queue-Diagnose: {payload.get('queue_count', 0)} Eintraege."
 
 
 def _metadata_ready(issues: Sequence[WorkbenchDiagnosticIssue]) -> bool:
@@ -212,7 +289,7 @@ def _readiness_status(
 ) -> str:
     if any(issue.severity == "error" for issue in issues) or any(check.status == "error" for check in checks):
         return "error"
-    if issues or any(check.status == "warning" for check in checks):
+    if any(issue.severity == "warning" for issue in issues) or any(check.status == "warning" for check in checks):
         return "warning"
     return "ok"
 

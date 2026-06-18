@@ -122,6 +122,7 @@ def test_workbench_v1_readiness_smoke_keeps_local_boundaries(tmp_path: Path, mon
     assert readiness["metadata_ready"] is True
     assert readiness["cli_ready"] is True
     assert readiness["run_control_ready"] is True
+    assert readiness["run_control_queue_ready"] is True
     assert readiness["writes_enabled"] is False
     assert readiness["execution_enabled"] is False
     assert [check["name"] for check in readiness["checks"]] == [
@@ -130,6 +131,7 @@ def test_workbench_v1_readiness_smoke_keeps_local_boundaries(tmp_path: Path, mon
         "metadata",
         "cli",
         "run_control",
+        "run_control_queue",
     ]
 
     assert overview["boundaries"]["writes_enabled"] is False

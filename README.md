@@ -62,7 +62,7 @@ Ein rein beschreibender Startplan kann dieselben lokalen Werte als JSON zusammen
 python -m ims.api.workbench_start_plan --config .\workbench.local.json
 ```
 
-Eine lokale v1-Bereitschaftspruefung buendelt Diagnose, Metadatenquelle, CLI-Grenzen und Run-Control-Preflight, ohne den Server zu starten:
+Eine lokale v1-Bereitschaftspruefung buendelt Diagnose, Metadatenquelle, CLI-Grenzen, Run-Control-Preflight und bei expliziter SQLite-Quelle die Run-Control-Queue-Diagnose, ohne den Server zu starten:
 
 ```powershell
 python -m ims.api.workbench_readiness --frontend-dist frontend/dist
@@ -159,6 +159,8 @@ python -m ims.api.run_control_queue_diagnostics --db .\.ims_workbench\metadata.s
 ```
 
 `init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list`, `show` und `run_control_queue_diagnostics` lesen die Queue-Datenbank read-only. Die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten.
+
+`workbench_readiness --db <metadata.sqlite>` bezieht diese Queue-Diagnose als eigenen Bereitschaftsbereich ein. Eine nicht initialisierte Queue bleibt ein zulaessiger Hinweis; unlesbare Queue-Schemas oder aktivierte Ausfuehrungsflags werden als Queue-Bereitschaftsproblem gemeldet.
 
 Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese gesperrte Steuerungsgrenze, ohne einen Lauf zu starten:
 

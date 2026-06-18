@@ -1,7 +1,9 @@
 import json
+import sqlite3
 
 import ims.api.workbench_readiness as readiness_module
 from ims.api.metadata_repository import build_seeded_metadata_repository
+from ims.api.run_control_queue import enqueue_run_control_request, initialize_run_control_queue
 from ims.api.workbench_readiness import WorkbenchReadinessCheck, WorkbenchReadinessResult, build_workbench_readiness, main
 
 
@@ -17,6 +19,7 @@ def test_workbench_readiness_reports_ok_with_explicit_frontend_dist(tmp_path):
     assert payload["metadata_ready"] is True
     assert payload["cli_ready"] is True
     assert payload["run_control_ready"] is True
+    assert payload["run_control_queue_ready"] is True
     assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["issues"] == []
@@ -26,6 +29,7 @@ def test_workbench_readiness_reports_ok_with_explicit_frontend_dist(tmp_path):
         "metadata",
         "cli",
         "run_control",
+        "run_control_queue",
     ]
     assert WorkbenchReadinessCheck is not None
     assert WorkbenchReadinessResult is not None
@@ -45,8 +49,104 @@ def test_workbench_readiness_reads_explicit_sqlite_file(tmp_path):
     assert payload["status"] == "ok"
     assert payload["metadata_ready"] is True
     assert payload["run_control_ready"] is True
+    assert payload["run_control_queue_ready"] is True
     assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
+    assert any(
+        check["name"] == "run_control_queue"
+        and check["status"] == "ok"
+        and "nicht initialisiert" in check["detail"]
+        for check in payload["checks"]
+    )
+
+
+def test_workbench_readiness_reports_valid_run_control_queue_ready(tmp_path):
+    frontend_dist = _frontend_dist(tmp_path)
+    db_path = tmp_path / "metadata.sqlite"
+    build_seeded_metadata_repository(db_path)
+    enqueue_run_control_request(_write_run_control_request(tmp_path), db_path=db_path)
+
+    payload = build_workbench_readiness(
+        frontend_dist=frontend_dist,
+        db_path=db_path,
+        run_id="baseline-python-tests",
+    ).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["run_control_queue_ready"] is True
+    assert any(
+        check["name"] == "run_control_queue"
+        and check["status"] == "ok"
+        and "1 Eintraege" in check["detail"]
+        for check in payload["checks"]
+    )
+
+
+def test_workbench_readiness_reports_malformed_run_control_queue_not_ready(tmp_path):
+    frontend_dist = _frontend_dist(tmp_path)
+    db_path = tmp_path / "metadata.sqlite"
+    build_seeded_metadata_repository(db_path)
+    with sqlite3.connect(db_path) as connection:
+        connection.execute("CREATE TABLE run_control_queue (queue_id TEXT PRIMARY KEY)")
+
+    payload = build_workbench_readiness(
+        frontend_dist=frontend_dist,
+        db_path=db_path,
+        run_id="baseline-python-tests",
+    ).to_dict()
+
+    assert payload["status"] == "warning"
+    assert payload["metadata_ready"] is True
+    assert payload["run_control_ready"] is True
+    assert payload["run_control_queue_ready"] is False
+    assert any(issue["code"] == "run_control_queue_unreadable" for issue in payload["issues"])
+    assert any(check["name"] == "run_control_queue" and check["status"] == "warning" for check in payload["checks"])
+
+
+def test_workbench_readiness_reports_executable_queue_entry_as_error(tmp_path):
+    frontend_dist = _frontend_dist(tmp_path)
+    db_path = tmp_path / "metadata.sqlite"
+    build_seeded_metadata_repository(db_path)
+    initialize_run_control_queue(db_path)
+    with sqlite3.connect(db_path) as connection:
+        connection.execute(
+            """
+            INSERT INTO run_control_queue (
+                queue_id,
+                run_id,
+                scenario_id,
+                metadata_db,
+                requested_by,
+                created_at,
+                status,
+                execution_enabled,
+                execution_performed
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                "executable-queue",
+                "baseline-python-tests",
+                "agrsich-reference-window",
+                None,
+                "local-test",
+                "2026-06-15T00:00:00Z",
+                "planned",
+                1,
+                0,
+            ),
+        )
+
+    payload = build_workbench_readiness(
+        frontend_dist=frontend_dist,
+        db_path=db_path,
+        run_id="baseline-python-tests",
+    ).to_dict()
+
+    assert payload["status"] == "error"
+    assert payload["run_control_queue_ready"] is False
+    assert payload["execution_enabled"] is False
+    assert any(issue["code"] == "run_control_queue_execution_enabled" for issue in payload["issues"])
 
 
 def test_workbench_readiness_reports_missing_frontend_dist_as_issue(tmp_path):
@@ -66,6 +166,7 @@ def test_workbench_readiness_reports_unknown_run_as_issue(tmp_path):
     assert payload["status"] == "warning"
     assert payload["metadata_ready"] is True
     assert payload["run_control_ready"] is False
+    assert payload["run_control_queue_ready"] is True
     assert any("run metadata not found: missing-run" in issue["message"] for issue in payload["issues"])
     assert payload["execution_enabled"] is False
 
@@ -80,6 +181,7 @@ def test_workbench_readiness_marks_unreadable_explicit_metadata_db_not_ready(tmp
     assert payload["status"] == "error"
     assert payload["metadata_ready"] is False
     assert payload["run_control_ready"] is False
+    assert payload["run_control_queue_ready"] is False
     assert any(issue["code"] == "run_control_preflight_failed" for issue in payload["issues"])
     assert any("metadata run-control-preflight database is not readable" in issue["message"] for issue in payload["issues"])
     assert any(check["name"] == "metadata" and check["status"] == "warning" for check in payload["checks"])
@@ -102,6 +204,7 @@ def test_workbench_readiness_marks_raw_sqlite_open_failure_as_metadata_not_ready
     assert payload["status"] == "error"
     assert payload["metadata_ready"] is False
     assert payload["run_control_ready"] is False
+    assert payload["run_control_queue_ready"] is False
     assert any(issue["message"] == "unable to open database file" for issue in payload["issues"])
 
 
@@ -128,6 +231,7 @@ def test_workbench_readiness_cli_prints_stable_json(tmp_path, capsys):
     assert output["status"] == "ok"
     assert output["mode"] == "workbench_readiness"
     assert output["run_control_ready"] is True
+    assert output["run_control_queue_ready"] is True
     assert output["writes_enabled"] is False
     assert output["execution_enabled"] is False
 
@@ -137,3 +241,22 @@ def _frontend_dist(tmp_path):
     dist_dir.mkdir()
     (dist_dir / "index.html").write_text("<!doctype html><title>IMS Workbench</title>", encoding="utf-8")
     return dist_dir
+
+
+def _write_run_control_request(tmp_path):
+    request_path = tmp_path / "run_control_request.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "ims.workbench.metadata.v1",
+                "run_id": "baseline-python-tests",
+                "scenario_id": "agrsich-reference-window",
+                "metadata_db": ".ims_workbench/metadata.sqlite",
+                "requested_by": "local-user",
+                "created_at": "2026-06-15T00:00:00Z",
+                "execution_enabled": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+    return request_path
