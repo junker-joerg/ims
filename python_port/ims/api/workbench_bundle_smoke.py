@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import zipfile
+import zlib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
@@ -193,7 +194,7 @@ def _metadata_is_stable(
 def _payload_issues(archive: zipfile.ZipFile) -> list[WorkbenchBundleSmokeIssue]:
     try:
         corrupt_entry = archive.testzip()
-    except (OSError, RuntimeError, zipfile.BadZipFile) as exc:
+    except (OSError, RuntimeError, zipfile.BadZipFile, zlib.error) as exc:
         return [
             WorkbenchBundleSmokeIssue(
                 code="zip_payload_corrupt",

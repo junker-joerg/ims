@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 import zipfile
+import zlib
 from pathlib import Path
 
 from ims.api.workbench_bundle_build import build_workbench_bundle_zip
@@ -113,6 +114,28 @@ def test_workbench_bundle_smoke_reports_corrupt_payload(tmp_path):
     assert payload["status"] == "error"
     assert "zip_payload_corrupt" in issue_codes
     assert corrupt_entry in issue_messages
+
+
+def test_workbench_bundle_smoke_reports_deflate_payload_error_as_json(tmp_path, monkeypatch, capsys):
+    _build_repo_fixture(tmp_path)
+    out_path = tmp_path / "dist" / "ims-workbench-local.zip"
+    out_path.parent.mkdir()
+    build_workbench_bundle_zip(root=tmp_path, out_path=out_path)
+
+    def raise_zlib_error(self):
+        raise zlib.error("invalid distance too far back")
+
+    monkeypatch.setattr(zipfile.ZipFile, "testzip", raise_zlib_error)
+
+    exit_code = main(["--zip-path", str(out_path)])
+    payload = json.loads(capsys.readouterr().out)
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+    issue_messages = "\n".join(str(issue["message"]) for issue in payload["issues"])
+
+    assert exit_code == 1
+    assert payload["status"] == "error"
+    assert "zip_payload_corrupt" in issue_codes
+    assert "invalid distance too far back" in issue_messages
 
 
 def test_workbench_bundle_smoke_reports_missing_zip(tmp_path):
