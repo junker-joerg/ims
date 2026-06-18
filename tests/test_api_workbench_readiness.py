@@ -103,6 +103,29 @@ def test_workbench_readiness_reports_malformed_run_control_queue_not_ready(tmp_p
     assert any(check["name"] == "run_control_queue" and check["status"] == "warning" for check in payload["checks"])
 
 
+def test_workbench_readiness_reports_queue_only_database_without_queue_read_failure(tmp_path):
+    frontend_dist = _frontend_dist(tmp_path)
+    db_path = tmp_path / "metadata.sqlite"
+    initialize_run_control_queue(db_path)
+
+    payload = build_workbench_readiness(
+        frontend_dist=frontend_dist,
+        db_path=db_path,
+        run_id="baseline-python-tests",
+    ).to_dict()
+
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+    assert payload["status"] == "error"
+    assert payload["metadata_ready"] is False
+    assert payload["run_control_ready"] is False
+    assert payload["run_control_queue_ready"] is False
+    assert "run_control_queue_missing_metadata_schema" in issue_codes
+    assert "run_control_queue_unreadable" not in issue_codes
+    assert any(check["name"] == "run_control_queue" and check["status"] == "warning" for check in payload["checks"])
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+
+
 def test_workbench_readiness_reports_executable_queue_entry_as_error(tmp_path):
     frontend_dist = _frontend_dist(tmp_path)
     db_path = tmp_path / "metadata.sqlite"
@@ -204,7 +227,7 @@ def test_workbench_readiness_marks_raw_sqlite_open_failure_as_metadata_not_ready
     assert payload["status"] == "error"
     assert payload["metadata_ready"] is False
     assert payload["run_control_ready"] is False
-    assert payload["run_control_queue_ready"] is False
+    assert payload["run_control_queue_ready"] is True
     assert any(issue["message"] == "unable to open database file" for issue in payload["issues"])
 
 

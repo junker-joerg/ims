@@ -71,7 +71,6 @@ def diagnose_run_control_queue(db_path: Path | str) -> RunControlQueueDiagnostic
 
     repository = _metadata_read_repository(resolved_path, mode="run-control-queue-diagnostics")
     metadata_source = repository.metadata_source()
-    scenario_ids = _scenario_ids(repository)
 
     issues: list[RunControlQueueDiagnosticIssue] = []
     try:
@@ -110,6 +109,9 @@ def diagnose_run_control_queue(db_path: Path | str) -> RunControlQueueDiagnostic
 
     entries = tuple(entry for entry in queue_payload.get("entries", ()) if isinstance(entry, dict))
     queue_ids = tuple(str(entry.get("queue_id", "")) for entry in entries)
+    scenario_ids, scenario_issue = _scenario_ids(repository)
+    if scenario_issue is not None:
+        issues.append(scenario_issue)
     missing_scenario_ids: list[str] = []
     execution_enabled_ids: list[str] = []
     execution_performed_ids: list[str] = []
@@ -119,7 +121,7 @@ def diagnose_run_control_queue(db_path: Path | str) -> RunControlQueueDiagnostic
         queue_id = str(entry.get("queue_id", ""))
         request = entry.get("request", {})
         scenario_id = str(request.get("scenario_id", "")) if isinstance(request, dict) else ""
-        if scenario_id not in scenario_ids:
+        if scenario_issue is None and scenario_id not in scenario_ids:
             missing_scenario_ids.append(queue_id)
         if bool(entry.get("execution_enabled")):
             execution_enabled_ids.append(queue_id)
@@ -171,19 +173,28 @@ def main(argv: Sequence[str] | None = None) -> int:
     return 1 if payload["status"] == "error" else 0
 
 
-def _scenario_ids(repository) -> set[str]:
+def _scenario_ids(repository) -> tuple[set[str], RunControlQueueDiagnosticIssue | None]:
     try:
         scenarios = repository.list_scenarios()
     except sqlite3.DatabaseError as exc:
+        if _is_missing_metadata_table(str(exc)):
+            return set(), RunControlQueueDiagnosticIssue(
+                code="run_control_queue_missing_metadata_schema",
+                severity="warning",
+                message=f"run control queue diagnostics metadata schema is not initialized: {exc}",
+            )
         raise MetadataImportError(f"run control queue diagnostics database is not readable: {exc}") from exc
     items = scenarios.get("items", [])
     if not isinstance(items, list):
-        return set()
-    return {
-        str(item.get("id", ""))
-        for item in items
-        if isinstance(item, dict) and isinstance(item.get("id"), str)
-    }
+        return set(), None
+    return (
+        {
+            str(item.get("id", ""))
+            for item in items
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        },
+        None,
+    )
 
 
 def _diagnostics_result(
@@ -261,6 +272,10 @@ def _status_from_issues(issues: Sequence[RunControlQueueDiagnosticIssue]) -> str
 
 def _is_missing_queue_table(message: str) -> bool:
     return "no such table: run_control_queue" in message
+
+
+def _is_missing_metadata_table(message: str) -> bool:
+    return "no such table: scenarios" in message or "no such table: runs" in message
 
 
 def _build_parser() -> argparse.ArgumentParser:
