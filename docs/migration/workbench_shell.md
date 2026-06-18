@@ -481,16 +481,16 @@ npm.cmd run build
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
-python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
-python -m ims.api.workbench_readiness --frontend-dist .\ims-workbench\app\frontend\dist
 ```
 
-Der Ablauf trennt Repo-Build, ZIP-Artefakt und portable Zielstruktur. Das ZIP
-bleibt ein lokales Bereitstellungsartefakt: Es ist kein Installer, kein
-automatischer Updater, keine SQLite-Migration, keine Fachvalidierung und keine
-historische Vollgleichheitsbehauptung. Die Readiness im portablen Ziel nutzt
-den Frontend-Pfad `app\frontend\dist`; Repo-Checks nutzen weiterhin
-`frontend/dist`.
+Der Ablauf prueft den tatsaechlich erzeugten ZIP-Inhalt. Er erzeugt keine
+portable Zielstruktur unter `.\ims-workbench` und validiert keinen moeglicherweise
+alten Zielordner. Eine portable Readiness mit `app\frontend\dist` ist erst nach
+einem separaten, expliziten Staging- oder Entpackschritt sinnvoll; Repo-Checks
+nutzen weiterhin `frontend/dist`. Das ZIP bleibt ein lokales
+Bereitstellungsartefakt: Es ist kein Installer, kein automatischer Updater,
+keine SQLite-Migration, keine Fachvalidierung und keine historische
+Vollgleichheitsbehauptung.
 
 ## SQLite-Vorbereitung
 
@@ -626,6 +626,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist` | Ein- und Ausschlusspfade fuer spaeteres Artefakt beschreiben | schreibt nicht |
 | `python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist` | Spaeteres Workbench-Bundle auf Basis des Manifests planen | schreibt nicht |
 | `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip` | Explizites lokales ZIP aus dem Bundle-Plan erzeugen | schreibt nur den expliziten ZIP-Zielpfad |
+| `python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip` | Explizit erzeugtes ZIP direkt pruefen | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:

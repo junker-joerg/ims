@@ -225,16 +225,18 @@ npm.cmd run build
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
-python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
-python -m ims.api.workbench_readiness --frontend-dist .\ims-workbench\app\frontend\dist
 ```
 
-Dieser Ablauf trennt drei Dinge bewusst:
+Dieser Ablauf prueft das tatsaechlich erzeugte ZIP. Er erzeugt keine portable
+Zielstruktur unter `.\ims-workbench`, entpackt nichts dauerhaft und validiert
+keinen bestehenden Zielordner.
+
+Die Grenzen bleiben getrennt:
 
 - Repo-Build: `npm.cmd run build` und `frontend/dist` im Checkout.
 - ZIP-Artefakt: expliziter Zielpfad unter einem vorbereiteten Ausgabeordner.
-- Portable Zielstruktur: `app\frontend\dist` im entpackten oder kopierten
-  Zielordner.
+- Portable Zielstruktur: erst nach separatem, explizitem Staging oder
+  Entpackschritt; dann nutzt Readiness `app\frontend\dist`.
 
 Der Ablauf startet keine Simulation, installiert nichts automatisch, erzeugt
 keinen HTTP- oder UI-Schreibpfad, fuehrt keine SQLite-Migration aus und ist kein
@@ -256,9 +258,10 @@ Checkliste geprueft werden:
 5. Der ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen wie
    `python_port` oder `frontend/dist`.
 6. Bundle-Plan und ZIP-Smoke wurden gegen das geplante Artefakt geprueft.
-7. Der konsolidierte lokale Release-Ablauf trennt Repo-Build, ZIP-Artefakt und
-   portable Zielstruktur.
-8. Portable Strukturpruefung laeuft gegen das Zielartefakt mit
+7. Der konsolidierte lokale Release-Ablauf prueft das ZIP selbst und validiert
+   keinen bestehenden oder stale Zielordner.
+8. Portable Strukturpruefung laeuft erst nach separatem, explizitem Staging
+   oder Entpacken gegen das Zielartefakt mit
    `workbench_portable_readiness --layout portable`.
 9. Readiness nutzt im portablen Artefakt den Frontend-Pfad
    `app\frontend\dist`.
@@ -301,10 +304,10 @@ Die grobe Gesamtplanung bis "wirklich alles fertig" bleibt:
 
 - Workbench-Ausbau nach v1: ca. `8-15` PRs.
 - Fachvalidierung und historische Vollgleichheit: ca. `10-18` PRs.
-- Packaging und Bereitstellung: ca. `0-2` PRs.
+- Packaging und Bereitstellung: ca. `0-1` PRs.
 - Integrations- und Review-Reserve: ca. `1-3` PRs.
 
-Erwartet bleiben damit weiterhin grob ca. `19-38+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
+Erwartet bleiben damit weiterhin grob ca. `18-37+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
 
 ## Teststrategie
 

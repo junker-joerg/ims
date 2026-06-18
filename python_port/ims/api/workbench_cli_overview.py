@@ -97,6 +97,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=True,
         ),
         WorkbenchCliCommand(
+            name="workbench_bundle_smoke",
+            command="python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip",
+            purpose="Explizit erzeugtes Workbench-ZIP pruefen, ohne es dauerhaft zu entpacken.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -209,6 +215,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "workbench_build_snapshot",
                 "workbench_artifact_manifest",
                 "workbench_bundle_plan",
+                "workbench_bundle_smoke",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",
