@@ -108,6 +108,35 @@ type MetadataConsistency = {
   issue_count: number;
 };
 
+type RunControlQueueEntry = {
+  queue_id: string;
+  request: {
+    run_id: string;
+    scenario_id: string;
+    requested_by: string;
+    created_at: string;
+    metadata_db?: string | null;
+    execution_enabled: boolean;
+  };
+  status: string;
+  execution_enabled: boolean;
+  execution_performed: boolean;
+};
+
+type RunControlQueueOverview = {
+  schema_version: string;
+  generated_at: string;
+  status: "ok" | "warning";
+  mode: "run_control_queue_overview";
+  source: MetadataSourceStatus;
+  queue_count: number;
+  entries: RunControlQueueEntry[];
+  issues: { code: string; severity: string; message: string }[];
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+  execution_performed: boolean;
+};
+
 type CapabilityState = {
   enabled: boolean;
   boundary?: string;
@@ -189,6 +218,7 @@ function App() {
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
   const [metadataSource, setMetadataSource] = useState<MetadataSourceStatus | null>(null);
   const [metadataConsistency, setMetadataConsistency] = useState<MetadataConsistency | null>(null);
+  const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
@@ -218,6 +248,7 @@ function App() {
           capabilityResponse,
           sourceResponse,
           consistencyResponse,
+          runControlQueueResponse,
           healthResponse,
           versionResponse
         ] = await Promise.all([
@@ -226,6 +257,7 @@ function App() {
           fetch("/api/metadata/capabilities"),
           fetch("/api/metadata/source"),
           fetch("/api/metadata/consistency"),
+          fetch("/api/run-control/queue"),
           fetch("/api/health"),
           fetch("/api/version")
         ]);
@@ -235,6 +267,7 @@ function App() {
           !capabilityResponse.ok ||
           !sourceResponse.ok ||
           !consistencyResponse.ok ||
+          !runControlQueueResponse.ok ||
           !healthResponse.ok ||
           !versionResponse.ok
         ) {
@@ -246,6 +279,7 @@ function App() {
           capabilityPayload,
           sourcePayload,
           consistencyPayload,
+          runControlQueuePayload,
           healthPayload,
           versionPayload
         ] = await Promise.all([
@@ -254,6 +288,7 @@ function App() {
           capabilityResponse.json() as Promise<MetadataCapabilities>,
           sourceResponse.json() as Promise<MetadataSourceStatus>,
           consistencyResponse.json() as Promise<MetadataConsistency>,
+          runControlQueueResponse.json() as Promise<RunControlQueueOverview>,
           healthResponse.json() as Promise<HealthStatus>,
           versionResponse.json() as Promise<VersionInfo>
         ]);
@@ -263,6 +298,7 @@ function App() {
           setCapabilities(capabilityPayload);
           setMetadataSource(sourcePayload);
           setMetadataConsistency(consistencyPayload);
+          setRunControlQueue(runControlQueuePayload);
           setHealthStatus(healthPayload);
           setVersionInfo(versionPayload);
           setSelectedScenarioId((current) => current ?? scenarioPayload.items[0]?.id ?? null);
@@ -396,6 +432,13 @@ function App() {
     ["Simulation", metadataConsistency?.simulation_enabled ? "aktiv" : "gesperrt"],
     ["Status", metadataConsistency?.status === "warning" ? "Warnung" : "ok"]
   ];
+  const runControlQueueRows = [
+    ["Queue-Status", runControlQueue?.status === "warning" ? "Hinweis" : "ok"],
+    ["Queue-Eintraege", String(runControlQueue?.queue_count ?? 0)],
+    ["Schreibpfade", runControlQueue?.writes_enabled ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", runControlQueue?.execution_enabled || runControlQueue?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
+  const runControlQueueIssue = runControlQueue?.issues[0]?.message ?? "Queue liest vorhandene lokale Eintraege ohne Ausfuehrung.";
   const diagnosisRows = [
     ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
     ["Version", versionInfo ? `${versionInfo.name} ${versionInfo.version}` : "laedt"],
@@ -795,6 +838,46 @@ function App() {
           </div>
           {filteredRuns.length === 0 ? (
             <div className="empty-state">Keine Runs fuer diesen Filter.</div>
+          ) : null}
+        </section>
+
+        <section className="panel run-control-panel" aria-label="Run-Control-Uebersicht">
+          <div className="panel-heading">
+            <ServerCog size={20} aria-hidden="true" />
+            <h2>Run-Control-Uebersicht</h2>
+          </div>
+          <div className="run-control-summary">
+            {runControlQueueRows.map(([label, value]) => (
+              <div className="run-control-summary-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <p className="run-control-note">{runControlQueueIssue}</p>
+          <div className="run-control-table">
+            <div className="run-control-head" aria-hidden="true">
+              <span>Queue</span>
+              <span>Run</span>
+              <span>Szenario</span>
+              <span>Status</span>
+              <span>Ausfuehrung</span>
+            </div>
+            {runControlQueue?.entries.map((entry) => (
+              <div className="run-control-row" key={entry.queue_id}>
+                <span>
+                  <strong>{entry.queue_id}</strong>
+                  <small>{entry.request.requested_by}</small>
+                </span>
+                <span>{entry.request.run_id}</span>
+                <span>{entry.request.scenario_id}</span>
+                <span>{entry.status}</span>
+                <span>{entry.execution_enabled || entry.execution_performed ? "aktiv" : "gesperrt"}</span>
+              </div>
+            ))}
+          </div>
+          {!runControlQueue?.entries.length ? (
+            <div className="empty-state">Keine Run-Control-Queue-Eintraege fuer diese Metadatenquelle.</div>
           ) : null}
         </section>
 

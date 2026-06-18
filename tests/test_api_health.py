@@ -1,9 +1,11 @@
 import importlib
+import json
 
 from starlette.testclient import TestClient
 
 from ims.api.app import APP_VERSION, create_app
 from ims.api.metadata_repository import build_seeded_metadata_repository
+from ims.api.run_control_queue import enqueue_run_control_request, initialize_run_control_queue
 
 
 def test_health_endpoint_reports_backend_ready(tmp_path):
@@ -189,6 +191,59 @@ def test_metadata_consistency_endpoint_keeps_readonly_boundaries_visible(tmp_pat
     assert payload["runs_with_execution_enabled"] == []
     assert payload["writes_enabled"] is False
     assert payload["simulation_enabled"] is False
+
+
+def test_run_control_queue_overview_reports_in_memory_boundary(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/queue")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_queue_overview"
+    assert payload["queue_count"] == 0
+    assert payload["entries"] == []
+    assert payload["issues"][0]["code"] == "run_control_queue_not_configured"
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_run_control_queue_overview_reads_injected_sqlite_queue(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    request_path = tmp_path / "run_control_request.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "run_id": "baseline-python-tests",
+                "scenario_id": "agrsich-reference-window",
+                "requested_by": "local-test",
+                "created_at": "2026-05-27T00:00:00Z",
+                "execution_enabled": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+    repository = build_seeded_metadata_repository(db_path)
+    initialize_run_control_queue(db_path)
+    enqueue_run_control_request(request_path, db_path=db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/queue")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["queue_count"] == 1
+    assert payload["entries"][0]["queue_id"] == "baseline-python-tests"
+    assert payload["entries"][0]["request"]["scenario_id"] == "agrsich-reference-window"
+    assert payload["entries"][0]["execution_enabled"] is False
+    assert payload["entries"][0]["execution_performed"] is False
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
 
 
 def test_metadata_source_reports_in_memory_default(tmp_path):

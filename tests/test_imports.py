@@ -180,6 +180,12 @@ def test_core_placeholders_import() -> None:
         list_run_control_queue,
         main as run_control_queue_main,
     )
+    from ims.api.run_control_queue_overview import (
+        RunControlQueueOverview,
+        RunControlQueueOverviewIssue,
+        build_run_control_queue_overview,
+        run_control_queue_overview_payload,
+    )
     from ims.api.run_control_requests import (
         WorkbenchRunControlRequest,
         WorkbenchRunControlRequestValidationResult,
@@ -660,6 +666,10 @@ def test_core_placeholders_import() -> None:
     assert list_run_control_queue is not None
     assert get_run_control_queue_entry is not None
     assert run_control_queue_main is not None
+    assert RunControlQueueOverview is not None
+    assert RunControlQueueOverviewIssue is not None
+    assert build_run_control_queue_overview is not None
+    assert run_control_queue_overview_payload is not None
     assert WorkbenchRunControlRequest is not None
     assert WorkbenchRunControlRequestValidationResult is not None
     assert parse_run_control_request_payload is not None

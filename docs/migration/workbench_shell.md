@@ -13,6 +13,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/metadata/capabilities` beschreibt die aktuell gesperrten Schreib- und Ausfuehrungsgrenzen.
 - `/api/metadata/source` beschreibt lesend, ob die Metadatenquelle in-memory oder als SQLite-Datei konfiguriert ist.
 - `/api/metadata/consistency` beschreibt lesend einfache Konsistenzkennzahlen der aktuellen Szenario- und Run-Metadaten.
+- `/api/run-control/queue` beschreibt lesend vorhandene lokale Run-Control-Queue-Eintraege, ohne die Queue zu initialisieren oder zu schreiben.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
 - Die Workbench zeigt die aktuelle Szenario-/Run-Auswahl in einer kompakten, rein lesenden Auswahlzusammenfassung.
@@ -20,6 +21,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Szenario-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Quelle und Umfang.
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - Die Run-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Szenario und Quelle.
+- Die Workbench zeigt eine kompakte Run-Control-Uebersicht fuer vorhandene Queue-Metadaten und gesperrte Ausfuehrungsgrenzen.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar, als Dry-Run vorab vergleichbar, als Snapshot lesbar und im Importformat exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -75,6 +77,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
 - Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
+- Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
@@ -561,6 +564,14 @@ python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite
 ```
 
 Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen. Erlaubte Statuswerte sind `planned`, `blocked` und `validated`. `init` und `enqueue` schreiben nur in den expliziten SQLite-Pfad; `list` und `show` lesen eine bestehende Queue read-only. Wenn keine WAL-/SHM-Sidecars vorhanden sind, erzeugen diese Lesezugriffe keine neuen Sidecars. Sind Live-WAL-Sidecars vollstaendig vorhanden, werden sie beruecksichtigt, statt aktuelle Queue-Daten still zu ignorieren. Unvollstaendige Sidecar-Zustaende, etwa `-wal` ohne `-shm`, werden vor dem Lesen abgelehnt, damit kein fehlender Sidecar neu aufgebaut wird. Kein Queue-Befehl startet eine Simulation, einen Worker, einen Scheduler, einen HTTP-Endpunkt oder einen UI-Schreibpfad. `execution_enabled` und `execution_performed` bleiben `false`.
+
+Die API bietet dazu eine rein lesende Uebersicht:
+
+```text
+GET /api/run-control/queue
+```
+
+Die Antwort enthaelt `mode = "run_control_queue_overview"`, `queue_count`, vorhandene `entries`, `issues`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Ohne explizite SQLite-Metadatenquelle meldet sie die Queue als nicht konfiguriert. Bei einer SQLite-Quelle ohne initialisierte Queue bleibt die Ausgabe ein lesender Hinweis; der Endpunkt legt keine Queue-Tabelle an und schreibt keine Datei. Die Frontend-Run-Control-Uebersicht nutzt genau diesen Endpunkt und bleibt ohne Start-, Upload-, Editor- oder Schreibkontrollen.
 
 Ein lokaler Preflight kann vorhandene Run-Metadaten gegen diese Grenze pruefen:
 
