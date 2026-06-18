@@ -133,6 +133,7 @@ def test_workbench_v1_readiness_smoke_keeps_local_boundaries(tmp_path: Path, mon
         "run_control_queue init",
         "run_control_queue enqueue",
         "metadata_import_cli import --db",
+        "workbench_portable_staging",
     ]
     assert all(command["starts_server"] is False for command in overview["commands"])
     assert all(command["starts_simulation"] is False for command in overview["commands"])

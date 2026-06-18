@@ -103,6 +103,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="workbench_portable_staging",
+            command="python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench",
+            purpose="Geprueftes Workbench-ZIP in eine portable Zielstruktur stagen.",
+            writes_enabled=True,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -234,6 +240,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "run_control_queue init",
                 "run_control_queue enqueue",
                 "metadata_import_cli import --db",
+                "workbench_portable_staging",
             ],
             "export_requires_explicit_out": True,
             "bundle_build_requires_explicit_out": True,

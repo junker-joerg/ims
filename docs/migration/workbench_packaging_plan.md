@@ -63,10 +63,11 @@ ein pruefbares lokales Artefakt, aber noch kein fertig gestagter portabler
 Ordner mit `app/frontend/dist`. Der ZIP-Smoke prueft deshalb den ZIP-Inhalt
 direkt und validiert keinen Zielordner.
 
-Ein spaeterer Staging-Adapter soll diese Grenze explizit machen:
+Der Staging-Adapter macht diese Grenze explizit:
 
 1. Quelle ist entweder ein geprueftes Repo-Layout-ZIP oder ein expliziter
-   Checkout-Pfad.
+   Checkout-Pfad. Der aktuell vorbereitete Adapter nutzt das gepruefte
+   Repo-Layout-ZIP.
 2. Ziel ist ein explizit angegebener, neuer oder leerer Staging-Ordner.
 3. Der Adapter baut daraus die portable Zielstruktur:
    - `ims-workbench/app/python_port`
@@ -87,10 +88,10 @@ Ein spaeterer Staging-Adapter soll diese Grenze explizit machen:
    und `workbench_readiness --frontend-dist <ziel>\\app\\frontend\\dist` die
    gestagte Struktur.
 
-Dieser Plan ergaenzt noch keinen Staging-Adapter. Er haelt nur fest, dass
-Staging, ZIP-Build und ZIP-Smoke getrennte Grenzen bleiben. Ein spaeterer
-Implementierungs-PR muss Dateikopien, Zielordner-Schutz, Leerzeichenpfade,
-Rollback-Verhalten und Staging-Smoke separat testen.
+Staging, ZIP-Build und ZIP-Smoke bleiben getrennte Grenzen. Der Staging-Adapter
+erwartet einen fehlenden oder leeren Zielordner, ueberschreibt keine lokalen
+Nutzerdaten und kopiert nur die definierten Workbench-Anwendungsartefakte in
+die portable Struktur.
 
 ## Lokale Datenablage
 
@@ -118,6 +119,7 @@ Erste lokale Windows-Skripte sind unter `scripts/workbench/` vorbereitet:
 - `python -m ims.api.workbench_artifact_manifest --root . --frontend-dist frontend/dist` beschreibt Ein- und Ausschlusspfade sowie Datei-Groessen und SHA-256-Pruefsummen fuer ein spaeteres Artefakt.
 - `python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist` plant ein spaeteres Bundle auf Basis des Manifests, ohne Dateien zu kopieren oder ein ZIP zu erzeugen.
 - `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip` erzeugt ein explizites lokales ZIP aus dem Bundle-Plan.
+- `python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench` staged ein geprueftes ZIP in eine portable Zielstruktur.
 
 Diese Skripte kapseln nur lokale Betriebsablaeufe:
 
@@ -262,14 +264,18 @@ npm.cmd run build
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
+python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
+python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
 ```
 
 Dieser Ablauf prueft das tatsaechlich erzeugte ZIP. Er erzeugt keine portable
-Zielstruktur unter `.\ims-workbench`, entpackt nichts dauerhaft und validiert
-keinen bestehenden Zielordner.
+Zielstruktur implizit, sondern staged sie erst ueber den expliziten
+Staging-Befehl in einen fehlenden oder leeren Zielordner.
 Der ZIP-Smoke prueft dabei erwartete Eintraege, ausgeschlossene lokale Daten,
 stabile ZIP-Metadaten sowie die Lesbarkeit der ZIP-Payloads inklusive
 CRC-Pruefung.
+Das Staging ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`,
+WAL-/SHM-Dateien oder Logs und fuehrt keine SQLite-Migration aus.
 
 Die Grenzen bleiben getrennt:
 
@@ -298,11 +304,10 @@ Checkliste geprueft werden:
 5. Der ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen wie
    `python_port` oder `frontend/dist`.
 6. Bundle-Plan und ZIP-Smoke wurden gegen das geplante Artefakt geprueft.
-7. Der konsolidierte lokale Release-Ablauf prueft das ZIP selbst und validiert
-   keinen bestehenden oder stale Zielordner.
-8. Portable Strukturpruefung laeuft erst nach separatem, explizitem Staging
-   oder Entpacken gegen das Zielartefakt mit
-   `workbench_portable_readiness --layout portable`.
+7. Der konsolidierte lokale Release-Ablauf prueft das ZIP selbst und staged es
+   danach in einen fehlenden oder leeren Zielordner.
+8. Portable Strukturpruefung laeuft erst nach diesem expliziten Staging gegen
+   das Zielartefakt mit `workbench_portable_readiness --layout portable`.
 9. Readiness nutzt im portablen Artefakt den Frontend-Pfad
    `app\frontend\dist`.
 10. Repo-Side-by-Side-Checks setzen `PYTHONPATH` auf den neuen
@@ -335,8 +340,8 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `0-2` reviewbaren PRs na
 11. Windows-Pfadhaertung und Leerzeichenpfade.
 12. Release-Checkliste: vorbereitet.
 13. Lokale Release-Bereitstellung: konsolidiert.
-14. Portables Staging fuer ZIP-Artefakte: geplant.
-15. Optionaler Staging-Adapter mit Smoke-Checks.
+14. Portables Staging fuer ZIP-Artefakte: vorbereitet.
+15. Optionaler Staging-Smoke und weitere Plattformhaertung.
 16. Abschlusskonsolidierung.
 17. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
 
@@ -366,6 +371,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles,
 - ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten,
 - ZIP-Payload-/CRC-Pruefung fuer beschaedigte Eintragsbytes,
+- portables Staging aus einem geprueften ZIP in eine leere Zielstruktur,
 - Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness,
 - Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback,
 - reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,

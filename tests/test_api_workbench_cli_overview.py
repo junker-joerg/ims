@@ -46,6 +46,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "workbench_bundle_plan",
         "workbench_bundle_build",
         "workbench_bundle_smoke",
+        "workbench_portable_staging",
         "metadata_import_cli check",
         "metadata_import_cli preview",
         "metadata_import_cli snapshot",
@@ -73,6 +74,7 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
 
     assert writing_commands == [
         "workbench_bundle_build",
+        "workbench_portable_staging",
         "metadata_import_cli export",
         "run_control_queue init",
         "run_control_queue enqueue",
