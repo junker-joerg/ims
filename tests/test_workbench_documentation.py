@@ -27,6 +27,10 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in readme
     assert "New-Item -ItemType Directory .\\dist -Force" in readme
     assert "fehlende Output-Parents nicht automatisch" in readme
+    assert "Lokaler Release-Ablauf fuer ein ZIP-Artefakt" in readme
+    assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in readme
+    assert "python -m ims.api.workbench_readiness --frontend-dist .\\ims-workbench\\app\\frontend\\dist" in readme
+    assert "lokaler Bereitstellungscheck" in readme
     assert "kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis" in readme
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in readme
     assert "`zip_sha256`-Pruefsumme bei identischem Inhalt reproduzierbar" in readme
@@ -91,6 +95,8 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist" in doc
     assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in doc
     assert "New-Item -ItemType Directory .\\dist -Force" in doc
+    assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in doc
+    assert "python -m ims.api.workbench_readiness --frontend-dist .\\ims-workbench\\app\\frontend\\dist" in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
@@ -145,6 +151,11 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "`zip_sha256` fuer identische Inhalte reproduzierbar bleibt" in doc
     assert "automatisierter ZIP-Smoke prueft fuer erzeugte lokale Bundles" in doc
     assert "Dieser Smoke startet keine Simulation" in doc
+    assert "## Lokale Release-Bereitstellung" in doc
+    assert "Der lokale Release-Ablauf fuer ein ZIP-Artefakt" in doc
+    assert "Repo-Build, ZIP-Artefakt und portable Zielstruktur" in doc
+    assert "Readiness im portablen Ziel nutzt" in doc
+    assert "app\\frontend\\dist" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
     assert "Die Uebersicht fuehrt diese Befehle nicht aus" in doc
@@ -284,8 +295,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Rollback heisst" in plan
     assert "kein fachlicher" in plan
     assert "Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung" in plan
-    assert "1-3" in plan
-    assert "20-40+" in plan
+    assert "0-2" in plan
+    assert "19-38+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Lokale Startskripte fuer Windows, ohne Installer: vorbereitet" in plan
@@ -298,6 +309,13 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Backup-/Restore-Doku fuer lokale Metadaten: vorbereitet" in plan
     assert "Update-/Rollback-Doku fuer lokale Workbench-Versionen: vorbereitet" in plan
     assert "Release-Checkliste fuer lokale ZIP-Artefakte" in plan
+    assert "Konsolidierter lokaler Release-Ablauf" in plan
+    assert "Der lokale Release-Ablauf fuer ein ZIP-Artefakt" in plan
+    assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in plan
+    assert "python -m ims.api.workbench_readiness --frontend-dist .\\ims-workbench\\app\\frontend\\dist" in plan
+    assert "Repo-Build: `npm.cmd run build`" in plan
+    assert "ZIP-Artefakt: expliziter Zielpfad" in plan
+    assert "Portable Zielstruktur: `app\\frontend\\dist`" in plan
     assert "Frontend wurde gebaut: `npm.cmd run build`" in plan
     assert "New-Item -ItemType Directory .\\dist -Force" in plan
     assert "workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in plan
@@ -306,6 +324,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Ausgabeordner bleibt ein Fehler" in plan
     assert "ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen" in plan
     assert "Bundle-Plan und ZIP-Smoke" in plan
+    assert "konsolidierte lokale Release-Ablauf trennt Repo-Build, ZIP-Artefakt" in plan
     assert "workbench_portable_readiness --layout portable" in plan
     assert "app\\frontend\\dist" in plan
     assert "Repo-Side-by-Side-Checks setzen `PYTHONPATH`" in plan
@@ -326,6 +345,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten" in plan
     assert "Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness" in plan
     assert "Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback" in plan
+    assert "Lokale Release-Bereitstellung: konsolidiert" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
     assert "reproduzierbare ZIP-Pruefsummen bei identischem Inhalt" in plan

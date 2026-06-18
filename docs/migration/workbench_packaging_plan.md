@@ -214,6 +214,33 @@ keine automatische SQLite-Migration, keinen Installer, keine Simulation und
 keine Fachvalidierung. Ein lokales Update oder Rollback ist kein fachlicher
 Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung.
 
+## Konsolidierter lokaler Release-Ablauf
+
+Der lokale Release-Ablauf fuer ein ZIP-Artefakt ist ein manueller, pruefbarer
+Bereitstellungscheck. Er fuehrt die bestehenden Packaging-Adapter zusammen,
+ohne neue Produktfunktion zu ergaenzen:
+
+```powershell
+npm.cmd run build
+New-Item -ItemType Directory .\dist -Force
+python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
+python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
+python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+python -m ims.api.workbench_readiness --frontend-dist .\ims-workbench\app\frontend\dist
+```
+
+Dieser Ablauf trennt drei Dinge bewusst:
+
+- Repo-Build: `npm.cmd run build` und `frontend/dist` im Checkout.
+- ZIP-Artefakt: expliziter Zielpfad unter einem vorbereiteten Ausgabeordner.
+- Portable Zielstruktur: `app\frontend\dist` im entpackten oder kopierten
+  Zielordner.
+
+Der Ablauf startet keine Simulation, installiert nichts automatisch, erzeugt
+keinen HTTP- oder UI-Schreibpfad, fuehrt keine SQLite-Migration aus und ist kein
+fachlicher Gleichheitsnachweis. Bestehende Metadaten werden nur ueber explizite
+`--db`-Pfade in Readiness-, Roundtrip- oder Update-Checks einbezogen.
+
 ## Release-Checkliste fuer lokale ZIP-Artefakte
 
 Ein lokales ZIP- oder Ordnerartefakt soll vor einer Weitergabe mit einer kurzen
@@ -229,26 +256,28 @@ Checkliste geprueft werden:
 5. Der ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen wie
    `python_port` oder `frontend/dist`.
 6. Bundle-Plan und ZIP-Smoke wurden gegen das geplante Artefakt geprueft.
-7. Portable Strukturpruefung laeuft gegen das Zielartefakt mit
+7. Der konsolidierte lokale Release-Ablauf trennt Repo-Build, ZIP-Artefakt und
+   portable Zielstruktur.
+8. Portable Strukturpruefung laeuft gegen das Zielartefakt mit
    `workbench_portable_readiness --layout portable`.
-8. Readiness nutzt im portablen Artefakt den Frontend-Pfad
+9. Readiness nutzt im portablen Artefakt den Frontend-Pfad
    `app\frontend\dist`.
-9. Repo-Side-by-Side-Checks setzen `PYTHONPATH` auf den neuen
+10. Repo-Side-by-Side-Checks setzen `PYTHONPATH` auf den neuen
    `python_port`-Pfad oder installieren die neue Version explizit in die
    verwendete virtuelle Umgebung.
-10. Bestehende Metadatenquelle wird explizit als `--db` uebergeben.
-11. Vor dem Update gibt es Backup oder JSON-Export der Metadatenquelle.
-12. `metadata_import_cli roundtrip --db <metadata.sqlite>` prueft die
+11. Bestehende Metadatenquelle wird explizit als `--db` uebergeben.
+12. Vor dem Update gibt es Backup oder JSON-Export der Metadatenquelle.
+13. `metadata_import_cli roundtrip --db <metadata.sqlite>` prueft die
     bestehende Metadatenquelle.
-13. Rollback-Pfad ist vorbereitet: alte Version, gesicherte Metadatenquelle und
+14. Rollback-Pfad ist vorbereitet: alte Version, gesicherte Metadatenquelle und
     Startkommando sind bekannt.
-14. Es gibt weiterhin keine Simulation, keinen HTTP- oder UI-Schreibpfad, keinen
+15. Es gibt weiterhin keine Simulation, keinen HTTP- oder UI-Schreibpfad, keinen
     automatischen Updater, keine automatische SQLite-Migration und keine
     historische Vollgleichheitsbehauptung.
 
 ## Erwartete PR-Roadmap
 
-Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `1-3` reviewbaren PRs nach diesem Schritt:
+Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `0-2` reviewbaren PRs nach diesem Schritt:
 
 1. Packaging- und Bereitstellungsplan: erledigt.
 2. Lokale Startskripte fuer Windows, ohne Installer: vorbereitet.
@@ -261,9 +290,10 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `1-3` reviewbaren PRs na
 9. Backup-/Restore-Doku fuer lokale Metadaten: vorbereitet.
 10. Update-/Rollback-Doku fuer lokale Workbench-Versionen: vorbereitet.
 11. Windows-Pfadhaertung und Leerzeichenpfade.
-12. Release-Checkliste.
-13. Abschlusskonsolidierung.
-14. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
+12. Release-Checkliste: vorbereitet.
+13. Lokale Release-Bereitstellung: konsolidiert.
+14. Abschlusskonsolidierung.
+15. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
 
 ## Gesamtplanung
 
@@ -271,10 +301,10 @@ Die grobe Gesamtplanung bis "wirklich alles fertig" bleibt:
 
 - Workbench-Ausbau nach v1: ca. `8-15` PRs.
 - Fachvalidierung und historische Vollgleichheit: ca. `10-18` PRs.
-- Packaging und Bereitstellung: ca. `1-3` PRs.
-- Integrations- und Review-Reserve: ca. `1-4` PRs.
+- Packaging und Bereitstellung: ca. `0-2` PRs.
+- Integrations- und Review-Reserve: ca. `1-3` PRs.
 
-Erwartet bleiben damit weiterhin grob ca. `20-40+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
+Erwartet bleiben damit weiterhin grob ca. `19-38+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
 
 ## Teststrategie
 
