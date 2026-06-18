@@ -12,7 +12,7 @@ from starlette.staticfiles import StaticFiles
 from ims.api.metadata import metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
-from ims.api.run_control_queue_overview import run_control_queue_overview_payload
+from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 
 try:
     from fastapi import FastAPI
@@ -130,6 +130,12 @@ def create_app(
     def queue_overview_payload() -> dict[str, object]:
         return run_control_queue_overview_payload(metadata_source)
 
+    def queue_detail_response(queue_id: str) -> JSONResponse:
+        detail = run_control_queue_detail_payload(metadata_source, queue_id)
+        if detail is None:
+            return JSONResponse(_not_found_payload("run_control_queue", queue_id), status_code=404)
+        return JSONResponse(detail)
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -183,6 +189,13 @@ def create_app(
         def run_control_queue() -> dict[str, object]:
             return queue_overview_payload()
 
+        @app.get("/api/run-control/queue/{queue_id}", response_model=None)
+        def run_control_queue_detail(queue_id: str) -> dict[str, object] | JSONResponse:
+            detail = run_control_queue_detail_payload(metadata_source, queue_id)
+            if detail is None:
+                return JSONResponse(_not_found_payload("run_control_queue", queue_id), status_code=404)
+            return detail
+
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
 
@@ -209,6 +222,10 @@ def create_app(
         Route("/api/metadata/source", lambda request: JSONResponse(metadata_source)),
         Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
+        Route(
+            "/api/run-control/queue/{queue_id}",
+            lambda request: queue_detail_response(request.path_params["queue_id"]),
+        ),
         Route("/", lambda request: index_response()),
     ]
     if (dist_dir / "assets").is_dir():

@@ -246,6 +246,58 @@ def test_run_control_queue_overview_reads_injected_sqlite_queue(tmp_path):
     assert payload["execution_enabled"] is False
 
 
+def test_run_control_queue_detail_reads_injected_sqlite_queue_entry(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    request_path = tmp_path / "run_control_request.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "run_id": "baseline-python-tests",
+                "scenario_id": "agrsich-reference-window",
+                "requested_by": "local-test",
+                "created_at": "2026-05-27T00:00:00Z",
+                "execution_enabled": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+    repository = build_seeded_metadata_repository(db_path)
+    initialize_run_control_queue(db_path)
+    enqueue_run_control_request(request_path, db_path=db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/queue/baseline-python-tests")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["mode"] == "run_control_queue_detail"
+    assert payload["entry"]["queue_id"] == "baseline-python-tests"
+    assert payload["entry"]["request"]["requested_by"] == "local-test"
+    assert payload["entry"]["request"]["execution_enabled"] is False
+    assert payload["entry"]["execution_performed"] is False
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_run_control_queue_detail_returns_stable_404(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/queue/missing-queue-entry")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "error": {
+            "code": "metadata_not_found",
+            "resource": "run_control_queue",
+            "id": "missing-queue-entry",
+            "message": "run_control_queue metadata not found",
+        }
+    }
+
+
 def test_metadata_source_reports_in_memory_default(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)

@@ -745,14 +745,43 @@ code {
   cursor: pointer;
 }
 
-.run-control-row {
-  cursor: default;
+.run-control-detail {
+  margin-top: 14px;
+}
+
+.run-control-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.run-control-detail-row {
+  min-height: 64px;
+  padding: 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
+.run-control-detail-row span {
+  display: block;
+  margin-bottom: 7px;
+  color: #66736c;
+}
+
+.run-control-detail-row strong {
+  display: block;
+  min-width: 0;
+  color: #143b2d;
+  overflow-wrap: anywhere;
 }
 
 .scenario-overview-row:hover,
 .scenario-overview-row.selected,
 .run-overview-row:hover,
-.run-overview-row.selected {
+.run-overview-row.selected,
+.run-control-row:hover,
+.run-control-row.selected {
   border-color: #9fb7aa;
   background: #eef5f1;
 }
@@ -819,6 +848,7 @@ code {
   .consistency-grid,
   .selection-summary-grid,
   .run-control-summary,
+  .run-control-detail-grid,
   .diagnosis-row,
   .scenario-filterbar,
   .run-filterbar,

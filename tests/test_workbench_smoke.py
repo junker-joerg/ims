@@ -23,6 +23,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     capabilities = client.get("/api/metadata/capabilities")
     consistency = client.get("/api/metadata/consistency")
     run_control_queue = client.get("/api/run-control/queue")
+    missing_queue_entry = client.get("/api/run-control/queue/missing-queue-entry")
     missing = client.get("/api/scenarios/missing-scenario")
 
     assert health.status_code == 200
@@ -51,6 +52,8 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert run_control_queue.json()["writes_enabled"] is False
     assert run_control_queue.json()["execution_enabled"] is False
     assert run_control_queue.json()["execution_performed"] is False
+    assert missing_queue_entry.status_code == 404
+    assert missing_queue_entry.json()["error"]["resource"] == "run_control_queue"
 
     scenario_id = scenarios.json()["items"][0]["id"]
     run_id = runs.json()["items"][0]["id"]
@@ -166,10 +169,12 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Szenario-Uebersicht" in source
     assert "Run-Uebersicht" in source
     assert "Run-Control-Uebersicht" in source
+    assert "Run-Control-Queue-Detail" in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
     assert "/api/run-control/queue" in source
+    assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source

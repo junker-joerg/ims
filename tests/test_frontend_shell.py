@@ -113,12 +113,19 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
 
     assert "/api/run-control/queue" in source
+    assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
     assert "Run-Control-Uebersicht" in source
+    assert "Run-Control-Queue-Detail" in source
+    assert "Queue-Detail" in source
     assert "runControlQueue" in source
+    assert "selectedQueueId" in source
+    assert "setSelectedQueueId(entry.queue_id)" in source
     assert "run-control-panel" in styles
     assert "run-control-table" in styles
+    assert "run-control-detail-grid" in styles
     assert "Queue-Status" in source
     assert "Queue-Eintraege" in source
+    assert "Angelegt von" in source
     assert "Keine Run-Control-Queue-Eintraege" in source
     assert "writes_enabled" in source
     assert "execution_performed" in source

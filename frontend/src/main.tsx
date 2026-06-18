@@ -137,6 +137,18 @@ type RunControlQueueOverview = {
   execution_performed: boolean;
 };
 
+type RunControlQueueDetail = {
+  schema_version: string;
+  generated_at: string;
+  status: "ok";
+  mode: "run_control_queue_detail";
+  source: MetadataSourceStatus;
+  entry: RunControlQueueEntry;
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+  execution_performed: boolean;
+};
+
 type CapabilityState = {
   enabled: boolean;
   boundary?: string;
@@ -219,6 +231,10 @@ function App() {
   const [metadataSource, setMetadataSource] = useState<MetadataSourceStatus | null>(null);
   const [metadataConsistency, setMetadataConsistency] = useState<MetadataConsistency | null>(null);
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
+  const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
+  const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
+  const [queueDetailState, setQueueDetailState] = useState<DetailState>("idle");
+  const [queueDetailError, setQueueDetailError] = useState<string | null>(null);
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
@@ -299,6 +315,7 @@ function App() {
           setMetadataSource(sourcePayload);
           setMetadataConsistency(consistencyPayload);
           setRunControlQueue(runControlQueuePayload);
+          setSelectedQueueId((current) => current ?? runControlQueuePayload.entries[0]?.queue_id ?? null);
           setHealthStatus(healthPayload);
           setVersionInfo(versionPayload);
           setSelectedScenarioId((current) => current ?? scenarioPayload.items[0]?.id ?? null);
@@ -317,6 +334,46 @@ function App() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadQueueDetail() {
+      if (!selectedQueueId) {
+        setQueueDetail(null);
+        setQueueDetailState("idle");
+        setQueueDetailError(null);
+        return;
+      }
+      setQueueDetailState("loading");
+      setQueueDetailError(null);
+      try {
+        const response = await fetch(`/api/run-control/queue/${encodeURIComponent(selectedQueueId)}`);
+        if (response.status === 404) {
+          throw new Error("Queue-Eintrag nicht gefunden");
+        }
+        if (!response.ok) {
+          throw new Error("Queue-Detail nicht erreichbar");
+        }
+        const payload = (await response.json()) as RunControlQueueDetail;
+        if (active) {
+          setQueueDetail(payload);
+          setQueueDetailState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setQueueDetail(null);
+          setQueueDetailError(error instanceof Error ? error.message : "Queue-Detail nicht erreichbar");
+          setQueueDetailState("error");
+        }
+      }
+    }
+
+    loadQueueDetail();
+    return () => {
+      active = false;
+    };
+  }, [selectedQueueId]);
 
   useEffect(() => {
     let active = true;
@@ -439,6 +496,22 @@ function App() {
     ["Ausfuehrung", runControlQueue?.execution_enabled || runControlQueue?.execution_performed ? "aktiv" : "gesperrt"]
   ];
   const runControlQueueIssue = runControlQueue?.issues[0]?.message ?? "Queue liest vorhandene lokale Eintraege ohne Ausfuehrung.";
+  const selectedQueueEntry =
+    queueDetail?.entry.queue_id === selectedQueueId
+      ? queueDetail.entry
+      : runControlQueue?.entries.find((entry) => entry.queue_id === selectedQueueId) ?? null;
+  const queueDetailRows = [
+    ["Queue-ID", selectedQueueEntry?.queue_id ?? "kein Eintrag"],
+    ["Run", selectedQueueEntry?.request.run_id ?? "-"],
+    ["Szenario", selectedQueueEntry?.request.scenario_id ?? "-"],
+    ["Status", selectedQueueEntry?.status ?? "-"],
+    ["Angelegt von", selectedQueueEntry?.request.requested_by ?? "-"],
+    ["Zeitpunkt", selectedQueueEntry?.request.created_at ?? "-"],
+    ["Schreibpfade", queueDetail?.writes_enabled ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", selectedQueueEntry?.execution_enabled || selectedQueueEntry?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
+  const queueDetailStatus =
+    queueDetailState === "error" ? queueDetailError ?? "nicht gefunden" : queueDetailState === "loading" ? "laedt" : "lesend";
   const diagnosisRows = [
     ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
     ["Version", versionInfo ? `${versionInfo.name} ${versionInfo.version}` : "laedt"],
@@ -864,7 +937,12 @@ function App() {
               <span>Ausfuehrung</span>
             </div>
             {runControlQueue?.entries.map((entry) => (
-              <div className="run-control-row" key={entry.queue_id}>
+              <button
+                className={`run-control-row ${entry.queue_id === selectedQueueId ? "selected" : ""}`}
+                key={entry.queue_id}
+                type="button"
+                onClick={() => setSelectedQueueId(entry.queue_id)}
+              >
                 <span>
                   <strong>{entry.queue_id}</strong>
                   <small>{entry.request.requested_by}</small>
@@ -873,12 +951,26 @@ function App() {
                 <span>{entry.request.scenario_id}</span>
                 <span>{entry.status}</span>
                 <span>{entry.execution_enabled || entry.execution_performed ? "aktiv" : "gesperrt"}</span>
-              </div>
+              </button>
             ))}
           </div>
           {!runControlQueue?.entries.length ? (
             <div className="empty-state">Keine Run-Control-Queue-Eintraege fuer diese Metadatenquelle.</div>
           ) : null}
+          <div className="run-control-detail" aria-label="Run-Control-Queue-Detail">
+            <div className="detail-status">
+              <span>Queue-Detail</span>
+              <strong>{queueDetailStatus}</strong>
+            </div>
+            <div className="run-control-detail-grid">
+              {queueDetailRows.map(([label, value]) => (
+                <div className="run-control-detail-row" key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="panel import-panel" aria-label="Importvorschau">
