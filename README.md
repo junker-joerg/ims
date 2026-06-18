@@ -113,10 +113,13 @@ npm.cmd run build
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
+python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
+python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
 ```
 
-Dieser Ablauf ist ein lokaler Bereitstellungscheck fuer den tatsaechlich erzeugten ZIP-Inhalt. Er erzeugt keine portable Zielstruktur unter `.\ims-workbench` und validiert keinen bestehenden Zielordner. Portable Readiness mit `app\frontend\dist` ist erst nach einem separaten, expliziten Staging- oder Entpackschritt sinnvoll. Der Ablauf startet keine Simulation, oeffnet keinen HTTP- oder UI-Schreibpfad, installiert nichts automatisch und migriert keine SQLite-Datenbank.
+Dieser Ablauf ist ein lokaler Bereitstellungscheck fuer den tatsaechlich erzeugten ZIP-Inhalt und eine daraus explizit gestagte portable Zielstruktur unter `.\ims-workbench`. Portable Readiness mit `app\frontend\dist` ist erst nach diesem Staging-Schritt sinnvoll. Der Ablauf startet keine Simulation, oeffnet keinen HTTP- oder UI-Schreibpfad, installiert nichts automatisch und migriert keine SQLite-Datenbank.
 Der ZIP-Smoke prueft erwartete Eintraege, ausgeschlossene lokale Daten, stabile ZIP-Metadaten sowie die Lesbarkeit der ZIP-Payloads inklusive CRC-Pruefung.
+Das portable Staging erwartet einen fehlenden oder leeren Zielordner und ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs.
 
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
 

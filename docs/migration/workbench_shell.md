@@ -481,13 +481,16 @@ npm.cmd run build
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
+python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
+python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
 ```
 
-Der Ablauf prueft den tatsaechlich erzeugten ZIP-Inhalt. Er erzeugt keine
-portable Zielstruktur unter `.\ims-workbench` und validiert keinen moeglicherweise
-alten Zielordner. Eine portable Readiness mit `app\frontend\dist` ist erst nach
-einem separaten, expliziten Staging- oder Entpackschritt sinnvoll; Repo-Checks
-nutzen weiterhin `frontend/dist`. Das ZIP bleibt ein lokales
+Der Ablauf prueft den tatsaechlich erzeugten ZIP-Inhalt und staged ihn danach
+explizit in eine portable Zielstruktur unter `.\ims-workbench`. Eine portable
+Readiness mit `app\frontend\dist` ist erst nach diesem Staging-Schritt sinnvoll;
+Repo-Checks nutzen weiterhin `frontend/dist`. Das portable Staging erwartet
+einen fehlenden oder leeren Zielordner und ueberschreibt keine lokalen
+Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Das ZIP bleibt ein lokales
 Bereitstellungsartefakt: Es ist kein Installer, kein automatischer Updater,
 keine SQLite-Migration, keine Fachvalidierung und keine historische
 Vollgleichheitsbehauptung.
@@ -627,6 +630,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist` | Spaeteres Workbench-Bundle auf Basis des Manifests planen | schreibt nicht |
 | `python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip` | Explizites lokales ZIP aus dem Bundle-Plan erzeugen | schreibt nur den expliziten ZIP-Zielpfad |
 | `python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip` | Explizit erzeugtes ZIP direkt pruefen | schreibt nicht |
+| `python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench` | Geprueftes ZIP in eine portable Zielstruktur stagen | schreibt nur in den expliziten leeren Zielordner |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:

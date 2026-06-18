@@ -29,9 +29,12 @@ def test_readme_documents_local_workbench_start_commands():
     assert "fehlende Output-Parents nicht automatisch" in readme
     assert "Lokaler Release-Ablauf fuer ein ZIP-Artefakt" in readme
     assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in readme
+    assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in readme
+    assert "python -m ims.api.workbench_portable_readiness --root .\\ims-workbench --layout portable" in readme
     assert "tatsaechlich erzeugten ZIP-Inhalt" in readme
-    assert "erzeugt keine portable Zielstruktur" in readme
-    assert "Portable Readiness mit `app\\frontend\\dist` ist erst nach einem separaten" in readme
+    assert "explizit gestagte portable Zielstruktur" in readme
+    assert "fehlenden oder leeren Zielordner" in readme
+    assert "ueberschreibt keine lokalen Nutzerdaten" in readme
     assert "lokaler Bereitstellungscheck" in readme
     assert "kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis" in readme
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in readme
@@ -98,6 +101,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in doc
     assert "New-Item -ItemType Directory .\\dist -Force" in doc
     assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in doc
+    assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
@@ -155,10 +159,11 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "## Lokale Release-Bereitstellung" in doc
     assert "Der lokale Release-Ablauf fuer ein ZIP-Artefakt" in doc
     assert "prueft den tatsaechlich erzeugten ZIP-Inhalt" in doc
-    assert "erzeugt keine" in doc
-    assert "portable Zielstruktur unter `.\\ims-workbench`" in doc
+    assert "explizit in eine portable Zielstruktur unter `.\\ims-workbench`" in doc
+    assert "fehlenden oder leeren Zielordner" in doc
+    assert "ueberschreibt keine lokalen" in doc
     assert "erst nach" in doc
-    assert "Staging- oder Entpackschritt" in doc
+    assert "diesem Staging-Schritt" in doc
     assert "app\\frontend\\dist" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
@@ -316,9 +321,11 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Konsolidierter lokaler Release-Ablauf" in plan
     assert "Der lokale Release-Ablauf fuer ein ZIP-Artefakt" in plan
     assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in plan
+    assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in plan
+    assert "python -m ims.api.workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "Repo-Build: `npm.cmd run build`" in plan
     assert "ZIP-Artefakt: expliziter Zielpfad" in plan
-    assert "erzeugt keine portable" in plan
+    assert "staged sie erst ueber den expliziten" in plan
     assert "Portable Zielstruktur: erst nach separatem" in plan
     assert "Readiness `app\\frontend\\dist`" in plan
     assert "Portables Staging fuer ZIP-Artefakte" in plan
@@ -333,9 +340,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ims-workbench/data/.ims_workbench" in plan
     assert "ims-workbench/logs" in plan
     assert "Lokale Nutzerdaten werden nicht ueberschrieben" in plan
-    assert "Staging, ZIP-Build und ZIP-Smoke getrennte Grenzen bleiben" in plan
-    assert "Ein spaeterer" in plan
-    assert "Implementierungs-PR muss Dateikopien" in plan
+    assert "Staging, ZIP-Build und ZIP-Smoke bleiben getrennte Grenzen" in plan
+    assert "kopiert nur die definierten Workbench-Anwendungsartefakte" in plan
     assert "Frontend wurde gebaut: `npm.cmd run build`" in plan
     assert "New-Item -ItemType Directory .\\dist -Force" in plan
     assert "workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in plan
@@ -345,8 +351,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "ZIP-Zielpfad liegt nicht unter eingeschlossenen Quellbaeumen" in plan
     assert "Bundle-Plan und ZIP-Smoke" in plan
     assert "konsolidierte lokale Release-Ablauf prueft das ZIP selbst" in plan
-    assert "validiert" in plan
-    assert "stale Zielordner" in plan
+    assert "staged es" in plan
+    assert "fehlenden oder leeren Zielordner" in plan
     assert "workbench_portable_readiness --layout portable" in plan
     assert "app\\frontend\\dist" in plan
     assert "Repo-Side-by-Side-Checks setzen `PYTHONPATH`" in plan
@@ -368,8 +374,9 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness" in plan
     assert "Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback" in plan
     assert "Lokale Release-Bereitstellung: konsolidiert" in plan
-    assert "Portables Staging fuer ZIP-Artefakte: geplant" in plan
-    assert "Optionaler Staging-Adapter mit Smoke-Checks" in plan
+    assert "Portables Staging fuer ZIP-Artefakte: vorbereitet" in plan
+    assert "Optionaler Staging-Smoke und weitere Plattformhaertung" in plan
+    assert "portables Staging aus einem geprueften ZIP in eine leere Zielstruktur" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
     assert "reproduzierbare ZIP-Pruefsummen bei identischem Inhalt" in plan
