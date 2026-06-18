@@ -55,6 +55,43 @@ ims-workbench/
 
 Diese Struktur ist ein Zielbild. In diesem Plan-PR wird sie nicht erzeugt.
 
+## Portables Staging fuer ZIP-Artefakte
+
+Das aktuell erzeugte ZIP enthaelt bewusst Repo-Layout-Eintraege wie
+`python_port`, `frontend/dist`, `scripts/workbench` und Doku-Dateien. Es ist
+ein pruefbares lokales Artefakt, aber noch kein fertig gestagter portabler
+Ordner mit `app/frontend/dist`. Der ZIP-Smoke prueft deshalb den ZIP-Inhalt
+direkt und validiert keinen Zielordner.
+
+Ein spaeterer Staging-Adapter soll diese Grenze explizit machen:
+
+1. Quelle ist entweder ein geprueftes Repo-Layout-ZIP oder ein expliziter
+   Checkout-Pfad.
+2. Ziel ist ein explizit angegebener, neuer oder leerer Staging-Ordner.
+3. Der Adapter baut daraus die portable Zielstruktur:
+   - `ims-workbench/app/python_port`
+   - `ims-workbench/app/frontend/dist`
+   - `ims-workbench/start-workbench.cmd`
+   - `ims-workbench/check-workbench.cmd`
+   - `ims-workbench/data/.ims_workbench`
+   - `ims-workbench/logs`
+4. Lokale Nutzerdaten werden nicht ueberschrieben. Bestehende
+   `metadata.sqlite`, WAL-/SHM-Dateien und Logs bleiben ausserhalb dieses
+   automatischen Stagings, bis ein separater Migrations- oder Restore-Schritt
+   explizit freigegeben ist.
+5. Der Staging-Adapter startet keinen Server, keine Simulation und keinen
+   Run-Control-Pfad.
+6. Der Staging-Adapter importiert keine Metadaten, fuehrt keine
+   SQLite-Migration aus und oeffnet keinen HTTP- oder UI-Schreibpfad.
+7. Nach dem Staging pruefen `workbench_portable_readiness --layout portable`
+   und `workbench_readiness --frontend-dist <ziel>\\app\\frontend\\dist` die
+   gestagte Struktur.
+
+Dieser Plan ergaenzt noch keinen Staging-Adapter. Er haelt nur fest, dass
+Staging, ZIP-Build und ZIP-Smoke getrennte Grenzen bleiben. Ein spaeterer
+Implementierungs-PR muss Dateikopien, Zielordner-Schutz, Leerzeichenpfade,
+Rollback-Verhalten und Staging-Smoke separat testen.
+
 ## Lokale Datenablage
 
 Die lokale Workbench-Datenablage bleibt auf Workbench-Metadaten beschraenkt. Die bevorzugte lokale Ablage ist:
@@ -295,8 +332,10 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `0-2` reviewbaren PRs na
 11. Windows-Pfadhaertung und Leerzeichenpfade.
 12. Release-Checkliste: vorbereitet.
 13. Lokale Release-Bereitstellung: konsolidiert.
-14. Abschlusskonsolidierung.
-15. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
+14. Portables Staging fuer ZIP-Artefakte: geplant.
+15. Optionaler Staging-Adapter mit Smoke-Checks.
+16. Abschlusskonsolidierung.
+17. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
 
 ## Gesamtplanung
 
