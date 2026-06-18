@@ -155,9 +155,10 @@ Eine lokale Run-Control-Queue kann solche Requests in einer expliziten SQLite-Da
 python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite
 python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite
 python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue_diagnostics --db .\.ims_workbench\metadata.sqlite
 ```
 
-`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list` und `show` lesen die Queue-Datenbank read-only, vermeiden neue WAL-/SHM-Sidecars und lehnen unvollstaendige Sidecar-Zustaende ab.
+`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list`, `show` und `run_control_queue_diagnostics` lesen die Queue-Datenbank read-only. Die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten.
 
 Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese gesperrte Steuerungsgrenze, ohne einen Lauf zu starten:
 
