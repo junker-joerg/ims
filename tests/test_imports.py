@@ -180,6 +180,12 @@ def test_core_placeholders_import() -> None:
         list_run_control_queue,
         main as run_control_queue_main,
     )
+    from ims.api.run_control_queue_diagnostics import (
+        RunControlQueueDiagnosticIssue,
+        RunControlQueueDiagnosticsResult,
+        diagnose_run_control_queue,
+        main as run_control_queue_diagnostics_main,
+    )
     from ims.api.run_control_queue_overview import (
         RunControlQueueOverview,
         RunControlQueueOverviewIssue,
@@ -667,6 +673,10 @@ def test_core_placeholders_import() -> None:
     assert list_run_control_queue is not None
     assert get_run_control_queue_entry is not None
     assert run_control_queue_main is not None
+    assert RunControlQueueDiagnosticIssue is not None
+    assert RunControlQueueDiagnosticsResult is not None
+    assert diagnose_run_control_queue is not None
+    assert run_control_queue_diagnostics_main is not None
     assert RunControlQueueOverview is not None
     assert RunControlQueueOverviewIssue is not None
     assert build_run_control_queue_overview is not None

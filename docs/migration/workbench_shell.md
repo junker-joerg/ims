@@ -127,7 +127,7 @@ scripts\workbench\start-workbench.cmd
 
 Die lokale Workbench-v1 ist als rein lokale Browser-Workbench und Modernisierungs-Meilenstein abgeschlossen. Dieser Abschluss ist kein Release-Tag, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung. Sie liefert Backend-Health und Version, statische Frontend-Auslieferung, lesende Szenario- und Run-Metadaten, Detailansichten, Filter, Auswahlzusammenfassung, Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose und Readiness.
 
-Die lokalen CLI-Adapter decken Startdiagnose, Startplan, Readiness, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag, Run-Control-Request-Check, Run-Control-Queue und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal und starten keine Simulation. Nur `metadata_import_cli import --db` schreibt Metadaten, `run_control_queue init/enqueue --db` schreibt Queue-Metadaten in eine explizite SQLite-Datei und `metadata_import_cli export --out` schreibt nur in den expliziten JSON-Zielpfad. `run_control_queue list/show --db` oeffnet die Queue-Datenbank read-only, vermeidet neue WAL-/SHM-Sidecars und lehnt unvollstaendige Sidecar-Zustaende ab.
+Die lokalen CLI-Adapter decken Startdiagnose, Startplan, Readiness, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag, Run-Control-Request-Check, Run-Control-Queue, Run-Control-Queue-Diagnose und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal und starten keine Simulation. Nur `metadata_import_cli import --db` schreibt Metadaten, `run_control_queue init/enqueue --db` schreibt Queue-Metadaten in eine explizite SQLite-Datei und `metadata_import_cli export --out` schreibt nur in den expliziten JSON-Zielpfad. `run_control_queue list/show --db` und `run_control_queue_diagnostics --db` oeffnen die Queue-Datenbank read-only; die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten.
 
 Nicht enthalten sind weiterhin Fachlogikaenderungen, echte Run-Ausfuehrung, neue HTTP-Endpunkte, HTTP- oder UI-Schreibpfade, Browser-Upload, Browser-Download, funktionaler Run-Start, Szenario-Editor, SQLite-Migration und historische Vollgleichheitsbehauptung.
 
@@ -562,9 +562,10 @@ Das Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `reque
 python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite
 python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite
 python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue_diagnostics --db .\.ims_workbench\metadata.sqlite
 ```
 
-Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen. Erlaubte Statuswerte sind `planned`, `blocked` und `validated`. `init` und `enqueue` schreiben nur in den expliziten SQLite-Pfad; `list` und `show` lesen eine bestehende Queue read-only. Wenn keine WAL-/SHM-Sidecars vorhanden sind, erzeugen diese Lesezugriffe keine neuen Sidecars. Sind Live-WAL-Sidecars vollstaendig vorhanden, werden sie beruecksichtigt, statt aktuelle Queue-Daten still zu ignorieren. Unvollstaendige Sidecar-Zustaende, etwa `-wal` ohne `-shm`, werden vor dem Lesen abgelehnt, damit kein fehlender Sidecar neu aufgebaut wird. Kein Queue-Befehl startet eine Simulation, einen Worker, einen Scheduler, einen HTTP-Endpunkt oder einen UI-Schreibpfad. `execution_enabled` und `execution_performed` bleiben `false`.
+Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen. Erlaubte Statuswerte sind `planned`, `blocked` und `validated`. `init` und `enqueue` schreiben nur in den expliziten SQLite-Pfad; `list`, `show` und `run_control_queue_diagnostics` lesen eine bestehende Queue read-only. Wenn keine WAL-/SHM-Sidecars vorhanden sind, erzeugen diese Lesezugriffe keine neuen Sidecars. Sind Live-WAL-Sidecars vollstaendig vorhanden, werden sie beruecksichtigt, statt aktuelle Queue-Daten still zu ignorieren. Unvollstaendige Sidecar-Zustaende, etwa `-wal` ohne `-shm`, werden vor dem Lesen abgelehnt, damit kein fehlender Sidecar neu aufgebaut wird. Die Diagnose meldet fehlende Szenario-Referenzen, unerwartete Ausfuehrungsflags, bereits gesetztes `execution_performed` und unbekannte Statuswerte als Issues. Kein Queue-Befehl startet eine Simulation, einen Worker, einen Scheduler, einen HTTP-Endpunkt oder einen UI-Schreibpfad. `execution_enabled` und `execution_performed` bleiben fuer normale Queue-Eintraege `false`.
 
 Die API bietet dazu eine rein lesende Uebersicht:
 
@@ -667,6 +668,7 @@ Vertraege und Grenzen:
 | `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |
 | `python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite` | Validierten Request ohne Ausfuehrung vormerken | schreibt Queue-Metadaten |
 | `python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite` | Queue read-only auflisten, neue Sidecars vermeiden und unvollstaendige Sidecars ablehnen | schreibt nicht |
+| `python -m ims.api.run_control_queue_diagnostics --db .\.ims_workbench\metadata.sqlite` | Queue-Schema, Szenario-Referenzen, Statuswerte und Ausfuehrungsflags read-only diagnostizieren | schreibt nicht |
 | `python -m ims.api.run_control_preflight --run-id baseline-python-tests` | Run-Metadaten lokal gegen die gesperrte Steuerungsgrenze pruefen | schreibt nicht |
 
 Metadaten:

@@ -53,6 +53,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_contracts" in readme
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
+    assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in readme
+    assert "Statuswerte, Szenario-Referenzen und Ausfuehrungsflags" in readme
     assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in readme
     assert "python -m ims.api.metadata_import_cli export" in readme
     assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in readme
@@ -114,6 +116,8 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_contracts" in doc
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in doc
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "fehlende Szenario-Referenzen" in doc
     assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in doc
     assert "python -m ims.api.metadata_import_cli check .\\metadata_import.json" in doc
     assert "python -m ims.api.metadata_import_cli preview .\\metadata_import.json" in doc

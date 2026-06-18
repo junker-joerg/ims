@@ -200,6 +200,13 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             requires_explicit_db=True,
         ),
         WorkbenchCliCommand(
+            name="run_control_queue_diagnostics",
+            command="python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite",
+            purpose="Lokale Run-Control-Queue rein lesend diagnostizieren.",
+            writes_enabled=False,
+            requires_explicit_db=True,
+        ),
+        WorkbenchCliCommand(
             name="run_control_preflight",
             command="python -m ims.api.run_control_preflight --run-id baseline-python-tests",
             purpose="Run-Metadaten lokal gegen die gesperrte Steuerungsgrenze pruefen.",
@@ -239,6 +246,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "run_control_contracts",
                 "run_control_requests check",
                 "run_control_queue list",
+                "run_control_queue_diagnostics",
                 "run_control_preflight",
             ],
             "write_commands": [
