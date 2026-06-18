@@ -71,6 +71,68 @@ def test_run_control_queue_diagnostics_reports_uninitialized_queue(tmp_path):
     assert payload["writes_performed"] is False
 
 
+def test_run_control_queue_diagnostics_handles_queue_only_database(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    initialize_run_control_queue(db_path)
+
+    payload = diagnose_run_control_queue(db_path).to_dict()
+
+    assert payload["status"] == "warning"
+    assert payload["queue_initialized"] is True
+    assert payload["queue_readable"] is True
+    assert payload["queue_count"] == 0
+    assert payload["missing_scenario_queue_ids"] == []
+    assert payload["issues"][0]["code"] == "run_control_queue_missing_metadata_schema"
+    assert payload["issues"][0]["severity"] == "warning"
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_run_control_queue_diagnostics_lists_queue_only_entries_without_scenario_lookup(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    initialize_run_control_queue(db_path)
+    with sqlite3.connect(db_path) as connection:
+        connection.execute(
+            """
+            INSERT INTO run_control_queue (
+                queue_id,
+                run_id,
+                scenario_id,
+                metadata_db,
+                requested_by,
+                created_at,
+                status,
+                execution_enabled,
+                execution_performed
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                "queue-only-run",
+                "queue-only-run",
+                "queue-only-scenario",
+                None,
+                "local-test",
+                "2026-06-15T00:00:00Z",
+                "planned",
+                0,
+                0,
+            ),
+        )
+
+    payload = diagnose_run_control_queue(db_path).to_dict()
+
+    assert payload["status"] == "warning"
+    assert payload["queue_initialized"] is True
+    assert payload["queue_readable"] is True
+    assert payload["queue_count"] == 1
+    assert payload["queue_ids"] == ["queue-only-run"]
+    assert payload["missing_scenario_queue_ids"] == []
+    assert payload["issues"][0]["code"] == "run_control_queue_missing_metadata_schema"
+    assert payload["execution_enabled_queue_ids"] == []
+    assert payload["execution_performed"] is False
+
+
 def test_run_control_queue_diagnostics_reports_missing_scenario_reference(tmp_path):
     db_path = tmp_path / "metadata.sqlite"
     build_seeded_metadata_repository(db_path)

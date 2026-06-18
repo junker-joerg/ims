@@ -55,6 +55,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "Statuswerte, Szenario-Referenzen und Ausfuehrungsflags" in readme
+    assert "Queue-only-Datenbank" in readme
+    assert "fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet" in readme
     assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in readme
     assert "python -m ims.api.metadata_import_cli export" in readme
     assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in readme
@@ -202,6 +204,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der Run-Control-Vertrag ist rein beschreibend" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
+    assert "Queue-only-Datenbank bleibt als Queue lesbar" in doc
+    assert "fehlende Szenario-/Run-Metadatentabellen werden als Diagnosewarnung gemeldet" in doc
     assert "Kein Queue-Befehl startet eine Simulation" in doc
     assert "GET /api/run-control/queue" in doc
     assert "GET /api/run-control/queue/{queue_id}" in doc
