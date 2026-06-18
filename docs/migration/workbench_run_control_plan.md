@@ -6,7 +6,15 @@ Dieses Dokument plant den naechsten Modernisierungsblock nach der abgeschlossene
 
 Die lokale Workbench-v1 ist als rein lokale Browser-Workbench abgeschlossen. Sie stellt Backend-Health und Version, statische Frontend-Auslieferung, lesende Szenario- und Run-Metadaten, Detailansichten, Filter, Auswahlzusammenfassung, Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose und Readiness bereit.
 
-Die lokalen CLI-Adapter decken Diagnose, Startplan, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal. Nur der explizite Metadatenimport mit `--db` schreibt Metadaten in eine angegebene SQLite-Datei; keine dieser Grenzen startet eine Simulation.
+Die lokalen CLI-Adapter decken Diagnose, Startplan, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag, Run-Control-Request-Check, Run-Control-Queue und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal. Nur der explizite Metadatenimport mit `--db` und die explizite lokale Run-Control-Queue schreiben Metadaten in eine angegebene SQLite-Datei; keine dieser Grenzen startet eine Simulation.
+
+Vorhandene lokale Run-Control-Bausteine sind:
+
+- Run-Control-Vertrag (`ims.api.run_control_contracts`), rein beschreibend.
+- Run-Control-Request-Check (`ims.api.run_control_requests`), lokal validierend.
+- Run-Control-Queue (`ims.api.run_control_queue`), explizit lokal und ohne Ausfuehrung.
+- Run-Control-Preflight (`ims.api.run_control_preflight`), lesend und ohne Ausfuehrung.
+- Workbench-Readiness und CLI-Uebersicht, die diese Grenzen sichtbar machen.
 
 ## Zielbild
 
@@ -16,22 +24,21 @@ Bis zu dieser separaten Freigabe bleibt `execution_enabled` auf `false`. Es gibt
 
 ## Gesamtplanung bis wirklich alles fertig
 
-Die Restplanung bis zum vollstaendigen Abschluss inklusive Workbench-Ausbau, Fachvalidierung, historischer Vollgleichheit und Packaging/Bereitstellung bleibt bewusst grob:
+Die Restplanung bis zum vollstaendigen Abschluss inklusive weiterem Workbench-Ausbau, Fachvalidierung und historischer Vollgleichheit bleibt bewusst grob. Der Packaging-/Bereitstellungsblock fuer die lokale Workbench-v1 ist bereits konsolidiert; offen bleiben dort nur Review-Fixes oder spaeter explizit beauftragte Release-Automatisierung.
 
-- Erwartet: ca. `33-50+` reviewbare PRs.
-- Realistische Mitte: ca. `44` PRs.
-- Optimistisch: ca. `33-38` PRs.
-- Realistisch: ca. `40-48` PRs.
-- Mit schwieriger Fachvalidierung oder Packaging-Fallen: `50+` PRs.
+- Erwartet: ca. `18-36+` reviewbare PRs.
+- Optimistisch: ca. `18-24` PRs.
+- Realistisch: ca. `24-32` PRs.
+- Mit schwieriger Fachvalidierung oder weiteren Integrationsfallen: `36+` PRs.
 
 Geplante Bloecke:
 
 | Block | Erwarteter Umfang | Inhalt |
 | --- | ---: | --- |
-| Workbench nach v1 vollstaendig nutzbarer machen | ca. `12-20` PRs | kontrollierte Run-Steuerung, lokale Schreibpfade, UI-Vorbereitung, spaeterer Ausfuehrungsadapter, Haertung, Doku und E2E-Smokes |
+| Workbench nach v1 vollstaendig nutzbarer machen | ca. `8-15` PRs | lesende Queue-/Run-Control-Anzeigen, API-Lesegrenzen, gesperrte Dry-Run-Vertraege, spaeterer Ausfuehrungsadapter nur nach Freigabe, Haertung, Doku und E2E-Smokes |
 | Fachvalidierung und historische Vollgleichheit | ca. `10-18` PRs | weitere Legacy-Referenzen, zusaetzliche Alt-/Neu-Vergleichspfade, Mehrperioden-Replays, Abweichungsanalyse, Modellkorrekturen und Abschlussbericht |
-| Packaging und Bereitstellung | ca. `8-14` PRs | lokale Startbarkeit, portable Ordnerstruktur, Startskripte/Launcher, reproduzierbarer Build, ZIP-/Release-Artefakte, Installations-, Update- und Backup-Doku |
-| Integrations- und Abschlussreserve | ca. `3-5` PRs | Review-Fixes, CI- und Windows-Pfadhaertung, finale Doku-Konsolidierung und Meilensteinabschluss |
+| Packaging und Bereitstellung | ca. `0` geplante PRs | lokale Startbarkeit, portable Ordnerstruktur, Startskripte/Launcher, reproduzierbarer Build, ZIP-/Staging-Grenzen, Installations-, Update- und Backup-Doku sind fuer v1 konsolidiert; offen nur Review-Fixes oder spaeter explizite Release-Automatisierung |
+| Integrations- und Abschlussreserve | ca. `1-3` PRs | Review-Fixes, CI- und Windows-Pfadhaertung, finale Doku-Konsolidierung und Meilensteinabschluss |
 
 Diese Planung ist keine Zusage auf historische Vollgleichheit. Fachvalidierung und historische Vollgleichheit bleiben eigene spaetere Bloecke mit separaten Referenzfenstern, Vergleichspfaden und Abschlusskriterien.
 
@@ -51,18 +58,13 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 
 ## Erwartete PR-Roadmap fuer den Workbench-Ausbau
 
-1. PR 1: Run-Control-Plan und Roadmap.
-2. PR 2: Run-Control-Request-DTO und lokale Validierung. Dieser Schritt fuehrt nur ein lokales Request-Format und einen Check ein; er startet keine Ausfuehrung.
-3. PR 3: Run-Control-Queue/Repository in SQLite, ohne Ausfuehrung. Dieser Schritt speichert nur validierte Request-Metadaten in einer expliziten lokalen Queue.
-4. PR 4: CLI-Dry-Run fuer Run-Control-Requests.
-5. PR 5: Gesperrte HTTP-Vertraege fuer Run-Control.
-6. PR 6: Metadaten-Schreibpfade kontrolliert vorbereiten.
-7. PR 7: UI-Anzeige fuer geplante Run-Control-Requests.
-8. PR 8: UI-Dry-Run/Preflight-Ansicht ohne Start.
-9. PR 9: Ausfuehrungsadapter-Plan und Fachlogikgrenze.
-10. PR 10-12: Kontrollierte Adapterimplementierung nur nach expliziter Freigabe.
-11. PR 13-15: Haertung, Doku, Smoke-/E2E-Checks und Abschluss.
-12. Zusaetzlich 3-5 Puffer-PRs fuer Review-Fixes, CI-Haertung und Grenzkorrekturen.
+1. PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend.
+2. PR 2: API-Leseendpunkte fuer Queue/Requests, noch ohne Schreibpfad.
+3. PR 3: Kontrollierter HTTP-Dry-Run-Vertrag, weiterhin gesperrt.
+4. PR 4: UI-Preflight-Ansicht fuer ausgewaehlten Run.
+5. PR 5: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe.
+6. PR 6+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe.
+7. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 
@@ -120,4 +122,4 @@ Die Run-Control-Schritte brauchen Tests auf mehreren Ebenen:
 
 ## Spaetere separate Bloecke
 
-Fachvalidierung und historische Vollgleichheit bleiben eigene spaetere Bloecke von ca. `10-18` PRs. Packaging und Bereitstellung bleiben ein eigener Block von ca. `8-14` PRs. Beide duerfen nicht als Nebeneffekt der Run-Control-Planung umgesetzt oder behauptet werden.
+Fachvalidierung und historische Vollgleichheit bleiben eigene spaetere Bloecke von ca. `10-18` PRs. Packaging und Bereitstellung sind fuer die lokale Workbench-v1 mit ca. `0` geplanten PRs konsolidiert; weitere Packaging-Arbeit waere ein separater spaeterer Auftrag, etwa fuer Release-Automatisierung. Keiner dieser Bloecke darf als Nebeneffekt der Run-Control-Planung umgesetzt oder behauptet werden.

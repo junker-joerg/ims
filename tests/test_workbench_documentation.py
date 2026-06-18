@@ -251,18 +251,26 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
 
     assert RUN_CONTROL_PLAN.is_file()
     assert "Workbench Run-Control Plan nach v1" in plan
-    assert "33-50+" in plan
-    assert "Realistische Mitte: ca. `44` PRs" in plan
+    assert "18-36+" in plan
+    assert "Packaging und Bereitstellung | ca. `0` geplante PRs" in plan
+    assert "Vorhandene lokale Run-Control-Bausteine" in plan
+    assert "Run-Control-Vertrag" in plan
+    assert "Run-Control-Request-Check" in plan
+    assert "Run-Control-Queue" in plan
+    assert "Run-Control-Preflight" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Phase 1: Rein lokale Run-Control-Requests" in plan
     assert "Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung" in plan
-    assert "PR 1: Run-Control-Plan und Roadmap" in plan
-    assert "PR 2: Run-Control-Request-DTO und lokale Validierung" in plan
-    assert "PR 3: Run-Control-Queue/Repository in SQLite, ohne Ausfuehrung" in plan
+    assert "PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend" in plan
+    assert "PR 2: API-Leseendpunkte fuer Queue/Requests, noch ohne Schreibpfad" in plan
+    assert "PR 3: Kontrollierter HTTP-Dry-Run-Vertrag, weiterhin gesperrt" in plan
+    assert "PR 4: UI-Preflight-Ansicht fuer ausgewaehlten Run" in plan
+    assert "PR 5: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe" in plan
+    assert "PR 6+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
-    assert "PR 13-15: Haertung, Doku, Smoke-/E2E-Checks und Abschluss" in plan
-    assert "3-5 Puffer-PRs" in plan
+    assert "Haertung, Doku, Smoke-/E2E-Checks" in plan
+    assert "Review-Fixes, CI- und Windows-Pfadhaertung" in plan
     assert "execution_enabled=false" in plan
     assert "`execution_enabled` bleibt bis zur expliziten Ausfuehrungsfreigabe `false`" in plan
     assert "Keine Fachlogikaenderung" in plan
