@@ -5,7 +5,7 @@ from pathlib import Path
 
 from ims.api.metadata import METADATA_GENERATED_AT, METADATA_SCHEMA_VERSION
 from ims.api.metadata_import import MetadataImportError
-from ims.api.run_control_queue import list_run_control_queue
+from ims.api.run_control_queue import get_run_control_queue_entry, list_run_control_queue
 
 
 @dataclass(frozen=True)
@@ -47,6 +47,23 @@ class RunControlQueueOverview:
 
 def run_control_queue_overview_payload(metadata_source: dict[str, object]) -> dict[str, object]:
     return build_run_control_queue_overview(metadata_source).to_dict()
+
+
+def run_control_queue_detail_payload(metadata_source: dict[str, object], queue_id: str) -> dict[str, object] | None:
+    detail = build_run_control_queue_detail(metadata_source, queue_id)
+    if detail is None:
+        return None
+    return {
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "generated_at": METADATA_GENERATED_AT,
+        "status": "ok",
+        "mode": "run_control_queue_detail",
+        "source": dict(metadata_source),
+        "entry": detail,
+        "writes_enabled": False,
+        "execution_enabled": False,
+        "execution_performed": False,
+    }
 
 
 def build_run_control_queue_overview(metadata_source: dict[str, object]) -> RunControlQueueOverview:
@@ -104,6 +121,24 @@ def build_run_control_queue_overview(metadata_source: dict[str, object]) -> RunC
         source=source,
         entries=entries,
     )
+
+
+def build_run_control_queue_detail(metadata_source: dict[str, object], queue_id: str) -> dict[str, object] | None:
+    source = dict(metadata_source)
+    if not queue_id.strip() or source.get("storage_kind") != "sqlite" or not source.get("path"):
+        return None
+
+    db_path = Path(str(source["path"]))
+    if not db_path.is_file():
+        return None
+
+    try:
+        result = get_run_control_queue_entry(queue_id, db_path=db_path).to_dict()
+    except MetadataImportError:
+        return None
+
+    entry = result.get("entry")
+    return entry if isinstance(entry, dict) else None
 
 
 def _is_uninitialized_queue(message: str) -> bool:

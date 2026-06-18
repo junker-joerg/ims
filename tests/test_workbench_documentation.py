@@ -198,6 +198,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
     assert "Kein Queue-Befehl startet eine Simulation" in doc
     assert "GET /api/run-control/queue" in doc
+    assert "GET /api/run-control/queue/{queue_id}" in doc
+    assert "metadata_not_found" in doc
     assert "Run-Control-Uebersicht" in doc
     assert "initialisiert aber keine Queue" in doc
     assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
