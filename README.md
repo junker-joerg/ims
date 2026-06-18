@@ -46,7 +46,7 @@ Die lokale Workbench-v1 ist als Modernisierungs-Meilenstein abgeschlossen. Diese
 - Lokale CLI-Adapter decken Diagnose, Import-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht und Run-Control-Preflight ab.
 - Keine Fachlogikaenderung, keine Simulation, keine HTTP-/UI-Schreibpfade und keine historische Vollgleichheitsbehauptung.
 
-Die spaetere Run-Steuerung und Gesamtplanung bis zum vollstaendigen Abschluss sind unter `docs/migration/workbench_run_control_plan.md` beschrieben. Der separate Packaging- und Bereitstellungsblock ist unter `docs/migration/workbench_packaging_plan.md` geplant. Diese Plaene sind konzeptionell und starten keine Simulation.
+Die spaetere Run-Steuerung und Gesamtplanung bis zum vollstaendigen Abschluss sind unter `docs/migration/workbench_run_control_plan.md` beschrieben. Der separate Packaging- und Bereitstellungsblock ist unter `docs/migration/workbench_packaging_plan.md` als lokaler ZIP-/Staging-Abschlussstatus konsolidiert. Diese Plaene und Checks starten keine Simulation.
 
 Start und Diagnose:
 

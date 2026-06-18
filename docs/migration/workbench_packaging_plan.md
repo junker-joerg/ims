@@ -1,6 +1,22 @@
 # Workbench Packaging- und Bereitstellungsplan
 
-Dieses Dokument plant den Packaging- und Bereitstellungsblock nach der abgeschlossenen lokalen Workbench-v1. Es ist ein Planungsstand, keine Implementierung: Es erzeugt kein Release-Artefakt, installiert nichts, startet keine Simulation, oeffnet keine Schreibpfade, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
+Dieses Dokument konsolidiert den Packaging- und Bereitstellungsblock nach der abgeschlossenen lokalen Workbench-v1. Der lokale ZIP-/Staging-Ablauf ist als manuelle, pruefbare Bereitstellungsgrenze vorbereitet. Dieses Dokument selbst erzeugt kein Release-Artefakt, installiert nichts, startet keine Simulation, oeffnet keine Schreibpfade, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
+
+## Abschlussstatus
+
+Der Packaging-/Bereitstellungsblock ist fuer die lokale Workbench-v1 abgeschlossen, abgesehen von moeglichen Review-Fixes und spaeterer Release-Automatisierung. Vorbereitet und getestet sind:
+
+- portable Readiness fuer Repo- und Zielstruktur,
+- Build-Snapshot fuer vorhandene Backend-/Frontend-Artefakte,
+- Artefaktmanifest mit Ein-/Ausschlussregeln, Groessen und SHA-256-Pruefsummen,
+- Bundle-Trockenlauf ohne ZIP-Erzeugung,
+- expliziter lokaler ZIP-Build mit reproduzierbaren ZIP-Metadaten,
+- ZIP-Smoke mit Eintrags-, Ausschluss-, Metadaten- und Payload-/CRC-Pruefung,
+- portables Staging aus geprueftem ZIP in einen fehlenden oder leeren Zielordner,
+- Staging-Smoke fuer Struktur, Startskriptgrenzen und Backend-Importfaehigkeit aus dem gestagten Workbench-Root,
+- manuelle Backup-/Restore-, Update-/Rollback- und Release-Checklisten.
+
+Der Abschlussstatus ist kein Installer, kein automatischer Updater, keine SQLite-Migration, kein Release-Tag und kein fachlicher Gleichheitsnachweis.
 
 ## Ausgangspunkt
 
@@ -330,7 +346,7 @@ Checkliste geprueft werden:
 
 ## Erwartete PR-Roadmap
 
-Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `0-2` reviewbaren PRs nach diesem Schritt:
+Der Packaging-/Bereitstellungsblock steht bei `0` geplanten PRs, abgesehen von Review-Fixes oder einer spaeter explizit freigegebenen Release-Automatisierung:
 
 1. Packaging- und Bereitstellungsplan: erledigt.
 2. Lokale Startskripte fuer Windows, ohne Installer: vorbereitet.
@@ -347,7 +363,7 @@ Der Packaging-/Bereitstellungsblock bleibt grob bei ca. `0-2` reviewbaren PRs na
 13. Lokale Release-Bereitstellung: konsolidiert.
 14. Portables Staging fuer ZIP-Artefakte: vorbereitet.
 15. Staging-Smoke fuer portable Zielstruktur und Startskriptgrenzen: vorbereitet.
-16. Abschlusskonsolidierung.
+16. Abschlusskonsolidierung: erledigt.
 17. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
 
 ## Gesamtplanung
