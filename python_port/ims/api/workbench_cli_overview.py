@@ -109,6 +109,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=True,
         ),
         WorkbenchCliCommand(
+            name="workbench_portable_staging_smoke",
+            command="python -m ims.api.workbench_portable_staging_smoke --root .\\ims-workbench",
+            purpose="Gestagte portable Workbench-Struktur und Startskript-Grenzen pruefen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -222,6 +228,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "workbench_artifact_manifest",
                 "workbench_bundle_plan",
                 "workbench_bundle_smoke",
+                "workbench_portable_staging_smoke",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",

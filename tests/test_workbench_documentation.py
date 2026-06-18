@@ -30,11 +30,13 @@ def test_readme_documents_local_workbench_start_commands():
     assert "Lokaler Release-Ablauf fuer ein ZIP-Artefakt" in readme
     assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in readme
     assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in readme
+    assert "python -m ims.api.workbench_portable_staging_smoke --root .\\ims-workbench" in readme
     assert "python -m ims.api.workbench_portable_readiness --root .\\ims-workbench --layout portable" in readme
     assert "tatsaechlich erzeugten ZIP-Inhalt" in readme
     assert "explizit gestagte portable Zielstruktur" in readme
     assert "fehlenden oder leeren Zielordner" in readme
     assert "ueberschreibt keine lokalen Nutzerdaten" in readme
+    assert "Staging-Smoke prueft danach die gestagte Backend-/Frontend-Struktur" in readme
     assert "lokaler Bereitstellungscheck" in readme
     assert "kein Installer, kein Release-Tag und kein fachlicher Gleichheitsnachweis" in readme
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in readme
@@ -102,6 +104,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "New-Item -ItemType Directory .\\dist -Force" in doc
     assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in doc
     assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in doc
+    assert "python -m ims.api.workbench_portable_staging_smoke --root .\\ims-workbench" in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
@@ -164,6 +167,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "ueberschreibt keine lokalen" in doc
     assert "erst nach" in doc
     assert "diesem Staging-Schritt" in doc
+    assert "Staging-Smoke liest die gestagte portable Zielstruktur" in doc
+    assert "Backend-Module" in doc
     assert "app\\frontend\\dist" in doc
     assert "writes_enabled = false" in doc
     assert "execution_enabled = false" in doc
@@ -304,8 +309,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Rollback heisst" in plan
     assert "kein fachlicher" in plan
     assert "Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung" in plan
-    assert "0-1" in plan
-    assert "18-37+" in plan
+    assert "0` PRs, abgesehen von Review-Fixes" in plan
+    assert "18-36+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Lokale Startskripte fuer Windows, ohne Installer: vorbereitet" in plan
@@ -322,6 +327,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Der lokale Release-Ablauf fuer ein ZIP-Artefakt" in plan
     assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in plan
     assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in plan
+    assert "python -m ims.api.workbench_portable_staging_smoke --root .\\ims-workbench" in plan
     assert "python -m ims.api.workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
     assert "Repo-Build: `npm.cmd run build`" in plan
     assert "ZIP-Artefakt: expliziter Zielpfad" in plan
@@ -375,7 +381,8 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback" in plan
     assert "Lokale Release-Bereitstellung: konsolidiert" in plan
     assert "Portables Staging fuer ZIP-Artefakte: vorbereitet" in plan
-    assert "Optionaler Staging-Smoke und weitere Plattformhaertung" in plan
+    assert "Staging-Smoke fuer portable Zielstruktur und Startskriptgrenzen: vorbereitet" in plan
+    assert "Staging-Smoke fuer zentrale Backend-Module" in plan
     assert "portables Staging aus einem geprueften ZIP in eine leere Zielstruktur" in plan
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in plan
     assert "stabilen Zeitstempeln und Dateirechten" in plan
