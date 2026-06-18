@@ -267,6 +267,9 @@ python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.z
 Dieser Ablauf prueft das tatsaechlich erzeugte ZIP. Er erzeugt keine portable
 Zielstruktur unter `.\ims-workbench`, entpackt nichts dauerhaft und validiert
 keinen bestehenden Zielordner.
+Der ZIP-Smoke prueft dabei erwartete Eintraege, ausgeschlossene lokale Daten,
+stabile ZIP-Metadaten sowie die Lesbarkeit der ZIP-Payloads inklusive
+CRC-Pruefung.
 
 Die Grenzen bleiben getrennt:
 
@@ -362,6 +365,7 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - Bundle-Trockenlauf auf Basis des Artefaktmanifests, ohne ZIP-Erzeugung,
 - ZIP-Inhaltspruefung fuer explizit erzeugte lokale Bundles,
 - ZIP-Smoke-Test fuer erwartete Workbench-Dateien, Ausschluesse und stabile ZIP-Metadaten,
+- ZIP-Payload-/CRC-Pruefung fuer beschaedigte Eintragsbytes,
 - Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness,
 - Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback,
 - reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,
