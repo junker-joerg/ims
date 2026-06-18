@@ -471,6 +471,27 @@ Der ZIP-Build schreibt ausschliesslich den expliziten ZIP-Zielpfad. Er kopiert k
 
 Ein automatisierter ZIP-Smoke prueft fuer erzeugte lokale Bundles erwartete Workbench-Dateien, ausgeschlossene lokale Daten und Caches sowie stabile ZIP-Metadaten. Dieser Smoke startet keine Simulation und ist kein Installer- oder Release-Test.
 
+## Lokale Release-Bereitstellung
+
+Der lokale Release-Ablauf fuer ein ZIP-Artefakt buendelt die vorhandenen
+Packaging-Grenzen in einer festen Reihenfolge:
+
+```powershell
+npm.cmd run build
+New-Item -ItemType Directory .\dist -Force
+python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
+python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
+python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+python -m ims.api.workbench_readiness --frontend-dist .\ims-workbench\app\frontend\dist
+```
+
+Der Ablauf trennt Repo-Build, ZIP-Artefakt und portable Zielstruktur. Das ZIP
+bleibt ein lokales Bereitstellungsartefakt: Es ist kein Installer, kein
+automatischer Updater, keine SQLite-Migration, keine Fachvalidierung und keine
+historische Vollgleichheitsbehauptung. Die Readiness im portablen Ziel nutzt
+den Frontend-Pfad `app\frontend\dist`; Repo-Checks nutzen weiterhin
+`frontend/dist`.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.
