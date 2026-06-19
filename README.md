@@ -161,6 +161,8 @@ python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.s
 
 `init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list`, `show`, `run_control_queue_diagnostics` und `run_control_queue_action_plan` lesen die Queue-Datenbank read-only. Die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten. Der Aktionsplan fuehrt diese Diagnose mit dem lokalen Preflight zusammen und empfiehlt pro Queue-Eintrag nur den naechsten sicheren lokalen Schritt: `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Eine Queue-only-Datenbank aus `run_control_queue init --db` bleibt diagnostizierbar und planbar; fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet.
 
+Read-only SQLite-Zugriffe behandeln lokale WAL-Grenzen bewusst: Rollback-Journal-Datenbanken bleiben normale `mode=ro`-Reads, vollstaendige `-wal`/`-shm`-Sidecars werden beruecksichtigt und `immutable=1` wird nur fuer sidecar-freie WAL-Dateien genutzt, damit lesende Queue- und Metadatenbefehle keine neuen Sidecars erzeugen.
+
 `workbench_readiness --db <metadata.sqlite>` bezieht diese Queue-Diagnose als eigenen Bereitschaftsbereich ein. Eine nicht initialisierte Queue bleibt ein zulaessiger Hinweis; unlesbare Queue-Schemas oder aktivierte Ausfuehrungsflags werden als Queue-Bereitschaftsproblem gemeldet.
 
 Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese gesperrte Steuerungsgrenze, ohne einen Lauf zu starten:
