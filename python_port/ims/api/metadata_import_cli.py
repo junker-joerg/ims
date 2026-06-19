@@ -478,11 +478,23 @@ def _readonly_sqlite_uri(path: Path) -> str:
         raise MetadataImportError("metadata read-only database has incomplete WAL sidecar state")
     if wal_exists and shm_exists:
         return f"{path.as_uri()}?mode=ro"
-    return f"{path.as_uri()}?mode=ro&immutable=1"
+    if _sqlite_file_uses_wal(path):
+        return f"{path.as_uri()}?mode=ro&immutable=1"
+    return f"{path.as_uri()}?mode=ro"
 
 
 def _sqlite_sidecar_state(path: Path) -> tuple[bool, bool]:
     return Path(f"{path}-wal").exists(), Path(f"{path}-shm").exists()
+
+
+def _sqlite_file_uses_wal(path: Path) -> bool:
+    try:
+        header = path.read_bytes()[:20]
+    except OSError as exc:
+        raise MetadataImportError(f"metadata read-only database header is not readable: {exc}") from exc
+    if len(header) < 20 or not header.startswith(b"SQLite format 3\x00"):
+        return False
+    return header[18] == 2 and header[19] == 2
 
 
 def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
