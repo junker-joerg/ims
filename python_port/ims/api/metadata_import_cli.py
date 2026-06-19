@@ -489,7 +489,8 @@ def _sqlite_sidecar_state(path: Path) -> tuple[bool, bool]:
 
 def _sqlite_file_uses_wal(path: Path) -> bool:
     try:
-        header = path.read_bytes()[:20]
+        with path.open("rb") as db_file:
+            header = db_file.read(20)
     except OSError as exc:
         raise MetadataImportError(f"metadata read-only database header is not readable: {exc}") from exc
     if len(header) < 20 or not header.startswith(b"SQLite format 3\x00"):
