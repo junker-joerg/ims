@@ -62,6 +62,7 @@ def test_workbench_cli_overview_contains_expected_commands():
         "run_control_queue enqueue",
         "run_control_queue list",
         "run_control_queue_diagnostics",
+        "run_control_queue_action_plan",
         "run_control_preflight",
         "metadata_import_cli import --db",
     ]
@@ -73,6 +74,7 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
     commands = build_workbench_cli_overview().to_dict()["commands"]
     writing_commands = [command["name"] for command in commands if command["writes_enabled"]]
     read_only_commands = [command["name"] for command in commands if not command["writes_enabled"]]
+    action_plan = next(command for command in commands if command["name"] == "run_control_queue_action_plan")
 
     assert writing_commands == [
         "workbench_bundle_build",
@@ -107,8 +109,12 @@ def test_workbench_cli_overview_marks_only_explicit_export_and_import_as_writing
         "run_control_requests check",
         "run_control_queue list",
         "run_control_queue_diagnostics",
+        "run_control_queue_action_plan",
         "run_control_preflight",
     ]
+    assert action_plan["writes_enabled"] is False
+    assert action_plan["requires_explicit_db"] is True
+    assert "rein lesend" in action_plan["purpose"]
 
 
 def test_workbench_cli_overview_cli_prints_stable_json(capsys):

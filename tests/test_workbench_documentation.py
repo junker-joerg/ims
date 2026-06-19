@@ -54,6 +54,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in readme
+    assert "python -m ims.api.run_control_queue_action_plan --db .\\.ims_workbench\\metadata.sqlite" in readme
+    assert "run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`" in readme
     assert "Statuswerte, Szenario-Referenzen und Ausfuehrungsflags" in readme
     assert "Queue-only-Datenbank" in readme
     assert "fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet" in readme
@@ -119,6 +121,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in doc
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in doc
     assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in doc
+    assert "python -m ims.api.run_control_queue_action_plan --db .\\.ims_workbench\\metadata.sqlite" in doc
     assert "fehlende Szenario-Referenzen" in doc
     assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in doc
     assert "python -m ims.api.metadata_import_cli check .\\metadata_import.json" in doc
@@ -204,8 +207,10 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der Run-Control-Vertrag ist rein beschreibend" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
+    assert 'mode = "run_control_queue_action_plan"' in doc
+    assert "`run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`" in doc
     assert "Queue-only-Datenbank bleibt als Queue lesbar" in doc
-    assert "fehlende Szenario-/Run-Metadatentabellen werden als Diagnosewarnung gemeldet" in doc
+    assert "fehlende Szenario-/Run-Metadatentabellen werden als Diagnosewarnung und Aktionsplan-Blocker gemeldet" in doc
     assert "Kein Queue-Befehl startet eine Simulation" in doc
     assert "GET /api/run-control/queue" in doc
     assert "GET /api/run-control/queue/{queue_id}" in doc
@@ -266,12 +271,15 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
 
     assert RUN_CONTROL_PLAN.is_file()
     assert "Workbench Run-Control Plan nach v1" in plan
-    assert "18-36+" in plan
+    assert "14-28+" in plan
     assert "Packaging und Bereitstellung | ca. `0` geplante PRs" in plan
     assert "Vorhandene lokale Run-Control-Bausteine" in plan
     assert "Run-Control-Vertrag" in plan
     assert "Run-Control-Request-Check" in plan
     assert "Run-Control-Queue" in plan
+    assert "Run-Control-Queue-Aktionsplan" in plan
+    assert "python -m ims.api.run_control_queue_action_plan --db .\\.ims_workbench\\metadata.sqlite" in plan
+    assert "writes_performed = false" in plan
     assert "Run-Control-Preflight" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
@@ -342,7 +350,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "kein fachlicher" in plan
     assert "Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung" in plan
     assert "0` PRs, abgesehen von Review-Fixes" in plan
-    assert "18-36+" in plan
+    assert "14-28+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
     assert "Lokale Startskripte fuer Windows, ohne Installer: vorbereitet" in plan

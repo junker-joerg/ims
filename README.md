@@ -156,9 +156,10 @@ python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite
 python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite
 python -m ims.api.run_control_queue list --db .\.ims_workbench\metadata.sqlite
 python -m ims.api.run_control_queue_diagnostics --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.sqlite
 ```
 
-`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list`, `show` und `run_control_queue_diagnostics` lesen die Queue-Datenbank read-only. Die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten. Eine Queue-only-Datenbank aus `run_control_queue init --db` bleibt diagnostizierbar; fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet.
+`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list`, `show`, `run_control_queue_diagnostics` und `run_control_queue_action_plan` lesen die Queue-Datenbank read-only. Die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten. Der Aktionsplan fuehrt diese Diagnose mit dem lokalen Preflight zusammen und empfiehlt pro Queue-Eintrag nur den naechsten sicheren lokalen Schritt: `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Eine Queue-only-Datenbank aus `run_control_queue init --db` bleibt diagnostizierbar und planbar; fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet.
 
 `workbench_readiness --db <metadata.sqlite>` bezieht diese Queue-Diagnose als eigenen Bereitschaftsbereich ein. Eine nicht initialisierte Queue bleibt ein zulaessiger Hinweis; unlesbare Queue-Schemas oder aktivierte Ausfuehrungsflags werden als Queue-Bereitschaftsproblem gemeldet.
 
