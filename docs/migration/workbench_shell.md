@@ -15,6 +15,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/metadata/consistency` beschreibt lesend einfache Konsistenzkennzahlen der aktuellen Szenario- und Run-Metadaten.
 - `/api/run-control/queue` beschreibt lesend vorhandene lokale Run-Control-Queue-Eintraege, ohne die Queue zu initialisieren oder zu schreiben.
 - `/api/run-control/queue/{queue_id}` liefert einen einzelnen Queue-Eintrag lesend per ID.
+- `/api/run-control/request-contract` beschreibt lesend den Run-Control-Request-Vertrag, ohne Request-Body, Upload oder Schreiben.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
 - Die Workbench zeigt die aktuelle Szenario-/Run-Auswahl in einer kompakten, rein lesenden Auswahlzusammenfassung.
@@ -79,6 +80,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
 - Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
+- Die Run-Control-Request-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/request-contract`, zeigt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO, validiert aber keinen Browser-Request und oeffnet keinen Upload- oder Schreibpfad.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
@@ -555,6 +557,14 @@ python -m ims.api.run_control_requests check .\run_control_request.json
 ```
 
 Das Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at` und das Pflichtfeld `execution_enabled` mit dem Wert `false`. Der Check lehnt `execution_enabled=true`, Fachlogikdaten, Simulationsergebnisfelder und unbekannte Felder ab. Er schreibt keine Metadaten, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und startet keine Simulation.
+
+Der HTTP-Lesekontrakt fuer dieses DTO ist:
+
+```text
+GET /api/run-control/request-contract
+```
+
+Die Antwort enthaelt `mode = "run_control_request_contract"`, `schema_version`, `accepted_fields`, `required_fields`, `optional_fields`, `forbidden_fields`, `example_request`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body, prueft keinen Browser-Upload, schreibt keine Queue und startet keine Ausfuehrung. Die Frontend-Request-Vertragskarte zeigt diese Felder nur als lokale Orientierung.
 
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:
 

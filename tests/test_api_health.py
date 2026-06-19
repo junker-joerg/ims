@@ -212,6 +212,26 @@ def test_run_control_queue_overview_reports_in_memory_boundary(tmp_path):
     assert payload["execution_performed"] is False
 
 
+def test_run_control_request_contract_endpoint_is_readonly(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/request-contract")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_request_contract"
+    assert payload["example_request"]["execution_enabled"] is False
+    assert "run_id" in payload["required_fields"]
+    assert "metadata_db" in payload["optional_fields"]
+    assert "execution_enabled=true" in payload["forbidden_fields"]
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_run_control_queue_overview_reads_injected_sqlite_queue(tmp_path):
     db_path = tmp_path / "metadata.sqlite"
     request_path = tmp_path / "run_control_request.json"

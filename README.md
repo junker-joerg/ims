@@ -149,6 +149,14 @@ Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage 
 python -m ims.api.run_control_requests check .\run_control_request.json
 ```
 
+Die Workbench-API stellt denselben Request-Vertrag lesend bereit:
+
+```text
+GET /api/run-control/request-contract
+```
+
+Der Endpunkt gibt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO zurueck. Er akzeptiert keinen Request-Body, validiert keinen Browser-Upload, schreibt keine Metadaten und startet keine Ausfuehrung.
+
 Eine lokale Run-Control-Queue kann solche Requests in einer expliziten SQLite-Datei vormerken, ohne Ausfuehrung, Worker oder Scheduler zu starten:
 
 ```powershell

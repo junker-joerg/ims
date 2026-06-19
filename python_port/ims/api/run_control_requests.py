@@ -77,6 +77,67 @@ class WorkbenchRunControlRequestValidationResult:
         }
 
 
+@dataclass(frozen=True)
+class WorkbenchRunControlRequestContract:
+    status: str
+    mode: str
+    schema_version: str
+    accepted_fields: tuple[str, ...]
+    required_fields: tuple[str, ...]
+    optional_fields: tuple[str, ...]
+    forbidden_fields: tuple[str, ...]
+    example_request: WorkbenchRunControlRequest
+    writes_enabled: bool = False
+    execution_enabled: bool = False
+    execution_performed: bool = False
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": self.status,
+            "mode": self.mode,
+            "schema_version": self.schema_version,
+            "accepted_fields": list(self.accepted_fields),
+            "required_fields": list(self.required_fields),
+            "optional_fields": list(self.optional_fields),
+            "forbidden_fields": list(self.forbidden_fields),
+            "example_request": self.example_request.to_dict(),
+            "writes_enabled": self.writes_enabled,
+            "execution_enabled": self.execution_enabled,
+            "execution_performed": self.execution_performed,
+        }
+
+
+def build_run_control_request_contract() -> WorkbenchRunControlRequestContract:
+    required_fields = tuple(sorted(REQUIRED_RUN_CONTROL_REQUEST_FIELDS))
+    optional_fields = tuple(sorted(RUN_CONTROL_REQUEST_FIELDS - REQUIRED_RUN_CONTROL_REQUEST_FIELDS))
+    return WorkbenchRunControlRequestContract(
+        status="ok",
+        mode="run_control_request_contract",
+        schema_version=METADATA_SCHEMA_VERSION,
+        accepted_fields=tuple(sorted(RUN_CONTROL_REQUEST_FIELDS)),
+        required_fields=required_fields,
+        optional_fields=optional_fields,
+        forbidden_fields=(
+            "execution_enabled=true",
+            "unknown_fields",
+            "fachlogik_state",
+            "simulation_results",
+        ),
+        example_request=WorkbenchRunControlRequest(
+            run_id="baseline-python-tests",
+            scenario_id="agrsich-reference-window",
+            metadata_db=".ims_workbench/metadata.sqlite",
+            requested_by="local-user",
+            created_at="2026-05-27T00:00:00Z",
+            execution_enabled=False,
+        ),
+    )
+
+
+def run_control_request_contract_payload() -> dict[str, object]:
+    return build_run_control_request_contract().to_dict()
+
+
 def validate_run_control_request(path: Path | str) -> WorkbenchRunControlRequestValidationResult:
     return validate_run_control_request_payload(_load_json_payload(path))
 

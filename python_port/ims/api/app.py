@@ -13,6 +13,7 @@ from ims.api.metadata import metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
+from ims.api.run_control_requests import run_control_request_contract_payload
 
 try:
     from fastapi import FastAPI
@@ -189,6 +190,10 @@ def create_app(
         def run_control_queue() -> dict[str, object]:
             return queue_overview_payload()
 
+        @app.get("/api/run-control/request-contract")
+        def run_control_request_contract() -> dict[str, object]:
+            return run_control_request_contract_payload()
+
         @app.get("/api/run-control/queue/{queue_id}", response_model=None)
         def run_control_queue_detail(queue_id: str) -> dict[str, object] | JSONResponse:
             detail = run_control_queue_detail_payload(metadata_source, queue_id)
@@ -222,6 +227,7 @@ def create_app(
         Route("/api/metadata/source", lambda request: JSONResponse(metadata_source)),
         Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
+        Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route(
             "/api/run-control/queue/{queue_id}",
             lambda request: queue_detail_response(request.path_params["queue_id"]),
