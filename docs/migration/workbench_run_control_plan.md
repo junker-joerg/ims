@@ -59,7 +59,7 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 
 ## Erwartete PR-Roadmap fuer den Workbench-Ausbau
 
-1. PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend.
+1. PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend mit clientseitigen Filtern, Hinweisen und lokalen Schrittlabels.
 2. PR 2: API-Leseendpunkte fuer Queue/Requests, noch ohne Schreibpfad.
 3. PR 3: Kontrollierter HTTP-Dry-Run-Vertrag, weiterhin gesperrt.
 4. PR 4: UI-Preflight-Ansicht fuer ausgewaehlten Run.

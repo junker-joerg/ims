@@ -171,6 +171,12 @@ type RunFilters = {
   source: string;
 };
 
+type QueueFilters = {
+  query: string;
+  status: string;
+  scenario: string;
+};
+
 const statusItems: StatusItem[] = [
   { label: "Backend", value: "bereit", tone: "ready" },
   { label: "Fachlogik", value: "abgegrenzt", tone: "quiet" },
@@ -191,6 +197,7 @@ const importShapeRows = [
 
 const ALL_SCENARIO_FILTERS = "alle";
 const ALL_RUN_FILTERS = "alle";
+const ALL_QUEUE_FILTERS = "alle";
 
 export function filterScenarios(scenarios: ScenarioMetadata[], filters: ScenarioFilters): ScenarioMetadata[] {
   const query = filters.query.trim().toLocaleLowerCase();
@@ -220,8 +227,41 @@ export function filterRuns(runs: RunMetadata[], filters: RunFilters): RunMetadat
   });
 }
 
+export function filterRunControlQueueEntries(
+  entries: RunControlQueueEntry[],
+  filters: QueueFilters
+): RunControlQueueEntry[] {
+  const query = filters.query.trim().toLocaleLowerCase();
+  return entries.filter((entry) => {
+    const matchesQuery =
+      !query ||
+      entry.queue_id.toLocaleLowerCase().includes(query) ||
+      entry.request.run_id.toLocaleLowerCase().includes(query) ||
+      entry.request.requested_by.toLocaleLowerCase().includes(query);
+    const matchesStatus = filters.status === ALL_QUEUE_FILTERS || entry.status === filters.status;
+    const matchesScenario = filters.scenario === ALL_QUEUE_FILTERS || entry.request.scenario_id === filters.scenario;
+    return matchesQuery && matchesStatus && matchesScenario;
+  });
+}
+
 function uniqueSorted(values: string[]): string[] {
   return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
+}
+
+function queueActionLabel(entry: RunControlQueueEntry): string {
+  if (entry.execution_enabled || entry.execution_performed) {
+    return "Blocker klaeren";
+  }
+  if (entry.status === "planned") {
+    return "Preflight lokal";
+  }
+  if (entry.status === "validated") {
+    return "Freigabe abwarten";
+  }
+  if (entry.status === "blocked") {
+    return "Blocker klaeren";
+  }
+  return "Status pruefen";
 }
 
 function App() {
@@ -252,6 +292,9 @@ function App() {
   const [runStatusFilter, setRunStatusFilter] = useState(ALL_RUN_FILTERS);
   const [runScenarioFilter, setRunScenarioFilter] = useState(ALL_RUN_FILTERS);
   const [runSourceFilter, setRunSourceFilter] = useState(ALL_RUN_FILTERS);
+  const [queueQuery, setQueueQuery] = useState("");
+  const [queueStatusFilter, setQueueStatusFilter] = useState(ALL_QUEUE_FILTERS);
+  const [queueScenarioFilter, setQueueScenarioFilter] = useState(ALL_QUEUE_FILTERS);
 
   useEffect(() => {
     let active = true;
@@ -434,6 +477,9 @@ function App() {
   const runStatusOptions = uniqueSorted(runs.map((run) => run.status));
   const runScenarioOptions = uniqueSorted(runs.map((run) => run.scenario_id));
   const runSourceOptions = uniqueSorted(runs.map((run) => run.source.label));
+  const queueEntries = runControlQueue?.entries ?? [];
+  const queueStatusOptions = uniqueSorted(queueEntries.map((entry) => entry.status));
+  const queueScenarioOptions = uniqueSorted(queueEntries.map((entry) => entry.request.scenario_id));
   const filteredScenarios = filterScenarios(scenarios, {
     query: scenarioQuery,
     status: scenarioStatusFilter,
@@ -445,6 +491,11 @@ function App() {
     status: runStatusFilter,
     scenario: runScenarioFilter,
     source: runSourceFilter
+  });
+  const filteredQueueEntries = filterRunControlQueueEntries(queueEntries, {
+    query: queueQuery,
+    status: queueStatusFilter,
+    scenario: queueScenarioFilter
   });
   const selectedScenario =
     scenarioDetail?.id === selectedScenarioId
@@ -492,10 +543,15 @@ function App() {
   const runControlQueueRows = [
     ["Queue-Status", runControlQueue?.status === "warning" ? "Hinweis" : "ok"],
     ["Queue-Eintraege", String(runControlQueue?.queue_count ?? 0)],
+    ["Sichtbar", String(filteredQueueEntries.length)],
+    ["Hinweise", String(runControlQueue?.issues.length ?? 0)],
     ["Schreibpfade", runControlQueue?.writes_enabled ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlQueue?.execution_enabled || runControlQueue?.execution_performed ? "aktiv" : "gesperrt"]
   ];
   const runControlQueueIssue = runControlQueue?.issues[0]?.message ?? "Queue liest vorhandene lokale Eintraege ohne Ausfuehrung.";
+  const runControlIssueRows = runControlQueue?.issues.length
+    ? runControlQueue.issues.map((issue) => [issue.severity, issue.code, issue.message])
+    : [["info", "run_control_queue_readonly", "Keine Queue-Hinweise fuer die aktuelle Sicht."]];
   const selectedQueueEntry =
     queueDetail?.entry.queue_id === selectedQueueId
       ? queueDetail.entry
@@ -505,8 +561,10 @@ function App() {
     ["Run", selectedQueueEntry?.request.run_id ?? "-"],
     ["Szenario", selectedQueueEntry?.request.scenario_id ?? "-"],
     ["Status", selectedQueueEntry?.status ?? "-"],
+    ["Naechster Schritt", selectedQueueEntry ? queueActionLabel(selectedQueueEntry) : "-"],
     ["Angelegt von", selectedQueueEntry?.request.requested_by ?? "-"],
     ["Zeitpunkt", selectedQueueEntry?.request.created_at ?? "-"],
+    ["Metadaten-DB", selectedQueueEntry?.request.metadata_db ?? "-"],
     ["Schreibpfade", queueDetail?.writes_enabled ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", selectedQueueEntry?.execution_enabled || selectedQueueEntry?.execution_performed ? "aktiv" : "gesperrt"]
   ];
@@ -928,15 +986,62 @@ function App() {
             ))}
           </div>
           <p className="run-control-note">{runControlQueueIssue}</p>
+          <div className="run-control-filterbar" aria-label="Run-Control-Queuefilter">
+            <label className="run-control-search">
+              <Search size={17} aria-hidden="true" />
+              <span>Suche</span>
+              <input
+                aria-label="Run-Control-Queuesuche"
+                onChange={(event) => setQueueQuery(event.target.value)}
+                placeholder="Queue, Run oder Person"
+                type="search"
+                value={queueQuery}
+              />
+            </label>
+            <label>
+              <span>Status</span>
+              <select
+                aria-label="Run-Control-Statusfilter"
+                onChange={(event) => setQueueStatusFilter(event.target.value)}
+                value={queueStatusFilter}
+              >
+                <option value={ALL_QUEUE_FILTERS}>alle</option>
+                {queueStatusOptions.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Szenario</span>
+              <select
+                aria-label="Run-Control-Szenariofilter"
+                onChange={(event) => setQueueScenarioFilter(event.target.value)}
+                value={queueScenarioFilter}
+              >
+                <option value={ALL_QUEUE_FILTERS}>alle</option>
+                {queueScenarioOptions.map((scenarioId) => (
+                  <option key={scenarioId} value={scenarioId}>
+                    {scenarioNameById.get(scenarioId) ?? scenarioId}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <p className="run-control-filter-count">
+            {filteredQueueEntries.length} von {queueEntries.length} Queue-Eintraegen sichtbar
+          </p>
           <div className="run-control-table">
             <div className="run-control-head" aria-hidden="true">
               <span>Queue</span>
               <span>Run</span>
               <span>Szenario</span>
               <span>Status</span>
+              <span>Naechster Schritt</span>
               <span>Ausfuehrung</span>
             </div>
-            {runControlQueue?.entries.map((entry) => (
+            {filteredQueueEntries.map((entry) => (
               <button
                 className={`run-control-row ${entry.queue_id === selectedQueueId ? "selected" : ""}`}
                 key={entry.queue_id}
@@ -950,12 +1055,16 @@ function App() {
                 <span>{entry.request.run_id}</span>
                 <span>{entry.request.scenario_id}</span>
                 <span>{entry.status}</span>
+                <span>{queueActionLabel(entry)}</span>
                 <span>{entry.execution_enabled || entry.execution_performed ? "aktiv" : "gesperrt"}</span>
               </button>
             ))}
           </div>
-          {!runControlQueue?.entries.length ? (
+          {queueEntries.length === 0 ? (
             <div className="empty-state">Keine Run-Control-Queue-Eintraege fuer diese Metadatenquelle.</div>
+          ) : null}
+          {queueEntries.length > 0 && filteredQueueEntries.length === 0 ? (
+            <div className="empty-state">Keine Queue-Eintraege fuer diesen Filter.</div>
           ) : null}
           <div className="run-control-detail" aria-label="Run-Control-Queue-Detail">
             <div className="detail-status">
@@ -970,6 +1079,15 @@ function App() {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="run-control-issues" aria-label="Run-Control-Queue-Hinweise">
+            {runControlIssueRows.map(([severity, code, message]) => (
+              <div className="run-control-issue-row" key={code}>
+                <span>{severity}</span>
+                <strong>{code}</strong>
+                <small>{message}</small>
+              </div>
+            ))}
           </div>
         </section>
 

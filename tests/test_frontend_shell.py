@@ -112,19 +112,36 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
 
+    assert "filterRunControlQueueEntries" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
     assert "Run-Control-Uebersicht" in source
     assert "Run-Control-Queue-Detail" in source
+    assert "Run-Control-Queue-Hinweise" in source
+    assert "Run-Control-Queuefilter" in source
+    assert "Run-Control-Queuesuche" in source
+    assert "Run-Control-Statusfilter" in source
+    assert "Run-Control-Szenariofilter" in source
     assert "Queue-Detail" in source
     assert "runControlQueue" in source
     assert "selectedQueueId" in source
     assert "setSelectedQueueId(entry.queue_id)" in source
+    assert "filteredQueueEntries.map" in source
+    assert "queueActionLabel" in source
+    assert "Preflight lokal" in source
+    assert "Freigabe abwarten" in source
+    assert "Blocker klaeren" in source
+    assert "Status pruefen" in source
     assert "run-control-panel" in styles
+    assert "run-control-filterbar" in styles
+    assert "run-control-filter-count" in styles
     assert "run-control-table" in styles
     assert "run-control-detail-grid" in styles
+    assert "run-control-issues" in styles
     assert "Queue-Status" in source
     assert "Queue-Eintraege" in source
+    assert "Naechster Schritt" in source
+    assert "Keine Queue-Eintraege fuer diesen Filter" in source
     assert "Angelegt von" in source
     assert "Keine Run-Control-Queue-Eintraege" in source
     assert "writes_enabled" in source

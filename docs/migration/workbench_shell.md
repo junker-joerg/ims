@@ -78,7 +78,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
 - Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
-- Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
+- Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
@@ -576,7 +576,7 @@ GET /api/run-control/queue
 
 Die Antwort enthaelt `mode = "run_control_queue_overview"`, `queue_count`, vorhandene `entries`, `issues`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Ohne explizite SQLite-Metadatenquelle meldet sie die Queue als nicht konfiguriert. Bei einer SQLite-Quelle ohne initialisierte Queue bleibt die Ausgabe ein lesender Hinweis; der Endpunkt legt keine Queue-Tabelle an und schreibt keine Datei.
 
-Ein einzelner Eintrag kann lesend ueber `GET /api/run-control/queue/{queue_id}` geladen werden. Fehlende Eintraege liefern die stabile `metadata_not_found`-Fehlerform. Die Frontend-Run-Control-Uebersicht nutzt diese Endpunkte fuer Auswahl und Detailkarte und bleibt ohne Start-, Upload-, Editor- oder Schreibkontrollen.
+Ein einzelner Eintrag kann lesend ueber `GET /api/run-control/queue/{queue_id}` geladen werden. Fehlende Eintraege liefern die stabile `metadata_not_found`-Fehlerform. Die Frontend-Run-Control-Uebersicht nutzt diese Endpunkte fuer Auswahl, Filter, lokale Schritt-Hinweise und Detailkarte und bleibt ohne Start-, Upload-, Editor- oder Schreibkontrollen. Die Schritt-Hinweise sind nur Anzeige: `planned` verweist auf lokalen Preflight, `validated` auf wartende Ausfuehrungsfreigabe, `blocked` auf Blockerklaerung und unbekannte Statuswerte auf Statuspruefung.
 
 Ein lokaler Preflight kann vorhandene Run-Metadaten gegen diese Grenze pruefen:
 
