@@ -374,7 +374,8 @@ h2 {
 }
 
 .scenario-filterbar,
-.run-filterbar {
+.run-filterbar,
+.run-control-filterbar {
   display: grid;
   grid-template-columns:
     minmax(220px, 1.4fr)
@@ -385,8 +386,16 @@ h2 {
   margin-bottom: 10px;
 }
 
+.run-control-filterbar {
+  grid-template-columns:
+    minmax(220px, 1.4fr)
+    minmax(130px, 0.7fr)
+    minmax(160px, 0.8fr);
+}
+
 .scenario-filterbar label,
-.run-filterbar label {
+.run-filterbar label,
+.run-control-filterbar label {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -399,7 +408,8 @@ h2 {
 }
 
 .scenario-filterbar label > span,
-.run-filterbar label > span {
+.run-filterbar label > span,
+.run-control-filterbar label > span {
   flex: 0 0 auto;
   color: #66736c;
 }
@@ -407,7 +417,9 @@ h2 {
 .scenario-filterbar input,
 .scenario-filterbar select,
 .run-filterbar input,
-.run-filterbar select {
+.run-filterbar select,
+.run-control-filterbar input,
+.run-control-filterbar select {
   width: 100%;
   min-width: 0;
   border: 0;
@@ -417,12 +429,14 @@ h2 {
 }
 
 .scenario-filterbar select,
-.run-filterbar select {
+.run-filterbar select,
+.run-control-filterbar select {
   cursor: pointer;
 }
 
 .scenario-filter-count,
-.run-filter-count {
+.run-filter-count,
+.run-control-filter-count {
   margin-bottom: 12px;
   color: #66736c;
   font-size: 0.9rem;
@@ -601,7 +615,7 @@ code {
 
 .run-control-summary {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 8px;
   margin-bottom: 12px;
 }
@@ -713,10 +727,11 @@ code {
 .run-control-row {
   display: grid;
   grid-template-columns:
-    minmax(170px, 1.2fr)
+    minmax(150px, 1.1fr)
     minmax(150px, 1fr)
     minmax(150px, 1fr)
     minmax(110px, 0.7fr)
+    minmax(140px, 0.9fr)
     minmax(98px, 0.55fr);
   gap: 10px;
   align-items: center;
@@ -751,11 +766,12 @@ code {
 
 .run-control-detail-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
 }
 
-.run-control-detail-row {
+.run-control-detail-row,
+.run-control-issue-row {
   min-height: 64px;
   padding: 10px;
   border: 1px solid #d8e2dd;
@@ -763,16 +779,33 @@ code {
   background: #fbfcfb;
 }
 
-.run-control-detail-row span {
+.run-control-detail-row span,
+.run-control-issue-row span {
   display: block;
   margin-bottom: 7px;
   color: #66736c;
 }
 
-.run-control-detail-row strong {
+.run-control-detail-row strong,
+.run-control-issue-row strong {
   display: block;
   min-width: 0;
   color: #143b2d;
+  overflow-wrap: anywhere;
+}
+
+.run-control-issues {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.run-control-issue-row small {
+  display: block;
+  margin-top: 5px;
+  color: #66736c;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
@@ -843,15 +876,17 @@ code {
   .status-grid,
   .work-grid,
   .detail-grid,
-  .import-grid,
-  .diagnosis-grid,
-  .consistency-grid,
+    .import-grid,
+    .diagnosis-grid,
+    .consistency-grid,
   .selection-summary-grid,
   .run-control-summary,
   .run-control-detail-grid,
+  .run-control-issues,
   .diagnosis-row,
   .scenario-filterbar,
   .run-filterbar,
+  .run-control-filterbar,
   .scenario-overview-head,
   .scenario-overview-row,
   .run-overview-head,
