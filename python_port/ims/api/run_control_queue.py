@@ -11,6 +11,7 @@ from ims.api.metadata import METADATA_SCHEMA_VERSION
 from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata_repository import connect_metadata_db, metadata_source_payload
 from ims.api.run_control_requests import WorkbenchRunControlRequest, validate_run_control_request
+from ims.api.sqlite_readonly import readonly_sqlite_uri
 
 
 RUN_CONTROL_QUEUE_SCHEMA = """
@@ -288,16 +289,7 @@ def _connect_queue_db_readonly(path: Path) -> sqlite3.Connection:
 
 
 def _readonly_queue_sqlite_uri(path: Path) -> str:
-    wal_exists, shm_exists = _sqlite_sidecar_state(path)
-    if wal_exists != shm_exists:
-        raise MetadataImportError("run control queue database has incomplete WAL sidecar state")
-    if wal_exists and shm_exists:
-        return f"{path.as_uri()}?mode=ro"
-    return f"{path.as_uri()}?mode=ro&immutable=1"
-
-
-def _sqlite_sidecar_state(path: Path) -> tuple[bool, bool]:
-    return Path(f"{path}-wal").exists(), Path(f"{path}-shm").exists()
+    return readonly_sqlite_uri(path, description="run control queue")
 
 
 def _validate_queue_status(status: str) -> None:

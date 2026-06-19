@@ -19,6 +19,7 @@ from ims.api.run_control_queue import (
     initialize_run_control_queue,
     list_run_control_queue,
     main,
+    _readonly_queue_sqlite_uri,
 )
 from ims.api.run_control_requests import parse_run_control_request_payload
 
@@ -127,6 +128,25 @@ def test_run_control_queue_read_commands_do_not_create_wal_sidecars(tmp_path):
     list_payload = list_run_control_queue(db_path).to_dict()
     show_payload = get_run_control_queue_entry("baseline-python-tests", db_path=db_path).to_dict()
 
+    assert list_payload["entries"][0]["queue_id"] == "baseline-python-tests"
+    assert show_payload["entry"]["queue_id"] == "baseline-python-tests"
+    assert not wal_path.exists()
+    assert not shm_path.exists()
+
+
+def test_run_control_queue_readonly_uri_keeps_rollback_database_mutable_safe(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    wal_path = Path(f"{db_path}-wal")
+    shm_path = Path(f"{db_path}-shm")
+    request_path = _write_request(tmp_path)
+    enqueue_run_control_request(request_path, db_path=db_path)
+
+    uri = _readonly_queue_sqlite_uri(db_path)
+    list_payload = list_run_control_queue(db_path).to_dict()
+    show_payload = get_run_control_queue_entry("baseline-python-tests", db_path=db_path).to_dict()
+
+    assert uri == f"{db_path.as_uri()}?mode=ro"
+    assert "immutable=1" not in uri
     assert list_payload["entries"][0]["queue_id"] == "baseline-python-tests"
     assert show_payload["entry"]["queue_id"] == "baseline-python-tests"
     assert not wal_path.exists()

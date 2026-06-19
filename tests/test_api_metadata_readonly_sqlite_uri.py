@@ -1,8 +1,9 @@
 import sqlite3
 from pathlib import Path
 
-from ims.api.metadata_import_cli import _readonly_sqlite_uri, _sqlite_file_uses_wal
+from ims.api.metadata_import_cli import _readonly_sqlite_uri
 from ims.api.metadata_repository import initialize_metadata_schema, seed_metadata
+from ims.api.sqlite_readonly import _sqlite_file_uses_wal
 
 
 def test_metadata_readonly_uri_keeps_rollback_database_mutable_safe(tmp_path):

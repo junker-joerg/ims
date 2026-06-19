@@ -22,6 +22,7 @@ from ims.api.metadata_repository import (
     WorkbenchMetadataRepository,
     build_seeded_metadata_repository,
 )
+from ims.api.sqlite_readonly import readonly_sqlite_uri
 from ims.api.metadata_write_contracts import validate_metadata_write_contract_payload
 
 
@@ -473,29 +474,7 @@ def _connect_snapshot_db_readonly(path: Path) -> sqlite3.Connection:
 
 
 def _readonly_sqlite_uri(path: Path) -> str:
-    wal_exists, shm_exists = _sqlite_sidecar_state(path)
-    if wal_exists != shm_exists:
-        raise MetadataImportError("metadata read-only database has incomplete WAL sidecar state")
-    if wal_exists and shm_exists:
-        return f"{path.as_uri()}?mode=ro"
-    if _sqlite_file_uses_wal(path):
-        return f"{path.as_uri()}?mode=ro&immutable=1"
-    return f"{path.as_uri()}?mode=ro"
-
-
-def _sqlite_sidecar_state(path: Path) -> tuple[bool, bool]:
-    return Path(f"{path}-wal").exists(), Path(f"{path}-shm").exists()
-
-
-def _sqlite_file_uses_wal(path: Path) -> bool:
-    try:
-        with path.open("rb") as db_file:
-            header = db_file.read(20)
-    except OSError as exc:
-        raise MetadataImportError(f"metadata read-only database header is not readable: {exc}") from exc
-    if len(header) < 20 or not header.startswith(b"SQLite format 3\x00"):
-        return False
-    return header[18] == 2 and header[19] == 2
+    return readonly_sqlite_uri(path, description="metadata read-only")
 
 
 def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
