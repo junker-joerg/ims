@@ -172,11 +172,13 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Run-Uebersicht" in source
     assert "Run-Control-Uebersicht" in source
     assert "Run-Control-Queue-Detail" in source
+    assert "Run-Control-Dry-Run-Vertrag" in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
+    assert "/api/run-control/dry-run-contract" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source
@@ -186,6 +188,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Schreibvertragspruefung lokal per CLI ohne Import" in source
     assert "Run-Control-Vertrag lokal per CLI ohne Ausfuehrung" in source
     assert "Run-Control-Preflight lokal per CLI ohne Ausfuehrung" in source
+    assert "Run-Control-Dry-Run-Vertrag per API gesperrt" in source
     assert "Export lokal per CLI nur mit explizitem Zielpfad" in source
     assert "Roundtrip lokal per CLI ohne Schreiben" in source
     assert "Dry-Run lokal per CLI ohne Import" in source

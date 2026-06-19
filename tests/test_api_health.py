@@ -232,6 +232,27 @@ def test_run_control_request_contract_endpoint_is_readonly(tmp_path):
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
 
 
+def test_run_control_dry_run_contract_endpoint_is_disabled_and_readonly(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/dry-run-contract")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "warning"
+    assert payload["mode"] == "run_control_dry_run_contract"
+    assert "run_id" in payload["expected_inputs"]
+    assert "run_control_request_contract_visible" in payload["required_preconditions"]
+    assert "http_post" in payload["forbidden_boundaries"]
+    assert payload["http_enabled"] is False
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_run_control_preflight_endpoint_reads_selected_run(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)

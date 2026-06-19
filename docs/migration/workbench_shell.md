@@ -16,6 +16,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/run-control/queue` beschreibt lesend vorhandene lokale Run-Control-Queue-Eintraege, ohne die Queue zu initialisieren oder zu schreiben.
 - `/api/run-control/queue/{queue_id}` liefert einen einzelnen Queue-Eintrag lesend per ID.
 - `/api/run-control/request-contract` beschreibt lesend den Run-Control-Request-Vertrag, ohne Request-Body, Upload oder Schreiben.
+- `/api/run-control/dry-run-contract` beschreibt den gesperrten Run-Control-Dry-Run-Vertrag, ohne Request-Body, POST/PUT oder Ausfuehrung.
 - `/api/run-control/preflight/{run_id}` prueft den ausgewaehlten Run lesend gegen die gesperrte Run-Control-Grenze.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
@@ -63,6 +64,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet und beruecksichtigen den aktuellen WAL-Zustand.
 - Der lokale Schreibvertrag ist rein beschreibend. Er oeffnet keinen HTTP- oder UI-Schreibpfad und erzeugt keine SQLite-Datei.
 - Der lokale Run-Control-Vertrag ist rein beschreibend. Er startet keinen Lauf und schaltet keine API- oder UI-Steuerung frei.
+- Der Run-Control-Dry-Run-Vertrag ist gesperrt. Er beschreibt erwartete Eingaben und Vorbedingungen fuer einen spaeteren HTTP-Dry-Run, oeffnet aber keinen Request-Body-, POST/PUT-, Upload-, Schreib- oder Ausfuehrungspfad.
 - Die lokale Run-Control-Queue schreibt nur ueber explizite CLI-Befehle mit `--db`. Sie startet keine Simulation, keinen Worker und keinen Scheduler.
 - Der lokale Run-Control-Preflight ist rein lesend. Er prueft Run- und Szenario-Metadaten, startet aber keine Simulation und schreibt keine Metadaten.
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
@@ -82,6 +84,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
 - Die Run-Control-Request-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/request-contract`, zeigt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO, validiert aber keinen Browser-Request und oeffnet keinen Upload- oder Schreibpfad.
+- Die Run-Control-Dry-Run-Vertragskarte ist rein lesend und gesperrt. Sie nutzt `/api/run-control/dry-run-contract`, zeigt erwartete Eingaben, Vorbedingungen und verbotene Grenzen, fuehrt aber keinen Dry-Run aus und enthaelt kein Formular.
 - Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
@@ -546,11 +549,14 @@ Der Vertrag ist selbst kein Schreibpfad. `python -m ims.api.metadata_write_contr
 
 ```powershell
 python -m ims.api.run_control_contracts
+python -m ims.api.run_control_dry_run_contract
 ```
 
 Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrte HTTP-, UI- und Ausfuehrungsgrenzen, zukuenftig erwartbare Eingaben wie `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at` und `execution_enabled` sowie verbotene Grenzen wie Simulation, Fachlogikmutation, Browser-Upload, HTTP-Schreibendpunkt und historische Vollgleichheitsbehauptung.
 
 Der Run-Control-Vertrag ist rein beschreibend. Er startet keinen Lauf, schreibt keine Metadaten, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und schaltet keinen UI-Startbutton frei. `execution_enabled` und `execution_performed` bleiben `false`.
+
+Der Run-Control-Dry-Run-Vertrag enthaelt `mode = "run_control_dry_run_contract"`, `expected_inputs`, `required_preconditions`, `forbidden_boundaries`, `http_enabled = false`, `writes_enabled = false`, `execution_enabled = false`, `writes_performed = false` und `execution_performed = false`. Er ist ein gesperrter Vertrag fuer einen spaeteren HTTP-Dry-Run und fuehrt keinen Dry-Run aus.
 
 Ein lokaler Request-Check kann eine spaetere Steuerungsanfrage als DTO validieren:
 
@@ -564,9 +570,12 @@ Der HTTP-Lesekontrakt fuer dieses DTO ist:
 
 ```text
 GET /api/run-control/request-contract
+GET /api/run-control/dry-run-contract
 ```
 
 Die Antwort enthaelt `mode = "run_control_request_contract"`, `schema_version`, `accepted_fields`, `required_fields`, `optional_fields`, `forbidden_fields`, `example_request`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body, prueft keinen Browser-Upload, schreibt keine Queue und startet keine Ausfuehrung. Die Frontend-Request-Vertragskarte zeigt diese Felder nur als lokale Orientierung.
+
+Der Dry-Run-Vertragsendpunkt liefert die gesperrte Form mit `mode = "run_control_dry_run_contract"`, erwarteten Eingaben, Vorbedingungen und verbotenen Grenzen. Er akzeptiert keinen Request-Body, oeffnet kein POST/PUT, schreibt keine Queue oder Metadaten und startet keine Simulation. Die Frontend-Dry-Run-Vertragskarte zeigt nur diese Grenze.
 
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:
 

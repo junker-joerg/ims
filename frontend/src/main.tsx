@@ -170,6 +170,20 @@ type RunControlRequestContract = {
   execution_performed: boolean;
 };
 
+type RunControlDryRunContract = {
+  status: "warning";
+  mode: "run_control_dry_run_contract";
+  schema_version: string;
+  expected_inputs: string[];
+  required_preconditions: string[];
+  forbidden_boundaries: string[];
+  http_enabled: boolean;
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+  writes_performed: boolean;
+  execution_performed: boolean;
+};
+
 type RunControlPreflight = {
   status: "ok" | "error";
   mode: "run_control_preflight";
@@ -308,6 +322,7 @@ function App() {
   const [metadataConsistency, setMetadataConsistency] = useState<MetadataConsistency | null>(null);
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
+  const [runControlDryRunContract, setRunControlDryRunContract] = useState<RunControlDryRunContract | null>(null);
   const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
   const [queueDetailState, setQueueDetailState] = useState<DetailState>("idle");
@@ -349,6 +364,7 @@ function App() {
           consistencyResponse,
           runControlQueueResponse,
           runControlRequestContractResponse,
+          runControlDryRunContractResponse,
           healthResponse,
           versionResponse
         ] = await Promise.all([
@@ -359,6 +375,7 @@ function App() {
           fetch("/api/metadata/consistency"),
           fetch("/api/run-control/queue"),
           fetch("/api/run-control/request-contract"),
+          fetch("/api/run-control/dry-run-contract"),
           fetch("/api/health"),
           fetch("/api/version")
         ]);
@@ -370,6 +387,7 @@ function App() {
           !consistencyResponse.ok ||
           !runControlQueueResponse.ok ||
           !runControlRequestContractResponse.ok ||
+          !runControlDryRunContractResponse.ok ||
           !healthResponse.ok ||
           !versionResponse.ok
         ) {
@@ -383,6 +401,7 @@ function App() {
           consistencyPayload,
           runControlQueuePayload,
           runControlRequestContractPayload,
+          runControlDryRunContractPayload,
           healthPayload,
           versionPayload
         ] = await Promise.all([
@@ -393,6 +412,7 @@ function App() {
           consistencyResponse.json() as Promise<MetadataConsistency>,
           runControlQueueResponse.json() as Promise<RunControlQueueOverview>,
           runControlRequestContractResponse.json() as Promise<RunControlRequestContract>,
+          runControlDryRunContractResponse.json() as Promise<RunControlDryRunContract>,
           healthResponse.json() as Promise<HealthStatus>,
           versionResponse.json() as Promise<VersionInfo>
         ]);
@@ -404,6 +424,7 @@ function App() {
           setMetadataConsistency(consistencyPayload);
           setRunControlQueue(runControlQueuePayload);
           setRunControlRequestContract(runControlRequestContractPayload);
+          setRunControlDryRunContract(runControlDryRunContractPayload);
           setSelectedQueueId((current) => current ?? runControlQueuePayload.entries[0]?.queue_id ?? null);
           setHealthStatus(healthPayload);
           setVersionInfo(versionPayload);
@@ -688,6 +709,16 @@ function App() {
     ],
     ["Schreibpfade", runControlRequestContract?.writes_enabled ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlRequestContract?.execution_enabled || runControlRequestContract?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
+  const runControlDryRunRows = [
+    ["Modus", runControlDryRunContract?.mode ?? "laedt"],
+    ["Status", runControlDryRunContract?.status === "warning" ? "gesperrt" : "laedt"],
+    ["Eingaben", runControlDryRunContract?.expected_inputs.join(", ") ?? "-"],
+    ["Vorbedingungen", runControlDryRunContract?.required_preconditions.join(", ") ?? "-"],
+    ["Gesperrte Grenzen", runControlDryRunContract?.forbidden_boundaries.join(", ") ?? "-"],
+    ["HTTP", runControlDryRunContract?.http_enabled ? "aktiv" : "gesperrt"],
+    ["Schreibpfade", runControlDryRunContract?.writes_enabled || runControlDryRunContract?.writes_performed ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", runControlDryRunContract?.execution_enabled || runControlDryRunContract?.execution_performed ? "aktiv" : "gesperrt"]
   ];
   const diagnosisRows = [
     ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
@@ -1247,10 +1278,26 @@ function App() {
                 <li>Run-Control-Vertrag lokal per CLI ohne Ausfuehrung</li>
                 <li>Run-Control-Preflight lokal per CLI ohne Ausfuehrung</li>
                 <li>Run-Control-Request-Vertrag per API nur lesend</li>
+                <li>Run-Control-Dry-Run-Vertrag per API gesperrt</li>
                 <li><code>execution_enabled</code> bleibt <code>false</code></li>
                 <li>Browser schreibt keine Metadaten</li>
               </ul>
             </article>
+          </div>
+        </section>
+
+        <section className="panel run-control-dry-run-panel" aria-label="Run-Control-Dry-Run-Vertrag">
+          <div className="panel-heading">
+            <CircleDot size={20} aria-hidden="true" />
+            <h2>Run-Control-Dry-Run-Vertrag</h2>
+          </div>
+          <div className="run-control-dry-run-grid">
+            {runControlDryRunRows.map(([label, value]) => (
+              <div className="run-control-dry-run-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
           </div>
         </section>
 

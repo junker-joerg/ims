@@ -141,7 +141,10 @@ Ein lokaler Run-Control-Vertrag beschreibt die spaetere Steuerungsgrenze, ohne e
 
 ```powershell
 python -m ims.api.run_control_contracts
+python -m ims.api.run_control_dry_run_contract
 ```
+
+Der Dry-Run-Vertrag bleibt gesperrt und beschreibt nur erwartete Eingaben, Vorbedingungen und verbotene Grenzen fuer einen spaeteren HTTP-Dry-Run. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` read-only bereit. Es gibt keinen Request-Body, kein POST/PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 
