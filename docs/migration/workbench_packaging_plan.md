@@ -370,12 +370,12 @@ Der Packaging-/Bereitstellungsblock steht bei `0` geplanten PRs, abgesehen von R
 
 Die grobe Gesamtplanung bis "wirklich alles fertig" bleibt:
 
-- Workbench-Ausbau nach v1: ca. `8-15` PRs.
+- Workbench-Ausbau nach v1: ca. `3-7` PRs.
 - Fachvalidierung und historische Vollgleichheit: ca. `10-18` PRs.
 - Packaging und Bereitstellung: ca. `0` PRs, abgesehen von Review-Fixes.
 - Integrations- und Review-Reserve: ca. `1-3` PRs.
 
-Erwartet bleiben damit weiterhin grob ca. `18-36+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
+Erwartet bleiben damit weiterhin grob ca. `14-28+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
 
 ## Teststrategie
 

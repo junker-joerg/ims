@@ -13,6 +13,7 @@ Vorhandene lokale Run-Control-Bausteine sind:
 - Run-Control-Vertrag (`ims.api.run_control_contracts`), rein beschreibend.
 - Run-Control-Request-Check (`ims.api.run_control_requests`), lokal validierend.
 - Run-Control-Queue (`ims.api.run_control_queue`), explizit lokal und ohne Ausfuehrung.
+- Run-Control-Queue-Aktionsplan (`ims.api.run_control_queue_action_plan`), lokal lesend und ohne Ausfuehrung.
 - Run-Control-Preflight (`ims.api.run_control_preflight`), lesend und ohne Ausfuehrung.
 - Workbench-Readiness und CLI-Uebersicht, die diese Grenzen sichtbar machen.
 
@@ -26,16 +27,16 @@ Bis zu dieser separaten Freigabe bleibt `execution_enabled` auf `false`. Es gibt
 
 Die Restplanung bis zum vollstaendigen Abschluss inklusive weiterem Workbench-Ausbau, Fachvalidierung und historischer Vollgleichheit bleibt bewusst grob. Der Packaging-/Bereitstellungsblock fuer die lokale Workbench-v1 ist bereits konsolidiert; offen bleiben dort nur Review-Fixes oder spaeter explizit beauftragte Release-Automatisierung.
 
-- Erwartet: ca. `18-36+` reviewbare PRs.
-- Optimistisch: ca. `18-24` PRs.
-- Realistisch: ca. `24-32` PRs.
-- Mit schwieriger Fachvalidierung oder weiteren Integrationsfallen: `36+` PRs.
+- Erwartet: grob ca. `14-28+` reviewbare PRs.
+- Workbench-Ausbau nach v1: ca. `3-7` PRs.
+- Fachvalidierung/historische Vollgleichheit: ca. `10-18` PRs.
+- Integrations-/Review-Reserve: ca. `1-3` PRs.
 
 Geplante Bloecke:
 
 | Block | Erwarteter Umfang | Inhalt |
 | --- | ---: | --- |
-| Workbench nach v1 vollstaendig nutzbarer machen | ca. `8-15` PRs | lesende Queue-/Run-Control-Anzeigen, API-Lesegrenzen, gesperrte Dry-Run-Vertraege, spaeterer Ausfuehrungsadapter nur nach Freigabe, Haertung, Doku und E2E-Smokes |
+| Workbench nach v1 vollstaendig nutzbarer machen | ca. `3-7` PRs | lokale Aktionsplaene, lesende Queue-/Run-Control-Anzeigen, gesperrte Dry-Run-Vertraege, spaeterer Ausfuehrungsadapter nur nach Freigabe, Haertung, Doku und E2E-Smokes |
 | Fachvalidierung und historische Vollgleichheit | ca. `10-18` PRs | weitere Legacy-Referenzen, zusaetzliche Alt-/Neu-Vergleichspfade, Mehrperioden-Replays, Abweichungsanalyse, Modellkorrekturen und Abschlussbericht |
 | Packaging und Bereitstellung | ca. `0` geplante PRs | lokale Startbarkeit, portable Ordnerstruktur, Startskripte/Launcher, reproduzierbarer Build, ZIP-/Staging-Grenzen, Installations-, Update- und Backup-Doku sind fuer v1 konsolidiert; offen nur Review-Fixes oder spaeter explizite Release-Automatisierung |
 | Integrations- und Abschlussreserve | ca. `1-3` PRs | Review-Fixes, CI- und Windows-Pfadhaertung, finale Doku-Konsolidierung und Meilensteinabschluss |
@@ -77,6 +78,15 @@ HTTP-Vertraege duerfen erst eingefuehrt werden, wenn ihre Schreib- und Ausfuehru
 SQLite bleibt die lokale Metadatenablage. Run-Control-Metadaten oder Queue-Eintraege duerfen nur ueber klar benannte Repository-Methoden geschrieben werden. Die lokale Queue darf validierte Requests vormerken, aber keinen Worker, Scheduler oder Simulationslauf starten.
 
 Lesende Diagnose-, Snapshot-, Export-, Roundtrip- und Preflight-Pfade duerfen keine Datenbankdateien erzeugen. Schreibpfade muessen einen expliziten Zielpfad verlangen und duerfen keine Ausfuehrung starten.
+
+Der lokale Queue-Aktionsplan ist ein rein lesender Adapter zwischen Queue-Diagnose und Preflight:
+
+```powershell
+python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.sqlite --queue-id <id>
+```
+
+Er erzeugt stabile JSON-Felder fuer `status`, `mode = "run_control_queue_action_plan"`, `db_path`, `metadata_source`, optional `queue_id`, `queue_count`, `actions`, `issues`, `writes_performed = false` und `execution_performed = false`. Pro Queue-Eintrag werden `queue_id`, `run_id`, `scenario_id`, `queue_status`, `next_action`, `next_action_label`, `blocked_by`, `execution_allowed = false`, `writes_performed = false` und `execution_performed = false` sichtbar. `planned` ohne Blocker fuehrt nur zu `run_preflight`, `validated` ohne Blocker zu `await_execution_release`, `blocked` oder Diagnose-/Preflight-Hinweise zu `resolve_blockers`; unbekannte Statuswerte bleiben ein `inspect_queue_status`-Hinweis. Queue-only-Datenbanken und nicht initialisierte Queues bleiben stabile Hinweise statt Abstuerze.
 
 ## Sicherheitsgrenzen
 
