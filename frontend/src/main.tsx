@@ -603,7 +603,15 @@ function App() {
     ["Pflichtfelder", runControlRequestContract?.required_fields.join(", ") ?? "-"],
     ["Optionale Felder", runControlRequestContract?.optional_fields.join(", ") ?? "-"],
     ["Verbotene Felder", runControlRequestContract?.forbidden_fields.join(", ") ?? "-"],
-    ["Beispiel-Run", runControlRequestContract?.example_request.run_id ?? "-"],
+    ["Beispiel run_id", runControlRequestContract?.example_request.run_id ?? "-"],
+    ["Beispiel scenario_id", runControlRequestContract?.example_request.scenario_id ?? "-"],
+    ["Beispiel metadata_db", runControlRequestContract?.example_request.metadata_db ?? "-"],
+    ["Beispiel requested_by", runControlRequestContract?.example_request.requested_by ?? "-"],
+    ["Beispiel created_at", runControlRequestContract?.example_request.created_at ?? "-"],
+    [
+      "Beispiel execution_enabled",
+      runControlRequestContract ? String(runControlRequestContract.example_request.execution_enabled) : "-"
+    ],
     ["Schreibpfade", runControlRequestContract?.writes_enabled ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlRequestContract?.execution_enabled || runControlRequestContract?.execution_performed ? "aktiv" : "gesperrt"]
   ];

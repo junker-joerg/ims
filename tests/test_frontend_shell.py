@@ -161,6 +161,18 @@ def test_frontend_shell_declares_readonly_run_control_request_contract():
     assert "optional_fields" in source
     assert "forbidden_fields" in source
     assert "example_request" in source
+    assert "Beispiel run_id" in source
+    assert "example_request.run_id" in source
+    assert "Beispiel scenario_id" in source
+    assert "example_request.scenario_id" in source
+    assert "Beispiel metadata_db" in source
+    assert "example_request.metadata_db" in source
+    assert "Beispiel requested_by" in source
+    assert "example_request.requested_by" in source
+    assert "Beispiel created_at" in source
+    assert "example_request.created_at" in source
+    assert "Beispiel execution_enabled" in source
+    assert "example_request.execution_enabled" in source
     assert "Run-Control-Request-Vertrag per API nur lesend" in source
     assert "run-control-request-panel" in styles
     assert "run-control-request-grid" in styles
