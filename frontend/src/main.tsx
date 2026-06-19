@@ -170,6 +170,21 @@ type RunControlRequestContract = {
   execution_performed: boolean;
 };
 
+type RunControlPreflight = {
+  status: "ok" | "error";
+  mode: "run_control_preflight";
+  run_id: string;
+  scenario_id: string | null;
+  run_found: boolean;
+  scenario_found: boolean;
+  metadata_source: MetadataSourceStatus;
+  execution_enabled: boolean;
+  execution_allowed: boolean;
+  issues: string[];
+  writes_performed: boolean;
+  execution_performed: boolean;
+};
+
 type CapabilityState = {
   enabled: boolean;
   boundary?: string;
@@ -297,6 +312,9 @@ function App() {
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
   const [queueDetailState, setQueueDetailState] = useState<DetailState>("idle");
   const [queueDetailError, setQueueDetailError] = useState<string | null>(null);
+  const [runControlPreflight, setRunControlPreflight] = useState<RunControlPreflight | null>(null);
+  const [runControlPreflightState, setRunControlPreflightState] = useState<DetailState>("idle");
+  const [runControlPreflightError, setRunControlPreflightError] = useState<string | null>(null);
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
@@ -445,6 +463,43 @@ function App() {
       active = false;
     };
   }, [selectedQueueId]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadRunControlPreflight() {
+      if (!selectedRunId) {
+        setRunControlPreflight(null);
+        setRunControlPreflightState("idle");
+        setRunControlPreflightError(null);
+        return;
+      }
+      setRunControlPreflightState("loading");
+      setRunControlPreflightError(null);
+      try {
+        const response = await fetch(`/api/run-control/preflight/${encodeURIComponent(selectedRunId)}`);
+        if (!response.ok) {
+          throw new Error("Run-Control-Preflight nicht erreichbar");
+        }
+        const payload = (await response.json()) as RunControlPreflight;
+        if (active) {
+          setRunControlPreflight(payload);
+          setRunControlPreflightState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setRunControlPreflight(null);
+          setRunControlPreflightError(error instanceof Error ? error.message : "Run-Control-Preflight nicht erreichbar");
+          setRunControlPreflightState("error");
+        }
+      }
+    }
+
+    loadRunControlPreflight();
+    return () => {
+      active = false;
+    };
+  }, [selectedRunId]);
 
   useEffect(() => {
     let active = true;
@@ -598,6 +653,25 @@ function App() {
   ];
   const queueDetailStatus =
     queueDetailState === "error" ? queueDetailError ?? "nicht gefunden" : queueDetailState === "loading" ? "laedt" : "lesend";
+  const runControlPreflightStatus =
+    runControlPreflightState === "error"
+      ? runControlPreflightError ?? "nicht erreichbar"
+      : runControlPreflightState === "loading"
+        ? "laedt"
+        : "lesend";
+  const runControlPreflightIssueLabel = runControlPreflight?.issues.length
+    ? runControlPreflight.issues.join(", ")
+    : "keine";
+  const runControlPreflightRows = [
+    ["Status", runControlPreflight?.status ?? "laedt"],
+    ["Run", runControlPreflight?.run_id ?? selectedRunId ?? "-"],
+    ["Szenario", runControlPreflight?.scenario_id ?? "-"],
+    ["Run gefunden", runControlPreflight?.run_found ? "ja" : "nein"],
+    ["Szenario gefunden", runControlPreflight?.scenario_found ? "ja" : "nein"],
+    ["Hinweise", runControlPreflightIssueLabel],
+    ["Schreibpfade", runControlPreflight?.writes_performed ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", runControlPreflight?.execution_allowed || runControlPreflight?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
   const runControlRequestRows = [
     ["Modus", runControlRequestContract?.mode ?? "laedt"],
     ["Pflichtfelder", runControlRequestContract?.required_fields.join(", ") ?? "-"],
@@ -1177,6 +1251,25 @@ function App() {
                 <li>Browser schreibt keine Metadaten</li>
               </ul>
             </article>
+          </div>
+        </section>
+
+        <section className="panel run-control-preflight-panel" aria-label="Run-Control-Preflight">
+          <div className="panel-heading">
+            <ShieldCheck size={20} aria-hidden="true" />
+            <h2>Run-Control-Preflight</h2>
+          </div>
+          <div className="detail-status">
+            <span>Quelle</span>
+            <strong>{runControlPreflightStatus}</strong>
+          </div>
+          <div className="run-control-preflight-grid">
+            {runControlPreflightRows.map(([label, value]) => (
+              <div className="run-control-preflight-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
           </div>
         </section>
 

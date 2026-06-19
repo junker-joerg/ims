@@ -183,6 +183,27 @@ def test_frontend_shell_declares_readonly_run_control_request_contract():
     assert 'type="file"' not in source
 
 
+def test_frontend_shell_declares_readonly_run_control_preflight():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "/api/run-control/preflight/${encodeURIComponent(selectedRunId)}" in source
+    assert "Run-Control-Preflight" in source
+    assert "runControlPreflight" in source
+    assert "setRunControlPreflight" in source
+    assert "run_found" in source
+    assert "scenario_found" in source
+    assert "execution_allowed" in source
+    assert "writes_performed" in source
+    assert "execution_performed" in source
+    assert "Run-Control-Preflight nicht erreichbar" in source
+    assert "run-control-preflight-panel" in styles
+    assert "run-control-preflight-grid" in styles
+    assert "run-control-preflight-row" in styles
+    assert "startRun" not in source
+    assert 'type="file"' not in source
+
+
 def test_frontend_shell_declares_readonly_scenario_overview():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

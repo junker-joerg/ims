@@ -16,6 +16,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/run-control/queue` beschreibt lesend vorhandene lokale Run-Control-Queue-Eintraege, ohne die Queue zu initialisieren oder zu schreiben.
 - `/api/run-control/queue/{queue_id}` liefert einen einzelnen Queue-Eintrag lesend per ID.
 - `/api/run-control/request-contract` beschreibt lesend den Run-Control-Request-Vertrag, ohne Request-Body, Upload oder Schreiben.
+- `/api/run-control/preflight/{run_id}` prueft den ausgewaehlten Run lesend gegen die gesperrte Run-Control-Grenze.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
 - Die Workbench zeigt die aktuelle Szenario-/Run-Auswahl in einer kompakten, rein lesenden Auswahlzusammenfassung.
@@ -81,6 +82,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
 - Die Run-Control-Request-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/request-contract`, zeigt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO, validiert aber keinen Browser-Request und oeffnet keinen Upload- oder Schreibpfad.
+- Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
@@ -601,6 +603,14 @@ python -m ims.api.run_control_preflight --run-id baseline-python-tests --db .\.i
 ```
 
 Der Run-Control-Preflight ist ebenfalls rein lokal und lesend. Er meldet, ob Run- und Szenario-Metadaten gefunden wurden, welche Metadatenquelle gelesen wurde und warum Ausfuehrung weiter nicht erlaubt ist. Unbekannte Runs, fehlende Szenario-Referenzen oder `execution_enabled=true` werden als Issues ausgegeben. Der Preflight erzeugt keine SQLite-Datei, schreibt keine Metadaten, oeffnet keinen HTTP-Endpunkt und startet keine Simulation.
+
+Die Workbench-API stellt denselben Preflight fuer die aktuelle UI-Auswahl read-only bereit:
+
+```text
+GET /api/run-control/preflight/{run_id}
+```
+
+Die Antwort enthaelt `mode = "run_control_preflight"`, `run_id`, `scenario_id`, `run_found`, `scenario_found`, `metadata_source`, `execution_enabled`, `execution_allowed = false`, `issues`, `writes_performed = false` und `execution_performed = false`. Die Frontend-Preflight-Karte laedt diesen Endpunkt bei Run-Auswahl und bleibt ohne Startbutton, Upload, Editor, POST/PUT oder Browser-Schreibpfad.
 
 ## Lokaler Start
 

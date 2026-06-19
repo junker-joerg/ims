@@ -54,6 +54,15 @@ def preflight_run_control(
     return _preflight_run_control_from_repository(run_id, repository)
 
 
+def preflight_run_control_from_repository(
+    run_id: str,
+    repository: WorkbenchMetadataRepository,
+) -> WorkbenchRunControlPreflightResult:
+    if not run_id.strip():
+        raise MetadataImportError("run control preflight requires a non-empty run_id")
+    return _preflight_run_control_from_repository(run_id, repository)
+
+
 def _preflight_run_control_from_repository(
     run_id: str,
     repository: WorkbenchMetadataRepository,

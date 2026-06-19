@@ -232,6 +232,46 @@ def test_run_control_request_contract_endpoint_is_readonly(tmp_path):
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
 
 
+def test_run_control_preflight_endpoint_reads_selected_run(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/preflight/baseline-python-tests")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_preflight"
+    assert payload["run_id"] == "baseline-python-tests"
+    assert payload["scenario_id"] == "agrsich-reference-window"
+    assert payload["run_found"] is True
+    assert payload["scenario_found"] is True
+    assert payload["execution_enabled"] is False
+    assert payload["execution_allowed"] is False
+    assert payload["issues"] == []
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_run_control_preflight_endpoint_reports_missing_run_without_execution(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/preflight/missing-run")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "error"
+    assert payload["mode"] == "run_control_preflight"
+    assert payload["run_id"] == "missing-run"
+    assert payload["run_found"] is False
+    assert payload["scenario_found"] is False
+    assert payload["execution_allowed"] is False
+    assert payload["issues"] == ["run metadata not found: missing-run"]
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+
+
 def test_run_control_queue_overview_reads_injected_sqlite_queue(tmp_path):
     db_path = tmp_path / "metadata.sqlite"
     request_path = tmp_path / "run_control_request.json"

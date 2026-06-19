@@ -12,6 +12,7 @@ from starlette.staticfiles import StaticFiles
 from ims.api.metadata import metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
+from ims.api.run_control_preflight import preflight_run_control_from_repository
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
 
@@ -137,6 +138,9 @@ def create_app(
             return JSONResponse(_not_found_payload("run_control_queue", queue_id), status_code=404)
         return JSONResponse(detail)
 
+    def preflight_payload(run_id: str) -> dict[str, object]:
+        return preflight_run_control_from_repository(run_id, repository).to_dict()
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -194,6 +198,10 @@ def create_app(
         def run_control_request_contract() -> dict[str, object]:
             return run_control_request_contract_payload()
 
+        @app.get("/api/run-control/preflight/{run_id}")
+        def run_control_preflight(run_id: str) -> dict[str, object]:
+            return preflight_payload(run_id)
+
         @app.get("/api/run-control/queue/{queue_id}", response_model=None)
         def run_control_queue_detail(queue_id: str) -> dict[str, object] | JSONResponse:
             detail = run_control_queue_detail_payload(metadata_source, queue_id)
@@ -228,6 +236,10 @@ def create_app(
         Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
+        Route(
+            "/api/run-control/preflight/{run_id}",
+            lambda request: JSONResponse(preflight_payload(request.path_params["run_id"])),
+        ),
         Route(
             "/api/run-control/queue/{queue_id}",
             lambda request: queue_detail_response(request.path_params["queue_id"]),
