@@ -150,6 +150,27 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert 'type="file"' not in source
 
 
+def test_frontend_shell_declares_readonly_run_control_request_contract():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "/api/run-control/request-contract" in source
+    assert "Run-Control-Request-Vertrag" in source
+    assert "runControlRequestContract" in source
+    assert "required_fields" in source
+    assert "optional_fields" in source
+    assert "forbidden_fields" in source
+    assert "example_request" in source
+    assert "Run-Control-Request-Vertrag per API nur lesend" in source
+    assert "run-control-request-panel" in styles
+    assert "run-control-request-grid" in styles
+    assert "run-control-request-row" in styles
+    assert "writes_enabled" in source
+    assert "execution_performed" in source
+    assert "startRun" not in source
+    assert 'type="file"' not in source
+
+
 def test_frontend_shell_declares_readonly_scenario_overview():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

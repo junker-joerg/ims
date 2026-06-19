@@ -9,9 +9,12 @@ import pytest
 from ims.api.metadata_import import MetadataImportError
 from ims.api.run_control_requests import (
     WorkbenchRunControlRequest,
+    WorkbenchRunControlRequestContract,
     WorkbenchRunControlRequestValidationResult,
+    build_run_control_request_contract,
     main,
     parse_run_control_request_payload,
+    run_control_request_contract_payload,
     validate_run_control_request,
     validate_run_control_request_payload,
 )
@@ -40,6 +43,28 @@ def test_run_control_request_validates_stable_shape():
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert "execution_enabled" in payload["accepted_fields"]
+
+
+def test_run_control_request_contract_reports_readonly_shape():
+    payload = run_control_request_contract_payload()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_request_contract"
+    assert payload["schema_version"] == "ims.workbench.metadata.v1"
+    assert payload["required_fields"] == [
+        "created_at",
+        "execution_enabled",
+        "requested_by",
+        "run_id",
+        "scenario_id",
+    ]
+    assert payload["optional_fields"] == ["metadata_db", "schema_version"]
+    assert payload["example_request"]["execution_enabled"] is False
+    assert "execution_enabled=true" in payload["forbidden_fields"]
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["execution_performed"] is False
+    assert isinstance(build_run_control_request_contract(), WorkbenchRunControlRequestContract)
 
 
 def test_run_control_request_allows_missing_optional_metadata_db():
