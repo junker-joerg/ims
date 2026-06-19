@@ -5,7 +5,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-from ims.api.metadata_repository import build_seeded_metadata_repository
+from ims.api.metadata_repository import (
+    build_seeded_metadata_repository,
+    connect_metadata_db,
+    initialize_metadata_schema,
+    seed_metadata,
+)
 from ims.api.run_control_queue import (
     WorkbenchRunControlQueueRepository,
     enqueue_run_control_request,
@@ -60,6 +65,25 @@ def _enqueue(
     with sqlite3.connect(db_path) as connection:
         connection.row_factory = sqlite3.Row
         WorkbenchRunControlQueueRepository(connection).enqueue(request, status=status)
+
+
+def _prepare_sidecar_free_wal_queue_db(db_path: Path, tmp_path: Path) -> tuple[Path, Path]:
+    wal_path = Path(f"{db_path}-wal")
+    shm_path = Path(f"{db_path}-shm")
+    request = parse_run_control_request_payload(_request_payload())
+    connection = connect_metadata_db(db_path)
+    try:
+        connection.execute("PRAGMA journal_mode=WAL")
+        initialize_metadata_schema(connection)
+        seed_metadata(connection)
+        WorkbenchRunControlQueueRepository(connection).enqueue(request)
+        connection.execute("SELECT COUNT(*) FROM scenarios").fetchone()
+        connection.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+    finally:
+        connection.close()
+    wal_path.unlink(missing_ok=True)
+    shm_path.unlink(missing_ok=True)
+    return wal_path, shm_path
 
 
 def test_run_control_queue_action_plan_for_valid_planned_entry(tmp_path):
@@ -220,6 +244,34 @@ def test_run_control_queue_action_plan_handles_queue_only_database(tmp_path):
     assert payload["actions"][0]["next_action"] == "resolve_blockers"
     assert "run_control_queue_missing_metadata_schema" in payload["actions"][0]["blocked_by"]
     assert payload["writes_performed"] is False
+
+
+def test_run_control_queue_action_plan_does_not_create_wal_sidecars(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    wal_path, shm_path = _prepare_sidecar_free_wal_queue_db(db_path, tmp_path)
+
+    payload = build_run_control_queue_action_plan(db_path).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["actions"][0]["next_action"] == "run_preflight"
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not wal_path.exists()
+    assert not shm_path.exists()
+
+
+def test_run_control_queue_action_plan_cli_does_not_create_wal_sidecars(tmp_path, capsys):
+    db_path = tmp_path / "metadata.sqlite"
+    wal_path, shm_path = _prepare_sidecar_free_wal_queue_db(db_path, tmp_path)
+
+    exit_code = main(["--db", str(db_path)])
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert payload["mode"] == "run_control_queue_action_plan"
+    assert payload["actions"][0]["next_action"] == "run_preflight"
+    assert not wal_path.exists()
+    assert not shm_path.exists()
 
 
 def test_run_control_queue_action_plan_reports_uninitialized_queue(tmp_path):

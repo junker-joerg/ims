@@ -473,7 +473,16 @@ def _connect_snapshot_db_readonly(path: Path) -> sqlite3.Connection:
 
 
 def _readonly_sqlite_uri(path: Path) -> str:
-    return f"{path.as_uri()}?mode=ro"
+    wal_exists, shm_exists = _sqlite_sidecar_state(path)
+    if wal_exists != shm_exists:
+        raise MetadataImportError("metadata read-only database has incomplete WAL sidecar state")
+    if wal_exists and shm_exists:
+        return f"{path.as_uri()}?mode=ro"
+    return f"{path.as_uri()}?mode=ro&immutable=1"
+
+
+def _sqlite_sidecar_state(path: Path) -> tuple[bool, bool]:
+    return Path(f"{path}-wal").exists(), Path(f"{path}-shm").exists()
 
 
 def _repository_ids(payload: dict[str, object]) -> tuple[str, ...]:
