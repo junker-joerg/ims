@@ -77,7 +77,7 @@ HTTP-Vertraege duerfen erst eingefuehrt werden, wenn ihre Schreib- und Ausfuehru
 
 SQLite bleibt die lokale Metadatenablage. Run-Control-Metadaten oder Queue-Eintraege duerfen nur ueber klar benannte Repository-Methoden geschrieben werden. Die lokale Queue darf validierte Requests vormerken, aber keinen Worker, Scheduler oder Simulationslauf starten.
 
-Lesende Diagnose-, Snapshot-, Export-, Roundtrip- und Preflight-Pfade duerfen keine Datenbankdateien erzeugen. Schreibpfade muessen einen expliziten Zielpfad verlangen und duerfen keine Ausfuehrung starten.
+Lesende Diagnose-, Snapshot-, Export-, Roundtrip- und Preflight-Pfade duerfen keine Datenbankdateien erzeugen. Schreibpfade muessen einen expliziten Zielpfad verlangen und duerfen keine Ausfuehrung starten. Fuer SQLite-Read-only-Zugriffe bleibt die WAL-Grenze explizit: Rollback-Journal-Datenbanken werden mit `mode=ro` gelesen, vollstaendige Live-WAL-Sidecars werden beruecksichtigt, unvollstaendige Sidecars werden abgelehnt und `immutable=1` ist nur fuer sidecar-freie WAL-Dateien zulaessig.
 
 Der lokale Queue-Aktionsplan ist ein rein lesender Adapter zwischen Queue-Diagnose und Preflight:
 

@@ -59,6 +59,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "Statuswerte, Szenario-Referenzen und Ausfuehrungsflags" in readme
     assert "Queue-only-Datenbank" in readme
     assert "fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet" in readme
+    assert "Rollback-Journal-Datenbanken bleiben normale `mode=ro`-Reads" in readme
+    assert "`immutable=1` wird nur fuer sidecar-freie WAL-Dateien genutzt" in readme
     assert "python -m ims.api.run_control_preflight --run-id baseline-python-tests" in readme
     assert "python -m ims.api.metadata_import_cli export" in readme
     assert "python -m ims.api.metadata_import_cli export --db .\\.ims_workbench\\metadata.sqlite --out .\\metadata_export.json" in readme
@@ -140,7 +142,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     doc = WORKBENCH_DOC.read_text(encoding="utf-8")
 
     assert "uvicorn" in doc
-    assert "immutable=1" not in doc
+    assert "Rollback-Journal-Datenbanken werden dabei als normale `mode=ro`-Quelle gelesen" in doc
+    assert "`immutable=1` bleibt auf sidecar-freie WAL-Dateien beschraenkt" in doc
+    assert "Rollback-Journal-Dateien bleiben `mode=ro`, sidecar-freie WAL-Dateien nutzen `immutable=1`" in doc
     assert "Vollgleichheit" in doc
     assert "Keines dieser Kommandos startet eine Simulation" in doc
     assert "keine Konfigurationsdatei automatisch" in doc
@@ -292,6 +296,8 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 5: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe" in plan
     assert "PR 6+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
+    assert "Rollback-Journal-Datenbanken werden mit `mode=ro` gelesen" in plan
+    assert "`immutable=1` ist nur fuer sidecar-freie WAL-Dateien zulaessig" in plan
     assert "Haertung, Doku, Smoke-/E2E-Checks" in plan
     assert "Review-Fixes, CI- und Windows-Pfadhaertung" in plan
     assert "execution_enabled=false" in plan
