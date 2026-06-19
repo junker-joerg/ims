@@ -464,6 +464,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.run-control-preflight-panel {
+  margin-bottom: 18px;
+}
+
 .import-panel {
   margin-bottom: 18px;
 }
@@ -840,6 +844,33 @@ code {
   overflow-wrap: anywhere;
 }
 
+.run-control-preflight-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.run-control-preflight-row {
+  min-height: 66px;
+  padding: 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
+.run-control-preflight-row span {
+  display: block;
+  margin-bottom: 7px;
+  color: #66736c;
+}
+
+.run-control-preflight-row strong {
+  display: block;
+  min-width: 0;
+  color: #143b2d;
+  overflow-wrap: anywhere;
+}
+
 .scenario-overview-row:hover,
 .scenario-overview-row.selected,
 .run-overview-row:hover,
@@ -915,6 +946,7 @@ code {
   .run-control-detail-grid,
   .run-control-issues,
   .run-control-request-grid,
+  .run-control-preflight-grid,
   .diagnosis-row,
   .scenario-filterbar,
   .run-filterbar,

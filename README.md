@@ -181,6 +181,8 @@ Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese ge
 python -m ims.api.run_control_preflight --run-id baseline-python-tests
 ```
 
+Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Karte zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne POST/PUT, Upload, Editor, Schreibpfad oder Simulation.
+
 Metadaten-CLI:
 
 Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:
