@@ -204,6 +204,28 @@ def test_frontend_shell_declares_readonly_run_control_preflight():
     assert 'type="file"' not in source
 
 
+def test_frontend_shell_declares_disabled_run_control_dry_run_contract():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "/api/run-control/dry-run-contract" in source
+    assert "Run-Control-Dry-Run-Vertrag" in source
+    assert "runControlDryRunContract" in source
+    assert "expected_inputs" in source
+    assert "required_preconditions" in source
+    assert "forbidden_boundaries" in source
+    assert "http_enabled" in source
+    assert "writes_performed" in source
+    assert "execution_performed" in source
+    assert "Run-Control-Dry-Run-Vertrag per API gesperrt" in source
+    assert "run-control-dry-run-panel" in styles
+    assert "run-control-dry-run-grid" in styles
+    assert "run-control-dry-run-row" in styles
+    assert "startRun" not in source
+    assert "submit" not in source
+    assert 'type="file"' not in source
+
+
 def test_frontend_shell_declares_readonly_scenario_overview():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

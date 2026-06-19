@@ -173,6 +173,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="run_control_dry_run_contract",
+            command="python -m ims.api.run_control_dry_run_contract",
+            purpose="Gesperrten Run-Control-Dry-Run-Vertrag ohne HTTP-Schreibpfad beschreiben.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="run_control_requests check",
             command="python -m ims.api.run_control_requests check .\\run_control_request.json",
             purpose="Lokalen Run-Control-Request gegen die gesperrte Ausfuehrungsgrenze pruefen.",
@@ -251,6 +257,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "metadata_write_contracts",
                 "metadata_write_contracts check",
                 "run_control_contracts",
+                "run_control_dry_run_contract",
                 "run_control_requests check",
                 "run_control_queue list",
                 "run_control_queue_diagnostics",

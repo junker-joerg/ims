@@ -11,6 +11,7 @@ Die lokalen CLI-Adapter decken Diagnose, Startplan, CLI-Uebersicht, Metadaten-Ch
 Vorhandene lokale Run-Control-Bausteine sind:
 
 - Run-Control-Vertrag (`ims.api.run_control_contracts`), rein beschreibend.
+- Run-Control-Dry-Run-Vertrag (`ims.api.run_control_dry_run_contract`), gesperrt und rein beschreibend.
 - Run-Control-Request-Check (`ims.api.run_control_requests`), lokal validierend.
 - Run-Control-Queue (`ims.api.run_control_queue`), explizit lokal und ohne Ausfuehrung.
 - Run-Control-Queue-Aktionsplan (`ims.api.run_control_queue_action_plan`), lokal lesend und ohne Ausfuehrung.
@@ -61,7 +62,7 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 
 1. PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend mit clientseitigen Filtern, Hinweisen und lokalen Schrittlabels.
 2. PR 2: API-Leseendpunkte fuer Queue/Requests, noch ohne Schreibpfad. Queue-Reads sind vorhanden; der Request-Vertrag wird als GET-Contract sichtbar.
-3. PR 3: Kontrollierter HTTP-Dry-Run-Vertrag, weiterhin gesperrt.
+3. PR 3: Kontrollierter HTTP-Dry-Run-Vertrag, weiterhin gesperrt und ohne Request-Body.
 4. PR 4: UI-Preflight-Ansicht fuer ausgewaehlten Run per GET-only Leseendpunkt.
 5. PR 5: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe.
 6. PR 6+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe.
@@ -119,7 +120,7 @@ Die Run-Control-Schritte brauchen Tests auf mehreren Ebenen:
 
 - Keine Fachlogikaenderung.
 - Keine Simulation starten.
-- Keine neuen HTTP-Endpunkte.
+- Keine neuen HTTP-Schreibendpunkte.
 - Kein HTTP-Schreibpfad.
 - Kein Browser-Upload.
 - Kein Browser-Download.
