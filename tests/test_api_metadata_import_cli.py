@@ -18,6 +18,7 @@ from ims.api.metadata_import_cli import (
     main,
     MetadataImportDryRunResult,
     MetadataImportReportResult,
+    _readonly_sqlite_uri,
     preview_metadata_import,
 )
 from ims.api.metadata_repository import (
@@ -197,6 +198,37 @@ def test_metadata_import_cli_snapshot_reads_explicit_sqlite_file(tmp_path):
     assert payload["scenarios"]["items"][0]["id"] == "agrsich-reference-window"
     assert payload["runs"]["items"][0]["execution_enabled"] is False
     assert payload["consistency"]["issue_count"] == 0
+
+
+def test_metadata_readonly_uri_keeps_rollback_database_mutable_safe(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    _create_seeded_sqlite_database(db_path)
+
+    uri = _readonly_sqlite_uri(db_path)
+
+    assert uri == f"{db_path.as_uri()}?mode=ro"
+    assert "immutable=1" not in uri
+    assert not Path(f"{db_path}-wal").exists()
+    assert not Path(f"{db_path}-shm").exists()
+
+
+def test_metadata_readonly_uri_uses_immutable_for_sidecar_free_wal_database(tmp_path):
+    db_path = tmp_path / "workbench.sqlite"
+    wal_path = Path(f"{db_path}-wal")
+    shm_path = Path(f"{db_path}-shm")
+    connection = _create_seeded_wal_database_with_open_writer(db_path)
+    try:
+        connection.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+    finally:
+        connection.close()
+    wal_path.unlink(missing_ok=True)
+    shm_path.unlink(missing_ok=True)
+
+    uri = _readonly_sqlite_uri(db_path)
+
+    assert uri == f"{db_path.as_uri()}?mode=ro&immutable=1"
+    assert not wal_path.exists()
+    assert not shm_path.exists()
 
 
 def test_metadata_import_cli_snapshot_reads_live_wal_data_from_open_writer(tmp_path):
