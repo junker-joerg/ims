@@ -314,6 +314,13 @@ function queueActionLabel(entry: RunControlQueueEntry): string {
   return "Status pruefen";
 }
 
+function yesNoLoading(value: boolean | undefined): string {
+  if (value === undefined) {
+    return "laedt";
+  }
+  return value ? "ja" : "nein";
+}
+
 function App() {
   const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
   const [runs, setRuns] = useState<RunMetadata[]>([]);
@@ -679,16 +686,22 @@ function App() {
       ? runControlPreflightError ?? "nicht erreichbar"
       : runControlPreflightState === "loading"
         ? "laedt"
-        : "lesend";
-  const runControlPreflightIssueLabel = runControlPreflight?.issues.length
-    ? runControlPreflight.issues.join(", ")
-    : "keine";
+        : runControlPreflight
+          ? "lesend"
+          : "laedt";
+  const runControlPreflightIssueLabel = runControlPreflight
+    ? runControlPreflight.issues.length
+      ? runControlPreflight.issues.join(", ")
+      : "keine"
+    : runControlPreflightState === "error"
+      ? runControlPreflightError ?? "nicht erreichbar"
+      : "laedt";
   const runControlPreflightRows = [
     ["Status", runControlPreflight?.status ?? "laedt"],
     ["Run", runControlPreflight?.run_id ?? selectedRunId ?? "-"],
     ["Szenario", runControlPreflight?.scenario_id ?? "-"],
-    ["Run gefunden", runControlPreflight?.run_found ? "ja" : "nein"],
-    ["Szenario gefunden", runControlPreflight?.scenario_found ? "ja" : "nein"],
+    ["Run gefunden", yesNoLoading(runControlPreflight?.run_found)],
+    ["Szenario gefunden", yesNoLoading(runControlPreflight?.scenario_found)],
     ["Hinweise", runControlPreflightIssueLabel],
     ["Schreibpfade", runControlPreflight?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlPreflight?.execution_allowed || runControlPreflight?.execution_performed ? "aktiv" : "gesperrt"]
@@ -712,13 +725,54 @@ function App() {
   ];
   const runControlDryRunRows = [
     ["Modus", runControlDryRunContract?.mode ?? "laedt"],
-    ["Status", runControlDryRunContract?.status === "warning" ? "gesperrt" : "laedt"],
+    [
+      "Status",
+      runControlDryRunContract
+        ? runControlDryRunContract.status === "warning"
+          ? "gesperrt"
+          : runControlDryRunContract.status
+        : "laedt"
+    ],
     ["Eingaben", runControlDryRunContract?.expected_inputs.join(", ") ?? "-"],
     ["Vorbedingungen", runControlDryRunContract?.required_preconditions.join(", ") ?? "-"],
     ["Gesperrte Grenzen", runControlDryRunContract?.forbidden_boundaries.join(", ") ?? "-"],
     ["HTTP", runControlDryRunContract?.http_enabled ? "aktiv" : "gesperrt"],
     ["Schreibpfade", runControlDryRunContract?.writes_enabled || runControlDryRunContract?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlDryRunContract?.execution_enabled || runControlDryRunContract?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
+  const runControlBoundaryRows = [
+    [
+      "Queue",
+      runControlQueue
+        ? `${runControlQueue.queue_count} Eintraege, ${runControlQueue.issues.length} Hinweise`
+        : "laedt"
+    ],
+    ["Preflight", runControlPreflightStatus],
+    ["Request-Vertrag", runControlRequestContract ? "lesend" : "laedt"],
+    ["Dry-Run-Vertrag", runControlDryRunContract ? "gesperrt" : "laedt"],
+    [
+      "Schreibpfade",
+      runControlQueue?.writes_enabled ||
+      runControlRequestContract?.writes_enabled ||
+      runControlDryRunContract?.writes_enabled ||
+      runControlDryRunContract?.writes_performed ||
+      runControlPreflight?.writes_performed
+        ? "aktiv"
+        : "gesperrt"
+    ],
+    [
+      "Ausfuehrung",
+      runControlQueue?.execution_enabled ||
+      runControlQueue?.execution_performed ||
+      runControlRequestContract?.execution_enabled ||
+      runControlRequestContract?.execution_performed ||
+      runControlDryRunContract?.execution_enabled ||
+      runControlDryRunContract?.execution_performed ||
+      runControlPreflight?.execution_allowed ||
+      runControlPreflight?.execution_performed
+        ? "aktiv"
+        : "gesperrt"
+    ]
   ];
   const diagnosisRows = [
     ["Backend", healthStatus?.status === "ok" ? "bereit" : metadataState === "error" ? "nicht erreichbar" : "laedt"],
@@ -1120,6 +1174,21 @@ function App() {
           {filteredRuns.length === 0 ? (
             <div className="empty-state">Keine Runs fuer diesen Filter.</div>
           ) : null}
+        </section>
+
+        <section className="panel run-control-boundary-panel" aria-label="Run-Control-Statusband">
+          <div className="panel-heading">
+            <ShieldCheck size={20} aria-hidden="true" />
+            <h2>Run-Control-Statusband</h2>
+          </div>
+          <div className="run-control-boundary-grid">
+            {runControlBoundaryRows.map(([label, value]) => (
+              <div className="run-control-boundary-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="panel run-control-panel" aria-label="Run-Control-Uebersicht">

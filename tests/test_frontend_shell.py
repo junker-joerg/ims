@@ -112,6 +112,11 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
 
+    assert "Run-Control-Statusband" in source
+    assert "runControlBoundaryRows" in source
+    assert "run-control-boundary-panel" in source
+    assert "run-control-boundary-grid" in styles
+    assert "run-control-boundary-row" in styles
     assert "filterRunControlQueueEntries" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
@@ -187,6 +192,7 @@ def test_frontend_shell_declares_readonly_run_control_preflight():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
 
+    assert "yesNoLoading" in source
     assert "/api/run-control/preflight/${encodeURIComponent(selectedRunId)}" in source
     assert "Run-Control-Preflight" in source
     assert "runControlPreflight" in source

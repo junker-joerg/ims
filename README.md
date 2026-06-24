@@ -184,7 +184,7 @@ Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese ge
 python -m ims.api.run_control_preflight --run-id baseline-python-tests
 ```
 
-Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Karte zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne POST/PUT, Upload, Editor, Schreibpfad oder Simulation.
+Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Karte zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne POST/PUT, Upload, Editor, Schreibpfad oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag und gesperrten Dry-Run-Vertrag als reine Anzeige.
 
 Metadaten-CLI:
 

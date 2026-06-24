@@ -632,6 +632,12 @@ code {
   margin-bottom: 12px;
 }
 
+.run-control-boundary-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .diagnosis-row {
   display: grid;
   grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1fr);
@@ -668,12 +674,21 @@ code {
   background: #fbfcfb;
 }
 
+.run-control-boundary-row {
+  min-height: 64px;
+  padding: 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #f7fbf8;
+}
+
 .diagnosis-row span {
   color: #66736c;
 }
 
 .consistency-row span,
 .selection-summary-row span,
+.run-control-boundary-row span,
 .run-control-summary-row span {
   display: block;
   margin-bottom: 7px;
@@ -688,6 +703,7 @@ code {
 
 .consistency-row strong,
 .selection-summary-row strong,
+.run-control-boundary-row strong,
 .run-control-summary-row strong {
   display: block;
   min-width: 0;
@@ -974,6 +990,7 @@ code {
     .consistency-grid,
   .selection-summary-grid,
   .run-control-summary,
+  .run-control-boundary-grid,
   .run-control-detail-grid,
   .run-control-issues,
   .run-control-request-grid,
