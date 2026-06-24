@@ -48,6 +48,11 @@ Die lokale Workbench-v1 ist als Modernisierungs-Meilenstein abgeschlossen. Diese
 
 Die spaetere Run-Steuerung und Gesamtplanung bis zum vollstaendigen Abschluss sind unter `docs/migration/workbench_run_control_plan.md` beschrieben. Der separate Packaging- und Bereitstellungsblock ist unter `docs/migration/workbench_packaging_plan.md` als lokaler ZIP-/Staging-Abschlussstatus konsolidiert. Diese Plaene und Checks starten keine Simulation.
 
+Der Anschluss zur eigentlichen IMS-Kern-Fachlogik nach Workbench-v1 ist unter
+`docs/plans/ims_core_fachlogik_resume_plan.md` geplant. Dieser Plan benennt den
+naechsten fachlichen Diagnoseblock fuer vorhandene explizite VU/VN-Periodenplaene,
+ohne neue Fachlogik, HTTP-Endpunkte oder Ausfuehrung freizuschalten.
+
 Start und Diagnose:
 
 Optional kann die Diagnose eine explizite lokale Konfigurationsdatei lesen:
