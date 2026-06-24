@@ -7,6 +7,8 @@ from ims.engine.explicit_period_plan import (
     ExplicitPeriodPlan,
     ExplicitPeriodPlanUpdate,
     build_explicit_period_fixture_from_plan,
+    explicit_period_snapshot_keys,
+    load_explicit_period_plan_from_mapping,
     run_explicit_multi_period_from_plan_fixture,
 )
 
@@ -326,3 +328,5 @@ def test_explicit_period_plan_rejects_non_list_snapshot_updates() -> None:
 def test_explicit_period_plan_api_import_shapes() -> None:
     assert ExplicitPeriodPlan is not None
     assert ExplicitPeriodPlanUpdate is not None
+    assert "vn_insurance_rule_snapshots" in explicit_period_snapshot_keys()
+    assert load_explicit_period_plan_from_mapping(_period_plan()).period_updates[0].period == 2

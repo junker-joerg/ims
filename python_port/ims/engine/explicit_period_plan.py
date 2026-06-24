@@ -136,6 +136,14 @@ def _load_plan(data: dict) -> ExplicitPeriodPlan:
     )
 
 
+def explicit_period_snapshot_keys() -> tuple[str, ...]:
+    return _SNAPSHOT_KEYS
+
+
+def load_explicit_period_plan_from_mapping(data: dict) -> ExplicitPeriodPlan:
+    return _load_plan(data)
+
+
 def _apply_entity_updates(snapshot: dict, entity_key: str, updates: list[dict]) -> None:
     entities = snapshot.get(entity_key)
     if not isinstance(entities, list):
