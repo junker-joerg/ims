@@ -27,6 +27,11 @@ portiert keinen historischen PlanVU-/PlanVN-Scheduler.
   `vn_insurance_rule_snapshots`-Eintrag derselben Periode beziehen.
 - `build_explicit_period_fixture_from_plan` erzeugt daraus das Objekt-Fixture
   mit `periods`.
+- `python -m ims.engine.explicit_period_diagnostics <plan.json>` liest dieselbe
+  Planstruktur als Diagnose. Die Ausgabe enthaelt Periodenfolge, globale
+  Perioden, Snapshot-Familien, erwartete Regelanwendungsgrenzen und
+  Legacy-Bezuege, fuehrt aber keinen Periodenrunner aus und schreibt keine
+  Dateien.
 - `run_explicit_multi_period_from_plan_fixture` fuehrt das erzeugte Fixture ueber
   den kombinierten expliziten VU/VN-Runner aus.
 - Optional koennen `legacy_targets` und `legacy_report_name` gesetzt werden. Sie

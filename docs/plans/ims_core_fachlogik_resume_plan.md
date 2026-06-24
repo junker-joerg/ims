@@ -58,7 +58,11 @@ Der passende PR-Titel waere:
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
-   ohne neue Fachregel.
+   ohne neue Fachregel. Der Befehl
+   `python -m ims.engine.explicit_period_diagnostics tests/fixtures/replay_vu14_period_plan.json`
+   liest Planstruktur, Periodenfolge, globale Perioden, Snapshot-Familien,
+   erwartete Regelanwendungsgrenzen und Legacy-Bezuege, startet aber keinen
+   Runner und schreibt keine Ausgaben.
 2. Validierungsbericht fuer die vorhandenen Legacy-Agrsich-Referenzen
    vereinheitlichen, ohne Toleranzen still zu veraendern.
 3. naechsten schmalen VU- oder VN-Regel-Slice aus den vorhandenen Plan-Dateien
