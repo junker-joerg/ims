@@ -25,7 +25,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Szenario-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Quelle und Umfang.
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - Die Run-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Szenario und Quelle.
-- Die Workbench zeigt eine kompakte Run-Control-Uebersicht fuer vorhandene Queue-Metadaten und gesperrte Ausfuehrungsgrenzen.
+- Die Workbench zeigt ein kompaktes Run-Control-Statusband sowie eine Uebersicht fuer vorhandene Queue-Metadaten und gesperrte Ausfuehrungsgrenzen.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar, als Dry-Run vorab vergleichbar, als Snapshot lesbar und im Importformat exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -82,6 +82,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Szenariofilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
 - Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
+- Das Run-Control-Statusband ist rein lesend. Es fasst Queue, Preflight, Request-Vertrag, Dry-Run-Vertrag, Schreibpfade und Ausfuehrungsgrenze aus den bereits gelesenen Antworten zusammen und oeffnet keinen eigenen API-, Start- oder Schreibpfad.
 - Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
 - Die Run-Control-Request-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/request-contract`, zeigt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO, validiert aber keinen Browser-Request und oeffnet keinen Upload- oder Schreibpfad.
 - Die Run-Control-Dry-Run-Vertragskarte ist rein lesend und gesperrt. Sie nutzt `/api/run-control/dry-run-contract`, zeigt erwartete Eingaben, Vorbedingungen und verbotene Grenzen, fuehrt aber keinen Dry-Run aus und enthaelt kein Formular.
@@ -619,7 +620,7 @@ Die Workbench-API stellt denselben Preflight fuer die aktuelle UI-Auswahl read-o
 GET /api/run-control/preflight/{run_id}
 ```
 
-Die Antwort enthaelt `mode = "run_control_preflight"`, `run_id`, `scenario_id`, `run_found`, `scenario_found`, `metadata_source`, `execution_enabled`, `execution_allowed = false`, `issues`, `writes_performed = false` und `execution_performed = false`. Die Frontend-Preflight-Karte laedt diesen Endpunkt bei Run-Auswahl und bleibt ohne Startbutton, Upload, Editor, POST/PUT oder Browser-Schreibpfad.
+Die Antwort enthaelt `mode = "run_control_preflight"`, `run_id`, `scenario_id`, `run_found`, `scenario_found`, `metadata_source`, `execution_enabled`, `execution_allowed = false`, `issues`, `writes_performed = false` und `execution_performed = false`. Die Frontend-Preflight-Karte laedt diesen Endpunkt bei Run-Auswahl, zeigt waehrend des Ladens neutrale Ladewerte statt negativer Pruefergebnisse und bleibt ohne Startbutton, Upload, Editor, POST/PUT oder Browser-Schreibpfad.
 
 ## Lokaler Start
 
