@@ -114,6 +114,9 @@ def test_frontend_shell_declares_readonly_run_control_overview():
 
     assert "Run-Control-Statusband" in source
     assert "runControlBoundaryRows" in source
+    assert "runControlPreflightBoundaryStatus" in source
+    assert 'runControlPreflight?.status === "error"' in source
+    assert "runControlPreflight?.issues.length" in source
     assert "run-control-boundary-panel" in source
     assert "run-control-boundary-grid" in styles
     assert "run-control-boundary-row" in styles
