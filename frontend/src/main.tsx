@@ -689,6 +689,18 @@ function App() {
         : runControlPreflight
           ? "lesend"
           : "laedt";
+  const runControlPreflightBoundaryStatus =
+    runControlPreflightState === "error"
+      ? runControlPreflightError ?? "nicht erreichbar"
+      : runControlPreflightState === "loading"
+        ? "laedt"
+        : runControlPreflight?.status === "error"
+          ? "Fehler"
+          : runControlPreflight?.issues.length
+            ? "Hinweis"
+            : runControlPreflight
+              ? "ok"
+              : "laedt";
   const runControlPreflightIssueLabel = runControlPreflight
     ? runControlPreflight.issues.length
       ? runControlPreflight.issues.join(", ")
@@ -747,7 +759,7 @@ function App() {
         ? `${runControlQueue.queue_count} Eintraege, ${runControlQueue.issues.length} Hinweise`
         : "laedt"
     ],
-    ["Preflight", runControlPreflightStatus],
+    ["Preflight", runControlPreflightBoundaryStatus],
     ["Request-Vertrag", runControlRequestContract ? "lesend" : "laedt"],
     ["Dry-Run-Vertrag", runControlDryRunContract ? "gesperrt" : "laedt"],
     [
