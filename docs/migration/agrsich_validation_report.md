@@ -158,7 +158,8 @@ Das gemeinsame Validierungsfixture bleibt auf echte historische Referenzdateien 
 weil sie aktuelle Testausgaben und keine historischen Originaldateien repraesentieren. Das
 Bundle umfasst damit weiterhin vier historische Referenzdateien mit 40 konkret verglichenen
 Zeilen; es bleibt eine Referenzfenster-Pruefung und keine Behauptung vollstaendiger
-historischer Modellgleichheit.
+historischer Modellgleichheit. Der Fixture-Lader weist Targets zurueck, deren `legacy_path`
+auf die kuratierte Writer-Referenzablage `tests/references/agrsich/` zeigt.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.

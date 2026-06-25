@@ -319,6 +319,22 @@ class LegacyValidationAcceptanceRunManifest:
     failing_summary_count: int
 
 
+def _path_contains_parts(path: Path, expected_parts: tuple[str, ...]) -> bool:
+    parts = tuple(part.lower() for part in path.parts)
+    expected = tuple(part.lower() for part in expected_parts)
+    width = len(expected)
+    return any(parts[index : index + width] == expected for index in range(len(parts) - width + 1))
+
+
+def _reject_curated_writer_reference_as_legacy_path(path: Path) -> None:
+    if _path_contains_parts(path, ("tests", "references", "agrsich")):
+        raise ValueError(
+            "legacy validation target legacy_path must not use curated writer references "
+            "from tests/references/agrsich; use historical references such as "
+            "tests/references/legacy_agrsich instead"
+        )
+
+
 def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidationTarget:
     subject_type = str(data["subject_type"])
     if subject_type not in {"insurer", "policyholder"}:
@@ -355,6 +371,7 @@ def _target_from_mapping(data: dict, fixture_base_path: Path) -> LegacyValidatio
     legacy_path = Path(legacy_path_data)
     if not legacy_path.is_absolute():
         legacy_path = fixture_base_path / legacy_path
+    _reject_curated_writer_reference_as_legacy_path(legacy_path.resolve())
 
     return LegacyValidationTarget(
         subject_type=subject_type,
