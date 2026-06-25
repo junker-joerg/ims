@@ -154,3 +154,24 @@ ihre eigenen Summary-Ausgaben erneut als Einzelreports einlesen.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
+
+## Lokaler Validierungsueberblick
+
+Fuer den Ruecksprung von der Workbench in die Fachlogik gibt es einen rein lesenden
+Ueberblick ueber ein vorhandenes Legacy-Agrsich-Validierungsfixture:
+
+```powershell
+python -m ims.model.legacy_validation_overview tests/fixtures/legacy_validation_bundle.json
+```
+
+Der Befehl gibt eine stabile JSON-Form mit `mode =
+"legacy_agrsich_validation_overview"` aus. Sie enthaelt Referenz-, Tabellen-,
+Perioden-, Feldabweichungs- und Toleranzzaehler sowie die vorhandenen Datei-,
+Perioden- und Feldsummaries. Die Toleranzangabe dokumentiert die heute genutzte
+Vergleichsgrenze `legacy_compare_default` mit `0.05`; sie veraendert die
+Vergleichslogik nicht.
+
+Dieser Ueberblick startet keine Simulation, keinen Runner und keinen Scheduler.
+Er schreibt keine Reportartefakte, oeffnet keinen HTTP- oder UI-Schreibpfad und
+behauptet keine historische Vollgleichheit ausserhalb der konkret referenzierten
+Legacy-Fenster.

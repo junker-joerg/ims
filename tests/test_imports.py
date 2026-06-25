@@ -481,6 +481,17 @@ def test_core_placeholders_import() -> None:
         write_legacy_validation_acceptance_run_manifest,
         write_legacy_validation_acceptance_run_artifacts_from_summary_directory,
     )
+    from ims.model.legacy_validation_overview import (
+        LEGACY_VALIDATION_DEFAULT_TOLERANCE,
+        LegacyValidationFieldOverview,
+        LegacyValidationOverviewIssue,
+        LegacyValidationOverviewResult,
+        LegacyValidationPeriodOverview,
+        LegacyValidationTableOverview,
+        LegacyValidationToleranceSummary,
+        build_legacy_validation_overview,
+        main as legacy_validation_overview_main,
+    )
     from ims.model.vn_rules import (
         VNDamageSettlementApplication,
         VNDamageSettlementSnapshot,
@@ -1007,6 +1018,15 @@ def test_core_placeholders_import() -> None:
     assert write_legacy_validation_acceptance_verdict_json is not None
     assert write_legacy_validation_acceptance_run_manifest is not None
     assert write_legacy_validation_acceptance_run_artifacts_from_summary_directory is not None
+    assert LEGACY_VALIDATION_DEFAULT_TOLERANCE == 0.05
+    assert LegacyValidationFieldOverview is not None
+    assert LegacyValidationOverviewIssue is not None
+    assert LegacyValidationOverviewResult is not None
+    assert LegacyValidationPeriodOverview is not None
+    assert LegacyValidationTableOverview is not None
+    assert LegacyValidationToleranceSummary is not None
+    assert build_legacy_validation_overview is not None
+    assert legacy_validation_overview_main is not None
     assert VNDamageSettlementApplication is not None
     assert VNDamageSettlementSnapshot is not None
     assert VNInsuranceDecision is not None
