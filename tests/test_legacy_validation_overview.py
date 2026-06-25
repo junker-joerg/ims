@@ -87,6 +87,115 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert set(tmp_path.iterdir()) == before
 
 
+def test_legacy_validation_overview_keeps_duplicate_export_filename_windows(
+    tmp_path: Path, monkeypatch
+) -> None:
+    first_target = LegacyValidationTarget(
+        subject_type="insurer",
+        legacy_path=Path("tests/references/legacy_agrsich/VU14L1.DAT"),
+        export_filename="same.dat",
+        periods=[1, 2],
+        level="I",
+        selector_kind="entity",
+        selector_value=14,
+    )
+    second_target = LegacyValidationTarget(
+        subject_type="insurer",
+        legacy_path=Path("tests/references/legacy_agrsich/VUSK1L4.DAT"),
+        export_filename="same.dat",
+        periods=[101, 102, 103],
+        level="IV",
+        selector_kind="all",
+        selector_value="SK1",
+    )
+    first_summary = LegacyFileValidationSummary(
+        filename="same.dat",
+        subject_type="insurer",
+        level="I",
+        selector_kind="entity",
+        selector_value=14,
+        export_path=Path("first/same.dat"),
+        legacy_path=Path("tests/references/legacy_agrsich/VU14L1.DAT"),
+        start_period=1,
+        end_period=2,
+        matches=True,
+        row_count=2,
+        matched_rows=2,
+        mismatched_rows=0,
+        match_rate=1.0,
+        compared_periods=[1, 2],
+        row_matches=[True, True],
+        periods_with_differences=[],
+        fields_with_differences=[],
+        field_deviations=[],
+        field_summaries=[],
+    )
+    second_summary = LegacyFileValidationSummary(
+        filename="same.dat",
+        subject_type="insurer",
+        level="IV",
+        selector_kind="all",
+        selector_value="SK1",
+        export_path=Path("second/same.dat"),
+        legacy_path=Path("tests/references/legacy_agrsich/VUSK1L4.DAT"),
+        start_period=101,
+        end_period=103,
+        matches=True,
+        row_count=3,
+        matched_rows=3,
+        mismatched_rows=0,
+        match_rate=1.0,
+        compared_periods=[101, 102, 103],
+        row_matches=[True, True, True],
+        periods_with_differences=[],
+        fields_with_differences=[],
+        field_deviations=[],
+        field_summaries=[],
+    )
+    fake_result = LegacyValidationRunResult(
+        targets=[first_target, second_target],
+        comparison=build_multi_period_legacy_comparison([]),
+        report=LegacyValidationReport(
+            matches=True,
+            total_files=2,
+            total_rows=5,
+            matched_rows=5,
+            mismatched_rows=0,
+            match_rate=1.0,
+            file_summaries=[first_summary, second_summary],
+            field_summaries=[],
+            group_summaries=[],
+            period_summaries=[],
+            deviation_index=[],
+        ),
+        written_reports=[],
+        artifacts=[],
+    )
+    monkeypatch.setattr(
+        overview_module,
+        "run_legacy_validation_from_fixture",
+        lambda path: fake_result,
+    )
+
+    payload = build_legacy_validation_overview(tmp_path / "bundle.json").to_dict()
+
+    assert [entry["filename"] for entry in payload["coverage"]] == ["same.dat", "same.dat"]
+    assert [
+        (
+            entry["start_period"],
+            entry["end_period"],
+            entry["period_count"],
+            entry["row_count"],
+        )
+        for entry in payload["coverage"]
+    ] == [(1, 2, 2, 2), (101, 103, 3, 3)]
+    assert [entry["selector_value"] for entry in payload["coverage"]] == [14, "SK1"]
+    assert [Path(entry["legacy_path"]).parts[-1] for entry in payload["coverage"]] == [
+        "VU14L1.DAT",
+        "VUSK1L4.DAT",
+    ]
+
+
 def test_legacy_validation_overview_reports_mismatch_as_warning(tmp_path: Path, monkeypatch) -> None:
     target = LegacyValidationTarget(
         subject_type="insurer",
