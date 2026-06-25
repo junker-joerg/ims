@@ -152,6 +152,13 @@ speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Sca
 Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich
 ihre eigenen Summary-Ausgaben erneut als Einzelreports einlesen.
 
+Das gemeinsame Validierungsfixture deckt neben den mehrperiodigen SK1- und Einzeldateifenstern
+nun auch die bereits kuratierten Regelaggregat-Referenzen `imsvur02.dat` und `imsvnr11.dat`
+ab. Diese beiden Referenzen pruefen je eine Zeile fuer Periode 14 und erhoehen das Bundle auf
+sechs Referenzdateien mit 42 konkret verglichenen Zeilen. Das erweitert die historische
+Validierungsbasis, bleibt aber eine Referenzfenster-Pruefung und keine Behauptung vollstaendiger
+historischer Modellgleichheit.
+
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
 bereits parsergestuetzte Dateifamilien auszuweiten.
 
