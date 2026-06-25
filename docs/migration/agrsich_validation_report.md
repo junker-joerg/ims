@@ -152,11 +152,12 @@ speichern Artefaktpfade relativ zum Manifestverzeichnis. Der rekursive Batch-Sca
 Summary-Buendelmanifeste, damit wiederholte Laeufe im selben Ausgabebaum nicht versehentlich
 ihre eigenen Summary-Ausgaben erneut als Einzelreports einlesen.
 
-Das gemeinsame Validierungsfixture deckt neben den mehrperiodigen SK1- und Einzeldateifenstern
-nun auch die bereits kuratierten Regelaggregat-Referenzen `imsvur02.dat` und `imsvnr11.dat`
-ab. Diese beiden Referenzen pruefen je eine Zeile fuer Periode 14 und erhoehen das Bundle auf
-sechs Referenzdateien mit 42 konkret verglichenen Zeilen. Das erweitert die historische
-Validierungsbasis, bleibt aber eine Referenzfenster-Pruefung und keine Behauptung vollstaendiger
+Das gemeinsame Validierungsfixture bleibt auf echte historische Referenzdateien unter
+`tests/references/legacy_agrsich/` beschraenkt. Kuratierte Writer-Referenzen unter
+`tests/references/agrsich/` duerfen nicht als Legacy-Baseline in dieses Bundle einfliessen,
+weil sie aktuelle Testausgaben und keine historischen Originaldateien repraesentieren. Das
+Bundle umfasst damit weiterhin vier historische Referenzdateien mit 40 konkret verglichenen
+Zeilen; es bleibt eine Referenzfenster-Pruefung und keine Behauptung vollstaendiger
 historischer Modellgleichheit.
 
 Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
