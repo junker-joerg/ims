@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 import argparse
+import fnmatch
 import json
 from pathlib import Path
 from typing import Any
@@ -195,6 +196,11 @@ def _coverage_entry_from_mapping(
                 f"{resolved_legacy_path}"
             ),
         )
+    if not resolved_legacy_path.is_file():
+        return None, LegacyValidationCoverageIssue(
+            code="legacy_reference_missing",
+            message=f"legacy validation coverage target legacy_path does not exist: {resolved_legacy_path}",
+        )
 
     periods = _periods_from_mapping(data.get("periods"))
     return (
@@ -243,20 +249,41 @@ def _coverage_gaps(
     return gaps
 
 
-def _backlog_entries(available_references: list[Path], covered_paths: set[Path]) -> list[LegacyValidationCoverageBacklogEntry]:
+def _matching_reference_names(names_by_upper: dict[str, str], candidate: str) -> list[str]:
+    if "*" in candidate or "?" in candidate:
+        return sorted(
+            original_name
+            for upper_name, original_name in names_by_upper.items()
+            if fnmatch.fnmatchcase(upper_name, candidate.upper())
+        )
+    match = names_by_upper.get(candidate.upper())
+    return [] if match is None else [match]
+
+
+def _backlog_entries(
+    available_references: list[Path],
+    covered_paths: set[Path],
+) -> list[LegacyValidationCoverageBacklogEntry]:
     available_names = {path.name.upper(): path.name for path in available_references}
     covered_names = {path.name.upper(): path.name for path in covered_paths}
     entries: list[LegacyValidationCoverageBacklogEntry] = []
     for family, candidates in LEGACY_AGRSICH_BACKLOG_CANDIDATES.items():
-        available_files = sorted(available_names[name.upper()] for name in candidates if name.upper() in available_names)
-        covered_files = sorted(covered_names[name.upper()] for name in candidates if name.upper() in covered_names)
-        missing_files = sorted(candidate for candidate in candidates if candidate.upper() not in available_names)
+        available_files: list[str] = []
+        covered_files: list[str] = []
+        missing_files: list[str] = []
+        for candidate in candidates:
+            available_matches = _matching_reference_names(available_names, candidate)
+            covered_matches = _matching_reference_names(covered_names, candidate)
+            available_files.extend(available_matches)
+            covered_files.extend(covered_matches)
+            if not available_matches:
+                missing_files.append(candidate)
         entries.append(
             LegacyValidationCoverageBacklogEntry(
                 family=family,
                 candidates=candidates,
-                available_files=available_files,
-                covered_files=covered_files,
+                available_files=sorted(set(available_files)),
+                covered_files=sorted(set(covered_files)),
                 missing_files=missing_files,
             )
         )

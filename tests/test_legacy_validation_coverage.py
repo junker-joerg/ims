@@ -105,6 +105,81 @@ def test_legacy_validation_coverage_matrix_excludes_writer_references(
     assert Path(payload["excluded_reference_dirs"][0]).parts[-2:] == ("references", "agrsich")
 
 
+def test_legacy_validation_coverage_matrix_rejects_missing_legacy_reference(
+    tmp_path: Path,
+) -> None:
+    missing_reference = tmp_path / "references" / "legacy_agrsich" / "MISSING.DAT"
+    data = {
+        "targets": [
+            {
+                "subject_type": "insurer",
+                "legacy_path": str(missing_reference),
+                "export_filename": "missing.dat",
+                "periods": [1],
+                "level": "I",
+                "selector_kind": "entity",
+                "selector_value": 1,
+            }
+        ]
+    }
+    fixture_path = tmp_path / "missing_reference_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    result = build_legacy_validation_coverage_matrix(
+        fixture_path,
+        reference_dir=tmp_path / "references" / "legacy_agrsich",
+    )
+    payload = result.to_dict()
+
+    assert payload["status"] == "error"
+    assert payload["reference_count"] == 0
+    assert payload["covered_rows"] == 0
+    assert payload["coverage"] == []
+    assert payload["issues"][0]["code"] == "legacy_reference_missing"
+    assert str(missing_reference) in payload["issues"][0]["message"]
+
+
+def test_legacy_validation_coverage_matrix_expands_wildcard_backlog_families(
+    tmp_path: Path,
+) -> None:
+    reference_dir = tmp_path / "references" / "legacy_agrsich"
+    reference_dir.mkdir(parents=True)
+    covered_reference = reference_dir / "IMSVNVK1.DAT"
+    uncovered_reference = reference_dir / "IMSVUVK2.DAT"
+    covered_reference.write_text("placeholder\n", encoding="utf-8")
+    uncovered_reference.write_text("placeholder\n", encoding="utf-8")
+    data = {
+        "targets": [
+            {
+                "subject_type": "policyholder",
+                "legacy_path": str(covered_reference),
+                "export_filename": "imsvnvk1.dat",
+                "periods": [1],
+                "level": "III",
+                "selector_kind": "class",
+                "selector_value": 1,
+            }
+        ]
+    }
+    fixture_path = tmp_path / "wildcard_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    result = build_legacy_validation_coverage_matrix(fixture_path, reference_dir=reference_dir)
+    payload = result.to_dict()
+    backlog_by_family = {entry["family"]: entry for entry in payload["backlog"]}
+
+    assert payload["status"] == "warning"
+    assert payload["reference_count"] == 1
+    assert payload["covered_rows"] == 1
+    assert backlog_by_family["policyholder_class"]["available_files"] == ["IMSVNVK1.DAT"]
+    assert backlog_by_family["policyholder_class"]["covered_files"] == ["IMSVNVK1.DAT"]
+    assert backlog_by_family["policyholder_class"]["missing_files"] == []
+    assert backlog_by_family["insurer_class"]["available_files"] == ["IMSVUVK2.DAT"]
+    assert backlog_by_family["insurer_class"]["covered_files"] == []
+    assert backlog_by_family["insurer_class"]["missing_files"] == []
+    assert payload["gaps"][0]["legacy_filename"] == "IMSVUVK2.DAT"
+
+
 def test_legacy_validation_coverage_matrix_cli_prints_stable_json(capsys) -> None:
     exit_code = main([str(FIXTURE_DIR / "legacy_validation_bundle.json")])
     payload = json.loads(capsys.readouterr().out)
