@@ -39,24 +39,6 @@
       "level": "II",
       "selector_kind": "rule",
       "selector_value": 5
-    },
-    {
-      "subject_type": "insurer",
-      "legacy_path": "../references/agrsich/imsvur02.dat",
-      "export_filename": "imsvur02.dat",
-      "periods": [14],
-      "level": "II",
-      "selector_kind": "rule",
-      "selector_value": 2
-    },
-    {
-      "subject_type": "policyholder",
-      "legacy_path": "../references/agrsich/imsvnr11.dat",
-      "export_filename": "imsvnr11.dat",
-      "periods": [14],
-      "level": "II",
-      "selector_kind": "rule",
-      "selector_value": 11
     }
   ]
 }

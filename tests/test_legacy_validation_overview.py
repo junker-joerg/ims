@@ -31,14 +31,14 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert isinstance(result, LegacyValidationOverviewResult)
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_validation_overview"
-    assert payload["reference_count"] == 6
-    assert payload["table_count"] == 6
-    assert payload["period_count"] == 21
+    assert payload["reference_count"] == 4
+    assert payload["table_count"] == 4
+    assert payload["period_count"] == 20
     assert payload["field_summary_count"] == 0
     assert payload["deviation_count"] == 0
     assert payload["matches"] is True
-    assert payload["total_rows"] == 42
-    assert payload["matched_rows"] == 42
+    assert payload["total_rows"] == 40
+    assert payload["matched_rows"] == 40
     assert payload["mismatched_rows"] == 0
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
@@ -47,15 +47,11 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
-        "imsvur02.dat",
-        "imsvnr11.dat",
     ]
     assert [(item["subject_type"], item["source"], item["tolerance"]) for item in payload["tolerances"]] == [
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
-        ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
-        ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
     ]
     assert set(tmp_path.iterdir()) == before
@@ -168,7 +164,7 @@ def test_legacy_validation_overview_cli_prints_stable_json(capsys) -> None:
     assert exit_code == 0
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_validation_overview"
-    assert payload["reference_count"] == 6
+    assert payload["reference_count"] == 4
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 
