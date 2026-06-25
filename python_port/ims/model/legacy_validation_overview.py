@@ -267,10 +267,8 @@ def _legacy_source(path: Path) -> tuple[str, bool]:
 
 
 def _coverage_overview(result: LegacyValidationRunResult) -> list[LegacyValidationCoverageOverview]:
-    summaries_by_filename = {summary.filename: summary for summary in result.report.file_summaries}
     coverage: list[LegacyValidationCoverageOverview] = []
-    for target in result.targets:
-        summary = summaries_by_filename[target.export_filename]
+    for target, summary in zip(result.targets, result.report.file_summaries, strict=True):
         legacy_source, is_legacy_reference = _legacy_source(target.legacy_path)
         coverage.append(
             LegacyValidationCoverageOverview(
