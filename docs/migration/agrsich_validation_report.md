@@ -176,7 +176,10 @@ python -m ims.model.legacy_validation_overview tests/fixtures/legacy_validation_
 Der Befehl gibt eine stabile JSON-Form mit `mode =
 "legacy_agrsich_validation_overview"` aus. Sie enthaelt Referenz-, Tabellen-,
 Perioden-, Feldabweichungs- und Toleranzzaehler sowie die vorhandenen Datei-,
-Perioden- und Feldsummaries. Die Toleranzangabe dokumentiert die heute genutzte
+Perioden- und Feldsummaries. Zusaetzlich enthaelt `coverage` je historischer
+Referenzdatei Subjekttyp, Aggregatstufe, Selektor, Periodenfenster, Zeilenzahl
+und die Quellenklassifikation `legacy_source = "legacy_agrsich"` mit
+`is_legacy_reference = true`. Die Toleranzangabe dokumentiert die heute genutzte
 Vergleichsgrenze `legacy_compare_default` mit `0.05`; sie veraendert die
 Vergleichslogik nicht.
 

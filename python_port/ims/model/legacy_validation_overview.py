@@ -129,6 +129,40 @@ class LegacyValidationFieldOverview:
 
 
 @dataclass(slots=True)
+class LegacyValidationCoverageOverview:
+    filename: str
+    legacy_path: str
+    legacy_source: str
+    is_legacy_reference: bool
+    subject_type: str
+    level: str
+    selector_kind: str
+    selector_value: int | str | None
+    start_period: int
+    end_period: int
+    period_count: int
+    row_count: int
+    matches: bool
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "filename": self.filename,
+            "legacy_path": self.legacy_path,
+            "legacy_source": self.legacy_source,
+            "is_legacy_reference": self.is_legacy_reference,
+            "subject_type": self.subject_type,
+            "level": self.level,
+            "selector_kind": self.selector_kind,
+            "selector_value": self.selector_value,
+            "start_period": self.start_period,
+            "end_period": self.end_period,
+            "period_count": self.period_count,
+            "row_count": self.row_count,
+            "matches": self.matches,
+        }
+
+
+@dataclass(slots=True)
 class LegacyValidationOverviewResult:
     status: str
     mode: str
@@ -145,6 +179,7 @@ class LegacyValidationOverviewResult:
     match_rate: float = 0.0
     periods: list[LegacyValidationPeriodOverview] = field(default_factory=list)
     tables: list[LegacyValidationTableOverview] = field(default_factory=list)
+    coverage: list[LegacyValidationCoverageOverview] = field(default_factory=list)
     field_summaries: list[LegacyValidationFieldOverview] = field(default_factory=list)
     tolerances: list[LegacyValidationToleranceSummary] = field(default_factory=list)
     issues: list[LegacyValidationOverviewIssue] = field(default_factory=list)
@@ -168,6 +203,7 @@ class LegacyValidationOverviewResult:
             "match_rate": self.match_rate,
             "periods": [period.to_dict() for period in self.periods],
             "tables": [table.to_dict() for table in self.tables],
+            "coverage": [entry.to_dict() for entry in self.coverage],
             "field_summaries": [summary.to_dict() for summary in self.field_summaries],
             "tolerances": [tolerance.to_dict() for tolerance in self.tolerances],
             "issues": [issue.to_dict() for issue in self.issues],
@@ -223,6 +259,39 @@ def _field_overview(summary: LegacyFieldDeviationSummary) -> LegacyValidationFie
     )
 
 
+def _legacy_source(path: Path) -> tuple[str, bool]:
+    normalized_parts = tuple(part.lower() for part in path.parts)
+    if "legacy_agrsich" in normalized_parts:
+        return "legacy_agrsich", True
+    return "unknown", False
+
+
+def _coverage_overview(result: LegacyValidationRunResult) -> list[LegacyValidationCoverageOverview]:
+    summaries_by_filename = {summary.filename: summary for summary in result.report.file_summaries}
+    coverage: list[LegacyValidationCoverageOverview] = []
+    for target in result.targets:
+        summary = summaries_by_filename[target.export_filename]
+        legacy_source, is_legacy_reference = _legacy_source(target.legacy_path)
+        coverage.append(
+            LegacyValidationCoverageOverview(
+                filename=target.export_filename,
+                legacy_path=str(target.legacy_path),
+                legacy_source=legacy_source,
+                is_legacy_reference=is_legacy_reference,
+                subject_type=target.subject_type,
+                level=target.level,
+                selector_kind=target.selector_kind,
+                selector_value=target.selector_value,
+                start_period=summary.start_period,
+                end_period=summary.end_period,
+                period_count=len(target.periods),
+                row_count=summary.row_count,
+                matches=summary.matches,
+            )
+        )
+    return coverage
+
+
 def build_legacy_validation_overview(path: str | Path) -> LegacyValidationOverviewResult:
     fixture_path = Path(path).expanduser().resolve()
     try:
@@ -252,6 +321,7 @@ def build_legacy_validation_overview(path: str | Path) -> LegacyValidationOvervi
             match_rate=report.match_rate,
             periods=[_period_overview(summary) for summary in report.period_summaries],
             tables=[_table_overview(summary) for summary in report.file_summaries],
+            coverage=_coverage_overview(result),
             field_summaries=[_field_overview(summary) for summary in report.field_summaries],
             tolerances=tolerances,
         )
