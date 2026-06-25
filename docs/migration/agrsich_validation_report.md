@@ -48,7 +48,7 @@ Ein kleines Validierungs-Fixture kann nun mehrere reale Legacy-Zieldateien besch
 gemeinsamen Reportpfad automatisch ausfuehren. Das aktuelle Bundle validiert ein
 Versicherer-Gesamtfenster aus `VUSK1L4.DAT`, ein Versicherer-Einzelfenster aus `VU14L1.DAT`,
 ein VN-Gesamtfenster aus `IMSVNSK1.DAT` und ein VN-Regelfenster aus `IMSVNR05.DAT` in einem
-Lauf. Alle vier Fenster umfassen aktuell je zehn Perioden.
+Lauf. Alle vier Fenster umfassen aktuell je 100 Perioden.
 
 Der Fixture-Lader weist unvollstaendige Targets mit fehlenden Datei-, Stufen- oder
 Selektorangaben, doppelte, unsortierte oder lueckenhafte Perioden innerhalb eines Targets und
@@ -156,7 +156,7 @@ Das gemeinsame Validierungsfixture bleibt auf echte historische Referenzdateien 
 `tests/references/legacy_agrsich/` beschraenkt. Kuratierte Writer-Referenzen unter
 `tests/references/agrsich/` duerfen nicht als Legacy-Baseline in dieses Bundle einfliessen,
 weil sie aktuelle Testausgaben und keine historischen Originaldateien repraesentieren. Das
-Bundle umfasst damit weiterhin vier historische Referenzdateien mit 40 konkret verglichenen
+Bundle umfasst damit weiterhin vier historische Referenzdateien mit 400 konkret verglichenen
 Zeilen; es bleibt eine Referenzfenster-Pruefung und keine Behauptung vollstaendiger
 historischer Modellgleichheit. Der Fixture-Lader weist Targets zurueck, deren `legacy_path`
 auf die kuratierte Writer-Referenzablage `tests/references/agrsich/` zeigt.
