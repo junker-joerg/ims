@@ -457,6 +457,31 @@ def test_legacy_validation_fixture_rejects_duplicate_targets(tmp_path: Path) -> 
         raise AssertionError("duplicate validation targets should fail")
 
 
+def test_legacy_validation_fixture_rejects_curated_writer_reference_as_legacy_path(
+    tmp_path: Path,
+) -> None:
+    data = json.loads((FIXTURE_DIR / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
+    data["targets"][0] = {
+        "subject_type": "insurer",
+        "legacy_path": str((Path.cwd() / "tests/references/agrsich/imsvur02.dat").resolve()),
+        "export_filename": "imsvur02.dat",
+        "periods": [14],
+        "level": "II",
+        "selector_kind": "rule",
+        "selector_value": 2,
+    }
+    fixture_path = tmp_path / "writer_reference_bundle.json"
+    fixture_path.write_text(json.dumps(data), encoding="utf-8")
+
+    try:
+        run_legacy_validation_from_fixture(fixture_path)
+    except ValueError as exc:
+        assert "curated writer references" in str(exc)
+        assert "legacy_path" in str(exc)
+    else:
+        raise AssertionError("writer reference legacy_path should fail")
+
+
 def test_legacy_validation_artifact_manifest_rejects_bad_count(tmp_path: Path) -> None:
     result = run_legacy_validation_from_fixture(
         FIXTURE_DIR / "legacy_validation_bundle.json",
