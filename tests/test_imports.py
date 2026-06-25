@@ -492,6 +492,11 @@ def test_core_placeholders_import() -> None:
         build_legacy_validation_overview,
         main as legacy_validation_overview_main,
     )
+    from ims.model.legacy_validation_coverage import (
+        LegacyValidationCoverageMatrixResult,
+        build_legacy_validation_coverage_matrix,
+        main as legacy_validation_coverage_main,
+    )
     from ims.model.vn_rules import (
         VNDamageSettlementApplication,
         VNDamageSettlementSnapshot,
@@ -1027,6 +1032,9 @@ def test_core_placeholders_import() -> None:
     assert LegacyValidationToleranceSummary is not None
     assert build_legacy_validation_overview is not None
     assert legacy_validation_overview_main is not None
+    assert LegacyValidationCoverageMatrixResult is not None
+    assert build_legacy_validation_coverage_matrix is not None
+    assert legacy_validation_coverage_main is not None
     assert VNDamageSettlementApplication is not None
     assert VNDamageSettlementSnapshot is not None
     assert VNInsuranceDecision is not None
