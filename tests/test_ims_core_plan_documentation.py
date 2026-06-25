@@ -23,8 +23,11 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     plan = PLAN.read_text(encoding="utf-8")
 
     assert "Ergaenze IMS-Kernlauf-Diagnose fuer explizite Periodenplaene" in plan
+    assert "python -m ims.model.legacy_validation_overview tests/fixtures/legacy_validation_bundle.json" in plan
     assert "bestehenden expliziten Periodenplan und Runner inventarisieren" in plan
     assert "deterministische Kernlauf-Diagnose" in plan
+    assert "legacy_compare_default" in plan
+    assert "keine Reportartefakte" in plan
     assert "keine neuen Fachregeln" in plan
     assert "Periodenfolge" in plan
     assert "Legacy-Targets" in plan

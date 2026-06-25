@@ -64,7 +64,12 @@ Der passende PR-Titel waere:
    erwartete Regelanwendungsgrenzen und Legacy-Bezuege, startet aber keinen
    Runner und schreibt keine Ausgaben.
 2. Validierungsbericht fuer die vorhandenen Legacy-Agrsich-Referenzen
-   vereinheitlichen, ohne Toleranzen still zu veraendern.
+   vereinheitlichen, ohne Toleranzen still zu veraendern. Der lokale Befehl
+   `python -m ims.model.legacy_validation_overview tests/fixtures/legacy_validation_bundle.json`
+   fasst vorhandene Legacy-Agrsich-Validierungsfixtures als JSON zusammen,
+   berichtet Tabellen, Perioden, Abweichungsachsen und die dokumentierte
+   `legacy_compare_default`-Toleranz, startet aber keinen Runner und schreibt
+   keine Reportartefakte.
 3. naechsten schmalen VU- oder VN-Regel-Slice aus den vorhandenen Plan-Dateien
    auswaehlen und mit explizitem Ursprung dokumentieren.
 4. erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.

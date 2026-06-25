@@ -31,7 +31,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `agrsich_replay_runner.md`: deterministischer Mehrperioden-Replay-Runner mit Legacy-Fenstervergleich
 - `vu_replay_legacy_targets.md`: mehrere Legacy-Ziele fuer deterministische VU-Agrsich-Replay-Laeufe
 - `agrsich_replay_plan.md`: deterministische Replay-Snapshot-Erzeugung aus Startzustand plus expliziten Periodenupdates
-- `agrsich_validation_report.md`: maschinenlesbarer Report fuer Agrsich-Legacy-Fenstervergleiche
+- `agrsich_validation_report.md`: maschinenlesbarer Report und rein lesender Ueberblick fuer Agrsich-Legacy-Fenstervergleiche
 - `bav_frmdinf_sector_vectors.md`: sparten- und risikogetrennte BAV-Fremdinformationen
 - `vu_foreign_info_rule_core.md`: kleiner VU-Regelkern fuer Dumping-, Durchschnitts- und Angriffslogik auf BAV-Frmdinf-Vektoren
 - `vu_foreign_info_period_runner.md`: kleiner deterministischer Periodenschritt fuer BAV-Frmdinf plus explizite VU-Regelparameter-Snapshots
