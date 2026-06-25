@@ -11,6 +11,7 @@ from ims.engine.explicit_period_plan import (
     explicit_period_snapshot_keys,
     load_explicit_period_plan_from_mapping,
 )
+from ims.io.scenario_loader import load_scenario_from_mapping
 from ims.model.agrsich_export import compute_global_period
 
 
@@ -185,6 +186,37 @@ def _period_summaries(plan: ExplicitPeriodPlan, fixture: dict[str, Any]) -> list
     return summaries
 
 
+def _snapshot_validation_issues(fixture: dict[str, Any]) -> list[ExplicitPeriodDiagnosticIssue]:
+    snapshots = fixture.get("periods", [])
+    if not isinstance(snapshots, list):
+        raise ValueError("explicit period diagnostics fixture periods must be a list")
+    issues: list[ExplicitPeriodDiagnosticIssue] = []
+    for snapshot in snapshots:
+        if not isinstance(snapshot, dict):
+            raise ValueError("explicit period diagnostics period snapshot must be an object")
+        try:
+            load_scenario_from_mapping(snapshot)
+        except Exception as exc:
+            period: int | None = None
+            global_period: int | None = None
+            try:
+                context = _context_from_period_snapshot(snapshot)
+                period = context.period
+                global_period = compute_global_period(context)
+            except Exception:
+                pass
+            issues.append(
+                ExplicitPeriodDiagnosticIssue(
+                    code="explicit_period_snapshot_invalid",
+                    severity="error",
+                    message=str(exc),
+                    period=period,
+                    global_period=global_period,
+                )
+            )
+    return issues
+
+
 def _ordering_issues(periods: list[ExplicitPeriodActionSummary]) -> list[ExplicitPeriodDiagnosticIssue]:
     global_periods = [period.global_period for period in periods]
     if len(set(global_periods)) != len(global_periods):
@@ -223,8 +255,9 @@ def diagnose_explicit_period_plan(path: str | Path) -> ExplicitPeriodDiagnostics
             raise ValueError("explicit period diagnostics plan must be a JSON object")
         plan = load_explicit_period_plan_from_mapping(data)
         fixture = build_explicit_period_fixture_from_plan(data)
-        periods = _period_summaries(plan, fixture)
-        issues = _ordering_issues(periods)
+        issues = _snapshot_validation_issues(fixture)
+        periods = [] if _status_from_issues(issues) == "error" else _period_summaries(plan, fixture)
+        issues.extend(_ordering_issues(periods))
         legacy_targets = _legacy_references(data)
         if not legacy_targets:
             issues.append(
