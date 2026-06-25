@@ -22,10 +22,22 @@ def _minimal_plan() -> dict:
                 "context": {"period": 2, "max_periods": 12, "run_index": 1, "rng_seed": 1202},
                 "insurers": [{"entity_id": 11, "name": "VU-11A"}],
                 "policyholders": [],
-                "vn_insurance_rule_snapshots": [{"policyholder_id": 21, "rule_kind": "none"}],
+                "vn_insurance_rule_snapshots": [{"policyholder_id": 21, "rule_kind": "compulsory"}],
             }
         ],
     }
+
+
+def _minimal_plan_with_legacy_reference() -> dict:
+    data = _minimal_plan()
+    data["legacy_targets"] = [
+        {
+            "legacy_path": "tests/references/legacy_agrsich/IMSVNR05.DAT",
+            "export_filename": "imsvnr05.dat",
+            "subject_type": "policyholder",
+        }
+    ]
+    return data
 
 
 def test_explicit_period_diagnostics_reports_fixture_without_execution() -> None:
@@ -74,6 +86,42 @@ def test_explicit_period_diagnostics_rejects_duplicate_global_periods(tmp_path: 
 
     assert payload["status"] == "error"
     assert payload["issues"][0]["code"] == "explicit_period_duplicate_global_period"
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_explicit_period_diagnostics_rejects_invalid_vn_rule_kind_before_counts(tmp_path: Path) -> None:
+    data = _minimal_plan_with_legacy_reference()
+    data["period_updates"][0]["vn_insurance_rule_snapshots"][0]["rule_kind"] = "unsupported"
+    plan_path = tmp_path / "invalid_rule_kind_period_plan.json"
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
+
+    payload = diagnose_explicit_period_plan(plan_path).to_dict()
+
+    assert payload["status"] == "error"
+    assert payload["period_count"] == 0
+    assert payload["periods"] == []
+    assert payload["issues"][0]["code"] == "explicit_period_snapshot_invalid"
+    assert "unsupported VN insurance rule kind" in payload["issues"][0]["message"]
+    assert payload["issues"][0]["period"] == 2
+    assert payload["issues"][0]["global_period"] == 14
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_explicit_period_diagnostics_rejects_unknown_snapshot_policyholder_before_counts(tmp_path: Path) -> None:
+    data = _minimal_plan_with_legacy_reference()
+    data["period_updates"][0]["vn_insurance_rule_snapshots"][0]["policyholder_id"] = 999
+    plan_path = tmp_path / "unknown_policyholder_period_plan.json"
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
+
+    payload = diagnose_explicit_period_plan(plan_path).to_dict()
+
+    assert payload["status"] == "error"
+    assert payload["period_count"] == 0
+    assert payload["periods"] == []
+    assert payload["issues"][0]["code"] == "explicit_period_snapshot_invalid"
+    assert "VN insurance rule snapshots reference unknown policyholders: 999" in payload["issues"][0]["message"]
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 
