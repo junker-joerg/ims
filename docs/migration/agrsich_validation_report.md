@@ -187,3 +187,28 @@ Dieser Ueberblick startet keine Simulation, keinen Runner und keinen Scheduler.
 Er schreibt keine Reportartefakte, oeffnet keinen HTTP- oder UI-Schreibpfad und
 behauptet keine historische Vollgleichheit ausserhalb der konkret referenzierten
 Legacy-Fenster.
+
+## Legacy-Coverage-Matrix
+
+Zusaetzlich gibt es eine rein lesende Coverage-Matrix fuer dasselbe
+Validierungsfixture:
+
+```powershell
+python -m ims.model.legacy_validation_coverage tests/fixtures/legacy_validation_bundle.json
+```
+
+Der Befehl gibt eine stabile JSON-Form mit `mode =
+"legacy_agrsich_coverage_matrix"` aus. Sie enthaelt die vorhandenen echten
+Referenzdateien unter `tests/references/legacy_agrsich/`, die davon im Fixture
+abgedeckten Dateien, Periodenfenster, Zeilenzaehler, `covered_rows`,
+`covered_periods`, offene `gaps` fuer vorhandene, aber nicht abgedeckte
+historische Referenzen sowie einen Backlog-Auszug fuer naheliegende
+Dateifamilien. Kuratierte Writer-Referenzen unter `tests/references/agrsich/`
+bleiben ausgeschlossen und werden nicht als historische Legacy-Abdeckung
+gezaehlt.
+
+Die Matrix vergleicht keine Werte neu, startet keine Simulation, keinen Runner
+und keinen Scheduler. Sie schreibt keine Artefakte und behauptet keine
+historische Vollgleichheit. Ihr Zweck ist Transparenz: sichtbar machen, welche
+echten Legacy-Dateien heute belegt sind und welche Referenzfamilien fuer
+spaetere Validierungsarbeit noch fehlen.
