@@ -33,12 +33,12 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert payload["mode"] == "legacy_agrsich_validation_overview"
     assert payload["reference_count"] == 4
     assert payload["table_count"] == 4
-    assert payload["period_count"] == 20
+    assert payload["period_count"] == 200
     assert payload["field_summary_count"] == 0
     assert payload["deviation_count"] == 0
     assert payload["matches"] is True
-    assert payload["total_rows"] == 40
-    assert payload["matched_rows"] == 40
+    assert payload["total_rows"] == 400
+    assert payload["matched_rows"] == 400
     assert payload["mismatched_rows"] == 0
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
@@ -75,15 +75,15 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert payload["coverage"][0]["selector_kind"] == "all"
     assert payload["coverage"][0]["selector_value"] == "SK1"
     assert payload["coverage"][0]["start_period"] == 101
-    assert payload["coverage"][0]["end_period"] == 110
-    assert payload["coverage"][0]["period_count"] == 10
-    assert payload["coverage"][0]["row_count"] == 10
+    assert payload["coverage"][0]["end_period"] == 200
+    assert payload["coverage"][0]["period_count"] == 100
+    assert payload["coverage"][0]["row_count"] == 100
     assert payload["coverage"][0]["matches"] is True
     assert payload["coverage"][3]["subject_type"] == "policyholder"
     assert payload["coverage"][3]["selector_kind"] == "rule"
     assert payload["coverage"][3]["selector_value"] == 5
     assert payload["coverage"][3]["start_period"] == 1
-    assert payload["coverage"][3]["end_period"] == 10
+    assert payload["coverage"][3]["end_period"] == 100
     assert set(tmp_path.iterdir()) == before
 
 
