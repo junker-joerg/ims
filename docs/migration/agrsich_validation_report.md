@@ -235,3 +235,31 @@ Damit bleibt der naechste Fachlogikschritt pruefbar, ohne Writer-Ausgaben aus
 keinen Vergleich, keinen Runner und keine Simulation, schreibt keine Artefakte,
 verwendet keine Writer-Referenzen als historische Quellen und behauptet keine
 historische Vollgleichheit.
+
+## IMS-Kernvalidierungsueberblick
+
+Die vorhandenen read-only Bausteine koennen nun in einem gemeinsamen
+Kernvalidierungsueberblick zusammengefuehrt werden:
+
+```powershell
+python -m ims.engine.core_validation_overview --legacy-fixture tests/fixtures/legacy_validation_bundle.json tests/fixtures/replay_vu14_period_plan.json tests/fixtures/replay_vusk1_period_plan.json
+```
+
+Der Befehl gibt eine stabile JSON-Form mit `mode = "ims_core_validation_overview"`
+aus. Sie buendelt:
+
+- das Diagnose-Buendel fuer explizite Periodenplaene,
+- den lokalen Legacy-Agrsich-Validierungsueberblick,
+- die Legacy-Coverage-Matrix,
+- den Plan fuer die naechste Legacy-Dateifamilie.
+
+Der Ueberblick fasst Plananzahl, Periodenzaehler, globale Perioden,
+Legacy-Referenzzaehler, abgedeckte Zeilen und die naechsten Validierungsaktionen
+zusammen. Die Teilpayloads bleiben enthalten, damit Diagnose- und
+Validierungsgrenzen nachvollziehbar bleiben.
+
+Auch dieser Ueberblick startet keinen Runner, keine Simulation und keinen
+Scheduler. Er schreibt keine Artefakte, oeffnet keine HTTP- oder UI-Schreibpfade
+und behauptet keine historische Vollgleichheit. Ein `warning`-Status ist
+erwartbar, wenn weitere Validierung durch fehlende historische Referenzen
+blockiert ist.
