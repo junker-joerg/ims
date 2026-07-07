@@ -50,3 +50,23 @@ ersetzen keine historische Vollsimulation.
 Der naechste grosse Schritt sollte einzelne periodische Updates aus portierter Regel- und
 Scheduling-Logik ableiten und die entstehenden Zustandsfenster weiter gegen echte Legacy-Dateien
 validieren.
+
+## Diagnose-Buendel fuer Periodenplaene
+
+Mehrere vorhandene explizite Periodenplaene koennen nun gemeinsam rein lesend
+diagnostiziert werden:
+
+```powershell
+python -m ims.engine.explicit_period_diagnostics_bundle tests/fixtures/replay_vu14_period_plan.json tests/fixtures/replay_vusk1_period_plan.json
+```
+
+Der Befehl gibt eine stabile JSON-Form mit `mode = "explicit_period_diagnostics_bundle"`
+aus. Sie fasst Plananzahl, Statuszaehler, Periodenzaehler, globale Perioden,
+Snapshot-Familien, Legacy-Bezuege und Diagnose-Issues ueber die uebergebenen
+Plaene zusammen. Die Einzeldiagnosen bleiben enthalten, damit Periodenfolge und
+Regelanwendungsgrenzen je Plan nachvollziehbar bleiben.
+
+Dieses Buendel startet keinen Runner, keine Simulation und keinen Scheduler. Es
+schreibt keine Artefakte, oeffnet keine HTTP- oder UI-Schreibpfade und behauptet
+keine historische Vollgleichheit. Es ist eine lokale Abgrenzungsdiagnose fuer
+bereits vorhandene explizite Periodenplaene.
