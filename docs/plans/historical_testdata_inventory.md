@@ -85,10 +85,14 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 1. `VUSK1L1.DAT` bis `VUSK1L5.DAT` sind als erste neue
    Versicherer-SK1-Zeitfenster uebernommen, weil Format und Periodenfenster zum
    vorhandenen Parser passen. Sie sind keine unterschiedlichen Aggregatebenen.
-2. Danach `IMSVNR01.DAT` bis `IMSVNR06.DAT` als VN-Regelfamilie pruefen.
-3. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
+2. `IMSVNR01.DAT` und `IMSVNR02.DAT` sind als erste zusaetzliche
+   VN-Regelreferenzen uebernommen, weil Format, Header und Periodenfenster zum
+   vorhandenen Parser passen.
+3. Danach `IMSVNR03.DAT`, `IMSVNR04.DAT` und `IMSVNR06.DAT` als Rest der
+   VN-Regelfamilie pruefen.
+4. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
    auswaehlen.
-4. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.
+5. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.
 
 ## Grenzen
 
