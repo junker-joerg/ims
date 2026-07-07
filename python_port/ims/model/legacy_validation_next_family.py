@@ -120,6 +120,8 @@ def _status(
 ) -> str:
     if any(issue.severity == "error" for issue in issues):
         return "error"
+    if issues:
+        return "warning"
     if any(action.next_action == "add_to_validation_bundle" for action in actions):
         return "ok"
     return "warning"
