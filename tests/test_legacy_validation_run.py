@@ -130,11 +130,11 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "policyholder",
     ]
     assert [target.export_filename for target in result.targets] == [
-        "imsvusk1_l1.dat",
-        "imsvusk1_l2.dat",
-        "imsvusk1_l3.dat",
         "imsvusk1.dat",
-        "imsvusk1_l5.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
@@ -164,6 +164,9 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         "policyholder",
         "policyholder",
     ]
+    assert [target.level for target in result.targets[:5]] == ["IV", "IV", "IV", "IV", "IV"]
+    assert [target.selector_kind for target in result.targets[:5]] == ["all", "all", "all", "all", "all"]
+    assert [target.selector_value for target in result.targets[:5]] == ["SK1", "SK1", "SK1", "SK1", "SK1"]
 
     assert [path.name for path in result.written_reports] == [
         "legacy_validation_bundle.json",
@@ -200,19 +203,16 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert payload["files"][7]["filename"] == "imsvnr05.dat"
     assert payload["files"][7]["start_period"] == 1
     assert [(item["subject_type"], item["level"], item["row_count"]) for item in payload["group_summaries"]] == [
-        ("insurer", "I", 200),
-        ("insurer", "II", 100),
-        ("insurer", "III", 100),
-        ("insurer", "IV", 100),
-        ("insurer", "V", 100),
+        ("insurer", "IV", 500),
+        ("insurer", "I", 100),
         ("policyholder", "IV", 100),
         ("policyholder", "II", 100),
     ]
     assert payload["period_summaries"][0]["global_period"] == 401
-    assert payload["period_summaries"][0]["filenames"] == ["imsvusk1_l1.dat"]
+    assert payload["period_summaries"][0]["filenames"] == ["imsvusk1.dat"]
     assert payload["period_summaries"][400]["global_period"] == 1
     assert payload["period_summaries"][400]["filenames"] == [
-        "imsvusk1_l5.dat",
+        "imsvusk1.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
@@ -231,14 +231,14 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     with (tmp_path / "legacy_validation_bundle_groups.csv").open("r", encoding="utf-8", newline="") as handle:
         group_rows = list(csv.DictReader(handle))
     assert group_rows[0]["subject_type"] == "insurer"
-    assert group_rows[0]["level"] == "I"
-    assert group_rows[0]["row_count"] == "200"
-    assert group_rows[0]["filenames"] == "imsvusk1_l1.dat;imsvu014.dat"
+    assert group_rows[0]["level"] == "IV"
+    assert group_rows[0]["row_count"] == "500"
+    assert group_rows[0]["filenames"] == "imsvusk1.dat;imsvusk1.dat;imsvusk1.dat;imsvusk1.dat;imsvusk1.dat"
 
     with (tmp_path / "legacy_validation_bundle_periods.csv").open("r", encoding="utf-8", newline="") as handle:
         period_rows = list(csv.DictReader(handle))
     assert period_rows[0]["global_period"] == "401"
-    assert period_rows[0]["filenames"] == "imsvusk1_l1.dat"
+    assert period_rows[0]["filenames"] == "imsvusk1.dat"
     assert period_rows[400]["global_period"] == "1"
     assert period_rows[400]["row_count"] == "4"
 

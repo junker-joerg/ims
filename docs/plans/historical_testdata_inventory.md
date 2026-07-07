@@ -83,8 +83,8 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 ## Empfohlene Reihenfolge
 
 1. `VUSK1L1.DAT` bis `VUSK1L5.DAT` sind als erste neue
-   Versicherer-Stufenfamilie uebernommen, weil Format und Periodenfenster zum
-   vorhandenen Parser passen.
+   Versicherer-SK1-Zeitfenster uebernommen, weil Format und Periodenfenster zum
+   vorhandenen Parser passen. Sie sind keine unterschiedlichen Aggregatebenen.
 2. Danach `IMSVNR01.DAT` bis `IMSVNR06.DAT` als VN-Regelfamilie pruefen.
 3. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
    auswaehlen.

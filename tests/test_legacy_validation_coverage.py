@@ -44,7 +44,7 @@ def test_legacy_validation_coverage_matrix_summarizes_current_bundle() -> None:
     assert all(entry["legacy_source"] == "legacy_agrsich" for entry in payload["coverage"])
     assert all(entry["is_legacy_reference"] is True for entry in payload["coverage"])
     assert all(entry["covered"] is True for entry in payload["coverage"])
-    assert payload["backlog"][0]["family"] == "insurer_stage_all"
+    assert payload["backlog"][0]["family"] == "insurer_sk1_time_windows"
     assert payload["backlog"][0]["available_files"] == [
         "VUSK1L1.DAT",
         "VUSK1L2.DAT",
@@ -60,6 +60,14 @@ def test_legacy_validation_coverage_matrix_summarizes_current_bundle() -> None:
         "VUSK1L5.DAT",
     ]
     assert payload["backlog"][0]["missing_files"] == []
+    assert [entry["level"] for entry in payload["coverage"][:5]] == ["IV", "IV", "IV", "IV", "IV"]
+    assert [entry["export_filename"] for entry in payload["coverage"][:5]] == [
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+    ]
 
 
 def test_legacy_validation_coverage_matrix_reports_available_uncovered_reference(

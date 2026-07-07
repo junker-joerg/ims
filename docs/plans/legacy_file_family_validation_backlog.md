@@ -5,7 +5,8 @@ Gesamtgleichheit des Modells missverstanden werden.
 
 ## Bereits angebunden
 
-- Versicherer-Agrsich: `VU14L1.DAT`, `VUSK1L1.DAT` bis `VUSK1L5.DAT`
+- Versicherer-Agrsich: `VU14L1.DAT`, `VUSK1L1.DAT` bis `VUSK1L5.DAT` als
+  SK1-Zeitfenster auf derselben unterstuetzten Aggregatstufe
 - VN-Agrsich: `IMSVNR05.DAT`, `IMSVNSK1.DAT`
 
 ## Naheliegende nächste Kandidaten

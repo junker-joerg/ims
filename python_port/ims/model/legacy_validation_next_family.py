@@ -12,7 +12,7 @@ from ims.model.legacy_validation_coverage import (
 
 
 FAMILY_LABELS = {
-    "insurer_stage_all": "Versicherer-Agrsich-Stufen",
+    "insurer_sk1_time_windows": "Versicherer-Agrsich-SK1-Zeitfenster",
     "policyholder_rule": "VN-Agrsich-Regeldateien",
     "policyholder_class": "VN-Agrsich-Klassenaggregate",
     "insurer_class": "Versicherer-Agrsich-Klassenaggregate",

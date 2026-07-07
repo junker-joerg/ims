@@ -7,7 +7,7 @@ from typing import Any
 
 
 LEGACY_AGRSICH_BACKLOG_CANDIDATES = {
-    "insurer_stage_all": ["VUSK1L1.DAT", "VUSK1L2.DAT", "VUSK1L3.DAT", "VUSK1L4.DAT", "VUSK1L5.DAT"],
+    "insurer_sk1_time_windows": ["VUSK1L1.DAT", "VUSK1L2.DAT", "VUSK1L3.DAT", "VUSK1L4.DAT", "VUSK1L5.DAT"],
     "policyholder_rule": [
         "IMSVNR01.DAT",
         "IMSVNR02.DAT",

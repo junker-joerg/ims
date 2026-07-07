@@ -46,10 +46,14 @@ Versicherer- und VN-Vergleiche in einem gemeinsamen Validierungsbericht buendeln
 
 Ein kleines Validierungs-Fixture kann nun mehrere reale Legacy-Zieldateien beschreiben und den
 gemeinsamen Reportpfad automatisch ausfuehren. Das aktuelle Bundle validiert die
-Versicherer-Stufenfamilie `VUSK1L1.DAT` bis `VUSK1L5.DAT`, ein
+Versicherer-SK1-Zeitfenster `VUSK1L1.DAT` bis `VUSK1L5.DAT`, ein
 Versicherer-Einzelfenster aus `VU14L1.DAT`, ein VN-Gesamtfenster aus
 `IMSVNSK1.DAT` und ein VN-Regelfenster aus `IMSVNR05.DAT` in einem Lauf. Alle
 acht Fenster umfassen aktuell je 100 Perioden.
+Die fuenf `VUSK1L*`-Dateien werden dabei nicht als unterschiedliche
+Aggregatstufen verstanden. Sie bleiben `SK1`/`all` auf der unterstuetzten
+Aggregatstufe `IV` und unterscheiden sich nur durch Legacy-Datei und
+Periodenfenster.
 
 Der Fixture-Lader weist unvollstaendige Targets mit fehlenden Datei-, Stufen- oder
 Selektorangaben, doppelte, unsortierte oder lueckenhafte Perioden innerhalb eines Targets und
@@ -162,8 +166,10 @@ Zeilen; es bleibt eine Referenzfenster-Pruefung und keine Behauptung vollstaendi
 historischer Modellgleichheit. Der Fixture-Lader weist Targets zurueck, deren `legacy_path`
 auf die kuratierte Writer-Referenzablage `tests/references/agrsich/` zeigt.
 
-Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf laengere Fenster und weitere
-bereits parsergestuetzte Dateifamilien auszuweiten.
+Der naechste sinnvolle Schritt ist, dieses Fixture-Format auf die
+VN-Regelfamilie `IMSVNR01.DAT` bis `IMSVNR06.DAT` auszuweiten, sobald die
+jeweiligen historischen Referenzen gezielt versioniert und als Regelaggregate
+geprueft sind.
 
 ## Lokaler Validierungsueberblick
 

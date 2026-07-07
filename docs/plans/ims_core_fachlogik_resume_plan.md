@@ -90,8 +90,8 @@ Der passende PR-Titel waere:
 
 Nach dem lokalen Inventar der historischen Testdaten unter `incomming/` ist der
 Referenzblocker fuer mehrere Dateifamilien nicht mehr grundsaetzlich offen. Die
-Versicherer-Stufenfamilie `VUSK1L1.DAT` bis `VUSK1L5.DAT` ist nun als
-versionierte Legacy-Referenzfamilie im Bundle abgedeckt; weitere lokale
+Versicherer-SK1-Zeitfenster `VUSK1L1.DAT` bis `VUSK1L5.DAT` sind nun als
+versionierte Legacy-Referenzfenster im Bundle abgedeckt; weitere lokale
 Kandidaten bleiben noch nicht versionierte Referenzen.
 
 Aktualisierte grobe Restplanung:

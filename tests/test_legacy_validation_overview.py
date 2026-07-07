@@ -43,11 +43,11 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert [table["filename"] for table in payload["tables"]] == [
-        "imsvusk1_l1.dat",
-        "imsvusk1_l2.dat",
-        "imsvusk1_l3.dat",
         "imsvusk1.dat",
-        "imsvusk1_l5.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
@@ -63,18 +63,18 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
     ]
     assert [entry["filename"] for entry in payload["coverage"]] == [
-        "imsvusk1_l1.dat",
-        "imsvusk1_l2.dat",
-        "imsvusk1_l3.dat",
         "imsvusk1.dat",
-        "imsvusk1_l5.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
+        "imsvusk1.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
     ]
     assert all(entry["legacy_source"] == "legacy_agrsich" for entry in payload["coverage"])
     assert all(entry["is_legacy_reference"] is True for entry in payload["coverage"])
-    assert payload["coverage"][0]["filename"] == "imsvusk1_l1.dat"
+    assert payload["coverage"][0]["filename"] == "imsvusk1.dat"
     assert Path(payload["coverage"][0]["legacy_path"]).parts[-3:] == (
         "references",
         "legacy_agrsich",
@@ -83,7 +83,7 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert payload["coverage"][0]["legacy_source"] == "legacy_agrsich"
     assert payload["coverage"][0]["is_legacy_reference"] is True
     assert payload["coverage"][0]["subject_type"] == "insurer"
-    assert payload["coverage"][0]["level"] == "I"
+    assert payload["coverage"][0]["level"] == "IV"
     assert payload["coverage"][0]["selector_kind"] == "all"
     assert payload["coverage"][0]["selector_value"] == "SK1"
     assert payload["coverage"][0]["start_period"] == 401
@@ -91,6 +91,8 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert payload["coverage"][0]["period_count"] == 100
     assert payload["coverage"][0]["row_count"] == 100
     assert payload["coverage"][0]["matches"] is True
+    assert [entry["level"] for entry in payload["coverage"][:5]] == ["IV", "IV", "IV", "IV", "IV"]
+    assert [entry["selector_value"] for entry in payload["coverage"][:5]] == ["SK1", "SK1", "SK1", "SK1", "SK1"]
     assert payload["coverage"][7]["subject_type"] == "policyholder"
     assert payload["coverage"][7]["selector_kind"] == "rule"
     assert payload["coverage"][7]["selector_value"] == 5
