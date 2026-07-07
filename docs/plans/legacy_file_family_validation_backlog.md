@@ -9,10 +9,10 @@ Gesamtgleichheit des Modells missverstanden werden.
   SK1-Zeitfenster auf derselben unterstuetzten Aggregatstufe
 - VN-Agrsich: `IMSVNR01.DAT` bis `IMSVNR06.DAT`, `IMSVNSK1.DAT`,
   `IMSVNVK1.DAT` bis `IMSVNVK3.DAT`
+- Versicherer-Klassenaggregate: `IMSVUVK1.DAT` bis `IMSVUVK3.DAT`
 
 ## Naheliegende naechste Kandidaten
 
-- Versicherer-Klassenaggregate `IMSVUVK*.DAT`.
 - Parameterausgaben wie `VU014PR1.DAT`, aber nur nach separater Feldklaerung.
 
 ## Neuer lokaler Kandidatenbestand
@@ -25,8 +25,7 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Uebernahmeschnitt:
 
-- `IMSVUVK*.DAT` aus den ZIP-Archiven nach separater Header-/Feldpruefung;
-- danach Parameterausgaben wie `VU014PR1.DAT` erst nach eigener Feldklaerung.
+- Parameterausgaben wie `VU014PR1.DAT` erst nach eigener Feldklaerung.
 
 ## Rest-PR-Planung
 
@@ -40,10 +39,10 @@ Naechster bevorzugter Uebernahmeschnitt:
   nach vollstaendiger IMSVNR-Abdeckung als covered erscheint (erledigt).
 - PR 5: VN-Klassenaggregate `IMSVNVK*.DAT` vorbereiten und validieren
   (dieser Schnitt; `policyholder_class` ist im Bundle belegt).
-- PR 6: Versicherer-Klassenaggregate `IMSVUVK*.DAT` vorbereiten; zuerst Quelle,
-  Header, Periodenfenster und Zeilenzahl separat pruefen.
+- PR 6: Versicherer-Klassenaggregate `IMSVUVK*.DAT` vorbereiten und validieren
+  (dieser Schnitt; `insurer_class` ist im Bundle belegt).
 - PR 7: Parameterausgaben wie `VU014PR1.DAT` nur nach eigener Feldklaerung
-  vorbereiten.
+  vorbereiten; keine Uebernahme ohne klares Feldmapping.
 - PR 8+: Schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
   Planfixtures, weiterhin ohne Vollgleichheitsbehauptung.
 

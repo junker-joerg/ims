@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 
 from ims.io.scenario_loader import load_scenario
-from ims.model.agrsich_export import build_agrsich_export_tables
+from ims.model.agrsich_export import INSURER_HEADER, ExportFileSpec, ExportRow, ExportTable, build_agrsich_export_tables
 from ims.model.agrsich_service import collect_extended_agrsich_records
 from ims.model.legacy_agrsich_reference import (
     LegacyComparison,
@@ -19,6 +19,27 @@ def _load_export_table(fixture_name: str, expected_filename: str):
     result = collect_extended_agrsich_records(scenario.context, scenario.bav, scenario.insurers, scenario.policyholders)
     tables = build_agrsich_export_tables(scenario.context, result)
     return next(table for table in tables if table.spec.filename == expected_filename)
+
+
+def _export_table_from_legacy_row(
+    legacy_row: LegacyInsurerRow,
+    *,
+    filename: str,
+    level: str,
+    selector_value: int,
+    selector_kind: str = "rule_class",
+) -> ExportTable:
+    return ExportTable(
+        spec=ExportFileSpec(
+            filename=filename,
+            subject_type="insurer",
+            level=level,
+            selector_kind=selector_kind,
+            selector_value=selector_value,
+        ),
+        header=INSURER_HEADER,
+        rows=[ExportRow(values=[legacy_row.global_period, *legacy_row.metric_values()])],
+    )
 
 
 def test_parse_legacy_insurer_dat_reads_vu14_file() -> None:
@@ -38,6 +59,37 @@ def test_parse_legacy_insurer_dat_reads_vusk1_file() -> None:
     assert len(table.rows) == 100
     assert table.rows[0].global_period == 101
     assert table.rows[-1].global_period == 200
+
+
+def test_parse_legacy_insurer_dat_reads_new_class_references() -> None:
+    expected = {
+        "IMSVUVK1.DAT": (1, 500),
+        "IMSVUVK2.DAT": (1, 500),
+        "IMSVUVK3.DAT": (1, 500),
+    }
+
+    for filename, (start_period, end_period) in expected.items():
+        table = parse_legacy_insurer_dat(Path("tests/references/legacy_agrsich") / filename)
+
+        assert isinstance(table, LegacyInsurerTable)
+        assert table.header.split() == [
+            "#t",
+            "Pr1",
+            "Wa1",
+            "Rs1",
+            "Vn1",
+            "Sa1",
+            "Sh1",
+            "Pr2",
+            "Wa2",
+            "Rs2",
+            "Vn2",
+            "Sa2",
+            "Sh2",
+        ]
+        assert len(table.rows) == end_period - start_period + 1
+        assert table.rows[0].global_period == start_period
+        assert table.rows[-1].global_period == end_period
 
 
 def test_compare_export_record_to_legacy_row_matches_vu14_alignment() -> None:
@@ -78,6 +130,32 @@ def test_compare_export_record_to_legacy_row_matches_vusk1_alignment() -> None:
         "Sa2",
         "Sh2",
     ]
+
+
+def test_compare_export_record_to_new_class_references_matches_alignment() -> None:
+    cases = [
+        ("IMSVUVK1.DAT", "imsvuvk1.dat", 1, 500),
+        ("IMSVUVK2.DAT", "imsvuvk2.dat", 2, 2),
+        ("IMSVUVK3.DAT", "imsvuvk3.dat", 3, 500),
+    ]
+
+    for legacy_filename, export_filename, selector_value, period in cases:
+        legacy_table = parse_legacy_insurer_dat(
+            Path("tests/references/legacy_agrsich") / legacy_filename
+        )
+        legacy_row = extract_legacy_row(legacy_table, period)
+
+        assert legacy_row is not None
+        export_table = _export_table_from_legacy_row(
+            legacy_row,
+            filename=export_filename,
+            level="III",
+            selector_value=selector_value,
+        )
+        comparison = compare_export_record_to_legacy_row(export_table, legacy_row)
+
+        assert comparison.matches is True
+        assert all(field.matches is True for field in comparison.field_comparisons)
 
 
 def test_compare_export_record_to_legacy_row_detects_difference() -> None:

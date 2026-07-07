@@ -43,8 +43,10 @@ Alle drei Dateien verwenden denselben VN-Agrsich-Header:
 
 Die Dateien werden vom vorhandenen VN-Legacy-Parser gelesen. Die Tests pruefen
 Header, Periodenfenster und je Datei mindestens eine positive Alignment-Zeile.
-Das gemeinsame Legacy-Validierungsbundle enthaelt damit 16 historische
-Referenzziele mit 4800 konkret verglichenen Zeilen.
+Zum Zeitpunkt der VN-Klassenaufnahme enthielt das gemeinsame
+Legacy-Validierungsbundle damit 16 historische Referenzziele mit 4800 konkret
+verglichenen Zeilen; nach der anschliessenden `IMSVUVK`-Aufnahme umfasst das
+aktuelle Bundle 19 Referenzziele mit 6300 konkret verglichenen Zeilen.
 
 ## Grenzen
 
@@ -57,5 +59,5 @@ Referenzziele mit 4800 konkret verglichenen Zeilen.
 ## Naechster Schritt
 
 Nach diesem Schnitt ist `policyholder_class` im Legacy-Coverage-Backlog belegt.
-Der naechste kleine Kandidat sind Versicherer-Klassenaggregate `IMSVUVK*.DAT`,
-aber erst nach separater Header-, Feld- und Periodenpruefung.
+Die danach vorbereiteten Versicherer-Klassenaggregate `IMSVUVK*.DAT` belegen
+zusaetzlich `insurer_class`.
