@@ -82,9 +82,9 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 
 ## Empfohlene Reihenfolge
 
-1. `VUSK1L1.DAT` bis `VUSK1L5.DAT` als erste neue Versicherer-Stufenfamilie
-   aufnehmen, weil Format und Periodenfenster bereits zum vorhandenen Parser
-   passen.
+1. `VUSK1L1.DAT` bis `VUSK1L5.DAT` sind als erste neue
+   Versicherer-Stufenfamilie uebernommen, weil Format und Periodenfenster zum
+   vorhandenen Parser passen.
 2. Danach `IMSVNR01.DAT` bis `IMSVNR06.DAT` als VN-Regelfamilie pruefen.
 3. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
    auswaehlen.
@@ -92,8 +92,9 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 
 ## Grenzen
 
-- keine Uebernahme der lokalen `incomming/`-Dateien in diesem PR;
-- kein Vergleichslauf gegen neue Referenzen;
+- keine weitere Uebernahme lokaler `incomming/`-Dateien ausserhalb gezielter
+  Folge-PRs;
+- keine Vergleichslaeufe gegen noch nicht versionierte Referenzen;
 - keine Simulation;
 - keine Fachlogikaenderung;
 - keine historische Vollgleichheitsbehauptung.

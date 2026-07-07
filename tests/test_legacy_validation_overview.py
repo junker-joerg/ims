@@ -31,19 +31,23 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert isinstance(result, LegacyValidationOverviewResult)
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_validation_overview"
-    assert payload["reference_count"] == 4
-    assert payload["table_count"] == 4
-    assert payload["period_count"] == 200
+    assert payload["reference_count"] == 8
+    assert payload["table_count"] == 8
+    assert payload["period_count"] == 500
     assert payload["field_summary_count"] == 0
     assert payload["deviation_count"] == 0
     assert payload["matches"] is True
-    assert payload["total_rows"] == 400
-    assert payload["matched_rows"] == 400
+    assert payload["total_rows"] == 800
+    assert payload["matched_rows"] == 800
     assert payload["mismatched_rows"] == 0
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert [table["filename"] for table in payload["tables"]] == [
+        "imsvusk1_l1.dat",
+        "imsvusk1_l2.dat",
+        "imsvusk1_l3.dat",
         "imsvusk1.dat",
+        "imsvusk1_l5.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
@@ -51,39 +55,47 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert [(item["subject_type"], item["source"], item["tolerance"]) for item in payload["tolerances"]] == [
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
+        ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
+        ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
+        ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
+        ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
     ]
     assert [entry["filename"] for entry in payload["coverage"]] == [
+        "imsvusk1_l1.dat",
+        "imsvusk1_l2.dat",
+        "imsvusk1_l3.dat",
         "imsvusk1.dat",
+        "imsvusk1_l5.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
     ]
     assert all(entry["legacy_source"] == "legacy_agrsich" for entry in payload["coverage"])
     assert all(entry["is_legacy_reference"] is True for entry in payload["coverage"])
-    assert payload["coverage"][0]["filename"] == "imsvusk1.dat"
+    assert payload["coverage"][0]["filename"] == "imsvusk1_l1.dat"
     assert Path(payload["coverage"][0]["legacy_path"]).parts[-3:] == (
         "references",
         "legacy_agrsich",
-        "VUSK1L4.DAT",
+        "VUSK1L1.DAT",
     )
     assert payload["coverage"][0]["legacy_source"] == "legacy_agrsich"
     assert payload["coverage"][0]["is_legacy_reference"] is True
     assert payload["coverage"][0]["subject_type"] == "insurer"
-    assert payload["coverage"][0]["level"] == "IV"
+    assert payload["coverage"][0]["level"] == "I"
     assert payload["coverage"][0]["selector_kind"] == "all"
     assert payload["coverage"][0]["selector_value"] == "SK1"
-    assert payload["coverage"][0]["start_period"] == 101
-    assert payload["coverage"][0]["end_period"] == 200
+    assert payload["coverage"][0]["start_period"] == 401
+    assert payload["coverage"][0]["end_period"] == 500
     assert payload["coverage"][0]["period_count"] == 100
     assert payload["coverage"][0]["row_count"] == 100
     assert payload["coverage"][0]["matches"] is True
-    assert payload["coverage"][3]["subject_type"] == "policyholder"
-    assert payload["coverage"][3]["selector_kind"] == "rule"
-    assert payload["coverage"][3]["selector_value"] == 5
-    assert payload["coverage"][3]["start_period"] == 1
-    assert payload["coverage"][3]["end_period"] == 100
+    assert payload["coverage"][7]["subject_type"] == "policyholder"
+    assert payload["coverage"][7]["selector_kind"] == "rule"
+    assert payload["coverage"][7]["selector_value"] == 5
+    assert payload["coverage"][7]["start_period"] == 1
+    assert payload["coverage"][7]["end_period"] == 100
     assert set(tmp_path.iterdir()) == before
 
 
@@ -303,7 +315,7 @@ def test_legacy_validation_overview_cli_prints_stable_json(capsys) -> None:
     assert exit_code == 0
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_validation_overview"
-    assert payload["reference_count"] == 4
+    assert payload["reference_count"] == 8
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 
