@@ -45,6 +45,7 @@ class CoreValidationOverviewResult:
     plan_count: int
     legacy_fixture_path: str
     period_plan_paths: list[str]
+    reference_dir: str | None = None
     period_count: int = 0
     global_periods: list[int] = field(default_factory=list)
     legacy_reference_count: int = 0
@@ -66,6 +67,7 @@ class CoreValidationOverviewResult:
             "plan_count": self.plan_count,
             "legacy_fixture_path": self.legacy_fixture_path,
             "period_plan_paths": list(self.period_plan_paths),
+            "reference_dir": self.reference_dir,
             "period_count": self.period_count,
             "global_periods": list(self.global_periods),
             "legacy_reference_count": self.legacy_reference_count,
@@ -114,11 +116,12 @@ def build_core_validation_overview(
     *,
     legacy_fixture_path: str | Path,
     period_plan_paths: list[str | Path],
+    reference_dir: str | Path | None = None,
 ) -> CoreValidationOverviewResult:
     period_diagnostics = build_explicit_period_diagnostics_bundle(period_plan_paths)
     legacy_validation = build_legacy_validation_overview(legacy_fixture_path)
-    coverage_matrix = build_legacy_validation_coverage_matrix(legacy_fixture_path)
-    next_family_plan = build_legacy_validation_next_family_plan(legacy_fixture_path)
+    coverage_matrix = build_legacy_validation_coverage_matrix(legacy_fixture_path, reference_dir=reference_dir)
+    next_family_plan = build_legacy_validation_next_family_plan(legacy_fixture_path, reference_dir=reference_dir)
 
     issues = (
         _issues_from_payload("period_diagnostics", period_diagnostics.to_dict())
@@ -133,12 +136,14 @@ def build_core_validation_overview(
         next_family_plan.status,
     ]
     resolved_period_paths = [str(Path(path).expanduser().resolve()) for path in period_plan_paths]
+    resolved_reference_dir = None if reference_dir is None else str(Path(reference_dir).expanduser().resolve())
     return CoreValidationOverviewResult(
         status=_status_from_parts(statuses),
         mode="ims_core_validation_overview",
         plan_count=period_diagnostics.plan_count,
         legacy_fixture_path=str(Path(legacy_fixture_path).expanduser().resolve()),
         period_plan_paths=resolved_period_paths,
+        reference_dir=resolved_reference_dir,
         period_count=period_diagnostics.total_period_count,
         global_periods=period_diagnostics.global_periods,
         legacy_reference_count=coverage_matrix.reference_count,
@@ -162,12 +167,17 @@ def main(argv: list[str] | None = None) -> int:
         required=True,
         help="Path to the Legacy-Agrsich validation fixture JSON file.",
     )
+    parser.add_argument(
+        "--reference-dir",
+        help="Optional directory containing historical Legacy-Agrsich reference files.",
+    )
     parser.add_argument("period_plan_paths", nargs="+", help="Paths to explicit period plan JSON files.")
     args = parser.parse_args(argv)
 
     result = build_core_validation_overview(
         legacy_fixture_path=args.legacy_fixture,
         period_plan_paths=args.period_plan_paths,
+        reference_dir=args.reference_dir,
     )
     print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
     return 2 if result.status == "error" else 0

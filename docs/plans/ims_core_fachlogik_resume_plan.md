@@ -88,24 +88,24 @@ Der passende PR-Titel waere:
 
 ## Aktualisierte PR-Restplanung
 
-Nach dem IMS-Kernvalidierungsueberblick bleiben ohne neue historische
-Referenzdateien voraussichtlich:
+Nach dem lokalen Inventar der historischen Testdaten unter `incomming/` ist der
+Referenzblocker fuer mehrere Dateifamilien nicht mehr grundsaetzlich offen. Die
+Daten sind aber noch nicht versionierte Referenzen.
 
-- 2-4 PRs fuer weitere Kernlauf-Diagnosen und Akzeptanzgrenzen;
+Aktualisierte grobe Restplanung:
+
+- 1-2 PRs fuer Inventar-/Akzeptanzgrenzen der neuen lokalen Kandidaten;
+- 2-4 PRs fuer die erste Uebernahmefamilie `VUSK1L1.DAT` bis `VUSK1L5.DAT`;
+- 2-4 PRs fuer `IMSVNR01.DAT` bis `IMSVNR06.DAT`;
+- 2-5 PRs fuer Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT`;
 - 2-4 PRs fuer schmale VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
   Planfixtures;
 - 1-3 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
   Kernvalidierungsdiagnosen.
 
-Mit neuen echten historischen Referenzen unter `tests/references/legacy_agrsich/`
-kommen je Dateifamilie voraussichtlich 2-4 PRs hinzu: Parser-/Alignment-Test,
-Fixture-Erweiterung, Coverage-/Overview-Anpassung und gegebenenfalls
-Abweichungsanalyse.
-
-In Summe bleiben damit ohne neue historische Dateien grob ca. 5-11 reviewbare
-PRs. Mit weiterer historischer Validierung bleibt die konservative Groesse bei
-ca. 12-25+ PRs. Diese Schaetzung ist keine historische
-Vollgleichheitsbehauptung.
+Damit bleiben grob ca. 10-22+ reviewbare PRs bis zu einem deutlich breiteren
+historischen Validierungsstand. Diese Schaetzung ersetzt keine
+Vollgleichheitspruefung.
 
 ## Grenzen
 
