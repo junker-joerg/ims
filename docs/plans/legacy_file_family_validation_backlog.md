@@ -13,7 +13,8 @@ Gesamtgleichheit des Modells missverstanden werden.
 
 ## Naheliegende naechste Kandidaten
 
-- Parameterausgaben wie `VU014PR1.DAT`, aber nur nach separater Feldklaerung.
+- Parameterausgaben wie `VU014PR1.DAT`, aber erst nach belastbarer
+  Feldklaerung und eigener Parserentscheidung.
 
 ## Neuer lokaler Kandidatenbestand
 
@@ -25,7 +26,8 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Uebernahmeschnitt:
 
-- Parameterausgaben wie `VU014PR1.DAT` erst nach eigener Feldklaerung.
+- Noch keine Uebernahme von `VU014PR1.DAT`; zuerst Feldmapping und historische
+  Schreibstelle klaeren.
 
 ## Rest-PR-Planung
 
@@ -42,8 +44,11 @@ Naechster bevorzugter Uebernahmeschnitt:
 - PR 6: Versicherer-Klassenaggregate `IMSVUVK*.DAT` vorbereiten und validieren
   (dieser Schnitt; `insurer_class` ist im Bundle belegt).
 - PR 7: Parameterausgaben wie `VU014PR1.DAT` nur nach eigener Feldklaerung
-  vorbereiten; keine Uebernahme ohne klares Feldmapping.
-- PR 8+: Schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
+  vorbereiten (dieser Schnitt: Inventar und offene Grenzen dokumentiert, keine
+  Referenzuebernahme).
+- PR 8: `VU014PR1.DAT` nur bei geklaertem Feldmapping mit eigenem Parser und
+  gezielten Tests uebernehmen.
+- PR 9+: Schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
   Planfixtures, weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierungsregel

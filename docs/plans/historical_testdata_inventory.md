@@ -54,6 +54,7 @@ Die vorhandenen Parser konnten zentrale Kandidaten lesen:
 | Datei | Parserfamilie | Zeilen | Perioden |
 | --- | --- | ---: | --- |
 | `VU14L1.DAT` | Versicherer | 100 | `1-100` |
+| `VU014PR1.DAT` | Parameterausgabe | 100 | `1-100` |
 | `VUSK1L1.DAT` | Versicherer | 100 | `401-500` |
 | `VUSK1L2.DAT` | Versicherer | 100 | `301-400` |
 | `VUSK1L3.DAT` | Versicherer | 100 | `201-300` |
@@ -109,7 +110,9 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 6. `IMSVUVK1.DAT` bis `IMSVUVK3.DAT` sind aus `WVEMOD1.ZIP` als
    Versicherer-Klassenaggregate uebernommen, weil Format, Header und
    Periodenfenster zum vorhandenen Versicherer-Parser passen.
-7. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.
+7. `VU014PR1.DAT` ist als Parameterausgabe inventarisiert: Header
+   `#t Pr1L1 Pr1l2 Pr1L3 Pr1L4 Pr1L5`, 100 Datenzeilen und Periodenfenster
+   `1-100`; keine Uebernahme ohne geklaertes Feldmapping.
 
 ## Grenzen
 

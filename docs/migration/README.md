@@ -65,5 +65,6 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_rule_family_imsvnr.md`: Vorbereitung der historischen VN-Regelfamilie `IMSVNR01.DAT` bis `IMSVNR06.DAT`
 - `vn_class_family_imsvnvk.md`: Vorbereitung der historischen VN-Klassenaggregate `IMSVNVK1.DAT` bis `IMSVNVK3.DAT`
 - `insurer_class_family_imsvuvk.md`: Vorbereitung der historischen Versicherer-Klassenaggregate `IMSVUVK1.DAT` bis `IMSVUVK3.DAT`
+- `parameter_output_vu014pr1.md`: Inventar und offene Feldklaerung fuer die historische Parameterausgabe `VU014PR1.DAT`
 - `fachlogik_migration_status.md`: Abschlussstand der kontrollierten Fachlogik-Migration im engeren Sinn mit Grenzen und Folgephasen
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
