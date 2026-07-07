@@ -21,6 +21,21 @@ def test_parameter_output_vu014pr1_inventory_is_documented() -> None:
     assert "keine historische Vollgleichheitsbehauptung" in doc
     assert "Keine Uebernahme in `tests/references/legacy_agrsich/`" in doc
     assert "Keine Erweiterung von `tests/fixtures/legacy_validation_bundle.json`" in doc
+    assert "Feldmapping bleibt offen" in doc
+
+
+def test_parameter_output_vu014pr1_field_mapping_limits_are_documented() -> None:
+    doc = DOC.read_text(encoding="utf-8")
+
+    assert "IMSDATA.C" in doc
+    assert "IMS.E" in doc
+    assert "Pr[SIMLAENGE+1]" in doc
+    assert "Pv[16]" in doc
+    assert "VU[j].DatenVU->Sp[1].l.Pr[1]" in doc
+    assert "VU14P1.DAT" in doc
+    assert "VU14P2.DAT" in doc
+    assert "IMSVU014.DAT" in doc
+    assert "keine zweite `VU014PR1.DAT`-Variante" in doc
 
 
 def test_parameter_output_vu014pr1_document_is_listed() -> None:

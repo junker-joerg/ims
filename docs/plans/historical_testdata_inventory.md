@@ -112,7 +112,12 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
    Periodenfenster zum vorhandenen Versicherer-Parser passen.
 7. `VU014PR1.DAT` ist als Parameterausgabe inventarisiert: Header
    `#t Pr1L1 Pr1l2 Pr1L3 Pr1L4 Pr1L5`, 100 Datenzeilen und Periodenfenster
-   `1-100`; keine Uebernahme ohne geklaertes Feldmapping.
+   `1-100`; die Altcode-Spur belegt `Pr1` nur als Versicherer-Praemienbezug
+   fuer Sparte 1, aber nicht die Bedeutung von `L1` bis `L5`. Verwandte lokale
+   Kandidaten `VU14P1.DAT`, `VU14P2.DAT` und archivierte `IMSVU014.DAT`
+   Varianten sind normale 13-spaltige Agrsich-Ausgaben und klaeren das
+   Parameterausgabe-Format nicht. Keine Uebernahme ohne geklaertes
+   Feldmapping.
 
 ## Grenzen
 

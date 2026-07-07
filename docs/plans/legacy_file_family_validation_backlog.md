@@ -13,8 +13,11 @@ Gesamtgleichheit des Modells missverstanden werden.
 
 ## Naheliegende naechste Kandidaten
 
-- Parameterausgaben wie `VU014PR1.DAT`, aber erst nach belastbarer
-  Feldklaerung und eigener Parserentscheidung.
+- Schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
+  Planfixtures, weil die naheliegenden Agrsich-Dateifamilien inzwischen
+  versioniert und validiert sind.
+- Parameterausgaben wie `VU014PR1.DAT` bleiben geparkt, bis eine belastbare
+  Feldklaerung und eigene Parserentscheidung vorliegt.
 
 ## Neuer lokaler Kandidatenbestand
 
@@ -24,10 +27,11 @@ Kandidatenbestand. Details stehen in
 Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 `tests/references/legacy_agrsich/` uebernommen.
 
-Naechster bevorzugter Uebernahmeschnitt:
+Naechster bevorzugter Arbeitsschnitt:
 
-- Noch keine Uebernahme von `VU014PR1.DAT`; zuerst Feldmapping und historische
-  Schreibstelle klaeren.
+- Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
+  einen vorhandenen expliziten Kernlogik-/Planfixture-Pfad verbreitern, ohne
+  Simulation, automatische historische Regelwahl oder Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -40,16 +44,21 @@ Naechster bevorzugter Uebernahmeschnitt:
 - PR 4: Coverage-/Next-Family-Plan so aktualisieren, dass `policyholder_rule`
   nach vollstaendiger IMSVNR-Abdeckung als covered erscheint (erledigt).
 - PR 5: VN-Klassenaggregate `IMSVNVK*.DAT` vorbereiten und validieren
-  (dieser Schnitt; `policyholder_class` ist im Bundle belegt).
+  (erledigt; `policyholder_class` ist im Bundle belegt).
 - PR 6: Versicherer-Klassenaggregate `IMSVUVK*.DAT` vorbereiten und validieren
-  (dieser Schnitt; `insurer_class` ist im Bundle belegt).
+  (erledigt; `insurer_class` ist im Bundle belegt).
 - PR 7: Parameterausgaben wie `VU014PR1.DAT` nur nach eigener Feldklaerung
-  vorbereiten (dieser Schnitt: Inventar und offene Grenzen dokumentiert, keine
-  Referenzuebernahme).
-- PR 8: `VU014PR1.DAT` nur bei geklaertem Feldmapping mit eigenem Parser und
-  gezielten Tests uebernehmen.
-- PR 9+: Schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
-  Planfixtures, weiterhin ohne Vollgleichheitsbehauptung.
+  vorbereiten (erledigt: Inventar, verwandte lokale Kandidaten und Altcode-Spur
+  dokumentiert; Feldmapping bleibt offen, keine Referenzuebernahme).
+- PR 8: `VU014PR1.DAT` nur wieder aufnehmen, wenn eine historische
+  Schreibstelle oder ein belastbares Feldmapping fuer `Pr1L1` bis `Pr1L5`
+  vorliegt; dann eigener Parser und gezielte Tests.
+- PR 9: Naechsten Kernlogik-Schnitt aus den vorhandenen Planfixtures waehlen:
+  bevorzugt ein eng abgegrenzter VU-/VN-Regel- oder Carryover-Anschluss mit
+  expliziten Eingaben, ohne Simulation und ohne automatische historische
+  Regelwahl.
+- PR 10+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
+  vorhandenen Planfixtures, weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierungsregel
 

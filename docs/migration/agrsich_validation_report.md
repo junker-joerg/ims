@@ -177,11 +177,13 @@ Referenzfenster-Familie im Bundle belegt. Die VN-Klassenaggregate
 `IMSVNVK1.DAT` bis `IMSVNVK3.DAT` sind ebenfalls als Stufe-`III`-Referenzen mit
 `selector_kind = "rule_class"` belegt. Die Versicherer-Klassenaggregate
 `IMSVUVK1.DAT` bis `IMSVUVK3.DAT` sind analog als Stufe-`III`-Referenzen mit
-`selector_kind = "rule_class"` belegt. Der naechste sinnvolle Schritt ist,
-Parameterausgaben wie `VU014PR1.DAT` erst nach separater Feldpruefung
-vorzubereiten. `VU014PR1.DAT` ist inzwischen nur inventarisiert; die Datei ist
-keine Agrsich-Aggregatreferenz im Bundle und bleibt bis zur Feldklaerung aus
-`tests/references/legacy_agrsich/` heraus.
+`selector_kind = "rule_class"` belegt. `VU014PR1.DAT` ist inzwischen als
+Parameterausgabe nur inventarisiert; die Datei ist keine Agrsich-Aggregatreferenz
+im Bundle und bleibt bis zur Feldklaerung aus
+`tests/references/legacy_agrsich/` heraus. Der naechste sinnvolle Schritt liegt
+deshalb nicht in einem weiteren Referenzimport, sondern in einem schmalen
+Kernlogik-/Planfixture-Schnitt ohne Simulation, automatische historische
+Regelwahl oder Vollgleichheitsbehauptung.
 
 ## Lokaler Validierungsueberblick
 

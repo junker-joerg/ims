@@ -59,5 +59,6 @@ historische Referenzziele mit 6300 konkret verglichenen Zeilen.
 ## Naechster Schritt
 
 Nach diesem Schnitt ist `insurer_class` im Legacy-Coverage-Backlog belegt. Der
-naechste kleine Kandidat sind Parameterausgaben wie `VU014PR1.DAT`, aber erst
-nach separater Feldklaerung.
+naechste groessere Kandidat ist ein schmaler Kernlogik-/Planfixture-Schnitt.
+Parameterausgaben wie `VU014PR1.DAT` bleiben bis zu einer belastbaren
+Feldklaerung geparkt und werden nicht als Agrsich-Referenz importiert.
