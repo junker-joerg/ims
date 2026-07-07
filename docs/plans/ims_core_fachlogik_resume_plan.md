@@ -62,17 +62,50 @@ Der passende PR-Titel waere:
    `python -m ims.engine.explicit_period_diagnostics tests/fixtures/replay_vu14_period_plan.json`
    liest Planstruktur, Periodenfolge, globale Perioden, Snapshot-Familien,
    erwartete Regelanwendungsgrenzen und Legacy-Bezuege, startet aber keinen
-   Runner und schreibt keine Ausgaben.
+   Runner und schreibt keine Ausgaben. Dieser Schritt ist umgesetzt.
 2. Validierungsbericht fuer die vorhandenen Legacy-Agrsich-Referenzen
    vereinheitlichen, ohne Toleranzen still zu veraendern. Der lokale Befehl
    `python -m ims.model.legacy_validation_overview tests/fixtures/legacy_validation_bundle.json`
    fasst vorhandene Legacy-Agrsich-Validierungsfixtures als JSON zusammen,
    berichtet Tabellen, Perioden, Abweichungsachsen und die dokumentierte
    `legacy_compare_default`-Toleranz, startet aber keinen Runner und schreibt
-   keine Reportartefakte.
-3. naechsten schmalen VU- oder VN-Regel-Slice aus den vorhandenen Plan-Dateien
-   auswaehlen und mit explizitem Ursprung dokumentieren.
-4. erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
+   keine Reportartefakte. Dieser Schritt ist umgesetzt.
+3. Diagnose-Buendel fuer mehrere vorhandene explizite Periodenplaene
+   zusammenfassen. Der Befehl
+   `python -m ims.engine.explicit_period_diagnostics_bundle tests/fixtures/replay_vu14_period_plan.json tests/fixtures/replay_vusk1_period_plan.json`
+   aggregiert Planstatus, Perioden, globale Perioden, Snapshot-Familien und
+   Legacy-Bezuege, ohne Runner oder Simulation zu starten. Dieser Schritt ist
+   umgesetzt.
+4. IMS-Kernvalidierungsueberblick aus Diagnose-Buendel,
+   Legacy-Validierungsueberblick, Coverage-Matrix und Next-Family-Plan
+   zusammenfuehren. Der Befehl
+   `python -m ims.engine.core_validation_overview --legacy-fixture tests/fixtures/legacy_validation_bundle.json tests/fixtures/replay_vu14_period_plan.json tests/fixtures/replay_vusk1_period_plan.json`
+   bleibt read-only und zeigt, welche weitere Validierung durch fehlende echte
+   historische Referenzen blockiert ist.
+5. Danach einen schmalen VU- oder VN-Regel-Slice aus den vorhandenen
+   Plan-Dateien auswaehlen und mit explizitem Ursprung dokumentieren.
+6. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
+
+## Aktualisierte PR-Restplanung
+
+Nach dem IMS-Kernvalidierungsueberblick bleiben ohne neue historische
+Referenzdateien voraussichtlich:
+
+- 2-4 PRs fuer weitere Kernlauf-Diagnosen und Akzeptanzgrenzen;
+- 2-4 PRs fuer schmale VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
+  Planfixtures;
+- 1-3 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
+  Kernvalidierungsdiagnosen.
+
+Mit neuen echten historischen Referenzen unter `tests/references/legacy_agrsich/`
+kommen je Dateifamilie voraussichtlich 2-4 PRs hinzu: Parser-/Alignment-Test,
+Fixture-Erweiterung, Coverage-/Overview-Anpassung und gegebenenfalls
+Abweichungsanalyse.
+
+In Summe bleiben damit ohne neue historische Dateien grob ca. 5-11 reviewbare
+PRs. Mit weiterer historischer Validierung bleibt die konservative Groesse bei
+ca. 12-25+ PRs. Diese Schaetzung ist keine historische
+Vollgleichheitsbehauptung.
 
 ## Grenzen
 
