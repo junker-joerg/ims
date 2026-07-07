@@ -16,6 +16,21 @@ Gesamtgleichheit des Modells missverstanden werden.
 - Versicherer-Klassenaggregate `IMSVUVK*.DAT`.
 - Parameterausgaben wie `VU014PR1.DAT`, aber nur nach separater Feldklärung.
 
+## Neuer lokaler Kandidatenbestand
+
+Unter `incomming/` liegt nun ein lokaler, nicht versionierter historischer
+Kandidatenbestand. Details stehen in
+`docs/plans/historical_testdata_inventory.md`. Der Bestand hebt mehrere bisherige
+Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
+`tests/references/legacy_agrsich/` uebernommen.
+
+Naechster bevorzugter Uebernahmeschnitt:
+
+- `VUSK1L1.DAT` bis `VUSK1L5.DAT` als zusammenhaengende
+  Versicherer-Stufenfamilie;
+- danach `IMSVNR01.DAT` bis `IMSVNR06.DAT`;
+- danach `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIP-Archiven.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:
