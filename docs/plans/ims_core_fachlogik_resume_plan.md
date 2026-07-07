@@ -90,12 +90,13 @@ Der passende PR-Titel waere:
 
 Nach dem lokalen Inventar der historischen Testdaten unter `incomming/` ist der
 Referenzblocker fuer mehrere Dateifamilien nicht mehr grundsaetzlich offen. Die
-Daten sind aber noch nicht versionierte Referenzen.
+Versicherer-Stufenfamilie `VUSK1L1.DAT` bis `VUSK1L5.DAT` ist nun als
+versionierte Legacy-Referenzfamilie im Bundle abgedeckt; weitere lokale
+Kandidaten bleiben noch nicht versionierte Referenzen.
 
 Aktualisierte grobe Restplanung:
 
-- 1-2 PRs fuer Inventar-/Akzeptanzgrenzen der neuen lokalen Kandidaten;
-- 2-4 PRs fuer die erste Uebernahmefamilie `VUSK1L1.DAT` bis `VUSK1L5.DAT`;
+- 0-1 PRs fuer weitere Inventar-/Akzeptanzgrenzen der neuen lokalen Kandidaten;
 - 2-4 PRs fuer `IMSVNR01.DAT` bis `IMSVNR06.DAT`;
 - 2-5 PRs fuer Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT`;
 - 2-4 PRs fuer schmale VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
@@ -103,7 +104,7 @@ Aktualisierte grobe Restplanung:
 - 1-3 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
   Kernvalidierungsdiagnosen.
 
-Damit bleiben grob ca. 10-22+ reviewbare PRs bis zu einem deutlich breiteren
+Damit bleiben grob ca. 8-18+ reviewbare PRs bis zu einem deutlich breiteren
 historischen Validierungsstand. Diese Schaetzung ersetzt keine
 Vollgleichheitspruefung.
 

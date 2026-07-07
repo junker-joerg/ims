@@ -122,27 +122,43 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert [target.subject_type for target in result.targets] == [
         "insurer",
         "insurer",
+        "insurer",
+        "insurer",
+        "insurer",
+        "insurer",
         "policyholder",
         "policyholder",
     ]
     assert [target.export_filename for target in result.targets] == [
+        "imsvusk1_l1.dat",
+        "imsvusk1_l2.dat",
+        "imsvusk1_l3.dat",
         "imsvusk1.dat",
+        "imsvusk1_l5.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
     ]
     assert [target.periods for target in result.targets] == [
+        list(range(401, 501)),
+        list(range(301, 401)),
+        list(range(201, 301)),
         list(range(101, 201)),
+        list(range(1, 101)),
         list(range(1, 101)),
         list(range(1, 101)),
         list(range(1, 101)),
     ]
     assert result.comparison.matches is True
     assert result.report.matches is True
-    assert result.report.total_files == 4
-    assert result.report.total_rows == 400
-    assert result.report.matched_rows == 400
+    assert result.report.total_files == 8
+    assert result.report.total_rows == 800
+    assert result.report.matched_rows == 800
     assert [summary.subject_type for summary in result.report.file_summaries] == [
+        "insurer",
+        "insurer",
+        "insurer",
+        "insurer",
         "insurer",
         "insurer",
         "policyholder",
@@ -169,30 +185,34 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     ]
     payload = json.loads((tmp_path / "legacy_validation_bundle.json").read_text(encoding="utf-8"))
     assert payload["matches"] is True
-    assert payload["total_rows"] == 400
-    assert payload["files"][1]["filename"] == "imsvu014.dat"
-    assert payload["files"][1]["subject_type"] == "insurer"
-    assert payload["files"][1]["level"] == "I"
-    assert payload["files"][1]["selector_kind"] == "entity"
-    assert payload["files"][1]["selector_value"] == 14
-    assert payload["files"][1]["end_period"] == 100
-    assert payload["files"][2]["filename"] == "imsvnsk1.dat"
-    assert payload["files"][2]["subject_type"] == "policyholder"
-    assert payload["files"][2]["level"] == "IV"
-    assert payload["files"][2]["selector_kind"] == "all"
-    assert payload["files"][2]["selector_value"] == "SK1"
-    assert payload["files"][3]["filename"] == "imsvnr05.dat"
-    assert payload["files"][3]["start_period"] == 1
+    assert payload["total_rows"] == 800
+    assert payload["files"][5]["filename"] == "imsvu014.dat"
+    assert payload["files"][5]["subject_type"] == "insurer"
+    assert payload["files"][5]["level"] == "I"
+    assert payload["files"][5]["selector_kind"] == "entity"
+    assert payload["files"][5]["selector_value"] == 14
+    assert payload["files"][5]["end_period"] == 100
+    assert payload["files"][6]["filename"] == "imsvnsk1.dat"
+    assert payload["files"][6]["subject_type"] == "policyholder"
+    assert payload["files"][6]["level"] == "IV"
+    assert payload["files"][6]["selector_kind"] == "all"
+    assert payload["files"][6]["selector_value"] == "SK1"
+    assert payload["files"][7]["filename"] == "imsvnr05.dat"
+    assert payload["files"][7]["start_period"] == 1
     assert [(item["subject_type"], item["level"], item["row_count"]) for item in payload["group_summaries"]] == [
+        ("insurer", "I", 200),
+        ("insurer", "II", 100),
+        ("insurer", "III", 100),
         ("insurer", "IV", 100),
-        ("insurer", "I", 100),
+        ("insurer", "V", 100),
         ("policyholder", "IV", 100),
         ("policyholder", "II", 100),
     ]
-    assert payload["period_summaries"][0]["global_period"] == 101
-    assert payload["period_summaries"][0]["filenames"] == ["imsvusk1.dat"]
-    assert payload["period_summaries"][100]["global_period"] == 1
-    assert payload["period_summaries"][100]["filenames"] == [
+    assert payload["period_summaries"][0]["global_period"] == 401
+    assert payload["period_summaries"][0]["filenames"] == ["imsvusk1_l1.dat"]
+    assert payload["period_summaries"][400]["global_period"] == 1
+    assert payload["period_summaries"][400]["filenames"] == [
+        "imsvusk1_l5.dat",
         "imsvu014.dat",
         "imsvnsk1.dat",
         "imsvnr05.dat",
@@ -201,26 +221,26 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
 
     with (tmp_path / "legacy_validation_bundle.csv").open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
-    assert rows[1]["level"] == "I"
-    assert rows[1]["selector_kind"] == "entity"
-    assert rows[1]["selector_value"] == "14"
-    assert rows[2]["level"] == "IV"
-    assert rows[2]["selector_kind"] == "all"
-    assert rows[2]["selector_value"] == "SK1"
+    assert rows[5]["level"] == "I"
+    assert rows[5]["selector_kind"] == "entity"
+    assert rows[5]["selector_value"] == "14"
+    assert rows[6]["level"] == "IV"
+    assert rows[6]["selector_kind"] == "all"
+    assert rows[6]["selector_value"] == "SK1"
 
     with (tmp_path / "legacy_validation_bundle_groups.csv").open("r", encoding="utf-8", newline="") as handle:
         group_rows = list(csv.DictReader(handle))
     assert group_rows[0]["subject_type"] == "insurer"
-    assert group_rows[0]["level"] == "IV"
-    assert group_rows[0]["row_count"] == "100"
-    assert group_rows[0]["filenames"] == "imsvusk1.dat"
+    assert group_rows[0]["level"] == "I"
+    assert group_rows[0]["row_count"] == "200"
+    assert group_rows[0]["filenames"] == "imsvusk1_l1.dat;imsvu014.dat"
 
     with (tmp_path / "legacy_validation_bundle_periods.csv").open("r", encoding="utf-8", newline="") as handle:
         period_rows = list(csv.DictReader(handle))
-    assert period_rows[0]["global_period"] == "101"
-    assert period_rows[0]["filenames"] == "imsvusk1.dat"
-    assert period_rows[100]["global_period"] == "1"
-    assert period_rows[100]["row_count"] == "3"
+    assert period_rows[0]["global_period"] == "401"
+    assert period_rows[0]["filenames"] == "imsvusk1_l1.dat"
+    assert period_rows[400]["global_period"] == "1"
+    assert period_rows[400]["row_count"] == "4"
 
     with (tmp_path / "legacy_validation_bundle_deviations.csv").open("r", encoding="utf-8", newline="") as handle:
         deviation_rows = list(csv.DictReader(handle))
@@ -229,8 +249,8 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     manifest = json.loads((tmp_path / "legacy_validation_bundle_artifacts.json").read_text(encoding="utf-8"))
     assert manifest["report_name"] == "legacy_validation_bundle"
     assert manifest["matches"] is True
-    assert manifest["total_files"] == 4
-    assert manifest["total_rows"] == 400
+    assert manifest["total_files"] == 8
+    assert manifest["total_rows"] == 800
     assert manifest["artifact_count"] == 7
     assert [artifact["kind"] for artifact in manifest["artifacts"]] == [
         "report_json",
@@ -249,7 +269,7 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert isinstance(loaded_manifest, LegacyValidationArtifactManifest)
     assert loaded_manifest.report_name == "legacy_validation_bundle"
     assert loaded_manifest.matches is True
-    assert loaded_manifest.total_rows == 400
+    assert loaded_manifest.total_rows == 800
     assert [artifact.kind for artifact in loaded_manifest.artifacts] == [
         "report_json",
         "file_summary_csv",
@@ -267,8 +287,8 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
         tmp_path / "legacy_validation_bundle_artifacts.json"
     )
     assert report_payload["matches"] is True
-    assert report_payload["total_rows"] == 400
-    assert report_payload["total_files"] == 4
+    assert report_payload["total_rows"] == 800
+    assert report_payload["total_files"] == 8
 
     report_summary = summarize_legacy_validation_report_payload_from_manifest(
         tmp_path / "legacy_validation_bundle_artifacts.json"
@@ -276,9 +296,9 @@ def test_legacy_validation_fixture_runs_multiple_file_families(tmp_path: Path) -
     assert isinstance(report_summary, LegacyValidationReportPayloadSummary)
     assert report_summary.report_name == "legacy_validation_bundle"
     assert report_summary.matches is True
-    assert report_summary.total_files == 4
-    assert report_summary.total_rows == 400
-    assert report_summary.matched_rows == 400
+    assert report_summary.total_files == 8
+    assert report_summary.total_rows == 800
+    assert report_summary.matched_rows == 800
     assert report_summary.mismatched_rows == 0
     assert report_summary.match_rate == 1.0
     assert report_summary.artifact_kinds == [
@@ -311,7 +331,7 @@ def test_legacy_validation_artifact_manifest_loads_relative_output_paths(
     assert loaded_manifest.artifact_for_kind("report_json") is not None
 
     payload = load_legacy_validation_report_payload_from_manifest(manifest_path)
-    assert payload["total_rows"] == 400
+    assert payload["total_rows"] == 800
 
 
 def test_legacy_validation_artifact_manifest_prefers_manifest_relative_paths(
@@ -341,8 +361,8 @@ def test_legacy_validation_artifact_manifest_prefers_manifest_relative_paths(
         stale_report_path.unlink()
 
     assert payload["matches"] is True
-    assert payload["total_files"] == 4
-    assert payload["total_rows"] == 400
+    assert payload["total_files"] == 8
+    assert payload["total_rows"] == 800
 
 
 def test_legacy_validation_fixture_rejects_unknown_subject_type(tmp_path: Path) -> None:
@@ -543,15 +563,15 @@ def test_legacy_validation_report_payload_summary_tracks_deviations(tmp_path: Pa
     report_path = result.artifacts[0].path
     report_data = json.loads(report_path.read_text(encoding="utf-8"))
     report_data["matches"] = False
-    report_data["matched_rows"] = 39
+    report_data["matched_rows"] = 799
     report_data["mismatched_rows"] = 1
-    report_data["match_rate"] = 0.975
-    report_data["files"][1]["matches"] = False
-    report_data["files"][1]["matched_rows"] = 9
-    report_data["files"][1]["mismatched_rows"] = 1
-    report_data["files"][1]["match_rate"] = 0.9
-    report_data["files"][1]["periods_with_differences"] = [2]
-    report_data["files"][1]["fields_with_differences"] = ["Pr1"]
+    report_data["match_rate"] = 799 / 800
+    report_data["files"][5]["matches"] = False
+    report_data["files"][5]["matched_rows"] = 99
+    report_data["files"][5]["mismatched_rows"] = 1
+    report_data["files"][5]["match_rate"] = 0.99
+    report_data["files"][5]["periods_with_differences"] = [2]
+    report_data["files"][5]["fields_with_differences"] = ["Pr1"]
     report_data["deviation_index"] = [
         {
             "filename": "imsvu014.dat",
@@ -570,16 +590,16 @@ def test_legacy_validation_report_payload_summary_tracks_deviations(tmp_path: Pa
     manifest_path = result.artifacts[-1].path
     manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest_data["matches"] = False
-    manifest_data["matched_rows"] = 39
+    manifest_data["matched_rows"] = 799
     manifest_data["mismatched_rows"] = 1
     manifest_path.write_text(json.dumps(manifest_data), encoding="utf-8")
 
     summary = summarize_legacy_validation_report_payload_from_manifest(manifest_path)
 
     assert summary.matches is False
-    assert summary.matched_rows == 39
+    assert summary.matched_rows == 799
     assert summary.mismatched_rows == 1
-    assert summary.match_rate == 0.975
+    assert summary.match_rate == 799 / 800
     assert summary.filenames_with_differences == ["imsvu014.dat"]
     assert summary.periods_with_differences == [2]
     assert summary.fields_with_differences == ["Pr1"]
@@ -621,9 +641,9 @@ def test_legacy_validation_report_payload_summary_bundle_from_manifests(tmp_path
     assert isinstance(bundle, LegacyValidationReportSummaryBundle)
     assert bundle.report_count == 2
     assert bundle.matches is True
-    assert bundle.total_files == 8
-    assert bundle.total_rows == 800
-    assert bundle.matched_rows == 800
+    assert bundle.total_files == 16
+    assert bundle.total_rows == 1600
+    assert bundle.matched_rows == 1600
     assert bundle.mismatched_rows == 0
     assert bundle.match_rate == 1.0
     assert bundle.artifact_count == 14
@@ -656,8 +676,8 @@ def test_legacy_validation_report_payload_summary_bundle_from_directory(tmp_path
     bundle = summarize_legacy_validation_report_payloads_from_directory(tmp_path)
 
     assert bundle.report_count == 2
-    assert bundle.total_files == 8
-    assert bundle.total_rows == 800
+    assert bundle.total_files == 16
+    assert bundle.total_rows == 1600
     assert bundle.match_rate == 1.0
 
 
@@ -673,12 +693,12 @@ def test_legacy_validation_report_payload_summary_bundle_tracks_mixed_results(tm
     report_path = second.artifacts[0].path
     report_data = json.loads(report_path.read_text(encoding="utf-8"))
     report_data["matches"] = False
-    report_data["matched_rows"] = 399
+    report_data["matched_rows"] = 799
     report_data["mismatched_rows"] = 1
-    report_data["match_rate"] = 0.9975
-    report_data["files"][1]["matches"] = False
-    report_data["files"][1]["matched_rows"] = 99
-    report_data["files"][1]["mismatched_rows"] = 1
+    report_data["match_rate"] = 799 / 800
+    report_data["files"][5]["matches"] = False
+    report_data["files"][5]["matched_rows"] = 99
+    report_data["files"][5]["mismatched_rows"] = 1
     report_data["deviation_index"] = [
         {
             "filename": "imsvu014.dat",
@@ -697,7 +717,7 @@ def test_legacy_validation_report_payload_summary_bundle_tracks_mixed_results(tm
     manifest_path = second.artifacts[-1].path
     manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest_data["matches"] = False
-    manifest_data["matched_rows"] = 399
+    manifest_data["matched_rows"] = 799
     manifest_data["mismatched_rows"] = 1
     manifest_path.write_text(json.dumps(manifest_data), encoding="utf-8")
 
@@ -706,11 +726,11 @@ def test_legacy_validation_report_payload_summary_bundle_tracks_mixed_results(tm
     )
 
     assert bundle.matches is False
-    assert bundle.total_files == 8
-    assert bundle.total_rows == 800
-    assert bundle.matched_rows == 799
+    assert bundle.total_files == 16
+    assert bundle.total_rows == 1600
+    assert bundle.matched_rows == 1599
     assert bundle.mismatched_rows == 1
-    assert bundle.match_rate == 799 / 800
+    assert bundle.match_rate == 1599 / 1600
     assert bundle.filenames_with_differences == ["imsvu014.dat"]
     assert bundle.periods_with_differences == [2]
     assert bundle.fields_with_differences == ["Pr1"]
@@ -742,8 +762,8 @@ def test_legacy_validation_report_payload_summary_bundle_writes_json_and_csv(tmp
     payload = json.loads(json_path.read_text(encoding="utf-8"))
     assert payload == legacy_validation_report_summary_bundle_to_dict(bundle)
     assert payload["report_count"] == 2
-    assert payload["total_files"] == 8
-    assert payload["total_rows"] == 800
+    assert payload["total_files"] == 16
+    assert payload["total_rows"] == 1600
     assert payload["summaries"][0] == legacy_validation_report_payload_summary_to_dict(
         bundle.summaries[0]
     )
@@ -753,8 +773,8 @@ def test_legacy_validation_report_payload_summary_bundle_writes_json_and_csv(tmp
     assert len(rows) == 2
     assert rows[0]["report_name"] == "legacy_validation_bundle"
     assert rows[0]["matches"] == "True"
-    assert rows[0]["total_files"] == "4"
-    assert rows[0]["total_rows"] == "400"
+    assert rows[0]["total_files"] == "8"
+    assert rows[0]["total_rows"] == "800"
     assert rows[0]["match_rate"] == "1.000000"
     assert rows[0]["artifact_count"] == "7"
     assert rows[0]["deviation_count"] == "0"
@@ -783,8 +803,8 @@ def test_legacy_validation_report_summary_bundle_artifacts_roundtrip(tmp_path: P
     assert manifest.bundle_name == "validation_batch"
     assert manifest.matches is True
     assert manifest.report_count == 2
-    assert manifest.total_files == 8
-    assert manifest.total_rows == 800
+    assert manifest.total_files == 16
+    assert manifest.total_rows == 1600
     assert manifest.artifact_count == 3
     assert [artifact.kind for artifact in manifest.artifacts] == [
         "summary_bundle_json",
@@ -801,7 +821,7 @@ def test_legacy_validation_report_summary_bundle_artifacts_roundtrip(tmp_path: P
         tmp_path / "bundle" / "validation_batch_artifacts.json"
     )
     assert loaded_manifest.bundle_name == "validation_batch"
-    assert loaded_manifest.total_rows == 800
+    assert loaded_manifest.total_rows == 1600
     assert loaded_manifest.artifact_for_kind("summary_bundle_json") is not None
     assert loaded_manifest.artifact_for_kind("unknown") is None
 
@@ -835,7 +855,7 @@ def test_legacy_validation_report_summary_bundle_manifest_loads_relative_output_
     payload = load_legacy_validation_report_summary_bundle_payload_from_manifest(
         manifest.artifacts[-1].path
     )
-    assert payload["total_rows"] == 400
+    assert payload["total_rows"] == 800
 
 
 def test_legacy_validation_report_summary_bundle_manifest_rejects_missing_artifact(tmp_path: Path) -> None:
@@ -897,13 +917,13 @@ def test_legacy_validation_report_summary_bundle_artifacts_from_manifests(tmp_pa
 
     assert manifest.bundle_name == "batch_from_manifests"
     assert manifest.report_count == 2
-    assert manifest.total_files == 8
-    assert manifest.total_rows == 800
+    assert manifest.total_files == 16
+    assert manifest.total_rows == 1600
     payload = load_legacy_validation_report_summary_bundle_payload_from_manifest(
         manifest.artifacts[-1].path
     )
     assert payload["report_count"] == 2
-    assert payload["total_rows"] == 800
+    assert payload["total_rows"] == 1600
     assert [artifact.path.name for artifact in manifest.artifacts] == [
         "batch_from_manifests.json",
         "batch_from_manifests.csv",
@@ -929,9 +949,9 @@ def test_legacy_validation_report_summary_bundle_artifacts_from_directory(tmp_pa
 
     assert manifest.bundle_name == "batch_from_directory"
     assert manifest.report_count == 2
-    assert manifest.total_files == 8
-    assert manifest.total_rows == 800
-    assert manifest.matched_rows == 800
+    assert manifest.total_files == 16
+    assert manifest.total_rows == 1600
+    assert manifest.matched_rows == 1600
     assert manifest.artifact_count == 3
     assert all(artifact.path.exists() for artifact in manifest.artifacts)
 
@@ -956,8 +976,8 @@ def test_legacy_validation_report_summary_bundle_directory_scan_ignores_summary_
     bundle = summarize_legacy_validation_report_payloads_from_directory(tmp_path / "runs")
 
     assert bundle.report_count == 2
-    assert bundle.total_files == 8
-    assert bundle.total_rows == 800
+    assert bundle.total_files == 16
+    assert bundle.total_rows == 1600
 
 
 def test_legacy_validation_report_summary_bundle_artifacts_from_directory_rejects_empty_input(
@@ -988,15 +1008,15 @@ def test_legacy_validation_batch_fixture_runs_items_and_writes_summary(tmp_path:
     ]
     assert all(isinstance(item, LegacyValidationBatchRunItem) for item in result.runs)
     assert [item.output_dir.name for item in result.runs] == ["bundle_a", "bundle_b"]
-    assert [item.result.report.total_rows for item in result.runs] == [400, 400]
+    assert [item.result.report.total_rows for item in result.runs] == [800, 800]
     assert [item.result.report.matches for item in result.runs] == [True, True]
 
     summary_manifest = result.summary_manifest
     assert summary_manifest.bundle_name == "legacy_validation_batch"
     assert summary_manifest.report_count == 2
-    assert summary_manifest.total_files == 8
-    assert summary_manifest.total_rows == 800
-    assert summary_manifest.matched_rows == 800
+    assert summary_manifest.total_files == 16
+    assert summary_manifest.total_rows == 1600
+    assert summary_manifest.matched_rows == 1600
     assert summary_manifest.artifact_count == 3
     assert [artifact.path.name for artifact in summary_manifest.artifacts] == [
         "legacy_validation_batch.json",
@@ -1009,7 +1029,7 @@ def test_legacy_validation_batch_fixture_runs_items_and_writes_summary(tmp_path:
         summary_manifest.artifacts[-1].path
     )
     assert payload["report_count"] == 2
-    assert payload["total_rows"] == 800
+    assert payload["total_rows"] == 1600
     assert payload["report_names"] == [
         "legacy_validation_bundle",
         "legacy_validation_bundle",
@@ -1020,7 +1040,7 @@ def test_legacy_validation_batch_fixture_runs_items_and_writes_summary(tmp_path:
     )
     assert batch_manifest_payload["batch_name"] == "legacy_validation_batch"
     assert batch_manifest_payload["run_count"] == 2
-    assert batch_manifest_payload["total_rows"] == 800
+    assert batch_manifest_payload["total_rows"] == 1600
     assert batch_manifest_payload["summary_manifest_path"] == str(
         Path("summary") / "legacy_validation_batch_artifacts.json"
     )

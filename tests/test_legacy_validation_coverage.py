@@ -19,31 +19,47 @@ def test_legacy_validation_coverage_matrix_summarizes_current_bundle() -> None:
     assert isinstance(result, LegacyValidationCoverageMatrixResult)
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_coverage_matrix"
-    assert payload["reference_count"] == 4
-    assert payload["available_reference_count"] == 4
-    assert payload["covered_file_count"] == 4
-    assert payload["covered_rows"] == 400
-    assert payload["covered_periods"] == 400
+    assert payload["reference_count"] == 8
+    assert payload["available_reference_count"] == 8
+    assert payload["covered_file_count"] == 8
+    assert payload["covered_rows"] == 800
+    assert payload["covered_periods"] == 800
     assert payload["gaps"] == []
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert [entry["legacy_filename"] for entry in payload["coverage"]] == [
+        "VUSK1L1.DAT",
+        "VUSK1L2.DAT",
+        "VUSK1L3.DAT",
         "VUSK1L4.DAT",
+        "VUSK1L5.DAT",
         "VU14L1.DAT",
         "IMSVNSK1.DAT",
         "IMSVNR05.DAT",
     ]
-    assert payload["coverage"][0]["start_period"] == 101
-    assert payload["coverage"][0]["end_period"] == 200
+    assert payload["coverage"][0]["start_period"] == 401
+    assert payload["coverage"][0]["end_period"] == 500
     assert payload["coverage"][0]["period_count"] == 100
     assert payload["coverage"][0]["row_count"] == 100
     assert all(entry["legacy_source"] == "legacy_agrsich" for entry in payload["coverage"])
     assert all(entry["is_legacy_reference"] is True for entry in payload["coverage"])
     assert all(entry["covered"] is True for entry in payload["coverage"])
     assert payload["backlog"][0]["family"] == "insurer_stage_all"
-    assert payload["backlog"][0]["available_files"] == ["VUSK1L4.DAT"]
-    assert payload["backlog"][0]["covered_files"] == ["VUSK1L4.DAT"]
-    assert "VUSK1L1.DAT" in payload["backlog"][0]["missing_files"]
+    assert payload["backlog"][0]["available_files"] == [
+        "VUSK1L1.DAT",
+        "VUSK1L2.DAT",
+        "VUSK1L3.DAT",
+        "VUSK1L4.DAT",
+        "VUSK1L5.DAT",
+    ]
+    assert payload["backlog"][0]["covered_files"] == [
+        "VUSK1L1.DAT",
+        "VUSK1L2.DAT",
+        "VUSK1L3.DAT",
+        "VUSK1L4.DAT",
+        "VUSK1L5.DAT",
+    ]
+    assert payload["backlog"][0]["missing_files"] == []
 
 
 def test_legacy_validation_coverage_matrix_reports_available_uncovered_reference(
@@ -63,14 +79,14 @@ def test_legacy_validation_coverage_matrix_reports_available_uncovered_reference
     payload = result.to_dict()
 
     assert payload["status"] == "warning"
-    assert payload["reference_count"] == 3
-    assert payload["covered_rows"] == 300
+    assert payload["reference_count"] == 7
+    assert payload["covered_rows"] == 700
     assert payload["gaps"] == [
         {
             "code": "legacy_reference_not_covered",
-            "legacy_filename": "VUSK1L4.DAT",
-            "legacy_path": str((FIXTURE_DIR / "../references/legacy_agrsich/VUSK1L4.DAT").resolve()),
-            "message": "historical legacy reference is present but not covered by the fixture: VUSK1L4.DAT",
+            "legacy_filename": "VUSK1L1.DAT",
+            "legacy_path": str((FIXTURE_DIR / "../references/legacy_agrsich/VUSK1L1.DAT").resolve()),
+            "message": "historical legacy reference is present but not covered by the fixture: VUSK1L1.DAT",
         }
     ]
 
@@ -187,7 +203,7 @@ def test_legacy_validation_coverage_matrix_cli_prints_stable_json(capsys) -> Non
     assert exit_code == 0
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_coverage_matrix"
-    assert payload["covered_rows"] == 400
+    assert payload["covered_rows"] == 800
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 

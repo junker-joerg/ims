@@ -5,12 +5,11 @@ Gesamtgleichheit des Modells missverstanden werden.
 
 ## Bereits angebunden
 
-- Versicherer-Agrsich: `VU14L1.DAT`, `VUSK1L4.DAT`
+- Versicherer-Agrsich: `VU14L1.DAT`, `VUSK1L1.DAT` bis `VUSK1L5.DAT`
 - VN-Agrsich: `IMSVNR05.DAT`, `IMSVNSK1.DAT`
 
 ## Naheliegende nächste Kandidaten
 
-- Weitere Versicherer-Agrsich-Stufen aus `VUSK1L1.DAT` bis `VUSK1L5.DAT`.
 - Weitere VN-Regeldateien aus `IMSVNR01.DAT` bis `IMSVNR06.DAT`.
 - VN-Klassenaggregate `IMSVNVK*.DAT`.
 - Versicherer-Klassenaggregate `IMSVUVK*.DAT`.
@@ -26,9 +25,7 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Uebernahmeschnitt:
 
-- `VUSK1L1.DAT` bis `VUSK1L5.DAT` als zusammenhaengende
-  Versicherer-Stufenfamilie;
-- danach `IMSVNR01.DAT` bis `IMSVNR06.DAT`;
+- `IMSVNR01.DAT` bis `IMSVNR06.DAT`;
 - danach `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIP-Archiven.
 
 ## Validierungsregel
