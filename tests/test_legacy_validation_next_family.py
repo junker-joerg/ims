@@ -66,6 +66,56 @@ def test_next_family_plan_selects_uncovered_available_reference(tmp_path: Path) 
     assert action_by_family["policyholder_rule"]["blocked_by"] == []
 
 
+def test_next_family_plan_keeps_warning_status_with_actionable_candidate(tmp_path: Path) -> None:
+    reference_dir = tmp_path / "references" / "legacy_agrsich"
+    writer_reference_dir = tmp_path / "references" / "agrsich"
+    reference_dir.mkdir(parents=True)
+    writer_reference_dir.mkdir(parents=True)
+    covered_reference = reference_dir / "IMSVNR05.DAT"
+    uncovered_reference = reference_dir / "IMSVNR06.DAT"
+    writer_reference = writer_reference_dir / "imsvnr05.dat"
+    covered_reference.write_text("placeholder\n", encoding="utf-8")
+    uncovered_reference.write_text("placeholder\n", encoding="utf-8")
+    writer_reference.write_text("placeholder\n", encoding="utf-8")
+    fixture_path = tmp_path / "mixed_bundle.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "targets": [
+                    {
+                        "subject_type": "policyholder",
+                        "legacy_path": str(covered_reference),
+                        "export_filename": "imsvnr05.dat",
+                        "periods": [1],
+                        "level": "II",
+                        "selector_kind": "rule",
+                        "selector_value": 5,
+                    },
+                    {
+                        "subject_type": "policyholder",
+                        "legacy_path": str(writer_reference),
+                        "export_filename": "imsvnr05.dat",
+                        "periods": [1],
+                        "level": "II",
+                        "selector_kind": "rule",
+                        "selector_value": 5,
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = build_legacy_validation_next_family_plan(fixture_path, reference_dir=reference_dir)
+    payload = result.to_dict()
+    action_by_family = {action["family"]: action for action in payload["actions"]}
+
+    assert payload["status"] == "warning"
+    assert payload["issues"][0]["code"] == "legacy_reference_excluded"
+    assert action_by_family["policyholder_rule"]["next_action"] == "add_to_validation_bundle"
+    assert action_by_family["policyholder_rule"]["candidate_files"] == ["IMSVNR06.DAT"]
+
+
 def test_next_family_plan_propagates_coverage_errors(tmp_path: Path) -> None:
     missing_reference = tmp_path / "references" / "legacy_agrsich" / "MISSING.DAT"
     fixture_path = tmp_path / "bad_bundle.json"
