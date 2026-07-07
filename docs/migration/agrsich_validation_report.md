@@ -212,3 +212,26 @@ und keinen Scheduler. Sie schreibt keine Artefakte und behauptet keine
 historische Vollgleichheit. Ihr Zweck ist Transparenz: sichtbar machen, welche
 echten Legacy-Dateien heute belegt sind und welche Referenzfamilien fuer
 spaetere Validierungsarbeit noch fehlen.
+
+## Naechste Legacy-Dateifamilie
+
+Auf Basis dieser Coverage-Matrix kann der naechste Validierungsschritt rein
+lesend geplant werden:
+
+```powershell
+python -m ims.model.legacy_validation_next_family tests/fixtures/legacy_validation_bundle.json
+```
+
+Der Befehl gibt eine stabile JSON-Form mit `mode = "legacy_agrsich_next_family_plan"`
+aus. Er prueft, ob in den bekannten Backlog-Familien bereits echte historische
+Referenzdateien unter `tests/references/legacy_agrsich/` vorhanden, aber noch
+nicht im Fixture abgedeckt sind. Solche Dateien werden als
+`add_to_validation_bundle` vorgeschlagen. Wenn alle vorhandenen echten
+Referenzen bereits abgedeckt sind, meldet der Plan stattdessen
+`await_historical_reference` mit `blocked_by = ["missing_historical_reference"]`.
+
+Damit bleibt der naechste Fachlogikschritt pruefbar, ohne Writer-Ausgaben aus
+`tests/references/agrsich/` als historische Quellen umzudeuten. Der Plan startet
+keinen Vergleich, keinen Runner und keine Simulation, schreibt keine Artefakte,
+verwendet keine Writer-Referenzen als historische Quellen und behauptet keine
+historische Vollgleichheit.
