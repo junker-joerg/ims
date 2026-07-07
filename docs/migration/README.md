@@ -63,5 +63,6 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_agrsich_replay_plan.md`: deterministische VN-Replay-Snapshot-Erzeugung aus Startzustand plus expliziten Periodenupdates
 - `vn_period_plan_legacy_targets.md`: Legacy-Ziele im deterministischen VN-Agrsich-Periodenplan
 - `vn_rule_family_imsvnr.md`: Vorbereitung der historischen VN-Regelfamilie `IMSVNR01.DAT` bis `IMSVNR06.DAT`
+- `vn_class_family_imsvnvk.md`: Vorbereitung der historischen VN-Klassenaggregate `IMSVNVK1.DAT` bis `IMSVNVK3.DAT`
 - `fachlogik_migration_status.md`: Abschlussstand der kontrollierten Fachlogik-Migration im engeren Sinn mit Grenzen und Folgephasen
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

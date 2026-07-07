@@ -66,6 +66,9 @@ Die vorhandenen Parser konnten zentrale Kandidaten lesen:
 | `IMSVNR03.DAT` | VN | 500 | `1-500` |
 | `IMSVNR04.DAT` | VN | 500 | `1-500` |
 | `IMSVNR06.DAT` | VN | 500 | `1-500` |
+| `IMSVNVK1.DAT` | VN | 500 | `1-500` |
+| `IMSVNVK2.DAT` | VN | 500 | `1-500` |
+| `IMSVNVK3.DAT` | VN | 500 | `1-500` |
 | `IMSVNSK1.DAT` | VN | 300 | `1-300` |
 
 ZIP-Stichproben waren ebenfalls mit den bestehenden Parsern lesbar, darunter
@@ -97,9 +100,11 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 4. `IMSVNR06.DAT` ist als letzte fehlende Datei der VN-Regelfamilie aus
    `WVEMOD1.ZIP` uebernommen; `IMSVNR05.DAT` wird im Bundle nun mit dem
    vollen `1-500`-Fenster der Gesamtfamilie abgeglichen.
-5. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
-   auswaehlen.
-6. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.
+5. `IMSVNVK1.DAT` bis `IMSVNVK3.DAT` sind aus `WVEMOD1.ZIP` als
+   VN-Klassenaggregate uebernommen, weil Format, Header und Periodenfenster zum
+   vorhandenen VN-Parser passen.
+6. Danach Versicherer-Klassenaggregate `IMSVUVK*.DAT` aus den ZIPs auswaehlen.
+7. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.
 
 ## Grenzen
 

@@ -36,13 +36,15 @@ def _export_table_from_legacy_row(
     *,
     filename: str,
     selector_value: int,
+    selector_kind: str = "rule",
+    level: str = "II",
 ) -> ExportTable:
     return ExportTable(
         spec=ExportFileSpec(
             filename=filename,
             subject_type="policyholder",
-            level="II",
-            selector_kind="rule",
+            level=level,
+            selector_kind=selector_kind,
             selector_value=selector_value,
         ),
         header=POLICYHOLDER_HEADER,
@@ -67,6 +69,9 @@ def test_parse_legacy_policyholder_dat_reads_new_rule_references() -> None:
         "IMSVNR03.DAT": (1, 500),
         "IMSVNR04.DAT": (1, 500),
         "IMSVNR06.DAT": (1, 500),
+        "IMSVNVK1.DAT": (1, 500),
+        "IMSVNVK2.DAT": (1, 500),
+        "IMSVNVK3.DAT": (1, 500),
     }
 
     for filename, (start_period, end_period) in expected.items():
@@ -116,14 +121,17 @@ def test_compare_policyholder_export_record_to_legacy_row_matches_rule_alignment
 
 def test_compare_policyholder_export_record_to_new_rule_references_matches_alignment() -> None:
     cases = [
-        ("IMSVNR01.DAT", "imsvnr01.dat", 1, 300),
-        ("IMSVNR02.DAT", "imsvnr02.dat", 2, 2),
-        ("IMSVNR03.DAT", "imsvnr03.dat", 3, 500),
-        ("IMSVNR04.DAT", "imsvnr04.dat", 4, 2),
-        ("IMSVNR06.DAT", "imsvnr06.dat", 6, 500),
+        ("IMSVNR01.DAT", "imsvnr01.dat", "II", "rule", 1, 300),
+        ("IMSVNR02.DAT", "imsvnr02.dat", "II", "rule", 2, 2),
+        ("IMSVNR03.DAT", "imsvnr03.dat", "II", "rule", 3, 500),
+        ("IMSVNR04.DAT", "imsvnr04.dat", "II", "rule", 4, 2),
+        ("IMSVNR06.DAT", "imsvnr06.dat", "II", "rule", 6, 500),
+        ("IMSVNVK1.DAT", "imsvnvk1.dat", "III", "rule_class", 1, 500),
+        ("IMSVNVK2.DAT", "imsvnvk2.dat", "III", "rule_class", 2, 2),
+        ("IMSVNVK3.DAT", "imsvnvk3.dat", "III", "rule_class", 3, 500),
     ]
 
-    for legacy_filename, export_filename, selector_value, period in cases:
+    for legacy_filename, export_filename, level, selector_kind, selector_value, period in cases:
         legacy_table = parse_legacy_policyholder_dat(
             Path("tests/references/legacy_agrsich") / legacy_filename
         )
@@ -133,6 +141,8 @@ def test_compare_policyholder_export_record_to_new_rule_references_matches_align
         export_table = _export_table_from_legacy_row(
             legacy_row,
             filename=export_filename,
+            level=level,
+            selector_kind=selector_kind,
             selector_value=selector_value,
         )
         comparison = compare_policyholder_export_record_to_legacy_row(export_table, legacy_row)

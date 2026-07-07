@@ -1,19 +1,19 @@
 # Backlog weiterer Legacy-Dateifamilien
 
-Diese Liste verhindert, dass einzelne grüne Agrsich-Slices als
+Diese Liste verhindert, dass einzelne gruene Agrsich-Slices als
 Gesamtgleichheit des Modells missverstanden werden.
 
 ## Bereits angebunden
 
 - Versicherer-Agrsich: `VU14L1.DAT`, `VUSK1L1.DAT` bis `VUSK1L5.DAT` als
   SK1-Zeitfenster auf derselben unterstuetzten Aggregatstufe
-- VN-Agrsich: `IMSVNR01.DAT` bis `IMSVNR06.DAT`, `IMSVNSK1.DAT`
+- VN-Agrsich: `IMSVNR01.DAT` bis `IMSVNR06.DAT`, `IMSVNSK1.DAT`,
+  `IMSVNVK1.DAT` bis `IMSVNVK3.DAT`
 
-## Naheliegende nächste Kandidaten
+## Naheliegende naechste Kandidaten
 
-- VN-Klassenaggregate `IMSVNVK*.DAT`.
 - Versicherer-Klassenaggregate `IMSVUVK*.DAT`.
-- Parameterausgaben wie `VU014PR1.DAT`, aber nur nach separater Feldklärung.
+- Parameterausgaben wie `VU014PR1.DAT`, aber nur nach separater Feldklaerung.
 
 ## Neuer lokaler Kandidatenbestand
 
@@ -25,24 +25,23 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Uebernahmeschnitt:
 
-- `IMSVNVK*.DAT` aus den ZIP-Archiven nach separater Header-/Feldpruefung;
-- danach `IMSVUVK*.DAT` aus den ZIP-Archiven.
+- `IMSVUVK*.DAT` aus den ZIP-Archiven nach separater Header-/Feldpruefung;
+- danach Parameterausgaben wie `VU014PR1.DAT` erst nach eigener Feldklaerung.
 
 ## Rest-PR-Planung
 
 - PR 1: `IMSVNR01.DAT` und `IMSVNR02.DAT` uebernehmen und validieren
   (erledigt).
 - PR 2: `IMSVNR03.DAT` und `IMSVNR04.DAT` uebernehmen und validieren
-  (dieser Schnitt).
+  (erledigt).
 - PR 3: `IMSVNR06.DAT` uebernehmen; `IMSVNR05.DAT` mit der Gesamtfamilie
-  abgleichen (dieser Schnitt).
+  abgleichen (erledigt).
 - PR 4: Coverage-/Next-Family-Plan so aktualisieren, dass `policyholder_rule`
-  nach vollstaendiger IMSVNR-Abdeckung als covered erscheint (in der
-  Coverage-Matrix erledigt; der Next-Family-Plan richtet den Blick nun auf
-  Klassenaggregate und Parameterausgaben).
-- PR 5: VN-Klassenaggregate `IMSVNVK*.DAT` vorbereiten, aber erst nach
-  separater Header-/Feldpruefung.
-- PR 6: Versicherer-Klassenaggregate `IMSVUVK*.DAT` vorbereiten.
+  nach vollstaendiger IMSVNR-Abdeckung als covered erscheint (erledigt).
+- PR 5: VN-Klassenaggregate `IMSVNVK*.DAT` vorbereiten und validieren
+  (dieser Schnitt; `policyholder_class` ist im Bundle belegt).
+- PR 6: Versicherer-Klassenaggregate `IMSVUVK*.DAT` vorbereiten; zuerst Quelle,
+  Header, Periodenfenster und Zeilenzahl separat pruefen.
 - PR 7: Parameterausgaben wie `VU014PR1.DAT` nur nach eigener Feldklaerung
   vorbereiten.
 - PR 8+: Schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
