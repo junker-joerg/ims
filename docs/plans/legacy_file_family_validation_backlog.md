@@ -7,11 +7,10 @@ Gesamtgleichheit des Modells missverstanden werden.
 
 - Versicherer-Agrsich: `VU14L1.DAT`, `VUSK1L1.DAT` bis `VUSK1L5.DAT` als
   SK1-Zeitfenster auf derselben unterstuetzten Aggregatstufe
-- VN-Agrsich: `IMSVNR01.DAT` bis `IMSVNR05.DAT`, `IMSVNSK1.DAT`
+- VN-Agrsich: `IMSVNR01.DAT` bis `IMSVNR06.DAT`, `IMSVNSK1.DAT`
 
 ## Naheliegende nächste Kandidaten
 
-- Weitere VN-Regeldatei `IMSVNR06.DAT`.
 - VN-Klassenaggregate `IMSVNVK*.DAT`.
 - Versicherer-Klassenaggregate `IMSVUVK*.DAT`.
 - Parameterausgaben wie `VU014PR1.DAT`, aber nur nach separater Feldklärung.
@@ -26,8 +25,8 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Uebernahmeschnitt:
 
-- `IMSVNR06.DAT` und Abgleich der vollstaendigen IMSVNR-Familie;
-- danach `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIP-Archiven.
+- `IMSVNVK*.DAT` aus den ZIP-Archiven nach separater Header-/Feldpruefung;
+- danach `IMSVUVK*.DAT` aus den ZIP-Archiven.
 
 ## Rest-PR-Planung
 
@@ -36,9 +35,11 @@ Naechster bevorzugter Uebernahmeschnitt:
 - PR 2: `IMSVNR03.DAT` und `IMSVNR04.DAT` uebernehmen und validieren
   (dieser Schnitt).
 - PR 3: `IMSVNR06.DAT` uebernehmen; `IMSVNR05.DAT` mit der Gesamtfamilie
-  abgleichen.
+  abgleichen (dieser Schnitt).
 - PR 4: Coverage-/Next-Family-Plan so aktualisieren, dass `policyholder_rule`
-  nach vollstaendiger IMSVNR-Abdeckung als covered erscheint.
+  nach vollstaendiger IMSVNR-Abdeckung als covered erscheint (in der
+  Coverage-Matrix erledigt; der Next-Family-Plan richtet den Blick nun auf
+  Klassenaggregate und Parameterausgaben).
 - PR 5: VN-Klassenaggregate `IMSVNVK*.DAT` vorbereiten, aber erst nach
   separater Header-/Feldpruefung.
 - PR 6: Versicherer-Klassenaggregate `IMSVUVK*.DAT` vorbereiten.

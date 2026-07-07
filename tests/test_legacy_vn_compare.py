@@ -66,6 +66,7 @@ def test_parse_legacy_policyholder_dat_reads_new_rule_references() -> None:
         "IMSVNR02.DAT": (1, 300),
         "IMSVNR03.DAT": (1, 500),
         "IMSVNR04.DAT": (1, 500),
+        "IMSVNR06.DAT": (1, 500),
     }
 
     for filename, (start_period, end_period) in expected.items():
@@ -119,6 +120,7 @@ def test_compare_policyholder_export_record_to_new_rule_references_matches_align
         ("IMSVNR02.DAT", "imsvnr02.dat", 2, 2),
         ("IMSVNR03.DAT", "imsvnr03.dat", 3, 500),
         ("IMSVNR04.DAT", "imsvnr04.dat", 4, 2),
+        ("IMSVNR06.DAT", "imsvnr06.dat", 6, 500),
     ]
 
     for legacy_filename, export_filename, selector_value, period in cases:

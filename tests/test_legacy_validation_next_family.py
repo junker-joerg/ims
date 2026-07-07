@@ -19,15 +19,18 @@ def test_next_family_plan_reports_reference_blockers_for_current_bundle() -> Non
     assert isinstance(result, LegacyValidationNextFamilyPlan)
     assert payload["status"] == "warning"
     assert payload["mode"] == "legacy_agrsich_next_family_plan"
-    assert payload["available_reference_count"] == 12
-    assert payload["covered_file_count"] == 12
+    assert payload["available_reference_count"] == 13
+    assert payload["covered_file_count"] == 13
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert {action["next_action"] for action in payload["actions"]} == {"await_historical_reference"}
-    assert payload["actions"][0]["family"] == "policyholder_rule"
-    assert payload["actions"][0]["candidate_files"] == [
-        "IMSVNR06.DAT",
+    assert [action["family"] for action in payload["actions"]] == [
+        "policyholder_class",
+        "insurer_class",
+        "parameter_output",
     ]
+    assert {action["family"] for action in payload["actions"]}.isdisjoint({"policyholder_rule"})
+    assert payload["actions"][0]["candidate_files"] == ["IMSVNVK*.DAT"]
     assert payload["actions"][0]["blocked_by"] == ["missing_historical_reference"]
 
 

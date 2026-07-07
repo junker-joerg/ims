@@ -29,9 +29,9 @@ def test_core_validation_overview_combines_existing_read_only_diagnostics() -> N
     assert payload["plan_count"] == 2
     assert payload["period_count"] == 8
     assert payload["global_periods"] == [1, 2, 3, 4, 101, 102, 103, 104]
-    assert payload["legacy_reference_count"] == 12
-    assert payload["legacy_covered_rows"] == 2400
-    assert payload["legacy_covered_periods"] == 2400
+    assert payload["legacy_reference_count"] == 13
+    assert payload["legacy_covered_rows"] == 3300
+    assert payload["legacy_covered_periods"] == 3300
     assert payload["next_validation_actions"] == ["await_historical_reference"]
     assert payload["period_diagnostics"]["mode"] == "explicit_period_diagnostics_bundle"
     assert payload["legacy_validation"]["mode"] == "legacy_agrsich_validation_overview"
@@ -124,7 +124,7 @@ def test_core_validation_overview_cli_prints_stable_json(capsys) -> None:
     assert payload["status"] == "warning"
     assert payload["mode"] == "ims_core_validation_overview"
     assert payload["plan_count"] == 2
-    assert payload["legacy_covered_rows"] == 2400
+    assert payload["legacy_covered_rows"] == 3300
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 

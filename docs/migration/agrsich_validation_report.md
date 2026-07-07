@@ -48,11 +48,10 @@ Ein kleines Validierungs-Fixture kann nun mehrere reale Legacy-Zieldateien besch
 gemeinsamen Reportpfad automatisch ausfuehren. Das aktuelle Bundle validiert die
 Versicherer-SK1-Zeitfenster `VUSK1L1.DAT` bis `VUSK1L5.DAT`, ein
 Versicherer-Einzelfenster aus `VU14L1.DAT`, ein VN-Gesamtfenster aus
-`IMSVNSK1.DAT` und fuenf VN-Regelfenster aus `IMSVNR01.DAT` bis
-`IMSVNR05.DAT` in einem Lauf. Die VUSK1-, VU14-, IMSVNSK1- und IMSVNR05-
-Fenster umfassen aktuell je 100 Perioden; `IMSVNR01.DAT` und `IMSVNR02.DAT`
-umfassen je 300 Perioden; `IMSVNR03.DAT` und `IMSVNR04.DAT` umfassen je 500
-Perioden.
+`IMSVNSK1.DAT` und sechs VN-Regelfenster aus `IMSVNR01.DAT` bis
+`IMSVNR06.DAT` in einem Lauf. Die VUSK1-, VU14- und IMSVNSK1-Fenster umfassen
+aktuell je 100 Perioden; `IMSVNR01.DAT` und `IMSVNR02.DAT` umfassen je 300
+Perioden; `IMSVNR03.DAT` bis `IMSVNR06.DAT` umfassen je 500 Perioden.
 Die fuenf `VUSK1L*`-Dateien werden dabei nicht als unterschiedliche
 Aggregatstufen verstanden. Sie bleiben `SK1`/`all` auf der unterstuetzten
 Aggregatstufe `IV` und unterscheiden sich nur durch Legacy-Datei und
@@ -164,15 +163,15 @@ Das gemeinsame Validierungsfixture bleibt auf echte historische Referenzdateien 
 `tests/references/legacy_agrsich/` beschraenkt. Kuratierte Writer-Referenzen unter
 `tests/references/agrsich/` duerfen nicht als Legacy-Baseline in dieses Bundle einfliessen,
 weil sie aktuelle Testausgaben und keine historischen Originaldateien repraesentieren. Das
-Bundle umfasst damit zwoelf historische Referenzdateien mit 2400 konkret verglichenen
+Bundle umfasst damit dreizehn historische Referenzdateien mit 3300 konkret verglichenen
 Zeilen; es bleibt eine Referenzfenster-Pruefung und keine Behauptung vollstaendiger
 historischer Modellgleichheit. Der Fixture-Lader weist Targets zurueck, deren `legacy_path`
 auf die kuratierte Writer-Referenzablage `tests/references/agrsich/` zeigt.
 
-Der naechste sinnvolle Schritt ist, die noch fehlende Regeldatei
-`IMSVNR06.DAT` gezielt zu pruefen, `IMSVNR05.DAT` mit der dann vollstaendigen
-Regelfamilie abzugleichen und erst danach die VN-Regelfamilie als vollstaendig
-belegte Coverage-Familie zu markieren.
+Die VN-Regelfamilie `IMSVNR01.DAT` bis `IMSVNR06.DAT` ist damit als
+Referenzfenster-Familie im Bundle belegt. Der naechste sinnvolle Schritt ist,
+VN-Klassenaggregate `IMSVNVK*.DAT` erst nach separater Header- und Feldpruefung
+vorzubereiten.
 
 ## Lokaler Validierungsueberblick
 

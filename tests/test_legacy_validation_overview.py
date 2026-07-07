@@ -31,14 +31,14 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert isinstance(result, LegacyValidationOverviewResult)
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_validation_overview"
-    assert payload["reference_count"] == 12
-    assert payload["table_count"] == 12
+    assert payload["reference_count"] == 13
+    assert payload["table_count"] == 13
     assert payload["period_count"] == 500
     assert payload["field_summary_count"] == 0
     assert payload["deviation_count"] == 0
     assert payload["matches"] is True
-    assert payload["total_rows"] == 2400
-    assert payload["matched_rows"] == 2400
+    assert payload["total_rows"] == 3300
+    assert payload["matched_rows"] == 3300
     assert payload["mismatched_rows"] == 0
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
@@ -55,6 +55,7 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
         "imsvnr03.dat",
         "imsvnr04.dat",
         "imsvnr05.dat",
+        "imsvnr06.dat",
     ]
     assert [(item["subject_type"], item["source"], item["tolerance"]) for item in payload["tolerances"]] == [
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
@@ -63,6 +64,7 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("insurer", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
+        ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
         ("policyholder", "legacy_compare_default", LEGACY_VALIDATION_DEFAULT_TOLERANCE),
@@ -83,6 +85,7 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
         "imsvnr03.dat",
         "imsvnr04.dat",
         "imsvnr05.dat",
+        "imsvnr06.dat",
     ]
     assert all(entry["legacy_source"] == "legacy_agrsich" for entry in payload["coverage"])
     assert all(entry["is_legacy_reference"] is True for entry in payload["coverage"])
@@ -121,7 +124,10 @@ def test_legacy_validation_overview_summarizes_bundle_without_writing(tmp_path: 
     assert payload["coverage"][10]["end_period"] == 500
     assert payload["coverage"][11]["selector_value"] == 5
     assert payload["coverage"][11]["start_period"] == 1
-    assert payload["coverage"][11]["end_period"] == 100
+    assert payload["coverage"][11]["end_period"] == 500
+    assert payload["coverage"][12]["selector_value"] == 6
+    assert payload["coverage"][12]["start_period"] == 1
+    assert payload["coverage"][12]["end_period"] == 500
     assert set(tmp_path.iterdir()) == before
 
 
@@ -341,7 +347,7 @@ def test_legacy_validation_overview_cli_prints_stable_json(capsys) -> None:
     assert exit_code == 0
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_validation_overview"
-    assert payload["reference_count"] == 12
+    assert payload["reference_count"] == 13
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 

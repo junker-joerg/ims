@@ -65,6 +65,7 @@ Die vorhandenen Parser konnten zentrale Kandidaten lesen:
 | `IMSVNR02.DAT` | VN | 300 | `1-300` |
 | `IMSVNR03.DAT` | VN | 500 | `1-500` |
 | `IMSVNR04.DAT` | VN | 500 | `1-500` |
+| `IMSVNR06.DAT` | VN | 500 | `1-500` |
 | `IMSVNSK1.DAT` | VN | 300 | `1-300` |
 
 ZIP-Stichproben waren ebenfalls mit den bestehenden Parsern lesbar, darunter
@@ -93,7 +94,9 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 3. `IMSVNR03.DAT` und `IMSVNR04.DAT` sind aus `WVEMOD1.ZIP` als weitere
    VN-Regelreferenzen uebernommen, weil Format, Header und Periodenfenster zum
    vorhandenen Parser passen.
-4. Danach `IMSVNR06.DAT` als letzte fehlende Datei der VN-Regelfamilie pruefen.
+4. `IMSVNR06.DAT` ist als letzte fehlende Datei der VN-Regelfamilie aus
+   `WVEMOD1.ZIP` uebernommen; `IMSVNR05.DAT` wird im Bundle nun mit dem
+   vollen `1-500`-Fenster der Gesamtfamilie abgeglichen.
 5. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
    auswaehlen.
 6. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.

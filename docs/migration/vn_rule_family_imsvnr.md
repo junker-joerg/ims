@@ -28,21 +28,23 @@ Spalten:
 ## Aktueller Stand
 
 Im versionierten Referenzbestand sind derzeit `IMSVNR01.DAT` bis
-`IMSVNR05.DAT` als Regelreferenzen enthalten. Die Coverage-Matrix fuehrt die
-ganze Familie bereits unter `policyholder_rule`; `IMSVNR06.DAT` bleibt dort
-bewusst als fehlende historische Quelle sichtbar.
+`IMSVNR06.DAT` als Regelreferenzen enthalten. Die Coverage-Matrix fuehrt die
+ganze Familie unter `policyholder_rule` und zeigt fuer diese Familie keine
+fehlende historische Quelle mehr.
 
 `IMSVNR01.DAT` und `IMSVNR02.DAT` wurden aus dem lokalen Kandidatenpfad
 `incomming/ZINS000/` uebernommen. Beide Dateien sind mit dem vorhandenen
 VN-Parser lesbar, haben den erwarteten Header, 300 Datenzeilen und den
 Periodenbereich `1-300`.
 
-`IMSVNR03.DAT` und `IMSVNR04.DAT` wurden gezielt aus
+`IMSVNR03.DAT`, `IMSVNR04.DAT` und `IMSVNR06.DAT` wurden gezielt aus
 `incomming/IMS.DAT/WVEMOD1.ZIP` uebernommen. Dieser ZIP-Kandidat wurde
 konservativ gewaehlt, weil `IMSVNR05.DAT` aus demselben Archiv bytegleich zur
 bereits versionierten Referenz `tests/references/legacy_agrsich/IMSVNR05.DAT`
-ist. Beide neuen Dateien sind mit dem vorhandenen VN-Parser lesbar, haben den
-erwarteten Header, 500 Datenzeilen und den Periodenbereich `1-500`.
+ist. `IMSVNR05.DAT` wird im Bundle nun ebenfalls ueber das volle
+`1-500`-Fenster der Archivfamilie validiert. Die Dateien sind mit dem
+vorhandenen VN-Parser lesbar, haben den erwarteten Header, 500 Datenzeilen und
+den Periodenbereich `1-500`.
 
 | Datei | Zeilen | Perioden | SHA-256 |
 | --- | ---: | --- | --- |
@@ -50,6 +52,8 @@ erwarteten Header, 500 Datenzeilen und den Periodenbereich `1-500`.
 | `IMSVNR02.DAT` | 300 | `1-300` | `695ca328675b1eb46bcb6e15c0e8c41ce78a48c98ac5216c7644423ced5a4eec` |
 | `IMSVNR03.DAT` | 500 | `1-500` | `8491bec0736fbf4fb95c9b7649338d0142207265024ec5c5e9c3e649bd49ffd4` |
 | `IMSVNR04.DAT` | 500 | `1-500` | `16bdf0b4329ec414990aaaec2ece0d48a8001b43d4a6bb8210625cfb56f3fce4` |
+| `IMSVNR05.DAT` | 500 | `1-500` | `80a83f47de5451cb9b660025ca3c0e511aa268602b0ced2301f82b4467549dfa` |
+| `IMSVNR06.DAT` | 500 | `1-500` | `1d18b3ce471f4b19f525956650b414e1fcfb8b93854eaaf60c8316b18b1eced0` |
 
 Weitere lokale Kandidaten unter `incomming/` duerfen erst in separaten, kleinen
 Schritten nach `tests/references/legacy_agrsich/` uebernommen werden. Dabei muss
