@@ -19,11 +19,11 @@ def test_legacy_validation_coverage_matrix_summarizes_current_bundle() -> None:
     assert isinstance(result, LegacyValidationCoverageMatrixResult)
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_coverage_matrix"
-    assert payload["reference_count"] == 10
-    assert payload["available_reference_count"] == 10
-    assert payload["covered_file_count"] == 10
-    assert payload["covered_rows"] == 1400
-    assert payload["covered_periods"] == 1400
+    assert payload["reference_count"] == 12
+    assert payload["available_reference_count"] == 12
+    assert payload["covered_file_count"] == 12
+    assert payload["covered_rows"] == 2400
+    assert payload["covered_periods"] == 2400
     assert payload["gaps"] == []
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
@@ -37,6 +37,8 @@ def test_legacy_validation_coverage_matrix_summarizes_current_bundle() -> None:
         "IMSVNSK1.DAT",
         "IMSVNR01.DAT",
         "IMSVNR02.DAT",
+        "IMSVNR03.DAT",
+        "IMSVNR04.DAT",
         "IMSVNR05.DAT",
     ]
     assert payload["coverage"][0]["start_period"] == 401
@@ -66,16 +68,18 @@ def test_legacy_validation_coverage_matrix_summarizes_current_bundle() -> None:
     assert payload["backlog"][1]["available_files"] == [
         "IMSVNR01.DAT",
         "IMSVNR02.DAT",
+        "IMSVNR03.DAT",
+        "IMSVNR04.DAT",
         "IMSVNR05.DAT",
     ]
     assert payload["backlog"][1]["covered_files"] == [
         "IMSVNR01.DAT",
         "IMSVNR02.DAT",
+        "IMSVNR03.DAT",
+        "IMSVNR04.DAT",
         "IMSVNR05.DAT",
     ]
     assert payload["backlog"][1]["missing_files"] == [
-        "IMSVNR03.DAT",
-        "IMSVNR04.DAT",
         "IMSVNR06.DAT",
     ]
     assert [entry["level"] for entry in payload["coverage"][:5]] == ["IV", "IV", "IV", "IV", "IV"]
@@ -105,8 +109,8 @@ def test_legacy_validation_coverage_matrix_reports_available_uncovered_reference
     payload = result.to_dict()
 
     assert payload["status"] == "warning"
-    assert payload["reference_count"] == 9
-    assert payload["covered_rows"] == 1300
+    assert payload["reference_count"] == 11
+    assert payload["covered_rows"] == 2300
     assert payload["gaps"] == [
         {
             "code": "legacy_reference_not_covered",
@@ -229,7 +233,7 @@ def test_legacy_validation_coverage_matrix_cli_prints_stable_json(capsys) -> Non
     assert exit_code == 0
     assert payload["status"] == "ok"
     assert payload["mode"] == "legacy_agrsich_coverage_matrix"
-    assert payload["covered_rows"] == 1400
+    assert payload["covered_rows"] == 2400
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 

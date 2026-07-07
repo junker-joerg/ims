@@ -64,6 +64,8 @@ def test_parse_legacy_policyholder_dat_reads_new_rule_references() -> None:
     expected = {
         "IMSVNR01.DAT": (1, 300),
         "IMSVNR02.DAT": (1, 300),
+        "IMSVNR03.DAT": (1, 500),
+        "IMSVNR04.DAT": (1, 500),
     }
 
     for filename, (start_period, end_period) in expected.items():
@@ -84,7 +86,7 @@ def test_parse_legacy_policyholder_dat_reads_new_rule_references() -> None:
             "Sh2",
             "Vm",
         ]
-        assert len(table.rows) == 300
+        assert len(table.rows) == end_period - start_period + 1
         assert table.rows[0].global_period == start_period
         assert table.rows[-1].global_period == end_period
 
@@ -115,6 +117,8 @@ def test_compare_policyholder_export_record_to_new_rule_references_matches_align
     cases = [
         ("IMSVNR01.DAT", "imsvnr01.dat", 1, 300),
         ("IMSVNR02.DAT", "imsvnr02.dat", 2, 2),
+        ("IMSVNR03.DAT", "imsvnr03.dat", 3, 500),
+        ("IMSVNR04.DAT", "imsvnr04.dat", 4, 2),
     ]
 
     for legacy_filename, export_filename, selector_value, period in cases:

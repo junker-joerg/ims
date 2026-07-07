@@ -27,21 +27,29 @@ Spalten:
 
 ## Aktueller Stand
 
-Im versionierten Referenzbestand sind derzeit `IMSVNR01.DAT`, `IMSVNR02.DAT`
-und `IMSVNR05.DAT` als Regelreferenzen enthalten. Die Coverage-Matrix fuehrt die
-ganze Familie bereits unter `policyholder_rule`; `IMSVNR03.DAT`,
-`IMSVNR04.DAT` und `IMSVNR06.DAT` bleiben dort bewusst als fehlende historische
-Quellen sichtbar.
+Im versionierten Referenzbestand sind derzeit `IMSVNR01.DAT` bis
+`IMSVNR05.DAT` als Regelreferenzen enthalten. Die Coverage-Matrix fuehrt die
+ganze Familie bereits unter `policyholder_rule`; `IMSVNR06.DAT` bleibt dort
+bewusst als fehlende historische Quelle sichtbar.
 
 `IMSVNR01.DAT` und `IMSVNR02.DAT` wurden aus dem lokalen Kandidatenpfad
 `incomming/ZINS000/` uebernommen. Beide Dateien sind mit dem vorhandenen
 VN-Parser lesbar, haben den erwarteten Header, 300 Datenzeilen und den
 Periodenbereich `1-300`.
 
+`IMSVNR03.DAT` und `IMSVNR04.DAT` wurden gezielt aus
+`incomming/IMS.DAT/WVEMOD1.ZIP` uebernommen. Dieser ZIP-Kandidat wurde
+konservativ gewaehlt, weil `IMSVNR05.DAT` aus demselben Archiv bytegleich zur
+bereits versionierten Referenz `tests/references/legacy_agrsich/IMSVNR05.DAT`
+ist. Beide neuen Dateien sind mit dem vorhandenen VN-Parser lesbar, haben den
+erwarteten Header, 500 Datenzeilen und den Periodenbereich `1-500`.
+
 | Datei | Zeilen | Perioden | SHA-256 |
 | --- | ---: | --- | --- |
 | `IMSVNR01.DAT` | 300 | `1-300` | `79cff0463c0bd9489459fd92694e4650b59c0a52c0703d879e5142aeaea4b9c9` |
 | `IMSVNR02.DAT` | 300 | `1-300` | `695ca328675b1eb46bcb6e15c0e8c41ce78a48c98ac5216c7644423ced5a4eec` |
+| `IMSVNR03.DAT` | 500 | `1-500` | `8491bec0736fbf4fb95c9b7649338d0142207265024ec5c5e9c3e649bd49ffd4` |
+| `IMSVNR04.DAT` | 500 | `1-500` | `16bdf0b4329ec414990aaaec2ece0d48a8001b43d4a6bb8210625cfb56f3fce4` |
 
 Weitere lokale Kandidaten unter `incomming/` duerfen erst in separaten, kleinen
 Schritten nach `tests/references/legacy_agrsich/` uebernommen werden. Dabei muss

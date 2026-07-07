@@ -63,11 +63,13 @@ Die vorhandenen Parser konnten zentrale Kandidaten lesen:
 | `IMSVUSK1.DAT` | Versicherer | 300 | `1-300` |
 | `IMSVNR01.DAT` | VN | 300 | `1-300` |
 | `IMSVNR02.DAT` | VN | 300 | `1-300` |
+| `IMSVNR03.DAT` | VN | 500 | `1-500` |
+| `IMSVNR04.DAT` | VN | 500 | `1-500` |
 | `IMSVNSK1.DAT` | VN | 300 | `1-300` |
 
 ZIP-Stichproben waren ebenfalls mit den bestehenden Parsern lesbar, darunter
-`IMSVNR06.DAT`, `IMSVNVK1.DAT`, `IMSVUVK1.DAT`, `IMSVUR01.DAT` und
-`IMSVUVK3.DAT`.
+`IMSVNR03.DAT`, `IMSVNR04.DAT`, `IMSVNR06.DAT`, `IMSVNVK1.DAT`,
+`IMSVUVK1.DAT`, `IMSVUR01.DAT` und `IMSVUVK3.DAT`.
 
 ## Abgrenzung zum bestehenden Referenzbestand
 
@@ -88,11 +90,13 @@ Dateifamilien sollen in separaten PRs aufgenommen werden.
 2. `IMSVNR01.DAT` und `IMSVNR02.DAT` sind als erste zusaetzliche
    VN-Regelreferenzen uebernommen, weil Format, Header und Periodenfenster zum
    vorhandenen Parser passen.
-3. Danach `IMSVNR03.DAT`, `IMSVNR04.DAT` und `IMSVNR06.DAT` als Rest der
-   VN-Regelfamilie pruefen.
-4. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
+3. `IMSVNR03.DAT` und `IMSVNR04.DAT` sind aus `WVEMOD1.ZIP` als weitere
+   VN-Regelreferenzen uebernommen, weil Format, Header und Periodenfenster zum
+   vorhandenen Parser passen.
+4. Danach `IMSVNR06.DAT` als letzte fehlende Datei der VN-Regelfamilie pruefen.
+5. Danach Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT` aus den ZIPs
    auswaehlen.
-5. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.
+6. `VU014PR1.DAT` erst nach separater Feldklaerung aufnehmen.
 
 ## Grenzen
 
