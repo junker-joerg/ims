@@ -23,6 +23,7 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     plan = PLAN.read_text(encoding="utf-8")
 
     assert "Ergaenze IMS-Kernlauf-Diagnose fuer explizite Periodenplaene" in plan
+    assert "Plane Execution-Summary-Vertrag im IMS-Kernvalidierungsueberblick" in plan
     assert "python -m ims.model.legacy_validation_overview tests/fixtures/legacy_validation_bundle.json" in plan
     assert "bestehenden expliziten Periodenplan und Runner inventarisieren" in plan
     assert "deterministische Kernlauf-Diagnose" in plan
@@ -32,6 +33,8 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Periodenfolge" in plan
     assert "Legacy-Targets" in plan
     assert "build_explicit_multi_period_execution_summary" in plan
+    assert "Execution-Summary-Vertraege" in plan
+    assert "ohne Runner-Start" in plan
     assert "ohne Simulation oder automatische historische Regelwahl" in plan
 
 
@@ -43,6 +46,7 @@ def test_ims_core_resume_plan_keeps_boundaries_conservative() -> None:
     assert "kein neuer HTTP-Endpunkt" in plan
     assert "kein HTTP- oder UI-Schreibpfad" in plan
     assert "kein funktionaler Run-Start" in plan
+    assert "kein Start eines expliziten Periodenrunners aus dem Kernvalidierungsueberblick" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
     assert "keine Behauptung, dass nicht vorhandene `legacy_c/`-Quellen gelesen wurden" in plan
 

@@ -35,10 +35,10 @@ darf deshalb keine nicht vorhandene C-Quelle als gelesen behaupten. Belastbare
 Referenzpunkte sind die vorhandenen Portierungsplaene, Python-Slices,
 Legacy-DAT-Referenzen und Vergleichstests.
 
-## Naechster groesserer Kernblock
+## Bisheriger groesserer Kernblock
 
-Der naechste fachliche Block sollte die vorhandenen expliziten VU/VN-Periodenlaeufe
-in Richtung validierbarer Kernlauf verdichten:
+Der erste fachliche Block nach der Workbench hat die vorhandenen expliziten
+VU/VN-Periodenlaeufe in Richtung validierbarer Kernlauf verdichtet:
 
 1. bestehenden expliziten Periodenplan und Runner inventarisieren;
 2. die heute unterstuetzten Snapshot-Familien und Carryover-Flags als stabile
@@ -54,6 +54,33 @@ in Richtung validierbarer Kernlauf verdichten:
 Der passende PR-Titel waere:
 
 `Ergaenze IMS-Kernlauf-Diagnose fuer explizite Periodenplaene`
+
+Dieser Block ist umgesetzt. Der aktuelle Stand trennt weiterhin:
+
+- read-only Plan- und Bundle-Diagnosen, die keine Runner starten;
+- echte explizite Mehrperiodenlaeufe, die nur ueber explizite Snapshots und
+  Tests/gezielte Aufrufe laufen;
+- `build_explicit_multi_period_execution_summary` als stabile Beschreibung eines
+  bereits ausgefuehrten expliziten Mehrperiodenergebnisses.
+
+## Naechster groesserer Kernblock
+
+Der naechste groessere Schritt sollte die Execution-Summary-Vertraege in den
+IMS-Kernvalidierungsueberblick einordnen, ohne dort einen Lauf zu starten. Ziel
+ist eine gemeinsame, read-only Sprache fuer:
+
+1. geplante Periodenstruktur aus `explicit_period_diagnostics`;
+2. historische Referenzabdeckung aus `legacy_validation_overview` und Coverage;
+3. vorhandene Execution-Summary-Felder als erwarteter Ergebnisvertrag fuer
+   spaetere kontrollierte Ausfuehrungsadapter;
+4. klare Blocker, wenn nur Plan-Diagnosen vorliegen und keine ausgefuehrte
+   Summary vorhanden ist;
+5. weiterhin keine Simulation, keine automatische historische Regelwahl und
+   keine Vollgleichheitsbehauptung.
+
+Der passende PR-Titel waere:
+
+`Plane Execution-Summary-Vertrag im IMS-Kernvalidierungsueberblick`
 
 ## Vorgeschlagene PR-Reihenfolge
 
@@ -88,7 +115,13 @@ Der passende PR-Titel waere:
    beschreibt ausgefuehrte explizite VU/VN-Mehrperiodenlaeufe mit
    Periodenachsen, Anwendungszaehlungen, Carryover- und Legacy-Report-Status,
    ohne Simulation oder automatische historische Regelwahl zu behaupten.
-6. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
+6. Als naechsten Schnitt den Execution-Summary-Vertrag im
+   `ims_core_validation_overview` planen: read-only, ohne Runner-Start und ohne
+   Ausfuehrung aus dem Overview heraus, aber mit expliziter Kennzeichnung,
+   welche Ergebnisfelder ein spaeter kontrollierter Ausfuehrungsadapter liefern
+   muss.
+   Kurzgrenze: keine Ausfuehrung aus dem Overview heraus.
+7. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
 
 ## Aktualisierte PR-Restplanung
 
@@ -105,8 +138,10 @@ Aktualisierte grobe Restplanung:
 - 2-5 PRs fuer Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT`;
 - 2-4 PRs fuer schmale VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
   Planfixtures;
+- 1 PR fuer einen read-only Execution-Summary-Vertrag im
+  Kernvalidierungsueberblick;
 - 1-3 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
-  Kernvalidierungsdiagnosen.
+  Kernvalidierungsdiagnosen und Summary-Vertraege.
 
 Damit bleiben grob ca. 8-18+ reviewbare PRs bis zu einem deutlich breiteren
 historischen Validierungsstand. Diese Schaetzung ersetzt keine
@@ -120,6 +155,7 @@ Vollgleichheitspruefung.
 - kein HTTP- oder UI-Schreibpfad;
 - kein Browser-Upload oder Browser-Download;
 - kein funktionaler Run-Start;
+- kein Start eines expliziten Periodenrunners aus dem Kernvalidierungsueberblick;
 - kein Szenario-Editor;
 - keine SQLite-Migration;
 - keine historische Vollgleichheitsbehauptung;

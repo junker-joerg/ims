@@ -29,9 +29,10 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Arbeitsschnitt:
 
-- Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
-  einen vorhandenen expliziten Kernlogik-/Planfixture-Pfad verbreitern, ohne
-  Simulation, automatische historische Regelwahl oder Vollgleichheitsbehauptung.
+- Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll den
+  Execution-Summary-Vertrag der expliziten Kernlogik in den read-only
+  Kernvalidierungsueberblick einordnen, ohne Runner-Start, Simulation,
+  automatische historische Regelwahl oder Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -54,11 +55,14 @@ Naechster bevorzugter Arbeitsschnitt:
   Schreibstelle oder ein belastbares Feldmapping fuer `Pr1L1` bis `Pr1L5`
   vorliegt; dann eigener Parser und gezielte Tests.
 - PR 9: Naechsten Kernlogik-Schnitt aus den vorhandenen Planfixtures waehlen
-  (dieser Schnitt: stabile Execution-Summary fuer ausgefuehrte explizite
+  (erledigt: stabile Execution-Summary fuer ausgefuehrte explizite
   VU/VN-Mehrperiodenlaeufe, ohne Simulation und ohne automatische historische
   Regelwahl).
-- PR 10+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
-  vorhandenen Planfixtures, weiterhin ohne Vollgleichheitsbehauptung.
+- PR 10: Execution-Summary-Vertrag im `ims_core_validation_overview` read-only
+  planen und dokumentieren; keine Ausfuehrung aus dem Overview heraus.
+- PR 11+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
+  vorhandenen Planfixtures oder eine spaetere Run-Control-Anbindung, weiterhin
+  ohne Vollgleichheitsbehauptung.
 
 ## Validierungsregel
 

@@ -196,3 +196,5 @@ def test_core_validation_overview_is_documented() -> None:
     assert 'mode = "ims_core_validation_overview"' in migration_doc
     assert "Aktualisierte PR-Restplanung" in resume_plan
     assert "IMS-Kernvalidierungsueberblick" in resume_plan
+    assert "Execution-Summary-Vertrag" in resume_plan
+    assert "keine Ausfuehrung aus dem Overview heraus" in resume_plan
