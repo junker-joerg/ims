@@ -18,6 +18,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/run-control/request-contract` beschreibt lesend den Run-Control-Request-Vertrag, ohne Request-Body, Upload oder Schreiben.
 - `/api/run-control/dry-run-contract` beschreibt den gesperrten Run-Control-Dry-Run-Vertrag, ohne Request-Body, POST/PUT oder Ausfuehrung.
 - `/api/run-control/preflight/{run_id}` prueft den ausgewaehlten Run lesend gegen die gesperrte Run-Control-Grenze.
+- `/api/core-validation/overview` beschreibt lesend den IMS-Kernvalidierungsueberblick, Legacy-Abdeckung und den Execution-Summary-Vertrag, ohne einen Runner zu starten.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
 - Die Workbench zeigt die aktuelle Szenario-/Run-Auswahl in einer kompakten, rein lesenden Auswahlzusammenfassung.
@@ -26,6 +27,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Workbench zeigt Run-Metadaten zusaetzlich in einer scanbaren, rein lesenden Uebersicht.
 - Die Run-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Szenario und Quelle.
 - Die Workbench zeigt ein kompaktes Run-Control-Statusband sowie eine Uebersicht fuer vorhandene Queue-Metadaten und gesperrte Ausfuehrungsgrenzen.
+- Die Workbench zeigt einen read-only Kernvalidierungsueberblick mit Execution-Summary-Vertrag, ohne Summary-Upload, Formular oder Laufstart.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar, als Dry-Run vorab vergleichbar, als Snapshot lesbar und im Importformat exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -87,6 +89,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Control-Request-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/request-contract`, zeigt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO, validiert aber keinen Browser-Request und oeffnet keinen Upload- oder Schreibpfad.
 - Die Run-Control-Dry-Run-Vertragskarte ist rein lesend und gesperrt. Sie nutzt `/api/run-control/dry-run-contract`, zeigt erwartete Eingaben, Vorbedingungen und verbotene Grenzen, fuehrt aber keinen Dry-Run aus und enthaelt kein Formular.
 - Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
+- Die Kernvalidierungsuebersicht ist rein lesend. Sie nutzt `/api/core-validation/overview`, zeigt Periodenplaene, Legacy-Referenzen und den Execution-Summary-Vertrag, startet aber keinen expliziten Periodenrunner und nimmt keine Summary-Datei entgegen.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
@@ -572,6 +575,7 @@ Der HTTP-Lesekontrakt fuer dieses DTO ist:
 ```text
 GET /api/run-control/request-contract
 GET /api/run-control/dry-run-contract
+GET /api/core-validation/overview
 ```
 
 Die Antwort enthaelt `mode = "run_control_request_contract"`, `schema_version`, `accepted_fields`, `required_fields`, `optional_fields`, `forbidden_fields`, `example_request`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body, prueft keinen Browser-Upload, schreibt keine Queue und startet keine Ausfuehrung. Die Frontend-Request-Vertragskarte zeigt diese Felder nur als lokale Orientierung.

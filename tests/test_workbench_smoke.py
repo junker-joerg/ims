@@ -22,6 +22,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     source = client.get("/api/metadata/source")
     capabilities = client.get("/api/metadata/capabilities")
     consistency = client.get("/api/metadata/consistency")
+    core_validation = client.get("/api/core-validation/overview")
     run_control_queue = client.get("/api/run-control/queue")
     missing_queue_entry = client.get("/api/run-control/queue/missing-queue-entry")
     missing = client.get("/api/scenarios/missing-scenario")
@@ -47,6 +48,10 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert consistency.json()["runs_with_execution_enabled"] == []
     assert consistency.json()["writes_enabled"] is False
     assert consistency.json()["simulation_enabled"] is False
+    assert core_validation.status_code == 200
+    assert core_validation.json()["mode"] == "ims_core_validation_overview"
+    assert core_validation.json()["execution_summary_contract"]["overview_starts_runner"] is False
+    assert core_validation.json()["execution_performed"] is False
     assert run_control_queue.status_code == 200
     assert run_control_queue.json()["mode"] == "run_control_queue_overview"
     assert run_control_queue.json()["writes_enabled"] is False
@@ -176,6 +181,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
+    assert "/api/core-validation/overview" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
     assert "/api/run-control/dry-run-contract" in source

@@ -213,6 +213,24 @@ def test_frontend_shell_declares_readonly_run_control_preflight():
     assert 'type="file"' not in source
 
 
+def test_frontend_shell_declares_readonly_core_validation_overview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "/api/core-validation/overview" in source
+    assert "Kernvalidierungsueberblick" in source
+    assert "coreValidation" in source
+    assert "execution_summary_contract" in source
+    assert "Execution-Summary-Vertrag" in source
+    assert "overview_starts_runner" in source
+    assert "Summary-Felder" in source
+    assert "core-validation-panel" in styles
+    assert "core-validation-summary" in styles
+    assert "core-validation-contract" in styles
+    assert "startRun" not in source
+    assert 'type="file"' not in source
+
+
 def test_frontend_shell_declares_disabled_run_control_dry_run_contract():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")

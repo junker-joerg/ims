@@ -16,6 +16,7 @@ from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_pa
 from ims.api.run_control_preflight import preflight_run_control_from_repository
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
+from ims.engine.core_validation_overview import build_core_validation_overview
 
 try:
     from fastapi import FastAPI
@@ -67,6 +68,18 @@ def _version_payload() -> dict[str, str]:
         "version": APP_VERSION,
         "api": "ims.api",
     }
+
+
+def _core_validation_overview_payload() -> dict[str, Any]:
+    root = _repo_root()
+    fixture_dir = root / "tests" / "fixtures"
+    return build_core_validation_overview(
+        legacy_fixture_path=fixture_dir / "legacy_validation_bundle.json",
+        period_plan_paths=[
+            fixture_dir / "replay_vu14_period_plan.json",
+            fixture_dir / "replay_vusk1_period_plan.json",
+        ],
+    ).to_dict()
 
 
 def _not_found_payload(resource: str, item_id: str) -> dict[str, object]:
@@ -191,6 +204,10 @@ def create_app(
         def consistency() -> dict[str, object]:
             return consistency_payload()
 
+        @app.get("/api/core-validation/overview")
+        def core_validation_overview() -> dict[str, object]:
+            return _core_validation_overview_payload()
+
         @app.get("/api/run-control/queue")
         def run_control_queue() -> dict[str, object]:
             return queue_overview_payload()
@@ -239,6 +256,7 @@ def create_app(
         Route("/api/metadata/capabilities", lambda request: JSONResponse(metadata_capabilities())),
         Route("/api/metadata/source", lambda request: JSONResponse(metadata_source)),
         Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
+        Route("/api/core-validation/overview", lambda request: JSONResponse(_core_validation_overview_payload())),
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route("/api/run-control/dry-run-contract", lambda request: JSONResponse(run_control_dry_run_contract_payload())),

@@ -124,6 +124,10 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_contracts" in doc
     assert "python -m ims.api.run_control_dry_run_contract" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
+    assert "GET /api/core-validation/overview" in doc
+    assert "Kernvalidierungsueberblick" in doc
+    assert "Execution-Summary-Vertrag" in doc
+    assert "keinen expliziten Periodenrunner" in doc
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in doc
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in doc
     assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in doc

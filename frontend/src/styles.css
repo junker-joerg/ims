@@ -456,6 +456,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.core-validation-panel {
+  margin-bottom: 18px;
+}
+
 .run-control-panel {
   margin-bottom: 18px;
 }
@@ -638,6 +642,19 @@ code {
   gap: 8px;
 }
 
+.core-validation-summary {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.core-validation-contract {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .diagnosis-row {
   display: grid;
   grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1fr);
@@ -682,12 +699,23 @@ code {
   background: #f7fbf8;
 }
 
+.core-validation-summary-row,
+.core-validation-contract-row {
+  min-height: 66px;
+  padding: 10px;
+  border: 1px solid #d8e2dd;
+  border-radius: 6px;
+  background: #fbfcfb;
+}
+
 .diagnosis-row span {
   color: #66736c;
 }
 
 .consistency-row span,
 .selection-summary-row span,
+.core-validation-summary-row span,
+.core-validation-contract-row span,
 .run-control-boundary-row span,
 .run-control-summary-row span {
   display: block;
@@ -703,6 +731,8 @@ code {
 
 .consistency-row strong,
 .selection-summary-row strong,
+.core-validation-summary-row strong,
+.core-validation-contract-row strong,
 .run-control-boundary-row strong,
 .run-control-summary-row strong {
   display: block;

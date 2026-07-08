@@ -253,6 +253,26 @@ def test_run_control_dry_run_contract_endpoint_is_disabled_and_readonly(tmp_path
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
 
 
+def test_core_validation_overview_endpoint_is_readonly_contract(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/core-validation/overview")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["mode"] == "ims_core_validation_overview"
+    assert payload["plan_count"] == 2
+    assert payload["legacy_reference_count"] == 19
+    assert payload["execution_summary_available"] is False
+    assert payload["execution_summary_contract"]["mode"] == "explicit_multi_period_execution_summary_contract"
+    assert payload["execution_summary_contract"]["overview_starts_runner"] is False
+    assert payload["execution_summary_contract"]["overview_accepts_summary_input"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_run_control_preflight_endpoint_reads_selected_run(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)

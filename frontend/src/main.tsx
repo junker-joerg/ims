@@ -199,6 +199,37 @@ type RunControlPreflight = {
   execution_performed: boolean;
 };
 
+type CoreValidationOverview = {
+  status: "ok" | "warning" | "error";
+  mode: "ims_core_validation_overview";
+  plan_count: number;
+  period_count: number;
+  global_periods: number[];
+  legacy_reference_count: number;
+  legacy_covered_rows: number;
+  legacy_covered_periods: number;
+  next_validation_actions: string[];
+  execution_summary_available: boolean;
+  execution_summary_next_action: string;
+  execution_summary_contract: {
+    mode: "explicit_multi_period_execution_summary_contract";
+    summary_mode: "explicit_multi_period_execution_summary";
+    required_fields: string[];
+    period_axis_fields: string[];
+    application_count_fields: string[];
+    carryover_fields: string[];
+    legacy_fields: string[];
+    boundary_fields: string[];
+    next_action: string;
+    overview_accepts_summary_input: boolean;
+    overview_starts_runner: boolean;
+    writes_performed: boolean;
+    execution_performed: boolean;
+  };
+  writes_performed: boolean;
+  execution_performed: boolean;
+};
+
 type CapabilityState = {
   enabled: boolean;
   boundary?: string;
@@ -330,6 +361,7 @@ function App() {
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
   const [runControlDryRunContract, setRunControlDryRunContract] = useState<RunControlDryRunContract | null>(null);
+  const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
   const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
   const [queueDetailState, setQueueDetailState] = useState<DetailState>("idle");
@@ -369,6 +401,7 @@ function App() {
           capabilityResponse,
           sourceResponse,
           consistencyResponse,
+          coreValidationResponse,
           runControlQueueResponse,
           runControlRequestContractResponse,
           runControlDryRunContractResponse,
@@ -380,6 +413,7 @@ function App() {
           fetch("/api/metadata/capabilities"),
           fetch("/api/metadata/source"),
           fetch("/api/metadata/consistency"),
+          fetch("/api/core-validation/overview"),
           fetch("/api/run-control/queue"),
           fetch("/api/run-control/request-contract"),
           fetch("/api/run-control/dry-run-contract"),
@@ -392,6 +426,7 @@ function App() {
           !capabilityResponse.ok ||
           !sourceResponse.ok ||
           !consistencyResponse.ok ||
+          !coreValidationResponse.ok ||
           !runControlQueueResponse.ok ||
           !runControlRequestContractResponse.ok ||
           !runControlDryRunContractResponse.ok ||
@@ -406,6 +441,7 @@ function App() {
           capabilityPayload,
           sourcePayload,
           consistencyPayload,
+          coreValidationPayload,
           runControlQueuePayload,
           runControlRequestContractPayload,
           runControlDryRunContractPayload,
@@ -417,6 +453,7 @@ function App() {
           capabilityResponse.json() as Promise<MetadataCapabilities>,
           sourceResponse.json() as Promise<MetadataSourceStatus>,
           consistencyResponse.json() as Promise<MetadataConsistency>,
+          coreValidationResponse.json() as Promise<CoreValidationOverview>,
           runControlQueueResponse.json() as Promise<RunControlQueueOverview>,
           runControlRequestContractResponse.json() as Promise<RunControlRequestContract>,
           runControlDryRunContractResponse.json() as Promise<RunControlDryRunContract>,
@@ -429,6 +466,7 @@ function App() {
           setCapabilities(capabilityPayload);
           setMetadataSource(sourcePayload);
           setMetadataConsistency(consistencyPayload);
+          setCoreValidation(coreValidationPayload);
           setRunControlQueue(runControlQueuePayload);
           setRunControlRequestContract(runControlRequestContractPayload);
           setRunControlDryRunContract(runControlDryRunContractPayload);
@@ -650,6 +688,43 @@ function App() {
     ["Schreibpfade", metadataConsistency?.writes_enabled ? "aktiv" : "gesperrt"],
     ["Simulation", metadataConsistency?.simulation_enabled ? "aktiv" : "gesperrt"],
     ["Status", metadataConsistency?.status === "warning" ? "Warnung" : "ok"]
+  ];
+  const coreValidationRows = [
+    ["Status", coreValidation?.status ?? "laedt"],
+    ["Periodenplaene", String(coreValidation?.plan_count ?? 0)],
+    ["Globale Perioden", coreValidation?.global_periods.join(", ") ?? "-"],
+    ["Legacy-Referenzen", String(coreValidation?.legacy_reference_count ?? 0)],
+    ["Abgedeckte Zeilen", String(coreValidation?.legacy_covered_rows ?? 0)],
+    ["Naechste Validierung", coreValidation?.next_validation_actions.join(", ") ?? "-"],
+    ["Summary vorhanden", coreValidation?.execution_summary_available ? "ja" : "nein"],
+    ["Summary naechster Schritt", coreValidation?.execution_summary_next_action ?? "-"],
+    ["Summary-Felder", String(coreValidation?.execution_summary_contract.required_fields.length ?? 0)],
+    [
+      "Overview startet Runner",
+      coreValidation?.execution_summary_contract.overview_starts_runner ? "ja" : "nein"
+    ],
+    [
+      "Schreibpfade",
+      coreValidation?.writes_performed || coreValidation?.execution_summary_contract.writes_performed
+        ? "aktiv"
+        : "gesperrt"
+    ],
+    [
+      "Ausfuehrung",
+      coreValidation?.execution_performed || coreValidation?.execution_summary_contract.execution_performed
+        ? "aktiv"
+        : "gesperrt"
+    ]
+  ];
+  const coreValidationContractRows = [
+    ["Modus", coreValidation?.execution_summary_contract.mode ?? "laedt"],
+    ["Summary-Modus", coreValidation?.execution_summary_contract.summary_mode ?? "-"],
+    ["Periodenachsen", coreValidation?.execution_summary_contract.period_axis_fields.join(", ") ?? "-"],
+    ["Anwendungszaehlungen", coreValidation?.execution_summary_contract.application_count_fields.join(", ") ?? "-"],
+    ["Carryover", coreValidation?.execution_summary_contract.carryover_fields.join(", ") ?? "-"],
+    ["Legacy", coreValidation?.execution_summary_contract.legacy_fields.join(", ") ?? "-"],
+    ["Grenzfelder", coreValidation?.execution_summary_contract.boundary_fields.join(", ") ?? "-"],
+    ["Naechste Aktion", coreValidation?.execution_summary_contract.next_action ?? "-"]
   ];
   const runControlQueueRows = [
     ["Queue-Status", runControlQueue?.status === "warning" ? "Hinweis" : "ok"],
@@ -1186,6 +1261,29 @@ function App() {
           {filteredRuns.length === 0 ? (
             <div className="empty-state">Keine Runs fuer diesen Filter.</div>
           ) : null}
+        </section>
+
+        <section className="panel core-validation-panel" aria-label="Kernvalidierungsueberblick">
+          <div className="panel-heading">
+            <GitBranch size={20} aria-hidden="true" />
+            <h2>Kernvalidierungsueberblick</h2>
+          </div>
+          <div className="core-validation-summary">
+            {coreValidationRows.map(([label, value]) => (
+              <div className="core-validation-summary-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="core-validation-contract" aria-label="Execution-Summary-Vertrag">
+            {coreValidationContractRows.map(([label, value]) => (
+              <div className="core-validation-contract-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="panel run-control-boundary-panel" aria-label="Run-Control-Statusband">
