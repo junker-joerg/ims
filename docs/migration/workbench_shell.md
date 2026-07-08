@@ -593,6 +593,8 @@ Der Queue-Vormerkendpunkt `POST /api/run-control/queue` akzeptiert dasselbe Requ
 
 Der Aktionsplan-Endpunkt `GET /api/run-control/queue/action-plan` liest dieselbe explizite SQLite-Quelle wie die Queue-Uebersicht. Optional kann `queue_id` als Query-Parameter gesetzt werden. Die Antwort liefert `mode = "run_control_queue_action_plan"`, `actions`, `issues`, `writes_performed = false` und `execution_performed = false`. Pro Queue-Eintrag bleiben `execution_allowed`, `writes_performed` und `execution_performed` `false`; sichtbar werden nur die naechsten sicheren Hinweise `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`.
 
+Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue` und anschliessend `GET /api/run-control/queue/action-plan`, optional mit `queue_id`. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run und Aktionsplan bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false` und ein Aktionshinweis `run_preflight`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
+
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:
 
 ```powershell

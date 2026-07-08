@@ -195,6 +195,14 @@ python -m ims.api.run_control_preflight --run-id baseline-python-tests
 
 Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen und nach einem erfolgreichen Dry-Run ueber `POST /api/run-control/queue` eine Queue-Vormerkung in einer expliziten SQLite-Quelle schreiben. `GET /api/run-control/queue/action-plan` zeigt danach nur den naechsten sicheren Schritt wie `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Diese Schritte zeigen Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne PUT, Upload, Editor oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag, Dry-Run-Pruefung, Queue-Vormerkung und Aktionsplan.
 
+Lokaler Demo-Smoke fuer die Browser-Workbench:
+
+```text
+Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen
+```
+
+Der Demo-Smoke nutzt den bekannten Run `baseline-python-tests` und das Szenario `agrsich-reference-window`. Er prueft den HTTP-Dry-Run, schreibt danach nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle und liest den Aktionsplan wieder aus. Erwartet bleiben `execution_enabled=false`, `execution_performed=false` und als naechster Schritt `run_preflight`. Der Ablauf ist eine lokale Bedien- und Integrationsprobe, keine Simulation, kein Ausfuehrungsadapter, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
+
 Metadaten-CLI:
 
 Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:
