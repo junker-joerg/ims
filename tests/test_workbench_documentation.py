@@ -6,6 +6,7 @@ README = REPO_ROOT / "README.md"
 WORKBENCH_DOC = REPO_ROOT / "docs" / "migration" / "workbench_shell.md"
 RUN_CONTROL_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_run_control_plan.md"
 PACKAGING_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_packaging_plan.md"
+DEMO_CHECKLIST = REPO_ROOT / "docs" / "migration" / "workbench_demo_checklist.md"
 CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
 START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
 SCRIPT_README = REPO_ROOT / "scripts" / "workbench" / "README.md"
@@ -102,6 +103,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "docs/migration/workbench_run_control_plan.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
     assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
+    assert "docs/migration/workbench_demo_checklist.md" in readme
+    assert "Startbefehle, UI-Reihenfolge, erwartete Demo-Signale" in readme
     assert "scripts\\workbench\\check-workbench.cmd" in readme
     assert "scripts\\workbench\\start-workbench.cmd" in readme
 
@@ -262,6 +265,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "0 reviewbare PRs" in doc
     assert "Die lokale Bedienreihenfolge fuer v1 ist" in doc
     assert "Die lokale Workbench-v1 ist als rein lokale Browser-Workbench und Modernisierungs-Meilenstein abgeschlossen" in doc
+    assert "docs/migration/workbench_demo_checklist.md" in doc
+    assert "Startbefehle, UI-Reihenfolge, erwartete Demo-Signale" in doc
     assert "Nicht enthalten sind weiterhin Fachlogikaenderungen" in doc
     assert "## Backup und Restore lokaler Metadaten" in doc
     assert "metadata.sqlite-wal" in doc
@@ -330,7 +335,8 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 4: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach erfolgreichem Dry-Run" in plan
     assert "PR 5: Run-Control-Aktionsplan per API/UI sichtbar machen" in plan
     assert "PR 6: Lokaler Demo-Smoke fuer Dry-Run, Queue-Vormerkung und Aktionsplan" in plan
-    assert "PR 7+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
+    assert "PR 7: Lokale Demo-Checkliste mit Startbefehlen, UI-Reihenfolge und Grenzen ohne Simulation" in plan
+    assert "PR 8+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "Rollback-Journal-Datenbanken werden mit `mode=ro` gelesen" in plan
     assert "`immutable=1` ist nur fuer sidecar-freie WAL-Dateien zulaessig" in plan
@@ -345,6 +351,29 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken und Run-Control-Aktionsplan ansehen, mit stabilen UI-Ankern" in plan
     assert "Kein Packaging in diesem PR" in plan
     assert "Keine historische Vollgleichheitsbehauptung" in plan
+
+
+def test_workbench_demo_checklist_documents_local_demo_scope():
+    checklist = DEMO_CHECKLIST.read_text(encoding="utf-8")
+
+    assert DEMO_CHECKLIST.is_file()
+    assert "Lokale Workbench-Demo-Checkliste" in checklist
+    assert "kein Release-Tag, keine Fachvalidierung, keine Simulation" in checklist
+    assert "baseline-python-tests" in checklist
+    assert "agrsich-reference-window" in checklist
+    assert "Dry-Run pruefen" in checklist
+    assert "Queue vormerken" in checklist
+    assert "Naechste Aktion = run_preflight" in checklist
+    assert "execution_enabled" in checklist
+    assert "execution_performed" in checklist
+    assert "Was demo-faehig ist" in checklist
+    assert "Was noch nicht demo-faehig ist" in checklist
+    assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
+    assert "Ausfuehrungsadapter hinter `run_preflight`" in checklist
+    assert "fachlicher Gleichheitsnachweis" in checklist
+    assert "Der Demo-Screenshot belegt nur Bedienbarkeit und sichtbare Grenzen" in checklist
+    assert "python -m pytest -q tests/test_workbench_demo_smoke.py tests/test_frontend_shell.py tests/test_workbench_documentation.py" in checklist
+    assert "npm.cmd run build --prefix .\\frontend" in checklist
 
 
 def test_workbench_packaging_plan_documents_portable_delivery_block():

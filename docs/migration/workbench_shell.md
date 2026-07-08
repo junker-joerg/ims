@@ -144,6 +144,8 @@ Die lokale Workbench-v1 ist als rein lokale Browser-Workbench und Modernisierung
 
 Die lokalen CLI-Adapter decken Startdiagnose, Startplan, Readiness, CLI-Uebersicht, Metadaten-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht, Schreibvertrag, Schreibvertragspruefung, Run-Control-Vertrag, Run-Control-Request-Check, Run-Control-Queue, Run-Control-Queue-Diagnose und Run-Control-Preflight ab. Diese Werkzeuge bleiben lokal und starten keine Simulation. Nur `metadata_import_cli import --db` schreibt Metadaten, `run_control_queue init/enqueue --db` schreibt Queue-Metadaten in eine explizite SQLite-Datei und `metadata_import_cli export --out` schreibt nur in den expliziten JSON-Zielpfad. `run_control_queue list/show --db` und `run_control_queue_diagnostics --db` oeffnen die Queue-Datenbank read-only; die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten.
 
+Die lokale Demo-Faehigkeit ist in `docs/migration/workbench_demo_checklist.md` als kurze Vorfuehr-Checkliste konsolidiert. Sie beschreibt Startbefehle, UI-Reihenfolge, erwartete Demo-Signale und die Grenze, dass der Browser-Demo-Pfad nur Dry-Run, Queue-Vormerkung und Aktionsplan zeigt.
+
 Nicht enthalten sind weiterhin Fachlogikaenderungen, echte Run-Ausfuehrung, neue HTTP-Endpunkte, HTTP- oder UI-Schreibpfade, Browser-Upload, Browser-Download, funktionaler Run-Start, Szenario-Editor, SQLite-Migration und historische Vollgleichheitsbehauptung.
 
 ## Metadatenmodell
