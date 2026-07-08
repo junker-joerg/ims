@@ -11,13 +11,14 @@ from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
 from ims.api.metadata_import import MetadataImportError
-from ims.api.metadata import metadata_capabilities
+from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_preflight import preflight_run_control_from_repository
 from ims.api.run_control_queue import enqueue_run_control_request_object
+from ims.api.run_control_queue_action_plan import build_run_control_queue_action_plan
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
 from ims.engine.core_validation_overview import build_core_validation_overview
@@ -119,6 +120,32 @@ def _run_control_queue_error_payload(message: str, issues: list[str] | None = No
     }
 
 
+def _run_control_queue_action_plan_unavailable_payload(
+    metadata_source: dict[str, object],
+    message: str,
+    *,
+    status: str = "warning",
+) -> dict[str, object]:
+    return {
+        "status": status,
+        "mode": "run_control_queue_action_plan",
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "metadata_source": dict(metadata_source),
+        "queue_count": 0,
+        "actions": [],
+        "issues": [
+            {
+                "code": "run_control_queue_action_plan_unavailable",
+                "severity": status,
+                "message": message,
+                "queue_ids": [],
+            }
+        ],
+        "writes_performed": False,
+        "execution_performed": False,
+    }
+
+
 def create_app(
     frontend_dist: Path | None = None,
     metadata_repository: MetadataRepositoryReader | None = None,
@@ -177,6 +204,28 @@ def create_app(
         if detail is None:
             return JSONResponse(_not_found_payload("run_control_queue", queue_id), status_code=404)
         return JSONResponse(detail)
+
+    def queue_action_plan_payload(queue_id: str | None = None) -> dict[str, object]:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            return _run_control_queue_action_plan_unavailable_payload(
+                metadata_source,
+                "run control queue action plan requires an explicit SQLite metadata source",
+            )
+        try:
+            return build_run_control_queue_action_plan(
+                Path(str(metadata_source["path"])),
+                queue_id=queue_id,
+            ).to_dict()
+        except MetadataImportError as exc:
+            return _run_control_queue_action_plan_unavailable_payload(
+                metadata_source,
+                str(exc),
+                status="error",
+            )
+
+    def queue_action_plan_response(request: Request) -> JSONResponse:
+        queue_id = request.query_params.get("queue_id")
+        return JSONResponse(queue_action_plan_payload(queue_id if queue_id else None))
 
     def preflight_payload(run_id: str) -> dict[str, object]:
         return preflight_run_control_from_repository(run_id, repository).to_dict()
@@ -290,6 +339,10 @@ def create_app(
         async def run_control_queue_enqueue(request: Request) -> JSONResponse:
             return await queue_enqueue_response(request)
 
+        @app.get("/api/run-control/queue/action-plan")
+        def run_control_queue_action_plan(queue_id: str | None = None) -> dict[str, object]:
+            return queue_action_plan_payload(queue_id)
+
         @app.get("/api/run-control/request-contract")
         def run_control_request_contract() -> dict[str, object]:
             return run_control_request_contract_payload()
@@ -341,6 +394,7 @@ def create_app(
         Route("/api/core-validation/overview", lambda request: JSONResponse(_core_validation_overview_payload())),
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
         Route("/api/run-control/queue", queue_enqueue_response, methods=["POST"]),
+        Route("/api/run-control/queue/action-plan", queue_action_plan_response),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route("/api/run-control/dry-run-contract", lambda request: JSONResponse(run_control_dry_run_contract_payload())),
         Route("/api/run-control/dry-run", dry_run_response, methods=["POST"]),

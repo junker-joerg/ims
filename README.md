@@ -193,7 +193,7 @@ Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese ge
 python -m ims.api.run_control_preflight --run-id baseline-python-tests
 ```
 
-Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen und nach einem erfolgreichen Dry-Run ueber `POST /api/run-control/queue` eine Queue-Vormerkung in einer expliziten SQLite-Quelle schreiben. Beide Schritte zeigen Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne PUT, Upload, Editor oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag, Dry-Run-Pruefung und Queue-Vormerkung.
+Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen und nach einem erfolgreichen Dry-Run ueber `POST /api/run-control/queue` eine Queue-Vormerkung in einer expliziten SQLite-Quelle schreiben. `GET /api/run-control/queue/action-plan` zeigt danach nur den naechsten sicheren Schritt wie `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Diese Schritte zeigen Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne PUT, Upload, Editor oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag, Dry-Run-Pruefung, Queue-Vormerkung und Aktionsplan.
 
 Metadaten-CLI:
 

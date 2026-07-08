@@ -45,6 +45,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
         },
     )
     run_control_queue_after_enqueue = client.get("/api/run-control/queue")
+    run_control_queue_action_plan = client.get("/api/run-control/queue/action-plan")
     missing_queue_entry = client.get("/api/run-control/queue/missing-queue-entry")
     missing = client.get("/api/scenarios/missing-scenario")
 
@@ -91,6 +92,12 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert run_control_queue_after_enqueue.status_code == 200
     assert run_control_queue_after_enqueue.json()["queue_count"] == 1
     assert run_control_queue_after_enqueue.json()["execution_performed"] is False
+    assert run_control_queue_action_plan.status_code == 200
+    assert run_control_queue_action_plan.json()["mode"] == "run_control_queue_action_plan"
+    assert run_control_queue_action_plan.json()["actions"][0]["next_action"] == "run_preflight"
+    assert run_control_queue_action_plan.json()["actions"][0]["execution_performed"] is False
+    assert run_control_queue_action_plan.json()["writes_performed"] is False
+    assert run_control_queue_action_plan.json()["execution_performed"] is False
     assert missing_queue_entry.status_code == 404
     assert missing_queue_entry.json()["error"]["resource"] == "run_control_queue"
 
@@ -217,6 +224,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/metadata/consistency" in source
     assert "/api/core-validation/overview" in source
     assert "/api/run-control/queue" in source
+    assert "/api/run-control/queue/action-plan" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
     assert "/api/run-control/dry-run-contract" in source
     assert "/api/run-control/dry-run" in source

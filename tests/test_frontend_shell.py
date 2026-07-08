@@ -133,6 +133,10 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "Queue-Detail" in source
     assert "Queue vormerken" in source
     assert "Run-Control-Queue-Vormerkung" in source
+    assert "Run-Control-Aktionsplan" in source
+    assert "runControlActionPlan" in source
+    assert "selectedQueueAction" in source
+    assert "/api/run-control/queue/action-plan" in source
     assert "runControlQueueEnqueueResult" in source
     assert "enqueueRunControlQueue" in source
     assert "canEnqueueRunControlQueue" in source
@@ -145,6 +149,10 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "Freigabe abwarten" in source
     assert "Blocker klaeren" in source
     assert "Status pruefen" in source
+    assert "run_preflight" in source
+    assert "await_execution_release" in source
+    assert "resolve_blockers" in source
+    assert "inspect_queue_status" in source
     assert "run-control-panel" in styles
     assert "run-control-filterbar" in styles
     assert "run-control-filter-count" in styles
@@ -153,6 +161,9 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "run-control-issues" in styles
     assert "run-control-queue-enqueue-grid" in styles
     assert "run-control-queue-enqueue-row" in styles
+    assert "run-control-action-plan-panel" in styles
+    assert "run-control-action-plan-grid" in styles
+    assert "run-control-action-plan-row" in styles
     assert "Queue-Status" in source
     assert "Queue-Eintraege" in source
     assert "Naechster Schritt" in source

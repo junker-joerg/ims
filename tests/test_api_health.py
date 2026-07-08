@@ -212,6 +212,25 @@ def test_run_control_queue_overview_reports_in_memory_boundary(tmp_path):
     assert payload["execution_performed"] is False
 
 
+def test_run_control_queue_action_plan_reports_in_memory_boundary(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/queue/action-plan")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "warning"
+    assert payload["mode"] == "run_control_queue_action_plan"
+    assert payload["queue_count"] == 0
+    assert payload["actions"] == []
+    assert payload["issues"][0]["code"] == "run_control_queue_action_plan_unavailable"
+    assert "explicit SQLite metadata source" in payload["issues"][0]["message"]
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_run_control_queue_enqueue_requires_explicit_sqlite_source(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)
@@ -274,6 +293,42 @@ def test_run_control_queue_enqueue_endpoint_writes_only_queue_metadata(tmp_path)
     assert detail.status_code == 200
     assert detail.json()["entry"]["queue_id"] == "baseline-python-tests"
     assert detail.json()["execution_performed"] is False
+
+
+def test_run_control_queue_action_plan_endpoint_reads_enqueued_queue(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+    client.post(
+        "/api/run-control/queue",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+
+    response = client.get("/api/run-control/queue/action-plan")
+    filtered = client.get("/api/run-control/queue/action-plan?queue_id=baseline-python-tests")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_queue_action_plan"
+    assert payload["queue_count"] == 1
+    assert payload["actions"][0]["queue_id"] == "baseline-python-tests"
+    assert payload["actions"][0]["next_action"] == "run_preflight"
+    assert payload["actions"][0]["execution_allowed"] is False
+    assert payload["actions"][0]["writes_performed"] is False
+    assert payload["actions"][0]["execution_performed"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert filtered.status_code == 200
+    assert filtered.json()["queue_id"] == "baseline-python-tests"
+    assert filtered.json()["actions"][0]["next_action_label"] == "Lokalen Preflight ausfuehren"
 
 
 def test_run_control_queue_enqueue_endpoint_rejects_execution_enabled(tmp_path):

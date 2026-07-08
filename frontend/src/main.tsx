@@ -162,6 +162,42 @@ type RunControlQueueEnqueueResult = {
   execution_performed: boolean;
 };
 
+type RunControlNextAction =
+  | "run_preflight"
+  | "await_execution_release"
+  | "resolve_blockers"
+  | "inspect_queue_status";
+
+type RunControlQueueActionPlan = {
+  status: "ok" | "warning" | "error";
+  mode: "run_control_queue_action_plan";
+  schema_version: string;
+  db_path?: string;
+  metadata_source: MetadataSourceStatus;
+  queue_id?: string;
+  queue_count: number;
+  actions: {
+    queue_id: string;
+    run_id: string;
+    scenario_id: string;
+    queue_status: string;
+    next_action: RunControlNextAction;
+    next_action_label: string;
+    blocked_by: string[];
+    execution_allowed: boolean;
+    writes_performed: boolean;
+    execution_performed: boolean;
+  }[];
+  issues: {
+    code: string;
+    severity: string;
+    message: string;
+    queue_ids: string[];
+  }[];
+  writes_performed: boolean;
+  execution_performed: boolean;
+};
+
 type RunControlRequestContract = {
   status: "ok";
   mode: "run_control_request_contract";
@@ -396,6 +432,9 @@ function App() {
   const [runControlQueueEnqueueResult, setRunControlQueueEnqueueResult] = useState<RunControlQueueEnqueueResult | null>(null);
   const [runControlQueueEnqueueState, setRunControlQueueEnqueueState] = useState<DetailState>("idle");
   const [runControlQueueEnqueueError, setRunControlQueueEnqueueError] = useState<string | null>(null);
+  const [runControlActionPlan, setRunControlActionPlan] = useState<RunControlQueueActionPlan | null>(null);
+  const [runControlActionPlanState, setRunControlActionPlanState] = useState<DetailState>("idle");
+  const [runControlActionPlanError, setRunControlActionPlanError] = useState<string | null>(null);
   const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
   const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
@@ -438,6 +477,7 @@ function App() {
           consistencyResponse,
           coreValidationResponse,
           runControlQueueResponse,
+          runControlActionPlanResponse,
           runControlRequestContractResponse,
           runControlDryRunContractResponse,
           healthResponse,
@@ -450,6 +490,7 @@ function App() {
           fetch("/api/metadata/consistency"),
           fetch("/api/core-validation/overview"),
           fetch("/api/run-control/queue"),
+          fetch("/api/run-control/queue/action-plan"),
           fetch("/api/run-control/request-contract"),
           fetch("/api/run-control/dry-run-contract"),
           fetch("/api/health"),
@@ -463,6 +504,7 @@ function App() {
           !consistencyResponse.ok ||
           !coreValidationResponse.ok ||
           !runControlQueueResponse.ok ||
+          !runControlActionPlanResponse.ok ||
           !runControlRequestContractResponse.ok ||
           !runControlDryRunContractResponse.ok ||
           !healthResponse.ok ||
@@ -478,6 +520,7 @@ function App() {
           consistencyPayload,
           coreValidationPayload,
           runControlQueuePayload,
+          runControlActionPlanPayload,
           runControlRequestContractPayload,
           runControlDryRunContractPayload,
           healthPayload,
@@ -490,6 +533,7 @@ function App() {
           consistencyResponse.json() as Promise<MetadataConsistency>,
           coreValidationResponse.json() as Promise<CoreValidationOverview>,
           runControlQueueResponse.json() as Promise<RunControlQueueOverview>,
+          runControlActionPlanResponse.json() as Promise<RunControlQueueActionPlan>,
           runControlRequestContractResponse.json() as Promise<RunControlRequestContract>,
           runControlDryRunContractResponse.json() as Promise<RunControlDryRunContract>,
           healthResponse.json() as Promise<HealthStatus>,
@@ -503,6 +547,8 @@ function App() {
           setMetadataConsistency(consistencyPayload);
           setCoreValidation(coreValidationPayload);
           setRunControlQueue(runControlQueuePayload);
+          setRunControlActionPlan(runControlActionPlanPayload);
+          setRunControlActionPlanState("ready");
           setRunControlRequestContract(runControlRequestContractPayload);
           setRunControlDryRunContract(runControlDryRunContractPayload);
           setSelectedQueueId((current) => current ?? runControlQueuePayload.entries[0]?.queue_id ?? null);
@@ -786,6 +832,11 @@ function App() {
       if (overviewResponse.ok) {
         setRunControlQueue((await overviewResponse.json()) as RunControlQueueOverview);
       }
+      const actionPlanResponse = await fetch("/api/run-control/queue/action-plan");
+      if (actionPlanResponse.ok) {
+        setRunControlActionPlan((await actionPlanResponse.json()) as RunControlQueueActionPlan);
+        setRunControlActionPlanState("ready");
+      }
     } catch (error) {
       setRunControlQueueEnqueueResult(null);
       setRunControlQueueEnqueueError(error instanceof Error ? error.message : "Queue-Vormerkung nicht erreichbar");
@@ -994,6 +1045,38 @@ function App() {
     ["Schreibpfad", runControlQueueEnqueueResult?.writes_performed ? "Queue geschrieben" : "nicht geschrieben"],
     ["Ausfuehrung", runControlQueueEnqueueResult?.execution_enabled || runControlQueueEnqueueResult?.execution_performed ? "aktiv" : "gesperrt"]
   ];
+  const selectedQueueAction =
+    runControlActionPlan?.actions.find((action) => action.queue_id === selectedQueueId) ??
+    runControlActionPlan?.actions[0] ??
+    null;
+  const runControlActionPlanStatus =
+    runControlActionPlanState === "error"
+      ? runControlActionPlanError ?? "nicht erreichbar"
+      : runControlActionPlanState === "loading"
+        ? "laedt"
+        : runControlActionPlan
+          ? runControlActionPlan.status === "ok"
+            ? "ok"
+            : "Hinweis"
+          : "laedt";
+  const runControlActionPlanIssueLabel = runControlActionPlan
+    ? runControlActionPlan.issues.length
+      ? runControlActionPlan.issues.map((issue) => issue.code).join(", ")
+      : "keine"
+    : runControlActionPlanState === "error"
+      ? runControlActionPlanError ?? "nicht erreichbar"
+      : "laedt";
+  const runControlActionPlanRows = [
+    ["Status", runControlActionPlanStatus],
+    ["Queue-Eintraege", String(runControlActionPlan?.queue_count ?? 0)],
+    ["Ausgewaehlt", selectedQueueAction?.queue_id ?? selectedQueueId ?? "-"],
+    ["Naechste Aktion", selectedQueueAction?.next_action ?? "-"],
+    ["Aktion", selectedQueueAction?.next_action_label ?? "-"],
+    ["Blocker", selectedQueueAction?.blocked_by.length ? selectedQueueAction.blocked_by.join(", ") : "keine"],
+    ["Hinweise", runControlActionPlanIssueLabel],
+    ["Schreibpfade", runControlActionPlan?.writes_performed ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", selectedQueueAction?.execution_allowed || runControlActionPlan?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
   const runControlBoundaryRows = [
     [
       "Queue",
@@ -1005,6 +1088,7 @@ function App() {
     ["Request-Vertrag", runControlRequestContract ? "lesend" : "laedt"],
     ["Dry-Run", runControlDryRunContract?.http_enabled ? runControlDryRunStatus : "gesperrt"],
     ["Queue vormerken", runControlQueueEnqueueStatus],
+    ["Aktionsplan", selectedQueueAction?.next_action ?? runControlActionPlanStatus],
     [
       "Schreibpfade",
       runControlQueue?.writes_enabled ||
@@ -1014,6 +1098,7 @@ function App() {
       runControlDryRunResult?.writes_enabled ||
       runControlDryRunResult?.writes_performed ||
       runControlQueueEnqueueResult?.writes_performed ||
+      runControlActionPlan?.writes_performed ||
       runControlPreflight?.writes_performed
         ? "aktiv"
         : "gesperrt"
@@ -1030,6 +1115,8 @@ function App() {
       runControlDryRunResult?.execution_performed ||
       runControlQueueEnqueueResult?.execution_enabled ||
       runControlQueueEnqueueResult?.execution_performed ||
+      selectedQueueAction?.execution_allowed ||
+      runControlActionPlan?.execution_performed ||
       runControlPreflight?.execution_allowed ||
       runControlPreflight?.execution_performed
         ? "aktiv"
@@ -1684,6 +1771,21 @@ function App() {
           <div className="run-control-queue-enqueue-grid" aria-label="Run-Control-Queue-Vormerkung">
             {runControlQueueEnqueueRows.map(([label, value]) => (
               <div className="run-control-queue-enqueue-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel run-control-action-plan-panel" aria-label="Run-Control-Aktionsplan">
+          <div className="panel-heading">
+            <GitBranch size={20} aria-hidden="true" />
+            <h2>Run-Control-Aktionsplan</h2>
+          </div>
+          <div className="run-control-action-plan-grid">
+            {runControlActionPlanRows.map(([label, value]) => (
+              <div className="run-control-action-plan-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>
