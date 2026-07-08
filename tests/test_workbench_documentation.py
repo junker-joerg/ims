@@ -53,6 +53,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_contracts" in readme
     assert "python -m ims.api.run_control_dry_run_contract" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
+    assert "POST /api/run-control/dry-run" in readme
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in readme
@@ -124,6 +125,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_contracts" in doc
     assert "python -m ims.api.run_control_dry_run_contract" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
+    assert "POST /api/run-control/dry-run" in doc
     assert "GET /api/core-validation/overview" in doc
     assert "Kernvalidierungsueberblick" in doc
     assert "Execution-Summary-Vertrag" in doc
@@ -217,7 +219,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "execution_performed = false" in doc
     assert "## Run-Steuerungsgrenze" in doc
     assert "Der Run-Control-Vertrag ist rein beschreibend" in doc
-    assert "Der Run-Control-Dry-Run-Vertrag ist gesperrt" in doc
+    assert "Der Run-Control-Dry-Run-Vertrag erlaubt nur den kontrollierten HTTP-Pruefpfad" in doc
     assert 'mode = "run_control_dry_run_contract"' in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
@@ -302,10 +304,10 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung" in plan
     assert "PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend" in plan
     assert "PR 2: API-Leseendpunkte fuer Queue/Requests, noch ohne Schreibpfad" in plan
-    assert "PR 3: Kontrollierter HTTP-Dry-Run-Vertrag, weiterhin gesperrt und ohne Request-Body" in plan
-    assert "PR 4: UI-Preflight-Ansicht fuer ausgewaehlten Run" in plan
-    assert "PR 5: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe" in plan
-    assert "PR 6+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
+    assert "PR 3: Kontrollierter HTTP-Dry-Run als Pruefpfad" in plan
+    assert "Erledigt" in plan
+    assert "PR 4: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe" in plan
+    assert "PR 5+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "Rollback-Journal-Datenbanken werden mit `mode=ro` gelesen" in plan
     assert "`immutable=1` ist nur fuer sidecar-freie WAL-Dateien zulaessig" in plan

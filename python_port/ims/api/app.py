@@ -5,13 +5,16 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from starlette.applications import Starlette
+from starlette.requests import Request
 from starlette.responses import FileResponse, JSONResponse
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
+from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
+from ims.api.run_control_dry_run import dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_preflight import preflight_run_control_from_repository
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
@@ -93,6 +96,17 @@ def _not_found_payload(resource: str, item_id: str) -> dict[str, object]:
     }
 
 
+def _run_control_dry_run_error_payload(message: str) -> dict[str, object]:
+    return {
+        "status": "error",
+        "mode": "run_control_dry_run",
+        "message": message,
+        "issues": [message],
+        "writes_performed": False,
+        "execution_performed": False,
+    }
+
+
 def create_app(
     frontend_dist: Path | None = None,
     metadata_repository: MetadataRepositoryReader | None = None,
@@ -154,6 +168,19 @@ def create_app(
 
     def preflight_payload(run_id: str) -> dict[str, object]:
         return preflight_run_control_from_repository(run_id, repository).to_dict()
+
+    async def dry_run_response(request: Request) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _run_control_dry_run_error_payload("run control dry-run JSON is invalid"),
+                status_code=400,
+            )
+        try:
+            return JSONResponse(dry_run_run_control_request_payload(payload, repository))
+        except MetadataImportError as exc:
+            return JSONResponse(_run_control_dry_run_error_payload(str(exc)), status_code=400)
 
     if FastAPI is not None:
         app = FastAPI(
@@ -220,6 +247,10 @@ def create_app(
         def run_control_dry_run_contract() -> dict[str, object]:
             return run_control_dry_run_contract_payload()
 
+        @app.post("/api/run-control/dry-run", response_model=None)
+        async def run_control_dry_run(request: Request) -> JSONResponse:
+            return await dry_run_response(request)
+
         @app.get("/api/run-control/preflight/{run_id}")
         def run_control_preflight(run_id: str) -> dict[str, object]:
             return preflight_payload(run_id)
@@ -260,6 +291,7 @@ def create_app(
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route("/api/run-control/dry-run-contract", lambda request: JSONResponse(run_control_dry_run_contract_payload())),
+        Route("/api/run-control/dry-run", dry_run_response, methods=["POST"]),
         Route(
             "/api/run-control/preflight/{run_id}",
             lambda request: JSONResponse(preflight_payload(request.path_params["run_id"])),

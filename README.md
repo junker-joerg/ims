@@ -153,7 +153,7 @@ python -m ims.api.run_control_contracts
 python -m ims.api.run_control_dry_run_contract
 ```
 
-Der Dry-Run-Vertrag bleibt gesperrt und beschreibt nur erwartete Eingaben, Vorbedingungen und verbotene Grenzen fuer einen spaeteren HTTP-Dry-Run. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` read-only bereit. Es gibt keinen Request-Body, kein POST/PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
+Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 
@@ -193,7 +193,7 @@ Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese ge
 python -m ims.api.run_control_preflight --run-id baseline-python-tests
 ```
 
-Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Karte zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne POST/PUT, Upload, Editor, Schreibpfad oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag und gesperrten Dry-Run-Vertrag als reine Anzeige.
+Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen. Beide Karten zeigen Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne PUT, Upload, Editor, Schreibpfad oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag und Dry-Run-Pruefung.
 
 Metadaten-CLI:
 

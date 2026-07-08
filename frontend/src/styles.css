@@ -151,6 +151,27 @@ h2 {
   white-space: nowrap;
 }
 
+.secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #9fb7aa;
+  border-radius: 6px;
+  color: #143b2d;
+  background: #eef5f1;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.secondary-action:disabled {
+  color: #66736c;
+  background: #f3f6f4;
+  cursor: default;
+}
+
 .status-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -927,7 +948,21 @@ code {
   gap: 8px;
 }
 
-.run-control-dry-run-row {
+.run-control-dry-run-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.run-control-dry-run-result-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.run-control-dry-run-row,
+.run-control-dry-run-result-row {
   min-height: 66px;
   padding: 10px;
   border: 1px solid #d8e2dd;
@@ -935,13 +970,15 @@ code {
   background: #fbfcfb;
 }
 
-.run-control-dry-run-row span {
+.run-control-dry-run-row span,
+.run-control-dry-run-result-row span {
   display: block;
   margin-bottom: 7px;
   color: #66736c;
 }
 
-.run-control-dry-run-row strong {
+.run-control-dry-run-row strong,
+.run-control-dry-run-result-row strong {
   display: block;
   min-width: 0;
   color: #143b2d;
@@ -1026,6 +1063,7 @@ code {
   .run-control-request-grid,
   .run-control-preflight-grid,
   .run-control-dry-run-grid,
+  .run-control-dry-run-result-grid,
   .diagnosis-row,
   .scenario-filterbar,
   .run-filterbar,

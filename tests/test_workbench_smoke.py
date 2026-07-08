@@ -24,6 +24,16 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     consistency = client.get("/api/metadata/consistency")
     core_validation = client.get("/api/core-validation/overview")
     run_control_queue = client.get("/api/run-control/queue")
+    run_control_dry_run = client.post(
+        "/api/run-control/dry-run",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-smoke",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
     missing_queue_entry = client.get("/api/run-control/queue/missing-queue-entry")
     missing = client.get("/api/scenarios/missing-scenario")
 
@@ -57,6 +67,11 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert run_control_queue.json()["writes_enabled"] is False
     assert run_control_queue.json()["execution_enabled"] is False
     assert run_control_queue.json()["execution_performed"] is False
+    assert run_control_dry_run.status_code == 200
+    assert run_control_dry_run.json()["mode"] == "run_control_dry_run"
+    assert run_control_dry_run.json()["dry_run_allowed"] is False
+    assert run_control_dry_run.json()["writes_performed"] is False
+    assert run_control_dry_run.json()["execution_performed"] is False
     assert missing_queue_entry.status_code == 404
     assert missing_queue_entry.json()["error"]["resource"] == "run_control_queue"
 
@@ -185,6 +200,8 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
     assert "/api/run-control/dry-run-contract" in source
+    assert "/api/run-control/dry-run" in source
+    assert "Dry-Run pruefen" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source
@@ -194,7 +211,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Schreibvertragspruefung lokal per CLI ohne Import" in source
     assert "Run-Control-Vertrag lokal per CLI ohne Ausfuehrung" in source
     assert "Run-Control-Preflight lokal per CLI ohne Ausfuehrung" in source
-    assert "Run-Control-Dry-Run-Vertrag per API gesperrt" in source
+    assert "Run-Control-Dry-Run per API pruefend ohne Ausfuehrung" in source
     assert "Export lokal per CLI nur mit explizitem Zielpfad" in source
     assert "Roundtrip lokal per CLI ohne Schreiben" in source
     assert "Dry-Run lokal per CLI ohne Import" in source

@@ -40,10 +40,11 @@ class WorkbenchRunControlDryRunContract:
 
 def build_run_control_dry_run_contract() -> WorkbenchRunControlDryRunContract:
     return WorkbenchRunControlDryRunContract(
-        status="warning",
+        status="ok",
         mode="run_control_dry_run_contract",
         schema_version=METADATA_SCHEMA_VERSION,
         expected_inputs=(
+            "request_body",
             "run_id",
             "scenario_id",
             "metadata_source",
@@ -53,6 +54,7 @@ def build_run_control_dry_run_contract() -> WorkbenchRunControlDryRunContract:
         required_preconditions=(
             "run_control_request_contract_visible",
             "run_control_preflight_visible",
+            "run_control_dry_run_endpoint_visible",
             "execution_enabled_false",
             "writes_enabled_false",
         ),
@@ -61,13 +63,13 @@ def build_run_control_dry_run_contract() -> WorkbenchRunControlDryRunContract:
             "fachlogik_mutation",
             "queue_write",
             "metadata_write",
-            "http_post",
             "http_put",
             "browser_upload",
             "browser_download",
             "scenario_editor",
             "historical_full_equality_claim",
         ),
+        http_enabled=True,
     )
 
 

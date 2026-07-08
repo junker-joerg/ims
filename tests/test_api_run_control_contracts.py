@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from ims.api.metadata import metadata_capabilities
+from ims.api.run_control_dry_run_contract import build_run_control_dry_run_contract
 from ims.api.run_control_contracts import WorkbenchRunControlContract, build_run_control_contract, main
 
 
@@ -49,6 +50,22 @@ def test_run_control_contract_keeps_capabilities_execution_disabled():
     assert capabilities["simulation_execution"]["enabled"] is False
     assert capabilities["writes"]["scenario_metadata"]["enabled"] is False
     assert capabilities["writes"]["run_metadata"]["enabled"] is False
+
+
+def test_run_control_dry_run_contract_enables_only_http_check_boundary():
+    payload = build_run_control_dry_run_contract().to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_dry_run_contract"
+    assert payload["http_enabled"] is True
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert "request_body" in payload["expected_inputs"]
+    assert "run_control_dry_run_endpoint_visible" in payload["required_preconditions"]
+    assert "http_post" not in payload["forbidden_boundaries"]
+    assert "queue_write" in payload["forbidden_boundaries"]
 
 
 def test_run_control_contract_cli_prints_stable_json(capsys):

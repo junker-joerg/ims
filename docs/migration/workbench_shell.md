@@ -16,7 +16,8 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/run-control/queue` beschreibt lesend vorhandene lokale Run-Control-Queue-Eintraege, ohne die Queue zu initialisieren oder zu schreiben.
 - `/api/run-control/queue/{queue_id}` liefert einen einzelnen Queue-Eintrag lesend per ID.
 - `/api/run-control/request-contract` beschreibt lesend den Run-Control-Request-Vertrag, ohne Request-Body, Upload oder Schreiben.
-- `/api/run-control/dry-run-contract` beschreibt den gesperrten Run-Control-Dry-Run-Vertrag, ohne Request-Body, POST/PUT oder Ausfuehrung.
+- `/api/run-control/dry-run-contract` beschreibt den Run-Control-Dry-Run-Vertrag fuer eine HTTP-Pruefung ohne Schreiben oder Ausfuehrung.
+- `/api/run-control/dry-run` prueft ein Run-Control-Request-DTO gegen Request-Vertrag und Preflight, ohne Queue, Metadaten oder Simulation zu schreiben.
 - `/api/run-control/preflight/{run_id}` prueft den ausgewaehlten Run lesend gegen die gesperrte Run-Control-Grenze.
 - `/api/core-validation/overview` beschreibt lesend den IMS-Kernvalidierungsueberblick, Legacy-Abdeckung und den Execution-Summary-Vertrag, ohne einen Runner zu starten.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
@@ -66,7 +67,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Der lokale CLI-Snapshot-Modus liest nur Metadaten und nutzt `IMS_METADATA_DB` nicht als implizite Quelle. Explizite SQLite-Snapshots werden read-only geoeffnet und beruecksichtigen den aktuellen WAL-Zustand.
 - Der lokale Schreibvertrag ist rein beschreibend. Er oeffnet keinen HTTP- oder UI-Schreibpfad und erzeugt keine SQLite-Datei.
 - Der lokale Run-Control-Vertrag ist rein beschreibend. Er startet keinen Lauf und schaltet keine API- oder UI-Steuerung frei.
-- Der Run-Control-Dry-Run-Vertrag ist gesperrt. Er beschreibt erwartete Eingaben und Vorbedingungen fuer einen spaeteren HTTP-Dry-Run, oeffnet aber keinen Request-Body-, POST/PUT-, Upload-, Schreib- oder Ausfuehrungspfad.
+- Der Run-Control-Dry-Run-Vertrag erlaubt nur den kontrollierten HTTP-Pruefpfad `POST /api/run-control/dry-run`. Dieser Request-Body muss dem Run-Control-Request-DTO entsprechen und `execution_enabled=false` setzen; Queue-Schreiben, Metadatenschreiben, Upload, PUT und Ausfuehrung bleiben gesperrt.
 - Die lokale Run-Control-Queue schreibt nur ueber explizite CLI-Befehle mit `--db`. Sie startet keine Simulation, keinen Worker und keinen Scheduler.
 - Der lokale Run-Control-Preflight ist rein lesend. Er prueft Run- und Szenario-Metadaten, startet aber keine Simulation und schreibt keine Metadaten.
 - Die lokale Startdiagnose schreibt keine Metadaten, startet keine Simulation und erzeugt keine SQLite-Datei fuer fehlende explizite DB-Pfade.
@@ -87,7 +88,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Das Run-Control-Statusband ist rein lesend. Es fasst Queue, Preflight, Request-Vertrag, Dry-Run-Vertrag, Schreibpfade und Ausfuehrungsgrenze aus den bereits gelesenen Antworten zusammen und oeffnet keinen eigenen API-, Start- oder Schreibpfad.
 - Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
 - Die Run-Control-Request-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/request-contract`, zeigt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO, validiert aber keinen Browser-Request und oeffnet keinen Upload- oder Schreibpfad.
-- Die Run-Control-Dry-Run-Vertragskarte ist rein lesend und gesperrt. Sie nutzt `/api/run-control/dry-run-contract`, zeigt erwartete Eingaben, Vorbedingungen und verbotene Grenzen, fuehrt aber keinen Dry-Run aus und enthaelt kein Formular.
+- Die Run-Control-Dry-Run-Karte zeigt den Vertrag und kann fuer den ausgewaehlten Run `POST /api/run-control/dry-run` als reine Pruefung ausloesen. Sie schreibt keine Queue oder Metadaten, startet keine Simulation und enthaelt keinen Upload, Editor oder Startbutton.
 - Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
 - Die Kernvalidierungsuebersicht ist rein lesend. Sie nutzt `/api/core-validation/overview`, zeigt Periodenplaene, Legacy-Referenzen und den Execution-Summary-Vertrag, startet aber keinen expliziten Periodenrunner und nimmt keine Summary-Datei entgegen.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
@@ -560,7 +561,7 @@ Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrt
 
 Der Run-Control-Vertrag ist rein beschreibend. Er startet keinen Lauf, schreibt keine Metadaten, erzeugt keine SQLite-Datei, oeffnet keinen HTTP-Endpunkt und schaltet keinen UI-Startbutton frei. `execution_enabled` und `execution_performed` bleiben `false`.
 
-Der Run-Control-Dry-Run-Vertrag enthaelt `mode = "run_control_dry_run_contract"`, `expected_inputs`, `required_preconditions`, `forbidden_boundaries`, `http_enabled = false`, `writes_enabled = false`, `execution_enabled = false`, `writes_performed = false` und `execution_performed = false`. Er ist ein gesperrter Vertrag fuer einen spaeteren HTTP-Dry-Run und fuehrt keinen Dry-Run aus.
+Der Run-Control-Dry-Run-Vertrag enthaelt `mode = "run_control_dry_run_contract"`, `expected_inputs`, `required_preconditions`, `forbidden_boundaries`, `http_enabled = true`, `writes_enabled = false`, `execution_enabled = false`, `writes_performed = false` und `execution_performed = false`. Er gibt nur den kontrollierten HTTP-Pruefpfad frei; Queue-Schreiben, Metadatenschreiben und Ausfuehrung bleiben gesperrt.
 
 Ein lokaler Request-Check kann eine spaetere Steuerungsanfrage als DTO validieren:
 
@@ -575,12 +576,13 @@ Der HTTP-Lesekontrakt fuer dieses DTO ist:
 ```text
 GET /api/run-control/request-contract
 GET /api/run-control/dry-run-contract
+POST /api/run-control/dry-run
 GET /api/core-validation/overview
 ```
 
 Die Antwort enthaelt `mode = "run_control_request_contract"`, `schema_version`, `accepted_fields`, `required_fields`, `optional_fields`, `forbidden_fields`, `example_request`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body, prueft keinen Browser-Upload, schreibt keine Queue und startet keine Ausfuehrung. Die Frontend-Request-Vertragskarte zeigt diese Felder nur als lokale Orientierung.
 
-Der Dry-Run-Vertragsendpunkt liefert die gesperrte Form mit `mode = "run_control_dry_run_contract"`, erwarteten Eingaben, Vorbedingungen und verbotenen Grenzen. Er akzeptiert keinen Request-Body, oeffnet kein POST/PUT, schreibt keine Queue oder Metadaten und startet keine Simulation. Die Frontend-Dry-Run-Vertragskarte zeigt nur diese Grenze.
+Der Dry-Run-Vertragsendpunkt liefert die Form mit `mode = "run_control_dry_run_contract"`, erwarteten Eingaben, Vorbedingungen und verbotenen Grenzen. Der zugehoerige `POST /api/run-control/dry-run` akzeptiert nur das bestehende Run-Control-Request-DTO, lehnt `execution_enabled=true`, unbekannte Felder und fachliche Ergebnisdaten ab, kombiniert den Request mit dem vorhandenen Preflight und liefert `mode = "run_control_dry_run"`. Er schreibt keine Queue oder Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Die Frontend-Dry-Run-Karte zeigt Vertrag und letztes Pruefergebnis fuer die aktuelle Run-Auswahl.
 
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:
 

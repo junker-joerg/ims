@@ -15,14 +15,16 @@ from ims.api.run_control_dry_run_contract import (
 def test_run_control_dry_run_contract_reports_stable_json_shape():
     payload = run_control_dry_run_contract_payload()
 
-    assert payload["status"] == "warning"
+    assert payload["status"] == "ok"
     assert payload["mode"] == "run_control_dry_run_contract"
     assert payload["schema_version"] == "ims.workbench.metadata.v1"
+    assert "request_body" in payload["expected_inputs"]
     assert "run_id" in payload["expected_inputs"]
     assert "run_control_preflight_visible" in payload["required_preconditions"]
+    assert "run_control_dry_run_endpoint_visible" in payload["required_preconditions"]
     assert "simulation_execution" in payload["forbidden_boundaries"]
-    assert "http_post" in payload["forbidden_boundaries"]
-    assert payload["http_enabled"] is False
+    assert "http_post" not in payload["forbidden_boundaries"]
+    assert payload["http_enabled"] is True
     assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["writes_performed"] is False

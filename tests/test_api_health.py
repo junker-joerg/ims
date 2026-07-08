@@ -240,17 +240,103 @@ def test_run_control_dry_run_contract_endpoint_is_disabled_and_readonly(tmp_path
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["status"] == "warning"
+    assert payload["status"] == "ok"
     assert payload["mode"] == "run_control_dry_run_contract"
+    assert "request_body" in payload["expected_inputs"]
     assert "run_id" in payload["expected_inputs"]
     assert "run_control_request_contract_visible" in payload["required_preconditions"]
-    assert "http_post" in payload["forbidden_boundaries"]
-    assert payload["http_enabled"] is False
+    assert "run_control_dry_run_endpoint_visible" in payload["required_preconditions"]
+    assert "http_post" not in payload["forbidden_boundaries"]
+    assert payload["http_enabled"] is True
     assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
+def test_run_control_dry_run_endpoint_validates_request_without_execution(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/run-control/dry-run",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_dry_run"
+    assert payload["request_accepted"] is True
+    assert payload["preflight_passed"] is True
+    assert payload["scenario_matches_request"] is True
+    assert payload["dry_run_allowed"] is False
+    assert payload["preflight"]["mode"] == "run_control_preflight"
+    assert payload["preflight"]["execution_allowed"] is False
+    assert payload["issues"] == []
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
+def test_run_control_dry_run_endpoint_rejects_execution_enabled(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/run-control/dry-run",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": True,
+        },
+    )
+
+    assert response.status_code == 400
+    payload = response.json()
+    assert payload["status"] == "error"
+    assert payload["mode"] == "run_control_dry_run"
+    assert "execution_enabled=true is forbidden" in payload["message"]
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
+def test_run_control_dry_run_endpoint_reports_scenario_mismatch_without_execution(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/run-control/dry-run",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "metadata-only-local",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "error"
+    assert payload["request_accepted"] is True
+    assert payload["preflight_passed"] is True
+    assert payload["scenario_matches_request"] is False
+    assert payload["dry_run_allowed"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
 
 
 def test_core_validation_overview_endpoint_is_readonly_contract(tmp_path):

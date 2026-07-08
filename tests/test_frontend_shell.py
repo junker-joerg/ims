@@ -231,23 +231,34 @@ def test_frontend_shell_declares_readonly_core_validation_overview():
     assert 'type="file"' not in source
 
 
-def test_frontend_shell_declares_disabled_run_control_dry_run_contract():
+def test_frontend_shell_declares_controlled_run_control_dry_run_check():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
 
     assert "/api/run-control/dry-run-contract" in source
+    assert "/api/run-control/dry-run" in source
+    assert 'method: "POST"' in source
     assert "Run-Control-Dry-Run-Vertrag" in source
+    assert "Run-Control-Dry-Run-Ergebnis" in source
     assert "runControlDryRunContract" in source
+    assert "runControlDryRunResult" in source
     assert "expected_inputs" in source
     assert "required_preconditions" in source
     assert "forbidden_boundaries" in source
     assert "http_enabled" in source
+    assert "request_accepted" in source
+    assert "preflight_passed" in source
+    assert "scenario_matches_request" in source
+    assert "dry_run_allowed" in source
     assert "writes_performed" in source
     assert "execution_performed" in source
-    assert "Run-Control-Dry-Run-Vertrag per API gesperrt" in source
+    assert "Dry-Run pruefen" in source
+    assert "Run-Control-Dry-Run per API pruefend ohne Ausfuehrung" in source
     assert "run-control-dry-run-panel" in styles
     assert "run-control-dry-run-grid" in styles
     assert "run-control-dry-run-row" in styles
+    assert "run-control-dry-run-result-grid" in styles
+    assert "run-control-dry-run-result-row" in styles
     assert "startRun" not in source
     assert "submit" not in source
     assert 'type="file"' not in source

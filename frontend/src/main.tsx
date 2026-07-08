@@ -171,13 +171,29 @@ type RunControlRequestContract = {
 };
 
 type RunControlDryRunContract = {
-  status: "warning";
+  status: "ok" | "warning";
   mode: "run_control_dry_run_contract";
   schema_version: string;
   expected_inputs: string[];
   required_preconditions: string[];
   forbidden_boundaries: string[];
   http_enabled: boolean;
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+  writes_performed: boolean;
+  execution_performed: boolean;
+};
+
+type RunControlDryRunResult = {
+  status: "ok" | "error";
+  mode: "run_control_dry_run";
+  request: RunControlRequestContract["example_request"];
+  preflight: RunControlPreflight;
+  request_accepted: boolean;
+  preflight_passed: boolean;
+  scenario_matches_request: boolean;
+  dry_run_allowed: boolean;
+  issues: string[];
   writes_enabled: boolean;
   execution_enabled: boolean;
   writes_performed: boolean;
@@ -361,6 +377,9 @@ function App() {
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
   const [runControlDryRunContract, setRunControlDryRunContract] = useState<RunControlDryRunContract | null>(null);
+  const [runControlDryRunResult, setRunControlDryRunResult] = useState<RunControlDryRunResult | null>(null);
+  const [runControlDryRunState, setRunControlDryRunState] = useState<DetailState>("idle");
+  const [runControlDryRunError, setRunControlDryRunError] = useState<string | null>(null);
   const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
   const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
@@ -672,6 +691,42 @@ function App() {
   const selectRun = (run: RunMetadata) => {
     setSelectedRunId(run.id);
     setSelectedScenarioId(run.scenario_id);
+    setRunControlDryRunResult(null);
+    setRunControlDryRunError(null);
+    setRunControlDryRunState("idle");
+  };
+  const checkRunControlDryRun = async () => {
+    if (!selectedRun) {
+      return;
+    }
+    setRunControlDryRunState("loading");
+    setRunControlDryRunError(null);
+    try {
+      const response = await fetch("/api/run-control/dry-run", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          run_id: selectedRun.id,
+          scenario_id: selectedRun.scenario_id,
+          metadata_db: metadataSource?.path ?? null,
+          requested_by: "workbench-ui",
+          created_at: "2026-05-27T00:00:00Z",
+          execution_enabled: false
+        })
+      });
+      const payload = (await response.json()) as RunControlDryRunResult | { message?: string };
+      if (!response.ok) {
+        throw new Error("message" in payload && payload.message ? payload.message : "Run-Control-Dry-Run nicht erreichbar");
+      }
+      setRunControlDryRunResult(payload as RunControlDryRunResult);
+      setRunControlDryRunState("ready");
+    } catch (error) {
+      setRunControlDryRunResult(null);
+      setRunControlDryRunError(error instanceof Error ? error.message : "Run-Control-Dry-Run nicht erreichbar");
+      setRunControlDryRunState("error");
+    }
   };
   const missingScenarioLabel = metadataConsistency?.runs_with_missing_scenario.length
     ? metadataConsistency.runs_with_missing_scenario.join(", ")
@@ -815,9 +870,9 @@ function App() {
     [
       "Status",
       runControlDryRunContract
-        ? runControlDryRunContract.status === "warning"
-          ? "gesperrt"
-          : runControlDryRunContract.status
+        ? runControlDryRunContract.http_enabled
+          ? "HTTP-Pruefung aktiv"
+          : "gesperrt"
         : "laedt"
     ],
     ["Eingaben", runControlDryRunContract?.expected_inputs.join(", ") ?? "-"],
@@ -826,6 +881,35 @@ function App() {
     ["HTTP", runControlDryRunContract?.http_enabled ? "aktiv" : "gesperrt"],
     ["Schreibpfade", runControlDryRunContract?.writes_enabled || runControlDryRunContract?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlDryRunContract?.execution_enabled || runControlDryRunContract?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
+  const runControlDryRunStatus =
+    runControlDryRunState === "error"
+      ? runControlDryRunError ?? "nicht erreichbar"
+      : runControlDryRunState === "loading"
+        ? "prueft"
+        : runControlDryRunResult
+          ? runControlDryRunResult.status === "ok"
+            ? "geprueft"
+            : "Hinweis"
+          : "nicht geprueft";
+  const runControlDryRunIssueLabel = runControlDryRunResult
+    ? runControlDryRunResult.issues.length
+      ? runControlDryRunResult.issues.join(", ")
+      : "keine"
+    : runControlDryRunState === "error"
+      ? runControlDryRunError ?? "nicht erreichbar"
+      : "nicht geprueft";
+  const runControlDryRunResultRows = [
+    ["Status", runControlDryRunStatus],
+    ["Run", runControlDryRunResult?.request.run_id ?? selectedRunId ?? "-"],
+    ["Szenario", runControlDryRunResult?.request.scenario_id ?? selectedRun?.scenario_id ?? "-"],
+    ["Request akzeptiert", yesNoLoading(runControlDryRunResult?.request_accepted)],
+    ["Preflight ok", yesNoLoading(runControlDryRunResult?.preflight_passed)],
+    ["Szenario passt", yesNoLoading(runControlDryRunResult?.scenario_matches_request)],
+    ["Dry-Run erlaubt", runControlDryRunResult?.dry_run_allowed ? "ja" : "nein"],
+    ["Hinweise", runControlDryRunIssueLabel],
+    ["Schreibpfade", runControlDryRunResult?.writes_enabled || runControlDryRunResult?.writes_performed ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", runControlDryRunResult?.execution_enabled || runControlDryRunResult?.execution_performed ? "aktiv" : "gesperrt"]
   ];
   const runControlBoundaryRows = [
     [
@@ -836,13 +920,15 @@ function App() {
     ],
     ["Preflight", runControlPreflightBoundaryStatus],
     ["Request-Vertrag", runControlRequestContract ? "lesend" : "laedt"],
-    ["Dry-Run-Vertrag", runControlDryRunContract ? "gesperrt" : "laedt"],
+    ["Dry-Run", runControlDryRunContract?.http_enabled ? runControlDryRunStatus : "gesperrt"],
     [
       "Schreibpfade",
       runControlQueue?.writes_enabled ||
       runControlRequestContract?.writes_enabled ||
       runControlDryRunContract?.writes_enabled ||
       runControlDryRunContract?.writes_performed ||
+      runControlDryRunResult?.writes_enabled ||
+      runControlDryRunResult?.writes_performed ||
       runControlPreflight?.writes_performed
         ? "aktiv"
         : "gesperrt"
@@ -855,6 +941,8 @@ function App() {
       runControlRequestContract?.execution_performed ||
       runControlDryRunContract?.execution_enabled ||
       runControlDryRunContract?.execution_performed ||
+      runControlDryRunResult?.execution_enabled ||
+      runControlDryRunResult?.execution_performed ||
       runControlPreflight?.execution_allowed ||
       runControlPreflight?.execution_performed
         ? "aktiv"
@@ -1457,7 +1545,7 @@ function App() {
                 <li>Run-Control-Vertrag lokal per CLI ohne Ausfuehrung</li>
                 <li>Run-Control-Preflight lokal per CLI ohne Ausfuehrung</li>
                 <li>Run-Control-Request-Vertrag per API nur lesend</li>
-                <li>Run-Control-Dry-Run-Vertrag per API gesperrt</li>
+                <li>Run-Control-Dry-Run per API pruefend ohne Ausfuehrung</li>
                 <li><code>execution_enabled</code> bleibt <code>false</code></li>
                 <li>Browser schreibt keine Metadaten</li>
               </ul>
@@ -1470,9 +1558,28 @@ function App() {
             <CircleDot size={20} aria-hidden="true" />
             <h2>Run-Control-Dry-Run-Vertrag</h2>
           </div>
+          <div className="run-control-dry-run-actions">
+            <button
+              className="secondary-action"
+              disabled={!selectedRun || runControlDryRunState === "loading"}
+              type="button"
+              onClick={checkRunControlDryRun}
+            >
+              <ShieldCheck size={17} aria-hidden="true" />
+              Dry-Run pruefen
+            </button>
+          </div>
           <div className="run-control-dry-run-grid">
             {runControlDryRunRows.map(([label, value]) => (
               <div className="run-control-dry-run-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="run-control-dry-run-result-grid" aria-label="Run-Control-Dry-Run-Ergebnis">
+            {runControlDryRunResultRows.map(([label, value]) => (
+              <div className="run-control-dry-run-result-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>
