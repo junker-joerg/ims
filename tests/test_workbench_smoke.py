@@ -219,6 +219,9 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Run-Control-Uebersicht" in source
     assert "Run-Control-Queue-Detail" in source
     assert "Run-Control-Dry-Run-Vertrag" in source
+    assert 'data-testid="run-control-demo-dry-run-button"' in source
+    assert 'data-testid="run-control-demo-queue-button"' in source
+    assert 'data-testid="run-control-demo-action-plan"' in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source

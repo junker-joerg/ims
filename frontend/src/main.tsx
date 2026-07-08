@@ -1727,7 +1727,11 @@ function App() {
           </div>
         </section>
 
-        <section className="panel run-control-dry-run-panel" aria-label="Run-Control-Dry-Run-Vertrag">
+        <section
+          className="panel run-control-dry-run-panel"
+          aria-label="Run-Control-Dry-Run-Vertrag"
+          data-testid="run-control-demo-dry-run-panel"
+        >
           <div className="panel-heading">
             <CircleDot size={20} aria-hidden="true" />
             <h2>Run-Control-Dry-Run-Vertrag</h2>
@@ -1735,6 +1739,7 @@ function App() {
           <div className="run-control-dry-run-actions">
             <button
               className="secondary-action"
+              data-testid="run-control-demo-dry-run-button"
               disabled={!selectedRun || runControlDryRunState === "loading"}
               type="button"
               onClick={checkRunControlDryRun}
@@ -1744,6 +1749,7 @@ function App() {
             </button>
             <button
               className="secondary-action"
+              data-testid="run-control-demo-queue-button"
               disabled={!canEnqueueRunControlQueue || runControlQueueEnqueueState === "loading"}
               type="button"
               onClick={enqueueRunControlQueue}
@@ -1760,7 +1766,11 @@ function App() {
               </div>
             ))}
           </div>
-          <div className="run-control-dry-run-result-grid" aria-label="Run-Control-Dry-Run-Ergebnis">
+          <div
+            className="run-control-dry-run-result-grid"
+            aria-label="Run-Control-Dry-Run-Ergebnis"
+            data-testid="run-control-demo-dry-run-result"
+          >
             {runControlDryRunResultRows.map(([label, value]) => (
               <div className="run-control-dry-run-result-row" key={label}>
                 <span>{label}</span>
@@ -1768,7 +1778,11 @@ function App() {
               </div>
             ))}
           </div>
-          <div className="run-control-queue-enqueue-grid" aria-label="Run-Control-Queue-Vormerkung">
+          <div
+            className="run-control-queue-enqueue-grid"
+            aria-label="Run-Control-Queue-Vormerkung"
+            data-testid="run-control-demo-queue-result"
+          >
             {runControlQueueEnqueueRows.map(([label, value]) => (
               <div className="run-control-queue-enqueue-row" key={label}>
                 <span>{label}</span>
@@ -1778,7 +1792,11 @@ function App() {
           </div>
         </section>
 
-        <section className="panel run-control-action-plan-panel" aria-label="Run-Control-Aktionsplan">
+        <section
+          className="panel run-control-action-plan-panel"
+          aria-label="Run-Control-Aktionsplan"
+          data-testid="run-control-demo-action-plan"
+        >
           <div className="panel-heading">
             <GitBranch size={20} aria-hidden="true" />
             <h2>Run-Control-Aktionsplan</h2>

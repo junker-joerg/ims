@@ -203,6 +203,8 @@ Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen
 
 Der Demo-Smoke nutzt den bekannten Run `baseline-python-tests` und das Szenario `agrsich-reference-window`. Er prueft den HTTP-Dry-Run, schreibt danach nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle und liest den Aktionsplan wieder aus. Erwartet bleiben `execution_enabled=false`, `execution_performed=false` und als naechster Schritt `run_preflight`. Der Ablauf ist eine lokale Bedien- und Integrationsprobe, keine Simulation, kein Ausfuehrungsadapter, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
 
+Der zugehoerige Browser-/Screenshot-Smoke nutzt stabile UI-Anker fuer Dry-Run-Schaltflaeche, Queue-Schaltflaeche, Queue-Ergebnis und Aktionsplankarte. Der Screenshot soll belegen, dass die lokale UI den Demo-Pfad sichtbar und bedienbar macht; er ist kein fachlicher Ergebnisnachweis.
+
 Metadaten-CLI:
 
 Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:

@@ -115,7 +115,7 @@ Die Run-Control-Schritte brauchen Tests auf mehreren Ebenen:
 - CLI/Dry-Run/Preflight: stabile JSON-Formen, `writes_performed = false`, `execution_performed = false`.
 - HTTP-Vertraege: zunaechst gesperrt oder Dry-Run, keine echte Ausfuehrung.
 - Frontend: rein lesende Anzeige, kein Startbutton mit Funktion, keine Schreibcontrols.
-- Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken und Run-Control-Aktionsplan ansehen, mit `execution_performed = false`.
+- Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken und Run-Control-Aktionsplan ansehen, mit stabilen UI-Ankern, Screenshot-Beleg und `execution_performed = false`.
 - Doku-Smokes: keine Fachlogikaenderung, keine historische Vollgleichheitsbehauptung, Packaging/Bereitstellung als eigener spaeterer Block.
 
 ## Nicht-Ziele dieses Plan-PRs

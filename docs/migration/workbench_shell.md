@@ -595,6 +595,8 @@ Der Aktionsplan-Endpunkt `GET /api/run-control/queue/action-plan` liest dieselbe
 
 Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue` und anschliessend `GET /api/run-control/queue/action-plan`, optional mit `queue_id`. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run und Aktionsplan bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false` und ein Aktionshinweis `run_preflight`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 
+Fuer den echten Browser-/Screenshot-Smoke stellt die Frontend-Schale stabile `data-testid`-Anker bereit: `run-control-demo-dry-run-button`, `run-control-demo-queue-button`, `run-control-demo-dry-run-result`, `run-control-demo-queue-result` und `run-control-demo-action-plan`. Der Screenshot-Smoke prueft Sichtbarkeit und Bedienfolge in der lokalen Workbench. Er prueft keine historischen Fachwerte und ersetzt keine spaetere Fachvalidierung.
+
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:
 
 ```powershell

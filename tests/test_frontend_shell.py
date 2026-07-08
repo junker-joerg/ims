@@ -259,6 +259,12 @@ def test_frontend_shell_declares_controlled_run_control_dry_run_check():
     assert 'method: "POST"' in source
     assert "Run-Control-Dry-Run-Vertrag" in source
     assert "Run-Control-Dry-Run-Ergebnis" in source
+    assert 'data-testid="run-control-demo-dry-run-panel"' in source
+    assert 'data-testid="run-control-demo-dry-run-button"' in source
+    assert 'data-testid="run-control-demo-queue-button"' in source
+    assert 'data-testid="run-control-demo-dry-run-result"' in source
+    assert 'data-testid="run-control-demo-queue-result"' in source
+    assert 'data-testid="run-control-demo-action-plan"' in source
     assert "runControlDryRunContract" in source
     assert "runControlDryRunResult" in source
     assert "expected_inputs" in source

@@ -60,6 +60,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen" in readme
     assert "baseline-python-tests" in readme
     assert "agrsich-reference-window" in readme
+    assert "Browser-/Screenshot-Smoke nutzt stabile UI-Anker" in readme
     assert "kein Ausfuehrungsadapter, keine Fachvalidierung" in readme
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
@@ -243,6 +244,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der lokale Demo-Smoke fuer die Browser-Workbench" in doc
     assert "Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen" in doc
     assert "POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`" in doc
+    assert "run-control-demo-dry-run-button" in doc
+    assert "run-control-demo-action-plan" in doc
     assert "Dieser Demo-Smoke startet keine Simulation" in doc
     assert "GET /api/run-control/queue/{queue_id}" in doc
     assert "metadata_not_found" in doc
@@ -339,7 +342,7 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Keine Simulation starten" in plan
     assert "Keine weiteren HTTP-Schreibendpunkte ausser der kontrollierten Queue-Vormerkung" in plan
     assert "Kein HTTP-Schreibpfad ausser Queue-Metadaten nach erfolgreichem Dry-Run" in plan
-    assert "Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken und Run-Control-Aktionsplan ansehen" in plan
+    assert "Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken und Run-Control-Aktionsplan ansehen, mit stabilen UI-Ankern" in plan
     assert "Kein Packaging in diesem PR" in plan
     assert "Keine historische Vollgleichheitsbehauptung" in plan
 
