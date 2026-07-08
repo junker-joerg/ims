@@ -9,6 +9,7 @@ from ims.engine.explicit_period_runner import (
     ExplicitMultiPeriodRunResult,
     ExplicitPeriodCarryover,
     ExplicitPeriodRunResult,
+    build_explicit_multi_period_execution_summary,
     run_explicit_multi_period_from_fixture,
     run_explicit_multi_period_from_mappings,
     run_explicit_period_from_mapping,
@@ -193,6 +194,40 @@ def test_explicit_multi_period_counts_vu_and_vn_applications(tmp_path: Path) -> 
     assert result.total_vn_settlement_applications == 2
     assert result.total_vn_damage_settlement_applications == 2
     assert {path.name for path in result.written_files} >= {"imsvu011.dat", "imsvnr05.dat"}
+
+
+def test_explicit_multi_period_execution_summary_reports_controlled_path(tmp_path: Path) -> None:
+    first = _scenario(2)
+    second = _scenario(3)
+    first["vn_insurance_rule_snapshots"] = [_compulsory_insurance_rule_snapshot()]
+    second["vn_insurance_rule_snapshots"] = [_compulsory_insurance_rule_snapshot()]
+
+    result = run_explicit_multi_period_from_mappings(
+        [first, second],
+        output_dir=tmp_path,
+        carry_forward_vu_state=True,
+        carry_forward_vn_state=True,
+    )
+
+    payload = build_explicit_multi_period_execution_summary(result).to_dict()
+
+    assert payload["mode"] == "explicit_multi_period_execution_summary"
+    assert payload["period_count"] == 2
+    assert payload["processed_local_periods"] == [2, 3]
+    assert payload["processed_global_periods"] == [2, 3]
+    assert payload["total_vu_rule_applications"] == 2
+    assert payload["total_vn_insurance_rule_applications"] == 2
+    assert payload["total_vn_damage_settlement_applications"] == 2
+    assert payload["carryover_count"] == 1
+    assert payload["vu_carryover_count"] == 1
+    assert payload["vn_carryover_count"] == 1
+    assert payload["written_file_count"] == len(result.written_files)
+    assert payload["legacy_comparison_performed"] is False
+    assert payload["legacy_comparison_matches"] is None
+    assert payload["writes_performed"] is True
+    assert payload["execution_performed"] is True
+    assert payload["automatic_historical_rule_selection_performed"] is False
+    assert payload["simulation_performed"] is False
 
 
 def test_explicit_multi_period_can_carry_forward_vn_state() -> None:

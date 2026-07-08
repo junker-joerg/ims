@@ -53,10 +53,10 @@ Naechster bevorzugter Arbeitsschnitt:
 - PR 8: `VU014PR1.DAT` nur wieder aufnehmen, wenn eine historische
   Schreibstelle oder ein belastbares Feldmapping fuer `Pr1L1` bis `Pr1L5`
   vorliegt; dann eigener Parser und gezielte Tests.
-- PR 9: Naechsten Kernlogik-Schnitt aus den vorhandenen Planfixtures waehlen:
-  bevorzugt ein eng abgegrenzter VU-/VN-Regel- oder Carryover-Anschluss mit
-  expliziten Eingaben, ohne Simulation und ohne automatische historische
-  Regelwahl.
+- PR 9: Naechsten Kernlogik-Schnitt aus den vorhandenen Planfixtures waehlen
+  (dieser Schnitt: stabile Execution-Summary fuer ausgefuehrte explizite
+  VU/VN-Mehrperiodenlaeufe, ohne Simulation und ohne automatische historische
+  Regelwahl).
 - PR 10+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
   vorhandenen Planfixtures, weiterhin ohne Vollgleichheitsbehauptung.
 

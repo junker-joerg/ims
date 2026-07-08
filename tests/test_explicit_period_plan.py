@@ -11,6 +11,7 @@ from ims.engine.explicit_period_plan import (
     load_explicit_period_plan_from_mapping,
     run_explicit_multi_period_from_plan_fixture,
 )
+from ims.engine.explicit_period_runner import build_explicit_multi_period_execution_summary
 
 
 def _free_linear_parameters() -> dict[str, list[float]]:
@@ -268,6 +269,19 @@ def test_explicit_period_plan_runs_legacy_targets_and_writes_report(tmp_path: Pa
         "plan_validation_periods.csv",
         "plan_validation_deviations.csv",
     ]
+
+    payload = build_explicit_multi_period_execution_summary(result).to_dict()
+
+    assert payload["processed_global_periods"] == [2, 3]
+    assert payload["total_vu_rule_applications"] == 2
+    assert payload["total_vn_insurance_rule_applications"] == 2
+    assert payload["carryover_count"] == 1
+    assert payload["vn_carryover_count"] == 1
+    assert payload["legacy_comparison_performed"] is True
+    assert payload["legacy_comparison_matches"] is True
+    assert payload["legacy_report_written_file_count"] == 6
+    assert payload["automatic_historical_rule_selection_performed"] is False
+    assert payload["simulation_performed"] is False
 
 
 def test_explicit_period_plan_can_override_entity_fields() -> None:

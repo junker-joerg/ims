@@ -31,6 +31,11 @@ historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
   die bereits vorhandenen kontrollierten Carryover-Bausteine.
 - Das Mehrperiodenergebnis zaehlt VN-Versicherungsregelanwendungen separat als
   `total_vn_insurance_rule_applications`.
+- `build_explicit_multi_period_execution_summary` erzeugt eine stabile
+  maschinenlesbare Zusammenfassung eines ausgefuehrten expliziten
+  Mehrperiodenlaufs. Sie berichtet lokale und globale Periodenachsen,
+  VU-/VN-Anwendungszaehlungen, Carryover-Zaehler, Legacy-Vergleichsstatus und
+  Schreibstatus, fuehrt aber keine fachliche Nachberechnung aus.
 - Schaden-/Abrechnungs-Snapshots duerfen ihre `insurance_decisions` aus einem
   passenden `vn_insurance_rule_snapshots`-Eintrag derselben VN ableiten. Damit
   kann der explizite VU/VN-Lauf die portierten VN-Versicherungsregeln direkt in
@@ -52,3 +57,5 @@ historische Scheduling-, Dialog- und Auswahlpfade bleiben ausserhalb.
 - Der Runner ist kein Ersatz fuer einen historischen PlanVN-/PlanVU-Scheduler.
 - Die globale Carryover-Diagnose fuehrt keine neue Fortschreibungslogik ein,
   sondern beschreibt nur den bereits validierten Zustandstransfer eindeutiger.
+- Die Execution-Summary dokumentiert explizit, dass keine automatische
+  historische Regelwahl und keine Vollsimulation ausgefuehrt wurden.

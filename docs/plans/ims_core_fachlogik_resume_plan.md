@@ -83,7 +83,11 @@ Der passende PR-Titel waere:
    bleibt read-only und zeigt, welche weitere Validierung durch fehlende echte
    historische Referenzen blockiert ist.
 5. Danach einen schmalen VU- oder VN-Regel-Slice aus den vorhandenen
-   Plan-Dateien auswaehlen und mit explizitem Ursprung dokumentieren.
+   Plan-Dateien auswaehlen und mit explizitem Ursprung dokumentieren. Der erste
+   Anschluss ist umgesetzt: `build_explicit_multi_period_execution_summary`
+   beschreibt ausgefuehrte explizite VU/VN-Mehrperiodenlaeufe mit
+   Periodenachsen, Anwendungszaehlungen, Carryover- und Legacy-Report-Status,
+   ohne Simulation oder automatische historische Regelwahl zu behaupten.
 6. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
 
 ## Aktualisierte PR-Restplanung

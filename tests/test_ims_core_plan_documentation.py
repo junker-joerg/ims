@@ -31,6 +31,8 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "keine neuen Fachregeln" in plan
     assert "Periodenfolge" in plan
     assert "Legacy-Targets" in plan
+    assert "build_explicit_multi_period_execution_summary" in plan
+    assert "ohne Simulation oder automatische historische Regelwahl" in plan
 
 
 def test_ims_core_resume_plan_keeps_boundaries_conservative() -> None:

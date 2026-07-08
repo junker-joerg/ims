@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 import json
 from pathlib import Path
+from typing import Any
 
 from ims.engine.vn_rule_runner import (
     VNSettlementPeriodRunResult,
@@ -90,6 +91,83 @@ class ExplicitMultiPeriodRunResult:
     legacy_comparison: MultiPeriodLegacyComparison | None = None
     legacy_report: LegacyValidationReport | None = None
     written_legacy_report_files: list[Path] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class ExplicitMultiPeriodExecutionSummary:
+    """Stabile Diagnose fuer einen ausgefuehrten expliziten VU/VN-Mehrperiodenlauf."""
+
+    mode: str
+    period_count: int
+    processed_local_periods: list[int]
+    processed_global_periods: list[int]
+    total_vu_rule_applications: int
+    total_vn_insurance_rule_applications: int
+    total_vn_settlement_applications: int
+    total_vn_damage_settlement_applications: int
+    carryover_count: int
+    vu_carryover_count: int
+    vn_carryover_count: int
+    written_file_count: int
+    legacy_comparison_performed: bool
+    legacy_comparison_matches: bool | None
+    legacy_report_written_file_count: int
+    writes_performed: bool
+    execution_performed: bool = True
+    automatic_historical_rule_selection_performed: bool = False
+    simulation_performed: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "mode": self.mode,
+            "period_count": self.period_count,
+            "processed_local_periods": list(self.processed_local_periods),
+            "processed_global_periods": list(self.processed_global_periods),
+            "total_vu_rule_applications": self.total_vu_rule_applications,
+            "total_vn_insurance_rule_applications": self.total_vn_insurance_rule_applications,
+            "total_vn_settlement_applications": self.total_vn_settlement_applications,
+            "total_vn_damage_settlement_applications": self.total_vn_damage_settlement_applications,
+            "carryover_count": self.carryover_count,
+            "vu_carryover_count": self.vu_carryover_count,
+            "vn_carryover_count": self.vn_carryover_count,
+            "written_file_count": self.written_file_count,
+            "legacy_comparison_performed": self.legacy_comparison_performed,
+            "legacy_comparison_matches": self.legacy_comparison_matches,
+            "legacy_report_written_file_count": self.legacy_report_written_file_count,
+            "writes_performed": self.writes_performed,
+            "execution_performed": self.execution_performed,
+            "automatic_historical_rule_selection_performed": (
+                self.automatic_historical_rule_selection_performed
+            ),
+            "simulation_performed": self.simulation_performed,
+        }
+
+
+def build_explicit_multi_period_execution_summary(
+    result: ExplicitMultiPeriodRunResult,
+) -> ExplicitMultiPeriodExecutionSummary:
+    """Beschreibt einen expliziten Mehrperiodenlauf ohne fachliche Nachberechnung."""
+
+    return ExplicitMultiPeriodExecutionSummary(
+        mode="explicit_multi_period_execution_summary",
+        period_count=len(result.period_results),
+        processed_local_periods=list(result.processed_local_periods),
+        processed_global_periods=list(result.processed_global_periods),
+        total_vu_rule_applications=result.total_vu_rule_applications,
+        total_vn_insurance_rule_applications=result.total_vn_insurance_rule_applications,
+        total_vn_settlement_applications=result.total_vn_settlement_applications,
+        total_vn_damage_settlement_applications=result.total_vn_damage_settlement_applications,
+        carryover_count=len(result.carryovers),
+        vu_carryover_count=sum(1 for carryover in result.carryovers if carryover.vu_carryover is not None),
+        vn_carryover_count=sum(1 for carryover in result.carryovers if carryover.vn_carryover is not None),
+        written_file_count=len(result.written_files),
+        legacy_comparison_performed=result.legacy_comparison is not None,
+        legacy_comparison_matches=(
+            result.legacy_comparison.matches if result.legacy_comparison is not None else None
+        ),
+        legacy_report_written_file_count=len(result.written_legacy_report_files),
+        writes_performed=bool(result.written_files or result.written_legacy_report_files),
+    )
 
 
 def _deduplicate_paths(paths: list[Path]) -> list[Path]:
