@@ -14,6 +14,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/metadata/source` beschreibt lesend, ob die Metadatenquelle in-memory oder als SQLite-Datei konfiguriert ist.
 - `/api/metadata/consistency` beschreibt lesend einfache Konsistenzkennzahlen der aktuellen Szenario- und Run-Metadaten.
 - `/api/run-control/queue` beschreibt lesend vorhandene lokale Run-Control-Queue-Eintraege, ohne die Queue zu initialisieren oder zu schreiben.
+- `POST /api/run-control/queue` merkt einen per Dry-Run validierten Run-Control-Request in einer expliziten SQLite-Queue vor, ohne Ausfuehrung.
 - `/api/run-control/queue/{queue_id}` liefert einen einzelnen Queue-Eintrag lesend per ID.
 - `/api/run-control/request-contract` beschreibt lesend den Run-Control-Request-Vertrag, ohne Request-Body, Upload oder Schreiben.
 - `/api/run-control/dry-run-contract` beschreibt den Run-Control-Dry-Run-Vertrag fuer eine HTTP-Pruefung ohne Schreiben oder Ausfuehrung.
@@ -86,9 +87,9 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Uebersicht ist rein lesend und enthaelt keine Start- oder Editierkontrollen.
 - Die Runfilter arbeiten nur auf bereits gelesenen Metadaten im Browser und oeffnen keinen API- oder Schreibpfad.
 - Das Run-Control-Statusband ist rein lesend. Es fasst Queue, Preflight, Request-Vertrag, Dry-Run-Vertrag, Schreibpfade und Ausfuehrungsgrenze aus den bereits gelesenen Antworten zusammen und oeffnet keinen eigenen API-, Start- oder Schreibpfad.
-- Die Run-Control-Uebersicht ist rein lesend. Sie nutzt `/api/run-control/queue`, zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen, initialisiert aber keine Queue, schreibt keine Metadaten und enthaelt keinen Startbutton.
+- Die Run-Control-Uebersicht nutzt `/api/run-control/queue` lesend und zeigt vorhandene Queue-Eintraege, clientseitige Queue-Filter, Hinweise und gesperrte Ausfuehrungsgrenzen. Queue-Schreiben ist nur ueber den getrennten Vormerkpfad nach erfolgreichem Dry-Run und mit expliziter SQLite-Quelle erlaubt; es startet keinen Lauf und enthaelt keinen Startbutton.
 - Die Run-Control-Request-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/request-contract`, zeigt Pflichtfelder, optionale Felder, verbotene Felder und ein Beispiel-DTO, validiert aber keinen Browser-Request und oeffnet keinen Upload- oder Schreibpfad.
-- Die Run-Control-Dry-Run-Karte zeigt den Vertrag und kann fuer den ausgewaehlten Run `POST /api/run-control/dry-run` als reine Pruefung ausloesen. Sie schreibt keine Queue oder Metadaten, startet keine Simulation und enthaelt keinen Upload, Editor oder Startbutton.
+- Die Run-Control-Dry-Run-Karte zeigt den Vertrag und kann fuer den ausgewaehlten Run `POST /api/run-control/dry-run` als reine Pruefung ausloesen. Nach einem passenden Dry-Run kann sie denselben Request ueber `POST /api/run-control/queue` in einer expliziten SQLite-Queue vormerken. Diese Vormerkung schreibt nur Queue-Metadaten, startet keine Simulation und enthaelt keinen Upload, Editor oder Startbutton.
 - Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
 - Die Kernvalidierungsuebersicht ist rein lesend. Sie nutzt `/api/core-validation/overview`, zeigt Periodenplaene, Legacy-Referenzen und den Execution-Summary-Vertrag, startet aber keinen expliziten Periodenrunner und nimmt keine Summary-Datei entgegen.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
@@ -577,12 +578,15 @@ Der HTTP-Lesekontrakt fuer dieses DTO ist:
 GET /api/run-control/request-contract
 GET /api/run-control/dry-run-contract
 POST /api/run-control/dry-run
+POST /api/run-control/queue
 GET /api/core-validation/overview
 ```
 
 Die Antwort enthaelt `mode = "run_control_request_contract"`, `schema_version`, `accepted_fields`, `required_fields`, `optional_fields`, `forbidden_fields`, `example_request`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body, prueft keinen Browser-Upload, schreibt keine Queue und startet keine Ausfuehrung. Die Frontend-Request-Vertragskarte zeigt diese Felder nur als lokale Orientierung.
 
 Der Dry-Run-Vertragsendpunkt liefert die Form mit `mode = "run_control_dry_run_contract"`, erwarteten Eingaben, Vorbedingungen und verbotenen Grenzen. Der zugehoerige `POST /api/run-control/dry-run` akzeptiert nur das bestehende Run-Control-Request-DTO, lehnt `execution_enabled=true`, unbekannte Felder und fachliche Ergebnisdaten ab, kombiniert den Request mit dem vorhandenen Preflight und liefert `mode = "run_control_dry_run"`. Er schreibt keine Queue oder Metadaten, erzeugt keine SQLite-Datei und startet keine Simulation. Die Frontend-Dry-Run-Karte zeigt Vertrag und letztes Pruefergebnis fuer die aktuelle Run-Auswahl.
+
+Der Queue-Vormerkendpunkt `POST /api/run-control/queue` akzeptiert dasselbe Request-DTO nur bei expliziter SQLite-Metadatenquelle. Vor dem Schreiben fuehrt er denselben Dry-Run aus; fehlgeschlagener Preflight, Szenario-Abweichungen, `execution_enabled=true` oder unbekannte Felder werden vor dem ersten Queue-Schreibzugriff abgelehnt. Bei Erfolg liefert er `mode = "run_control_queue_enqueue"`, den geschriebenen Queue-Eintrag, `writes_performed = true`, `execution_enabled = false` und `execution_performed = false`. Ohne explizite SQLite-Quelle bleibt der Endpunkt blockiert und erzeugt keine `.ims_workbench`-Datei.
 
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:
 

@@ -149,6 +149,19 @@ type RunControlQueueDetail = {
   execution_performed: boolean;
 };
 
+type RunControlQueueEnqueueResult = {
+  status: "ok";
+  mode: "run_control_queue_enqueue";
+  schema_version: string;
+  db_path: string;
+  entry: RunControlQueueEntry;
+  entries: RunControlQueueEntry[];
+  dry_run: RunControlDryRunResult;
+  writes_performed: boolean;
+  execution_enabled: boolean;
+  execution_performed: boolean;
+};
+
 type RunControlRequestContract = {
   status: "ok";
   mode: "run_control_request_contract";
@@ -380,6 +393,9 @@ function App() {
   const [runControlDryRunResult, setRunControlDryRunResult] = useState<RunControlDryRunResult | null>(null);
   const [runControlDryRunState, setRunControlDryRunState] = useState<DetailState>("idle");
   const [runControlDryRunError, setRunControlDryRunError] = useState<string | null>(null);
+  const [runControlQueueEnqueueResult, setRunControlQueueEnqueueResult] = useState<RunControlQueueEnqueueResult | null>(null);
+  const [runControlQueueEnqueueState, setRunControlQueueEnqueueState] = useState<DetailState>("idle");
+  const [runControlQueueEnqueueError, setRunControlQueueEnqueueError] = useState<string | null>(null);
   const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
   const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
@@ -694,27 +710,36 @@ function App() {
     setRunControlDryRunResult(null);
     setRunControlDryRunError(null);
     setRunControlDryRunState("idle");
+    setRunControlQueueEnqueueResult(null);
+    setRunControlQueueEnqueueError(null);
+    setRunControlQueueEnqueueState("idle");
   };
+  const selectedRunControlRequest = selectedRun
+    ? {
+        run_id: selectedRun.id,
+        scenario_id: selectedRun.scenario_id,
+        metadata_db: metadataSource?.path ?? null,
+        requested_by: "workbench-ui",
+        created_at: "2026-05-27T00:00:00Z",
+        execution_enabled: false
+      }
+    : null;
   const checkRunControlDryRun = async () => {
-    if (!selectedRun) {
+    if (!selectedRunControlRequest) {
       return;
     }
     setRunControlDryRunState("loading");
     setRunControlDryRunError(null);
+    setRunControlQueueEnqueueResult(null);
+    setRunControlQueueEnqueueError(null);
+    setRunControlQueueEnqueueState("idle");
     try {
       const response = await fetch("/api/run-control/dry-run", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          run_id: selectedRun.id,
-          scenario_id: selectedRun.scenario_id,
-          metadata_db: metadataSource?.path ?? null,
-          requested_by: "workbench-ui",
-          created_at: "2026-05-27T00:00:00Z",
-          execution_enabled: false
-        })
+        body: JSON.stringify(selectedRunControlRequest)
       });
       const payload = (await response.json()) as RunControlDryRunResult | { message?: string };
       if (!response.ok) {
@@ -726,6 +751,45 @@ function App() {
       setRunControlDryRunResult(null);
       setRunControlDryRunError(error instanceof Error ? error.message : "Run-Control-Dry-Run nicht erreichbar");
       setRunControlDryRunState("error");
+    }
+  };
+  const canEnqueueRunControlQueue =
+    Boolean(selectedRunControlRequest) &&
+    metadataSource?.storage_kind === "sqlite" &&
+    Boolean(metadataSource.path) &&
+    runControlDryRunResult?.status === "ok" &&
+    runControlDryRunResult.request.run_id === selectedRun?.id &&
+    runControlDryRunResult.request.scenario_id === selectedRun?.scenario_id;
+  const enqueueRunControlQueue = async () => {
+    if (!selectedRunControlRequest || !canEnqueueRunControlQueue) {
+      return;
+    }
+    setRunControlQueueEnqueueState("loading");
+    setRunControlQueueEnqueueError(null);
+    try {
+      const response = await fetch("/api/run-control/queue", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(selectedRunControlRequest)
+      });
+      const payload = (await response.json()) as RunControlQueueEnqueueResult | { message?: string };
+      if (!response.ok) {
+        throw new Error("message" in payload && payload.message ? payload.message : "Queue-Vormerkung nicht erreichbar");
+      }
+      const enqueuePayload = payload as RunControlQueueEnqueueResult;
+      setRunControlQueueEnqueueResult(enqueuePayload);
+      setRunControlQueueEnqueueState("ready");
+      setSelectedQueueId(enqueuePayload.entry.queue_id);
+      const overviewResponse = await fetch("/api/run-control/queue");
+      if (overviewResponse.ok) {
+        setRunControlQueue((await overviewResponse.json()) as RunControlQueueOverview);
+      }
+    } catch (error) {
+      setRunControlQueueEnqueueResult(null);
+      setRunControlQueueEnqueueError(error instanceof Error ? error.message : "Queue-Vormerkung nicht erreichbar");
+      setRunControlQueueEnqueueState("error");
     }
   };
   const missingScenarioLabel = metadataConsistency?.runs_with_missing_scenario.length
@@ -911,6 +975,25 @@ function App() {
     ["Schreibpfade", runControlDryRunResult?.writes_enabled || runControlDryRunResult?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlDryRunResult?.execution_enabled || runControlDryRunResult?.execution_performed ? "aktiv" : "gesperrt"]
   ];
+  const runControlQueueEnqueueStatus =
+    runControlQueueEnqueueState === "error"
+      ? runControlQueueEnqueueError ?? "nicht erreichbar"
+      : runControlQueueEnqueueState === "loading"
+        ? "merkt vor"
+        : runControlQueueEnqueueResult
+          ? "vorgemerkt"
+          : metadataSource?.storage_kind === "sqlite"
+            ? "bereit nach Dry-Run"
+            : "SQLite-Quelle fehlt";
+  const runControlQueueEnqueueRows = [
+    ["Status", runControlQueueEnqueueStatus],
+    ["Queue-ID", runControlQueueEnqueueResult?.entry.queue_id ?? selectedRunId ?? "-"],
+    ["Statuswert", runControlQueueEnqueueResult?.entry.status ?? "planned"],
+    ["Quelle", metadataSource?.storage_kind === "sqlite" ? "SQLite" : "nicht konfiguriert"],
+    ["Dry-Run vorher", canEnqueueRunControlQueue || runControlQueueEnqueueResult ? "ok" : "erforderlich"],
+    ["Schreibpfad", runControlQueueEnqueueResult?.writes_performed ? "Queue geschrieben" : "nicht geschrieben"],
+    ["Ausfuehrung", runControlQueueEnqueueResult?.execution_enabled || runControlQueueEnqueueResult?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
   const runControlBoundaryRows = [
     [
       "Queue",
@@ -921,6 +1004,7 @@ function App() {
     ["Preflight", runControlPreflightBoundaryStatus],
     ["Request-Vertrag", runControlRequestContract ? "lesend" : "laedt"],
     ["Dry-Run", runControlDryRunContract?.http_enabled ? runControlDryRunStatus : "gesperrt"],
+    ["Queue vormerken", runControlQueueEnqueueStatus],
     [
       "Schreibpfade",
       runControlQueue?.writes_enabled ||
@@ -929,6 +1013,7 @@ function App() {
       runControlDryRunContract?.writes_performed ||
       runControlDryRunResult?.writes_enabled ||
       runControlDryRunResult?.writes_performed ||
+      runControlQueueEnqueueResult?.writes_performed ||
       runControlPreflight?.writes_performed
         ? "aktiv"
         : "gesperrt"
@@ -943,6 +1028,8 @@ function App() {
       runControlDryRunContract?.execution_performed ||
       runControlDryRunResult?.execution_enabled ||
       runControlDryRunResult?.execution_performed ||
+      runControlQueueEnqueueResult?.execution_enabled ||
+      runControlQueueEnqueueResult?.execution_performed ||
       runControlPreflight?.execution_allowed ||
       runControlPreflight?.execution_performed
         ? "aktiv"
@@ -1568,6 +1655,15 @@ function App() {
               <ShieldCheck size={17} aria-hidden="true" />
               Dry-Run pruefen
             </button>
+            <button
+              className="secondary-action"
+              disabled={!canEnqueueRunControlQueue || runControlQueueEnqueueState === "loading"}
+              type="button"
+              onClick={enqueueRunControlQueue}
+            >
+              <Database size={17} aria-hidden="true" />
+              Queue vormerken
+            </button>
           </div>
           <div className="run-control-dry-run-grid">
             {runControlDryRunRows.map(([label, value]) => (
@@ -1580,6 +1676,14 @@ function App() {
           <div className="run-control-dry-run-result-grid" aria-label="Run-Control-Dry-Run-Ergebnis">
             {runControlDryRunResultRows.map(([label, value]) => (
               <div className="run-control-dry-run-result-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="run-control-queue-enqueue-grid" aria-label="Run-Control-Queue-Vormerkung">
+            {runControlQueueEnqueueRows.map(([label, value]) => (
+              <div className="run-control-queue-enqueue-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>

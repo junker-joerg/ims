@@ -212,6 +212,125 @@ def test_run_control_queue_overview_reports_in_memory_boundary(tmp_path):
     assert payload["execution_performed"] is False
 
 
+def test_run_control_queue_enqueue_requires_explicit_sqlite_source(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/run-control/queue",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+
+    assert response.status_code == 400
+    payload = response.json()
+    assert payload["mode"] == "run_control_queue_enqueue"
+    assert "explicit SQLite metadata source" in payload["message"]
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
+def test_run_control_queue_enqueue_endpoint_writes_only_queue_metadata(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/run-control/queue",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+    overview = client.get("/api/run-control/queue")
+    detail = client.get("/api/run-control/queue/baseline-python-tests")
+
+    assert response.status_code == 201
+    payload = response.json()
+    assert payload["mode"] == "run_control_queue_enqueue"
+    assert payload["entry"]["queue_id"] == "baseline-python-tests"
+    assert payload["entry"]["request"]["scenario_id"] == "agrsich-reference-window"
+    assert payload["entry"]["execution_enabled"] is False
+    assert payload["entry"]["execution_performed"] is False
+    assert payload["dry_run"]["status"] == "ok"
+    assert payload["writes_performed"] is True
+    assert payload["execution_enabled"] is False
+    assert payload["execution_performed"] is False
+    assert overview.status_code == 200
+    assert overview.json()["queue_count"] == 1
+    assert overview.json()["entries"][0]["queue_id"] == "baseline-python-tests"
+    assert overview.json()["writes_enabled"] is False
+    assert overview.json()["execution_performed"] is False
+    assert detail.status_code == 200
+    assert detail.json()["entry"]["queue_id"] == "baseline-python-tests"
+    assert detail.json()["execution_performed"] is False
+
+
+def test_run_control_queue_enqueue_endpoint_rejects_execution_enabled(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/run-control/queue",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": True,
+        },
+    )
+    overview = client.get("/api/run-control/queue")
+
+    assert response.status_code == 400
+    payload = response.json()
+    assert payload["mode"] == "run_control_queue_enqueue"
+    assert "execution_enabled=true is forbidden" in payload["message"]
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert overview.json()["queue_count"] == 0
+
+
+def test_run_control_queue_enqueue_endpoint_rejects_failed_dry_run(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/run-control/queue",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "metadata-only-local",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+    overview = client.get("/api/run-control/queue")
+
+    assert response.status_code == 400
+    payload = response.json()
+    assert payload["mode"] == "run_control_queue_enqueue"
+    assert payload["message"] == "run control queue enqueue requires a passing dry-run"
+    assert "scenario_id does not match" in payload["issues"][0]
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert overview.json()["queue_count"] == 0
+
+
 def test_run_control_request_contract_endpoint_is_readonly(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)

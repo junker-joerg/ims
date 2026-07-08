@@ -34,6 +34,17 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
             "execution_enabled": False,
         },
     )
+    run_control_queue_enqueue = client.post(
+        "/api/run-control/queue",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-smoke",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+    run_control_queue_after_enqueue = client.get("/api/run-control/queue")
     missing_queue_entry = client.get("/api/run-control/queue/missing-queue-entry")
     missing = client.get("/api/scenarios/missing-scenario")
 
@@ -72,6 +83,14 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert run_control_dry_run.json()["dry_run_allowed"] is False
     assert run_control_dry_run.json()["writes_performed"] is False
     assert run_control_dry_run.json()["execution_performed"] is False
+    assert run_control_queue_enqueue.status_code == 201
+    assert run_control_queue_enqueue.json()["mode"] == "run_control_queue_enqueue"
+    assert run_control_queue_enqueue.json()["entry"]["execution_performed"] is False
+    assert run_control_queue_enqueue.json()["writes_performed"] is True
+    assert run_control_queue_enqueue.json()["execution_performed"] is False
+    assert run_control_queue_after_enqueue.status_code == 200
+    assert run_control_queue_after_enqueue.json()["queue_count"] == 1
+    assert run_control_queue_after_enqueue.json()["execution_performed"] is False
     assert missing_queue_entry.status_code == 404
     assert missing_queue_entry.json()["error"]["resource"] == "run_control_queue"
 
@@ -202,6 +221,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/run-control/dry-run-contract" in source
     assert "/api/run-control/dry-run" in source
     assert "Dry-Run pruefen" in source
+    assert "Queue vormerken" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source

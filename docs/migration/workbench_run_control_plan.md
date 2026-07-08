@@ -13,7 +13,7 @@ Vorhandene lokale Run-Control-Bausteine sind:
 - Run-Control-Vertrag (`ims.api.run_control_contracts`), rein beschreibend.
 - Run-Control-Dry-Run-Vertrag (`ims.api.run_control_dry_run_contract`) und HTTP-Pruefpfad (`POST /api/run-control/dry-run`), ohne Schreiben und ohne Ausfuehrung.
 - Run-Control-Request-Check (`ims.api.run_control_requests`), lokal validierend.
-- Run-Control-Queue (`ims.api.run_control_queue`), explizit lokal und ohne Ausfuehrung.
+- Run-Control-Queue (`ims.api.run_control_queue`) und API-Vormerkung (`POST /api/run-control/queue`), explizit lokal und ohne Ausfuehrung.
 - Run-Control-Queue-Aktionsplan (`ims.api.run_control_queue_action_plan`), lokal lesend und ohne Ausfuehrung.
 - Run-Control-Preflight (`ims.api.run_control_preflight`), lesend und ohne Ausfuehrung.
 - Workbench-Readiness und CLI-Uebersicht, die diese Grenzen sichtbar machen.
@@ -37,7 +37,7 @@ Geplante Bloecke:
 
 | Block | Erwarteter Umfang | Inhalt |
 | --- | ---: | --- |
-| Workbench nach v1 vollstaendig nutzbarer machen | ca. `2-5` PRs | lokale Aktionsplaene, lesende Queue-/Run-Control-Anzeigen, kontrollierte Dry-Run-Pruefung, spaeterer Ausfuehrungsadapter nur nach Freigabe, Haertung, Doku und E2E-Smokes |
+| Workbench nach v1 vollstaendig nutzbarer machen | ca. `1-4` PRs | lokale Aktionsplaene, lesende Queue-/Run-Control-Anzeigen, kontrollierte Dry-Run-Pruefung, Queue-Vormerkung, spaeterer Ausfuehrungsadapter nur nach Freigabe, Haertung, Doku und E2E-Smokes |
 | Fachvalidierung und historische Vollgleichheit | ca. `10-18` PRs | weitere Legacy-Referenzen, zusaetzliche Alt-/Neu-Vergleichspfade, Mehrperioden-Replays, Abweichungsanalyse, Modellkorrekturen und Abschlussbericht |
 | Packaging und Bereitstellung | ca. `0` geplante PRs | lokale Startbarkeit, portable Ordnerstruktur, Startskripte/Launcher, reproduzierbarer Build, ZIP-/Staging-Grenzen, Installations-, Update- und Backup-Doku sind fuer v1 konsolidiert; offen nur Review-Fixes oder spaeter explizite Release-Automatisierung |
 | Integrations- und Abschlussreserve | ca. `1-3` PRs | Review-Fixes, CI- und Windows-Pfadhaertung, finale Doku-Konsolidierung und Meilensteinabschluss |
@@ -63,15 +63,15 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 1. PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend mit clientseitigen Filtern, Hinweisen und lokalen Schrittlabels.
 2. PR 2: API-Leseendpunkte fuer Queue/Requests, noch ohne Schreibpfad. Queue-Reads sind vorhanden; der Request-Vertrag wird als GET-Contract sichtbar.
 3. PR 3: Kontrollierter HTTP-Dry-Run als Pruefpfad mit Request-DTO und UI-Ergebnis, ohne Queue-Schreiben, Metadatenschreiben oder Ausfuehrung. Erledigt.
-4. PR 4: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe.
+4. PR 4: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach erfolgreichem Dry-Run und expliziter SQLite-Quelle. Erledigt.
 5. PR 5+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe.
-7. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
+6. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 
 Run-Control-DTOs sollen nur Metadaten und Absichten beschreiben. Erwartbare Felder sind `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at`, `execution_enabled=false`, Status, Quelle und Validierungs-/Preflight-Ergebnis. Fachlogikdaten, Simulationsergebnisse und Legacy-Vergleichsdaten gehoeren nicht in diese DTOs.
 
-HTTP-Vertraege duerfen erst eingefuehrt werden, wenn ihre Schreib- und Ausfuehrungsgrenzen testbar sind. Der erste freigegebene HTTP-Pfad bleibt ein reiner Dry-Run-Check: Er akzeptiert nur das Run-Control-Request-DTO, kombiniert es mit Preflight und schreibt keine Queue oder Metadaten. Fehlerformen sollen stabil, knapp und maschinenlesbar sein.
+HTTP-Vertraege duerfen erst eingefuehrt werden, wenn ihre Schreib- und Ausfuehrungsgrenzen testbar sind. Der erste freigegebene HTTP-Pfad bleibt ein reiner Dry-Run-Check: Er akzeptiert nur das Run-Control-Request-DTO, kombiniert es mit Preflight und schreibt keine Queue oder Metadaten. Der erste HTTP-Schreibpfad darf nur Queue-Metadaten in eine explizit konfigurierte SQLite-Quelle vormerken, nachdem derselbe Dry-Run bestanden wurde. Fehlerformen sollen stabil, knapp und maschinenlesbar sein.
 
 ## Repository- und SQLite-Grenzen
 
@@ -100,7 +100,7 @@ Er erzeugt stabile JSON-Felder fuer `status`, `mode = "run_control_queue_action_
 
 ## UI-Grenzen
 
-Die UI darf geplante Run-Control-Metadaten spaeter anzeigen, filtern und als Preflight-Ergebnis erklaeren. Sie darf in den naechsten Schritten keinen Upload, keinen Editor, keinen Browser-Download, keinen HTTP-Schreibpfad und keinen funktionalen Run-Start bereitstellen.
+Die UI darf geplante Run-Control-Metadaten anzeigen, filtern und als Preflight-Ergebnis erklaeren. Sie darf nur die kontrollierte Queue-Vormerkung nach erfolgreichem Dry-Run und expliziter SQLite-Quelle ausloesen. Upload, Editor, Browser-Download und funktionaler Run-Start bleiben ausgeschlossen.
 
 UI-Texte sollen operational, knapp und ruhig bleiben. Die Workbench bleibt ein Werkzeug, keine Marketing-Oberflaeche.
 
@@ -119,8 +119,8 @@ Die Run-Control-Schritte brauchen Tests auf mehreren Ebenen:
 
 - Keine Fachlogikaenderung.
 - Keine Simulation starten.
-- Keine neuen HTTP-Schreibendpunkte.
-- Kein HTTP-Schreibpfad.
+- Keine weiteren HTTP-Schreibendpunkte ausser der kontrollierten Queue-Vormerkung.
+- Kein HTTP-Schreibpfad ausser Queue-Metadaten nach erfolgreichem Dry-Run und expliziter SQLite-Quelle.
 - Kein Browser-Upload.
 - Kein Browser-Download.
 - Keine UI-Schreibpfade.

@@ -54,6 +54,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_dry_run_contract" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
     assert "POST /api/run-control/dry-run" in readme
+    assert "POST /api/run-control/queue" in readme
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in readme
@@ -126,6 +127,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_dry_run_contract" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
     assert "POST /api/run-control/dry-run" in doc
+    assert "POST /api/run-control/queue" in doc
     assert "GET /api/core-validation/overview" in doc
     assert "Kernvalidierungsueberblick" in doc
     assert "Execution-Summary-Vertrag" in doc
@@ -229,10 +231,12 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "fehlende Szenario-/Run-Metadatentabellen werden als Diagnosewarnung und Aktionsplan-Blocker gemeldet" in doc
     assert "Kein Queue-Befehl startet eine Simulation" in doc
     assert "GET /api/run-control/queue" in doc
+    assert "POST /api/run-control/queue" in doc
     assert "GET /api/run-control/queue/{queue_id}" in doc
     assert "metadata_not_found" in doc
     assert "Run-Control-Uebersicht" in doc
-    assert "initialisiert aber keine Queue" in doc
+    assert "Queue-Schreiben ist nur ueber den getrennten Vormerkpfad" in doc
+    assert "Ohne explizite SQLite-Quelle bleibt der Endpunkt blockiert" in doc
     assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
     assert "schaltet keinen UI-Startbutton frei" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
@@ -306,7 +310,7 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 2: API-Leseendpunkte fuer Queue/Requests, noch ohne Schreibpfad" in plan
     assert "PR 3: Kontrollierter HTTP-Dry-Run als Pruefpfad" in plan
     assert "Erledigt" in plan
-    assert "PR 4: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach separater Freigabe" in plan
+    assert "PR 4: Kontrollierte lokale Queue-Schreibpfade ueber API nur nach erfolgreichem Dry-Run" in plan
     assert "PR 5+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "Rollback-Journal-Datenbanken werden mit `mode=ro` gelesen" in plan
@@ -317,7 +321,8 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "`execution_enabled` bleibt bis zur expliziten Ausfuehrungsfreigabe `false`" in plan
     assert "Keine Fachlogikaenderung" in plan
     assert "Keine Simulation starten" in plan
-    assert "Keine neuen HTTP-Schreibendpunkte" in plan
+    assert "Keine weiteren HTTP-Schreibendpunkte ausser der kontrollierten Queue-Vormerkung" in plan
+    assert "Kein HTTP-Schreibpfad ausser Queue-Metadaten nach erfolgreichem Dry-Run" in plan
     assert "Kein Packaging in diesem PR" in plan
     assert "Keine historische Vollgleichheitsbehauptung" in plan
 

@@ -131,6 +131,11 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "Run-Control-Statusfilter" in source
     assert "Run-Control-Szenariofilter" in source
     assert "Queue-Detail" in source
+    assert "Queue vormerken" in source
+    assert "Run-Control-Queue-Vormerkung" in source
+    assert "runControlQueueEnqueueResult" in source
+    assert "enqueueRunControlQueue" in source
+    assert "canEnqueueRunControlQueue" in source
     assert "runControlQueue" in source
     assert "selectedQueueId" in source
     assert "setSelectedQueueId(entry.queue_id)" in source
@@ -146,6 +151,8 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "run-control-table" in styles
     assert "run-control-detail-grid" in styles
     assert "run-control-issues" in styles
+    assert "run-control-queue-enqueue-grid" in styles
+    assert "run-control-queue-enqueue-row" in styles
     assert "Queue-Status" in source
     assert "Queue-Eintraege" in source
     assert "Naechster Schritt" in source
@@ -237,6 +244,7 @@ def test_frontend_shell_declares_controlled_run_control_dry_run_check():
 
     assert "/api/run-control/dry-run-contract" in source
     assert "/api/run-control/dry-run" in source
+    assert "/api/run-control/queue" in source
     assert 'method: "POST"' in source
     assert "Run-Control-Dry-Run-Vertrag" in source
     assert "Run-Control-Dry-Run-Ergebnis" in source
@@ -253,6 +261,7 @@ def test_frontend_shell_declares_controlled_run_control_dry_run_check():
     assert "writes_performed" in source
     assert "execution_performed" in source
     assert "Dry-Run pruefen" in source
+    assert "Queue vormerken" in source
     assert "Run-Control-Dry-Run per API pruefend ohne Ausfuehrung" in source
     assert "run-control-dry-run-panel" in styles
     assert "run-control-dry-run-grid" in styles

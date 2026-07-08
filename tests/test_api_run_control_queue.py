@@ -15,6 +15,7 @@ from ims.api.run_control_queue import (
     WorkbenchRunControlQueueRepository,
     WorkbenchRunControlQueueResult,
     enqueue_run_control_request,
+    enqueue_run_control_request_payload,
     get_run_control_queue_entry,
     initialize_run_control_queue,
     list_run_control_queue,
@@ -75,6 +76,20 @@ def test_run_control_queue_enqueue_and_list_without_execution(tmp_path):
     assert list_payload["entries"][0]["queue_id"] == "baseline-python-tests"
     assert list_payload["writes_performed"] is False
     assert list_payload["execution_performed"] is False
+
+
+def test_run_control_queue_enqueue_payload_without_execution(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+
+    enqueue_payload = enqueue_run_control_request_payload(_valid_request_payload(), db_path=db_path).to_dict()
+    list_payload = list_run_control_queue(db_path).to_dict()
+
+    assert enqueue_payload["mode"] == "run_control_queue_enqueue"
+    assert enqueue_payload["entry"]["queue_id"] == "baseline-python-tests"
+    assert enqueue_payload["entry"]["request"]["execution_enabled"] is False
+    assert enqueue_payload["writes_performed"] is True
+    assert enqueue_payload["execution_performed"] is False
+    assert list_payload["entries"][0]["queue_id"] == "baseline-python-tests"
 
 
 def test_run_control_queue_show_reads_single_entry(tmp_path):

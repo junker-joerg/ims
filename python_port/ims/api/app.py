@@ -14,9 +14,10 @@ from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
-from ims.api.run_control_dry_run import dry_run_run_control_request_payload
+from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_preflight import preflight_run_control_from_repository
+from ims.api.run_control_queue import enqueue_run_control_request_object
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
 from ims.engine.core_validation_overview import build_core_validation_overview
@@ -107,6 +108,17 @@ def _run_control_dry_run_error_payload(message: str) -> dict[str, object]:
     }
 
 
+def _run_control_queue_error_payload(message: str, issues: list[str] | None = None) -> dict[str, object]:
+    return {
+        "status": "error",
+        "mode": "run_control_queue_enqueue",
+        "message": message,
+        "issues": issues or [message],
+        "writes_performed": False,
+        "execution_performed": False,
+    }
+
+
 def create_app(
     frontend_dist: Path | None = None,
     metadata_repository: MetadataRepositoryReader | None = None,
@@ -182,6 +194,41 @@ def create_app(
         except MetadataImportError as exc:
             return JSONResponse(_run_control_dry_run_error_payload(str(exc)), status_code=400)
 
+    async def queue_enqueue_response(request: Request) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            return JSONResponse(
+                _run_control_queue_error_payload(
+                    "run control queue enqueue requires an explicit SQLite metadata source"
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _run_control_queue_error_payload("run control queue enqueue JSON is invalid"),
+                status_code=400,
+            )
+        try:
+            dry_run = dry_run_run_control_request(payload, repository)
+            if dry_run.issues:
+                return JSONResponse(
+                    _run_control_queue_error_payload(
+                        "run control queue enqueue requires a passing dry-run",
+                        list(dry_run.issues),
+                    ),
+                    status_code=400,
+                )
+            result = enqueue_run_control_request_object(
+                dry_run.request,
+                db_path=Path(str(metadata_source["path"])),
+            ).to_dict()
+        except MetadataImportError as exc:
+            return JSONResponse(_run_control_queue_error_payload(str(exc)), status_code=400)
+        result["dry_run"] = dry_run.to_dict()
+        result["execution_enabled"] = False
+        return JSONResponse(result, status_code=201)
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -239,6 +286,10 @@ def create_app(
         def run_control_queue() -> dict[str, object]:
             return queue_overview_payload()
 
+        @app.post("/api/run-control/queue", response_model=None)
+        async def run_control_queue_enqueue(request: Request) -> JSONResponse:
+            return await queue_enqueue_response(request)
+
         @app.get("/api/run-control/request-contract")
         def run_control_request_contract() -> dict[str, object]:
             return run_control_request_contract_payload()
@@ -289,6 +340,7 @@ def create_app(
         Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
         Route("/api/core-validation/overview", lambda request: JSONResponse(_core_validation_overview_payload())),
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
+        Route("/api/run-control/queue", queue_enqueue_response, methods=["POST"]),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route("/api/run-control/dry-run-contract", lambda request: JSONResponse(run_control_dry_run_contract_payload())),
         Route("/api/run-control/dry-run", dry_run_response, methods=["POST"]),

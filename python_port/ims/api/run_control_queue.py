@@ -10,7 +10,11 @@ from typing import Sequence
 from ims.api.metadata import METADATA_SCHEMA_VERSION
 from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata_repository import connect_metadata_db, metadata_source_payload
-from ims.api.run_control_requests import WorkbenchRunControlRequest, validate_run_control_request
+from ims.api.run_control_requests import (
+    WorkbenchRunControlRequest,
+    validate_run_control_request,
+    validate_run_control_request_payload,
+)
 from ims.api.sqlite_readonly import readonly_sqlite_uri
 
 
@@ -185,6 +189,23 @@ def enqueue_run_control_request(
     db_path: Path | str,
 ) -> WorkbenchRunControlQueueResult:
     request = validate_run_control_request(path).request
+    return enqueue_run_control_request_object(request, db_path=db_path)
+
+
+def enqueue_run_control_request_payload(
+    payload: object,
+    *,
+    db_path: Path | str,
+) -> WorkbenchRunControlQueueResult:
+    request = validate_run_control_request_payload(payload).request
+    return enqueue_run_control_request_object(request, db_path=db_path)
+
+
+def enqueue_run_control_request_object(
+    request: WorkbenchRunControlRequest,
+    *,
+    db_path: Path | str,
+) -> WorkbenchRunControlQueueResult:
     repository = _queue_repository(db_path, create=True)
     entry = repository.enqueue(request)
     return WorkbenchRunControlQueueResult(

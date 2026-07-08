@@ -950,11 +950,14 @@ code {
 
 .run-control-dry-run-actions {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: flex-end;
   margin-bottom: 12px;
 }
 
-.run-control-dry-run-result-grid {
+.run-control-dry-run-result-grid,
+.run-control-queue-enqueue-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
@@ -962,7 +965,8 @@ code {
 }
 
 .run-control-dry-run-row,
-.run-control-dry-run-result-row {
+.run-control-dry-run-result-row,
+.run-control-queue-enqueue-row {
   min-height: 66px;
   padding: 10px;
   border: 1px solid #d8e2dd;
@@ -971,14 +975,16 @@ code {
 }
 
 .run-control-dry-run-row span,
-.run-control-dry-run-result-row span {
+.run-control-dry-run-result-row span,
+.run-control-queue-enqueue-row span {
   display: block;
   margin-bottom: 7px;
   color: #66736c;
 }
 
 .run-control-dry-run-row strong,
-.run-control-dry-run-result-row strong {
+.run-control-dry-run-result-row strong,
+.run-control-queue-enqueue-row strong {
   display: block;
   min-width: 0;
   color: #143b2d;
@@ -1064,6 +1070,7 @@ code {
   .run-control-preflight-grid,
   .run-control-dry-run-grid,
   .run-control-dry-run-result-grid,
+  .run-control-queue-enqueue-grid,
   .diagnosis-row,
   .scenario-filterbar,
   .run-filterbar,
