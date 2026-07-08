@@ -17,6 +17,12 @@ def test_package_imports() -> None:
 def test_core_placeholders_import() -> None:
     from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
     from ims.engine.context import SimulationContext
+    from ims.engine.core_validation_overview import (
+        CoreExecutionSummaryContract,
+        CoreValidationOverviewResult,
+        build_core_validation_overview,
+        build_execution_summary_contract,
+    )
     from ims.engine.event_builders import (
         build_mixed_bav_events,
         build_progressed_bav_events,
@@ -829,6 +835,11 @@ def test_core_placeholders_import() -> None:
     assert initialize_bav_followup_run is not None
     assert BAVUpdateResult is not None
     assert update_bav_central_state is not None
+    assert SimulationContext is not None
+    assert CoreExecutionSummaryContract is not None
+    assert CoreValidationOverviewResult is not None
+    assert build_core_validation_overview is not None
+    assert build_execution_summary_contract is not None
     assert SimulationStepResult is not None
     assert TwoStepSimulationResult is not None
     assert _build_simulation_step_result is not None

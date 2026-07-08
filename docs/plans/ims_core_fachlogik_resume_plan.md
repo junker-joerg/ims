@@ -63,10 +63,10 @@ Dieser Block ist umgesetzt. Der aktuelle Stand trennt weiterhin:
 - `build_explicit_multi_period_execution_summary` als stabile Beschreibung eines
   bereits ausgefuehrten expliziten Mehrperiodenergebnisses.
 
-## Naechster groesserer Kernblock
+## Aktueller groesserer Kernblock
 
-Der naechste groessere Schritt sollte die Execution-Summary-Vertraege in den
-IMS-Kernvalidierungsueberblick einordnen, ohne dort einen Lauf zu starten. Ziel
+Der aktuelle groessere Schritt ordnet die Execution-Summary-Vertraege in den
+IMS-Kernvalidierungsueberblick ein, ohne dort einen Lauf zu starten. Ziel
 ist eine gemeinsame, read-only Sprache fuer:
 
 1. geplante Periodenstruktur aus `explicit_period_diagnostics`;
@@ -115,13 +115,14 @@ Der passende PR-Titel waere:
    beschreibt ausgefuehrte explizite VU/VN-Mehrperiodenlaeufe mit
    Periodenachsen, Anwendungszaehlungen, Carryover- und Legacy-Report-Status,
    ohne Simulation oder automatische historische Regelwahl zu behaupten.
-6. Als naechsten Schnitt den Execution-Summary-Vertrag im
-   `ims_core_validation_overview` planen: read-only, ohne Runner-Start und ohne
-   Ausfuehrung aus dem Overview heraus, aber mit expliziter Kennzeichnung,
-   welche Ergebnisfelder ein spaeter kontrollierter Ausfuehrungsadapter liefern
-   muss.
+6. Execution-Summary-Vertrag im `ims_core_validation_overview` planen
+   (dieser Schnitt): read-only, ohne Runner-Start und ohne Ausfuehrung aus dem
+   Overview heraus, aber mit expliziter Kennzeichnung, welche Ergebnisfelder ein
+   spaeter kontrollierter Ausfuehrungsadapter liefern muss.
    Kurzgrenze: keine Ausfuehrung aus dem Overview heraus.
-7. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
+7. Als naechsten Schritt eine read-only API-/UI-Anbindung fuer den
+   Kernvalidierungsueberblick planen, weiterhin ohne funktionalen Start.
+8. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
 
 ## Aktualisierte PR-Restplanung
 

@@ -59,8 +59,11 @@ Naechster bevorzugter Arbeitsschnitt:
   VU/VN-Mehrperiodenlaeufe, ohne Simulation und ohne automatische historische
   Regelwahl).
 - PR 10: Execution-Summary-Vertrag im `ims_core_validation_overview` read-only
-  planen und dokumentieren; keine Ausfuehrung aus dem Overview heraus.
-- PR 11+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
+  planen und dokumentieren (dieser Schnitt; keine Ausfuehrung aus dem Overview
+  heraus).
+- PR 11: Read-only API-/UI-Anbindung fuer den Kernvalidierungsueberblick
+  vorbereiten, damit die UI den Demo-Status ohne Laufstart anzeigen kann.
+- PR 12+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
   vorhandenen Planfixtures oder eine spaetere Run-Control-Anbindung, weiterhin
   ohne Vollgleichheitsbehauptung.
 

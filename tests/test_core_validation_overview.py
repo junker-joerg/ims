@@ -2,7 +2,9 @@ import json
 from pathlib import Path
 
 from ims.engine.core_validation_overview import (
+    CoreExecutionSummaryContract,
     CoreValidationOverviewResult,
+    build_execution_summary_contract,
     build_core_validation_overview,
     main,
 )
@@ -33,10 +35,67 @@ def test_core_validation_overview_combines_existing_read_only_diagnostics() -> N
     assert payload["legacy_covered_rows"] == 6300
     assert payload["legacy_covered_periods"] == 6300
     assert payload["next_validation_actions"] == ["await_historical_reference"]
+    assert payload["execution_summary_available"] is False
+    assert payload["execution_summary_next_action"] == "await_precomputed_execution_summary"
+    assert payload["execution_summary_contract"]["mode"] == "explicit_multi_period_execution_summary_contract"
+    assert payload["execution_summary_contract"]["summary_mode"] == "explicit_multi_period_execution_summary"
+    assert payload["execution_summary_contract"]["overview_starts_runner"] is False
+    assert payload["execution_summary_contract"]["overview_accepts_summary_input"] is False
+    assert payload["execution_summary_contract"]["execution_performed"] is False
     assert payload["period_diagnostics"]["mode"] == "explicit_period_diagnostics_bundle"
     assert payload["legacy_validation"]["mode"] == "legacy_agrsich_validation_overview"
     assert payload["coverage_matrix"]["mode"] == "legacy_agrsich_coverage_matrix"
     assert payload["next_family_plan"]["mode"] == "legacy_agrsich_next_family_plan"
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_core_validation_overview_execution_summary_contract_is_stable() -> None:
+    contract = build_execution_summary_contract()
+    payload = contract.to_dict()
+
+    assert isinstance(contract, CoreExecutionSummaryContract)
+    assert payload["source_builder"] == (
+        "ims.engine.explicit_period_runner.build_explicit_multi_period_execution_summary"
+    )
+    assert payload["required_fields"] == [
+        "mode",
+        "period_count",
+        "processed_local_periods",
+        "processed_global_periods",
+        "total_vu_rule_applications",
+        "total_vn_insurance_rule_applications",
+        "total_vn_settlement_applications",
+        "total_vn_damage_settlement_applications",
+        "carryover_count",
+        "vu_carryover_count",
+        "vn_carryover_count",
+        "written_file_count",
+        "legacy_comparison_performed",
+        "legacy_comparison_matches",
+        "legacy_report_written_file_count",
+        "writes_performed",
+        "execution_performed",
+        "automatic_historical_rule_selection_performed",
+        "simulation_performed",
+    ]
+    assert payload["period_axis_fields"] == [
+        "period_count",
+        "processed_local_periods",
+        "processed_global_periods",
+    ]
+    assert "total_vu_rule_applications" in payload["application_count_fields"]
+    assert "vn_carryover_count" in payload["carryover_fields"]
+    assert "legacy_comparison_matches" in payload["legacy_fields"]
+    assert payload["boundary_fields"] == [
+        "writes_performed",
+        "execution_performed",
+        "automatic_historical_rule_selection_performed",
+        "simulation_performed",
+    ]
+    assert payload["next_action"] == "provide_precomputed_execution_summary"
+    assert payload["requires_precomputed_summary"] is True
+    assert payload["overview_starts_runner"] is False
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 
@@ -125,6 +184,7 @@ def test_core_validation_overview_cli_prints_stable_json(capsys) -> None:
     assert payload["mode"] == "ims_core_validation_overview"
     assert payload["plan_count"] == 2
     assert payload["legacy_covered_rows"] == 6300
+    assert payload["execution_summary_contract"]["next_action"] == "provide_precomputed_execution_summary"
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 
@@ -194,6 +254,8 @@ def test_core_validation_overview_is_documented() -> None:
     assert "## IMS-Kernvalidierungsueberblick" in migration_doc
     assert "python -m ims.engine.core_validation_overview" in migration_doc
     assert 'mode = "ims_core_validation_overview"' in migration_doc
+    assert "`explicit_multi_period_execution_summary`-Payloads" in migration_doc
+    assert "keine Summary-Datei entgegen" in migration_doc
     assert "Aktualisierte PR-Restplanung" in resume_plan
     assert "IMS-Kernvalidierungsueberblick" in resume_plan
     assert "Execution-Summary-Vertrag" in resume_plan

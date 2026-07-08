@@ -272,12 +272,20 @@ aus. Sie buendelt:
 - das Diagnose-Buendel fuer explizite Periodenplaene,
 - den lokalen Legacy-Agrsich-Validierungsueberblick,
 - die Legacy-Coverage-Matrix,
-- den Plan fuer die naechste Legacy-Dateifamilie.
+- den Plan fuer die naechste Legacy-Dateifamilie,
+- einen read-only Vertrag fuer spaetere
+  `explicit_multi_period_execution_summary`-Payloads.
 
 Der Ueberblick fasst Plananzahl, Periodenzaehler, globale Perioden,
 Legacy-Referenzzaehler, abgedeckte Zeilen und die naechsten Validierungsaktionen
 zusammen. Die Teilpayloads bleiben enthalten, damit Diagnose- und
 Validierungsgrenzen nachvollziehbar bleiben.
+
+Der Execution-Summary-Vertrag listet die erwarteten Felder eines spaeter
+bereitgestellten, bereits ausgefuehrten expliziten Mehrperioden-Ergebnisses:
+Periodenachsen, VU-/VN-Anwendungszaehlungen, Carryover-Zaehler, Legacy-
+Vergleichsstatus und Ausfuehrungsgrenzen. Der Overview nimmt in diesem Schnitt
+keine Summary-Datei entgegen und startet keinen expliziten Periodenrunner.
 
 Auch dieser Ueberblick startet keinen Runner, keine Simulation und keinen
 Scheduler. Er schreibt keine Artefakte, oeffnet keine HTTP- oder UI-Schreibpfade
