@@ -45,6 +45,31 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar.
 8. Run-Control-Aktionsplan lesen.
 9. Erwartung im Aktionsplan: `Naechste Aktion = run_preflight`, Blocker `keine`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
 
+## Optionaler lesender Kernblick
+
+Nach dem Run-Control-Demo-Pfad kann die Demo den Kernvalidierungsueberblick als rein lesenden Fachlogik-Ausblick zeigen. Dieser Blick ist kein Start eines Kernlaufs.
+
+Lokale Diagnosebefehle fuer denselben Stand:
+
+```powershell
+$env:PYTHONPATH = "python_port"
+python -m ims.engine.explicit_period_diagnostics tests/fixtures/replay_vu14_period_plan.json
+python -m ims.engine.explicit_period_diagnostics tests/fixtures/replay_vusk1_period_plan.json
+python -m ims.engine.explicit_period_diagnostics_bundle tests/fixtures/replay_vu14_period_plan.json tests/fixtures/replay_vusk1_period_plan.json
+python -m ims.engine.core_validation_overview --legacy-fixture tests/fixtures/legacy_validation_bundle.json tests/fixtures/replay_vu14_period_plan.json tests/fixtures/replay_vusk1_period_plan.json
+```
+
+Aktueller Diagnosebefund:
+
+- `explicit_period_diagnostics_bundle`: Status `ok`, 2 Planfixtures, 8 Perioden, globale Perioden `1, 2, 3, 4, 101, 102, 103, 104`.
+- Legacy-Bezug im Bundle: 2 Legacy-Ziele (`VU14L1.DAT`, `VUSK1L4.DAT`).
+- `ims_core_validation_overview`: Status `warning`, weil die naechste Validierungsaktion weiter `await_historical_reference` bleibt.
+- Legacy-Abdeckung im Ueberblick: 19 Referenzen, 6300 abgedeckte Zeilen und 6300 abgedeckte Perioden.
+- Execution-Summary-Vertrag: `execution_summary_available = false`, `execution_summary_next_action = await_precomputed_execution_summary`.
+- Grenzwerte: `overview_starts_runner = false`, `overview_accepts_summary_input = false`, `writes_performed = false`, `execution_performed = false`.
+
+In der UI ist dieser Blick die Karte `Kernvalidierungsueberblick`. Sie darf Periodenplaene, Legacy-Abdeckung und den Execution-Summary-Vertrag anzeigen. Sie darf keine Summary-Datei annehmen, keinen Periodenrunner starten und keine Fachlogik ausfuehren.
+
 ## Was demo-faehig ist
 
 - lokale Browser-Workbench mit gebautem Frontend
@@ -55,11 +80,13 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar.
 - kontrollierter HTTP-Dry-Run ohne Schreiben
 - kontrollierte Queue-Vormerkung in expliziter SQLite-Datei
 - lesender Run-Control-Aktionsplan mit `run_preflight`
+- lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
 - Browser-/Screenshot-Smoke ueber stabile UI-Anker
 
 ## Was noch nicht demo-faehig ist
 
 - echte Simulation oder Periodenrunner-Ausfuehrung
+- vorab berechnete Execution-Summary als UI-Eingabe
 - Ausfuehrungsadapter hinter `run_preflight`
 - fachlicher Gleichheitsnachweis gegen historische IMS/ESS-Laeufe
 - Szenario-Editor, Browser-Upload oder Browser-Download

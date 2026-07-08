@@ -34,6 +34,12 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Legacy-Targets" in plan
     assert "build_explicit_multi_period_execution_summary" in plan
     assert "Execution-Summary-Vertraege" in plan
+    assert "vorhandenen expliziten VU/VN-Periodenplaene" in plan
+    assert "2 Planfixtures, 8 Perioden" in plan
+    assert "19 Legacy-Referenzen, 6300 abgedeckte Zeilen" in plan
+    assert "`/api/core-validation/overview`" in plan
+    assert "Kernvalidierungsueberblick" in plan
+    assert "docs/migration/workbench_demo_checklist.md" in plan
     assert "ohne Runner-Start" in plan
     assert "ohne Simulation oder automatische historische Regelwahl" in plan
 

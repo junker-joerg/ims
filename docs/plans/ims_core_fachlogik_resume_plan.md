@@ -65,9 +65,10 @@ Dieser Block ist umgesetzt. Der aktuelle Stand trennt weiterhin:
 
 ## Aktueller groesserer Kernblock
 
-Der aktuelle groessere Schritt ordnet die Execution-Summary-Vertraege in den
-IMS-Kernvalidierungsueberblick ein, ohne dort einen Lauf zu starten. Ziel
-ist eine gemeinsame, read-only Sprache fuer:
+Der aktuelle groessere Schritt ordnet die Execution-Summary-Vertraege und die
+vorhandenen expliziten VU/VN-Periodenplaene in den IMS-Kernvalidierungsueberblick
+und die lokale Demo-Grenze ein, ohne dort einen Lauf zu starten. Ziel ist eine
+gemeinsame, read-only Sprache fuer:
 
 1. geplante Periodenstruktur aus `explicit_period_diagnostics`;
 2. historische Referenzabdeckung aus `legacy_validation_overview` und Coverage;
@@ -77,6 +78,13 @@ ist eine gemeinsame, read-only Sprache fuer:
    Summary vorhanden ist;
 5. weiterhin keine Simulation, keine automatische historische Regelwahl und
    keine Vollgleichheitsbehauptung.
+
+Der erste UI-/Demo-Anschluss ist umgesetzt: `/api/core-validation/overview` und
+die Workbench-Karte `Kernvalidierungsueberblick` zeigen Plananzahl,
+Periodenachsen, Legacy-Abdeckung und Execution-Summary-Vertrag lesend. Die
+lokale Demo-Checkliste dokumentiert den aktuellen Diagnosebefund:
+2 Planfixtures, 8 Perioden, globale Perioden `1, 2, 3, 4, 101, 102, 103, 104`,
+19 Legacy-Referenzen, 6300 abgedeckte Zeilen und `execution_performed = false`.
 
 Der passende PR-Titel waere:
 
@@ -120,8 +128,11 @@ Der passende PR-Titel waere:
    Overview heraus, aber mit expliziter Kennzeichnung, welche Ergebnisfelder ein
    spaeter kontrollierter Ausfuehrungsadapter liefern muss.
    Kurzgrenze: keine Ausfuehrung aus dem Overview heraus.
-7. Als naechsten Schritt eine read-only API-/UI-Anbindung fuer den
-   Kernvalidierungsueberblick planen, weiterhin ohne funktionalen Start.
+7. Read-only API-/UI-Anbindung fuer den Kernvalidierungsueberblick in die
+   lokale Demo-Grenze einordnen, weiterhin ohne funktionalen Start. Dieser
+   Anschluss ist umgesetzt: `/api/core-validation/overview`, die UI-Karte und
+   `docs/migration/workbench_demo_checklist.md` zeigen die vorhandenen
+   VU/VN-Periodenplaene diagnostisch.
 8. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
 
 ## Aktualisierte PR-Restplanung
@@ -141,7 +152,7 @@ Aktualisierte grobe Restplanung:
   Planfixtures;
 - 1 PR fuer einen read-only Execution-Summary-Vertrag im
   Kernvalidierungsueberblick;
-- 1-3 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
+- 1-2 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
   Kernvalidierungsdiagnosen und Summary-Vertraege.
 
 Damit bleiben grob ca. 8-18+ reviewbare PRs bis zu einem deutlich breiteren

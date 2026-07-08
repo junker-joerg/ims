@@ -367,8 +367,18 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "execution_enabled" in checklist
     assert "execution_performed" in checklist
     assert "Was demo-faehig ist" in checklist
+    assert "Optionaler lesender Kernblick" in checklist
+    assert "python -m ims.engine.explicit_period_diagnostics tests/fixtures/replay_vu14_period_plan.json" in checklist
+    assert "python -m ims.engine.explicit_period_diagnostics_bundle tests/fixtures/replay_vu14_period_plan.json tests/fixtures/replay_vusk1_period_plan.json" in checklist
+    assert "python -m ims.engine.core_validation_overview --legacy-fixture tests/fixtures/legacy_validation_bundle.json" in checklist
+    assert "2 Planfixtures, 8 Perioden" in checklist
+    assert "19 Referenzen, 6300 abgedeckte Zeilen" in checklist
+    assert "execution_summary_next_action = await_precomputed_execution_summary" in checklist
+    assert "overview_starts_runner = false" in checklist
+    assert "Kernvalidierungsueberblick" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
     assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
+    assert "vorab berechnete Execution-Summary als UI-Eingabe" in checklist
     assert "Ausfuehrungsadapter hinter `run_preflight`" in checklist
     assert "fachlicher Gleichheitsnachweis" in checklist
     assert "Der Demo-Screenshot belegt nur Bedienbarkeit und sichtbare Grenzen" in checklist

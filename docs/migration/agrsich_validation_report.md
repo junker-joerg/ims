@@ -292,3 +292,12 @@ Scheduler. Er schreibt keine Artefakte, oeffnet keine HTTP- oder UI-Schreibpfade
 und behauptet keine historische Vollgleichheit. Ein `warning`-Status ist
 erwartbar, wenn weitere Validierung durch fehlende historische Referenzen
 blockiert ist.
+
+Die lokale Workbench bindet denselben Ueberblick read-only ueber
+`GET /api/core-validation/overview` ein. Fuer die Demo-Grenze ist nur die Anzeige
+zulaessig: aktuell 2 Planfixtures, 8 diagnostizierte Perioden, globale Perioden
+`1, 2, 3, 4, 101, 102, 103, 104`, 19 Legacy-Referenzen sowie 6300 abgedeckte
+Zeilen und Perioden. `execution_summary_available` bleibt `false`; der
+naechste Summary-Schritt ist `await_precomputed_execution_summary`. Der
+Overview startet keinen Runner, akzeptiert keine Summary-Datei und setzt
+`execution_performed = false`.
