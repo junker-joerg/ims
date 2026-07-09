@@ -92,6 +92,12 @@ def test_transition_diagnostics_reports_planned_carryover_without_executing(tmp_
     assert payload["transitions"][0]["explicit_input_fields"]["policyholders"] == ["active"]
     assert payload["transitions"][0]["vu_carryover_planned"] is True
     assert payload["transitions"][0]["vn_carryover_planned"] is True
+    assert payload["transitions"][0]["vu_carryover_candidate_insurer_ids"] == [11]
+    assert payload["transitions"][0]["vn_carryover_candidate_insurer_ids"] == [11]
+    assert payload["transitions"][0]["vn_carryover_candidate_policyholder_ids"] == [21]
+    assert "premiums_current_sector" in payload["transitions"][0]["carryover_source_fields"]["vu_insurers"]
+    assert "claims_count_current" in payload["transitions"][0]["carryover_source_fields"]["vn_insurers"]
+    assert "chosen_insurer_current" in payload["transitions"][0]["carryover_source_fields"]["vn_policyholders"]
     assert payload["transitions"][0]["vu_carryover_executed"] is False
     assert payload["transitions"][0]["vn_carryover_executed"] is False
     assert payload["execution_performed"] is False
@@ -112,6 +118,12 @@ def test_transition_diagnostics_accepts_versioned_vn_policyholder_fixture() -> N
     assert payload["transitions"][0]["policyholder_ids"] == [21]
     assert payload["transitions"][0]["explicit_policyholder_update_ids"] == [21]
     assert payload["transitions"][0]["vn_carryover_planned"] is True
+    assert payload["transitions"][0]["vu_carryover_candidate_insurer_ids"] == []
+    assert payload["transitions"][0]["vn_carryover_candidate_insurer_ids"] == [11]
+    assert payload["transitions"][0]["vn_carryover_candidate_policyholder_ids"] == [21]
+    assert "vn_insurers" in payload["transitions"][0]["carryover_source_fields"]
+    assert "vn_policyholders" in payload["transitions"][0]["carryover_source_fields"]
+    assert "vu_insurers" not in payload["transitions"][0]["carryover_source_fields"]
     assert payload["transitions"][0]["vn_carryover_executed"] is False
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False

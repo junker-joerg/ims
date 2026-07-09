@@ -14,6 +14,39 @@ from ims.engine.explicit_period_plan import (
 from ims.model.agrsich_export import compute_global_period
 
 
+VU_CARRYOVER_SOURCE_FIELDS = (
+    "active",
+    "advertising_current_sector",
+    "policyholders_current",
+    "policyholders_current_sector",
+    "premiums_current_sector",
+    "reserves_current",
+)
+VN_CARRYOVER_INSURER_SOURCE_FIELDS = (
+    "active",
+    "advertising_current_sector",
+    "claims_count_current",
+    "claims_sum_current",
+    "policyholders_current",
+    "policyholders_current_sector",
+    "premiums_current_sector",
+    "reserves_current",
+)
+VN_CARRYOVER_POLICYHOLDER_SOURCE_FIELDS = (
+    "active",
+    "chosen_insurer_current",
+    "chosen_insurer_sector_current",
+    "claim_sum_current",
+    "end_wealth_current",
+    "end_wealth_sector_current",
+    "insured_current",
+    "insured_current_sector",
+    "insurer_id",
+    "paid_premium_current",
+    "self_damage_current",
+)
+
+
 @dataclass(slots=True)
 class ExplicitPeriodTransitionIssue:
     code: str
@@ -48,6 +81,10 @@ class ExplicitPeriodTransitionSummary:
     explicit_input_fields: dict[str, list[str]]
     vu_carryover_planned: bool
     vn_carryover_planned: bool
+    vu_carryover_candidate_insurer_ids: list[int] = field(default_factory=list)
+    vn_carryover_candidate_insurer_ids: list[int] = field(default_factory=list)
+    vn_carryover_candidate_policyholder_ids: list[int] = field(default_factory=list)
+    carryover_source_fields: dict[str, list[str]] = field(default_factory=dict)
     vu_carryover_executed: bool = False
     vn_carryover_executed: bool = False
     writes_performed: bool = False
@@ -68,6 +105,18 @@ class ExplicitPeriodTransitionSummary:
             },
             "vu_carryover_planned": self.vu_carryover_planned,
             "vn_carryover_planned": self.vn_carryover_planned,
+            "vu_carryover_candidate_insurer_ids": list(
+                self.vu_carryover_candidate_insurer_ids
+            ),
+            "vn_carryover_candidate_insurer_ids": list(
+                self.vn_carryover_candidate_insurer_ids
+            ),
+            "vn_carryover_candidate_policyholder_ids": list(
+                self.vn_carryover_candidate_policyholder_ids
+            ),
+            "carryover_source_fields": {
+                key: list(value) for key, value in self.carryover_source_fields.items()
+            },
             "vu_carryover_executed": self.vu_carryover_executed,
             "vn_carryover_executed": self.vn_carryover_executed,
             "writes_performed": self.writes_performed,
@@ -144,6 +193,20 @@ def _updated_fields(updates: list[dict]) -> list[str]:
     return sorted(fields)
 
 
+def _intersection_ids(previous_snapshot: dict[str, Any], current_snapshot: dict[str, Any], key: str) -> list[int]:
+    return sorted(set(_entity_ids(previous_snapshot, key)) & set(_entity_ids(current_snapshot, key)))
+
+
+def _carryover_source_fields(plan: ExplicitPeriodPlan) -> dict[str, list[str]]:
+    fields: dict[str, list[str]] = {}
+    if plan.carry_forward_vu_state:
+        fields["vu_insurers"] = list(VU_CARRYOVER_SOURCE_FIELDS)
+    if plan.carry_forward_vn_state:
+        fields["vn_insurers"] = list(VN_CARRYOVER_INSURER_SOURCE_FIELDS)
+        fields["vn_policyholders"] = list(VN_CARRYOVER_POLICYHOLDER_SOURCE_FIELDS)
+    return fields
+
+
 def _transition_summaries(
     plan: ExplicitPeriodPlan,
     snapshots: list[dict[str, Any]],
@@ -158,6 +221,8 @@ def _transition_summaries(
         previous_context = contexts[index - 1]
         current_context = contexts[index]
         update = plan.period_updates[index]
+        shared_insurer_ids = _intersection_ids(previous_snapshot, current_snapshot, "insurers")
+        shared_policyholder_ids = _intersection_ids(previous_snapshot, current_snapshot, "policyholders")
         transitions.append(
             ExplicitPeriodTransitionSummary(
                 from_period=previous_context.period,
@@ -180,6 +245,16 @@ def _transition_summaries(
                 },
                 vu_carryover_planned=plan.carry_forward_vu_state,
                 vn_carryover_planned=plan.carry_forward_vn_state,
+                vu_carryover_candidate_insurer_ids=(
+                    shared_insurer_ids if plan.carry_forward_vu_state else []
+                ),
+                vn_carryover_candidate_insurer_ids=(
+                    shared_insurer_ids if plan.carry_forward_vn_state else []
+                ),
+                vn_carryover_candidate_policyholder_ids=(
+                    shared_policyholder_ids if plan.carry_forward_vn_state else []
+                ),
+                carryover_source_fields=_carryover_source_fields(plan),
             )
         )
     return global_periods, transitions

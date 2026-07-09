@@ -30,9 +30,9 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 Naechster bevorzugter Arbeitsschnitt:
 
 - Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
-  nach dem minimalen VN-Policyholder-Anschlussfixture einen noch engeren
-  Carryover-Code-Slice vorbereiten. `VU014PR1.DAT` bleibt weiterhin geparkt;
-  keine Simulation, keine automatische historische Regelwahl und keine
+  nach den rein lesenden Carryover-Kandidatenlisten einen engen
+  Carryover-Code-Slice planen. `VU014PR1.DAT` bleibt weiterhin geparkt; keine
+  Simulation, keine automatische historische Regelwahl und keine
   Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
@@ -90,8 +90,12 @@ Naechster bevorzugter Arbeitsschnitt:
   `replay_vn_policyholder_transition_plan.json`).
 - PR 19: Engen Carryover-Code-Slice aus dem Anschlussfixture planen oder
   vorbereiten, weiterhin ohne historische Regelableitung und ohne
-  Vollsimulation.
-- PR 20+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
+  Vollsimulation (dieser Schnitt: Carryover-Kandidatenlisten in der
+  Uebergangsdiagnose, keine Carryover-Ausfuehrung).
+- PR 20: Echten Carryover-Code-Slice separat planen oder vorbereiten, dabei
+  weiterhin nur vorhandene portierte Carryover-Bausteine nutzen und keine
+  historische Regelableitung einfuehren.
+- PR 21+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
   eine spaetere Run-Control-Anbindung erst nach separater Freigabe vorbereiten,
   weiterhin ohne Vollgleichheitsbehauptung.
 

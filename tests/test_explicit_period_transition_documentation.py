@@ -23,6 +23,11 @@ def test_explicit_period_transition_diagnostics_is_documented() -> None:
     assert "replay_vn_policyholder_transition_plan.json" in doc
     assert "VN-Policyholder `21`" in doc
     assert "vn_carryover_planned = true" in doc
+    assert "Carryover-Kandidatenlisten" in doc
+    assert "carryover_source_fields" in doc
+    assert "vn_carryover_candidate_policyholder_ids = [21]" in doc
+    assert "vn_carryover_candidate_insurer_ids = [11]" in doc
+    assert "vn_carryover_executed` bleibt `false" in doc
     assert "explicit_period_transition_no_policyholders" in doc
     assert "gezielt fuer eine minimale VN-Subjektmenge auf" in doc
     assert "kein Runner-Start" in doc

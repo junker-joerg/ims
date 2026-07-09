@@ -440,7 +440,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "replay_vn_policyholder_transition_plan.json" in backlog
     assert "explicit_period_transition_no_policyholders" in backlog
     assert "PR 19: Engen Carryover-Code-Slice" in backlog
-    assert "PR 20+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern" in backlog
+    assert "Carryover-Kandidatenlisten in der" in backlog
+    assert "keine Carryover-Ausfuehrung" in backlog
+    assert "PR 20: Echten Carryover-Code-Slice separat planen" in backlog
+    assert "PR 21+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

@@ -24,6 +24,9 @@ Die stabile JSON-Antwort nutzt
 - `insurer_ids` und `policyholder_ids`;
 - explizite Update-Ziele und Update-Felder;
 - `vu_carryover_planned` und `vn_carryover_planned`;
+- Carryover-Kandidatenlisten fuer gemeinsam vorhandene Versicherer und VN;
+- `carryover_source_fields` als Feldgrenze der bereits portierten
+  Carryover-Bausteine;
 - `writes_performed = false`;
 - `execution_performed = false`;
 - `simulation_performed = false`;
@@ -58,6 +61,10 @@ spaeteren, engeren Carryover- oder Regel-Slice belegbar sind.
   `vn_carryover_planned = true`. Dieses Anschlussfixture startet ebenfalls
   keinen Runner, loest den `explicit_period_transition_no_policyholders`-Hinweis
   aber gezielt fuer eine minimale VN-Subjektmenge auf.
+- Die Diagnose meldet dafuer
+  `vn_carryover_candidate_policyholder_ids = [21]` und
+  `vn_carryover_candidate_insurer_ids = [11]`. Diese Kandidatenlisten sind nur
+  Lesesignale; `vn_carryover_executed` bleibt `false`.
 
 ## Grenzen
 
