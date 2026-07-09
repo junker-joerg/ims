@@ -30,12 +30,11 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 Naechster bevorzugter Arbeitsschnitt:
 
 - Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
-  einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus den
-  vorhandenen Planfixtures kartieren. Dieser Plan liegt nun unter
-  `docs/plans/explicit_period_transition_slice.md` und beschreibt zuerst die
-  Periodenuebergangs-/Carryover-Grenze fuer `VU14L1.DAT` und `VUSK1L4.DAT`,
-  weiterhin ohne Runner-Start, Simulation, automatische historische Regelwahl
-  oder Vollgleichheitsbehauptung.
+  nach der umgesetzten Periodenuebergangsdiagnose die offene
+  VN-Policyholder-Abdeckung oder einen noch engeren Carryover-Code-Slice
+  vorbereiten. Die Periodenuebergangs-/Carryover-Grenze bleibt damit sichtbar.
+  `VU014PR1.DAT` bleibt weiterhin geparkt; keine Simulation, keine
+  automatische historische Regelwahl und keine Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -80,12 +79,16 @@ Naechster bevorzugter Arbeitsschnitt:
   visueller Beleg fuer die neue Karte gebraucht wird (erledigt).
 - PR 16: Naechsten schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus
   vorhandenen Planfixtures planen: Altcode-Spur, Fixture-Bezug, erwartete
-  Zwischenzustaende und Testgrenzen dokumentieren, noch ohne neue Fachlogik
-  (dieser Schnitt).
+  Zwischenzustaende und Testgrenzen unter
+  `docs/plans/explicit_period_transition_slice.md` dokumentieren, noch ohne neue Fachlogik.
+  Periodenuebergangs-/Carryover-Grenze fuer `VU14L1.DAT` und `VUSK1L4.DAT` (erledigt).
 - PR 17: Explizite Periodenuebergangs-/Carryover-Diagnose aus dem Plan
   vorbereiten, weiterhin ohne Runner-Start, Simulation oder automatische
-  historische Regelwahl.
-- PR 18+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
+  historische Regelwahl (dieser Schnitt).
+- PR 18: Kleines VN-Policyholder- oder Carryover-Anschlussfixture planen, damit
+  `explicit_period_transition_no_policyholders` gezielt aufgeloest oder als
+  weiterhin offene Grenze bestaetigt wird.
+- PR 19+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
   eine spaetere Run-Control-Anbindung erst nach separater Freigabe vorbereiten,
   weiterhin ohne Vollgleichheitsbehauptung.
 

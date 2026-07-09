@@ -101,6 +101,14 @@ kartiert. Der Plan bleibt ohne neue Fachlogik, ohne Runner-Start, ohne
 Simulation, ohne automatische historische Regelwahl und ohne
 Vollgleichheitsbehauptung.
 
+PR 17 setzt diesen Anschluss als read-only
+`ims.engine.explicit_period_transition_diagnostics` um. Die Diagnose beschreibt
+benachbarte Uebergaenge aus den Planfixtures, meldet die fehlende
+VN-Policyholder-Abdeckung als Hinweis
+`explicit_period_transition_no_policyholders` und setzt `writes_performed`,
+`execution_performed`, `simulation_performed` sowie
+`automatic_historical_rule_selection_performed` auf `false`.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -156,6 +164,11 @@ Vollgleichheitsbehauptung.
    dokumentiert: `VU14L1.DAT` und `VUSK1L4.DAT` liefern belegbare
    Versicherer-Periodenfenster, aber noch keine VN-Policyholder und keine
    automatisch berechnete Regelwirkung.
+10. Explizite Periodenuebergangsdiagnose umsetzen. Der Befehl
+    `python -m ims.engine.explicit_period_transition_diagnostics tests/fixtures/replay_vu14_period_plan.json`
+    beschreibt Uebergaenge, Subjektmengen, explizite Update-Felder und geplante
+    Carryover-Flags, bleibt aber ohne Runner-Start, Simulation oder neue
+    Fachlogik.
 
 ## Aktualisierte PR-Restplanung
 
@@ -170,9 +183,9 @@ Aktualisierte grobe Restplanung:
 - 0-1 PRs fuer weitere Inventar-/Akzeptanzgrenzen der neuen lokalen Kandidaten;
 - 2-4 PRs fuer `IMSVNR01.DAT` bis `IMSVNR06.DAT`;
 - 2-5 PRs fuer Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT`;
-- 1 Plan-PR fuer den naechsten schmalen Periodenuebergangs-/Carryover-Slice aus
-  vorhandenen Planfixtures (dieser Stand);
-- 2-4 PRs fuer anschliessende schmale VU-/VN-Regel- oder Carryover-Code-Slices;
+- Plan- und Diagnose-PR fuer den schmalen Periodenuebergangs-/Carryover-Slice
+  aus vorhandenen Planfixtures sind umgesetzt;
+- 1-3 PRs fuer anschliessende schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.

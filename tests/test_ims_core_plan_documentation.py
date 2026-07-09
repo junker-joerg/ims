@@ -52,6 +52,9 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "ohne Runner-Start" in plan
     assert "ohne Simulation oder automatische historische Regelwahl" in plan
     assert "Periodenuebergangs- und Carryover-Grenze" in plan
+    assert "ims.engine.explicit_period_transition_diagnostics" in plan
+    assert "explicit_period_transition_no_policyholders" in plan
+    assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
 def test_ims_core_resume_plan_keeps_boundaries_conservative() -> None:
@@ -111,6 +114,7 @@ def test_explicit_period_transition_plan_selects_next_narrow_slice() -> None:
     assert "docs/migration/agrsich_replay_plan.md" in plan
     assert "docs/migration/explicit_vu_vn_period_runner.md" in plan
     assert 'mode = "explicit_period_transition_diagnostics"' in plan
+    assert "ims.engine.explicit_period_transition_diagnostics" in plan
     assert "writes_performed = false" in plan
     assert "execution_performed = false" in plan
     assert "simulation_performed = false" in plan
@@ -134,5 +138,6 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
+    assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme

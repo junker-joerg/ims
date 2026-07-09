@@ -8,8 +8,9 @@ VU-/VN-Regel ableiten. Er kartiert zuerst, welche Zwischenzustaende beim
 Uebergang zwischen den bereits vorhandenen expliziten Periodenfixtures sichtbar
 gemacht werden duerfen.
 
-Der naechste Code-PR darf danach eine kleine, rein lokale Diagnose fuer
-Periodenuebergaenge vorbereiten. Sie soll zeigen:
+Der folgende Code-PR hat eine kleine, rein lokale Diagnose fuer
+Periodenuebergaenge vorbereitet: `ims.engine.explicit_period_transition_diagnostics`.
+Sie zeigt:
 
 - Quell- und Zielperiode je Uebergang;
 - lokale und globale Periodenachse;
@@ -54,11 +55,10 @@ Die fachliche Spur laeuft ueber bereits dokumentierte Migrationsschnitte:
 
 ## Kandidat fuer den naechsten Code-PR
 
-Der bevorzugte naechste Code-Schnitt ist eine kleine
-`explicit_period_transition_diagnostics`-Diagnose oder eine entsprechende
-Erweiterung der bestehenden Periodendiagnose. Sie soll die vorhandenen
-Planfixtures lesen, aber keinen Runner, Scheduler, HTTP-Pfad oder UI-Startpfad
-aktivieren.
+Der ausgefuehrte Code-Schnitt ist die kleine
+`explicit_period_transition_diagnostics`-Diagnose. Sie liest die vorhandenen
+Planfixtures, aktiviert aber keinen Runner, Scheduler, HTTP-Pfad oder
+UI-Startpfad.
 
 Erwartete Ausgabegrenze:
 
@@ -95,9 +95,9 @@ Erwartete Ausgabegrenze:
 - Carryover darf nur vorhandene portierte Carryover-Bausteine beschreiben. Er
   darf keine fehlenden Regelwerte auffuellen.
 
-## Testgrenze fuer den naechsten Code-PR
+## Testgrenze fuer den Code-PR
 
-Der naechste Code-PR soll mindestens pruefen:
+Der Code-PR prueft mindestens:
 
 - beide vorhandenen Planfixtures werden als Diagnoseeingaben akzeptiert;
 - globale Perioden `1..4` und `101..104` bleiben getrennt sichtbar;

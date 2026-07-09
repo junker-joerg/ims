@@ -435,7 +435,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "Periodenuebergangs-/Carryover-Grenze fuer `VU14L1.DAT` und `VUSK1L4.DAT`" in backlog
     assert "noch ohne neue Fachlogik" in backlog
     assert "PR 17: Explizite Periodenuebergangs-/Carryover-Diagnose" in backlog
-    assert "PR 18+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern" in backlog
+    assert "historische Regelwahl (dieser Schnitt)" in backlog
+    assert "PR 18: Kleines VN-Policyholder- oder Carryover-Anschlussfixture planen" in backlog
+    assert "explicit_period_transition_no_policyholders" in backlog
+    assert "PR 19+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

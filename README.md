@@ -59,6 +59,10 @@ Der konkrete naechste PR-16-Schnitt ist unter
 Periodenuebergangs- und Carryover-Grenze der vorhandenen VU-Planfixtures
 `replay_vu14_period_plan.json` und `replay_vusk1_period_plan.json`, noch ohne
 neue Fachlogik und ohne Runner-Start.
+Der PR-17-Code-Schnitt ist die lokale Diagnose
+`python -m ims.engine.explicit_period_transition_diagnostics tests/fixtures/replay_vu14_period_plan.json`;
+sie beschreibt Uebergaenge, Update-Felder und Carryover-Planung, bleibt aber
+ohne Runner-Start und ohne Simulation.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
