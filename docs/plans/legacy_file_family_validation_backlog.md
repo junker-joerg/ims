@@ -30,10 +30,32 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 Naechster bevorzugter Arbeitsschnitt:
 
 - Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll den
-  in `docs/plans/explicit_transition_carryover_code_slice.md` geplanten engen
-  Carryover-Probe als Code-Schnitt umsetzen. `VU014PR1.DAT` bleibt weiterhin
-  geparkt; keine Simulation, keine automatische historische Regelwahl und keine
-  Vollgleichheitsbehauptung.
+  ausgefuehrten engen Carryover-Probe read-only in den Kernvalidierungsblick
+  einordnen. `VU014PR1.DAT` bleibt weiterhin geparkt; keine Simulation, keine
+  automatische historische Regelwahl und keine Vollgleichheitsbehauptung.
+
+## Aktuelle PR-Zaehlung
+
+Nach PR 21 bleiben bis zu einer demo-nahen, weiterhin read-only
+Carryover/Kern-Sicht noch 4 klar planbare PRs:
+
+- PR 22: Carryover-Probe im Kernvalidierungsueberblick als Ergebnisvertrag
+  einordnen, ohne Probe aus dem Overview heraus zu starten.
+- PR 23: Read-only API-Vertrag fuer bereits berechnete Carryover-Probe-Ergebnisse
+  vorbereiten, ohne Schreibpfad und ohne Runner-Start.
+- PR 24: UI-Karte fuer die bereits berechnete Carryover-Probe-Sicht vorbereiten,
+  ohne Startbutton oder Ausfuehrungsadapter.
+- PR 25: Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ergaenzen.
+
+Danach bleiben mindestens 3 weitere fachliche Validierungs-PRs offen:
+
+- ein schmaler VU- oder VN-Regel-Slice aus vorhandenen Planfixtures;
+- ein gezielter Abgleich dieses Slices mit vorhandenen Legacy-Referenzfenstern;
+- ein separater Plan fuer einen spaeteren kontrollierten Ausfuehrungsadapter.
+
+Zaehlschnitt: 4 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht; 7+
+PRs bis zu einem breiteren fachlichen Anschluss. Diese Zahl ist kein
+Vollgleichheits- oder Gesamtabschlussversprechen.
 
 ## Rest-PR-Planung
 
@@ -99,8 +121,16 @@ Naechster bevorzugter Arbeitsschnitt:
   Carryover-Ausfuehrung).
 - PR 21: Den geplanten engen Carryover-Probe als Code-/Test-Schritt umsetzen:
   nur explizites Opt-in, nur vorhandene portierte Carryover-Bausteine,
-  Uebergangsdiagnose als Grenzpruefung, keine API-/UI-/Run-Control-Anbindung.
-- PR 22+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
+  Uebergangsdiagnose als Grenzpruefung, keine API-/UI-/Run-Control-Anbindung
+  (dieser Schnitt: `ims.engine.explicit_transition_carryover_probe`, erledigt).
+- PR 22: Carryover-Probe im Kernvalidierungsueberblick als read-only Vertrag
+  aufnehmen, aber keinen Probe-Start aus dem Overview heraus einfuehren.
+- PR 23: Read-only API-Vertrag fuer bereits berechnete Probe-Ergebnisse
+  vorbereiten.
+- PR 24: UI-Karte fuer die bereits berechnete Carryover-Probe-Sicht
+  vorbereiten.
+- PR 25: Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ergaenzen.
+- PR 26+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
   Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
   Vollgleichheitsbehauptung.
 

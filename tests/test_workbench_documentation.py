@@ -445,8 +445,18 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 20: Echten Carryover-Code-Slice separat planen" in backlog
     assert "docs/plans/explicit_transition_carryover_code_slice.md" in backlog
     assert "PR 21: Den geplanten engen Carryover-Probe als Code-/Test-Schritt umsetzen" in backlog
+    assert "ims.engine.explicit_transition_carryover_probe" in backlog
+    assert "(dieser Schnitt:" in backlog
+    assert "erledigt" in backlog
+    assert "Aktuelle PR-Zaehlung" in backlog
+    assert "4 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
+    assert "7+" in backlog
+    assert "PR 22: Carryover-Probe im Kernvalidierungsueberblick" in backlog
+    assert "PR 23: Read-only API-Vertrag" in backlog
+    assert "PR 24: UI-Karte" in backlog
+    assert "PR 25: Demo-/Doku-Smoke" in backlog
     assert "keine API-/UI-/Run-Control-Anbindung" in backlog
-    assert "PR 22+: Eine spaetere Run-Control-Anbindung" in backlog
+    assert "PR 26+: Eine spaetere Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

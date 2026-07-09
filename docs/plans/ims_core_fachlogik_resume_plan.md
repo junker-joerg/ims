@@ -121,6 +121,11 @@ nur `apply_vu_foreign_info_carryover` und `apply_vn_state_carryover` als
 vorhandene portierte Bausteine nutzen, muss explizites Opt-in verlangen und darf
 keine historische Regelwirkung oder Vollgleichheit ableiten.
 
+PR 21 setzt diesen Schnitt als `ims.engine.explicit_transition_carryover_probe`
+um. Der Probe nutzt explizite Fixture-Snapshots als Quelle, fuehrt Carryover nur
+bei `--apply-vu` oder `--apply-vn` in-memory aus und bleibt ohne API-/UI-,
+Overview- oder Run-Control-Anbindung.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -191,6 +196,10 @@ keine historische Regelwirkung oder Vollgleichheit ableiten.
     naechsten Code-PR auf einen expliziten Carryover-Probe mit vorhandenen
     portierten Carryover-Bausteinen, ohne Simulation, API-/UI-Startpfad oder
     historische Regelableitung.
+13. Engen Carryover-Probe umsetzen. Der Befehl
+    `python -m ims.engine.explicit_transition_carryover_probe --apply-vn tests/fixtures/replay_vn_policyholder_transition_plan.json`
+    prueft vorhandene Carryover-Bausteine in-memory gegen die
+    Uebergangsdiagnose, schreibt nichts und startet keine Simulation.
 
 ## Aktualisierte PR-Restplanung
 
@@ -208,7 +217,10 @@ Aktualisierte grobe Restplanung:
 - Plan- und Diagnose-PR fuer den schmalen Periodenuebergangs-/Carryover-Slice
   aus vorhandenen Planfixtures sind umgesetzt;
 - Plan fuer den engen Carryover-Code-Slice ist umgesetzt;
-- 1-3 PRs fuer anschliessende schmale VU-/VN-Regel- oder Carryover-Code-Slices;
+- enger Carryover-Probe ist umgesetzt;
+- 4 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
+- danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
+  Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.

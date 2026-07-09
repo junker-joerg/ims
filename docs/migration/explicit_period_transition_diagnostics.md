@@ -12,6 +12,7 @@ Beispiel:
 ```powershell
 python -m ims.engine.explicit_period_transition_diagnostics tests/fixtures/replay_vu14_period_plan.json
 python -m ims.engine.explicit_period_transition_diagnostics tests/fixtures/replay_vusk1_period_plan.json
+python -m ims.engine.explicit_transition_carryover_probe --apply-vn tests/fixtures/replay_vn_policyholder_transition_plan.json
 ```
 
 Die stabile JSON-Antwort nutzt
@@ -31,6 +32,20 @@ Die stabile JSON-Antwort nutzt
 - `execution_performed = false`;
 - `simulation_performed = false`;
 - `automatic_historical_rule_selection_performed = false`.
+
+Der anschliessende enge Carryover-Probe nutzt
+`mode = "explicit_transition_carryover_probe"`. Er bleibt ein lokaler
+In-Memory-Probe fuer vorhandene portierte Bausteine:
+
+- ohne `--apply-vu` oder `--apply-vn` wird kein Carryover ausgefuehrt;
+- mit explizitem Opt-in nutzt er nur `apply_vu_foreign_info_carryover` oder
+  `apply_vn_state_carryover`;
+- `previous_result_source = "explicit_fixture_snapshot"` markiert, dass die
+  Quelle ein explizites Fixture ist und kein historisches Vorperioden-Ergebnis;
+- `in_memory_carryover_performed` meldet lokale Objektmutationen im Probe;
+- `writes_performed = false`, `execution_performed = false`,
+  `simulation_performed = false` und
+  `automatic_historical_rule_selection_performed = false` bleiben erhalten.
 
 ## Ursprung und Mapping
 
@@ -65,6 +80,10 @@ spaeteren, engeren Carryover- oder Regel-Slice belegbar sind.
   `vn_carryover_candidate_policyholder_ids = [21]` und
   `vn_carryover_candidate_insurer_ids = [11]`. Diese Kandidatenlisten sind nur
   Lesesignale; `vn_carryover_executed` bleibt `false`.
+- Der Carryover-Probe mit `--apply-vn` traegt fuer dasselbe Fixture in-memory
+  den Versicherer `11` und den VN `21`, meldet
+  `diagnostic_candidate_ids_match = true` und bleibt ohne Dateischreiben,
+  Simulation oder automatische historische Regelwahl.
 
 ## Grenzen
 
@@ -72,6 +91,7 @@ spaeteren, engeren Carryover- oder Regel-Slice belegbar sind.
 - keine Simulation;
 - keine neue Fachlogik;
 - keine automatische historische Regelwahl;
+- kein historisches Vorperioden-Ergebnis erfinden;
 - kein HTTP- oder UI-Schreibpfad;
 - keine Uebernahme von `VU014PR1.DAT`;
 - keine historische Vollgleichheitsbehauptung.

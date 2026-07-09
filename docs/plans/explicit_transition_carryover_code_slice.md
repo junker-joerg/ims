@@ -8,6 +8,11 @@ ableiten, keine Simulation starten und keinen neuen Runner-Startpfad
 freischalten. Er grenzt nur ab, wie vorhandene portierte Carryover-Bausteine in
 einem spaeteren kleinen Code-PR kontrolliert geprueft werden duerfen.
 
+PR 21 setzt diesen Plan als
+`python_port/ims/engine/explicit_transition_carryover_probe.py` um. Der Probe
+bleibt lokal, schreibt keine Dateien, startet keine Simulation und ist nicht an
+API, UI, Overview oder Run-Control angebunden.
+
 Der spaetere Code darf ausschliesslich auf bereits vorhandene Bausteine
 aufsetzen:
 
@@ -39,7 +44,7 @@ Vollsimulation und keine automatische Rekonstruktion historischer VU-/VN-Regeln.
 
 ## Vorgeschlagener Code-Schnitt
 
-Der naechste Code-PR soll einen kleinen, getrennten Carryover-Probe vorbereiten.
+Der Code-PR bereitet einen kleinen, getrennten Carryover-Probe vor.
 Geeigneter Arbeitstitel:
 
 `Pruefe explizite Carryover-Bausteine fuer Periodenuebergaenge`
@@ -96,9 +101,9 @@ Lokale Objektmutationen innerhalb eines gezielten Unit-Tests duerfen als
 Carryover-Probe sichtbar sein. Sie duerfen nicht als Schreibpfad, Simulation
 oder historische Vollgleichheit beschrieben werden.
 
-## Tests fuer den naechsten Code-PR
+## Tests fuer den Code-PR
 
-Der Code-PR sollte klein bleiben und mindestens pruefen:
+Der Code-PR bleibt klein und prueft mindestens:
 
 - ohne explizites Opt-in wird kein Carryover ausgefuehrt;
 - bei VU-Opt-in werden nur gemeinsame Versicherer-IDs aus der

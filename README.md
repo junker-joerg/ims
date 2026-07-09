@@ -70,6 +70,12 @@ Der naechste Carryover-Code-Schnitt ist unter
 ein explizites Opt-in, darf nur die vorhandenen portierten
 Carryover-Bausteine pruefen und bleibt ohne Simulation, API-/UI-Startpfad oder
 historische Regelableitung.
+Der lokale Probe-Befehl
+`python -m ims.engine.explicit_transition_carryover_probe --apply-vn tests/fixtures/replay_vn_policyholder_transition_plan.json`
+prueft diese Grenze in-memory. Aktueller Zaehlschnitt: 4 PRs bis zur
+demo-nahen read-only Carryover/Kern-Sicht, danach 3+ fachliche
+Validierungs-PRs; keine dieser Zahlen ist eine historische
+Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
