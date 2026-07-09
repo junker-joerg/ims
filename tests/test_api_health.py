@@ -600,6 +600,29 @@ def test_core_validation_overview_endpoint_is_readonly_contract(tmp_path):
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
 
 
+def test_core_validation_carryover_probe_contract_endpoint_is_readonly(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/core-validation/carryover-probe-contract")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "core_validation_carryover_probe_api_contract"
+    assert payload["expected_probe_mode"] == "explicit_transition_carryover_probe"
+    assert payload["precomputed_probe_required"] is True
+    assert payload["api_accepts_probe_payload"] is False
+    assert payload["api_starts_probe"] is False
+    assert payload["http_enabled"] is True
+    assert payload["ui_enabled"] is False
+    assert "probe_execution_from_api" in payload["forbidden_boundaries"]
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert payload["simulation_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_run_control_preflight_endpoint_reads_selected_run(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)

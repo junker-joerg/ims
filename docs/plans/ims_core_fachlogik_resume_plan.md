@@ -132,6 +132,11 @@ PR 22 ordnet den Probe als
 Felder eines spaeter bereitgestellten Probe-Payloads und startet keinen Probe
 aus dem Overview heraus.
 
+PR 23 stellt denselben Vertrag ueber
+`GET /api/core-validation/carryover-probe-contract` read-only bereit. Der
+Endpunkt beschreibt vorab berechnete Probe-Payloads, akzeptiert aber keinen
+Payload und startet keinen Probe.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -210,6 +215,10 @@ aus dem Overview heraus.
     Overview meldet `carryover_probe_available = false`,
     `carryover_probe_next_action = "provide_precomputed_carryover_probe"` und
     `overview_starts_probe = false`.
+15. Read-only API-Vertrag fuer Carryover-Probe-Ergebnisse vorbereiten. Der
+    Endpunkt `GET /api/core-validation/carryover-probe-contract` liefert
+    `mode = "core_validation_carryover_probe_api_contract"`, bleibt ohne
+    Request-Body und startet keinen Probe.
 
 ## Aktualisierte PR-Restplanung
 
@@ -229,7 +238,8 @@ Aktualisierte grobe Restplanung:
 - Plan fuer den engen Carryover-Code-Slice ist umgesetzt;
 - enger Carryover-Probe ist umgesetzt;
 - Carryover-Probe-Vertrag im Kernvalidierungsueberblick ist umgesetzt;
-- 3 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
+- Carryover-Probe-API-Vertrag ist umgesetzt;
+- 2 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
 - danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

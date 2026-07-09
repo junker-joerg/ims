@@ -30,19 +30,19 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 Naechster bevorzugter Arbeitsschnitt:
 
 - Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll den
-  Carryover-Probe-Vertrag read-only in Richtung API-Vertrag vorbereiten.
+  Carryover-Probe-Vertrag read-only in Richtung UI-Karte vorbereiten.
   `VU014PR1.DAT` bleibt weiterhin geparkt; keine Simulation, keine automatische
   historische Regelwahl und keine Vollgleichheitsbehauptung.
 
 ## Aktuelle PR-Zaehlung
 
-Nach PR 22 bleiben bis zu einer demo-nahen, weiterhin read-only
-Carryover/Kern-Sicht noch 3 klar planbare PRs:
+Nach PR 23 bleiben bis zu einer demo-nahen, weiterhin read-only
+Carryover/Kern-Sicht noch 2 klar planbare PRs:
 
 - PR 22: Carryover-Probe im Kernvalidierungsueberblick als Ergebnisvertrag
   einordnen, ohne Probe aus dem Overview heraus zu starten (erledigt).
 - PR 23: Read-only API-Vertrag fuer bereits berechnete Carryover-Probe-Ergebnisse
-  vorbereiten, ohne Schreibpfad und ohne Runner-Start.
+  vorbereiten, ohne Schreibpfad und ohne Runner-Start (erledigt).
 - PR 24: UI-Karte fuer die bereits berechnete Carryover-Probe-Sicht vorbereiten,
   ohne Startbutton oder Ausfuehrungsadapter.
 - PR 25: Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ergaenzen.
@@ -53,7 +53,7 @@ Danach bleiben mindestens 3 weitere fachliche Validierungs-PRs offen:
 - ein gezielter Abgleich dieses Slices mit vorhandenen Legacy-Referenzfenstern;
 - ein separater Plan fuer einen spaeteren kontrollierten Ausfuehrungsadapter.
 
-Zaehlschnitt: 3 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht; 6+
+Zaehlschnitt: 2 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht; 5+
 PRs bis zu einem breiteren fachlichen Anschluss. Diese Zahl ist kein
 Vollgleichheits- oder Gesamtabschlussversprechen.
 
@@ -127,7 +127,8 @@ Vollgleichheits- oder Gesamtabschlussversprechen.
   aufnehmen, aber keinen Probe-Start aus dem Overview heraus einfuehren
   (dieser Schnitt: `explicit_transition_carryover_probe_contract`, erledigt).
 - PR 23: Read-only API-Vertrag fuer bereits berechnete Probe-Ergebnisse
-  vorbereiten.
+  vorbereiten (dieser Schnitt:
+  `GET /api/core-validation/carryover-probe-contract`, erledigt).
 - PR 24: UI-Karte fuer die bereits berechnete Carryover-Probe-Sicht
   vorbereiten.
 - PR 25: Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ergaenzen.

@@ -170,6 +170,12 @@ def test_core_placeholders_import() -> None:
         validate_metadata_write_contract,
         validate_metadata_write_contract_payload,
     )
+    from ims.api.core_validation_carryover_probe_contract import (
+        CoreValidationCarryoverProbeApiContract,
+        build_core_validation_carryover_probe_api_contract,
+        core_validation_carryover_probe_api_contract_payload,
+        main as core_validation_carryover_probe_contract_main,
+    )
     from ims.api.run_control_contracts import (
         WorkbenchRunControlContract,
         build_run_control_contract,
@@ -696,6 +702,10 @@ def test_core_placeholders_import() -> None:
     assert validate_metadata_write_contract_payload is not None
     assert MetadataWriteContractValidationResult is not None
     assert metadata_write_contracts_main is not None
+    assert CoreValidationCarryoverProbeApiContract is not None
+    assert build_core_validation_carryover_probe_api_contract is not None
+    assert core_validation_carryover_probe_api_contract_payload is not None
+    assert core_validation_carryover_probe_contract_main is not None
     assert WorkbenchRunControlContract is not None
     assert build_run_control_contract is not None
     assert run_control_contracts_main is not None

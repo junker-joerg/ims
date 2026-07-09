@@ -22,6 +22,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/run-control/dry-run` prueft ein Run-Control-Request-DTO gegen Request-Vertrag und Preflight, ohne Queue, Metadaten oder Simulation zu schreiben.
 - `/api/run-control/preflight/{run_id}` prueft den ausgewaehlten Run lesend gegen die gesperrte Run-Control-Grenze.
 - `/api/core-validation/overview` beschreibt lesend den IMS-Kernvalidierungsueberblick, Legacy-Abdeckung und den Execution-Summary-Vertrag, ohne einen Runner zu starten.
+- `/api/core-validation/carryover-probe-contract` beschreibt lesend den API-Vertrag fuer spaeter bereits berechnete Carryover-Probe-Payloads, ohne Payload-Upload oder Probe-Start.
 - `/api/run-control/core-diagnostics-bridge` buendelt lesend Queue-Aktionsplan und Kernvalidierungsueberblick, ohne Queue, Metadaten, Runner oder Simulation zu schreiben.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
@@ -36,6 +37,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar, als Dry-Run vorab vergleichbar, als Snapshot lesbar und im Importformat exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
 - `ims.api.metadata_write_contracts` beschreibt die vorbereiteten lokalen Schreibgrenzen, ohne selbst zu schreiben.
+- `ims.api.core_validation_carryover_probe_contract` beschreibt den read-only API-Vertrag fuer vorab berechnete Carryover-Probe-Ergebnisse, ohne den Probe zu starten.
 - `ims.api.run_control_contracts` beschreibt die spaetere Run-Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.run_control_requests` validiert lokale Run-Control-Request-DTOs, ohne Ausfuehrung zu erlauben.
 - `ims.api.run_control_queue` speichert validierte Run-Control-Requests lokal in einer expliziten SQLite-Queue, ohne Ausfuehrung zu erlauben.
@@ -95,6 +97,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Control-Aktionsplankarte nutzt `/api/run-control/queue/action-plan` und zeigt fuer vorhandene Queue-Eintraege nur `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Sie schreibt nicht und startet keinen Adapter.
 - Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
 - Die Kernvalidierungsuebersicht ist rein lesend. Sie nutzt `/api/core-validation/overview`, zeigt Periodenplaene, Legacy-Referenzen und den Execution-Summary-Vertrag, startet aber keinen expliziten Periodenrunner und nimmt keine Summary-Datei entgegen.
+- Der Carryover-Probe-Vertrag ist rein lesend. Er nutzt `/api/core-validation/carryover-probe-contract`, beschreibt nur vorab berechnete `explicit_transition_carryover_probe`-Payloads und nimmt keinen Payload entgegen.
 - Die Run-Control-Kernblick-Bruecke ist rein lesend. Sie nutzt `/api/run-control/core-diagnostics-bridge`, kombiniert nur vorhandene Queue-Aktionsplan- und Kernvalidierungssignale, schreibt nicht, startet keinen Runner und enthaelt keinen Startbutton.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
@@ -587,6 +590,7 @@ POST /api/run-control/dry-run
 POST /api/run-control/queue
 GET /api/run-control/queue/action-plan
 GET /api/core-validation/overview
+GET /api/core-validation/carryover-probe-contract
 GET /api/run-control/core-diagnostics-bridge
 ```
 
@@ -605,6 +609,17 @@ denselben Aktionsplan mit `GET /api/core-validation/overview`. Optional kann
 Legacy-Zaehler, `bridge_next_action`, `blocked_by`, `writes_performed = false`
 und `execution_performed = false`. Der Endpunkt startet keinen Preflight, keinen
 Periodenrunner, keine Simulation und keinen Ausfuehrungsadapter.
+
+Der Carryover-Probe-Vertragsendpunkt
+`GET /api/core-validation/carryover-probe-contract` beschreibt, welche bereits
+berechneten `explicit_transition_carryover_probe`-Payloads spaeter zur
+Kernvalidierung passen. Die Antwort liefert
+`mode = "core_validation_carryover_probe_api_contract"`,
+`precomputed_probe_required = true`, `api_accepts_probe_payload = false`,
+`api_starts_probe = false`, `writes_performed = false` und
+`execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body,
+liest keine Probe-Datei, startet keinen Probe, schreibt nichts und behauptet
+keine historische Vollgleichheit.
 
 Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan` und `GET /api/run-control/core-diagnostics-bridge`, jeweils optional mit `queue_id`. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan und Bruecke bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight` und ein Brueckenhinweis `resolve_core_validation_blockers`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 
@@ -727,6 +742,7 @@ Vertraege und Grenzen:
 | `python -m ims.api.metadata_write_contracts` | Vorbereitete Schreibgrenzen beschreibend ausgeben | schreibt nicht |
 | `python -m ims.api.metadata_write_contracts check .\metadata_import.json` | Importdatei gegen den Schreibvertrag pruefen | schreibt nicht |
 | `python -m ims.api.run_control_contracts` | Spaetere Run-Steuerungsgrenze ohne Ausfuehrung beschreiben | schreibt nicht |
+| `python -m ims.api.core_validation_carryover_probe_contract` | API-Vertrag fuer vorab berechnete Carryover-Probe-Ergebnisse beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_requests check .\run_control_request.json` | Lokalen Run-Control-Request ohne Ausfuehrung validieren | schreibt nicht |
 | `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |
 | `python -m ims.api.run_control_queue enqueue .\run_control_request.json --db .\.ims_workbench\metadata.sqlite` | Validierten Request ohne Ausfuehrung vormerken | schreibt Queue-Metadaten |

@@ -74,9 +74,12 @@ Der lokale Probe-Befehl
 `python -m ims.engine.explicit_transition_carryover_probe --apply-vn tests/fixtures/replay_vn_policyholder_transition_plan.json`
 prueft diese Grenze in-memory. Der Kernvalidierungsueberblick enthaelt nun
 einen read-only `explicit_transition_carryover_probe_contract`, startet den
-Probe aber nicht. Aktueller Zaehlschnitt: 3 PRs bis zur
+Probe aber nicht. Die Workbench-API stellt den Vertrag ueber
+`GET /api/core-validation/carryover-probe-contract` ebenfalls nur lesend bereit;
+der Endpunkt akzeptiert keinen Probe-Payload und startet keinen Probe. Aktueller
+Zaehlschnitt: 2 PRs bis zur
 demo-nahen read-only Carryover/Kern-Sicht, danach 3+ fachliche
-Validierungs-PRs, also 6+ PRs bis zu einem breiteren fachlichen Anschluss;
+Validierungs-PRs, also 5+ PRs bis zu einem breiteren fachlichen Anschluss;
 keine dieser Zahlen ist eine historische
 Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
@@ -186,9 +189,15 @@ Ein lokaler Run-Control-Vertrag beschreibt die spaetere Steuerungsgrenze, ohne e
 ```powershell
 python -m ims.api.run_control_contracts
 python -m ims.api.run_control_dry_run_contract
+python -m ims.api.core_validation_carryover_probe_contract
 ```
 
 Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
+
+Der Carryover-Probe-Vertrag beschreibt den read-only API-Vertrag fuer bereits
+berechnete Probe-Ergebnisse. Die Workbench-API stellt ihn ueber
+`GET /api/core-validation/carryover-probe-contract` bereit. Er akzeptiert keinen
+Probe-Payload, startet keinen Probe und schreibt keine Daten.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 

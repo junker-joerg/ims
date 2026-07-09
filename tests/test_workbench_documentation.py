@@ -54,7 +54,9 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in readme
     assert "python -m ims.api.run_control_contracts" in readme
     assert "python -m ims.api.run_control_dry_run_contract" in readme
+    assert "python -m ims.api.core_validation_carryover_probe_contract" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
+    assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "POST /api/run-control/dry-run" in readme
     assert "POST /api/run-control/queue" in readme
     assert "GET /api/run-control/queue/action-plan" in readme
@@ -139,7 +141,9 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
     assert "python -m ims.api.run_control_contracts" in doc
     assert "python -m ims.api.run_control_dry_run_contract" in doc
+    assert "python -m ims.api.core_validation_carryover_probe_contract" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
+    assert "GET /api/core-validation/carryover-probe-contract" in doc
     assert "POST /api/run-control/dry-run" in doc
     assert "POST /api/run-control/queue" in doc
     assert "GET /api/run-control/queue/action-plan" in doc
@@ -449,11 +453,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "(dieser Schnitt:" in backlog
     assert "erledigt" in backlog
     assert "Aktuelle PR-Zaehlung" in backlog
-    assert "3 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
-    assert "6+" in backlog
+    assert "2 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
+    assert "5+" in backlog
     assert "PR 22: Carryover-Probe im Kernvalidierungsueberblick" in backlog
     assert "explicit_transition_carryover_probe_contract" in backlog
     assert "PR 23: Read-only API-Vertrag" in backlog
+    assert "GET /api/core-validation/carryover-probe-contract" in backlog
     assert "PR 24: UI-Karte" in backlog
     assert "PR 25: Demo-/Doku-Smoke" in backlog
     assert "keine API-/UI-/Run-Control-Anbindung" in backlog

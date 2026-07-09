@@ -14,6 +14,9 @@ from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
+from ims.api.core_validation_carryover_probe_contract import (
+    core_validation_carryover_probe_api_contract_payload,
+)
 from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_preflight import preflight_run_control_from_repository
@@ -342,6 +345,10 @@ def create_app(
         def core_validation_overview() -> dict[str, object]:
             return _core_validation_overview_payload()
 
+        @app.get("/api/core-validation/carryover-probe-contract")
+        def core_validation_carryover_probe_contract() -> dict[str, object]:
+            return core_validation_carryover_probe_api_contract_payload()
+
         @app.get("/api/run-control/queue")
         def run_control_queue() -> dict[str, object]:
             return queue_overview_payload()
@@ -407,6 +414,10 @@ def create_app(
         Route("/api/metadata/source", lambda request: JSONResponse(metadata_source)),
         Route("/api/metadata/consistency", lambda request: JSONResponse(consistency_payload())),
         Route("/api/core-validation/overview", lambda request: JSONResponse(_core_validation_overview_payload())),
+        Route(
+            "/api/core-validation/carryover-probe-contract",
+            lambda request: JSONResponse(core_validation_carryover_probe_api_contract_payload()),
+        ),
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
         Route("/api/run-control/queue", queue_enqueue_response, methods=["POST"]),
         Route("/api/run-control/queue/action-plan", queue_action_plan_response),

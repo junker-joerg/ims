@@ -317,6 +317,15 @@ naechste Carryover-Probe-Schritt ist `provide_precomputed_carryover_probe`.
 Der Overview startet keinen Runner, akzeptiert keine Summary- oder Probe-Datei
 und setzt `execution_performed = false`.
 
+Der separate API-Vertragsendpunkt
+`GET /api/core-validation/carryover-probe-contract` stellt denselben
+Carryover-Probe-Payload-Vertrag lesend bereit. Er nutzt
+`mode = "core_validation_carryover_probe_api_contract"`, verlangt ein bereits
+vorab berechnetes `explicit_transition_carryover_probe`-Ergebnis
+(`precomputed_probe_required = true`) und setzt
+`api_accepts_probe_payload = false` sowie `api_starts_probe = false`. Er ist
+kein Upload-, Schreib- oder Startpfad.
+
 ## Run-Control-Bruecke zum Kernblick
 
 Fuer die spaetere Workbench-Verbindung zwischen Run-Control-Aktionsplan und

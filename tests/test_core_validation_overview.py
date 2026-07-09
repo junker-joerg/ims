@@ -333,6 +333,9 @@ def test_core_validation_overview_is_documented() -> None:
     assert "Execution-Summary-Vertrag" in resume_plan
     assert "Carryover-Probe-Vertrag" in migration_doc
     assert "explicit_transition_carryover_probe_contract" in migration_doc
+    assert "GET /api/core-validation/carryover-probe-contract" in migration_doc
+    assert "core_validation_carryover_probe_api_contract" in migration_doc
+    assert "api_starts_probe = false" in migration_doc
     assert "provide_precomputed_carryover_probe" in migration_doc
     assert "keinen Probe aus dem Overview heraus" in migration_doc
     assert "keine Ausfuehrung aus dem Overview heraus" in resume_plan
