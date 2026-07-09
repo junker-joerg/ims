@@ -90,6 +90,17 @@ Der passende PR-Titel waere:
 
 `Plane Execution-Summary-Vertrag im IMS-Kernvalidierungsueberblick`
 
+## Naechster fachlicher Slice
+
+Nach der read-only Run-Control-Bruecke ist der naechste groessere Schritt wieder
+ein schmaler Kern-Fachlogik-Slice. PR 16 plant diesen Anschluss unter
+`docs/plans/explicit_period_transition_slice.md`: Zuerst werden die vorhandenen
+VU-Periodenfixtures `replay_vu14_period_plan.json` und
+`replay_vusk1_period_plan.json` als Periodenuebergangs- und Carryover-Grenze
+kartiert. Der Plan bleibt ohne neue Fachlogik, ohne Runner-Start, ohne
+Simulation, ohne automatische historische Regelwahl und ohne
+Vollgleichheitsbehauptung.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -140,6 +151,11 @@ Der passende PR-Titel waere:
    gemeinsam gelesen werden; der read-only API-Schnitt
    `GET /api/run-control/core-diagnostics-bridge` schaltet keinen Schreibpfad,
    keinen UI-Startpfad und keinen Runner-Start frei.
+9. Expliziten Periodenuebergang aus vorhandenen Planfixtures planen. Dieser
+   Schnitt ist in `docs/plans/explicit_period_transition_slice.md`
+   dokumentiert: `VU14L1.DAT` und `VUSK1L4.DAT` liefern belegbare
+   Versicherer-Periodenfenster, aber noch keine VN-Policyholder und keine
+   automatisch berechnete Regelwirkung.
 
 ## Aktualisierte PR-Restplanung
 
@@ -154,13 +170,12 @@ Aktualisierte grobe Restplanung:
 - 0-1 PRs fuer weitere Inventar-/Akzeptanzgrenzen der neuen lokalen Kandidaten;
 - 2-4 PRs fuer `IMSVNR01.DAT` bis `IMSVNR06.DAT`;
 - 2-5 PRs fuer Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT`;
-- 2-4 PRs fuer schmale VU-/VN-Regel- oder Carryover-Slices aus vorhandenen
-  Planfixtures;
-- 1 PR fuer einen read-only Execution-Summary-Vertrag im
-  Kernvalidierungsueberblick;
-- 0-1 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
-  Kernvalidierungsdiagnosen und Summary-Vertraege; der Plan ist angelegt,
-  ein optionaler Helper/UI-Leseschnitt bleibt separat.
+- 1 Plan-PR fuer den naechsten schmalen Periodenuebergangs-/Carryover-Slice aus
+  vorhandenen Planfixtures (dieser Stand);
+- 2-4 PRs fuer anschliessende schmale VU-/VN-Regel- oder Carryover-Code-Slices;
+- read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
+  Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
+  Ausfuehrungsadapter nach separater Freigabe.
 
 Damit bleiben grob ca. 8-18+ reviewbare PRs bis zu einem deutlich breiteren
 historischen Validierungsstand. Diese Schaetzung ersetzt keine

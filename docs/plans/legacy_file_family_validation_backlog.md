@@ -31,9 +31,11 @@ Naechster bevorzugter Arbeitsschnitt:
 
 - Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
   einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus den
-  vorhandenen Planfixtures kartieren, zuerst mit Altcode-/Fixture-Plan,
-  Risiken und Testgrenzen, weiterhin ohne Runner-Start, Simulation,
-  automatische historische Regelwahl oder Vollgleichheitsbehauptung.
+  vorhandenen Planfixtures kartieren. Dieser Plan liegt nun unter
+  `docs/plans/explicit_period_transition_slice.md` und beschreibt zuerst die
+  Periodenuebergangs-/Carryover-Grenze fuer `VU14L1.DAT` und `VUSK1L4.DAT`,
+  weiterhin ohne Runner-Start, Simulation, automatische historische Regelwahl
+  oder Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -75,11 +77,15 @@ Naechster bevorzugter Arbeitsschnitt:
   vorbereiten; weiterhin ohne Startbutton, Upload oder Ausfuehrungsadapter
   (erledigt).
 - PR 15: Bruecken-Demo-/Screenshot-Smoke optional aktualisieren, wenn ein
-  visueller Beleg fuer die neue Karte gebraucht wird (dieser Schnitt).
+  visueller Beleg fuer die neue Karte gebraucht wird (erledigt).
 - PR 16: Naechsten schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus
   vorhandenen Planfixtures planen: Altcode-Spur, Fixture-Bezug, erwartete
-  Zwischenzustaende und Testgrenzen dokumentieren, noch ohne neue Fachlogik.
-- PR 17+: Den geplanten Slice in kleinen Code-/Test-Schritten umsetzen oder
+  Zwischenzustaende und Testgrenzen dokumentieren, noch ohne neue Fachlogik
+  (dieser Schnitt).
+- PR 17: Explizite Periodenuebergangs-/Carryover-Diagnose aus dem Plan
+  vorbereiten, weiterhin ohne Runner-Start, Simulation oder automatische
+  historische Regelwahl.
+- PR 18+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
   eine spaetere Run-Control-Anbindung erst nach separater Freigabe vorbereiten,
   weiterhin ohne Vollgleichheitsbehauptung.
 

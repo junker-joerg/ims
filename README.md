@@ -54,6 +54,11 @@ Der Anschluss zur eigentlichen IMS-Kern-Fachlogik nach Workbench-v1 ist unter
 `docs/plans/ims_core_fachlogik_resume_plan.md` geplant. Dieser Plan benennt den
 naechsten fachlichen Diagnoseblock fuer vorhandene explizite VU/VN-Periodenplaene,
 ohne neue Fachlogik, HTTP-Schreibpfade oder Ausfuehrung freizuschalten.
+Der konkrete naechste PR-16-Schnitt ist unter
+`docs/plans/explicit_period_transition_slice.md` dokumentiert: Er kartiert die
+Periodenuebergangs- und Carryover-Grenze der vorhandenen VU-Planfixtures
+`replay_vu14_period_plan.json` und `replay_vusk1_period_plan.json`, noch ohne
+neue Fachlogik und ohne Runner-Start.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

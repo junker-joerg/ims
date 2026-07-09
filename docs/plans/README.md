@@ -9,3 +9,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `run_control_core_diagnostics_bridge_plan.md`: Read-only Plan fuer eine
   spaetere Verbindung von Run-Control-Aktionsplan und Kernlauf-Diagnosen, ohne
   neuen Schreib- oder Ausfuehrungspfad.
+- `explicit_period_transition_slice.md`: PR-16-Plan fuer den naechsten
+  schmalen fachlichen Slice aus vorhandenen VU-Periodenfixtures, zunaechst nur
+  als Periodenuebergangs- und Carryover-Grenze ohne neue Fachlogik.

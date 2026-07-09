@@ -422,17 +422,20 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert LEGACY_BACKLOG.is_file()
     assert "Keine Uebernahme von `VU014PR1.DAT`" in backlog
     assert "schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in backlog
-    assert "Altcode-/Fixture-Plan" in backlog
+    assert "Periodenuebergangs-/Carryover-Grenze" in backlog
     assert "PR 12: Read-only Brueckenplan" in backlog
     assert "ohne neuen Endpunkt, Schreibpfad oder Runner-Start (erledigt)" in backlog
     assert "PR 13: Optional eine rein lesende API-Anbindung" in backlog
     assert "(erledigt)" in backlog
     assert "PR 14: Optional eine rein lesende UI-Karte" in backlog
     assert "PR 15: Bruecken-Demo-/Screenshot-Smoke" in backlog
-    assert "visueller Beleg fuer die neue Karte gebraucht wird (dieser Schnitt)" in backlog
+    assert "visueller Beleg fuer die neue Karte gebraucht wird (erledigt)" in backlog
     assert "PR 16: Naechsten schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in backlog
+    assert "docs/plans/explicit_period_transition_slice.md" in backlog
+    assert "Periodenuebergangs-/Carryover-Grenze fuer `VU14L1.DAT` und `VUSK1L4.DAT`" in backlog
     assert "noch ohne neue Fachlogik" in backlog
-    assert "PR 17+: Den geplanten Slice in kleinen Code-/Test-Schritten umsetzen" in backlog
+    assert "PR 17: Explizite Periodenuebergangs-/Carryover-Diagnose" in backlog
+    assert "PR 18+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
