@@ -107,8 +107,9 @@ Brueckenmodus bleibt read-only:
 Der erste kleine Code-Schnitt war ein reines Python-DTO:
 `ims.api.run_control_core_diagnostics_bridge.build_run_control_core_diagnostics_bridge`.
 Der aktuelle API-Schnitt macht denselben Vertrag ueber
-`GET /api/run-control/core-diagnostics-bridge` lesend verfuegbar; er ist noch
-keine UI-Karte und kein Ausfuehrungsadapter.
+`GET /api/run-control/core-diagnostics-bridge` lesend verfuegbar. Die
+Workbench-Karte `Run-Control-Kernblick-Bruecke` zeigt diese Antwort nur
+lesend; sie ist kein Startpfad und kein Ausfuehrungsadapter.
 
 ## Sicherheitsgrenzen
 

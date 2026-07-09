@@ -71,8 +71,11 @@ Naechster bevorzugter Arbeitsschnitt:
   vorbereiten; weiterhin ohne UI-Startpfad und ohne Ausfuehrungsadapter
   (dieser Schnitt).
 - PR 14: Optional eine rein lesende UI-Karte fuer die Bruecken-Antwort
-  vorbereiten; weiterhin ohne Startbutton, Upload oder Ausfuehrungsadapter.
-- PR 15+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
+  vorbereiten; weiterhin ohne Startbutton, Upload oder Ausfuehrungsadapter
+  (dieser Schnitt).
+- PR 15: Bruecken-Demo-/Screenshot-Smoke optional aktualisieren, wenn ein
+  visueller Beleg fuer die neue Karte gebraucht wird.
+- PR 16+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
   vorhandenen Planfixtures oder eine spaetere Run-Control-Anbindung, weiterhin
   ohne Vollgleichheitsbehauptung.
 

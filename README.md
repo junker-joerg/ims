@@ -58,8 +58,10 @@ Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
 read-only Endpunkt `GET /api/run-control/core-diagnostics-bridge` buendelt
-Queue-Aktionsplan und Kernvalidierungsueberblick, bleibt aber ohne Schreibpfad,
-ohne UI-Startpfad, ohne Runner-Start und ohne automatische Fachlogik.
+Queue-Aktionsplan und Kernvalidierungsueberblick. Die UI-Karte
+`Run-Control-Kernblick-Bruecke` zeigt diesen Vertrag nur lesend; sie bleibt ohne
+Schreibpfad, ohne UI-Startpfad, ohne Runner-Start und ohne automatische
+Fachlogik.
 Als erster rein lesender Kernblick kann
 `python -m ims.engine.explicit_period_diagnostics tests/fixtures/replay_vu14_period_plan.json`
 die vorhandene Planstruktur diagnostizieren, ohne Simulation, Runner-Start oder

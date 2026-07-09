@@ -109,7 +109,9 @@ Nicht erlaubt:
 3. Read-only API-Endpunkt fuer dieselbe Bruecke
    `GET /api/run-control/core-diagnostics-bridge` (dieser Schnitt): kein
    Schreiben, kein UI-Startpfad, kein Ausfuehrungsadapter.
-4. Danach optional: UI-Karte, die diese Zusammenfassung nur anzeigt.
+4. Read-only UI-Karte `Run-Control-Kernblick-Bruecke`, die diese
+   Zusammenfassung nur anzeigt (dieser Schnitt): kein Startbutton, kein Upload,
+   kein Ausfuehrungsadapter.
 5. Erst nach separater expliziter Freigabe: Planung eines echten
    Ausfuehrungsadapters, weiterhin als eigener PR und nicht als Nebeneffekt
    dieser Bruecke.

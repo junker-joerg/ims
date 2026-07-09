@@ -219,9 +219,11 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Run-Control-Uebersicht" in source
     assert "Run-Control-Queue-Detail" in source
     assert "Run-Control-Dry-Run-Vertrag" in source
+    assert "Run-Control-Kernblick-Bruecke" in source
     assert 'data-testid="run-control-demo-dry-run-button"' in source
     assert 'data-testid="run-control-demo-queue-button"' in source
     assert 'data-testid="run-control-demo-action-plan"' in source
+    assert 'data-testid="run-control-core-bridge"' in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
@@ -231,6 +233,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
     assert "/api/run-control/dry-run-contract" in source
     assert "/api/run-control/dry-run" in source
+    assert "/api/run-control/core-diagnostics-bridge" in source
     assert "Dry-Run pruefen" in source
     assert "Queue vormerken" in source
     assert "Import aktuell nur ueber Python-Adapter" in source

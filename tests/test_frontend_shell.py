@@ -134,9 +134,14 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "Queue vormerken" in source
     assert "Run-Control-Queue-Vormerkung" in source
     assert "Run-Control-Aktionsplan" in source
+    assert "Run-Control-Kernblick-Bruecke" in source
     assert "runControlActionPlan" in source
+    assert "runControlCoreBridge" in source
+    assert "runControlCoreBridgeRows" in source
+    assert "selectedBridgeAction" in source
     assert "selectedQueueAction" in source
     assert "/api/run-control/queue/action-plan" in source
+    assert "/api/run-control/core-diagnostics-bridge" in source
     assert "runControlQueueEnqueueResult" in source
     assert "enqueueRunControlQueue" in source
     assert "canEnqueueRunControlQueue" in source
@@ -153,6 +158,9 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "await_execution_release" in source
     assert "resolve_blockers" in source
     assert "inspect_queue_status" in source
+    assert "inspect_core_validation_overview" in source
+    assert "await_precomputed_execution_summary" in source
+    assert "resolve_core_validation_blockers" in source
     assert "run-control-panel" in styles
     assert "run-control-filterbar" in styles
     assert "run-control-filter-count" in styles
@@ -164,6 +172,9 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "run-control-action-plan-panel" in styles
     assert "run-control-action-plan-grid" in styles
     assert "run-control-action-plan-row" in styles
+    assert "run-control-core-bridge-panel" in styles
+    assert "run-control-core-bridge-grid" in styles
+    assert "run-control-core-bridge-row" in styles
     assert "Queue-Status" in source
     assert "Queue-Eintraege" in source
     assert "Naechster Schritt" in source
@@ -265,6 +276,7 @@ def test_frontend_shell_declares_controlled_run_control_dry_run_check():
     assert 'data-testid="run-control-demo-dry-run-result"' in source
     assert 'data-testid="run-control-demo-queue-result"' in source
     assert 'data-testid="run-control-demo-action-plan"' in source
+    assert 'data-testid="run-control-core-bridge"' in source
     assert "runControlDryRunContract" in source
     assert "runControlDryRunResult" in source
     assert "expected_inputs" in source

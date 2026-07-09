@@ -317,6 +317,6 @@ bereit. Sichtbar werden Queue-Bezug, Perioden- und Legacy-Zaehler,
 
 Das DTO startet keinen Queue-Preflight, keinen expliziten Periodenrunner, keine
 Simulation und keinen Scheduler. Es schreibt keine Metadaten, oeffnet keinen
-HTTP- oder UI-Schreibpfad und behauptet keine historische Vollgleichheit. Noch
-nicht enthalten ist eine UI-Karte; sie bleibt ein separater spaeterer
-Leseschritt.
+HTTP- oder UI-Schreibpfad und behauptet keine historische Vollgleichheit. Die
+Workbench-Karte `Run-Control-Kernblick-Bruecke` zeigt den Vertrag nur lesend
+und enthaelt keinen Startbutton, keinen Upload und keinen Ausfuehrungsadapter.

@@ -70,11 +70,13 @@ Aktueller Diagnosebefund:
 
 In der UI ist dieser Blick die Karte `Kernvalidierungsueberblick`. Sie darf Periodenplaene, Legacy-Abdeckung und den Execution-Summary-Vertrag anzeigen. Sie darf keine Summary-Datei annehmen, keinen Periodenrunner starten und keine Fachlogik ausfuehren.
 
-Run-Control-Aktionsplan und Kernvalidierungsueberblick sind in dieser Demo noch
-nebeneinanderliegende Lesesignale. Die spaetere Verbindung ist nur als
-read-only Brueckenplan unter
-`docs/plans/run_control_core_diagnostics_bridge_plan.md` dokumentiert und
-schaltet keinen Startpfad frei.
+Die Karte `Run-Control-Kernblick-Bruecke` zeigt den Run-Control-Aktionsplan und
+den Kernvalidierungsueberblick als gemeinsame Lesesicht. Sie darf nur
+`GET /api/run-control/core-diagnostics-bridge` anzeigen, keinen Startpfad
+freischalten, keinen Upload anbieten und keinen Ausfuehrungsadapter aktivieren.
+Sie schaltet keinen Startpfad frei.
+Der geplante Brueckenschnitt ist in `docs/plans/run_control_core_diagnostics_bridge_plan.md`
+dokumentiert.
 
 ## Was demo-faehig ist
 
@@ -87,6 +89,7 @@ schaltet keinen Startpfad frei.
 - kontrollierte Queue-Vormerkung in expliziter SQLite-Datei
 - lesender Run-Control-Aktionsplan mit `run_preflight`
 - lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
+- lesende Run-Control-Kernblick-Bruecke ohne Startpfad
 - Browser-/Screenshot-Smoke ueber stabile UI-Anker
 
 ## Was noch nicht demo-faehig ist

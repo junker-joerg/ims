@@ -260,7 +260,8 @@ def test_core_validation_overview_is_documented() -> None:
     assert "ims.api.run_control_core_diagnostics_bridge.build_run_control_core_diagnostics_bridge" in migration_doc
     assert '"run_control_core_diagnostics_bridge"' in migration_doc
     assert "GET /api/run-control/core-diagnostics-bridge" in migration_doc
-    assert "nicht enthalten ist eine UI-Karte" in migration_doc
+    assert "Run-Control-Kernblick-Bruecke" in migration_doc
+    assert "keinen Startbutton, keinen Upload und keinen Ausfuehrungsadapter" in migration_doc
     assert "Aktualisierte PR-Restplanung" in resume_plan
     assert "IMS-Kernvalidierungsueberblick" in resume_plan
     assert "Execution-Summary-Vertrag" in resume_plan

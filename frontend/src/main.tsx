@@ -168,6 +168,12 @@ type RunControlNextAction =
   | "resolve_blockers"
   | "inspect_queue_status";
 
+type RunControlBridgeNextAction =
+  | RunControlNextAction
+  | "inspect_core_validation_overview"
+  | "await_precomputed_execution_summary"
+  | "resolve_core_validation_blockers";
+
 type RunControlQueueActionPlan = {
   status: "ok" | "warning" | "error";
   mode: "run_control_queue_action_plan";
@@ -189,6 +195,44 @@ type RunControlQueueActionPlan = {
     execution_performed: boolean;
   }[];
   issues: {
+    code: string;
+    severity: string;
+    message: string;
+    queue_ids: string[];
+  }[];
+  writes_performed: boolean;
+  execution_performed: boolean;
+};
+
+type RunControlCoreDiagnosticsBridge = {
+  status: "ok" | "warning" | "error";
+  mode: "run_control_core_diagnostics_bridge";
+  queue_action_plan_mode: string;
+  core_validation_mode: string;
+  queue_count: number;
+  action_count: number;
+  period_plan_count: number;
+  period_count: number;
+  global_periods: number[];
+  legacy_reference_count: number;
+  execution_summary_available: boolean;
+  execution_summary_next_action: string;
+  actions: {
+    queue_id: string;
+    run_id: string;
+    scenario_id: string;
+    queue_status: string;
+    queue_next_action: RunControlNextAction;
+    core_validation_status: string;
+    bridge_next_action: RunControlBridgeNextAction;
+    blocked_by: string[];
+    execution_summary_next_action: string;
+    execution_allowed: boolean;
+    writes_performed: boolean;
+    execution_performed: boolean;
+  }[];
+  issues: {
+    source: string;
     code: string;
     severity: string;
     message: string;
@@ -435,6 +479,7 @@ function App() {
   const [runControlActionPlan, setRunControlActionPlan] = useState<RunControlQueueActionPlan | null>(null);
   const [runControlActionPlanState, setRunControlActionPlanState] = useState<DetailState>("idle");
   const [runControlActionPlanError, setRunControlActionPlanError] = useState<string | null>(null);
+  const [runControlCoreBridge, setRunControlCoreBridge] = useState<RunControlCoreDiagnosticsBridge | null>(null);
   const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
   const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
@@ -478,6 +523,7 @@ function App() {
           coreValidationResponse,
           runControlQueueResponse,
           runControlActionPlanResponse,
+          runControlCoreBridgeResponse,
           runControlRequestContractResponse,
           runControlDryRunContractResponse,
           healthResponse,
@@ -491,6 +537,7 @@ function App() {
           fetch("/api/core-validation/overview"),
           fetch("/api/run-control/queue"),
           fetch("/api/run-control/queue/action-plan"),
+          fetch("/api/run-control/core-diagnostics-bridge"),
           fetch("/api/run-control/request-contract"),
           fetch("/api/run-control/dry-run-contract"),
           fetch("/api/health"),
@@ -505,6 +552,7 @@ function App() {
           !coreValidationResponse.ok ||
           !runControlQueueResponse.ok ||
           !runControlActionPlanResponse.ok ||
+          !runControlCoreBridgeResponse.ok ||
           !runControlRequestContractResponse.ok ||
           !runControlDryRunContractResponse.ok ||
           !healthResponse.ok ||
@@ -521,6 +569,7 @@ function App() {
           coreValidationPayload,
           runControlQueuePayload,
           runControlActionPlanPayload,
+          runControlCoreBridgePayload,
           runControlRequestContractPayload,
           runControlDryRunContractPayload,
           healthPayload,
@@ -534,6 +583,7 @@ function App() {
           coreValidationResponse.json() as Promise<CoreValidationOverview>,
           runControlQueueResponse.json() as Promise<RunControlQueueOverview>,
           runControlActionPlanResponse.json() as Promise<RunControlQueueActionPlan>,
+          runControlCoreBridgeResponse.json() as Promise<RunControlCoreDiagnosticsBridge>,
           runControlRequestContractResponse.json() as Promise<RunControlRequestContract>,
           runControlDryRunContractResponse.json() as Promise<RunControlDryRunContract>,
           healthResponse.json() as Promise<HealthStatus>,
@@ -549,6 +599,7 @@ function App() {
           setRunControlQueue(runControlQueuePayload);
           setRunControlActionPlan(runControlActionPlanPayload);
           setRunControlActionPlanState("ready");
+          setRunControlCoreBridge(runControlCoreBridgePayload);
           setRunControlRequestContract(runControlRequestContractPayload);
           setRunControlDryRunContract(runControlDryRunContractPayload);
           setSelectedQueueId((current) => current ?? runControlQueuePayload.entries[0]?.queue_id ?? null);
@@ -837,6 +888,10 @@ function App() {
         setRunControlActionPlan((await actionPlanResponse.json()) as RunControlQueueActionPlan);
         setRunControlActionPlanState("ready");
       }
+      const coreBridgeResponse = await fetch("/api/run-control/core-diagnostics-bridge");
+      if (coreBridgeResponse.ok) {
+        setRunControlCoreBridge((await coreBridgeResponse.json()) as RunControlCoreDiagnosticsBridge);
+      }
     } catch (error) {
       setRunControlQueueEnqueueResult(null);
       setRunControlQueueEnqueueError(error instanceof Error ? error.message : "Queue-Vormerkung nicht erreichbar");
@@ -1077,6 +1132,38 @@ function App() {
     ["Schreibpfade", runControlActionPlan?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", selectedQueueAction?.execution_allowed || runControlActionPlan?.execution_performed ? "aktiv" : "gesperrt"]
   ];
+  const selectedBridgeAction =
+    runControlCoreBridge?.actions.find((action) => action.queue_id === selectedQueueId) ??
+    runControlCoreBridge?.actions[0] ??
+    null;
+  const runControlCoreBridgeIssueLabel = runControlCoreBridge
+    ? runControlCoreBridge.issues.length
+      ? runControlCoreBridge.issues.map((issue) => issue.code).join(", ")
+      : "keine"
+    : "laedt";
+  const runControlCoreBridgeRows = [
+    ["Status", runControlCoreBridge?.status === "warning" ? "Hinweis" : runControlCoreBridge?.status ?? "laedt"],
+    ["Queue-Eintraege", String(runControlCoreBridge?.queue_count ?? 0)],
+    ["Brueckenaktionen", String(runControlCoreBridge?.action_count ?? 0)],
+    ["Ausgewaehlt", selectedBridgeAction?.queue_id ?? selectedQueueId ?? "-"],
+    ["Queue-Aktion", selectedBridgeAction?.queue_next_action ?? "-"],
+    ["Brueckenaktion", selectedBridgeAction?.bridge_next_action ?? "-"],
+    ["Kernstatus", selectedBridgeAction?.core_validation_status ?? runControlCoreBridge?.core_validation_mode ?? "-"],
+    ["Periodenplaene", String(runControlCoreBridge?.period_plan_count ?? 0)],
+    ["Legacy-Referenzen", String(runControlCoreBridge?.legacy_reference_count ?? 0)],
+    ["Summary-Schritt", selectedBridgeAction?.execution_summary_next_action ?? runControlCoreBridge?.execution_summary_next_action ?? "-"],
+    ["Blocker", selectedBridgeAction?.blocked_by.length ? selectedBridgeAction.blocked_by.join(", ") : "keine"],
+    ["Hinweise", runControlCoreBridgeIssueLabel],
+    ["Schreibpfade", selectedBridgeAction?.writes_performed || runControlCoreBridge?.writes_performed ? "aktiv" : "gesperrt"],
+    [
+      "Ausfuehrung",
+      selectedBridgeAction?.execution_allowed ||
+      selectedBridgeAction?.execution_performed ||
+      runControlCoreBridge?.execution_performed
+        ? "aktiv"
+        : "gesperrt"
+    ]
+  ];
   const runControlBoundaryRows = [
     [
       "Queue",
@@ -1089,6 +1176,7 @@ function App() {
     ["Dry-Run", runControlDryRunContract?.http_enabled ? runControlDryRunStatus : "gesperrt"],
     ["Queue vormerken", runControlQueueEnqueueStatus],
     ["Aktionsplan", selectedQueueAction?.next_action ?? runControlActionPlanStatus],
+    ["Kernbruecke", selectedBridgeAction?.bridge_next_action ?? "laedt"],
     [
       "Schreibpfade",
       runControlQueue?.writes_enabled ||
@@ -1099,6 +1187,7 @@ function App() {
       runControlDryRunResult?.writes_performed ||
       runControlQueueEnqueueResult?.writes_performed ||
       runControlActionPlan?.writes_performed ||
+      runControlCoreBridge?.writes_performed ||
       runControlPreflight?.writes_performed
         ? "aktiv"
         : "gesperrt"
@@ -1117,6 +1206,9 @@ function App() {
       runControlQueueEnqueueResult?.execution_performed ||
       selectedQueueAction?.execution_allowed ||
       runControlActionPlan?.execution_performed ||
+      selectedBridgeAction?.execution_allowed ||
+      selectedBridgeAction?.execution_performed ||
+      runControlCoreBridge?.execution_performed ||
       runControlPreflight?.execution_allowed ||
       runControlPreflight?.execution_performed
         ? "aktiv"
@@ -1804,6 +1896,25 @@ function App() {
           <div className="run-control-action-plan-grid">
             {runControlActionPlanRows.map(([label, value]) => (
               <div className="run-control-action-plan-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          className="panel run-control-core-bridge-panel"
+          aria-label="Run-Control-Kernblick-Bruecke"
+          data-testid="run-control-core-bridge"
+        >
+          <div className="panel-heading">
+            <GitBranch size={20} aria-hidden="true" />
+            <h2>Run-Control-Kernblick-Bruecke</h2>
+          </div>
+          <div className="run-control-core-bridge-grid">
+            {runControlCoreBridgeRows.map(([label, value]) => (
+              <div className="run-control-core-bridge-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>

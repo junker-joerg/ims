@@ -58,6 +58,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "POST /api/run-control/queue" in readme
     assert "GET /api/run-control/queue/action-plan" in readme
     assert "GET /api/run-control/core-diagnostics-bridge" in readme
+    assert "Run-Control-Kernblick-Bruecke" in readme
     assert "Lokaler Demo-Smoke fuer die Browser-Workbench" in readme
     assert "Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen" in readme
     assert "baseline-python-tests" in readme
@@ -142,6 +143,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "GET /api/run-control/queue/action-plan" in doc
     assert "GET /api/core-validation/overview" in doc
     assert "GET /api/run-control/core-diagnostics-bridge" in doc
+    assert "Run-Control-Kernblick-Bruecke" in doc
     assert "Kernvalidierungsueberblick" in doc
     assert "Execution-Summary-Vertrag" in doc
     assert "keinen expliziten Periodenrunner" in doc
@@ -260,7 +262,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die Run-Control-Aktionsplankarte nutzt `/api/run-control/queue/action-plan`" in doc
     assert "Die Run-Control-Kernblick-Bruecke ist rein lesend" in doc
     assert "`/api/run-control/core-diagnostics-bridge`" in doc
-    assert "noch keine UI-Karte" in doc
+    assert "enthaelt keinen Startbutton" in doc
     assert "run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status" in doc
     assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
     assert "schaltet keinen UI-Startbutton frei" in doc
@@ -346,6 +348,7 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
     assert 'mode = "run_control_core_diagnostics_bridge"' in plan
+    assert "Run-Control-Kernblick-Bruecke" in plan
     assert "GET /api/core-validation/overview" in plan
     assert "GET /api/run-control/core-diagnostics-bridge" in plan
     assert "inspect_core_validation_overview" in plan
@@ -389,9 +392,13 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "execution_summary_next_action = await_precomputed_execution_summary" in checklist
     assert "overview_starts_runner = false" in checklist
     assert "Kernvalidierungsueberblick" in checklist
-    assert "Run-Control-Aktionsplan und Kernvalidierungsueberblick" in checklist
+    assert "Run-Control-Kernblick-Bruecke" in checklist
+    assert "GET /api/run-control/core-diagnostics-bridge" in checklist
+    assert "Run-Control-Aktionsplan" in checklist
+    assert "gemeinsame Lesesicht" in checklist
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
     assert "schaltet keinen Startpfad frei" in checklist
+    assert "lesende Run-Control-Kernblick-Bruecke ohne Startpfad" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
     assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
     assert "vorab berechnete Execution-Summary als UI-Eingabe" in checklist
