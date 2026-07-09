@@ -443,7 +443,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "Carryover-Kandidatenlisten in der" in backlog
     assert "keine Carryover-Ausfuehrung" in backlog
     assert "PR 20: Echten Carryover-Code-Slice separat planen" in backlog
-    assert "PR 21+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern" in backlog
+    assert "docs/plans/explicit_transition_carryover_code_slice.md" in backlog
+    assert "PR 21: Den geplanten engen Carryover-Probe als Code-/Test-Schritt umsetzen" in backlog
+    assert "keine API-/UI-/Run-Control-Anbindung" in backlog
+    assert "PR 22+: Eine spaetere Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

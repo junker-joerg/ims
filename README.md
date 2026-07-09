@@ -65,6 +65,11 @@ sie beschreibt Uebergaenge, Update-Felder und Carryover-Planung, bleibt aber
 ohne Runner-Start und ohne Simulation.
 Das Anschlussfixture `tests/fixtures/replay_vn_policyholder_transition_plan.json`
 belegt dieselbe Diagnose fuer eine minimale VN-Policyholder-Subjektmenge.
+Der naechste Carryover-Code-Schnitt ist unter
+`docs/plans/explicit_transition_carryover_code_slice.md` abgegrenzt: Er verlangt
+ein explizites Opt-in, darf nur die vorhandenen portierten
+Carryover-Bausteine pruefen und bleibt ohne Simulation, API-/UI-Startpfad oder
+historische Regelableitung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

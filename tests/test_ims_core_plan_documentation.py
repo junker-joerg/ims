@@ -9,6 +9,9 @@ RUN_CONTROL_CORE_BRIDGE_PLAN = (
 EXPLICIT_PERIOD_TRANSITION_PLAN = (
     REPO_ROOT / "docs" / "plans" / "explicit_period_transition_slice.md"
 )
+EXPLICIT_TRANSITION_CARRYOVER_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "explicit_transition_carryover_code_slice.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -55,6 +58,9 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "ims.engine.explicit_period_transition_diagnostics" in plan
     assert "explicit_period_transition_no_policyholders" in plan
     assert "replay_vn_policyholder_transition_plan.json" in plan
+    assert "docs/plans/explicit_transition_carryover_code_slice.md" in plan
+    assert "apply_vu_foreign_info_carryover" in plan
+    assert "apply_vn_state_carryover" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -126,6 +132,36 @@ def test_explicit_period_transition_plan_selects_next_narrow_slice() -> None:
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
+def test_explicit_transition_carryover_code_plan_keeps_code_slice_narrow() -> None:
+    plan = EXPLICIT_TRANSITION_CARRYOVER_PLAN.read_text(encoding="utf-8")
+
+    assert EXPLICIT_TRANSITION_CARRYOVER_PLAN.is_file()
+    assert "Enger Carryover-Code-Slice fuer explizite Periodenuebergaenge" in plan
+    assert "Dieser PR 20" in plan
+    assert "apply_vu_foreign_info_carryover" in plan
+    assert "python_port/ims/engine/vu_rule_runner.py" in plan
+    assert "apply_vn_state_carryover" in plan
+    assert "python_port/ims/engine/vn_rule_runner.py" in plan
+    assert "diagnose_explicit_period_transitions" in plan
+    assert "python_port/ims/engine/explicit_period_transition_diagnostics.py" in plan
+    assert "tests/fixtures/replay_vu14_period_plan.json" in plan
+    assert "tests/fixtures/replay_vusk1_period_plan.json" in plan
+    assert "tests/fixtures/replay_vn_policyholder_transition_plan.json" in plan
+    assert "`VUForeignInfoPeriodRunResult`" in plan
+    assert "`VNSettlementPeriodRunResult`" in plan
+    assert 'mode = "explicit_transition_carryover_probe"' in plan
+    assert "diagnostic_candidate_ids_match = true" in plan
+    assert "writes_performed = false" in plan
+    assert "execution_performed = false" in plan
+    assert "simulation_performed = false" in plan
+    assert "automatic_historical_rule_selection_performed = false" in plan
+    assert "kein historisches Vorperioden-Ergebnis erfinden" in plan
+    assert "keine automatische historische Regelableitung" in plan
+    assert "keine Simulation und kein Scheduler-Start" in plan
+    assert "keine Uebernahme von `VU014PR1.DAT`" in plan
+    assert "keine historische Vollgleichheitsbehauptung" in plan
+
+
 def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     plans_readme = PLANS_README.read_text(encoding="utf-8")
     readme = README.read_text(encoding="utf-8")
@@ -136,10 +172,14 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "Run-Control-Aktionsplan und Kernlauf-Diagnosen" in plans_readme
     assert "explicit_period_transition_slice.md" in plans_readme
     assert "Periodenuebergangs- und Carryover-Grenze" in plans_readme
+    assert "explicit_transition_carryover_code_slice.md" in plans_readme
+    assert "bestehenden portierten Carryover-Bausteinen" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
+    assert "docs/plans/explicit_transition_carryover_code_slice.md" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
     assert "replay_vn_policyholder_transition_plan.json" in readme
+    assert "explizites Opt-in" in readme

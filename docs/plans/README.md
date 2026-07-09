@@ -12,3 +12,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `explicit_period_transition_slice.md`: PR-16-Plan fuer den naechsten
   schmalen fachlichen Slice aus vorhandenen VU-Periodenfixtures, zunaechst nur
   als Periodenuebergangs- und Carryover-Grenze ohne neue Fachlogik.
+- `explicit_transition_carryover_code_slice.md`: PR-20-Plan fuer den engen
+  Carryover-Code-Slice aus vorhandenen expliziten Periodenfixtures, nur mit
+  bestehenden portierten Carryover-Bausteinen und ohne historische
+  Regelableitung.

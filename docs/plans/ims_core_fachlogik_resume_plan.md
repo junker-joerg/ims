@@ -114,6 +114,13 @@ PR 18 ergaenzt das minimale Anschlussfixture
 VN-Policyholder-Subjektmenge fuer die Uebergangsdiagnose, ohne den Runner zu
 starten oder eine historische Regelentscheidung abzuleiten.
 
+PR 19 ergaenzt rein lesende Carryover-Kandidatenlisten in der
+Uebergangsdiagnose. PR 20 plant den ersten echten Carryover-Code-Schnitt unter
+`docs/plans/explicit_transition_carryover_code_slice.md`: Der spaetere Code darf
+nur `apply_vu_foreign_info_carryover` und `apply_vn_state_carryover` als
+vorhandene portierte Bausteine nutzen, muss explizites Opt-in verlangen und darf
+keine historische Regelwirkung oder Vollgleichheit ableiten.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -179,6 +186,11 @@ starten oder eine historische Regelentscheidung abzuleiten.
     `explicit_period_transition_no_policyholders` fuer eine belegte VN-
     Subjektmenge nicht mehr gemeldet wird; es bleibt ein explizites
     Eingabefixtures ohne Legacy-Vollgleichheitsbehauptung.
+12. Engen Carryover-Code-Slice planen. Dieser Schnitt steht in
+    `docs/plans/explicit_transition_carryover_code_slice.md` und begrenzt den
+    naechsten Code-PR auf einen expliziten Carryover-Probe mit vorhandenen
+    portierten Carryover-Bausteinen, ohne Simulation, API-/UI-Startpfad oder
+    historische Regelableitung.
 
 ## Aktualisierte PR-Restplanung
 
@@ -195,6 +207,7 @@ Aktualisierte grobe Restplanung:
 - 2-5 PRs fuer Klassenaggregate `IMSVNVK*.DAT` und `IMSVUVK*.DAT`;
 - Plan- und Diagnose-PR fuer den schmalen Periodenuebergangs-/Carryover-Slice
   aus vorhandenen Planfixtures sind umgesetzt;
+- Plan fuer den engen Carryover-Code-Slice ist umgesetzt;
 - 1-3 PRs fuer anschliessende schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

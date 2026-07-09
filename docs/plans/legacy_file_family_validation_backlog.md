@@ -29,10 +29,10 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Arbeitsschnitt:
 
-- Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
-  nach den rein lesenden Carryover-Kandidatenlisten einen engen
-  Carryover-Code-Slice planen. `VU014PR1.DAT` bleibt weiterhin geparkt; keine
-  Simulation, keine automatische historische Regelwahl und keine
+- Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll den
+  in `docs/plans/explicit_transition_carryover_code_slice.md` geplanten engen
+  Carryover-Probe als Code-Schnitt umsetzen. `VU014PR1.DAT` bleibt weiterhin
+  geparkt; keine Simulation, keine automatische historische Regelwahl und keine
   Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
@@ -94,10 +94,17 @@ Naechster bevorzugter Arbeitsschnitt:
   Uebergangsdiagnose, keine Carryover-Ausfuehrung).
 - PR 20: Echten Carryover-Code-Slice separat planen oder vorbereiten, dabei
   weiterhin nur vorhandene portierte Carryover-Bausteine nutzen und keine
-  historische Regelableitung einfuehren.
-- PR 21+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
-  eine spaetere Run-Control-Anbindung erst nach separater Freigabe vorbereiten,
-  weiterhin ohne Vollgleichheitsbehauptung.
+  historische Regelableitung einfuehren (dieser Schnitt:
+  `docs/plans/explicit_transition_carryover_code_slice.md`, noch keine
+  Carryover-Ausfuehrung).
+- PR 21: Den geplanten engen Carryover-Probe als Code-/Test-Schritt umsetzen:
+  nur explizites Opt-in, nur vorhandene portierte Carryover-Bausteine,
+  Uebergangsdiagnose als Grenzpruefung, keine API-/UI-/Run-Control-Anbindung.
+- PR 22+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
+  Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
+  Vollgleichheitsbehauptung.
+
+Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierungsregel
 
