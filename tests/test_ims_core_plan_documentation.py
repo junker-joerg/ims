@@ -66,7 +66,9 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "GET /api/core-validation/carryover-probe-contract" in plan
     assert "Carryover-Probe-Vertrag" in plan
     assert "ohne Probe-Upload, Probe-Start" in plan
-    assert "1 PR bis zur demo-nahen read-only Carryover/Kern-Sicht" in plan
+    assert "Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ist umgesetzt" in plan
+    assert "carryover-probe-contract" in plan
+    assert "0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in plan
     assert "danach 3+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -191,9 +193,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "explicit_transition_carryover_probe_contract" in readme
     assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "Carryover-Probe-Vertrag" in readme
-    assert "1 PR bis zur" in readme
+    assert "0 PRs bis zur" in readme
     assert "3+ fachliche" in readme
-    assert "4+ PRs bis zu" in readme
     assert "einem breiteren fachlichen Anschluss" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme

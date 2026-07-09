@@ -23,6 +23,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     capabilities = client.get("/api/metadata/capabilities")
     consistency = client.get("/api/metadata/consistency")
     core_validation = client.get("/api/core-validation/overview")
+    carryover_probe_contract = client.get("/api/core-validation/carryover-probe-contract")
     run_control_queue = client.get("/api/run-control/queue")
     run_control_dry_run = client.post(
         "/api/run-control/dry-run",
@@ -74,6 +75,13 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert core_validation.json()["mode"] == "ims_core_validation_overview"
     assert core_validation.json()["execution_summary_contract"]["overview_starts_runner"] is False
     assert core_validation.json()["execution_performed"] is False
+    assert carryover_probe_contract.status_code == 200
+    assert carryover_probe_contract.json()["mode"] == "core_validation_carryover_probe_api_contract"
+    assert carryover_probe_contract.json()["precomputed_probe_required"] is True
+    assert carryover_probe_contract.json()["api_starts_probe"] is False
+    assert carryover_probe_contract.json()["api_accepts_probe_payload"] is False
+    assert carryover_probe_contract.json()["execution_performed"] is False
+    assert carryover_probe_contract.json()["simulation_performed"] is False
     assert run_control_queue.status_code == 200
     assert run_control_queue.json()["mode"] == "run_control_queue_overview"
     assert run_control_queue.json()["writes_enabled"] is False
@@ -224,10 +232,12 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert 'data-testid="run-control-demo-queue-button"' in source
     assert 'data-testid="run-control-demo-action-plan"' in source
     assert 'data-testid="run-control-core-bridge"' in source
+    assert 'data-testid="carryover-probe-contract"' in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
     assert "/api/core-validation/overview" in source
+    assert "/api/core-validation/carryover-probe-contract" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/action-plan" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source

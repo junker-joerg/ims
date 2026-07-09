@@ -68,6 +68,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "agrsich-reference-window" in readme
     assert "Browser-/Screenshot-Smoke nutzt stabile UI-Anker" in readme
     assert "run-control-core-bridge" in readme
+    assert "carryover-probe-contract" in readme
+    assert "api_starts_probe=false" in readme
     assert "kein Ausfuehrungsadapter, keine Fachvalidierung" in readme
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
@@ -412,17 +414,22 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "gemeinsame Lesesicht" in checklist
     assert "Brueckenaktion = resolve_core_validation_blockers" in checklist
     assert "Summary-Schritt `await_precomputed_execution_summary`" in checklist
+    assert "api_starts_probe = false" in checklist
+    assert "api_accepts_probe_payload = false" in checklist
+    assert "ui_enabled = false" in checklist
+    assert "simulation_performed = false" in checklist
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
     assert "schaltet keinen Startpfad frei" in checklist
     assert "lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads" in checklist
     assert "lesende Run-Control-Kernblick-Bruecke ohne Startpfad" in checklist
     assert "run-control-core-bridge" in checklist
+    assert "carryover-probe-contract" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
     assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
     assert "vorab berechnete Execution-Summary als UI-Eingabe" in checklist
     assert "Ausfuehrungsadapter hinter `run_preflight`" in checklist
     assert "fachlicher Gleichheitsnachweis" in checklist
-    assert "Der Demo-Screenshot belegt nur Bedienbarkeit und sichtbare Grenzen" in checklist
+    assert "gesperrte Carryover-Probe-Vertragskarte" in checklist
     assert "python -m pytest -q tests/test_workbench_demo_smoke.py tests/test_frontend_shell.py tests/test_workbench_documentation.py" in checklist
     assert "npm.cmd run build --prefix .\\frontend" in checklist
 
@@ -460,8 +467,8 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "(dieser Schnitt:" in backlog
     assert "erledigt" in backlog
     assert "Aktuelle PR-Zaehlung" in backlog
-    assert "1 PR bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
-    assert "4+" in backlog
+    assert "0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
+    assert "3+" in backlog
     assert "PR 22: Carryover-Probe im Kernvalidierungsueberblick" in backlog
     assert "explicit_transition_carryover_probe_contract" in backlog
     assert "PR 23: Read-only API-Vertrag" in backlog
@@ -469,6 +476,7 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 24: UI-Karte" in backlog
     assert "`Carryover-Probe-Vertrag` in der Workbench" in backlog
     assert "PR 25: Demo-/Doku-Smoke" in backlog
+    assert "`carryover-probe-contract` im Demo-Smoke" in backlog
     assert "keine API-/UI-/Run-Control-Anbindung" in backlog
     assert "PR 26+: Eine spaetere Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog

@@ -79,10 +79,11 @@ Probe aber nicht. Die Workbench-API stellt den Vertrag ueber
 der Endpunkt akzeptiert keinen Probe-Payload und startet keinen Probe. Die
 Workbench zeigt den Vertrag nun als eigene read-only Karte
 `Carryover-Probe-Vertrag`, ebenfalls ohne Payload-Upload, Probe-Start oder
-Ausfuehrungsadapter. Aktueller Zaehlschnitt: 1 PR bis zur demo-nahen read-only
-Carryover/Kern-Sicht, danach 3+ fachliche Validierungs-PRs, also 4+ PRs bis zu
-einem breiteren fachlichen Anschluss; keine dieser Zahlen ist eine historische
-Vollgleichheitsbehauptung.
+Ausfuehrungsadapter. Der Demo-/Doku-Smoke deckt diese read-only
+Carryover/Kern-Sicht nun mit ab. Aktueller Zaehlschnitt: 0 PRs bis zur
+demo-nahen read-only Carryover/Kern-Sicht, danach 3+ fachliche
+Validierungs-PRs bis zu einem breiteren fachlichen Anschluss; keine dieser
+Zahlen ist eine historische Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
@@ -246,9 +247,9 @@ Lokaler Demo-Smoke fuer die Browser-Workbench:
 Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen
 ```
 
-Der Demo-Smoke nutzt den bekannten Run `baseline-python-tests` und das Szenario `agrsich-reference-window`. Er prueft den HTTP-Dry-Run, schreibt danach nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle, liest den Aktionsplan wieder aus und prueft die read-only Run-Control-Kernblick-Bruecke. Erwartet bleiben `execution_enabled=false`, `execution_performed=false`, als naechster Queue-Schritt `run_preflight` und als Brueckenhinweis `resolve_core_validation_blockers`. Der Ablauf ist eine lokale Bedien- und Integrationsprobe, keine Simulation, kein Ausfuehrungsadapter, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
+Der Demo-Smoke nutzt den bekannten Run `baseline-python-tests` und das Szenario `agrsich-reference-window`. Er prueft den HTTP-Dry-Run, schreibt danach nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle, liest den Aktionsplan wieder aus, prueft die read-only Run-Control-Kernblick-Bruecke und liest den Carryover-Probe-Vertrag. Erwartet bleiben `execution_enabled=false`, `execution_performed=false`, als naechster Queue-Schritt `run_preflight`, als Brueckenhinweis `resolve_core_validation_blockers` und `api_starts_probe=false`. Der Ablauf ist eine lokale Bedien- und Integrationsprobe, keine Simulation, kein Ausfuehrungsadapter, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
 
-Der zugehoerige Browser-/Screenshot-Smoke nutzt stabile UI-Anker fuer Dry-Run-Schaltflaeche, Queue-Schaltflaeche, Queue-Ergebnis, Aktionsplankarte und `run-control-core-bridge`. Der Screenshot soll belegen, dass die lokale UI den Demo-Pfad und die gesperrte Brueckenkarte sichtbar macht; er ist kein fachlicher Ergebnisnachweis.
+Der zugehoerige Browser-/Screenshot-Smoke nutzt stabile UI-Anker fuer Dry-Run-Schaltflaeche, Queue-Schaltflaeche, Queue-Ergebnis, Aktionsplankarte, `run-control-core-bridge` und `carryover-probe-contract`. Der Screenshot soll belegen, dass die lokale UI den Demo-Pfad, die gesperrte Brueckenkarte und den gesperrten Carryover-Probe-Vertrag sichtbar macht; er ist kein fachlicher Ergebnisnachweis.
 
 Metadaten-CLI:
 

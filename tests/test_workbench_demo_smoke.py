@@ -28,6 +28,7 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     selected_action_plan = client.get(f"/api/run-control/queue/action-plan?queue_id={queue_id}")
     core_bridge = client.get("/api/run-control/core-diagnostics-bridge")
     selected_core_bridge = client.get(f"/api/run-control/core-diagnostics-bridge?queue_id={queue_id}")
+    carryover_probe_contract = client.get("/api/core-validation/carryover-probe-contract")
 
     assert source.status_code == 200
     assert source.json()["storage_kind"] == "sqlite"
@@ -93,3 +94,15 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     assert selected_core_bridge.json()["actions"][0]["queue_id"] == queue_id
     assert selected_core_bridge.json()["actions"][0]["bridge_next_action"] == "resolve_core_validation_blockers"
     assert selected_core_bridge.json()["execution_performed"] is False
+
+    assert carryover_probe_contract.status_code == 200
+    assert carryover_probe_contract.json()["mode"] == "core_validation_carryover_probe_api_contract"
+    assert carryover_probe_contract.json()["endpoint"] == "/api/core-validation/carryover-probe-contract"
+    assert carryover_probe_contract.json()["expected_probe_mode"] == "explicit_transition_carryover_probe"
+    assert carryover_probe_contract.json()["precomputed_probe_required"] is True
+    assert carryover_probe_contract.json()["api_accepts_probe_payload"] is False
+    assert carryover_probe_contract.json()["api_starts_probe"] is False
+    assert carryover_probe_contract.json()["ui_enabled"] is False
+    assert carryover_probe_contract.json()["writes_performed"] is False
+    assert carryover_probe_contract.json()["execution_performed"] is False
+    assert carryover_probe_contract.json()["simulation_performed"] is False

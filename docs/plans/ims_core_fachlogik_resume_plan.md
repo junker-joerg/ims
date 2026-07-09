@@ -143,6 +143,12 @@ PR 24 zeigt diesen Vertrag in der Workbench als read-only Karte
 entgegen, startet keinen Probe, aktiviert keinen Ausfuehrungsadapter und leitet
 keine automatische historische Regelwahl ab.
 
+PR 25 ergaenzt den Demo-/Doku-Smoke fuer diese read-only Carryover/Kern-Sicht.
+Der Smoke liest den Carryover-Probe-Vertrag neben Dry-Run, Queue,
+Aktionsplan und Run-Control-Kernblick-Bruecke und prueft weiter
+`api_starts_probe = false`, `api_accepts_probe_payload = false`,
+`execution_performed = false` und `simulation_performed = false`.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -228,6 +234,10 @@ keine automatische historische Regelwahl ab.
 16. Read-only UI-Karte fuer denselben Vertrag vorbereiten. Die Workbench zeigt
     `Carryover-Probe-Vertrag`, bleibt aber ohne Probe-Upload, Probe-Start,
     Runner-Start, Ausfuehrungsadapter und automatische historische Regelwahl.
+17. Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ergaenzen. Der
+    Demo-Smoke liest `GET /api/core-validation/carryover-probe-contract`,
+    prueft die gesperrten Probe-Grenzen und nutzt `carryover-probe-contract`
+    als stabilen UI-Anker.
 
 ## Aktualisierte PR-Restplanung
 
@@ -249,14 +259,15 @@ Aktualisierte grobe Restplanung:
 - Carryover-Probe-Vertrag im Kernvalidierungsueberblick ist umgesetzt;
 - Carryover-Probe-API-Vertrag ist umgesetzt;
 - Carryover-Probe-Vertragskarte in der Workbench ist umgesetzt;
-- 1 PR bis zur demo-nahen read-only Carryover/Kern-Sicht;
+- Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ist umgesetzt;
+- 0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
 - danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. 7-17+ reviewbare PRs bis zu einem deutlich breiteren
+Damit bleiben grob ca. 6-16+ reviewbare PRs bis zu einem deutlich breiteren
 historischen Validierungsstand. Diese Schaetzung ersetzt keine
 Vollgleichheitspruefung.
 
