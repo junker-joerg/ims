@@ -33,6 +33,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Uebersicht enthaelt clientseitige Filter fuer Suche, Status, Szenario und Quelle.
 - Die Workbench zeigt ein kompaktes Run-Control-Statusband sowie eine Uebersicht fuer vorhandene Queue-Metadaten und gesperrte Ausfuehrungsgrenzen.
 - Die Workbench zeigt einen read-only Kernvalidierungsueberblick mit Execution-Summary-Vertrag, ohne Summary-Upload, Formular oder Laufstart.
+- Die Workbench zeigt den Carryover-Probe-Vertrag als read-only Karte, ohne Probe-Upload, Probe-Start oder Ausfuehrungsadapter.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar, als Dry-Run vorab vergleichbar, als Snapshot lesbar und im Importformat exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -97,7 +98,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Control-Aktionsplankarte nutzt `/api/run-control/queue/action-plan` und zeigt fuer vorhandene Queue-Eintraege nur `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Sie schreibt nicht und startet keinen Adapter.
 - Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
 - Die Kernvalidierungsuebersicht ist rein lesend. Sie nutzt `/api/core-validation/overview`, zeigt Periodenplaene, Legacy-Referenzen und den Execution-Summary-Vertrag, startet aber keinen expliziten Periodenrunner und nimmt keine Summary-Datei entgegen.
-- Der Carryover-Probe-Vertrag ist rein lesend. Er nutzt `/api/core-validation/carryover-probe-contract`, beschreibt nur vorab berechnete `explicit_transition_carryover_probe`-Payloads und nimmt keinen Payload entgegen.
+- Die Carryover-Probe-Vertragskarte ist rein lesend. Sie nutzt `/api/core-validation/carryover-probe-contract`, beschreibt nur vorab berechnete `explicit_transition_carryover_probe`-Payloads, nimmt keinen Payload entgegen und startet keinen Probe.
 - Die Run-Control-Kernblick-Bruecke ist rein lesend. Sie nutzt `/api/run-control/core-diagnostics-bridge`, kombiniert nur vorhandene Queue-Aktionsplan- und Kernvalidierungssignale, schreibt nicht, startet keinen Runner und enthaelt keinen Startbutton.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.

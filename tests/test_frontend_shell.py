@@ -260,6 +260,30 @@ def test_frontend_shell_declares_readonly_core_validation_overview():
     assert 'type="file"' not in source
 
 
+def test_frontend_shell_declares_readonly_carryover_probe_contract_card():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "/api/core-validation/carryover-probe-contract" in source
+    assert "CoreValidationCarryoverProbeContract" in source
+    assert "Carryover-Probe-Vertrag" in source
+    assert 'data-testid="carryover-probe-contract"' in source
+    assert "carryoverProbeContract" in source
+    assert "precomputed_probe_required" in source
+    assert "expected_probe_mode" in source
+    assert "expected_contract_mode" in source
+    assert "api_accepts_probe_payload" in source
+    assert "api_starts_probe" in source
+    assert "ui_enabled" in source
+    assert "automatic_historical_rule_selection_performed" in source
+    assert "Carryover-Probe-Grenzen" in source
+    assert "carryover-probe-panel" in styles
+    assert "startRun" not in source
+    assert "startProbe" not in source
+    assert "uploadProbe" not in source
+    assert 'type="file"' not in source
+
+
 def test_frontend_shell_declares_controlled_run_control_dry_run_check():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")

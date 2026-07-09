@@ -137,6 +137,12 @@ PR 23 stellt denselben Vertrag ueber
 Endpunkt beschreibt vorab berechnete Probe-Payloads, akzeptiert aber keinen
 Payload und startet keinen Probe.
 
+PR 24 zeigt diesen Vertrag in der Workbench als read-only Karte
+`Carryover-Probe-Vertrag`. Die Karte nutzt nur
+`GET /api/core-validation/carryover-probe-contract`, nimmt keinen Payload
+entgegen, startet keinen Probe, aktiviert keinen Ausfuehrungsadapter und leitet
+keine automatische historische Regelwahl ab.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -219,6 +225,9 @@ Payload und startet keinen Probe.
     Endpunkt `GET /api/core-validation/carryover-probe-contract` liefert
     `mode = "core_validation_carryover_probe_api_contract"`, bleibt ohne
     Request-Body und startet keinen Probe.
+16. Read-only UI-Karte fuer denselben Vertrag vorbereiten. Die Workbench zeigt
+    `Carryover-Probe-Vertrag`, bleibt aber ohne Probe-Upload, Probe-Start,
+    Runner-Start, Ausfuehrungsadapter und automatische historische Regelwahl.
 
 ## Aktualisierte PR-Restplanung
 
@@ -239,14 +248,15 @@ Aktualisierte grobe Restplanung:
 - enger Carryover-Probe ist umgesetzt;
 - Carryover-Probe-Vertrag im Kernvalidierungsueberblick ist umgesetzt;
 - Carryover-Probe-API-Vertrag ist umgesetzt;
-- 2 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
+- Carryover-Probe-Vertragskarte in der Workbench ist umgesetzt;
+- 1 PR bis zur demo-nahen read-only Carryover/Kern-Sicht;
 - danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. 8-18+ reviewbare PRs bis zu einem deutlich breiteren
+Damit bleiben grob ca. 7-17+ reviewbare PRs bis zu einem deutlich breiteren
 historischen Validierungsstand. Diese Schaetzung ersetzt keine
 Vollgleichheitspruefung.
 

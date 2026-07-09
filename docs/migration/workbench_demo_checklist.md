@@ -72,6 +72,11 @@ Aktueller Diagnosebefund:
 
 In der UI ist dieser Blick die Karte `Kernvalidierungsueberblick`. Sie darf Periodenplaene, Legacy-Abdeckung und den Execution-Summary-Vertrag anzeigen. Sie darf keine Summary-Datei annehmen, keinen Periodenrunner starten und keine Fachlogik ausfuehren.
 
+Die Karte `Carryover-Probe-Vertrag` zeigt den read-only Vertrag fuer vorab
+berechnete `explicit_transition_carryover_probe`-Payloads. Sie darf keinen
+Probe-Payload annehmen, keinen Probe starten, keinen Ausfuehrungsadapter
+aktivieren und keine automatische historische Regelwahl ableiten.
+
 Die Karte `Run-Control-Kernblick-Bruecke` zeigt den Run-Control-Aktionsplan und
 den Kernvalidierungsueberblick als gemeinsame Lesesicht. Sie darf nur
 `GET /api/run-control/core-diagnostics-bridge` anzeigen, keinen Startpfad
@@ -91,6 +96,7 @@ dokumentiert.
 - kontrollierte Queue-Vormerkung in expliziter SQLite-Datei
 - lesender Run-Control-Aktionsplan mit `run_preflight`
 - lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
+- lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads ohne Upload oder Startpfad
 - lesende Run-Control-Kernblick-Bruecke ohne Startpfad
 - Browser-/Screenshot-Smoke ueber stabile UI-Anker einschliesslich `run-control-core-bridge`
 

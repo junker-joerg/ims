@@ -339,6 +339,31 @@ type CoreValidationOverview = {
   execution_performed: boolean;
 };
 
+type CoreValidationCarryoverProbeContract = {
+  status: "ok";
+  mode: "core_validation_carryover_probe_api_contract";
+  endpoint: string;
+  expected_probe_mode: "explicit_transition_carryover_probe";
+  expected_contract_mode: "explicit_transition_carryover_probe_contract";
+  expected_inputs: string[];
+  required_preconditions: string[];
+  accepted_payload_fields: string[];
+  transition_fields: string[];
+  carryover_request_fields: string[];
+  carried_entity_fields: string[];
+  boundary_fields: string[];
+  forbidden_boundaries: string[];
+  precomputed_probe_required: boolean;
+  api_accepts_probe_payload: boolean;
+  api_starts_probe: boolean;
+  http_enabled: boolean;
+  ui_enabled: boolean;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  automatic_historical_rule_selection_performed: boolean;
+};
+
 type CapabilityState = {
   enabled: boolean;
   boundary?: string;
@@ -481,6 +506,9 @@ function App() {
   const [runControlActionPlanError, setRunControlActionPlanError] = useState<string | null>(null);
   const [runControlCoreBridge, setRunControlCoreBridge] = useState<RunControlCoreDiagnosticsBridge | null>(null);
   const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
+  const [carryoverProbeContract, setCarryoverProbeContract] = useState<CoreValidationCarryoverProbeContract | null>(
+    null
+  );
   const [selectedQueueId, setSelectedQueueId] = useState<string | null>(null);
   const [queueDetail, setQueueDetail] = useState<RunControlQueueDetail | null>(null);
   const [queueDetailState, setQueueDetailState] = useState<DetailState>("idle");
@@ -521,6 +549,7 @@ function App() {
           sourceResponse,
           consistencyResponse,
           coreValidationResponse,
+          carryoverProbeContractResponse,
           runControlQueueResponse,
           runControlActionPlanResponse,
           runControlCoreBridgeResponse,
@@ -535,6 +564,7 @@ function App() {
           fetch("/api/metadata/source"),
           fetch("/api/metadata/consistency"),
           fetch("/api/core-validation/overview"),
+          fetch("/api/core-validation/carryover-probe-contract"),
           fetch("/api/run-control/queue"),
           fetch("/api/run-control/queue/action-plan"),
           fetch("/api/run-control/core-diagnostics-bridge"),
@@ -550,6 +580,7 @@ function App() {
           !sourceResponse.ok ||
           !consistencyResponse.ok ||
           !coreValidationResponse.ok ||
+          !carryoverProbeContractResponse.ok ||
           !runControlQueueResponse.ok ||
           !runControlActionPlanResponse.ok ||
           !runControlCoreBridgeResponse.ok ||
@@ -567,6 +598,7 @@ function App() {
           sourcePayload,
           consistencyPayload,
           coreValidationPayload,
+          carryoverProbeContractPayload,
           runControlQueuePayload,
           runControlActionPlanPayload,
           runControlCoreBridgePayload,
@@ -581,6 +613,7 @@ function App() {
           sourceResponse.json() as Promise<MetadataSourceStatus>,
           consistencyResponse.json() as Promise<MetadataConsistency>,
           coreValidationResponse.json() as Promise<CoreValidationOverview>,
+          carryoverProbeContractResponse.json() as Promise<CoreValidationCarryoverProbeContract>,
           runControlQueueResponse.json() as Promise<RunControlQueueOverview>,
           runControlActionPlanResponse.json() as Promise<RunControlQueueActionPlan>,
           runControlCoreBridgeResponse.json() as Promise<RunControlCoreDiagnosticsBridge>,
@@ -596,6 +629,7 @@ function App() {
           setMetadataSource(sourcePayload);
           setMetadataConsistency(consistencyPayload);
           setCoreValidation(coreValidationPayload);
+          setCarryoverProbeContract(carryoverProbeContractPayload);
           setRunControlQueue(runControlQueuePayload);
           setRunControlActionPlan(runControlActionPlanPayload);
           setRunControlActionPlanState("ready");
@@ -950,6 +984,29 @@ function App() {
     ["Legacy", coreValidation?.execution_summary_contract.legacy_fields.join(", ") ?? "-"],
     ["Grenzfelder", coreValidation?.execution_summary_contract.boundary_fields.join(", ") ?? "-"],
     ["Naechste Aktion", coreValidation?.execution_summary_contract.next_action ?? "-"]
+  ];
+  const carryoverProbeRows = [
+    ["Status", carryoverProbeContract?.status ?? "laedt"],
+    ["Modus", carryoverProbeContract?.mode ?? "laedt"],
+    ["Probe-Modus", carryoverProbeContract?.expected_probe_mode ?? "-"],
+    ["Endpunkt", carryoverProbeContract?.endpoint ?? "-"],
+    ["Vorberechnete Probe", carryoverProbeContract?.precomputed_probe_required ? "erforderlich" : "offen"],
+    ["Erwartete Eingaben", carryoverProbeContract?.expected_inputs.join(", ") ?? "-"],
+    ["Voraussetzungen", carryoverProbeContract?.required_preconditions.join(", ") ?? "-"]
+  ];
+  const carryoverProbeBoundaryRows = [
+    ["API nimmt Payload an", carryoverProbeContract?.api_accepts_probe_payload ? "ja" : "nein"],
+    ["API startet Probe", carryoverProbeContract?.api_starts_probe ? "ja" : "nein"],
+    ["UI aktiv", carryoverProbeContract?.ui_enabled ? "ja" : "nein"],
+    ["Schreibpfade", carryoverProbeContract?.writes_performed ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", carryoverProbeContract?.execution_performed ? "aktiv" : "gesperrt"],
+    ["Simulation", carryoverProbeContract?.simulation_performed ? "aktiv" : "gesperrt"],
+    [
+      "Historische Regelwahl",
+      carryoverProbeContract?.automatic_historical_rule_selection_performed ? "aktiv" : "gesperrt"
+    ],
+    ["Grenzfelder", carryoverProbeContract?.boundary_fields.join(", ") ?? "-"],
+    ["Verbotene Grenzen", carryoverProbeContract?.forbidden_boundaries.join(", ") ?? "-"]
   ];
   const runControlQueueRows = [
     ["Queue-Status", runControlQueue?.status === "warning" ? "Hinweis" : "ok"],
@@ -1632,6 +1689,33 @@ function App() {
           </div>
           <div className="core-validation-contract" aria-label="Execution-Summary-Vertrag">
             {coreValidationContractRows.map(([label, value]) => (
+              <div className="core-validation-contract-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          className="panel carryover-probe-panel"
+          aria-label="Carryover-Probe-Vertrag"
+          data-testid="carryover-probe-contract"
+        >
+          <div className="panel-heading">
+            <GitBranch size={20} aria-hidden="true" />
+            <h2>Carryover-Probe-Vertrag</h2>
+          </div>
+          <div className="core-validation-summary">
+            {carryoverProbeRows.map(([label, value]) => (
+              <div className="core-validation-summary-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="core-validation-contract" aria-label="Carryover-Probe-Grenzen">
+            {carryoverProbeBoundaryRows.map(([label, value]) => (
               <div className="core-validation-contract-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>

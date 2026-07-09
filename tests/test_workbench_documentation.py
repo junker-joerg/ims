@@ -151,6 +151,8 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "GET /api/run-control/core-diagnostics-bridge" in doc
     assert "Run-Control-Kernblick-Bruecke" in doc
     assert "Kernvalidierungsueberblick" in doc
+    assert "Carryover-Probe-Vertrag" in doc
+    assert "ohne Probe-Upload, Probe-Start oder Ausfuehrungsadapter" in doc
     assert "Execution-Summary-Vertrag" in doc
     assert "keinen expliziten Periodenrunner" in doc
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in doc
@@ -400,6 +402,10 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "execution_summary_next_action = await_precomputed_execution_summary" in checklist
     assert "overview_starts_runner = false" in checklist
     assert "Kernvalidierungsueberblick" in checklist
+    assert "Carryover-Probe-Vertrag" in checklist
+    assert "Probe-Payload annehmen" in checklist
+    assert "keinen Probe starten" in checklist
+    assert "keinen Ausfuehrungsadapter" in checklist
     assert "Run-Control-Kernblick-Bruecke" in checklist
     assert "GET /api/run-control/core-diagnostics-bridge" in checklist
     assert "Run-Control-Aktionsplan" in checklist
@@ -408,6 +414,7 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "Summary-Schritt `await_precomputed_execution_summary`" in checklist
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
     assert "schaltet keinen Startpfad frei" in checklist
+    assert "lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads" in checklist
     assert "lesende Run-Control-Kernblick-Bruecke ohne Startpfad" in checklist
     assert "run-control-core-bridge" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
@@ -453,13 +460,14 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "(dieser Schnitt:" in backlog
     assert "erledigt" in backlog
     assert "Aktuelle PR-Zaehlung" in backlog
-    assert "2 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
-    assert "5+" in backlog
+    assert "1 PR bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
+    assert "4+" in backlog
     assert "PR 22: Carryover-Probe im Kernvalidierungsueberblick" in backlog
     assert "explicit_transition_carryover_probe_contract" in backlog
     assert "PR 23: Read-only API-Vertrag" in backlog
     assert "GET /api/core-validation/carryover-probe-contract" in backlog
     assert "PR 24: UI-Karte" in backlog
+    assert "`Carryover-Probe-Vertrag` in der Workbench" in backlog
     assert "PR 25: Demo-/Doku-Smoke" in backlog
     assert "keine API-/UI-/Run-Control-Anbindung" in backlog
     assert "PR 26+: Eine spaetere Run-Control-Anbindung" in backlog

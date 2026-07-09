@@ -76,11 +76,12 @@ prueft diese Grenze in-memory. Der Kernvalidierungsueberblick enthaelt nun
 einen read-only `explicit_transition_carryover_probe_contract`, startet den
 Probe aber nicht. Die Workbench-API stellt den Vertrag ueber
 `GET /api/core-validation/carryover-probe-contract` ebenfalls nur lesend bereit;
-der Endpunkt akzeptiert keinen Probe-Payload und startet keinen Probe. Aktueller
-Zaehlschnitt: 2 PRs bis zur
-demo-nahen read-only Carryover/Kern-Sicht, danach 3+ fachliche
-Validierungs-PRs, also 5+ PRs bis zu einem breiteren fachlichen Anschluss;
-keine dieser Zahlen ist eine historische
+der Endpunkt akzeptiert keinen Probe-Payload und startet keinen Probe. Die
+Workbench zeigt den Vertrag nun als eigene read-only Karte
+`Carryover-Probe-Vertrag`, ebenfalls ohne Payload-Upload, Probe-Start oder
+Ausfuehrungsadapter. Aktueller Zaehlschnitt: 1 PR bis zur demo-nahen read-only
+Carryover/Kern-Sicht, danach 3+ fachliche Validierungs-PRs, also 4+ PRs bis zu
+einem breiteren fachlichen Anschluss; keine dieser Zahlen ist eine historische
 Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
