@@ -199,6 +199,12 @@ def test_core_placeholders_import() -> None:
         diagnose_run_control_queue,
         main as run_control_queue_diagnostics_main,
     )
+    from ims.api.run_control_core_diagnostics_bridge import (
+        RunControlCoreDiagnosticsBridgeAction,
+        RunControlCoreDiagnosticsBridgeIssue,
+        RunControlCoreDiagnosticsBridgeResult,
+        build_run_control_core_diagnostics_bridge,
+    )
     from ims.api.run_control_queue_overview import (
         RunControlQueueOverview,
         RunControlQueueOverviewIssue,
@@ -709,6 +715,10 @@ def test_core_placeholders_import() -> None:
     assert RunControlQueueDiagnosticsResult is not None
     assert diagnose_run_control_queue is not None
     assert run_control_queue_diagnostics_main is not None
+    assert RunControlCoreDiagnosticsBridgeAction is not None
+    assert RunControlCoreDiagnosticsBridgeIssue is not None
+    assert RunControlCoreDiagnosticsBridgeResult is not None
+    assert build_run_control_core_diagnostics_bridge is not None
     assert RunControlQueueOverview is not None
     assert RunControlQueueOverviewIssue is not None
     assert build_run_control_queue_overview is not None

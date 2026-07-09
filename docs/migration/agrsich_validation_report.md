@@ -301,3 +301,21 @@ Zeilen und Perioden. `execution_summary_available` bleibt `false`; der
 naechste Summary-Schritt ist `await_precomputed_execution_summary`. Der
 Overview startet keinen Runner, akzeptiert keine Summary-Datei und setzt
 `execution_performed = false`.
+
+## Run-Control-Bruecke zum Kernblick
+
+Fuer die spaetere Workbench-Verbindung zwischen Run-Control-Aktionsplan und
+Kernvalidierungsueberblick gibt es nun ein reines DTO:
+`ims.api.run_control_core_diagnostics_bridge.build_run_control_core_diagnostics_bridge`.
+Es nimmt vorhandene Payloads aus `run_control_queue_action_plan` und
+`ims_core_validation_overview` entgegen und gibt `mode =
+"run_control_core_diagnostics_bridge"` zurueck. Sichtbar werden Queue-Bezug,
+Perioden- und Legacy-Zaehler, `execution_summary_next_action`,
+`bridge_next_action`, `blocked_by`, `writes_performed = false` und
+`execution_performed = false`.
+
+Das DTO startet keinen Queue-Preflight, keinen expliziten Periodenrunner, keine
+Simulation und keinen Scheduler. Es schreibt keine Metadaten, oeffnet keinen
+HTTP- oder UI-Schreibpfad und behauptet keine historische Vollgleichheit. Noch
+nicht enthalten sind ein eigener HTTP-Endpunkt und eine UI-Karte; beide bleiben
+separate spaetere Leseschritte.

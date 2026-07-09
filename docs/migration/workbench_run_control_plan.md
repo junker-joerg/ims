@@ -104,6 +104,10 @@ zusammen anzeigen. Der geplante Brueckenmodus bleibt read-only:
 `writes_performed = false`, `execution_performed = false`,
 `inspect_core_validation_overview`, `await_precomputed_execution_summary` und
 `resolve_core_validation_blockers` sind Hinweise, keine Ausfuehrung.
+Der erste kleine Code-Schnitt ist ein reines Python-DTO:
+`ims.api.run_control_core_diagnostics_bridge.build_run_control_core_diagnostics_bridge`.
+Es kombiniert nur bereits vorliegende Payloads oder `to_dict()`-Objekte und ist
+noch kein HTTP-Endpunkt, keine UI-Karte und kein Ausfuehrungsadapter.
 
 ## Sicherheitsgrenzen
 

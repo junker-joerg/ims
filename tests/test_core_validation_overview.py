@@ -256,6 +256,10 @@ def test_core_validation_overview_is_documented() -> None:
     assert 'mode = "ims_core_validation_overview"' in migration_doc
     assert "`explicit_multi_period_execution_summary`-Payloads" in migration_doc
     assert "keine Summary-Datei entgegen" in migration_doc
+    assert "Run-Control-Bruecke zum Kernblick" in migration_doc
+    assert "ims.api.run_control_core_diagnostics_bridge.build_run_control_core_diagnostics_bridge" in migration_doc
+    assert '"run_control_core_diagnostics_bridge"' in migration_doc
+    assert "nicht enthalten sind ein eigener HTTP-Endpunkt und eine UI-Karte" in migration_doc
     assert "Aktualisierte PR-Restplanung" in resume_plan
     assert "IMS-Kernvalidierungsueberblick" in resume_plan
     assert "Execution-Summary-Vertrag" in resume_plan

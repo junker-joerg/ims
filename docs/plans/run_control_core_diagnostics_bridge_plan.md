@@ -34,10 +34,11 @@ Aktueller Diagnosebefund fuer den lesenden Kernblick: 2 Planfixtures,
 
 ## Geplanter read-only Brueckenschnitt
 
-Ein spaeterer kleiner PR darf einen rein lesenden Hilfsvertrag oder eine kleine
-UI-Zusammenfassung vorbereiten. Dieser Vertrag wuerde vorhandene Antworten aus
-Queue-Aktionsplan und Kernvalidierungsueberblick zusammen anzeigen, aber keine
-neuen Fachentscheidungen treffen.
+Dieser PR bereitet einen rein lesenden Hilfsvertrag als Python-DTO vor:
+`ims.api.run_control_core_diagnostics_bridge.build_run_control_core_diagnostics_bridge`.
+Der Helper nimmt vorhandene Antworten aus Queue-Aktionsplan und
+Kernvalidierungsueberblick entgegen und zeigt sie zusammen an, aber trifft keine
+neuen Fachentscheidungen.
 
 Moegliche Felder:
 
@@ -100,7 +101,10 @@ Nicht erlaubt:
 
 1. Dieser PR: Plan und Dokumentation fuer die read-only Bruecke, ohne Codepfad.
 2. Danach optional: kleiner read-only Helper oder DTO, der vorhandene
-   Queue-Aktionsplan- und Kernueberblick-Antworten zusammenfasst.
+   Queue-Aktionsplan- und Kernueberblick-Antworten zusammenfasst. Dieser
+   Schritt ist umgesetzt: Das DTO arbeitet nur auf bestehenden Payloads oder
+   `to_dict()`-Objekten und startet selbst keinen Builder, Runner oder
+   Simulationspfad.
 3. Danach optional: UI-Karte, die diese Zusammenfassung nur anzeigt.
 4. Erst nach separater expliziter Freigabe: Planung eines echten
    Ausfuehrungsadapters, weiterhin als eigener PR und nicht als Nebeneffekt

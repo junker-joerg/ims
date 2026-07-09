@@ -65,9 +65,11 @@ Naechster bevorzugter Arbeitsschnitt:
   vorbereiten, damit die UI den Demo-Status ohne Laufstart anzeigen kann
   (erledigt).
 - PR 12: Read-only Brueckenplan fuer Run-Control-Aktionsplan und
-  Kernlauf-Diagnosen dokumentieren, ohne neuen Endpunkt, Schreibpfad oder
-  Runner-Start.
-- PR 13+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
+  Kernlauf-Diagnosen dokumentieren und als kleines Python-DTO vorbereiten,
+  ohne neuen Endpunkt, Schreibpfad oder Runner-Start.
+- PR 13: Optional eine rein lesende API-Anbindung fuer das Bruecken-DTO
+  vorbereiten; weiterhin ohne UI-Startpfad und ohne Ausfuehrungsadapter.
+- PR 14+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
   vorhandenen Planfixtures oder eine spaetere Run-Control-Anbindung, weiterhin
   ohne Vollgleichheitsbehauptung.
 
