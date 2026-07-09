@@ -54,6 +54,7 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Periodenuebergangs- und Carryover-Grenze" in plan
     assert "ims.engine.explicit_period_transition_diagnostics" in plan
     assert "explicit_period_transition_no_policyholders" in plan
+    assert "replay_vn_policyholder_transition_plan.json" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -141,3 +142,4 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
+    assert "replay_vn_policyholder_transition_plan.json" in readme

@@ -11,6 +11,7 @@ from ims.engine.explicit_period_transition_diagnostics import (
 FIXTURE_DIR = Path("tests/fixtures")
 VU14_PLAN = FIXTURE_DIR / "replay_vu14_period_plan.json"
 VUSK1_PLAN = FIXTURE_DIR / "replay_vusk1_period_plan.json"
+VN_POLICYHOLDER_PLAN = FIXTURE_DIR / "replay_vn_policyholder_transition_plan.json"
 
 
 def _minimal_transition_plan() -> dict:
@@ -94,6 +95,28 @@ def test_transition_diagnostics_reports_planned_carryover_without_executing(tmp_
     assert payload["transitions"][0]["vu_carryover_executed"] is False
     assert payload["transitions"][0]["vn_carryover_executed"] is False
     assert payload["execution_performed"] is False
+
+
+def test_transition_diagnostics_accepts_versioned_vn_policyholder_fixture() -> None:
+    payload = diagnose_explicit_period_transitions(VN_POLICYHOLDER_PLAN).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "explicit_period_transition_diagnostics"
+    assert payload["period_count"] == 2
+    assert payload["transition_count"] == 1
+    assert payload["global_periods"] == [21, 22]
+    assert payload["issues"] == []
+    assert payload["transitions"][0]["from_global_period"] == 21
+    assert payload["transitions"][0]["to_global_period"] == 22
+    assert payload["transitions"][0]["insurer_ids"] == [11]
+    assert payload["transitions"][0]["policyholder_ids"] == [21]
+    assert payload["transitions"][0]["explicit_policyholder_update_ids"] == [21]
+    assert payload["transitions"][0]["vn_carryover_planned"] is True
+    assert payload["transitions"][0]["vn_carryover_executed"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert payload["simulation_performed"] is False
+    assert payload["automatic_historical_rule_selection_performed"] is False
 
 
 def test_transition_diagnostics_rejects_non_increasing_global_periods(tmp_path: Path) -> None:

@@ -20,7 +20,11 @@ def test_explicit_period_transition_diagnostics_is_documented() -> None:
     assert "automatic_historical_rule_selection_performed = false" in doc
     assert "VU14L1.DAT" in doc
     assert "VUSK1L4.DAT" in doc
+    assert "replay_vn_policyholder_transition_plan.json" in doc
+    assert "VN-Policyholder `21`" in doc
+    assert "vn_carryover_planned = true" in doc
     assert "explicit_period_transition_no_policyholders" in doc
+    assert "gezielt fuer eine minimale VN-Subjektmenge auf" in doc
     assert "kein Runner-Start" in doc
     assert "keine Simulation" in doc
     assert "keine neue Fachlogik" in doc

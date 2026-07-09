@@ -63,6 +63,8 @@ Der PR-17-Code-Schnitt ist die lokale Diagnose
 `python -m ims.engine.explicit_period_transition_diagnostics tests/fixtures/replay_vu14_period_plan.json`;
 sie beschreibt Uebergaenge, Update-Felder und Carryover-Planung, bleibt aber
 ohne Runner-Start und ohne Simulation.
+Das Anschlussfixture `tests/fixtures/replay_vn_policyholder_transition_plan.json`
+belegt dieselbe Diagnose fuer eine minimale VN-Policyholder-Subjektmenge.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

@@ -109,6 +109,11 @@ VN-Policyholder-Abdeckung als Hinweis
 `execution_performed`, `simulation_performed` sowie
 `automatic_historical_rule_selection_performed` auf `false`.
 
+PR 18 ergaenzt das minimale Anschlussfixture
+`tests/fixtures/replay_vn_policyholder_transition_plan.json`. Es belegt eine
+VN-Policyholder-Subjektmenge fuer die Uebergangsdiagnose, ohne den Runner zu
+starten oder eine historische Regelentscheidung abzuleiten.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -169,6 +174,11 @@ VN-Policyholder-Abdeckung als Hinweis
     beschreibt Uebergaenge, Subjektmengen, explizite Update-Felder und geplante
     Carryover-Flags, bleibt aber ohne Runner-Start, Simulation oder neue
     Fachlogik.
+11. Minimales VN-Policyholder-Anschlussfixture ergaenzen. Das Fixture
+    `tests/fixtures/replay_vn_policyholder_transition_plan.json` zeigt, dass
+    `explicit_period_transition_no_policyholders` fuer eine belegte VN-
+    Subjektmenge nicht mehr gemeldet wird; es bleibt ein explizites
+    Eingabefixtures ohne Legacy-Vollgleichheitsbehauptung.
 
 ## Aktualisierte PR-Restplanung
 

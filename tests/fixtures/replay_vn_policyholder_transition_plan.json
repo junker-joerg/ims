@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "purpose": "Kleines Anschlussfixture fuer explizite Periodenuebergangsdiagnose mit VN-Policyholder; kein historischer Vollsimulationslauf."
+  },
+  "carry_forward_vn_state": true,
+  "base_snapshot": {
+    "context": {"period": 0, "logtime": 0, "max_periods": 10, "run_index": 2, "rng_seed": 2100},
+    "bav": {"entity_id": 1, "name": "Replay-VN-Transition-BAV"},
+    "insurers": [
+      {"entity_id": 11, "name": "Replay Transition VU 11", "active": true, "active_prev": true, "rule_id": 1, "rule_class": 1, "premiums_current": 100.0, "advertising_current": 12.0, "reserves_current": [200.0, 250.0], "policyholders_current": 1.0, "claims_count_current": [0, 0], "claims_sum_current": [0.0, 0.0]}
+    ],
+    "policyholders": [
+      {"entity_id": 21, "name": "Replay Transition VN 21", "active": true, "active_prev": true, "rule_id": 5, "rule_class": 1, "insurer_id": 11, "insured_current": 1.0, "chosen_insurer_current": 11, "paid_premium_current": [100.0, 100.0], "self_damage_current": [0.0, 0.0], "claim_sum_current": [0.0, 0.0], "end_wealth_current": 1000.0}
+    ]
+  },
+  "period_updates": [
+    {
+      "context": {"period": 1, "run_index": 2, "rng_seed": 2101},
+      "insurers": [{"entity_id": 11, "premiums_current": 101.0, "policyholders_current": 1.0}],
+      "policyholders": [{"entity_id": 21, "insured_current": 1.0, "chosen_insurer_current": 11, "paid_premium_current": [101.0, 101.0], "end_wealth_current": 999.0}]
+    },
+    {
+      "context": {"period": 2, "run_index": 2, "rng_seed": 2102},
+      "insurers": [{"entity_id": 11, "premiums_current": 102.0, "policyholders_current": 1.0}],
+      "policyholders": [{"entity_id": 21, "insured_current": 1.0, "chosen_insurer_current": 11, "paid_premium_current": [102.0, 102.0], "end_wealth_current": 998.0}]
+    }
+  ]
+}

@@ -53,6 +53,11 @@ spaeteren, engeren Carryover- oder Regel-Slice belegbar sind.
 - Beide aktuellen Planfixtures melden deshalb den Hinweis
   `explicit_period_transition_no_policyholders`. Das ist keine Fehlerkorrektur,
   sondern eine offene VN-Abdeckungsgrenze.
+- `replay_vn_policyholder_transition_plan.json`: 2 Perioden, 1 Uebergang,
+  globale Perioden `21, 22`, Versicherer `11`, VN-Policyholder `21` und
+  `vn_carryover_planned = true`. Dieses Anschlussfixture startet ebenfalls
+  keinen Runner, loest den `explicit_period_transition_no_policyholders`-Hinweis
+  aber gezielt fuer eine minimale VN-Subjektmenge auf.
 
 ## Grenzen
 

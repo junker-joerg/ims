@@ -30,11 +30,10 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 Naechster bevorzugter Arbeitsschnitt:
 
 - Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
-  nach der umgesetzten Periodenuebergangsdiagnose die offene
-  VN-Policyholder-Abdeckung oder einen noch engeren Carryover-Code-Slice
-  vorbereiten. Die Periodenuebergangs-/Carryover-Grenze bleibt damit sichtbar.
-  `VU014PR1.DAT` bleibt weiterhin geparkt; keine Simulation, keine
-  automatische historische Regelwahl und keine Vollgleichheitsbehauptung.
+  nach dem minimalen VN-Policyholder-Anschlussfixture einen noch engeren
+  Carryover-Code-Slice vorbereiten. `VU014PR1.DAT` bleibt weiterhin geparkt;
+  keine Simulation, keine automatische historische Regelwahl und keine
+  Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -84,11 +83,15 @@ Naechster bevorzugter Arbeitsschnitt:
   Periodenuebergangs-/Carryover-Grenze fuer `VU14L1.DAT` und `VUSK1L4.DAT` (erledigt).
 - PR 17: Explizite Periodenuebergangs-/Carryover-Diagnose aus dem Plan
   vorbereiten, weiterhin ohne Runner-Start, Simulation oder automatische
-  historische Regelwahl (dieser Schnitt).
+  historische Regelwahl (erledigt).
 - PR 18: Kleines VN-Policyholder- oder Carryover-Anschlussfixture planen, damit
   `explicit_period_transition_no_policyholders` gezielt aufgeloest oder als
-  weiterhin offene Grenze bestaetigt wird.
-- PR 19+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
+  weiterhin offene Grenze bestaetigt wird (dieser Schnitt:
+  `replay_vn_policyholder_transition_plan.json`).
+- PR 19: Engen Carryover-Code-Slice aus dem Anschlussfixture planen oder
+  vorbereiten, weiterhin ohne historische Regelableitung und ohne
+  Vollsimulation.
+- PR 20+: Den geplanten Slice in kleinen Code-/Test-Schritten erweitern oder
   eine spaetere Run-Control-Anbindung erst nach separater Freigabe vorbereiten,
   weiterhin ohne Vollgleichheitsbehauptung.
 
