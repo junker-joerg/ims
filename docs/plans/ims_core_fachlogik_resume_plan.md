@@ -133,7 +133,12 @@ Der passende PR-Titel waere:
    Anschluss ist umgesetzt: `/api/core-validation/overview`, die UI-Karte und
    `docs/migration/workbench_demo_checklist.md` zeigen die vorhandenen
    VU/VN-Periodenplaene diagnostisch.
-8. Erst danach eine echte Run-Control-Anbindung an Kernlauf-Diagnosen planen.
+8. Echte Run-Control-Anbindung an Kernlauf-Diagnosen erst als read-only
+   Brueckenplan vorbereiten. Dieser Schnitt ist in
+   `docs/plans/run_control_core_diagnostics_bridge_plan.md` dokumentiert:
+   Queue-Aktionsplan und Kernvalidierungsueberblick duerfen spaeter nur
+   gemeinsam gelesen werden; kein neuer HTTP-Endpunkt, kein Schreibpfad und
+   kein Runner-Start werden dadurch freigeschaltet.
 
 ## Aktualisierte PR-Restplanung
 
@@ -152,8 +157,9 @@ Aktualisierte grobe Restplanung:
   Planfixtures;
 - 1 PR fuer einen read-only Execution-Summary-Vertrag im
   Kernvalidierungsueberblick;
-- 1-2 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
-  Kernvalidierungsdiagnosen und Summary-Vertraege.
+- 0-1 PRs fuer eine spaetere read-only Run-Control-Anbindung an diese
+  Kernvalidierungsdiagnosen und Summary-Vertraege; der Plan ist angelegt,
+  ein optionaler Helper/UI-Leseschnitt bleibt separat.
 
 Damit bleiben grob ca. 8-18+ reviewbare PRs bis zu einem deutlich breiteren
 historischen Validierungsstand. Diese Schaetzung ersetzt keine

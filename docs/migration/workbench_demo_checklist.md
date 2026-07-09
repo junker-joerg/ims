@@ -70,6 +70,12 @@ Aktueller Diagnosebefund:
 
 In der UI ist dieser Blick die Karte `Kernvalidierungsueberblick`. Sie darf Periodenplaene, Legacy-Abdeckung und den Execution-Summary-Vertrag anzeigen. Sie darf keine Summary-Datei annehmen, keinen Periodenrunner starten und keine Fachlogik ausfuehren.
 
+Run-Control-Aktionsplan und Kernvalidierungsueberblick sind in dieser Demo noch
+nebeneinanderliegende Lesesignale. Die spaetere Verbindung ist nur als
+read-only Brueckenplan unter
+`docs/plans/run_control_core_diagnostics_bridge_plan.md` dokumentiert und
+schaltet keinen Startpfad frei.
+
 ## Was demo-faehig ist
 
 - lokale Browser-Workbench mit gebautem Frontend

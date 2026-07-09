@@ -336,8 +336,15 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 5: Run-Control-Aktionsplan per API/UI sichtbar machen" in plan
     assert "PR 6: Lokaler Demo-Smoke fuer Dry-Run, Queue-Vormerkung und Aktionsplan" in plan
     assert "PR 7: Lokale Demo-Checkliste mit Startbefehlen, UI-Reihenfolge und Grenzen ohne Simulation" in plan
-    assert "PR 8+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
+    assert "PR 8: Read-only Run-Control-Brueckenplan zu Kernlauf-Diagnosen" in plan
+    assert "PR 9+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
+    assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
+    assert 'mode = "run_control_core_diagnostics_bridge"' in plan
+    assert "GET /api/core-validation/overview" in plan
+    assert "inspect_core_validation_overview" in plan
+    assert "await_precomputed_execution_summary" in plan
+    assert "resolve_core_validation_blockers" in plan
     assert "Rollback-Journal-Datenbanken werden mit `mode=ro` gelesen" in plan
     assert "`immutable=1` ist nur fuer sidecar-freie WAL-Dateien zulaessig" in plan
     assert "Haertung, Doku, Smoke-/E2E-Checks" in plan
@@ -376,6 +383,9 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "execution_summary_next_action = await_precomputed_execution_summary" in checklist
     assert "overview_starts_runner = false" in checklist
     assert "Kernvalidierungsueberblick" in checklist
+    assert "Run-Control-Aktionsplan und Kernvalidierungsueberblick" in checklist
+    assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
+    assert "schaltet keinen Startpfad frei" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
     assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
     assert "vorab berechnete Execution-Summary als UI-Eingabe" in checklist

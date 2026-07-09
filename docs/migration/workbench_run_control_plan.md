@@ -17,6 +17,10 @@ Vorhandene lokale Run-Control-Bausteine sind:
 - Run-Control-Queue-Aktionsplan (`ims.api.run_control_queue_action_plan`), lokal lesend und ohne Ausfuehrung.
 - Run-Control-Preflight (`ims.api.run_control_preflight`), lesend und ohne Ausfuehrung.
 - Workbench-Readiness und CLI-Uebersicht, die diese Grenzen sichtbar machen.
+- Read-only Brueckenplanung zu Kernlauf-Diagnosen in
+  `docs/plans/run_control_core_diagnostics_bridge_plan.md`; sie verbindet noch
+  keinen neuen Codepfad, sondern beschreibt nur die spaetere gemeinsame Lesesicht
+  auf Queue-Aktionsplan und Kernvalidierungsueberblick.
 
 ## Zielbild
 
@@ -67,8 +71,10 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 5. PR 5: Run-Control-Aktionsplan per API/UI sichtbar machen, weiter ohne Ausfuehrungsadapter. Erledigt.
 6. PR 6: Lokaler Demo-Smoke fuer Dry-Run, Queue-Vormerkung und Aktionsplan, ohne Ausfuehrungsadapter. Erledigt.
 7. PR 7: Lokale Demo-Checkliste mit Startbefehlen, UI-Reihenfolge und Grenzen ohne Simulation. Erledigt.
-8. PR 8+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe.
-9. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
+8. PR 8: Read-only Run-Control-Brueckenplan zu Kernlauf-Diagnosen, ohne neuen
+   Endpunkt, Schreibpfad oder Runner-Start.
+9. PR 9+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe.
+10. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 
@@ -91,10 +97,20 @@ python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.s
 
 Er erzeugt stabile JSON-Felder fuer `status`, `mode = "run_control_queue_action_plan"`, `db_path`, `metadata_source`, optional `queue_id`, `queue_count`, `actions`, `issues`, `writes_performed = false` und `execution_performed = false`. Pro Queue-Eintrag werden `queue_id`, `run_id`, `scenario_id`, `queue_status`, `next_action`, `next_action_label`, `blocked_by`, `execution_allowed = false`, `writes_performed = false` und `execution_performed = false` sichtbar. `planned` ohne Blocker fuehrt nur zu `run_preflight`, `validated` ohne Blocker zu `await_execution_release`, `blocked` oder Diagnose-/Preflight-Hinweise zu `resolve_blockers`; unbekannte Statuswerte bleiben ein `inspect_queue_status`-Hinweis. Queue-only-Datenbanken und nicht initialisierte Queues bleiben stabile Hinweise statt Abstuerze.
 
+Eine spaetere Run-Control-Bruecke zu Kernlauf-Diagnosen darf diesen
+Aktionsplan nur mit dem bestehenden `GET /api/core-validation/overview`
+zusammen anzeigen. Der geplante Brueckenmodus bleibt read-only:
+`mode = "run_control_core_diagnostics_bridge"`,
+`writes_performed = false`, `execution_performed = false`,
+`inspect_core_validation_overview`, `await_precomputed_execution_summary` und
+`resolve_core_validation_blockers` sind Hinweise, keine Ausfuehrung.
+
 ## Sicherheitsgrenzen
 
 - `execution_enabled` bleibt bis zur expliziten Ausfuehrungsfreigabe `false`.
 - `execution_performed` bleibt in Plan-, Diagnose-, Dry-Run- und Preflight-Pfaden `false`.
+- Eine Run-Control-Bruecke zu Kernlauf-Diagnosen bleibt read-only und darf
+  keinen neuen Schreib- oder Ausfuehrungspfad oeffnen.
 - Kein Startbutton mit echter Funktion.
 - Keine stille Fachlogikmutation.
 - Keine Simulation im Plan-PR.
