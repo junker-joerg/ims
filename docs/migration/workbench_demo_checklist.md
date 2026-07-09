@@ -44,6 +44,8 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar.
 7. Erwartung nach Queue-Vormerkung: Status `vorgemerkt`, Queue-ID `baseline-python-tests`, Schreibpfad `Queue geschrieben`, Ausfuehrung gesperrt.
 8. Run-Control-Aktionsplan lesen.
 9. Erwartung im Aktionsplan: `Naechste Aktion = run_preflight`, Blocker `keine`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
+10. Run-Control-Kernblick-Bruecke lesen.
+11. Erwartung in der Bruecke: `Brueckenaktion = resolve_core_validation_blockers`, Summary-Schritt `await_precomputed_execution_summary`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
 
 ## Optionaler lesender Kernblick
 
@@ -90,7 +92,7 @@ dokumentiert.
 - lesender Run-Control-Aktionsplan mit `run_preflight`
 - lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
 - lesende Run-Control-Kernblick-Bruecke ohne Startpfad
-- Browser-/Screenshot-Smoke ueber stabile UI-Anker
+- Browser-/Screenshot-Smoke ueber stabile UI-Anker einschliesslich `run-control-core-bridge`
 
 ## Was noch nicht demo-faehig ist
 

@@ -26,6 +26,8 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     queue_overview = client.get("/api/run-control/queue")
     action_plan = client.get("/api/run-control/queue/action-plan")
     selected_action_plan = client.get(f"/api/run-control/queue/action-plan?queue_id={queue_id}")
+    core_bridge = client.get("/api/run-control/core-diagnostics-bridge")
+    selected_core_bridge = client.get(f"/api/run-control/core-diagnostics-bridge?queue_id={queue_id}")
 
     assert source.status_code == 200
     assert source.json()["storage_kind"] == "sqlite"
@@ -71,3 +73,23 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     assert selected_action_plan.json()["actions"][0]["next_action"] == "run_preflight"
     assert selected_action_plan.json()["actions"][0]["execution_allowed"] is False
     assert selected_action_plan.json()["execution_performed"] is False
+
+    assert core_bridge.status_code == 200
+    assert core_bridge.json()["mode"] == "run_control_core_diagnostics_bridge"
+    assert core_bridge.json()["queue_count"] == 1
+    assert core_bridge.json()["action_count"] == 1
+    assert core_bridge.json()["actions"][0]["queue_id"] == queue_id
+    assert core_bridge.json()["actions"][0]["queue_next_action"] == "run_preflight"
+    assert core_bridge.json()["actions"][0]["bridge_next_action"] == "resolve_core_validation_blockers"
+    assert core_bridge.json()["actions"][0]["execution_allowed"] is False
+    assert core_bridge.json()["actions"][0]["writes_performed"] is False
+    assert core_bridge.json()["actions"][0]["execution_performed"] is False
+    assert core_bridge.json()["writes_performed"] is False
+    assert core_bridge.json()["execution_performed"] is False
+    assert core_bridge.json()["execution_summary_next_action"] == "await_precomputed_execution_summary"
+
+    assert selected_core_bridge.status_code == 200
+    assert selected_core_bridge.json()["queue_count"] == 1
+    assert selected_core_bridge.json()["actions"][0]["queue_id"] == queue_id
+    assert selected_core_bridge.json()["actions"][0]["bridge_next_action"] == "resolve_core_validation_blockers"
+    assert selected_core_bridge.json()["execution_performed"] is False

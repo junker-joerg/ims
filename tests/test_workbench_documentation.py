@@ -7,6 +7,7 @@ WORKBENCH_DOC = REPO_ROOT / "docs" / "migration" / "workbench_shell.md"
 RUN_CONTROL_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_run_control_plan.md"
 PACKAGING_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_packaging_plan.md"
 DEMO_CHECKLIST = REPO_ROOT / "docs" / "migration" / "workbench_demo_checklist.md"
+LEGACY_BACKLOG = REPO_ROOT / "docs" / "plans" / "legacy_file_family_validation_backlog.md"
 CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
 START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
 SCRIPT_README = REPO_ROOT / "scripts" / "workbench" / "README.md"
@@ -64,6 +65,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "baseline-python-tests" in readme
     assert "agrsich-reference-window" in readme
     assert "Browser-/Screenshot-Smoke nutzt stabile UI-Anker" in readme
+    assert "run-control-core-bridge" in readme
     assert "kein Ausfuehrungsadapter, keine Fachvalidierung" in readme
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
@@ -250,9 +252,11 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "GET /api/run-control/queue/action-plan" in doc
     assert "Der lokale Demo-Smoke fuer die Browser-Workbench" in doc
     assert "Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen" in doc
+    assert "Run-Control-Kernblick-Bruecke lesen" in doc
     assert "POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`" in doc
     assert "run-control-demo-dry-run-button" in doc
     assert "run-control-demo-action-plan" in doc
+    assert "run-control-core-bridge" in doc
     assert "Dieser Demo-Smoke startet keine Simulation" in doc
     assert "GET /api/run-control/queue/{queue_id}" in doc
     assert "metadata_not_found" in doc
@@ -364,7 +368,7 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Keine Simulation starten" in plan
     assert "Keine weiteren HTTP-Schreibendpunkte ausser der kontrollierten Queue-Vormerkung" in plan
     assert "Kein HTTP-Schreibpfad ausser Queue-Metadaten nach erfolgreichem Dry-Run" in plan
-    assert "Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken und Run-Control-Aktionsplan ansehen, mit stabilen UI-Ankern" in plan
+    assert "Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken, Run-Control-Aktionsplan ansehen und Run-Control-Kernblick-Bruecke lesen" in plan
     assert "Kein Packaging in diesem PR" in plan
     assert "Keine historische Vollgleichheitsbehauptung" in plan
 
@@ -396,9 +400,12 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "GET /api/run-control/core-diagnostics-bridge" in checklist
     assert "Run-Control-Aktionsplan" in checklist
     assert "gemeinsame Lesesicht" in checklist
+    assert "Brueckenaktion = resolve_core_validation_blockers" in checklist
+    assert "Summary-Schritt `await_precomputed_execution_summary`" in checklist
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
     assert "schaltet keinen Startpfad frei" in checklist
     assert "lesende Run-Control-Kernblick-Bruecke ohne Startpfad" in checklist
+    assert "run-control-core-bridge" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
     assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
     assert "vorab berechnete Execution-Summary als UI-Eingabe" in checklist
@@ -407,6 +414,26 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "Der Demo-Screenshot belegt nur Bedienbarkeit und sichtbare Grenzen" in checklist
     assert "python -m pytest -q tests/test_workbench_demo_smoke.py tests/test_frontend_shell.py tests/test_workbench_documentation.py" in checklist
     assert "npm.cmd run build --prefix .\\frontend" in checklist
+
+
+def test_legacy_file_family_backlog_updates_remaining_pr_plan():
+    backlog = LEGACY_BACKLOG.read_text(encoding="utf-8")
+
+    assert LEGACY_BACKLOG.is_file()
+    assert "Keine Uebernahme von `VU014PR1.DAT`" in backlog
+    assert "schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in backlog
+    assert "Altcode-/Fixture-Plan" in backlog
+    assert "PR 12: Read-only Brueckenplan" in backlog
+    assert "ohne neuen Endpunkt, Schreibpfad oder Runner-Start (erledigt)" in backlog
+    assert "PR 13: Optional eine rein lesende API-Anbindung" in backlog
+    assert "(erledigt)" in backlog
+    assert "PR 14: Optional eine rein lesende UI-Karte" in backlog
+    assert "PR 15: Bruecken-Demo-/Screenshot-Smoke" in backlog
+    assert "visueller Beleg fuer die neue Karte gebraucht wird (dieser Schnitt)" in backlog
+    assert "PR 16: Naechsten schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in backlog
+    assert "noch ohne neue Fachlogik" in backlog
+    assert "PR 17+: Den geplanten Slice in kleinen Code-/Test-Schritten umsetzen" in backlog
+    assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
 def test_workbench_packaging_plan_documents_portable_delivery_block():

@@ -29,9 +29,10 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 
 Naechster bevorzugter Arbeitsschnitt:
 
-- Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll den
-  Execution-Summary-Vertrag der expliziten Kernlogik in den read-only
-  Kernvalidierungsueberblick einordnen, ohne Runner-Start, Simulation,
+- Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll
+  einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus den
+  vorhandenen Planfixtures kartieren, zuerst mit Altcode-/Fixture-Plan,
+  Risiken und Testgrenzen, weiterhin ohne Runner-Start, Simulation,
   automatische historische Regelwahl oder Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
@@ -66,18 +67,21 @@ Naechster bevorzugter Arbeitsschnitt:
   (erledigt).
 - PR 12: Read-only Brueckenplan fuer Run-Control-Aktionsplan und
   Kernlauf-Diagnosen dokumentieren und als kleines Python-DTO vorbereiten,
-  ohne neuen Endpunkt, Schreibpfad oder Runner-Start.
+  ohne neuen Endpunkt, Schreibpfad oder Runner-Start (erledigt).
 - PR 13: Optional eine rein lesende API-Anbindung fuer das Bruecken-DTO
   vorbereiten; weiterhin ohne UI-Startpfad und ohne Ausfuehrungsadapter
-  (dieser Schnitt).
+  (erledigt).
 - PR 14: Optional eine rein lesende UI-Karte fuer die Bruecken-Antwort
   vorbereiten; weiterhin ohne Startbutton, Upload oder Ausfuehrungsadapter
-  (dieser Schnitt).
+  (erledigt).
 - PR 15: Bruecken-Demo-/Screenshot-Smoke optional aktualisieren, wenn ein
-  visueller Beleg fuer die neue Karte gebraucht wird.
-- PR 16+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
-  vorhandenen Planfixtures oder eine spaetere Run-Control-Anbindung, weiterhin
-  ohne Vollgleichheitsbehauptung.
+  visueller Beleg fuer die neue Karte gebraucht wird (dieser Schnitt).
+- PR 16: Naechsten schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus
+  vorhandenen Planfixtures planen: Altcode-Spur, Fixture-Bezug, erwartete
+  Zwischenzustaende und Testgrenzen dokumentieren, noch ohne neue Fachlogik.
+- PR 17+: Den geplanten Slice in kleinen Code-/Test-Schritten umsetzen oder
+  eine spaetere Run-Control-Anbindung erst nach separater Freigabe vorbereiten,
+  weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierungsregel
 
