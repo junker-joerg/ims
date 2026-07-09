@@ -9,6 +9,7 @@ from ims.engine.explicit_period_diagnostics_bundle import (
     build_explicit_period_diagnostics_bundle,
 )
 from ims.engine.explicit_period_runner import ExplicitMultiPeriodExecutionSummary
+from ims.engine.explicit_transition_carryover_probe import ExplicitTransitionCarryoverProbeResult
 from ims.model.legacy_validation_coverage import (
     LegacyValidationCoverageMatrixResult,
     build_legacy_validation_coverage_matrix,
@@ -80,6 +81,50 @@ class CoreExecutionSummaryContract:
 
 
 @dataclass(slots=True)
+class CoreCarryoverProbeContract:
+    """Read-only Vertrag fuer spaetere explizite Carryover-Probe-Ergebnisse."""
+
+    mode: str
+    probe_mode: str
+    source_builder: str
+    required_fields: list[str]
+    transition_fields: list[str]
+    carryover_request_fields: list[str]
+    carried_entity_fields: list[str]
+    boundary_fields: list[str]
+    next_action: str
+    requires_precomputed_probe: bool = True
+    overview_accepts_probe_input: bool = False
+    overview_starts_probe: bool = False
+    writes_performed: bool = False
+    execution_performed: bool = False
+    simulation_performed: bool = False
+    automatic_historical_rule_selection_performed: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "mode": self.mode,
+            "probe_mode": self.probe_mode,
+            "source_builder": self.source_builder,
+            "required_fields": list(self.required_fields),
+            "transition_fields": list(self.transition_fields),
+            "carryover_request_fields": list(self.carryover_request_fields),
+            "carried_entity_fields": list(self.carried_entity_fields),
+            "boundary_fields": list(self.boundary_fields),
+            "next_action": self.next_action,
+            "requires_precomputed_probe": self.requires_precomputed_probe,
+            "overview_accepts_probe_input": self.overview_accepts_probe_input,
+            "overview_starts_probe": self.overview_starts_probe,
+            "writes_performed": self.writes_performed,
+            "execution_performed": self.execution_performed,
+            "simulation_performed": self.simulation_performed,
+            "automatic_historical_rule_selection_performed": (
+                self.automatic_historical_rule_selection_performed
+            ),
+        }
+
+
+@dataclass(slots=True)
 class CoreValidationOverviewResult:
     status: str
     mode: str
@@ -96,6 +141,9 @@ class CoreValidationOverviewResult:
     execution_summary_available: bool = False
     execution_summary_next_action: str = "await_precomputed_execution_summary"
     execution_summary_contract: CoreExecutionSummaryContract | None = None
+    carryover_probe_available: bool = False
+    carryover_probe_next_action: str = "provide_precomputed_carryover_probe"
+    carryover_probe_contract: CoreCarryoverProbeContract | None = None
     period_diagnostics: ExplicitPeriodDiagnosticsBundleResult | None = None
     legacy_validation: LegacyValidationOverviewResult | None = None
     coverage_matrix: LegacyValidationCoverageMatrixResult | None = None
@@ -123,6 +171,11 @@ class CoreValidationOverviewResult:
             "execution_summary_contract": None
             if self.execution_summary_contract is None
             else self.execution_summary_contract.to_dict(),
+            "carryover_probe_available": self.carryover_probe_available,
+            "carryover_probe_next_action": self.carryover_probe_next_action,
+            "carryover_probe_contract": None
+            if self.carryover_probe_contract is None
+            else self.carryover_probe_contract.to_dict(),
             "period_diagnostics": None
             if self.period_diagnostics is None
             else self.period_diagnostics.to_dict(),
@@ -200,6 +253,44 @@ def build_execution_summary_contract() -> CoreExecutionSummaryContract:
     )
 
 
+def build_carryover_probe_contract() -> CoreCarryoverProbeContract:
+    """Beschreibt den erwarteten Carryover-Probe-Payload, ohne den Probe zu starten."""
+
+    return CoreCarryoverProbeContract(
+        mode="explicit_transition_carryover_probe_contract",
+        probe_mode="explicit_transition_carryover_probe",
+        source_builder="ims.engine.explicit_transition_carryover_probe.probe_explicit_transition_carryover",
+        required_fields=list(ExplicitTransitionCarryoverProbeResult.__dataclass_fields__),
+        transition_fields=[
+            "from_period",
+            "to_period",
+            "from_global_period",
+            "to_global_period",
+            "diagnostic_candidate_ids_match",
+            "previous_result_source",
+        ],
+        carryover_request_fields=[
+            "vu_carryover_requested",
+            "vn_carryover_requested",
+            "vu_carryover_executed",
+            "vn_carryover_executed",
+        ],
+        carried_entity_fields=[
+            "carried_insurer_ids",
+            "carried_policyholder_ids",
+            "carried_insurer_state",
+            "carried_policyholder_state",
+        ],
+        boundary_fields=[
+            "writes_performed",
+            "execution_performed",
+            "simulation_performed",
+            "automatic_historical_rule_selection_performed",
+        ],
+        next_action="provide_precomputed_carryover_probe",
+    )
+
+
 def build_core_validation_overview(
     *,
     legacy_fixture_path: str | Path,
@@ -239,6 +330,7 @@ def build_core_validation_overview(
         legacy_covered_periods=coverage_matrix.covered_periods,
         next_validation_actions=sorted({action.next_action for action in next_family_plan.actions}),
         execution_summary_contract=build_execution_summary_contract(),
+        carryover_probe_contract=build_carryover_probe_contract(),
         period_diagnostics=period_diagnostics,
         legacy_validation=legacy_validation,
         coverage_matrix=coverage_matrix,

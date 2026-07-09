@@ -126,6 +126,12 @@ um. Der Probe nutzt explizite Fixture-Snapshots als Quelle, fuehrt Carryover nur
 bei `--apply-vu` oder `--apply-vn` in-memory aus und bleibt ohne API-/UI-,
 Overview- oder Run-Control-Anbindung.
 
+PR 22 ordnet den Probe als
+`explicit_transition_carryover_probe_contract` im
+`ims_core_validation_overview` ein. Der Overview beschreibt nur die erwarteten
+Felder eines spaeter bereitgestellten Probe-Payloads und startet keinen Probe
+aus dem Overview heraus.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -200,6 +206,10 @@ Overview- oder Run-Control-Anbindung.
     `python -m ims.engine.explicit_transition_carryover_probe --apply-vn tests/fixtures/replay_vn_policyholder_transition_plan.json`
     prueft vorhandene Carryover-Bausteine in-memory gegen die
     Uebergangsdiagnose, schreibt nichts und startet keine Simulation.
+14. Carryover-Probe-Vertrag in den Kernvalidierungsueberblick einordnen. Der
+    Overview meldet `carryover_probe_available = false`,
+    `carryover_probe_next_action = "provide_precomputed_carryover_probe"` und
+    `overview_starts_probe = false`.
 
 ## Aktualisierte PR-Restplanung
 
@@ -218,7 +228,8 @@ Aktualisierte grobe Restplanung:
   aus vorhandenen Planfixtures sind umgesetzt;
 - Plan fuer den engen Carryover-Code-Slice ist umgesetzt;
 - enger Carryover-Probe ist umgesetzt;
-- 4 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
+- Carryover-Probe-Vertrag im Kernvalidierungsueberblick ist umgesetzt;
+- 3 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
 - danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

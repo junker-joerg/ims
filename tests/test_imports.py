@@ -18,8 +18,10 @@ def test_core_placeholders_import() -> None:
     from ims.analysis.aggregates import AggregateSnapshot, collect_basic_aggregates
     from ims.engine.context import SimulationContext
     from ims.engine.core_validation_overview import (
+        CoreCarryoverProbeContract,
         CoreExecutionSummaryContract,
         CoreValidationOverviewResult,
+        build_carryover_probe_contract,
         build_core_validation_overview,
         build_execution_summary_contract,
     )
@@ -846,8 +848,10 @@ def test_core_placeholders_import() -> None:
     assert BAVUpdateResult is not None
     assert update_bav_central_state is not None
     assert SimulationContext is not None
+    assert CoreCarryoverProbeContract is not None
     assert CoreExecutionSummaryContract is not None
     assert CoreValidationOverviewResult is not None
+    assert build_carryover_probe_contract is not None
     assert build_core_validation_overview is not None
     assert build_execution_summary_contract is not None
     assert SimulationStepResult is not None

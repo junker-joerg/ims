@@ -2,8 +2,10 @@ import json
 from pathlib import Path
 
 from ims.engine.core_validation_overview import (
+    CoreCarryoverProbeContract,
     CoreExecutionSummaryContract,
     CoreValidationOverviewResult,
+    build_carryover_probe_contract,
     build_execution_summary_contract,
     build_core_validation_overview,
     main,
@@ -42,12 +44,74 @@ def test_core_validation_overview_combines_existing_read_only_diagnostics() -> N
     assert payload["execution_summary_contract"]["overview_starts_runner"] is False
     assert payload["execution_summary_contract"]["overview_accepts_summary_input"] is False
     assert payload["execution_summary_contract"]["execution_performed"] is False
+    assert payload["carryover_probe_available"] is False
+    assert payload["carryover_probe_next_action"] == "provide_precomputed_carryover_probe"
+    assert payload["carryover_probe_contract"]["mode"] == "explicit_transition_carryover_probe_contract"
+    assert payload["carryover_probe_contract"]["probe_mode"] == "explicit_transition_carryover_probe"
+    assert payload["carryover_probe_contract"]["overview_starts_probe"] is False
+    assert payload["carryover_probe_contract"]["overview_accepts_probe_input"] is False
+    assert payload["carryover_probe_contract"]["execution_performed"] is False
+    assert payload["carryover_probe_contract"]["simulation_performed"] is False
     assert payload["period_diagnostics"]["mode"] == "explicit_period_diagnostics_bundle"
     assert payload["legacy_validation"]["mode"] == "legacy_agrsich_validation_overview"
     assert payload["coverage_matrix"]["mode"] == "legacy_agrsich_coverage_matrix"
     assert payload["next_family_plan"]["mode"] == "legacy_agrsich_next_family_plan"
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
+
+
+def test_core_validation_overview_carryover_probe_contract_is_stable() -> None:
+    contract = build_carryover_probe_contract()
+    payload = contract.to_dict()
+
+    assert isinstance(contract, CoreCarryoverProbeContract)
+    assert payload["source_builder"] == (
+        "ims.engine.explicit_transition_carryover_probe.probe_explicit_transition_carryover"
+    )
+    assert payload["required_fields"] == [
+        "status",
+        "mode",
+        "plan_path",
+        "transition_count",
+        "vu_carryover_requested",
+        "vn_carryover_requested",
+        "in_memory_carryover_performed",
+        "transitions",
+        "issues",
+        "writes_performed",
+        "execution_performed",
+        "simulation_performed",
+        "automatic_historical_rule_selection_performed",
+    ]
+    assert payload["transition_fields"] == [
+        "from_period",
+        "to_period",
+        "from_global_period",
+        "to_global_period",
+        "diagnostic_candidate_ids_match",
+        "previous_result_source",
+    ]
+    assert payload["carryover_request_fields"] == [
+        "vu_carryover_requested",
+        "vn_carryover_requested",
+        "vu_carryover_executed",
+        "vn_carryover_executed",
+    ]
+    assert "carried_insurer_state" in payload["carried_entity_fields"]
+    assert payload["boundary_fields"] == [
+        "writes_performed",
+        "execution_performed",
+        "simulation_performed",
+        "automatic_historical_rule_selection_performed",
+    ]
+    assert payload["next_action"] == "provide_precomputed_carryover_probe"
+    assert payload["requires_precomputed_probe"] is True
+    assert payload["overview_accepts_probe_input"] is False
+    assert payload["overview_starts_probe"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert payload["simulation_performed"] is False
+    assert payload["automatic_historical_rule_selection_performed"] is False
 
 
 def test_core_validation_overview_execution_summary_contract_is_stable() -> None:
@@ -185,6 +249,8 @@ def test_core_validation_overview_cli_prints_stable_json(capsys) -> None:
     assert payload["plan_count"] == 2
     assert payload["legacy_covered_rows"] == 6300
     assert payload["execution_summary_contract"]["next_action"] == "provide_precomputed_execution_summary"
+    assert payload["carryover_probe_contract"]["next_action"] == "provide_precomputed_carryover_probe"
+    assert payload["carryover_probe_contract"]["overview_starts_probe"] is False
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
 
@@ -265,4 +331,8 @@ def test_core_validation_overview_is_documented() -> None:
     assert "Aktualisierte PR-Restplanung" in resume_plan
     assert "IMS-Kernvalidierungsueberblick" in resume_plan
     assert "Execution-Summary-Vertrag" in resume_plan
+    assert "Carryover-Probe-Vertrag" in migration_doc
+    assert "explicit_transition_carryover_probe_contract" in migration_doc
+    assert "provide_precomputed_carryover_probe" in migration_doc
+    assert "keinen Probe aus dem Overview heraus" in migration_doc
     assert "keine Ausfuehrung aus dem Overview heraus" in resume_plan

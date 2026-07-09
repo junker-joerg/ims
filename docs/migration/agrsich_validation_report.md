@@ -274,7 +274,9 @@ aus. Sie buendelt:
 - die Legacy-Coverage-Matrix,
 - den Plan fuer die naechste Legacy-Dateifamilie,
 - einen read-only Vertrag fuer spaetere
-  `explicit_multi_period_execution_summary`-Payloads.
+  `explicit_multi_period_execution_summary`-Payloads,
+- einen read-only Carryover-Probe-Vertrag fuer spaetere
+  `explicit_transition_carryover_probe`-Payloads.
 
 Der Ueberblick fasst Plananzahl, Periodenzaehler, globale Perioden,
 Legacy-Referenzzaehler, abgedeckte Zeilen und die naechsten Validierungsaktionen
@@ -286,6 +288,18 @@ bereitgestellten, bereits ausgefuehrten expliziten Mehrperioden-Ergebnisses:
 Periodenachsen, VU-/VN-Anwendungszaehlungen, Carryover-Zaehler, Legacy-
 Vergleichsstatus und Ausfuehrungsgrenzen. Der Overview nimmt in diesem Schnitt
 keine Summary-Datei entgegen und startet keinen expliziten Periodenrunner.
+
+Der Carryover-Probe-Vertrag nutzt
+`mode = "explicit_transition_carryover_probe_contract"` und beschreibt, welche
+Felder ein spaeter bereits berechneter Probe-Payload mit
+`mode = "explicit_transition_carryover_probe"` liefern muss:
+Uebergangsachsen, explizite VU-/VN-Opt-in-Felder, getragene VU-/VN-IDs,
+`diagnostic_candidate_ids_match`, `previous_result_source` sowie die
+Grenzfelder `writes_performed`, `execution_performed`,
+`simulation_performed` und
+`automatic_historical_rule_selection_performed`. Der naechste Schritt ist
+`provide_precomputed_carryover_probe`; der Overview nimmt in diesem Schnitt
+keinen Probe-Payload entgegen und startet keinen Probe aus dem Overview heraus.
 
 Auch dieser Ueberblick startet keinen Runner, keine Simulation und keinen
 Scheduler. Er schreibt keine Artefakte, oeffnet keine HTTP- oder UI-Schreibpfade
@@ -299,8 +313,9 @@ zulaessig: aktuell 2 Planfixtures, 8 diagnostizierte Perioden, globale Perioden
 `1, 2, 3, 4, 101, 102, 103, 104`, 19 Legacy-Referenzen sowie 6300 abgedeckte
 Zeilen und Perioden. `execution_summary_available` bleibt `false`; der
 naechste Summary-Schritt ist `await_precomputed_execution_summary`. Der
-Overview startet keinen Runner, akzeptiert keine Summary-Datei und setzt
-`execution_performed = false`.
+naechste Carryover-Probe-Schritt ist `provide_precomputed_carryover_probe`.
+Der Overview startet keinen Runner, akzeptiert keine Summary- oder Probe-Datei
+und setzt `execution_performed = false`.
 
 ## Run-Control-Bruecke zum Kernblick
 

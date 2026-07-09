@@ -591,6 +591,10 @@ def test_core_validation_overview_endpoint_is_readonly_contract(tmp_path):
     assert payload["execution_summary_contract"]["mode"] == "explicit_multi_period_execution_summary_contract"
     assert payload["execution_summary_contract"]["overview_starts_runner"] is False
     assert payload["execution_summary_contract"]["overview_accepts_summary_input"] is False
+    assert payload["carryover_probe_available"] is False
+    assert payload["carryover_probe_contract"]["mode"] == "explicit_transition_carryover_probe_contract"
+    assert payload["carryover_probe_contract"]["overview_starts_probe"] is False
+    assert payload["carryover_probe_contract"]["overview_accepts_probe_input"] is False
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()

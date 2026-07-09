@@ -72,9 +72,12 @@ Carryover-Bausteine pruefen und bleibt ohne Simulation, API-/UI-Startpfad oder
 historische Regelableitung.
 Der lokale Probe-Befehl
 `python -m ims.engine.explicit_transition_carryover_probe --apply-vn tests/fixtures/replay_vn_policyholder_transition_plan.json`
-prueft diese Grenze in-memory. Aktueller Zaehlschnitt: 4 PRs bis zur
+prueft diese Grenze in-memory. Der Kernvalidierungsueberblick enthaelt nun
+einen read-only `explicit_transition_carryover_probe_contract`, startet den
+Probe aber nicht. Aktueller Zaehlschnitt: 3 PRs bis zur
 demo-nahen read-only Carryover/Kern-Sicht, danach 3+ fachliche
-Validierungs-PRs; keine dieser Zahlen ist eine historische
+Validierungs-PRs, also 6+ PRs bis zu einem breiteren fachlichen Anschluss;
+keine dieser Zahlen ist eine historische
 Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
