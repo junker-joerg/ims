@@ -22,6 +22,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/run-control/dry-run` prueft ein Run-Control-Request-DTO gegen Request-Vertrag und Preflight, ohne Queue, Metadaten oder Simulation zu schreiben.
 - `/api/run-control/preflight/{run_id}` prueft den ausgewaehlten Run lesend gegen die gesperrte Run-Control-Grenze.
 - `/api/core-validation/overview` beschreibt lesend den IMS-Kernvalidierungsueberblick, Legacy-Abdeckung und den Execution-Summary-Vertrag, ohne einen Runner zu starten.
+- `/api/run-control/core-diagnostics-bridge` buendelt lesend Queue-Aktionsplan und Kernvalidierungsueberblick, ohne Queue, Metadaten, Runner oder Simulation zu schreiben.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
 - Die Workbench zeigt die aktuelle Szenario-/Run-Auswahl in einer kompakten, rein lesenden Auswahlzusammenfassung.
@@ -94,6 +95,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Run-Control-Aktionsplankarte nutzt `/api/run-control/queue/action-plan` und zeigt fuer vorhandene Queue-Eintraege nur `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Sie schreibt nicht und startet keinen Adapter.
 - Die Run-Control-Preflight-Karte ist rein lesend. Sie nutzt `/api/run-control/preflight/{run_id}` fuer den aktuell ausgewaehlten Run, zeigt Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, startet aber keinen Lauf und schreibt keine Metadaten.
 - Die Kernvalidierungsuebersicht ist rein lesend. Sie nutzt `/api/core-validation/overview`, zeigt Periodenplaene, Legacy-Referenzen und den Execution-Summary-Vertrag, startet aber keinen expliziten Periodenrunner und nimmt keine Summary-Datei entgegen.
+- Die Run-Control-Kernblick-Bruecke ist rein lesend. Sie nutzt `/api/run-control/core-diagnostics-bridge`, kombiniert nur vorhandene Queue-Aktionsplan- und Kernvalidierungssignale, schreibt nicht, startet keinen Runner und ist noch keine UI-Karte.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
 - Die Metadaten-Konsistenzdiagnose ist rein lesend und repariert, importiert oder schreibt keine Metadaten.
@@ -585,6 +587,7 @@ POST /api/run-control/dry-run
 POST /api/run-control/queue
 GET /api/run-control/queue/action-plan
 GET /api/core-validation/overview
+GET /api/run-control/core-diagnostics-bridge
 ```
 
 Die Antwort enthaelt `mode = "run_control_request_contract"`, `schema_version`, `accepted_fields`, `required_fields`, `optional_fields`, `forbidden_fields`, `example_request`, `writes_enabled = false`, `execution_enabled = false` und `execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body, prueft keinen Browser-Upload, schreibt keine Queue und startet keine Ausfuehrung. Die Frontend-Request-Vertragskarte zeigt diese Felder nur als lokale Orientierung.
@@ -594,6 +597,14 @@ Der Dry-Run-Vertragsendpunkt liefert die Form mit `mode = "run_control_dry_run_c
 Der Queue-Vormerkendpunkt `POST /api/run-control/queue` akzeptiert dasselbe Request-DTO nur bei expliziter SQLite-Metadatenquelle. Vor dem Schreiben fuehrt er denselben Dry-Run aus; fehlgeschlagener Preflight, Szenario-Abweichungen, `execution_enabled=true` oder unbekannte Felder werden vor dem ersten Queue-Schreibzugriff abgelehnt. Bei Erfolg liefert er `mode = "run_control_queue_enqueue"`, den geschriebenen Queue-Eintrag, `writes_performed = true`, `execution_enabled = false` und `execution_performed = false`. Ohne explizite SQLite-Quelle bleibt der Endpunkt blockiert und erzeugt keine `.ims_workbench`-Datei.
 
 Der Aktionsplan-Endpunkt `GET /api/run-control/queue/action-plan` liest dieselbe explizite SQLite-Quelle wie die Queue-Uebersicht. Optional kann `queue_id` als Query-Parameter gesetzt werden. Die Antwort liefert `mode = "run_control_queue_action_plan"`, `actions`, `issues`, `writes_performed = false` und `execution_performed = false`. Pro Queue-Eintrag bleiben `execution_allowed`, `writes_performed` und `execution_performed` `false`; sichtbar werden nur die naechsten sicheren Hinweise `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`.
+
+Der Bruecken-Endpunkt `GET /api/run-control/core-diagnostics-bridge` kombiniert
+denselben Aktionsplan mit `GET /api/core-validation/overview`. Optional kann
+`queue_id` als Query-Parameter gesetzt werden. Die Antwort liefert `mode =
+"run_control_core_diagnostics_bridge"`, Queue-Bezug, Perioden- und
+Legacy-Zaehler, `bridge_next_action`, `blocked_by`, `writes_performed = false`
+und `execution_performed = false`. Der Endpunkt startet keinen Preflight, keinen
+Periodenrunner, keine Simulation und keinen Ausfuehrungsadapter.
 
 Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue` und anschliessend `GET /api/run-control/queue/action-plan`, optional mit `queue_id`. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run und Aktionsplan bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false` und ein Aktionshinweis `run_preflight`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 

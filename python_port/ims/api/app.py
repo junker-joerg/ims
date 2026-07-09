@@ -17,6 +17,7 @@ from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_preflight import preflight_run_control_from_repository
+from ims.api.run_control_core_diagnostics_bridge import build_run_control_core_diagnostics_bridge
 from ims.api.run_control_queue import enqueue_run_control_request_object
 from ims.api.run_control_queue_action_plan import build_run_control_queue_action_plan
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
@@ -227,6 +228,16 @@ def create_app(
         queue_id = request.query_params.get("queue_id")
         return JSONResponse(queue_action_plan_payload(queue_id if queue_id else None))
 
+    def run_control_core_diagnostics_bridge_payload(queue_id: str | None = None) -> dict[str, object]:
+        return build_run_control_core_diagnostics_bridge(
+            queue_action_plan_payload(queue_id),
+            _core_validation_overview_payload(),
+        ).to_dict()
+
+    def run_control_core_diagnostics_bridge_response(request: Request) -> JSONResponse:
+        queue_id = request.query_params.get("queue_id")
+        return JSONResponse(run_control_core_diagnostics_bridge_payload(queue_id if queue_id else None))
+
     def preflight_payload(run_id: str) -> dict[str, object]:
         return preflight_run_control_from_repository(run_id, repository).to_dict()
 
@@ -343,6 +354,10 @@ def create_app(
         def run_control_queue_action_plan(queue_id: str | None = None) -> dict[str, object]:
             return queue_action_plan_payload(queue_id)
 
+        @app.get("/api/run-control/core-diagnostics-bridge")
+        def run_control_core_diagnostics_bridge(queue_id: str | None = None) -> dict[str, object]:
+            return run_control_core_diagnostics_bridge_payload(queue_id)
+
         @app.get("/api/run-control/request-contract")
         def run_control_request_contract() -> dict[str, object]:
             return run_control_request_contract_payload()
@@ -395,6 +410,7 @@ def create_app(
         Route("/api/run-control/queue", lambda request: JSONResponse(queue_overview_payload())),
         Route("/api/run-control/queue", queue_enqueue_response, methods=["POST"]),
         Route("/api/run-control/queue/action-plan", queue_action_plan_response),
+        Route("/api/run-control/core-diagnostics-bridge", run_control_core_diagnostics_bridge_response),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route("/api/run-control/dry-run-contract", lambda request: JSONResponse(run_control_dry_run_contract_payload())),
         Route("/api/run-control/dry-run", dry_run_response, methods=["POST"]),

@@ -4,9 +4,9 @@
 
 Dieser Plan beschreibt den naechsten kleinen Brueckenschritt zwischen
 Run-Control-Aktionsplan und IMS-Kernvalidierungsueberblick. Er ist eine
-Planungs- und Dokumentationsschicht: Es wird kein neuer HTTP-Endpunkt
-eingefuehrt, kein Queue-Status veraendert, kein expliziter Periodenrunner
-gestartet und keine Simulation ausgefuehrt.
+Planungs- und Dokumentationsschicht: Es wird kein HTTP-Schreibpfad eingefuehrt,
+kein Queue-Status veraendert, kein expliziter Periodenrunner gestartet und
+keine Simulation ausgefuehrt.
 
 Der spaetere Nutzen ist eine gemeinsame, read-only Sprache fuer die Frage:
 Welche vorhandenen Kern-Diagnosen gehoeren zu einem vorgemerkten oder
@@ -99,14 +99,18 @@ Nicht erlaubt:
 
 ## PR-Reihenfolge
 
-1. Dieser PR: Plan und Dokumentation fuer die read-only Bruecke, ohne Codepfad.
+1. Plan und Dokumentation fuer die read-only Bruecke, ohne Codepfad
+   (erledigt).
 2. Danach optional: kleiner read-only Helper oder DTO, der vorhandene
    Queue-Aktionsplan- und Kernueberblick-Antworten zusammenfasst. Dieser
    Schritt ist umgesetzt: Das DTO arbeitet nur auf bestehenden Payloads oder
    `to_dict()`-Objekten und startet selbst keinen Builder, Runner oder
    Simulationspfad.
-3. Danach optional: UI-Karte, die diese Zusammenfassung nur anzeigt.
-4. Erst nach separater expliziter Freigabe: Planung eines echten
+3. Read-only API-Endpunkt fuer dieselbe Bruecke
+   `GET /api/run-control/core-diagnostics-bridge` (dieser Schnitt): kein
+   Schreiben, kein UI-Startpfad, kein Ausfuehrungsadapter.
+4. Danach optional: UI-Karte, die diese Zusammenfassung nur anzeigt.
+5. Erst nach separater expliziter Freigabe: Planung eines echten
    Ausfuehrungsadapters, weiterhin als eigener PR und nicht als Nebeneffekt
    dieser Bruecke.
 

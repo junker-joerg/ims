@@ -137,8 +137,9 @@ Der passende PR-Titel waere:
    Brueckenplan vorbereiten. Dieser Schnitt ist in
    `docs/plans/run_control_core_diagnostics_bridge_plan.md` dokumentiert:
    Queue-Aktionsplan und Kernvalidierungsueberblick duerfen spaeter nur
-   gemeinsam gelesen werden; kein neuer HTTP-Endpunkt, kein Schreibpfad und
-   kein Runner-Start werden dadurch freigeschaltet.
+   gemeinsam gelesen werden; der read-only API-Schnitt
+   `GET /api/run-control/core-diagnostics-bridge` schaltet keinen Schreibpfad,
+   keinen UI-Startpfad und keinen Runner-Start frei.
 
 ## Aktualisierte PR-Restplanung
 
@@ -169,7 +170,7 @@ Vollgleichheitspruefung.
 
 - keine Fachlogikaenderung in diesem Plan-PR;
 - keine Simulation starten;
-- kein neuer HTTP-Endpunkt;
+- kein neuer HTTP-Schreibendpunkt;
 - kein HTTP- oder UI-Schreibpfad;
 - kein Browser-Upload oder Browser-Download;
 - kein funktionaler Run-Start;

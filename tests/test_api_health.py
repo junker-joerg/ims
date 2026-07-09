@@ -231,6 +231,30 @@ def test_run_control_queue_action_plan_reports_in_memory_boundary(tmp_path):
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
 
 
+def test_run_control_core_diagnostics_bridge_reports_in_memory_boundary(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/core-diagnostics-bridge")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "warning"
+    assert payload["mode"] == "run_control_core_diagnostics_bridge"
+    assert payload["queue_action_plan_mode"] == "run_control_queue_action_plan"
+    assert payload["core_validation_mode"] == "ims_core_validation_overview"
+    assert payload["queue_count"] == 0
+    assert payload["action_count"] == 0
+    assert payload["period_plan_count"] == 2
+    assert payload["period_count"] == 8
+    assert payload["legacy_reference_count"] == 19
+    assert payload["execution_summary_available"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert payload["issues"][0]["code"] == "run_control_queue_action_plan_unavailable"
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_run_control_queue_enqueue_requires_explicit_sqlite_source(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)
@@ -329,6 +353,45 @@ def test_run_control_queue_action_plan_endpoint_reads_enqueued_queue(tmp_path):
     assert filtered.status_code == 200
     assert filtered.json()["queue_id"] == "baseline-python-tests"
     assert filtered.json()["actions"][0]["next_action_label"] == "Lokalen Preflight ausfuehren"
+
+
+def test_run_control_core_diagnostics_bridge_endpoint_reads_enqueued_queue(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+    client.post(
+        "/api/run-control/queue",
+        json={
+            "run_id": "baseline-python-tests",
+            "scenario_id": "agrsich-reference-window",
+            "requested_by": "local-test",
+            "created_at": "2026-05-27T00:00:00Z",
+            "execution_enabled": False,
+        },
+    )
+
+    response = client.get("/api/run-control/core-diagnostics-bridge")
+    filtered = client.get("/api/run-control/core-diagnostics-bridge?queue_id=baseline-python-tests")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "warning"
+    assert payload["mode"] == "run_control_core_diagnostics_bridge"
+    assert payload["queue_count"] == 1
+    assert payload["action_count"] == 1
+    assert payload["period_plan_count"] == 2
+    assert payload["legacy_reference_count"] == 19
+    assert payload["actions"][0]["queue_id"] == "baseline-python-tests"
+    assert payload["actions"][0]["queue_next_action"] == "run_preflight"
+    assert payload["actions"][0]["bridge_next_action"] == "resolve_core_validation_blockers"
+    assert "core_validation_await_historical_reference" in payload["actions"][0]["blocked_by"]
+    assert payload["actions"][0]["execution_allowed"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert filtered.status_code == 200
+    assert filtered.json()["action_count"] == 1
+    assert filtered.json()["actions"][0]["queue_id"] == "baseline-python-tests"
 
 
 def test_run_control_queue_enqueue_endpoint_rejects_execution_enabled(tmp_path):

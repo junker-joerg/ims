@@ -41,6 +41,7 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "2 Planfixtures, 8 Perioden" in plan
     assert "19 Legacy-Referenzen, 6300 abgedeckte Zeilen" in plan
     assert "`/api/core-validation/overview`" in plan
+    assert "GET /api/run-control/core-diagnostics-bridge" in plan
     assert "Kernvalidierungsueberblick" in plan
     assert "docs/migration/workbench_demo_checklist.md" in plan
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
@@ -53,7 +54,7 @@ def test_ims_core_resume_plan_keeps_boundaries_conservative() -> None:
 
     assert "keine Fachlogikaenderung in diesem Plan-PR" in plan
     assert "keine Simulation starten" in plan
-    assert "kein neuer HTTP-Endpunkt" in plan
+    assert "kein neuer HTTP-Schreibendpunkt" in plan
     assert "kein HTTP- oder UI-Schreibpfad" in plan
     assert "kein funktionaler Run-Start" in plan
     assert "kein Start eines expliziten Periodenrunners aus dem Kernvalidierungsueberblick" in plan

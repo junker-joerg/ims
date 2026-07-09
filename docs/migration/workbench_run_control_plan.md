@@ -97,17 +97,18 @@ python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.s
 
 Er erzeugt stabile JSON-Felder fuer `status`, `mode = "run_control_queue_action_plan"`, `db_path`, `metadata_source`, optional `queue_id`, `queue_count`, `actions`, `issues`, `writes_performed = false` und `execution_performed = false`. Pro Queue-Eintrag werden `queue_id`, `run_id`, `scenario_id`, `queue_status`, `next_action`, `next_action_label`, `blocked_by`, `execution_allowed = false`, `writes_performed = false` und `execution_performed = false` sichtbar. `planned` ohne Blocker fuehrt nur zu `run_preflight`, `validated` ohne Blocker zu `await_execution_release`, `blocked` oder Diagnose-/Preflight-Hinweise zu `resolve_blockers`; unbekannte Statuswerte bleiben ein `inspect_queue_status`-Hinweis. Queue-only-Datenbanken und nicht initialisierte Queues bleiben stabile Hinweise statt Abstuerze.
 
-Eine spaetere Run-Control-Bruecke zu Kernlauf-Diagnosen darf diesen
-Aktionsplan nur mit dem bestehenden `GET /api/core-validation/overview`
-zusammen anzeigen. Der geplante Brueckenmodus bleibt read-only:
+Die Run-Control-Bruecke zu Kernlauf-Diagnosen darf diesen Aktionsplan nur mit
+dem bestehenden `GET /api/core-validation/overview` zusammen anzeigen. Der
+Brueckenmodus bleibt read-only:
 `mode = "run_control_core_diagnostics_bridge"`,
 `writes_performed = false`, `execution_performed = false`,
 `inspect_core_validation_overview`, `await_precomputed_execution_summary` und
 `resolve_core_validation_blockers` sind Hinweise, keine Ausfuehrung.
-Der erste kleine Code-Schnitt ist ein reines Python-DTO:
+Der erste kleine Code-Schnitt war ein reines Python-DTO:
 `ims.api.run_control_core_diagnostics_bridge.build_run_control_core_diagnostics_bridge`.
-Es kombiniert nur bereits vorliegende Payloads oder `to_dict()`-Objekte und ist
-noch kein HTTP-Endpunkt, keine UI-Karte und kein Ausfuehrungsadapter.
+Der aktuelle API-Schnitt macht denselben Vertrag ueber
+`GET /api/run-control/core-diagnostics-bridge` lesend verfuegbar; er ist noch
+keine UI-Karte und kein Ausfuehrungsadapter.
 
 ## Sicherheitsgrenzen
 

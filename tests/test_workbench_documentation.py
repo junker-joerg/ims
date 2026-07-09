@@ -57,6 +57,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "POST /api/run-control/dry-run" in readme
     assert "POST /api/run-control/queue" in readme
     assert "GET /api/run-control/queue/action-plan" in readme
+    assert "GET /api/run-control/core-diagnostics-bridge" in readme
     assert "Lokaler Demo-Smoke fuer die Browser-Workbench" in readme
     assert "Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen" in readme
     assert "baseline-python-tests" in readme
@@ -140,6 +141,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "POST /api/run-control/queue" in doc
     assert "GET /api/run-control/queue/action-plan" in doc
     assert "GET /api/core-validation/overview" in doc
+    assert "GET /api/run-control/core-diagnostics-bridge" in doc
     assert "Kernvalidierungsueberblick" in doc
     assert "Execution-Summary-Vertrag" in doc
     assert "keinen expliziten Periodenrunner" in doc
@@ -256,6 +258,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Queue-Schreiben ist nur ueber den getrennten Vormerkpfad" in doc
     assert "Ohne explizite SQLite-Quelle bleibt der Endpunkt blockiert" in doc
     assert "Die Run-Control-Aktionsplankarte nutzt `/api/run-control/queue/action-plan`" in doc
+    assert "Die Run-Control-Kernblick-Bruecke ist rein lesend" in doc
+    assert "`/api/run-control/core-diagnostics-bridge`" in doc
+    assert "noch keine UI-Karte" in doc
     assert "run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status" in doc
     assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
     assert "schaltet keinen UI-Startbutton frei" in doc
@@ -342,6 +347,7 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
     assert 'mode = "run_control_core_diagnostics_bridge"' in plan
     assert "GET /api/core-validation/overview" in plan
+    assert "GET /api/run-control/core-diagnostics-bridge" in plan
     assert "inspect_core_validation_overview" in plan
     assert "await_precomputed_execution_summary" in plan
     assert "resolve_core_validation_blockers" in plan

@@ -68,8 +68,11 @@ Naechster bevorzugter Arbeitsschnitt:
   Kernlauf-Diagnosen dokumentieren und als kleines Python-DTO vorbereiten,
   ohne neuen Endpunkt, Schreibpfad oder Runner-Start.
 - PR 13: Optional eine rein lesende API-Anbindung fuer das Bruecken-DTO
-  vorbereiten; weiterhin ohne UI-Startpfad und ohne Ausfuehrungsadapter.
-- PR 14+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
+  vorbereiten; weiterhin ohne UI-Startpfad und ohne Ausfuehrungsadapter
+  (dieser Schnitt).
+- PR 14: Optional eine rein lesende UI-Karte fuer die Bruecken-Antwort
+  vorbereiten; weiterhin ohne Startbutton, Upload oder Ausfuehrungsadapter.
+- PR 15+: Weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices aus
   vorhandenen Planfixtures oder eine spaetere Run-Control-Anbindung, weiterhin
   ohne Vollgleichheitsbehauptung.
 
