@@ -30,7 +30,8 @@ Referenzblocker fachlich auf, wird aber erst in separaten PRs gezielt nach
 Naechster bevorzugter Arbeitsschnitt:
 
 - Keine Uebernahme von `VU014PR1.DAT`; der naechste groessere Schritt soll den
-  naechsten schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice vorbereiten.
+  geplanten VN-Carryover-Slice als ersten fachlichen Regressionstest
+  vorbereiten.
   `VU014PR1.DAT` bleibt weiterhin geparkt; keine Simulation, keine automatische
   historische Regelwahl und keine Vollgleichheitsbehauptung.
 
@@ -50,13 +51,21 @@ vorbereitet:
 
 Danach bleiben mindestens 3 weitere fachliche Validierungs-PRs offen:
 
-- ein schmaler VU- oder VN-Regel-Slice aus vorhandenen Planfixtures;
-- ein gezielter Abgleich dieses Slices mit vorhandenen Legacy-Referenzfenstern;
+- die Umsetzung des geplanten VN-Carryover-Slices als Regressionstest;
+- die Schaerfung der fachlichen Assertions und Dokumentation dieses Slices;
 - ein separater Plan fuer einen spaeteren kontrollierten Ausfuehrungsadapter.
 
 Zaehlschnitt: 0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht; 3+
 PRs bis zu einem breiteren fachlichen Anschluss. Diese Zahl ist kein
 Vollgleichheits- oder Gesamtabschlussversprechen.
+
+Bis zum ersten echten fachlichen Regressionstest bleiben nach PR 26 noch 2 PRs:
+
+- PR 27: VN-Carryover-Slice aus
+  `replay_vn_policyholder_transition_plan.json` als gezielten Regressionstest
+  ausfuehren.
+- PR 28: Assertions und Dokumentation fuer diesen Slice schaerfen, weiterhin
+  ohne historische Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -135,7 +144,13 @@ Vollgleichheits- oder Gesamtabschlussversprechen.
   erledigt).
 - PR 25: Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ergaenzen
   (dieser Schnitt: `carryover-probe-contract` im Demo-Smoke, erledigt).
-- PR 26+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
+- PR 26: Ersten fachlichen VN-Carryover-Slice-Test planen
+  (dieser Schnitt: `docs/plans/first_fachlicher_slice_test_plan.md`).
+- PR 27: Den geplanten VN-Carryover-Slice als fachlichen Regressionstest
+  ausfuehren, nur ueber vorhandene portierte Probe-/Carryover-Bausteine.
+- PR 28: Assertions und Dokumentation fuer den ersten fachlichen
+  Regressionstest schaerfen, ohne Vollgleichheitsbehauptung.
+- PR 29+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
   Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
   Vollgleichheitsbehauptung.
 

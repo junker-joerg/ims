@@ -84,6 +84,12 @@ Carryover/Kern-Sicht nun mit ab. Aktueller Zaehlschnitt: 0 PRs bis zur
 demo-nahen read-only Carryover/Kern-Sicht, danach 3+ fachliche
 Validierungs-PRs bis zu einem breiteren fachlichen Anschluss; keine dieser
 Zahlen ist eine historische Vollgleichheitsbehauptung.
+Der erste echte fachliche Test-Slice ist unter
+`docs/plans/first_fachlicher_slice_test_plan.md` geplant: VN-Carryover fuer
+Versicherer `11` und Policyholder `21` von globaler Periode `21` nach `22` aus
+`replay_vn_policyholder_transition_plan.json`. Bis zum ersten formalen
+fachlichen Regressionstest bleiben damit noch 2 kleine PRs; auch dieser Test
+bleibt zunaechst ohne Simulation und ohne Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

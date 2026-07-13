@@ -12,6 +12,9 @@ EXPLICIT_PERIOD_TRANSITION_PLAN = (
 EXPLICIT_TRANSITION_CARRYOVER_PLAN = (
     REPO_ROOT / "docs" / "plans" / "explicit_transition_carryover_code_slice.md"
 )
+FIRST_FACHLICHER_SLICE_TEST_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "first_fachlicher_slice_test_plan.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -69,6 +72,10 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ist umgesetzt" in plan
     assert "carryover-probe-contract" in plan
     assert "0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in plan
+    assert "first_fachlicher_slice_test_plan.md" in plan
+    assert "Versicherer `11` und Policyholder `21`" in plan
+    assert "globale Perioden `21 -> 22`" in plan
+    assert "2 PRs bis zum ersten echten fachlichen Regressionstest" in plan
     assert "danach 3+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -172,6 +179,36 @@ def test_explicit_transition_carryover_code_plan_keeps_code_slice_narrow() -> No
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
+def test_first_fachlicher_slice_plan_selects_vn_carryover_regression() -> None:
+    plan = FIRST_FACHLICHER_SLICE_TEST_PLAN.read_text(encoding="utf-8")
+
+    assert FIRST_FACHLICHER_SLICE_TEST_PLAN.is_file()
+    assert "Erster fachlicher VN-Carryover-Slice-Test" in plan
+    assert "Dieser PR 26" in plan
+    assert "tests/fixtures/replay_vn_policyholder_transition_plan.json" in plan
+    assert "VN-Policyholder-State-Carryover von globaler Periode 21 nach 22" in plan
+    assert "entity_id = 11" in plan
+    assert "entity_id = 21" in plan
+    assert "`apply_vn_state_carryover`" in plan
+    assert "`probe_explicit_transition_carryover(..., apply_vn=True)`" in plan
+    assert "carried_insurer_ids = [11]" in plan
+    assert "carried_policyholder_ids = [21]" in plan
+    assert "diagnostic_candidate_ids_match = true" in plan
+    assert 'previous_result_source = "explicit_fixture_snapshot"' in plan
+    assert 'carried_policyholder_state["21"]["end_wealth_current"] = 999.0' in plan
+    assert "kein historischer Gleichheitsnachweis" in plan
+    assert "`legacy_c/` enthaelt in diesem Stand keine belastbar gelesene historische" in plan
+    assert "PR 27: den VN-Carryover-Slice als eigenen Regressionstest" in plan
+    assert "PR 28: die Assertions und Dokumentation" in plan
+    assert "writes_performed = false" in plan
+    assert "execution_performed = false" in plan
+    assert "simulation_performed = false" in plan
+    assert "automatic_historical_rule_selection_performed = false" in plan
+    assert "keine Simulation" in plan
+    assert "keine neue Fachregel" in plan
+    assert "keine historische Vollgleichheit behaupten" in plan
+
+
 def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     plans_readme = PLANS_README.read_text(encoding="utf-8")
     readme = README.read_text(encoding="utf-8")
@@ -184,10 +221,13 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "Periodenuebergangs- und Carryover-Grenze" in plans_readme
     assert "explicit_transition_carryover_code_slice.md" in plans_readme
     assert "bestehenden portierten Carryover-Bausteinen" in plans_readme
+    assert "first_fachlicher_slice_test_plan.md" in plans_readme
+    assert "ersten fachlichen VN-Carryover-Slice-Test" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
     assert "docs/plans/explicit_transition_carryover_code_slice.md" in readme
+    assert "docs/plans/first_fachlicher_slice_test_plan.md" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "explicit_transition_carryover_probe_contract" in readme
@@ -196,6 +236,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "0 PRs bis zur" in readme
     assert "3+ fachliche" in readme
     assert "einem breiteren fachlichen Anschluss" in readme
+    assert "Versicherer `11` und Policyholder `21`" in readme
+    assert "globaler Periode `21` nach `22`" in readme
+    assert "noch 2 kleine PRs" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
     assert "replay_vn_policyholder_transition_plan.json" in readme

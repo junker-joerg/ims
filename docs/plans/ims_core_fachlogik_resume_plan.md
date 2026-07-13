@@ -149,6 +149,16 @@ Aktionsplan und Run-Control-Kernblick-Bruecke und prueft weiter
 `api_starts_probe = false`, `api_accepts_probe_payload = false`,
 `execution_performed = false` und `simulation_performed = false`.
 
+PR 26 legt den ersten echten fachlichen Test-Slice als Plan fest:
+`docs/plans/first_fachlicher_slice_test_plan.md` waehlt den
+VN-Policyholder-State-Carryover aus
+`tests/fixtures/replay_vn_policyholder_transition_plan.json`. Der geplante
+Regressionstest soll Versicherer `11` und Policyholder `21` von globaler
+Periode `21` nach `22` pruefen, mit `apply_vn_state_carryover` und
+`probe_explicit_transition_carryover(..., apply_vn=True)` als bestehendem
+portierten Pfad. Dieser Plan fuehrt noch keinen neuen Testpfad ein und startet
+keine Simulation.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -238,6 +248,11 @@ Aktionsplan und Run-Control-Kernblick-Bruecke und prueft weiter
     Demo-Smoke liest `GET /api/core-validation/carryover-probe-contract`,
     prueft die gesperrten Probe-Grenzen und nutzt `carryover-probe-contract`
     als stabilen UI-Anker.
+18. Ersten fachlichen VN-Carryover-Slice-Test planen. Der Plan
+    `docs/plans/first_fachlicher_slice_test_plan.md` fixiert
+    `replay_vn_policyholder_transition_plan.json`, Versicherer `11`,
+    Policyholder `21`, globale Perioden `21 -> 22` und die erwarteten
+    Zwischenzustaende fuer den naechsten Regressionstest.
 
 ## Aktualisierte PR-Restplanung
 
@@ -260,7 +275,9 @@ Aktualisierte grobe Restplanung:
 - Carryover-Probe-API-Vertrag ist umgesetzt;
 - Carryover-Probe-Vertragskarte in der Workbench ist umgesetzt;
 - Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ist umgesetzt;
+- erster fachlicher VN-Carryover-Slice-Test ist geplant;
 - 0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
+- 2 PRs bis zum ersten echten fachlichen Regressionstest;
 - danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

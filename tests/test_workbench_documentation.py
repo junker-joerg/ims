@@ -469,6 +469,7 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "Aktuelle PR-Zaehlung" in backlog
     assert "0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
     assert "3+" in backlog
+    assert "Bis zum ersten echten fachlichen Regressionstest bleiben nach PR 26 noch 2 PRs" in backlog
     assert "PR 22: Carryover-Probe im Kernvalidierungsueberblick" in backlog
     assert "explicit_transition_carryover_probe_contract" in backlog
     assert "PR 23: Read-only API-Vertrag" in backlog
@@ -477,8 +478,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "`Carryover-Probe-Vertrag` in der Workbench" in backlog
     assert "PR 25: Demo-/Doku-Smoke" in backlog
     assert "`carryover-probe-contract` im Demo-Smoke" in backlog
+    assert "PR 26: Ersten fachlichen VN-Carryover-Slice-Test planen" in backlog
+    assert "docs/plans/first_fachlicher_slice_test_plan.md" in backlog
+    assert "PR 27: Den geplanten VN-Carryover-Slice als fachlichen Regressionstest" in backlog
+    assert "PR 28: Assertions und Dokumentation fuer den ersten fachlichen" in backlog
     assert "keine API-/UI-/Run-Control-Anbindung" in backlog
-    assert "PR 26+: Eine spaetere Run-Control-Anbindung" in backlog
+    assert "PR 29+: Eine spaetere Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

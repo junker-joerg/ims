@@ -16,3 +16,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Carryover-Code-Slice aus vorhandenen expliziten Periodenfixtures, nur mit
   bestehenden portierten Carryover-Bausteinen und ohne historische
   Regelableitung.
+- `first_fachlicher_slice_test_plan.md`: PR-26-Plan fuer den ersten fachlichen VN-Carryover-Slice-Test aus dem vorhandenen
+  `replay_vn_policyholder_transition_plan.json`, weiterhin ohne Simulation und
+  ohne Vollgleichheitsbehauptung.
