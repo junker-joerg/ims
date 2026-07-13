@@ -81,10 +81,12 @@ Naechster bevorzugter fachlicher Schnitt:
   Versicherer `11/12` und Periode `5`. Auch dieser Schnitt bleibt ohne
   Simulation und ohne historische Vollgleichheitsbehauptung.
 - PR 30: geplanten VN-Regel-Snapshot-Slice als zweiten fachlichen
-  Regressionstest umsetzen und dokumentieren.
+  Regressionstest umsetzen und dokumentieren (erledigt:
+  `tests/test_second_fachlicher_vn_rule_snapshot_regression.py` und
+  `docs/migration/second_fachlicher_regressionstest.md`).
 
-Bis zum zweiten ausgefuehrten fachlichen Regressionstest bleibt nach PR 29 noch
-1 PR.
+Bis zum zweiten ausgefuehrten fachlichen Regressionstest bleiben nach PR 30
+noch 0 PRs.
 
 ## Rest-PR-Planung
 
@@ -176,8 +178,12 @@ Bis zum zweiten ausgefuehrten fachlichen Regressionstest bleibt nach PR 29 noch
   VU-Carryover oder VN-Regelwirkung ueber explizite Snapshots (dieser Schnitt:
   VN-Regelwirkung ueber explizite `best_info`-Snapshots, erledigt).
 - PR 30: Geplanten VN-Regel-Snapshot-Slice als zweiten fachlichen
-  Regressionstest umsetzen und dokumentieren.
-- PR 31+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
+  Regressionstest umsetzen und dokumentieren (dieser Schnitt:
+  `tests/test_second_fachlicher_vn_rule_snapshot_regression.py`, erledigt).
+- PR 31: Optional weiteren VN-Regel-Snapshot oder VU-Carryover-Fixture planen,
+  falls der Review mehr fachliche Breite vor einer Run-Control-Planung
+  verlangt.
+- PR 32+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
   Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
   Vollgleichheitsbehauptung.
 

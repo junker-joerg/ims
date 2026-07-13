@@ -96,6 +96,11 @@ Schritt ist unter `docs/plans/second_fachlicher_slice_test_plan.md` als zweiter
 schmaler Slice geplant: VN-Regelwirkung ueber explizite `best_info`-Snapshots
 fuer Policyholder `21`, Versicherer `11/12` und Periode `5`. Auch dieser
 Anschluss bleibt ohne Simulation und ohne Vollgleichheitsbehauptung.
+Der zweite fachliche Regressionstest ist unter
+`tests/test_second_fachlicher_vn_rule_snapshot_regression.py` umgesetzt und in
+`docs/migration/second_fachlicher_regressionstest.md` eingeordnet. Er prueft
+die `best_info`-Snapshot-Wirkung und ihre Uebernahme in den VN-Periodenlauf,
+ohne daraus einen historischen Vollgleichheitsnachweis abzuleiten.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

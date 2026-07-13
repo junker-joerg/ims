@@ -6,8 +6,9 @@ Dieser PR 29 legt den zweiten schmalen fachlichen Regressionstest der
 IMS-Migration fest. Nach dem VN-Carryover-Slice wird als naechster kleiner
 Fachlogik-Schnitt eine VN-Regelwirkung ueber explizite Snapshots gewaehlt.
 
-Der Schnitt bleibt ein Plan-PR: Er fuehrt noch keinen neuen Regressionstest
-ein, startet keinen Runner und behauptet keine historische Vollgleichheit.
+Der urspruengliche Schnitt war ein Plan-PR: Er fuehrte noch keinen neuen
+Regressionstest ein, startete keinen Runner und behauptete keine historische
+Vollgleichheit. PR 30 setzt diesen Plan als gezielten Regressionstest um.
 
 ## Auswahl
 
@@ -47,16 +48,18 @@ Die VN-Regelwirkung ueber explizite Snapshots ist dagegen schon als
 portierter, deterministischer Pfad vorhanden und kann ohne neue historische
 DAT-Behauptung getestet werden.
 
-## Erwarteter naechster PR
+## Umsetzung in PR 30
 
-PR 30 soll den geplanten Slice als eigenen Regressionstest umsetzen:
+PR 30 setzt den geplanten Slice als eigenen Regressionstest um:
 
-- neuer Test mit explizitem `best_info`-Snapshot fuer Policyholder `21`;
+- `tests/test_second_fachlicher_vn_rule_snapshot_regression.py`;
+- expliziter `best_info`-Snapshot fuer Policyholder `21`;
 - Erwartung `chosen_insurer_ids = [12, None]`;
 - Erwartung `information_cost = 4.0`;
-- optionaler Runner-Grenztest, der die Snapshot-Entscheidung ueber
+- Runner-Grenztest, der die Snapshot-Entscheidung ueber
   `run_vn_settlement_period_from_mapping` nachweist;
-- Dokumentation der Grenzen in `docs/migration/`.
+- Dokumentation der Grenzen in
+  `docs/migration/second_fachlicher_regressionstest.md`.
 
 ## Grenzen
 
@@ -73,13 +76,14 @@ PR 30 soll den geplanten Slice als eigenen Regressionstest umsetzen:
 ## Folgeplanung
 
 - PR 30: geplanten `best_info`-VN-Regel-Snapshot-Slice als Regressionstest
-  umsetzen und dokumentieren.
-- PR 31: optional zweiten VN-Regel-Snapshot oder VU-Carryover-Fixture planen,
+  umsetzen und dokumentieren (erledigt).
+- PR 31: optional weiteren VN-Regel-Snapshot oder VU-Carryover-Fixture planen,
   falls der Review mehr Breite vor einer Run-Control-Planung verlangt.
 - PR 32+: spaetere Run-Control- oder Ausfuehrungsadapterplaene erst nach
   separater fachlicher Freigabe; weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierung dieses Plan-PRs
 
-Dieser Plan wird nur ueber Dokumentationstests validiert. Die fachliche
-Ausfuehrung des Slices folgt in einem separaten PR.
+Der urspruengliche Plan-PR wurde nur ueber Dokumentationstests validiert. PR 30
+validiert die fachliche Ausfuehrung zusaetzlich ueber
+`tests/test_second_fachlicher_vn_rule_snapshot_regression.py`.

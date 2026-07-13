@@ -181,6 +181,13 @@ Versicherungsentscheidung `[12, None]` und `information_cost = 4.0` pruefen.
 VU-Carryover bleibt ein spaeterer eigener Slice, weil dafuer ein eigenes
 explizites Fixture konservativer ist.
 
+PR 30 setzt diesen zweiten fachlichen Slice um:
+`tests/test_second_fachlicher_vn_rule_snapshot_regression.py` prueft die reine
+`best_info`-Snapshot-Wirkung und eine Runner-Grenze ueber
+`run_vn_settlement_period_from_mapping`. Die Migrationsnotiz
+`docs/migration/second_fachlicher_regressionstest.md` grenzt den Test weiter
+von Simulation, UI-/Run-Control-Startpfad und historischer Vollgleichheit ab.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -290,6 +297,11 @@ explizites Fixture konservativer ist.
     VN-Regelwirkung ueber explizite `best_info`-Snapshots als naechsten
     Regressionstest, weiterhin ohne Simulation, Runner-Start aus einer UI oder
     historische Vollgleichheitsbehauptung.
+22. Geplanten zweiten fachlichen Slice als Regressionstest ausfuehren. Dieser
+    Schnitt ist umgesetzt:
+    `tests/test_second_fachlicher_vn_rule_snapshot_regression.py` prueft
+    `chosen_insurer_ids = [12, None]`, `selected_insurer_ids = [12, 11]`,
+    `information_cost = 4.0` und die Uebernahme in den VN-Periodenlauf.
 
 ## Aktualisierte PR-Restplanung
 
@@ -321,7 +333,9 @@ Aktualisierte grobe Restplanung:
   Regressionstests;
 - zweiter fachlicher Slice ist als VN-Regelwirkung ueber explizite
   `best_info`-Snapshots geplant;
-- 1 PR bis zum zweiten ausgefuehrten fachlichen Regressionstest;
+- zweiter fachlicher VN-Regel-Snapshot-Slice ist als Regressionstest
+  umgesetzt und dokumentiert;
+- 0 PRs bis zum zweiten ausgefuehrten fachlichen Regressionstest;
 - danach 2+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

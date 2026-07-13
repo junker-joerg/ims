@@ -21,6 +21,9 @@ FIRST_FACHLICHER_REGRESSION_DOC = (
 SECOND_FACHLICHER_SLICE_TEST_PLAN = (
     REPO_ROOT / "docs" / "plans" / "second_fachlicher_slice_test_plan.md"
 )
+SECOND_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "second_fachlicher_regressionstest.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -91,7 +94,10 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Policyholder `21`, Versicherer `11/12`, Periode `5`" in plan
     assert "Versicherungsentscheidung `[12, None]`" in plan
     assert "information_cost = 4.0" in plan
-    assert "1 PR bis zum zweiten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in plan
+    assert "second_fachlicher_regressionstest.md" in plan
+    assert "zweiter fachlicher VN-Regel-Snapshot-Slice ist als Regressionstest" in plan
+    assert "0 PRs bis zum zweiten ausgefuehrten fachlichen Regressionstest" in plan
     assert "danach 2+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -274,12 +280,39 @@ def test_second_fachlicher_slice_plan_selects_vn_rule_snapshot_regression() -> N
     assert "tests/test_vn_insurance_rules.py::test_vn_insurance_rule_dispatch_applies_mixed_rule_snapshots" in plan
     assert "tests/test_vn_rule_runner.py::test_vn_rule_runner_applies_explicit_insurance_rule_snapshots" in plan
     assert "VU-Carryover bleibt fachlich naheliegend" in plan
-    assert "PR 30 soll den geplanten Slice als eigenen Regressionstest umsetzen" in plan
+    assert "PR 30 setzt den geplanten Slice als eigenen Regressionstest um" in plan
+    assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in plan
+    assert "docs/migration/second_fachlicher_regressionstest.md" in plan
+    assert "PR 30: geplanten `best_info`-VN-Regel-Snapshot-Slice als Regressionstest" in plan
+    assert "umsetzen und dokumentieren (erledigt)" in plan
+    assert "validiert die fachliche Ausfuehrung" in plan
     assert "keine Simulation" in plan
     assert "kein Scheduler-Start" in plan
     assert "kein API-/UI-/Run-Control-Startpfad" in plan
     assert "keine neue Fachregel" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
+
+
+def test_second_fachlicher_regression_doc_scopes_second_test() -> None:
+    doc = SECOND_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert SECOND_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Zweiter fachlicher Regressionstest" in doc
+    assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in doc
+    assert "`best_info`" in doc
+    assert "`apply_vn_insurance_rule_snapshots`" in doc
+    assert "`run_vn_settlement_period_from_mapping`" in doc
+    assert "Policyholder | `21`" in doc
+    assert "Versicherer | `11` und `12`" in doc
+    assert "Periode | `5`" in doc
+    assert "chosen_insurer_ids = [12, None]" in doc
+    assert "selected_insurer_ids = [12, 11]" in doc
+    assert "information_cost = 4.0" in doc
+    assert "chosen_insurer_sector_current = [12, None]" in doc
+    assert "end_wealth_current = 87.0" in doc
+    assert "kein historischer Vollgleichheitsnachweis" in doc
+    assert "kein API-/UI-/Run-Control-Startpfad" in doc
+    assert "keine neue Fachregel" in doc
 
 
 def test_plan_indexes_reference_ims_core_resume_plan() -> None:
@@ -305,7 +338,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/first_fachlicher_slice_test_plan.md" in readme
     assert "docs/migration/first_fachlicher_regressionstest.md" in readme
     assert "docs/plans/second_fachlicher_slice_test_plan.md" in readme
+    assert "docs/migration/second_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
+    assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "explicit_transition_carryover_probe_contract" in readme
@@ -320,6 +355,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "schmaler Slice geplant" in readme
     assert "VN-Regelwirkung ueber explizite `best_info`-Snapshots" in readme
     assert "Policyholder `21`, Versicherer `11/12` und Periode `5`" in readme
+    assert "zweite fachliche Regressionstest" in readme
+    assert "Uebernahme in den VN-Periodenlauf" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
     assert "replay_vn_policyholder_transition_plan.json" in readme
