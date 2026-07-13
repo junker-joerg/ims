@@ -138,6 +138,10 @@ Der zugehoerige Vertrag ist unter
 `docs/migration/run_control_adapter_result_contract.md` dokumentiert. Er kann
 ein vorab erzeugtes `controlled_execution_adapter`-JSON lokal pruefen, startet
 aber keinen Adapter und schreibt keine Metadaten.
+Der vorgeschlagene naechste Schritt steht unter
+`docs/plans/run_control_adapter_result_view_plan.md`: eine read-only
+API-/UI-Anzeigeplanung fuer Adapter-Resultate, weiterhin ohne Browser-Upload,
+Dateiauswahl, Startbutton oder Adapterstart.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

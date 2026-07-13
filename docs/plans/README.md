@@ -32,3 +32,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `run_control_adapter_result_plan.md`: PR-36-Entscheidung fuer ein
   read-only Adapter-Resultat in Run-Control und PR-37-Vertrag, weiterhin ohne
   Adapterstart, Browser-Upload, Queue-Worker oder UI-Startpfad.
+- `run_control_adapter_result_view_plan.md`: Vorschlag fuer PR 38 als
+  read-only API-/UI-Anzeigeplanung fuer bereits lokal erzeugte
+  Adapterresultate, weiterhin ohne Upload, Startbutton oder Adapterstart.

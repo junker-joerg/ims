@@ -144,6 +144,12 @@ Der read-only Adapter-Resultat-Vertrag ist nach PR 37 umgesetzt:
 
 Bis zu einem read-only Adapter-Resultat-Vertrag bleiben nach PR 37 noch 0 PRs.
 
+Naechster vorgeschlagener Schritt:
+
+- PR 38: read-only API-/UI-Anzeige fuer Adapter-Resultate planen, weiterhin
+  ohne Browser-Upload, Dateiauswahl, Startbutton oder Adapterstart
+  (`docs/plans/run_control_adapter_result_view_plan.md`).
+
 ## Rest-PR-Planung
 
 - PR 1: `IMSVNR01.DAT` und `IMSVNR02.DAT` uebernehmen und validieren
@@ -260,9 +266,14 @@ Bis zu einem read-only Adapter-Resultat-Vertrag bleiben nach PR 37 noch 0 PRs.
   ohne Adapterstart aus Run-Control (dieser Schnitt:
   `tests/test_api_run_control_adapter_result_contract.py` und
   `docs/migration/run_control_adapter_result_contract.md`, erledigt).
-- PR 38: Optionale read-only API-/UI-Anzeige fuer das Adapter-Resultat planen
-  oder vorbereiten, weiterhin ohne Adapterstart.
-- PR 39+: Breitere fachliche Regel-Slices erst nach separater Freigabe
+- PR 38: Read-only API-/UI-Anzeige fuer das Adapter-Resultat planen,
+  weiterhin ohne Upload, Dateiauswahl, Startbutton oder Adapterstart.
+- PR 39: Optional read-only API-Vertrag oder Endpunkt fuer ein vorab
+  bereitgestelltes Adapter-Resultat vorbereiten, weiterhin ohne Upload und
+  ohne Adapterstart.
+- PR 40: Optional UI-Karte fuer diesen Vertrag anzeigen, weiterhin ohne
+  Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe.
+- PR 41+: Breitere fachliche Regel-Slices erst nach separater Freigabe
   vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.

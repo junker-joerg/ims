@@ -653,6 +653,9 @@ HTTP-Lesekontrakte und schaltet keinen Startbutton frei.
 Der naechste geplante Run-Control-Anschluss ist nur ein read-only Adapter-Resultat. `docs/plans/run_control_adapter_result_plan.md` legt fest,
 dass Run-Control hoechstens ein bereits lokal erzeugtes
 `controlled_execution_adapter`-JSON einordnen darf. Es gibt weiterhin keinen Adapterstart aus Run-Control, keinen Browser-Upload, keinen Queue-Worker und keinen UI-Startpfad.
+Der vorgeschlagene Folgeschritt `docs/plans/run_control_adapter_result_view_plan.md`
+plant nur eine read-only API-/UI-Anzeige fuer Adapter-Resultate. Auch dort
+bleiben Browser-Upload, Dateiauswahl, Startbutton und Adapterstart gesperrt.
 
 Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen -> Carryover-Probe-Vertrag lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan`, `GET /api/run-control/core-diagnostics-bridge` und `GET /api/core-validation/carryover-probe-contract`, jeweils optional mit `queue_id`, wo der Endpunkt dies unterstuetzt. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan, Bruecke und Carryover-Probe-Vertrag bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight`, ein Brueckenhinweis `resolve_core_validation_blockers` und `api_starts_probe = false`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 

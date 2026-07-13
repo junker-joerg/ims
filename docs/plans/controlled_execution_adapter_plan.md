@@ -117,8 +117,11 @@ zurueck.
   `python_port/ims/api/run_control_adapter_result_contract.py`,
   `tests/test_api_run_control_adapter_result_contract.py` und
   `docs/migration/run_control_adapter_result_contract.md`).
-- PR 38+: danach optional rein lesende API-/UI-Anzeige oder weiterer
-  fachlicher Slice, weiterhin ohne Vollgleichheitsbehauptung.
+- PR 38 kann danach optional eine rein lesende API-/UI-Anzeige fuer
+  Adapter-Resultate planen (`docs/plans/run_control_adapter_result_view_plan.md`),
+  weiterhin ohne Upload, Startbutton oder Adapterstart.
+- PR 39+: danach optional read-only API-/UI-Anzeige oder weiterer fachlicher
+  Slice, weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierung dieses Plan-/Vertragsstands
 

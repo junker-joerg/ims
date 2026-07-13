@@ -114,6 +114,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "keine HTTP-/UI-Schreibpfade" in readme
     assert "docs/migration/workbench_run_control_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_plan.md" in readme
+    assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
     assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
     assert "docs/migration/workbench_demo_checklist.md" in readme
@@ -268,6 +269,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "bereits lokal erzeugtes" in doc
     assert "keinen Adapterstart aus Run-Control" in doc
     assert "akzeptiert keinen Browser-Upload" in doc
+    assert "run_control_adapter_result_view_plan.md" in doc
+    assert "read-only API-/UI-Anzeige" in doc
+    assert "Dateiauswahl, Startbutton und Adapterstart gesperrt" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
     assert 'mode = "run_control_queue_action_plan"' in doc
@@ -543,6 +547,7 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "bleiben nach PR 35 noch 0 PRs" in backlog
     assert "PR 36: Entscheiden" in backlog
     assert "run_control_adapter_result_plan.md" in backlog
+    assert "run_control_adapter_result_view_plan.md" in backlog
     assert "read-only Adapter-Resultat" in backlog
     assert "Bis zur Entscheidung fuer ein read-only Adapter-Resultat" in backlog
     assert "bleiben nach PR 36 noch" in backlog
@@ -551,8 +556,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "docs/migration/run_control_adapter_result_contract.md" in backlog
     assert "Bis zu einem read-only Adapter-Resultat-Vertrag" in backlog
     assert "bleiben nach PR 37 noch 0 PRs" in backlog
-    assert "PR 38: Optionale read-only API-/UI-Anzeige" in backlog
-    assert "PR 39+: Breitere fachliche Regel-Slices" in backlog
+    assert "PR 38: Read-only API-/UI-Anzeige" in backlog
+    assert "PR 39: Optional read-only API-Vertrag" in backlog
+    assert "PR 40: Optional UI-Karte" in backlog
+    assert "PR 41+: Breitere fachliche Regel-Slices" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

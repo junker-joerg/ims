@@ -244,6 +244,12 @@ Validator und CLI-Schreibfreiheit; die Migrationsnotiz
 `docs/migration/run_control_adapter_result_contract.md` dokumentiert die
 Grenzen.
 
+Als naechster Schritt wird PR 38 vorgeschlagen:
+`docs/plans/run_control_adapter_result_view_plan.md` soll eine rein lesende
+API-/UI-Anzeigeplanung fuer bereits lokal erzeugte Adapterresultate festlegen.
+Der Vorschlag bleibt ohne neuen Endpunkt, ohne Browser-Upload, ohne
+Dateiauswahl, ohne UI-Startbutton und ohne Adapterstart aus Run-Control.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -394,6 +400,10 @@ Grenzen.
     `tests/test_api_run_control_adapter_result_contract.py` und
     `docs/migration/run_control_adapter_result_contract.md` validieren ein
     bereits erzeugtes Adapterresultat ohne Adapterstart.
+30. Read-only Anzeige fuer Adapter-Resultate planen. Vorgeschlagen fuer den
+    naechsten Schnitt:
+    `docs/plans/run_control_adapter_result_view_plan.md` soll API-/UI-Anzeige
+    nur als gesperrte, lesende Grenze vorbereiten.
 
 ## Aktualisierte PR-Restplanung
 
@@ -440,7 +450,9 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zur Entscheidung fuer ein read-only Adapter-Resultat;
 - read-only Adapter-Resultat-Vertrag ist umgesetzt;
 - 0 PRs bis zu einem read-only Adapter-Resultat-Vertrag;
-- danach 1 PR fuer optionale read-only API-/UI-Anzeige;
+- vorgeschlagener naechster Schritt ist PR 38:
+  read-only API-/UI-Anzeige fuer Adapter-Resultate planen;
+- danach 1-2 PRs fuer optionalen read-only API-Vertrag/Endpunkt und UI-Karte;
 - danach 1-2+ PRs fuer anschliessende
   schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
