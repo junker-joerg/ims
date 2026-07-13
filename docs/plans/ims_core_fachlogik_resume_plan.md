@@ -209,6 +209,15 @@ naechsten Schnitt. Dieser Plan startet noch keinen Runner und haelt API, UI,
 Queue, Preflight, Aktionsplan und Kernblick-Bruecke weiter auf
 `execution_performed = false`.
 
+PR 34 setzt diesen Vertrag als read-only DTO um:
+`python_port/ims/api/controlled_execution_adapter_contract.py` beschreibt
+Fixture-Eingaben, Preconditions, verbotene Grenzen und die erwarteten Felder des
+`explicit_multi_period_execution_summary`-Vertrags. Der zugehoerige Test
+`tests/test_api_controlled_execution_adapter_contract.py` prueft die JSON-Form,
+die Schreibfreiheit und die Argumentablehnung; die Migrationsnotiz
+`docs/migration/controlled_execution_adapter_contract.md` ordnet den Schnitt ein.
+Auch dieser Stand startet keinen Runner und haelt `execution_performed = false`.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -338,6 +347,12 @@ Queue, Preflight, Aktionsplan und Kernblick-Bruecke weiter auf
     `docs/plans/controlled_execution_adapter_plan.md` beschreibt den ersten
     Adapter nur als Vertrag und Grenze, ohne Runner-Start, API-/UI-Startpfad,
     Queue-Worker oder historische Vollgleichheitsbehauptung.
+26. Read-only Ausfuehrungsadapter-Vertrag als DTO und Vertragstest vorbereiten.
+    Dieser Schnitt ist umgesetzt:
+    `python_port/ims/api/controlled_execution_adapter_contract.py`,
+    `tests/test_api_controlled_execution_adapter_contract.py` und
+    `docs/migration/controlled_execution_adapter_contract.md` validieren den
+    Vertrag ohne Runner-Start.
 
 ## Aktualisierte PR-Restplanung
 
@@ -376,8 +391,8 @@ Aktualisierte grobe Restplanung:
 - dritter fachlicher VU-Carryover-Fixture-Slice ist als Regressionstest
   umgesetzt und dokumentiert;
 - 0 PRs bis zum dritten ausgefuehrten fachlichen Regressionstest;
-- Ausfuehrungsadapter-Vertrag ist als naechster groesserer Schritt geplant;
-- 1 PR bis zu einem read-only Ausfuehrungsadapter-Vertrag;
+- Ausfuehrungsadapter-Vertrag ist als read-only DTO umgesetzt;
+- 0 PRs bis zu einem read-only Ausfuehrungsadapter-Vertrag;
 - danach 2+ PRs fuer lokale Adapterumsetzung, anschliessende schmale
   VU-/VN-Regel- oder Carryover-Code-Slices und spaetere Run-Control-
   Adapterplaene;

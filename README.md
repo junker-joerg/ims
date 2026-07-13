@@ -112,12 +112,17 @@ Der dritte fachliche Regressionstest ist unter
 `docs/migration/third_fachlicher_regressionstest.md` eingeordnet. Er prueft
 die VU-Carryover-Wirkung und die Vrvu04-Nettowechslerbasis, ohne daraus einen
 historischen Vollgleichheitsnachweis abzuleiten.
-Der naechste groessere Schritt ist unter
-`docs/plans/controlled_execution_adapter_plan.md` geplant: ein schmaler,
-kontrollierter Ausfuehrungsadapter-Vertrag nach drei fachlichen
-Regressionstests. Dieser Plan oeffnet noch keinen Runner-, API- oder UI-Start
-und laesst `execution_performed` in den bestehenden Run-Control-Pfaden auf
-`false`.
+Der read-only Vertrag fuer einen spaeteren kontrollierten Ausfuehrungsadapter
+ist unter `python_port/ims/api/controlled_execution_adapter_contract.py`
+umgesetzt und in
+`docs/migration/controlled_execution_adapter_contract.md` eingeordnet. Er bindet
+einen spaeteren lokalen Adapter an den vorhandenen
+`explicit_multi_period_execution_summary`-Vertrag, oeffnet aber keinen Runner-,
+API- oder UI-Start und laesst `runner_start_enabled`, `writes_enabled` und
+`execution_performed` auf `false`. Die Restplanung steht weiter unter
+`docs/plans/controlled_execution_adapter_plan.md`; dieser Vertrag ist ein
+kontrollierter Ausfuehrungsadapter-Vertrag, aber kein historischer
+Vollgleichheitsnachweis.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
@@ -226,6 +231,7 @@ Ein lokaler Run-Control-Vertrag beschreibt die spaetere Steuerungsgrenze, ohne e
 python -m ims.api.run_control_contracts
 python -m ims.api.run_control_dry_run_contract
 python -m ims.api.core_validation_carryover_probe_contract
+python -m ims.api.controlled_execution_adapter_contract
 ```
 
 Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
@@ -234,6 +240,10 @@ Der Carryover-Probe-Vertrag beschreibt den read-only API-Vertrag fuer bereits
 berechnete Probe-Ergebnisse. Die Workbench-API stellt ihn ueber
 `GET /api/core-validation/carryover-probe-contract` bereit. Er akzeptiert keinen
 Probe-Payload, startet keinen Probe und schreibt keine Daten.
+
+Der kontrollierte Ausfuehrungsadapter-Vertrag beschreibt nur die spaetere lokale
+Adaptergrenze. Er hat in diesem Stand keinen HTTP-Endpunkt, keinen UI-Startpfad,
+keinen Queue-Worker und startet keinen expliziten Periodenrunner.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 

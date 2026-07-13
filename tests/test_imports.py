@@ -176,6 +176,12 @@ def test_core_placeholders_import() -> None:
         core_validation_carryover_probe_api_contract_payload,
         main as core_validation_carryover_probe_contract_main,
     )
+    from ims.api.controlled_execution_adapter_contract import (
+        ControlledExecutionAdapterContract,
+        build_controlled_execution_adapter_contract,
+        controlled_execution_adapter_contract_payload,
+        main as controlled_execution_adapter_contract_main,
+    )
     from ims.api.run_control_contracts import (
         WorkbenchRunControlContract,
         build_run_control_contract,
@@ -706,6 +712,10 @@ def test_core_placeholders_import() -> None:
     assert build_core_validation_carryover_probe_api_contract is not None
     assert core_validation_carryover_probe_api_contract_payload is not None
     assert core_validation_carryover_probe_contract_main is not None
+    assert ControlledExecutionAdapterContract is not None
+    assert build_controlled_execution_adapter_contract is not None
+    assert controlled_execution_adapter_contract_payload is not None
+    assert controlled_execution_adapter_contract_main is not None
     assert WorkbenchRunControlContract is not None
     assert build_run_control_contract is not None
     assert run_control_contracts_main is not None

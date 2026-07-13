@@ -106,10 +106,13 @@ Der naechste groessere Schnitt ist nach PR 33 geplant:
 - PR 33: schmalen kontrollierten Ausfuehrungsadapter-Vertrag nach drei
   fachlichen Regressionstests planen (erledigt:
   `docs/plans/controlled_execution_adapter_plan.md`).
-- PR 34: read-only Ausfuehrungsadapter-Vertrag als DTO oder Vertragstest
-  vorbereiten, weiterhin ohne Runner-Start.
+- PR 34: read-only Ausfuehrungsadapter-Vertrag als DTO und Vertragstest
+  vorbereiten, weiterhin ohne Runner-Start (erledigt:
+  `python_port/ims/api/controlled_execution_adapter_contract.py`,
+  `tests/test_api_controlled_execution_adapter_contract.py` und
+  `docs/migration/controlled_execution_adapter_contract.md`).
 
-Bis zu einem read-only Ausfuehrungsadapter-Vertrag bleibt nach PR 33 noch 1 PR.
+Bis zu einem read-only Ausfuehrungsadapter-Vertrag bleiben nach PR 34 noch 0 PRs.
 
 ## Rest-PR-Planung
 
@@ -213,11 +216,13 @@ Bis zu einem read-only Ausfuehrungsadapter-Vertrag bleibt nach PR 33 noch 1 PR.
   schmaler Ausfuehrungsadapterplan fachlich sinnvoller ist (dieser Schnitt:
   Ausfuehrungsadapter-Vertrag geplant, erledigt).
 - PR 34: Read-only Ausfuehrungsadapter-Vertrag vorbereiten, weiterhin ohne
-  Runner-Start, API-/UI-Startpfad oder Queue-Worker.
-- PR 35+: Eine spaetere lokale Adapterumsetzung, Run-Control-Anbindung oder
-  breitere fachliche
-  Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
-  Vollgleichheitsbehauptung.
+  Runner-Start, API-/UI-Startpfad oder Queue-Worker (dieser Schnitt:
+  `tests/test_api_controlled_execution_adapter_contract.py` und
+  `docs/migration/controlled_execution_adapter_contract.md`, erledigt).
+- PR 35: Optional lokalen Adapter fuer explizite Fixture-Ausfuehrung umsetzen,
+  nur nach separater Freigabe und ohne API-/UI-Startpfad.
+- PR 36+: Run-Control-Anbindung oder breitere fachliche Regel-Slices erst nach
+  separater Freigabe vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.
 

@@ -50,9 +50,9 @@ Technische Anker:
 - `docs/plans/run_control_core_diagnostics_bridge_plan.md`;
 - `docs/migration/workbench_run_control_plan.md`.
 
-## Erwarteter naechster PR
+## Umgesetzter Vertrag in PR 34
 
-PR 34 soll zunaechst nur den Ausfuehrungsadapter-Vertrag vorbereiten:
+PR 34 bereitet den Ausfuehrungsadapter-Vertrag als read-only DTO vor:
 
 - klare Adapter-Eingaben benennen, etwa Fixture-Pfad, Adaptermodus und
   explizite Freigabeflags;
@@ -63,11 +63,22 @@ PR 34 soll zunaechst nur den Ausfuehrungsadapter-Vertrag vorbereiten:
   `explicit_multi_period_execution_summary`-Vertrag binden;
 - weiter `execution_performed = false` in API, UI, Queue, Preflight,
   Aktionsplan und Kernblick-Bruecke;
-- Dokumentation und Tests, aber noch keinen Runner-Start.
+- Dokumentation und Tests, aber keinen Runner-Start.
+
+Umgesetzt sind:
+
+- `python_port/ims/api/controlled_execution_adapter_contract.py`;
+- `tests/test_api_controlled_execution_adapter_contract.py`;
+- `docs/migration/controlled_execution_adapter_contract.md`.
+
+Der Vertrag bindet spaetere Adapterergebnisse an
+`explicit_multi_period_execution_summary`, meldet aber weiterhin
+`runner_start_enabled = false`, `writes_enabled = false` und
+`execution_performed = false`.
 
 PR 35 kann danach einen lokalen, explizit aufgerufenen Adapter umsetzen, wenn
-der Vertrag geprueft ist. Dieser spaetere Schritt muss separat freigegeben
-werden.
+der Vertrag geprueft und separat freigegeben ist. Dieser spaetere Schritt
+bleibt ohne API-/UI-Startpfad.
 
 ## Grenzen
 
@@ -83,14 +94,15 @@ werden.
 
 ## Folgeplanung
 
-- PR 34: read-only Ausfuehrungsadapter-Vertrag planen oder als DTO
-  vorbereiten, weiterhin ohne Runner-Start.
+- PR 34: read-only Ausfuehrungsadapter-Vertrag als DTO und Vertragstest
+  umsetzen und dokumentieren (erledigt).
 - PR 35: optional lokalen Adapter fuer explizite Fixture-Ausfuehrung umsetzen,
   nur nach separater Freigabe und ohne API-/UI-Startpfad.
 - PR 36+: erst danach entscheiden, ob Run-Control den Adapter nur lesen,
   vormerken oder weiterhin blockieren soll.
 
-## Validierung dieses Plan-PRs
+## Validierung dieses Plan-/Vertragsstands
 
-Dieser Plan wird ueber Dokumentationstests validiert. Er prueft nur die
-Entscheidung, die Grenzen und die naechsten PR-Schritte.
+Dieser Stand wird ueber Dokumentationstests und den neuen Vertragstest
+validiert. Er prueft die Entscheidung, die Grenzen, die naechsten PR-Schritte
+und die stabile JSON-Form des read-only Vertrags.
