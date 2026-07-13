@@ -159,6 +159,13 @@ Periode `21` nach `22` pruefen, mit `apply_vn_state_carryover` und
 portierten Pfad. Dieser Plan fuehrt noch keinen neuen Testpfad ein und startet
 keine Simulation.
 
+PR 27 fuehrt diesen Slice als eigenen fachlichen Regressionstest aus:
+`tests/test_first_fachlicher_vn_carryover_regression.py` prueft den
+VN-Carryover von Versicherer `11` und Policyholder `21` aus globaler Periode
+`21` nach `22` ueber den vorhandenen Probe-/Carryover-Pfad. Der Test bleibt
+ohne Simulation, ohne Scheduler-Start, ohne API-/UI-/Run-Control-Pfad und ohne
+historische Vollgleichheitsbehauptung.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -253,6 +260,12 @@ keine Simulation.
     `replay_vn_policyholder_transition_plan.json`, Versicherer `11`,
     Policyholder `21`, globale Perioden `21 -> 22` und die erwarteten
     Zwischenzustaende fuer den naechsten Regressionstest.
+19. Geplanten VN-Carryover-Slice als Regressionstest ausfuehren. Dieser Schnitt
+    ist umgesetzt:
+    `tests/test_first_fachlicher_vn_carryover_regression.py` prueft
+    `carried_insurer_ids = [11]`, `carried_policyholder_ids = [21]`,
+    `diagnostic_candidate_ids_match = true` und die gesperrten
+    Ausfuehrungs-/Simulationsflags.
 
 ## Aktualisierte PR-Restplanung
 
@@ -276,8 +289,11 @@ Aktualisierte grobe Restplanung:
 - Carryover-Probe-Vertragskarte in der Workbench ist umgesetzt;
 - Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ist umgesetzt;
 - erster fachlicher VN-Carryover-Slice-Test ist geplant;
+- erster fachlicher VN-Carryover-Slice-Test ist als Regressionstest umgesetzt;
 - 0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
-- 2 PRs bis zum ersten echten fachlichen Regressionstest;
+- 0 PRs bis zum ersten ausgefuehrten fachlichen Regressionstest;
+- 1 PR bis zur geschaerften Einordnung dieses ersten fachlichen
+  Regressionstests;
 - danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

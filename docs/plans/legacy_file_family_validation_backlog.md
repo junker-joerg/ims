@@ -59,13 +59,17 @@ Zaehlschnitt: 0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht; 3+
 PRs bis zu einem breiteren fachlichen Anschluss. Diese Zahl ist kein
 Vollgleichheits- oder Gesamtabschlussversprechen.
 
-Bis zum ersten echten fachlichen Regressionstest bleiben nach PR 26 noch 2 PRs:
+Der erste echte fachliche Regressionstest ist nach PR 27 ausgefuehrt:
 
 - PR 27: VN-Carryover-Slice aus
   `replay_vn_policyholder_transition_plan.json` als gezielten Regressionstest
-  ausfuehren.
+  ausfuehren (erledigt:
+  `tests/test_first_fachlicher_vn_carryover_regression.py`).
 - PR 28: Assertions und Dokumentation fuer diesen Slice schaerfen, weiterhin
   ohne historische Vollgleichheitsbehauptung.
+
+Bis zur geschaerften Einordnung dieses ersten fachlichen Regressionstests
+bleibt nach PR 27 noch 1 PR.
 
 ## Rest-PR-Planung
 
@@ -147,7 +151,9 @@ Bis zum ersten echten fachlichen Regressionstest bleiben nach PR 26 noch 2 PRs:
 - PR 26: Ersten fachlichen VN-Carryover-Slice-Test planen
   (dieser Schnitt: `docs/plans/first_fachlicher_slice_test_plan.md`).
 - PR 27: Den geplanten VN-Carryover-Slice als fachlichen Regressionstest
-  ausfuehren, nur ueber vorhandene portierte Probe-/Carryover-Bausteine.
+  ausfuehren, nur ueber vorhandene portierte Probe-/Carryover-Bausteine
+  (dieser Schnitt: `tests/test_first_fachlicher_vn_carryover_regression.py`,
+  erledigt).
 - PR 28: Assertions und Dokumentation fuer den ersten fachlichen
   Regressionstest schaerfen, ohne Vollgleichheitsbehauptung.
 - PR 29+: Eine spaetere Run-Control-Anbindung oder breitere fachliche

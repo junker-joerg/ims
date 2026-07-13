@@ -75,7 +75,10 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "first_fachlicher_slice_test_plan.md" in plan
     assert "Versicherer `11` und Policyholder `21`" in plan
     assert "globale Perioden `21 -> 22`" in plan
-    assert "2 PRs bis zum ersten echten fachlichen Regressionstest" in plan
+    assert "tests/test_first_fachlicher_vn_carryover_regression.py" in plan
+    assert "erster fachlicher VN-Carryover-Slice-Test ist als Regressionstest umgesetzt" in plan
+    assert "0 PRs bis zum ersten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "1 PR bis zur geschaerften Einordnung" in plan
     assert "danach 3+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -199,6 +202,8 @@ def test_first_fachlicher_slice_plan_selects_vn_carryover_regression() -> None:
     assert "kein historischer Gleichheitsnachweis" in plan
     assert "`legacy_c/` enthaelt in diesem Stand keine belastbar gelesene historische" in plan
     assert "PR 27: den VN-Carryover-Slice als eigenen Regressionstest" in plan
+    assert "tests/test_first_fachlicher_vn_carryover_regression.py" in plan
+    assert "Umgesetzter Regressionstest in PR 27" in plan
     assert "PR 28: die Assertions und Dokumentation" in plan
     assert "writes_performed = false" in plan
     assert "execution_performed = false" in plan
@@ -228,6 +233,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/explicit_period_transition_slice.md" in readme
     assert "docs/plans/explicit_transition_carryover_code_slice.md" in readme
     assert "docs/plans/first_fachlicher_slice_test_plan.md" in readme
+    assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "explicit_transition_carryover_probe_contract" in readme
@@ -238,7 +244,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "einem breiteren fachlichen Anschluss" in readme
     assert "Versicherer `11` und Policyholder `21`" in readme
     assert "globaler Periode `21` nach `22`" in readme
-    assert "noch 2 kleine PRs" in readme
+    assert "PR 28 schaerft nur noch" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
     assert "replay_vn_policyholder_transition_plan.json" in readme

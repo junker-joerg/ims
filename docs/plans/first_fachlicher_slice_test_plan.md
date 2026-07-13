@@ -84,17 +84,29 @@ Legacy-Agrsich-Referenzfenster.
 
 ## Naechste PRs
 
-Der Weg zum ersten echten fachlichen Test bleibt klein:
+Der Weg zum ersten echten fachlichen Test ist klein geblieben:
 
 1. PR 26: diesen Slice als fachlichen Testplan festlegen und die Grenzen
-   dokumentieren.
+   dokumentieren (erledigt).
 2. PR 27: den VN-Carryover-Slice als eigenen Regressionstest mit klarer
    erwarteter Ergebnisform ausfuehren. Dabei darf nur der vorhandene
    Probe-/Carryover-Pfad genutzt werden; keine Simulation und keine neue
-   Fachregel.
+   Fachregel (erledigt:
+   `tests/test_first_fachlicher_vn_carryover_regression.py`).
 3. PR 28: die Assertions und Dokumentation so schaerfen, dass der Slice als
    erster fachlicher Regressionstest zaehlbar ist, weiterhin ohne
    Vollgleichheitsbehauptung.
+
+## Umgesetzter Regressionstest in PR 27
+
+`tests/test_first_fachlicher_vn_carryover_regression.py` fuehrt den Slice
+ueber `probe_explicit_transition_carryover(..., apply_vn=True)` aus und prueft
+die fachlichen Zwischenzustaende fuer Versicherer `11`, Policyholder `21` und
+globale Perioden `21 -> 22`.
+
+Der Test bleibt ein enger Regressionstest auf explizite Fixture-Zustaende. Er
+startet keine Simulation, nutzt keinen Scheduler, oeffnet keinen API-/UI- oder
+Run-Control-Pfad und behauptet keine historische Vollgleichheit.
 
 ## Testgrenzen fuer PR 27
 

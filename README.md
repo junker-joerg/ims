@@ -87,9 +87,11 @@ Zahlen ist eine historische Vollgleichheitsbehauptung.
 Der erste echte fachliche Test-Slice ist unter
 `docs/plans/first_fachlicher_slice_test_plan.md` geplant: VN-Carryover fuer
 Versicherer `11` und Policyholder `21` von globaler Periode `21` nach `22` aus
-`replay_vn_policyholder_transition_plan.json`. Bis zum ersten formalen
-fachlichen Regressionstest bleiben damit noch 2 kleine PRs; auch dieser Test
-bleibt zunaechst ohne Simulation und ohne Vollgleichheitsbehauptung.
+`replay_vn_policyholder_transition_plan.json`. Der Slice ist nun als eigener
+fachlicher Regressionstest unter
+`tests/test_first_fachlicher_vn_carryover_regression.py` ausgefuehrt. Er bleibt
+ohne Simulation und ohne Vollgleichheitsbehauptung; PR 28 schaerft nur noch die
+Einordnung, Assertions und Dokumentation dieses ersten Tests.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
