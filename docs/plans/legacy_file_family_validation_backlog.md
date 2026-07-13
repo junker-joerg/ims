@@ -134,6 +134,16 @@ Der naechste Run-Control-Anschluss ist nach PR 36 geplant:
 Bis zur Entscheidung fuer ein read-only Adapter-Resultat bleiben nach PR 36 noch
 0 PRs.
 
+Der read-only Adapter-Resultat-Vertrag ist nach PR 37 umgesetzt:
+
+- PR 37: Read-only Adapter-Resultat-DTO oder Vertrag vorbereiten, weiterhin
+  ohne Adapterstart aus Run-Control (erledigt:
+  `python_port/ims/api/run_control_adapter_result_contract.py`,
+  `tests/test_api_run_control_adapter_result_contract.py` und
+  `docs/migration/run_control_adapter_result_contract.md`).
+
+Bis zu einem read-only Adapter-Resultat-Vertrag bleiben nach PR 37 noch 0 PRs.
+
 ## Rest-PR-Planung
 
 - PR 1: `IMSVNR01.DAT` und `IMSVNR02.DAT` uebernehmen und validieren
@@ -247,10 +257,13 @@ Bis zur Entscheidung fuer ein read-only Adapter-Resultat bleiben nach PR 36 noch
   Resultat anzeigen darf oder ob zuerst ein weiterer schmaler fachlicher Slice
   folgt (dieser Schnitt: read-only Adapter-Resultat geplant, erledigt).
 - PR 37: Read-only Adapter-Resultat-DTO oder Vertrag vorbereiten, weiterhin
-  ohne Adapterstart aus Run-Control.
-- PR 38+: Optionale read-only API-/UI-Anzeige oder breitere fachliche
-  Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
-  Vollgleichheitsbehauptung.
+  ohne Adapterstart aus Run-Control (dieser Schnitt:
+  `tests/test_api_run_control_adapter_result_contract.py` und
+  `docs/migration/run_control_adapter_result_contract.md`, erledigt).
+- PR 38: Optionale read-only API-/UI-Anzeige fuer das Adapter-Resultat planen
+  oder vorbereiten, weiterhin ohne Adapterstart.
+- PR 39+: Breitere fachliche Regel-Slices erst nach separater Freigabe
+  vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.
 

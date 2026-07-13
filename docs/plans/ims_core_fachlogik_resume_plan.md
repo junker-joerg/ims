@@ -235,6 +235,15 @@ einordnen oder dessen Ergebnisform beschreiben duerfen. Es gibt weiterhin
 keinen Adapterstart, keinen Browser-Upload, keinen Queue-Worker, keinen
 Startbutton und keine historische Vollgleichheitsbehauptung.
 
+PR 37 setzt diesen Vertrag um:
+`python_port/ims/api/run_control_adapter_result_contract.py` beschreibt die
+erwartete `controlled_execution_adapter`-Resultatform und prueft bereits
+erzeugte JSON-Dateien read-only. Der Test
+`tests/test_api_run_control_adapter_result_contract.py` belegt Vertrag,
+Validator und CLI-Schreibfreiheit; die Migrationsnotiz
+`docs/migration/run_control_adapter_result_contract.md` dokumentiert die
+Grenzen.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -379,6 +388,12 @@ Startbutton und keine historische Vollgleichheitsbehauptung.
     umgesetzt: `docs/plans/run_control_adapter_result_plan.md` entscheidet,
     dass Run-Control zunaechst nur ein bereits lokal erzeugtes Adapterergebnis
     einordnen darf, ohne Adapterstart.
+29. Read-only Adapter-Resultat-Vertrag fuer Run-Control umsetzen. Dieser
+    Schnitt ist umgesetzt:
+    `python_port/ims/api/run_control_adapter_result_contract.py`,
+    `tests/test_api_run_control_adapter_result_contract.py` und
+    `docs/migration/run_control_adapter_result_contract.md` validieren ein
+    bereits erzeugtes Adapterresultat ohne Adapterstart.
 
 ## Aktualisierte PR-Restplanung
 
@@ -423,8 +438,10 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad;
 - read-only Adapter-Resultat fuer Run-Control ist geplant;
 - 0 PRs bis zur Entscheidung fuer ein read-only Adapter-Resultat;
-- danach 1 PR fuer ein read-only Adapter-Resultat-DTO oder Vertrag;
-- danach 1-2+ PRs fuer optionale read-only API-/UI-Anzeige oder anschliessende
+- read-only Adapter-Resultat-Vertrag ist umgesetzt;
+- 0 PRs bis zu einem read-only Adapter-Resultat-Vertrag;
+- danach 1 PR fuer optionale read-only API-/UI-Anzeige;
+- danach 1-2+ PRs fuer anschliessende
   schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

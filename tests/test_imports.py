@@ -188,6 +188,15 @@ def test_core_placeholders_import() -> None:
         main as controlled_execution_adapter_main,
         run_controlled_execution_adapter,
     )
+    from ims.api.run_control_adapter_result_contract import (
+        RunControlAdapterResultContract,
+        RunControlAdapterResultIssue,
+        RunControlAdapterResultValidationResult,
+        build_run_control_adapter_result_contract,
+        main as run_control_adapter_result_contract_main,
+        run_control_adapter_result_contract_payload,
+        validate_run_control_adapter_result_payload,
+    )
     from ims.api.run_control_contracts import (
         WorkbenchRunControlContract,
         build_run_control_contract,
@@ -726,6 +735,13 @@ def test_core_placeholders_import() -> None:
     assert detect_controlled_execution_fixture_kind is not None
     assert run_controlled_execution_adapter is not None
     assert controlled_execution_adapter_main is not None
+    assert RunControlAdapterResultContract is not None
+    assert RunControlAdapterResultIssue is not None
+    assert RunControlAdapterResultValidationResult is not None
+    assert build_run_control_adapter_result_contract is not None
+    assert run_control_adapter_result_contract_payload is not None
+    assert validate_run_control_adapter_result_payload is not None
+    assert run_control_adapter_result_contract_main is not None
     assert WorkbenchRunControlContract is not None
     assert build_run_control_contract is not None
     assert run_control_contracts_main is not None

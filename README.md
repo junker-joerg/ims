@@ -133,6 +133,11 @@ Der naechste Run-Control-Anschluss ist unter
 zunaechst nur ein bereits lokal erzeugtes Adapterergebnis als read-only
 Resultat einordnen duerfen. Der Plan oeffnet keinen Adapterstart, keinen
 Browser-Upload, keinen Queue-Worker und keinen UI-Startpfad.
+Der zugehoerige Vertrag ist unter
+`python_port/ims/api/run_control_adapter_result_contract.py` umgesetzt und in
+`docs/migration/run_control_adapter_result_contract.md` dokumentiert. Er kann
+ein vorab erzeugtes `controlled_execution_adapter`-JSON lokal pruefen, startet
+aber keinen Adapter und schreibt keine Metadaten.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
@@ -243,6 +248,8 @@ python -m ims.api.run_control_dry_run_contract
 python -m ims.api.core_validation_carryover_probe_contract
 python -m ims.api.controlled_execution_adapter_contract
 python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release
+python -m ims.api.run_control_adapter_result_contract
+python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
 ```
 
 Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
@@ -260,6 +267,10 @@ Der lokale kontrollierte Ausfuehrungsadapter startet nur nach expliziter lokaler
 Freigabe und gibt eine `explicit_multi_period_execution_summary` zurueck. Er
 akzeptiert in diesem Stand keinen Output-Pfad, schreibt keine Metadaten und ist
 nicht an die Browser-Workbench angebunden.
+
+Der Run-Control-Adapter-Resultat-Vertrag beschreibt und prueft nur bereits lokal
+erzeugte Adapter-JSONs. Er ist kein Startpfad, kein Upload und kein
+Run-Control-Worker.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 

@@ -113,7 +113,10 @@ zurueck.
   Adapter-Resultat einordnen darf oder ob ein weiterer fachlicher Slice folgt
   (erledigt: `docs/plans/run_control_adapter_result_plan.md`).
 - PR 37: read-only Adapter-Resultat-DTO oder Vertrag vorbereiten, weiterhin
-  ohne Adapterstart aus Run-Control.
+  ohne Adapterstart aus Run-Control (erledigt:
+  `python_port/ims/api/run_control_adapter_result_contract.py`,
+  `tests/test_api_run_control_adapter_result_contract.py` und
+  `docs/migration/run_control_adapter_result_contract.md`).
 - PR 38+: danach optional rein lesende API-/UI-Anzeige oder weiterer
   fachlicher Slice, weiterhin ohne Vollgleichheitsbehauptung.
 

@@ -568,6 +568,8 @@ python -m ims.api.run_control_contracts
 python -m ims.api.run_control_dry_run_contract
 python -m ims.api.controlled_execution_adapter_contract
 python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release
+python -m ims.api.run_control_adapter_result_contract
+python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
 ```
 
 Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrte HTTP-, UI- und Ausfuehrungsgrenzen, zukuenftig erwartbare Eingaben wie `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at` und `execution_enabled` sowie verbotene Grenzen wie Simulation, Fachlogikmutation, Browser-Upload, HTTP-Schreibendpunkt und historische Vollgleichheitsbehauptung.
@@ -589,6 +591,12 @@ Der lokale kontrollierte Ausfuehrungsadapter enthaelt
 `--explicit-execution-release`. Er akzeptiert `periods`-Fixtures und
 Planfixtures mit `base_snapshot` plus `period_updates`, gibt ausschliesslich den
 `explicit_multi_period_execution_summary`-Vertrag zurueck und nimmt keinen freien `--output-dir` an.
+
+Der Run-Control-Adapter-Resultat-Vertrag enthaelt
+`mode = "run_control_adapter_result_contract"` und prueft nur ein bereits lokal
+erzeugtes `controlled_execution_adapter`-JSON. Der lokale Check liefert
+`mode = "run_control_adapter_result_validation"`, startet keinen Adapter,
+schreibt keine Metadaten und akzeptiert keinen Browser-Upload.
 
 Ein lokaler Request-Check kann eine spaetere Steuerungsanfrage als DTO validieren:
 
@@ -769,6 +777,8 @@ Vertraege und Grenzen:
 | `python -m ims.api.run_control_contracts` | Spaetere Run-Steuerungsgrenze ohne Ausfuehrung beschreiben | schreibt nicht |
 | `python -m ims.api.controlled_execution_adapter_contract` | Spaeteren lokalen Ausfuehrungsadapter-Vertrag ohne Runner-Start beschreiben | schreibt nicht |
 | `python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release` | Lokalen explizit freigegebenen Fixture-Adapter ohne Output-Pfad ausfuehren | schreibt nicht |
+| `python -m ims.api.run_control_adapter_result_contract` | Run-Control-Adapter-Resultat-Vertrag beschreiben | schreibt nicht |
+| `python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json` | Bereits erzeugtes Adapter-Resultat read-only gegen den Vertrag pruefen | schreibt nicht |
 | `python -m ims.api.core_validation_carryover_probe_contract` | API-Vertrag fuer vorab berechnete Carryover-Probe-Ergebnisse beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_requests check .\run_control_request.json` | Lokalen Run-Control-Request ohne Ausfuehrung validieren | schreibt nicht |
 | `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |

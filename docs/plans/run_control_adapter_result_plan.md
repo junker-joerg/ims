@@ -39,6 +39,15 @@ PR 37 soll nur ein read-only Resultat-DTO oder einen Vertrag vorbereiten:
 - kein HTTP-Schreibpfad und kein UI-Startbutton;
 - kein Start von `ims.api.controlled_execution_adapter` aus Run-Control.
 
+PR 37 ist umgesetzt:
+
+- `python_port/ims/api/run_control_adapter_result_contract.py` beschreibt den
+  read-only Vertrag und validiert bereits erzeugte Adapterresultate lokal;
+- `tests/test_api_run_control_adapter_result_contract.py` prueft Vertrag,
+  Validator, CLI und Schreibfreiheit;
+- `docs/migration/run_control_adapter_result_contract.md` dokumentiert Ursprung,
+  Mapping, Grenzen und offene Folgeschritte.
+
 PR 38 kann danach optional eine rein lesende API-/UI-Anzeige fuer ein solches
 vorab erzeugtes Ergebnis planen. Erst danach darf separat entschieden werden,
 ob weitere fachliche Slices oder eine noch engere Ausfuehrungsfreigabe folgen.
@@ -58,6 +67,7 @@ ob weitere fachliche Slices oder eine noch engere Ausfuehrungsfreigabe folgen.
 
 ## Validierung dieses Plan-PRs
 
-Dieser PR wird nur ueber Dokumentationstests validiert. Er startet keinen
-Adapter und keine Simulation. Er fixiert die Entscheidung, dass Run-Control als
-naechstes hoechstens ein read-only Adapter-Resultat einordnet.
+Dieser Plan- und Vertragsschnitt wird ueber Dokumentations- und Vertragstests
+validiert. Er startet keinen Adapter und keine Simulation. Er fixiert die
+Entscheidung, dass Run-Control hoechstens ein read-only Adapter-Resultat
+einordnet.

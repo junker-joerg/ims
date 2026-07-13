@@ -57,6 +57,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.core_validation_carryover_probe_contract" in readme
     assert "python -m ims.api.controlled_execution_adapter_contract" in readme
     assert "python -m ims.api.controlled_execution_adapter --fixture" in readme
+    assert "python -m ims.api.run_control_adapter_result_contract" in readme
+    assert "python -m ims.api.run_control_adapter_result_contract check" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
     assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "POST /api/run-control/dry-run" in readme
@@ -149,6 +151,8 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.core_validation_carryover_probe_contract" in doc
     assert "python -m ims.api.controlled_execution_adapter_contract" in doc
     assert "python -m ims.api.controlled_execution_adapter --fixture" in doc
+    assert "python -m ims.api.run_control_adapter_result_contract" in doc
+    assert "python -m ims.api.run_control_adapter_result_contract check" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
     assert "GET /api/core-validation/carryover-probe-contract" in doc
     assert "POST /api/run-control/dry-run" in doc
@@ -255,12 +259,15 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert 'mode = "run_control_dry_run_contract"' in doc
     assert 'mode = "controlled_execution_adapter_contract"' in doc
     assert 'mode = "controlled_execution_adapter"' in doc
+    assert 'mode = "run_control_adapter_result_contract"' in doc
+    assert 'mode = "run_control_adapter_result_validation"' in doc
     assert "runner_start_enabled = false" in doc
     assert "--explicit-execution-release" in doc
     assert "keinen freien `--output-dir`" in doc
     assert "read-only Adapter-Resultat" in doc
     assert "bereits lokal erzeugtes" in doc
     assert "keinen Adapterstart aus Run-Control" in doc
+    assert "akzeptiert keinen Browser-Upload" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
     assert 'mode = "run_control_queue_action_plan"' in doc
@@ -540,7 +547,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "Bis zur Entscheidung fuer ein read-only Adapter-Resultat" in backlog
     assert "bleiben nach PR 36 noch" in backlog
     assert "PR 37: Read-only Adapter-Resultat-DTO" in backlog
-    assert "PR 38+: Optionale read-only API-/UI-Anzeige" in backlog
+    assert "tests/test_api_run_control_adapter_result_contract.py" in backlog
+    assert "docs/migration/run_control_adapter_result_contract.md" in backlog
+    assert "Bis zu einem read-only Adapter-Resultat-Vertrag" in backlog
+    assert "bleiben nach PR 37 noch 0 PRs" in backlog
+    assert "PR 38: Optionale read-only API-/UI-Anzeige" in backlog
+    assert "PR 39+: Breitere fachliche Regel-Slices" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
