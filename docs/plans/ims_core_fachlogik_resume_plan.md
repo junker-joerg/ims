@@ -202,6 +202,13 @@ Nettowechslerbasis. Die Migrationsnotiz
 `docs/migration/third_fachlicher_regressionstest.md` grenzt den Test weiter von
 Simulation, UI-/Run-Control-Startpfad und historischer Vollgleichheit ab.
 
+PR 33 legt den naechsten groesseren Schritt fest:
+`docs/plans/controlled_execution_adapter_plan.md` waehlt nach drei fachlichen
+Regressionstests einen schmalen kontrollierten Ausfuehrungsadapter-Vertrag als
+naechsten Schnitt. Dieser Plan startet noch keinen Runner und haelt API, UI,
+Queue, Preflight, Aktionsplan und Kernblick-Bruecke weiter auf
+`execution_performed = false`.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -327,6 +334,10 @@ Simulation, UI-/Run-Control-Startpfad und historischer Vollgleichheit ab.
     `carryovers[0].insurer_ids = [10]`, `foreign_info.insurer.dp = [51.0, 52.0]`,
     `policyholders_prev_sector = [30.0, 80.0]` und
     `net_switcher_values = [0.0, 0.0]`.
+25. Schmalen Ausfuehrungsadapter-Vertrag planen. Dieser Schnitt ist umgesetzt:
+    `docs/plans/controlled_execution_adapter_plan.md` beschreibt den ersten
+    Adapter nur als Vertrag und Grenze, ohne Runner-Start, API-/UI-Startpfad,
+    Queue-Worker oder historische Vollgleichheitsbehauptung.
 
 ## Aktualisierte PR-Restplanung
 
@@ -365,8 +376,11 @@ Aktualisierte grobe Restplanung:
 - dritter fachlicher VU-Carryover-Fixture-Slice ist als Regressionstest
   umgesetzt und dokumentiert;
 - 0 PRs bis zum dritten ausgefuehrten fachlichen Regressionstest;
-- danach 2+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
-  Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
+- Ausfuehrungsadapter-Vertrag ist als naechster groesserer Schritt geplant;
+- 1 PR bis zu einem read-only Ausfuehrungsadapter-Vertrag;
+- danach 2+ PRs fuer lokale Adapterumsetzung, anschliessende schmale
+  VU-/VN-Regel- oder Carryover-Code-Slices und spaetere Run-Control-
+  Adapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.

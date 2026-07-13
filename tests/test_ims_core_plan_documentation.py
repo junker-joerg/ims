@@ -30,6 +30,9 @@ THIRD_FACHLICHER_SLICE_TEST_PLAN = (
 THIRD_FACHLICHER_REGRESSION_DOC = (
     REPO_ROOT / "docs" / "migration" / "third_fachlicher_regressionstest.md"
 )
+CONTROLLED_EXECUTION_ADAPTER_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "controlled_execution_adapter_plan.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -113,6 +116,10 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "third_fachlicher_regressionstest.md" in plan
     assert "dritter fachlicher VU-Carryover-Fixture-Slice ist als Regressionstest" in plan
     assert "0 PRs bis zum dritten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "controlled_execution_adapter_plan.md" in plan
+    assert "Ausfuehrungsadapter-Vertrag" in plan
+    assert "execution_performed = false" in plan
+    assert "1 PR bis zu einem read-only Ausfuehrungsadapter-Vertrag" in plan
     assert "danach 2+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -382,6 +389,32 @@ def test_third_fachlicher_regression_doc_scopes_third_test() -> None:
     assert "keine neue Fachregel" in doc
 
 
+def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
+    plan = CONTROLLED_EXECUTION_ADAPTER_PLAN.read_text(encoding="utf-8")
+
+    assert CONTROLLED_EXECUTION_ADAPTER_PLAN.is_file()
+    assert "Kontrollierter Ausfuehrungsadapter nach drei Fach-Slices" in plan
+    assert "Dieser PR 33" in plan
+    assert "Gewaehlt wird ein schmaler Ausfuehrungsadapterplan" in plan
+    assert "Drei fachliche Regressionstests" in plan
+    assert "kein API-/UI-Startpfad im ersten Adapter-PR" in plan
+    assert "nur explizite VU/VN-Periodenfixtures" in plan
+    assert "keine Queue-Ausfuehrung und kein Worker" in plan
+    assert "build_explicit_multi_period_execution_summary" in plan
+    assert "python_port/ims/api/run_control_queue_action_plan.py" in plan
+    assert "python_port/ims/api/run_control_core_diagnostics_bridge.py" in plan
+    assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
+    assert "docs/migration/workbench_run_control_plan.md" in plan
+    assert "PR 34 soll zunaechst nur den Ausfuehrungsadapter-Vertrag vorbereiten" in plan
+    assert "execution_performed = false" in plan
+    assert "noch keinen Runner-Start" in plan
+    assert "keine Simulation" in plan
+    assert "kein HTTP-/UI-Startpfad" in plan
+    assert "kein Queue-Worker" in plan
+    assert "keine neue Fachregel" in plan
+    assert "keine historische Vollgleichheitsbehauptung" in plan
+
+
 def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     plans_readme = PLANS_README.read_text(encoding="utf-8")
     readme = README.read_text(encoding="utf-8")
@@ -400,6 +433,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "fachlichen Slice als VN-Regelwirkung" in plans_readme
     assert "third_fachlicher_slice_test_plan.md" in plans_readme
     assert "fachlichen Slice als VU-Carryover-Fixture" in plans_readme
+    assert "controlled_execution_adapter_plan.md" in plans_readme
+    assert "schmalen Ausfuehrungsadapter" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
@@ -410,6 +445,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/migration/second_fachlicher_regressionstest.md" in readme
     assert "docs/plans/third_fachlicher_slice_test_plan.md" in readme
     assert "docs/migration/third_fachlicher_regressionstest.md" in readme
+    assert "docs/plans/controlled_execution_adapter_plan.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
@@ -434,6 +470,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "Versicherer `10` von lokaler Periode `2` nach `3`" in readme
     assert "dritte fachliche Regressionstest" in readme
     assert "Vrvu04-Nettowechslerbasis" in readme
+    assert "kontrollierter Ausfuehrungsadapter-Vertrag" in readme
+    assert "execution_performed" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
     assert "replay_vn_policyholder_transition_plan.json" in readme

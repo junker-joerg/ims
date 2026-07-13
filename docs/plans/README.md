@@ -25,3 +25,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `third_fachlicher_slice_test_plan.md`: PR-31-Plan fuer den dritten
   fachlichen Slice als VU-Carryover-Fixture, weiterhin ohne Simulation und ohne
   Vollgleichheitsbehauptung.
+- `controlled_execution_adapter_plan.md`: PR-33-Plan fuer einen spaeteren
+  schmalen Ausfuehrungsadapter nach drei fachlichen Regressionstests, zunaechst
+  ohne Runner-Start, API-/UI-Startpfad oder Vollgleichheitsbehauptung.

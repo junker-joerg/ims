@@ -112,6 +112,12 @@ Der dritte fachliche Regressionstest ist unter
 `docs/migration/third_fachlicher_regressionstest.md` eingeordnet. Er prueft
 die VU-Carryover-Wirkung und die Vrvu04-Nettowechslerbasis, ohne daraus einen
 historischen Vollgleichheitsnachweis abzuleiten.
+Der naechste groessere Schritt ist unter
+`docs/plans/controlled_execution_adapter_plan.md` geplant: ein schmaler,
+kontrollierter Ausfuehrungsadapter-Vertrag nach drei fachlichen
+Regressionstests. Dieser Plan oeffnet noch keinen Runner-, API- oder UI-Start
+und laesst `execution_performed` in den bestehenden Run-Control-Pfaden auf
+`false`.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

@@ -101,6 +101,16 @@ Der dritte fachliche Slice ist nach PR 31 geplant:
 Bis zum dritten ausgefuehrten fachlichen Regressionstest bleiben nach PR 32
 noch 0 PRs.
 
+Der naechste groessere Schnitt ist nach PR 33 geplant:
+
+- PR 33: schmalen kontrollierten Ausfuehrungsadapter-Vertrag nach drei
+  fachlichen Regressionstests planen (erledigt:
+  `docs/plans/controlled_execution_adapter_plan.md`).
+- PR 34: read-only Ausfuehrungsadapter-Vertrag als DTO oder Vertragstest
+  vorbereiten, weiterhin ohne Runner-Start.
+
+Bis zu einem read-only Ausfuehrungsadapter-Vertrag bleibt nach PR 33 noch 1 PR.
+
 ## Rest-PR-Planung
 
 - PR 1: `IMSVNR01.DAT` und `IMSVNR02.DAT` uebernehmen und validieren
@@ -200,8 +210,12 @@ noch 0 PRs.
   Regressionstest umsetzen und dokumentieren (dieser Schnitt:
   `tests/test_third_fachlicher_vu_carryover_regression.py`, erledigt).
 - PR 33: Danach entscheiden, ob ein weiterer VN-/VU-Regel-Snapshot oder ein
-  schmaler Ausfuehrungsadapterplan fachlich sinnvoller ist.
-- PR 34+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
+  schmaler Ausfuehrungsadapterplan fachlich sinnvoller ist (dieser Schnitt:
+  Ausfuehrungsadapter-Vertrag geplant, erledigt).
+- PR 34: Read-only Ausfuehrungsadapter-Vertrag vorbereiten, weiterhin ohne
+  Runner-Start, API-/UI-Startpfad oder Queue-Worker.
+- PR 35+: Eine spaetere lokale Adapterumsetzung, Run-Control-Anbindung oder
+  breitere fachliche
   Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
   Vollgleichheitsbehauptung.
 

@@ -509,7 +509,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "noch 0 PRs" in backlog
     assert "PR 32: Geplanten VU-Carryover-Fixture-Slice" in backlog
     assert "PR 33: Danach entscheiden" in backlog
-    assert "PR 34+: Eine spaetere Run-Control-Anbindung" in backlog
+    assert "Ausfuehrungsadapter-Vertrag geplant" in backlog
+    assert "controlled_execution_adapter_plan.md" in backlog
+    assert "Bis zu einem read-only Ausfuehrungsadapter-Vertrag" in backlog
+    assert "bleibt nach PR 33 noch 1 PR" in backlog
+    assert "PR 34: Read-only Ausfuehrungsadapter-Vertrag" in backlog
+    assert "PR 35+: Eine spaetere lokale Adapterumsetzung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
