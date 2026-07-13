@@ -88,6 +88,17 @@ Naechster bevorzugter fachlicher Schnitt:
 Bis zum zweiten ausgefuehrten fachlichen Regressionstest bleiben nach PR 30
 noch 0 PRs.
 
+Der dritte fachliche Slice ist nach PR 31 geplant:
+
+- PR 31: VU-Carryover-Fixture fuer Versicherer `10` von lokaler Periode `2`
+  nach `3` als naechsten schmalen Regressionstest waehlen (erledigt:
+  `docs/plans/third_fachlicher_slice_test_plan.md`).
+- PR 32: geplanten VU-Carryover-Fixture-Slice als dritten fachlichen
+  Regressionstest umsetzen und dokumentieren.
+
+Bis zum dritten ausgefuehrten fachlichen Regressionstest bleibt nach PR 31 noch
+1 PR.
+
 ## Rest-PR-Planung
 
 - PR 1: `IMSVNR01.DAT` und `IMSVNR02.DAT` uebernehmen und validieren
@@ -182,8 +193,10 @@ noch 0 PRs.
   `tests/test_second_fachlicher_vn_rule_snapshot_regression.py`, erledigt).
 - PR 31: Optional weiteren VN-Regel-Snapshot oder VU-Carryover-Fixture planen,
   falls der Review mehr fachliche Breite vor einer Run-Control-Planung
-  verlangt.
-- PR 32+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
+  verlangt (dieser Schnitt: VU-Carryover-Fixture geplant, erledigt).
+- PR 32: Geplanten VU-Carryover-Fixture-Slice als dritten fachlichen
+  Regressionstest umsetzen und dokumentieren.
+- PR 33+: Eine spaetere Run-Control-Anbindung oder breitere fachliche
   Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
   Vollgleichheitsbehauptung.
 

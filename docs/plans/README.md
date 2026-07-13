@@ -22,3 +22,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `second_fachlicher_slice_test_plan.md`: PR-29-Plan fuer den zweiten
   fachlichen Slice als VN-Regelwirkung ueber explizite `best_info`-Snapshots,
   weiterhin ohne Simulation und ohne Vollgleichheitsbehauptung.
+- `third_fachlicher_slice_test_plan.md`: PR-31-Plan fuer den dritten
+  fachlichen Slice als VU-Carryover-Fixture, weiterhin ohne Simulation und ohne
+  Vollgleichheitsbehauptung.

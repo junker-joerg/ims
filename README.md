@@ -101,6 +101,12 @@ Der zweite fachliche Regressionstest ist unter
 `docs/migration/second_fachlicher_regressionstest.md` eingeordnet. Er prueft
 die `best_info`-Snapshot-Wirkung und ihre Uebernahme in den VN-Periodenlauf,
 ohne daraus einen historischen Vollgleichheitsnachweis abzuleiten.
+Der dritte fachliche Slice ist unter
+`docs/plans/third_fachlicher_slice_test_plan.md` geplant: VU-Carryover fuer
+Versicherer `10` von lokaler Periode `2` nach `3`, mit erwarteter
+weitergerollter Frmdinf-Basis und Vrvu04-Nettowechslerbasis. Auch dieser
+Anschluss bleibt ohne Simulation, ohne neue Fachregel und ohne
+Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

@@ -500,7 +500,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "bleiben nach PR 30" in backlog
     assert "noch 0 PRs" in backlog
     assert "PR 31: Optional weiteren VN-Regel-Snapshot" in backlog
-    assert "PR 32+: Eine spaetere Run-Control-Anbindung" in backlog
+    assert "VU-Carryover-Fixture geplant" in backlog
+    assert "third_fachlicher_slice_test_plan.md" in backlog
+    assert "Bis zum dritten ausgefuehrten fachlichen Regressionstest" in backlog
+    assert "bleibt nach PR 31 noch" in backlog
+    assert "PR 32: Geplanten VU-Carryover-Fixture-Slice" in backlog
+    assert "PR 33+: Eine spaetere Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
