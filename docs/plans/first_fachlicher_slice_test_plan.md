@@ -95,7 +95,8 @@ Der Weg zum ersten echten fachlichen Test ist klein geblieben:
    `tests/test_first_fachlicher_vn_carryover_regression.py`).
 3. PR 28: die Assertions und Dokumentation so schaerfen, dass der Slice als
    erster fachlicher Regressionstest zaehlbar ist, weiterhin ohne
-   Vollgleichheitsbehauptung.
+   Vollgleichheitsbehauptung (dieser Schnitt:
+   `docs/migration/first_fachlicher_regressionstest.md`, erledigt).
 
 ## Umgesetzter Regressionstest in PR 27
 
@@ -107,6 +108,12 @@ globale Perioden `21 -> 22`.
 Der Test bleibt ein enger Regressionstest auf explizite Fixture-Zustaende. Er
 startet keine Simulation, nutzt keinen Scheduler, oeffnet keinen API-/UI- oder
 Run-Control-Pfad und behauptet keine historische Vollgleichheit.
+
+PR 28 ordnet diesen Test unter
+`docs/migration/first_fachlicher_regressionstest.md` als ersten fachlichen
+Regressionstest ein. Die Migrationsnotiz trennt explizit zwischen belegtem
+VN-Carryover-Zwischenzustand und weiterhin offener historischer
+Vollgleichheit.
 
 ## Testgrenzen fuer PR 27
 

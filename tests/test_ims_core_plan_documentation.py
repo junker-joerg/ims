@@ -15,6 +15,9 @@ EXPLICIT_TRANSITION_CARRYOVER_PLAN = (
 FIRST_FACHLICHER_SLICE_TEST_PLAN = (
     REPO_ROOT / "docs" / "plans" / "first_fachlicher_slice_test_plan.md"
 )
+FIRST_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "first_fachlicher_regressionstest.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -78,8 +81,9 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in plan
     assert "erster fachlicher VN-Carryover-Slice-Test ist als Regressionstest umgesetzt" in plan
     assert "0 PRs bis zum ersten ausgefuehrten fachlichen Regressionstest" in plan
-    assert "1 PR bis zur geschaerften Einordnung" in plan
-    assert "danach 3+ PRs" in plan
+    assert "first_fachlicher_regressionstest.md" in plan
+    assert "0 PRs bis zur geschaerften Einordnung" in plan
+    assert "danach 2+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -204,7 +208,9 @@ def test_first_fachlicher_slice_plan_selects_vn_carryover_regression() -> None:
     assert "PR 27: den VN-Carryover-Slice als eigenen Regressionstest" in plan
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in plan
     assert "Umgesetzter Regressionstest in PR 27" in plan
+    assert "docs/migration/first_fachlicher_regressionstest.md" in plan
     assert "PR 28: die Assertions und Dokumentation" in plan
+    assert "PR 28 ordnet diesen Test" in plan
     assert "writes_performed = false" in plan
     assert "execution_performed = false" in plan
     assert "simulation_performed = false" in plan
@@ -212,6 +218,32 @@ def test_first_fachlicher_slice_plan_selects_vn_carryover_regression() -> None:
     assert "keine Simulation" in plan
     assert "keine neue Fachregel" in plan
     assert "keine historische Vollgleichheit behaupten" in plan
+
+
+def test_first_fachlicher_regression_doc_scopes_first_test() -> None:
+    doc = FIRST_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert FIRST_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Erster fachlicher Regressionstest" in doc
+    assert "tests/test_first_fachlicher_vn_carryover_regression.py" in doc
+    assert "tests/fixtures/replay_vn_policyholder_transition_plan.json" in doc
+    assert "`probe_explicit_transition_carryover(..., apply_vn=True)`" in doc
+    assert "`apply_vn_state_carryover`" in doc
+    assert "Versicherer | `11`" in doc
+    assert "Policyholder | `21`" in doc
+    assert "globale Periode `21 -> 22`" in doc
+    assert "carried_insurer_ids = [11]" in doc
+    assert "carried_policyholder_ids = [21]" in doc
+    assert "VN_CARRYOVER_INSURER_SOURCE_FIELDS" in doc
+    assert "VN_CARRYOVER_POLICYHOLDER_SOURCE_FIELDS" in doc
+    assert "writes_performed = false" in doc
+    assert "execution_performed = false" in doc
+    assert "simulation_performed = false" in doc
+    assert "automatic_historical_rule_selection_performed = false" in doc
+    assert "kein historischer Vollgleichheitsnachweis" in doc
+    assert "kein API-/UI-/Run-Control-Startpfad" in doc
+    assert "keine neue Fachregel" in doc
+    assert "zweiten schmalen Slice" in doc
 
 
 def test_plan_indexes_reference_ims_core_resume_plan() -> None:
@@ -233,6 +265,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/explicit_period_transition_slice.md" in readme
     assert "docs/plans/explicit_transition_carryover_code_slice.md" in readme
     assert "docs/plans/first_fachlicher_slice_test_plan.md" in readme
+    assert "docs/migration/first_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
@@ -244,7 +277,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "einem breiteren fachlichen Anschluss" in readme
     assert "Versicherer `11` und Policyholder `21`" in readme
     assert "globaler Periode `21` nach `22`" in readme
-    assert "PR 28 schaerft nur noch" in readme
+    assert "zweiter schmaler Slice" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
     assert "replay_vn_policyholder_transition_plan.json" in readme

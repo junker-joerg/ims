@@ -166,6 +166,13 @@ VN-Carryover von Versicherer `11` und Policyholder `21` aus globaler Periode
 ohne Simulation, ohne Scheduler-Start, ohne API-/UI-/Run-Control-Pfad und ohne
 historische Vollgleichheitsbehauptung.
 
+PR 28 schaerft diesen ersten fachlichen Regressionstest. Die Assertions binden
+die VN-Source-Field-Vertraege direkt an die bestehenden Konstanten
+`VN_CARRYOVER_INSURER_SOURCE_FIELDS` und
+`VN_CARRYOVER_POLICYHOLDER_SOURCE_FIELDS`; die Migrationsnotiz
+`docs/migration/first_fachlicher_regressionstest.md` dokumentiert Zweck,
+Grenzen und offene Folgearbeit.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -266,6 +273,10 @@ historische Vollgleichheitsbehauptung.
     `carried_insurer_ids = [11]`, `carried_policyholder_ids = [21]`,
     `diagnostic_candidate_ids_match = true` und die gesperrten
     Ausfuehrungs-/Simulationsflags.
+20. Ersten fachlichen Regressionstest schaerfen und einordnen. Dieser Schnitt
+    ist umgesetzt: `docs/migration/first_fachlicher_regressionstest.md`
+    dokumentiert den belegten VN-Carryover-Zwischenzustand und grenzt ihn von
+    historischer Vollgleichheit ab.
 
 ## Aktualisierte PR-Restplanung
 
@@ -290,11 +301,12 @@ Aktualisierte grobe Restplanung:
 - Demo-/Doku-Smoke fuer die read-only Carryover/Kern-Sicht ist umgesetzt;
 - erster fachlicher VN-Carryover-Slice-Test ist geplant;
 - erster fachlicher VN-Carryover-Slice-Test ist als Regressionstest umgesetzt;
+- erster fachlicher Regressionstest ist dokumentiert und eingeordnet;
 - 0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht;
 - 0 PRs bis zum ersten ausgefuehrten fachlichen Regressionstest;
-- 1 PR bis zur geschaerften Einordnung dieses ersten fachlichen
+- 0 PRs bis zur geschaerften Einordnung dieses ersten fachlichen
   Regressionstests;
-- danach 3+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
+- danach 2+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

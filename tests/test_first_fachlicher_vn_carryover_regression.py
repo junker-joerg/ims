@@ -1,11 +1,21 @@
 from pathlib import Path
 
+from ims.engine.explicit_period_transition_diagnostics import (
+    VN_CARRYOVER_INSURER_SOURCE_FIELDS,
+    VN_CARRYOVER_POLICYHOLDER_SOURCE_FIELDS,
+)
 from ims.engine.explicit_transition_carryover_probe import (
     probe_explicit_transition_carryover,
 )
 
 
 VN_POLICYHOLDER_PLAN = Path("tests/fixtures/replay_vn_policyholder_transition_plan.json")
+BOUNDARY_FLAGS = (
+    "writes_performed",
+    "execution_performed",
+    "simulation_performed",
+    "automatic_historical_rule_selection_performed",
+)
 
 
 def test_first_fachlicher_vn_carryover_slice_regression() -> None:
@@ -42,29 +52,9 @@ def test_first_fachlicher_vn_carryover_slice_regression() -> None:
     assert transition["previous_result_source"] == "explicit_fixture_snapshot"
     assert transition["issues"] == []
 
-    assert transition["source_fields"]["vn_insurers"] == [
-        "active",
-        "advertising_current_sector",
-        "claims_count_current",
-        "claims_sum_current",
-        "policyholders_current",
-        "policyholders_current_sector",
-        "premiums_current_sector",
-        "reserves_current",
-    ]
-    assert transition["source_fields"]["vn_policyholders"] == [
-        "active",
-        "chosen_insurer_current",
-        "chosen_insurer_sector_current",
-        "claim_sum_current",
-        "end_wealth_current",
-        "end_wealth_sector_current",
-        "insured_current",
-        "insured_current_sector",
-        "insurer_id",
-        "paid_premium_current",
-        "self_damage_current",
-    ]
+    assert set(transition["source_fields"]) == {"vn_insurers", "vn_policyholders"}
+    assert transition["source_fields"]["vn_insurers"] == list(VN_CARRYOVER_INSURER_SOURCE_FIELDS)
+    assert transition["source_fields"]["vn_policyholders"] == list(VN_CARRYOVER_POLICYHOLDER_SOURCE_FIELDS)
     assert transition["carried_insurer_state"]["11"]["active_prev"] is True
     assert transition["carried_insurer_state"]["11"]["premiums_current"] == 101.0
     assert transition["carried_insurer_state"]["11"]["policyholders_current"] == 1.0
@@ -74,7 +64,9 @@ def test_first_fachlicher_vn_carryover_slice_regression() -> None:
     assert transition["carried_policyholder_state"]["21"]["insured_current"] == 1.0
     assert transition["carried_policyholder_state"]["21"]["end_wealth_current"] == 999.0
 
-    assert payload["writes_performed"] is False
-    assert payload["execution_performed"] is False
-    assert payload["simulation_performed"] is False
-    assert payload["automatic_historical_rule_selection_performed"] is False
+    assert {flag: payload[flag] for flag in BOUNDARY_FLAGS} == {
+        "writes_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "automatic_historical_rule_selection_performed": False,
+    }

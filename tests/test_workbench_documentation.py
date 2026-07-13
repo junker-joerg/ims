@@ -469,9 +469,9 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "Aktuelle PR-Zaehlung" in backlog
     assert "0 PRs bis zur demo-nahen read-only Carryover/Kern-Sicht" in backlog
     assert "3+" in backlog
-    assert "Der erste echte fachliche Regressionstest ist nach PR 27 ausgefuehrt" in backlog
+    assert "Der erste echte fachliche Regressionstest ist nach PR 28 ausgefuehrt und" in backlog
     assert "Bis zur geschaerften Einordnung dieses ersten fachlichen Regressionstests" in backlog
-    assert "bleibt nach PR 27 noch 1 PR" in backlog
+    assert "bleiben nach PR 28 noch 0 PRs" in backlog
     assert "PR 22: Carryover-Probe im Kernvalidierungsueberblick" in backlog
     assert "explicit_transition_carryover_probe_contract" in backlog
     assert "PR 23: Read-only API-Vertrag" in backlog
@@ -486,8 +486,11 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in backlog
     assert "erledigt" in backlog
     assert "PR 28: Assertions und Dokumentation fuer den ersten fachlichen" in backlog
+    assert "docs/migration/first_fachlicher_regressionstest.md" in backlog
+    assert "PR 29: Zweiten schmalen fachlichen Slice" in backlog
+    assert "VU-Carryover oder VN-Regelwirkung" in backlog
     assert "keine API-/UI-/Run-Control-Anbindung" in backlog
-    assert "PR 29+: Eine spaetere Run-Control-Anbindung" in backlog
+    assert "PR 30+: Eine spaetere Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
