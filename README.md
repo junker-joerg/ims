@@ -142,6 +142,13 @@ Der vorgeschlagene naechste Schritt steht unter
 `docs/plans/run_control_adapter_result_view_plan.md`: eine read-only
 API-/UI-Anzeigeplanung fuer Adapter-Resultate, weiterhin ohne Browser-Upload,
 Dateiauswahl, Startbutton oder Adapterstart.
+Der erste API-Schnitt dafuer ist unter
+`python_port/ims/api/run_control_adapter_result_api_contract.py` umgesetzt und
+in `docs/migration/run_control_adapter_result_api_contract.md` dokumentiert.
+`GET /api/run-control/adapter-result-contract` beschreibt nur die spaetere
+Anzeigegrenze fuer vorab lokal gepruefte Adapter-Resultate; der Endpunkt nimmt
+keinen Payload an, validiert kein Resultat ueber HTTP und startet keinen
+Adapter.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
@@ -254,6 +261,7 @@ python -m ims.api.controlled_execution_adapter_contract
 python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release
 python -m ims.api.run_control_adapter_result_contract
 python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
+python -m ims.api.run_control_adapter_result_api_contract
 ```
 
 Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
@@ -275,6 +283,17 @@ nicht an die Browser-Workbench angebunden.
 Der Run-Control-Adapter-Resultat-Vertrag beschreibt und prueft nur bereits lokal
 erzeugte Adapter-JSONs. Er ist kein Startpfad, kein Upload und kein
 Run-Control-Worker.
+Die Workbench-API stellt diesen Anzeigevertrag jetzt lesend bereit:
+
+```text
+GET /api/run-control/adapter-result-contract
+```
+
+Die Antwort enthaelt `mode = "run_control_adapter_result_api_contract"`,
+`api_accepts_result_payload = false`, `api_validates_result_payload = false`
+und `api_starts_adapter = false`. Der Endpunkt akzeptiert keinen Request-Body,
+liest keine Adapter-Datei, schreibt keine Metadaten und startet keine
+Ausfuehrung.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 

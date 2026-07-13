@@ -24,6 +24,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     consistency = client.get("/api/metadata/consistency")
     core_validation = client.get("/api/core-validation/overview")
     carryover_probe_contract = client.get("/api/core-validation/carryover-probe-contract")
+    adapter_result_contract = client.get("/api/run-control/adapter-result-contract")
     run_control_queue = client.get("/api/run-control/queue")
     run_control_dry_run = client.post(
         "/api/run-control/dry-run",
@@ -82,6 +83,12 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert carryover_probe_contract.json()["api_accepts_probe_payload"] is False
     assert carryover_probe_contract.json()["execution_performed"] is False
     assert carryover_probe_contract.json()["simulation_performed"] is False
+    assert adapter_result_contract.status_code == 200
+    assert adapter_result_contract.json()["mode"] == "run_control_adapter_result_api_contract"
+    assert adapter_result_contract.json()["api_accepts_result_payload"] is False
+    assert adapter_result_contract.json()["api_starts_adapter"] is False
+    assert adapter_result_contract.json()["execution_performed"] is False
+    assert adapter_result_contract.json()["simulation_performed"] is False
     assert run_control_queue.status_code == 200
     assert run_control_queue.json()["mode"] == "run_control_queue_overview"
     assert run_control_queue.json()["writes_enabled"] is False

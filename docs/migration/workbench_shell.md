@@ -23,6 +23,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/run-control/preflight/{run_id}` prueft den ausgewaehlten Run lesend gegen die gesperrte Run-Control-Grenze.
 - `/api/core-validation/overview` beschreibt lesend den IMS-Kernvalidierungsueberblick, Legacy-Abdeckung und den Execution-Summary-Vertrag, ohne einen Runner zu starten.
 - `/api/core-validation/carryover-probe-contract` beschreibt lesend den API-Vertrag fuer spaeter bereits berechnete Carryover-Probe-Payloads, ohne Payload-Upload oder Probe-Start.
+- `/api/run-control/adapter-result-contract` beschreibt lesend den API-Vertrag fuer spaeter bereits lokal gepruefte Adapter-Resultate, ohne Payload-Upload, HTTP-Validierung oder Adapterstart.
 - `/api/run-control/core-diagnostics-bridge` buendelt lesend Queue-Aktionsplan und Kernvalidierungsueberblick, ohne Queue, Metadaten, Runner oder Simulation zu schreiben.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
@@ -570,6 +571,7 @@ python -m ims.api.controlled_execution_adapter_contract
 python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release
 python -m ims.api.run_control_adapter_result_contract
 python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
+python -m ims.api.run_control_adapter_result_api_contract
 ```
 
 Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrte HTTP-, UI- und Ausfuehrungsgrenzen, zukuenftig erwartbare Eingaben wie `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at` und `execution_enabled` sowie verbotene Grenzen wie Simulation, Fachlogikmutation, Browser-Upload, HTTP-Schreibendpunkt und historische Vollgleichheitsbehauptung.
@@ -598,6 +600,13 @@ erzeugtes `controlled_execution_adapter`-JSON. Der lokale Check liefert
 `mode = "run_control_adapter_result_validation"`, startet keinen Adapter,
 schreibt keine Metadaten und akzeptiert keinen Browser-Upload.
 
+Der Run-Control-Adapter-Resultat-API-Vertrag enthaelt
+`mode = "run_control_adapter_result_api_contract"` und wird nur ueber
+`GET /api/run-control/adapter-result-contract` lesend bereitgestellt. Er
+beschreibt die spaetere Anzeigegrenze fuer vorab lokal gepruefte
+Adapter-Resultate, akzeptiert aber keinen Payload, validiert kein Resultat ueber
+HTTP, startet keinen Adapter und schaltet keine UI-Karte frei.
+
 Ein lokaler Request-Check kann eine spaetere Steuerungsanfrage als DTO validieren:
 
 ```powershell
@@ -616,6 +625,7 @@ POST /api/run-control/queue
 GET /api/run-control/queue/action-plan
 GET /api/core-validation/overview
 GET /api/core-validation/carryover-probe-contract
+GET /api/run-control/adapter-result-contract
 GET /api/run-control/core-diagnostics-bridge
 ```
 
@@ -646,6 +656,17 @@ Kernvalidierung passen. Die Antwort liefert
 liest keine Probe-Datei, startet keinen Probe, schreibt nichts und behauptet
 keine historische Vollgleichheit.
 
+Der Adapter-Resultat-Vertragsendpunkt
+`GET /api/run-control/adapter-result-contract` beschreibt, welche bereits lokal
+geprueften `controlled_execution_adapter`-Resultate spaeter angezeigt werden
+duerfen. Die Antwort liefert
+`mode = "run_control_adapter_result_api_contract"`,
+`api_accepts_result_payload = false`, `api_validates_result_payload = false`,
+`api_starts_adapter = false`, `writes_performed = false` und
+`execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body,
+liest keine Adapter-Datei, startet keinen Adapter, schreibt nichts und
+behauptet keine historische Vollgleichheit.
+
 Der kontrollierte Ausfuehrungsadapter-Vertrag bleibt dagegen ein lokaler
 CLI-/DTO-Vertrag. Der lokale Adapter ist ebenfalls nicht Teil der
 HTTP-Lesekontrakte und schaltet keinen Startbutton frei.
@@ -657,7 +678,7 @@ Der vorgeschlagene Folgeschritt `docs/plans/run_control_adapter_result_view_plan
 plant nur eine read-only API-/UI-Anzeige fuer Adapter-Resultate. Auch dort
 bleiben Browser-Upload, Dateiauswahl, Startbutton und Adapterstart gesperrt.
 
-Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen -> Carryover-Probe-Vertrag lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan`, `GET /api/run-control/core-diagnostics-bridge` und `GET /api/core-validation/carryover-probe-contract`, jeweils optional mit `queue_id`, wo der Endpunkt dies unterstuetzt. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan, Bruecke und Carryover-Probe-Vertrag bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight`, ein Brueckenhinweis `resolve_core_validation_blockers` und `api_starts_probe = false`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
+Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen -> Carryover-Probe-Vertrag lesen -> Adapter-Resultat-Vertrag lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan`, `GET /api/run-control/core-diagnostics-bridge`, `GET /api/core-validation/carryover-probe-contract` und `GET /api/run-control/adapter-result-contract`, jeweils optional mit `queue_id`, wo der Endpunkt dies unterstuetzt. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan, Bruecke, Carryover-Probe-Vertrag und Adapter-Resultat-Vertrag bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight`, ein Brueckenhinweis `resolve_core_validation_blockers`, `api_starts_probe = false` und `api_starts_adapter = false`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 
 Fuer den echten Browser-/Screenshot-Smoke stellt die Frontend-Schale stabile `data-testid`-Anker bereit: `run-control-demo-dry-run-button`, `run-control-demo-queue-button`, `run-control-demo-dry-run-result`, `run-control-demo-queue-result`, `run-control-demo-action-plan`, `run-control-core-bridge` und `carryover-probe-contract`. Der Screenshot-Smoke prueft Sichtbarkeit und Bedienfolge in der lokalen Workbench. Er prueft keine historischen Fachwerte und ersetzt keine spaetere Fachvalidierung.
 
@@ -782,6 +803,7 @@ Vertraege und Grenzen:
 | `python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release` | Lokalen explizit freigegebenen Fixture-Adapter ohne Output-Pfad ausfuehren | schreibt nicht |
 | `python -m ims.api.run_control_adapter_result_contract` | Run-Control-Adapter-Resultat-Vertrag beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json` | Bereits erzeugtes Adapter-Resultat read-only gegen den Vertrag pruefen | schreibt nicht |
+| `python -m ims.api.run_control_adapter_result_api_contract` | API-Vertrag fuer vorab lokal gepruefte Adapter-Resultate beschreiben | schreibt nicht |
 | `python -m ims.api.core_validation_carryover_probe_contract` | API-Vertrag fuer vorab berechnete Carryover-Probe-Ergebnisse beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_requests check .\run_control_request.json` | Lokalen Run-Control-Request ohne Ausfuehrung validieren | schreibt nicht |
 | `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |

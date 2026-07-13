@@ -32,10 +32,13 @@ PR 38 soll eine read-only Anzeigegrenze planen:
 ## Empfohlene PR-Reihenfolge
 
 - PR 38: read-only API-/UI-Anzeige fuer Adapter-Resultate planen und
-  dokumentieren, ohne neuen Endpunkt und ohne UI-Startpfad.
+  dokumentieren, ohne neuen Endpunkt und ohne UI-Startpfad (erledigt).
 - PR 39: optional read-only API-Vertrag oder Endpunkt fuer ein vorab
   bereitgestelltes Adapter-Resultat vorbereiten, weiterhin ohne Upload und
-  ohne Adapterstart.
+  ohne Adapterstart (dieser Schnitt:
+  `python_port/ims/api/run_control_adapter_result_api_contract.py`,
+  `tests/test_api_run_control_adapter_result_api_contract.py` und
+  `docs/migration/run_control_adapter_result_api_contract.md`).
 - PR 40: optional UI-Karte fuer diesen Vertrag anzeigen, weiterhin ohne
   Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe.
 - PR 41+: danach wieder einen schmalen fachlichen VU-/VN-Regel- oder

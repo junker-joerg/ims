@@ -244,11 +244,15 @@ Validator und CLI-Schreibfreiheit; die Migrationsnotiz
 `docs/migration/run_control_adapter_result_contract.md` dokumentiert die
 Grenzen.
 
-Als naechster Schritt wird PR 38 vorgeschlagen:
-`docs/plans/run_control_adapter_result_view_plan.md` soll eine rein lesende
-API-/UI-Anzeigeplanung fuer bereits lokal erzeugte Adapterresultate festlegen.
-Der Vorschlag bleibt ohne neuen Endpunkt, ohne Browser-Upload, ohne
-Dateiauswahl, ohne UI-Startbutton und ohne Adapterstart aus Run-Control.
+PR 38 hat die naechste read-only Anzeigegrenze geplant:
+`docs/plans/run_control_adapter_result_view_plan.md` legt eine rein lesende
+API-/UI-Anzeigeplanung fuer bereits lokal erzeugte Adapterresultate fest.
+
+PR 39 setzt den ersten API-Schnitt dafuer um:
+`python_port/ims/api/run_control_adapter_result_api_contract.py` stellt
+`GET /api/run-control/adapter-result-contract` als read-only Vertrag bereit.
+Der Endpunkt bleibt ohne Payload-Upload, ohne HTTP-Validierung eines
+Adapter-Resultats, ohne UI-Startbutton und ohne Adapterstart aus Run-Control.
 
 ## Vorgeschlagene PR-Reihenfolge
 
@@ -401,9 +405,16 @@ Dateiauswahl, ohne UI-Startbutton und ohne Adapterstart aus Run-Control.
     `docs/migration/run_control_adapter_result_contract.md` validieren ein
     bereits erzeugtes Adapterresultat ohne Adapterstart.
 30. Read-only Anzeige fuer Adapter-Resultate planen. Vorgeschlagen fuer den
-    naechsten Schnitt:
+    naechsten Schnitt und umgesetzt:
     `docs/plans/run_control_adapter_result_view_plan.md` soll API-/UI-Anzeige
     nur als gesperrte, lesende Grenze vorbereiten.
+31. Read-only API-Vertrag fuer Adapter-Resultate bereitstellen. Dieser Schnitt
+    ist umgesetzt:
+    `python_port/ims/api/run_control_adapter_result_api_contract.py`,
+    `tests/test_api_run_control_adapter_result_api_contract.py` und
+    `docs/migration/run_control_adapter_result_api_contract.md` beschreiben
+    `GET /api/run-control/adapter-result-contract` ohne Payload-Upload,
+    HTTP-Validierung oder Adapterstart.
 
 ## Aktualisierte PR-Restplanung
 
@@ -450,9 +461,10 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zur Entscheidung fuer ein read-only Adapter-Resultat;
 - read-only Adapter-Resultat-Vertrag ist umgesetzt;
 - 0 PRs bis zu einem read-only Adapter-Resultat-Vertrag;
-- vorgeschlagener naechster Schritt ist PR 38:
-  read-only API-/UI-Anzeige fuer Adapter-Resultate planen;
-- danach 1-2 PRs fuer optionalen read-only API-Vertrag/Endpunkt und UI-Karte;
+- read-only API-/UI-Anzeige fuer Adapter-Resultate ist geplant;
+- read-only API-Vertrag fuer Adapter-Resultate ist umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 40:
+  gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag anzeigen;
 - danach 1-2+ PRs fuer anschliessende
   schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

@@ -48,6 +48,9 @@ RUN_CONTROL_ADAPTER_RESULT_VIEW_PLAN = (
 RUN_CONTROL_ADAPTER_RESULT_CONTRACT_DOC = (
     REPO_ROOT / "docs" / "migration" / "run_control_adapter_result_contract.md"
 )
+RUN_CONTROL_ADAPTER_RESULT_API_CONTRACT_DOC = (
+    REPO_ROOT / "docs" / "migration" / "run_control_adapter_result_api_contract.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -146,13 +149,16 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "tests/test_api_run_control_adapter_result_contract.py" in plan
     assert "docs/migration/run_control_adapter_result_contract.md" in plan
     assert "docs/plans/run_control_adapter_result_view_plan.md" in plan
+    assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in plan
+    assert "tests/test_api_run_control_adapter_result_api_contract.py" in plan
+    assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
     assert "0 PRs bis zu einem read-only Ausfuehrungsadapter-Vertrag" in plan
     assert "0 PRs bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad" in plan
     assert "0 PRs bis zur Entscheidung fuer ein read-only Adapter-Resultat" in plan
     assert "0 PRs bis zu einem read-only Adapter-Resultat-Vertrag" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 38" in plan
-    assert "read-only API-/UI-Anzeige fuer Adapter-Resultate planen" in plan
-    assert "danach 1-2 PRs fuer optionalen read-only API-Vertrag/Endpunkt und UI-Karte" in plan
+    assert "read-only API-Vertrag fuer Adapter-Resultate ist umgesetzt" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 40" in plan
+    assert "gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag anzeigen" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -466,6 +472,9 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "docs/migration/run_control_adapter_result_contract.md" in plan
     assert "docs/plans/run_control_adapter_result_view_plan.md" in plan
     assert "PR 38 kann danach optional eine rein lesende API-/UI-Anzeige" in plan
+    assert "PR 39 stellt den read-only API-Vertrag fuer Adapter-Resultate bereit" in plan
+    assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in plan
+    assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -511,6 +520,24 @@ def test_run_control_adapter_result_contract_doc_scopes_readonly_validation() ->
     assert "keine historische Vollgleichheitsbehauptung" in doc
 
 
+def test_run_control_adapter_result_api_contract_doc_scopes_readonly_endpoint() -> None:
+    doc = RUN_CONTROL_ADAPTER_RESULT_API_CONTRACT_DOC.read_text(encoding="utf-8")
+
+    assert RUN_CONTROL_ADAPTER_RESULT_API_CONTRACT_DOC.is_file()
+    assert "Run-Control Adapter-Resultat-API-Vertrag" in doc
+    assert "Dieser PR 39" in doc
+    assert "GET /api/run-control/adapter-result-contract" in doc
+    assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in doc
+    assert "tests/test_api_run_control_adapter_result_api_contract.py" in doc
+    assert "`mode = \"run_control_adapter_result_api_contract\"`" in doc
+    assert "`api_accepts_result_payload = false`" in doc
+    assert "`api_validates_result_payload = false`" in doc
+    assert "`api_starts_adapter = false`" in doc
+    assert "kein HTTP-Payload-Check fuer Adapter-Resultate" in doc
+    assert "kein Start von `ims.api.controlled_execution_adapter`" in doc
+    assert "keine historische Vollgleichheitsbehauptung" in doc
+
+
 def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     plan = RUN_CONTROL_ADAPTER_RESULT_VIEW_PLAN.read_text(encoding="utf-8")
 
@@ -526,6 +553,9 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "kein Startbutton" in plan
     assert "kein Start von `ims.api.controlled_execution_adapter`" in plan
     assert "PR 39: optional read-only API-Vertrag oder Endpunkt" in plan
+    assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in plan
+    assert "tests/test_api_run_control_adapter_result_api_contract.py" in plan
+    assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
     assert "PR 40: optional UI-Karte" in plan
     assert "PR 41+: danach wieder einen schmalen fachlichen" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
@@ -598,6 +628,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "PR-37-Vertrag" in plans_readme
     assert "run_control_adapter_result_view_plan.md" in plans_readme
     assert "Vorschlag fuer PR 38" in plans_readme
+    assert "run_control_adapter_result_api_contract.md" in plans_readme
+    assert "GET /api/run-control/adapter-result-contract" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
@@ -614,19 +646,23 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/run_control_adapter_result_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
+    assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter_contract.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter.py" in readme
     assert "python_port/ims/api/run_control_adapter_result_contract.py" in readme
+    assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in readme
     assert "python -m ims.api.controlled_execution_adapter_contract" in readme
     assert "python -m ims.api.controlled_execution_adapter --fixture" in readme
     assert "python -m ims.api.run_control_adapter_result_contract" in readme
+    assert "python -m ims.api.run_control_adapter_result_api_contract" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "explicit_transition_carryover_probe_contract" in readme
     assert "GET /api/core-validation/carryover-probe-contract" in readme
+    assert "GET /api/run-control/adapter-result-contract" in readme
     assert "Carryover-Probe-Vertrag" in readme
     assert "0 PRs bis zur" in readme
     assert "3+ fachliche" in readme

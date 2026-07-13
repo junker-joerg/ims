@@ -35,3 +35,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `run_control_adapter_result_view_plan.md`: Vorschlag fuer PR 38 als
   read-only API-/UI-Anzeigeplanung fuer bereits lokal erzeugte
   Adapterresultate, weiterhin ohne Upload, Startbutton oder Adapterstart.
+- `../migration/run_control_adapter_result_api_contract.md`: PR-39-API-Vertrag
+  fuer `GET /api/run-control/adapter-result-contract`, weiterhin ohne
+  Payload-Upload, HTTP-Validierung, Startbutton oder Adapterstart.

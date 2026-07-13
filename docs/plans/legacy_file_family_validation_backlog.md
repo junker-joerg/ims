@@ -144,11 +144,21 @@ Der read-only Adapter-Resultat-Vertrag ist nach PR 37 umgesetzt:
 
 Bis zu einem read-only Adapter-Resultat-Vertrag bleiben nach PR 37 noch 0 PRs.
 
-Naechster vorgeschlagener Schritt:
+Der read-only API-Vertrag fuer Adapter-Resultate ist nach PR 39 umgesetzt:
 
 - PR 38: read-only API-/UI-Anzeige fuer Adapter-Resultate planen, weiterhin
   ohne Browser-Upload, Dateiauswahl, Startbutton oder Adapterstart
   (`docs/plans/run_control_adapter_result_view_plan.md`).
+- PR 39: read-only API-Vertrag fuer vorab lokal gepruefte Adapter-Resultate,
+  weiterhin ohne Upload, HTTP-Validierung oder Adapterstart
+  (`python_port/ims/api/run_control_adapter_result_api_contract.py`,
+  `tests/test_api_run_control_adapter_result_api_contract.py` und
+  `docs/migration/run_control_adapter_result_api_contract.md`).
+
+Naechster vorgeschlagener Schritt:
+
+- PR 40: gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag anzeigen,
+  weiterhin ohne Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe.
 
 ## Rest-PR-Planung
 
@@ -267,10 +277,13 @@ Naechster vorgeschlagener Schritt:
   `tests/test_api_run_control_adapter_result_contract.py` und
   `docs/migration/run_control_adapter_result_contract.md`, erledigt).
 - PR 38: Read-only API-/UI-Anzeige fuer das Adapter-Resultat planen,
-  weiterhin ohne Upload, Dateiauswahl, Startbutton oder Adapterstart.
+  weiterhin ohne Upload, Dateiauswahl, Startbutton oder Adapterstart
+  (erledigt).
 - PR 39: Optional read-only API-Vertrag oder Endpunkt fuer ein vorab
   bereitgestelltes Adapter-Resultat vorbereiten, weiterhin ohne Upload und
-  ohne Adapterstart.
+  ohne Adapterstart (dieser Schnitt:
+  `tests/test_api_run_control_adapter_result_api_contract.py` und
+  `docs/migration/run_control_adapter_result_api_contract.md`, erledigt).
 - PR 40: Optional UI-Karte fuer diesen Vertrag anzeigen, weiterhin ohne
   Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe.
 - PR 41+: Breitere fachliche Regel-Slices erst nach separater Freigabe

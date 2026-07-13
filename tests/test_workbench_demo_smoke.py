@@ -29,6 +29,7 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     core_bridge = client.get("/api/run-control/core-diagnostics-bridge")
     selected_core_bridge = client.get(f"/api/run-control/core-diagnostics-bridge?queue_id={queue_id}")
     carryover_probe_contract = client.get("/api/core-validation/carryover-probe-contract")
+    adapter_result_contract = client.get("/api/run-control/adapter-result-contract")
 
     assert source.status_code == 200
     assert source.json()["storage_kind"] == "sqlite"
@@ -106,3 +107,12 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     assert carryover_probe_contract.json()["writes_performed"] is False
     assert carryover_probe_contract.json()["execution_performed"] is False
     assert carryover_probe_contract.json()["simulation_performed"] is False
+
+    assert adapter_result_contract.status_code == 200
+    assert adapter_result_contract.json()["mode"] == "run_control_adapter_result_api_contract"
+    assert adapter_result_contract.json()["precomputed_result_required"] is True
+    assert adapter_result_contract.json()["api_accepts_result_payload"] is False
+    assert adapter_result_contract.json()["api_validates_result_payload"] is False
+    assert adapter_result_contract.json()["api_starts_adapter"] is False
+    assert adapter_result_contract.json()["execution_performed"] is False
+    assert adapter_result_contract.json()["simulation_performed"] is False

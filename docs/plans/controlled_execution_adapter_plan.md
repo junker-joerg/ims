@@ -119,9 +119,13 @@ zurueck.
   `docs/migration/run_control_adapter_result_contract.md`).
 - PR 38 kann danach optional eine rein lesende API-/UI-Anzeige fuer
   Adapter-Resultate planen (`docs/plans/run_control_adapter_result_view_plan.md`),
-  weiterhin ohne Upload, Startbutton oder Adapterstart.
-- PR 39+: danach optional read-only API-/UI-Anzeige oder weiterer fachlicher
-  Slice, weiterhin ohne Vollgleichheitsbehauptung.
+  weiterhin ohne Upload, Startbutton oder Adapterstart (erledigt).
+- PR 39 stellt den read-only API-Vertrag fuer Adapter-Resultate bereit
+  (`python_port/ims/api/run_control_adapter_result_api_contract.py` und
+  `docs/migration/run_control_adapter_result_api_contract.md`), weiterhin ohne
+  Payload-Upload, HTTP-Validierung oder Adapterstart (dieser Schnitt).
+- PR 40+: danach optional gesperrte UI-Karte oder weiterer fachlicher Slice,
+  weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierung dieses Plan-/Vertragsstands
 

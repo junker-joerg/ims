@@ -59,8 +59,10 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.controlled_execution_adapter --fixture" in readme
     assert "python -m ims.api.run_control_adapter_result_contract" in readme
     assert "python -m ims.api.run_control_adapter_result_contract check" in readme
+    assert "python -m ims.api.run_control_adapter_result_api_contract" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
     assert "GET /api/core-validation/carryover-probe-contract" in readme
+    assert "GET /api/run-control/adapter-result-contract" in readme
     assert "POST /api/run-control/dry-run" in readme
     assert "POST /api/run-control/queue" in readme
     assert "GET /api/run-control/queue/action-plan" in readme
@@ -74,6 +76,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "run-control-core-bridge" in readme
     assert "carryover-probe-contract" in readme
     assert "api_starts_probe=false" in readme
+    assert "api_starts_adapter = false" in readme
     assert "kein Ausfuehrungsadapter, keine Fachvalidierung" in readme
     assert "python -m ims.api.run_control_requests check .\\run_control_request.json" in readme
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
@@ -115,6 +118,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "docs/migration/workbench_run_control_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
+    assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
     assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
     assert "docs/migration/workbench_demo_checklist.md" in readme
@@ -154,8 +158,10 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.controlled_execution_adapter --fixture" in doc
     assert "python -m ims.api.run_control_adapter_result_contract" in doc
     assert "python -m ims.api.run_control_adapter_result_contract check" in doc
+    assert "python -m ims.api.run_control_adapter_result_api_contract" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
     assert "GET /api/core-validation/carryover-probe-contract" in doc
+    assert "GET /api/run-control/adapter-result-contract" in doc
     assert "POST /api/run-control/dry-run" in doc
     assert "POST /api/run-control/queue" in doc
     assert "GET /api/run-control/queue/action-plan" in doc
@@ -262,6 +268,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert 'mode = "controlled_execution_adapter"' in doc
     assert 'mode = "run_control_adapter_result_contract"' in doc
     assert 'mode = "run_control_adapter_result_validation"' in doc
+    assert 'mode = "run_control_adapter_result_api_contract"' in doc
     assert "runner_start_enabled = false" in doc
     assert "--explicit-execution-release" in doc
     assert "keinen freien `--output-dir`" in doc
@@ -272,6 +279,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "run_control_adapter_result_view_plan.md" in doc
     assert "read-only API-/UI-Anzeige" in doc
     assert "Dateiauswahl, Startbutton und Adapterstart gesperrt" in doc
+    assert "api_accepts_result_payload = false" in doc
+    assert "api_validates_result_payload = false" in doc
+    assert "api_starts_adapter = false" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
     assert 'mode = "run_control_queue_action_plan"' in doc
@@ -285,6 +295,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der lokale Demo-Smoke fuer die Browser-Workbench" in doc
     assert "Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen" in doc
     assert "Run-Control-Kernblick-Bruecke lesen" in doc
+    assert "Adapter-Resultat-Vertrag lesen" in doc
     assert "POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`" in doc
     assert "run-control-demo-dry-run-button" in doc
     assert "run-control-demo-action-plan" in doc
@@ -558,6 +569,9 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "bleiben nach PR 37 noch 0 PRs" in backlog
     assert "PR 38: Read-only API-/UI-Anzeige" in backlog
     assert "PR 39: Optional read-only API-Vertrag" in backlog
+    assert "tests/test_api_run_control_adapter_result_api_contract.py" in backlog
+    assert "docs/migration/run_control_adapter_result_api_contract.md" in backlog
+    assert "Naechster vorgeschlagener Schritt" in backlog
     assert "PR 40: Optional UI-Karte" in backlog
     assert "PR 41+: Breitere fachliche Regel-Slices" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
