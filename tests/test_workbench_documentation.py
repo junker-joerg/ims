@@ -111,6 +111,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "expliziten Importbericht und Run-Control-Preflight" in readme
     assert "keine HTTP-/UI-Schreibpfade" in readme
     assert "docs/migration/workbench_run_control_plan.md" in readme
+    assert "docs/plans/run_control_adapter_result_plan.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
     assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
     assert "docs/migration/workbench_demo_checklist.md" in readme
@@ -257,6 +258,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "runner_start_enabled = false" in doc
     assert "--explicit-execution-release" in doc
     assert "keinen freien `--output-dir`" in doc
+    assert "read-only Adapter-Resultat" in doc
+    assert "bereits lokal erzeugtes" in doc
+    assert "keinen Adapterstart aus Run-Control" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
     assert 'mode = "run_control_queue_action_plan"' in doc
@@ -531,7 +535,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "Bis zu einem lokalen expliziten Adapter" in backlog
     assert "bleiben nach PR 35 noch 0 PRs" in backlog
     assert "PR 36: Entscheiden" in backlog
-    assert "PR 37+: Run-Control-Anbindung" in backlog
+    assert "run_control_adapter_result_plan.md" in backlog
+    assert "read-only Adapter-Resultat" in backlog
+    assert "Bis zur Entscheidung fuer ein read-only Adapter-Resultat" in backlog
+    assert "bleiben nach PR 36 noch" in backlog
+    assert "PR 37: Read-only Adapter-Resultat-DTO" in backlog
+    assert "PR 38+: Optionale read-only API-/UI-Anzeige" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

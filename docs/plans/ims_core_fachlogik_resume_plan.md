@@ -227,6 +227,14 @@ Fixture-Arten, Schreibfreiheit und CLI-Grenzen; die Migrationsnotiz
 `docs/migration/controlled_execution_adapter.md` grenzt den Schnitt von API, UI,
 Queue, Simulation und Vollgleichheit ab.
 
+PR 36 entscheidet den naechsten Anschluss:
+`docs/plans/run_control_adapter_result_plan.md` waehlt ein read-only
+Adapter-Resultat fuer Run-Control als naechsten Schnitt. Run-Control soll
+zunaechst nur ein bereits lokal erzeugtes `controlled_execution_adapter`-JSON
+einordnen oder dessen Ergebnisform beschreiben duerfen. Es gibt weiterhin
+keinen Adapterstart, keinen Browser-Upload, keinen Queue-Worker, keinen
+Startbutton und keine historische Vollgleichheitsbehauptung.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -367,6 +375,10 @@ Queue, Simulation und Vollgleichheit ab.
     `tests/test_api_controlled_execution_adapter.py` und
     `docs/migration/controlled_execution_adapter.md` fuehren den Adapter nur
     mit explizitem Freigabeflag und ohne Output-Pfad ein.
+28. Read-only Adapter-Resultat fuer Run-Control planen. Dieser Schnitt ist
+    umgesetzt: `docs/plans/run_control_adapter_result_plan.md` entscheidet,
+    dass Run-Control zunaechst nur ein bereits lokal erzeugtes Adapterergebnis
+    einordnen darf, ohne Adapterstart.
 
 ## Aktualisierte PR-Restplanung
 
@@ -409,8 +421,11 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zu einem read-only Ausfuehrungsadapter-Vertrag;
 - lokaler kontrollierter Ausfuehrungsadapter ist umgesetzt;
 - 0 PRs bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad;
-- danach 1-2+ PRs fuer read-only Adapter-Resultate in Run-Control oder
-  anschliessende schmale VU-/VN-Regel- oder Carryover-Code-Slices;
+- read-only Adapter-Resultat fuer Run-Control ist geplant;
+- 0 PRs bis zur Entscheidung fuer ein read-only Adapter-Resultat;
+- danach 1 PR fuer ein read-only Adapter-Resultat-DTO oder Vertrag;
+- danach 1-2+ PRs fuer optionale read-only API-/UI-Anzeige oder anschliessende
+  schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.

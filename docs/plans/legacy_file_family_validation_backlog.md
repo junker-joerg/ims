@@ -124,6 +124,16 @@ Der lokale Adapter-Schnitt ist nach PR 35 umgesetzt:
 
 Bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad bleiben nach PR 35 noch 0 PRs.
 
+Der naechste Run-Control-Anschluss ist nach PR 36 geplant:
+
+- PR 36: entscheiden, ob Run-Control den lokalen Adapter nur als read-only
+  Resultat anzeigen darf oder ob zuerst ein weiterer schmaler fachlicher Slice
+  folgt (erledigt: gewaehlt ist ein read-only Adapter-Resultat,
+  `docs/plans/run_control_adapter_result_plan.md`).
+
+Bis zur Entscheidung fuer ein read-only Adapter-Resultat bleiben nach PR 36 noch
+0 PRs.
+
 ## Rest-PR-Planung
 
 - PR 1: `IMSVNR01.DAT` und `IMSVNR02.DAT` uebernehmen und validieren
@@ -235,9 +245,12 @@ Bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad bleiben nach PR 3
   `docs/migration/controlled_execution_adapter.md`, erledigt).
 - PR 36: Entscheiden, ob Run-Control den lokalen Adapter nur als read-only
   Resultat anzeigen darf oder ob zuerst ein weiterer schmaler fachlicher Slice
-  folgt.
-- PR 37+: Run-Control-Anbindung oder breitere fachliche Regel-Slices erst nach
-  separater Freigabe vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
+  folgt (dieser Schnitt: read-only Adapter-Resultat geplant, erledigt).
+- PR 37: Read-only Adapter-Resultat-DTO oder Vertrag vorbereiten, weiterhin
+  ohne Adapterstart aus Run-Control.
+- PR 38+: Optionale read-only API-/UI-Anzeige oder breitere fachliche
+  Regel-Slices erst nach separater Freigabe vorbereiten, weiterhin ohne
+  Vollgleichheitsbehauptung.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.
 

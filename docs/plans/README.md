@@ -29,3 +29,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   und lokalen schmalen Ausfuehrungsadapter nach drei fachlichen
   Regressionstests, weiterhin ohne API-/UI-Startpfad, Queue-Worker oder
   Vollgleichheitsbehauptung.
+- `run_control_adapter_result_plan.md`: PR-36-Entscheidung fuer ein
+  read-only Adapter-Resultat in Run-Control, weiterhin ohne Adapterstart,
+  Browser-Upload, Queue-Worker oder UI-Startpfad.

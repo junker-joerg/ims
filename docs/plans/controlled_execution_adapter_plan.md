@@ -109,8 +109,13 @@ zurueck.
   umsetzen und dokumentieren (erledigt).
 - PR 35: optional lokalen Adapter fuer explizite Fixture-Ausfuehrung umsetzen,
   nur nach separater Freigabe und ohne API-/UI-Startpfad (erledigt).
-- PR 36+: erst danach entscheiden, ob Run-Control den Adapter nur lesen,
-  vormerken oder weiterhin blockieren soll.
+- PR 36: entscheiden, ob Run-Control zunaechst nur ein read-only
+  Adapter-Resultat einordnen darf oder ob ein weiterer fachlicher Slice folgt
+  (erledigt: `docs/plans/run_control_adapter_result_plan.md`).
+- PR 37: read-only Adapter-Resultat-DTO oder Vertrag vorbereiten, weiterhin
+  ohne Adapterstart aus Run-Control.
+- PR 38+: danach optional rein lesende API-/UI-Anzeige oder weiterer
+  fachlicher Slice, weiterhin ohne Vollgleichheitsbehauptung.
 
 ## Validierung dieses Plan-/Vertragsstands
 

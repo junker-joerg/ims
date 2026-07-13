@@ -128,6 +128,11 @@ weiter unter `docs/plans/controlled_execution_adapter_plan.md`; dieser
 kontrollierte Ausfuehrungsadapter ist kein historischer Vollgleichheitsnachweis.
 Er bleibt als kontrollierter Ausfuehrungsadapter-Vertrag die dokumentierte
 Grenze fuer diese lokale Freigabe.
+Der naechste Run-Control-Anschluss ist unter
+`docs/plans/run_control_adapter_result_plan.md` geplant: Run-Control soll
+zunaechst nur ein bereits lokal erzeugtes Adapterergebnis als read-only
+Resultat einordnen duerfen. Der Plan oeffnet keinen Adapterstart, keinen
+Browser-Upload, keinen Queue-Worker und keinen UI-Startpfad.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
