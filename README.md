@@ -92,8 +92,10 @@ fachlicher Regressionstest unter
 `tests/test_first_fachlicher_vn_carryover_regression.py` ausgefuehrt. Er bleibt
 ohne Simulation und ohne Vollgleichheitsbehauptung. Die Einordnung steht in
 `docs/migration/first_fachlicher_regressionstest.md`; der naechste fachliche
-Schritt ist ein zweiter schmaler Slice, zum Beispiel VU-Carryover oder
-VN-Regelwirkung ueber explizite Snapshots.
+Schritt ist unter `docs/plans/second_fachlicher_slice_test_plan.md` als zweiter
+schmaler Slice geplant: VN-Regelwirkung ueber explizite `best_info`-Snapshots
+fuer Policyholder `21`, Versicherer `11/12` und Periode `5`. Auch dieser
+Anschluss bleibt ohne Simulation und ohne Vollgleichheitsbehauptung.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

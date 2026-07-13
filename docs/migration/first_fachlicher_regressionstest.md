@@ -62,8 +62,8 @@ Nicht enthalten:
 
 ## Offene Folgearbeit
 
-Der naechste fachliche Anschluss sollte einen zweiten schmalen Slice waehlen,
-zum Beispiel einen VU-Carryover-Slice oder eine VN-Regelwirkung ueber explizite
-Snapshots. Ein spaeterer Teilgleichheitsnachweis braucht weiterhin eigene
-historische Referenzfenster und darf nicht aus diesem Test allein abgeleitet
-werden.
+Der naechste fachliche Anschluss ist nun unter
+`docs/plans/second_fachlicher_slice_test_plan.md` als VN-Regelwirkung ueber
+explizite `best_info`-Snapshots geplant. Ein spaeterer Teilgleichheitsnachweis
+braucht weiterhin eigene historische Referenzfenster und darf nicht aus diesem
+Test allein abgeleitet werden.

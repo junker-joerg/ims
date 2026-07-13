@@ -488,9 +488,15 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 28: Assertions und Dokumentation fuer den ersten fachlichen" in backlog
     assert "docs/migration/first_fachlicher_regressionstest.md" in backlog
     assert "PR 29: Zweiten schmalen fachlichen Slice" in backlog
-    assert "VU-Carryover oder VN-Regelwirkung" in backlog
+    assert "second_fachlicher_slice_test_plan.md" in backlog
+    assert "VN-Regelwirkung ueber explizite `best_info`-Snapshots" in backlog
+    assert "Policyholder `21`" in backlog
+    assert "Versicherer `11/12` und Periode `5`" in backlog
     assert "keine API-/UI-/Run-Control-Anbindung" in backlog
-    assert "PR 30+: Eine spaetere Run-Control-Anbindung" in backlog
+    assert "PR 30: Geplanten VN-Regel-Snapshot-Slice" in backlog
+    assert "Bis zum zweiten ausgefuehrten fachlichen Regressionstest" in backlog
+    assert "bleibt nach PR 29 noch" in backlog
+    assert "PR 31+: Eine spaetere Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

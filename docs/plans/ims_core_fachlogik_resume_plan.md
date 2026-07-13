@@ -173,6 +173,14 @@ die VN-Source-Field-Vertraege direkt an die bestehenden Konstanten
 `docs/migration/first_fachlicher_regressionstest.md` dokumentiert Zweck,
 Grenzen und offene Folgearbeit.
 
+PR 29 legt den zweiten schmalen fachlichen Slice fest:
+`docs/plans/second_fachlicher_slice_test_plan.md` waehlt eine
+VN-Regelwirkung ueber explizite `best_info`-Snapshots. Der geplante Test soll
+Policyholder `21`, Versicherer `11/12`, Periode `5`, die erwartete
+Versicherungsentscheidung `[12, None]` und `information_cost = 4.0` pruefen.
+VU-Carryover bleibt ein spaeterer eigener Slice, weil dafuer ein eigenes
+explizites Fixture konservativer ist.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -277,6 +285,11 @@ Grenzen und offene Folgearbeit.
     ist umgesetzt: `docs/migration/first_fachlicher_regressionstest.md`
     dokumentiert den belegten VN-Carryover-Zwischenzustand und grenzt ihn von
     historischer Vollgleichheit ab.
+21. Zweiten fachlichen Slice waehlen. Dieser Schnitt ist umgesetzt:
+    `docs/plans/second_fachlicher_slice_test_plan.md` plant die
+    VN-Regelwirkung ueber explizite `best_info`-Snapshots als naechsten
+    Regressionstest, weiterhin ohne Simulation, Runner-Start aus einer UI oder
+    historische Vollgleichheitsbehauptung.
 
 ## Aktualisierte PR-Restplanung
 
@@ -306,6 +319,9 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zum ersten ausgefuehrten fachlichen Regressionstest;
 - 0 PRs bis zur geschaerften Einordnung dieses ersten fachlichen
   Regressionstests;
+- zweiter fachlicher Slice ist als VN-Regelwirkung ueber explizite
+  `best_info`-Snapshots geplant;
+- 1 PR bis zum zweiten ausgefuehrten fachlichen Regressionstest;
 - danach 2+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

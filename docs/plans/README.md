@@ -19,3 +19,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `first_fachlicher_slice_test_plan.md`: PR-26-Plan fuer den ersten fachlichen VN-Carryover-Slice-Test aus dem vorhandenen
   `replay_vn_policyholder_transition_plan.json`, weiterhin ohne Simulation und
   ohne Vollgleichheitsbehauptung.
+- `second_fachlicher_slice_test_plan.md`: PR-29-Plan fuer den zweiten
+  fachlichen Slice als VN-Regelwirkung ueber explizite `best_info`-Snapshots,
+  weiterhin ohne Simulation und ohne Vollgleichheitsbehauptung.
