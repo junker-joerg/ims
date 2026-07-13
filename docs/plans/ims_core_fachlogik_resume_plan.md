@@ -195,6 +195,13 @@ Der geplante Test soll `carryovers[0].insurer_ids = [10]`,
 `foreign_info.insurer.dp = [51.0, 52.0]` und
 `policyholders_prev_sector = [30.0, 80.0]` pruefen.
 
+PR 32 setzt diesen dritten fachlichen Slice um:
+`tests/test_third_fachlicher_vu_carryover_regression.py` prueft den
+VU-Carryover, die weitergerollte Frmdinf-Basis und die Vrvu04-
+Nettowechslerbasis. Die Migrationsnotiz
+`docs/migration/third_fachlicher_regressionstest.md` grenzt den Test weiter von
+Simulation, UI-/Run-Control-Startpfad und historischer Vollgleichheit ab.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -314,6 +321,12 @@ Der geplante Test soll `carryovers[0].insurer_ids = [10]`,
     VU-Carryover-Fixture als naechsten Regressionstest, weiterhin ohne
     Simulation, API-/UI-/Run-Control-Startpfad oder historische
     Vollgleichheitsbehauptung.
+24. Geplanten dritten fachlichen Slice als Regressionstest ausfuehren. Dieser
+    Schnitt ist umgesetzt:
+    `tests/test_third_fachlicher_vu_carryover_regression.py` prueft
+    `carryovers[0].insurer_ids = [10]`, `foreign_info.insurer.dp = [51.0, 52.0]`,
+    `policyholders_prev_sector = [30.0, 80.0]` und
+    `net_switcher_values = [0.0, 0.0]`.
 
 ## Aktualisierte PR-Restplanung
 
@@ -349,7 +362,9 @@ Aktualisierte grobe Restplanung:
   umgesetzt und dokumentiert;
 - 0 PRs bis zum zweiten ausgefuehrten fachlichen Regressionstest;
 - dritter fachlicher Slice ist als VU-Carryover-Fixture geplant;
-- 1 PR bis zum dritten ausgefuehrten fachlichen Regressionstest;
+- dritter fachlicher VU-Carryover-Fixture-Slice ist als Regressionstest
+  umgesetzt und dokumentiert;
+- 0 PRs bis zum dritten ausgefuehrten fachlichen Regressionstest;
 - danach 2+ PRs fuer anschliessende schmale VU-/VN-Regel- oder
   Carryover-Code-Slices und spaetere Ausfuehrungsadapterplaene;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

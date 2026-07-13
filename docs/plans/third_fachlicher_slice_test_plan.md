@@ -7,8 +7,9 @@ IMS-Migration fest. Nach dem VN-Carryover-Slice und dem
 VN-`best_info`-Regel-Snapshot-Slice wird als naechster kleiner Fachlogik-
 Schnitt ein VU-Carryover-Fixture gewaehlt.
 
-Der Schnitt bleibt ein Plan-PR: Er fuehrt noch keinen neuen Regressionstest ein,
-startet keine Simulation und behauptet keine historische Vollgleichheit.
+Der urspruengliche Schnitt war ein Plan-PR: Er fuehrte noch keinen neuen
+Regressionstest ein, startete keine Simulation und behauptete keine historische
+Vollgleichheit. PR 32 setzt diesen Plan als gezielten Regressionstest um.
 
 ## Auswahl
 
@@ -48,18 +49,19 @@ Ein weiterer VN-Regel-Snapshot bleibt moeglich, bringt aber weniger neue
 Abdeckung, solange die VU-Perioden-/Carryover-Seite noch nicht als eigener
 fachlicher Regressionstest eingeordnet ist.
 
-## Erwarteter naechster PR
+## Umsetzung in PR 32
 
-PR 32 soll den geplanten Slice als eigenen Regressionstest umsetzen:
+PR 32 setzt den geplanten Slice als eigenen Regressionstest um:
 
-- neues explizites Zwei-Perioden-Fixture oder testlokales Fixture fuer
-  Versicherer `10`;
+- `tests/test_third_fachlicher_vu_carryover_regression.py`;
+- testlokales explizites Zwei-Perioden-Fixture fuer Versicherer `10`;
 - Erwartung `carryovers[0].insurer_ids = [10]`;
 - Erwartung `foreign_info.insurer.dp = [51.0, 52.0]` in der zweiten Periode;
 - Erwartung `policyholders_prev_sector = [30.0, 80.0]`;
-- optionaler Vrvu04-Grenztest mit Nettowechslerwerten `net_switcher_values =
+- Vrvu04-Grenztest mit Nettowechslerwerten `net_switcher_values =
   [0.0, 0.0]`;
-- Dokumentation der Grenzen in `docs/migration/`.
+- Dokumentation der Grenzen in
+  `docs/migration/third_fachlicher_regressionstest.md`.
 
 ## Grenzen
 
@@ -75,7 +77,7 @@ PR 32 soll den geplanten Slice als eigenen Regressionstest umsetzen:
 ## Folgeplanung
 
 - PR 32: geplanten VU-Carryover-Fixture-Slice als dritten fachlichen
-  Regressionstest umsetzen und dokumentieren.
+  Regressionstest umsetzen und dokumentieren (erledigt).
 - PR 33: danach entscheiden, ob ein weiterer VN-/VU-Regel-Snapshot oder ein
   schmaler Ausfuehrungsadapterplan fachlich sinnvoller ist.
 - PR 34+: Run-Control- oder Ausfuehrungsadapterplaene erst nach separater
@@ -83,5 +85,6 @@ PR 32 soll den geplanten Slice als eigenen Regressionstest umsetzen:
 
 ## Validierung dieses Plan-PRs
 
-Dieser Plan wird nur ueber Dokumentationstests validiert. Die fachliche
-Ausfuehrung des Slices folgt in einem separaten PR.
+Der urspruengliche Plan-PR wurde nur ueber Dokumentationstests validiert. PR 32
+validiert die fachliche Ausfuehrung zusaetzlich ueber
+`tests/test_third_fachlicher_vu_carryover_regression.py`.

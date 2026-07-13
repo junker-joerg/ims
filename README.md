@@ -107,6 +107,11 @@ Versicherer `10` von lokaler Periode `2` nach `3`, mit erwarteter
 weitergerollter Frmdinf-Basis und Vrvu04-Nettowechslerbasis. Auch dieser
 Anschluss bleibt ohne Simulation, ohne neue Fachregel und ohne
 Vollgleichheitsbehauptung.
+Der dritte fachliche Regressionstest ist unter
+`tests/test_third_fachlicher_vu_carryover_regression.py` umgesetzt und in
+`docs/migration/third_fachlicher_regressionstest.md` eingeordnet. Er prueft
+die VU-Carryover-Wirkung und die Vrvu04-Nettowechslerbasis, ohne daraus einen
+historischen Vollgleichheitsnachweis abzuleiten.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der

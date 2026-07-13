@@ -27,6 +27,9 @@ SECOND_FACHLICHER_REGRESSION_DOC = (
 THIRD_FACHLICHER_SLICE_TEST_PLAN = (
     REPO_ROOT / "docs" / "plans" / "third_fachlicher_slice_test_plan.md"
 )
+THIRD_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "third_fachlicher_regressionstest.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -106,7 +109,10 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "lokaler Periode `2` nach `3`" in plan
     assert "foreign_info.insurer.dp = [51.0, 52.0]" in plan
     assert "policyholders_prev_sector = [30.0, 80.0]" in plan
-    assert "1 PR bis zum dritten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "tests/test_third_fachlicher_vu_carryover_regression.py" in plan
+    assert "third_fachlicher_regressionstest.md" in plan
+    assert "dritter fachlicher VU-Carryover-Fixture-Slice ist als Regressionstest" in plan
+    assert "0 PRs bis zum dritten ausgefuehrten fachlichen Regressionstest" in plan
     assert "danach 2+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -343,13 +349,37 @@ def test_third_fachlicher_slice_plan_selects_vu_carryover_fixture() -> None:
     assert "test_vu_rule_multi_period_carryover_advances_net_switcher_previous_basis" in plan
     assert "docs/plans/vu_net_switcher_carryover_window_slice.md" in plan
     assert "docs/migration/vu_foreign_info_period_runner.md" in plan
-    assert "PR 32 soll den geplanten Slice als eigenen Regressionstest umsetzen" in plan
+    assert "PR 32 setzt den geplanten Slice als eigenen Regressionstest um" in plan
+    assert "tests/test_third_fachlicher_vu_carryover_regression.py" in plan
+    assert "docs/migration/third_fachlicher_regressionstest.md" in plan
+    assert "umsetzen und dokumentieren (erledigt)" in plan
+    assert "validiert die fachliche Ausfuehrung" in plan
     assert "net_switcher_values" in plan
     assert "keine Simulation" in plan
     assert "kein Scheduler-Start" in plan
     assert "kein API-/UI-/Run-Control-Startpfad" in plan
     assert "keine neue Fachregel" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
+
+
+def test_third_fachlicher_regression_doc_scopes_third_test() -> None:
+    doc = THIRD_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert THIRD_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Dritter fachlicher Regressionstest" in doc
+    assert "tests/test_third_fachlicher_vu_carryover_regression.py" in doc
+    assert "`run_vu_foreign_info_multi_period_from_mappings`" in doc
+    assert "`apply_vu_foreign_info_carryover`" in doc
+    assert "Versicherer | `10`" in doc
+    assert "lokale Perioden `2 -> 3`" in doc
+    assert "Globale Perioden | `14 -> 15`" in doc
+    assert "carryovers[0].insurer_ids = [10]" in doc
+    assert "foreign_info.insurer.dp = [51.0, 52.0]" in doc
+    assert "policyholders_prev_sector = [30.0, 80.0]" in doc
+    assert "net_switcher_values = [0.0, 0.0]" in doc
+    assert "kein historischer Vollgleichheitsnachweis" in doc
+    assert "kein API-/UI-/Run-Control-Startpfad" in doc
+    assert "keine neue Fachregel" in doc
 
 
 def test_plan_indexes_reference_ims_core_resume_plan() -> None:
@@ -379,8 +409,10 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/second_fachlicher_slice_test_plan.md" in readme
     assert "docs/migration/second_fachlicher_regressionstest.md" in readme
     assert "docs/plans/third_fachlicher_slice_test_plan.md" in readme
+    assert "docs/migration/third_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
+    assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "explicit_transition_carryover_probe_contract" in readme
@@ -400,6 +432,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "dritte fachliche Slice" in readme
     assert "VU-Carryover fuer" in readme
     assert "Versicherer `10` von lokaler Periode `2` nach `3`" in readme
+    assert "dritte fachliche Regressionstest" in readme
+    assert "Vrvu04-Nettowechslerbasis" in readme
     assert "rein lesende Verbindung zwischen Run-Control-Aktionsplan" in readme
     assert "replay_vu14_period_plan.json" in readme
     assert "replay_vn_policyholder_transition_plan.json" in readme
