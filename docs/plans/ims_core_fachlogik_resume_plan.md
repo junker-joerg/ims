@@ -218,6 +218,15 @@ die Schreibfreiheit und die Argumentablehnung; die Migrationsnotiz
 `docs/migration/controlled_execution_adapter_contract.md` ordnet den Schnitt ein.
 Auch dieser Stand startet keinen Runner und haelt `execution_performed = false`.
 
+PR 35 setzt den lokalen Adapter um:
+`python_port/ims/api/controlled_execution_adapter.py` fuehrt nur explizit
+freigegebene Fixture-Laeufe aus, akzeptiert keinen freien Output-Pfad und gibt
+das Ergebnis als `explicit_multi_period_execution_summary` zurueck. Der Test
+`tests/test_api_controlled_execution_adapter.py` prueft Freigabepflicht,
+Fixture-Arten, Schreibfreiheit und CLI-Grenzen; die Migrationsnotiz
+`docs/migration/controlled_execution_adapter.md` grenzt den Schnitt von API, UI,
+Queue, Simulation und Vollgleichheit ab.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -353,6 +362,11 @@ Auch dieser Stand startet keinen Runner und haelt `execution_performed = false`.
     `tests/test_api_controlled_execution_adapter_contract.py` und
     `docs/migration/controlled_execution_adapter_contract.md` validieren den
     Vertrag ohne Runner-Start.
+27. Lokalen kontrollierten Ausfuehrungsadapter umsetzen. Dieser Schnitt ist
+    umgesetzt: `python_port/ims/api/controlled_execution_adapter.py`,
+    `tests/test_api_controlled_execution_adapter.py` und
+    `docs/migration/controlled_execution_adapter.md` fuehren den Adapter nur
+    mit explizitem Freigabeflag und ohne Output-Pfad ein.
 
 ## Aktualisierte PR-Restplanung
 
@@ -393,9 +407,10 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zum dritten ausgefuehrten fachlichen Regressionstest;
 - Ausfuehrungsadapter-Vertrag ist als read-only DTO umgesetzt;
 - 0 PRs bis zu einem read-only Ausfuehrungsadapter-Vertrag;
-- danach 2+ PRs fuer lokale Adapterumsetzung, anschliessende schmale
-  VU-/VN-Regel- oder Carryover-Code-Slices und spaetere Run-Control-
-  Adapterplaene;
+- lokaler kontrollierter Ausfuehrungsadapter ist umgesetzt;
+- 0 PRs bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad;
+- danach 1-2+ PRs fuer read-only Adapter-Resultate in Run-Control oder
+  anschliessende schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.

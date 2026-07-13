@@ -56,6 +56,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_dry_run_contract" in readme
     assert "python -m ims.api.core_validation_carryover_probe_contract" in readme
     assert "python -m ims.api.controlled_execution_adapter_contract" in readme
+    assert "python -m ims.api.controlled_execution_adapter --fixture" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
     assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "POST /api/run-control/dry-run" in readme
@@ -146,6 +147,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_dry_run_contract" in doc
     assert "python -m ims.api.core_validation_carryover_probe_contract" in doc
     assert "python -m ims.api.controlled_execution_adapter_contract" in doc
+    assert "python -m ims.api.controlled_execution_adapter --fixture" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
     assert "GET /api/core-validation/carryover-probe-contract" in doc
     assert "POST /api/run-control/dry-run" in doc
@@ -251,7 +253,10 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Der Run-Control-Dry-Run-Vertrag erlaubt nur den kontrollierten HTTP-Pruefpfad" in doc
     assert 'mode = "run_control_dry_run_contract"' in doc
     assert 'mode = "controlled_execution_adapter_contract"' in doc
+    assert 'mode = "controlled_execution_adapter"' in doc
     assert "runner_start_enabled = false" in doc
+    assert "--explicit-execution-release" in doc
+    assert "keinen freien `--output-dir`" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
     assert 'mode = "run_control_queue_action_plan"' in doc
@@ -521,7 +526,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "tests/test_api_controlled_execution_adapter_contract.py" in backlog
     assert "docs/migration/controlled_execution_adapter_contract.md" in backlog
     assert "PR 35: Optional lokalen Adapter" in backlog
-    assert "PR 36+: Run-Control-Anbindung" in backlog
+    assert "tests/test_api_controlled_execution_adapter.py" in backlog
+    assert "docs/migration/controlled_execution_adapter.md" in backlog
+    assert "Bis zu einem lokalen expliziten Adapter" in backlog
+    assert "bleiben nach PR 35 noch 0 PRs" in backlog
+    assert "PR 36: Entscheiden" in backlog
+    assert "PR 37+: Run-Control-Anbindung" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

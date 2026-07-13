@@ -76,9 +76,20 @@ Der Vertrag bindet spaetere Adapterergebnisse an
 `runner_start_enabled = false`, `writes_enabled = false` und
 `execution_performed = false`.
 
-PR 35 kann danach einen lokalen, explizit aufgerufenen Adapter umsetzen, wenn
-der Vertrag geprueft und separat freigegeben ist. Dieser spaetere Schritt
-bleibt ohne API-/UI-Startpfad.
+PR 35 setzt danach einen lokalen, explizit aufgerufenen Adapter um. Dieser
+Schritt bleibt ohne API-/UI-Startpfad, ohne Queue-Worker und ohne freien
+Output-Pfad.
+
+Umgesetzt sind:
+
+- `python_port/ims/api/controlled_execution_adapter.py`;
+- `tests/test_api_controlled_execution_adapter.py`;
+- `docs/migration/controlled_execution_adapter.md`.
+
+Der lokale Adapter verlangt `--explicit-execution-release`, erkennt einfache
+`periods`-Fixtures sowie Planfixtures mit `base_snapshot` und `period_updates`
+und gibt nur den vorhandenen `explicit_multi_period_execution_summary`-Vertrag
+zurueck.
 
 ## Grenzen
 
@@ -97,7 +108,7 @@ bleibt ohne API-/UI-Startpfad.
 - PR 34: read-only Ausfuehrungsadapter-Vertrag als DTO und Vertragstest
   umsetzen und dokumentieren (erledigt).
 - PR 35: optional lokalen Adapter fuer explizite Fixture-Ausfuehrung umsetzen,
-  nur nach separater Freigabe und ohne API-/UI-Startpfad.
+  nur nach separater Freigabe und ohne API-/UI-Startpfad (erledigt).
 - PR 36+: erst danach entscheiden, ob Run-Control den Adapter nur lesen,
   vormerken oder weiterhin blockieren soll.
 

@@ -36,6 +36,9 @@ CONTROLLED_EXECUTION_ADAPTER_PLAN = (
 CONTROLLED_EXECUTION_ADAPTER_CONTRACT_DOC = (
     REPO_ROOT / "docs" / "migration" / "controlled_execution_adapter_contract.md"
 )
+CONTROLLED_EXECUTION_ADAPTER_DOC = (
+    REPO_ROOT / "docs" / "migration" / "controlled_execution_adapter.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -125,8 +128,12 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "python_port/ims/api/controlled_execution_adapter_contract.py" in plan
     assert "tests/test_api_controlled_execution_adapter_contract.py" in plan
     assert "docs/migration/controlled_execution_adapter_contract.md" in plan
+    assert "python_port/ims/api/controlled_execution_adapter.py" in plan
+    assert "tests/test_api_controlled_execution_adapter.py" in plan
+    assert "docs/migration/controlled_execution_adapter.md" in plan
     assert "0 PRs bis zu einem read-only Ausfuehrungsadapter-Vertrag" in plan
-    assert "danach 2+ PRs" in plan
+    assert "0 PRs bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad" in plan
+    assert "danach 1-2+ PRs" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -426,6 +433,12 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "PR 34: read-only Ausfuehrungsadapter-Vertrag als DTO und Vertragstest" in plan
     assert "umsetzen und dokumentieren (erledigt)" in plan
     assert "stabile JSON-Form des read-only Vertrags" in plan
+    assert "PR 35 setzt danach einen lokalen, explizit aufgerufenen Adapter um" in plan
+    assert "python_port/ims/api/controlled_execution_adapter.py" in plan
+    assert "tests/test_api_controlled_execution_adapter.py" in plan
+    assert "docs/migration/controlled_execution_adapter.md" in plan
+    assert "--explicit-execution-release" in plan
+    assert "ohne API-/UI-Startpfad (erledigt)" in plan
 
 
 def test_controlled_execution_adapter_contract_doc_scopes_contract() -> None:
@@ -449,6 +462,26 @@ def test_controlled_execution_adapter_contract_doc_scopes_contract() -> None:
     assert "keine historische Vollgleichheitsbehauptung" in doc
 
 
+def test_controlled_execution_adapter_doc_scopes_local_adapter() -> None:
+    doc = CONTROLLED_EXECUTION_ADAPTER_DOC.read_text(encoding="utf-8")
+
+    assert CONTROLLED_EXECUTION_ADAPTER_DOC.is_file()
+    assert "Kontrollierter lokaler Ausfuehrungsadapter" in doc
+    assert "Dieser PR 35 setzt den ersten lokalen Ausfuehrungsadapter um" in doc
+    assert "python_port/ims/api/controlled_execution_adapter.py" in doc
+    assert "tests/test_api_controlled_execution_adapter.py" in doc
+    assert "run_explicit_multi_period_from_fixture" in doc
+    assert "run_explicit_multi_period_from_plan_fixture" in doc
+    assert "build_explicit_multi_period_execution_summary" in doc
+    assert "--explicit-execution-release" in doc
+    assert "`--output-dir` ist bewusst kein" in doc
+    assert "kein HTTP-Endpunkt" in doc
+    assert "kein UI-Startpfad" in doc
+    assert "kein Queue-Worker" in doc
+    assert "keine neue Fachlogik" in doc
+    assert "keine historische Vollgleichheitsbehauptung" in doc
+
+
 def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     plans_readme = PLANS_README.read_text(encoding="utf-8")
     readme = README.read_text(encoding="utf-8")
@@ -468,7 +501,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "third_fachlicher_slice_test_plan.md" in plans_readme
     assert "fachlichen Slice als VU-Carryover-Fixture" in plans_readme
     assert "controlled_execution_adapter_plan.md" in plans_readme
-    assert "PR-33/34-Plan und Vertrag" in plans_readme
+    assert "PR-33 bis PR-35-Plan" in plans_readme
     assert "schmalen Ausfuehrungsadapter" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
@@ -482,11 +515,14 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/migration/third_fachlicher_regressionstest.md" in readme
     assert "docs/plans/controlled_execution_adapter_plan.md" in readme
     assert "docs/migration/controlled_execution_adapter_contract.md" in readme
+    assert "docs/migration/controlled_execution_adapter.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter_contract.py" in readme
+    assert "python_port/ims/api/controlled_execution_adapter.py" in readme
     assert "python -m ims.api.controlled_execution_adapter_contract" in readme
+    assert "python -m ims.api.controlled_execution_adapter --fixture" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "explicit_transition_carryover_probe_contract" in readme
@@ -509,6 +545,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "dritte fachliche Regressionstest" in readme
     assert "Vrvu04-Nettowechslerbasis" in readme
     assert "kontrollierter Ausfuehrungsadapter-Vertrag" in readme
+    assert "--explicit-execution-release" in readme
     assert "explicit_multi_period_execution_summary" in readme
     assert "runner_start_enabled" in readme
     assert "execution_performed" in readme

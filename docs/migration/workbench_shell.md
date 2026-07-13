@@ -567,6 +567,7 @@ Der Vertrag ist selbst kein Schreibpfad. `python -m ims.api.metadata_write_contr
 python -m ims.api.run_control_contracts
 python -m ims.api.run_control_dry_run_contract
 python -m ims.api.controlled_execution_adapter_contract
+python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release
 ```
 
 Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrte HTTP-, UI- und Ausfuehrungsgrenzen, zukuenftig erwartbare Eingaben wie `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at` und `execution_enabled` sowie verbotene Grenzen wie Simulation, Fachlogikmutation, Browser-Upload, HTTP-Schreibendpunkt und historische Vollgleichheitsbehauptung.
@@ -582,6 +583,12 @@ Fixture-Eingaben, die Felder des spaeteren
 `runner_start_enabled = false`, `writes_enabled = false` und
 `execution_performed = false`. Er hat in diesem Stand keinen HTTP-Endpunkt,
 keinen UI-Startpfad und keinen Queue-Worker.
+
+Der lokale kontrollierte Ausfuehrungsadapter enthaelt
+`mode = "controlled_execution_adapter"` und startet nur mit
+`--explicit-execution-release`. Er akzeptiert `periods`-Fixtures und
+Planfixtures mit `base_snapshot` plus `period_updates`, gibt ausschliesslich den
+`explicit_multi_period_execution_summary`-Vertrag zurueck und nimmt keinen freien `--output-dir` an.
 
 Ein lokaler Request-Check kann eine spaetere Steuerungsanfrage als DTO validieren:
 
@@ -632,8 +639,8 @@ liest keine Probe-Datei, startet keinen Probe, schreibt nichts und behauptet
 keine historische Vollgleichheit.
 
 Der kontrollierte Ausfuehrungsadapter-Vertrag bleibt dagegen ein lokaler
-CLI-/DTO-Vertrag. Er ist nicht Teil der HTTP-Lesekontrakte, startet keinen
-expliziten Periodenrunner und schaltet keinen Startbutton frei.
+CLI-/DTO-Vertrag. Der lokale Adapter ist ebenfalls nicht Teil der
+HTTP-Lesekontrakte und schaltet keinen Startbutton frei.
 
 Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen -> Carryover-Probe-Vertrag lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan`, `GET /api/run-control/core-diagnostics-bridge` und `GET /api/core-validation/carryover-probe-contract`, jeweils optional mit `queue_id`, wo der Endpunkt dies unterstuetzt. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan, Bruecke und Carryover-Probe-Vertrag bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight`, ein Brueckenhinweis `resolve_core_validation_blockers` und `api_starts_probe = false`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 
@@ -757,6 +764,7 @@ Vertraege und Grenzen:
 | `python -m ims.api.metadata_write_contracts check .\metadata_import.json` | Importdatei gegen den Schreibvertrag pruefen | schreibt nicht |
 | `python -m ims.api.run_control_contracts` | Spaetere Run-Steuerungsgrenze ohne Ausfuehrung beschreiben | schreibt nicht |
 | `python -m ims.api.controlled_execution_adapter_contract` | Spaeteren lokalen Ausfuehrungsadapter-Vertrag ohne Runner-Start beschreiben | schreibt nicht |
+| `python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release` | Lokalen explizit freigegebenen Fixture-Adapter ohne Output-Pfad ausfuehren | schreibt nicht |
 | `python -m ims.api.core_validation_carryover_probe_contract` | API-Vertrag fuer vorab berechnete Carryover-Probe-Ergebnisse beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_requests check .\run_control_request.json` | Lokalen Run-Control-Request ohne Ausfuehrung validieren | schreibt nicht |
 | `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |

@@ -114,6 +114,16 @@ Der naechste groessere Schnitt ist nach PR 33 geplant:
 
 Bis zu einem read-only Ausfuehrungsadapter-Vertrag bleiben nach PR 34 noch 0 PRs.
 
+Der lokale Adapter-Schnitt ist nach PR 35 umgesetzt:
+
+- PR 35: lokalen Adapter fuer explizite Fixture-Ausfuehrung umsetzen, nur mit
+  explizitem Freigabeflag und ohne API-/UI-Startpfad (erledigt:
+  `python_port/ims/api/controlled_execution_adapter.py`,
+  `tests/test_api_controlled_execution_adapter.py` und
+  `docs/migration/controlled_execution_adapter.md`).
+
+Bis zu einem lokalen expliziten Adapter ohne API-/UI-Startpfad bleiben nach PR 35 noch 0 PRs.
+
 ## Rest-PR-Planung
 
 - PR 1: `IMSVNR01.DAT` und `IMSVNR02.DAT` uebernehmen und validieren
@@ -220,8 +230,13 @@ Bis zu einem read-only Ausfuehrungsadapter-Vertrag bleiben nach PR 34 noch 0 PRs
   `tests/test_api_controlled_execution_adapter_contract.py` und
   `docs/migration/controlled_execution_adapter_contract.md`, erledigt).
 - PR 35: Optional lokalen Adapter fuer explizite Fixture-Ausfuehrung umsetzen,
-  nur nach separater Freigabe und ohne API-/UI-Startpfad.
-- PR 36+: Run-Control-Anbindung oder breitere fachliche Regel-Slices erst nach
+  nur nach separater Freigabe und ohne API-/UI-Startpfad (dieser Schnitt:
+  `tests/test_api_controlled_execution_adapter.py` und
+  `docs/migration/controlled_execution_adapter.md`, erledigt).
+- PR 36: Entscheiden, ob Run-Control den lokalen Adapter nur als read-only
+  Resultat anzeigen darf oder ob zuerst ein weiterer schmaler fachlicher Slice
+  folgt.
+- PR 37+: Run-Control-Anbindung oder breitere fachliche Regel-Slices erst nach
   separater Freigabe vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.

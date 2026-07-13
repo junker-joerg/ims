@@ -117,12 +117,17 @@ ist unter `python_port/ims/api/controlled_execution_adapter_contract.py`
 umgesetzt und in
 `docs/migration/controlled_execution_adapter_contract.md` eingeordnet. Er bindet
 einen spaeteren lokalen Adapter an den vorhandenen
-`explicit_multi_period_execution_summary`-Vertrag, oeffnet aber keinen Runner-,
-API- oder UI-Start und laesst `runner_start_enabled`, `writes_enabled` und
-`execution_performed` auf `false`. Die Restplanung steht weiter unter
-`docs/plans/controlled_execution_adapter_plan.md`; dieser Vertrag ist ein
-kontrollierter Ausfuehrungsadapter-Vertrag, aber kein historischer
-Vollgleichheitsnachweis.
+`explicit_multi_period_execution_summary`-Vertrag, oeffnet aber keinen API-
+oder UI-Start und laesst `runner_start_enabled`, `writes_enabled` und
+`execution_performed` im Vertrag auf `false`. Der lokale Adapter selbst ist
+unter `python_port/ims/api/controlled_execution_adapter.py` umgesetzt und in
+`docs/migration/controlled_execution_adapter.md` dokumentiert. Er laeuft nur mit
+explizitem `--explicit-execution-release`, akzeptiert keinen freien Output-Pfad
+und bleibt von Run-Control, API, UI und Queue getrennt. Die Restplanung steht
+weiter unter `docs/plans/controlled_execution_adapter_plan.md`; dieser
+kontrollierte Ausfuehrungsadapter ist kein historischer Vollgleichheitsnachweis.
+Er bleibt als kontrollierter Ausfuehrungsadapter-Vertrag die dokumentierte
+Grenze fuer diese lokale Freigabe.
 Die spaetere rein lesende Verbindung zwischen Run-Control-Aktionsplan und
 Kernlauf-Diagnosen ist unter
 `docs/plans/run_control_core_diagnostics_bridge_plan.md` geplant. Der
@@ -232,6 +237,7 @@ python -m ims.api.run_control_contracts
 python -m ims.api.run_control_dry_run_contract
 python -m ims.api.core_validation_carryover_probe_contract
 python -m ims.api.controlled_execution_adapter_contract
+python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_vn_policyholder_transition_plan.json --explicit-execution-release
 ```
 
 Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
@@ -244,6 +250,11 @@ Probe-Payload, startet keinen Probe und schreibt keine Daten.
 Der kontrollierte Ausfuehrungsadapter-Vertrag beschreibt nur die spaetere lokale
 Adaptergrenze. Er hat in diesem Stand keinen HTTP-Endpunkt, keinen UI-Startpfad,
 keinen Queue-Worker und startet keinen expliziten Periodenrunner.
+
+Der lokale kontrollierte Ausfuehrungsadapter startet nur nach expliziter lokaler
+Freigabe und gibt eine `explicit_multi_period_execution_summary` zurueck. Er
+akzeptiert in diesem Stand keinen Output-Pfad, schreibt keine Metadaten und ist
+nicht an die Browser-Workbench angebunden.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 
