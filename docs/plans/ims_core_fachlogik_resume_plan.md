@@ -284,6 +284,14 @@ Adapterstart und Ergebnisablage. Der Schnitt bleibt ohne neuen API-Startpfad,
 ohne UI-Startbutton, ohne Queue-Worker, ohne Simulation und ohne
 Vollgleichheitsbehauptung.
 
+PR 44 stellt den hart gegateten API-Startvertrag bereit:
+`python_port/ims/api/run_control_adapter_start_contract.py` und
+`GET /api/run-control/adapter-start-contract` beschreiben nur den spaeteren
+Startrequest, Preconditions und verbotene Grenzen. `POST /api/run-control/adapter-start`
+existiert noch nicht; `api_starts_adapter`,
+`ui_start_enabled`, `queue_worker_enabled`, `writes_enabled` und
+`execution_enabled` bleiben `false`.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -465,6 +473,13 @@ Vollgleichheitsbehauptung.
     `docs/plans/run_control_execution_release_plan.md` benennt Preconditions,
     verbotene Pfade und die PR-Reihenfolge bis zur benutzbaren kontrollierten
     Demo-Simulation.
+36. API-Startvertrag fuer den kontrollierten Adapter hart gegated vorbereiten.
+    Dieser Schnitt ist umgesetzt:
+    `python_port/ims/api/run_control_adapter_start_contract.py`,
+    `tests/test_api_run_control_adapter_start_contract.py` und
+    `docs/migration/run_control_adapter_start_contract.md` beschreiben
+    `GET /api/run-control/adapter-start-contract` ohne Start-Payload,
+    POST-Startendpunkt, UI-Startbutton, Queue-Worker oder Simulation.
 
 ## Aktualisierte PR-Restplanung
 
@@ -521,10 +536,11 @@ Aktualisierte grobe Restplanung:
   Regressionstest umgesetzt und dokumentiert;
 - 0 PRs bis zum fuenften ausgefuehrten fachlichen Regressionstest;
 - Run-Control-Ausfuehrungsfreigabeplan ist dokumentiert;
-- vorgeschlagener naechster Schritt ist PR 44:
-  API-Startvertrag fuer den kontrollierten Adapter hart gegated vorbereiten,
-  weiterhin ohne UI-Startbutton und ohne Queue-Worker;
-- danach grob 4 bis 6 reviewbare PRs bis zu einer benutzbaren kontrollierten
+- API-Startvertrag fuer den kontrollierten Adapter ist hart gegated umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 45:
+  Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung vorbereiten,
+  weiterhin ohne Queue-Worker und ohne UI-Startbutton;
+- danach grob 3 bis 5 reviewbare PRs bis zu einer benutzbaren kontrollierten
   Demo-Simulation;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

@@ -60,9 +60,11 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_adapter_result_contract" in readme
     assert "python -m ims.api.run_control_adapter_result_contract check" in readme
     assert "python -m ims.api.run_control_adapter_result_api_contract" in readme
+    assert "python -m ims.api.run_control_adapter_start_contract" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
     assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "GET /api/run-control/adapter-result-contract" in readme
+    assert "GET /api/run-control/adapter-start-contract" in readme
     assert "POST /api/run-control/dry-run" in readme
     assert "POST /api/run-control/queue" in readme
     assert "GET /api/run-control/queue/action-plan" in readme
@@ -119,6 +121,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "docs/plans/run_control_adapter_result_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
+    assert "docs/migration/run_control_adapter_start_contract.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
     assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
     assert "docs/migration/workbench_demo_checklist.md" in readme
@@ -159,9 +162,11 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_adapter_result_contract" in doc
     assert "python -m ims.api.run_control_adapter_result_contract check" in doc
     assert "python -m ims.api.run_control_adapter_result_api_contract" in doc
+    assert "python -m ims.api.run_control_adapter_start_contract" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
     assert "GET /api/core-validation/carryover-probe-contract" in doc
     assert "GET /api/run-control/adapter-result-contract" in doc
+    assert "GET /api/run-control/adapter-start-contract" in doc
     assert "POST /api/run-control/dry-run" in doc
     assert "POST /api/run-control/queue" in doc
     assert "GET /api/run-control/queue/action-plan" in doc
@@ -269,6 +274,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert 'mode = "run_control_adapter_result_contract"' in doc
     assert 'mode = "run_control_adapter_result_validation"' in doc
     assert 'mode = "run_control_adapter_result_api_contract"' in doc
+    assert 'mode = "run_control_adapter_start_contract"' in doc
     assert "runner_start_enabled = false" in doc
     assert "--explicit-execution-release" in doc
     assert "keinen freien `--output-dir`" in doc
@@ -393,7 +399,10 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 8: Read-only Run-Control-Brueckenplan zu Kernlauf-Diagnosen" in plan
     assert "docs/plans/run_control_execution_release_plan.md" in plan
     assert "PR 9: Ausfuehrungsfreigabeplan fuer Run-Control dokumentieren" in plan
-    assert "PR 10+: API-Startvertrag, Persistenz, UI-Flow" in plan
+    assert "PR 10: API-Startvertrag fuer den kontrollierten Adapter hart gegated" in plan
+    assert "python_port/ims/api/run_control_adapter_start_contract.py" in plan
+    assert "GET /api/run-control/adapter-start-contract" in plan
+    assert "PR 11+: Persistenz, UI-Flow, Ergebnisanzeige" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
     assert 'mode = "run_control_core_diagnostics_bridge"' in plan
@@ -596,9 +605,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "docs/migration/fifth_fachlicher_regressionstest.md" in backlog
     assert "PR 43: Expliziten Run-Control-Ausfuehrungsfreigabeplan" in backlog
     assert "docs/plans/run_control_execution_release_plan.md" in backlog
-    assert "PR 44: API-Startpfad fuer den kontrollierten Adapter hart gegated" in backlog
+    assert "PR 44: API-Startvertrag fuer den kontrollierten Adapter hart gegated" in backlog
+    assert "tests/test_api_run_control_adapter_start_contract.py" in backlog
+    assert "docs/migration/run_control_adapter_start_contract.md" in backlog
+    assert "PR 45: Queue-/Status-/Resultat-Persistenz" in backlog
     assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
-    assert "Zaehlschnitt nach PR 43: grob 4 bis 6 reviewbare PRs" in backlog
+    assert "Zaehlschnitt nach PR 44: grob 3 bis 5 reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

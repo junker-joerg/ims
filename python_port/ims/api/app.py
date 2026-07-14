@@ -21,6 +21,7 @@ from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_preflight import preflight_run_control_from_repository
 from ims.api.run_control_adapter_result_api_contract import run_control_adapter_result_api_contract_payload
+from ims.api.run_control_adapter_start_contract import run_control_adapter_start_contract_payload
 from ims.api.run_control_core_diagnostics_bridge import build_run_control_core_diagnostics_bridge
 from ims.api.run_control_queue import enqueue_run_control_request_object
 from ims.api.run_control_queue_action_plan import build_run_control_queue_action_plan
@@ -378,6 +379,10 @@ def create_app(
         def run_control_adapter_result_contract() -> dict[str, object]:
             return run_control_adapter_result_api_contract_payload()
 
+        @app.get("/api/run-control/adapter-start-contract")
+        def run_control_adapter_start_contract() -> dict[str, object]:
+            return run_control_adapter_start_contract_payload()
+
         @app.post("/api/run-control/dry-run", response_model=None)
         async def run_control_dry_run(request: Request) -> JSONResponse:
             return await dry_run_response(request)
@@ -432,6 +437,10 @@ def create_app(
         Route(
             "/api/run-control/adapter-result-contract",
             lambda request: JSONResponse(run_control_adapter_result_api_contract_payload()),
+        ),
+        Route(
+            "/api/run-control/adapter-start-contract",
+            lambda request: JSONResponse(run_control_adapter_start_contract_payload()),
         ),
         Route("/api/run-control/dry-run", dry_run_response, methods=["POST"]),
         Route(

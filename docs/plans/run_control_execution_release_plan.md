@@ -69,9 +69,27 @@ folgende Bedingungen pruefbar macht:
   Resultat-/Statuspfad.
 - `api_starts_adapter` darf nur im freigegebenen Startpfad `true` werden.
 
+## Umsetzung in PR 44
+
+PR 44 setzt diese Grenze als read-only Startvertrag um:
+
+- `python_port/ims/api/run_control_adapter_start_contract.py` beschreibt die
+  Request-Felder, Preconditions und verbotenen Grenzen;
+- `GET /api/run-control/adapter-start-contract` liefert diesen Vertrag lesend
+  aus;
+- `planned_start_endpoint = "/api/run-control/adapter-start"` bleibt nur ein
+  benannter Zukunftspfad;
+- `api_accepts_start_payload = false`, `api_validates_start_payload = false`
+  und `api_starts_adapter = false`;
+- `ui_start_enabled = false`, `queue_worker_enabled = false`,
+  `writes_enabled = false` und `execution_enabled = false`;
+- der negative Test prueft, dass `POST /api/run-control/adapter-start` in
+  diesem Schnitt nicht vorhanden ist.
+
 ## Verbotene Pfade
 
-In PR 43 und bis zur Umsetzung der naechsten Vertraege bleiben verboten:
+In PR 43, PR 44 und bis zur Umsetzung der naechsten Vertraege bleiben
+verboten:
 
 - kein sofortiger UI-Startbutton;
 - kein Queue-Worker;
@@ -88,7 +106,7 @@ In PR 43 und bis zur Umsetzung der naechsten Vertraege bleiben verboten:
 
 - PR 43: diesen Ausfuehrungsfreigabeplan dokumentieren und testen.
 - PR 44: API-Startvertrag fuer den kontrollierten Adapter hart gegated
-  vorbereiten, noch ohne UI-Button.
+  vorbereiten, noch ohne UI-Button oder POST-Startendpunkt (dieser Schnitt).
 - PR 45: Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
   anbinden.
 - PR 46: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen.
@@ -96,7 +114,7 @@ In PR 43 und bis zur Umsetzung der naechsten Vertraege bleiben verboten:
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
 - PR 49 optional: Packaging-/Startskript-Update fuer lokale Auslieferung.
 
-Damit bleiben nach PR 43 grob 4 bis 6 reviewbare PRs bis zu einer benutzbaren
+Damit bleiben nach PR 44 grob 3 bis 5 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation. Diese Zahl ist kein historischer
 Vollgleichheitsnachweis.
 

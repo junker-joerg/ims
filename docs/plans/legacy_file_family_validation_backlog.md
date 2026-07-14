@@ -178,9 +178,9 @@ Der fuenfte fachliche VN-Slice ist nach PR 42 umgesetzt:
   (`tests/test_fifth_fachlicher_vn_sample_search_regression.py` und
   `docs/migration/fifth_fachlicher_regressionstest.md`).
 
-Naechster vorgeschlagener Schritt:
+Aktueller vorgeschlagener Schritt nach PR 44:
 
-- PR 44: API-Startvertrag fuer den kontrollierten Adapter hart gegated
+- PR 45: Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
   vorbereiten, weiterhin ohne UI-Startbutton, ohne Queue-Worker, ohne
   Browser-Upload und ohne Vollgleichheitsbehauptung.
 
@@ -323,8 +323,12 @@ Naechster vorgeschlagener Schritt:
 - PR 43: Expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten, bevor ein
   benutzbarer Startpfad freigeschaltet wird (dieser Schnitt:
   `docs/plans/run_control_execution_release_plan.md`, erledigt).
-- PR 44: API-Startpfad fuer den kontrollierten Adapter hart gegated
-  vorbereiten, noch ohne UI-Button.
+- PR 44: API-Startvertrag fuer den kontrollierten Adapter hart gegated
+  vorbereiten (dieser Schnitt:
+  `python_port/ims/api/run_control_adapter_start_contract.py`,
+  `tests/test_api_run_control_adapter_start_contract.py` und
+  `docs/migration/run_control_adapter_start_contract.md`, erledigt), weiterhin
+  ohne POST-Start, UI-Button oder Queue-Worker.
 - PR 45: Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
   anbinden.
 - PR 46: UI-Flow Preflight -> explizite Freigabe -> Ausfuehren anzeigen.
@@ -332,7 +336,7 @@ Naechster vorgeschlagener Schritt:
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
 - PR 49 optional: Packaging-/Startskript-Update fuer die lokale Auslieferung.
 
-Zaehlschnitt nach PR 43: grob 4 bis 6 reviewbare PRs bis zu einer benutzbaren
+Zaehlschnitt nach PR 44: grob 3 bis 5 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation; das bleibt kein historischer
 Vollgleichheitsnachweis.
 

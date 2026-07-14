@@ -134,6 +134,17 @@ Ausfuehrungsfreigabe, spaeterem Adapterstart und Ergebnisablage. Dieser
 PR-43-Schnitt baut noch keinen API-Startpfad, keinen UI-Startbutton und keinen
 Queue-Worker. Nach diesem Plan bleiben grob noch 4 bis 6 reviewbare PRs bis zu
 einer benutzbaren kontrollierten Demo-Simulation.
+Der hart gegatete API-Startvertrag ist unter
+`python_port/ims/api/run_control_adapter_start_contract.py` umgesetzt und in
+`docs/migration/run_control_adapter_start_contract.md` dokumentiert.
+`GET /api/run-control/adapter-start-contract` beschreibt nur die spaeteren
+Request-Felder, Preconditions und verbotenen Grenzen fuer
+`POST /api/run-control/adapter-start`; der POST-Startendpunkt existiert in
+diesem PR-44-Schnitt nicht. `api_accepts_start_payload`,
+`api_validates_start_payload`, `api_starts_adapter`, `ui_start_enabled`,
+`queue_worker_enabled`, `writes_enabled` und `execution_enabled` bleiben
+`false`. Nach PR 44 bleiben grob noch 3 bis 5 reviewbare PRs bis zu einer
+benutzbaren kontrollierten Demo-Simulation.
 Der read-only Vertrag fuer einen spaeteren kontrollierten Ausfuehrungsadapter
 ist unter `python_port/ims/api/controlled_execution_adapter_contract.py`
 umgesetzt und in
@@ -284,6 +295,7 @@ python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_v
 python -m ims.api.run_control_adapter_result_contract
 python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
 python -m ims.api.run_control_adapter_result_api_contract
+python -m ims.api.run_control_adapter_start_contract
 ```
 
 Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
@@ -316,6 +328,20 @@ Die Antwort enthaelt `mode = "run_control_adapter_result_api_contract"`,
 und `api_starts_adapter = false`. Der Endpunkt akzeptiert keinen Request-Body,
 liest keine Adapter-Datei, schreibt keine Metadaten und startet keine
 Ausfuehrung.
+
+Der Run-Control-Adapter-Startvertrag beschreibt nur den spaeteren
+Startrequest. Die Workbench-API stellt ihn lesend bereit:
+
+```text
+GET /api/run-control/adapter-start-contract
+```
+
+Die Antwort enthaelt `mode = "run_control_adapter_start_contract"`,
+`planned_start_endpoint = "/api/run-control/adapter-start"`,
+`api_accepts_start_payload = false`, `api_validates_start_payload = false`,
+`api_starts_adapter = false`, `ui_start_enabled = false` und
+`queue_worker_enabled = false`. `POST /api/run-control/adapter-start` ist in
+diesem Stand nicht vorhanden.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 

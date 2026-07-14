@@ -521,6 +521,36 @@ def test_run_control_adapter_result_contract_endpoint_is_readonly(tmp_path):
     assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
 
 
+def test_run_control_adapter_start_contract_endpoint_is_readonly(tmp_path):
+    app = create_app(frontend_dist=tmp_path)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/adapter-start-contract")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "run_control_adapter_start_contract"
+    assert payload["endpoint"] == "/api/run-control/adapter-start-contract"
+    assert payload["planned_start_endpoint"] == "/api/run-control/adapter-start"
+    assert "queue_id" in payload["required_request_fields"]
+    assert "explicit_execution_release_true" in payload["required_preconditions"]
+    assert "browser_upload" in payload["forbidden_request_fields"]
+    assert "post_adapter_start_endpoint" in payload["forbidden_boundaries"]
+    assert payload["contract_only"] is True
+    assert payload["api_accepts_start_payload"] is False
+    assert payload["api_validates_start_payload"] is False
+    assert payload["api_starts_adapter"] is False
+    assert payload["ui_start_enabled"] is False
+    assert payload["queue_worker_enabled"] is False
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert payload["simulation_performed"] is False
+    assert not (tmp_path / ".ims_workbench" / "metadata.sqlite").exists()
+
+
 def test_run_control_dry_run_endpoint_validates_request_without_execution(tmp_path):
     app = create_app(frontend_dist=tmp_path)
     client = TestClient(app)

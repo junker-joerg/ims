@@ -71,4 +71,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `workbench_demo_checklist.md`: lokale Demo-Checkliste fuer Start, UI-Reihenfolge, Demo-Signale und Grenzen ohne Simulation
 - `fourth_fachlicher_regressionstest.md`: vierter schmaler fachlicher Test fuer VN-`best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden
 - `fifth_fachlicher_regressionstest.md`: fuenfter schmaler fachlicher Test fuer VN-`sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze
+- `run_control_adapter_start_contract.md`: hart gegateter read-only Startvertrag fuer einen spaeteren Run-Control-Adapterstart, weiterhin ohne POST-Start, UI-Button, Queue-Worker oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -47,3 +47,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `run_control_execution_release_plan.md`: PR-43-Plan fuer die explizite
   Run-Control-Ausfuehrungsfreigabe vor einem spaeter benutzbaren Startpfad,
   weiterhin ohne UI-Startbutton, Queue-Worker oder Simulation.
+- `../migration/run_control_adapter_start_contract.md`: PR-44-Startvertrag
+  fuer `GET /api/run-control/adapter-start-contract`, weiterhin ohne
+  POST-Start, UI-Startbutton, Queue-Worker, Persistenz oder Simulation.

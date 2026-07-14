@@ -24,6 +24,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `/api/core-validation/overview` beschreibt lesend den IMS-Kernvalidierungsueberblick, Legacy-Abdeckung und den Execution-Summary-Vertrag, ohne einen Runner zu starten.
 - `/api/core-validation/carryover-probe-contract` beschreibt lesend den API-Vertrag fuer spaeter bereits berechnete Carryover-Probe-Payloads, ohne Payload-Upload oder Probe-Start.
 - `/api/run-control/adapter-result-contract` beschreibt lesend den API-Vertrag fuer spaeter bereits lokal gepruefte Adapter-Resultate, ohne Payload-Upload, HTTP-Validierung oder Adapterstart.
+- `/api/run-control/adapter-start-contract` beschreibt lesend den API-Startvertrag fuer einen spaeteren kontrollierten Adapterstart, ohne Start-Payload, POST-Start, UI-Button, Queue-Worker oder Simulation.
 - `/api/run-control/core-diagnostics-bridge` buendelt lesend Queue-Aktionsplan und Kernvalidierungsueberblick, ohne Queue, Metadaten, Runner oder Simulation zu schreiben.
 - Die Workbench buendelt Health, Version, Capabilities und Metadatenquelle in einer kleinen lesenden Betriebsdiagnose.
 - Die Workbench zeigt die Metadaten-Konsistenz als kleine Diagnose ohne Reparaturpfade.
@@ -36,6 +37,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Workbench zeigt einen read-only Kernvalidierungsueberblick mit Execution-Summary-Vertrag, ohne Summary-Upload, Formular oder Laufstart.
 - Die Workbench zeigt den Carryover-Probe-Vertrag als read-only Karte, ohne Probe-Upload, Probe-Start oder Ausfuehrungsadapter.
 - Die Workbench zeigt den Adapter-Resultat-Vertrag als read-only Karte, ohne Resultat-Upload, HTTP-Validierung, Dateiauswahl oder Adapterstart.
+- Der Adapter-Startvertrag ist nur ein API-DTO-Vertrag; die Workbench zeigt noch keinen Startbutton.
 - `ims.api.metadata_repository` bereitet eine lokale SQLite-Ablage fuer diese Metadaten vor.
 - `ims.api.metadata_import` kann lokale JSON-Metadaten kontrolliert in diese Ablage importieren.
 - `ims.api.metadata_import_cli` macht diesen Importpfad lokal pruefbar, als Preview zusammenfassbar, als Dry-Run vorab vergleichbar, als Snapshot lesbar und im Importformat exportierbar, ohne HTTP- oder UI-Schreibpfade zu oeffnen.
@@ -102,6 +104,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - Die Kernvalidierungsuebersicht ist rein lesend. Sie nutzt `/api/core-validation/overview`, zeigt Periodenplaene, Legacy-Referenzen und den Execution-Summary-Vertrag, startet aber keinen expliziten Periodenrunner und nimmt keine Summary-Datei entgegen.
 - Die Carryover-Probe-Vertragskarte ist rein lesend. Sie nutzt `/api/core-validation/carryover-probe-contract`, beschreibt nur vorab berechnete `explicit_transition_carryover_probe`-Payloads, nimmt keinen Payload entgegen und startet keinen Probe.
 - Die Adapter-Resultat-Vertragskarte ist rein lesend. Sie nutzt `/api/run-control/adapter-result-contract`, beschreibt nur vorab lokal gepruefte `controlled_execution_adapter`-Resultate, nimmt keinen Payload entgegen, validiert kein Resultat ueber HTTP und startet keinen Adapter.
+- Der Adapter-Startvertrag ist rein lesend. Er nutzt `/api/run-control/adapter-start-contract`, beschreibt nur den spaeteren Startrequest, nimmt keinen Payload entgegen, validiert keinen Start-Payload ueber HTTP und stellt keinen `POST /api/run-control/adapter-start` bereit.
 - Die Run-Control-Kernblick-Bruecke ist rein lesend. Sie nutzt `/api/run-control/core-diagnostics-bridge`, kombiniert nur vorhandene Queue-Aktionsplan- und Kernvalidierungssignale, schreibt nicht, startet keinen Runner und enthaelt keinen Startbutton.
 - Die Metadatenquellen-Anzeige ist reine Betriebsdiagnose und oeffnet keine Persistenz- oder Ausfuehrungspfade.
 - Die Betriebsdiagnose buendelt vorhandene Statusendpunkte, startet aber keine Laeufe und schreibt keine Daten.
@@ -574,6 +577,7 @@ python -m ims.api.controlled_execution_adapter --fixture tests\fixtures\replay_v
 python -m ims.api.run_control_adapter_result_contract
 python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
 python -m ims.api.run_control_adapter_result_api_contract
+python -m ims.api.run_control_adapter_start_contract
 ```
 
 Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrte HTTP-, UI- und Ausfuehrungsgrenzen, zukuenftig erwartbare Eingaben wie `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at` und `execution_enabled` sowie verbotene Grenzen wie Simulation, Fachlogikmutation, Browser-Upload, HTTP-Schreibendpunkt und historische Vollgleichheitsbehauptung.
@@ -609,6 +613,14 @@ beschreibt die spaetere Anzeigegrenze fuer vorab lokal gepruefte
 Adapter-Resultate, akzeptiert aber keinen Payload, validiert kein Resultat ueber
 HTTP, startet keinen Adapter und schaltet keine UI-Karte frei.
 
+Der Run-Control-Adapter-Startvertrag enthaelt
+`mode = "run_control_adapter_start_contract"` und wird nur ueber
+`GET /api/run-control/adapter-start-contract` lesend bereitgestellt. Er
+beschreibt den spaeteren Startrequest fuer
+`POST /api/run-control/adapter-start`, akzeptiert in diesem Stand aber keinen
+Start-Payload, validiert keinen Start-Payload ueber HTTP, startet keinen
+Adapter und schaltet keinen UI-Startbutton frei.
+
 Ein lokaler Request-Check kann eine spaetere Steuerungsanfrage als DTO validieren:
 
 ```powershell
@@ -628,6 +640,7 @@ GET /api/run-control/queue/action-plan
 GET /api/core-validation/overview
 GET /api/core-validation/carryover-probe-contract
 GET /api/run-control/adapter-result-contract
+GET /api/run-control/adapter-start-contract
 GET /api/run-control/core-diagnostics-bridge
 ```
 
@@ -668,6 +681,18 @@ duerfen. Die Antwort liefert
 `execution_performed = false`. Der Endpunkt akzeptiert keinen Request-Body,
 liest keine Adapter-Datei, startet keinen Adapter, schreibt nichts und
 behauptet keine historische Vollgleichheit.
+
+Der Adapter-Start-Vertragsendpunkt
+`GET /api/run-control/adapter-start-contract` beschreibt, welche spaeteren
+Request-Felder und Preconditions fuer einen freigegebenen Adapterstart
+erforderlich waeren. Die Antwort liefert
+`mode = "run_control_adapter_start_contract"`,
+`planned_start_endpoint = "/api/run-control/adapter-start"`,
+`api_accepts_start_payload = false`, `api_validates_start_payload = false`,
+`api_starts_adapter = false`, `ui_start_enabled = false`,
+`queue_worker_enabled = false`, `writes_performed = false` und
+`execution_performed = false`. `POST /api/run-control/adapter-start` existiert
+in diesem Stand nicht.
 
 Der kontrollierte Ausfuehrungsadapter-Vertrag bleibt dagegen ein lokaler
 CLI-/DTO-Vertrag. Der lokale Adapter ist ebenfalls nicht Teil der
@@ -806,6 +831,7 @@ Vertraege und Grenzen:
 | `python -m ims.api.run_control_adapter_result_contract` | Run-Control-Adapter-Resultat-Vertrag beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json` | Bereits erzeugtes Adapter-Resultat read-only gegen den Vertrag pruefen | schreibt nicht |
 | `python -m ims.api.run_control_adapter_result_api_contract` | API-Vertrag fuer vorab lokal gepruefte Adapter-Resultate beschreiben | schreibt nicht |
+| `python -m ims.api.run_control_adapter_start_contract` | API-Startvertrag fuer spaetere Adapterstarts beschreiben | schreibt nicht |
 | `python -m ims.api.core_validation_carryover_probe_contract` | API-Vertrag fuer vorab berechnete Carryover-Probe-Ergebnisse beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_requests check .\run_control_request.json` | Lokalen Run-Control-Request ohne Ausfuehrung validieren | schreibt nicht |
 | `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |

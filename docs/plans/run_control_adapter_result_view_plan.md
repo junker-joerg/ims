@@ -51,8 +51,11 @@ PR 38 soll eine read-only Anzeigegrenze planen:
   (erledigt).
 - PR 43: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan
   vorbereiten (`docs/plans/run_control_execution_release_plan.md`, erledigt).
-- PR 44+: danach API-Startvertrag, Persistenz, UI-Flow, Ergebnisanzeige und
-  Demo-Smoke in getrennten Schritten vorbereiten.
+- PR 44: danach API-Startvertrag als
+  `GET /api/run-control/adapter-start-contract` vorbereiten, weiterhin ohne
+  POST-Start, UI-Startbutton, Queue-Worker oder Simulation (erledigt).
+- PR 45+: danach Persistenz, UI-Flow, Ergebnisanzeige und Demo-Smoke in
+  getrennten Schritten vorbereiten.
 
 ## Grenzen
 

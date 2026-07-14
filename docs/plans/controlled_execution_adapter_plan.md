@@ -136,8 +136,12 @@ zurueck.
 - PR 43 bereitet den expliziten Run-Control-Ausfuehrungsfreigabeplan vor:
   `docs/plans/run_control_execution_release_plan.md`, weiterhin ohne
   UI-Startbutton, Queue-Worker oder Adapterstart.
-- PR 44+: danach API-Startvertrag, Persistenz, UI-Flow, Ergebnisanzeige und
-  Demo-Smoke in getrennten PRs.
+- PR 44 stellt den hart gegateten API-Startvertrag
+  `python_port/ims/api/run_control_adapter_start_contract.py` und
+  `GET /api/run-control/adapter-start-contract` bereit, weiterhin ohne
+  POST-Start, UI-Startbutton, Queue-Worker oder Simulation (erledigt).
+- PR 45+: danach Persistenz, UI-Flow, Ergebnisanzeige und Demo-Smoke in
+  getrennten PRs.
 
 ## Validierung dieses Plan-/Vertragsstands
 

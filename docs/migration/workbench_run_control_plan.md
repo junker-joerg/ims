@@ -85,9 +85,15 @@ benutzbaren kontrollierten Demo-Simulation.
 9. PR 9: Ausfuehrungsfreigabeplan fuer Run-Control dokumentieren, weiterhin
    ohne UI-Startbutton, Queue-Worker oder Adapterstart. Erledigt:
    `docs/plans/run_control_execution_release_plan.md`.
-10. PR 10+: API-Startvertrag, Persistenz, UI-Flow, Ergebnisanzeige und
-    Demo-Smoke erst in separaten PRs.
-11. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
+10. PR 10: API-Startvertrag fuer den kontrollierten Adapter hart gegated als
+    read-only Vertrag bereitstellen. Erledigt:
+    `python_port/ims/api/run_control_adapter_start_contract.py`,
+    `GET /api/run-control/adapter-start-contract` und
+    `docs/migration/run_control_adapter_start_contract.md`; weiterhin ohne
+    POST-Start, UI-Startbutton, Queue-Worker, Persistenz oder Simulation.
+11. PR 11+: Persistenz, UI-Flow, Ergebnisanzeige und Demo-Smoke erst in
+    separaten PRs.
+12. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 
