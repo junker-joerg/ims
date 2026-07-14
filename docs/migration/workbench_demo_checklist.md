@@ -37,7 +37,7 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar.
 
 1. Dashboard oeffnen und Metadatenquelle pruefen: erwarteter Hinweis `SQLite-Datei`.
 2. Auswahl pruefen: erwarteter Run `baseline-python-tests`, erwartetes Szenario `agrsich-reference-window`.
-3. Run-Control-Statusband lesen: Queue, Preflight, Request-Vertrag, Dry-Run, Queue-Vormerkung und Aktionsplan sind getrennt sichtbar.
+3. Run-Control-Statusband lesen: Queue, Preflight, Request-Vertrag, Dry-Run, Adapter-Resultat-Vertrag, Queue-Vormerkung und Aktionsplan sind getrennt sichtbar.
 4. `Dry-Run pruefen` klicken.
 5. Erwartung nach Dry-Run: Request akzeptiert, Preflight ok, Szenario passt, Schreibpfade gesperrt, Ausfuehrung gesperrt.
 6. `Queue vormerken` klicken.
@@ -48,6 +48,8 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar.
 11. Erwartung in der Bruecke: `Brueckenaktion = resolve_core_validation_blockers`, Summary-Schritt `await_precomputed_execution_summary`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
 12. Carryover-Probe-Vertrag lesen.
 13. Erwartung im Vertrag: `api_starts_probe = false`, `api_accepts_probe_payload = false`, `ui_enabled = false`, `simulation_performed = false`.
+14. Adapter-Resultat-Vertrag lesen.
+15. Erwartung im Vertrag: `api_starts_adapter = false`, `api_accepts_result_payload = false`, `api_validates_result_payload = false`, `ui_enabled = false`, `simulation_performed = false`.
 
 ## Optionaler lesender Kernblick
 
@@ -79,6 +81,12 @@ berechnete `explicit_transition_carryover_probe`-Payloads. Sie darf keinen
 Probe-Payload annehmen, keinen Probe starten, keinen Ausfuehrungsadapter
 aktivieren und keine automatische historische Regelwahl ableiten.
 
+Die Karte `Adapter-Resultat-Vertrag` zeigt den read-only Vertrag fuer vorab
+lokal gepruefte `controlled_execution_adapter`-Resultate. Sie darf keinen
+Resultat-Payload annehmen, kein Resultat ueber HTTP validieren, keinen
+Dateipicker anbieten, keinen Adapter starten und keine automatische historische
+Regelwahl ableiten.
+
 Die Karte `Run-Control-Kernblick-Bruecke` zeigt den Run-Control-Aktionsplan und
 den Kernvalidierungsueberblick als gemeinsame Lesesicht. Sie darf nur
 `GET /api/run-control/core-diagnostics-bridge` anzeigen, keinen Startpfad
@@ -99,8 +107,9 @@ dokumentiert.
 - lesender Run-Control-Aktionsplan mit `run_preflight`
 - lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
 - lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads ohne Upload oder Startpfad
+- lesender Adapter-Resultat-Vertrag fuer vorab lokal gepruefte Adapter-Resultate ohne Upload, HTTP-Validierung oder Startpfad
 - lesende Run-Control-Kernblick-Bruecke ohne Startpfad
-- Browser-/Screenshot-Smoke ueber stabile UI-Anker einschliesslich `run-control-core-bridge` und `carryover-probe-contract`
+- Browser-/Screenshot-Smoke ueber stabile UI-Anker einschliesslich `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`
 
 ## Was noch nicht demo-faehig ist
 
@@ -116,7 +125,7 @@ dokumentiert.
 
 Die Queue-Vormerkung ist der einzige in der Demo erwartete UI-ausgeloeste Schreibvorgang. Sie schreibt nur Queue-Metadaten in die explizite SQLite-Datei. Sie startet keinen Worker, keinen Scheduler, keinen Simulationslauf und keine Fachlogikmutation.
 
-Der Demo-Screenshot belegt nur Bedienbarkeit, sichtbare Grenzen und die gesperrte Carryover-Probe-Vertragskarte. Er belegt keine historischen Fachwerte und ersetzt keine spaetere Alt-/Neu-Fachvalidierung.
+Der Demo-Screenshot belegt nur Bedienbarkeit, sichtbare Grenzen, die gesperrte Carryover-Probe-Vertragskarte und die gesperrte Adapter-Resultat-Vertragskarte. Er belegt keine historischen Fachwerte und ersetzt keine spaetere Alt-/Neu-Fachvalidierung.
 
 ## Schnelle Pruefung vor der Demo
 

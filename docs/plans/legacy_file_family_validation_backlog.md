@@ -155,10 +155,18 @@ Der read-only API-Vertrag fuer Adapter-Resultate ist nach PR 39 umgesetzt:
   `tests/test_api_run_control_adapter_result_api_contract.py` und
   `docs/migration/run_control_adapter_result_api_contract.md`).
 
-Naechster vorgeschlagener Schritt:
+Die gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag ist nach PR 40 umgesetzt:
 
 - PR 40: gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag anzeigen,
-  weiterhin ohne Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe.
+  weiterhin ohne Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe
+  (`frontend/src/main.tsx`, `frontend/src/styles.css` und
+  `tests/test_frontend_shell.py`).
+
+Naechster vorgeschlagener Schritt:
+
+- PR 41: wieder einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice
+  aus vorhandenen Planfixtures vorbereiten, weiterhin ohne
+  Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -285,8 +293,10 @@ Naechster vorgeschlagener Schritt:
   `tests/test_api_run_control_adapter_result_api_contract.py` und
   `docs/migration/run_control_adapter_result_api_contract.md`, erledigt).
 - PR 40: Optional UI-Karte fuer diesen Vertrag anzeigen, weiterhin ohne
-  Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe.
-- PR 41+: Breitere fachliche Regel-Slices erst nach separater Freigabe
+  Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe (dieser Schnitt:
+  `frontend/src/main.tsx`, `frontend/src/styles.css` und
+  `tests/test_frontend_shell.py`, erledigt).
+- PR 41+: Schmale fachliche Regel-Slices erst nach separater Freigabe
   vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.

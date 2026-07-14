@@ -138,6 +138,11 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "runControlActionPlan" in source
     assert "runControlCoreBridge" in source
     assert "runControlCoreBridgeRows" in source
+    assert "Adapter-Resultat-Vertrag" in source
+    assert "adapterResultContractRows" in source
+    assert "runControlAdapterResultContract" in source
+    assert "/api/run-control/adapter-result-contract" in source
+    assert 'data-testid="adapter-result-contract"' in source
     assert "selectedBridgeAction" in source
     assert "selectedQueueAction" in source
     assert "/api/run-control/queue/action-plan" in source
@@ -175,6 +180,9 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "run-control-core-bridge-panel" in styles
     assert "run-control-core-bridge-grid" in styles
     assert "run-control-core-bridge-row" in styles
+    assert "adapter-result-contract-panel" in styles
+    assert "adapter-result-contract-grid" in styles
+    assert "adapter-result-contract-row" in styles
     assert "Queue-Status" in source
     assert "Queue-Eintraege" in source
     assert "Naechster Schritt" in source
@@ -257,6 +265,7 @@ def test_frontend_shell_declares_readonly_core_validation_overview():
     assert "core-validation-summary" in styles
     assert "core-validation-contract" in styles
     assert "startRun" not in source
+    assert "uploadAdapter" not in source
     assert 'type="file"' not in source
 
 
@@ -281,6 +290,35 @@ def test_frontend_shell_declares_readonly_carryover_probe_contract_card():
     assert "startRun" not in source
     assert "startProbe" not in source
     assert "uploadProbe" not in source
+    assert 'type="file"' not in source
+
+
+def test_frontend_shell_declares_readonly_adapter_result_contract_card():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "/api/run-control/adapter-result-contract" in source
+    assert "RunControlAdapterResultApiContract" in source
+    assert "Adapter-Resultat-Vertrag" in source
+    assert "Adapter-Resultat-Grenzen" in source
+    assert 'data-testid="adapter-result-contract"' in source
+    assert "runControlAdapterResultContract" in source
+    assert "adapterResultContractRows" in source
+    assert "expected_result_mode" in source
+    assert "expected_validation_mode" in source
+    assert "expected_contract_mode" in source
+    assert "api_accepts_result_payload" in source
+    assert "api_validates_result_payload" in source
+    assert "api_starts_adapter" in source
+    assert "queue_worker_enabled" in source
+    assert "simulation_performed" in source
+    assert "automatic_historical_rule_selection_performed" in source
+    assert "adapter-result-contract-panel" in styles
+    assert "adapter-result-contract-grid" in styles
+    assert "adapter-result-contract-row" in styles
+    assert "startRun" not in source
+    assert "startAdapter" not in source
+    assert "uploadAdapter" not in source
     assert 'type="file"' not in source
 
 

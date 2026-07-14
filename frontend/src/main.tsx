@@ -277,6 +277,34 @@ type RunControlDryRunContract = {
   execution_performed: boolean;
 };
 
+type RunControlAdapterResultApiContract = {
+  status: "ok";
+  mode: "run_control_adapter_result_api_contract";
+  schema_version: string;
+  endpoint: string;
+  expected_result_mode: "controlled_execution_adapter";
+  expected_validation_mode: "run_control_adapter_result_validation";
+  expected_contract_mode: "run_control_adapter_result_contract";
+  source_contract_module: string;
+  expected_inputs: string[];
+  required_preconditions: string[];
+  accepted_result_fields: string[];
+  accepted_summary_fields: string[];
+  forbidden_fields: string[];
+  forbidden_boundaries: string[];
+  precomputed_result_required: boolean;
+  api_accepts_result_payload: boolean;
+  api_validates_result_payload: boolean;
+  api_starts_adapter: boolean;
+  http_enabled: boolean;
+  ui_enabled: boolean;
+  queue_worker_enabled: boolean;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  automatic_historical_rule_selection_performed: boolean;
+};
+
 type RunControlDryRunResult = {
   status: "ok" | "error";
   mode: "run_control_dry_run";
@@ -495,6 +523,8 @@ function App() {
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
   const [runControlDryRunContract, setRunControlDryRunContract] = useState<RunControlDryRunContract | null>(null);
+  const [runControlAdapterResultContract, setRunControlAdapterResultContract] =
+    useState<RunControlAdapterResultApiContract | null>(null);
   const [runControlDryRunResult, setRunControlDryRunResult] = useState<RunControlDryRunResult | null>(null);
   const [runControlDryRunState, setRunControlDryRunState] = useState<DetailState>("idle");
   const [runControlDryRunError, setRunControlDryRunError] = useState<string | null>(null);
@@ -555,6 +585,7 @@ function App() {
           runControlCoreBridgeResponse,
           runControlRequestContractResponse,
           runControlDryRunContractResponse,
+          runControlAdapterResultContractResponse,
           healthResponse,
           versionResponse
         ] = await Promise.all([
@@ -570,6 +601,7 @@ function App() {
           fetch("/api/run-control/core-diagnostics-bridge"),
           fetch("/api/run-control/request-contract"),
           fetch("/api/run-control/dry-run-contract"),
+          fetch("/api/run-control/adapter-result-contract"),
           fetch("/api/health"),
           fetch("/api/version")
         ]);
@@ -586,6 +618,7 @@ function App() {
           !runControlCoreBridgeResponse.ok ||
           !runControlRequestContractResponse.ok ||
           !runControlDryRunContractResponse.ok ||
+          !runControlAdapterResultContractResponse.ok ||
           !healthResponse.ok ||
           !versionResponse.ok
         ) {
@@ -604,6 +637,7 @@ function App() {
           runControlCoreBridgePayload,
           runControlRequestContractPayload,
           runControlDryRunContractPayload,
+          runControlAdapterResultContractPayload,
           healthPayload,
           versionPayload
         ] = await Promise.all([
@@ -619,6 +653,7 @@ function App() {
           runControlCoreBridgeResponse.json() as Promise<RunControlCoreDiagnosticsBridge>,
           runControlRequestContractResponse.json() as Promise<RunControlRequestContract>,
           runControlDryRunContractResponse.json() as Promise<RunControlDryRunContract>,
+          runControlAdapterResultContractResponse.json() as Promise<RunControlAdapterResultApiContract>,
           healthResponse.json() as Promise<HealthStatus>,
           versionResponse.json() as Promise<VersionInfo>
         ]);
@@ -636,6 +671,7 @@ function App() {
           setRunControlCoreBridge(runControlCoreBridgePayload);
           setRunControlRequestContract(runControlRequestContractPayload);
           setRunControlDryRunContract(runControlDryRunContractPayload);
+          setRunControlAdapterResultContract(runControlAdapterResultContractPayload);
           setSelectedQueueId((current) => current ?? runControlQueuePayload.entries[0]?.queue_id ?? null);
           setHealthStatus(healthPayload);
           setVersionInfo(versionPayload);
@@ -1109,6 +1145,31 @@ function App() {
     ["Schreibpfade", runControlDryRunContract?.writes_enabled || runControlDryRunContract?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlDryRunContract?.execution_enabled || runControlDryRunContract?.execution_performed ? "aktiv" : "gesperrt"]
   ];
+  const adapterResultContractRows = [
+    ["Modus", runControlAdapterResultContract?.mode ?? "laedt"],
+    ["Endpunkt", runControlAdapterResultContract?.endpoint ?? "/api/run-control/adapter-result-contract"],
+    ["Resultat", runControlAdapterResultContract?.expected_result_mode ?? "-"],
+    ["Validation", runControlAdapterResultContract?.expected_validation_mode ?? "-"],
+    ["Eingaben", runControlAdapterResultContract?.expected_inputs.join(", ") ?? "-"],
+    ["Vorbedingungen", runControlAdapterResultContract?.required_preconditions.join(", ") ?? "-"],
+    ["Verbotene Felder", runControlAdapterResultContract?.forbidden_fields.join(", ") ?? "-"],
+    ["Gesperrte Grenzen", runControlAdapterResultContract?.forbidden_boundaries.join(", ") ?? "-"],
+    [
+      "Payload",
+      runControlAdapterResultContract?.api_accepts_result_payload ||
+      runControlAdapterResultContract?.api_validates_result_payload
+        ? "aktiv"
+        : "gesperrt"
+    ],
+    ["Adapterstart", runControlAdapterResultContract?.api_starts_adapter ? "aktiv" : "gesperrt"],
+    ["UI", runControlAdapterResultContract?.ui_enabled ? "aktiv" : "gesperrt"],
+    [
+      "Ausfuehrung",
+      runControlAdapterResultContract?.execution_performed || runControlAdapterResultContract?.simulation_performed
+        ? "aktiv"
+        : "gesperrt"
+    ]
+  ];
   const runControlDryRunStatus =
     runControlDryRunState === "error"
       ? runControlDryRunError ?? "nicht erreichbar"
@@ -1231,6 +1292,7 @@ function App() {
     ["Preflight", runControlPreflightBoundaryStatus],
     ["Request-Vertrag", runControlRequestContract ? "lesend" : "laedt"],
     ["Dry-Run", runControlDryRunContract?.http_enabled ? runControlDryRunStatus : "gesperrt"],
+    ["Adapter-Resultat", runControlAdapterResultContract ? "lesend" : "laedt"],
     ["Queue vormerken", runControlQueueEnqueueStatus],
     ["Aktionsplan", selectedQueueAction?.next_action ?? runControlActionPlanStatus],
     ["Kernbruecke", selectedBridgeAction?.bridge_next_action ?? "laedt"],
@@ -1242,6 +1304,7 @@ function App() {
       runControlDryRunContract?.writes_performed ||
       runControlDryRunResult?.writes_enabled ||
       runControlDryRunResult?.writes_performed ||
+      runControlAdapterResultContract?.writes_performed ||
       runControlQueueEnqueueResult?.writes_performed ||
       runControlActionPlan?.writes_performed ||
       runControlCoreBridge?.writes_performed ||
@@ -1259,6 +1322,9 @@ function App() {
       runControlDryRunContract?.execution_performed ||
       runControlDryRunResult?.execution_enabled ||
       runControlDryRunResult?.execution_performed ||
+      runControlAdapterResultContract?.api_starts_adapter ||
+      runControlAdapterResultContract?.execution_performed ||
+      runControlAdapterResultContract?.simulation_performed ||
       runControlQueueEnqueueResult?.execution_enabled ||
       runControlQueueEnqueueResult?.execution_performed ||
       selectedQueueAction?.execution_allowed ||
@@ -1717,6 +1783,25 @@ function App() {
           <div className="core-validation-contract" aria-label="Carryover-Probe-Grenzen">
             {carryoverProbeBoundaryRows.map(([label, value]) => (
               <div className="core-validation-contract-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          className="panel adapter-result-contract-panel"
+          aria-label="Adapter-Resultat-Vertrag"
+          data-testid="adapter-result-contract"
+        >
+          <div className="panel-heading">
+            <Braces size={20} aria-hidden="true" />
+            <h2>Adapter-Resultat-Vertrag</h2>
+          </div>
+          <div className="adapter-result-contract-grid" aria-label="Adapter-Resultat-Grenzen">
+            {adapterResultContractRows.map(([label, value]) => (
+              <div className="adapter-result-contract-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>

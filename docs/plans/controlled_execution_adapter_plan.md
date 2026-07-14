@@ -124,8 +124,11 @@ zurueck.
   (`python_port/ims/api/run_control_adapter_result_api_contract.py` und
   `docs/migration/run_control_adapter_result_api_contract.md`), weiterhin ohne
   Payload-Upload, HTTP-Validierung oder Adapterstart (dieser Schnitt).
-- PR 40+: danach optional gesperrte UI-Karte oder weiterer fachlicher Slice,
-  weiterhin ohne Vollgleichheitsbehauptung.
+- PR 40 zeigt die gesperrte UI-Karte `Adapter-Resultat-Vertrag`, weiterhin
+  ohne Upload, Dateiauswahl, Startbutton, HTTP-Validierung oder Adapterstart
+  (dieser Schnitt).
+- PR 41+: danach wieder schmaler fachlicher Slice, weiterhin ohne
+  Vollgleichheitsbehauptung.
 
 ## Validierung dieses Plan-/Vertragsstands
 

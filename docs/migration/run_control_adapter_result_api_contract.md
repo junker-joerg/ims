@@ -62,8 +62,8 @@ python -m ims.api.run_control_adapter_result_contract check .\adapter_result.jso
 - keine automatische historische Regelwahl;
 - keine historische Vollgleichheitsbehauptung.
 
-## Naechster Schritt
+## Folgeschritt
 
-PR 40 kann eine gesperrte UI-Karte fuer diesen Vertrag anzeigen. Auch dieser
-Folgeschritt bleibt ohne Upload, Dateiauswahl, Startbutton und
-Ausfuehrungsfreigabe.
+PR 40 zeigt eine gesperrte UI-Karte fuer diesen Vertrag. Auch dieser
+Folgeschritt bleibt ohne Upload, Dateiauswahl, Startbutton,
+HTTP-Resultatvalidierung und Ausfuehrungsfreigabe.

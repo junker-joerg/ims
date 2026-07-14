@@ -157,8 +157,9 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "0 PRs bis zur Entscheidung fuer ein read-only Adapter-Resultat" in plan
     assert "0 PRs bis zu einem read-only Adapter-Resultat-Vertrag" in plan
     assert "read-only API-Vertrag fuer Adapter-Resultate ist umgesetzt" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 40" in plan
-    assert "gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag anzeigen" in plan
+    assert "gesperrte UI-Karte fuer Adapter-Resultat-Vertrag ist umgesetzt" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 41" in plan
+    assert "wieder einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -475,6 +476,8 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "PR 39 stellt den read-only API-Vertrag fuer Adapter-Resultate bereit" in plan
     assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in plan
     assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
+    assert "PR 40 zeigt die gesperrte UI-Karte `Adapter-Resultat-Vertrag`" in plan
+    assert "PR 41+: danach wieder schmaler fachlicher Slice" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -557,6 +560,7 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "tests/test_api_run_control_adapter_result_api_contract.py" in plan
     assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
     assert "PR 40: optional UI-Karte" in plan
+    assert "`Adapter-Resultat-Vertrag` in `frontend/src/main.tsx`" in plan
     assert "PR 41+: danach wieder einen schmalen fachlichen" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 

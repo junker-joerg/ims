@@ -254,6 +254,11 @@ PR 39 setzt den ersten API-Schnitt dafuer um:
 Der Endpunkt bleibt ohne Payload-Upload, ohne HTTP-Validierung eines
 Adapter-Resultats, ohne UI-Startbutton und ohne Adapterstart aus Run-Control.
 
+PR 40 zeigt diesen Vertrag als gesperrte UI-Karte:
+`frontend/src/main.tsx` laedt `GET /api/run-control/adapter-result-contract`
+und stellt `Adapter-Resultat-Vertrag` nur lesend dar. Die Karte bleibt ohne
+Upload, Dateiauswahl, Startbutton, HTTP-Resultatvalidierung und Adapterstart.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -415,6 +420,10 @@ Adapter-Resultats, ohne UI-Startbutton und ohne Adapterstart aus Run-Control.
     `docs/migration/run_control_adapter_result_api_contract.md` beschreiben
     `GET /api/run-control/adapter-result-contract` ohne Payload-Upload,
     HTTP-Validierung oder Adapterstart.
+32. Gesperrte UI-Karte fuer Adapter-Resultat-Vertrag anzeigen. Dieser Schnitt
+    ist umgesetzt: `frontend/src/main.tsx`, `frontend/src/styles.css` und
+    `tests/test_frontend_shell.py` zeigen `Adapter-Resultat-Vertrag` ohne
+    Upload, Dateiauswahl, Startbutton oder Adapterstart.
 
 ## Aktualisierte PR-Restplanung
 
@@ -463,8 +472,10 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zu einem read-only Adapter-Resultat-Vertrag;
 - read-only API-/UI-Anzeige fuer Adapter-Resultate ist geplant;
 - read-only API-Vertrag fuer Adapter-Resultate ist umgesetzt;
-- vorgeschlagener naechster Schritt ist PR 40:
-  gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag anzeigen;
+- gesperrte UI-Karte fuer Adapter-Resultat-Vertrag ist umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 41:
+  wieder einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice
+  vorbereiten;
 - danach 1-2+ PRs fuer anschliessende
   schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

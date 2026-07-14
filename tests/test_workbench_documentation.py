@@ -440,6 +440,7 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "overview_starts_runner = false" in checklist
     assert "Kernvalidierungsueberblick" in checklist
     assert "Carryover-Probe-Vertrag" in checklist
+    assert "Adapter-Resultat-Vertrag" in checklist
     assert "Probe-Payload annehmen" in checklist
     assert "keinen Probe starten" in checklist
     assert "keinen Ausfuehrungsadapter" in checklist
@@ -453,18 +454,24 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "api_accepts_probe_payload = false" in checklist
     assert "ui_enabled = false" in checklist
     assert "simulation_performed = false" in checklist
+    assert "api_starts_adapter = false" in checklist
+    assert "api_accepts_result_payload = false" in checklist
+    assert "api_validates_result_payload = false" in checklist
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
     assert "schaltet keinen Startpfad frei" in checklist
     assert "lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads" in checklist
+    assert "lesender Adapter-Resultat-Vertrag fuer vorab lokal gepruefte Adapter-Resultate" in checklist
     assert "lesende Run-Control-Kernblick-Bruecke ohne Startpfad" in checklist
     assert "run-control-core-bridge" in checklist
     assert "carryover-probe-contract" in checklist
+    assert "adapter-result-contract" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
     assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
     assert "vorab berechnete Execution-Summary als UI-Eingabe" in checklist
     assert "Ausfuehrungsadapter hinter `run_preflight`" in checklist
     assert "fachlicher Gleichheitsnachweis" in checklist
     assert "gesperrte Carryover-Probe-Vertragskarte" in checklist
+    assert "gesperrte Adapter-Resultat-Vertragskarte" in checklist
     assert "python -m pytest -q tests/test_workbench_demo_smoke.py tests/test_frontend_shell.py tests/test_workbench_documentation.py" in checklist
     assert "npm.cmd run build --prefix .\\frontend" in checklist
 
@@ -571,9 +578,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 39: Optional read-only API-Vertrag" in backlog
     assert "tests/test_api_run_control_adapter_result_api_contract.py" in backlog
     assert "docs/migration/run_control_adapter_result_api_contract.md" in backlog
-    assert "Naechster vorgeschlagener Schritt" in backlog
+    assert "Die gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag ist nach PR 40 umgesetzt" in backlog
     assert "PR 40: Optional UI-Karte" in backlog
-    assert "PR 41+: Breitere fachliche Regel-Slices" in backlog
+    assert "frontend/src/main.tsx" in backlog
+    assert "tests/test_frontend_shell.py" in backlog
+    assert "PR 41: wieder einen schmalen fachlichen" in backlog
+    assert "PR 41+: Schmale fachliche Regel-Slices" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

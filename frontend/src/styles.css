@@ -485,6 +485,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.adapter-result-contract-panel {
+  margin-bottom: 18px;
+}
+
 .run-control-panel {
   margin-bottom: 18px;
 }
@@ -971,6 +975,7 @@ code {
 .run-control-dry-run-result-grid,
 .run-control-action-plan-grid,
 .run-control-core-bridge-grid,
+.adapter-result-contract-grid,
 .run-control-queue-enqueue-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -982,6 +987,7 @@ code {
 .run-control-dry-run-result-row,
 .run-control-action-plan-row,
 .run-control-core-bridge-row,
+.adapter-result-contract-row,
 .run-control-queue-enqueue-row {
   min-height: 66px;
   padding: 10px;
@@ -994,6 +1000,7 @@ code {
 .run-control-dry-run-result-row span,
 .run-control-action-plan-row span,
 .run-control-core-bridge-row span,
+.adapter-result-contract-row span,
 .run-control-queue-enqueue-row span {
   display: block;
   margin-bottom: 7px;
@@ -1004,6 +1011,7 @@ code {
 .run-control-dry-run-result-row strong,
 .run-control-action-plan-row strong,
 .run-control-core-bridge-row strong,
+.adapter-result-contract-row strong,
 .run-control-queue-enqueue-row strong {
   display: block;
   min-width: 0;
@@ -1092,6 +1100,7 @@ code {
   .run-control-dry-run-result-grid,
   .run-control-action-plan-grid,
   .run-control-core-bridge-grid,
+  .adapter-result-contract-grid,
   .run-control-queue-enqueue-grid,
   .diagnosis-row,
   .scenario-filterbar,

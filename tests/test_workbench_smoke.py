@@ -235,16 +235,19 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Run-Control-Queue-Detail" in source
     assert "Run-Control-Dry-Run-Vertrag" in source
     assert "Run-Control-Kernblick-Bruecke" in source
+    assert "Adapter-Resultat-Vertrag" in source
     assert 'data-testid="run-control-demo-dry-run-button"' in source
     assert 'data-testid="run-control-demo-queue-button"' in source
     assert 'data-testid="run-control-demo-action-plan"' in source
     assert 'data-testid="run-control-core-bridge"' in source
     assert 'data-testid="carryover-probe-contract"' in source
+    assert 'data-testid="adapter-result-contract"' in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source
     assert "/api/core-validation/overview" in source
     assert "/api/core-validation/carryover-probe-contract" in source
+    assert "/api/run-control/adapter-result-contract" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/action-plan" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source

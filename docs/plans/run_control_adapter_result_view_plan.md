@@ -40,7 +40,9 @@ PR 38 soll eine read-only Anzeigegrenze planen:
   `tests/test_api_run_control_adapter_result_api_contract.py` und
   `docs/migration/run_control_adapter_result_api_contract.md`).
 - PR 40: optional UI-Karte fuer diesen Vertrag anzeigen, weiterhin ohne
-  Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe.
+  Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe (dieser Schnitt:
+  `Adapter-Resultat-Vertrag` in `frontend/src/main.tsx` und
+  `tests/test_frontend_shell.py`).
 - PR 41+: danach wieder einen schmalen fachlichen VU-/VN-Regel- oder
   Carryover-Slice vorbereiten.
 
