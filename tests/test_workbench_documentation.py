@@ -391,7 +391,9 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 6: Lokaler Demo-Smoke fuer Dry-Run, Queue-Vormerkung und Aktionsplan" in plan
     assert "PR 7: Lokale Demo-Checkliste mit Startbefehlen, UI-Reihenfolge und Grenzen ohne Simulation" in plan
     assert "PR 8: Read-only Run-Control-Brueckenplan zu Kernlauf-Diagnosen" in plan
-    assert "PR 9+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe" in plan
+    assert "docs/plans/run_control_execution_release_plan.md" in plan
+    assert "PR 9: Ausfuehrungsfreigabeplan fuer Run-Control dokumentieren" in plan
+    assert "PR 10+: API-Startvertrag, Persistenz, UI-Flow" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
     assert 'mode = "run_control_core_diagnostics_bridge"' in plan
@@ -407,6 +409,8 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Review-Fixes, CI- und Windows-Pfadhaertung" in plan
     assert "execution_enabled=false" in plan
     assert "`execution_enabled` bleibt bis zur expliziten Ausfuehrungsfreigabe `false`" in plan
+    assert "Die Ausfuehrungsfreigabe ist in PR 43 nur geplant" in plan
+    assert "kein API-Pfad setzt" in plan
     assert "Keine Fachlogikaenderung" in plan
     assert "Keine Simulation starten" in plan
     assert "Keine weiteren HTTP-Schreibendpunkte ausser der kontrollierten Queue-Vormerkung" in plan
@@ -590,9 +594,11 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 42: `sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze" in backlog
     assert "tests/test_fifth_fachlicher_vn_sample_search_regression.py" in backlog
     assert "docs/migration/fifth_fachlicher_regressionstest.md" in backlog
-    assert "PR 43: expliziten Run-Control-Ausfuehrungsfreigabeplan" in backlog
+    assert "PR 43: Expliziten Run-Control-Ausfuehrungsfreigabeplan" in backlog
+    assert "docs/plans/run_control_execution_release_plan.md" in backlog
+    assert "PR 44: API-Startpfad fuer den kontrollierten Adapter hart gegated" in backlog
     assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
-    assert "Zaehlschnitt nach PR 42: grob 5 bis 7 reviewbare PRs" in backlog
+    assert "Zaehlschnitt nach PR 43: grob 4 bis 6 reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

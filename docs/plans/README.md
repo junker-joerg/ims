@@ -44,3 +44,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `../migration/fifth_fachlicher_regressionstest.md`: PR-42-Einordnung des
   fuenften fachlichen VN-Slices fuer `sample_search` / Vrvn05 plus
   Schaden-/Settlement-Runner-Grenze, weiterhin ohne Simulation.
+- `run_control_execution_release_plan.md`: PR-43-Plan fuer die explizite
+  Run-Control-Ausfuehrungsfreigabe vor einem spaeter benutzbaren Startpfad,
+  weiterhin ohne UI-Startbutton, Queue-Worker oder Simulation.

@@ -21,6 +21,10 @@ Vorhandene lokale Run-Control-Bausteine sind:
   `docs/plans/run_control_core_diagnostics_bridge_plan.md`; sie verbindet noch
   keinen neuen Codepfad, sondern beschreibt nur die spaetere gemeinsame Lesesicht
   auf Queue-Aktionsplan und Kernvalidierungsueberblick.
+- Expliziter Ausfuehrungsfreigabeplan in
+  `docs/plans/run_control_execution_release_plan.md`; er beschreibt den
+  spaeteren Uebergang von validierter Queue zu kontrolliertem Adapterstart,
+  setzt ihn aber in PR 43 noch nicht um.
 
 ## Zielbild
 
@@ -62,6 +66,11 @@ Phase 5: Kontrollierter Adapter zur spaeteren Simulationsausfuehrung, erst nach 
 
 Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 
+PR 43 konkretisiert die Phase-5-Freigabegrenze als Plan. Der Plan erlaubt noch
+keinen Startbutton, keinen Queue-Worker und keinen Adapterstart aus Run-Control;
+er beschreibt nur Preconditions, verbotene Pfade und die PR-Reihenfolge bis zur
+benutzbaren kontrollierten Demo-Simulation.
+
 ## Erwartete PR-Roadmap fuer den Workbench-Ausbau
 
 1. PR 1: Run-Control-Dashboard/lesende Queue-Anzeige im Frontend mit clientseitigen Filtern, Hinweisen und lokalen Schrittlabels.
@@ -73,8 +82,12 @@ Phase 6: Haertung, Doku, Smoke-/E2E-Pruefung und Abschlusskonsolidierung.
 7. PR 7: Lokale Demo-Checkliste mit Startbefehlen, UI-Reihenfolge und Grenzen ohne Simulation. Erledigt.
 8. PR 8: Read-only Run-Control-Brueckenplan zu Kernlauf-Diagnosen, ohne neuen
    Endpunkt, Schreibpfad oder Runner-Start.
-9. PR 9+: Ausfuehrungsadapter erst nach expliziter fachlicher Freigabe.
-10. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
+9. PR 9: Ausfuehrungsfreigabeplan fuer Run-Control dokumentieren, weiterhin
+   ohne UI-Startbutton, Queue-Worker oder Adapterstart. Erledigt:
+   `docs/plans/run_control_execution_release_plan.md`.
+10. PR 10+: API-Startvertrag, Persistenz, UI-Flow, Ergebnisanzeige und
+    Demo-Smoke erst in separaten PRs.
+11. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 
@@ -117,6 +130,8 @@ lesend; sie ist kein Startpfad und kein Ausfuehrungsadapter.
 - `execution_performed` bleibt in Plan-, Diagnose-, Dry-Run- und Preflight-Pfaden `false`.
 - Eine Run-Control-Bruecke zu Kernlauf-Diagnosen bleibt read-only und darf
   keinen neuen Schreib- oder Ausfuehrungspfad oeffnen.
+- Die Ausfuehrungsfreigabe ist in PR 43 nur geplant; kein API-Pfad setzt
+  `api_starts_adapter = true`.
 - Kein Startbutton mit echter Funktion.
 - Keine stille Fachlogikmutation.
 - Keine Simulation im Plan-PR.

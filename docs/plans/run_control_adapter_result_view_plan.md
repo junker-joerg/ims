@@ -49,8 +49,10 @@ PR 38 soll eine read-only Anzeigegrenze planen:
 - PR 42: weiteren schmalen fachlichen VN-Slice umsetzen:
   `sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze
   (erledigt).
-- PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan
-  vorbereiten, weiterhin ohne sofortigen UI-Startbutton.
+- PR 43: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan
+  vorbereiten (`docs/plans/run_control_execution_release_plan.md`, erledigt).
+- PR 44+: danach API-Startvertrag, Persistenz, UI-Flow, Ergebnisanzeige und
+  Demo-Smoke in getrennten Schritten vorbereiten.
 
 ## Grenzen
 

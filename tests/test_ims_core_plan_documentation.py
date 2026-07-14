@@ -6,6 +6,9 @@ PLAN = REPO_ROOT / "docs" / "plans" / "ims_core_fachlogik_resume_plan.md"
 RUN_CONTROL_CORE_BRIDGE_PLAN = (
     REPO_ROOT / "docs" / "plans" / "run_control_core_diagnostics_bridge_plan.md"
 )
+RUN_CONTROL_EXECUTION_RELEASE_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "run_control_execution_release_plan.md"
+)
 EXPLICIT_PERIOD_TRANSITION_PLAN = (
     REPO_ROOT / "docs" / "plans" / "explicit_period_transition_slice.md"
 )
@@ -172,9 +175,11 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "docs/migration/fifth_fachlicher_regressionstest.md" in plan
     assert "fuenfter fachlicher VN-`sample_search`-/Settlement-Slice" in plan
     assert "0 PRs bis zum fuenften ausgefuehrten fachlichen Regressionstest" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 43" in plan
-    assert "expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten" in plan
-    assert "grob 5 bis 7 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
+    assert "docs/plans/run_control_execution_release_plan.md" in plan
+    assert "Run-Control-Ausfuehrungsfreigabeplan ist dokumentiert" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 44" in plan
+    assert "API-Startvertrag fuer den kontrollierten Adapter hart gegated" in plan
+    assert "grob 4 bis 6 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -215,6 +220,32 @@ def test_run_control_core_bridge_plan_keeps_readonly_boundaries() -> None:
     assert "kein Start eines expliziten Periodenrunners" in plan
     assert "keine Simulation" in plan
     assert "keine neue Fachlogik" in plan
+    assert "keine historische Vollgleichheitsbehauptung" in plan
+
+
+def test_run_control_execution_release_plan_scopes_release_chain() -> None:
+    plan = RUN_CONTROL_EXECUTION_RELEASE_PLAN.read_text(encoding="utf-8")
+
+    assert RUN_CONTROL_EXECUTION_RELEASE_PLAN.is_file()
+    assert "Run-Control-Ausfuehrungsfreigabe" in plan
+    assert "Dieser PR 43" in plan
+    assert "controlled_execution_adapter" in plan
+    assert "`--explicit-execution-release`" in plan
+    assert "Execution release" in plan
+    assert "Adapter start" in plan
+    assert "Result persistence" in plan
+    assert "Queue-Eintrag existiert" in plan
+    assert "explicit_execution_release = true" in plan
+    assert "api_starts_adapter" in plan
+    assert "kein sofortiger UI-Startbutton" in plan
+    assert "kein Queue-Worker" in plan
+    assert "kein Scheduler-Start" in plan
+    assert "kein Browser-Upload" in plan
+    assert "keine automatische historische Regelwahl" in plan
+    assert "keine neue Fachlogik" in plan
+    assert "PR 44: API-Startvertrag" in plan
+    assert "PR 48: Demo-Smoke und Doku" in plan
+    assert "grob 4 bis 6 reviewbare PRs" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -541,7 +572,8 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "PR 40 zeigt die gesperrte UI-Karte `Adapter-Resultat-Vertrag`" in plan
     assert "PR 41 setzt danach wieder einen schmalen fachlichen VN-Slice um" in plan
     assert "PR 42 setzt einen weiteren schmalen fachlichen VN-Slice um" in plan
-    assert "PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan" in plan
+    assert "PR 43 bereitet den expliziten Run-Control-Ausfuehrungsfreigabeplan" in plan
+    assert "PR 44+: danach API-Startvertrag" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -627,7 +659,9 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "`Adapter-Resultat-Vertrag` in `frontend/src/main.tsx`" in plan
     assert "PR 41: danach wieder einen schmalen fachlichen VN-Slice" in plan
     assert "PR 42: weiteren schmalen fachlichen VN-Slice" in plan
-    assert "PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan" in plan
+    assert "PR 43: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan" in plan
+    assert "docs/plans/run_control_execution_release_plan.md" in plan
+    assert "PR 44+: danach API-Startvertrag" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -704,6 +738,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "PR-41-Einordnung des" in plans_readme
     assert "fifth_fachlicher_regressionstest.md" in plans_readme
     assert "PR-42-Einordnung des" in plans_readme
+    assert "run_control_execution_release_plan.md" in plans_readme
+    assert "PR-43-Plan fuer die explizite" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
@@ -719,6 +755,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/migration/controlled_execution_adapter.md" in readme
     assert "docs/plans/run_control_adapter_result_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
+    assert "docs/plans/run_control_execution_release_plan.md" in readme
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/fourth_fachlicher_regressionstest.md" in readme
@@ -764,6 +801,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "fuenfte fachliche Regressionstest" in readme
     assert "VN-`sample_search`-/Vrvn05-Entscheidung" in readme
     assert "grob noch 5 bis 7 PRs" in readme
+    assert "Run-Control-Ausfuehrungsfreigabeplan" in readme
+    assert "keinen API-Startpfad, keinen UI-Startbutton" in readme
+    assert "grob noch 4 bis 6 reviewbare PRs" in readme
     assert "kontrollierter Ausfuehrungsadapter-Vertrag" in readme
     assert "bereits lokal erzeugtes Adapterergebnis als read-only" in readme
     assert "vorab erzeugtes `controlled_execution_adapter`-JSON" in readme

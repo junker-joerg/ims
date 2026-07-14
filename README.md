@@ -127,6 +127,13 @@ Versicherer `11/12`, die Stichprobendiagnose und die Uebernahme in den
 VN-Schaden-/Settlement-Runner, ohne Simulation und ohne historischen
 Vollgleichheitsnachweis. Nach diesem PR-42-Schnitt bleiben fuer eine
 reviewbare und stabile benutzbare Demo-Simulation grob noch 5 bis 7 PRs.
+Der Run-Control-Ausfuehrungsfreigabeplan ist unter
+`docs/plans/run_control_execution_release_plan.md` dokumentiert. Er beschreibt
+die Freigabekette von Dry-Run, Queue, Action-Plan, expliziter
+Ausfuehrungsfreigabe, spaeterem Adapterstart und Ergebnisablage. Dieser
+PR-43-Schnitt baut noch keinen API-Startpfad, keinen UI-Startbutton und keinen
+Queue-Worker. Nach diesem Plan bleiben grob noch 4 bis 6 reviewbare PRs bis zu
+einer benutzbaren kontrollierten Demo-Simulation.
 Der read-only Vertrag fuer einen spaeteren kontrollierten Ausfuehrungsadapter
 ist unter `python_port/ims/api/controlled_execution_adapter_contract.py`
 umgesetzt und in

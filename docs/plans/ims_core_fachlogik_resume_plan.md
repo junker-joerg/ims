@@ -277,6 +277,13 @@ VN-Schaden-/Settlement-Runner. Die Migrationsnotiz
 Mapping, Grenzen und die Schaetzung von noch 5 bis 7 reviewbaren PRs bis zu
 einer benutzbaren kontrollierten Demo-Simulation.
 
+PR 43 bereitet die explizite Run-Control-Ausfuehrungsfreigabe als Plan vor:
+`docs/plans/run_control_execution_release_plan.md` beschreibt die Freigabekette
+von Dry-Run, Queue, Action-Plan, expliziter Ausfuehrungsfreigabe, spaeterem
+Adapterstart und Ergebnisablage. Der Schnitt bleibt ohne neuen API-Startpfad,
+ohne UI-Startbutton, ohne Queue-Worker, ohne Simulation und ohne
+Vollgleichheitsbehauptung.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -454,6 +461,10 @@ einer benutzbaren kontrollierten Demo-Simulation.
     `sample_search` / Vrvn05, `sampled_insurer_ids = [[11, 12], [11]]`,
     `information_cost = 3.0`, `damages = [9.0, 0.0]` und
     `end_wealth_current = 87.0`.
+35. Run-Control-Ausfuehrungsfreigabe planen. Dieser Schnitt ist umgesetzt:
+    `docs/plans/run_control_execution_release_plan.md` benennt Preconditions,
+    verbotene Pfade und die PR-Reihenfolge bis zur benutzbaren kontrollierten
+    Demo-Simulation.
 
 ## Aktualisierte PR-Restplanung
 
@@ -509,11 +520,11 @@ Aktualisierte grobe Restplanung:
 - fuenfter fachlicher VN-`sample_search`-/Settlement-Slice ist als
   Regressionstest umgesetzt und dokumentiert;
 - 0 PRs bis zum fuenften ausgefuehrten fachlichen Regressionstest;
-- vorgeschlagener naechster Schritt ist PR 43:
-  expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten, weiterhin ohne
-  sofortigen UI-Startbutton, ohne Queue-Worker und ohne historische
-  Vollgleichheitsbehauptung;
-- danach grob 5 bis 7 reviewbare PRs bis zu einer benutzbaren kontrollierten
+- Run-Control-Ausfuehrungsfreigabeplan ist dokumentiert;
+- vorgeschlagener naechster Schritt ist PR 44:
+  API-Startvertrag fuer den kontrollierten Adapter hart gegated vorbereiten,
+  weiterhin ohne UI-Startbutton und ohne Queue-Worker;
+- danach grob 4 bis 6 reviewbare PRs bis zu einer benutzbaren kontrollierten
   Demo-Simulation;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

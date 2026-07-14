@@ -180,9 +180,9 @@ Der fuenfte fachliche VN-Slice ist nach PR 42 umgesetzt:
 
 Naechster vorgeschlagener Schritt:
 
-- PR 43: expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten, weiterhin
-  ohne sofortigen UI-Startbutton, ohne Queue-Worker, ohne Simulation aus der UI
-  und ohne Vollgleichheitsbehauptung.
+- PR 44: API-Startvertrag fuer den kontrollierten Adapter hart gegated
+  vorbereiten, weiterhin ohne UI-Startbutton, ohne Queue-Worker, ohne
+  Browser-Upload und ohne Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -321,7 +321,8 @@ Naechster vorgeschlagener Schritt:
   `tests/test_fifth_fachlicher_vn_sample_search_regression.py` und
   `docs/migration/fifth_fachlicher_regressionstest.md`, erledigt).
 - PR 43: Expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten, bevor ein
-  benutzbarer Startpfad freigeschaltet wird.
+  benutzbarer Startpfad freigeschaltet wird (dieser Schnitt:
+  `docs/plans/run_control_execution_release_plan.md`, erledigt).
 - PR 44: API-Startpfad fuer den kontrollierten Adapter hart gegated
   vorbereiten, noch ohne UI-Button.
 - PR 45: Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
@@ -331,7 +332,7 @@ Naechster vorgeschlagener Schritt:
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
 - PR 49 optional: Packaging-/Startskript-Update fuer die lokale Auslieferung.
 
-Zaehlschnitt nach PR 42: grob 5 bis 7 reviewbare PRs bis zu einer benutzbaren
+Zaehlschnitt nach PR 43: grob 4 bis 6 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation; das bleibt kein historischer
 Vollgleichheitsnachweis.
 

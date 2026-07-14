@@ -133,8 +133,11 @@ zurueck.
 - PR 42 setzt einen weiteren schmalen fachlichen VN-Slice um:
   `sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze, weiterhin
   ohne Vollgleichheitsbehauptung.
-- PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan
-  vorbereiten, bevor ein benutzbarer Startpfad freigeschaltet wird.
+- PR 43 bereitet den expliziten Run-Control-Ausfuehrungsfreigabeplan vor:
+  `docs/plans/run_control_execution_release_plan.md`, weiterhin ohne
+  UI-Startbutton, Queue-Worker oder Adapterstart.
+- PR 44+: danach API-Startvertrag, Persistenz, UI-Flow, Ergebnisanzeige und
+  Demo-Smoke in getrennten PRs.
 
 ## Validierung dieses Plan-/Vertragsstands
 
