@@ -70,4 +70,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `fachlogik_migration_status.md`: Abschlussstand der kontrollierten Fachlogik-Migration im engeren Sinn mit Grenzen und Folgephasen
 - `workbench_demo_checklist.md`: lokale Demo-Checkliste fuer Start, UI-Reihenfolge, Demo-Signale und Grenzen ohne Simulation
 - `fourth_fachlicher_regressionstest.md`: vierter schmaler fachlicher Test fuer VN-`best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden
+- `fifth_fachlicher_regressionstest.md`: fuenfter schmaler fachlicher Test fuer VN-`sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

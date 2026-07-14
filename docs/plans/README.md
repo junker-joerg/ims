@@ -41,3 +41,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `../migration/fourth_fachlicher_regressionstest.md`: PR-41-Einordnung des
   vierten fachlichen VN-Slices fuer `best_info`-Wirkung plus VN-State-Carryover,
   weiterhin ohne Simulation und ohne Vollgleichheitsbehauptung.
+- `../migration/fifth_fachlicher_regressionstest.md`: PR-42-Einordnung des
+  fuenften fachlichen VN-Slices fuer `sample_search` / Vrvn05 plus
+  Schaden-/Settlement-Runner-Grenze, weiterhin ohne Simulation.

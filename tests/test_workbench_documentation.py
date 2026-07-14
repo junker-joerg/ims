@@ -586,8 +586,13 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 41: `best_info`-Wirkung plus VN-State-Carryover" in backlog
     assert "tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py" in backlog
     assert "docs/migration/fourth_fachlicher_regressionstest.md" in backlog
-    assert "PR 42: weiteren schmalen fachlichen" in backlog
-    assert "PR 42+: Weitere schmale fachliche Regel- oder Carryover-Slices" in backlog
+    assert "Der fuenfte fachliche VN-Slice ist nach PR 42 umgesetzt" in backlog
+    assert "PR 42: `sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze" in backlog
+    assert "tests/test_fifth_fachlicher_vn_sample_search_regression.py" in backlog
+    assert "docs/migration/fifth_fachlicher_regressionstest.md" in backlog
+    assert "PR 43: expliziten Run-Control-Ausfuehrungsfreigabeplan" in backlog
+    assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
+    assert "Zaehlschnitt nach PR 42: grob 5 bis 7 reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

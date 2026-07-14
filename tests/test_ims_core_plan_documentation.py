@@ -33,6 +33,9 @@ THIRD_FACHLICHER_REGRESSION_DOC = (
 FOURTH_FACHLICHER_REGRESSION_DOC = (
     REPO_ROOT / "docs" / "migration" / "fourth_fachlicher_regressionstest.md"
 )
+FIFTH_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "fifth_fachlicher_regressionstest.md"
+)
 CONTROLLED_EXECUTION_ADAPTER_PLAN = (
     REPO_ROOT / "docs" / "plans" / "controlled_execution_adapter_plan.md"
 )
@@ -165,8 +168,13 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "docs/migration/fourth_fachlicher_regressionstest.md" in plan
     assert "vierter fachlicher VN-`best_info`-/Carryover-Slice" in plan
     assert "0 PRs bis zum vierten ausgefuehrten fachlichen Regressionstest" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 42" in plan
-    assert "weiteren schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in plan
+    assert "tests/test_fifth_fachlicher_vn_sample_search_regression.py" in plan
+    assert "docs/migration/fifth_fachlicher_regressionstest.md" in plan
+    assert "fuenfter fachlicher VN-`sample_search`-/Settlement-Slice" in plan
+    assert "0 PRs bis zum fuenften ausgefuehrten fachlichen Regressionstest" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 43" in plan
+    assert "expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten" in plan
+    assert "grob 5 bis 7 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -459,6 +467,29 @@ def test_fourth_fachlicher_regression_doc_scopes_fourth_test() -> None:
     assert "keine neue Fachregel" in doc
 
 
+def test_fifth_fachlicher_regression_doc_scopes_fifth_test() -> None:
+    doc = FIFTH_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert FIFTH_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Fuenfter fachlicher Regressionstest" in doc
+    assert "tests/test_fifth_fachlicher_vn_sample_search_regression.py" in doc
+    assert "Regelart | `sample_search`" in doc
+    assert "Historischer Bezug | `IMS.E`, `act Vrvn05`" in doc
+    assert "`apply_vn_insurance_rule_snapshots`" in doc
+    assert "`run_vn_settlement_period_from_mapping`" in doc
+    assert "Policyholder | `21`" in doc
+    assert "Versicherer | `11` und `12`" in doc
+    assert "sampled_insurer_ids = [[11, 12], [11]]" in doc
+    assert "used_insurer_choice_draws_by_sector = [[0.0, 0.99], [0.0]]" in doc
+    assert "information_cost = 3.0" in doc
+    assert "damages = [9.0, 0.0]" in doc
+    assert "end_wealth_current = 87.0" in doc
+    assert "kein historischer Vollgleichheitsnachweis" in doc
+    assert "kein API-/UI-/Run-Control-Startpfad" in doc
+    assert "keine neue Fachregel" in doc
+    assert "noch 5 bis 7 PRs" in doc
+
+
 def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     plan = CONTROLLED_EXECUTION_ADAPTER_PLAN.read_text(encoding="utf-8")
 
@@ -509,7 +540,8 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
     assert "PR 40 zeigt die gesperrte UI-Karte `Adapter-Resultat-Vertrag`" in plan
     assert "PR 41 setzt danach wieder einen schmalen fachlichen VN-Slice um" in plan
-    assert "PR 42+: danach weitere schmale fachliche Regel- oder Carryover-Slices" in plan
+    assert "PR 42 setzt einen weiteren schmalen fachlichen VN-Slice um" in plan
+    assert "PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -594,7 +626,8 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "PR 40: optional UI-Karte" in plan
     assert "`Adapter-Resultat-Vertrag` in `frontend/src/main.tsx`" in plan
     assert "PR 41: danach wieder einen schmalen fachlichen VN-Slice" in plan
-    assert "PR 42+: danach weitere schmale fachliche" in plan
+    assert "PR 42: weiteren schmalen fachlichen VN-Slice" in plan
+    assert "PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -669,6 +702,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "GET /api/run-control/adapter-result-contract" in plans_readme
     assert "fourth_fachlicher_regressionstest.md" in plans_readme
     assert "PR-41-Einordnung des" in plans_readme
+    assert "fifth_fachlicher_regressionstest.md" in plans_readme
+    assert "PR-42-Einordnung des" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
@@ -687,10 +722,12 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/fourth_fachlicher_regressionstest.md" in readme
+    assert "docs/migration/fifth_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
     assert "tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py" in readme
+    assert "tests/test_fifth_fachlicher_vn_sample_search_regression.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter_contract.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter.py" in readme
     assert "python_port/ims/api/run_control_adapter_result_contract.py" in readme
@@ -724,6 +761,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "vierte fachliche Regressionstest" in readme
     assert "VN-`best_info`-Entscheidung" in readme
     assert "Periode `5` in den vorhandenen VN-State-Carryover" in readme
+    assert "fuenfte fachliche Regressionstest" in readme
+    assert "VN-`sample_search`-/Vrvn05-Entscheidung" in readme
+    assert "grob noch 5 bis 7 PRs" in readme
     assert "kontrollierter Ausfuehrungsadapter-Vertrag" in readme
     assert "bereits lokal erzeugtes Adapterergebnis als read-only" in readme
     assert "vorab erzeugtes `controlled_execution_adapter`-JSON" in readme

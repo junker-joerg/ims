@@ -46,8 +46,11 @@ PR 38 soll eine read-only Anzeigegrenze planen:
 - PR 41: danach wieder einen schmalen fachlichen VN-Slice umsetzen:
   `best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden
   (erledigt).
-- PR 42+: danach weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices
-  vorbereiten.
+- PR 42: weiteren schmalen fachlichen VN-Slice umsetzen:
+  `sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze
+  (erledigt).
+- PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan
+  vorbereiten, weiterhin ohne sofortigen UI-Startbutton.
 
 ## Grenzen
 

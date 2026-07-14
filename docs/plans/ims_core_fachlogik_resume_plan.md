@@ -268,6 +268,15 @@ Schaden- oder Settlement-Snapshots; die Migrationsnotiz
 `docs/migration/fourth_fachlicher_regressionstest.md` grenzt den Slice von
 Simulation, API-/UI-/Run-Control-Startpfad und historischer Vollgleichheit ab.
 
+PR 42 verbreitert die VN-Regelabdeckung noch einmal schmal:
+`tests/test_fifth_fachlicher_vn_sample_search_regression.py` prueft
+`sample_search` / Vrvn05 ueber explizite Snapshots, feste
+`insurer_choice_draws_by_sector`, Stichprobendiagnose und die Uebernahme in den
+VN-Schaden-/Settlement-Runner. Die Migrationsnotiz
+`docs/migration/fifth_fachlicher_regressionstest.md` dokumentiert Ursprung,
+Mapping, Grenzen und die Schaetzung von noch 5 bis 7 reviewbaren PRs bis zu
+einer benutzbaren kontrollierten Demo-Simulation.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -439,6 +448,12 @@ Simulation, API-/UI-/Run-Control-Startpfad und historischer Vollgleichheit ab.
     die `best_info`-Entscheidung `[12, None]`, `information_cost = 4.0`,
     `damages = [9.0, 0.0]`, `end_wealth_current = 87.0` und den
     weitergetragenen VN-Zustand in Periode `6` ohne neue VN-Snapshots.
+34. Fuenften fachlichen VN-Slice als Regressionstest ausfuehren. Dieser
+    Schnitt ist umgesetzt:
+    `tests/test_fifth_fachlicher_vn_sample_search_regression.py` prueft
+    `sample_search` / Vrvn05, `sampled_insurer_ids = [[11, 12], [11]]`,
+    `information_cost = 3.0`, `damages = [9.0, 0.0]` und
+    `end_wealth_current = 87.0`.
 
 ## Aktualisierte PR-Restplanung
 
@@ -491,12 +506,15 @@ Aktualisierte grobe Restplanung:
 - vierter fachlicher VN-`best_info`-/Carryover-Slice ist als Regressionstest
   umgesetzt und dokumentiert;
 - 0 PRs bis zum vierten ausgefuehrten fachlichen Regressionstest;
-- vorgeschlagener naechster Schritt ist PR 42:
-  weiteren schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice waehlen,
-  vorzugsweise mit eigenem explizitem Zwischenzustand aus vorhandenen
-  Planfixtures;
-- danach 1-2+ PRs fuer anschliessende
-  schmale VU-/VN-Regel- oder Carryover-Code-Slices;
+- fuenfter fachlicher VN-`sample_search`-/Settlement-Slice ist als
+  Regressionstest umgesetzt und dokumentiert;
+- 0 PRs bis zum fuenften ausgefuehrten fachlichen Regressionstest;
+- vorgeschlagener naechster Schritt ist PR 43:
+  expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten, weiterhin ohne
+  sofortigen UI-Startbutton, ohne Queue-Worker und ohne historische
+  Vollgleichheitsbehauptung;
+- danach grob 5 bis 7 reviewbare PRs bis zu einer benutzbaren kontrollierten
+  Demo-Simulation;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.

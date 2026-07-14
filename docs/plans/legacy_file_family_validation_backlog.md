@@ -170,11 +170,19 @@ Der vierte fachliche VN-Slice ist nach PR 41 umgesetzt:
   (`tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` und
   `docs/migration/fourth_fachlicher_regressionstest.md`).
 
+Der fuenfte fachliche VN-Slice ist nach PR 42 umgesetzt:
+
+- PR 42: `sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze
+  pruefen, weiterhin mit expliziten Draws, ohne Simulation und ohne
+  Vollgleichheitsbehauptung
+  (`tests/test_fifth_fachlicher_vn_sample_search_regression.py` und
+  `docs/migration/fifth_fachlicher_regressionstest.md`).
+
 Naechster vorgeschlagener Schritt:
 
-- PR 42: weiteren schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus
-  vorhandenen Planfixtures waehlen und vorbereiten, weiterhin ohne Simulation,
-  ohne neue unbelegte Fachlogik und ohne Vollgleichheitsbehauptung.
+- PR 43: expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten, weiterhin
+  ohne sofortigen UI-Startbutton, ohne Queue-Worker, ohne Simulation aus der UI
+  und ohne Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -308,8 +316,24 @@ Naechster vorgeschlagener Schritt:
   dokumentieren (dieser Schnitt:
   `tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` und
   `docs/migration/fourth_fachlicher_regressionstest.md`, erledigt).
-- PR 42+: Weitere schmale fachliche Regel- oder Carryover-Slices erst nach
-  separater Freigabe vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
+- PR 42: Schmalen fachlichen VN-`sample_search`-/Settlement-Slice ausfuehren
+  und dokumentieren (dieser Schnitt:
+  `tests/test_fifth_fachlicher_vn_sample_search_regression.py` und
+  `docs/migration/fifth_fachlicher_regressionstest.md`, erledigt).
+- PR 43: Expliziten Run-Control-Ausfuehrungsfreigabeplan vorbereiten, bevor ein
+  benutzbarer Startpfad freigeschaltet wird.
+- PR 44: API-Startpfad fuer den kontrollierten Adapter hart gegated
+  vorbereiten, noch ohne UI-Button.
+- PR 45: Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
+  anbinden.
+- PR 46: UI-Flow Preflight -> explizite Freigabe -> Ausfuehren anzeigen.
+- PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden.
+- PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
+- PR 49 optional: Packaging-/Startskript-Update fuer die lokale Auslieferung.
+
+Zaehlschnitt nach PR 42: grob 5 bis 7 reviewbare PRs bis zu einer benutzbaren
+kontrollierten Demo-Simulation; das bleibt kein historischer
+Vollgleichheitsnachweis.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.
 

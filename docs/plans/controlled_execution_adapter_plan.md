@@ -130,8 +130,11 @@ zurueck.
 - PR 41 setzt danach wieder einen schmalen fachlichen VN-Slice um:
   `best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden,
   weiterhin ohne Vollgleichheitsbehauptung.
-- PR 42+: danach weitere schmale fachliche Regel- oder Carryover-Slices, jeweils
-  mit eigenem belegtem Zwischenzustand.
+- PR 42 setzt einen weiteren schmalen fachlichen VN-Slice um:
+  `sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze, weiterhin
+  ohne Vollgleichheitsbehauptung.
+- PR 43+: danach den expliziten Run-Control-Ausfuehrungsfreigabeplan
+  vorbereiten, bevor ein benutzbarer Startpfad freigeschaltet wird.
 
 ## Validierung dieses Plan-/Vertragsstands
 
