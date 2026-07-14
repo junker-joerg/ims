@@ -43,8 +43,11 @@ PR 38 soll eine read-only Anzeigegrenze planen:
   Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe (dieser Schnitt:
   `Adapter-Resultat-Vertrag` in `frontend/src/main.tsx` und
   `tests/test_frontend_shell.py`).
-- PR 41+: danach wieder einen schmalen fachlichen VU-/VN-Regel- oder
-  Carryover-Slice vorbereiten.
+- PR 41: danach wieder einen schmalen fachlichen VN-Slice umsetzen:
+  `best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden
+  (erledigt).
+- PR 42+: danach weitere schmale fachliche VU-/VN-Regel- oder Carryover-Slices
+  vorbereiten.
 
 ## Grenzen
 

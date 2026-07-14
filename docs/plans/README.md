@@ -38,3 +38,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `../migration/run_control_adapter_result_api_contract.md`: PR-39-API-Vertrag
   fuer `GET /api/run-control/adapter-result-contract`, weiterhin ohne
   Payload-Upload, HTTP-Validierung, Startbutton oder Adapterstart.
+- `../migration/fourth_fachlicher_regressionstest.md`: PR-41-Einordnung des
+  vierten fachlichen VN-Slices fuer `best_info`-Wirkung plus VN-State-Carryover,
+  weiterhin ohne Simulation und ohne Vollgleichheitsbehauptung.

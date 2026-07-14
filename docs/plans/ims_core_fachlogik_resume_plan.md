@@ -259,6 +259,15 @@ PR 40 zeigt diesen Vertrag als gesperrte UI-Karte:
 und stellt `Adapter-Resultat-Vertrag` nur lesend dar. Die Karte bleibt ohne
 Upload, Dateiauswahl, Startbutton, HTTP-Resultatvalidierung und Adapterstart.
 
+PR 41 kehrt danach bewusst zu einem schmalen fachlichen Slice zurueck:
+`tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` prueft die
+bereits belegte VN-`best_info`-Entscheidung fuer Policyholder `21` und
+Versicherer `11/12` zusammen mit dem vorhandenen VN-State-Carryover von
+Periode `5` nach `6`. Die zweite Periode enthaelt keine neuen VN-Regel-,
+Schaden- oder Settlement-Snapshots; die Migrationsnotiz
+`docs/migration/fourth_fachlicher_regressionstest.md` grenzt den Slice von
+Simulation, API-/UI-/Run-Control-Startpfad und historischer Vollgleichheit ab.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -424,6 +433,12 @@ Upload, Dateiauswahl, Startbutton, HTTP-Resultatvalidierung und Adapterstart.
     ist umgesetzt: `frontend/src/main.tsx`, `frontend/src/styles.css` und
     `tests/test_frontend_shell.py` zeigen `Adapter-Resultat-Vertrag` ohne
     Upload, Dateiauswahl, Startbutton oder Adapterstart.
+33. Vierten fachlichen VN-Slice als Regressionstest ausfuehren. Dieser Schnitt
+    ist umgesetzt:
+    `tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` prueft
+    die `best_info`-Entscheidung `[12, None]`, `information_cost = 4.0`,
+    `damages = [9.0, 0.0]`, `end_wealth_current = 87.0` und den
+    weitergetragenen VN-Zustand in Periode `6` ohne neue VN-Snapshots.
 
 ## Aktualisierte PR-Restplanung
 
@@ -473,9 +488,13 @@ Aktualisierte grobe Restplanung:
 - read-only API-/UI-Anzeige fuer Adapter-Resultate ist geplant;
 - read-only API-Vertrag fuer Adapter-Resultate ist umgesetzt;
 - gesperrte UI-Karte fuer Adapter-Resultat-Vertrag ist umgesetzt;
-- vorgeschlagener naechster Schritt ist PR 41:
-  wieder einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice
-  vorbereiten;
+- vierter fachlicher VN-`best_info`-/Carryover-Slice ist als Regressionstest
+  umgesetzt und dokumentiert;
+- 0 PRs bis zum vierten ausgefuehrten fachlichen Regressionstest;
+- vorgeschlagener naechster Schritt ist PR 42:
+  weiteren schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice waehlen,
+  vorzugsweise mit eigenem explizitem Zwischenzustand aus vorhandenen
+  Planfixtures;
 - danach 1-2+ PRs fuer anschliessende
   schmale VU-/VN-Regel- oder Carryover-Code-Slices;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und

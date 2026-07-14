@@ -112,6 +112,13 @@ Der dritte fachliche Regressionstest ist unter
 `docs/migration/third_fachlicher_regressionstest.md` eingeordnet. Er prueft
 die VU-Carryover-Wirkung und die Vrvu04-Nettowechslerbasis, ohne daraus einen
 historischen Vollgleichheitsnachweis abzuleiten.
+Der vierte fachliche Regressionstest ist unter
+`tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` umgesetzt
+und in `docs/migration/fourth_fachlicher_regressionstest.md` eingeordnet. Er
+prueft, dass die explizite VN-`best_info`-Entscheidung fuer Policyholder `21`
+und Versicherer `11/12` von Periode `5` in den vorhandenen VN-State-Carryover
+nach Periode `6` eingeht, ohne neue Snapshots in der Folgeperiode, ohne
+Simulation und ohne historischen Vollgleichheitsnachweis.
 Der read-only Vertrag fuer einen spaeteren kontrollierten Ausfuehrungsadapter
 ist unter `python_port/ims/api/controlled_execution_adapter_contract.py`
 umgesetzt und in

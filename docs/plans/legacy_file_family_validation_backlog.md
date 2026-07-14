@@ -162,11 +162,19 @@ Die gesperrte UI-Karte fuer den Adapter-Resultat-Vertrag ist nach PR 40 umgesetz
   (`frontend/src/main.tsx`, `frontend/src/styles.css` und
   `tests/test_frontend_shell.py`).
 
+Der vierte fachliche VN-Slice ist nach PR 41 umgesetzt:
+
+- PR 41: `best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite
+  Perioden pruefen, weiterhin ohne neue Folgeperioden-Snapshots, ohne
+  Simulation und ohne Vollgleichheitsbehauptung
+  (`tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` und
+  `docs/migration/fourth_fachlicher_regressionstest.md`).
+
 Naechster vorgeschlagener Schritt:
 
-- PR 41: wieder einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice
-  aus vorhandenen Planfixtures vorbereiten, weiterhin ohne
-  Vollgleichheitsbehauptung.
+- PR 42: weiteren schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice aus
+  vorhandenen Planfixtures waehlen und vorbereiten, weiterhin ohne Simulation,
+  ohne neue unbelegte Fachlogik und ohne Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -296,8 +304,12 @@ Naechster vorgeschlagener Schritt:
   Upload, Dateiauswahl, Startbutton oder Ausfuehrungsfreigabe (dieser Schnitt:
   `frontend/src/main.tsx`, `frontend/src/styles.css` und
   `tests/test_frontend_shell.py`, erledigt).
-- PR 41+: Schmale fachliche Regel-Slices erst nach separater Freigabe
-  vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
+- PR 41: Schmalen fachlichen VN-`best_info`-/Carryover-Slice ausfuehren und
+  dokumentieren (dieser Schnitt:
+  `tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` und
+  `docs/migration/fourth_fachlicher_regressionstest.md`, erledigt).
+- PR 42+: Weitere schmale fachliche Regel- oder Carryover-Slices erst nach
+  separater Freigabe vorbereiten, weiterhin ohne Vollgleichheitsbehauptung.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.
 

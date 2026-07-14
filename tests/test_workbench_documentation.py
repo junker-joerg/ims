@@ -582,8 +582,12 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 40: Optional UI-Karte" in backlog
     assert "frontend/src/main.tsx" in backlog
     assert "tests/test_frontend_shell.py" in backlog
-    assert "PR 41: wieder einen schmalen fachlichen" in backlog
-    assert "PR 41+: Schmale fachliche Regel-Slices" in backlog
+    assert "Der vierte fachliche VN-Slice ist nach PR 41 umgesetzt" in backlog
+    assert "PR 41: `best_info`-Wirkung plus VN-State-Carryover" in backlog
+    assert "tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py" in backlog
+    assert "docs/migration/fourth_fachlicher_regressionstest.md" in backlog
+    assert "PR 42: weiteren schmalen fachlichen" in backlog
+    assert "PR 42+: Weitere schmale fachliche Regel- oder Carryover-Slices" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

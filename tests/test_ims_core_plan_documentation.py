@@ -30,6 +30,9 @@ THIRD_FACHLICHER_SLICE_TEST_PLAN = (
 THIRD_FACHLICHER_REGRESSION_DOC = (
     REPO_ROOT / "docs" / "migration" / "third_fachlicher_regressionstest.md"
 )
+FOURTH_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "fourth_fachlicher_regressionstest.md"
+)
 CONTROLLED_EXECUTION_ADAPTER_PLAN = (
     REPO_ROOT / "docs" / "plans" / "controlled_execution_adapter_plan.md"
 )
@@ -158,8 +161,12 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "0 PRs bis zu einem read-only Adapter-Resultat-Vertrag" in plan
     assert "read-only API-Vertrag fuer Adapter-Resultate ist umgesetzt" in plan
     assert "gesperrte UI-Karte fuer Adapter-Resultat-Vertrag ist umgesetzt" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 41" in plan
-    assert "wieder einen schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in plan
+    assert "tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py" in plan
+    assert "docs/migration/fourth_fachlicher_regressionstest.md" in plan
+    assert "vierter fachlicher VN-`best_info`-/Carryover-Slice" in plan
+    assert "0 PRs bis zum vierten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 42" in plan
+    assert "weiteren schmalen fachlichen VU-/VN-Regel- oder Carryover-Slice" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -428,6 +435,30 @@ def test_third_fachlicher_regression_doc_scopes_third_test() -> None:
     assert "keine neue Fachregel" in doc
 
 
+def test_fourth_fachlicher_regression_doc_scopes_fourth_test() -> None:
+    doc = FOURTH_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert FOURTH_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Vierter fachlicher Regressionstest" in doc
+    assert "tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py" in doc
+    assert "`run_vn_settlement_multi_period_from_mappings`" in doc
+    assert "`apply_vn_state_carryover`" in doc
+    assert "Regelart | `best_info`" in doc
+    assert "Policyholder | `21`" in doc
+    assert "Versicherer | `11` und `12`" in doc
+    assert "lokale Perioden `5 -> 6`" in doc
+    assert "Globale Perioden | `5 -> 6`" in doc
+    assert "carryovers[0].insurer_ids = [11, 12]" in doc
+    assert "carryovers[0].policyholder_ids = [21]" in doc
+    assert "chosen_insurer_ids = [12, None]" in doc
+    assert "information_cost = 4.0" in doc
+    assert "damages = [9.0, 0.0]" in doc
+    assert "end_wealth_current = 87.0" in doc
+    assert "kein historischer Vollgleichheitsnachweis" in doc
+    assert "kein API-/UI-/Run-Control-Startpfad" in doc
+    assert "keine neue Fachregel" in doc
+
+
 def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     plan = CONTROLLED_EXECUTION_ADAPTER_PLAN.read_text(encoding="utf-8")
 
@@ -477,7 +508,8 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in plan
     assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
     assert "PR 40 zeigt die gesperrte UI-Karte `Adapter-Resultat-Vertrag`" in plan
-    assert "PR 41+: danach wieder schmaler fachlicher Slice" in plan
+    assert "PR 41 setzt danach wieder einen schmalen fachlichen VN-Slice um" in plan
+    assert "PR 42+: danach weitere schmale fachliche Regel- oder Carryover-Slices" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -561,7 +593,8 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "docs/migration/run_control_adapter_result_api_contract.md" in plan
     assert "PR 40: optional UI-Karte" in plan
     assert "`Adapter-Resultat-Vertrag` in `frontend/src/main.tsx`" in plan
-    assert "PR 41+: danach wieder einen schmalen fachlichen" in plan
+    assert "PR 41: danach wieder einen schmalen fachlichen VN-Slice" in plan
+    assert "PR 42+: danach weitere schmale fachliche" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -634,6 +667,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "Vorschlag fuer PR 38" in plans_readme
     assert "run_control_adapter_result_api_contract.md" in plans_readme
     assert "GET /api/run-control/adapter-result-contract" in plans_readme
+    assert "fourth_fachlicher_regressionstest.md" in plans_readme
+    assert "PR-41-Einordnung des" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
@@ -651,9 +686,11 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
+    assert "docs/migration/fourth_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
+    assert "tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter_contract.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter.py" in readme
     assert "python_port/ims/api/run_control_adapter_result_contract.py" in readme
@@ -684,6 +721,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "Versicherer `10` von lokaler Periode `2` nach `3`" in readme
     assert "dritte fachliche Regressionstest" in readme
     assert "Vrvu04-Nettowechslerbasis" in readme
+    assert "vierte fachliche Regressionstest" in readme
+    assert "VN-`best_info`-Entscheidung" in readme
+    assert "Periode `5` in den vorhandenen VN-State-Carryover" in readme
     assert "kontrollierter Ausfuehrungsadapter-Vertrag" in readme
     assert "bereits lokal erzeugtes Adapterergebnis als read-only" in readme
     assert "vorab erzeugtes `controlled_execution_adapter`-JSON" in readme

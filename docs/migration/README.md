@@ -69,4 +69,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `parameter_output_vu014pr1.md`: Inventar und offene Feldklaerung fuer die historische Parameterausgabe `VU014PR1.DAT`
 - `fachlogik_migration_status.md`: Abschlussstand der kontrollierten Fachlogik-Migration im engeren Sinn mit Grenzen und Folgephasen
 - `workbench_demo_checklist.md`: lokale Demo-Checkliste fuer Start, UI-Reihenfolge, Demo-Signale und Grenzen ohne Simulation
+- `fourth_fachlicher_regressionstest.md`: vierter schmaler fachlicher Test fuer VN-`best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

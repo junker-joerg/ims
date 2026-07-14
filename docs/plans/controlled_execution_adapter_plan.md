@@ -127,8 +127,11 @@ zurueck.
 - PR 40 zeigt die gesperrte UI-Karte `Adapter-Resultat-Vertrag`, weiterhin
   ohne Upload, Dateiauswahl, Startbutton, HTTP-Validierung oder Adapterstart
   (dieser Schnitt).
-- PR 41+: danach wieder schmaler fachlicher Slice, weiterhin ohne
-  Vollgleichheitsbehauptung.
+- PR 41 setzt danach wieder einen schmalen fachlichen VN-Slice um:
+  `best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden,
+  weiterhin ohne Vollgleichheitsbehauptung.
+- PR 42+: danach weitere schmale fachliche Regel- oder Carryover-Slices, jeweils
+  mit eigenem belegtem Zwischenzustand.
 
 ## Validierung dieses Plan-/Vertragsstands
 
