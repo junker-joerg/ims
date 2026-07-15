@@ -110,12 +110,14 @@ verboten:
 - PR 45: Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
   anbinden, noch ohne UI-Button, Queue-Worker oder Adapterstart (dieser
   Schnitt).
-- PR 46: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen.
+- PR 46: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen,
+  weiterhin ohne UI-Startbutton, Queue-Worker oder Adapterstart (dieser
+  Schnitt).
 - PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden.
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
 - PR 49 optional: Packaging-/Startskript-Update fuer lokale Auslieferung.
 
-Damit bleiben nach PR 45 grob 2 bis 4 reviewbare PRs bis zu einer benutzbaren
+Damit bleiben nach PR 46 grob 1 bis 3 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation. Diese Zahl ist kein historischer
 Vollgleichheitsnachweis.
 
@@ -133,6 +135,25 @@ PR 45 setzt die lokale Persistenzgrenze als expliziten SQLite-Schritt um:
 - der Aktionsplan zeigt fuer diesen Status nur `inspect_persisted_result`;
 - `adapter_started = false`, `execution_performed = false` und
   `simulation_performed = false` bleiben im Persistenzresultat.
+
+## Umsetzung in PR 46
+
+Run-Control-Ausfuehrungsflow in der Workbench anzeigen.
+
+PR 46 zeigt den geplanten Ausfuehrungsflow in der Workbench als reine
+Statussicht:
+
+- `GET /api/run-control/adapter-start-contract` wird vom Frontend geladen;
+- die neue Karte `Run-Control-Ausfuehrungsflow` zeigt
+  `Preflight -> explizite Freigabe -> Ausfuehren`;
+- der Status `result_persisted` wird als `Ergebnis pruefen` eingeordnet;
+- der Aktionsplan-Schritt `inspect_persisted_result` bleibt sichtbar;
+- Start-Payload, Startvalidierung, Adapterstart, UI-Start und Queue-Worker
+  bleiben gesperrt.
+
+Der vorgeschlagene naechste groessere Schritt ist PR 47:
+Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden, weiterhin ohne
+historische Vollgleichheitsbehauptung.
 
 ## Validierung dieses Planstands
 

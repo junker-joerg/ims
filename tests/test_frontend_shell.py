@@ -134,15 +134,20 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "Queue vormerken" in source
     assert "Run-Control-Queue-Vormerkung" in source
     assert "Run-Control-Aktionsplan" in source
+    assert "Run-Control-Ausfuehrungsflow" in source
     assert "Run-Control-Kernblick-Bruecke" in source
     assert "runControlActionPlan" in source
+    assert "runControlExecutionFlowRows" in source
+    assert "runControlAdapterStartContract" in source
     assert "runControlCoreBridge" in source
     assert "runControlCoreBridgeRows" in source
     assert "Adapter-Resultat-Vertrag" in source
     assert "adapterResultContractRows" in source
     assert "runControlAdapterResultContract" in source
     assert "/api/run-control/adapter-result-contract" in source
+    assert "/api/run-control/adapter-start-contract" in source
     assert 'data-testid="adapter-result-contract"' in source
+    assert 'data-testid="run-control-execution-flow"' in source
     assert "selectedBridgeAction" in source
     assert "selectedQueueAction" in source
     assert "/api/run-control/queue/action-plan" in source
@@ -157,11 +162,13 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "queueActionLabel" in source
     assert "Preflight lokal" in source
     assert "Freigabe abwarten" in source
+    assert "Ergebnis pruefen" in source
     assert "Blocker klaeren" in source
     assert "Status pruefen" in source
     assert "run_preflight" in source
     assert "await_execution_release" in source
     assert "resolve_blockers" in source
+    assert "inspect_persisted_result" in source
     assert "inspect_queue_status" in source
     assert "inspect_core_validation_overview" in source
     assert "await_precomputed_execution_summary" in source
@@ -177,6 +184,10 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "run-control-action-plan-panel" in styles
     assert "run-control-action-plan-grid" in styles
     assert "run-control-action-plan-row" in styles
+    assert "run-control-execution-flow-panel" in styles
+    assert "run-control-execution-flow-steps" in styles
+    assert "run-control-execution-flow-grid" in styles
+    assert "run-control-execution-flow-row" in styles
     assert "run-control-core-bridge-panel" in styles
     assert "run-control-core-bridge-grid" in styles
     assert "run-control-core-bridge-row" in styles
@@ -319,6 +330,39 @@ def test_frontend_shell_declares_readonly_adapter_result_contract_card():
     assert "startRun" not in source
     assert "startAdapter" not in source
     assert "uploadAdapter" not in source
+    assert 'type="file"' not in source
+
+
+def test_frontend_shell_declares_gated_run_control_execution_flow():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert "/api/run-control/adapter-start-contract" in source
+    assert "RunControlAdapterStartContract" in source
+    assert "Run-Control-Ausfuehrungsflow" in source
+    assert 'aria-label="Preflight -> explizite Freigabe -> Ausfuehren"' in source
+    assert 'data-testid="run-control-execution-flow"' in source
+    assert "runControlExecutionFlowSteps" in source
+    assert "runControlExecutionFlowRows" in source
+    assert "planned_start_endpoint" in source
+    assert "api_accepts_start_payload" in source
+    assert "api_validates_start_payload" in source
+    assert "api_starts_adapter" in source
+    assert "ui_start_enabled" in source
+    assert "queue_worker_enabled" in source
+    assert "historical_full_equality_claimed" in source
+    assert "result_persisted" in source
+    assert "inspect_persisted_result" in source
+    assert "Ausfuehren" in source
+    assert "gesperrt" in source
+    assert "run-control-execution-flow-panel" in styles
+    assert "run-control-execution-flow-steps" in styles
+    assert "run-control-execution-flow-step" in styles
+    assert "run-control-execution-flow-grid" in styles
+    assert "run-control-execution-flow-row" in styles
+    assert "startRun" not in source
+    assert "startAdapter" not in source
+    assert "runControlStartAdapter" not in source
     assert 'type="file"' not in source
 
 

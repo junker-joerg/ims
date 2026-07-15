@@ -73,4 +73,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `fifth_fachlicher_regressionstest.md`: fuenfter schmaler fachlicher Test fuer VN-`sample_search` / Vrvn05 plus Schaden-/Settlement-Runner-Grenze
 - `run_control_adapter_start_contract.md`: hart gegateter read-only Startvertrag fuer einen spaeteren Run-Control-Adapterstart, weiterhin ohne POST-Start, UI-Button, Queue-Worker oder Simulation
 - `run_control_execution_result_store.md`: kontrollierte lokale Persistenzgrenze fuer vorab validierte Adapter-Resultate, Queue-Status `result_persisted` und weiterhin ohne Adapterstart oder Simulation
+- `run_control_execution_flow_ui.md`: rein lesende Workbench-Karte fuer `Preflight -> explizite Freigabe -> Ausfuehren`, weiterhin ohne UI-Startbutton, Queue-Worker, Adapterstart oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

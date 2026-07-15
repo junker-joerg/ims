@@ -78,7 +78,8 @@ Der Persistenzpfad verlangt:
 
 ## Folgeschritt
 
-PR 46 soll den UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
-anzeigen. Nach PR 45 bleiben grob 2 bis 4 reviewbare PRs bis zu einer
-benutzbaren kontrollierten Demo-Simulation. Diese Schaetzung ist kein
-historischer Vollgleichheitsnachweis.
+PR 46 zeigt den UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
+inzwischen als reine Statussicht in der Workbench. Nach PR 46 bleiben grob
+1 bis 3 reviewbare PRs bis zu einer benutzbaren kontrollierten
+Demo-Simulation. Diese Schaetzung ist kein historischer
+Vollgleichheitsnachweis.

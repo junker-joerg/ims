@@ -54,3 +54,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   fuer vorab validierte Adapter-Resultate und Queue-Status
   `result_persisted`, weiterhin ohne Adapterstart, Queue-Worker oder
   Simulation.
+- `../migration/run_control_execution_flow_ui.md`: PR-46-UI-Flow
+  `Preflight -> explizite Freigabe -> Ausfuehren`, weiterhin ohne
+  UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.

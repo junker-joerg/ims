@@ -509,6 +509,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.run-control-execution-flow-panel {
+  margin-bottom: 18px;
+}
+
 .run-control-core-bridge-panel {
   margin-bottom: 18px;
 }
@@ -974,6 +978,7 @@ code {
 
 .run-control-dry-run-result-grid,
 .run-control-action-plan-grid,
+.run-control-execution-flow-grid,
 .run-control-core-bridge-grid,
 .adapter-result-contract-grid,
 .run-control-queue-enqueue-grid {
@@ -986,6 +991,7 @@ code {
 .run-control-dry-run-row,
 .run-control-dry-run-result-row,
 .run-control-action-plan-row,
+.run-control-execution-flow-row,
 .run-control-core-bridge-row,
 .adapter-result-contract-row,
 .run-control-queue-enqueue-row {
@@ -999,6 +1005,7 @@ code {
 .run-control-dry-run-row span,
 .run-control-dry-run-result-row span,
 .run-control-action-plan-row span,
+.run-control-execution-flow-row span,
 .run-control-core-bridge-row span,
 .adapter-result-contract-row span,
 .run-control-queue-enqueue-row span {
@@ -1010,9 +1017,37 @@ code {
 .run-control-dry-run-row strong,
 .run-control-dry-run-result-row strong,
 .run-control-action-plan-row strong,
+.run-control-execution-flow-row strong,
 .run-control-core-bridge-row strong,
 .adapter-result-contract-row strong,
 .run-control-queue-enqueue-row strong {
+  display: block;
+  min-width: 0;
+  color: #143b2d;
+  overflow-wrap: anywhere;
+}
+
+.run-control-execution-flow-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.run-control-execution-flow-step {
+  min-height: 70px;
+  padding: 12px;
+  border: 1px solid #c9d8d1;
+  border-radius: 6px;
+  background: #f7faf8;
+}
+
+.run-control-execution-flow-step span {
+  display: block;
+  margin-bottom: 8px;
+  color: #66736c;
+}
+
+.run-control-execution-flow-step strong {
   display: block;
   min-width: 0;
   color: #143b2d;
@@ -1099,6 +1134,8 @@ code {
   .run-control-dry-run-grid,
   .run-control-dry-run-result-grid,
   .run-control-action-plan-grid,
+  .run-control-execution-flow-grid,
+  .run-control-execution-flow-steps,
   .run-control-core-bridge-grid,
   .adapter-result-contract-grid,
   .run-control-queue-enqueue-grid,

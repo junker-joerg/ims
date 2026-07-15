@@ -153,6 +153,16 @@ explizitem `--explicit-persistence-release` in eine explizite SQLite-Quelle,
 setzt den Queue-Status `result_persisted` und startet keinen Adapter. Nach
 PR 45 bleiben grob noch 2 bis 4 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation.
+Der Workbench-UI-Flow fuer die kontrollierte Ausfuehrungsgrenze ist unter
+`frontend/src/main.tsx` umgesetzt und in
+`docs/migration/run_control_execution_flow_ui.md` dokumentiert. Die Karte
+`Run-Control-Ausfuehrungsflow` zeigt
+`Preflight -> explizite Freigabe -> Ausfuehren`, laedt
+`GET /api/run-control/adapter-start-contract` nur lesend und ordnet
+`result_persisted` als `Ergebnis pruefen` ein. Sie enthaelt keinen
+UI-Startbutton, keinen Queue-Worker, keinen Adapterstart und keine Simulation.
+Nach PR 46 bleiben grob noch 1 bis 3 reviewbare PRs bis zu einer benutzbaren
+kontrollierten Demo-Simulation.
 Der read-only Vertrag fuer einen spaeteren kontrollierten Ausfuehrungsadapter
 ist unter `python_port/ims/api/controlled_execution_adapter_contract.py`
 umgesetzt und in
@@ -391,7 +401,7 @@ python -m ims.api.run_control_queue_diagnostics --db .\.ims_workbench\metadata.s
 python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.sqlite
 ```
 
-`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list`, `show`, `run_control_queue_diagnostics` und `run_control_queue_action_plan` lesen die Queue-Datenbank read-only. Die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten. Der Aktionsplan fuehrt diese Diagnose mit dem lokalen Preflight zusammen und empfiehlt pro Queue-Eintrag nur den naechsten sicheren lokalen Schritt: `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Eine Queue-only-Datenbank aus `run_control_queue init --db` bleibt diagnostizierbar und planbar; fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet.
+`init` und `enqueue` sind die expliziten lokalen Queue-Schreibbefehle. `list`, `show`, `run_control_queue_diagnostics` und `run_control_queue_action_plan` lesen die Queue-Datenbank read-only. Die Diagnose prueft Queue-Schema, Statuswerte, Szenario-Referenzen und Ausfuehrungsflags, ohne Metadaten zu schreiben oder eine Simulation zu starten. Der Aktionsplan fuehrt diese Diagnose mit dem lokalen Preflight zusammen und empfiehlt pro Queue-Eintrag nur den naechsten sicheren lokalen Schritt: `run_preflight`, `await_execution_release`, `resolve_blockers`, `inspect_persisted_result` oder `inspect_queue_status`. Eine Queue-only-Datenbank aus `run_control_queue init --db` bleibt diagnostizierbar und planbar; fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet.
 
 Die Workbench-Oberflaeche zeigt vorhandene Queue-Eintraege rein lesend, filtert sie clientseitig und blendet nur lokale Schrittlabels wie Preflight, Freigabe abwarten, Blocker klaeren oder Status pruefen ein. Daraus entsteht kein Start-, Upload-, Editor-, HTTP-Schreib- oder Ausfuehrungspfad.
 
@@ -405,7 +415,7 @@ Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese ge
 python -m ims.api.run_control_preflight --run-id baseline-python-tests
 ```
 
-Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen und nach einem erfolgreichen Dry-Run ueber `POST /api/run-control/queue` eine Queue-Vormerkung in einer expliziten SQLite-Quelle schreiben. `GET /api/run-control/queue/action-plan` zeigt danach nur den naechsten sicheren Schritt wie `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Die Karten `Carryover-Probe-Vertrag` und `Adapter-Resultat-Vertrag` zeigen nur gesperrte read-only Vertraege fuer vorab berechnete bzw. lokal gepruefte Payloads. Diese Schritte zeigen Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne PUT, Upload, Editor oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag, Dry-Run-Pruefung, Adapter-Resultat-Vertrag, Queue-Vormerkung und Aktionsplan.
+Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen und nach einem erfolgreichen Dry-Run ueber `POST /api/run-control/queue` eine Queue-Vormerkung in einer expliziten SQLite-Quelle schreiben. `GET /api/run-control/queue/action-plan` zeigt danach nur den naechsten sicheren Schritt wie `run_preflight`, `await_execution_release`, `resolve_blockers`, `inspect_persisted_result` oder `inspect_queue_status`. Die Karten `Carryover-Probe-Vertrag` und `Adapter-Resultat-Vertrag` zeigen nur gesperrte read-only Vertraege fuer vorab berechnete bzw. lokal gepruefte Payloads. Die Karte `Run-Control-Ausfuehrungsflow` zeigt `Preflight -> explizite Freigabe -> Ausfuehren` nur als Statussicht auf Preflight, Aktionsplan, Startvertrag und Ergebnisstatus. Diese Schritte zeigen Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne PUT, Upload, Editor, UI-Startbutton oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag, Dry-Run-Pruefung, Adapter-Resultat-Vertrag, Queue-Vormerkung und Aktionsplan.
 
 Lokaler Demo-Smoke fuer die Browser-Workbench:
 
@@ -415,7 +425,7 @@ Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Con
 
 Der Demo-Smoke nutzt den bekannten Run `baseline-python-tests` und das Szenario `agrsich-reference-window`. Er prueft den HTTP-Dry-Run, schreibt danach nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle, liest den Aktionsplan wieder aus, prueft die read-only Run-Control-Kernblick-Bruecke und liest den Carryover-Probe-Vertrag sowie den Adapter-Resultat-Vertrag. Erwartet bleiben `execution_enabled=false`, `execution_performed=false`, als naechster Queue-Schritt `run_preflight`, als Brueckenhinweis `resolve_core_validation_blockers`, `api_starts_probe=false` und `api_starts_adapter=false`. Der Ablauf ist eine lokale Bedien- und Integrationsprobe, keine Simulation, kein Ausfuehrungsadapter, keine Fachvalidierung und keine historische Vollgleichheitsbehauptung.
 
-Der zugehoerige Browser-/Screenshot-Smoke nutzt stabile UI-Anker fuer Dry-Run-Schaltflaeche, Queue-Schaltflaeche, Queue-Ergebnis, Aktionsplankarte, `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`. Der Screenshot soll belegen, dass die lokale UI den Demo-Pfad, die gesperrte Brueckenkarte, den gesperrten Carryover-Probe-Vertrag und den gesperrten Adapter-Resultat-Vertrag sichtbar macht; er ist kein fachlicher Ergebnisnachweis.
+Der zugehoerige Browser-/Screenshot-Smoke nutzt stabile UI-Anker fuer Dry-Run-Schaltflaeche, Queue-Schaltflaeche, Queue-Ergebnis, Aktionsplankarte, `run-control-execution-flow`, `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`. Der Screenshot soll belegen, dass die lokale UI den Demo-Pfad, die gesperrte Ausfuehrungsflow-Karte, die gesperrte Brueckenkarte, den gesperrten Carryover-Probe-Vertrag und den gesperrten Adapter-Resultat-Vertrag sichtbar macht; er ist kein fachlicher Ergebnisnachweis.
 
 Metadaten-CLI:
 

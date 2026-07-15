@@ -11,6 +11,7 @@ Die Demo zeigt, dass die lokale Browser-Workbench einen Run-Control-Wunsch kontr
 3. HTTP-Dry-Run fuer `baseline-python-tests` pruefen
 4. Queue-Vormerkung in einer expliziten SQLite-Metadatenquelle schreiben
 5. Run-Control-Aktionsplan lesen und `run_preflight` als naechsten sicheren Schritt anzeigen
+6. Run-Control-Ausfuehrungsflow als gesperrte Statussicht anzeigen
 
 Die Demo zeigt keine fachliche Ausfuehrung. `execution_enabled` und `execution_performed` bleiben `false`.
 
@@ -44,12 +45,14 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar.
 7. Erwartung nach Queue-Vormerkung: Status `vorgemerkt`, Queue-ID `baseline-python-tests`, Schreibpfad `Queue geschrieben`, Ausfuehrung gesperrt.
 8. Run-Control-Aktionsplan lesen.
 9. Erwartung im Aktionsplan: `Naechste Aktion = run_preflight`, Blocker `keine`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
-10. Run-Control-Kernblick-Bruecke lesen.
-11. Erwartung in der Bruecke: `Brueckenaktion = resolve_core_validation_blockers`, Summary-Schritt `await_precomputed_execution_summary`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
-12. Carryover-Probe-Vertrag lesen.
-13. Erwartung im Vertrag: `api_starts_probe = false`, `api_accepts_probe_payload = false`, `ui_enabled = false`, `simulation_performed = false`.
-14. Adapter-Resultat-Vertrag lesen.
-15. Erwartung im Vertrag: `api_starts_adapter = false`, `api_accepts_result_payload = false`, `api_validates_result_payload = false`, `ui_enabled = false`, `simulation_performed = false`.
+10. Run-Control-Ausfuehrungsflow lesen.
+11. Erwartung im Flow: `Preflight -> explizite Freigabe -> Ausfuehren` ist sichtbar, `api_starts_adapter = false`, `ui_start_enabled = false`, `queue_worker_enabled = false`.
+12. Run-Control-Kernblick-Bruecke lesen.
+13. Erwartung in der Bruecke: `Brueckenaktion = resolve_core_validation_blockers`, Summary-Schritt `await_precomputed_execution_summary`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
+14. Carryover-Probe-Vertrag lesen.
+15. Erwartung im Vertrag: `api_starts_probe = false`, `api_accepts_probe_payload = false`, `ui_enabled = false`, `simulation_performed = false`.
+16. Adapter-Resultat-Vertrag lesen.
+17. Erwartung im Vertrag: `api_starts_adapter = false`, `api_accepts_result_payload = false`, `api_validates_result_payload = false`, `ui_enabled = false`, `simulation_performed = false`.
 
 ## Optionaler lesender Kernblick
 
@@ -95,6 +98,11 @@ Sie schaltet keinen Startpfad frei.
 Der geplante Brueckenschnitt ist in `docs/plans/run_control_core_diagnostics_bridge_plan.md`
 dokumentiert.
 
+Die Karte `Run-Control-Ausfuehrungsflow` zeigt den Ablauf
+`Preflight -> explizite Freigabe -> Ausfuehren` nur als Statussicht auf
+Preflight, Aktionsplan, Adapter-Startvertrag und Queue-Ergebnisstatus. Sie
+enthaelt keinen UI-Startbutton, keinen Queue-Worker und keinen Adapterstart.
+
 ## Was demo-faehig ist
 
 - lokale Browser-Workbench mit gebautem Frontend
@@ -105,11 +113,12 @@ dokumentiert.
 - kontrollierter HTTP-Dry-Run ohne Schreiben
 - kontrollierte Queue-Vormerkung in expliziter SQLite-Datei
 - lesender Run-Control-Aktionsplan mit `run_preflight`
+- lesender Run-Control-Ausfuehrungsflow mit gesperrtem Ausfuehren-Schritt und stabilem UI-Anker `run-control-execution-flow`
 - lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
 - lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads ohne Upload oder Startpfad
 - lesender Adapter-Resultat-Vertrag fuer vorab lokal gepruefte Adapter-Resultate ohne Upload, HTTP-Validierung oder Startpfad
 - lesende Run-Control-Kernblick-Bruecke ohne Startpfad
-- Browser-/Screenshot-Smoke ueber stabile UI-Anker einschliesslich `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`
+- Browser-/Screenshot-Smoke ueber stabile UI-Anker einschliesslich `run-control-execution-flow`, `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`
 
 ## Was noch nicht demo-faehig ist
 
@@ -125,7 +134,7 @@ dokumentiert.
 
 Die Queue-Vormerkung ist der einzige in der Demo erwartete UI-ausgeloeste Schreibvorgang. Sie schreibt nur Queue-Metadaten in die explizite SQLite-Datei. Sie startet keinen Worker, keinen Scheduler, keinen Simulationslauf und keine Fachlogikmutation.
 
-Der Demo-Screenshot belegt nur Bedienbarkeit, sichtbare Grenzen, die gesperrte Carryover-Probe-Vertragskarte und die gesperrte Adapter-Resultat-Vertragskarte. Er belegt keine historischen Fachwerte und ersetzt keine spaetere Alt-/Neu-Fachvalidierung.
+Der Demo-Screenshot belegt nur Bedienbarkeit, sichtbare Grenzen, die gesperrte Ausfuehrungsflow-Karte, die gesperrte Carryover-Probe-Vertragskarte und die gesperrte Adapter-Resultat-Vertragskarte. Er belegt keine historischen Fachwerte und ersetzt keine spaetere Alt-/Neu-Fachvalidierung.
 
 ## Schnelle Pruefung vor der Demo
 

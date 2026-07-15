@@ -58,8 +58,11 @@ PR 38 soll eine read-only Anzeigegrenze planen:
   `python_port/ims/api/run_control_execution_result_store.py` vorbereiten,
   weiterhin ohne Adapterstart, UI-Startbutton, Queue-Worker oder Simulation
   (erledigt).
-- PR 46+: danach UI-Flow, Ergebnisanzeige und Demo-Smoke in getrennten
-  Schritten vorbereiten.
+- PR 46: danach UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
+  anzeigen, weiterhin ohne UI-Startbutton, Queue-Worker, Adapterstart oder
+  Simulation (erledigt).
+- PR 47+: danach Ergebnisanzeige und Demo-Smoke in getrennten Schritten
+  vorbereiten.
 
 ## Grenzen
 

@@ -178,11 +178,10 @@ Der fuenfte fachliche VN-Slice ist nach PR 42 umgesetzt:
   (`tests/test_fifth_fachlicher_vn_sample_search_regression.py` und
   `docs/migration/fifth_fachlicher_regressionstest.md`).
 
-Aktueller vorgeschlagener Schritt nach PR 45:
+Aktueller vorgeschlagener Schritt nach PR 46:
 
-- PR 46: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen,
-  weiterhin ohne Queue-Worker, ohne automatische Ausfuehrung, ohne
-  Browser-Upload und ohne Vollgleichheitsbehauptung.
+- PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden,
+  weiterhin ohne historische Vollgleichheitsbehauptung.
 
 ## Rest-PR-Planung
 
@@ -335,12 +334,16 @@ Aktueller vorgeschlagener Schritt nach PR 45:
   `tests/test_api_run_control_execution_result_store.py` und
   `docs/migration/run_control_execution_result_store.md`, erledigt), weiterhin
   ohne Adapterstart, UI-Button oder Queue-Worker.
-- PR 46: UI-Flow Preflight -> explizite Freigabe -> Ausfuehren anzeigen.
+- PR 46: UI-Flow Preflight -> explizite Freigabe -> Ausfuehren anzeigen
+  (dieser Schnitt: `frontend/src/main.tsx`, `frontend/src/styles.css`,
+  `tests/test_frontend_shell.py` und
+  `docs/migration/run_control_execution_flow_ui.md`, erledigt), weiterhin
+  ohne UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
 - PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden.
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
 - PR 49 optional: Packaging-/Startskript-Update fuer die lokale Auslieferung.
 
-Zaehlschnitt nach PR 45: grob 2 bis 4 reviewbare PRs bis zu einer benutzbaren
+Zaehlschnitt nach PR 46: grob 1 bis 3 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation; das bleibt kein historischer
 Vollgleichheitsnachweis.
 

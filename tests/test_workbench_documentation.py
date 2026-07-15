@@ -66,6 +66,9 @@ def test_readme_documents_local_workbench_start_commands():
     assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "GET /api/run-control/adapter-result-contract" in readme
     assert "GET /api/run-control/adapter-start-contract" in readme
+    assert "docs/migration/run_control_execution_flow_ui.md" in readme
+    assert "Run-Control-Ausfuehrungsflow" in readme
+    assert "Preflight -> explizite Freigabe -> Ausfuehren" in readme
     assert "POST /api/run-control/dry-run" in readme
     assert "POST /api/run-control/queue" in readme
     assert "GET /api/run-control/queue/action-plan" in readme
@@ -77,6 +80,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "agrsich-reference-window" in readme
     assert "Browser-/Screenshot-Smoke nutzt stabile UI-Anker" in readme
     assert "run-control-core-bridge" in readme
+    assert "run-control-execution-flow" in readme
     assert "carryover-probe-contract" in readme
     assert "api_starts_probe=false" in readme
     assert "api_starts_adapter = false" in readme
@@ -85,7 +89,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_queue enqueue .\\run_control_request.json --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.run_control_queue_diagnostics --db .\\.ims_workbench\\metadata.sqlite" in readme
     assert "python -m ims.api.run_control_queue_action_plan --db .\\.ims_workbench\\metadata.sqlite" in readme
-    assert "run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`" in readme
+    assert "run_preflight`, `await_execution_release`, `resolve_blockers`, `inspect_persisted_result` oder `inspect_queue_status`" in readme
     assert "Statuswerte, Szenario-Referenzen und Ausfuehrungsflags" in readme
     assert "Queue-only-Datenbank" in readme
     assert "fehlende Szenario-/Run-Metadatentabellen werden als Warnung gemeldet" in readme
@@ -124,6 +128,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/run_control_adapter_start_contract.md" in readme
     assert "docs/migration/run_control_execution_result_store.md" in readme
+    assert "docs/migration/run_control_execution_flow_ui.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
     assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
     assert "docs/migration/workbench_demo_checklist.md" in readme
@@ -279,6 +284,9 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert 'mode = "run_control_adapter_result_api_contract"' in doc
     assert 'mode = "run_control_adapter_start_contract"' in doc
     assert 'mode = "run_control_execution_result_store_persist"' in doc
+    assert "Run-Control-Ausfuehrungsflow" in doc
+    assert "Preflight -> explizite Freigabe -> Ausfuehren" in doc
+    assert "ui_start_enabled = false" in doc
     assert "runner_start_enabled = false" in doc
     assert "--explicit-execution-release" in doc
     assert "keinen freien `--output-dir`" in doc
@@ -306,11 +314,13 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "GET /api/run-control/queue/action-plan" in doc
     assert "Der lokale Demo-Smoke fuer die Browser-Workbench" in doc
     assert "Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen" in doc
+    assert "Run-Control-Ausfuehrungsflow ansehen" in doc
     assert "Run-Control-Kernblick-Bruecke lesen" in doc
     assert "Adapter-Resultat-Vertrag lesen" in doc
     assert "POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`" in doc
     assert "run-control-demo-dry-run-button" in doc
     assert "run-control-demo-action-plan" in doc
+    assert "run-control-execution-flow" in doc
     assert "run-control-core-bridge" in doc
     assert "Dieser Demo-Smoke startet keine Simulation" in doc
     assert "GET /api/run-control/queue/{queue_id}" in doc
@@ -322,7 +332,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "Die Run-Control-Kernblick-Bruecke ist rein lesend" in doc
     assert "`/api/run-control/core-diagnostics-bridge`" in doc
     assert "enthaelt keinen Startbutton" in doc
-    assert "run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status" in doc
+    assert "run_preflight`, `await_execution_release`, `resolve_blockers`, `inspect_persisted_result` oder `inspect_queue_status" in doc
     assert "Der Run-Control-Preflight ist ebenfalls rein lokal und lesend" in doc
     assert "schaltet keinen UI-Startbutton frei" in doc
     assert "keine Fachvalidierung und keine historische Vollgleichheitsbehauptung" in doc
@@ -479,12 +489,17 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "api_starts_adapter = false" in checklist
     assert "api_accepts_result_payload = false" in checklist
     assert "api_validates_result_payload = false" in checklist
+    assert "Run-Control-Ausfuehrungsflow" in checklist
+    assert "Preflight -> explizite Freigabe -> Ausfuehren" in checklist
+    assert "ui_start_enabled = false" in checklist
+    assert "lesender Run-Control-Ausfuehrungsflow" in checklist
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
     assert "schaltet keinen Startpfad frei" in checklist
     assert "lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads" in checklist
     assert "lesender Adapter-Resultat-Vertrag fuer vorab lokal gepruefte Adapter-Resultate" in checklist
     assert "lesende Run-Control-Kernblick-Bruecke ohne Startpfad" in checklist
     assert "run-control-core-bridge" in checklist
+    assert "run-control-execution-flow" in checklist
     assert "carryover-probe-contract" in checklist
     assert "adapter-result-contract" in checklist
     assert "Was noch nicht demo-faehig ist" in checklist
@@ -621,8 +636,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "tests/test_api_run_control_execution_result_store.py" in backlog
     assert "docs/migration/run_control_execution_result_store.md" in backlog
     assert "PR 46: UI-Flow" in backlog
+    assert "docs/migration/run_control_execution_flow_ui.md" in backlog
+    assert "PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe" in backlog
     assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
-    assert "Zaehlschnitt nach PR 45: grob 2 bis 4 reviewbare PRs" in backlog
+    assert "Zaehlschnitt nach PR 46: grob 1 bis 3 reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

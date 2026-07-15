@@ -25,6 +25,7 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     core_validation = client.get("/api/core-validation/overview")
     carryover_probe_contract = client.get("/api/core-validation/carryover-probe-contract")
     adapter_result_contract = client.get("/api/run-control/adapter-result-contract")
+    adapter_start_contract = client.get("/api/run-control/adapter-start-contract")
     run_control_queue = client.get("/api/run-control/queue")
     run_control_dry_run = client.post(
         "/api/run-control/dry-run",
@@ -89,6 +90,14 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert adapter_result_contract.json()["api_starts_adapter"] is False
     assert adapter_result_contract.json()["execution_performed"] is False
     assert adapter_result_contract.json()["simulation_performed"] is False
+    assert adapter_start_contract.status_code == 200
+    assert adapter_start_contract.json()["mode"] == "run_control_adapter_start_contract"
+    assert adapter_start_contract.json()["api_accepts_start_payload"] is False
+    assert adapter_start_contract.json()["api_starts_adapter"] is False
+    assert adapter_start_contract.json()["ui_start_enabled"] is False
+    assert adapter_start_contract.json()["queue_worker_enabled"] is False
+    assert adapter_start_contract.json()["execution_performed"] is False
+    assert adapter_start_contract.json()["simulation_performed"] is False
     assert run_control_queue.status_code == 200
     assert run_control_queue.json()["mode"] == "run_control_queue_overview"
     assert run_control_queue.json()["writes_enabled"] is False
@@ -234,11 +243,13 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Run-Control-Uebersicht" in source
     assert "Run-Control-Queue-Detail" in source
     assert "Run-Control-Dry-Run-Vertrag" in source
+    assert "Run-Control-Ausfuehrungsflow" in source
     assert "Run-Control-Kernblick-Bruecke" in source
     assert "Adapter-Resultat-Vertrag" in source
     assert 'data-testid="run-control-demo-dry-run-button"' in source
     assert 'data-testid="run-control-demo-queue-button"' in source
     assert 'data-testid="run-control-demo-action-plan"' in source
+    assert 'data-testid="run-control-execution-flow"' in source
     assert 'data-testid="run-control-core-bridge"' in source
     assert 'data-testid="carryover-probe-contract"' in source
     assert 'data-testid="adapter-result-contract"' in source
@@ -248,6 +259,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/core-validation/overview" in source
     assert "/api/core-validation/carryover-probe-contract" in source
     assert "/api/run-control/adapter-result-contract" in source
+    assert "/api/run-control/adapter-start-contract" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/action-plan" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
@@ -256,6 +268,8 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/run-control/core-diagnostics-bridge" in source
     assert "Dry-Run pruefen" in source
     assert "Queue vormerken" in source
+    assert "Preflight -> explizite Freigabe -> Ausfuehren" in source
+    assert "inspect_persisted_result" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source

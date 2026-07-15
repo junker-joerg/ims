@@ -166,6 +166,7 @@ type RunControlNextAction =
   | "run_preflight"
   | "await_execution_release"
   | "resolve_blockers"
+  | "inspect_persisted_result"
   | "inspect_queue_status";
 
 type RunControlBridgeNextAction =
@@ -303,6 +304,36 @@ type RunControlAdapterResultApiContract = {
   execution_performed: boolean;
   simulation_performed: boolean;
   automatic_historical_rule_selection_performed: boolean;
+};
+
+type RunControlAdapterStartContract = {
+  status: "ok";
+  mode: "run_control_adapter_start_contract";
+  schema_version: string;
+  endpoint: string;
+  planned_start_endpoint: string;
+  source_adapter_module: string;
+  expected_adapter_mode: string;
+  expected_summary_mode: string;
+  required_request_fields: string[];
+  optional_request_fields: string[];
+  required_preconditions: string[];
+  forbidden_request_fields: string[];
+  forbidden_boundaries: string[];
+  contract_only: boolean;
+  http_enabled: boolean;
+  api_accepts_start_payload: boolean;
+  api_validates_start_payload: boolean;
+  api_starts_adapter: boolean;
+  ui_start_enabled: boolean;
+  queue_worker_enabled: boolean;
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  automatic_historical_rule_selection_performed: boolean;
+  historical_full_equality_claimed: boolean;
 };
 
 type RunControlDryRunResult = {
@@ -504,6 +535,9 @@ function queueActionLabel(entry: RunControlQueueEntry): string {
   if (entry.status === "blocked") {
     return "Blocker klaeren";
   }
+  if (entry.status === "result_persisted") {
+    return "Ergebnis pruefen";
+  }
   return "Status pruefen";
 }
 
@@ -525,6 +559,8 @@ function App() {
   const [runControlDryRunContract, setRunControlDryRunContract] = useState<RunControlDryRunContract | null>(null);
   const [runControlAdapterResultContract, setRunControlAdapterResultContract] =
     useState<RunControlAdapterResultApiContract | null>(null);
+  const [runControlAdapterStartContract, setRunControlAdapterStartContract] =
+    useState<RunControlAdapterStartContract | null>(null);
   const [runControlDryRunResult, setRunControlDryRunResult] = useState<RunControlDryRunResult | null>(null);
   const [runControlDryRunState, setRunControlDryRunState] = useState<DetailState>("idle");
   const [runControlDryRunError, setRunControlDryRunError] = useState<string | null>(null);
@@ -586,6 +622,7 @@ function App() {
           runControlRequestContractResponse,
           runControlDryRunContractResponse,
           runControlAdapterResultContractResponse,
+          runControlAdapterStartContractResponse,
           healthResponse,
           versionResponse
         ] = await Promise.all([
@@ -602,6 +639,7 @@ function App() {
           fetch("/api/run-control/request-contract"),
           fetch("/api/run-control/dry-run-contract"),
           fetch("/api/run-control/adapter-result-contract"),
+          fetch("/api/run-control/adapter-start-contract"),
           fetch("/api/health"),
           fetch("/api/version")
         ]);
@@ -619,6 +657,7 @@ function App() {
           !runControlRequestContractResponse.ok ||
           !runControlDryRunContractResponse.ok ||
           !runControlAdapterResultContractResponse.ok ||
+          !runControlAdapterStartContractResponse.ok ||
           !healthResponse.ok ||
           !versionResponse.ok
         ) {
@@ -638,6 +677,7 @@ function App() {
           runControlRequestContractPayload,
           runControlDryRunContractPayload,
           runControlAdapterResultContractPayload,
+          runControlAdapterStartContractPayload,
           healthPayload,
           versionPayload
         ] = await Promise.all([
@@ -654,6 +694,7 @@ function App() {
           runControlRequestContractResponse.json() as Promise<RunControlRequestContract>,
           runControlDryRunContractResponse.json() as Promise<RunControlDryRunContract>,
           runControlAdapterResultContractResponse.json() as Promise<RunControlAdapterResultApiContract>,
+          runControlAdapterStartContractResponse.json() as Promise<RunControlAdapterStartContract>,
           healthResponse.json() as Promise<HealthStatus>,
           versionResponse.json() as Promise<VersionInfo>
         ]);
@@ -672,6 +713,7 @@ function App() {
           setRunControlRequestContract(runControlRequestContractPayload);
           setRunControlDryRunContract(runControlDryRunContractPayload);
           setRunControlAdapterResultContract(runControlAdapterResultContractPayload);
+          setRunControlAdapterStartContract(runControlAdapterStartContractPayload);
           setSelectedQueueId((current) => current ?? runControlQueuePayload.entries[0]?.queue_id ?? null);
           setHealthStatus(healthPayload);
           setVersionInfo(versionPayload);
@@ -1249,6 +1291,37 @@ function App() {
     ["Hinweise", runControlActionPlanIssueLabel],
     ["Schreibpfade", runControlActionPlan?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", selectedQueueAction?.execution_allowed || runControlActionPlan?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
+  const executionReleaseStatus =
+    selectedQueueAction?.next_action === "await_execution_release"
+      ? "wartet"
+      : selectedQueueAction?.next_action === "inspect_persisted_result"
+        ? "erledigt"
+        : selectedQueueAction?.blocked_by.length
+          ? "blockiert"
+          : "nicht bereit";
+  const executionStartStatus = runControlAdapterStartContract
+    ? runControlAdapterStartContract.api_starts_adapter ||
+      runControlAdapterStartContract.ui_start_enabled ||
+      runControlAdapterStartContract.execution_enabled
+      ? "aktiv"
+      : "gesperrt"
+    : "laedt";
+  const runControlExecutionFlowSteps = [
+    ["Preflight", runControlPreflightBoundaryStatus],
+    ["Explizite Freigabe", executionReleaseStatus],
+    ["Ausfuehren", executionStartStatus]
+  ];
+  const runControlExecutionFlowRows = [
+    ["Startvertrag", runControlAdapterStartContract?.mode ?? "laedt"],
+    ["Start-Endpunkt", runControlAdapterStartContract?.planned_start_endpoint ?? "-"],
+    ["Payload", runControlAdapterStartContract?.api_accepts_start_payload ? "aktiv" : "gesperrt"],
+    ["Payload-Validierung", runControlAdapterStartContract?.api_validates_start_payload ? "aktiv" : "gesperrt"],
+    ["Adapterstart", runControlAdapterStartContract?.api_starts_adapter ? "aktiv" : "gesperrt"],
+    ["UI-Start", runControlAdapterStartContract?.ui_start_enabled ? "aktiv" : "gesperrt"],
+    ["Queue-Worker", runControlAdapterStartContract?.queue_worker_enabled ? "aktiv" : "gesperrt"],
+    ["Persistenz", selectedQueueEntry?.status === "result_persisted" ? "Ergebnis liegt vor" : "offen"],
+    ["Naechster Schritt", selectedQueueAction?.next_action ?? runControlActionPlanStatus]
   ];
   const selectedBridgeAction =
     runControlCoreBridge?.actions.find((action) => action.queue_id === selectedQueueId) ??
@@ -2065,6 +2138,33 @@ function App() {
           <div className="run-control-action-plan-grid">
             {runControlActionPlanRows.map(([label, value]) => (
               <div className="run-control-action-plan-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          className="panel run-control-execution-flow-panel"
+          aria-label="Run-Control-Ausfuehrungsflow"
+          data-testid="run-control-execution-flow"
+        >
+          <div className="panel-heading">
+            <Play size={20} aria-hidden="true" />
+            <h2>Run-Control-Ausfuehrungsflow</h2>
+          </div>
+          <div className="run-control-execution-flow-steps" aria-label="Preflight -> explizite Freigabe -> Ausfuehren">
+            {runControlExecutionFlowSteps.map(([label, value]) => (
+              <div className="run-control-execution-flow-step" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="run-control-execution-flow-grid" aria-label="Run-Control-Startvertrag-Grenzen">
+            {runControlExecutionFlowRows.map(([label, value]) => (
+              <div className="run-control-execution-flow-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>

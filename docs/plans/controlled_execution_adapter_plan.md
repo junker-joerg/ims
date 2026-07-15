@@ -143,7 +143,10 @@ zurueck.
 - PR 45 setzt die lokale Queue-/Status-/Resultat-Persistenz ueber
   `python_port/ims/api/run_control_execution_result_store.py` um, weiterhin
   ohne Adapterstart, UI-Startbutton, Queue-Worker oder Simulation (erledigt).
-- PR 46+: danach UI-Flow, Ergebnisanzeige und Demo-Smoke in getrennten PRs.
+- PR 46 zeigt den UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
+  in der Workbench, weiterhin ohne UI-Startbutton, Queue-Worker,
+  Adapterstart oder Simulation (erledigt).
+- PR 47+: danach Ergebnisanzeige und Demo-Smoke in getrennten PRs.
 
 ## Validierung dieses Plan-/Vertragsstands
 

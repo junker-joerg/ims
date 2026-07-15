@@ -494,6 +494,12 @@ Simulation.
     `docs/migration/run_control_execution_result_store.md` speichern nur vorab
     validierte Adapter-Resultate mit expliziter Persistenzfreigabe, weiterhin
     ohne Adapterstart, UI-Startbutton, Queue-Worker oder Simulation.
+38. Run-Control-Ausfuehrungsflow in der Workbench anzeigen. Dieser Schnitt ist
+    umgesetzt: `frontend/src/main.tsx`, `frontend/src/styles.css`,
+    `tests/test_frontend_shell.py` und
+    `docs/migration/run_control_execution_flow_ui.md` zeigen
+    `Preflight -> explizite Freigabe -> Ausfuehren` nur als Statussicht,
+    weiterhin ohne UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
 
 ## Aktualisierte PR-Restplanung
 
@@ -553,10 +559,11 @@ Aktualisierte grobe Restplanung:
 - API-Startvertrag fuer den kontrollierten Adapter ist hart gegated umgesetzt;
 - Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung ist lokal
   vorbereitet;
-- vorgeschlagener naechster Schritt ist PR 46:
-  UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen,
-  weiterhin ohne Queue-Worker und ohne automatische Ausfuehrung;
-- danach grob 2 bis 4 reviewbare PRs bis zu einer benutzbaren kontrollierten
+- Run-Control-Ausfuehrungsflow in der Workbench ist umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 47:
+  Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden,
+  weiterhin ohne historische Vollgleichheitsbehauptung;
+- danach grob 1 bis 3 reviewbare PRs bis zu einer benutzbaren kontrollierten
   Demo-Simulation;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
