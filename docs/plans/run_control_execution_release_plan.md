@@ -108,15 +108,31 @@ verboten:
 - PR 44: API-Startvertrag fuer den kontrollierten Adapter hart gegated
   vorbereiten, noch ohne UI-Button oder POST-Startendpunkt (dieser Schnitt).
 - PR 45: Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
-  anbinden.
+  anbinden, noch ohne UI-Button, Queue-Worker oder Adapterstart (dieser
+  Schnitt).
 - PR 46: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen.
 - PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden.
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
 - PR 49 optional: Packaging-/Startskript-Update fuer lokale Auslieferung.
 
-Damit bleiben nach PR 44 grob 3 bis 5 reviewbare PRs bis zu einer benutzbaren
+Damit bleiben nach PR 45 grob 2 bis 4 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation. Diese Zahl ist kein historischer
 Vollgleichheitsnachweis.
+
+## Umsetzung in PR 45
+
+PR 45 setzt die lokale Persistenzgrenze als expliziten SQLite-Schritt um:
+
+- `python_port/ims/api/run_control_execution_result_store.py` legt
+  `run_control_execution_results` an und speichert nur vorab validierte
+  `controlled_execution_adapter`-Resultate;
+- `--explicit-persistence-release` ist fuer den Schreibschritt Pflicht;
+- Queue-Eintraege muessen `validated` sein und behalten
+  `execution_performed = false`;
+- nach erfolgreicher Persistenz wird der Queue-Status `result_persisted`;
+- der Aktionsplan zeigt fuer diesen Status nur `inspect_persisted_result`;
+- `adapter_started = false`, `execution_performed = false` und
+  `simulation_performed = false` bleiben im Persistenzresultat.
 
 ## Validierung dieses Planstands
 

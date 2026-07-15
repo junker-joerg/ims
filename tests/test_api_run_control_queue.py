@@ -237,6 +237,7 @@ def test_run_control_queue_repository_rejects_unknown_status():
         repository.enqueue(request, status="running")
 
     assert "planned" in RUN_CONTROL_QUEUE_STATUSES
+    assert "result_persisted" in RUN_CONTROL_QUEUE_STATUSES
     assert WorkbenchRunControlQueueEntry is not None
     assert WorkbenchRunControlQueueResult is not None
 

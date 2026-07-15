@@ -54,8 +54,12 @@ PR 38 soll eine read-only Anzeigegrenze planen:
 - PR 44: danach API-Startvertrag als
   `GET /api/run-control/adapter-start-contract` vorbereiten, weiterhin ohne
   POST-Start, UI-Startbutton, Queue-Worker oder Simulation (erledigt).
-- PR 45+: danach Persistenz, UI-Flow, Ergebnisanzeige und Demo-Smoke in
-  getrennten Schritten vorbereiten.
+- PR 45: danach Queue-/Status-/Resultat-Persistenz ueber
+  `python_port/ims/api/run_control_execution_result_store.py` vorbereiten,
+  weiterhin ohne Adapterstart, UI-Startbutton, Queue-Worker oder Simulation
+  (erledigt).
+- PR 46+: danach UI-Flow, Ergebnisanzeige und Demo-Smoke in getrennten
+  Schritten vorbereiten.
 
 ## Grenzen
 

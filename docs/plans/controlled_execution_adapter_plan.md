@@ -140,8 +140,10 @@ zurueck.
   `python_port/ims/api/run_control_adapter_start_contract.py` und
   `GET /api/run-control/adapter-start-contract` bereit, weiterhin ohne
   POST-Start, UI-Startbutton, Queue-Worker oder Simulation (erledigt).
-- PR 45+: danach Persistenz, UI-Flow, Ergebnisanzeige und Demo-Smoke in
-  getrennten PRs.
+- PR 45 setzt die lokale Queue-/Status-/Resultat-Persistenz ueber
+  `python_port/ims/api/run_control_execution_result_store.py` um, weiterhin
+  ohne Adapterstart, UI-Startbutton, Queue-Worker oder Simulation (erledigt).
+- PR 46+: danach UI-Flow, Ergebnisanzeige und Demo-Smoke in getrennten PRs.
 
 ## Validierung dieses Plan-/Vertragsstands
 

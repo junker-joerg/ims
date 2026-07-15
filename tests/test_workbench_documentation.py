@@ -61,6 +61,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.run_control_adapter_result_contract check" in readme
     assert "python -m ims.api.run_control_adapter_result_api_contract" in readme
     assert "python -m ims.api.run_control_adapter_start_contract" in readme
+    assert "python -m ims.api.run_control_execution_result_store persist" in readme
     assert "GET /api/run-control/dry-run-contract" in readme
     assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "GET /api/run-control/adapter-result-contract" in readme
@@ -122,6 +123,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/run_control_adapter_start_contract.md" in readme
+    assert "docs/migration/run_control_execution_result_store.md" in readme
     assert "docs/migration/workbench_packaging_plan.md" in readme
     assert "als lokaler ZIP-/Staging-Abschlussstatus konsolidiert" in readme
     assert "docs/migration/workbench_demo_checklist.md" in readme
@@ -163,6 +165,7 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.run_control_adapter_result_contract check" in doc
     assert "python -m ims.api.run_control_adapter_result_api_contract" in doc
     assert "python -m ims.api.run_control_adapter_start_contract" in doc
+    assert "python -m ims.api.run_control_execution_result_store persist" in doc
     assert "GET /api/run-control/dry-run-contract" in doc
     assert "GET /api/core-validation/carryover-probe-contract" in doc
     assert "GET /api/run-control/adapter-result-contract" in doc
@@ -275,6 +278,7 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert 'mode = "run_control_adapter_result_validation"' in doc
     assert 'mode = "run_control_adapter_result_api_contract"' in doc
     assert 'mode = "run_control_adapter_start_contract"' in doc
+    assert 'mode = "run_control_execution_result_store_persist"' in doc
     assert "runner_start_enabled = false" in doc
     assert "--explicit-execution-release" in doc
     assert "keinen freien `--output-dir`" in doc
@@ -290,8 +294,10 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "api_starts_adapter = false" in doc
     assert "Request-DTO enthaelt `run_id`, `scenario_id`, optional `metadata_db`, `requested_by`, `created_at`" in doc
     assert "Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen" in doc
+    assert "`planned`, `blocked`, `validated` und `result_persisted`" in doc
     assert 'mode = "run_control_queue_action_plan"' in doc
-    assert "`run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`" in doc
+    assert "`run_preflight`, `await_execution_release`, `resolve_blockers`, `inspect_persisted_result` oder `inspect_queue_status`" in doc
+    assert "Der lokale Ergebnisstore schreibt nur mit `--explicit-persistence-release`" in doc
     assert "Queue-only-Datenbank bleibt als Queue lesbar" in doc
     assert "fehlende Szenario-/Run-Metadatentabellen werden als Diagnosewarnung und Aktionsplan-Blocker gemeldet" in doc
     assert "Kein Queue-Befehl startet eine Simulation" in doc
@@ -402,7 +408,10 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 10: API-Startvertrag fuer den kontrollierten Adapter hart gegated" in plan
     assert "python_port/ims/api/run_control_adapter_start_contract.py" in plan
     assert "GET /api/run-control/adapter-start-contract" in plan
-    assert "PR 11+: Persistenz, UI-Flow, Ergebnisanzeige" in plan
+    assert "PR 11: Queue-/Status-/Resultat-Persistenz" in plan
+    assert "python_port/ims/api/run_control_execution_result_store.py" in plan
+    assert "result_persisted" in plan
+    assert "PR 12+: UI-Flow, Ergebnisanzeige" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
     assert 'mode = "run_control_core_diagnostics_bridge"' in plan
@@ -609,8 +618,11 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "tests/test_api_run_control_adapter_start_contract.py" in backlog
     assert "docs/migration/run_control_adapter_start_contract.md" in backlog
     assert "PR 45: Queue-/Status-/Resultat-Persistenz" in backlog
+    assert "tests/test_api_run_control_execution_result_store.py" in backlog
+    assert "docs/migration/run_control_execution_result_store.md" in backlog
+    assert "PR 46: UI-Flow" in backlog
     assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
-    assert "Zaehlschnitt nach PR 44: grob 3 bis 5 reviewbare PRs" in backlog
+    assert "Zaehlschnitt nach PR 45: grob 2 bis 4 reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

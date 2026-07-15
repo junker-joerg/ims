@@ -145,6 +145,14 @@ diesem PR-44-Schnitt nicht. `api_accepts_start_payload`,
 `queue_worker_enabled`, `writes_enabled` und `execution_enabled` bleiben
 `false`. Nach PR 44 bleiben grob noch 3 bis 5 reviewbare PRs bis zu einer
 benutzbaren kontrollierten Demo-Simulation.
+Die lokale Ergebnis-Persistenzgrenze ist unter
+`python_port/ims/api/run_control_execution_result_store.py` umgesetzt und in
+`docs/migration/run_control_execution_result_store.md` dokumentiert. Sie
+speichert nur ein vorab validiertes `controlled_execution_adapter`-JSON mit
+explizitem `--explicit-persistence-release` in eine explizite SQLite-Quelle,
+setzt den Queue-Status `result_persisted` und startet keinen Adapter. Nach
+PR 45 bleiben grob noch 2 bis 4 reviewbare PRs bis zu einer benutzbaren
+kontrollierten Demo-Simulation.
 Der read-only Vertrag fuer einen spaeteren kontrollierten Ausfuehrungsadapter
 ist unter `python_port/ims/api/controlled_execution_adapter_contract.py`
 umgesetzt und in
@@ -296,6 +304,9 @@ python -m ims.api.run_control_adapter_result_contract
 python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
 python -m ims.api.run_control_adapter_result_api_contract
 python -m ims.api.run_control_adapter_start_contract
+python -m ims.api.run_control_execution_result_store init --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_execution_result_store persist --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests --adapter-result .\adapter_result.json --persisted-at 2026-07-15T00:00:00Z --explicit-persistence-release
+python -m ims.api.run_control_execution_result_store show --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests
 ```
 
 Der Dry-Run-Vertrag beschreibt den kontrollierten HTTP-Pruefpfad. Die Workbench-API stellt ihn ueber `GET /api/run-control/dry-run-contract` bereit; `POST /api/run-control/dry-run` akzeptiert nur das Run-Control-Request-DTO mit `execution_enabled=false`, kombiniert es mit dem vorhandenen Preflight und schreibt keine Queue oder Metadaten. Es gibt keinen PUT, keinen Browser-Upload, keinen Schreibpfad und keine Simulation.
@@ -342,6 +353,19 @@ Die Antwort enthaelt `mode = "run_control_adapter_start_contract"`,
 `api_starts_adapter = false`, `ui_start_enabled = false` und
 `queue_worker_enabled = false`. `POST /api/run-control/adapter-start` ist in
 diesem Stand nicht vorhanden.
+
+Der lokale Run-Control-Ergebnisstore speichert vorab validierte
+Adapter-Resultate an einen validierten Queue-Eintrag:
+
+```powershell
+python -m ims.api.run_control_execution_result_store persist --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests --adapter-result .\adapter_result.json --persisted-at 2026-07-15T00:00:00Z --explicit-persistence-release
+```
+
+Der Store validiert das Adapter-Resultat gegen den
+Run-Control-Adapter-Resultat-Vertrag, schreibt das Resultat und die Summary in
+`run_control_execution_results` und setzt den Queue-Status auf
+`result_persisted`. Er startet keinen Adapter und laesst
+`execution_performed = false` fuer die Queue.
 
 Ein lokaler Run-Control-Request-Check validiert eine spaetere Steuerungsanfrage als DTO, ohne sie zu speichern oder auszufuehren:
 

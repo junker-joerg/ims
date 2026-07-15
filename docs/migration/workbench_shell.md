@@ -46,6 +46,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.run_control_contracts` beschreibt die spaetere Run-Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.run_control_requests` validiert lokale Run-Control-Request-DTOs, ohne Ausfuehrung zu erlauben.
 - `ims.api.run_control_queue` speichert validierte Run-Control-Requests lokal in einer expliziten SQLite-Queue, ohne Ausfuehrung zu erlauben.
+- `ims.api.run_control_execution_result_store` speichert vorab validierte Adapter-Resultate lokal in eine explizite SQLite-Quelle und setzt den Queue-Status `result_persisted`, ohne Adapterstart.
 - `ims.api.run_control_preflight` prueft vorhandene Run-Metadaten lokal gegen diese gesperrte Steuerungsgrenze, ohne Ausfuehrung zu erlauben.
 - `ims.api.workbench_diagnostics` prueft lokale Startbedingungen als CLI-Diagnose, ohne einen Server dauerhaft zu starten.
 - `ims.api.workbench_start_plan` beschreibt den lokalen Start aus Defaults oder Konfiguration, startet aber keinen Server.
@@ -578,6 +579,9 @@ python -m ims.api.run_control_adapter_result_contract
 python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json
 python -m ims.api.run_control_adapter_result_api_contract
 python -m ims.api.run_control_adapter_start_contract
+python -m ims.api.run_control_execution_result_store init --db .\.ims_workbench\metadata.sqlite
+python -m ims.api.run_control_execution_result_store persist --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests --adapter-result .\adapter_result.json --persisted-at 2026-07-15T00:00:00Z --explicit-persistence-release
+python -m ims.api.run_control_execution_result_store show --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests
 ```
 
 Die Ausgabe enthaelt `mode = "run_control_contract"`, `schema_version`, gesperrte HTTP-, UI- und Ausfuehrungsgrenzen, zukuenftig erwartbare Eingaben wie `run_id`, `scenario_id`, `metadata_db`, `requested_by`, `created_at` und `execution_enabled` sowie verbotene Grenzen wie Simulation, Fachlogikmutation, Browser-Upload, HTTP-Schreibendpunkt und historische Vollgleichheitsbehauptung.
@@ -620,6 +624,15 @@ beschreibt den spaeteren Startrequest fuer
 `POST /api/run-control/adapter-start`, akzeptiert in diesem Stand aber keinen
 Start-Payload, validiert keinen Start-Payload ueber HTTP, startet keinen
 Adapter und schaltet keinen UI-Startbutton frei.
+
+Der Run-Control-Ergebnisstore enthaelt
+`mode = "run_control_execution_result_store_persist"` fuer den expliziten
+Schreibschritt und `mode = "run_control_execution_result_store_show"` fuer den
+read-only Zugriff. Er speichert nur ein vorab validiertes
+`controlled_execution_adapter`-JSON nach `--explicit-persistence-release` in
+`run_control_execution_results`, setzt den Queue-Status auf
+`result_persisted`, startet aber keinen Adapter, keinen Runner und keinen
+Queue-Worker.
 
 Ein lokaler Request-Check kann eine spaetere Steuerungsanfrage als DTO validieren:
 
@@ -705,7 +718,7 @@ Der vorgeschlagene Folgeschritt `docs/plans/run_control_adapter_result_view_plan
 plant nur eine read-only API-/UI-Anzeige fuer Adapter-Resultate. Auch dort
 bleiben Browser-Upload, Dateiauswahl, Startbutton und Adapterstart gesperrt.
 
-Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen -> Carryover-Probe-Vertrag lesen -> Adapter-Resultat-Vertrag lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan`, `GET /api/run-control/core-diagnostics-bridge`, `GET /api/core-validation/carryover-probe-contract` und `GET /api/run-control/adapter-result-contract`, jeweils optional mit `queue_id`, wo der Endpunkt dies unterstuetzt. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan, Bruecke, Carryover-Probe-Vertrag und Adapter-Resultat-Vertrag bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight`, ein Brueckenhinweis `resolve_core_validation_blockers`, `api_starts_probe = false` und `api_starts_adapter = false`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
+Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Kernblick-Bruecke lesen -> Carryover-Probe-Vertrag lesen -> Adapter-Resultat-Vertrag lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan`, `GET /api/run-control/core-diagnostics-bridge`, `GET /api/core-validation/carryover-probe-contract` und `GET /api/run-control/adapter-result-contract`, jeweils optional mit `queue_id`, wo der Endpunkt dies unterstuetzt. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan, Bruecke, Carryover-Probe-Vertrag und Adapter-Resultat-Vertrag bleiben lesend. Der neue lokale Ergebnisstore ist noch kein Browser-Demo-Schritt. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight`, ein Brueckenhinweis `resolve_core_validation_blockers`, `api_starts_probe = false` und `api_starts_adapter = false`. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 
 Fuer den echten Browser-/Screenshot-Smoke stellt die Frontend-Schale stabile `data-testid`-Anker bereit: `run-control-demo-dry-run-button`, `run-control-demo-queue-button`, `run-control-demo-dry-run-result`, `run-control-demo-queue-result`, `run-control-demo-action-plan`, `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`. Der Screenshot-Smoke prueft Sichtbarkeit und Bedienfolge in der lokalen Workbench. Er prueft keine historischen Fachwerte und ersetzt keine spaetere Fachvalidierung.
 
@@ -719,7 +732,17 @@ python -m ims.api.run_control_queue_diagnostics --db .\.ims_workbench\metadata.s
 python -m ims.api.run_control_queue_action_plan --db .\.ims_workbench\metadata.sqlite
 ```
 
-Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen. Erlaubte Statuswerte sind `planned`, `blocked` und `validated`. `init` und `enqueue` schreiben nur in den expliziten SQLite-Pfad; `list`, `show`, `run_control_queue_diagnostics` und `run_control_queue_action_plan` lesen eine bestehende Queue read-only. Wenn keine WAL-/SHM-Sidecars vorhanden sind, erzeugen diese Lesezugriffe keine neuen Sidecars. Rollback-Journal-Datenbanken werden dabei als normale `mode=ro`-Quelle gelesen; `immutable=1` bleibt auf sidecar-freie WAL-Dateien beschraenkt. Sind Live-WAL-Sidecars vollstaendig vorhanden, werden sie beruecksichtigt, statt aktuelle Queue-Daten still zu ignorieren. Unvollstaendige Sidecar-Zustaende, etwa `-wal` ohne `-shm`, werden vor dem Lesen abgelehnt, damit kein fehlender Sidecar neu aufgebaut wird. Die Diagnose meldet fehlende Szenario-Referenzen, unerwartete Ausfuehrungsflags, bereits gesetztes `execution_performed` und unbekannte Statuswerte als Issues. Der Aktionsplan gibt `mode = "run_control_queue_action_plan"`, `metadata_source`, `queue_count`, `actions`, `issues`, `writes_performed = false` und `execution_performed = false` aus. Pro Queue-Eintrag bleiben `execution_allowed`, `writes_performed` und `execution_performed` `false`; empfohlen werden nur `run_preflight`, `await_execution_release`, `resolve_blockers` oder `inspect_queue_status`. Er nutzt Queue-Diagnose und Preflight als lesende Hinweise, startet aber keine Ausfuehrung und oeffnet keine Schreibpfade. Eine nur mit `run_control_queue init --db` angelegte Queue-only-Datenbank bleibt als Queue lesbar; fehlende Szenario-/Run-Metadatentabellen werden als Diagnosewarnung und Aktionsplan-Blocker gemeldet. Kein Queue-Befehl startet eine Simulation, einen Worker, einen Scheduler, einen HTTP-Endpunkt oder einen UI-Schreibpfad. `execution_enabled` und `execution_performed` bleiben fuer normale Queue-Eintraege `false`.
+Die Queue speichert `queue_id`, Request-Daten, Status und Ausfuehrungsgrenzen. Erlaubte Statuswerte sind `planned`, `blocked`, `validated` und `result_persisted`. `init` und `enqueue` schreiben nur in den expliziten SQLite-Pfad; `list`, `show`, `run_control_queue_diagnostics` und `run_control_queue_action_plan` lesen eine bestehende Queue read-only. Wenn keine WAL-/SHM-Sidecars vorhanden sind, erzeugen diese Lesezugriffe keine neuen Sidecars. Rollback-Journal-Datenbanken werden dabei als normale `mode=ro`-Quelle gelesen; `immutable=1` bleibt auf sidecar-freie WAL-Dateien beschraenkt. Sind Live-WAL-Sidecars vollstaendig vorhanden, werden sie beruecksichtigt, statt aktuelle Queue-Daten still zu ignorieren. Unvollstaendige Sidecar-Zustaende, etwa `-wal` ohne `-shm`, werden vor dem Lesen abgelehnt, damit kein fehlender Sidecar neu aufgebaut wird. Die Diagnose meldet fehlende Szenario-Referenzen, unerwartete Ausfuehrungsflags, bereits gesetztes `execution_performed` und unbekannte Statuswerte als Issues. Der Aktionsplan gibt `mode = "run_control_queue_action_plan"`, `metadata_source`, `queue_count`, `actions`, `issues`, `writes_performed = false` und `execution_performed = false` aus. Pro Queue-Eintrag bleiben `execution_allowed`, `writes_performed` und `execution_performed` `false`; empfohlen werden nur `run_preflight`, `await_execution_release`, `resolve_blockers`, `inspect_persisted_result` oder `inspect_queue_status`. Er nutzt Queue-Diagnose und Preflight als lesende Hinweise, startet aber keine Ausfuehrung und oeffnet keine Schreibpfade. Eine nur mit `run_control_queue init --db` angelegte Queue-only-Datenbank bleibt als Queue lesbar; fehlende Szenario-/Run-Metadatentabellen werden als Diagnosewarnung und Aktionsplan-Blocker gemeldet. Kein Queue-Befehl startet eine Simulation, einen Worker, einen Scheduler, einen HTTP-Endpunkt oder einen UI-Schreibpfad. `execution_enabled` und `execution_performed` bleiben fuer normale Queue-Eintraege `false`.
+
+Der lokale Ergebnisstore schreibt nur mit `--explicit-persistence-release`.
+`persist` verlangt einen validierten Queue-Eintrag, ein vorab lokal erzeugtes
+Adapter-Resultat-JSON und einen expliziten Persistenzzeitpunkt. Der Store
+validiert das Resultat gegen den Run-Control-Adapter-Resultat-Vertrag,
+speichert Resultat, Summary und Validierungsprotokoll in
+`run_control_execution_results` und setzt den Queue-Status auf
+`result_persisted`. `show` liest das persistierte Resultat read-only. Der Store
+startet keinen Adapter und setzt im eigenen Ergebnis `adapter_started = false`,
+`execution_performed = false` und `simulation_performed = false`.
 
 Die API bietet dazu eine rein lesende Uebersicht:
 
@@ -832,6 +855,9 @@ Vertraege und Grenzen:
 | `python -m ims.api.run_control_adapter_result_contract check .\adapter_result.json` | Bereits erzeugtes Adapter-Resultat read-only gegen den Vertrag pruefen | schreibt nicht |
 | `python -m ims.api.run_control_adapter_result_api_contract` | API-Vertrag fuer vorab lokal gepruefte Adapter-Resultate beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_adapter_start_contract` | API-Startvertrag fuer spaetere Adapterstarts beschreiben | schreibt nicht |
+| `python -m ims.api.run_control_execution_result_store init --db .\.ims_workbench\metadata.sqlite` | Resultat-Schema in expliziter SQLite-Datei anlegen | schreibt Resultat-Metadaten-Schema |
+| `python -m ims.api.run_control_execution_result_store persist --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests --adapter-result .\adapter_result.json --persisted-at 2026-07-15T00:00:00Z --explicit-persistence-release` | Vorab validiertes Adapter-Resultat an validierten Queue-Eintrag haengen | schreibt Resultat-Metadaten, startet nicht |
+| `python -m ims.api.run_control_execution_result_store show --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests` | Persistiertes Adapter-Resultat read-only anzeigen | schreibt nicht |
 | `python -m ims.api.core_validation_carryover_probe_contract` | API-Vertrag fuer vorab berechnete Carryover-Probe-Ergebnisse beschreiben | schreibt nicht |
 | `python -m ims.api.run_control_requests check .\run_control_request.json` | Lokalen Run-Control-Request ohne Ausfuehrung validieren | schreibt nicht |
 | `python -m ims.api.run_control_queue init --db .\.ims_workbench\metadata.sqlite` | Queue-Schema in expliziter SQLite-Datei anlegen | schreibt Queue-Metadaten |

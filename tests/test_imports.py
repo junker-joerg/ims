@@ -209,6 +209,14 @@ def test_core_placeholders_import() -> None:
         main as run_control_adapter_start_contract_main,
         run_control_adapter_start_contract_payload,
     )
+    from ims.api.run_control_execution_result_store import (
+        RunControlExecutionResultRecord,
+        RunControlExecutionResultStoreResult,
+        get_run_control_execution_result,
+        initialize_run_control_execution_result_store,
+        main as run_control_execution_result_store_main,
+        persist_run_control_adapter_result,
+    )
     from ims.api.run_control_contracts import (
         WorkbenchRunControlContract,
         build_run_control_contract,
@@ -762,6 +770,12 @@ def test_core_placeholders_import() -> None:
     assert build_run_control_adapter_start_contract is not None
     assert run_control_adapter_start_contract_payload is not None
     assert run_control_adapter_start_contract_main is not None
+    assert RunControlExecutionResultRecord is not None
+    assert RunControlExecutionResultStoreResult is not None
+    assert initialize_run_control_execution_result_store is not None
+    assert persist_run_control_adapter_result is not None
+    assert get_run_control_execution_result is not None
+    assert run_control_execution_result_store_main is not None
     assert WorkbenchRunControlContract is not None
     assert build_run_control_contract is not None
     assert run_control_contracts_main is not None

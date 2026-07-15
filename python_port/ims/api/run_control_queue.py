@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS run_control_queue (
     execution_performed INTEGER NOT NULL CHECK (execution_performed IN (0, 1))
 )
 """
-RUN_CONTROL_QUEUE_STATUSES = ("planned", "blocked", "validated")
+RUN_CONTROL_QUEUE_STATUSES = ("planned", "blocked", "validated", "result_persisted")
 
 
 @dataclass(frozen=True)

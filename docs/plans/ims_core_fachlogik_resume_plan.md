@@ -292,6 +292,13 @@ existiert noch nicht; `api_starts_adapter`,
 `ui_start_enabled`, `queue_worker_enabled`, `writes_enabled` und
 `execution_enabled` bleiben `false`.
 
+PR 45 stellt die lokale Queue-/Status-/Resultat-Persistenzgrenze bereit:
+`python_port/ims/api/run_control_execution_result_store.py` speichert nur ein
+vorab validiertes Adapter-Resultat in eine explizite SQLite-Quelle, setzt den
+Queue-Status `result_persisted` und laesst `execution_performed` fuer die Queue
+weiter `false`. Der Schnitt startet keinen Adapter, keinen Worker und keine
+Simulation.
+
 ## Vorgeschlagene PR-Reihenfolge
 
 1. Kernlauf-Diagnose fuer vorhandene explizite Periodenplaene, nur lesend und
@@ -480,6 +487,13 @@ existiert noch nicht; `api_starts_adapter`,
     `docs/migration/run_control_adapter_start_contract.md` beschreiben
     `GET /api/run-control/adapter-start-contract` ohne Start-Payload,
     POST-Startendpunkt, UI-Startbutton, Queue-Worker oder Simulation.
+37. Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung
+    vorbereiten. Dieser Schnitt ist umgesetzt:
+    `python_port/ims/api/run_control_execution_result_store.py`,
+    `tests/test_api_run_control_execution_result_store.py` und
+    `docs/migration/run_control_execution_result_store.md` speichern nur vorab
+    validierte Adapter-Resultate mit expliziter Persistenzfreigabe, weiterhin
+    ohne Adapterstart, UI-Startbutton, Queue-Worker oder Simulation.
 
 ## Aktualisierte PR-Restplanung
 
@@ -537,10 +551,12 @@ Aktualisierte grobe Restplanung:
 - 0 PRs bis zum fuenften ausgefuehrten fachlichen Regressionstest;
 - Run-Control-Ausfuehrungsfreigabeplan ist dokumentiert;
 - API-Startvertrag fuer den kontrollierten Adapter ist hart gegated umgesetzt;
-- vorgeschlagener naechster Schritt ist PR 45:
-  Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung vorbereiten,
-  weiterhin ohne Queue-Worker und ohne UI-Startbutton;
-- danach grob 3 bis 5 reviewbare PRs bis zu einer benutzbaren kontrollierten
+- Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung ist lokal
+  vorbereitet;
+- vorgeschlagener naechster Schritt ist PR 46:
+  UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen,
+  weiterhin ohne Queue-Worker und ohne automatische Ausfuehrung;
+- danach grob 2 bis 4 reviewbare PRs bis zu einer benutzbaren kontrollierten
   Demo-Simulation;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

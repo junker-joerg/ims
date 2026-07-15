@@ -207,6 +207,9 @@ def _action_for_entry(
         else:
             next_action = "await_execution_release"
             label = "Auf separate Ausfuehrungsfreigabe warten"
+    elif entry.status == "result_persisted":
+        next_action = "inspect_persisted_result"
+        label = "Persistiertes Ergebnis pruefen"
     else:
         next_action = "inspect_queue_status"
         label = "Queue-Status pruefen"

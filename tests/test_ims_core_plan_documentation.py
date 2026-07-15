@@ -63,6 +63,9 @@ RUN_CONTROL_ADAPTER_RESULT_API_CONTRACT_DOC = (
 RUN_CONTROL_ADAPTER_START_CONTRACT_DOC = (
     REPO_ROOT / "docs" / "migration" / "run_control_adapter_start_contract.md"
 )
+RUN_CONTROL_EXECUTION_RESULT_STORE_DOC = (
+    REPO_ROOT / "docs" / "migration" / "run_control_execution_result_store.md"
+)
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 README = REPO_ROOT / "README.md"
 
@@ -185,9 +188,13 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "docs/migration/run_control_adapter_start_contract.md" in plan
     assert "GET /api/run-control/adapter-start-contract" in plan
     assert "API-Startvertrag fuer den kontrollierten Adapter ist hart gegated umgesetzt" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 45" in plan
+    assert "python_port/ims/api/run_control_execution_result_store.py" in plan
+    assert "tests/test_api_run_control_execution_result_store.py" in plan
+    assert "docs/migration/run_control_execution_result_store.md" in plan
+    assert "Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung ist lokal" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 46" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
-    assert "grob 3 bis 5 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
+    assert "grob 2 bis 4 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -259,8 +266,13 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "api_starts_adapter = false" in plan
     assert "POST /api/run-control/adapter-start" in plan
     assert "PR 44: API-Startvertrag" in plan
+    assert "Umsetzung in PR 45" in plan
+    assert "python_port/ims/api/run_control_execution_result_store.py" in plan
+    assert "run_control_execution_results" in plan
+    assert "result_persisted" in plan
+    assert "inspect_persisted_result" in plan
     assert "PR 48: Demo-Smoke und Doku" in plan
-    assert "grob 3 bis 5 reviewbare PRs" in plan
+    assert "grob 2 bis 4 reviewbare PRs" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -591,7 +603,9 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "PR 44 stellt den hart gegateten API-Startvertrag" in plan
     assert "python_port/ims/api/run_control_adapter_start_contract.py" in plan
     assert "GET /api/run-control/adapter-start-contract" in plan
-    assert "PR 45+: danach Persistenz" in plan
+    assert "PR 45 setzt die lokale Queue-/Status-/Resultat-Persistenz" in plan
+    assert "python_port/ims/api/run_control_execution_result_store.py" in plan
+    assert "PR 46+: danach UI-Flow" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -676,6 +690,24 @@ def test_run_control_adapter_start_contract_doc_scopes_hard_gate() -> None:
     assert "keine historische Vollgleichheitsbehauptung" in doc
 
 
+def test_run_control_execution_result_store_doc_scopes_persistence_boundary() -> None:
+    doc = RUN_CONTROL_EXECUTION_RESULT_STORE_DOC.read_text(encoding="utf-8")
+
+    assert RUN_CONTROL_EXECUTION_RESULT_STORE_DOC.is_file()
+    assert "Run-Control Ergebnis-Persistenzgrenze" in doc
+    assert "Dieser PR 45" in doc
+    assert "python -m ims.api.run_control_execution_result_store persist" in doc
+    assert "python_port/ims/api/run_control_execution_result_store.py" in doc
+    assert "tests/test_api_run_control_execution_result_store.py" in doc
+    assert "run_control_execution_results" in doc
+    assert "result_persisted" in doc
+    assert "inspect_persisted_result" in doc
+    assert "`execution_performed` bleibt `false`" in doc
+    assert "`--explicit-persistence-release`" in doc
+    assert "kein Start von `ims.api.controlled_execution_adapter`" in doc
+    assert "keine historische Vollgleichheitsbehauptung" in doc
+
+
 def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     plan = RUN_CONTROL_ADAPTER_RESULT_VIEW_PLAN.read_text(encoding="utf-8")
 
@@ -702,7 +734,9 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "docs/plans/run_control_execution_release_plan.md" in plan
     assert "PR 44: danach API-Startvertrag" in plan
     assert "GET /api/run-control/adapter-start-contract" in plan
-    assert "PR 45+: danach Persistenz" in plan
+    assert "PR 45: danach Queue-/Status-/Resultat-Persistenz" in plan
+    assert "python_port/ims/api/run_control_execution_result_store.py" in plan
+    assert "PR 46+: danach UI-Flow" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -783,6 +817,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "PR-43-Plan fuer die explizite" in plans_readme
     assert "run_control_adapter_start_contract.md" in plans_readme
     assert "GET /api/run-control/adapter-start-contract" in plans_readme
+    assert "run_control_execution_result_store.md" in plans_readme
+    assert "result_persisted" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
@@ -802,6 +838,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/run_control_adapter_start_contract.md" in readme
+    assert "docs/migration/run_control_execution_result_store.md" in readme
     assert "docs/migration/fourth_fachlicher_regressionstest.md" in readme
     assert "docs/migration/fifth_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
@@ -814,11 +851,13 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "python_port/ims/api/run_control_adapter_result_contract.py" in readme
     assert "python_port/ims/api/run_control_adapter_result_api_contract.py" in readme
     assert "python_port/ims/api/run_control_adapter_start_contract.py" in readme
+    assert "python_port/ims/api/run_control_execution_result_store.py" in readme
     assert "python -m ims.api.controlled_execution_adapter_contract" in readme
     assert "python -m ims.api.controlled_execution_adapter --fixture" in readme
     assert "python -m ims.api.run_control_adapter_result_contract" in readme
     assert "python -m ims.api.run_control_adapter_result_api_contract" in readme
     assert "python -m ims.api.run_control_adapter_start_contract" in readme
+    assert "python -m ims.api.run_control_execution_result_store persist" in readme
     assert "python -m ims.engine.explicit_transition_carryover_probe --apply-vn" in readme
     assert "python -m ims.engine.explicit_period_transition_diagnostics" in readme
     assert "explicit_transition_carryover_probe_contract" in readme
@@ -854,6 +893,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "hart gegatete API-Startvertrag" in readme
     assert "PR-44-Schnitt" in readme
     assert "grob noch 3 bis 5 reviewbare PRs" in readme
+    assert "lokale Ergebnis-Persistenzgrenze" in readme
+    assert "result_persisted" in readme
+    assert "grob noch 2 bis 4 reviewbare PRs" in readme
     assert "kontrollierter Ausfuehrungsadapter-Vertrag" in readme
     assert "bereits lokal erzeugtes Adapterergebnis als read-only" in readme
     assert "vorab erzeugtes `controlled_execution_adapter`-JSON" in readme

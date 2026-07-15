@@ -123,6 +123,20 @@ def test_run_control_queue_action_plan_for_validated_entry_waits_for_release(tmp
     assert payload["actions"][0]["execution_allowed"] is False
 
 
+def test_run_control_queue_action_plan_for_persisted_result_inspects_result(tmp_path):
+    db_path = tmp_path / "metadata.sqlite"
+    build_seeded_metadata_repository(db_path)
+    _enqueue(db_path, tmp_path, status="result_persisted")
+
+    payload = build_run_control_queue_action_plan(db_path).to_dict()
+
+    assert payload["status"] == "ok"
+    assert payload["actions"][0]["queue_status"] == "result_persisted"
+    assert payload["actions"][0]["next_action"] == "inspect_persisted_result"
+    assert payload["actions"][0]["execution_allowed"] is False
+    assert payload["actions"][0]["execution_performed"] is False
+
+
 def test_run_control_queue_action_plan_for_blocked_entry_resolves_blockers(tmp_path):
     db_path = tmp_path / "metadata.sqlite"
     build_seeded_metadata_repository(db_path)

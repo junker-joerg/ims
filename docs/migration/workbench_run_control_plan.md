@@ -91,9 +91,14 @@ benutzbaren kontrollierten Demo-Simulation.
     `GET /api/run-control/adapter-start-contract` und
     `docs/migration/run_control_adapter_start_contract.md`; weiterhin ohne
     POST-Start, UI-Startbutton, Queue-Worker, Persistenz oder Simulation.
-11. PR 11+: Persistenz, UI-Flow, Ergebnisanzeige und Demo-Smoke erst in
-    separaten PRs.
-12. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
+11. PR 11: Queue-/Status-/Resultat-Persistenz fuer vorab validierte
+    Adapter-Resultate bereitstellen. Erledigt:
+    `python_port/ims/api/run_control_execution_result_store.py`,
+    Queue-Status `result_persisted` und
+    `docs/migration/run_control_execution_result_store.md`; weiterhin ohne
+    Adapterstart, UI-Startbutton, Queue-Worker oder Simulation.
+12. PR 12+: UI-Flow, Ergebnisanzeige und Demo-Smoke erst in separaten PRs.
+13. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 

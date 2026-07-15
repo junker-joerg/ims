@@ -50,3 +50,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `../migration/run_control_adapter_start_contract.md`: PR-44-Startvertrag
   fuer `GET /api/run-control/adapter-start-contract`, weiterhin ohne
   POST-Start, UI-Startbutton, Queue-Worker, Persistenz oder Simulation.
+- `../migration/run_control_execution_result_store.md`: PR-45-Persistenzgrenze
+  fuer vorab validierte Adapter-Resultate und Queue-Status
+  `result_persisted`, weiterhin ohne Adapterstart, Queue-Worker oder
+  Simulation.
