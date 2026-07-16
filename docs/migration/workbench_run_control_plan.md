@@ -17,14 +17,20 @@ Vorhandene lokale Run-Control-Bausteine sind:
 - Run-Control-Queue-Aktionsplan (`ims.api.run_control_queue_action_plan`), lokal lesend und ohne Ausfuehrung.
 - Run-Control-Preflight (`ims.api.run_control_preflight`), lesend und ohne Ausfuehrung.
 - Workbench-Readiness und CLI-Uebersicht, die diese Grenzen sichtbar machen.
-- Read-only Brueckenplanung zu Kernlauf-Diagnosen in
-  `docs/plans/run_control_core_diagnostics_bridge_plan.md`; sie verbindet noch
-  keinen neuen Codepfad, sondern beschreibt nur die spaetere gemeinsame Lesesicht
-  auf Queue-Aktionsplan und Kernvalidierungsueberblick.
+- Read-only Bruecke zu Kernlauf-Diagnosen in
+  `docs/plans/run_control_core_diagnostics_bridge_plan.md` und
+  `GET /api/run-control/core-diagnostics-bridge`; sie verbindet Queue-Aktionsplan
+  und Kernvalidierungsueberblick nur als gemeinsame Lesesicht.
 - Expliziter Ausfuehrungsfreigabeplan in
   `docs/plans/run_control_execution_release_plan.md`; er beschreibt den
   spaeteren Uebergang von validierter Queue zu kontrolliertem Adapterstart,
   setzt ihn aber in PR 43 noch nicht um.
+- Hart gegateter Adapter-Startvertrag
+  `GET /api/run-control/adapter-start-contract`, lokale
+  Queue-/Status-/Resultat-Persistenz und die read-only
+  Workbench-Karten `Run-Control-Ausfuehrungsflow` sowie
+  `Run-Control-Ergebnisanzeige`; sie zeigen Freigabe- und Ergebnisstatus, starten
+  aber keinen Adapter, keinen Worker und keine Simulation.
 
 ## Zielbild
 
@@ -97,8 +103,18 @@ benutzbaren kontrollierten Demo-Simulation.
     Queue-Status `result_persisted` und
     `docs/migration/run_control_execution_result_store.md`; weiterhin ohne
     Adapterstart, UI-Startbutton, Queue-Worker oder Simulation.
-12. PR 12+: UI-Flow, Ergebnisanzeige und Demo-Smoke erst in separaten PRs.
-13. Weitere PRs: Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und Grenzkorrekturen.
+12. PR 12: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
+    anzeigen. Erledigt: `Run-Control-Ausfuehrungsflow` /
+    `run-control-execution-flow`, weiterhin ohne UI-Startbutton, Queue-Worker,
+    Adapterstart oder Simulation.
+13. PR 13: Read-only Ergebnisanzeige fuer persistierte Adapterresultate
+    anbinden. Erledigt: `GET /api/run-control/execution-result/{queue_id}`,
+    `Run-Control-Ergebnisanzeige` / `run-control-execution-result`, weiterhin
+    ohne Upload, UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
+14. PR 14: Demo-Smoke und Doku fuer den benutzbaren lokalen Ablauf als
+    naechster Schritt.
+15. Weitere PRs: optionale Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und
+    Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 
@@ -151,7 +167,7 @@ lesend; sie ist kein Startpfad und kein Ausfuehrungsadapter.
 
 ## UI-Grenzen
 
-Die UI darf geplante Run-Control-Metadaten anzeigen, filtern und als Preflight-Ergebnis erklaeren. Sie darf nur die kontrollierte Queue-Vormerkung nach erfolgreichem Dry-Run und expliziter SQLite-Quelle ausloesen. Upload, Editor, Browser-Download und funktionaler Run-Start bleiben ausgeschlossen.
+Die UI darf geplante Run-Control-Metadaten anzeigen, filtern und als Preflight-Ergebnis erklaeren. Sie darf nur die kontrollierte Queue-Vormerkung nach erfolgreichem Dry-Run und expliziter SQLite-Quelle ausloesen. `Run-Control-Ausfuehrungsflow` und `Run-Control-Ergebnisanzeige` bleiben read-only: Sie lesen Startvertrag, Queue-Status und persistierte Adapterresultate, oeffnen aber keinen Startpfad. Upload, Editor, Browser-Download, Queue-Worker, Adapterstart und funktionaler Run-Start bleiben ausgeschlossen.
 
 UI-Texte sollen operational, knapp und ruhig bleiben. Die Workbench bleibt ein Werkzeug, keine Marketing-Oberflaeche.
 
@@ -164,7 +180,7 @@ Die Run-Control-Schritte brauchen Tests auf mehreren Ebenen:
 - CLI/Dry-Run/Preflight: stabile JSON-Formen, `writes_performed = false`, `execution_performed = false`.
 - HTTP-Vertraege: zunaechst gesperrt oder Dry-Run, keine echte Ausfuehrung.
 - Frontend: rein lesende Anzeige, kein Startbutton mit Funktion, keine Schreibcontrols.
-- Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken, Run-Control-Aktionsplan ansehen und Run-Control-Kernblick-Bruecke lesen, mit stabilen UI-Ankern, Screenshot-Beleg und `execution_performed = false`.
+- Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken, Run-Control-Aktionsplan ansehen, Run-Control-Ausfuehrungsflow ansehen, Run-Control-Ergebnisanzeige ansehen und Run-Control-Kernblick-Bruecke lesen, mit stabilen UI-Ankern, Screenshot-Beleg und `execution_performed = false`.
 - Doku-Smokes: keine Fachlogikaenderung, keine historische Vollgleichheitsbehauptung, Packaging/Bereitstellung als eigener spaeterer Block.
 
 ## Nicht-Ziele dieses Plan-PRs

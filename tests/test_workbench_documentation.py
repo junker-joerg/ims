@@ -431,7 +431,14 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "PR 11: Queue-/Status-/Resultat-Persistenz" in plan
     assert "python_port/ims/api/run_control_execution_result_store.py" in plan
     assert "result_persisted" in plan
-    assert "PR 12+: UI-Flow, Ergebnisanzeige" in plan
+    assert "PR 12: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`" in plan
+    assert "Run-Control-Ausfuehrungsflow" in plan
+    assert "run-control-execution-flow" in plan
+    assert "PR 13: Read-only Ergebnisanzeige fuer persistierte Adapterresultate" in plan
+    assert "GET /api/run-control/execution-result/{queue_id}" in plan
+    assert "Run-Control-Ergebnisanzeige" in plan
+    assert "run-control-execution-result" in plan
+    assert "PR 14: Demo-Smoke und Doku fuer den benutzbaren lokalen Ablauf" in plan
     assert "keinen Worker, Scheduler oder Simulationslauf starten" in plan
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in plan
     assert 'mode = "run_control_core_diagnostics_bridge"' in plan
@@ -453,7 +460,7 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "Keine Simulation starten" in plan
     assert "Keine weiteren HTTP-Schreibendpunkte ausser der kontrollierten Queue-Vormerkung" in plan
     assert "Kein HTTP-Schreibpfad ausser Queue-Metadaten nach erfolgreichem Dry-Run" in plan
-    assert "Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken, Run-Control-Aktionsplan ansehen und Run-Control-Kernblick-Bruecke lesen" in plan
+    assert "Demo-Smoke: Browser-Ablauf Dry-Run pruefen, Queue vormerken, Run-Control-Aktionsplan ansehen, Run-Control-Ausfuehrungsflow ansehen, Run-Control-Ergebnisanzeige ansehen und Run-Control-Kernblick-Bruecke lesen" in plan
     assert "Kein Packaging in diesem PR" in plan
     assert "Keine historische Vollgleichheitsbehauptung" in plan
 
