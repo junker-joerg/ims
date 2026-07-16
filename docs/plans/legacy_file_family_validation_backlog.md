@@ -376,9 +376,13 @@ Vorgeschlagener naechster Schritt nach PR 49:
   (dieser Schnitt: `tests/test_seventh_fachlicher_vn_preference_regression.py`
   und `docs/migration/seventh_fachlicher_regressionstest.md`, erledigt).
 - PR 53: VN-`random`-/Vrvn02-Slice mit expliziten Draws und Seed-/Draw-Grenze
-  als schmalen Regressionstest umsetzen.
+  als schmalen Regressionstest umsetzen (dieser Schnitt:
+  `tests/test_eighth_fachlicher_vn_random_regression.py` und
+  `docs/migration/eighth_fachlicher_regressionstest.md`, erledigt).
+- PR 54: VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03` breiter gegen
+  vorhandene explizite Fixtures pruefen.
 
-Zaehlschnitt nach PR 52: grob `16-22` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 53: grob `15-21` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

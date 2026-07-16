@@ -207,7 +207,9 @@ PR 51. PR 51 setzt diesen sechsten fachlichen
 VN-`search_history`-/Vrvn04-Regressionstest um. Der vorgeschlagene naechste
 groessere Umsetzungsschritt war PR 52: Vrvn03 / `preference` als siebten
 fachlichen Slice umsetzen. PR 52 ist erledigt; der naechste fachliche Schritt
-ist PR 53: Vrvn02 / `random` mit expliziten Draws und Seed-/Draw-Grenze.
+war PR 53: Vrvn02 / `random` mit expliziten Draws und Seed-/Draw-Grenze. PR 53
+ist erledigt; der naechste fachliche Schritt ist PR 54:
+VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03` breiter pruefen.
 
 ## Validierung dieses Planstands
 

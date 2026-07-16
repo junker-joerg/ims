@@ -148,6 +148,13 @@ die VN-`preference`-/Vrvn03-Entscheidung fuer Policyholder `21`, Versicherer
 `11/12`, die Praeferenzscores aus aktiver VU-Werbung und die Uebernahme in den
 VN-Schaden-/Settlement-Runner, ohne Simulation und ohne historischen
 Vollgleichheitsnachweis.
+Der achte fachliche Regressionstest ist unter
+`tests/test_eighth_fachlicher_vn_random_regression.py` umgesetzt und in
+`docs/migration/eighth_fachlicher_regressionstest.md` eingeordnet. Er prueft
+die VN-`random`-/Vrvn02-Entscheidung fuer Policyholder `21`, Versicherer
+`11/12`, explizite Status- und Versicherer-Draws sowie die Uebernahme in den
+VN-Schaden-/Settlement-Runner, ohne Simulation, ohne historische
+RNG-Gleichheitsbehauptung und ohne historischen Vollgleichheitsnachweis.
 Der Run-Control-Ausfuehrungsfreigabeplan ist unter
 `docs/plans/run_control_execution_release_plan.md` dokumentiert. Er beschreibt
 die Freigabekette von Dry-Run, Queue, Action-Plan, expliziter

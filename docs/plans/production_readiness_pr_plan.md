@@ -40,7 +40,7 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 - PR 52: siebten fachlichen Regressionstest fuer Vrvn03 / `preference`
   umsetzen, inklusive Runner-Grenze zu Schaden/Settlement (erledigt).
 - PR 53: Vrvn02 / `random` mit expliziten Draws und Seed-/Draw-Grenze als
-  schmalen Regressionstest absichern.
+  schmalen Regressionstest absichern (erledigt).
 - PR 54: VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03` breiter gegen
   vorhandene explizite Fixtures pruefen.
 - PR 55: VU-Regelbreite ergaenzen, vorzugsweise ein expliziter VU-Random- oder
@@ -84,14 +84,14 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Ab PR 52 bleiben grob `16-22` reviewbare PRs bis zu einer konservativen
+Ab PR 53 bleiben grob `15-21` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 53 bleibt klein: Er setzt Vrvn02 / `random` mit expliziten Draws und
-Seed-/Draw-Grenze als schmalen Regressionstest um. Auch dieser Schritt startet
-keine Simulation, schaltet keinen UI-Startpfad frei und behauptet keine
+PR 54 bleibt klein: Er prueft den VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis
+`Vrvn03` breiter gegen vorhandene explizite Fixtures. Auch dieser Schritt
+startet keine Simulation, schaltet keinen UI-Startpfad frei und behauptet keine
 historische Vollgleichheit.
