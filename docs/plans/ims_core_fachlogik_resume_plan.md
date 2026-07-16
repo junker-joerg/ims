@@ -569,11 +569,11 @@ Aktualisierte grobe Restplanung:
 - Run-Control-Ausfuehrungsflow in der Workbench ist umgesetzt;
 - Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate ist umgesetzt;
 - PR 48 Demo-Smoke und Doku fuer den benutzbaren Ablauf ist umgesetzt;
-- vorgeschlagener naechster Schritt ist optional PR 49:
-  Packaging-/Startskript-Haertung fuer die lokale Auslieferung, oder danach
+- PR 49 Packaging-/Startskript-Haertung fuer die lokale Auslieferung ist
+  umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 50:
   wieder ein schmaler fachlicher Validierungsslice;
-- danach grob 0 bis 1 optionale reviewbare PRs bis zu einer startbar
-  verpackten kontrollierten Demo;
+- 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.

@@ -33,7 +33,7 @@ scripts\workbench\check-workbench.cmd
 scripts\workbench\start-workbench.cmd
 ```
 
-Die Skripte setzen ein gebautes `frontend/dist` voraus. Das Check-Skript fuehrt Diagnose und Readiness aus, startet aber keinen dauerhaften Server. Das Start-Skript startet nur den lokalen Backend-Server.
+Die Skripte setzen ein gebautes `frontend/dist` voraus. Das Check-Skript fuehrt Diagnose und Readiness aus, startet aber keinen dauerhaften Server. Es nutzt `IMS_METADATA_DB` nur, wenn die Datei bereits existiert. Das Start-Skript startet nur den lokalen Backend-Server. Beide Skripte setzen bei Bedarf ueberschreibbare Defaults fuer `IMS_FRONTEND_DIST`, `IMS_METADATA_DB`, `IMS_WORKBENCH_HOST` und `IMS_WORKBENCH_PORT`.
 
 Lokaler Workbench-v1 Abschlussstatus:
 
@@ -290,7 +290,7 @@ python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout p
 
 Dieser Ablauf ist ein lokaler Bereitstellungscheck fuer den tatsaechlich erzeugten ZIP-Inhalt und eine daraus explizit gestagte portable Zielstruktur unter `.\ims-workbench`. Portable Readiness mit `app\frontend\dist` ist erst nach diesem Staging-Schritt sinnvoll. Der Ablauf startet keine Simulation, oeffnet keinen HTTP- oder UI-Schreibpfad, installiert nichts automatisch und migriert keine SQLite-Datenbank.
 Der ZIP-Smoke prueft erwartete Eintraege, ausgeschlossene lokale Daten, stabile ZIP-Metadaten sowie die Lesbarkeit der ZIP-Payloads inklusive CRC-Pruefung.
-Das portable Staging erwartet einen fehlenden oder leeren Zielordner und ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Der Staging-Smoke prueft danach die gestagte Backend-/Frontend-Struktur, die Backend-Importfaehigkeit aus dem gestagten Workbench-Root fuer die Check-/Startskriptgrenze und die portablen Startskriptgrenzen rein lesend.
+Das portable Staging erwartet einen fehlenden oder leeren Zielordner und ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Der Staging-Smoke prueft danach die gestagte Backend-/Frontend-Struktur, die Backend-Importfaehigkeit aus dem gestagten Workbench-Root fuer die Check-/Startskriptgrenze und die portablen Startskriptgrenzen rein lesend. Die generierten portablen Skripte setzen dieselben ueberschreibbaren Defaults fuer Frontend-Dist, lokale Metadatenablage, Host und Port.
 
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
 

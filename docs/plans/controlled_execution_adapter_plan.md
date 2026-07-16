@@ -151,8 +151,8 @@ zurueck.
   Adapterstart oder Simulation (erledigt).
 - PR 48 sichert den benutzbaren Ablauf als Demo-Smoke und Doku ab,
   weiterhin ohne Adapterstart oder Simulation (erledigt).
-- PR 49 optional: danach Packaging-/Startskript-Haertung fuer die lokale
-  Auslieferung.
+- PR 49 haertet die Packaging-/Startskriptgrenze fuer die lokale
+  Auslieferung, weiterhin ohne Adapterstart oder Simulation (erledigt).
 
 ## Validierung dieses Plan-/Vertragsstands
 

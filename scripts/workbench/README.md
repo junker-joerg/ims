@@ -9,6 +9,13 @@ scripts\workbench\start-workbench.cmd
 
 - `check-workbench.cmd` prueft `frontend/dist`, Startdiagnose und Readiness. Es startet keinen dauerhaften Server und schreibt keine Metadaten.
 - `start-workbench.cmd` startet nur den lokalen Backend-Server auf `http://127.0.0.1:8000/` und nutzt das vorhandene gebaute Frontend.
+- Beide Skripte setzen konservative Defaults, falls nichts vorgegeben ist:
+  `IMS_FRONTEND_DIST`, `IMS_METADATA_DB`, `IMS_WORKBENCH_HOST=127.0.0.1` und
+  `IMS_WORKBENCH_PORT=8000`. Diese Werte koennen vor dem Skriptaufruf
+  ueberschrieben werden.
+- Das Check-Skript uebergibt `IMS_METADATA_DB` nur, wenn die Datei bereits
+  existiert; ein Erstcheck ohne lokale Datenbank bleibt dadurch read-only und
+  erfolgreich.
 
 Vorher muss das Frontend gebaut sein:
 

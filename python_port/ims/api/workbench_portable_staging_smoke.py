@@ -166,14 +166,21 @@ def _script_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssue]:
     issues: list[WorkbenchPortableStagingSmokeIssue] = []
     checks = {
         root / "check-workbench.cmd": (
-            "app\\frontend\\dist\\index.html",
+            "IMS_FRONTEND_DIST=%WORKBENCH_ROOT%\\app\\frontend\\dist",
+            "IMS_METADATA_DB=%WORKBENCH_ROOT%\\data\\.ims_workbench\\metadata.sqlite",
+            "%IMS_FRONTEND_DIST%\\index.html",
             "app\\python_port",
-            "--frontend-dist app/frontend/dist",
+            '--frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"',
         ),
         root / "start-workbench.cmd": (
-            "app\\frontend\\dist\\index.html",
+            "IMS_FRONTEND_DIST=%WORKBENCH_ROOT%\\app\\frontend\\dist",
+            "IMS_METADATA_DB=%WORKBENCH_ROOT%\\data\\.ims_workbench\\metadata.sqlite",
+            "IMS_WORKBENCH_HOST=127.0.0.1",
+            "IMS_WORKBENCH_PORT=8000",
+            "%IMS_FRONTEND_DIST%\\index.html",
             "app\\python_port",
             "--app-dir app/python_port",
+            '--host "%IMS_WORKBENCH_HOST%" --port "%IMS_WORKBENCH_PORT%"',
         ),
     }
     for script_path, required_fragments in checks.items():

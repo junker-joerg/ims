@@ -117,10 +117,11 @@ verboten:
   ohne Upload, UI-Startbutton, Queue-Worker oder Adapterstart (dieser
   Schnitt).
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf (dieser Schnitt).
-- PR 49 optional: Packaging-/Startskript-Update fuer lokale Auslieferung.
+- PR 49: Packaging-/Startskript-Haertung fuer lokale Auslieferung (dieser
+  Schnitt).
 
-Damit bleiben nach PR 48 grob 0 bis 1 optionale reviewbare PRs bis zu einer
-startbar verpackten kontrollierten Demo. Diese Zahl ist kein historischer
+Damit bleiben nach PR 49 0 weitere Pflicht-PRs bis zu einer startbar
+verpackten kontrollierten Demo. Diese Zahl ist kein historischer
 Vollgleichheitsnachweis.
 
 ## Umsetzung in PR 45
@@ -189,8 +190,18 @@ PR 48 sichert den benutzbaren lokalen Demo-Ablauf als API-/Doku-Smoke ab:
   `ui_start_enabled = false`, `queue_worker_enabled = false` und
   `simulation_performed = false` bleiben die belegten Grenzen.
 
-Der vorgeschlagene naechste groessere Schritt ist optional PR 49:
-Packaging-/Startskript-Haertung fuer die lokale Auslieferung, oder danach
+## Umsetzung in PR 49
+
+PR 49 haertet die lokale Auslieferungsgrenze:
+
+- Repo- und portable Start-/Check-Skripte setzen ueberschreibbare Defaults fuer
+  `IMS_FRONTEND_DIST`, `IMS_METADATA_DB`, `IMS_WORKBENCH_HOST` und
+  `IMS_WORKBENCH_PORT`;
+- der portable Staging-Smoke prueft diese Startskriptgrenzen rein lesend;
+- es gibt weiterhin keinen Adapterstart, keinen Queue-Worker, keine Simulation
+  und keine historische Vollgleichheitsbehauptung.
+
+Der vorgeschlagene naechste groessere Schritt ist PR 50:
 wieder ein schmaler fachlicher Validierungsslice.
 
 ## Validierung dieses Planstands

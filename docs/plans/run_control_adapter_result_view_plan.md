@@ -66,8 +66,8 @@ PR 38 soll eine read-only Anzeigegrenze planen:
   Simulation (erledigt).
 - PR 48: danach Demo-Smoke und Doku fuer den benutzbaren Ablauf absichern,
   weiterhin ohne Adapterstart oder Simulation (erledigt).
-- PR 49 optional: danach Packaging-/Startskript-Haertung fuer die lokale
-  Auslieferung vorbereiten.
+- PR 49: danach Packaging-/Startskript-Haertung fuer die lokale Auslieferung
+  absichern, weiterhin ohne Adapterstart oder Simulation (erledigt).
 
 ## Grenzen
 

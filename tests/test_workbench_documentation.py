@@ -665,9 +665,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "docs/migration/run_control_execution_result_view.md" in backlog
     assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
     assert "tests/test_workbench_demo_smoke.py" in backlog
-    assert "Vorgeschlagener naechster Schritt nach PR 48" in backlog
-    assert "PR 49 optional: Packaging-/Startskript-Haertung" in backlog
-    assert "Zaehlschnitt nach PR 48: grob 0 bis 1 optionale reviewbare PRs" in backlog
+    assert "PR 49: Packaging-/Startskript-Haertung fuer die lokale Auslieferung" in backlog
+    assert "Vorgeschlagener naechster Schritt nach PR 49" in backlog
+    assert "PR 50: wieder einen schmalen fachlichen Validierungsslice" in backlog
+    assert "Zaehlschnitt nach PR 49: 0 weitere Pflicht-PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
@@ -717,7 +718,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Rollback heisst" in plan
     assert "kein fachlicher" in plan
     assert "Gleichheitsnachweis und keine historische Vollgleichheitsbehauptung" in plan
-    assert "0` PRs, abgesehen von Review-Fixes" in plan
+    assert "0` Pflicht-PRs, abgesehen von Review-Fixes" in plan
     assert "14-28+" in plan
     assert "Fachvalidierung und historische Vollgleichheit" in plan
     assert "Packaging und Bereitstellung" in plan
@@ -822,11 +823,20 @@ def test_workbench_start_scripts_are_readonly_packaging_helpers():
     assert CHECK_SCRIPT.is_file()
     assert START_SCRIPT.is_file()
     assert SCRIPT_README.is_file()
-    assert "python -m ims.api.workbench_diagnostics --frontend-dist frontend/dist" in check_script
-    assert "python -m ims.api.workbench_readiness --frontend-dist frontend/dist" in check_script
-    assert "python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000" in start_script
-    assert "frontend\\dist\\index.html" in check_script
-    assert "frontend\\dist\\index.html" in start_script
+    assert "IMS_FRONTEND_DIST=%REPO_ROOT%\\frontend\\dist" in check_script
+    assert "IMS_METADATA_DB=%REPO_ROOT%\\.ims_workbench\\metadata.sqlite" in check_script
+    assert 'if exist "%IMS_METADATA_DB%"' in check_script
+    assert 'python -m ims.api.workbench_diagnostics --frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"' in check_script
+    assert 'python -m ims.api.workbench_readiness --frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"' in check_script
+    assert "IMS_WORKBENCH_HOST=127.0.0.1" in start_script
+    assert "IMS_WORKBENCH_PORT=8000" in start_script
+    assert 'python -m uvicorn ims.api.app:app --app-dir python_port --host "%IMS_WORKBENCH_HOST%" --port "%IMS_WORKBENCH_PORT%"' in start_script
+    assert "%IMS_FRONTEND_DIST%\\index.html" in check_script
+    assert "%IMS_FRONTEND_DIST%\\index.html" in start_script
+    assert "IMS_WORKBENCH_HOST" in script_readme
+    assert "IMS_WORKBENCH_PORT" in script_readme
+    assert "IMS_METADATA_DB" in script_readme
+    assert "nur, wenn die Datei bereits" in script_readme
     assert "startet keinen dauerhaften Server" in script_readme
     assert "startet nur den lokalen Backend-Server" in script_readme
 

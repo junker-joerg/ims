@@ -197,11 +197,12 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "docs/migration/run_control_execution_result_view.md" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate ist umgesetzt" in plan
     assert "PR 48 Demo-Smoke und Doku fuer den benutzbaren Ablauf ist umgesetzt" in plan
-    assert "vorgeschlagener naechster Schritt ist optional PR 49" in plan
-    assert "Packaging-/Startskript-Haertung fuer die lokale Auslieferung" in plan
+    assert "PR 49 Packaging-/Startskript-Haertung fuer die lokale Auslieferung ist" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 50" in plan
+    assert "wieder ein schmaler fachlicher Validierungsslice" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
-    assert "grob 0 bis 1 optionale reviewbare PRs bis zu einer startbar" in plan
+    assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -284,7 +285,10 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "PR 48: Demo-Smoke und Doku" in plan
     assert "## Umsetzung in PR 48" in plan
     assert "tests/test_workbench_demo_smoke.py" in plan
-    assert "grob 0 bis 1 optionale reviewbare PRs" in plan
+    assert "nach PR 49 0 weitere Pflicht-PRs" in plan
+    assert "## Umsetzung in PR 49" in plan
+    assert "IMS_WORKBENCH_HOST" in plan
+    assert "Der vorgeschlagene naechste groessere Schritt ist PR 50" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -620,7 +624,7 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "PR 46 zeigt den UI-Flow" in plan
     assert "PR 47 bindet die read-only Ergebnisanzeige" in plan
     assert "PR 48 sichert den benutzbaren Ablauf als Demo-Smoke" in plan
-    assert "PR 49 optional" in plan
+    assert "PR 49 haertet die Packaging-/Startskriptgrenze" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -754,7 +758,7 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "PR 46: danach UI-Flow" in plan
     assert "PR 47: danach Ergebnisanzeige" in plan
     assert "PR 48: danach Demo-Smoke und Doku fuer den benutzbaren Ablauf absichern" in plan
-    assert "PR 49 optional" in plan
+    assert "PR 49: danach Packaging-/Startskript-Haertung" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 

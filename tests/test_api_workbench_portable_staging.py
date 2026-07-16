@@ -39,9 +39,18 @@ def test_portable_staging_creates_portable_layout_from_bundle_zip(tmp_path):
     assert (out_path / "app" / "frontend" / "dist" / "assets" / "app.js").is_file()
     assert (out_path / "start-workbench.cmd").is_file()
     assert (out_path / "check-workbench.cmd").is_file()
-    assert "app\\frontend\\dist\\index.html" in (out_path / "check-workbench.cmd").read_text(encoding="utf-8")
-    assert "app\\python_port" in (out_path / "start-workbench.cmd").read_text(encoding="utf-8")
-    assert "--app-dir app/python_port" in (out_path / "start-workbench.cmd").read_text(encoding="utf-8")
+    check_script = (out_path / "check-workbench.cmd").read_text(encoding="utf-8")
+    start_script = (out_path / "start-workbench.cmd").read_text(encoding="utf-8")
+    assert "IMS_FRONTEND_DIST=%WORKBENCH_ROOT%\\app\\frontend\\dist" in check_script
+    assert "IMS_METADATA_DB=%WORKBENCH_ROOT%\\data\\.ims_workbench\\metadata.sqlite" in check_script
+    assert '%IMS_FRONTEND_DIST%\\index.html' in check_script
+    assert 'if exist "%IMS_METADATA_DB%"' in check_script
+    assert '--frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"' in check_script
+    assert "IMS_WORKBENCH_HOST=127.0.0.1" in start_script
+    assert "IMS_WORKBENCH_PORT=8000" in start_script
+    assert "app\\python_port" in start_script
+    assert "--app-dir app/python_port" in start_script
+    assert '--host "%IMS_WORKBENCH_HOST%" --port "%IMS_WORKBENCH_PORT%"' in start_script
     assert (out_path / "data" / ".ims_workbench").is_dir()
     assert (out_path / "logs").is_dir()
     readiness = build_workbench_portable_readiness(out_path, layout="portable").to_dict()

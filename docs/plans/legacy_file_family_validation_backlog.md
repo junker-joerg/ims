@@ -185,12 +185,16 @@ Aktueller Stand nach PR 48:
   `tests/test_workbench_demo_smoke.py` und
   `docs/migration/workbench_demo_checklist.md`, erledigt).
 
-Vorgeschlagener naechster Schritt nach PR 48:
+Aktueller Stand nach PR 49:
 
-- PR 49 optional: Packaging-/Startskript-Haertung fuer die lokale
-  Auslieferung, nur wenn der Demo-Ablauf als startbares Paket stabilisiert
-  werden soll; sonst wieder einen schmalen fachlichen Validierungsslice
-  waehlen.
+- PR 49: Packaging-/Startskript-Haertung fuer die lokale Auslieferung,
+  weiterhin ohne Simulation, Adapterstart oder Vollgleichheitsbehauptung
+  (dieser Schnitt: Repo- und portable Start-/Check-Skripte, erledigt).
+
+Vorgeschlagener naechster Schritt nach PR 49:
+
+- PR 50: wieder einen schmalen fachlichen Validierungsslice waehlen, weil der
+  lokale Demo- und Packaging-Pfad jetzt reviewbar stabilisiert ist.
 
 ## Rest-PR-Planung
 
@@ -357,11 +361,12 @@ Vorgeschlagener naechster Schritt nach PR 48:
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf (dieser Schnitt:
   `tests/test_workbench_demo_smoke.py` und
   `docs/migration/workbench_demo_checklist.md`, erledigt).
-- PR 49 optional: Packaging-/Startskript-Update fuer die lokale Auslieferung.
+- PR 49: Packaging-/Startskript-Haertung fuer die lokale Auslieferung (dieser
+  Schnitt: Repo- und portable Start-/Check-Skripte, erledigt).
 
-Zaehlschnitt nach PR 48: grob 0 bis 1 optionale reviewbare PRs bis zu einer
-startbar verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als
-API-/Doku-Smoke abgesichert. Das bleibt kein historischer
+Zaehlschnitt nach PR 49: 0 weitere Pflicht-PRs bis zu einer startbar
+verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als
+API-/Doku-Smoke und Startskriptgrenze abgesichert. Das bleibt kein historischer
 Vollgleichheitsnachweis.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.

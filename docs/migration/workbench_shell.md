@@ -151,7 +151,7 @@ scripts\workbench\check-workbench.cmd
 scripts\workbench\start-workbench.cmd
 ```
 
-`check-workbench.cmd` prueft das vorhandene `frontend/dist`, Startdiagnose und Readiness. Es startet keinen dauerhaften Server, schreibt keine Metadaten und startet keine Simulation. `start-workbench.cmd` startet nur den lokalen Backend-Server auf `127.0.0.1:8000`; es fuehrt keinen Import, keine Queue-Schreiboperation und keinen Run aus.
+`check-workbench.cmd` prueft das vorhandene `frontend/dist`, Startdiagnose und Readiness. Es startet keinen dauerhaften Server, schreibt keine Metadaten und startet keine Simulation; `IMS_METADATA_DB` wird nur uebergeben, wenn die Datei bereits existiert. `start-workbench.cmd` startet nur den lokalen Backend-Server auf `127.0.0.1:8000`; es fuehrt keinen Import, keine Queue-Schreiboperation und keinen Run aus. Beide Skripte setzen bei Bedarf ueberschreibbare Defaults fuer `IMS_FRONTEND_DIST`, `IMS_METADATA_DB`, `IMS_WORKBENCH_HOST` und `IMS_WORKBENCH_PORT`.
 
 ## Lokaler Workbench-v1 Abschlussstatus
 
@@ -534,7 +534,10 @@ Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Der
 Staging-Smoke liest die gestagte portable Zielstruktur, prueft zentrale
 Backend-Module, deren Importfaehigkeit aus dem gestagten Workbench-Root ueber `app\python_port`,
 `app\frontend\dist` und die portablen Startskripte, schreibt nichts und startet
-keine Simulation. Das ZIP bleibt ein lokales
+keine Simulation. Die generierten portablen Start-/Check-Skripte setzen
+ueberschreibbare Defaults fuer `IMS_FRONTEND_DIST`, `IMS_METADATA_DB`,
+`IMS_WORKBENCH_HOST` und `IMS_WORKBENCH_PORT`, gespiegelt auf die portable
+Struktur unter `app\` und `data\.ims_workbench`. Das ZIP bleibt ein lokales
 Bereitstellungsartefakt: Es ist kein Installer, kein automatischer Updater,
 keine SQLite-Migration, keine Fachvalidierung und keine historische
 Vollgleichheitsbehauptung.

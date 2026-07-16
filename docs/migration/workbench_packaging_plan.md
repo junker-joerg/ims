@@ -128,6 +128,11 @@ Erste lokale Windows-Skripte sind unter `scripts/workbench/` vorbereitet:
 
 - `check-workbench.cmd` prueft `frontend/dist`, Startdiagnose und Readiness.
 - `start-workbench.cmd` startet nur den lokalen Backend-Server auf `127.0.0.1:8000`.
+- PR 49 haertet diese Skripte und die beim portablen Staging generierten
+  Skripte: `IMS_FRONTEND_DIST`, `IMS_METADATA_DB`, `IMS_WORKBENCH_HOST` und
+  `IMS_WORKBENCH_PORT` bekommen ueberschreibbare Defaults; Check-Skripte
+  bleiben rein pruefend und uebergeben `IMS_METADATA_DB` nur bei bereits
+  vorhandener Datei, Start-Skripte starten nur den lokalen Backend-Server.
 - `README.md` beschreibt diese lokale Grenze.
 - `python -m ims.api.workbench_portable_readiness --root . --layout repo` prueft die heutige Repo-Struktur.
 - `python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable` prueft eine spaetere portable Zielstruktur.
@@ -358,7 +363,8 @@ Der Packaging-/Bereitstellungsblock steht bei `0` geplanten PRs, abgesehen von R
 8. ZIP-Smoke-Test ohne Simulation: vorbereitet.
 9. Backup-/Restore-Doku fuer lokale Metadaten: vorbereitet.
 10. Update-/Rollback-Doku fuer lokale Workbench-Versionen: vorbereitet.
-11. Windows-Pfadhaertung und Leerzeichenpfade.
+11. Windows-Pfadhaertung und Leerzeichenpfade: umgesetzt in PR 49 fuer
+    Repo- und portable Start-/Check-Skripte.
 12. Release-Checkliste: vorbereitet.
 13. Lokale Release-Bereitstellung: konsolidiert.
 14. Portables Staging fuer ZIP-Artefakte: vorbereitet.
@@ -372,7 +378,8 @@ Die grobe Gesamtplanung bis "wirklich alles fertig" bleibt:
 
 - Workbench-Ausbau nach v1: ca. `3-7` PRs.
 - Fachvalidierung und historische Vollgleichheit: ca. `10-18` PRs.
-- Packaging und Bereitstellung: ca. `0` PRs, abgesehen von Review-Fixes.
+- Packaging und Bereitstellung: ca. `0` Pflicht-PRs, abgesehen von Review-Fixes
+  oder spaeter expliziter Release-Automatisierung.
 - Integrations- und Review-Reserve: ca. `1-3` PRs.
 
 Erwartet bleiben damit weiterhin grob ca. `14-28+` reviewbare PRs. Diese Zahl ist bewusst konservativ und kann durch Fachvalidierung oder Plattform-/Packaging-Fallen steigen.
@@ -394,6 +401,8 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - ZIP-Payload-/CRC-Pruefung fuer beschaedigte Eintragsbytes,
 - portables Staging aus einem geprueften ZIP in eine leere Zielstruktur,
 - Staging-Smoke fuer zentrale Backend-Module, Backend-Importfaehigkeit, Frontend-Dist und portable Startskriptgrenzen,
+- Startskript-Haertung fuer ueberschreibbare Host-/Port-, Frontend- und
+  Metadatenpfade,
 - Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness,
 - Update-/Rollback-Doku fuer parallele Versionstests, Datenablage-Trennung, Readiness, Roundtrip und manuellen Rollback,
 - reproduzierbare ZIP-Pruefsummen bei identischem Inhalt trotz unterschiedlicher lokaler Dateizeitstempel,
