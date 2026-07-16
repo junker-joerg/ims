@@ -576,15 +576,18 @@ Aktualisierte grobe Restplanung:
 - sechster fachlicher VN-`search_history`-/Vrvn04-Slice ist als
   Regressionstest umgesetzt und dokumentiert;
 - 0 PRs bis zum sechsten ausgefuehrten fachlichen Regressionstest;
-- vorgeschlagener naechster Schritt ist PR 52:
-  siebten fachlichen VN-`preference`-/Vrvn03-Slice planen und umsetzen oder bei
-  Bedarf zuerst schmal planen;
+- siebter fachlicher VN-`preference`-/Vrvn03-Slice ist als Regressionstest
+  umgesetzt und dokumentiert;
+- 0 PRs bis zum siebten ausgefuehrten fachlichen Regressionstest;
+- vorgeschlagener naechster Schritt ist PR 53:
+  VN-`random`-/Vrvn02-Slice mit expliziten Draws und Seed-/Draw-Grenze als
+  schmalen Regressionstest umsetzen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `17-23` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `16-22` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 

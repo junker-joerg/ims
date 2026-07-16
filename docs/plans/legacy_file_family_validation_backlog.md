@@ -373,9 +373,12 @@ Vorgeschlagener naechster Schritt nach PR 49:
   `tests/test_sixth_fachlicher_vn_search_history_regression.py` und
   `docs/migration/sixth_fachlicher_regressionstest.md`, erledigt).
 - PR 52: siebten fachlichen VN-`preference`-/Vrvn03-Slice planen und umsetzen
-  oder bei Bedarf zuerst in einen schmalen Plan-Schnitt trennen.
+  (dieser Schnitt: `tests/test_seventh_fachlicher_vn_preference_regression.py`
+  und `docs/migration/seventh_fachlicher_regressionstest.md`, erledigt).
+- PR 53: VN-`random`-/Vrvn02-Slice mit expliziten Draws und Seed-/Draw-Grenze
+  als schmalen Regressionstest umsetzen.
 
-Zaehlschnitt nach PR 51: grob `17-23` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 52: grob `16-22` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

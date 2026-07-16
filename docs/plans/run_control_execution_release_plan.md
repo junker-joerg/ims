@@ -205,8 +205,9 @@ PR 50 schreibt die Produktionsreife-Roadmap fest und waehlt wieder einen
 schmalen fachlichen Validierungsslice: Vrvn04 / `search_history` als Plan fuer
 PR 51. PR 51 setzt diesen sechsten fachlichen
 VN-`search_history`-/Vrvn04-Regressionstest um. Der vorgeschlagene naechste
-groessere Umsetzungsschritt ist PR 52: Vrvn03 / `preference` als siebten
-fachlichen Slice planen und umsetzen oder bei Bedarf zuerst schmal planen.
+groessere Umsetzungsschritt war PR 52: Vrvn03 / `preference` als siebten
+fachlichen Slice umsetzen. PR 52 ist erledigt; der naechste fachliche Schritt
+ist PR 53: Vrvn02 / `random` mit expliziten Draws und Seed-/Draw-Grenze.
 
 ## Validierung dieses Planstands
 

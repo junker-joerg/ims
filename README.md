@@ -141,6 +141,13 @@ VN-`search_history`-/Vrvn04-Entscheidung fuer Policyholder `21`, Versicherer
 `11/12`, die Historienauswahl aus Periode `4` und die Uebernahme in den
 VN-Schaden-/Settlement-Runner, ohne Simulation und ohne historischen
 Vollgleichheitsnachweis.
+Der siebte fachliche Regressionstest ist unter
+`tests/test_seventh_fachlicher_vn_preference_regression.py` umgesetzt und in
+`docs/migration/seventh_fachlicher_regressionstest.md` eingeordnet. Er prueft
+die VN-`preference`-/Vrvn03-Entscheidung fuer Policyholder `21`, Versicherer
+`11/12`, die Praeferenzscores aus aktiver VU-Werbung und die Uebernahme in den
+VN-Schaden-/Settlement-Runner, ohne Simulation und ohne historischen
+Vollgleichheitsnachweis.
 Der Run-Control-Ausfuehrungsfreigabeplan ist unter
 `docs/plans/run_control_execution_release_plan.md` dokumentiert. Er beschreibt
 die Freigabekette von Dry-Run, Queue, Action-Plan, expliziter
