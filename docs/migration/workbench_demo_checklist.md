@@ -111,6 +111,24 @@ Adapterresultat ueber `GET /api/run-control/execution-result/{queue_id}` nur
 lesend. Sie nimmt keinen Payload an, bietet keinen Dateipicker an, startet
 keinen Adapter und schreibt keine Metadaten.
 
+## Automatisierter PR48-Smoke
+
+Der PR48-Smoke ist in `tests/test_workbench_demo_smoke.py` als kleine
+API-Bedienfolge verankert. Er nutzt eine explizite lokale SQLite-Quelle,
+fuehrt den HTTP-Dry-Run aus, merkt genau einen Queue-Eintrag vor und liest
+anschliessend Aktionsplan, Run-Control-Ausfuehrungsflow-Vertrag,
+Run-Control-Ergebnisanzeige, Run-Control-Kernblick-Bruecke,
+Carryover-Probe-Vertrag und Adapter-Resultat-Vertrag. Erwartet bleiben
+`writes_performed = false` auf allen lesenden Schritten,
+`execution_performed = false`, `api_starts_adapter = false`,
+`ui_start_enabled = false`, `queue_worker_enabled = false` und bei noch nicht
+persistiertem Adapterresultat eine stabile read-only 404-Form.
+
+Dieser automatisierte Smoke ersetzt den echten Browser-/Screenshot-Smoke
+nicht. Er prueft aber die API-Signale, die der sichtbare UI-Durchlauf anzeigen
+soll, ohne Simulation, ohne Adapterstart und ohne historische
+Vollgleichheitsbehauptung.
+
 ## Was demo-faehig ist
 
 - lokale Browser-Workbench mit gebautem Frontend

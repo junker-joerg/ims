@@ -149,7 +149,10 @@ zurueck.
 - PR 47 bindet die read-only Ergebnisanzeige fuer persistierte
   Adapterresultate an, weiterhin ohne Upload, UI-Startbutton, Queue-Worker,
   Adapterstart oder Simulation (erledigt).
-- PR 48+: danach Demo-Smoke und optional Packaging in getrennten PRs.
+- PR 48 sichert den benutzbaren Ablauf als Demo-Smoke und Doku ab,
+  weiterhin ohne Adapterstart oder Simulation (erledigt).
+- PR 49 optional: danach Packaging-/Startskript-Haertung fuer die lokale
+  Auslieferung.
 
 ## Validierung dieses Plan-/Vertragsstands
 

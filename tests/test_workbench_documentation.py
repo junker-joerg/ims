@@ -450,7 +450,7 @@ def test_workbench_run_control_plan_documents_next_modernization_block():
     assert "resolve_core_validation_blockers" in plan
     assert "Rollback-Journal-Datenbanken werden mit `mode=ro` gelesen" in plan
     assert "`immutable=1` ist nur fuer sidecar-freie WAL-Dateien zulaessig" in plan
-    assert "Haertung, Doku, Smoke-/E2E-Checks" in plan
+    assert "optionale Haertung, Packaging-/Startskript-Update" in plan
     assert "Review-Fixes, CI- und Windows-Pfadhaertung" in plan
     assert "execution_enabled=false" in plan
     assert "`execution_enabled` bleibt bis zur expliziten Ausfuehrungsfreigabe `false`" in plan
@@ -508,6 +508,9 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "api_validates_result_payload = false" in checklist
     assert "Run-Control-Ausfuehrungsflow" in checklist
     assert "Run-Control-Ergebnisanzeige" in checklist
+    assert "Automatisierter PR48-Smoke" in checklist
+    assert "tests/test_workbench_demo_smoke.py" in checklist
+    assert "eine stabile read-only 404-Form" in checklist
     assert "Preflight -> explizite Freigabe -> Ausfuehren" in checklist
     assert "GET /api/run-control/execution-result/{queue_id}" in checklist
     assert "ui_start_enabled = false" in checklist
@@ -661,7 +664,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe" in backlog
     assert "docs/migration/run_control_execution_result_view.md" in backlog
     assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
-    assert "Zaehlschnitt nach PR 47: grob 0 bis 2 reviewbare PRs" in backlog
+    assert "tests/test_workbench_demo_smoke.py" in backlog
+    assert "Vorgeschlagener naechster Schritt nach PR 48" in backlog
+    assert "PR 49 optional: Packaging-/Startskript-Haertung" in backlog
+    assert "Zaehlschnitt nach PR 48: grob 0 bis 1 optionale reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

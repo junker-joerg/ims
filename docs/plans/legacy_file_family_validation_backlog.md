@@ -178,10 +178,19 @@ Der fuenfte fachliche VN-Slice ist nach PR 42 umgesetzt:
   (`tests/test_fifth_fachlicher_vn_sample_search_regression.py` und
   `docs/migration/fifth_fachlicher_regressionstest.md`).
 
-Aktueller vorgeschlagener Schritt nach PR 47:
+Aktueller Stand nach PR 48:
 
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf,
-  weiterhin ohne historische Vollgleichheitsbehauptung.
+  weiterhin ohne historische Vollgleichheitsbehauptung (dieser Schnitt:
+  `tests/test_workbench_demo_smoke.py` und
+  `docs/migration/workbench_demo_checklist.md`, erledigt).
+
+Vorgeschlagener naechster Schritt nach PR 48:
+
+- PR 49 optional: Packaging-/Startskript-Haertung fuer die lokale
+  Auslieferung, nur wenn der Demo-Ablauf als startbares Paket stabilisiert
+  werden soll; sonst wieder einen schmalen fachlichen Validierungsslice
+  waehlen.
 
 ## Rest-PR-Planung
 
@@ -345,11 +354,14 @@ Aktueller vorgeschlagener Schritt nach PR 47:
   `tests/test_frontend_shell.py` und
   `docs/migration/run_control_execution_result_view.md`, erledigt), weiterhin
   ohne Upload, UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
-- PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
+- PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf (dieser Schnitt:
+  `tests/test_workbench_demo_smoke.py` und
+  `docs/migration/workbench_demo_checklist.md`, erledigt).
 - PR 49 optional: Packaging-/Startskript-Update fuer die lokale Auslieferung.
 
-Zaehlschnitt nach PR 47: grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren
-kontrollierten Demo-Simulation; das bleibt kein historischer
+Zaehlschnitt nach PR 48: grob 0 bis 1 optionale reviewbare PRs bis zu einer
+startbar verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als
+API-/Doku-Smoke abgesichert. Das bleibt kein historischer
 Vollgleichheitsnachweis.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.

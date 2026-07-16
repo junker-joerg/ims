@@ -196,11 +196,12 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Run-Control-Ausfuehrungsflow in der Workbench ist umgesetzt" in plan
     assert "docs/migration/run_control_execution_result_view.md" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate ist umgesetzt" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 48" in plan
-    assert "Demo-Smoke und Doku fuer den benutzbaren Ablauf" in plan
+    assert "PR 48 Demo-Smoke und Doku fuer den benutzbaren Ablauf ist umgesetzt" in plan
+    assert "vorgeschlagener naechster Schritt ist optional PR 49" in plan
+    assert "Packaging-/Startskript-Haertung fuer die lokale Auslieferung" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
-    assert "grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
+    assert "grob 0 bis 1 optionale reviewbare PRs bis zu einer startbar" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -281,7 +282,9 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "GET /api/run-control/execution-result/{queue_id}" in plan
     assert "Run-Control-Ergebnisanzeige" in plan
     assert "PR 48: Demo-Smoke und Doku" in plan
-    assert "grob 0 bis 2 reviewbare PRs" in plan
+    assert "## Umsetzung in PR 48" in plan
+    assert "tests/test_workbench_demo_smoke.py" in plan
+    assert "grob 0 bis 1 optionale reviewbare PRs" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -616,7 +619,8 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "python_port/ims/api/run_control_execution_result_store.py" in plan
     assert "PR 46 zeigt den UI-Flow" in plan
     assert "PR 47 bindet die read-only Ergebnisanzeige" in plan
-    assert "PR 48+: danach Demo-Smoke" in plan
+    assert "PR 48 sichert den benutzbaren Ablauf als Demo-Smoke" in plan
+    assert "PR 49 optional" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -749,7 +753,8 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "python_port/ims/api/run_control_execution_result_store.py" in plan
     assert "PR 46: danach UI-Flow" in plan
     assert "PR 47: danach Ergebnisanzeige" in plan
-    assert "PR 48+: danach Demo-Smoke" in plan
+    assert "PR 48: danach Demo-Smoke und Doku fuer den benutzbaren Ablauf absichern" in plan
+    assert "PR 49 optional" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 

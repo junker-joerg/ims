@@ -60,6 +60,6 @@ Ergebnisform ohne Schreib- oder Startwirkung. Die Frontend-Tests pruefen den
 stabilen UI-Anker `run-control-execution-result`, die Ergebniszeilen und die
 gesperrten Grenzen.
 
-Nach PR 47 bleiben grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren,
-kontrollierten Demo-Simulation: Demo-Smoke/Doku und optional
-Packaging-/Startskript-Anpassungen.
+PR 48 sichert den benutzbaren lokalen Ablauf als Demo-Smoke und Doku ab. Danach
+bleibt optional noch Packaging-/Startskript-Haertung fuer eine startbar
+verpackte kontrollierte Demo.

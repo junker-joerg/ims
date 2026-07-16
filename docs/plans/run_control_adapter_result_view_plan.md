@@ -64,8 +64,10 @@ PR 38 soll eine read-only Anzeigegrenze planen:
 - PR 47: danach Ergebnisanzeige fuer persistierte Adapterresultate anbinden,
   weiterhin ohne Upload, UI-Startbutton, Queue-Worker, Adapterstart oder
   Simulation (erledigt).
-- PR 48+: danach Demo-Smoke und optional Packaging in getrennten Schritten
-  vorbereiten.
+- PR 48: danach Demo-Smoke und Doku fuer den benutzbaren Ablauf absichern,
+  weiterhin ohne Adapterstart oder Simulation (erledigt).
+- PR 49 optional: danach Packaging-/Startskript-Haertung fuer die lokale
+  Auslieferung vorbereiten.
 
 ## Grenzen
 

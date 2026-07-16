@@ -116,11 +116,11 @@ verboten:
 - PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden, weiterhin
   ohne Upload, UI-Startbutton, Queue-Worker oder Adapterstart (dieser
   Schnitt).
-- PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
+- PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf (dieser Schnitt).
 - PR 49 optional: Packaging-/Startskript-Update fuer lokale Auslieferung.
 
-Damit bleiben nach PR 47 grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren
-kontrollierten Demo-Simulation. Diese Zahl ist kein historischer
+Damit bleiben nach PR 48 grob 0 bis 1 optionale reviewbare PRs bis zu einer
+startbar verpackten kontrollierten Demo. Diese Zahl ist kein historischer
 Vollgleichheitsnachweis.
 
 ## Umsetzung in PR 45
@@ -171,9 +171,27 @@ lesend an:
 - Upload, UI-Startbutton, Queue-Worker, Adapterstart, Simulation und
   historische Vollgleichheitsbehauptung bleiben gesperrt.
 
-Der vorgeschlagene naechste groessere Schritt ist PR 48:
+Der nach PR 47 vorgeschlagene naechste groessere Schritt war PR 48:
 Demo-Smoke und Doku fuer den benutzbaren Ablauf, weiterhin ohne historische
 Vollgleichheitsbehauptung.
+
+## Umsetzung in PR 48
+
+PR 48 sichert den benutzbaren lokalen Demo-Ablauf als API-/Doku-Smoke ab:
+
+- `tests/test_workbench_demo_smoke.py` prueft Dry-Run, Queue-Vormerkung,
+  Aktionsplan, hart gesperrten Adapter-Startvertrag, read-only
+  Ergebnisanzeige, Run-Control-Kernblick-Bruecke, Carryover-Probe-Vertrag und
+  Adapter-Resultat-Vertrag;
+- `docs/migration/workbench_demo_checklist.md` beschreibt die UI-Reihenfolge,
+  die erwarteten Demo-Signale und die Grenzen fuer Browser-/Screenshot-Smoke;
+- `execution_performed = false`, `api_starts_adapter = false`,
+  `ui_start_enabled = false`, `queue_worker_enabled = false` und
+  `simulation_performed = false` bleiben die belegten Grenzen.
+
+Der vorgeschlagene naechste groessere Schritt ist optional PR 49:
+Packaging-/Startskript-Haertung fuer die lokale Auslieferung, oder danach
+wieder ein schmaler fachlicher Validierungsslice.
 
 ## Validierung dieses Planstands
 

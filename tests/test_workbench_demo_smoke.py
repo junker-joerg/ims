@@ -28,6 +28,8 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     selected_action_plan = client.get(f"/api/run-control/queue/action-plan?queue_id={queue_id}")
     core_bridge = client.get("/api/run-control/core-diagnostics-bridge")
     selected_core_bridge = client.get(f"/api/run-control/core-diagnostics-bridge?queue_id={queue_id}")
+    adapter_start_contract = client.get("/api/run-control/adapter-start-contract")
+    execution_result_missing = client.get(f"/api/run-control/execution-result/{queue_id}")
     carryover_probe_contract = client.get("/api/core-validation/carryover-probe-contract")
     adapter_result_contract = client.get("/api/run-control/adapter-result-contract")
 
@@ -95,6 +97,25 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     assert selected_core_bridge.json()["actions"][0]["queue_id"] == queue_id
     assert selected_core_bridge.json()["actions"][0]["bridge_next_action"] == "resolve_core_validation_blockers"
     assert selected_core_bridge.json()["execution_performed"] is False
+
+    assert adapter_start_contract.status_code == 200
+    assert adapter_start_contract.json()["mode"] == "run_control_adapter_start_contract"
+    assert adapter_start_contract.json()["planned_start_endpoint"] == "/api/run-control/adapter-start"
+    assert adapter_start_contract.json()["api_accepts_start_payload"] is False
+    assert adapter_start_contract.json()["api_validates_start_payload"] is False
+    assert adapter_start_contract.json()["api_starts_adapter"] is False
+    assert adapter_start_contract.json()["ui_start_enabled"] is False
+    assert adapter_start_contract.json()["queue_worker_enabled"] is False
+    assert adapter_start_contract.json()["execution_performed"] is False
+    assert adapter_start_contract.json()["simulation_performed"] is False
+
+    assert execution_result_missing.status_code == 404
+    assert execution_result_missing.json()["mode"] == "run_control_execution_result_store_show"
+    assert execution_result_missing.json()["status"] == "error"
+    assert execution_result_missing.json()["writes_performed"] is False
+    assert execution_result_missing.json()["execution_performed"] is False
+    assert execution_result_missing.json()["adapter_started"] is False
+    assert execution_result_missing.json()["simulation_performed"] is False
 
     assert carryover_probe_contract.status_code == 200
     assert carryover_probe_contract.json()["mode"] == "core_validation_carryover_probe_api_contract"

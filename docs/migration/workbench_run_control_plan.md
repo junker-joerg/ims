@@ -51,7 +51,7 @@ Geplante Bloecke:
 
 | Block | Erwarteter Umfang | Inhalt |
 | --- | ---: | --- |
-| Workbench nach v1 vollstaendig nutzbarer machen | ca. `0-1` PRs | lokale Aktionsplaene, lesende Queue-/Run-Control-Anzeigen, kontrollierte Dry-Run-Pruefung, Queue-Vormerkung, Demo-Smoke und Demo-Checkliste sind vorbereitet; offen bleiben nur Review-Fixes oder ein spaeterer Ausfuehrungsadapter nach Freigabe |
+| Workbench nach v1 vollstaendig nutzbarer machen | ca. `0` Pflicht-PRs | lokale Aktionsplaene, lesende Queue-/Run-Control-Anzeigen, kontrollierte Dry-Run-Pruefung, Queue-Vormerkung, Demo-Smoke und Demo-Checkliste sind vorbereitet; offen bleiben nur Review-Fixes, optionale Packaging-/Startskript-Haertung oder ein spaeterer Ausfuehrungsadapter nach separater Freigabe |
 | Fachvalidierung und historische Vollgleichheit | ca. `10-18` PRs | weitere Legacy-Referenzen, zusaetzliche Alt-/Neu-Vergleichspfade, Mehrperioden-Replays, Abweichungsanalyse, Modellkorrekturen und Abschlussbericht |
 | Packaging und Bereitstellung | ca. `0` geplante PRs | lokale Startbarkeit, portable Ordnerstruktur, Startskripte/Launcher, reproduzierbarer Build, ZIP-/Staging-Grenzen, Installations-, Update- und Backup-Doku sind fuer v1 konsolidiert; offen nur Review-Fixes oder spaeter explizite Release-Automatisierung |
 | Integrations- und Abschlussreserve | ca. `1-3` PRs | Review-Fixes, CI- und Windows-Pfadhaertung, finale Doku-Konsolidierung und Meilensteinabschluss |
@@ -111,10 +111,13 @@ benutzbaren kontrollierten Demo-Simulation.
     anbinden. Erledigt: `GET /api/run-control/execution-result/{queue_id}`,
     `Run-Control-Ergebnisanzeige` / `run-control-execution-result`, weiterhin
     ohne Upload, UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
-14. PR 14: Demo-Smoke und Doku fuer den benutzbaren lokalen Ablauf als
-    naechster Schritt.
-15. Weitere PRs: optionale Haertung, Doku, Smoke-/E2E-Checks, Review-Fixes und
-    Grenzkorrekturen.
+14. PR 14: Demo-Smoke und Doku fuer den benutzbaren lokalen Ablauf. Erledigt:
+    `tests/test_workbench_demo_smoke.py` prueft Dry-Run, Queue-Vormerkung,
+    Aktionsplan, Ausfuehrungsflow-Vertrag, Ergebnisanzeige,
+    Kernblick-Bruecke, Carryover-Probe-Vertrag und Adapter-Resultat-Vertrag
+    ohne Simulation.
+15. Weitere PRs: optionale Haertung, Packaging-/Startskript-Update,
+    Review-Fixes und Grenzkorrekturen.
 
 ## API- und DTO-Grenzen
 
