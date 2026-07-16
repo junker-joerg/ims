@@ -51,8 +51,9 @@ Die spaetere Run-Steuerung und Gesamtplanung bis zum vollstaendigen Abschluss si
 Die PR-Roadmap bis zu einer konservativen Produktionsreife steht unter
 `docs/plans/production_readiness_pr_plan.md`. PR 50 waehlt als naechsten
 fachlichen Slice Vrvn04 / `search_history` unter
-`docs/plans/sixth_fachlicher_slice_test_plan.md`; die Testumsetzung folgt
-separat.
+`docs/plans/sixth_fachlicher_slice_test_plan.md`; die Testumsetzung ist in
+PR 51 unter `tests/test_sixth_fachlicher_vn_search_history_regression.py`
+erfolgt.
 
 Die lokale Demo-Checkliste fuer eine kurze Vorfuehrung steht unter `docs/migration/workbench_demo_checklist.md`. Sie benennt Startbefehle, UI-Reihenfolge, erwartete Demo-Signale und klare Grenzen: Queue-Metadaten duerfen nur in eine explizite SQLite-Datei vorgemerkt werden; Simulation, Ausfuehrungsadapter und fachlicher Gleichheitsnachweis bleiben ausgeschlossen.
 
@@ -133,6 +134,13 @@ Versicherer `11/12`, die Stichprobendiagnose und die Uebernahme in den
 VN-Schaden-/Settlement-Runner, ohne Simulation und ohne historischen
 Vollgleichheitsnachweis. Nach diesem PR-42-Schnitt bleiben fuer eine
 reviewbare und stabile benutzbare Demo-Simulation grob noch 5 bis 7 PRs.
+Der sechste fachliche Regressionstest ist unter
+`tests/test_sixth_fachlicher_vn_search_history_regression.py` umgesetzt und in
+`docs/migration/sixth_fachlicher_regressionstest.md` eingeordnet. Er prueft die
+VN-`search_history`-/Vrvn04-Entscheidung fuer Policyholder `21`, Versicherer
+`11/12`, die Historienauswahl aus Periode `4` und die Uebernahme in den
+VN-Schaden-/Settlement-Runner, ohne Simulation und ohne historischen
+Vollgleichheitsnachweis.
 Der Run-Control-Ausfuehrungsfreigabeplan ist unter
 `docs/plans/run_control_execution_release_plan.md` dokumentiert. Er beschreibt
 die Freigabekette von Dry-Run, Queue, Action-Plan, expliziter

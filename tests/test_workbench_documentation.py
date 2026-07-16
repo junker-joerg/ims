@@ -670,7 +670,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "docs/plans/production_readiness_pr_plan.md" in backlog
     assert "docs/plans/sixth_fachlicher_slice_test_plan.md" in backlog
     assert "PR 51: sechsten fachlichen VN-`search_history`-/Vrvn04-Slice" in backlog
-    assert "Zaehlschnitt nach PR 50: grob `18-24` reviewbare PRs" in backlog
+    assert "tests/test_sixth_fachlicher_vn_search_history_regression.py" in backlog
+    assert "docs/migration/sixth_fachlicher_regressionstest.md" in backlog
+    assert "PR 52: siebten fachlichen VN-`preference`-/Vrvn03-Slice" in backlog
+    assert "Zaehlschnitt nach PR 51: grob `17-23` reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

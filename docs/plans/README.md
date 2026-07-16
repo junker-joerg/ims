@@ -29,8 +29,11 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Produktionsreife mit validiertem Altdaten-Korpus, laufender UI und
   dokumentierten Abweichungsgrenzen.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
-  fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung folgt
-  separat in PR 51.
+  fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
+  separat in PR 51 umgesetzt.
+- `../migration/sixth_fachlicher_regressionstest.md`: PR-51-Einordnung des
+  sechsten fachlichen VN-Slices fuer `search_history` / Vrvn04 plus
+  Schaden-/Settlement-Runner-Grenze, weiterhin ohne Simulation.
 - `controlled_execution_adapter_plan.md`: PR-33 bis PR-35-Plan fuer Vertrag
   und lokalen schmalen Ausfuehrungsadapter nach drei fachlichen
   Regressionstests, weiterhin ohne API-/UI-Startpfad, Queue-Worker oder

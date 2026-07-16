@@ -573,14 +573,18 @@ Aktualisierte grobe Restplanung:
   umgesetzt;
 - PR 50 legt die Produktionsreife-Roadmap fest und waehlt den sechsten
   fachlichen Slice: Vrvn04 / `search_history` als Plan fuer PR 51;
-- vorgeschlagener naechster Schritt ist PR 51:
-  sechsten fachlichen VN-`search_history`-/Vrvn04-Regressionstest umsetzen;
+- sechster fachlicher VN-`search_history`-/Vrvn04-Slice ist als
+  Regressionstest umgesetzt und dokumentiert;
+- 0 PRs bis zum sechsten ausgefuehrten fachlichen Regressionstest;
+- vorgeschlagener naechster Schritt ist PR 52:
+  siebten fachlichen VN-`preference`-/Vrvn03-Slice planen und umsetzen oder bei
+  Bedarf zuerst schmal planen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `18-24` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `17-23` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 

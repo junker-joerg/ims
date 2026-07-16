@@ -42,6 +42,9 @@ FIFTH_FACHLICHER_REGRESSION_DOC = (
 SIXTH_FACHLICHER_SLICE_TEST_PLAN = (
     REPO_ROOT / "docs" / "plans" / "sixth_fachlicher_slice_test_plan.md"
 )
+SIXTH_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "sixth_fachlicher_regressionstest.md"
+)
 PRODUCTION_READINESS_PLAN = (
     REPO_ROOT / "docs" / "plans" / "production_readiness_pr_plan.md"
 )
@@ -206,12 +209,14 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 49 Packaging-/Startskript-Haertung fuer die lokale Auslieferung ist" in plan
     assert "PR 50 legt die Produktionsreife-Roadmap fest" in plan
     assert "Vrvn04 / `search_history` als Plan fuer PR 51" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 51" in plan
-    assert "sechsten fachlichen VN-`search_history`-/Vrvn04-Regressionstest umsetzen" in plan
+    assert "sechster fachlicher VN-`search_history`-/Vrvn04-Slice ist" in plan
+    assert "0 PRs bis zum sechsten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 52" in plan
+    assert "siebten fachlichen VN-`preference`-/Vrvn03-Slice planen" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "18-24" in plan
+    assert "17-23" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -242,10 +247,10 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "Phase B: Altdaten-Validierung verdichten" in plan
     assert "Phase C: Kontrollierte Ausfuehrung und UI" in plan
     assert "Phase D: Freigabehaertung" in plan
-    assert "18-24" in plan
+    assert "17-23" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
-    assert "schaltet keinen UI-Startpfad" in plan
+    assert "keinen UI-Startpfad frei" in plan
 
 
 def test_sixth_fachlicher_slice_plan_selects_vrvn04_search_history() -> None:
@@ -256,6 +261,7 @@ def test_sixth_fachlicher_slice_plan_selects_vrvn04_search_history() -> None:
     assert "Vrvn04" in plan
     assert "`search_history`" in plan
     assert "tests/test_sixth_fachlicher_vn_search_history_regression.py" in plan
+    assert "docs/migration/sixth_fachlicher_regressionstest.md" in plan
     assert "apply_vn_search_insurance_rule" in plan
     assert "apply_vn_insurance_rule_snapshots" in plan
     assert "run_vn_settlement_period_from_mapping" in plan
@@ -338,7 +344,8 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "IMS_WORKBENCH_HOST" in plan
     assert "PR 50 schreibt die Produktionsreife-Roadmap fest" in plan
     assert "Vrvn04 / `search_history` als Plan fuer" in plan
-    assert "Der vorgeschlagene naechste groessere Umsetzungsschritt ist PR 51" in plan
+    assert "PR 51 setzt diesen sechsten fachlichen" in plan
+    assert "groessere Umsetzungsschritt ist PR 52" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -614,6 +621,28 @@ def test_fifth_fachlicher_regression_doc_scopes_fifth_test() -> None:
     assert "noch 5 bis 7 PRs" in doc
 
 
+def test_sixth_fachlicher_regression_doc_scopes_sixth_test() -> None:
+    doc = SIXTH_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert SIXTH_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Sechster fachlicher Regressionstest" in doc
+    assert "tests/test_sixth_fachlicher_vn_search_history_regression.py" in doc
+    assert "Regelart | `search_history`" in doc
+    assert "Historischer Bezug | `IMS.E`, `act Vrvn04`" in doc
+    assert "`apply_vn_insurance_rule_snapshots`" in doc
+    assert "`run_vn_settlement_period_from_mapping`" in doc
+    assert "Policyholder | `21`" in doc
+    assert "Versicherer | `11` und `12`" in doc
+    assert "selected_history_periods = [4, 4]" in doc
+    assert "used_fallback = [False, False]" in doc
+    assert "damages = [9.0, 0.0]" in doc
+    assert "end_wealth_current = 87.0" in doc
+    assert "kein historischer Vollgleichheitsnachweis" in doc
+    assert "kein API-/UI-/Run-Control-Startpfad" in doc
+    assert "keine neue Fachregel" in doc
+    assert "Fachschnitt ist PR 52" in doc
+
+
 def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     plan = CONTROLLED_EXECUTION_ADAPTER_PLAN.read_text(encoding="utf-8")
 
@@ -875,6 +904,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "Produktionsreife" in plans_readme
     assert "sixth_fachlicher_slice_test_plan.md" in plans_readme
     assert "Vrvn04 / `search_history`" in plans_readme
+    assert "sixth_fachlicher_regressionstest.md" in plans_readme
+    assert "PR-51-Einordnung des" in plans_readme
     assert "controlled_execution_adapter_plan.md" in plans_readme
     assert "PR-33 bis PR-35-Plan" in plans_readme
     assert "schmalen Ausfuehrungsadapter" in plans_readme
@@ -914,17 +945,21 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/production_readiness_pr_plan.md" in readme
     assert "docs/plans/sixth_fachlicher_slice_test_plan.md" in readme
     assert "PR 50 waehlt als naechsten" in readme
+    assert "tests/test_sixth_fachlicher_vn_search_history_regression.py" in readme
+    assert "docs/migration/sixth_fachlicher_regressionstest.md" in readme
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/run_control_adapter_start_contract.md" in readme
     assert "docs/migration/run_control_execution_result_store.md" in readme
     assert "docs/migration/fourth_fachlicher_regressionstest.md" in readme
     assert "docs/migration/fifth_fachlicher_regressionstest.md" in readme
+    assert "docs/migration/sixth_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
     assert "tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py" in readme
     assert "tests/test_fifth_fachlicher_vn_sample_search_regression.py" in readme
+    assert "tests/test_sixth_fachlicher_vn_search_history_regression.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter_contract.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter.py" in readme
     assert "python_port/ims/api/run_control_adapter_result_contract.py" in readme
@@ -965,6 +1000,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "Periode `5` in den vorhandenen VN-State-Carryover" in readme
     assert "fuenfte fachliche Regressionstest" in readme
     assert "VN-`sample_search`-/Vrvn05-Entscheidung" in readme
+    assert "sechste fachliche Regressionstest" in readme
+    assert "VN-`search_history`-/Vrvn04-Entscheidung" in readme
+    assert "Historienauswahl aus Periode `4`" in readme
     assert "grob noch 5 bis 7 PRs" in readme
     assert "Run-Control-Ausfuehrungsfreigabeplan" in readme
     assert "keinen API-Startpfad, keinen UI-Startbutton" in readme

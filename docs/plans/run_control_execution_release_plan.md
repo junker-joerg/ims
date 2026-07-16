@@ -203,8 +203,10 @@ PR 49 haertet die lokale Auslieferungsgrenze:
 
 PR 50 schreibt die Produktionsreife-Roadmap fest und waehlt wieder einen
 schmalen fachlichen Validierungsslice: Vrvn04 / `search_history` als Plan fuer
-PR 51. Der vorgeschlagene naechste groessere Umsetzungsschritt ist PR 51:
-den sechsten fachlichen VN-`search_history`-/Vrvn04-Regressionstest umsetzen.
+PR 51. PR 51 setzt diesen sechsten fachlichen
+VN-`search_history`-/Vrvn04-Regressionstest um. Der vorgeschlagene naechste
+groessere Umsetzungsschritt ist PR 52: Vrvn03 / `preference` als siebten
+fachlichen Slice planen und umsetzen oder bei Bedarf zuerst schmal planen.
 
 ## Validierung dieses Planstands
 

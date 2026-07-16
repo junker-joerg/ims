@@ -7,7 +7,9 @@ umgesetzten VN-`best_info`-, VN-`sample_search`- und Carryover-Slices. Der
 naechste kleine Fachschnitt soll die VN-Suchversicherungsregel
 `search_history` / Vrvn04 ueber explizite Snapshots pruefen.
 
-Dieser PR plant den Test nur. Die Umsetzung des Tests folgt separat in PR 51.
+Dieser PR plant den Test nur. Die Umsetzung des Tests ist separat in PR 51
+unter `tests/test_sixth_fachlicher_vn_search_history_regression.py` erfolgt
+und in `docs/migration/sixth_fachlicher_regressionstest.md` dokumentiert.
 
 ## Ursprung und bestehende Bausteine
 

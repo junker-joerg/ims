@@ -36,7 +36,7 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 - PR 50: sechsten fachlichen Slice waehlen. Dieser Schnitt: Vrvn04 /
   `search_history` als expliziter VN-Regel-Snapshot-Regressionstest planen.
 - PR 51: sechsten fachlichen Regressionstest fuer Vrvn04 / `search_history`
-  umsetzen, inklusive Runner-Grenze zu Schaden/Settlement.
+  umsetzen, inklusive Runner-Grenze zu Schaden/Settlement (erledigt).
 - PR 52: siebten fachlichen Regressionstest fuer Vrvn03 / `preference`
   planen und umsetzen oder bei Bedarf zuerst splitten.
 - PR 53: Vrvn02 / `random` mit expliziten Draws und Seed-/Draw-Grenze als
@@ -84,13 +84,13 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Ab PR 50 bleiben grob `18-24` reviewbare PRs bis zu einer konservativen
+Ab PR 51 bleiben grob `17-23` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 50 bleibt klein: Er waehlt nur den sechsten fachlichen Slice und schreibt
-diese Roadmap fest. Er startet keine Simulation, schaltet keinen UI-Startpfad
-frei und behauptet keine historische Vollgleichheit.
+PR 52 bleibt klein: Er waehlt und/oder setzt den siebten fachlichen Slice fuer
+Vrvn03 / `preference` um. Auch dieser Schritt startet keine Simulation, schaltet
+keinen UI-Startpfad frei und behauptet keine historische Vollgleichheit.

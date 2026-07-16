@@ -369,9 +369,13 @@ Vorgeschlagener naechster Schritt nach PR 49:
 - PR 50: Produktionsreife-Roadmap und sechsten fachlichen Slice waehlen
   (dieser Schnitt: Vrvn04 / `search_history` als Plan fuer PR 51).
 - PR 51: sechsten fachlichen VN-`search_history`-/Vrvn04-Slice als
-  Regressionstest umsetzen und dokumentieren.
+  Regressionstest umsetzen und dokumentieren (dieser Schnitt:
+  `tests/test_sixth_fachlicher_vn_search_history_regression.py` und
+  `docs/migration/sixth_fachlicher_regressionstest.md`, erledigt).
+- PR 52: siebten fachlichen VN-`preference`-/Vrvn03-Slice planen und umsetzen
+  oder bei Bedarf zuerst in einen schmalen Plan-Schnitt trennen.
 
-Zaehlschnitt nach PR 50: grob `18-24` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 51: grob `17-23` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als
