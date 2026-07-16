@@ -6,7 +6,9 @@ import sys
 from pathlib import Path
 
 import pytest
+from starlette.testclient import TestClient
 
+from ims.api.app import create_app
 from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata_repository import build_seeded_metadata_repository
 from ims.api.run_control_execution_result_store import (
@@ -152,6 +154,54 @@ def test_run_control_execution_result_store_persists_validated_result_without_st
     assert queue_payload["entry"]["execution_performed"] is False
     assert RunControlExecutionResultRecord is not None
     assert RunControlExecutionResultStoreResult is not None
+
+
+def test_run_control_execution_result_endpoint_shows_persisted_result_readonly(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    _enqueue_validated(db_path)
+    result_path = _write_adapter_result(tmp_path)
+    persist_run_control_adapter_result(
+        "baseline-python-tests",
+        result_path,
+        db_path=db_path,
+        persisted_at="2026-07-15T00:00:00Z",
+        explicit_persistence_release=True,
+    )
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/execution-result/baseline-python-tests")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["mode"] == "run_control_execution_result_store_show"
+    assert payload["record"]["queue_id"] == "baseline-python-tests"
+    assert payload["record"]["summary_mode"] == "explicit_multi_period_execution_summary"
+    assert payload["record"]["adapter_execution_performed"] is True
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert payload["adapter_started"] is False
+    assert payload["simulation_performed"] is False
+    assert payload["historical_full_equality_claimed"] is False
+
+
+def test_run_control_execution_result_endpoint_reports_missing_result_without_writing(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    repository = build_seeded_metadata_repository(db_path)
+    app = create_app(frontend_dist=tmp_path, metadata_repository=repository)
+    client = TestClient(app)
+
+    response = client.get("/api/run-control/execution-result/missing-queue")
+
+    assert response.status_code == 404
+    payload = response.json()
+    assert payload["mode"] == "run_control_execution_result_store_show"
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert payload["adapter_started"] is False
+    assert payload["simulation_performed"] is False
+    assert "missing-queue" in payload["message"]
 
 
 def test_run_control_execution_result_store_requires_explicit_release(tmp_path) -> None:

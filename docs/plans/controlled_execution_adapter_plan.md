@@ -146,7 +146,10 @@ zurueck.
 - PR 46 zeigt den UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
   in der Workbench, weiterhin ohne UI-Startbutton, Queue-Worker,
   Adapterstart oder Simulation (erledigt).
-- PR 47+: danach Ergebnisanzeige und Demo-Smoke in getrennten PRs.
+- PR 47 bindet die read-only Ergebnisanzeige fuer persistierte
+  Adapterresultate an, weiterhin ohne Upload, UI-Startbutton, Queue-Worker,
+  Adapterstart oder Simulation (erledigt).
+- PR 48+: danach Demo-Smoke und optional Packaging in getrennten PRs.
 
 ## Validierung dieses Plan-/Vertragsstands
 

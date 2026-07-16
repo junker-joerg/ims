@@ -513,6 +513,10 @@ h2 {
   margin-bottom: 18px;
 }
 
+.run-control-execution-result-panel {
+  margin-bottom: 18px;
+}
+
 .run-control-core-bridge-panel {
   margin-bottom: 18px;
 }
@@ -979,6 +983,7 @@ code {
 .run-control-dry-run-result-grid,
 .run-control-action-plan-grid,
 .run-control-execution-flow-grid,
+.run-control-execution-result-grid,
 .run-control-core-bridge-grid,
 .adapter-result-contract-grid,
 .run-control-queue-enqueue-grid {
@@ -992,6 +997,7 @@ code {
 .run-control-dry-run-result-row,
 .run-control-action-plan-row,
 .run-control-execution-flow-row,
+.run-control-execution-result-row,
 .run-control-core-bridge-row,
 .adapter-result-contract-row,
 .run-control-queue-enqueue-row {
@@ -1006,6 +1012,7 @@ code {
 .run-control-dry-run-result-row span,
 .run-control-action-plan-row span,
 .run-control-execution-flow-row span,
+.run-control-execution-result-row span,
 .run-control-core-bridge-row span,
 .adapter-result-contract-row span,
 .run-control-queue-enqueue-row span {
@@ -1018,6 +1025,7 @@ code {
 .run-control-dry-run-result-row strong,
 .run-control-action-plan-row strong,
 .run-control-execution-flow-row strong,
+.run-control-execution-result-row strong,
 .run-control-core-bridge-row strong,
 .adapter-result-contract-row strong,
 .run-control-queue-enqueue-row strong {
@@ -1136,6 +1144,7 @@ code {
   .run-control-action-plan-grid,
   .run-control-execution-flow-grid,
   .run-control-execution-flow-steps,
+  .run-control-execution-result-grid,
   .run-control-core-bridge-grid,
   .adapter-result-contract-grid,
   .run-control-queue-enqueue-grid,

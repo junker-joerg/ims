@@ -55,6 +55,7 @@ Die Frontend-Quelltests pruefen, dass die neue Karte, der Startvertrag und
 `inspect_persisted_result` sichtbar sind. Der Workbench-Smoke prueft den
 read-only Startvertrag zusammen mit den bestehenden API-Grenzen.
 
-Nach PR 46 bleiben grob 1 bis 3 reviewbare PRs bis zu einer benutzbaren,
-kontrollierten Demo-Simulation: Ergebnisanzeige, Demo-Smoke/Doku und optional
-Packaging-/Startskript-Anpassungen.
+Nach PR 47 ist die read-only Ergebnisanzeige umgesetzt. Es bleiben grob
+0 bis 2 reviewbare PRs bis zu einer benutzbaren, kontrollierten
+Demo-Simulation: Demo-Smoke/Doku und optional Packaging-/Startskript-
+Anpassungen.

@@ -336,6 +336,42 @@ type RunControlAdapterStartContract = {
   historical_full_equality_claimed: boolean;
 };
 
+type RunControlExecutionResultRecord = {
+  queue_id: string;
+  run_id: string;
+  scenario_id: string;
+  adapter_mode: string;
+  fixture_kind: string;
+  fixture_path: string;
+  summary_mode: string;
+  result_status: string;
+  persisted_at: string;
+  result_payload: Record<string, unknown>;
+  summary_payload: Record<string, unknown>;
+  validation_payload: Record<string, unknown>;
+  adapter_execution_performed: boolean;
+  simulation_performed: boolean;
+  automatic_historical_rule_selection_performed: boolean;
+  historical_full_equality_claimed: boolean;
+};
+
+type RunControlExecutionResult = {
+  status: "ok" | "error";
+  mode: "run_control_execution_result_store_show";
+  schema_version: string;
+  db_path?: string;
+  metadata_source?: MetadataSourceStatus;
+  record?: RunControlExecutionResultRecord;
+  message?: string;
+  issues?: string[];
+  writes_performed: boolean;
+  execution_performed: boolean;
+  adapter_started: boolean;
+  simulation_performed: boolean;
+  automatic_historical_rule_selection_performed?: boolean;
+  historical_full_equality_claimed?: boolean;
+};
+
 type RunControlDryRunResult = {
   status: "ok" | "error";
   mode: "run_control_dry_run";
@@ -570,6 +606,9 @@ function App() {
   const [runControlActionPlan, setRunControlActionPlan] = useState<RunControlQueueActionPlan | null>(null);
   const [runControlActionPlanState, setRunControlActionPlanState] = useState<DetailState>("idle");
   const [runControlActionPlanError, setRunControlActionPlanError] = useState<string | null>(null);
+  const [runControlExecutionResult, setRunControlExecutionResult] = useState<RunControlExecutionResult | null>(null);
+  const [runControlExecutionResultState, setRunControlExecutionResultState] = useState<DetailState>("idle");
+  const [runControlExecutionResultError, setRunControlExecutionResultError] = useState<string | null>(null);
   const [runControlCoreBridge, setRunControlCoreBridge] = useState<RunControlCoreDiagnosticsBridge | null>(null);
   const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
   const [carryoverProbeContract, setCarryoverProbeContract] = useState<CoreValidationCarryoverProbeContract | null>(
@@ -602,6 +641,51 @@ function App() {
   const [queueQuery, setQueueQuery] = useState("");
   const [queueStatusFilter, setQueueStatusFilter] = useState(ALL_QUEUE_FILTERS);
   const [queueScenarioFilter, setQueueScenarioFilter] = useState(ALL_QUEUE_FILTERS);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadExecutionResult() {
+      if (!selectedQueueId) {
+        setRunControlExecutionResult(null);
+        setRunControlExecutionResultState("idle");
+        setRunControlExecutionResultError(null);
+        return;
+      }
+      setRunControlExecutionResultState("loading");
+      setRunControlExecutionResultError(null);
+      try {
+        const response = await fetch(`/api/run-control/execution-result/${encodeURIComponent(selectedQueueId)}`);
+        const payload = (await response.json()) as RunControlExecutionResult;
+        if (active) {
+          if (response.status === 404) {
+            setRunControlExecutionResult(null);
+            setRunControlExecutionResultError("kein persistiertes Ergebnis");
+            setRunControlExecutionResultState("ready");
+            return;
+          }
+          if (!response.ok) {
+            throw new Error(payload.message ?? "Run-Control-Ergebnis nicht erreichbar");
+          }
+          setRunControlExecutionResult(payload);
+          setRunControlExecutionResultState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setRunControlExecutionResult(null);
+          setRunControlExecutionResultError(
+            error instanceof Error ? error.message : "Run-Control-Ergebnis nicht erreichbar"
+          );
+          setRunControlExecutionResultState("error");
+        }
+      }
+    }
+
+    loadExecutionResult();
+    return () => {
+      active = false;
+    };
+  }, [selectedQueueId]);
 
   useEffect(() => {
     let active = true;
@@ -1322,6 +1406,39 @@ function App() {
     ["Queue-Worker", runControlAdapterStartContract?.queue_worker_enabled ? "aktiv" : "gesperrt"],
     ["Persistenz", selectedQueueEntry?.status === "result_persisted" ? "Ergebnis liegt vor" : "offen"],
     ["Naechster Schritt", selectedQueueAction?.next_action ?? runControlActionPlanStatus]
+  ];
+  const executionResultRecord = runControlExecutionResult?.record;
+  const runControlExecutionResultStatus =
+    runControlExecutionResultState === "error"
+      ? runControlExecutionResultError ?? "nicht erreichbar"
+      : runControlExecutionResultState === "loading"
+        ? "laedt"
+        : executionResultRecord
+          ? "persistiert"
+          : runControlExecutionResultError ?? "kein persistiertes Ergebnis";
+  const runControlExecutionResultRows = [
+    ["Status", runControlExecutionResultStatus],
+    ["Queue", executionResultRecord?.queue_id ?? selectedQueueId ?? "-"],
+    ["Run", executionResultRecord?.run_id ?? selectedQueueEntry?.request.run_id ?? "-"],
+    ["Szenario", executionResultRecord?.scenario_id ?? selectedQueueEntry?.request.scenario_id ?? "-"],
+    ["Ergebnis", executionResultRecord?.result_status ?? "-"],
+    ["Summary", executionResultRecord?.summary_mode ?? "-"],
+    ["Persistiert", executionResultRecord?.persisted_at ?? "-"],
+    ["Adaptermodus", executionResultRecord?.adapter_mode ?? "-"],
+    [
+      "Adapterausfuehrung",
+      executionResultRecord?.adapter_execution_performed || runControlExecutionResult?.adapter_started ? "dokumentiert" : "gesperrt"
+    ],
+    ["Simulation", executionResultRecord?.simulation_performed || runControlExecutionResult?.simulation_performed ? "aktiv" : "gesperrt"],
+    [
+      "Historische Gleichheit",
+      executionResultRecord?.historical_full_equality_claimed ||
+      runControlExecutionResult?.historical_full_equality_claimed
+        ? "behauptet"
+        : "nicht behauptet"
+    ],
+    ["Schreibpfade", runControlExecutionResult?.writes_performed ? "aktiv" : "gesperrt"],
+    ["Ausfuehrung", runControlExecutionResult?.execution_performed ? "aktiv" : "gesperrt"]
   ];
   const selectedBridgeAction =
     runControlCoreBridge?.actions.find((action) => action.queue_id === selectedQueueId) ??
@@ -2165,6 +2282,25 @@ function App() {
           <div className="run-control-execution-flow-grid" aria-label="Run-Control-Startvertrag-Grenzen">
             {runControlExecutionFlowRows.map(([label, value]) => (
               <div className="run-control-execution-flow-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          className="panel run-control-execution-result-panel"
+          aria-label="Run-Control-Ergebnisanzeige"
+          data-testid="run-control-execution-result"
+        >
+          <div className="panel-heading">
+            <Database size={20} aria-hidden="true" />
+            <h2>Run-Control-Ergebnisanzeige</h2>
+          </div>
+          <div className="run-control-execution-result-grid" aria-label="Persistiertes Run-Control-Ergebnis">
+            {runControlExecutionResultRows.map(([label, value]) => (
+              <div className="run-control-execution-result-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
               </div>

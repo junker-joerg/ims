@@ -194,10 +194,13 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung ist lokal" in plan
     assert "docs/migration/run_control_execution_flow_ui.md" in plan
     assert "Run-Control-Ausfuehrungsflow in der Workbench ist umgesetzt" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 47" in plan
-    assert "Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden" in plan
+    assert "docs/migration/run_control_execution_result_view.md" in plan
+    assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate ist umgesetzt" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 48" in plan
+    assert "Demo-Smoke und Doku fuer den benutzbaren Ablauf" in plan
+    assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
-    assert "grob 1 bis 3 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
+    assert "grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren kontrollierten" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -275,8 +278,10 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "result_persisted" in plan
     assert "inspect_persisted_result" in plan
     assert "Run-Control-Ausfuehrungsflow in der Workbench anzeigen" in plan
+    assert "GET /api/run-control/execution-result/{queue_id}" in plan
+    assert "Run-Control-Ergebnisanzeige" in plan
     assert "PR 48: Demo-Smoke und Doku" in plan
-    assert "grob 1 bis 3 reviewbare PRs" in plan
+    assert "grob 0 bis 2 reviewbare PRs" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -610,7 +615,8 @@ def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     assert "PR 45 setzt die lokale Queue-/Status-/Resultat-Persistenz" in plan
     assert "python_port/ims/api/run_control_execution_result_store.py" in plan
     assert "PR 46 zeigt den UI-Flow" in plan
-    assert "PR 47+: danach Ergebnisanzeige" in plan
+    assert "PR 47 bindet die read-only Ergebnisanzeige" in plan
+    assert "PR 48+: danach Demo-Smoke" in plan
 
 
 def test_run_control_adapter_result_plan_keeps_result_readonly() -> None:
@@ -742,7 +748,8 @@ def test_run_control_adapter_result_view_plan_scopes_next_step() -> None:
     assert "PR 45: danach Queue-/Status-/Resultat-Persistenz" in plan
     assert "python_port/ims/api/run_control_execution_result_store.py" in plan
     assert "PR 46: danach UI-Flow" in plan
-    assert "PR 47+: danach Ergebnisanzeige" in plan
+    assert "PR 47: danach Ergebnisanzeige" in plan
+    assert "PR 48+: danach Demo-Smoke" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -903,7 +910,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "result_persisted" in readme
     assert "grob noch 2 bis 4 reviewbare PRs" in readme
     assert "Run-Control-Ausfuehrungsflow" in readme
-    assert "grob noch 1 bis 3 reviewbare PRs" in readme
+    assert "Run-Control-Ergebnisanzeige" in readme
+    assert "grob noch 0 bis 2 reviewbare PRs" in readme
     assert "kontrollierter Ausfuehrungsadapter-Vertrag" in readme
     assert "bereits lokal erzeugtes Adapterergebnis als read-only" in readme
     assert "vorab erzeugtes `controlled_execution_adapter`-JSON" in readme

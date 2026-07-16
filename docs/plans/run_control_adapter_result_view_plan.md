@@ -61,7 +61,10 @@ PR 38 soll eine read-only Anzeigegrenze planen:
 - PR 46: danach UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
   anzeigen, weiterhin ohne UI-Startbutton, Queue-Worker, Adapterstart oder
   Simulation (erledigt).
-- PR 47+: danach Ergebnisanzeige und Demo-Smoke in getrennten Schritten
+- PR 47: danach Ergebnisanzeige fuer persistierte Adapterresultate anbinden,
+  weiterhin ohne Upload, UI-Startbutton, Queue-Worker, Adapterstart oder
+  Simulation (erledigt).
+- PR 48+: danach Demo-Smoke und optional Packaging in getrennten Schritten
   vorbereiten.
 
 ## Grenzen

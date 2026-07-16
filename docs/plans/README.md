@@ -57,3 +57,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `../migration/run_control_execution_flow_ui.md`: PR-46-UI-Flow
   `Preflight -> explizite Freigabe -> Ausfuehren`, weiterhin ohne
   UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
+- `../migration/run_control_execution_result_view.md`: PR-47-read-only
+  Ergebnisanzeige fuer persistierte Run-Control-Adapterresultate, weiterhin
+  ohne Upload, UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.

@@ -19,6 +19,7 @@ from ims.api.core_validation_carryover_probe_contract import (
 )
 from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
+from ims.api.run_control_execution_result_store import get_run_control_execution_result
 from ims.api.run_control_preflight import preflight_run_control_from_repository
 from ims.api.run_control_adapter_result_api_contract import run_control_adapter_result_api_contract_payload
 from ims.api.run_control_adapter_start_contract import run_control_adapter_start_contract_payload
@@ -152,6 +153,24 @@ def _run_control_queue_action_plan_unavailable_payload(
     }
 
 
+def _run_control_execution_result_error_payload(
+    metadata_source: dict[str, object],
+    message: str,
+) -> dict[str, object]:
+    return {
+        "status": "error",
+        "mode": "run_control_execution_result_store_show",
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "metadata_source": dict(metadata_source),
+        "message": message,
+        "issues": [message],
+        "writes_performed": False,
+        "execution_performed": False,
+        "adapter_started": False,
+        "simulation_performed": False,
+    }
+
+
 def create_app(
     frontend_dist: Path | None = None,
     metadata_repository: MetadataRepositoryReader | None = None,
@@ -242,6 +261,30 @@ def create_app(
     def run_control_core_diagnostics_bridge_response(request: Request) -> JSONResponse:
         queue_id = request.query_params.get("queue_id")
         return JSONResponse(run_control_core_diagnostics_bridge_payload(queue_id if queue_id else None))
+
+    def execution_result_response(queue_id: str) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            return JSONResponse(
+                _run_control_execution_result_error_payload(
+                    metadata_source,
+                    "run control execution result requires an explicit SQLite metadata source",
+                ),
+                status_code=404,
+            )
+        try:
+            result = get_run_control_execution_result(
+                queue_id,
+                db_path=Path(str(metadata_source["path"])),
+            ).to_dict()
+        except MetadataImportError as exc:
+            message = str(exc)
+            if "no such table: run_control_execution_results" in message:
+                message = f"run control execution result not found: {queue_id}"
+            return JSONResponse(
+                _run_control_execution_result_error_payload(metadata_source, message),
+                status_code=404,
+            )
+        return JSONResponse(result)
 
     def preflight_payload(run_id: str) -> dict[str, object]:
         return preflight_run_control_from_repository(run_id, repository).to_dict()
@@ -367,6 +410,10 @@ def create_app(
         def run_control_core_diagnostics_bridge(queue_id: str | None = None) -> dict[str, object]:
             return run_control_core_diagnostics_bridge_payload(queue_id)
 
+        @app.get("/api/run-control/execution-result/{queue_id}", response_model=None)
+        def run_control_execution_result(queue_id: str) -> dict[str, object] | JSONResponse:
+            return execution_result_response(queue_id)
+
         @app.get("/api/run-control/request-contract")
         def run_control_request_contract() -> dict[str, object]:
             return run_control_request_contract_payload()
@@ -432,6 +479,10 @@ def create_app(
         Route("/api/run-control/queue", queue_enqueue_response, methods=["POST"]),
         Route("/api/run-control/queue/action-plan", queue_action_plan_response),
         Route("/api/run-control/core-diagnostics-bridge", run_control_core_diagnostics_bridge_response),
+        Route(
+            "/api/run-control/execution-result/{queue_id}",
+            lambda request: execution_result_response(request.path_params["queue_id"]),
+        ),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route("/api/run-control/dry-run-contract", lambda request: JSONResponse(run_control_dry_run_contract_payload())),
         Route(

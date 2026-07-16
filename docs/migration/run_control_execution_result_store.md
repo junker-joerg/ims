@@ -79,7 +79,8 @@ Der Persistenzpfad verlangt:
 ## Folgeschritt
 
 PR 46 zeigt den UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren`
-inzwischen als reine Statussicht in der Workbench. Nach PR 46 bleiben grob
-1 bis 3 reviewbare PRs bis zu einer benutzbaren kontrollierten
+inzwischen als reine Statussicht in der Workbench. PR 47 bindet die
+read-only Ergebnisanzeige fuer persistierte Adapterresultate an. Nach PR 47
+bleiben grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren kontrollierten
 Demo-Simulation. Diese Schaetzung ist kein historischer
 Vollgleichheitsnachweis.

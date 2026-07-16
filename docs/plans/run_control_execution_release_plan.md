@@ -113,11 +113,13 @@ verboten:
 - PR 46: UI-Flow `Preflight -> explizite Freigabe -> Ausfuehren` anzeigen,
   weiterhin ohne UI-Startbutton, Queue-Worker oder Adapterstart (dieser
   Schnitt).
-- PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden.
+- PR 47: Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden, weiterhin
+  ohne Upload, UI-Startbutton, Queue-Worker oder Adapterstart (dieser
+  Schnitt).
 - PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf.
 - PR 49 optional: Packaging-/Startskript-Update fuer lokale Auslieferung.
 
-Damit bleiben nach PR 46 grob 1 bis 3 reviewbare PRs bis zu einer benutzbaren
+Damit bleiben nach PR 47 grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren
 kontrollierten Demo-Simulation. Diese Zahl ist kein historischer
 Vollgleichheitsnachweis.
 
@@ -154,6 +156,24 @@ Statussicht:
 Der vorgeschlagene naechste groessere Schritt ist PR 47:
 Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden, weiterhin ohne
 historische Vollgleichheitsbehauptung.
+
+## Umsetzung in PR 47
+
+PR 47 bindet die Ergebnisanzeige fuer persistierte Adapterresultate rein
+lesend an:
+
+- `GET /api/run-control/execution-result/{queue_id}` liest nur vorhandene
+  Datensaetze aus `run_control_execution_results`;
+- fehlende Ergebnisse liefern eine stabile read-only Fehlerform ohne Schreib-
+  oder Startwirkung;
+- die neue Workbench-Karte `Run-Control-Ergebnisanzeige` zeigt Queue, Run,
+  Szenario, Resultatstatus, Summary-Modus, Persistenzzeitpunkt und Grenzflags;
+- Upload, UI-Startbutton, Queue-Worker, Adapterstart, Simulation und
+  historische Vollgleichheitsbehauptung bleiben gesperrt.
+
+Der vorgeschlagene naechste groessere Schritt ist PR 48:
+Demo-Smoke und Doku fuer den benutzbaren Ablauf, weiterhin ohne historische
+Vollgleichheitsbehauptung.
 
 ## Validierung dieses Planstands
 

@@ -500,6 +500,13 @@ Simulation.
     `docs/migration/run_control_execution_flow_ui.md` zeigen
     `Preflight -> explizite Freigabe -> Ausfuehren` nur als Statussicht,
     weiterhin ohne UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
+39. Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden.
+    Dieser Schnitt ist umgesetzt: `python_port/ims/api/app.py`,
+    `frontend/src/main.tsx`, `frontend/src/styles.css`,
+    `tests/test_api_run_control_execution_result_store.py` und
+    `docs/migration/run_control_execution_result_view.md` lesen vorhandene
+    `run_control_execution_results` nur per Queue-ID, weiterhin ohne Upload,
+    UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
 
 ## Aktualisierte PR-Restplanung
 
@@ -560,10 +567,11 @@ Aktualisierte grobe Restplanung:
 - Queue-/Status-/Resultat-Persistenz fuer freigegebene Ausfuehrung ist lokal
   vorbereitet;
 - Run-Control-Ausfuehrungsflow in der Workbench ist umgesetzt;
-- vorgeschlagener naechster Schritt ist PR 47:
-  Ergebnisanzeige fuer freigegebene Adapterlaeufe anbinden,
+- Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate ist umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 48:
+  Demo-Smoke und Doku fuer den benutzbaren Ablauf,
   weiterhin ohne historische Vollgleichheitsbehauptung;
-- danach grob 1 bis 3 reviewbare PRs bis zu einer benutzbaren kontrollierten
+- danach grob 0 bis 2 reviewbare PRs bis zu einer benutzbaren kontrollierten
   Demo-Simulation;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

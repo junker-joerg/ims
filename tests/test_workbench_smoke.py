@@ -49,6 +49,9 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     )
     run_control_queue_after_enqueue = client.get("/api/run-control/queue")
     run_control_queue_action_plan = client.get("/api/run-control/queue/action-plan")
+    run_control_execution_result_missing = client.get(
+        "/api/run-control/execution-result/baseline-python-tests"
+    )
     missing_queue_entry = client.get("/api/run-control/queue/missing-queue-entry")
     missing = client.get("/api/scenarios/missing-scenario")
 
@@ -122,6 +125,12 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert run_control_queue_action_plan.json()["actions"][0]["execution_performed"] is False
     assert run_control_queue_action_plan.json()["writes_performed"] is False
     assert run_control_queue_action_plan.json()["execution_performed"] is False
+    assert run_control_execution_result_missing.status_code == 404
+    assert run_control_execution_result_missing.json()["mode"] == "run_control_execution_result_store_show"
+    assert run_control_execution_result_missing.json()["writes_performed"] is False
+    assert run_control_execution_result_missing.json()["execution_performed"] is False
+    assert run_control_execution_result_missing.json()["adapter_started"] is False
+    assert run_control_execution_result_missing.json()["simulation_performed"] is False
     assert missing_queue_entry.status_code == 404
     assert missing_queue_entry.json()["error"]["resource"] == "run_control_queue"
 
@@ -244,12 +253,14 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Run-Control-Queue-Detail" in source
     assert "Run-Control-Dry-Run-Vertrag" in source
     assert "Run-Control-Ausfuehrungsflow" in source
+    assert "Run-Control-Ergebnisanzeige" in source
     assert "Run-Control-Kernblick-Bruecke" in source
     assert "Adapter-Resultat-Vertrag" in source
     assert 'data-testid="run-control-demo-dry-run-button"' in source
     assert 'data-testid="run-control-demo-queue-button"' in source
     assert 'data-testid="run-control-demo-action-plan"' in source
     assert 'data-testid="run-control-execution-flow"' in source
+    assert 'data-testid="run-control-execution-result"' in source
     assert 'data-testid="run-control-core-bridge"' in source
     assert 'data-testid="carryover-probe-contract"' in source
     assert 'data-testid="adapter-result-contract"' in source
@@ -260,6 +271,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/core-validation/carryover-probe-contract" in source
     assert "/api/run-control/adapter-result-contract" in source
     assert "/api/run-control/adapter-start-contract" in source
+    assert "/api/run-control/execution-result/${encodeURIComponent(selectedQueueId)}" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/action-plan" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source
@@ -270,6 +282,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "Queue vormerken" in source
     assert "Preflight -> explizite Freigabe -> Ausfuehren" in source
     assert "inspect_persisted_result" in source
+    assert "kein persistiertes Ergebnis" in source
     assert "Import aktuell nur ueber Python-Adapter" in source
     assert "Preview lokal per CLI ohne Schreiben" in source
     assert "Snapshot lokal per CLI ohne Browser-Export" in source
