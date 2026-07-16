@@ -51,6 +51,9 @@ SEVENTH_FACHLICHER_REGRESSION_DOC = (
 EIGHTH_FACHLICHER_REGRESSION_DOC = (
     REPO_ROOT / "docs" / "migration" / "eighth_fachlicher_regressionstest.md"
 )
+NINTH_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "ninth_fachlicher_regressionstest.md"
+)
 PRODUCTION_READINESS_PLAN = (
     REPO_ROOT / "docs" / "plans" / "production_readiness_pr_plan.md"
 )
@@ -221,12 +224,14 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "0 PRs bis zum siebten ausgefuehrten fachlichen Regressionstest" in plan
     assert "achter fachlicher VN-`random`-/Vrvn02-Slice ist" in plan
     assert "0 PRs bis zum achten ausgefuehrten fachlichen Regressionstest" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 54" in plan
-    assert "VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03`" in plan
+    assert "neunter fachlicher VN-Schaden-/Settlement-Breitenslice" in plan
+    assert "0 PRs bis zum neunten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 55" in plan
+    assert "VU-Regelbreite ergaenzen" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "15-21" in plan
+    assert "14-20" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -257,7 +262,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "Phase B: Altdaten-Validierung verdichten" in plan
     assert "Phase C: Kontrollierte Ausfuehrung und UI" in plan
     assert "Phase D: Freigabehaertung" in plan
-    assert "15-21" in plan
+    assert "14-20" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "keinen UI-Startpfad frei" in plan
@@ -363,6 +368,9 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "PR 53" in plan and "ist erledigt" in plan
     assert "PR 54" in plan
     assert "VN-Schaden-/Settlement-Pfad" in plan
+    assert "PR 54 ist" in plan and "erledigt" in plan
+    assert "PR 55" in plan
+    assert "expliziter Draw-/Carryover-Grenze" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -706,6 +714,30 @@ def test_eighth_fachlicher_regression_doc_scopes_eighth_test() -> None:
     assert "Fachschnitt ist PR 54" in doc
 
 
+def test_ninth_fachlicher_regression_doc_scopes_ninth_test() -> None:
+    doc = NINTH_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert NINTH_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Neunter fachlicher Regressionstest" in doc
+    assert "tests/test_ninth_fachlicher_vn_damage_settlement_breadth.py" in doc
+    assert "Regelarten | `compulsory`, `random`, `preference`" in doc
+    assert "Historischer Bezug | `IMS.E`, `act Vrvn01` bis `act Vrvn03`" in doc
+    assert "`run_vn_settlement_period_from_mapping`" in doc
+    assert "Policyholder | `21`, `22`, `23`" in doc
+    assert "Versicherer | `11` und `12`" in doc
+    assert "rule_kind = [COMPULSORY, RANDOM, PREFERENCE]" in doc
+    assert "[[12, 11], [12, None], [12, None]]" in doc
+    assert "total_damage_settlement_applications = 3" in doc
+    assert "damages = [9.0, 16.0]" in doc
+    assert "end_wealth_sector_current = [107.0, 59.0]" in doc
+    assert "reserves_current = [25.0, 60.0]" in doc
+    assert "claims_sum_current = [27.0, 0.0]" in doc
+    assert "kein historischer Vollgleichheitsnachweis" in doc
+    assert "kein API-/UI-/Run-Control-Startpfad" in doc
+    assert "keine neue Fachregel" in doc
+    assert "Fachschnitt" in doc and "PR 55" in doc
+
+
 def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:
     plan = CONTROLLED_EXECUTION_ADAPTER_PLAN.read_text(encoding="utf-8")
 
@@ -973,6 +1005,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "PR-52-Einordnung des" in plans_readme
     assert "eighth_fachlicher_regressionstest.md" in plans_readme
     assert "PR-53-Einordnung des" in plans_readme
+    assert "ninth_fachlicher_regressionstest.md" in plans_readme
+    assert "PR-54-Einordnung des" in plans_readme
     assert "controlled_execution_adapter_plan.md" in plans_readme
     assert "PR-33 bis PR-35-Plan" in plans_readme
     assert "schmalen Ausfuehrungsadapter" in plans_readme
@@ -1018,6 +1052,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/migration/seventh_fachlicher_regressionstest.md" in readme
     assert "tests/test_eighth_fachlicher_vn_random_regression.py" in readme
     assert "docs/migration/eighth_fachlicher_regressionstest.md" in readme
+    assert "tests/test_ninth_fachlicher_vn_damage_settlement_breadth.py" in readme
+    assert "docs/migration/ninth_fachlicher_regressionstest.md" in readme
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/run_control_adapter_start_contract.md" in readme
@@ -1027,6 +1063,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/migration/sixth_fachlicher_regressionstest.md" in readme
     assert "docs/migration/seventh_fachlicher_regressionstest.md" in readme
     assert "docs/migration/eighth_fachlicher_regressionstest.md" in readme
+    assert "docs/migration/ninth_fachlicher_regressionstest.md" in readme
     assert "tests/test_first_fachlicher_vn_carryover_regression.py" in readme
     assert "tests/test_second_fachlicher_vn_rule_snapshot_regression.py" in readme
     assert "tests/test_third_fachlicher_vu_carryover_regression.py" in readme
@@ -1035,6 +1072,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "tests/test_sixth_fachlicher_vn_search_history_regression.py" in readme
     assert "tests/test_seventh_fachlicher_vn_preference_regression.py" in readme
     assert "tests/test_eighth_fachlicher_vn_random_regression.py" in readme
+    assert "tests/test_ninth_fachlicher_vn_damage_settlement_breadth.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter_contract.py" in readme
     assert "python_port/ims/api/controlled_execution_adapter.py" in readme
     assert "python_port/ims/api/run_control_adapter_result_contract.py" in readme
@@ -1084,6 +1122,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "achte fachliche Regressionstest" in readme
     assert "VN-`random`-/Vrvn02-Entscheidung" in readme
     assert "explizite Status- und Versicherer-Draws" in readme
+    assert "neunte fachliche Regressionstest" in readme
+    assert "VN-Schaden-/Settlement-Pfad" in readme
+    assert "kumulierten Versichererfortschreibungen" in readme
     assert "grob noch 5 bis 7 PRs" in readme
     assert "Run-Control-Ausfuehrungsfreigabeplan" in readme
     assert "keinen API-Startpfad, keinen UI-Startbutton" in readme

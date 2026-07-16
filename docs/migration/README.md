@@ -74,6 +74,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `sixth_fachlicher_regressionstest.md`: sechster schmaler fachlicher Test fuer VN-`search_history` / Vrvn04 plus Schaden-/Settlement-Runner-Grenze
 - `seventh_fachlicher_regressionstest.md`: siebter schmaler fachlicher Test fuer VN-`preference` / Vrvn03 plus Schaden-/Settlement-Runner-Grenze
 - `eighth_fachlicher_regressionstest.md`: achter schmaler fachlicher Test fuer VN-`random` / Vrvn02 plus explizite Draw- und Schaden-/Settlement-Runner-Grenze
+- `ninth_fachlicher_regressionstest.md`: neunter fachlicher Test fuer breitere VN-Schaden-/Settlement-Kopplung aus `Vrvn01` bis `Vrvn03`
 - `run_control_adapter_start_contract.md`: hart gegateter read-only Startvertrag fuer einen spaeteren Run-Control-Adapterstart, weiterhin ohne POST-Start, UI-Button, Queue-Worker oder Simulation
 - `run_control_execution_result_store.md`: kontrollierte lokale Persistenzgrenze fuer vorab validierte Adapter-Resultate, Queue-Status `result_persisted` und weiterhin ohne Adapterstart oder Simulation
 - `run_control_execution_flow_ui.md`: rein lesende Workbench-Karte fuer `Preflight -> explizite Freigabe -> Ausfuehren`, weiterhin ohne UI-Startbutton, Queue-Worker, Adapterstart oder Simulation

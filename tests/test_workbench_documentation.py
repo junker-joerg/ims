@@ -679,7 +679,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "tests/test_eighth_fachlicher_vn_random_regression.py" in backlog
     assert "docs/migration/eighth_fachlicher_regressionstest.md" in backlog
     assert "PR 54: VN-Schaden-/Settlement-Pfad" in backlog
-    assert "Zaehlschnitt nach PR 53: grob `15-21` reviewbare PRs" in backlog
+    assert "tests/test_ninth_fachlicher_vn_damage_settlement_breadth.py" in backlog
+    assert "docs/migration/ninth_fachlicher_regressionstest.md" in backlog
+    assert "PR 55: VU-Regelbreite" in backlog
+    assert "Zaehlschnitt nach PR 54: grob `14-20` reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

@@ -40,6 +40,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `../migration/eighth_fachlicher_regressionstest.md`: PR-53-Einordnung des
   achten fachlichen VN-Slices fuer `random` / Vrvn02 plus explizite Draw- und
   Schaden-/Settlement-Runner-Grenze, weiterhin ohne Simulation.
+- `../migration/ninth_fachlicher_regressionstest.md`: PR-54-Einordnung des
+  breiteren VN-Schaden-/Settlement-Slices fuer `Vrvn01` bis `Vrvn03`,
+  weiterhin ohne Simulation.
 - `controlled_execution_adapter_plan.md`: PR-33 bis PR-35-Plan fuer Vertrag
   und lokalen schmalen Ausfuehrungsadapter nach drei fachlichen
   Regressionstests, weiterhin ohne API-/UI-Startpfad, Queue-Worker oder

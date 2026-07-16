@@ -380,9 +380,13 @@ Vorgeschlagener naechster Schritt nach PR 49:
   `tests/test_eighth_fachlicher_vn_random_regression.py` und
   `docs/migration/eighth_fachlicher_regressionstest.md`, erledigt).
 - PR 54: VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03` breiter gegen
-  vorhandene explizite Fixtures pruefen.
+  vorhandene explizite Fixtures pruefen (dieser Schnitt:
+  `tests/test_ninth_fachlicher_vn_damage_settlement_breadth.py` und
+  `docs/migration/ninth_fachlicher_regressionstest.md`, erledigt).
+- PR 55: VU-Regelbreite ergaenzen, vorzugsweise ein expliziter VU-Random- oder
+  VU-Markup-Slice mit Draw-/Carryover-Grenze.
 
-Zaehlschnitt nach PR 53: grob `15-21` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 54: grob `14-20` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

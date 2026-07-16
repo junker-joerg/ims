@@ -155,6 +155,13 @@ die VN-`random`-/Vrvn02-Entscheidung fuer Policyholder `21`, Versicherer
 `11/12`, explizite Status- und Versicherer-Draws sowie die Uebernahme in den
 VN-Schaden-/Settlement-Runner, ohne Simulation, ohne historische
 RNG-Gleichheitsbehauptung und ohne historischen Vollgleichheitsnachweis.
+Der neunte fachliche Regressionstest ist unter
+`tests/test_ninth_fachlicher_vn_damage_settlement_breadth.py` umgesetzt und in
+`docs/migration/ninth_fachlicher_regressionstest.md` eingeordnet. Er prueft den
+VN-Schaden-/Settlement-Pfad fuer explizite Entscheidungen aus `Vrvn01` bis
+`Vrvn03` mit drei Policyholdern, kumulierten Versichererfortschreibungen und
+Sektorvermoegen, ohne Simulation und ohne historischen
+Vollgleichheitsnachweis.
 Der Run-Control-Ausfuehrungsfreigabeplan ist unter
 `docs/plans/run_control_execution_release_plan.md` dokumentiert. Er beschreibt
 die Freigabekette von Dry-Run, Queue, Action-Plan, expliziter
