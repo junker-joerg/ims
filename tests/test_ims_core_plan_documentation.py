@@ -39,6 +39,12 @@ FOURTH_FACHLICHER_REGRESSION_DOC = (
 FIFTH_FACHLICHER_REGRESSION_DOC = (
     REPO_ROOT / "docs" / "migration" / "fifth_fachlicher_regressionstest.md"
 )
+SIXTH_FACHLICHER_SLICE_TEST_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "sixth_fachlicher_slice_test_plan.md"
+)
+PRODUCTION_READINESS_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "production_readiness_pr_plan.md"
+)
 CONTROLLED_EXECUTION_ADAPTER_PLAN = (
     REPO_ROOT / "docs" / "plans" / "controlled_execution_adapter_plan.md"
 )
@@ -198,11 +204,15 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate ist umgesetzt" in plan
     assert "PR 48 Demo-Smoke und Doku fuer den benutzbaren Ablauf ist umgesetzt" in plan
     assert "PR 49 Packaging-/Startskript-Haertung fuer die lokale Auslieferung ist" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 50" in plan
-    assert "wieder ein schmaler fachlicher Validierungsslice" in plan
+    assert "PR 50 legt die Produktionsreife-Roadmap fest" in plan
+    assert "Vrvn04 / `search_history` als Plan fuer PR 51" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 51" in plan
+    assert "sechsten fachlichen VN-`search_history`-/Vrvn04-Regressionstest umsetzen" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
+    assert "18-24" in plan
+    assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -217,6 +227,44 @@ def test_ims_core_resume_plan_keeps_boundaries_conservative() -> None:
     assert "kein Start eines expliziten Periodenrunners aus dem Kernvalidierungsueberblick" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
     assert "keine Behauptung, dass nicht vorhandene `legacy_c/`-Quellen gelesen wurden" in plan
+
+
+def test_production_readiness_plan_scopes_remaining_prs() -> None:
+    plan = PRODUCTION_READINESS_PLAN.read_text(encoding="utf-8")
+
+    assert PRODUCTION_READINESS_PLAN.is_file()
+    assert "Plan: PRs bis zur Produktionsreife" in plan
+    assert "validiertem Altdaten-Korpus" in plan
+    assert "laufender UI" in plan
+    assert "PR 50: sechsten fachlichen Slice waehlen" in plan
+    assert "PR 51: sechsten fachlichen Regressionstest fuer Vrvn04" in plan
+    assert "Phase A: Fachliche Slice-Abdeckung erweitern" in plan
+    assert "Phase B: Altdaten-Validierung verdichten" in plan
+    assert "Phase C: Kontrollierte Ausfuehrung und UI" in plan
+    assert "Phase D: Freigabehaertung" in plan
+    assert "18-24" in plan
+    assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
+    assert "keine automatische historische Regelwahl" in plan
+    assert "schaltet keinen UI-Startpfad" in plan
+
+
+def test_sixth_fachlicher_slice_plan_selects_vrvn04_search_history() -> None:
+    plan = SIXTH_FACHLICHER_SLICE_TEST_PLAN.read_text(encoding="utf-8")
+
+    assert SIXTH_FACHLICHER_SLICE_TEST_PLAN.is_file()
+    assert "Sechster fachlicher Slice-Test" in plan
+    assert "Vrvn04" in plan
+    assert "`search_history`" in plan
+    assert "tests/test_sixth_fachlicher_vn_search_history_regression.py" in plan
+    assert "apply_vn_search_insurance_rule" in plan
+    assert "apply_vn_insurance_rule_snapshots" in plan
+    assert "run_vn_settlement_period_from_mapping" in plan
+    assert "chosen_insurer_ids = [12, None]" in plan
+    assert "selected_insurer_ids = [12, 11]" in plan
+    assert "damages = [9.0, 0.0]" in plan
+    assert "end_wealth_current = 87.0" in plan
+    assert "Keine Simulation" in plan
+    assert "Keine historische Vollgleichheitsbehauptung" in plan
 
 
 def test_run_control_core_bridge_plan_keeps_readonly_boundaries() -> None:
@@ -288,7 +336,9 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "nach PR 49 0 weitere Pflicht-PRs" in plan
     assert "## Umsetzung in PR 49" in plan
     assert "IMS_WORKBENCH_HOST" in plan
-    assert "Der vorgeschlagene naechste groessere Schritt ist PR 50" in plan
+    assert "PR 50 schreibt die Produktionsreife-Roadmap fest" in plan
+    assert "Vrvn04 / `search_history` als Plan fuer" in plan
+    assert "Der vorgeschlagene naechste groessere Umsetzungsschritt ist PR 51" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -821,6 +871,10 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "fachlichen Slice als VN-Regelwirkung" in plans_readme
     assert "third_fachlicher_slice_test_plan.md" in plans_readme
     assert "fachlichen Slice als VU-Carryover-Fixture" in plans_readme
+    assert "production_readiness_pr_plan.md" in plans_readme
+    assert "Produktionsreife" in plans_readme
+    assert "sixth_fachlicher_slice_test_plan.md" in plans_readme
+    assert "Vrvn04 / `search_history`" in plans_readme
     assert "controlled_execution_adapter_plan.md" in plans_readme
     assert "PR-33 bis PR-35-Plan" in plans_readme
     assert "schmalen Ausfuehrungsadapter" in plans_readme
@@ -857,6 +911,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "docs/plans/run_control_adapter_result_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
     assert "docs/plans/run_control_execution_release_plan.md" in readme
+    assert "docs/plans/production_readiness_pr_plan.md" in readme
+    assert "docs/plans/sixth_fachlicher_slice_test_plan.md" in readme
+    assert "PR 50 waehlt als naechsten" in readme
     assert "docs/migration/run_control_adapter_result_contract.md" in readme
     assert "docs/migration/run_control_adapter_result_api_contract.md" in readme
     assert "docs/migration/run_control_adapter_start_contract.md" in readme

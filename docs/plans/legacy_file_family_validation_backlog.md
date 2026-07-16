@@ -193,8 +193,11 @@ Aktueller Stand nach PR 49:
 
 Vorgeschlagener naechster Schritt nach PR 49:
 
-- PR 50: wieder einen schmalen fachlichen Validierungsslice waehlen, weil der
-  lokale Demo- und Packaging-Pfad jetzt reviewbar stabilisiert ist.
+- PR 50: Produktionsreife-Roadmap festschreiben und wieder einen schmalen
+  fachlichen Validierungsslice waehlen, weil der lokale Demo- und
+  Packaging-Pfad jetzt reviewbar stabilisiert ist (dieser Schnitt:
+  `docs/plans/production_readiness_pr_plan.md` und
+  `docs/plans/sixth_fachlicher_slice_test_plan.md`).
 
 ## Rest-PR-Planung
 
@@ -363,8 +366,14 @@ Vorgeschlagener naechster Schritt nach PR 49:
   `docs/migration/workbench_demo_checklist.md`, erledigt).
 - PR 49: Packaging-/Startskript-Haertung fuer die lokale Auslieferung (dieser
   Schnitt: Repo- und portable Start-/Check-Skripte, erledigt).
+- PR 50: Produktionsreife-Roadmap und sechsten fachlichen Slice waehlen
+  (dieser Schnitt: Vrvn04 / `search_history` als Plan fuer PR 51).
+- PR 51: sechsten fachlichen VN-`search_history`-/Vrvn04-Slice als
+  Regressionstest umsetzen und dokumentieren.
 
-Zaehlschnitt nach PR 49: 0 weitere Pflicht-PRs bis zu einer startbar
+Zaehlschnitt nach PR 50: grob `18-24` reviewbare PRs bis zu konservativer
+Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
+Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als
 API-/Doku-Smoke und Startskriptgrenze abgesichert. Das bleibt kein historischer
 Vollgleichheitsnachweis.

@@ -25,6 +25,12 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `third_fachlicher_slice_test_plan.md`: PR-31-Plan fuer den dritten
   fachlichen Slice als VU-Carryover-Fixture, weiterhin ohne Simulation und ohne
   Vollgleichheitsbehauptung.
+- `production_readiness_pr_plan.md`: PR-50-Roadmap bis zur konservativen
+  Produktionsreife mit validiertem Altdaten-Korpus, laufender UI und
+  dokumentierten Abweichungsgrenzen.
+- `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
+  fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung folgt
+  separat in PR 51.
 - `controlled_execution_adapter_plan.md`: PR-33 bis PR-35-Plan fuer Vertrag
   und lokalen schmalen Ausfuehrungsadapter nach drei fachlichen
   Regressionstests, weiterhin ohne API-/UI-Startpfad, Queue-Worker oder

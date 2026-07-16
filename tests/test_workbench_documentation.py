@@ -666,9 +666,11 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 48: Demo-Smoke und Doku fuer den benutzbaren Ablauf" in backlog
     assert "tests/test_workbench_demo_smoke.py" in backlog
     assert "PR 49: Packaging-/Startskript-Haertung fuer die lokale Auslieferung" in backlog
-    assert "Vorgeschlagener naechster Schritt nach PR 49" in backlog
-    assert "PR 50: wieder einen schmalen fachlichen Validierungsslice" in backlog
-    assert "Zaehlschnitt nach PR 49: 0 weitere Pflicht-PRs" in backlog
+    assert "PR 50: Produktionsreife-Roadmap" in backlog
+    assert "docs/plans/production_readiness_pr_plan.md" in backlog
+    assert "docs/plans/sixth_fachlicher_slice_test_plan.md" in backlog
+    assert "PR 51: sechsten fachlichen VN-`search_history`-/Vrvn04-Slice" in backlog
+    assert "Zaehlschnitt nach PR 50: grob `18-24` reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

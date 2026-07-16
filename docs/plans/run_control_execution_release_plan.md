@@ -201,8 +201,10 @@ PR 49 haertet die lokale Auslieferungsgrenze:
 - es gibt weiterhin keinen Adapterstart, keinen Queue-Worker, keine Simulation
   und keine historische Vollgleichheitsbehauptung.
 
-Der vorgeschlagene naechste groessere Schritt ist PR 50:
-wieder ein schmaler fachlicher Validierungsslice.
+PR 50 schreibt die Produktionsreife-Roadmap fest und waehlt wieder einen
+schmalen fachlichen Validierungsslice: Vrvn04 / `search_history` als Plan fuer
+PR 51. Der vorgeschlagene naechste groessere Umsetzungsschritt ist PR 51:
+den sechsten fachlichen VN-`search_history`-/Vrvn04-Regressionstest umsetzen.
 
 ## Validierung dieses Planstands
 

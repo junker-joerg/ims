@@ -571,16 +571,18 @@ Aktualisierte grobe Restplanung:
 - PR 48 Demo-Smoke und Doku fuer den benutzbaren Ablauf ist umgesetzt;
 - PR 49 Packaging-/Startskript-Haertung fuer die lokale Auslieferung ist
   umgesetzt;
-- vorgeschlagener naechster Schritt ist PR 50:
-  wieder ein schmaler fachlicher Validierungsslice;
+- PR 50 legt die Produktionsreife-Roadmap fest und waehlt den sechsten
+  fachlichen Slice: Vrvn04 / `search_history` als Plan fuer PR 51;
+- vorgeschlagener naechster Schritt ist PR 51:
+  sechsten fachlichen VN-`search_history`-/Vrvn04-Regressionstest umsetzen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. 6-16+ reviewbare PRs bis zu einem deutlich breiteren
-historischen Validierungsstand. Diese Schaetzung ersetzt keine
-Vollgleichheitspruefung.
+Damit bleiben grob ca. `18-24` reviewbare PRs bis zu konservativer
+Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
+Schaetzung ersetzt keine Vollgleichheitspruefung.
 
 ## Grenzen
 
