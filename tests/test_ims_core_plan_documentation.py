@@ -60,6 +60,9 @@ TENTH_FACHLICHER_REGRESSION_DOC = (
 PRODUCTION_READINESS_PLAN = (
     REPO_ROOT / "docs" / "plans" / "production_readiness_pr_plan.md"
 )
+PRODUCTION_LEGACY_CORPUS_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "production_legacy_corpus_plan.md"
+)
 CONTROLLED_EXECUTION_ADAPTER_PLAN = (
     REPO_ROOT / "docs" / "plans" / "controlled_execution_adapter_plan.md"
 )
@@ -231,11 +234,15 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "0 PRs bis zum neunten ausgefuehrten fachlichen Regressionstest" in plan
     assert "zehnten ausgefuehrten fachlichen Regressionstest" in plan
     assert "vorgeschlagener naechster Schritt ist PR 56" in plan
+    assert "ZINS000-Aufnahmeentscheid" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 57" in plan
+    assert "`IMSVU014.DAT` und" in plan
+    assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "13-19" in plan
+    assert "12-18" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -268,12 +275,67 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "Phase D: Freigabehaertung" in plan
     assert "PR 55: VU-Regelbreite ergaenzen" in plan
     assert "Vrvu01" in plan
-    assert "PR 56 fixiert als Plan den Produktions-Altdatenkorpus" in plan
-    assert "13-19" in plan
+    assert "PR 56: Produktions-Altdatenkorpus als Plan fixieren" in plan
+    assert "19 versionierte Referenzen" in plan
+    assert "6.300 eingetragene" in plan
+    assert "PR 57 prueft nur das getrennte ZINS000-Paar" in plan
+    assert "12-18" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "schaltet keinen UI-Startpfad" in plan
-    assert "frei und behauptet keine historische Vollgleichheit" in plan
+    assert "schaltet keinen UI-Startpfad frei" in plan
+    assert "behauptet keine historische Vollgleichheit" in plan
+
+
+def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:
+    plan = PRODUCTION_LEGACY_CORPUS_PLAN.read_text(encoding="utf-8")
+
+    assert PRODUCTION_LEGACY_CORPUS_PLAN.is_file()
+    assert "Produktions-Altdatenkorpus fuer die erste Freigabe" in plan
+    assert "19 bereits versionierten Dateien" in plan
+    assert "6.300 konkret eingetragenen Vergleichsperioden" in plan
+    assert "physisch 6.700 Datenzeilen" in plan
+    assert "`IMSVNSK1.DAT` 500 Zeilen" in plan
+    assert "belegte Fenster `1-100`" in plan
+    assert "`SK1`-/`all`-Aggregats" in plan
+    assert "Sie sind keine unterschiedlichen" in plan
+    assert "Aggregatebenen" in plan
+    assert "`parse_legacy_insurer_dat`" in plan
+    assert "`parse_legacy_policyholder_dat`" in plan
+    assert "Writer-Referenzen unter" in plan
+    assert "`tests/references/agrsich/` sind keine historischen Quellen" in plan
+    for legacy_filename in (
+        "VU14L1.DAT",
+        "VUSK1L1.DAT",
+        "VUSK1L2.DAT",
+        "VUSK1L3.DAT",
+        "VUSK1L4.DAT",
+        "VUSK1L5.DAT",
+        "IMSVNSK1.DAT",
+        "IMSVNR01.DAT",
+        "IMSVNR06.DAT",
+        "IMSVNVK1.DAT",
+        "IMSVNVK3.DAT",
+        "IMSVUVK1.DAT",
+        "IMSVUVK3.DAT",
+    ):
+        assert legacy_filename in plan
+    assert "6.300 von 6.300 ausgerichteten Referenzzeilen" in plan
+    assert "Er ist deshalb noch" in plan
+    assert "kein unabhaengiger Neu-/Alt-Vergleich" in plan
+    assert "`VU014PR1.DAT` | blockiert" in plan
+    assert "`IMSVUR01.DAT` bis `IMSVUR09.DAT` | geparkt" in plan
+    assert "`incomming/ZINS000/IMSVU014.DAT`" in plan
+    assert "`incomming/ZINS000/IMSVUSK1.DAT`" in plan
+    assert "0276eab7b1f80dfc39773eb0e5a4a5df02b69b140792be9f810baa222e8ce828" in plan
+    assert "dc066d624c443fc165b0fb83481083dae33d823bd8a3a20d934adb4bf5426b2a" in plan
+    assert "`0/100` gleiche Periodenzeilen" in plan
+    assert "`0/300` gleiche" in plan
+    assert "nur als getrennte ZINS000-Referenzschicht" in plan
+    assert "Aufgabe von PR 58" in plan
+    assert "importiert keine Datei aus `incomming/`" in plan
+    assert "startet keine Simulation" in plan
+    assert "keine historische Vollgleichheit" in plan
 
 
 def test_sixth_fachlicher_slice_plan_selects_vrvn04_search_history() -> None:
@@ -381,6 +443,8 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "zwei expliziten" in plan and "Draw-Vektoren" in plan
     assert "kontrollierter Carryover-Opt-in-Grenze" in plan
     assert "naechste Schritt ist PR 56" in plan
+    assert "PR 56 ist mit 19 Kernreferenzen" in plan
+    assert "PR 57 prueft als naechstes ausschliesslich" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 

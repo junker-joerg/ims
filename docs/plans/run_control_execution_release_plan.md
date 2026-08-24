@@ -213,6 +213,9 @@ VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03` breiter pruefen. PR 54 ist
 erledigt; PR 55 prueft danach `Vrvu01` / Zufall I mit zwei expliziten
 Draw-Vektoren und kontrollierter Carryover-Opt-in-Grenze (erledigt). Der
 naechste Schritt ist PR 56: den Produktions-Altdatenkorpus als Plan fixieren.
+PR 56 ist mit 19 Kernreferenzen, 6.300 Vergleichszeilen und einem getrennten
+ZINS000-Aufnahmeentscheid erledigt. PR 57 prueft als naechstes ausschliesslich
+`IMSVU014.DAT` und `IMSVUSK1.DAT` als separate historische Referenzschicht.
 
 ## Validierung dieses Planstands
 

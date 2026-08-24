@@ -28,6 +28,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `production_readiness_pr_plan.md`: PR-50-Roadmap bis zur konservativen
   Produktionsreife mit validiertem Altdaten-Korpus, laufender UI und
   dokumentierten Abweichungsgrenzen.
+- `production_legacy_corpus_plan.md`: PR-56-Festlegung des verpflichtenden
+  19-Dateien-Kernkorpus mit 6.300 Vergleichszeilen, Ausschlussgrenzen und dem
+  getrennten ZINS000-Aufnahmeentscheid fuer PR 57.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

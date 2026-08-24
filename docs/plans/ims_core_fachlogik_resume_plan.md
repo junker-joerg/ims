@@ -590,13 +590,17 @@ Aktualisierte grobe Restplanung:
   Regressionstest umgesetzt und dokumentiert;
 - 0 PRs bis zum zehnten ausgefuehrten fachlichen Regressionstest;
 - vorgeschlagener naechster Schritt ist PR 56: Produktions-Altdatenkorpus als
-  Plan fixieren und Ein-/Ausschlussgrenzen fuer die erste Freigabe benennen;
+  Plan fixieren und Ein-/Ausschlussgrenzen fuer die erste Freigabe benennen
+  (erledigt: 19 Referenzen, 6.300 Vergleichszeilen und getrennter
+  ZINS000-Aufnahmeentscheid);
+- vorgeschlagener naechster Schritt ist PR 57: `IMSVU014.DAT` und
+  `IMSVUSK1.DAT` nur als getrennte ZINS000-Referenzschicht pruefen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `13-19` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `12-18` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 

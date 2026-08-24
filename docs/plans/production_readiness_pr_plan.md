@@ -52,6 +52,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 - PR 56: Produktions-Altdatenkorpus als Plan fixieren: welche historischen
   Referenzen zaehlen fuer die erste Freigabe, welche bleiben ausgeschlossen.
+  Der Kernkorpus umfasst 19 versionierte Referenzen und 6.300 eingetragene
+  Vergleichszeilen; PR 57 prueft nur das getrennte ZINS000-Paar
+  `IMSVU014.DAT` und `IMSVUSK1.DAT` (erledigt).
 - PR 57: gezielte weitere Altdaten nur nach Header-/Feldpruefung uebernehmen;
   `incomming/` bleibt weiterhin kein Sammelimport.
 - PR 58: Mehrperioden-Legacy-Vergleich fuer den Freigabekorpus vorbereiten,
@@ -86,16 +89,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 55 bleiben grob `13-19` reviewbare PRs bis zu einer konservativen
+Nach PR 56 bleiben grob `12-18` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 56 fixiert als Plan den Produktions-Altdatenkorpus. Er benennt, welche
-historischen Referenzen fuer die erste Freigabe zaehlen, welche bewusst
-ausgeschlossen bleiben und welche Herkunfts-, Header-, Perioden- und
-Parsergrenzen vor PR 57 noch zu klaeren sind. Dieser Schritt startet keine
-Simulation, importiert `incomming/` nicht gesammelt, schaltet keinen UI-Startpfad
-frei und behauptet keine historische Vollgleichheit.
+PR 57 prueft gezielt `incomming/ZINS000/IMSVU014.DAT` und
+`incomming/ZINS000/IMSVUSK1.DAT`. Weil beide Kandidaten in allen ueberlappenden
+Perioden von der heutigen Baseline abweichen, duerfen sie nur als getrennte
+ZINS000-Referenzschicht aufgenommen werden. Der PR importiert keine weiteren
+Dateien, startet keine Simulation, schaltet keinen UI-Startpfad frei und
+behauptet keine historische Vollgleichheit.

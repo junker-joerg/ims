@@ -685,7 +685,9 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "tests/test_tenth_fachlicher_vu_random_carryover_regression.py" in backlog
     assert "docs/migration/tenth_fachlicher_regressionstest.md" in backlog
     assert "PR 56: Produktions-Altdatenkorpus als Plan fixieren" in backlog
-    assert "Zaehlschnitt nach PR 55: grob `13-19` reviewbare PRs" in backlog
+    assert "docs/plans/production_legacy_corpus_plan.md" in backlog
+    assert "PR 57: ausschliesslich `IMSVU014.DAT` und `IMSVUSK1.DAT`" in backlog
+    assert "Zaehlschnitt nach PR 56: grob `12-18` reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

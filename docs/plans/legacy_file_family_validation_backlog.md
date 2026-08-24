@@ -389,9 +389,14 @@ Vorgeschlagener naechster Schritt nach PR 49:
   `docs/migration/tenth_fachlicher_regressionstest.md`, erledigt).
 - PR 56: Produktions-Altdatenkorpus als Plan fixieren und fuer die erste
   Freigabe Ein-/Ausschluss, Herkunft, Header, Periodenfenster und Parsergrenzen
-  dokumentieren; `incomming/` bleibt unversioniert.
+  dokumentieren (dieser Schnitt:
+  `docs/plans/production_legacy_corpus_plan.md`, erledigt); `incomming/` bleibt
+  unversioniert.
+- PR 57: ausschliesslich `IMSVU014.DAT` und `IMSVUSK1.DAT` aus ZINS000 als
+  getrennte Referenzschicht pruefen; keine Ersetzung der Baseline und kein
+  Sammelimport.
 
-Zaehlschnitt nach PR 55: grob `13-19` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 56: grob `12-18` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als
