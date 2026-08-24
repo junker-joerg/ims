@@ -88,7 +88,8 @@ verifiziert nur die Vergleichsmechanik mit kontrollierten Testwerten.
 
 PR 59 hat den read-only Abweichungsbericht angebunden und weist fehlende der 15
 Kernexporttabellen als blockierende Inputluecken aus. PR 60 soll einen ersten
-schmalen, tatsaechlich berechneten Output liefern; fixturegenerierte
-Echo-Tabellen duerfen nicht als Neu-Ergebnisse verwendet werden. Erst
-tatsaechlich gelieferte berechnete Tabellen duerfen Treffer oder Abweichungen
-erzeugen.
+schmalen Aggregat-/Export-Output liefern und hat vier VU14-Perioden angebunden.
+PR 61 klaert die technische Level-IV-Selektorgrenze `all` gegen `SK1`.
+Fixturegenerierte Echo-Tabellen duerfen nicht als Neu-Ergebnisse verwendet
+werden. Erst tatsaechlich gelieferte berechnete Tabellen duerfen Treffer oder
+Abweichungen erzeugen.

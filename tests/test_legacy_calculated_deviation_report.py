@@ -208,4 +208,5 @@ def test_deviation_report_documentation_keeps_findings_conservative() -> None:
     assert "keinen neuen fachlichen Schwellenwert" in doc
     assert "kein Ergebnis eines Neu-/Alt-Laufs" in doc
     assert "historical_equivalence_claimed = false" in doc
-    assert "PR 60" in doc and "tatsaechlich berechneten Output" in doc
+    assert "PR 60" in doc and "VU14-Zustaenden angebunden" in doc
+    assert "PR 61" in doc and "Level-IV-Selektorgrenze" in doc

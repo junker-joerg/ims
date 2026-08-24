@@ -92,9 +92,8 @@ fachlichen Gleichheitsnachweis.
 
 ## Naechster Schritt
 
-PR 60 bindet einen ersten schmalen, tatsaechlich berechneten Output aus einem
-bereits vorhandenen expliziten Mehrperiodenpfad an die read-only Diagnose. Er
-darf keine Legacyreferenz als Neu-Output spiegeln. Falls noch kein passendes
-historisches Zielfenster berechenbar ist, muss PR 60 die verbleibende
-Adapterluecke dokumentieren. Modellkorrekturen bleiben gesperrt, bis eine
-konkrete berechnete Abweichung belegt ist.
+PR 60 hat einen ersten schmalen Aggregat-/Export-Output aus vier expliziten
+VU14-Zustaenden angebunden. PR 61 klaert als naechstes die technische
+Level-IV-Selektorgrenze `all` gegen `SK1`, bevor ein berechneter SK1-Slice
+angeschlossen wird. Modellkorrekturen bleiben gesperrt, bis eine konkrete
+berechnete Abweichung aus vergleichbaren Zustaenden belegt ist.

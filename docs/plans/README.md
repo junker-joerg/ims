@@ -33,7 +33,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   in PR 57 getrennt versionierten ZINS000-Paar; PR 58 bleibt der naechste
   berechnete Mehrperiodenvergleich und ist als strikter Eingangsvertrag
   umgesetzt; der read-only Abweichungsbericht aus PR 59 weist fuer den
-  Kernkorpus 15 noch fehlende berechnete Exporte aus.
+  Kernkorpus 15 noch fehlende berechnete Exporte aus. PR 60 schliesst den
+  ersten engen VU14-Aggregat-/Export-Slice fuer Perioden `1-4` an.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

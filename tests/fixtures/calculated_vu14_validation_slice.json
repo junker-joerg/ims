@@ -1,0 +1,18 @@
+{
+  "report_name": "calculated_vu14_periods_1_4",
+  "metadata": {
+    "validation_scope": "VU14L1 periods 1-4 only",
+    "historical_equivalence_claimed": false
+  },
+  "targets": [
+    {
+      "subject_type": "insurer",
+      "legacy_path": "../references/legacy_agrsich/VU14L1.DAT",
+      "export_filename": "imsvu014.dat",
+      "periods": [1, 2, 3, 4],
+      "level": "I",
+      "selector_kind": "entity",
+      "selector_value": 14
+    }
+  ]
+}

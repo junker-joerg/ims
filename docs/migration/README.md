@@ -70,6 +70,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `zins000_reference_layer.md`: getrennte historische Referenzschicht fuer `IMSVU014.DAT` und `IMSVUSK1.DAT` ohne Erweiterung des Kernbundles
 - `calculated_legacy_multi_period_contract.md`: strikter PR-58-Eingangsvertrag fuer berechnete Mehrperiodenergebnisse ohne Legacy-Selbstvergleich oder Simulation
 - `calculated_legacy_deviation_report.md`: read-only PR-59-Diagnose fuer Inputblocker, exakte Treffer, tolerierte Zahlenunterschiede und offene Feldfragen
+- `explicit_vu14_calculated_deviation_slice.md`: erster PR-60-Adapter von vier explizit berechneten VU14-Aggregat-/Exportperioden zur read-only Legacy-Diagnose
 - `fachlogik_migration_status.md`: Abschlussstand der kontrollierten Fachlogik-Migration im engeren Sinn mit Grenzen und Folgephasen
 - `workbench_demo_checklist.md`: lokale Demo-Checkliste fuer Start, UI-Reihenfolge, Demo-Signale und Grenzen ohne Simulation
 - `fourth_fachlicher_regressionstest.md`: vierter schmaler fachlicher Test fuer VN-`best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden

@@ -156,3 +156,11 @@ PR 59 veraendert Inventar, Referenzen und Bundle ebenfalls nicht. Ohne
 gelieferte berechnete Tabellen meldet die Diagnose fuer den Kernkorpus 15
 blockierende `required_export_missing`-Issues. Dieser Befund beschreibt die
 noch fehlende Berechnungsanbindung und keine historische Modellabweichung.
+
+## Erster berechneter VU14-Slice PR 60
+
+PR 60 nutzt ausschließlich die bereits versionierte `VU14L1.DAT` und das
+belegte Fenster `1-4`. Es werden keine weiteren historischen Dateien
+uebernommen. Vier explizite, referenzausgerichtete Zustandsinputs liefern einen
+passenden Aggregat-/Exportvergleich; eine unabhaengige historische
+Zustandsentwicklung ist dadurch nicht belegt.

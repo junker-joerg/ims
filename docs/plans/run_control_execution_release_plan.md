@@ -219,9 +219,10 @@ und `IMSVUSK1.DAT` als separate historische Referenzschicht versioniert. PR 58
 hat den berechneten Mehrperiodenvergleich fuer den unveraenderten Kernkorpus
 als strikten externen Exporttabellenvertrag vorbereitet. PR 59 hat den
 read-only Abweichungsbericht angebunden und weist 15 fehlende Kernexporte
-blockierend aus. PR 60 bindet als naechstes einen ersten schmalen, tatsaechlich
-berechneten Output an, ohne einen UI-Startpfad oder eine Vollsimulation
-freizuschalten.
+blockierend aus. PR 60 hat einen ersten schmalen,
+tatsaechlich berechneten VU14-Aggregat-/Export-Slice angebunden. PR 61 klaert als
+naechstes die technische Level-IV-Selektorgrenze `all` gegen `SK1`, ohne einen
+UI-Startpfad oder eine Vollsimulation freizuschalten.
 
 ## Validierung dieses Planstands
 

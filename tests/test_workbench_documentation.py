@@ -692,7 +692,8 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 59: ersten read-only Abweichungsbericht" in backlog
     assert "15 blockierende Kerninputluecken" in backlog
     assert "PR 60: ersten schmalen, tatsaechlich berechneten Output" in backlog
-    assert "Zaehlschnitt nach PR 59: grob `9-15` reviewbare PRs" in backlog
+    assert "PR 61: Level-IV-Selektormetadaten `all` und `SK1`" in backlog
+    assert "Zaehlschnitt nach PR 60: grob `9-15` reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

@@ -404,9 +404,12 @@ Vorgeschlagener naechster Schritt nach PR 49:
   (erledigt; 15 blockierende Kerninputluecken).
 - PR 60: ersten schmalen, tatsaechlich berechneten Output aus einem vorhandenen
   expliziten Mehrperiodenpfad anbinden; Modellkorrekturen weiter sperren, bis
-  eine konkrete Abweichung belegt ist.
+  eine konkrete Abweichung belegt ist (erledigt: VU14 Perioden `1-4`, nur
+  Aggregation/Export aus referenzausgerichteten Snapshots).
+- PR 61: Level-IV-Selektormetadaten `all` und `SK1` technisch kanonisieren;
+  VUSK1 bleibt ein `SK1`-/`all`-Aggregat auf Stufe IV.
 
-Zaehlschnitt nach PR 59: grob `9-15` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 60: grob `9-15` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

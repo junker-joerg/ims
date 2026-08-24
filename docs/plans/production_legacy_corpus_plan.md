@@ -149,7 +149,10 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 8. PR 59 klassifiziert vollstaendige Vergleiche technisch und weist fehlende
    Inputs blockierend aus, ohne aus Teiltreffern Vollgleichheit abzuleiten;
 9. PR 60 liefert einen ersten tatsaechlich berechneten schmalen Output oder
-   dokumentiert die konkrete verbleibende Adapterluecke.
+   dokumentiert die konkrete verbleibende Adapterluecke (erledigt fuer VU14,
+   Perioden `1-4`, nur Aggregation/Export aus expliziten Snapshots);
+10. PR 61 klaert `selector_value = "all"` gegen den historischen Level-IV-
+    Selektor `SK1`, ohne VUSK1-Zeitfenster als Aggregatebenen umzudeuten.
 
 ## Offene Risiken
 

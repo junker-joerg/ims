@@ -74,6 +74,13 @@ vollstaendig gelieferte berechnete Tabellen. Fuer den Kernkorpus weist sie
 derzeit 15 fehlende berechnete Exporte als Inputblocker aus; es wurde noch kein
 historischer Kernvergleich ausgefuehrt.
 
+Der erste schmale berechnete Anschluss ist unter
+`docs/migration/explicit_vu14_calculated_deviation_slice.md` dokumentiert:
+Vier explizite VU14-Zustaende erzeugen ueber Aggregation und Export vier
+passende Zeilen gegen `VU14L1.DAT`. Die Zustandswerte sind
+referenzausgerichtete Inputs; der Slice ist daher kein unabhaengiger
+historischer Modelllauf.
+
 Die lokale Demo-Checkliste fuer eine kurze Vorfuehrung steht unter `docs/migration/workbench_demo_checklist.md`. Sie benennt Startbefehle, UI-Reihenfolge, erwartete Demo-Signale und klare Grenzen: Queue-Metadaten duerfen nur in eine explizite SQLite-Datei vorgemerkt werden; Simulation, Ausfuehrungsadapter und fachlicher Gleichheitsnachweis bleiben ausgeschlossen.
 
 Der Anschluss zur eigentlichen IMS-Kern-Fachlogik nach Workbench-v1 ist unter

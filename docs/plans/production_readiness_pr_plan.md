@@ -67,44 +67,48 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   blockierend abbrechen. Der Kernkorpus meldet derzeit 15 fehlende berechnete
   Exporte (erledigt).
 - PR 60: ersten tatsaechlich berechneten schmalen Output aus einem vorhandenen
-  expliziten Mehrperiodenpfad anbinden. Modellkorrekturen nur fuer danach
-  belegte Abweichungen umsetzen; keine spekulativen Fachverbesserungen.
+  expliziten Mehrperiodenpfad anbinden. Vier VU14-Perioden sind als
+  Aggregat-/Export-Slice angeschlossen; die expliziten Zustandswerte bleiben
+  referenzausgerichtete Inputs (erledigt).
+- PR 61: technische Level-IV-Selektorgrenze `all` gegen `SK1` explizit
+  kanonisieren und testen; keine Aenderung der Aggregatstufe oder Fachlogik.
+  Modellkorrekturen nur fuer danach belegte Abweichungen umsetzen.
 
 ### Phase C: Kontrollierte Ausfuehrung und UI
 
-- PR 61: Run-Control-Ausfuehrungsfreigabe fuer den lokalen Adapter als
+- PR 62: Run-Control-Ausfuehrungsfreigabe fuer den lokalen Adapter als
   kontrollierten Startpfad vorbereiten, mit Auditfeldern und weiter ohne freien
   Browser-Upload.
-- PR 62: UI-Startpfad hinter expliziter Freigabe aktivieren; Queue-Worker und
+- PR 63: UI-Startpfad hinter expliziter Freigabe aktivieren; Queue-Worker und
   Adapterstart bleiben eng gegated.
-- PR 63: UI-Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige fuer
+- PR 64: UI-Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige fuer
   persistierte Runs stabilisieren.
-- PR 64: Browser-/Screenshot-E2E-Smoke fuer den freigegebenen lokalen Demo-Run
+- PR 65: Browser-/Screenshot-E2E-Smoke fuer den freigegebenen lokalen Demo-Run
   ergaenzen.
 
 ### Phase D: Freigabehaertung
 
-- PR 65: Packaging-/Staging-/Startskript-Smoke fuer den freigegebenen Stand
+- PR 66: Packaging-/Staging-/Startskript-Smoke fuer den freigegebenen Stand
   wiederholen und Release-Checkliste einfrieren.
-- PR 66: Backup-/Restore- und Update-/Rollback-Probe fuer lokale Metadaten mit
+- PR 67: Backup-/Restore- und Update-/Rollback-Probe fuer lokale Metadaten mit
   einem validierten Ergebnisstand pruefen.
-- PR 67: Abschlussbericht fuer den ersten Produktionsfreigabekorpus erstellen:
+- PR 68: Abschlussbericht fuer den ersten Produktionsfreigabekorpus erstellen:
   Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad.
-- PR 68+: Review-Fixes, CI-/Windows-Haertung und blockierende
+- PR 69+: Review-Fixes, CI-/Windows-Haertung und blockierende
   Abweichungskorrekturen.
 
 ## Grobe Anzahl
 
-Nach PR 59 bleiben grob `9-15` reviewbare PRs bis zu einer konservativen
+Nach PR 60 bleiben grob `9-15` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 60 bindet einen ersten schmalen, tatsaechlich berechneten Output aus einem
-vorhandenen expliziten Mehrperiodenpfad an die PR-59-Diagnose. Legacy-Echo-
-Tabellen bleiben als Neu-Ergebnisse unzulaessig. Falls noch kein passendes
-historisches Zielfenster berechenbar ist, dokumentiert der PR die konkrete
-Adapterluecke. Er startet keine Vollsimulation, schaltet keinen UI-Startpfad
-frei und behauptet keine historische Vollgleichheit.
+PR 61 klaert die technische Level-IV-Selektorgrenze zwischen den berechneten
+Laufzeitmetadaten `selector_value = "all"` und dem historischen Bundlewert
+`SK1`. Die Kanonisierung muss explizit und getestet bleiben; sie darf weder die
+VUSK1-Zeitfenster als Aggregatebenen umdeuten noch Fachlogik veraendern. Der PR
+startet keine Vollsimulation, schaltet keinen UI-Startpfad frei und behauptet
+keine historische Vollgleichheit.

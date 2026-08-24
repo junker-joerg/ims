@@ -600,8 +600,11 @@ Aktualisierte grobe Restplanung:
   Exporte, 19 Ziele und 6.300 Perioden);
 - PR 59 hat den ersten read-only Abweichungsbericht angebunden; der Kernkorpus
   bleibt mit 15 fehlenden berechneten Exporten blockiert;
-- vorgeschlagener naechster Schritt ist PR 60: ersten schmalen, tatsaechlich
-  berechneten Output aus einem vorhandenen expliziten Mehrperiodenpfad anbinden;
+- PR 60 hat den ersten schmalen berechneten Aggregat-/Export-Output aus einem
+  vorhandenen expliziten Mehrperiodenpfad angebunden (VU14 Perioden `1-4`, 4/4
+  Zeilen und 56/56 Felder);
+- vorgeschlagener naechster Schritt ist PR 61: technische Level-IV-
+  Selektorgrenze `all` gegen `SK1` explizit kanonisieren und testen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte

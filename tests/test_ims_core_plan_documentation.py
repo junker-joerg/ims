@@ -238,7 +238,8 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 57 hat `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "PR 58 hat den berechneten kontrollierten Mehrperiodenvergleich" in plan
     assert "PR 59 hat den ersten read-only Abweichungsbericht angebunden" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 60" in plan
+    assert "PR 60 hat den ersten schmalen berechneten Aggregat-/Export-Output" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 61" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
@@ -286,12 +287,12 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "9-15" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
-    assert "PR 60 bindet einen ersten schmalen" in plan
+    assert "Vier VU14-Perioden" in plan
+    assert "PR 61 klaert die technische Level-IV-Selektorgrenze" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
-    assert "frei und behauptet keine historische Vollgleichheit" in plan
-    assert "behauptet keine historische Vollgleichheit" in plan
+    assert "behauptet\nkeine historische Vollgleichheit" in plan
 
 
 def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:
@@ -455,7 +456,8 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "PR 58" in plan and "berechneten Mehrperiodenvergleich" in plan
     assert "PR 59" in plan and "read-only Abweichungsbericht" in plan
     assert "PR 60" in plan
-    assert "tatsaechlich" in plan and "berechneten Output" in plan
+    assert "tatsaechlich" in plan and "berechneten VU14-Aggregat-/Export-Slice" in plan
+    assert "PR 61" in plan and "Level-IV-Selektorgrenze" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 

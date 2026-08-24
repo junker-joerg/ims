@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "purpose": "Vier explizite VU14-Zustandssnapshots fuer den ersten berechneten PR60-Diagnoseslice; kein historischer Scheduler- oder Vollsimulationslauf.",
+    "state_origin": "explicit_reference_aligned_snapshots",
+    "calculation_scope": "agrsich_aggregation_and_export_from_explicit_state_snapshots"
+  },
+  "periods": [
+    {
+      "context": {"period": 1, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1401},
+      "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
+      "insurers": [
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 101.0, "advertising_current": 10.1, "reserves_current": [202.0, 252.0], "policyholders_current": 51.0, "claims_count_current": [2, 3], "claims_sum_current": [20.5, 25.5]}
+      ],
+      "policyholders": []
+    },
+    {
+      "context": {"period": 2, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1402},
+      "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
+      "insurers": [
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 102.0, "advertising_current": 10.2, "reserves_current": [204.0, 254.0], "policyholders_current": 52.0, "claims_count_current": [3, 4], "claims_sum_current": [21.0, 26.0]}
+      ],
+      "policyholders": []
+    },
+    {
+      "context": {"period": 3, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1403},
+      "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
+      "insurers": [
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 103.0, "advertising_current": 10.3, "reserves_current": [206.0, 256.0], "policyholders_current": 53.0, "claims_count_current": [4, 5], "claims_sum_current": [21.5, 26.5]}
+      ],
+      "policyholders": []
+    },
+    {
+      "context": {"period": 4, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1404},
+      "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
+      "insurers": [
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 104.0, "advertising_current": 10.4, "reserves_current": [208.0, 258.0], "policyholders_current": 54.0, "claims_count_current": [5, 6], "claims_sum_current": [22.0, 27.0]}
+      ],
+      "policyholders": []
+    }
+  ]
+}
