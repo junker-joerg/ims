@@ -217,9 +217,11 @@ PR 56 ist mit 19 Kernreferenzen, 6.300 Vergleichszeilen und einem getrennten
 ZINS000-Aufnahmeentscheid erledigt. PR 57 hat ausschliesslich `IMSVU014.DAT`
 und `IMSVUSK1.DAT` als separate historische Referenzschicht versioniert. PR 58
 hat den berechneten Mehrperiodenvergleich fuer den unveraenderten Kernkorpus
-als strikten externen Exporttabellenvertrag vorbereitet. PR 59 bindet als
-naechstes einen read-only Abweichungsbericht an, ohne einen UI-Startpfad oder
-eine Vollsimulation freizuschalten.
+als strikten externen Exporttabellenvertrag vorbereitet. PR 59 hat den
+read-only Abweichungsbericht angebunden und weist 15 fehlende Kernexporte
+blockierend aus. PR 60 bindet als naechstes einen ersten schmalen, tatsaechlich
+berechneten Output an, ohne einen UI-Startpfad oder eine Vollsimulation
+freizuschalten.
 
 ## Validierung dieses Planstands
 

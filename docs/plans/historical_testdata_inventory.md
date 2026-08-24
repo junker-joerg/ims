@@ -149,3 +149,10 @@ PR 58 laesst Inventar und Kernbundle unveraendert. Der neue Sollplan verlangt
 fuer einen spaeteren berechneten Vergleich exakt 15 Exporttabellen, 19 Ziele
 und 6.300 Perioden. ZINS000 bleibt eine getrennt waehlbare Schicht. Es wurden
 keine weiteren Dateien aus `incomming/` uebernommen.
+
+## Read-only Abweichungsdiagnose PR 59
+
+PR 59 veraendert Inventar, Referenzen und Bundle ebenfalls nicht. Ohne
+gelieferte berechnete Tabellen meldet die Diagnose fuer den Kernkorpus 15
+blockierende `required_export_missing`-Issues. Dieser Befund beschreibt die
+noch fehlende Berechnungsanbindung und keine historische Modellabweichung.

@@ -598,14 +598,16 @@ Aktualisierte grobe Restplanung:
 - PR 58 hat den berechneten kontrollierten Mehrperiodenvergleich fuer den
   Kernkorpus als strikten externen Exporttabellenvertrag vorbereitet (15
   Exporte, 19 Ziele und 6.300 Perioden);
-- vorgeschlagener naechster Schritt ist PR 59: ersten read-only
-  Abweichungsbericht aus explizit berechneten Mehrperiodenergebnissen anbinden;
+- PR 59 hat den ersten read-only Abweichungsbericht angebunden; der Kernkorpus
+  bleibt mit 15 fehlenden berechneten Exporten blockiert;
+- vorgeschlagener naechster Schritt ist PR 60: ersten schmalen, tatsaechlich
+  berechneten Output aus einem vorhandenen expliziten Mehrperiodenpfad anbinden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `10-16` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `9-15` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 

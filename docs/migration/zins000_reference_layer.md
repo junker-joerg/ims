@@ -86,6 +86,7 @@ nicht mit dem Kernkorpus vermischen.
 - Historischer RNG, Scheduler und automatische Regelwahl lassen sich aus den
   beiden Ausgabedateien nicht rekonstruieren.
 - PR 58 hat den kontrollierten berechneten Mehrperiodenvergleich fuer den
-  Kernkorpus als Eingangsvertrag vorbereitet. PR 59 bindet den ersten
-  read-only Abweichungsbericht an. ZINS000 bleibt dabei eine separat waehlbare
-  Referenzschicht.
+  Kernkorpus als Eingangsvertrag vorbereitet. PR 59 hat den ersten read-only
+  Abweichungsbericht angebunden und ist mit 15 fehlenden Kernexporten
+  blockiert. PR 60 liefert den ersten schmalen berechneten Output. ZINS000
+  bleibt dabei eine separat waehlbare Referenzschicht.

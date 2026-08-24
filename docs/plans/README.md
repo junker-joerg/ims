@@ -32,7 +32,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   19-Dateien-Kernkorpus mit 6.300 Vergleichszeilen, Ausschlussgrenzen und dem
   in PR 57 getrennt versionierten ZINS000-Paar; PR 58 bleibt der naechste
   berechnete Mehrperiodenvergleich und ist als strikter Eingangsvertrag
-  umgesetzt; der erste read-only Abweichungsbericht folgt in PR 59.
+  umgesetzt; der read-only Abweichungsbericht aus PR 59 weist fuer den
+  Kernkorpus 15 noch fehlende berechnete Exporte aus.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

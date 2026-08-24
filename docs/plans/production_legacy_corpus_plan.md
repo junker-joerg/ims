@@ -85,8 +85,10 @@ Target-Metadaten und Reportbildung. Der Validierungslauf baut seine
 Vergleichstabellen aus den gelesenen Referenzzeilen auf. Er ist deshalb noch
 kein unabhaengiger Neu-/Alt-Vergleich eines berechneten historischen Modells.
 PR 58 hat dafuer den strikten Eingangsvertrag fuer von aussen gelieferte
-berechnete Exporttabellen umgesetzt. Ein berechneter Kernkorpus-Lauf und dessen
-Abweichungsbericht bleiben Aufgabe von PR 59.
+berechnete Exporttabellen umgesetzt. PR 59 hat die read-only
+Abweichungsdiagnose ergaenzt; fuer den Kernkorpus bleibt sie mit 15 fehlenden
+berechneten Exporttabellen blockiert. Ein berechneter Kernkorpus-Lauf ist damit
+weiterhin nicht belegt.
 
 ## Bewusst ausgeschlossene Kandidaten
 
@@ -132,7 +134,7 @@ geprueften Dateien gezielt in den historischen Referenzbestand uebernommen.
 Die Herkunfts- und Vergleichsgrenzen stehen in
 `docs/migration/zins000_reference_layer.md`.
 
-## Freigabegates fuer PR 59 und PR 60
+## Freigabegates ab PR 60
 
 Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 
@@ -144,8 +146,10 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 6. `VU014PR1.DAT` bleibt ohne Feldmapping ausserhalb aller Agrsich-Bundles;
 7. der PR-58-Vertrag akzeptiert nur extern gelieferte, vollstaendige
    Exporttabellen und baut keine Neu-Zeilen aus Referenzzeilen;
-8. PR 59 klassifiziert Abweichungen, ohne aus Teiltreffern Vollgleichheit
-   abzuleiten.
+8. PR 59 klassifiziert vollstaendige Vergleiche technisch und weist fehlende
+   Inputs blockierend aus, ohne aus Teiltreffern Vollgleichheit abzuleiten;
+9. PR 60 liefert einen ersten tatsaechlich berechneten schmalen Output oder
+   dokumentiert die konkrete verbleibende Adapterluecke.
 
 ## Offene Risiken
 

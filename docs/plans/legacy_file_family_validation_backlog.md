@@ -400,9 +400,13 @@ Vorgeschlagener naechster Schritt nach PR 49:
   19-Dateien-Kernkorpus als strikten Vertrag fuer 15 extern gelieferte
   Exporttabellen vorbereiten; ZINS000 nur separat waehlbar halten (erledigt).
 - PR 59: ersten read-only Abweichungsbericht anbinden; fehlende berechnete
-  Kernexporte blockierend und Legacy-Echo-Tabellen unzulaessig halten.
+  Kernexporte blockierend und Legacy-Echo-Tabellen unzulaessig halten
+  (erledigt; 15 blockierende Kerninputluecken).
+- PR 60: ersten schmalen, tatsaechlich berechneten Output aus einem vorhandenen
+  expliziten Mehrperiodenpfad anbinden; Modellkorrekturen weiter sperren, bis
+  eine konkrete Abweichung belegt ist.
 
-Zaehlschnitt nach PR 58: grob `10-16` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 59: grob `9-15` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

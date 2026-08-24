@@ -86,9 +86,9 @@ verifiziert nur die Vergleichsmechanik mit kontrollierten Testwerten.
 
 ## Naechster Schritt
 
-PR 59 soll einen ersten read-only Abweichungsbericht aus explizit berechneten
-Mehrperiodenergebnissen an diesen Vertrag anbinden. Fehlende der 15
-Kernexporttabellen muessen dabei als blockierende Inputluecken erscheinen;
-fixturegenerierte Echo-Tabellen duerfen nicht als Neu-Ergebnisse verwendet
-werden. Erst tatsaechlich gelieferte berechnete Tabellen duerfen Treffer oder
-Abweichungen erzeugen.
+PR 59 hat den read-only Abweichungsbericht angebunden und weist fehlende der 15
+Kernexporttabellen als blockierende Inputluecken aus. PR 60 soll einen ersten
+schmalen, tatsaechlich berechneten Output liefern; fixturegenerierte
+Echo-Tabellen duerfen nicht als Neu-Ergebnisse verwendet werden. Erst
+tatsaechlich gelieferte berechnete Tabellen duerfen Treffer oder Abweichungen
+erzeugen.

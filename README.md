@@ -68,6 +68,12 @@ fixiert fuer den Kernkorpus 15 benoetigte Exporttabellen, 19 Ziele und 6.300
 Perioden, startet aber keinen Lauf und ist noch kein historischer
 Vollgleichheitsnachweis.
 
+Die read-only Abweichungsdiagnose unter
+`docs/migration/calculated_legacy_deviation_report.md` klassifiziert nur
+vollstaendig gelieferte berechnete Tabellen. Fuer den Kernkorpus weist sie
+derzeit 15 fehlende berechnete Exporte als Inputblocker aus; es wurde noch kein
+historischer Kernvergleich ausgefuehrt.
+
 Die lokale Demo-Checkliste fuer eine kurze Vorfuehrung steht unter `docs/migration/workbench_demo_checklist.md`. Sie benennt Startbefehle, UI-Reihenfolge, erwartete Demo-Signale und klare Grenzen: Queue-Metadaten duerfen nur in eine explizite SQLite-Datei vorgemerkt werden; Simulation, Ausfuehrungsadapter und fachlicher Gleichheitsnachweis bleiben ausgeschlossen.
 
 Der Anschluss zur eigentlichen IMS-Kern-Fachlogik nach Workbench-v1 ist unter
