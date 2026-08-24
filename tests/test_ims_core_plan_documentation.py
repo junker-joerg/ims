@@ -239,14 +239,14 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 58 hat den berechneten kontrollierten Mehrperiodenvergleich" in plan
     assert "PR 59 hat den ersten read-only Abweichungsbericht angebunden" in plan
     assert "PR 60 hat den ersten schmalen berechneten Aggregat-/Export-Output" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 65" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 66" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "6-12" in plan
+    assert "5-11" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -283,7 +283,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "6-12" in plan
+    assert "5-11" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
@@ -292,10 +292,11 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze" in plan
     assert "PR 64: UI-Startpfad" in plan
     assert "PR 65: UI-Ergebnisverlauf" in plan
+    assert "PR 66: Browser-/Screenshot-E2E-Smoke" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
-    assert "historische Vollgleichheitsbehauptung bleiben\ngesperrt" in plan
+    assert "historische Vollgleichheitsbehauptung bleiben gesperrt" in plan.replace("\n", " ")
 
 
 def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:
@@ -1140,6 +1141,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "GET /api/run-control/adapter-start-contract" in plans_readme
     assert "run_control_execution_result_store.md" in plans_readme
     assert "result_persisted" in plans_readme
+    assert "run_control_execution_history_plan.md" in plans_readme
+    assert "read-only\n  Attempt-Verlauf" in plans_readme
     assert "docs/plans/ims_core_fachlogik_resume_plan.md" in readme
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in readme
     assert "docs/plans/explicit_period_transition_slice.md" in readme
@@ -1207,6 +1210,7 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "POST /api/run-control/adapter-release-check" in readme
     assert "`release_ready = true`" in readme
     assert "POST /api/run-control/adapter-start" in readme
+    assert "GET /api/run-control/execution-history/{queue_id}" in readme
     assert "idempotency_key" in readme
     assert "Carryover-Probe-Vertrag" in readme
     assert "0 PRs bis zur" in readme

@@ -110,8 +110,10 @@ Start. Sie enthaelt keinen Queue-Worker und keine automatische Wiederholung.
 
 Die Karte `Run-Control-Ergebnisanzeige` zeigt ein vorhandenes persistiertes
 Adapterresultat ueber `GET /api/run-control/execution-result/{queue_id}` nur
-lesend. Sie nimmt keinen Payload an, bietet keinen Dateipicker an, startet
-keinen Adapter und schreibt keine Metadaten.
+lesend. `GET /api/run-control/execution-history/{queue_id}` ergaenzt den
+neuesten Start-, Fehler- oder Abschlusszustand. `Ergebnis neu laden` wiederholt
+nur beide GET-Abfragen. Die Karte nimmt keinen Payload an, bietet keinen
+Dateipicker oder Retry an, startet keinen Adapter und schreibt keine Metadaten.
 
 ## Automatisierter PR48-Smoke
 
@@ -142,7 +144,7 @@ Vollgleichheitsbehauptung.
 - kontrollierte Queue-Vormerkung in expliziter SQLite-Datei
 - lesender Run-Control-Aktionsplan mit `run_preflight`
 - kontrollierter Run-Control-Ausfuehrungsflow fuer vorab validierte Queue-Eintraege mit explizitem Freigabecheck, manuellem Start und stabilem UI-Anker `run-control-execution-flow`
-- lesende Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate mit stabilem UI-Anker `run-control-execution-result`
+- lesende Run-Control-Ergebnisanzeige mit Verlaufssicht und den stabilen UI-Ankern `run-control-execution-result`, `run-control-execution-history` und `run-control-execution-result-refresh`
 - lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
 - lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads ohne Upload oder Startpfad
 - lesender Adapter-Resultat-Vertrag fuer vorab lokal gepruefte Adapter-Resultate ohne Upload, HTTP-Validierung oder Startpfad

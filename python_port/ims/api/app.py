@@ -25,6 +25,7 @@ from ims.api.run_control_adapter_start import (
 )
 from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
+from ims.api.run_control_execution_history import get_run_control_execution_history
 from ims.api.run_control_execution_result_store import get_run_control_execution_result
 from ims.api.run_control_execution_release import (
     build_default_execution_release_profiles,
@@ -185,6 +186,36 @@ def _run_control_execution_result_error_payload(
     }
 
 
+def _run_control_execution_history_error_payload(
+    metadata_source: dict[str, object],
+    queue_id: str,
+    message: str,
+) -> dict[str, object]:
+    return {
+        "status": "error",
+        "mode": "run_control_execution_history",
+        "schema_version": METADATA_SCHEMA_VERSION,
+        "metadata_source": dict(metadata_source),
+        "queue_id": queue_id,
+        "queue_status": "unknown",
+        "attempt_count": 0,
+        "attempts": [],
+        "latest_attempt": None,
+        "persisted_result_available": False,
+        "persisted_at": None,
+        "automatic_retry_enabled": False,
+        "queue_worker_enabled": False,
+        "message": message,
+        "issues": [message],
+        "writes_performed": False,
+        "execution_performed": False,
+        "adapter_started": False,
+        "simulation_performed": False,
+        "automatic_historical_rule_selection_performed": False,
+        "historical_full_equality_claimed": False,
+    }
+
+
 def _run_control_execution_release_error_payload(message: str) -> dict[str, object]:
     return {
         "status": "error",
@@ -339,6 +370,33 @@ def create_app(
                 _run_control_execution_result_error_payload(metadata_source, message),
                 status_code=404,
             )
+        return JSONResponse(result)
+
+    def execution_history_response(queue_id: str) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            return JSONResponse(
+                _run_control_execution_history_error_payload(
+                    metadata_source,
+                    queue_id,
+                    "run control execution history requires an explicit SQLite metadata source",
+                ),
+                status_code=404,
+            )
+        try:
+            result = get_run_control_execution_history(
+                queue_id,
+                db_path=Path(str(metadata_source["path"])),
+            ).to_dict()
+        except MetadataImportError as exc:
+            return JSONResponse(
+                _run_control_execution_history_error_payload(
+                    metadata_source,
+                    queue_id,
+                    str(exc),
+                ),
+                status_code=404,
+            )
+        result["metadata_source"] = dict(metadata_source)
         return JSONResponse(result)
 
     def preflight_payload(run_id: str) -> dict[str, object]:
@@ -569,6 +627,10 @@ def create_app(
         def run_control_execution_result(queue_id: str) -> dict[str, object] | JSONResponse:
             return execution_result_response(queue_id)
 
+        @app.get("/api/run-control/execution-history/{queue_id}", response_model=None)
+        def run_control_execution_history(queue_id: str) -> dict[str, object] | JSONResponse:
+            return execution_history_response(queue_id)
+
         @app.get("/api/run-control/request-contract")
         def run_control_request_contract() -> dict[str, object]:
             return run_control_request_contract_payload()
@@ -645,6 +707,10 @@ def create_app(
         Route(
             "/api/run-control/execution-result/{queue_id}",
             lambda request: execution_result_response(request.path_params["queue_id"]),
+        ),
+        Route(
+            "/api/run-control/execution-history/{queue_id}",
+            lambda request: execution_history_response(request.path_params["queue_id"]),
         ),
         Route("/api/run-control/request-contract", lambda request: JSONResponse(run_control_request_contract_payload())),
         Route("/api/run-control/dry-run-contract", lambda request: JSONResponse(run_control_dry_run_contract_payload())),

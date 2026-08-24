@@ -165,7 +165,9 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
     bleiben unveraendert gesperrt (erledigt).
 14. PR 65 darf Ergebnisverlauf und Fehleranzeige haerten, aber weder den
     Korpus erweitern noch aus persistierten Teilergebnissen historische
-    Vollgleichheit ableiten.
+    Vollgleichheit ableiten (erledigt durch read-only Attempt-Verlauf).
+15. PR 66 darf den kontrollierten Browser-E2E-Smoke ausfuehren, aber den
+    historischen Korpus und die Gleichheitsaussage nicht erweitern.
 
 ## Offene Risiken
 

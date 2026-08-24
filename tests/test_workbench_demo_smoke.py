@@ -30,6 +30,7 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     selected_core_bridge = client.get(f"/api/run-control/core-diagnostics-bridge?queue_id={queue_id}")
     adapter_start_contract = client.get("/api/run-control/adapter-start-contract")
     execution_result_missing = client.get(f"/api/run-control/execution-result/{queue_id}")
+    execution_history = client.get(f"/api/run-control/execution-history/{queue_id}")
     carryover_probe_contract = client.get("/api/core-validation/carryover-probe-contract")
     adapter_result_contract = client.get("/api/run-control/adapter-result-contract")
 
@@ -116,6 +117,14 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     assert execution_result_missing.json()["execution_performed"] is False
     assert execution_result_missing.json()["adapter_started"] is False
     assert execution_result_missing.json()["simulation_performed"] is False
+
+    assert execution_history.status_code == 200
+    assert execution_history.json()["mode"] == "run_control_execution_history"
+    assert execution_history.json()["attempt_count"] == 0
+    assert execution_history.json()["automatic_retry_enabled"] is False
+    assert execution_history.json()["writes_performed"] is False
+    assert execution_history.json()["execution_performed"] is False
+    assert execution_history.json()["simulation_performed"] is False
 
     assert carryover_probe_contract.status_code == 200
     assert carryover_probe_contract.json()["mode"] == "core_validation_carryover_probe_api_contract"

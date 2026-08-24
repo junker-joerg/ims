@@ -611,14 +611,16 @@ Aktualisierte grobe Restplanung:
   Idempotenz und konservativem Fehlerstatus umgesetzt;
 - PR 64 hat den vorbereiteten UI-Flow zweistufig an diese Backend-Grenze
   angebunden, weiterhin ohne Queue-Worker oder automatische Wiederholung;
-- vorgeschlagener naechster Schritt ist PR 65: Ergebnisverlauf,
-  Fehlerzustaende und erneute Ergebnisanzeige stabilisieren;
+- PR 65 hat Ergebnisverlauf, Fehlerzustaende und erneute read-only
+  Ergebnisanzeige ohne Retry stabilisiert;
+- vorgeschlagener naechster Schritt ist PR 66: Browser-/Screenshot-E2E-Smoke
+  fuer den explizit freigegebenen lokalen Demo-Run;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der umgesetzten UI-Startgrenze bleiben grob ca. `6-12`
+Nach der umgesetzten Verlaufssicht bleiben grob ca. `5-11`
 reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.

@@ -769,6 +769,20 @@ automatische Wiederholung und Simulation bleiben gesperrt. Der Browser-Smoke
 prueft Layout und gesperrten Ausgangszustand, ohne einen Adapterstart
 auszuloesen.
 
+## Erweiterung in PR 65
+
+Die Workbench liest fuer die ausgewaehlte Queue zusaetzlich
+`GET /api/run-control/execution-history/{queue_id}`. Die Ergebnisanzeige ordnet
+den neuesten Attempt mit Auditfeldern, Start-/Endzeit, `starting`, `failed`,
+`result_persisted` und optionaler Fehlermeldung ein. Der stabile UI-Anker ist
+`run-control-execution-history`.
+
+`Ergebnis neu laden` mit dem Anker `run-control-execution-result-refresh`
+wiederholt nur die GET-Abfragen fuer Ergebnis und Verlauf. Es gibt keinen
+Retry-Button, kein automatisches Polling und keine Queue-Mutation. Queue-Worker,
+freie Browserpfade, Simulation und historische Vollgleichheitsbehauptung
+bleiben gesperrt.
+
 Fuer den echten Browser-/Screenshot-Smoke stellt die Frontend-Schale stabile `data-testid`-Anker bereit: `run-control-demo-dry-run-button`, `run-control-demo-queue-button`, `run-control-demo-dry-run-result`, `run-control-demo-queue-result`, `run-control-demo-action-plan`, `run-control-execution-flow`, `run-control-execution-result`, `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`. Der Screenshot-Smoke prueft Sichtbarkeit und Bedienfolge in der lokalen Workbench. Er prueft keine historischen Fachwerte und ersetzt keine spaetere Fachvalidierung.
 
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:

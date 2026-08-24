@@ -217,6 +217,11 @@ def test_core_placeholders_import() -> None:
         main as run_control_execution_result_store_main,
         persist_run_control_adapter_result,
     )
+    from ims.api.run_control_execution_history import (
+        RunControlExecutionAttemptRecord,
+        RunControlExecutionHistoryResult,
+        get_run_control_execution_history,
+    )
     from ims.api.run_control_contracts import (
         WorkbenchRunControlContract,
         build_run_control_contract,
@@ -776,6 +781,9 @@ def test_core_placeholders_import() -> None:
     assert persist_run_control_adapter_result is not None
     assert get_run_control_execution_result is not None
     assert run_control_execution_result_store_main is not None
+    assert RunControlExecutionAttemptRecord is not None
+    assert RunControlExecutionHistoryResult is not None
+    assert get_run_control_execution_history is not None
     assert WorkbenchRunControlContract is not None
     assert build_run_control_contract is not None
     assert run_control_contracts_main is not None

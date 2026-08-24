@@ -52,6 +52,9 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     run_control_execution_result_missing = client.get(
         "/api/run-control/execution-result/baseline-python-tests"
     )
+    run_control_execution_history = client.get(
+        "/api/run-control/execution-history/baseline-python-tests"
+    )
     missing_queue_entry = client.get("/api/run-control/queue/missing-queue-entry")
     missing = client.get("/api/scenarios/missing-scenario")
 
@@ -131,6 +134,12 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert run_control_execution_result_missing.json()["execution_performed"] is False
     assert run_control_execution_result_missing.json()["adapter_started"] is False
     assert run_control_execution_result_missing.json()["simulation_performed"] is False
+    assert run_control_execution_history.status_code == 200
+    assert run_control_execution_history.json()["mode"] == "run_control_execution_history"
+    assert run_control_execution_history.json()["attempt_count"] == 0
+    assert run_control_execution_history.json()["automatic_retry_enabled"] is False
+    assert run_control_execution_history.json()["writes_performed"] is False
+    assert run_control_execution_history.json()["execution_performed"] is False
     assert missing_queue_entry.status_code == 404
     assert missing_queue_entry.json()["error"]["resource"] == "run_control_queue"
 
@@ -261,6 +270,8 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert 'data-testid="run-control-demo-action-plan"' in source
     assert 'data-testid="run-control-execution-flow"' in source
     assert 'data-testid="run-control-execution-result"' in source
+    assert 'data-testid="run-control-execution-history"' in source
+    assert 'data-testid="run-control-execution-result-refresh"' in source
     assert 'data-testid="run-control-core-bridge"' in source
     assert 'data-testid="carryover-probe-contract"' in source
     assert 'data-testid="adapter-result-contract"' in source
@@ -272,6 +283,7 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert "/api/run-control/adapter-result-contract" in source
     assert "/api/run-control/adapter-start-contract" in source
     assert "/api/run-control/execution-result/${encodeURIComponent(selectedQueueId)}" in source
+    assert "/api/run-control/execution-history/${encodeURIComponent(selectedQueueId)}" in source
     assert "/api/run-control/queue" in source
     assert "/api/run-control/queue/action-plan" in source
     assert "/api/run-control/queue/${encodeURIComponent(selectedQueueId)}" in source

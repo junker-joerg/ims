@@ -10,6 +10,7 @@ import {
   FileText,
   GitBranch,
   Play,
+  RefreshCw,
   Search,
   ServerCog,
   ShieldCheck
@@ -420,6 +421,44 @@ type RunControlExecutionResult = {
   historical_full_equality_claimed?: boolean;
 };
 
+type RunControlExecutionAttempt = {
+  attempt_id: string;
+  queue_id: string;
+  idempotency_key: string;
+  status: "starting" | "failed" | "result_persisted";
+  released_by: string;
+  released_at: string;
+  release_reason: string;
+  started_at: string;
+  completed_at: string | null;
+  failure_message: string | null;
+  adapter_started: boolean;
+  result_persisted: boolean;
+  simulation_performed: boolean;
+};
+
+type RunControlExecutionHistory = {
+  status: "ok" | "error";
+  mode: "run_control_execution_history";
+  schema_version: string;
+  queue_id: string;
+  queue_status: string;
+  attempt_count: number;
+  attempts: RunControlExecutionAttempt[];
+  latest_attempt: RunControlExecutionAttempt | null;
+  persisted_result_available: boolean;
+  persisted_at: string | null;
+  automatic_retry_enabled: boolean;
+  queue_worker_enabled: boolean;
+  message?: string;
+  issues?: string[];
+  writes_performed: boolean;
+  execution_performed: boolean;
+  adapter_started: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claimed: boolean;
+};
+
 type RunControlDryRunResult = {
   status: "ok" | "error";
   mode: "run_control_dry_run";
@@ -680,6 +719,11 @@ function App() {
   const [runControlExecutionResult, setRunControlExecutionResult] = useState<RunControlExecutionResult | null>(null);
   const [runControlExecutionResultState, setRunControlExecutionResultState] = useState<DetailState>("idle");
   const [runControlExecutionResultError, setRunControlExecutionResultError] = useState<string | null>(null);
+  const [runControlExecutionHistory, setRunControlExecutionHistory] =
+    useState<RunControlExecutionHistory | null>(null);
+  const [runControlExecutionHistoryState, setRunControlExecutionHistoryState] = useState<DetailState>("idle");
+  const [runControlExecutionHistoryError, setRunControlExecutionHistoryError] = useState<string | null>(null);
+  const [executionEvidenceRevision, setExecutionEvidenceRevision] = useState(0);
   const [runControlCoreBridge, setRunControlCoreBridge] = useState<RunControlCoreDiagnosticsBridge | null>(null);
   const [coreValidation, setCoreValidation] = useState<CoreValidationOverview | null>(null);
   const [carryoverProbeContract, setCarryoverProbeContract] = useState<CoreValidationCarryoverProbeContract | null>(
@@ -716,47 +760,74 @@ function App() {
   useEffect(() => {
     let active = true;
 
-    async function loadExecutionResult() {
+    async function loadExecutionEvidence() {
       if (!selectedQueueId) {
         setRunControlExecutionResult(null);
         setRunControlExecutionResultState("idle");
         setRunControlExecutionResultError(null);
+        setRunControlExecutionHistory(null);
+        setRunControlExecutionHistoryState("idle");
+        setRunControlExecutionHistoryError(null);
         return;
       }
       setRunControlExecutionResultState("loading");
       setRunControlExecutionResultError(null);
+      setRunControlExecutionHistoryState("loading");
+      setRunControlExecutionHistoryError(null);
       try {
-        const response = await fetch(`/api/run-control/execution-result/${encodeURIComponent(selectedQueueId)}`);
-        const payload = (await response.json()) as RunControlExecutionResult;
+        const [resultResponse, historyResponse] = await Promise.all([
+          fetch(`/api/run-control/execution-result/${encodeURIComponent(selectedQueueId)}`),
+          fetch(`/api/run-control/execution-history/${encodeURIComponent(selectedQueueId)}`)
+        ]);
+        const resultPayload = (await resultResponse.json()) as RunControlExecutionResult;
+        const historyPayload = (await historyResponse.json()) as RunControlExecutionHistory;
         if (active) {
-          if (response.status === 404) {
+          if (resultResponse.status === 404) {
             setRunControlExecutionResult(null);
             setRunControlExecutionResultError("kein persistiertes Ergebnis");
             setRunControlExecutionResultState("ready");
-            return;
+          } else if (!resultResponse.ok) {
+            setRunControlExecutionResult(null);
+            setRunControlExecutionResultError(
+              resultPayload.message ?? "Run-Control-Ergebnis nicht erreichbar"
+            );
+            setRunControlExecutionResultState("error");
+          } else {
+            setRunControlExecutionResult(resultPayload);
+            setRunControlExecutionResultState("ready");
           }
-          if (!response.ok) {
-            throw new Error(payload.message ?? "Run-Control-Ergebnis nicht erreichbar");
+          if (!historyResponse.ok) {
+            setRunControlExecutionHistory(null);
+            setRunControlExecutionHistoryError(
+              historyPayload.message ?? "Run-Control-Verlauf nicht erreichbar"
+            );
+            setRunControlExecutionHistoryState("error");
+          } else {
+            setRunControlExecutionHistory(historyPayload);
+            setRunControlExecutionHistoryState("ready");
           }
-          setRunControlExecutionResult(payload);
-          setRunControlExecutionResultState("ready");
         }
       } catch (error) {
         if (active) {
           setRunControlExecutionResult(null);
+          setRunControlExecutionHistory(null);
           setRunControlExecutionResultError(
             error instanceof Error ? error.message : "Run-Control-Ergebnis nicht erreichbar"
           );
+          setRunControlExecutionHistoryError(
+            error instanceof Error ? error.message : "Run-Control-Verlauf nicht erreichbar"
+          );
           setRunControlExecutionResultState("error");
+          setRunControlExecutionHistoryState("error");
         }
       }
     }
 
-    loadExecutionResult();
+    loadExecutionEvidence();
     return () => {
       active = false;
     };
-  }, [selectedQueueId]);
+  }, [selectedQueueId, executionEvidenceRevision]);
 
   useEffect(() => {
     setExecutionReleaseConfirmed(false);
@@ -1278,13 +1349,21 @@ function App() {
     setAdapterStartError(null);
   };
   const refreshRunControlExecutionState = async (queueId: string) => {
-    const [overviewResponse, detailResponse, actionPlanResponse, coreBridgeResponse, resultResponse] =
+    const [
+      overviewResponse,
+      detailResponse,
+      actionPlanResponse,
+      coreBridgeResponse,
+      resultResponse,
+      historyResponse
+    ] =
       await Promise.all([
         fetch("/api/run-control/queue"),
         fetch(`/api/run-control/queue/${encodeURIComponent(queueId)}`),
         fetch("/api/run-control/queue/action-plan"),
         fetch("/api/run-control/core-diagnostics-bridge"),
-        fetch(`/api/run-control/execution-result/${encodeURIComponent(queueId)}`)
+        fetch(`/api/run-control/execution-result/${encodeURIComponent(queueId)}`),
+        fetch(`/api/run-control/execution-history/${encodeURIComponent(queueId)}`)
       ]);
     if (overviewResponse.ok) {
       setRunControlQueue((await overviewResponse.json()) as RunControlQueueOverview);
@@ -1309,6 +1388,16 @@ function App() {
       setRunControlExecutionResult(null);
       setRunControlExecutionResultState("ready");
       setRunControlExecutionResultError("kein persistiertes Ergebnis");
+    }
+    if (historyResponse.ok) {
+      setRunControlExecutionHistory((await historyResponse.json()) as RunControlExecutionHistory);
+      setRunControlExecutionHistoryState("ready");
+      setRunControlExecutionHistoryError(null);
+    } else {
+      const payload = (await historyResponse.json()) as RunControlExecutionHistory;
+      setRunControlExecutionHistory(null);
+      setRunControlExecutionHistoryState("error");
+      setRunControlExecutionHistoryError(payload.message ?? "Run-Control-Verlauf nicht erreichbar");
     }
   };
   const canCheckExecutionRelease =
@@ -1668,6 +1757,38 @@ function App() {
     ],
     ["Schreibpfade", runControlExecutionResult?.writes_performed ? "aktiv" : "gesperrt"],
     ["Ausfuehrung", runControlExecutionResult?.execution_performed ? "aktiv" : "gesperrt"]
+  ];
+  const latestExecutionAttempt =
+    runControlExecutionHistory?.latest_attempt ?? runControlExecutionHistory?.attempts[0] ?? null;
+  const runControlExecutionHistoryStatus =
+    runControlExecutionHistoryState === "error"
+      ? runControlExecutionHistoryError ?? "nicht erreichbar"
+      : runControlExecutionHistoryState === "loading"
+        ? "laedt"
+        : latestExecutionAttempt
+          ? latestExecutionAttempt.status
+          : "noch kein Startversuch";
+  const runControlExecutionHistoryRows = [
+    ["Verlauf", runControlExecutionHistoryStatus],
+    ["Queue-Status", runControlExecutionHistory?.queue_status ?? selectedQueueEntry?.status ?? "-"],
+    ["Versuche", String(runControlExecutionHistory?.attempt_count ?? 0)],
+    ["Attempt-ID", latestExecutionAttempt?.attempt_id ?? "-"],
+    ["Idempotenz", latestExecutionAttempt?.idempotency_key ?? "-"],
+    ["Freigegeben von", latestExecutionAttempt?.released_by ?? "-"],
+    ["Freigabezeit", latestExecutionAttempt?.released_at ?? "-"],
+    ["Startzeit", latestExecutionAttempt?.started_at ?? "-"],
+    ["Abschluss", latestExecutionAttempt?.completed_at ?? "offen"],
+    ["Begruendung", latestExecutionAttempt?.release_reason ?? "-"],
+    ["Fehler", latestExecutionAttempt?.failure_message ?? "keiner"],
+    [
+      "Persistiertes Ergebnis",
+      runControlExecutionHistory?.persisted_result_available ? "vorhanden" : "nicht vorhanden"
+    ],
+    [
+      "Automatische Wiederholung",
+      runControlExecutionHistory?.automatic_retry_enabled ? "aktiv" : "gesperrt"
+    ],
+    ["Queue-Worker", runControlExecutionHistory?.queue_worker_enabled ? "aktiv" : "gesperrt"]
   ];
   const selectedBridgeAction =
     runControlCoreBridge?.actions.find((action) => action.queue_id === selectedQueueId) ??
@@ -2585,9 +2706,35 @@ function App() {
           <div className="panel-heading">
             <Database size={20} aria-hidden="true" />
             <h2>Run-Control-Ergebnisanzeige</h2>
+            <button
+              className="secondary-action run-control-execution-result-refresh"
+              data-testid="run-control-execution-result-refresh"
+              disabled={
+                !selectedQueueId ||
+                runControlExecutionResultState === "loading" ||
+                runControlExecutionHistoryState === "loading"
+              }
+              type="button"
+              onClick={() => setExecutionEvidenceRevision((revision) => revision + 1)}
+            >
+              <RefreshCw size={17} aria-hidden="true" />
+              Ergebnis neu laden
+            </button>
           </div>
           <div className="run-control-execution-result-grid" aria-label="Persistiertes Run-Control-Ergebnis">
             {runControlExecutionResultRows.map(([label, value]) => (
+              <div className="run-control-execution-result-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <div
+            className="run-control-execution-result-grid run-control-execution-history-grid"
+            aria-label="Run-Control-Ausfuehrungsverlauf"
+            data-testid="run-control-execution-history"
+          >
+            {runControlExecutionHistoryRows.map(([label, value]) => (
               <div className="run-control-execution-result-row" key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>

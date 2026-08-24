@@ -7,6 +7,8 @@ WORKBENCH_DOC = REPO_ROOT / "docs" / "migration" / "workbench_shell.md"
 RUN_CONTROL_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_run_control_plan.md"
 PACKAGING_PLAN = REPO_ROOT / "docs" / "migration" / "workbench_packaging_plan.md"
 DEMO_CHECKLIST = REPO_ROOT / "docs" / "migration" / "workbench_demo_checklist.md"
+EXECUTION_HISTORY_DOC = REPO_ROOT / "docs" / "migration" / "run_control_execution_history.md"
+EXECUTION_HISTORY_PLAN = REPO_ROOT / "docs" / "plans" / "run_control_execution_history_plan.md"
 LEGACY_BACKLOG = REPO_ROOT / "docs" / "plans" / "legacy_file_family_validation_backlog.md"
 CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
 START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
@@ -696,12 +698,36 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 60: ersten schmalen, tatsaechlich berechneten Output" in backlog
     assert "PR 61: Level-IV-Selektormetadaten `all` und `SK1`" in backlog
     assert "Zaehlschnitt nach PR 63" in backlog
-    assert "grob `6-12` reviewbare PRs" in backlog
+    assert "grob `5-11` reviewbare PRs" in backlog
     assert "PR 62: kontrollierte Run-Control-Ausfuehrungsfreigabe" in backlog
     assert "PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze" in backlog
     assert "PR 64 ist erledigt" in backlog
-    assert "PR 65 stabilisiert als naechstes" in backlog
+    assert "PR 65 ist erledigt" in backlog
+    assert "PR 66 prueft als naechstes" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
+
+
+def test_run_control_execution_history_documents_readonly_attempt_view() -> None:
+    doc = EXECUTION_HISTORY_DOC.read_text(encoding="utf-8")
+    plan = EXECUTION_HISTORY_PLAN.read_text(encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
+    checklist = DEMO_CHECKLIST.read_text(encoding="utf-8")
+
+    assert EXECUTION_HISTORY_DOC.is_file()
+    assert EXECUTION_HISTORY_PLAN.is_file()
+    assert "run_control_execution_attempts" in doc
+    assert "python_port/ims/api/run_control_execution_history.py" in doc
+    assert "GET /api/run-control/execution-history/{queue_id}" in doc
+    assert "automatic_retry_enabled" in doc
+    assert "kein automatisches Polling" in doc
+    assert "keine historische Vollgleichheitsbehauptung" in doc
+    assert "Run-Control-Ergebnisverlauf (PR 65)" in plan
+    assert "Ergebnis neu laden" in plan
+    assert "keinen Retry-, Reset-, Worker-" in plan
+    assert "GET /api/run-control/execution-history/{queue_id}" in readme
+    assert "run-control-execution-history" in readme
+    assert "run-control-execution-result-refresh" in checklist
+    assert "keinen Dateipicker oder Retry" in checklist.replace("\n", " ")
 
 
 def test_workbench_packaging_plan_documents_portable_delivery_block():

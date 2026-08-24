@@ -87,4 +87,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `run_control_execution_result_store.md`: kontrollierte lokale Persistenzgrenze fuer vorab validierte Adapter-Resultate, Queue-Status `result_persisted` und weiterhin ohne Adapterstart oder Simulation
 - `run_control_execution_flow_ui.md`: Entwicklung der Workbench-Karte von der read-only Statussicht bis zum zweistufig freigegebenen PR-64-UI-Start, weiterhin ohne Queue-Worker, Upload oder Simulation
 - `run_control_execution_result_view.md`: read-only API- und Workbench-Ergebnisanzeige fuer persistierte Run-Control-Adapterresultate, weiterhin ohne Upload, Adapterstart, Queue-Worker oder Simulation
+- `run_control_execution_history.md`: read-only PR-65-Verlauf fuer vorhandene Adapterstart-Audit-, Zeit- und Fehlerdaten ohne Retry, Queue-Worker oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

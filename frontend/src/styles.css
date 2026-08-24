@@ -523,6 +523,14 @@ h2 {
   margin-bottom: 18px;
 }
 
+.run-control-execution-result-panel .panel-heading {
+  flex-wrap: wrap;
+}
+
+.run-control-execution-result-refresh {
+  margin-left: auto;
+}
+
 .run-control-core-bridge-panel {
   margin-bottom: 18px;
 }
@@ -1187,6 +1195,11 @@ code {
 
   nav a {
     justify-content: center;
+  }
+
+  .run-control-execution-result-refresh {
+    width: 100%;
+    margin-left: 0;
   }
 
   .status-grid,

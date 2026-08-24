@@ -86,7 +86,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   Adapterstart bleiben eng gegated (erledigt: zweistufiger Freigabecheck,
   stabiler Idempotenzpayload und manuell ausgeloester Start).
 - PR 65: UI-Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige fuer
-  persistierte Runs stabilisieren.
+  persistierte Runs stabilisieren (erledigt: read-only Attempt-Verlauf,
+  Fehlermeldung und manueller GET-Neuladepfad ohne Retry).
 - PR 66: Browser-/Screenshot-E2E-Smoke fuer den freigegebenen lokalen Demo-Run
   ergaenzen.
 
@@ -103,16 +104,15 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 64 bleiben grob `6-12` reviewbare PRs bis zu einer konservativen
+Nach PR 65 bleiben grob `5-11` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 65 stabilisiert Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige
-fuer persistierte Runs. Der Schritt darf keine automatische Wiederholung
-einfuehren: `starting` und `failed` bleiben pruefpflichtige Zustaende,
-`result_persisted` bleibt die einzige abgeschlossene Ergebnisgrenze. Freier
-Browser-Upload, Queue-Worker und historische Vollgleichheitsbehauptung bleiben
-gesperrt.
+PR 66 ergaenzt einen Browser-/Screenshot-E2E-Smoke fuer den explizit
+freigegebenen lokalen Demo-Run. Der Smoke muss Freigabe, Start, Verlauf und
+persistiertes Ergebnis sichtbar pruefen, mit injiziertem kontrolliertem Adapter
+und ohne automatische Wiederholung. Freier Browser-Upload, Queue-Worker,
+Simulation und historische Vollgleichheitsbehauptung bleiben gesperrt.

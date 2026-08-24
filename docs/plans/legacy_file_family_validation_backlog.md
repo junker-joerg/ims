@@ -432,6 +432,11 @@ konservativen Produktionsreife. PR 65 stabilisiert als naechstes
 Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige, weiterhin ohne
 automatische Wiederholung oder Erweiterung der historischen Gleichheitsaussage.
 
+PR 65 ist erledigt. Neuer Zaehlschnitt: grob `5-11` reviewbare PRs bis zur
+konservativen Produktionsreife. PR 66 prueft als naechstes den explizit
+freigegebenen lokalen Demo-Run im Browser, weiterhin ohne Erweiterung des
+Altdatenkorpus oder historische Vollgleichheitsbehauptung.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:

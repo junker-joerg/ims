@@ -150,6 +150,7 @@ def test_frontend_shell_declares_readonly_run_control_overview():
     assert "/api/run-control/adapter-result-contract" in source
     assert "/api/run-control/adapter-start-contract" in source
     assert "/api/run-control/execution-result/${encodeURIComponent(selectedQueueId)}" in source
+    assert "/api/run-control/execution-history/${encodeURIComponent(selectedQueueId)}" in source
     assert 'data-testid="adapter-result-contract"' in source
     assert 'data-testid="run-control-execution-flow"' in source
     assert 'data-testid="run-control-execution-result"' in source
@@ -391,13 +392,25 @@ def test_frontend_shell_declares_readonly_run_control_execution_result_card():
     styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
 
     assert "/api/run-control/execution-result/${encodeURIComponent(selectedQueueId)}" in source
+    assert "/api/run-control/execution-history/${encodeURIComponent(selectedQueueId)}" in source
     assert "RunControlExecutionResult" in source
     assert "RunControlExecutionResultRecord" in source
+    assert "RunControlExecutionHistory" in source
+    assert "RunControlExecutionAttempt" in source
     assert "Run-Control-Ergebnisanzeige" in source
     assert "Persistiertes Run-Control-Ergebnis" in source
     assert 'data-testid="run-control-execution-result"' in source
+    assert 'data-testid="run-control-execution-history"' in source
+    assert 'data-testid="run-control-execution-result-refresh"' in source
     assert "runControlExecutionResultRows" in source
+    assert "runControlExecutionHistoryRows" in source
     assert "runControlExecutionResultState" in source
+    assert "runControlExecutionHistoryState" in source
+    assert "setExecutionEvidenceRevision" in source
+    assert "Ergebnis neu laden" in source
+    assert "Automatische Wiederholung" in source
+    assert "automatic_retry_enabled" in source
+    assert "failure_message" in source
     assert "kein persistiertes Ergebnis" in source
     assert "adapter_execution_performed" in source
     assert "summary_mode" in source
@@ -406,6 +419,9 @@ def test_frontend_shell_declares_readonly_run_control_execution_result_card():
     assert "run-control-execution-result-panel" in styles
     assert "run-control-execution-result-grid" in styles
     assert "run-control-execution-result-row" in styles
+    assert "run-control-execution-result-refresh" in styles
+    assert "retryExecution" not in source
+    assert "/api/run-control/execution-retry" not in source
     assert "startRun" not in source
     assert "startAdapter" not in source
     assert "uploadAdapter" not in source
