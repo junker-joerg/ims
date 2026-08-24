@@ -235,14 +235,15 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "zehnten ausgefuehrten fachlichen Regressionstest" in plan
     assert "vorgeschlagener naechster Schritt ist PR 56" in plan
     assert "ZINS000-Aufnahmeentscheid" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 57" in plan
+    assert "PR 57 hat `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 58" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "12-18" in plan
+    assert "11-17" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -278,8 +279,10 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 56: Produktions-Altdatenkorpus als Plan fixieren" in plan
     assert "19 versionierte Referenzen" in plan
     assert "6.300 eingetragene" in plan
-    assert "PR 57 prueft nur das getrennte ZINS000-Paar" in plan
-    assert "12-18" in plan
+    assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
+    assert "getrennte ZINS000-Schicht" in plan
+    assert "11-17" in plan
+    assert "PR 58 bereitet den kontrollierten berechneten Mehrperiodenvergleich" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "schaltet keinen UI-Startpfad" in plan
@@ -444,7 +447,8 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "kontrollierter Carryover-Opt-in-Grenze" in plan
     assert "naechste Schritt ist PR 56" in plan
     assert "PR 56 ist mit 19 Kernreferenzen" in plan
-    assert "PR 57 prueft als naechstes ausschliesslich" in plan
+    assert "PR 57 hat ausschliesslich `IMSVU014.DAT`" in plan
+    assert "PR 58" in plan and "berechneten Mehrperiodenvergleich" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 

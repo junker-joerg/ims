@@ -58,8 +58,9 @@ erfolgt.
 Der verpflichtende Produktions-Altdatenkorpus ist unter
 `docs/plans/production_legacy_corpus_plan.md` auf 19 versionierte Referenzen
 mit 6.300 konkret eingetragenen Vergleichszeilen begrenzt. Weitere lokale
-Kandidaten bleiben ausgeschlossen; PR 57 prueft nur `IMSVU014.DAT` und
-`IMSVUSK1.DAT` als getrennte ZINS000-Referenzschicht.
+Kandidaten bleiben ausgeschlossen. PR 57 hat nur `IMSVU014.DAT` und
+`IMSVUSK1.DAT` als getrennte ZINS000-Referenzschicht versioniert; sie bleiben
+aus dem Kernbundle ausgeschlossen.
 
 Die lokale Demo-Checkliste fuer eine kurze Vorfuehrung steht unter `docs/migration/workbench_demo_checklist.md`. Sie benennt Startbefehle, UI-Reihenfolge, erwartete Demo-Signale und klare Grenzen: Queue-Metadaten duerfen nur in eine explizite SQLite-Datei vorgemerkt werden; Simulation, Ausfuehrungsadapter und fachlicher Gleichheitsnachweis bleiben ausgeschlossen.
 

@@ -1,0 +1,33 @@
+{
+  "layer_id": "zins000",
+  "layer_status": "versioned_separate_reference_layer",
+  "source_context": "incomming/ZINS000",
+  "core_bundle_included": false,
+  "comparison_scope": "parser_provenance_and_overlap_only",
+  "references": [
+    {
+      "legacy_path": "../references/legacy_agrsich/zins000/IMSVU014.DAT",
+      "sha256": "0276eab7b1f80dfc39773eb0e5a4a5df02b69b140792be9f810baa222e8ce828",
+      "subject_type": "insurer",
+      "export_filename": "imsvu014.dat",
+      "level": "I",
+      "selector_kind": "entity",
+      "selector_value": 14,
+      "start_period": 1,
+      "end_period": 300,
+      "row_count": 300
+    },
+    {
+      "legacy_path": "../references/legacy_agrsich/zins000/IMSVUSK1.DAT",
+      "sha256": "dc066d624c443fc165b0fb83481083dae33d823bd8a3a20d934adb4bf5426b2a",
+      "subject_type": "insurer",
+      "export_filename": "imsvusk1.dat",
+      "level": "IV",
+      "selector_kind": "all",
+      "selector_value": "SK1",
+      "start_period": 1,
+      "end_period": 300,
+      "row_count": 300
+    }
+  ]
+}

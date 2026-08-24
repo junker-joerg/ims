@@ -593,14 +593,16 @@ Aktualisierte grobe Restplanung:
   Plan fixieren und Ein-/Ausschlussgrenzen fuer die erste Freigabe benennen
   (erledigt: 19 Referenzen, 6.300 Vergleichszeilen und getrennter
   ZINS000-Aufnahmeentscheid);
-- vorgeschlagener naechster Schritt ist PR 57: `IMSVU014.DAT` und
-  `IMSVUSK1.DAT` nur als getrennte ZINS000-Referenzschicht pruefen;
+- PR 57 hat `IMSVU014.DAT` und `IMSVUSK1.DAT` nur als getrennte
+  ZINS000-Referenzschicht versioniert; der Kernkorpus bleibt unveraendert;
+- vorgeschlagener naechster Schritt ist PR 58: berechneten kontrollierten
+  Mehrperiodenvergleich fuer den Kernkorpus vorbereiten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `12-18` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `11-17` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 

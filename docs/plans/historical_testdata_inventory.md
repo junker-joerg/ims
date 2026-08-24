@@ -134,9 +134,11 @@ Der verpflichtende erste Freigabekorpus bleibt auf die 19 bereits
 versionierten Referenzen und 6.300 Bundle-Zeilen begrenzt. Details und
 Freigabegates stehen in `docs/plans/production_legacy_corpus_plan.md`.
 
-PR 57 prueft als einzigen lokalen Aufnahmeentscheid das ZINS000-Paar
+PR 57 hat als einzigen lokalen Aufnahmeentscheid das ZINS000-Paar
 `IMSVU014.DAT` und `IMSVUSK1.DAT`. Beide Dateien enthalten 300 Perioden im
 Versicherer-Agrsich-Format, stimmen aber numerisch in keiner ueberlappenden
 Periode mit `VU14L1.DAT` beziehungsweise den Zeitfenstern `VUSK1L5` bis
-`VUSK1L3` ueberein. Sie duerfen deshalb nur als getrennte historische Schicht
-und nicht als Ersatz oder Fortsetzung der heutigen Baseline bewertet werden.
+`VUSK1L3` ueberein. Sie sind deshalb unter
+`tests/references/legacy_agrsich/zins000/` nur als getrennte historische
+Schicht versioniert und nicht als Ersatz oder Fortsetzung der heutigen
+Baseline bewertet. Das produktive Kernbundle bleibt unveraendert.

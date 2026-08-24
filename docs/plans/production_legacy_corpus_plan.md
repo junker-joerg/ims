@@ -102,9 +102,10 @@ Ein Ausschluss bedeutet nicht, dass die Datei fachlich wertlos ist. Er bedeutet
 nur, dass sie fuer die erste Freigabe noch keine belastbare Vergleichsgrenze
 besitzt.
 
-## Einziger Aufnahmeentscheid fuer PR 57
+## Ergebnis des Aufnahmeentscheids aus PR 57
 
-PR 57 prueft gezielt das zusammengehoerige ZINS000-Paar:
+PR 57 hat gezielt das zusammengehoerige ZINS000-Paar geprueft und unter
+`tests/references/legacy_agrsich/zins000/` versioniert:
 
 | Datei | Lokale Quelle | Headerfamilie | Zeilen / Fenster | SHA-256 |
 | --- | --- | --- | --- | --- |
@@ -119,16 +120,16 @@ Zeilenvergleich ergab im Ueberlapp:
 - `IMSVUSK1.DAT` gegen `VUSK1L5`, `VUSK1L4` und `VUSK1L3`: `0/300` gleiche
   Periodenzeilen.
 
-PR 57 darf dieses Paar daher nur als getrennte ZINS000-Referenzschicht
-aufnehmen, niemals als Ersatz oder Fortsetzung der 19 Kernreferenzen. Vor einer
-Aufnahme sind Header, Periodenfolge, Zeilenzahl, Hashes und die gemeinsame
-Quelleneinordnung erneut zu testen. Kann die getrennte Schicht nicht sauber
-belegt werden, dokumentiert PR 57 den Ausschluss und der Kernkorpus bleibt bei
-19 Dateien und 6.300 Vergleichszeilen.
+Das Paar ist daher nur als getrennte ZINS000-Referenzschicht aufgenommen,
+niemals als Ersatz oder Fortsetzung der 19 Kernreferenzen. Header,
+Periodenfolge, Zeilenzahl, Hashes und die gemeinsame Quelleneinordnung sind in
+`tests/fixtures/legacy_zins000_reference_layer.json` fixiert und getestet. Der
+Kernkorpus bleibt bei 19 Dateien und 6.300 Vergleichszeilen.
 
-`incomming/` selbst bleibt in beiden Faellen unversioniert. Es duerfen nur die
-beiden einzeln geprueften Dateien gezielt in den historischen Referenzbestand
-uebernommen werden.
+`incomming/` selbst bleibt unversioniert. Es wurden nur die beiden einzeln
+geprueften Dateien gezielt in den historischen Referenzbestand uebernommen.
+Die Herkunfts- und Vergleichsgrenzen stehen in
+`docs/migration/zins000_reference_layer.md`.
 
 ## Freigabegates fuer PR 58 und PR 59
 

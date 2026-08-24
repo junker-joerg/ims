@@ -56,7 +56,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   Vergleichszeilen; PR 57 prueft nur das getrennte ZINS000-Paar
   `IMSVU014.DAT` und `IMSVUSK1.DAT` (erledigt).
 - PR 57: gezielte weitere Altdaten nur nach Header-/Feldpruefung uebernehmen;
-  `incomming/` bleibt weiterhin kein Sammelimport.
+  genau `IMSVU014.DAT` und `IMSVUSK1.DAT` sind als getrennte ZINS000-Schicht
+  versioniert; `incomming/` bleibt weiterhin kein Sammelimport (erledigt).
 - PR 58: Mehrperioden-Legacy-Vergleich fuer den Freigabekorpus vorbereiten,
   weiterhin ohne Vollsimulation.
 - PR 59: Abweichungsbericht erzeugen: Treffer, tolerierte Differenzen,
@@ -89,16 +90,15 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 56 bleiben grob `12-18` reviewbare PRs bis zu einer konservativen
+Nach PR 57 bleiben grob `11-17` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 57 prueft gezielt `incomming/ZINS000/IMSVU014.DAT` und
-`incomming/ZINS000/IMSVUSK1.DAT`. Weil beide Kandidaten in allen ueberlappenden
-Perioden von der heutigen Baseline abweichen, duerfen sie nur als getrennte
-ZINS000-Referenzschicht aufgenommen werden. Der PR importiert keine weiteren
-Dateien, startet keine Simulation, schaltet keinen UI-Startpfad frei und
+PR 58 bereitet den kontrollierten berechneten Mehrperiodenvergleich fuer den
+19-Dateien-Kernkorpus vor. ZINS000 bleibt dabei eine getrennt waehlbare
+Referenzschicht und wird nicht mit den 6.300 Kernvergleichsperioden vermischt.
+Der PR startet keine Vollsimulation, schaltet keinen UI-Startpfad frei und
 behauptet keine historische Vollgleichheit.

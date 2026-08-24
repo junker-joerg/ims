@@ -394,9 +394,12 @@ Vorgeschlagener naechster Schritt nach PR 49:
   unversioniert.
 - PR 57: ausschliesslich `IMSVU014.DAT` und `IMSVUSK1.DAT` aus ZINS000 als
   getrennte Referenzschicht pruefen; keine Ersetzung der Baseline und kein
-  Sammelimport.
+  Sammelimport (erledigt; versioniert unter
+  `tests/references/legacy_agrsich/zins000/`).
+- PR 58: berechneten kontrollierten Mehrperiodenvergleich fuer den
+  19-Dateien-Kernkorpus vorbereiten; ZINS000 nur separat waehlbar halten.
 
-Zaehlschnitt nach PR 56: grob `12-18` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 57: grob `11-17` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

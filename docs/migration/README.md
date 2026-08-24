@@ -67,6 +67,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_class_family_imsvnvk.md`: Vorbereitung der historischen VN-Klassenaggregate `IMSVNVK1.DAT` bis `IMSVNVK3.DAT`
 - `insurer_class_family_imsvuvk.md`: Vorbereitung der historischen Versicherer-Klassenaggregate `IMSVUVK1.DAT` bis `IMSVUVK3.DAT`
 - `parameter_output_vu014pr1.md`: Inventar und offene Feldklaerung fuer die historische Parameterausgabe `VU014PR1.DAT`
+- `zins000_reference_layer.md`: getrennte historische Referenzschicht fuer `IMSVU014.DAT` und `IMSVUSK1.DAT` ohne Erweiterung des Kernbundles
 - `fachlogik_migration_status.md`: Abschlussstand der kontrollierten Fachlogik-Migration im engeren Sinn mit Grenzen und Folgephasen
 - `workbench_demo_checklist.md`: lokale Demo-Checkliste fuer Start, UI-Reihenfolge, Demo-Signale und Grenzen ohne Simulation
 - `fourth_fachlicher_regressionstest.md`: vierter schmaler fachlicher Test fuer VN-`best_info`-Wirkung plus VN-State-Carryover ueber zwei explizite Perioden

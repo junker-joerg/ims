@@ -30,7 +30,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   dokumentierten Abweichungsgrenzen.
 - `production_legacy_corpus_plan.md`: PR-56-Festlegung des verpflichtenden
   19-Dateien-Kernkorpus mit 6.300 Vergleichszeilen, Ausschlussgrenzen und dem
-  getrennten ZINS000-Aufnahmeentscheid fuer PR 57.
+  in PR 57 getrennt versionierten ZINS000-Paar; PR 58 bleibt der naechste
+  berechnete Mehrperiodenvergleich.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

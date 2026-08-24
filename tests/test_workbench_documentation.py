@@ -687,7 +687,9 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 56: Produktions-Altdatenkorpus als Plan fixieren" in backlog
     assert "docs/plans/production_legacy_corpus_plan.md" in backlog
     assert "PR 57: ausschliesslich `IMSVU014.DAT` und `IMSVUSK1.DAT`" in backlog
-    assert "Zaehlschnitt nach PR 56: grob `12-18` reviewbare PRs" in backlog
+    assert "tests/references/legacy_agrsich/zins000/" in backlog
+    assert "PR 58: berechneten kontrollierten Mehrperiodenvergleich" in backlog
+    assert "Zaehlschnitt nach PR 57: grob `11-17` reviewbare PRs" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 
