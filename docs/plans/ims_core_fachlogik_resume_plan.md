@@ -605,14 +605,17 @@ Aktualisierte grobe Restplanung:
   Zeilen und 56/56 Felder);
 - PR 61 hat die technische Level-IV-Selektorgrenze `all` gegen `SK1` explizit
   kanonisiert und getestet, ohne Aggregatstufe oder Fachlogik zu aendern;
-- vorgeschlagener naechster Schritt ist PR 62: kontrollierte Run-Control-
-  Ausfuehrungsfreigabe fuer den lokalen Adapter vorbereiten;
+- PR 62 hat den read-only Run-Control-Freigabecheck mit Auditfeldern,
+  validierter Queue und serverseitigem Fixture-Profil umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 63: atomare Backend-Start-, Status-
+  und Ergebnisgrenze gegen Doppelstarts schaffen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `8-14` reviewbare PRs bis zu konservativer
+Wegen der neu separat geplanten atomaren Startgrenze bleiben grob ca. `8-14`
+reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 

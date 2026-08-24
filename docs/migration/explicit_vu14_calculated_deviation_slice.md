@@ -81,6 +81,6 @@ Laufzeittabelle und die Aggregatstufe bleiben unveraendert. Ein berechneter
 SK1-Slice ist damit technisch anschliessbar, aber noch nicht fachlich
 validiert.
 
-Als naechstes bereitet PR 62 die kontrollierte Run-Control-
-Ausfuehrungsfreigabe vor. Daraus folgt weiterhin keine historische
-Vollgleichheitsbehauptung.
+PR 62 hat den kontrollierten read-only Run-Control-Freigabecheck umgesetzt.
+Als naechstes bereitet PR 63 die atomare Backend-Start-/Statusgrenze vor.
+Daraus folgt weiterhin keine historische Vollgleichheitsbehauptung.

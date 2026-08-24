@@ -20,11 +20,19 @@ from ims.api.core_validation_carryover_probe_contract import (
 from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_execution_result_store import get_run_control_execution_result
+from ims.api.run_control_execution_release import (
+    build_default_execution_release_profiles,
+    check_run_control_execution_release,
+    parse_run_control_execution_release_payload,
+)
 from ims.api.run_control_preflight import preflight_run_control_from_repository
 from ims.api.run_control_adapter_result_api_contract import run_control_adapter_result_api_contract_payload
 from ims.api.run_control_adapter_start_contract import run_control_adapter_start_contract_payload
 from ims.api.run_control_core_diagnostics_bridge import build_run_control_core_diagnostics_bridge
-from ims.api.run_control_queue import enqueue_run_control_request_object
+from ims.api.run_control_queue import (
+    enqueue_run_control_request_object,
+    get_run_control_queue_entry,
+)
 from ims.api.run_control_queue_action_plan import build_run_control_queue_action_plan
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
@@ -168,6 +176,24 @@ def _run_control_execution_result_error_payload(
         "execution_performed": False,
         "adapter_started": False,
         "simulation_performed": False,
+    }
+
+
+def _run_control_execution_release_error_payload(message: str) -> dict[str, object]:
+    return {
+        "status": "error",
+        "mode": "run_control_execution_release_check",
+        "message": message,
+        "issues": [message],
+        "release_ready": False,
+        "adapter_start_allowed": False,
+        "adapter_started": False,
+        "result_persisted": False,
+        "writes_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "automatic_historical_rule_selection_performed": False,
+        "historical_full_equality_claimed": False,
     }
 
 
@@ -337,6 +363,48 @@ def create_app(
         result["execution_enabled"] = False
         return JSONResponse(result, status_code=201)
 
+    async def execution_release_check_response(request: Request) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            return JSONResponse(
+                _run_control_execution_release_error_payload(
+                    "run control execution release check requires an explicit SQLite metadata source"
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _run_control_execution_release_error_payload(
+                    "run control execution release JSON is invalid"
+                ),
+                status_code=400,
+            )
+        try:
+            release_request = parse_run_control_execution_release_payload(payload)
+            db_path = Path(str(metadata_source["path"]))
+            try:
+                queue_entry = get_run_control_queue_entry(
+                    release_request.queue_id,
+                    db_path=db_path,
+                ).entry
+            except MetadataImportError:
+                queue_entry = None
+            preflight = preflight_run_control_from_repository(release_request.run_id, repository)
+            result = check_run_control_execution_release(
+                release_request,
+                queue_entry=queue_entry,
+                preflight=preflight,
+                profiles=build_default_execution_release_profiles(_repo_root()),
+                trusted_fixture_root=_repo_root() / "tests" / "fixtures",
+            )
+        except MetadataImportError as exc:
+            return JSONResponse(
+                _run_control_execution_release_error_payload(str(exc)),
+                status_code=400,
+            )
+        return JSONResponse(result.to_dict(), status_code=200 if result.release_ready else 409)
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -430,6 +498,10 @@ def create_app(
         def run_control_adapter_start_contract() -> dict[str, object]:
             return run_control_adapter_start_contract_payload()
 
+        @app.post("/api/run-control/adapter-release-check", response_model=None)
+        async def run_control_adapter_release_check(request: Request) -> JSONResponse:
+            return await execution_release_check_response(request)
+
         @app.post("/api/run-control/dry-run", response_model=None)
         async def run_control_dry_run(request: Request) -> JSONResponse:
             return await dry_run_response(request)
@@ -492,6 +564,11 @@ def create_app(
         Route(
             "/api/run-control/adapter-start-contract",
             lambda request: JSONResponse(run_control_adapter_start_contract_payload()),
+        ),
+        Route(
+            "/api/run-control/adapter-release-check",
+            execution_release_check_response,
+            methods=["POST"],
         ),
         Route("/api/run-control/dry-run", dry_run_response, methods=["POST"]),
         Route(

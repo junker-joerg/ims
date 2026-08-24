@@ -409,9 +409,13 @@ Vorgeschlagener naechster Schritt nach PR 49:
 - PR 61: Level-IV-Selektormetadaten `all` und `SK1` technisch kanonisieren;
   VUSK1 bleibt ein `SK1`-/`all`-Aggregat auf Stufe IV (erledigt).
 - PR 62: kontrollierte Run-Control-Ausfuehrungsfreigabe fuer den lokalen
-  Adapter vorbereiten; keine Erweiterung der historischen Gleichheitsaussage.
+  Adapter vorbereiten; keine Erweiterung der historischen Gleichheitsaussage
+  (read-only Freigabecheck erledigt).
+- PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze gegen Doppelstarts
+  schaffen; noch kein UI-Startbutton.
 
-Zaehlschnitt nach PR 61: grob `8-14` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 62: wegen des separat geplanten atomaren Startschritts
+weiterhin grob `8-14` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

@@ -92,5 +92,6 @@ schmalen Aggregat-/Export-Output liefern und hat vier VU14-Perioden angebunden.
 PR 61 hat die technische Level-IV-Selektorgrenze `all` gegen `SK1` eng
 kanonisiert und getestet. Fixturegenerierte Echo-Tabellen duerfen nicht als
 Neu-Ergebnisse verwendet werden. Erst tatsaechlich gelieferte berechnete
-Tabellen duerfen Treffer oder Abweichungen erzeugen. PR 62 bereitet als
-naechstes die kontrollierte Run-Control-Ausfuehrungsfreigabe vor.
+Tabellen duerfen Treffer oder Abweichungen erzeugen. PR 62 hat den read-only
+Run-Control-Freigabecheck umgesetzt; PR 63 bereitet als naechstes die atomare
+Backend-Start-/Statusgrenze vor.

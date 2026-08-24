@@ -14,8 +14,10 @@ class RunControlAdapterStartContract:
     mode: str
     schema_version: str
     endpoint: str
+    release_check_endpoint: str
     planned_start_endpoint: str
     source_adapter_module: str
+    release_validation_module: str
     expected_adapter_mode: str
     expected_summary_mode: str
     required_request_fields: tuple[str, ...]
@@ -27,6 +29,8 @@ class RunControlAdapterStartContract:
     http_enabled: bool = True
     api_accepts_start_payload: bool = False
     api_validates_start_payload: bool = False
+    api_accepts_release_payload: bool = True
+    api_validates_release_payload: bool = True
     api_starts_adapter: bool = False
     ui_start_enabled: bool = False
     queue_worker_enabled: bool = False
@@ -44,8 +48,10 @@ class RunControlAdapterStartContract:
             "mode": self.mode,
             "schema_version": self.schema_version,
             "endpoint": self.endpoint,
+            "release_check_endpoint": self.release_check_endpoint,
             "planned_start_endpoint": self.planned_start_endpoint,
             "source_adapter_module": self.source_adapter_module,
+            "release_validation_module": self.release_validation_module,
             "expected_adapter_mode": self.expected_adapter_mode,
             "expected_summary_mode": self.expected_summary_mode,
             "required_request_fields": list(self.required_request_fields),
@@ -57,6 +63,8 @@ class RunControlAdapterStartContract:
             "http_enabled": self.http_enabled,
             "api_accepts_start_payload": self.api_accepts_start_payload,
             "api_validates_start_payload": self.api_validates_start_payload,
+            "api_accepts_release_payload": self.api_accepts_release_payload,
+            "api_validates_release_payload": self.api_validates_release_payload,
             "api_starts_adapter": self.api_starts_adapter,
             "ui_start_enabled": self.ui_start_enabled,
             "queue_worker_enabled": self.queue_worker_enabled,
@@ -78,16 +86,22 @@ def build_run_control_adapter_start_contract() -> RunControlAdapterStartContract
         mode="run_control_adapter_start_contract",
         schema_version=METADATA_SCHEMA_VERSION,
         endpoint="/api/run-control/adapter-start-contract",
+        release_check_endpoint="/api/run-control/adapter-release-check",
         planned_start_endpoint="/api/run-control/adapter-start",
         source_adapter_module="ims.api.controlled_execution_adapter",
+        release_validation_module="ims.api.run_control_execution_release",
         expected_adapter_mode="explicit_multi_period_fixture_adapter",
         expected_summary_mode="explicit_multi_period_execution_summary",
         required_request_fields=(
             "queue_id",
             "run_id",
             "scenario_id",
+            "release_profile_id",
             "explicit_execution_release",
             "expected_adapter_mode",
+            "released_by",
+            "released_at",
+            "release_reason",
         ),
         optional_request_fields=(
             "requested_by",
@@ -101,6 +115,8 @@ def build_run_control_adapter_start_contract() -> RunControlAdapterStartContract
             "queue_status_validated_or_explicitly_released",
             "preflight_passed_or_blockers_explicitly_resolved",
             "explicit_execution_release_true",
+            "release_audit_fields_present",
+            "release_profile_known_locally",
             "fixture_path_from_known_local_metadata",
             "result_storage_path_controlled_by_run_control",
         ),

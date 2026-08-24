@@ -87,3 +87,17 @@ PR 45 soll als naechsten reviewbaren Schritt die Queue-/Status-/Resultatgrenzen
 fuer eine spaeter freigegebene Ausfuehrung vorbereiten. Auch dieser Schritt
 soll noch klein bleiben und darf nur die kontrollierte Persistenzgrenze
 schaffen, nicht automatisch Queue-Worker oder UI-Startbutton einfuehren.
+
+## Erweiterung in PR 62
+
+PR 62 laesst den Startendpunkt weiterhin gesperrt, ergaenzt aber den
+read-only Freigabecheck `POST /api/run-control/adapter-release-check`.
+`api_accepts_release_payload = true` und
+`api_validates_release_payload = true` gelten nur fuer diesen Check. Die
+Startflags `api_accepts_start_payload`, `api_validates_start_payload` und
+`api_starts_adapter` bleiben `false`.
+
+Der Freigabecheck verlangt zusaetzlich `release_profile_id`, `released_by`,
+`released_at` und `release_reason`. Fixture- oder Ausgabepfade duerfen nicht
+aus dem Browserpayload stammen. PR 63 muss vor einem echten Adapterstart eine
+atomare Status-/Idempotenz- und Ergebnisgrenze schaffen.

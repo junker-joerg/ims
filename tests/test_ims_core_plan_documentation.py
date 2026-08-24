@@ -239,7 +239,7 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 58 hat den berechneten kontrollierten Mehrperiodenvergleich" in plan
     assert "PR 59 hat den ersten read-only Abweichungsbericht angebunden" in plan
     assert "PR 60 hat den ersten schmalen berechneten Aggregat-/Export-Output" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 62" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 63" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
@@ -289,11 +289,12 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
     assert "PR 61" in plan and "Level-IV-Selektorgrenze" in plan
-    assert "PR 62 bereitet die Run-Control-Ausfuehrungsfreigabe" in plan
+    assert "PR 62" in plan and "read-only Freigabecheck erledigt" in plan
+    assert "PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
-    assert "behauptet keine historische\nVollgleichheit" in plan
+    assert "behauptet keine\nhistorische Vollgleichheit" in plan
 
 
 def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:
@@ -459,6 +460,8 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "PR 60" in plan
     assert "tatsaechlich" in plan and "berechneten VU14-Aggregat-/Export-Slice" in plan
     assert "PR 61" in plan and "Level-IV-Selektorgrenze" in plan
+    assert "PR 62" in plan and "read-only Freigabecheck" in plan
+    assert "PR 63" in plan and "atomare Backend-Start-/Status" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -1200,6 +1203,9 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "GET /api/core-validation/carryover-probe-contract" in readme
     assert "GET /api/run-control/adapter-result-contract" in readme
     assert "GET /api/run-control/adapter-start-contract" in readme
+    assert "POST /api/run-control/adapter-release-check" in readme
+    assert "`release_ready = true`" in readme
+    assert "atomaren Status-/Idempotenz- und Ergebnisgrenze in PR 63" in readme
     assert "Carryover-Probe-Vertrag" in readme
     assert "0 PRs bis zur" in readme
     assert "3+ fachliche" in readme

@@ -436,6 +436,20 @@ Die Antwort enthaelt `mode = "run_control_adapter_start_contract"`,
 `queue_worker_enabled = false`. `POST /api/run-control/adapter-start` ist in
 diesem Stand nicht vorhanden.
 
+PR 62 ergaenzt den rein lesenden Freigabecheck:
+
+```text
+POST /api/run-control/adapter-release-check
+```
+
+Er verlangt eine validierte Queue, einen gruenen Preflight, ein serverseitig
+bekanntes lokales Fixture-Profil sowie die Auditfelder `released_by`,
+`released_at` und `release_reason`. Browser-Fixture- und Outputpfade werden
+verworfen. Auch bei `release_ready = true` bleiben `adapter_start_allowed`,
+`adapter_started`, `writes_performed`, `execution_performed` und
+`simulation_performed` auf `false`. Der echte Backendstart folgt erst nach
+einer atomaren Status-/Idempotenz- und Ergebnisgrenze in PR 63.
+
 Der lokale Run-Control-Ergebnisstore speichert vorab validierte
 Adapter-Resultate an einen validierten Queue-Eintrag:
 

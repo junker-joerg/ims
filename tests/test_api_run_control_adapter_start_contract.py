@@ -23,12 +23,18 @@ def test_run_control_adapter_start_contract_reports_hard_gated_shape() -> None:
     assert payload["mode"] == "run_control_adapter_start_contract"
     assert payload["schema_version"] == "ims.workbench.metadata.v1"
     assert payload["endpoint"] == "/api/run-control/adapter-start-contract"
+    assert payload["release_check_endpoint"] == "/api/run-control/adapter-release-check"
     assert payload["planned_start_endpoint"] == "/api/run-control/adapter-start"
     assert payload["source_adapter_module"] == "ims.api.controlled_execution_adapter"
+    assert payload["release_validation_module"] == "ims.api.run_control_execution_release"
     assert payload["expected_adapter_mode"] == "explicit_multi_period_fixture_adapter"
     assert payload["expected_summary_mode"] == "explicit_multi_period_execution_summary"
     assert "queue_id" in payload["required_request_fields"]
     assert "explicit_execution_release" in payload["required_request_fields"]
+    assert "release_profile_id" in payload["required_request_fields"]
+    assert "released_by" in payload["required_request_fields"]
+    assert "released_at" in payload["required_request_fields"]
+    assert "release_reason" in payload["required_request_fields"]
     assert "queue_entry_exists" in payload["required_preconditions"]
     assert "explicit_execution_release_true" in payload["required_preconditions"]
     assert "fixture_path_from_known_local_metadata" in payload["required_preconditions"]
@@ -43,6 +49,8 @@ def test_run_control_adapter_start_contract_reports_hard_gated_shape() -> None:
     assert payload["http_enabled"] is True
     assert payload["api_accepts_start_payload"] is False
     assert payload["api_validates_start_payload"] is False
+    assert payload["api_accepts_release_payload"] is True
+    assert payload["api_validates_release_payload"] is True
     assert payload["api_starts_adapter"] is False
     assert payload["ui_start_enabled"] is False
     assert payload["queue_worker_enabled"] is False

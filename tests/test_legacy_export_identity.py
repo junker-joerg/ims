@@ -54,4 +54,5 @@ def test_level_iv_selector_documentation_keeps_scope_conservative() -> None:
     assert "Zeitfenster desselben `SK1`-/`all`-Aggregats" in doc
     assert "keine historische Vollgleichheit" in doc
     assert "keine Vollsimulation gestartet" in doc
-    assert "PR 62" in doc and "Run-Control-Ausfuehrungsfreigabe" in doc
+    assert "PR 62" in doc and "Run-Control-Freigabecheck" in doc
+    assert "PR 63" in doc and "Backend-Start-/Status" in doc

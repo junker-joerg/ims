@@ -222,8 +222,22 @@ read-only Abweichungsbericht angebunden und weist 15 fehlende Kernexporte
 blockierend aus. PR 60 hat einen ersten schmalen,
 tatsaechlich berechneten VU14-Aggregat-/Export-Slice angebunden. PR 61 hat die
 technische Level-IV-Selektorgrenze `all` gegen `SK1` eng kanonisiert. PR 62
-bereitet als naechstes den kontrollierten Run-Control-Freigabepfad vor, ohne
-freien Browser-Upload oder eine unbegrenzte Vollsimulation freizuschalten.
+hat den kontrollierten read-only Freigabecheck mit Auditfeldern, validierter
+Queue, gruenem Preflight und serverseitigem Fixture-Profil umgesetzt. PR 63
+schafft als naechstes die atomare Backend-Start-/Status- und Ergebnisgrenze
+gegen Doppelstarts, weiterhin ohne UI-Startbutton oder freien Browser-Upload.
+
+## Umsetzung in PR 62
+
+- `POST /api/run-control/adapter-release-check` validiert nur die Freigabereife;
+- Pflicht-Auditfelder sind `released_by`, `released_at` und `release_reason`;
+- `release_profile_id` waehlt nur ein serverseitig bekanntes lokales Profil;
+- Browser-Fixture- und Outputpfade werden als unbekannte Felder verworfen;
+- Queue-Status `validated`, passende IDs und ein gruener Preflight sind Pflicht;
+- `adapter_start_allowed = false`, `adapter_started = false`,
+  `writes_performed = false`, `execution_performed = false` und
+  `simulation_performed = false` bleiben erhalten;
+- `POST /api/run-control/adapter-start` bleibt nicht vorhanden.
 
 ## Validierung dieses Planstands
 

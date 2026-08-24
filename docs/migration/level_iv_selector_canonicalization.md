@@ -63,7 +63,7 @@ kein Nachweis einer unabhaengigen historischen Zustandsentwicklung.
 
 ## Naechster Schritt
 
-PR 62 bereitet gemaess Produktionsreifeplan die kontrollierte
-Run-Control-Ausfuehrungsfreigabe fuer den lokalen Adapter vor. Sie bleibt
-separat gegatet und darf weder freien Browser-Upload noch eine unbegrenzte
-Simulation freischalten.
+PR 62 hat den kontrollierten read-only Run-Control-Freigabecheck fuer den
+lokalen Adapter umgesetzt. PR 63 bereitet die atomare Backend-Start-/Status-
+und Ergebnisgrenze vor. Freier Browser-Upload und unbegrenzte Simulation
+bleiben gesperrt.

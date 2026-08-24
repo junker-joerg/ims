@@ -693,8 +693,10 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "15 blockierende Kerninputluecken" in backlog
     assert "PR 60: ersten schmalen, tatsaechlich berechneten Output" in backlog
     assert "PR 61: Level-IV-Selektormetadaten `all` und `SK1`" in backlog
-    assert "Zaehlschnitt nach PR 61: grob `8-14` reviewbare PRs" in backlog
+    assert "Zaehlschnitt nach PR 62" in backlog
+    assert "weiterhin grob `8-14` reviewbare PRs" in backlog
     assert "PR 62: kontrollierte Run-Control-Ausfuehrungsfreigabe" in backlog
+    assert "PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

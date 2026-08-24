@@ -78,36 +78,39 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 - PR 62: Run-Control-Ausfuehrungsfreigabe fuer den lokalen Adapter als
   kontrollierten Startpfad vorbereiten, mit Auditfeldern und weiter ohne freien
-  Browser-Upload.
-- PR 63: UI-Startpfad hinter expliziter Freigabe aktivieren; Queue-Worker und
+  Browser-Upload (read-only Freigabecheck erledigt).
+- PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze gegen Doppelstarts
+  schaffen, noch ohne UI-Startbutton.
+- PR 64: UI-Startpfad hinter expliziter Freigabe aktivieren; Queue-Worker und
   Adapterstart bleiben eng gegated.
-- PR 64: UI-Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige fuer
+- PR 65: UI-Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige fuer
   persistierte Runs stabilisieren.
-- PR 65: Browser-/Screenshot-E2E-Smoke fuer den freigegebenen lokalen Demo-Run
+- PR 66: Browser-/Screenshot-E2E-Smoke fuer den freigegebenen lokalen Demo-Run
   ergaenzen.
 
 ### Phase D: Freigabehaertung
 
-- PR 66: Packaging-/Staging-/Startskript-Smoke fuer den freigegebenen Stand
+- PR 67: Packaging-/Staging-/Startskript-Smoke fuer den freigegebenen Stand
   wiederholen und Release-Checkliste einfrieren.
-- PR 67: Backup-/Restore- und Update-/Rollback-Probe fuer lokale Metadaten mit
+- PR 68: Backup-/Restore- und Update-/Rollback-Probe fuer lokale Metadaten mit
   einem validierten Ergebnisstand pruefen.
-- PR 68: Abschlussbericht fuer den ersten Produktionsfreigabekorpus erstellen:
+- PR 69: Abschlussbericht fuer den ersten Produktionsfreigabekorpus erstellen:
   Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad.
-- PR 69+: Review-Fixes, CI-/Windows-Haertung und blockierende
+- PR 70+: Review-Fixes, CI-/Windows-Haertung und blockierende
   Abweichungskorrekturen.
 
 ## Grobe Anzahl
 
-Nach PR 61 bleiben grob `8-14` reviewbare PRs bis zu einer konservativen
+Nach PR 62 bleiben wegen der separat benoetigten atomaren Backend-Startgrenze
+weiterhin grob `8-14` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 62 bereitet die Run-Control-Ausfuehrungsfreigabe fuer den lokalen Adapter
-als kontrollierten Startpfad vor. Auditfelder, explizites Gating und die
-Abgrenzung gegen freien Browser-Upload bleiben Pflicht. Der PR darf keine
-unbegrenzte Vollsimulation freischalten und behauptet keine historische
-Vollgleichheit.
+PR 63 schafft eine atomare Backend-Start-, Status- und Ergebnisgrenze gegen
+Doppelstarts. Der vorhandene read-only Freigabecheck bleibt Voraussetzung;
+freier Browser-Upload und UI-Startbutton bleiben in diesem PR gesperrt. Der PR
+darf keine unbegrenzte Vollsimulation freischalten und behauptet keine
+historische Vollgleichheit.

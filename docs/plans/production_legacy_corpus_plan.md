@@ -155,7 +155,10 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
     Selektor `SK1`, ohne VUSK1-Zeitfenster als Aggregatebenen umzudeuten
     (erledigt durch enge technische Kanonisierung und Negativtests);
 11. PR 62 bereitet den kontrollierten Run-Control-Freigabepfad vor, ohne die
-    Korpusgrenzen oder historischen Gleichheitsaussagen zu erweitern.
+    Korpusgrenzen oder historischen Gleichheitsaussagen zu erweitern
+    (read-only Freigabecheck erledigt);
+12. PR 63 schafft vor einem echten Adapterstart die atomare Status- und
+    Ergebnisgrenze gegen Doppelstarts.
 
 ## Offene Risiken
 
