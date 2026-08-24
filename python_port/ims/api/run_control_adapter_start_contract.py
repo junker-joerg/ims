@@ -32,7 +32,7 @@ class RunControlAdapterStartContract:
     api_accepts_release_payload: bool = True
     api_validates_release_payload: bool = True
     api_starts_adapter: bool = True
-    ui_start_enabled: bool = False
+    ui_start_enabled: bool = True
     queue_worker_enabled: bool = False
     writes_enabled: bool = True
     execution_enabled: bool = True
@@ -137,7 +137,6 @@ def build_run_control_adapter_start_contract() -> RunControlAdapterStartContract
             "simulation_execution",
             "scheduler_start",
             "queue_worker",
-            "ui_start_button",
             "browser_file_picker",
             "metadata_write",
             "fachlogik_mutation",

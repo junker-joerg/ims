@@ -37,8 +37,11 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   ersten engen VU14-Aggregat-/Export-Slice fuer Perioden `1-4` an; PR 61
   kanonisiert die technische Level-IV-Selektorgrenze `all`/`SK1`. PR 62 setzt
   den read-only Run-Control-Freigabecheck um; PR 63 schliesst die atomare
-  Backend-Start-/Status-/Ergebnisgrenze. PR 64 bindet als naechstes den
-  vorbereiteten UI-Flow kontrolliert an.
+  Backend-Start-/Status-/Ergebnisgrenze. PR 64 bindet den vorbereiteten UI-Flow
+  kontrolliert an; PR 65 stabilisiert als naechstes Ergebnisverlauf und
+  Fehlerzustaende.
+- `run_control_ui_start_plan.md`: enger PR-64-Plan fuer zweistufige
+  Freigabepruefung und manuellen UI-Start ohne Queue-Worker oder Simulation.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

@@ -609,14 +609,16 @@ Aktualisierte grobe Restplanung:
   validierter Queue und serverseitigem Fixture-Profil umgesetzt;
 - PR 63 hat die atomare Backend-Start-, Status- und Ergebnisgrenze mit
   Idempotenz und konservativem Fehlerstatus umgesetzt;
-- vorgeschlagener naechster Schritt ist PR 64: den vorbereiteten UI-Flow an
-  diese Backend-Grenze anbinden, weiterhin ohne Queue-Worker;
+- PR 64 hat den vorbereiteten UI-Flow zweistufig an diese Backend-Grenze
+  angebunden, weiterhin ohne Queue-Worker oder automatische Wiederholung;
+- vorgeschlagener naechster Schritt ist PR 65: Ergebnisverlauf,
+  Fehlerzustaende und erneute Ergebnisanzeige stabilisieren;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der umgesetzten atomaren Startgrenze bleiben grob ca. `7-13`
+Nach der umgesetzten UI-Startgrenze bleiben grob ca. `6-12`
 reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.

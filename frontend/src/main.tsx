@@ -165,6 +165,8 @@ type RunControlQueueEnqueueResult = {
 type RunControlNextAction =
   | "run_preflight"
   | "await_execution_release"
+  | "await_execution_completion"
+  | "inspect_execution_failure"
   | "resolve_blockers"
   | "inspect_persisted_result"
   | "inspect_queue_status";
@@ -334,6 +336,52 @@ type RunControlAdapterStartContract = {
   simulation_performed: boolean;
   automatic_historical_rule_selection_performed: boolean;
   historical_full_equality_claimed: boolean;
+};
+
+type RunControlExecutionReleaseRequest = {
+  schema_version: string;
+  queue_id: string;
+  run_id: string;
+  scenario_id: string;
+  release_profile_id: string;
+  idempotency_key: string;
+  expected_adapter_mode: string;
+  explicit_execution_release: true;
+  released_by: string;
+  released_at: string;
+  release_reason: string;
+  carry_forward_vu_state: false;
+  carry_forward_vn_state: false;
+};
+
+type RunControlExecutionReleaseResult = {
+  status: "ready" | "blocked" | "error";
+  mode: "run_control_execution_release_check";
+  request?: RunControlExecutionReleaseRequest;
+  issues: string[];
+  release_ready: boolean;
+  adapter_started: boolean;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  message?: string;
+};
+
+type RunControlAdapterStartResponse = {
+  status: "ok" | "error";
+  mode: "run_control_adapter_start";
+  queue_id?: string;
+  queue_status?: string;
+  idempotency_key?: string;
+  replayed?: boolean;
+  record?: RunControlExecutionResultRecord;
+  adapter_started: boolean;
+  result_persisted: boolean;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  message?: string;
+  issues?: string[];
 };
 
 type RunControlExecutionResultRecord = {
@@ -558,10 +606,12 @@ function uniqueSorted(values: string[]): string[] {
   return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
 }
 
+function createUiIdempotencyKey(queueId: string): string {
+  const suffix = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`;
+  return `workbench-ui-${queueId}-${suffix}`;
+}
+
 function queueActionLabel(entry: RunControlQueueEntry): string {
-  if (entry.execution_enabled || entry.execution_performed) {
-    return "Blocker klaeren";
-  }
   if (entry.status === "planned") {
     return "Preflight lokal";
   }
@@ -573,6 +623,15 @@ function queueActionLabel(entry: RunControlQueueEntry): string {
   }
   if (entry.status === "result_persisted") {
     return "Ergebnis pruefen";
+  }
+  if (entry.status === "starting") {
+    return "Start laeuft";
+  }
+  if (entry.status === "failed") {
+    return "Fehler pruefen";
+  }
+  if (entry.execution_enabled || entry.execution_performed) {
+    return "Blocker klaeren";
   }
   return "Status pruefen";
 }
@@ -597,6 +656,18 @@ function App() {
     useState<RunControlAdapterResultApiContract | null>(null);
   const [runControlAdapterStartContract, setRunControlAdapterStartContract] =
     useState<RunControlAdapterStartContract | null>(null);
+  const [executionReleaseActor, setExecutionReleaseActor] = useState("workbench-ui");
+  const [executionReleaseReason, setExecutionReleaseReason] = useState("Kontrollierter Workbench-Start");
+  const [executionReleaseConfirmed, setExecutionReleaseConfirmed] = useState(false);
+  const [executionReleaseRequest, setExecutionReleaseRequest] =
+    useState<RunControlExecutionReleaseRequest | null>(null);
+  const [executionReleaseResult, setExecutionReleaseResult] =
+    useState<RunControlExecutionReleaseResult | null>(null);
+  const [executionReleaseState, setExecutionReleaseState] = useState<DetailState>("idle");
+  const [executionReleaseError, setExecutionReleaseError] = useState<string | null>(null);
+  const [adapterStartResult, setAdapterStartResult] = useState<RunControlAdapterStartResponse | null>(null);
+  const [adapterStartState, setAdapterStartState] = useState<DetailState>("idle");
+  const [adapterStartError, setAdapterStartError] = useState<string | null>(null);
   const [runControlDryRunResult, setRunControlDryRunResult] = useState<RunControlDryRunResult | null>(null);
   const [runControlDryRunState, setRunControlDryRunState] = useState<DetailState>("idle");
   const [runControlDryRunError, setRunControlDryRunError] = useState<string | null>(null);
@@ -685,6 +756,17 @@ function App() {
     return () => {
       active = false;
     };
+  }, [selectedQueueId]);
+
+  useEffect(() => {
+    setExecutionReleaseConfirmed(false);
+    setExecutionReleaseRequest(null);
+    setExecutionReleaseResult(null);
+    setExecutionReleaseState("idle");
+    setExecutionReleaseError(null);
+    setAdapterStartResult(null);
+    setAdapterStartState("idle");
+    setAdapterStartError(null);
   }, [selectedQueueId]);
 
   useEffect(() => {
@@ -1186,6 +1268,136 @@ function App() {
     queueDetail?.entry.queue_id === selectedQueueId
       ? queueDetail.entry
       : runControlQueue?.entries.find((entry) => entry.queue_id === selectedQueueId) ?? null;
+  const invalidateExecutionRelease = () => {
+    setExecutionReleaseRequest(null);
+    setExecutionReleaseResult(null);
+    setExecutionReleaseState("idle");
+    setExecutionReleaseError(null);
+    setAdapterStartResult(null);
+    setAdapterStartState("idle");
+    setAdapterStartError(null);
+  };
+  const refreshRunControlExecutionState = async (queueId: string) => {
+    const [overviewResponse, detailResponse, actionPlanResponse, coreBridgeResponse, resultResponse] =
+      await Promise.all([
+        fetch("/api/run-control/queue"),
+        fetch(`/api/run-control/queue/${encodeURIComponent(queueId)}`),
+        fetch("/api/run-control/queue/action-plan"),
+        fetch("/api/run-control/core-diagnostics-bridge"),
+        fetch(`/api/run-control/execution-result/${encodeURIComponent(queueId)}`)
+      ]);
+    if (overviewResponse.ok) {
+      setRunControlQueue((await overviewResponse.json()) as RunControlQueueOverview);
+    }
+    if (detailResponse.ok) {
+      setQueueDetail((await detailResponse.json()) as RunControlQueueDetail);
+      setQueueDetailState("ready");
+      setQueueDetailError(null);
+    }
+    if (actionPlanResponse.ok) {
+      setRunControlActionPlan((await actionPlanResponse.json()) as RunControlQueueActionPlan);
+      setRunControlActionPlanState("ready");
+    }
+    if (coreBridgeResponse.ok) {
+      setRunControlCoreBridge((await coreBridgeResponse.json()) as RunControlCoreDiagnosticsBridge);
+    }
+    if (resultResponse.ok) {
+      setRunControlExecutionResult((await resultResponse.json()) as RunControlExecutionResult);
+      setRunControlExecutionResultState("ready");
+      setRunControlExecutionResultError(null);
+    } else if (resultResponse.status === 404) {
+      setRunControlExecutionResult(null);
+      setRunControlExecutionResultState("ready");
+      setRunControlExecutionResultError("kein persistiertes Ergebnis");
+    }
+  };
+  const canCheckExecutionRelease =
+    selectedQueueEntry?.status === "validated" &&
+    executionReleaseConfirmed &&
+    Boolean(executionReleaseActor.trim()) &&
+    Boolean(executionReleaseReason.trim()) &&
+    runControlAdapterStartContract?.api_accepts_start_payload === true &&
+    runControlAdapterStartContract.api_validates_start_payload === true &&
+    runControlAdapterStartContract.ui_start_enabled === true;
+  const checkExecutionRelease = async () => {
+    if (!selectedQueueEntry || !runControlAdapterStartContract || !canCheckExecutionRelease) {
+      return;
+    }
+    const request: RunControlExecutionReleaseRequest = {
+      schema_version: runControlAdapterStartContract.schema_version,
+      queue_id: selectedQueueEntry.queue_id,
+      run_id: selectedQueueEntry.request.run_id,
+      scenario_id: selectedQueueEntry.request.scenario_id,
+      release_profile_id: "vu14-calculated-diagnostic",
+      idempotency_key: createUiIdempotencyKey(selectedQueueEntry.queue_id),
+      expected_adapter_mode: runControlAdapterStartContract.expected_adapter_mode,
+      explicit_execution_release: true,
+      released_by: executionReleaseActor.trim(),
+      released_at: new Date().toISOString(),
+      release_reason: executionReleaseReason.trim(),
+      carry_forward_vu_state: false,
+      carry_forward_vn_state: false
+    };
+    setExecutionReleaseRequest(request);
+    setExecutionReleaseResult(null);
+    setExecutionReleaseState("loading");
+    setExecutionReleaseError(null);
+    setAdapterStartResult(null);
+    setAdapterStartState("idle");
+    setAdapterStartError(null);
+    try {
+      const response = await fetch("/api/run-control/adapter-release-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request)
+      });
+      const payload = (await response.json()) as RunControlExecutionReleaseResult;
+      if (!response.ok && response.status !== 409) {
+        throw new Error(payload.message ?? "Ausfuehrungsfreigabe nicht erreichbar");
+      }
+      setExecutionReleaseResult(payload);
+      setExecutionReleaseState("ready");
+      setExecutionReleaseError(payload.release_ready ? null : payload.issues.join(", ") || "Freigabe blockiert");
+    } catch (error) {
+      setExecutionReleaseResult(null);
+      setExecutionReleaseError(error instanceof Error ? error.message : "Ausfuehrungsfreigabe nicht erreichbar");
+      setExecutionReleaseState("error");
+    }
+  };
+  const canStartAdapter =
+    executionReleaseRequest?.queue_id === selectedQueueEntry?.queue_id &&
+    executionReleaseResult?.release_ready === true &&
+    selectedQueueEntry?.status === "validated" &&
+    adapterStartState !== "loading";
+  const startReleasedAdapter = async () => {
+    if (!executionReleaseRequest || !selectedQueueEntry || !canStartAdapter) {
+      return;
+    }
+    setAdapterStartResult(null);
+    setAdapterStartState("loading");
+    setAdapterStartError(null);
+    try {
+      const response = await fetch("/api/run-control/adapter-start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(executionReleaseRequest)
+      });
+      const payload = (await response.json()) as RunControlAdapterStartResponse;
+      setAdapterStartResult(payload);
+      if (!response.ok) {
+        setAdapterStartError(payload.message ?? "Adapterstart fehlgeschlagen");
+        setAdapterStartState("error");
+      } else {
+        setAdapterStartState("ready");
+      }
+      await refreshRunControlExecutionState(selectedQueueEntry.queue_id);
+    } catch (error) {
+      setAdapterStartResult(null);
+      setAdapterStartError(error instanceof Error ? error.message : "Adapterstart nicht erreichbar");
+      setAdapterStartState("error");
+      await refreshRunControlExecutionState(selectedQueueEntry.queue_id);
+    }
+  };
   const queueDetailRows = [
     ["Queue-ID", selectedQueueEntry?.queue_id ?? "kein Eintrag"],
     ["Run", selectedQueueEntry?.request.run_id ?? "-"],
@@ -1377,20 +1589,33 @@ function App() {
     ["Ausfuehrung", selectedQueueAction?.execution_allowed || runControlActionPlan?.execution_performed ? "aktiv" : "gesperrt"]
   ];
   const executionReleaseStatus =
-    selectedQueueAction?.next_action === "await_execution_release"
-      ? "wartet"
-      : selectedQueueAction?.next_action === "inspect_persisted_result"
-        ? "erledigt"
-        : selectedQueueAction?.blocked_by.length
+    executionReleaseState === "loading"
+      ? "prueft"
+      : executionReleaseResult?.release_ready
+        ? "freigegeben"
+        : executionReleaseError
           ? "blockiert"
-          : "nicht bereit";
-  const executionStartStatus = runControlAdapterStartContract
-    ? runControlAdapterStartContract.api_starts_adapter ||
-      runControlAdapterStartContract.ui_start_enabled ||
-      runControlAdapterStartContract.execution_enabled
-      ? "aktiv"
-      : "gesperrt"
-    : "laedt";
+          : selectedQueueAction?.next_action === "await_execution_release"
+            ? "wartet"
+            : selectedQueueAction?.next_action === "inspect_persisted_result"
+              ? "erledigt"
+              : selectedQueueAction?.blocked_by.length
+                ? "blockiert"
+                : "nicht bereit";
+  const executionStartStatus =
+    adapterStartState === "loading"
+      ? "startet"
+      : adapterStartResult?.result_persisted
+        ? "abgeschlossen"
+        : adapterStartError
+          ? "fehlgeschlagen"
+          : selectedQueueEntry?.status === "starting"
+            ? "laeuft"
+            : selectedQueueEntry?.status === "failed"
+              ? "fehlgeschlagen"
+              : runControlAdapterStartContract?.ui_start_enabled
+                ? "bereit nach Freigabe"
+                : "gesperrt";
   const runControlExecutionFlowSteps = [
     ["Preflight", runControlPreflightBoundaryStatus],
     ["Explizite Freigabe", executionReleaseStatus],
@@ -1404,6 +1629,10 @@ function App() {
     ["Adapterstart", runControlAdapterStartContract?.api_starts_adapter ? "aktiv" : "gesperrt"],
     ["UI-Start", runControlAdapterStartContract?.ui_start_enabled ? "aktiv" : "gesperrt"],
     ["Queue-Worker", runControlAdapterStartContract?.queue_worker_enabled ? "aktiv" : "gesperrt"],
+    ["Freigabeprofil", executionReleaseRequest?.release_profile_id ?? "vu14-calculated-diagnostic"],
+    ["Freigabe-ID", executionReleaseRequest?.idempotency_key ?? "noch nicht erzeugt"],
+    ["Freigabecheck", executionReleaseError ?? executionReleaseResult?.status ?? "offen"],
+    ["Startstatus", adapterStartError ?? adapterStartResult?.queue_status ?? selectedQueueEntry?.status ?? "offen"],
     ["Persistenz", selectedQueueEntry?.status === "result_persisted" ? "Ergebnis liegt vor" : "offen"],
     ["Naechster Schritt", selectedQueueAction?.next_action ?? runControlActionPlanStatus]
   ];
@@ -2278,6 +2507,65 @@ function App() {
                 <strong>{value}</strong>
               </div>
             ))}
+          </div>
+          <div className="run-control-execution-release" data-testid="run-control-execution-release">
+            <div className="run-control-execution-release-fields">
+              <label>
+                <span>Freigegeben von</span>
+                <input
+                  type="text"
+                  value={executionReleaseActor}
+                  onChange={(event) => {
+                    setExecutionReleaseActor(event.target.value);
+                    invalidateExecutionRelease();
+                  }}
+                />
+              </label>
+              <label>
+                <span>Begruendung</span>
+                <input
+                  type="text"
+                  value={executionReleaseReason}
+                  onChange={(event) => {
+                    setExecutionReleaseReason(event.target.value);
+                    invalidateExecutionRelease();
+                  }}
+                />
+              </label>
+            </div>
+            <div className="run-control-execution-release-actions">
+              <label className="run-control-execution-confirmation">
+                <input
+                  type="checkbox"
+                  checked={executionReleaseConfirmed}
+                  onChange={(event) => {
+                    setExecutionReleaseConfirmed(event.target.checked);
+                    invalidateExecutionRelease();
+                  }}
+                />
+                <span>Ausfuehrung explizit freigeben</span>
+              </label>
+              <button
+                className="secondary-action"
+                data-testid="run-control-release-check-button"
+                disabled={!canCheckExecutionRelease || executionReleaseState === "loading"}
+                type="button"
+                onClick={checkExecutionRelease}
+              >
+                <ShieldCheck size={17} aria-hidden="true" />
+                Freigabe pruefen
+              </button>
+              <button
+                className="primary-action"
+                data-testid="run-control-adapter-start-button"
+                disabled={!canStartAdapter}
+                type="button"
+                onClick={startReleasedAdapter}
+              >
+                <Play size={17} aria-hidden="true" />
+                Adapter starten
+              </button>
+            </div>
           </div>
           <div className="run-control-execution-flow-grid" aria-label="Run-Control-Startvertrag-Grenzen">
             {runControlExecutionFlowRows.map(([label, value]) => (

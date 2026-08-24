@@ -514,8 +514,10 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "eine stabile read-only 404-Form" in checklist
     assert "Preflight -> explizite Freigabe -> Ausfuehren" in checklist
     assert "GET /api/run-control/execution-result/{queue_id}" in checklist
-    assert "ui_start_enabled = false" in checklist
-    assert "lesender Run-Control-Ausfuehrungsflow" in checklist
+    assert "ui_start_enabled = true" in checklist
+    assert "kontrollierter Run-Control-Ausfuehrungsflow" in checklist
+    assert "Freigabe pruefen -> Adapter starten" in checklist
+    assert "stabilen Idempotenzpayload" in checklist
     assert "lesende Run-Control-Ergebnisanzeige" in checklist
     assert "docs/plans/run_control_core_diagnostics_bridge_plan.md" in checklist
     assert "schaltet keinen Startpfad frei" in checklist
@@ -530,10 +532,9 @@ def test_workbench_demo_checklist_documents_local_demo_scope():
     assert "Was noch nicht demo-faehig ist" in checklist
     assert "echte Simulation oder Periodenrunner-Ausfuehrung" in checklist
     assert "vorab berechnete Execution-Summary als UI-Eingabe" in checklist
-    assert "Ausfuehrungsadapter hinter `run_preflight`" in checklist
+    assert "automatische Queue-Validierung oder Ausfuehrung hinter `run_preflight`" in checklist
     assert "fachlicher Gleichheitsnachweis" in checklist
-    assert "gesperrte Carryover-Probe-Vertragskarte" in checklist
-    assert "gesperrte Adapter-Resultat-Vertragskarte" in checklist
+    assert "gesperrten\nCarryover-/Adapter-Resultat-Vertragskarten" in checklist
     assert "python -m pytest -q tests/test_workbench_demo_smoke.py tests/test_frontend_shell.py tests/test_workbench_documentation.py" in checklist
     assert "npm.cmd run build --prefix .\\frontend" in checklist
 
@@ -695,10 +696,11 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "PR 60: ersten schmalen, tatsaechlich berechneten Output" in backlog
     assert "PR 61: Level-IV-Selektormetadaten `all` und `SK1`" in backlog
     assert "Zaehlschnitt nach PR 63" in backlog
-    assert "grob `7-13` reviewbare PRs" in backlog
+    assert "grob `6-12` reviewbare PRs" in backlog
     assert "PR 62: kontrollierte Run-Control-Ausfuehrungsfreigabe" in backlog
     assert "PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze" in backlog
-    assert "Naechster Schnitt ist PR 64" in backlog
+    assert "PR 64 ist erledigt" in backlog
+    assert "PR 65 stabilisiert als naechstes" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

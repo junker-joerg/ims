@@ -253,6 +253,18 @@ bindet als naechstes den vorbereiteten UI-Flow an.
 - UI-Startbutton, Queue-Worker, freie Browserpfade und Simulation bleiben
   ausserhalb dieses PRs.
 
+## Umsetzung in PR 64
+
+- die Workbench verlangt Freigebenden, Begruendung und explizite Bestaetigung;
+- nur Queue-Status `validated` kann den Freigabecheck ausloesen;
+- UTC-Zeitpunkt und `idempotency_key` werden beim Check erzeugt und fuer den
+  anschliessenden Start unveraendert beibehalten;
+- erst ein positiver Freigabecheck aktiviert den manuellen Startbutton;
+- Erfolg und Fehler laden Queue-, Aktions- und Ergebnissichten neu;
+- `ui_start_enabled = true`, waehrend `queue_worker_enabled = false` bleibt;
+- Browser-Upload, freie Pfade, automatische Wiederholung und Simulation
+  bleiben gesperrt.
+
 ## Validierung dieses Planstands
 
 Dieser Plan wird durch Dokumentationstests abgesichert. Sie pruefen, dass die

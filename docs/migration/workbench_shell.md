@@ -753,6 +753,22 @@ Es gibt weiterhin keinen Adapterstart aus Run-Control.
 
 Der lokale Demo-Smoke fuer die Browser-Workbench ist die bewusst kleine Bedienfolge `Dry-Run pruefen -> Queue vormerken -> Run-Control-Aktionsplan ansehen -> Run-Control-Ausfuehrungsflow ansehen -> Run-Control-Ergebnisanzeige ansehen -> Run-Control-Kernblick-Bruecke lesen -> Carryover-Probe-Vertrag lesen -> Adapter-Resultat-Vertrag lesen`. Als stabile Demo-Daten dienen `baseline-python-tests` und `agrsich-reference-window`. Die API-Sequenz ist `POST /api/run-control/dry-run`, danach `POST /api/run-control/queue`, anschliessend `GET /api/run-control/queue/action-plan`, `GET /api/run-control/adapter-start-contract`, `GET /api/run-control/execution-result/{queue_id}`, `GET /api/run-control/core-diagnostics-bridge`, `GET /api/core-validation/carryover-probe-contract` und `GET /api/run-control/adapter-result-contract`, jeweils optional mit `queue_id`, wo der Endpunkt dies unterstuetzt. Dabei schreibt nur die Queue-Vormerkung in eine explizite SQLite-Metadatenquelle; Dry-Run, Aktionsplan, Ausfuehrungsflow, Ergebnisanzeige, Bruecke, Carryover-Probe-Vertrag und Adapter-Resultat-Vertrag bleiben lesend. Erwartet sind `execution_enabled = false`, `execution_performed = false`, ein Queue-Aktionshinweis `run_preflight`, ein Brueckenhinweis `resolve_core_validation_blockers`, `api_starts_probe = false`, `api_starts_adapter = false`, `ui_start_enabled = false` und bei fehlendem persistiertem Ergebnis eine gesperrte read-only Ergebnisform. Dieser Demo-Smoke startet keine Simulation, aktiviert keinen Ausfuehrungsadapter, aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 
+## Erweiterung in PR 64
+
+Die Karte `Run-Control-Ausfuehrungsflow` besitzt nun den zweistufigen,
+manuellen Bedienpfad `Freigabe pruefen -> Adapter starten`. Er ist nur fuer
+einen ausgewaehlten Queue-Eintrag mit Status `validated` aktiv und verlangt
+Auditangaben sowie eine explizite Bestaetigung. Der Freigabecheck erzeugt einen
+stabilen Idempotenzpayload; der Start sendet genau diesen Payload an die
+atomare Backend-Grenze. Nach Erfolg oder Fehler werden Queue, Aktionsplan und
+Ergebnisanzeige neu geladen.
+
+`ui_start_enabled = true` bezeichnet ausschliesslich diesen kontrollierten
+Bedienpfad. `queue_worker_enabled = false`, freie Browserpfade, Upload,
+automatische Wiederholung und Simulation bleiben gesperrt. Der Browser-Smoke
+prueft Layout und gesperrten Ausgangszustand, ohne einen Adapterstart
+auszuloesen.
+
 Fuer den echten Browser-/Screenshot-Smoke stellt die Frontend-Schale stabile `data-testid`-Anker bereit: `run-control-demo-dry-run-button`, `run-control-demo-queue-button`, `run-control-demo-dry-run-result`, `run-control-demo-queue-result`, `run-control-demo-action-plan`, `run-control-execution-flow`, `run-control-execution-result`, `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`. Der Screenshot-Smoke prueft Sichtbarkeit und Bedienfolge in der lokalen Workbench. Er prueft keine historischen Fachwerte und ersetzt keine spaetere Fachvalidierung.
 
 `ims.api.run_control_queue` kann validierte Requests lokal vormerken:

@@ -59,3 +59,25 @@ Nach PR 47 ist die read-only Ergebnisanzeige umgesetzt. Es bleiben grob
 0 bis 2 reviewbare PRs bis zu einer benutzbaren, kontrollierten
 Demo-Simulation: Demo-Smoke/Doku und optional Packaging-/Startskript-
 Anpassungen.
+
+## Erweiterung in PR 64
+
+PR 64 erweitert die bisherige Statussicht um den kontrollierten UI-Startpfad.
+Die Karte verlangt `Freigegeben von`, `Begruendung` und eine explizite
+Bestaetigung. Erst `POST /api/run-control/adapter-release-check` erzeugt und
+prueft den vollstaendigen Payload mit UTC-Zeitpunkt und stabilem
+`idempotency_key`. Nur ein positives Ergebnis schaltet den getrennten Button
+`Adapter starten` frei; dieser sendet denselben Payload unveraendert an
+`POST /api/run-control/adapter-start`.
+
+Die UI bietet die Freigabe nur fuer Queue-Status `validated` an. Nach Erfolg
+oder Fehler werden Queue, Detail, Aktionsplan, Kernbruecke und Ergebnisanzeige
+neu geladen. `starting`, `failed` und `result_persisted` werden sichtbar
+eingeordnet. Es gibt keinen automatischen Start und keine automatische
+Wiederholung.
+
+Fixture- und Ausgabepfade bleiben ausserhalb des Browsers. Das Profil
+`vu14-calculated-diagnostic` ist fest serverseitig bekannt; VU-/VN-Carryover
+bleibt im UI-Payload `false`. Queue-Worker, Browser-Upload, Simulation,
+automatische historische Regelwahl und historische Vollgleichheitsbehauptung
+bleiben ausgeschlossen.

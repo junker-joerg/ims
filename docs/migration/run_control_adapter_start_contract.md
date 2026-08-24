@@ -116,3 +116,12 @@ Der lesende GET-Vertrag selbst fuehrt weiterhin nichts aus und meldet deshalb
 automatische historische Regelwahl und historische Vollgleichheitsbehauptung
 bleiben ausgeschlossen. Die atomare Umsetzung ist in
 `run_control_atomic_adapter_start.md` dokumentiert.
+
+## Erweiterung in PR 64
+
+PR 64 setzt `ui_start_enabled = true` und entfernt den UI-Startbutton aus den
+verbotenen Vertragsgrenzen. Das aktiviert ausschliesslich den zweistufigen
+Workbench-Pfad `Freigabe pruefen -> Adapter starten`. Der UI-Start bleibt an
+Queue-Status `validated`, Auditfelder, das feste serverseitige Profil und den
+unveraenderten Idempotenzpayload gebunden. `queue_worker_enabled = false`,
+freie Pfade, Browser-Upload und Simulation bleiben gesperrt.

@@ -65,3 +65,6 @@ Es wurde fuer diesen PR keine Simulation gestartet.
 PR 64 kann nun den bereits vorbereiteten UI-Flow an diesen eng gegateten
 Backend-Endpunkt anbinden. Die explizite Freigabe und der Idempotenzschluessel
 bleiben dabei Pflicht.
+
+PR 64 hat diesen UI-Anschluss umgesetzt. Die atomaren Backend-Invarianten
+bleiben unveraendert; die UI fuegt keine Wiederholungs- oder Workerlogik hinzu.

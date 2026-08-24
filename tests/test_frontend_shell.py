@@ -335,8 +335,8 @@ def test_frontend_shell_declares_readonly_adapter_result_contract_card():
     assert "adapter-result-contract-panel" in styles
     assert "adapter-result-contract-grid" in styles
     assert "adapter-result-contract-row" in styles
-    assert "startRun" not in source
-    assert "startAdapter" not in source
+    assert "startReleasedAdapter" in source
+    assert "checkExecutionRelease" in source
     assert "uploadAdapter" not in source
     assert 'type="file"' not in source
 
@@ -368,9 +368,21 @@ def test_frontend_shell_declares_gated_run_control_execution_flow():
     assert "run-control-execution-flow-step" in styles
     assert "run-control-execution-flow-grid" in styles
     assert "run-control-execution-flow-row" in styles
-    assert "startRun" not in source
-    assert "startAdapter" not in source
-    assert "runControlStartAdapter" not in source
+    assert "/api/run-control/adapter-release-check" in source
+    assert "/api/run-control/adapter-start" in source
+    assert "RunControlExecutionReleaseRequest" in source
+    assert "createUiIdempotencyKey" in source
+    assert "executionReleaseConfirmed" in source
+    assert "canCheckExecutionRelease" in source
+    assert "canStartAdapter" in source
+    assert "startReleasedAdapter" in source
+    assert 'data-testid="run-control-release-check-button"' in source
+    assert 'data-testid="run-control-adapter-start-button"' in source
+    assert "vu14-calculated-diagnostic" in source
+    assert "carry_forward_vu_state: false" in source
+    assert "carry_forward_vn_state: false" in source
+    assert "run-control-execution-release" in styles
+    assert "run-control-execution-confirmation" in styles
     assert 'type="file"' not in source
 
 

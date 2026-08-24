@@ -83,7 +83,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   schaffen, noch ohne UI-Startbutton (erledigt: Idempotenz-Claim,
   `starting`/`failed`/`result_persisted` und atomare Resultatablage).
 - PR 64: UI-Startpfad hinter expliziter Freigabe aktivieren; Queue-Worker und
-  Adapterstart bleiben eng gegated.
+  Adapterstart bleiben eng gegated (erledigt: zweistufiger Freigabecheck,
+  stabiler Idempotenzpayload und manuell ausgeloester Start).
 - PR 65: UI-Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige fuer
   persistierte Runs stabilisieren.
 - PR 66: Browser-/Screenshot-E2E-Smoke fuer den freigegebenen lokalen Demo-Run
@@ -102,16 +103,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 63 bleiben grob `7-13` reviewbare PRs bis zu einer konservativen
+Nach PR 64 bleiben grob `6-12` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 64 bindet den vorbereiteten UI-Flow an den atomaren Backend-Start an. Die UI
-muss die explizite Freigabe sichtbar bestaetigen, einen stabilen
-Idempotenzschluessel senden und laufende, fehlgeschlagene sowie persistierte
-Zustaende ohne automatischen Wiederholungsstart darstellen. Freier
+PR 65 stabilisiert Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige
+fuer persistierte Runs. Der Schritt darf keine automatische Wiederholung
+einfuehren: `starting` und `failed` bleiben pruefpflichtige Zustaende,
+`result_persisted` bleibt die einzige abgeschlossene Ergebnisgrenze. Freier
 Browser-Upload, Queue-Worker und historische Vollgleichheitsbehauptung bleiben
 gesperrt.

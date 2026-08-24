@@ -45,7 +45,7 @@ def test_run_control_adapter_start_contract_reports_hard_gated_shape() -> None:
     assert "adapter_start_from_contract" in payload["forbidden_boundaries"]
     assert "post_adapter_start_endpoint" not in payload["forbidden_boundaries"]
     assert "queue_worker" in payload["forbidden_boundaries"]
-    assert "ui_start_button" in payload["forbidden_boundaries"]
+    assert "ui_start_button" not in payload["forbidden_boundaries"]
     assert payload["contract_only"] is False
     assert payload["http_enabled"] is True
     assert payload["api_accepts_start_payload"] is True
@@ -53,7 +53,7 @@ def test_run_control_adapter_start_contract_reports_hard_gated_shape() -> None:
     assert payload["api_accepts_release_payload"] is True
     assert payload["api_validates_release_payload"] is True
     assert payload["api_starts_adapter"] is True
-    assert payload["ui_start_enabled"] is False
+    assert payload["ui_start_enabled"] is True
     assert payload["queue_worker_enabled"] is False
     assert payload["writes_enabled"] is True
     assert payload["execution_enabled"] is True
@@ -122,7 +122,7 @@ def test_run_control_adapter_start_contract_endpoint_describes_backend_start(tmp
     assert payload["planned_start_endpoint"] == "/api/run-control/adapter-start"
     assert payload["api_accepts_start_payload"] is True
     assert payload["api_starts_adapter"] is True
-    assert payload["ui_start_enabled"] is False
+    assert payload["ui_start_enabled"] is True
     assert payload["queue_worker_enabled"] is False
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False

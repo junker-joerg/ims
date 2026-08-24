@@ -25,7 +25,7 @@ python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 
 ```
 
 Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die
-aktuelle UI bleibt ohne Startbutton. Das Backend besitzt einen explizit
+aktuelle UI bietet fuer vorab validierte Queue-Eintraege einen zweistufig
 freizugebenden, idempotenten Adapterstart; Browser-Upload, Queue-Worker und
 Simulation bleiben gesperrt.
 
@@ -435,7 +435,7 @@ GET /api/run-control/adapter-start-contract
 Die Antwort enthaelt `mode = "run_control_adapter_start_contract"`,
 `planned_start_endpoint = "/api/run-control/adapter-start"`,
 `api_accepts_start_payload = true`, `api_validates_start_payload = true`,
-`api_starts_adapter = true`, `ui_start_enabled = false` und
+`api_starts_adapter = true`, `ui_start_enabled = true` und
 `queue_worker_enabled = false`. Der GET-Vertrag selbst bleibt lesend.
 
 PR 62 ergaenzt den rein lesenden Freigabecheck:
@@ -462,8 +462,10 @@ Der Start verlangt denselben strikt validierten Freigabepayload plus
 persistiert ein gueltiges Resultat gemeinsam mit `result_persisted` und gibt
 denselben abgeschlossenen Request ohne zweiten Adapteraufruf erneut aus.
 Ueberlappende oder veraenderte Wiederholungen werden blockiert; Fehler bleiben
-als `failed` sichtbar. UI-Startbutton, Queue-Worker, freie Browserpfade,
-Simulation und historische Vollgleichheitsbehauptung bleiben ausgeschlossen.
+als `failed` sichtbar. PR 64 bindet die Workbench zweistufig an: erst
+`Freigabe pruefen`, dann `Adapter starten` mit demselben Idempotenzpayload.
+Queue-Worker, freie Browserpfade, Simulation und historische
+Vollgleichheitsbehauptung bleiben ausgeschlossen.
 
 Der lokale Run-Control-Ergebnisstore speichert vorab validierte
 Adapter-Resultate an einen validierten Queue-Eintrag:
@@ -516,7 +518,7 @@ Ein lokaler Run-Control-Preflight prueft vorhandene Run-Metadaten gegen diese ge
 python -m ims.api.run_control_preflight --run-id baseline-python-tests
 ```
 
-Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen und nach einem erfolgreichen Dry-Run ueber `POST /api/run-control/queue` eine Queue-Vormerkung in einer expliziten SQLite-Quelle schreiben. `GET /api/run-control/queue/action-plan` zeigt danach nur den naechsten sicheren Schritt wie `run_preflight`, `await_execution_release`, `resolve_blockers`, `inspect_persisted_result` oder `inspect_queue_status`. Die Karten `Carryover-Probe-Vertrag` und `Adapter-Resultat-Vertrag` zeigen nur gesperrte read-only Vertraege fuer vorab berechnete bzw. lokal gepruefte Payloads. Die Karte `Run-Control-Ausfuehrungsflow` zeigt `Preflight -> explizite Freigabe -> Ausfuehren` nur als Statussicht auf Preflight, Aktionsplan, Startvertrag und Ergebnisstatus. Die Karte `Run-Control-Ergebnisanzeige` liest optional `GET /api/run-control/execution-result/{queue_id}` und zeigt nur bereits persistierte Ergebnis-Metadaten. Diese Schritte zeigen Run-/Szenario-Bezug, Hinweise und gesperrte Ausfuehrungsgrenzen, ohne PUT, Upload, Editor, UI-Startbutton oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag, Dry-Run-Pruefung, Adapter-Resultat-Vertrag, Queue-Vormerkung und Aktionsplan.
+Die Workbench-UI laedt denselben Preflight fuer den ausgewaehlten Run ueber `GET /api/run-control/preflight/{run_id}`. Die Dry-Run-Karte kann fuer die aktuelle Auswahl `POST /api/run-control/dry-run` als reine Pruefung ausloesen und nach einem erfolgreichen Dry-Run ueber `POST /api/run-control/queue` eine Queue-Vormerkung in einer expliziten SQLite-Quelle schreiben. `GET /api/run-control/queue/action-plan` zeigt danach den naechsten sicheren Schritt wie `run_preflight`, `await_execution_release`, `await_execution_completion`, `inspect_execution_failure`, `inspect_persisted_result` oder `inspect_queue_status`. Die Karten `Carryover-Probe-Vertrag` und `Adapter-Resultat-Vertrag` zeigen nur gesperrte read-only Vertraege fuer vorab berechnete bzw. lokal gepruefte Payloads. Die Karte `Run-Control-Ausfuehrungsflow` bindet einen validierten Queue-Eintrag zweistufig ueber `POST /api/run-control/adapter-release-check` und `POST /api/run-control/adapter-start` an. Die Karte `Run-Control-Ergebnisanzeige` liest optional `GET /api/run-control/execution-result/{queue_id}` und zeigt persistierte Ergebnis-Metadaten. Der UI-Start bleibt ohne freie Pfade, Upload, Queue-Worker, automatische Wiederholung oder Simulation. Ein kompaktes Run-Control-Statusband buendelt Queue, Preflight, Request-Vertrag, Dry-Run-Pruefung, Adapter-Resultat-Vertrag, Queue-Vormerkung und Aktionsplan.
 
 Lokaler Demo-Smoke fuer die Browser-Workbench:
 

@@ -47,7 +47,7 @@ Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar.
 8. Run-Control-Aktionsplan lesen.
 9. Erwartung im Aktionsplan: `Naechste Aktion = run_preflight`, Blocker `keine`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
 10. Run-Control-Ausfuehrungsflow lesen.
-11. Erwartung im Flow: `Preflight -> explizite Freigabe -> Ausfuehren` ist sichtbar, `api_starts_adapter = false`, `ui_start_enabled = false`, `queue_worker_enabled = false`.
+11. Erwartung im Flow: `Preflight -> explizite Freigabe -> Ausfuehren` ist sichtbar, `api_starts_adapter = true`, `ui_start_enabled = true`, `queue_worker_enabled = false`; fuer den neu vorgemerkten Status `planned` bleiben Freigabecheck und Startbutton gesperrt.
 12. Run-Control-Ergebnisanzeige lesen.
 13. Erwartung in der Ergebnisanzeige: kein Upload, kein Startpfad, bei fehlendem persistiertem Ergebnis `kein persistiertes Ergebnis`, Schreibpfade gesperrt, Ausfuehrung gesperrt.
 14. Run-Control-Kernblick-Bruecke lesen.
@@ -102,9 +102,11 @@ Der geplante Brueckenschnitt ist in `docs/plans/run_control_core_diagnostics_bri
 dokumentiert.
 
 Die Karte `Run-Control-Ausfuehrungsflow` zeigt den Ablauf
-`Preflight -> explizite Freigabe -> Ausfuehren` nur als Statussicht auf
-Preflight, Aktionsplan, Adapter-Startvertrag und Queue-Ergebnisstatus. Sie
-enthaelt keinen UI-Startbutton, keinen Queue-Worker und keinen Adapterstart.
+`Preflight -> explizite Freigabe -> Ausfuehren` und besitzt fuer vorab
+validierte Queue-Eintraege den zweistufigen Pfad
+`Freigabe pruefen -> Adapter starten`. Sie verlangt Auditangaben, eine
+explizite Bestaetigung und denselben stabilen Idempotenzpayload fuer Check und
+Start. Sie enthaelt keinen Queue-Worker und keine automatische Wiederholung.
 
 Die Karte `Run-Control-Ergebnisanzeige` zeigt ein vorhandenes persistiertes
 Adapterresultat ueber `GET /api/run-control/execution-result/{queue_id}` nur
@@ -120,8 +122,8 @@ anschliessend Aktionsplan, Run-Control-Ausfuehrungsflow-Vertrag,
 Run-Control-Ergebnisanzeige, Run-Control-Kernblick-Bruecke,
 Carryover-Probe-Vertrag und Adapter-Resultat-Vertrag. Erwartet bleiben
 `writes_performed = false` auf allen lesenden Schritten,
-`execution_performed = false`, `api_starts_adapter = false`,
-`ui_start_enabled = false`, `queue_worker_enabled = false` und bei noch nicht
+`execution_performed = false`, `api_starts_adapter = true`,
+`ui_start_enabled = true`, `queue_worker_enabled = false` und bei noch nicht
 persistiertem Adapterresultat eine stabile read-only 404-Form.
 
 Dieser automatisierte Smoke ersetzt den echten Browser-/Screenshot-Smoke
@@ -139,7 +141,7 @@ Vollgleichheitsbehauptung.
 - kontrollierter HTTP-Dry-Run ohne Schreiben
 - kontrollierte Queue-Vormerkung in expliziter SQLite-Datei
 - lesender Run-Control-Aktionsplan mit `run_preflight`
-- lesender Run-Control-Ausfuehrungsflow mit gesperrtem Ausfuehren-Schritt und stabilem UI-Anker `run-control-execution-flow`
+- kontrollierter Run-Control-Ausfuehrungsflow fuer vorab validierte Queue-Eintraege mit explizitem Freigabecheck, manuellem Start und stabilem UI-Anker `run-control-execution-flow`
 - lesende Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate mit stabilem UI-Anker `run-control-execution-result`
 - lesender Kernvalidierungsueberblick fuer vorhandene VU/VN-Periodenplaene und Legacy-Abdeckung
 - lesender Carryover-Probe-Vertrag fuer vorab berechnete Probe-Payloads ohne Upload oder Startpfad
@@ -151,7 +153,7 @@ Vollgleichheitsbehauptung.
 
 - echte Simulation oder Periodenrunner-Ausfuehrung
 - vorab berechnete Execution-Summary als UI-Eingabe
-- Ausfuehrungsadapter hinter `run_preflight`
+- automatische Queue-Validierung oder Ausfuehrung hinter `run_preflight`
 - fachlicher Gleichheitsnachweis gegen historische IMS/ESS-Laeufe
 - Szenario-Editor, Browser-Upload oder Browser-Download
 - automatische SQLite-Migration, automatischer Updater oder Installer
@@ -159,9 +161,16 @@ Vollgleichheitsbehauptung.
 
 ## Vorfuehrgrenzen
 
-Die Queue-Vormerkung ist der einzige in der Demo erwartete UI-ausgeloeste Schreibvorgang. Sie schreibt nur Queue-Metadaten in die explizite SQLite-Datei. Sie startet keinen Worker, keinen Scheduler, keinen Simulationslauf und keine Fachlogikmutation.
+Im Standard-Smoke bleibt die Queue-Vormerkung der einzige erwartete
+UI-ausgeloeste Schreibvorgang. Ein separat vorbereiteter Queue-Eintrag mit
+Status `validated` darf den kontrollierten Adapterstart demonstrieren. Dieser
+Start bleibt manuell, idempotent und ohne Worker, freien Pfad, automatische
+Regelwahl oder Simulationsbehauptung.
 
-Der Demo-Screenshot belegt nur Bedienbarkeit, sichtbare Grenzen, die gesperrte Ausfuehrungsflow-Karte, die read-only Ergebnisanzeige, die gesperrte Carryover-Probe-Vertragskarte und die gesperrte Adapter-Resultat-Vertragskarte. Er belegt keine historischen Fachwerte und ersetzt keine spaetere Alt-/Neu-Fachvalidierung.
+Der Demo-Screenshot belegt nur Bedienbarkeit, sichtbare Grenzen, den
+kontrollierten Ausfuehrungsflow, die Ergebnisanzeige und die gesperrten
+Carryover-/Adapter-Resultat-Vertragskarten. Er belegt keine historischen
+Fachwerte und ersetzt keine spaetere Alt-/Neu-Fachvalidierung.
 
 ## Schnelle Pruefung vor der Demo
 

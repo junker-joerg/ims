@@ -427,6 +427,11 @@ Naechster Schnitt ist PR 64: kontrollierte UI-Anbindung an den atomaren
 Backend-Start, mit expliziter Freigabe und Idempotenz, weiterhin ohne
 Queue-Worker oder freien Browser-Upload.
 
+PR 64 ist erledigt. Neuer Zaehlschnitt: grob `6-12` reviewbare PRs bis zur
+konservativen Produktionsreife. PR 65 stabilisiert als naechstes
+Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige, weiterhin ohne
+automatische Wiederholung oder Erweiterung der historischen Gleichheitsaussage.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:

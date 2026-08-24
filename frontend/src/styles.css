@@ -172,6 +172,12 @@ h2 {
   cursor: default;
 }
 
+.primary-action:disabled {
+  color: #d7e0dc;
+  background: #6f8179;
+  cursor: default;
+}
+
 .status-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -636,6 +642,7 @@ code {
 
 .shape-row strong {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .boundary-list {
@@ -1041,6 +1048,62 @@ code {
   gap: 8px;
 }
 
+.run-control-execution-release {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #d8e2dd;
+}
+
+.run-control-execution-release-fields {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) minmax(260px, 1.3fr);
+  gap: 10px;
+}
+
+.run-control-execution-release-fields label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: #526159;
+}
+
+.run-control-execution-release-fields input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #b8c9c0;
+  border-radius: 6px;
+  color: #143b2d;
+  background: #ffffff;
+  font: inherit;
+}
+
+.run-control-execution-release-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.run-control-execution-confirmation {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-right: auto;
+  color: #143b2d;
+}
+
+.run-control-execution-confirmation input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #1e5b45;
+}
+
 .run-control-execution-flow-step {
   min-height: 70px;
   padding: 12px;
@@ -1129,9 +1192,11 @@ code {
   .status-grid,
   .work-grid,
   .detail-grid,
-    .import-grid,
-    .diagnosis-grid,
-    .consistency-grid,
+  .import-grid,
+  .diagnosis-grid,
+  .consistency-grid,
+  .core-validation-summary,
+  .core-validation-contract,
   .selection-summary-grid,
   .run-control-summary,
   .run-control-boundary-grid,
@@ -1144,6 +1209,7 @@ code {
   .run-control-action-plan-grid,
   .run-control-execution-flow-grid,
   .run-control-execution-flow-steps,
+  .run-control-execution-release-fields,
   .run-control-execution-result-grid,
   .run-control-core-bridge-grid,
   .adapter-result-contract-grid,
@@ -1159,7 +1225,8 @@ code {
   .run-control-head,
   .run-control-row,
   .scenario-strip,
-  .validation-row {
+  .validation-row,
+  .shape-row {
     grid-template-columns: 1fr;
   }
 

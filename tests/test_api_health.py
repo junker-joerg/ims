@@ -541,7 +541,7 @@ def test_run_control_adapter_start_contract_endpoint_is_readonly(tmp_path):
     assert payload["api_accepts_start_payload"] is True
     assert payload["api_validates_start_payload"] is True
     assert payload["api_starts_adapter"] is True
-    assert payload["ui_start_enabled"] is False
+    assert payload["ui_start_enabled"] is True
     assert payload["queue_worker_enabled"] is False
     assert payload["writes_enabled"] is True
     assert payload["execution_enabled"] is True

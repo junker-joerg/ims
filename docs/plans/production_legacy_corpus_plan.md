@@ -162,7 +162,10 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
     historischen Korpus oder der Gleichheitsaussage).
 13. PR 64 darf nur den kontrollierten UI-Pfad an diese Backend-Grenze anbinden;
     der historische Korpus, automatische Regelwahl und freie Browserpfade
-    bleiben unveraendert gesperrt.
+    bleiben unveraendert gesperrt (erledigt).
+14. PR 65 darf Ergebnisverlauf und Fehleranzeige haerten, aber weder den
+    Korpus erweitern noch aus persistierten Teilergebnissen historische
+    Vollgleichheit ableiten.
 
 ## Offene Risiken
 
