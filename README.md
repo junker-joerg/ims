@@ -24,7 +24,10 @@ python -m ims.api.workbench_bundle_plan --root . --frontend-dist frontend/dist
 python -m uvicorn ims.api.app:app --app-dir python_port --host 127.0.0.1 --port 8000
 ```
 
-Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die aktuelle Workbench ist weiterhin rein lesend: keine Simulation, kein Browser-Upload und keine HTTP-/UI-Schreibpfade.
+Danach ist die Workbench lokal unter `http://127.0.0.1:8000/` erreichbar. Die
+aktuelle UI bleibt ohne Startbutton. Das Backend besitzt einen explizit
+freizugebenden, idempotenten Adapterstart; Browser-Upload, Queue-Worker und
+Simulation bleiben gesperrt.
 
 Alternativ stehen erste lokale Windows-Skripte bereit:
 
@@ -44,7 +47,7 @@ Die lokale Workbench-v1 ist als Modernisierungs-Meilenstein abgeschlossen. Diese
 - Szenario- und Run-Metadaten sind lesend als Listen, Details, Filter und Auswahlzusammenfassung verfuegbar.
 - Betriebsdiagnose, Metadatenquelle, Konsistenzdiagnose, Readiness und lokale CLI-Grenzen sind dokumentiert und getestet.
 - Lokale CLI-Adapter decken Diagnose, Import-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht und Run-Control-Preflight ab.
-- Keine Fachlogikaenderung, keine Simulation, keine HTTP-/UI-Schreibpfade und keine historische Vollgleichheitsbehauptung.
+- Keine Fachlogikaenderung, keine Simulation, kein UI-Schreibpfad und keine historische Vollgleichheitsbehauptung.
 
 Die spaetere Run-Steuerung und Gesamtplanung bis zum vollstaendigen Abschluss sind unter `docs/migration/workbench_run_control_plan.md` beschrieben. Der separate Packaging- und Bereitstellungsblock ist unter `docs/migration/workbench_packaging_plan.md` als lokaler ZIP-/Staging-Abschlussstatus konsolidiert. Diese Plaene und Checks starten keine Simulation.
 
@@ -431,10 +434,9 @@ GET /api/run-control/adapter-start-contract
 
 Die Antwort enthaelt `mode = "run_control_adapter_start_contract"`,
 `planned_start_endpoint = "/api/run-control/adapter-start"`,
-`api_accepts_start_payload = false`, `api_validates_start_payload = false`,
-`api_starts_adapter = false`, `ui_start_enabled = false` und
-`queue_worker_enabled = false`. `POST /api/run-control/adapter-start` ist in
-diesem Stand nicht vorhanden.
+`api_accepts_start_payload = true`, `api_validates_start_payload = true`,
+`api_starts_adapter = true`, `ui_start_enabled = false` und
+`queue_worker_enabled = false`. Der GET-Vertrag selbst bleibt lesend.
 
 PR 62 ergaenzt den rein lesenden Freigabecheck:
 
@@ -447,8 +449,21 @@ bekanntes lokales Fixture-Profil sowie die Auditfelder `released_by`,
 `released_at` und `release_reason`. Browser-Fixture- und Outputpfade werden
 verworfen. Auch bei `release_ready = true` bleiben `adapter_start_allowed`,
 `adapter_started`, `writes_performed`, `execution_performed` und
-`simulation_performed` auf `false`. Der echte Backendstart folgt erst nach
-einer atomaren Status-/Idempotenz- und Ergebnisgrenze in PR 63.
+`simulation_performed` auf `false`.
+
+PR 63 ergaenzt den atomaren Backendstart:
+
+```text
+POST /api/run-control/adapter-start
+```
+
+Der Start verlangt denselben strikt validierten Freigabepayload plus
+`idempotency_key`. Er reserviert den Queue-Eintrag atomar als `starting`,
+persistiert ein gueltiges Resultat gemeinsam mit `result_persisted` und gibt
+denselben abgeschlossenen Request ohne zweiten Adapteraufruf erneut aus.
+Ueberlappende oder veraenderte Wiederholungen werden blockiert; Fehler bleiben
+als `failed` sichtbar. UI-Startbutton, Queue-Worker, freie Browserpfade,
+Simulation und historische Vollgleichheitsbehauptung bleiben ausgeschlossen.
 
 Der lokale Run-Control-Ergebnisstore speichert vorab validierte
 Adapter-Resultate an einen validierten Queue-Eintrag:

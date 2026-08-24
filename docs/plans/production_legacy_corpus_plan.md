@@ -158,7 +158,11 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
     Korpusgrenzen oder historischen Gleichheitsaussagen zu erweitern
     (read-only Freigabecheck erledigt);
 12. PR 63 schafft vor einem echten Adapterstart die atomare Status- und
-    Ergebnisgrenze gegen Doppelstarts.
+    Ergebnisgrenze gegen Doppelstarts (erledigt; ohne Erweiterung des
+    historischen Korpus oder der Gleichheitsaussage).
+13. PR 64 darf nur den kontrollierten UI-Pfad an diese Backend-Grenze anbinden;
+    der historische Korpus, automatische Regelwahl und freie Browserpfade
+    bleiben unveraendert gesperrt.
 
 ## Offene Risiken
 

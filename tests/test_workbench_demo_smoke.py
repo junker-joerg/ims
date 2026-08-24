@@ -101,9 +101,9 @@ def test_workbench_demo_smoke_dry_run_queue_and_action_plan_without_execution(tm
     assert adapter_start_contract.status_code == 200
     assert adapter_start_contract.json()["mode"] == "run_control_adapter_start_contract"
     assert adapter_start_contract.json()["planned_start_endpoint"] == "/api/run-control/adapter-start"
-    assert adapter_start_contract.json()["api_accepts_start_payload"] is False
-    assert adapter_start_contract.json()["api_validates_start_payload"] is False
-    assert adapter_start_contract.json()["api_starts_adapter"] is False
+    assert adapter_start_contract.json()["api_accepts_start_payload"] is True
+    assert adapter_start_contract.json()["api_validates_start_payload"] is True
+    assert adapter_start_contract.json()["api_starts_adapter"] is True
     assert adapter_start_contract.json()["ui_start_enabled"] is False
     assert adapter_start_contract.json()["queue_worker_enabled"] is False
     assert adapter_start_contract.json()["execution_performed"] is False

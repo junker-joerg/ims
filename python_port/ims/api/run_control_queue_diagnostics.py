@@ -125,7 +125,7 @@ def diagnose_run_control_queue(db_path: Path | str) -> RunControlQueueDiagnostic
             missing_scenario_ids.append(queue_id)
         if bool(entry.get("execution_enabled")):
             execution_enabled_ids.append(queue_id)
-        if bool(entry.get("execution_performed")):
+        if bool(entry.get("execution_performed")) and entry.get("status") != "result_persisted":
             execution_performed_ids.append(queue_id)
         if str(entry.get("status", "")) not in RUN_CONTROL_QUEUE_STATUSES:
             unsupported_status_ids.append(queue_id)

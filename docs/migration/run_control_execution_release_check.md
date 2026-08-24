@@ -84,3 +84,13 @@ historische Vollgleichheit. Es wurde keine Simulation gestartet.
 
 PR 63 fuegt die atomare Backend-Start-, Status- und Ergebnisgrenze hinzu. Erst
 danach darf PR 64 den UI-Startpfad hinter der expliziten Freigabe aktivieren.
+
+## Anschluss in PR 63
+
+PR 63 hat die angekuendigte atomare Backend-Grenze umgesetzt. Der
+Freigabepayload verlangt nun auch `idempotency_key`; der read-only Check bleibt
+unveraendert ohne Schreib- oder Ausfuehrungswirkung. Nur der getrennte Endpunkt
+`POST /api/run-control/adapter-start` darf nach positivem Check den
+serverseitigen Adapter aufrufen. Doppelstarts, veraenderte Wiederholungen und
+ungueltige Resultate werden vor einem zweiten oder abschliessenden Lauf
+blockiert. UI-Startbutton und Queue-Worker bleiben Aufgabe spaeterer PRs.

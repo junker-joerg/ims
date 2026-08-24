@@ -136,12 +136,9 @@ def build_run_control_adapter_result_contract() -> RunControlAdapterResultContra
             "historical_full_equality_expectation",
         ),
         forbidden_boundaries=(
-            "adapter_start_from_run_control",
-            "runner_start_from_run_control",
             "simulation_execution",
             "scheduler_start",
             "queue_worker",
-            "http_write_endpoint",
             "ui_start_button",
             "metadata_write",
             "fachlogik_mutation",

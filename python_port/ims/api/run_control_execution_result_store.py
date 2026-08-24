@@ -172,48 +172,13 @@ def persist_run_control_adapter_result(
             if bool(queue_row["execution_performed"]):
                 raise MetadataImportError("run control queue entry unexpectedly reports execution")
 
-            record = _build_record(queue_row, payload, validation_payload, persisted_at)
-            connection.execute(
-                """
-                INSERT INTO run_control_execution_results (
-                    queue_id,
-                    run_id,
-                    scenario_id,
-                    adapter_mode,
-                    fixture_kind,
-                    fixture_path,
-                    summary_mode,
-                    result_status,
-                    persisted_at,
-                    result_payload_json,
-                    summary_payload_json,
-                    validation_payload_json,
-                    adapter_execution_performed,
-                    simulation_performed,
-                    automatic_historical_rule_selection_performed,
-                    historical_full_equality_claimed
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(queue_id) DO UPDATE SET
-                    run_id = excluded.run_id,
-                    scenario_id = excluded.scenario_id,
-                    adapter_mode = excluded.adapter_mode,
-                    fixture_kind = excluded.fixture_kind,
-                    fixture_path = excluded.fixture_path,
-                    summary_mode = excluded.summary_mode,
-                    result_status = excluded.result_status,
-                    persisted_at = excluded.persisted_at,
-                    result_payload_json = excluded.result_payload_json,
-                    summary_payload_json = excluded.summary_payload_json,
-                    validation_payload_json = excluded.validation_payload_json,
-                    adapter_execution_performed = excluded.adapter_execution_performed,
-                    simulation_performed = excluded.simulation_performed,
-                    automatic_historical_rule_selection_performed =
-                        excluded.automatic_historical_rule_selection_performed,
-                    historical_full_equality_claimed = excluded.historical_full_equality_claimed
-                """,
-                _record_values(record),
+            record = build_run_control_execution_result_record(
+                queue_row,
+                payload,
+                validation_payload,
+                persisted_at,
             )
+            upsert_run_control_execution_result_record(connection, record)
             connection.execute(
                 """
                 UPDATE run_control_queue
@@ -376,7 +341,7 @@ def _queue_row(connection: sqlite3.Connection, queue_id: str) -> sqlite3.Row | N
         raise MetadataImportError(f"run control queue is not readable or initialized: {exc}") from exc
 
 
-def _build_record(
+def build_run_control_execution_result_record(
     queue_row: sqlite3.Row,
     payload: Mapping[str, object],
     validation_payload: dict[str, object],
@@ -404,6 +369,54 @@ def _build_record(
             payload["automatic_historical_rule_selection_performed"]
         ),
         historical_full_equality_claimed=bool(payload["historical_full_equality_claimed"]),
+    )
+
+
+def upsert_run_control_execution_result_record(
+    connection: sqlite3.Connection,
+    record: RunControlExecutionResultRecord,
+) -> None:
+    connection.execute(RUN_CONTROL_EXECUTION_RESULT_SCHEMA)
+    connection.execute(
+        """
+        INSERT INTO run_control_execution_results (
+            queue_id,
+            run_id,
+            scenario_id,
+            adapter_mode,
+            fixture_kind,
+            fixture_path,
+            summary_mode,
+            result_status,
+            persisted_at,
+            result_payload_json,
+            summary_payload_json,
+            validation_payload_json,
+            adapter_execution_performed,
+            simulation_performed,
+            automatic_historical_rule_selection_performed,
+            historical_full_equality_claimed
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(queue_id) DO UPDATE SET
+            run_id = excluded.run_id,
+            scenario_id = excluded.scenario_id,
+            adapter_mode = excluded.adapter_mode,
+            fixture_kind = excluded.fixture_kind,
+            fixture_path = excluded.fixture_path,
+            summary_mode = excluded.summary_mode,
+            result_status = excluded.result_status,
+            persisted_at = excluded.persisted_at,
+            result_payload_json = excluded.result_payload_json,
+            summary_payload_json = excluded.summary_payload_json,
+            validation_payload_json = excluded.validation_payload_json,
+            adapter_execution_performed = excluded.adapter_execution_performed,
+            simulation_performed = excluded.simulation_performed,
+            automatic_historical_rule_selection_performed =
+                excluded.automatic_historical_rule_selection_performed,
+            historical_full_equality_claimed = excluded.historical_full_equality_claimed
+        """,
+        _record_values(record),
     )
 
 

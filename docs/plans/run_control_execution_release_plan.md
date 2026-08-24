@@ -224,8 +224,9 @@ tatsaechlich berechneten VU14-Aggregat-/Export-Slice angebunden. PR 61 hat die
 technische Level-IV-Selektorgrenze `all` gegen `SK1` eng kanonisiert. PR 62
 hat den kontrollierten read-only Freigabecheck mit Auditfeldern, validierter
 Queue, gruenem Preflight und serverseitigem Fixture-Profil umgesetzt. PR 63
-schafft als naechstes die atomare Backend-Start-/Status- und Ergebnisgrenze
-gegen Doppelstarts, weiterhin ohne UI-Startbutton oder freien Browser-Upload.
+hat die atomare Backend-Start-/Status- und Ergebnisgrenze gegen Doppelstarts
+umgesetzt, weiterhin ohne UI-Startbutton oder freien Browser-Upload. PR 64
+bindet als naechstes den vorbereiteten UI-Flow an.
 
 ## Umsetzung in PR 62
 
@@ -238,6 +239,19 @@ gegen Doppelstarts, weiterhin ohne UI-Startbutton oder freien Browser-Upload.
   `writes_performed = false`, `execution_performed = false` und
   `simulation_performed = false` bleiben erhalten;
 - `POST /api/run-control/adapter-start` bleibt nicht vorhanden.
+
+## Umsetzung in PR 63
+
+- `idempotency_key` ist Pflicht im Freigabe- und Startpayload;
+- `POST /api/run-control/adapter-start` reserviert genau einen Queue-Eintrag
+  atomar als `starting`;
+- gleiche abgeschlossene Requests liefern das persistierte Resultat erneut,
+  ohne den Adapter ein zweites Mal aufzurufen;
+- veraenderte oder ueberlappende Wiederholungen werden blockiert;
+- Resultat, Versuch und Queue-Abschluss werden gemeinsam persistiert;
+- Fehler bleiben als `failed` sichtbar und erzeugen kein Resultat;
+- UI-Startbutton, Queue-Worker, freie Browserpfade und Simulation bleiben
+  ausserhalb dieses PRs.
 
 ## Validierung dieses Planstands
 

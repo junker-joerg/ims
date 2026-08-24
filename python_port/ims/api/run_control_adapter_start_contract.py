@@ -25,17 +25,17 @@ class RunControlAdapterStartContract:
     required_preconditions: tuple[str, ...]
     forbidden_request_fields: tuple[str, ...]
     forbidden_boundaries: tuple[str, ...]
-    contract_only: bool = True
+    contract_only: bool = False
     http_enabled: bool = True
-    api_accepts_start_payload: bool = False
-    api_validates_start_payload: bool = False
+    api_accepts_start_payload: bool = True
+    api_validates_start_payload: bool = True
     api_accepts_release_payload: bool = True
     api_validates_release_payload: bool = True
-    api_starts_adapter: bool = False
+    api_starts_adapter: bool = True
     ui_start_enabled: bool = False
     queue_worker_enabled: bool = False
-    writes_enabled: bool = False
-    execution_enabled: bool = False
+    writes_enabled: bool = True
+    execution_enabled: bool = True
     writes_performed: bool = False
     execution_performed: bool = False
     simulation_performed: bool = False
@@ -97,6 +97,7 @@ def build_run_control_adapter_start_contract() -> RunControlAdapterStartContract
             "run_id",
             "scenario_id",
             "release_profile_id",
+            "idempotency_key",
             "explicit_execution_release",
             "expected_adapter_mode",
             "released_by",
@@ -131,7 +132,6 @@ def build_run_control_adapter_start_contract() -> RunControlAdapterStartContract
             "legacy_full_equality_expectation",
         ),
         forbidden_boundaries=(
-            "post_adapter_start_endpoint",
             "adapter_start_from_contract",
             "runner_start_from_contract",
             "simulation_execution",
@@ -140,7 +140,6 @@ def build_run_control_adapter_start_contract() -> RunControlAdapterStartContract
             "ui_start_button",
             "browser_file_picker",
             "metadata_write",
-            "result_persistence",
             "fachlogik_mutation",
             "historical_full_equality_claim",
         ),

@@ -36,8 +36,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Kernkorpus 15 noch fehlende berechnete Exporte aus. PR 60 schliesst den
   ersten engen VU14-Aggregat-/Export-Slice fuer Perioden `1-4` an; PR 61
   kanonisiert die technische Level-IV-Selektorgrenze `all`/`SK1`. PR 62 setzt
-  den read-only Run-Control-Freigabecheck um; PR 63 ist die naechste atomare
-  Backend-Start-/Statusgrenze.
+  den read-only Run-Control-Freigabecheck um; PR 63 schliesst die atomare
+  Backend-Start-/Status-/Ergebnisgrenze. PR 64 bindet als naechstes den
+  vorbereiteten UI-Flow kontrolliert an.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

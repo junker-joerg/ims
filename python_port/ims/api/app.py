@@ -17,6 +17,12 @@ from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
 from ims.api.core_validation_carryover_probe_contract import (
     core_validation_carryover_probe_api_contract_payload,
 )
+from ims.api.controlled_execution_adapter import run_controlled_execution_adapter
+from ims.api.run_control_adapter_start import (
+    AdapterRunner,
+    RunControlAdapterStartError,
+    start_run_control_adapter,
+)
 from ims.api.run_control_dry_run import dry_run_run_control_request, dry_run_run_control_request_payload
 from ims.api.run_control_dry_run_contract import run_control_dry_run_contract_payload
 from ims.api.run_control_execution_result_store import get_run_control_execution_result
@@ -197,13 +203,36 @@ def _run_control_execution_release_error_payload(message: str) -> dict[str, obje
     }
 
 
+def _run_control_adapter_start_error_payload(
+    message: str,
+    *,
+    adapter_started: bool = False,
+    writes_performed: bool = False,
+) -> dict[str, object]:
+    return {
+        "status": "error",
+        "mode": "run_control_adapter_start",
+        "message": message,
+        "issues": [message],
+        "adapter_started": adapter_started,
+        "result_persisted": False,
+        "writes_performed": writes_performed,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "automatic_historical_rule_selection_performed": False,
+        "historical_full_equality_claimed": False,
+    }
+
+
 def create_app(
     frontend_dist: Path | None = None,
     metadata_repository: MetadataRepositoryReader | None = None,
+    adapter_runner: AdapterRunner | None = None,
 ) -> Any:
     dist_dir = frontend_dist or _frontend_dist_dir()
     metadata_db_path = _metadata_db_path()
     repository = metadata_repository or LazyWorkbenchMetadataRepository(metadata_db_path)
+    effective_adapter_runner = adapter_runner or run_controlled_execution_adapter
     metadata_source = repository.metadata_source()
     if metadata_repository is not None:
         metadata_source = {**metadata_source, "injected": True}
@@ -405,6 +434,64 @@ def create_app(
             )
         return JSONResponse(result.to_dict(), status_code=200 if result.release_ready else 409)
 
+    async def adapter_start_response(request: Request) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            return JSONResponse(
+                _run_control_adapter_start_error_payload(
+                    "run control adapter start requires an explicit SQLite metadata source"
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _run_control_adapter_start_error_payload(
+                    "run control adapter start JSON is invalid"
+                ),
+                status_code=400,
+            )
+        try:
+            release_request = parse_run_control_execution_release_payload(payload)
+            db_path = Path(str(metadata_source["path"]))
+            try:
+                queue_entry = get_run_control_queue_entry(
+                    release_request.queue_id,
+                    db_path=db_path,
+                ).entry
+            except MetadataImportError:
+                queue_entry = None
+            release = check_run_control_execution_release(
+                release_request,
+                queue_entry=queue_entry,
+                preflight=preflight_run_control_from_repository(
+                    release_request.run_id, repository
+                ),
+                profiles=build_default_execution_release_profiles(_repo_root()),
+                trusted_fixture_root=_repo_root() / "tests" / "fixtures",
+            )
+            result = start_run_control_adapter(
+                release,
+                db_path=db_path,
+                adapter_runner=effective_adapter_runner,
+            )
+        except MetadataImportError as exc:
+            adapter_started = (
+                exc.adapter_started if isinstance(exc, RunControlAdapterStartError) else False
+            )
+            writes_performed = (
+                exc.writes_performed if isinstance(exc, RunControlAdapterStartError) else False
+            )
+            return JSONResponse(
+                _run_control_adapter_start_error_payload(
+                    str(exc),
+                    adapter_started=adapter_started,
+                    writes_performed=writes_performed,
+                ),
+                status_code=409,
+            )
+        return JSONResponse(result.to_dict(), status_code=200 if result.replayed else 201)
+
     if FastAPI is not None:
         app = FastAPI(
             title=APP_NAME,
@@ -502,6 +589,10 @@ def create_app(
         async def run_control_adapter_release_check(request: Request) -> JSONResponse:
             return await execution_release_check_response(request)
 
+        @app.post("/api/run-control/adapter-start", response_model=None)
+        async def run_control_adapter_start(request: Request) -> JSONResponse:
+            return await adapter_start_response(request)
+
         @app.post("/api/run-control/dry-run", response_model=None)
         async def run_control_dry_run(request: Request) -> JSONResponse:
             return await dry_run_response(request)
@@ -568,6 +659,11 @@ def create_app(
         Route(
             "/api/run-control/adapter-release-check",
             execution_release_check_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/adapter-start",
+            adapter_start_response,
             methods=["POST"],
         ),
         Route("/api/run-control/dry-run", dry_run_response, methods=["POST"]),

@@ -95,8 +95,8 @@ def test_workbench_api_metadata_smoke(tmp_path: Path):
     assert adapter_result_contract.json()["simulation_performed"] is False
     assert adapter_start_contract.status_code == 200
     assert adapter_start_contract.json()["mode"] == "run_control_adapter_start_contract"
-    assert adapter_start_contract.json()["api_accepts_start_payload"] is False
-    assert adapter_start_contract.json()["api_starts_adapter"] is False
+    assert adapter_start_contract.json()["api_accepts_start_payload"] is True
+    assert adapter_start_contract.json()["api_starts_adapter"] is True
     assert adapter_start_contract.json()["ui_start_enabled"] is False
     assert adapter_start_contract.json()["queue_worker_enabled"] is False
     assert adapter_start_contract.json()["execution_performed"] is False

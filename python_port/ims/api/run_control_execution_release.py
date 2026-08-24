@@ -25,6 +25,7 @@ RUN_CONTROL_EXECUTION_RELEASE_FIELDS = frozenset(
         "run_id",
         "scenario_id",
         "release_profile_id",
+        "idempotency_key",
         "expected_adapter_mode",
         "explicit_execution_release",
         "released_by",
@@ -70,6 +71,7 @@ class RunControlExecutionReleaseRequest:
     run_id: str
     scenario_id: str
     release_profile_id: str
+    idempotency_key: str
     expected_adapter_mode: str
     explicit_execution_release: bool
     released_by: str
@@ -86,6 +88,7 @@ class RunControlExecutionReleaseRequest:
             "run_id": self.run_id,
             "scenario_id": self.scenario_id,
             "release_profile_id": self.release_profile_id,
+            "idempotency_key": self.idempotency_key,
             "expected_adapter_mode": self.expected_adapter_mode,
             "explicit_execution_release": self.explicit_execution_release,
             "released_by": self.released_by,
@@ -206,6 +209,7 @@ def parse_run_control_execution_release_payload(
         run_id=_required_text(payload, "run_id"),
         scenario_id=_required_text(payload, "scenario_id"),
         release_profile_id=_required_text(payload, "release_profile_id"),
+        idempotency_key=_required_text(payload, "idempotency_key"),
         expected_adapter_mode=_required_text(payload, "expected_adapter_mode"),
         explicit_execution_release=explicit_release,
         released_by=_required_text(payload, "released_by"),

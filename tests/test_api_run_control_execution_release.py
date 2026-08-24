@@ -33,6 +33,7 @@ def _release_payload(**overrides: object) -> dict[str, object]:
         "run_id": "baseline-python-tests",
         "scenario_id": "agrsich-reference-window",
         "release_profile_id": "vu14-calculated-diagnostic",
+        "idempotency_key": "release-check-001",
         "expected_adapter_mode": "explicit_multi_period_fixture_adapter",
         "explicit_execution_release": True,
         "released_by": "local-reviewer",
@@ -186,7 +187,7 @@ def test_execution_release_check_endpoint_is_readonly(tmp_path: Path, monkeypatc
     assert queue_entry is not None
     assert queue_entry.status == "validated"
     assert queue_entry.execution_performed is False
-    assert client.post("/api/run-control/adapter-start", json=_release_payload()).status_code == 404
+    assert client.get("/api/run-control/adapter-start-contract").status_code == 200
 
 
 def test_execution_release_check_endpoint_rejects_non_sqlite_source(tmp_path: Path) -> None:

@@ -607,14 +607,16 @@ Aktualisierte grobe Restplanung:
   kanonisiert und getestet, ohne Aggregatstufe oder Fachlogik zu aendern;
 - PR 62 hat den read-only Run-Control-Freigabecheck mit Auditfeldern,
   validierter Queue und serverseitigem Fixture-Profil umgesetzt;
-- vorgeschlagener naechster Schritt ist PR 63: atomare Backend-Start-, Status-
-  und Ergebnisgrenze gegen Doppelstarts schaffen;
+- PR 63 hat die atomare Backend-Start-, Status- und Ergebnisgrenze mit
+  Idempotenz und konservativem Fehlerstatus umgesetzt;
+- vorgeschlagener naechster Schritt ist PR 64: den vorbereiteten UI-Flow an
+  diese Backend-Grenze anbinden, weiterhin ohne Queue-Worker;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Wegen der neu separat geplanten atomaren Startgrenze bleiben grob ca. `8-14`
+Nach der umgesetzten atomaren Startgrenze bleiben grob ca. `7-13`
 reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
@@ -623,10 +625,9 @@ Schaetzung ersetzt keine Vollgleichheitspruefung.
 
 - keine Fachlogikaenderung in diesem Plan-PR;
 - keine Simulation starten;
-- kein neuer HTTP-Schreibendpunkt;
-- kein HTTP- oder UI-Schreibpfad;
+- kein ungesteuerter HTTP- oder UI-Schreibpfad;
 - kein Browser-Upload oder Browser-Download;
-- kein funktionaler Run-Start;
+- kein automatischer oder UI-ausgeloester Run-Start in diesem Planstand;
 - kein Start eines expliziten Periodenrunners aus dem Kernvalidierungsueberblick;
 - kein Szenario-Editor;
 - keine SQLite-Migration;

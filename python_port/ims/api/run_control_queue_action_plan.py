@@ -207,6 +207,12 @@ def _action_for_entry(
         else:
             next_action = "await_execution_release"
             label = "Auf separate Ausfuehrungsfreigabe warten"
+    elif entry.status == "starting":
+        next_action = "await_execution_completion"
+        label = "Auf Abschluss des Adapterstarts warten"
+    elif entry.status == "failed":
+        next_action = "inspect_execution_failure"
+        label = "Fehlgeschlagenen Adapterstart pruefen"
     elif entry.status == "result_persisted":
         next_action = "inspect_persisted_result"
         label = "Persistiertes Ergebnis pruefen"
@@ -221,6 +227,7 @@ def _action_for_entry(
         next_action=next_action,
         next_action_label=label,
         blocked_by=blocked_by,
+        execution_performed=entry.execution_performed,
     )
 
 

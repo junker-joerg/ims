@@ -101,3 +101,18 @@ Der Freigabecheck verlangt zusaetzlich `release_profile_id`, `released_by`,
 `released_at` und `release_reason`. Fixture- oder Ausgabepfade duerfen nicht
 aus dem Browserpayload stammen. PR 63 muss vor einem echten Adapterstart eine
 atomare Status-/Idempotenz- und Ergebnisgrenze schaffen.
+
+## Erweiterung in PR 63
+
+PR 63 aktiviert den eng gegateten Backend-Endpunkt
+`POST /api/run-control/adapter-start`. Der Vertrag verlangt nun zusaetzlich
+`idempotency_key`; `api_accepts_start_payload`,
+`api_validates_start_payload`, `api_starts_adapter`, `writes_enabled` und
+`execution_enabled` beschreiben diese Backend-Faehigkeit mit `true`.
+
+Der lesende GET-Vertrag selbst fuehrt weiterhin nichts aus und meldet deshalb
+`writes_performed = false`, `execution_performed = false` und
+`simulation_performed = false`. UI-Startbutton, Queue-Worker, freie Pfade,
+automatische historische Regelwahl und historische Vollgleichheitsbehauptung
+bleiben ausgeschlossen. Die atomare Umsetzung ist in
+`run_control_atomic_adapter_start.md` dokumentiert.

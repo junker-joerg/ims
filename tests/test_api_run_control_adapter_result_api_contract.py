@@ -31,7 +31,7 @@ def test_run_control_adapter_result_api_contract_reports_readonly_endpoint_shape
     assert "summary" in payload["accepted_result_fields"]
     assert "simulation_performed" in payload["accepted_summary_fields"]
     assert "browser_upload" in payload["forbidden_fields"]
-    assert "adapter_start_from_run_control" in payload["forbidden_boundaries"]
+    assert "adapter_start_from_run_control" not in payload["forbidden_boundaries"]
     assert "http_payload_validation" in payload["forbidden_boundaries"]
     assert "browser_file_picker" in payload["forbidden_boundaries"]
     assert payload["precomputed_result_required"] is True

@@ -536,15 +536,15 @@ def test_run_control_adapter_start_contract_endpoint_is_readonly(tmp_path):
     assert "queue_id" in payload["required_request_fields"]
     assert "explicit_execution_release_true" in payload["required_preconditions"]
     assert "browser_upload" in payload["forbidden_request_fields"]
-    assert "post_adapter_start_endpoint" in payload["forbidden_boundaries"]
-    assert payload["contract_only"] is True
-    assert payload["api_accepts_start_payload"] is False
-    assert payload["api_validates_start_payload"] is False
-    assert payload["api_starts_adapter"] is False
+    assert "post_adapter_start_endpoint" not in payload["forbidden_boundaries"]
+    assert payload["contract_only"] is False
+    assert payload["api_accepts_start_payload"] is True
+    assert payload["api_validates_start_payload"] is True
+    assert payload["api_starts_adapter"] is True
     assert payload["ui_start_enabled"] is False
     assert payload["queue_worker_enabled"] is False
-    assert payload["writes_enabled"] is False
-    assert payload["execution_enabled"] is False
+    assert payload["writes_enabled"] is True
+    assert payload["execution_enabled"] is True
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False

@@ -72,7 +72,7 @@ def test_run_control_adapter_result_contract_reports_readonly_shape() -> None:
     assert "summary" in payload["required_result_fields"]
     assert "simulation_performed" in payload["required_summary_fields"]
     assert "browser_upload" in payload["forbidden_fields"]
-    assert "adapter_start_from_run_control" in payload["forbidden_boundaries"]
+    assert "adapter_start_from_run_control" not in payload["forbidden_boundaries"]
     assert payload["precomputed_result_required"] is True
     assert payload["adapter_start_allowed"] is False
     assert payload["api_accepts_upload"] is False

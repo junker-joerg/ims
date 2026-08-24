@@ -80,7 +80,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   kontrollierten Startpfad vorbereiten, mit Auditfeldern und weiter ohne freien
   Browser-Upload (read-only Freigabecheck erledigt).
 - PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze gegen Doppelstarts
-  schaffen, noch ohne UI-Startbutton.
+  schaffen, noch ohne UI-Startbutton (erledigt: Idempotenz-Claim,
+  `starting`/`failed`/`result_persisted` und atomare Resultatablage).
 - PR 64: UI-Startpfad hinter expliziter Freigabe aktivieren; Queue-Worker und
   Adapterstart bleiben eng gegated.
 - PR 65: UI-Ergebnisverlauf, Fehlerzustaende und erneute Ergebnisanzeige fuer
@@ -101,16 +102,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 62 bleiben wegen der separat benoetigten atomaren Backend-Startgrenze
-weiterhin grob `8-14` reviewbare PRs bis zu einer konservativen
+Nach PR 63 bleiben grob `7-13` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 63 schafft eine atomare Backend-Start-, Status- und Ergebnisgrenze gegen
-Doppelstarts. Der vorhandene read-only Freigabecheck bleibt Voraussetzung;
-freier Browser-Upload und UI-Startbutton bleiben in diesem PR gesperrt. Der PR
-darf keine unbegrenzte Vollsimulation freischalten und behauptet keine
-historische Vollgleichheit.
+PR 64 bindet den vorbereiteten UI-Flow an den atomaren Backend-Start an. Die UI
+muss die explizite Freigabe sichtbar bestaetigen, einen stabilen
+Idempotenzschluessel senden und laufende, fehlgeschlagene sowie persistierte
+Zustaende ohne automatischen Wiederholungsstart darstellen. Freier
+Browser-Upload, Queue-Worker und historische Vollgleichheitsbehauptung bleiben
+gesperrt.

@@ -239,14 +239,14 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 58 hat den berechneten kontrollierten Mehrperiodenvergleich" in plan
     assert "PR 59 hat den ersten read-only Abweichungsbericht angebunden" in plan
     assert "PR 60 hat den ersten schmalen berechneten Aggregat-/Export-Output" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 63" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 64" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "8-14" in plan
+    assert "7-13" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -256,9 +256,8 @@ def test_ims_core_resume_plan_keeps_boundaries_conservative() -> None:
 
     assert "keine Fachlogikaenderung in diesem Plan-PR" in plan
     assert "keine Simulation starten" in plan
-    assert "kein neuer HTTP-Schreibendpunkt" in plan
-    assert "kein HTTP- oder UI-Schreibpfad" in plan
-    assert "kein funktionaler Run-Start" in plan
+    assert "kein ungesteuerter HTTP- oder UI-Schreibpfad" in plan
+    assert "kein automatischer oder UI-ausgeloester Run-Start" in plan
     assert "kein Start eines expliziten Periodenrunners aus dem Kernvalidierungsueberblick" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
     assert "keine Behauptung, dass nicht vorhandene `legacy_c/`-Quellen gelesen wurden" in plan
@@ -284,17 +283,18 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "8-14" in plan
+    assert "7-13" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
     assert "PR 61" in plan and "Level-IV-Selektorgrenze" in plan
     assert "PR 62" in plan and "read-only Freigabecheck erledigt" in plan
     assert "PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze" in plan
+    assert "PR 64: UI-Startpfad" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
-    assert "behauptet keine\nhistorische Vollgleichheit" in plan
+    assert "historische Vollgleichheitsbehauptung bleiben\ngesperrt" in plan
 
 
 def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:
@@ -1205,7 +1205,8 @@ def test_plan_indexes_reference_ims_core_resume_plan() -> None:
     assert "GET /api/run-control/adapter-start-contract" in readme
     assert "POST /api/run-control/adapter-release-check" in readme
     assert "`release_ready = true`" in readme
-    assert "atomaren Status-/Idempotenz- und Ergebnisgrenze in PR 63" in readme
+    assert "POST /api/run-control/adapter-start" in readme
+    assert "idempotency_key" in readme
     assert "Carryover-Probe-Vertrag" in readme
     assert "0 PRs bis zur" in readme
     assert "3+ fachliche" in readme

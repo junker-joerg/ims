@@ -125,7 +125,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "Die lokale Workbench-v1 ist als Modernisierungs-Meilenstein abgeschlossen" in readme
     assert "kein Release-Tag, keine Fachvalidierung" in readme
     assert "expliziten Importbericht und Run-Control-Preflight" in readme
-    assert "keine HTTP-/UI-Schreibpfade" in readme
+    assert "kein UI-Schreibpfad" in readme
+    assert "idempotenten Adapterstart" in readme
     assert "docs/migration/workbench_run_control_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_plan.md" in readme
     assert "docs/plans/run_control_adapter_result_view_plan.md" in readme
@@ -693,10 +694,11 @@ def test_legacy_file_family_backlog_updates_remaining_pr_plan():
     assert "15 blockierende Kerninputluecken" in backlog
     assert "PR 60: ersten schmalen, tatsaechlich berechneten Output" in backlog
     assert "PR 61: Level-IV-Selektormetadaten `all` und `SK1`" in backlog
-    assert "Zaehlschnitt nach PR 62" in backlog
-    assert "weiterhin grob `8-14` reviewbare PRs" in backlog
+    assert "Zaehlschnitt nach PR 63" in backlog
+    assert "grob `7-13` reviewbare PRs" in backlog
     assert "PR 62: kontrollierte Run-Control-Ausfuehrungsfreigabe" in backlog
     assert "PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze" in backlog
+    assert "Naechster Schnitt ist PR 64" in backlog
     assert "weiterhin ohne Vollgleichheitsbehauptung" in backlog
 
 

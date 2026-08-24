@@ -412,10 +412,9 @@ Vorgeschlagener naechster Schritt nach PR 49:
   Adapter vorbereiten; keine Erweiterung der historischen Gleichheitsaussage
   (read-only Freigabecheck erledigt).
 - PR 63: atomare Backend-Start-, Status- und Ergebnisgrenze gegen Doppelstarts
-  schaffen; noch kein UI-Startbutton.
+  schaffen; noch kein UI-Startbutton (erledigt).
 
-Zaehlschnitt nach PR 62: wegen des separat geplanten atomaren Startschritts
-weiterhin grob `8-14` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 63: grob `7-13` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als
@@ -423,6 +422,10 @@ API-/Doku-Smoke und Startskriptgrenze abgesichert. Das bleibt kein historischer
 Vollgleichheitsnachweis.
 
 Restgrenze fuer alle Folge-PRs: weiterhin ohne Vollgleichheitsbehauptung.
+
+Naechster Schnitt ist PR 64: kontrollierte UI-Anbindung an den atomaren
+Backend-Start, mit expliziter Freigabe und Idempotenz, weiterhin ohne
+Queue-Worker oder freien Browser-Upload.
 
 ## Validierungsregel
 
