@@ -54,6 +54,9 @@ EIGHTH_FACHLICHER_REGRESSION_DOC = (
 NINTH_FACHLICHER_REGRESSION_DOC = (
     REPO_ROOT / "docs" / "migration" / "ninth_fachlicher_regressionstest.md"
 )
+TENTH_FACHLICHER_REGRESSION_DOC = (
+    REPO_ROOT / "docs" / "migration" / "tenth_fachlicher_regressionstest.md"
+)
 PRODUCTION_READINESS_PLAN = (
     REPO_ROOT / "docs" / "plans" / "production_readiness_pr_plan.md"
 )
@@ -226,12 +229,13 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "0 PRs bis zum achten ausgefuehrten fachlichen Regressionstest" in plan
     assert "neunter fachlicher VN-Schaden-/Settlement-Breitenslice" in plan
     assert "0 PRs bis zum neunten ausgefuehrten fachlichen Regressionstest" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 55" in plan
-    assert "VU-Regelbreite ergaenzen" in plan
+    assert "zehnten ausgefuehrten fachlichen Regressionstest" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 56" in plan
+    assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "14-20" in plan
+    assert "13-19" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -262,10 +266,14 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "Phase B: Altdaten-Validierung verdichten" in plan
     assert "Phase C: Kontrollierte Ausfuehrung und UI" in plan
     assert "Phase D: Freigabehaertung" in plan
-    assert "14-20" in plan
+    assert "PR 55: VU-Regelbreite ergaenzen" in plan
+    assert "Vrvu01" in plan
+    assert "PR 56 fixiert als Plan den Produktions-Altdatenkorpus" in plan
+    assert "13-19" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
-    assert "keinen UI-Startpfad frei" in plan
+    assert "schaltet keinen UI-Startpfad" in plan
+    assert "frei und behauptet keine historische Vollgleichheit" in plan
 
 
 def test_sixth_fachlicher_slice_plan_selects_vrvn04_search_history() -> None:
@@ -370,7 +378,9 @@ def test_run_control_execution_release_plan_scopes_release_chain() -> None:
     assert "VN-Schaden-/Settlement-Pfad" in plan
     assert "PR 54 ist" in plan and "erledigt" in plan
     assert "PR 55" in plan
-    assert "expliziter Draw-/Carryover-Grenze" in plan
+    assert "zwei expliziten" in plan and "Draw-Vektoren" in plan
+    assert "kontrollierter Carryover-Opt-in-Grenze" in plan
+    assert "naechste Schritt ist PR 56" in plan
     assert "keine historische Vollgleichheitsbehauptung" in plan
 
 
@@ -736,6 +746,27 @@ def test_ninth_fachlicher_regression_doc_scopes_ninth_test() -> None:
     assert "kein API-/UI-/Run-Control-Startpfad" in doc
     assert "keine neue Fachregel" in doc
     assert "Fachschnitt" in doc and "PR 55" in doc
+
+
+def test_tenth_fachlicher_regression_doc_scopes_tenth_test() -> None:
+    doc = TENTH_FACHLICHER_REGRESSION_DOC.read_text(encoding="utf-8")
+
+    assert TENTH_FACHLICHER_REGRESSION_DOC.is_file()
+    assert "Zehnter fachlicher Regressionstest" in doc
+    assert "tests/test_tenth_fachlicher_vu_random_carryover_regression.py" in doc
+    assert "Historischer Bezug | bestehendes Mapping zu `IMS.E`, `act Vrvu01`" in doc
+    assert "`run_vu_foreign_info_multi_period_from_mappings`" in doc
+    assert "Versicherer | `10`" in doc
+    assert "Lokale Perioden | `2 -> 3`" in doc
+    assert "Globale Perioden | `14 -> 15`" in doc
+    assert "random_draws = [0.1, 0.2, 0.3, 0.4]" in doc
+    assert "random_draws = [0.5, 0.25, 0.75, 0.125]" in doc
+    assert "reserves_current = [55.125, 66.15]" in doc
+    assert "carryovers = []" in doc
+    assert "keine Simulation" in doc
+    assert "kein historischer RNG-Nachweis" in doc
+    assert "kein historischer" in doc and "Vollgleichheitsnachweis" in doc
+    assert "PR 56 fixiert den Produktions-Altdatenkorpus" in doc
 
 
 def test_controlled_execution_adapter_plan_keeps_adapter_gated() -> None:

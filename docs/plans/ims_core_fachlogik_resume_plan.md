@@ -585,15 +585,18 @@ Aktualisierte grobe Restplanung:
 - neunter fachlicher VN-Schaden-/Settlement-Breitenslice fuer `Vrvn01` bis
   `Vrvn03` ist als Regressionstest umgesetzt und dokumentiert;
 - 0 PRs bis zum neunten ausgefuehrten fachlichen Regressionstest;
-- vorgeschlagener naechster Schritt ist PR 55:
-  VU-Regelbreite ergaenzen, vorzugsweise einen expliziten VU-Random- oder
-  VU-Markup-Slice mit Draw-/Carryover-Grenze umsetzen;
+- zehnter fachlicher VU-`Vrvu01`-/Zufall-I-Slice mit zwei expliziten
+  Draw-Vektoren und kontrollierter Carryover-Opt-in-Grenze ist als
+  Regressionstest umgesetzt und dokumentiert;
+- 0 PRs bis zum zehnten ausgefuehrten fachlichen Regressionstest;
+- vorgeschlagener naechster Schritt ist PR 56: Produktions-Altdatenkorpus als
+  Plan fixieren und Ein-/Ausschlussgrenzen fuer die erste Freigabe benennen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `14-20` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `13-19` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 

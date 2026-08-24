@@ -210,8 +210,9 @@ fachlichen Slice umsetzen. PR 52 ist erledigt; der naechste fachliche Schritt
 war PR 53: Vrvn02 / `random` mit expliziten Draws und Seed-/Draw-Grenze. PR 53
 ist erledigt; der naechste fachliche Schritt war PR 54:
 VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03` breiter pruefen. PR 54 ist
-erledigt; der naechste fachliche Schritt ist PR 55: VU-Regelbreite mit
-expliziter Draw-/Carryover-Grenze.
+erledigt; PR 55 prueft danach `Vrvu01` / Zufall I mit zwei expliziten
+Draw-Vektoren und kontrollierter Carryover-Opt-in-Grenze (erledigt). Der
+naechste Schritt ist PR 56: den Produktions-Altdatenkorpus als Plan fixieren.
 
 ## Validierung dieses Planstands
 

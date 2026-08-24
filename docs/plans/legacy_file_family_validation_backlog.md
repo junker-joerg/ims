@@ -384,9 +384,14 @@ Vorgeschlagener naechster Schritt nach PR 49:
   `tests/test_ninth_fachlicher_vn_damage_settlement_breadth.py` und
   `docs/migration/ninth_fachlicher_regressionstest.md`, erledigt).
 - PR 55: VU-Regelbreite ergaenzen, vorzugsweise ein expliziter VU-Random- oder
-  VU-Markup-Slice mit Draw-/Carryover-Grenze.
+  VU-Markup-Slice mit Draw-/Carryover-Grenze (dieser Schnitt:
+  `tests/test_tenth_fachlicher_vu_random_carryover_regression.py` und
+  `docs/migration/tenth_fachlicher_regressionstest.md`, erledigt).
+- PR 56: Produktions-Altdatenkorpus als Plan fixieren und fuer die erste
+  Freigabe Ein-/Ausschluss, Herkunft, Header, Periodenfenster und Parsergrenzen
+  dokumentieren; `incomming/` bleibt unversioniert.
 
-Zaehlschnitt nach PR 54: grob `14-20` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 55: grob `13-19` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

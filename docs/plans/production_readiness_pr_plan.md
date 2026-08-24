@@ -44,7 +44,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 - PR 54: VN-Schaden-/Settlement-Pfad aus `Vrvn01` bis `Vrvn03` breiter gegen
   vorhandene explizite Fixtures pruefen (erledigt).
 - PR 55: VU-Regelbreite ergaenzen, vorzugsweise ein expliziter VU-Random- oder
-  VU-Markup-Slice mit Draw-/Carryover-Grenze.
+  VU-Markup-Slice mit Draw-/Carryover-Grenze. Dieser Schnitt prueft
+  `Vrvu01` / Zufall I ueber zwei explizite Draw-Vektoren und eine kontrollierte
+  Carryover-Opt-in-Grenze (erledigt).
 
 ### Phase B: Altdaten-Validierung verdichten
 
@@ -84,14 +86,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Ab PR 54 bleiben grob `14-20` reviewbare PRs bis zu einer konservativen
+Nach PR 55 bleiben grob `13-19` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 55 bleibt klein: Er ergaenzt VU-Regelbreite, vorzugsweise einen expliziten
-VU-Random- oder VU-Markup-Slice mit Draw-/Carryover-Grenze. Auch dieser Schritt
-startet keine Simulation, schaltet keinen UI-Startpfad frei und behauptet keine
-historische Vollgleichheit.
+PR 56 fixiert als Plan den Produktions-Altdatenkorpus. Er benennt, welche
+historischen Referenzen fuer die erste Freigabe zaehlen, welche bewusst
+ausgeschlossen bleiben und welche Herkunfts-, Header-, Perioden- und
+Parsergrenzen vor PR 57 noch zu klaeren sind. Dieser Schritt startet keine
+Simulation, importiert `incomming/` nicht gesammelt, schaltet keinen UI-Startpfad
+frei und behauptet keine historische Vollgleichheit.

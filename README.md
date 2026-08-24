@@ -162,6 +162,12 @@ VN-Schaden-/Settlement-Pfad fuer explizite Entscheidungen aus `Vrvn01` bis
 `Vrvn03` mit drei Policyholdern, kumulierten Versichererfortschreibungen und
 Sektorvermoegen, ohne Simulation und ohne historischen
 Vollgleichheitsnachweis.
+Der zehnte fachliche Regressionstest ist unter
+`tests/test_tenth_fachlicher_vu_random_carryover_regression.py` umgesetzt und
+in `docs/migration/tenth_fachlicher_regressionstest.md` eingeordnet. Er prueft
+`Vrvu01` / Zufall I ueber zwei explizite Draw-Vektoren und trennt den
+VU-Zustandstransfer durch ein ausdrueckliches Carryover-Opt-in, ohne
+historische RNG- oder Vollgleichheitsbehauptung.
 Der Run-Control-Ausfuehrungsfreigabeplan ist unter
 `docs/plans/run_control_execution_release_plan.md` dokumentiert. Er beschreibt
 die Freigabekette von Dry-Run, Queue, Action-Plan, expliziter
