@@ -216,8 +216,10 @@ naechste Schritt ist PR 56: den Produktions-Altdatenkorpus als Plan fixieren.
 PR 56 ist mit 19 Kernreferenzen, 6.300 Vergleichszeilen und einem getrennten
 ZINS000-Aufnahmeentscheid erledigt. PR 57 hat ausschliesslich `IMSVU014.DAT`
 und `IMSVUSK1.DAT` als separate historische Referenzschicht versioniert. PR 58
-bereitet als naechstes den berechneten Mehrperiodenvergleich fuer den
-unveraenderten Kernkorpus vor.
+hat den berechneten Mehrperiodenvergleich fuer den unveraenderten Kernkorpus
+als strikten externen Exporttabellenvertrag vorbereitet. PR 59 bindet als
+naechstes einen read-only Abweichungsbericht an, ohne einen UI-Startpfad oder
+eine Vollsimulation freizuschalten.
 
 ## Validierung dieses Planstands
 

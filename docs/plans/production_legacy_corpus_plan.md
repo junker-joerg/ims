@@ -84,8 +84,9 @@ Dieser Befund prueft Referenzpfade, Parser, Header, Periodenfenster,
 Target-Metadaten und Reportbildung. Der Validierungslauf baut seine
 Vergleichstabellen aus den gelesenen Referenzzeilen auf. Er ist deshalb noch
 kein unabhaengiger Neu-/Alt-Vergleich eines berechneten historischen Modells.
-Der kontrollierte Mehrperiodenvergleich gegen portierte Ergebnisse bleibt
-Aufgabe von PR 58.
+PR 58 hat dafuer den strikten Eingangsvertrag fuer von aussen gelieferte
+berechnete Exporttabellen umgesetzt. Ein berechneter Kernkorpus-Lauf und dessen
+Abweichungsbericht bleiben Aufgabe von PR 59.
 
 ## Bewusst ausgeschlossene Kandidaten
 
@@ -131,7 +132,7 @@ geprueften Dateien gezielt in den historischen Referenzbestand uebernommen.
 Die Herkunfts- und Vergleichsgrenzen stehen in
 `docs/migration/zins000_reference_layer.md`.
 
-## Freigabegates fuer PR 58 und PR 59
+## Freigabegates fuer PR 59 und PR 60
 
 Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 
@@ -141,8 +142,8 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 4. Coverage meldet keine vorhandene, aber ungedeckte Referenz;
 5. ZINS000 wird, falls aufgenommen, als eigene historische Schicht behandelt;
 6. `VU014PR1.DAT` bleibt ohne Feldmapping ausserhalb aller Agrsich-Bundles;
-7. PR 58 vergleicht berechnete Mehrperiodenergebnisse, statt nur
-   Referenzzeilen in die Vergleichsform zu uebertragen;
+7. der PR-58-Vertrag akzeptiert nur extern gelieferte, vollstaendige
+   Exporttabellen und baut keine Neu-Zeilen aus Referenzzeilen;
 8. PR 59 klassifiziert Abweichungen, ohne aus Teiltreffern Vollgleichheit
    abzuleiten.
 

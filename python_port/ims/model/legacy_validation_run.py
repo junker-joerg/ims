@@ -404,6 +404,22 @@ def _validate_unique_targets(targets: list[LegacyValidationTarget]) -> None:
         seen.add(identity)
 
 
+def load_legacy_validation_targets_from_fixture(path: str | Path) -> list[LegacyValidationTarget]:
+    fixture_path = Path(path).resolve()
+    with fixture_path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError("legacy validation fixture must be a JSON object")
+
+    target_items = data.get("targets")
+    if not isinstance(target_items, list) or not target_items:
+        raise ValueError("legacy validation fixture must contain a non-empty targets list")
+
+    targets = [_target_from_mapping(item, fixture_path.parent) for item in target_items]
+    _validate_unique_targets(targets)
+    return targets
+
+
 def _insurer_export_table_from_target(target: LegacyValidationTarget, legacy_table: LegacyInsurerTable) -> ExportTable:
     rows: list[ExportRow] = []
     for period in target.periods:

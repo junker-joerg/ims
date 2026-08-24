@@ -62,6 +62,12 @@ Kandidaten bleiben ausgeschlossen. PR 57 hat nur `IMSVU014.DAT` und
 `IMSVUSK1.DAT` als getrennte ZINS000-Referenzschicht versioniert; sie bleiben
 aus dem Kernbundle ausgeschlossen.
 
+Der vorbereitete berechnete Mehrperiodenvergleich ist unter
+`docs/migration/calculated_legacy_multi_period_contract.md` dokumentiert. Er
+fixiert fuer den Kernkorpus 15 benoetigte Exporttabellen, 19 Ziele und 6.300
+Perioden, startet aber keinen Lauf und ist noch kein historischer
+Vollgleichheitsnachweis.
+
 Die lokale Demo-Checkliste fuer eine kurze Vorfuehrung steht unter `docs/migration/workbench_demo_checklist.md`. Sie benennt Startbefehle, UI-Reihenfolge, erwartete Demo-Signale und klare Grenzen: Queue-Metadaten duerfen nur in eine explizite SQLite-Datei vorgemerkt werden; Simulation, Ausfuehrungsadapter und fachlicher Gleichheitsnachweis bleiben ausgeschlossen.
 
 Der Anschluss zur eigentlichen IMS-Kern-Fachlogik nach Workbench-v1 ist unter

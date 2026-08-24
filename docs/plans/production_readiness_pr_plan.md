@@ -59,7 +59,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   genau `IMSVU014.DAT` und `IMSVUSK1.DAT` sind als getrennte ZINS000-Schicht
   versioniert; `incomming/` bleibt weiterhin kein Sammelimport (erledigt).
 - PR 58: Mehrperioden-Legacy-Vergleich fuer den Freigabekorpus vorbereiten,
-  weiterhin ohne Vollsimulation.
+  als strikten Vertrag fuer extern gelieferte berechnete Exporttabellen mit
+  15 Exporten, 19 Zielen und 6.300 Perioden, weiterhin ohne Vollsimulation
+  (erledigt).
 - PR 59: Abweichungsbericht erzeugen: Treffer, tolerierte Differenzen,
   blockierende Differenzen und offene Feldfragen.
 - PR 60: Modellkorrekturen nur fuer belegte Abweichungen in kleinen PRs
@@ -90,15 +92,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 57 bleiben grob `11-17` reviewbare PRs bis zu einer konservativen
+Nach PR 58 bleiben grob `10-16` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 58 bereitet den kontrollierten berechneten Mehrperiodenvergleich fuer den
-19-Dateien-Kernkorpus vor. ZINS000 bleibt dabei eine getrennt waehlbare
-Referenzschicht und wird nicht mit den 6.300 Kernvergleichsperioden vermischt.
-Der PR startet keine Vollsimulation, schaltet keinen UI-Startpfad frei und
-behauptet keine historische Vollgleichheit.
+PR 59 bindet einen ersten read-only Abweichungsbericht aus explizit
+berechneten Mehrperiodenergebnissen an den PR-58-Vertrag. Fehlende
+Kernexporttabellen werden als blockierende Inputluecken ausgewiesen; ZINS000
+bleibt getrennt und fixturegenerierte Echo-Tabellen duerfen nicht als
+Neu-Ergebnisse gelten. Der PR startet keine Vollsimulation, schaltet keinen
+UI-Startpfad frei und behauptet keine historische Vollgleichheit.

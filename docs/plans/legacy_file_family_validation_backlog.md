@@ -397,9 +397,12 @@ Vorgeschlagener naechster Schritt nach PR 49:
   Sammelimport (erledigt; versioniert unter
   `tests/references/legacy_agrsich/zins000/`).
 - PR 58: berechneten kontrollierten Mehrperiodenvergleich fuer den
-  19-Dateien-Kernkorpus vorbereiten; ZINS000 nur separat waehlbar halten.
+  19-Dateien-Kernkorpus als strikten Vertrag fuer 15 extern gelieferte
+  Exporttabellen vorbereiten; ZINS000 nur separat waehlbar halten (erledigt).
+- PR 59: ersten read-only Abweichungsbericht anbinden; fehlende berechnete
+  Kernexporte blockierend und Legacy-Echo-Tabellen unzulaessig halten.
 
-Zaehlschnitt nach PR 57: grob `11-17` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 58: grob `10-16` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

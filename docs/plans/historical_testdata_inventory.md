@@ -142,3 +142,10 @@ Periode mit `VU14L1.DAT` beziehungsweise den Zeitfenstern `VUSK1L5` bis
 `tests/references/legacy_agrsich/zins000/` nur als getrennte historische
 Schicht versioniert und nicht als Ersatz oder Fortsetzung der heutigen
 Baseline bewertet. Das produktive Kernbundle bleibt unveraendert.
+
+## Berechneter Vergleichsvertrag PR 58
+
+PR 58 laesst Inventar und Kernbundle unveraendert. Der neue Sollplan verlangt
+fuer einen spaeteren berechneten Vergleich exakt 15 Exporttabellen, 19 Ziele
+und 6.300 Perioden. ZINS000 bleibt eine getrennt waehlbare Schicht. Es wurden
+keine weiteren Dateien aus `incomming/` uebernommen.

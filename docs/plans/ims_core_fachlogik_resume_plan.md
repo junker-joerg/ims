@@ -595,14 +595,17 @@ Aktualisierte grobe Restplanung:
   ZINS000-Aufnahmeentscheid);
 - PR 57 hat `IMSVU014.DAT` und `IMSVUSK1.DAT` nur als getrennte
   ZINS000-Referenzschicht versioniert; der Kernkorpus bleibt unveraendert;
-- vorgeschlagener naechster Schritt ist PR 58: berechneten kontrollierten
-  Mehrperiodenvergleich fuer den Kernkorpus vorbereiten;
+- PR 58 hat den berechneten kontrollierten Mehrperiodenvergleich fuer den
+  Kernkorpus als strikten externen Exporttabellenvertrag vorbereitet (15
+  Exporte, 19 Ziele und 6.300 Perioden);
+- vorgeschlagener naechster Schritt ist PR 59: ersten read-only
+  Abweichungsbericht aus explizit berechneten Mehrperiodenergebnissen anbinden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `11-17` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `10-16` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 
