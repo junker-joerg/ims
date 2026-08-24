@@ -220,9 +220,10 @@ hat den berechneten Mehrperiodenvergleich fuer den unveraenderten Kernkorpus
 als strikten externen Exporttabellenvertrag vorbereitet. PR 59 hat den
 read-only Abweichungsbericht angebunden und weist 15 fehlende Kernexporte
 blockierend aus. PR 60 hat einen ersten schmalen,
-tatsaechlich berechneten VU14-Aggregat-/Export-Slice angebunden. PR 61 klaert als
-naechstes die technische Level-IV-Selektorgrenze `all` gegen `SK1`, ohne einen
-UI-Startpfad oder eine Vollsimulation freizuschalten.
+tatsaechlich berechneten VU14-Aggregat-/Export-Slice angebunden. PR 61 hat die
+technische Level-IV-Selektorgrenze `all` gegen `SK1` eng kanonisiert. PR 62
+bereitet als naechstes den kontrollierten Run-Control-Freigabepfad vor, ohne
+freien Browser-Upload oder eine unbegrenzte Vollsimulation freizuschalten.
 
 ## Validierung dieses Planstands
 

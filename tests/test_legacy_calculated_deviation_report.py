@@ -66,6 +66,30 @@ def _table(
     )
 
 
+def _write_level_iv_fixture(tmp_path: Path) -> Path:
+    fixture_path = _write_fixture(tmp_path)
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    fixture["targets"][0].update(
+        {
+            "export_filename": "imsvusk1.dat",
+            "level": "IV",
+            "selector_kind": "all",
+            "selector_value": "SK1",
+        }
+    )
+    fixture_path.write_text(json.dumps(fixture), encoding="utf-8")
+    return fixture_path
+
+
+def _level_iv_table() -> ExportTable:
+    table = _table()
+    table.spec.filename = "imsvusk1.dat"
+    table.spec.level = "IV"
+    table.spec.selector_kind = "all"
+    table.spec.selector_value = "all"
+    return table
+
+
 def test_core_deviation_report_exposes_missing_calculated_exports_as_blockers() -> None:
     report = build_calculated_legacy_deviation_report(
         CORE_BUNDLE,
@@ -112,6 +136,24 @@ def test_deviation_report_classifies_exact_matches(tmp_path: Path) -> None:
     assert report.blocking_numeric_differences == []
     assert report.open_field_questions == []
     assert report.comparison_performed is True
+    assert report.historical_equivalence_claimed is False
+
+
+def test_deviation_report_accepts_runtime_all_for_historical_level_iv_sk1(
+    tmp_path: Path,
+) -> None:
+    table = _level_iv_table()
+    report = build_calculated_legacy_deviation_report(
+        _write_level_iv_fixture(tmp_path),
+        [table],
+        calculation_origin="unit_test_level_iv_selector_contract",
+    )
+
+    assert table.spec.selector_value == "all"
+    assert report.status == "matches"
+    assert report.comparison_performed is True
+    assert report.matches is True
+    assert report.compared_row_count == 2
     assert report.historical_equivalence_claimed is False
 
 

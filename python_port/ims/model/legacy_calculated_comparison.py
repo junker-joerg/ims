@@ -11,6 +11,11 @@ from ims.model.legacy_agrsich_multi_period import (
     compare_policyholder_export_table_to_legacy,
 )
 from ims.model.legacy_agrsich_reference import LegacyInsurerTable, parse_legacy_insurer_dat
+from ims.model.legacy_export_identity import (
+    ExportIdentity,
+    build_legacy_export_identity,
+    format_legacy_export_identity,
+)
 from ims.model.legacy_validation_report import (
     LegacyValidationReport,
     build_legacy_validation_report_from_multi_period_comparison,
@@ -20,10 +25,6 @@ from ims.model.legacy_validation_run import (
     load_legacy_validation_targets_from_fixture,
 )
 from ims.model.legacy_vn_reference import LegacyPolicyholderTable, parse_legacy_policyholder_dat
-
-
-ExportIdentity = tuple[str, str, str, str, int | str | None]
-
 
 @dataclass(slots=True)
 class RequiredCalculatedExport:
@@ -119,7 +120,7 @@ class CalculatedLegacyComparisonResult:
 
 
 def _target_identity(target: LegacyValidationTarget) -> ExportIdentity:
-    return (
+    return build_legacy_export_identity(
         target.export_filename,
         target.subject_type,
         target.level,
@@ -129,7 +130,7 @@ def _target_identity(target: LegacyValidationTarget) -> ExportIdentity:
 
 
 def _table_identity(table: ExportTable) -> ExportIdentity:
-    return (
+    return build_legacy_export_identity(
         table.spec.filename,
         table.spec.subject_type,
         table.spec.level,
@@ -139,8 +140,7 @@ def _table_identity(table: ExportTable) -> ExportIdentity:
 
 
 def _identity_label(identity: ExportIdentity) -> str:
-    filename, subject_type, level, selector_kind, selector_value = identity
-    return f"{filename} ({subject_type}/{level}/{selector_kind}={selector_value})"
+    return format_legacy_export_identity(identity)
 
 
 def _required_exports(targets: list[LegacyValidationTarget]) -> list[RequiredCalculatedExport]:
@@ -150,12 +150,13 @@ def _required_exports(targets: list[LegacyValidationTarget]) -> list[RequiredCal
         identity = _target_identity(target)
         existing = grouped.get(identity)
         if existing is None:
+            filename, subject_type, level, selector_kind, selector_value = identity
             existing = RequiredCalculatedExport(
-                filename=target.export_filename,
-                subject_type=target.subject_type,
-                level=target.level,
-                selector_kind=target.selector_kind,
-                selector_value=target.selector_value,
+                filename=filename,
+                subject_type=subject_type,
+                level=level,
+                selector_kind=selector_kind,
+                selector_value=selector_value,
                 periods=[],
                 target_count=0,
                 legacy_paths=[],
@@ -302,7 +303,7 @@ def compare_calculated_export_tables_to_legacy_fixture(
     targets = load_legacy_validation_targets_from_fixture(resolved_fixture_path)
     required_exports = _required_exports(targets)
     required_by_identity = {
-        (
+        build_legacy_export_identity(
             item.filename,
             item.subject_type,
             item.level,

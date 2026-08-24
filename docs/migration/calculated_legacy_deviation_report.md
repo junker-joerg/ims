@@ -93,7 +93,9 @@ fachlichen Gleichheitsnachweis.
 ## Naechster Schritt
 
 PR 60 hat einen ersten schmalen Aggregat-/Export-Output aus vier expliziten
-VU14-Zustaenden angebunden. PR 61 klaert als naechstes die technische
-Level-IV-Selektorgrenze `all` gegen `SK1`, bevor ein berechneter SK1-Slice
-angeschlossen wird. Modellkorrekturen bleiben gesperrt, bis eine konkrete
-berechnete Abweichung aus vergleichbaren Zustaenden belegt ist.
+VU14-Zustaenden angebunden. PR 61 hat die technische Level-IV-Selektorgrenze
+`all` gegen `SK1` explizit und eng kanonisiert. PR 62 bereitet als naechstes
+die kontrollierte Run-Control-Ausfuehrungsfreigabe vor; ein fachlich
+validierter berechneter SK1-Slice bleibt davon getrennt. Modellkorrekturen
+bleiben gesperrt, bis eine konkrete berechnete Abweichung aus vergleichbaren
+Zustaenden belegt ist.

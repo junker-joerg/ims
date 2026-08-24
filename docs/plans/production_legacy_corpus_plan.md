@@ -152,7 +152,10 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
    dokumentiert die konkrete verbleibende Adapterluecke (erledigt fuer VU14,
    Perioden `1-4`, nur Aggregation/Export aus expliziten Snapshots);
 10. PR 61 klaert `selector_value = "all"` gegen den historischen Level-IV-
-    Selektor `SK1`, ohne VUSK1-Zeitfenster als Aggregatebenen umzudeuten.
+    Selektor `SK1`, ohne VUSK1-Zeitfenster als Aggregatebenen umzudeuten
+    (erledigt durch enge technische Kanonisierung und Negativtests);
+11. PR 62 bereitet den kontrollierten Run-Control-Freigabepfad vor, ohne die
+    Korpusgrenzen oder historischen Gleichheitsaussagen zu erweitern.
 
 ## Offene Risiken
 

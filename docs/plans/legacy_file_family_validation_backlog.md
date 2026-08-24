@@ -407,9 +407,11 @@ Vorgeschlagener naechster Schritt nach PR 49:
   eine konkrete Abweichung belegt ist (erledigt: VU14 Perioden `1-4`, nur
   Aggregation/Export aus referenzausgerichteten Snapshots).
 - PR 61: Level-IV-Selektormetadaten `all` und `SK1` technisch kanonisieren;
-  VUSK1 bleibt ein `SK1`-/`all`-Aggregat auf Stufe IV.
+  VUSK1 bleibt ein `SK1`-/`all`-Aggregat auf Stufe IV (erledigt).
+- PR 62: kontrollierte Run-Control-Ausfuehrungsfreigabe fuer den lokalen
+  Adapter vorbereiten; keine Erweiterung der historischen Gleichheitsaussage.
 
-Zaehlschnitt nach PR 60: grob `9-15` reviewbare PRs bis zu konservativer
+Zaehlschnitt nach PR 61: grob `8-14` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI; 0 weitere
 Pflicht-PRs bis zu einer startbar
 verpackten kontrollierten Demo; der lokale benutzbare Ablauf ist als

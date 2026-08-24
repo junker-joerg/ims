@@ -71,8 +71,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   Aggregat-/Export-Slice angeschlossen; die expliziten Zustandswerte bleiben
   referenzausgerichtete Inputs (erledigt).
 - PR 61: technische Level-IV-Selektorgrenze `all` gegen `SK1` explizit
-  kanonisieren und testen; keine Aenderung der Aggregatstufe oder Fachlogik.
-  Modellkorrekturen nur fuer danach belegte Abweichungen umsetzen.
+  kanonisieren und testen; keine Aenderung der Aggregatstufe oder Fachlogik
+  (erledigt). Modellkorrekturen nur fuer danach belegte Abweichungen umsetzen.
 
 ### Phase C: Kontrollierte Ausfuehrung und UI
 
@@ -99,16 +99,15 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 60 bleiben grob `9-15` reviewbare PRs bis zu einer konservativen
+Nach PR 61 bleiben grob `8-14` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 61 klaert die technische Level-IV-Selektorgrenze zwischen den berechneten
-Laufzeitmetadaten `selector_value = "all"` und dem historischen Bundlewert
-`SK1`. Die Kanonisierung muss explizit und getestet bleiben; sie darf weder die
-VUSK1-Zeitfenster als Aggregatebenen umdeuten noch Fachlogik veraendern. Der PR
-startet keine Vollsimulation, schaltet keinen UI-Startpfad frei und behauptet
-keine historische Vollgleichheit.
+PR 62 bereitet die Run-Control-Ausfuehrungsfreigabe fuer den lokalen Adapter
+als kontrollierten Startpfad vor. Auditfelder, explizites Gating und die
+Abgrenzung gegen freien Browser-Upload bleiben Pflicht. Der PR darf keine
+unbegrenzte Vollsimulation freischalten und behauptet keine historische
+Vollgleichheit.

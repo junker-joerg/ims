@@ -9,9 +9,11 @@ from ims.model.legacy_calculated_deviation_report import (
     CalculatedLegacyDeviationReport,
     build_calculated_legacy_deviation_report,
 )
-
-
-ExportIdentity = tuple[str, str, str, str, int | str | None]
+from ims.model.legacy_export_identity import (
+    ExportIdentity,
+    build_legacy_export_identity,
+    format_legacy_export_identity,
+)
 
 
 @dataclass(slots=True)
@@ -67,7 +69,7 @@ class ExplicitLegacyDeviationAdapterResult:
 
 
 def _table_identity(table: ExportTable) -> ExportIdentity:
-    return (
+    return build_legacy_export_identity(
         table.spec.filename,
         table.spec.subject_type,
         table.spec.level,
@@ -77,14 +79,23 @@ def _table_identity(table: ExportTable) -> ExportIdentity:
 
 
 def _identity_label(identity: ExportIdentity) -> str:
-    filename, subject_type, level, selector_kind, selector_value = identity
-    return f"{filename} ({subject_type}/{level}/{selector_kind}={selector_value})"
+    return format_legacy_export_identity(identity)
+
+
+def _raw_table_identity(table: ExportTable) -> ExportIdentity:
+    return (
+        table.spec.filename,
+        table.spec.subject_type,
+        table.spec.level,
+        table.spec.selector_kind,
+        table.spec.selector_value,
+    )
 
 
 def _required_identities(validation_fixture_path: str | Path) -> set[ExportIdentity]:
     plan = build_calculated_legacy_comparison_plan(validation_fixture_path)
     return {
-        (
+        build_legacy_export_identity(
             required.filename,
             required.subject_type,
             required.level,
@@ -107,7 +118,7 @@ def _select_and_merge_required_exports(
             identity = _table_identity(table)
             if identity not in required_identities:
                 ignored_count += 1
-                ignored_identities.add(identity)
+                ignored_identities.add(_raw_table_identity(table))
                 continue
 
             existing = selected.get(identity)

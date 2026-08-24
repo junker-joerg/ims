@@ -2,9 +2,11 @@ import json
 from pathlib import Path
 
 from ims.engine.explicit_legacy_deviation_adapter import (
+    _select_and_merge_required_exports,
     build_explicit_legacy_deviation_report,
 )
 from ims.engine.explicit_period_runner import run_explicit_multi_period_from_fixture
+from ims.model.legacy_export_identity import build_legacy_export_identity
 
 
 EXPLICIT_FIXTURE = Path("tests/fixtures/calculated_vu14_explicit_slice.json")
@@ -91,6 +93,27 @@ def test_explicit_vu14_slice_feeds_calculated_deviation_report() -> None:
     assert report.blocking_numeric_differences == []
     assert report.open_field_questions == []
     assert report.historical_equivalence_claimed is False
+
+
+def test_adapter_selects_runtime_all_table_for_historical_level_iv_sk1_identity() -> None:
+    required_identity = build_legacy_export_identity(
+        "imsvusk1.dat",
+        "insurer",
+        "IV",
+        "all",
+        "SK1",
+    )
+
+    selected, ignored_count, ignored_identities = _select_and_merge_required_exports(
+        _run_calculated_slice(),
+        {required_identity},
+    )
+
+    assert len(selected) == 1
+    assert selected[0].spec.selector_value == "all"
+    assert [row.values[0] for row in selected[0].rows] == [1, 2, 3, 4]
+    assert ignored_count == 16
+    assert "imsvusk1.dat (insurer/IV/all=all)" not in ignored_identities
 
 
 def test_explicit_vu14_slice_remains_incomplete_for_core_bundle() -> None:

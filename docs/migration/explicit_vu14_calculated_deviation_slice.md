@@ -73,9 +73,14 @@ verwendet fuer `IMSVUSK1` und `IMSVNSK1` den historischen Selektorwert `SK1`.
 Beide Bezeichnungen gehoeren zur dokumentierten `SK1`-/`all`-Grenze, duerfen
 aber im strikten Adapter nicht still gleichgesetzt werden.
 
-## Naechster Schritt
+## Umsetzung in PR 61
 
-PR 61 klaert und testet eine explizite technische Kanonisierung der
-Level-IV-Selektormetadaten `all` und `SK1`, ohne die Aggregatstufe oder
-Fachlogik zu aendern. Erst danach darf ein berechneter SK1-Slice an denselben
-Diagnosepfad angeschlossen werden.
+PR 61 kanonisiert und testet die Level-IV-Selektormetadaten `all` und `SK1`
+nun explizit an einer gemeinsamen technischen Identitaetsgrenze. Die rohe
+Laufzeittabelle und die Aggregatstufe bleiben unveraendert. Ein berechneter
+SK1-Slice ist damit technisch anschliessbar, aber noch nicht fachlich
+validiert.
+
+Als naechstes bereitet PR 62 die kontrollierte Run-Control-
+Ausfuehrungsfreigabe vor. Daraus folgt weiterhin keine historische
+Vollgleichheitsbehauptung.

@@ -34,7 +34,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   berechnete Mehrperiodenvergleich und ist als strikter Eingangsvertrag
   umgesetzt; der read-only Abweichungsbericht aus PR 59 weist fuer den
   Kernkorpus 15 noch fehlende berechnete Exporte aus. PR 60 schliesst den
-  ersten engen VU14-Aggregat-/Export-Slice fuer Perioden `1-4` an.
+  ersten engen VU14-Aggregat-/Export-Slice fuer Perioden `1-4` an; PR 61
+  kanonisiert die technische Level-IV-Selektorgrenze `all`/`SK1`. PR 62 ist
+  der naechste kontrollierte Run-Control-Freigabeschritt.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

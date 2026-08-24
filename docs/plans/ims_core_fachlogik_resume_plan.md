@@ -603,14 +603,16 @@ Aktualisierte grobe Restplanung:
 - PR 60 hat den ersten schmalen berechneten Aggregat-/Export-Output aus einem
   vorhandenen expliziten Mehrperiodenpfad angebunden (VU14 Perioden `1-4`, 4/4
   Zeilen und 56/56 Felder);
-- vorgeschlagener naechster Schritt ist PR 61: technische Level-IV-
-  Selektorgrenze `all` gegen `SK1` explizit kanonisieren und testen;
+- PR 61 hat die technische Level-IV-Selektorgrenze `all` gegen `SK1` explizit
+  kanonisiert und getestet, ohne Aggregatstufe oder Fachlogik zu aendern;
+- vorgeschlagener naechster Schritt ist PR 62: kontrollierte Run-Control-
+  Ausfuehrungsfreigabe fuer den lokalen Adapter vorbereiten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Damit bleiben grob ca. `9-15` reviewbare PRs bis zu konservativer
+Damit bleiben grob ca. `8-14` reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.
 
