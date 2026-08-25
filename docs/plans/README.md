@@ -67,6 +67,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   VU-Klassenaggregate aus demselben kontrollierten 100-Perioden-Zustand.
 - `vdefmd6_vn_rule_group_1_run_plan.md`: PR-83-Plan fuer die ersten drei
   VN-Regelaggregate mit offener historischer Akkumulator- und `Ev`-Feldgrenze.
+- `vdefmd6_vn_rule_group_2_run_plan.md`: PR-84-Plan fuer die Regeln 4-6 mit
+  zusaetzlicher offener `WVEMOD1`-Lauf- und Seed-Provenienz.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

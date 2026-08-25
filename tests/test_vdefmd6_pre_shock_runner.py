@@ -6,6 +6,7 @@ from ims.engine.vdefmd6_pre_shock_runner import (
     VDEFMD6_PRE_SHOCK_EXECUTION_ORDER,
     VDEFMD6_PRE_SHOCK_STATE_POLICY_ID,
     VDEFMD6_VN_RULE_GROUP_1_FILENAMES,
+    VDEFMD6_VN_RULE_GROUP_2_FILENAMES,
     VDEFMD6_VU_AGGREGATE_FILENAMES,
     run_vdefmd6_100_periods,
     run_vdefmd6_pre_shock_periods,
@@ -146,3 +147,24 @@ def test_vdefmd6_100_period_runner_materializes_first_vn_rule_group() -> None:
         tables[f"imsvnr{rule_id:02d}.dat"].spec.selector_value
         for rule_id in range(1, 4)
     ] == [1, 2, 3]
+
+
+def test_vdefmd6_100_period_runner_materializes_second_vn_rule_group() -> None:
+    result = run_vdefmd6_100_periods(base_seed=20260001)
+    tables = {
+        table.spec.filename: table
+        for table in result.vn_rule_group_2_export_tables
+    }
+
+    assert tuple(tables) == VDEFMD6_VN_RULE_GROUP_2_FILENAMES
+    assert all(len(table.rows) == 100 for table in tables.values())
+    assert all(
+        [row.values[0] for row in table.rows] == list(range(1, 101))
+        for table in tables.values()
+    )
+    assert all(table.spec.level == "II" for table in tables.values())
+    assert all(table.spec.selector_kind == "rule" for table in tables.values())
+    assert [
+        tables[f"imsvnr{rule_id:02d}.dat"].spec.selector_value
+        for rule_id in range(4, 7)
+    ] == [4, 5, 6]

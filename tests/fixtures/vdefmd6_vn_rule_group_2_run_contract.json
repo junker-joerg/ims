@@ -1,0 +1,98 @@
+{
+  "schema_version": "pr84-v1",
+  "model_id": "Vdefmd6",
+  "scope": "controlled_vn_rule_group_2_periods_1_100",
+  "expected_targets": [
+    {
+      "export_filename": "imsvnr04.dat",
+      "reference_filename": "IMSVNR04.DAT",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 4,
+      "generated_period_count": 100,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 263,
+      "full_row_match_periods": [],
+      "first_full_state_divergence_period": 1,
+      "field_match_counts": {"header": 100, "global_period": 100, "Vu1": 0, "Vs1": 32, "Vp1": 1, "Ev1": 0, "Sh1": 0, "Vu2": 0, "Vs2": 29, "Vp2": 1, "Ev2": 0, "Sh2": 0, "Vm": 0}
+    },
+    {
+      "export_filename": "imsvnr05.dat",
+      "reference_filename": "IMSVNR05.DAT",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 5,
+      "generated_period_count": 100,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 209,
+      "full_row_match_periods": [],
+      "first_full_state_divergence_period": 1,
+      "field_match_counts": {"header": 100, "global_period": 100, "Vu1": 3, "Vs1": 2, "Vp1": 1, "Ev1": 0, "Sh1": 0, "Vu2": 0, "Vs2": 2, "Vp2": 1, "Ev2": 0, "Sh2": 0, "Vm": 0}
+    },
+    {
+      "export_filename": "imsvnr06.dat",
+      "reference_filename": "IMSVNR06.DAT",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 6,
+      "generated_period_count": 100,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 454,
+      "full_row_match_periods": [],
+      "first_full_state_divergence_period": 1,
+      "field_match_counts": {"header": 100, "global_period": 100, "Vu1": 40, "Vs1": 81, "Vp1": 1, "Ev1": 0, "Sh1": 0, "Vu2": 48, "Vs2": 81, "Vp2": 3, "Ev2": 0, "Sh2": 0, "Vm": 0}
+    }
+  ],
+  "execution_order": [
+    "activate_subjects",
+    "bav_foreign_information",
+    "insurer_rules_by_id",
+    "policyholder_rules_by_id",
+    "aggregate_export"
+  ],
+  "state_policy_id": "vdefmd6-modern-100-period-state-v1",
+  "blocker_codes": [
+    "historical_reference_run_identity_open",
+    "historical_same_slot_execution_order_open",
+    "historical_rng_draw_order_open",
+    "market_insurance_degree_derivation_open",
+    "historical_vu_class_accumulator_semantics_open",
+    "historical_vn_rule_accumulator_semantics_open",
+    "policyholder_ev_field_semantics_open"
+  ],
+  "source_anchors": [
+    {"path": "IMSDATA.C", "needle": "int vkrvn[8]  = {0,1,1,2,2,3,3,0};", "meaning": "VN rule class mapping"},
+    {"path": "IMS.E", "needle": "for( j = 1; j < 7 ; j++ )", "meaning": "historical VN rule loop"},
+    {"path": "IMS.E", "needle": "if (( VN[i].DatenVN->Vr == j ) && ( aktiVN[i] == 1 ))", "meaning": "historical active rule selection"},
+    {"path": "IMS.E", "needle": "if ( BAV[Ownnr()].DatenBAV.Vnag2[j] != 0 )", "meaning": "historical rule divisor"},
+    {"path": "IMS.E", "needle": "sh1=0.0; sh1=0.0;", "meaning": "historical sh2 initialization gap"},
+    {"path": "IMS.E", "needle": "a1[k] = 0;", "meaning": "historical mode counter initialization"},
+    {"path": "python_port/ims/model/agrsich_service.py", "needle": "policyholder_by_rule.setdefault(policyholder.rule_id, []).append(policyholder)", "meaning": "modern independent rule grouping"},
+    {"path": "python_port/ims/model/agrsich_service.py", "needle": "def _mode_smallest", "meaning": "modern selected-insurer mode"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "VDEFMD6_VN_RULE_GROUP_2_FILENAMES", "meaning": "controlled rule target set"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "def _vn_rule_group_2_export_tables", "meaning": "in-memory rule materialization"},
+    {"path": "python_port/ims/model/legacy_vn_reference.py", "needle": "actual_value = None if actual is None else float(actual)", "meaning": "missing mode is an explicit mismatch"},
+    {"path": "docs/migration/vn_rule_family_imsvnr.md", "needle": "incomming/IMS.DAT/WVEMOD1.ZIP", "meaning": "documented archive provenance"},
+    {"path": "tests/references/legacy_agrsich/IMSVNR04.DAT", "needle": "0001 000 0.00 00.0 023.7 023.7", "meaning": "rule 4 initial row"},
+    {"path": "tests/references/legacy_agrsich/IMSVNR05.DAT", "needle": "0001 000 0.00 00.0 016.8 016.8", "meaning": "rule 5 initial row"},
+    {"path": "tests/references/legacy_agrsich/IMSVNR06.DAT", "needle": "0001 000 0.00 00.0 014.6 014.6", "meaning": "rule 6 initial row"}
+  ],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "comparison_started_after_generation": true,
+    "controlled_execution_performed": true,
+    "writes_performed": false,
+    "scheduler_started": false,
+    "simulation_performed": false,
+    "historical_reference_run_identity_claimed": false,
+    "historical_same_slot_order_claimed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_vu_class_accumulator_compatibility_applied": false,
+    "historical_vn_rule_accumulator_compatibility_applied": false,
+    "historical_full_equality_claimed": false,
+    "production_release_approved": false
+  }
+}

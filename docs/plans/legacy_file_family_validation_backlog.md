@@ -495,6 +495,10 @@ historische VU-Klassenakkumulatorsemantik ist als eigener Blocker dokumentiert.
 PR 83 hat anschliessend `imsvnr01.dat` bis `imsvnr03.dat` fuer Perioden 1-100
 mit 946/3.900 Feldtreffern klassifiziert. Danach bleiben mindestens drei
 reviewbare PRs bis PR 86; VN-Regelakkumulator und `Ev`-Feldbedeutung sind offen.
+PR 84 hat anschliessend `imsvnr04.dat` bis `imsvnr06.dat` mit 926/3.900
+Feldtreffern und 326/3.300 Fachwerttreffern klassifiziert. Danach bleiben zwei
+reviewbare PRs bis PR 86; die konkrete `WVEMOD1`-Laufidentitaet ist ebenfalls
+offen.
 
 ## Validierungsregel
 

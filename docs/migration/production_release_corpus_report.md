@@ -178,6 +178,9 @@ geschlossen. PR 82 hat SK1/all und die drei VU-Klassen fuer 1-100 mit
 898/5.600 Feldtreffern klassifiziert und die historische klassenuebergreifende
 Akkumulatorsemantik als offenen Blocker festgehalten. PR 83 hat die VN-Regeln
 1-3 fuer Perioden 1-100 mit 946/3.900 Feldtreffern
-klassifiziert; keine Zeile trifft vollstaendig. Danach bleiben mindestens drei
-reviewbare PRs bis zur erneuten fachlichen Freigabepruefung; konkrete Funde
-koennen weitere kleine Slices erfordern.
+klassifiziert; keine Zeile trifft vollstaendig. PR 84 hat die Regeln 4-6 mit
+926/3.900 Feldtreffern beziehungsweise 326/3.300 Fachwerttreffern
+klassifiziert. Auch hier trifft keine Zeile vollstaendig; die Laufidentitaet
+der `WVEMOD1`-Referenz bleibt offen. Danach bleiben mindestens zwei reviewbare
+PRs bis zur erneuten fachlichen Freigabepruefung; konkrete Funde koennen
+weitere kleine Slices erfordern.

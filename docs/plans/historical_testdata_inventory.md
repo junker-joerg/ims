@@ -178,3 +178,15 @@ ueberein; zusaetzlich stimmt `WVEMOD1.ZIP/IMSVU014.DAT` in 1-100. Nur die
 Die bisherigen Vier-Perioden-Fixtures sind auf die echten Zeilen 1-4
 ausgerichtet. Sie bleiben direkte Vergleichseingaben. Nur Periode 1 wird
 zusaetzlich unabhaengig aus der `Vdefmd6`-Initialisierung erzeugt.
+
+## PR-84-Provenienzpruefung
+
+Der lokale Bestand umfasst 39 direkte DAT-Dateien und sieben ZIP-Archive. Die
+Archive enthalten zusammen 165 DAT-Eintraege, darunter mehrere gleichnamige
+Ausgabefamilien aus unterschiedlichen Modellvarianten.
+
+`VDEFMD5A.ZIP` enthaelt einen `IMSREPOR.DAT` fuer IMS MSDOS v1.0 mit Seed
+`5616`, 25 VU und 200 VN. `WVEMOD1.ZIP`, die Quelle der versionierten Regeln
+3-6, enthaelt keinen solchen Runreport. PR 84 uebertraegt den Seed deshalb
+nicht zwischen den Archivfamilien und behauptet keine konkrete historische
+Laufidentitaet fuer die Referenzwerte.

@@ -108,5 +108,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vdefmd6_vn_rule_group_1_run_contract.md`: PR-83-Vertrag fuer
   `imsvnr01.dat` bis `imsvnr03.dat` mit klassifizierten Abweichungen und
   offener VN-Regelakkumulator-/`Ev`-Feldgrenze
+- `vdefmd6_vn_rule_group_2_run_contract.md`: PR-84-Vertrag fuer
+  `imsvnr04.dat` bis `imsvnr06.dat` mit Fachwertzaehlung und offener
+  `WVEMOD1`-Laufidentitaet
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

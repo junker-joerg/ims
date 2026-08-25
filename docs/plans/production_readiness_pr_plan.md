@@ -150,23 +150,25 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 - PR 83: VN-Regelzustand fuer `imsvnr01.dat` bis `imsvnr03.dat` schliessen
   (erledigt: `pr83-v1`, 946/3.900 Feldtreffer; historischer VN-
   Regelakkumulator und `Ev`-Feldbedeutung bleiben offen).
-- PR 84: VN-Regelzustand fuer `imsvnr04.dat` bis `imsvnr06.dat` schliessen.
+- PR 84: VN-Regelzustand fuer `imsvnr04.dat` bis `imsvnr06.dat` schliessen
+  (erledigt: `pr84-v1`, 926/3.900 Feldtreffer und 326/3.300 Fachwerttreffer;
+  historische Laufidentitaet fuer `WVEMOD1` bleibt offen).
 - PR 85: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
 - PR 86: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
   neu bewerten.
 
 ## Grobe Anzahl
 
-Nach PR 83 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 84 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`3` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`2` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 84 schliesst als naechstes `imsvnr04.dat` bis `imsvnr06.dat` aus demselben
-kontrollierten Zustand. Historische Reihenfolge, RNG-Grenze, BAV-
-Versicherungsgrad-Ableitung, VU-/VN-Akkumulatoren und die `Ev`-Feldbedeutung
-bleiben Blocker; Legacy-Ausgaben werden nicht zurueckgefuehrt.
+PR 85 vergleicht als naechstes die drei VN-Klassen und VN-SK1/all aus demselben
+kontrollierten Zustand. Historische Laufidentitaet, Reihenfolge, RNG-Grenze,
+BAV-Versicherungsgrad-Ableitung, VU-/VN-Akkumulatoren und die `Ev`-
+Feldbedeutung bleiben Blocker; Legacy-Ausgaben werden nicht zurueckgefuehrt.

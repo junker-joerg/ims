@@ -75,4 +75,11 @@ Felder, aber keine vollstaendige Zeile. Der historische, zwischen Regeln nicht
 zurueckgesetzte Akkumulator und die Bedeutung der `Ev`-Spalten bleiben offene
 fachliche Grenzen. Die Referenzen werden nicht als Erzeugungsinput verwendet.
 
-PR 84 soll als naechstes die Regeln 4-6 unter denselben Grenzen vergleichen.
+PR 84 erzeugt auch `imsvnr04.dat` bis `imsvnr06.dat` fuer Perioden 1-100. Der
+Vergleich trifft 926/3.900 Felder beziehungsweise 326/3.300 Fachwerte, aber
+erneut keine vollstaendige Zeile. Fuer das Quellarchiv `WVEMOD1.ZIP` ist kein
+zugeordneter Runreport mit Seed belegt. Ueber alle sechs Regeln treffen damit
+1.872/7.800 Felder beziehungsweise 672/6.600 Fachwerte.
+
+PR 85 soll als naechstes VN-Klassen und VN-SK1/all unter denselben Grenzen
+vergleichen.
