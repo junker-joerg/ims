@@ -1,0 +1,132 @@
+{
+  "schema_version": "pr77-v1",
+  "model_id": "Vdefmd6",
+  "scope": "pre_shock_periods_1_49",
+  "expected": {
+    "period_start": 1,
+    "period_end": 49,
+    "policyholder_count": 200,
+    "pre_shock_active_policyholder_count": 150,
+    "deferred_policyholder_count": 50,
+    "mapped_rule_count": 6,
+    "pre_shock_rule_counts": {"1": 15, "2": 15, "3": 30, "4": 30, "5": 30, "6": 30},
+    "historical_damage_normal_calls_per_active_policyholder": 4,
+    "historical_uniform_draws_per_normal_call": 12,
+    "historical_minimum_damage_uniform_draws_per_active_policyholder": 48,
+    "historical_minimum_damage_uniform_draws_per_pre_shock_period": 7200
+  },
+  "rule_mappings": [
+    {
+      "rule_id": 1,
+      "rule_kind": "compulsory",
+      "rule_class": 1,
+      "population_ranges": [{"start": 1, "end": 15, "activation_period": 1}],
+      "pre_shock_active_count": 15,
+      "insurance_inputs": ["active_insurer_ids", "initial_decisions", "draws.insurer_choice_draws"],
+      "periods_2_49_decision_draws": "two active-insurer choices with rejection loops"
+    },
+    {
+      "rule_id": 2,
+      "rule_kind": "random",
+      "rule_class": 1,
+      "population_ranges": [{"start": 16, "end": 30, "activation_period": 1}, {"start": 191, "end": 200, "activation_period": 50}],
+      "pre_shock_active_count": 15,
+      "insurance_inputs": ["parameters.insurance_thresholds_normal", "active_insurer_ids", "initial_decisions", "draws.status_draws", "draws.insurer_choice_draws"],
+      "periods_2_49_decision_draws": "two status draws then two active-insurer choices with rejection loops"
+    },
+    {
+      "rule_id": 3,
+      "rule_kind": "preference",
+      "rule_class": 2,
+      "population_ranges": [{"start": 31, "end": 60, "activation_period": 1}, {"start": 151, "end": 190, "activation_period": 50}],
+      "pre_shock_active_count": 30,
+      "insurance_inputs": ["parameters.insurance_thresholds_normal", "damage_probabilities", "active_insurer_ids", "initial_decisions", "insurer_inputs.advertising_current_sector", "draws.fallback_insurer_choice_draws"],
+      "periods_2_49_decision_draws": "conditional fallback choices when no positive advertising preference exists"
+    },
+    {
+      "rule_id": 4,
+      "rule_kind": "search_history",
+      "rule_class": 2,
+      "population_ranges": [{"start": 61, "end": 90, "activation_period": 1}],
+      "pre_shock_active_count": 30,
+      "insurance_inputs": ["parameters.insurance_thresholds_normal", "damage_probabilities", "active_insurer_ids", "initial_decisions", "history", "draws.fallback_insurer_choice_draws"],
+      "periods_2_49_decision_draws": "conditional fallback choices when no insured premium history exists"
+    },
+    {
+      "rule_id": 5,
+      "rule_kind": "sample_search",
+      "rule_class": 3,
+      "population_ranges": [{"start": 91, "end": 120, "activation_period": 1}],
+      "pre_shock_active_count": 30,
+      "insurance_inputs": ["parameters.insurance_thresholds_normal", "parameters.sample_sizes_normal", "market_damage_indicator", "active_insurer_ids", "initial_decisions", "insurer_inputs.premiums_current_sector", "draws.insurer_choice_draws_by_sector", "information_cost_per_sample"],
+      "periods_2_49_decision_draws": "eight active-insurer sample choices per sector in Vdefmd6"
+    },
+    {
+      "rule_id": 6,
+      "rule_kind": "best_info",
+      "rule_class": 3,
+      "population_ranges": [{"start": 121, "end": 150, "activation_period": 1}],
+      "pre_shock_active_count": 30,
+      "insurance_inputs": ["parameters.insurance_thresholds_normal", "market_damage_indicator", "active_insurer_ids", "initial_decisions", "insurer_inputs.premiums_current_sector", "information_cost_per_insurer"],
+      "periods_2_49_decision_draws": "none; minimum current premium among active insurers"
+    }
+  ],
+  "common_damage_inputs": ["parameters.damage_intercept_normal", "parameters.damage_factor_normal", "damage_thresholds", "draws.trigger_draws", "draws.amount_draws", "change_shock=false"],
+  "common_settlement_inputs": ["insurance_decisions", "previous_wealth", "previous_wealth_sector", "insurer.premiums_current_sector", "insurer.reserves_current_sector", "insurer.claim_sum_current_sector", "insurer.claim_count_current_sector", "insurer.policyholders_current_sector"],
+  "historical_stage_order": [
+    {"position": 1, "stage": "damage_realization", "scope": "sector 1 then sector 2"},
+    {"position": 2, "stage": "insurance_decision", "scope": "rule-specific"},
+    {"position": 3, "stage": "settlement", "scope": "sector 1"},
+    {"position": 4, "stage": "settlement", "scope": "sector 2"},
+    {"position": 5, "stage": "wealth_update", "scope": "policyholder total"}
+  ],
+  "draw_order": {
+    "damage_sector_statement_order": ["sector_1", "sector_2"],
+    "within_sector_normal_call_order": "unspecified_by_c_expression",
+    "historical_normal_uniform_draws_per_call": 12,
+    "modern_python_damage_order": ["sector_1_trigger", "sector_1_amount", "sector_2_trigger", "sector_2_amount"],
+    "modern_damage_order_is_historical_claim": false,
+    "decision_draws_follow_damage_statements": true,
+    "historical_subject_same_slot_order_known": false,
+    "historical_draw_order_fully_bound": false
+  },
+  "runner_bridge": {
+    "current_runner_stage_order": ["insurance_rule_snapshots", "damage_settlement_snapshots", "settlement_snapshots"],
+    "matches_historical_random_consumption_order": false,
+    "required_next_step": "materialize explicit damage and decision draws before runner application",
+    "automatic_snapshot_derivation_ready": false
+  },
+  "blocker_codes": ["within_sector_c_normal_order_unspecified", "historical_subject_same_slot_order_missing", "automatic_vdefmd6_snapshot_derivation_missing", "pre_shock_full_state_execution_missing"],
+  "source_anchors": [
+    {"path": "IMS.E", "needle": "act Vrvn01", "meaning": "compulsory VN rule"},
+    {"path": "IMS.E", "needle": "act Vrvn02", "meaning": "random VN rule"},
+    {"path": "IMS.E", "needle": "act Vrvn03", "meaning": "preference VN rule"},
+    {"path": "IMS.E", "needle": "act Vrvn04", "meaning": "history-search VN rule"},
+    {"path": "IMS.E", "needle": "act Vrvn05", "meaning": "sample-search VN rule"},
+    {"path": "IMS.E", "needle": "act Vrvn06", "meaning": "best-info VN rule"},
+    {"path": "IMS.E", "needle": "s1  = ( sw1 > normal() ) * ( a0 + b0 * normal() );", "meaning": "sector-1 damage statement"},
+    {"path": "IMS.E", "needle": "s2  = ( sw2 > normal() ) * ( c0 + d0 * normal() );", "meaning": "sector-2 damage statement"},
+    {"path": "IMSRND.C", "needle": "for(k=0;k<=11;k++)", "meaning": "twelve uniform draws per normal call"},
+    {"path": "IMS.E", "needle": "vr1 = ( e0 <= myrndf() );", "meaning": "Vrvn02 status draw after damage"},
+    {"path": "IMS.E", "needle": "for(j=1;j<=g0;j++)", "meaning": "Vrvn05 sector-1 sample size"},
+    {"path": "IMS.E", "needle": "for(j=1;j<=MAXVU;j++)", "meaning": "Vrvn06 full insurer information"},
+    {"path": "IMS.E", "needle": "VU[r1].DatenVU->Sp[1].l.Sh[gperiod] =", "meaning": "settlement writes insurer claim sum"},
+    {"path": "IMS.E", "needle": "VU[r1].DatenVU->Sp[1].l.Sa[gperiod]++;", "meaning": "settlement writes insurer claim count"},
+    {"path": "IMS.E", "needle": "VU[r1].DatenVU->Sp[1].l.Vn[gperiod]++;", "meaning": "settlement writes insured count"},
+    {"path": "IMS.E", "needle": "VN[gOwnnr].DatenVN->Vm[gperiod]", "meaning": "settlement writes policyholder wealth"},
+    {"path": "python_port/ims/model/vn_insurance_rules.py", "needle": "class VNInsuranceRuleSnapshot:", "meaning": "explicit insurance input surface"},
+    {"path": "python_port/ims/model/vn_rules.py", "needle": "class VNDamageSettlementSnapshot:", "meaning": "explicit damage and settlement input surface"},
+    {"path": "python_port/ims/engine/vn_rule_runner.py", "needle": "insurance_rule_applications = apply_vn_insurance_rule_snapshots(", "meaning": "current runner starts with insurance decisions"},
+    {"path": "python_port/ims/engine/vn_rule_runner.py", "needle": "damage_settlement_applications = apply_vn_damage_settlement_snapshots(", "meaning": "current runner applies damage after decisions"}
+  ],
+  "boundaries": {
+    "legacy_output_used_as_input": false,
+    "writes_performed": false,
+    "execution_performed": false,
+    "runner_started": false,
+    "rng_draws_performed": false,
+    "simulation_performed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_full_equality_claimed": false
+  }
+}

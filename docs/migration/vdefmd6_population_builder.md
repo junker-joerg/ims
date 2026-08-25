@@ -61,5 +61,6 @@ ausgefuehrten Schleifen und dokumentiert den Widerspruch im Vertrag
 
 PR 75 hat die Aktionsslots und eine explizite, reproduzierbare moderne
 Seed-Policy lesend gebunden. PR 76 hat danach die VU14-Regelprojektion fuer
-Perioden 1-49 klassifiziert. PR 77 kartiert als naechstes den offenen
-VN-/Schaden-/Settlement-Pfad.
+Perioden 1-49 klassifiziert. PR 77 hat den offenen VN-/Schaden-/Settlement-
+Pfad kartiert; PR 78 leitet als naechstes die expliziten Vorschock-Snapshots
+und eine moderne Drawfolge ab.

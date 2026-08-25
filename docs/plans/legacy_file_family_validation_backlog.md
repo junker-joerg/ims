@@ -482,7 +482,9 @@ Periode 1 unabhaengig in 14/14 Feldern bestaetigt. PR 74 hat die
 25-VU-/200-VN-Population typisiert aufgebaut. PR 75 hat die wirksamen
 Aktionsslots und moderne Seed-Policy lesend gebunden. PR 76 hat danach die
 VU14-Vorschock-Regelprojektion klassifiziert und den fehlenden VN-/Schaden-/
-Settlement-Pfad belegt. PR 77 kartiert diesen Pfad; acht PRs bis PR 84 bleiben.
+Settlement-Pfad belegt. PR 77 ist nun mit sechs Regelabbildungen, 150 aktiven
+Vorschock-VN und der explizit offenen historischen Draw-Reihenfolge erledigt.
+Ab PR 78 bleiben sieben reviewbare PRs bis PR 84.
 
 ## Validierungsregel
 

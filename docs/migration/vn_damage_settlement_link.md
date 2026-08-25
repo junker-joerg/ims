@@ -8,9 +8,9 @@ Abrechnungskern. Die Verbindung bleibt bewusst explizit und testbar.
 
 - `IMS.E`, `act Vrvn01`
 - `IMS.E`, `act Vrvn02`
-- `IMS.E`, `act Vrvn03`
+- `IMS.E`, `act Vrvn03` bis `act Vrvn06`
 
-Die historischen Regeln ziehen je Sparte einen Schaden und schreiben danach,
+Die sechs historischen Regeln ziehen je Sparte einen Schaden und schreiben danach,
 abhaengig von der Versicherungsentscheidung, VN- und VU-Zustand fort. Die
 Python-Abbildung haelt diese Schritte getrennt, fuehrt nun aber den belegten
 Uebergang vom Schadenresultat zum Settlement-Snapshot ein.

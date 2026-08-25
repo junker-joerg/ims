@@ -9,9 +9,9 @@ VN-Periodenrunner die benoetigten Normalziehungen aus `SimulationContext`.
 
 - `IMS.E`, `act Vrvn01`
 - `IMS.E`, `act Vrvn02`
-- `IMS.E`, `act Vrvn03`
+- `IMS.E`, `act Vrvn03` bis `act Vrvn06`
 
-Die historische Formel nutzt pro Sparte zwei Normalziehungen: eine fuer den
+Die in allen sechs Regeln vorhandene historische Formel nutzt pro Sparte zwei Normalziehungen: eine fuer den
 Schadeneintritt und eine fuer die Schadenhoehe.
 
 ## Python-Abbildung

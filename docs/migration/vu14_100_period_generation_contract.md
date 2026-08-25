@@ -128,6 +128,16 @@ Der Bericht ist `rule_projection_ready = true`, aber weiterhin
 Der Befund teilt die Restplanung: Nach PR 76 bleiben mindestens acht Schritte
 bis PR 84.
 
+## Fortschreibung durch PR 77
+
+PR 77 hat fuer alle sechs `Vdefmd6`-VN-Regeln die Vorschock-Eingaben, den
+gemeinsamen Schadenpfad und die Settlement-Schreibflaechen kartiert. Die 150
+aktiven VN verursachen historisch mindestens 7.200 uniforme Basisziehungen je
+Periode allein im Schadenteil. Die Reihenfolge der zwei `normal()`-Aufrufe
+innerhalb einer C-Schadenformel sowie die historische VN-Same-Slot-Reihenfolge
+bleiben unbestimmt. Deshalb bleiben Erzeugung und historische RNG-Gleichheit
+gesperrt. Ab PR 78 verbleiben mindestens sieben Schritte bis PR 84.
+
 Eine fachliche Freigabe oder historische Vollgleichheit folgt weder aus PR 72
 noch aus Quellenbindung, Populationsbuilder, Aktions-/Seed-Vertrag oder
 Vorschock-Regelprojektion in PR 73 bis PR 76.

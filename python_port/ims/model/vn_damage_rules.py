@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 @dataclass(slots=True)
 class VNDamageRuleParameters:
-    """Parameter fuer den gemeinsamen Schadenerzeugungskern aus Vrvn01 bis Vrvn03."""
+    """Parameter fuer den gemeinsamen Schadenerzeugungskern aus Vrvn01 bis Vrvn06."""
 
     damage_intercept_normal: list[float]
     damage_factor_normal: list[float]
@@ -82,7 +82,7 @@ def apply_vn_damage_rule(
     change_shock: bool = False,
 ) -> VNDamageRuleResult:
     """
-    Portiert den gemeinsamen Schadenerzeugungskern aus Vrvn01 bis Vrvn03.
+    Portiert den gemeinsamen Schadenerzeugungskern aus Vrvn01 bis Vrvn06.
 
     Historische Form je Sparte: `(Sw > normal()) * (a + b * normal())`.
     Die Normalziehungen werden in diesem Slice explizit uebergeben.

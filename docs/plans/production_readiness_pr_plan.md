@@ -128,7 +128,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   klassifizieren (erledigt: `pr76-v1`, Regelausgaben treffen 1-16, erste
   entscheidungsrelevante Luecke in 17, Vollzustand bleibt blockiert).
 - PR 77: VN-/Schaden-/Settlement-Eingaben und Draw-Reihenfolge fuer die
-  Vorschockperiode kartieren.
+  Vorschockperiode kartieren (erledigt: `pr77-v1`, sechs Regeln und 150 aktive
+  VN gebunden; C-interne Normalreihenfolge und Same-Slot-Reihenfolge bleiben
+  explizit offen).
 - PR 78: VU14-Vollzustand fuer Perioden 2-49 schliessen.
 - PR 79: Schockgrenze und VU14-Perioden 50-100 schliessen.
 - PR 80: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
@@ -140,15 +142,17 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 76 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 77 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`8` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`7` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 77 kartiert als naechstes die VN-/Schaden-/Settlement-Eingaben und ihre
-Draw-Reihenfolge fuer die Vorschockperiode. Die historische Reihenfolge bleibt
-solange ein expliziter Blocker; es werden keine Legacy-Ausgaben zurueckgefuehrt.
+PR 78 leitet als naechstes aus der kartierten `Vdefmd6`-Population die
+expliziten Vorschock-Snapshots und eine dokumentierte moderne Drawfolge ab.
+Der bestehende Runner soll damit den VU14-Vollzustand fuer Perioden 2-49
+reproduzierbar bilden und Abweichungen klassifizieren. Die offene historische
+Reihenfolge bleibt ein Blocker; Legacy-Ausgaben werden nicht zurueckgefuehrt.

@@ -638,15 +638,18 @@ Aktualisierte grobe Restplanung:
   ohne historische Same-Slot- oder RNG-Gleichheitsbehauptung gebunden;
 - PR 76 hat eine unabhaengige VU14-Regelprojektion fuer Perioden 1-49
   klassifiziert; Regelausgaben treffen bis 16, der Vollzustand bleibt offen;
-- vorgeschlagener naechster Schritt ist PR 77: VN-/Schaden-/Settlement-
-  Eingaben und Draw-Reihenfolge fuer die Vorschockperiode kartieren;
+- PR 77 hat VN-/Schaden-/Settlement-Eingaben fuer alle sechs Regeln und 150
+  aktive Vorschock-VN kartiert; die C-interne Normal- und historische
+  Same-Slot-Reihenfolge bleiben offen;
+- vorgeschlagener naechster Schritt ist PR 78: explizite Vdefmd6-Snapshots und
+  eine moderne reproduzierbare Drawfolge fuer Perioden 2-49 ableiten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der PR-76-Vorschockprojektion bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `8`
+Nach der PR-77-Herkunftskartierung bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

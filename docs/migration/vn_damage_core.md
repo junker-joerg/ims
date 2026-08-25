@@ -1,16 +1,17 @@
-# VN-Schadenerzeugung aus Vrvn01 bis Vrvn03
+# VN-Schadenerzeugung aus Vrvn01 bis Vrvn06
 
 Dieser Slice portiert den gemeinsamen Schadenerzeugungskern der historischen
-VN-Regeln `Vrvn01`, `Vrvn02` und `Vrvn03`. Er bleibt bewusst eine pure
+VN-Regeln `Vrvn01` bis `Vrvn06`. Er bleibt bewusst eine pure
 Berechnung mit explizit uebergebenen Normalziehungen.
 
 ## Ursprung im Altcode
 
 - `IMS.E`, `act Vrvn01`
 - `IMS.E`, `act Vrvn02`
-- `IMS.E`, `act Vrvn03`
+- `IMS.E`, `act Vrvn03` bis `act Vrvn06`
 
-In allen drei Regeln wird je Sparte dieselbe Form genutzt:
+In allen sechs Regeln wird je Sparte dieselbe Form genutzt. Die Reichweite bis
+`Vrvn06` wurde im PR-77-Herkunftsvertrag mit eigenen Quellankern festgehalten:
 
 - `s1 = (sw1 > normal()) * (a + b * normal())`
 - `s2 = (sw2 > normal()) * (c + d * normal())`
