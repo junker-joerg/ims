@@ -48,6 +48,6 @@ Aktionen noch Zufallsziehungen oder eine Simulation aus.
 
 ## Danach
 
-PR 76 schliesst den unabhaengigen VU14-Zustandsweg fuer Perioden 2-49,
-beginnend mit dem ersten Folgezustand nach Periode 1. Die restlichen Perioden
-werden weiterhin in kleinen, reviewbaren Schritten geschlossen.
+PR 76 hat den VU14-Regelpfad fuer Perioden 1-49 projiziert und die offene
+VN-/Schaden-/Settlement-Grenze klassifiziert. PR 77 kartiert diesen Pfad als
+naechstes, bevor ein vollstaendiger Folgezustand behauptet werden darf.

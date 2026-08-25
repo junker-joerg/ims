@@ -21,6 +21,10 @@ from ims.api.vdefmd6_action_seed_report import (
     DEFAULT_CONTRACT_PATH as DEFAULT_ACTION_SEED_CONTRACT_PATH,
     build_vdefmd6_action_seed_report,
 )
+from ims.api.vu14_pre_shock_projection_report import (
+    DEFAULT_CONTRACT_PATH as DEFAULT_PRE_SHOCK_CONTRACT_PATH,
+    build_vu14_pre_shock_projection_report,
+)
 
 
 CONTRACT_VERSION = "pr72-v1"
@@ -85,6 +89,8 @@ _SOURCE_PATHS = (
     DEFAULT_POPULATION_CONTRACT_PATH,
     Path("python_port/ims/model/vdefmd6_action_seed.py"),
     DEFAULT_ACTION_SEED_CONTRACT_PATH,
+    Path("python_port/ims/model/vu14_pre_shock_projection.py"),
+    DEFAULT_PRE_SHOCK_CONTRACT_PATH,
     DEFAULT_SLICE_PATH,
     Path("tests/references/legacy_agrsich/VU14L1.DAT"),
 )
@@ -116,6 +122,7 @@ class VU14GenerationContractReport:
     source_binding: dict[str, object]
     population_builder: dict[str, object]
     action_seed_plan: dict[str, object]
+    pre_shock_projection: dict[str, object]
     source_evidence_paths: tuple[str, ...]
     status: str
     issues: tuple[VU14GenerationContractIssue, ...]
@@ -142,6 +149,7 @@ class VU14GenerationContractReport:
             "source_binding": dict(self.source_binding),
             "population_builder": dict(self.population_builder),
             "action_seed_plan": dict(self.action_seed_plan),
+            "pre_shock_projection": dict(self.pre_shock_projection),
             "source_evidence_paths": list(self.source_evidence_paths),
             "source_evidence_count": len(self.source_evidence_paths),
             "generation_blocker_codes": list(_BLOCKERS),
@@ -168,6 +176,7 @@ def build_vu14_generation_contract_report(
     source_binding_path: Path | str | None = None,
     population_contract_path: Path | str | None = None,
     action_seed_contract_path: Path | str | None = None,
+    pre_shock_contract_path: Path | str | None = None,
 ) -> VU14GenerationContractReport:
     root = Path(repo_root).expanduser().resolve()
     contract_file = _resolve(root, contract_path, DEFAULT_CONTRACT_PATH)
@@ -211,6 +220,19 @@ def build_vu14_generation_contract_report(
                 path=action_seed_issue.path,
             )
         )
+    pre_shock_report = build_vu14_pre_shock_projection_report(
+        root,
+        contract_path=pre_shock_contract_path,
+        binding_path=binding_file,
+    )
+    for pre_shock_issue in pre_shock_report.issues:
+        issues.append(
+            VU14GenerationContractIssue(
+                code=f"pre_shock_projection_{pre_shock_issue.code}",
+                message=pre_shock_issue.message,
+                path=pre_shock_issue.path,
+            )
+        )
     evidenced = set(binding_report.evidenced_requirement_codes) if not binding_report.issues else set()
     if not population_report.population_ready:
         evidenced.discard("complete_population_origin")
@@ -231,6 +253,7 @@ def build_vu14_generation_contract_report(
         source_binding=binding_report.to_dict(),
         population_builder=population_report.to_dict(),
         action_seed_plan=action_seed_report.to_dict(),
+        pre_shock_projection=pre_shock_report.to_dict(),
         source_evidence_paths=source_paths,
         status="error" if issues else "prepared",
         issues=tuple(issues),
@@ -249,6 +272,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--source-binding", type=Path)
     parser.add_argument("--population-contract", type=Path)
     parser.add_argument("--action-seed-contract", type=Path)
+    parser.add_argument("--pre-shock-contract", type=Path)
     args = parser.parse_args(argv)
     report = build_vu14_generation_contract_report(
         args.repo_root,
@@ -258,6 +282,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         source_binding_path=args.source_binding,
         population_contract_path=args.population_contract,
         action_seed_contract_path=args.action_seed_contract,
+        pre_shock_contract_path=args.pre_shock_contract,
     )
     print(json.dumps(report.to_dict(), ensure_ascii=True, sort_keys=True))
     return 1 if report.status == "error" else 0

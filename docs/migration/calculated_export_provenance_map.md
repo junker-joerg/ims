@@ -121,8 +121,8 @@ Der erwartete PR-71-Befund lautet:
 
 ## Restplanung
 
-Fuer eine interne, reviewbare Erzeugung reicht die aktuelle Mindestserie von
-PR 72 bis PR 82. Nach PR 75 bleiben davon mindestens sieben PRs offen:
+Fuer eine interne, reviewbare Erzeugung reicht die aktualisierte Mindestserie
+von PR 72 bis PR 84. Nach PR 76 bleiben davon mindestens acht PRs offen:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
@@ -131,15 +131,18 @@ PR 72 bis PR 82. Nach PR 75 bleiben davon mindestens sieben PRs offen:
    (erledigt);
 3. PR 74: Population typisiert aufbauen (erledigt, `pr74-v1`);
 4. PR 75: Aktions-/Seed-Grenze read-only schliessen (erledigt, `pr75-v1`);
-5. PR 76 und PR 77: VU14-Perioden 2-100 in kleinen Slices schliessen;
-6. PR 78: dieselbe Versicherer-Population auf `imsvusk1.dat` und
+5. PR 76: Vorschock-Regelprojektion klassifizieren (erledigt, `pr76-v1`);
+6. PR 77 und PR 78: VN-/Schaden-/Settlement-Herkunft kartieren und den
+   VU14-Vollzustand fuer Perioden 2-49 schliessen;
+7. PR 79: Schockgrenze und VU14-Perioden 50-100 schliessen;
+8. PR 80: dieselbe Versicherer-Population auf `imsvusk1.dat` und
    `imsvuvk1-3.dat` fuer das geforderte Fenster verbreitern;
-7. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-8. PR 81: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
-9. PR 82: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
+9. PR 81 und PR 82: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+10. PR 83: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
+11. PR 84: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
    die fachliche Freigabe erneut menschlich bewerten.
 
-Die verbleibenden sieben PRs sind eine Mindestplanung. Funde zum Scheduler,
+Die verbleibenden acht PRs sind eine Mindestplanung. Funde zum Scheduler,
 zum RNG oder zur Zustandsfortschreibung duerfen eigene kleine Korrektur-PRs
 erzwingen. Werden stattdessen unabhaengig berechnete Tabellen extern mit
 belegter Herkunft geliefert, kann die interne Erzeugungsserie verkuerzt werden.

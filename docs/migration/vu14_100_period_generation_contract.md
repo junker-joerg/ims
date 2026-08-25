@@ -114,6 +114,20 @@ weder den historischen Seed noch Algorithmus, Draw-Reihenfolge oder
 Draw-Anzahl. Deshalb bleiben vier Erzeugungsblocker und sieben geplante PRs
 bis PR 82 offen.
 
+## Fortschreibung durch PR 76
+
+PR 76 hat VU14 aus `Vdefmd6` und `Vrvu06` fuer Perioden 1-49 ohne Legacy-
+Erzeugungsinput projiziert. Die direkten Regelfelder treffen die Referenz fuer
+Perioden 1-16; nur Periode 1 trifft als vollstaendige Zeile. In Periode 17
+wird der fehlende Vorperiodenschaden erstmals fuer die Regelverzweigung
+entscheidungsrelevant. Reserven, Versicherte und Schadenfelder bleiben ab
+Periode 2 durch den VN-/Schaden-/Settlement-Pfad offen.
+
+Der Bericht ist `rule_projection_ready = true`, aber weiterhin
+`independent_periods_2_49_ready = false` und `generation_ready = false`.
+Der Befund teilt die Restplanung: Nach PR 76 bleiben mindestens acht Schritte
+bis PR 84.
+
 Eine fachliche Freigabe oder historische Vollgleichheit folgt weder aus PR 72
-noch aus Quellenbindung, Populationsbuilder oder Aktions-/Seed-Vertrag in
-PR 73 bis PR 75.
+noch aus Quellenbindung, Populationsbuilder, Aktions-/Seed-Vertrag oder
+Vorschock-Regelprojektion in PR 73 bis PR 76.

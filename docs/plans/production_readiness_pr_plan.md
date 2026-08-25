@@ -124,26 +124,31 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 - PR 75: Aktionsslots und moderne reproduzierbare Seed-Policy anbinden
   (erledigt: `pr75-v1`, 200 Slots, 20.250 wirksame Aufrufe und 13 Quellanker;
   keine historische Same-Slot- oder RNG-Gleichheitsbehauptung).
-- PR 76: VU14-Perioden 2-49 erzeugen und Abweichungen klassifizieren.
-- PR 77: Schockgrenze und VU14-Perioden 50-100 schliessen.
-- PR 78: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
+- PR 76: VU14-Regelprojektion fuer Perioden 2-49 erzeugen und Abweichungen
+  klassifizieren (erledigt: `pr76-v1`, Regelausgaben treffen 1-16, erste
+  entscheidungsrelevante Luecke in 17, Vollzustand bleibt blockiert).
+- PR 77: VN-/Schaden-/Settlement-Eingaben und Draw-Reihenfolge fuer die
+  Vorschockperiode kartieren.
+- PR 78: VU14-Vollzustand fuer Perioden 2-49 schliessen.
+- PR 79: Schockgrenze und VU14-Perioden 50-100 schliessen.
+- PR 80: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
   verbreitern.
-- PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen.
-- PR 81: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
-- PR 82: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
+- PR 81 und PR 82: VN-Regelzustand in zwei kleinen Gruppen schliessen.
+- PR 83: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
+- PR 84: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
   neu bewerten.
 
 ## Grobe Anzahl
 
-Nach PR 75 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 76 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`7` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`8` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 76 schliesst als naechstes den unabhaengigen VU14-Zustandsweg fuer Perioden
-2-49 und klassifiziert Abweichungen. Der konkrete historische Seed und die
-historische Draw-Reihenfolge bleiben unbekannt.
+PR 77 kartiert als naechstes die VN-/Schaden-/Settlement-Eingaben und ihre
+Draw-Reihenfolge fuer die Vorschockperiode. Die historische Reihenfolge bleibt
+solange ein expliziter Blocker; es werden keine Legacy-Ausgaben zurueckgefuehrt.

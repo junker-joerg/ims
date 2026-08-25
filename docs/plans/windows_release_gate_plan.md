@@ -78,5 +78,6 @@ jeder dieser 15 Exportidentitaeten kartiert. PR 72 hat danach den read-only
 VU14-Quellenbindung und Periode 1 geschlossen. PR 74 hat die belegte
 `Vdefmd6`-Population aus 25 VU und 200 VN aufgebaut. PR 75 hat danach die
 wirksamen Aktionsslots und eine moderne Seed-Policy read-only gebunden. PR 76
-schliesst als naechstes VU14-Perioden 2-49, weiterhin ohne
-vorgezogene Vollgleichheitsbehauptung.
+hat die VU14-Vorschock-Regelprojektion klassifiziert; PR 77 kartiert als
+naechstes den offenen VN-/Schaden-/Settlement-Pfad, weiterhin ohne vorgezogene
+Vollgleichheitsbehauptung.

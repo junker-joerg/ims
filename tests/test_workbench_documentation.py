@@ -135,6 +135,7 @@ def test_pr70_windows_release_gate_docs_share_local_and_ci_contract():
     assert "PR 72" in plan and "100-Perioden-Erzeugungsvertrag" in plan
     assert "PR 74" in plan and "25 VU und 200 VN" in plan
     assert "PR 75" in plan and "Seed-Policy" in plan
+    assert "PR 76" in plan and "Vorschock-Regelprojektion" in plan
 
 
 def test_readme_documents_local_workbench_start_commands():

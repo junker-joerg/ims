@@ -67,6 +67,6 @@ Draw-Reihenfolge und Draw-Anzahl nicht belegt.
 - keine Verwendung historischer Ausgaben als Eingaben;
 - keine historische Vollgleichheitsbehauptung.
 
-Nach PR 75 bleiben sieben geplante Schritte, PR 76 bis PR 82. PR 76 schliesst
-als naechstes den unabhaengigen VU14-Zustandsweg fuer Perioden 2-49,
-beginnend mit dem ersten Folgezustand nach Periode 1.
+PR 76 hat die VU14-Regelprojektion fuer Perioden 1-49 klassifiziert und dabei
+den offenen VN-/Schaden-/Settlement-Pfad ab Periode 2 belegt. PR 77 kartiert
+diesen Pfad als naechstes; danach bleiben mindestens acht Schritte bis PR 84.

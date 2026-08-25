@@ -636,15 +636,17 @@ Aktualisierte grobe Restplanung:
 - PR 74 hat die belegte Population aus 25 VU und 200 VN typisiert aufgebaut;
 - PR 75 hat 200 wirksame Aktionsslots und eine explizite moderne Seed-Policy
   ohne historische Same-Slot- oder RNG-Gleichheitsbehauptung gebunden;
-- vorgeschlagener naechster Schritt ist PR 76: unabhaengigen
-  VU14-Zustandsweg fuer Perioden 2-49 schliessen;
+- PR 76 hat eine unabhaengige VU14-Regelprojektion fuer Perioden 1-49
+  klassifiziert; Regelausgaben treffen bis 16, der Vollzustand bleibt offen;
+- vorgeschlagener naechster Schritt ist PR 77: VN-/Schaden-/Settlement-
+  Eingaben und Draw-Reihenfolge fuer die Vorschockperiode kartieren;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem PR-75-Aktions-/Seed-Vertrag bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
+Nach der PR-76-Vorschockprojektion bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `8`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

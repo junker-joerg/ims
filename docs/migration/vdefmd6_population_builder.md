@@ -60,5 +60,6 @@ ausgefuehrten Schleifen und dokumentiert den Widerspruch im Vertrag
 ## Danach
 
 PR 75 hat die Aktionsslots und eine explizite, reproduzierbare moderne
-Seed-Policy lesend gebunden. PR 76 schliesst als naechstes den unabhaengigen
-VU14-Zustandsweg fuer Perioden 2-49.
+Seed-Policy lesend gebunden. PR 76 hat danach die VU14-Regelprojektion fuer
+Perioden 1-49 klassifiziert. PR 77 kartiert als naechstes den offenen
+VN-/Schaden-/Settlement-Pfad.

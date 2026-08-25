@@ -480,8 +480,9 @@ Legacy-/Output-Echos ein. PR 73 hat VU14 an `Vdefmd6` gebunden, die zuvor
 kuenstliche Referenz durch die dreifach belegte historische Reihe ersetzt und
 Periode 1 unabhaengig in 14/14 Feldern bestaetigt. PR 74 hat die
 25-VU-/200-VN-Population typisiert aufgebaut. PR 75 hat die wirksamen
-Aktionsslots und moderne Seed-Policy lesend gebunden. PR 76 schliesst als
-naechstes VU14-Perioden 2-49; sieben PRs bis PR 82 bleiben.
+Aktionsslots und moderne Seed-Policy lesend gebunden. PR 76 hat danach die
+VU14-Vorschock-Regelprojektion klassifiziert und den fehlenden VN-/Schaden-/
+Settlement-Pfad belegt. PR 77 kartiert diesen Pfad; acht PRs bis PR 84 bleiben.
 
 ## Validierungsregel
 
