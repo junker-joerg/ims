@@ -197,8 +197,12 @@ Die lokale Workbench-Datenablage enthaelt aktuell nur Workbench-Metadaten. Ein B
 - `python -m ims.api.metadata_import_cli export --db .\.ims_workbench\metadata.sqlite --out .\metadata_export.json` erzeugt ein explizites JSON-Bundle im Importformat.
 - `python -m ims.api.metadata_import_cli roundtrip --db .\.ims_workbench\metadata.sqlite` prueft die Lesbarkeit und Importvertragsnaehe, schreibt aber nicht.
 - `python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_workbench\metadata.sqlite` prueft eine wiederhergestellte Metadatenquelle vor der lokalen Nutzung.
+- `python -m ims.api.workbench_metadata_recovery inspect --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests` prueft einen vollstaendigen validierten Ergebnisstand rein lesend.
+- `python -m ims.api.workbench_metadata_recovery backup --source-db .\.ims_workbench\metadata.sqlite --out .\backup\metadata.sqlite --queue-id baseline-python-tests` erzeugt ein explizites SQLite-Backup inklusive Queue, Attempt und Resultat.
+- `python -m ims.api.workbench_metadata_recovery restore --backup-db .\backup\metadata.sqlite --out .\restore\metadata.sqlite --queue-id baseline-python-tests` restauriert in einen neuen Zielpfad.
+- `python -m ims.api.workbench_metadata_recovery verify --source-db .\.ims_workbench\metadata.sqlite --candidate-db .\restore\metadata.sqlite --queue-id baseline-python-tests` vergleicht beide Zustaende ueber einen stabilen Digest.
 
-Ein Restore bleibt zunaechst ein manueller, expliziter Betriebsablauf: Workbench stoppen, bestehende Metadatenquelle sichern oder ersetzen, wiederhergestellte Datei mit Readiness und Roundtrip pruefen, dann Workbench neu starten. Dieser Plan ergaenzt keine automatische Backup-Funktion, keine SQLite-Migration, keinen Updater, keine Simulation und keine Fachvalidierung. Ein Backup enthaelt keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
+Ein Restore bleibt zunaechst ein manueller, expliziter Betriebsablauf: Workbench stoppen, bestehende Metadatenquelle sichern, in einen neuen Pfad wiederherstellen, mit `verify` und Readiness pruefen und erst dann bewusst als Metadatenquelle verwenden. Die PR-68-Probe nutzt die SQLite-Backup-API und erhaelt committed WAL-Inhalt; der JSON-Export allein enthaelt Queue, Attempt und Resultat nicht. Dieser Plan ergaenzt keine automatische Backup-Funktion, keine SQLite-Migration, keinen Updater, keine Simulation und keine Fachvalidierung. Ein Backup enthaelt keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
 
 ## Update und Rollback lokaler Workbench-Versionen
 
@@ -232,6 +236,7 @@ $exportPath = Join-Path $oldRoot "metadata_export.json"
 python -m ims.api.metadata_import_cli export --db $metadataDb --out $exportPath
 python -m ims.api.workbench_portable_readiness --root $newRoot --layout portable
 python -m ims.api.workbench_readiness --frontend-dist (Join-Path $newRoot "app\frontend\dist") --db $metadataDb
+python -m ims.api.workbench_metadata_recovery inspect --db $metadataDb --queue-id baseline-python-tests
 ```
 
 5. Optional die Metadatenquelle zusaetzlich pruefen:
@@ -262,6 +267,12 @@ Backend-/Adaptercode aus der bisherigen Workbench-Version nutzen.
 
 Der neue Anwendungspfad und der bestehende Metadatenpfad duerfen dabei nicht
 implizit aus dem aktuellen Arbeitsverzeichnis geraten.
+
+PR 68 belegt diesen Side-by-Side-Schnitt mit dem Repo-Anwendungspfad und einem
+frisch gestagten portablen Anwendungspfad. Beide lesen dieselbe explizite
+Metadatenquelle mit ihrem jeweiligen `python_port` und muessen denselben
+`critical_digest` liefern. Beide Pfade enthalten dabei denselben PR-68-Code;
+der Nachweis ist deshalb kein allgemeiner Versionskompatibilitaetstest.
 
 Rollback heisst entsprechend: neue Workbench stoppen, alte Version wieder
 starten und bei Bedarf die zuvor gesicherte Metadatenquelle zuruecklegen. Der

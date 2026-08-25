@@ -449,6 +449,13 @@ PR-66-Fake-Adapter geprueft. Neuer Zaehlschnitt: grob `3-9` reviewbare PRs bis
 zur konservativen Produktionsreife. PR 68 prueft als naechstes Backup/Restore
 und Update/Rollback lokaler Metadaten mit validiertem Ergebnisstand.
 
+PR 68 ist erledigt. Die technische Recovery-Probe sichert und restauriert den
+validierten Ergebnisstand ueber fuenf SQLite-Tabellen und prueft getrennte
+Repo-/Portable-Anwendungspfade, ohne Simulation oder Schemamigration. Neuer
+Zaehlschnitt: grob `2-8` reviewbare PRs bis zur konservativen Produktionsreife.
+PR 69 erstellt als naechstes den Abschlussbericht fuer den ersten
+Produktionsfreigabekorpus.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:

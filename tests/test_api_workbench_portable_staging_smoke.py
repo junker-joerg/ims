@@ -181,6 +181,7 @@ def _build_repo_fixture(root: Path) -> None:
     _touch(root / "docs" / "migration" / "workbench_shell.md", "workbench doc")
     _touch(root / "docs" / "migration" / "workbench_packaging_plan.md", "packaging plan")
     _touch(root / "docs" / "migration" / "workbench_release_checklist.md", "release checklist")
+    _touch(root / "docs" / "migration" / "workbench_metadata_recovery.md", "metadata recovery")
 
 
 def _touch(path: Path, content: str) -> None:

@@ -172,6 +172,9 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 16. PR 67 darf Packaging, Staging und normalen Produktionsstart pruefen, aber
     weder Altdatenkorpus noch Gleichheitsaussage erweitern (erledigt mit
     Release-Checkliste `pr67-v1` und ohne Simulation).
+17. PR 68 darf Backup/Restore und getrennte Anwendungspfade pruefen, aber weder
+    den Altdatenkorpus noch Fachlogik oder Gleichheitsaussage erweitern
+    (erledigt mit SQLite-Recovery-Vertrag `pr68-v1` ohne Simulation).
 
 ## Offene Risiken
 

@@ -42,6 +42,7 @@ def test_workbench_artifact_manifest_reports_included_and_excluded_paths(tmp_pat
         "workbench_doc",
         "packaging_plan",
         "release_checklist",
+        "metadata_recovery_doc",
     ]
     assert str(tmp_path / "frontend" / "node_modules") in payload["excluded_paths"]
     assert str(tmp_path / ".ims_workbench") in payload["excluded_paths"]
@@ -184,6 +185,7 @@ def _build_repo_fixture(
     _touch(root / "docs" / "migration" / "workbench_shell.md", "workbench")
     _touch(root / "docs" / "migration" / "workbench_packaging_plan.md", "packaging")
     _touch(root / "docs" / "migration" / "workbench_release_checklist.md", "checklist")
+    _touch(root / "docs" / "migration" / "workbench_metadata_recovery.md", "recovery")
 
 
 def _touch(path: Path, content: str = "") -> None:

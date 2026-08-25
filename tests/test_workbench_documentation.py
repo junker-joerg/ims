@@ -13,6 +13,8 @@ BROWSER_DEMO_SMOKE_DOC = REPO_ROOT / "docs" / "migration" / "run_control_browser
 BROWSER_DEMO_SMOKE_PLAN = REPO_ROOT / "docs" / "plans" / "run_control_browser_demo_smoke_plan.md"
 RELEASE_CHECKLIST = REPO_ROOT / "docs" / "migration" / "workbench_release_checklist.md"
 RELEASE_SMOKE_PLAN = REPO_ROOT / "docs" / "plans" / "workbench_release_smoke_plan.md"
+METADATA_RECOVERY_DOC = REPO_ROOT / "docs" / "migration" / "workbench_metadata_recovery.md"
+METADATA_RECOVERY_PLAN = REPO_ROOT / "docs" / "plans" / "workbench_metadata_recovery_plan.md"
 LEGACY_BACKLOG = REPO_ROOT / "docs" / "plans" / "legacy_file_family_validation_backlog.md"
 CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
 START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
@@ -42,6 +44,31 @@ def test_pr67_release_smoke_docs_freeze_checklist_and_boundaries():
     assert "Release-Checkliste: in PR 67 als `pr67-v1` eingefroren" in packaging
     assert "workbench_release_smoke_plan.md" in plans_readme
     assert "workbench_release_checklist.md" in migration_readme
+
+
+def test_pr68_metadata_recovery_docs_cover_result_state_and_boundaries():
+    doc = METADATA_RECOVERY_DOC.read_text(encoding="utf-8")
+    normalized_doc = doc.replace("\n", " ")
+    plan = METADATA_RECOVERY_PLAN.read_text(encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
+    plans_readme = (REPO_ROOT / "docs" / "plans" / "README.md").read_text(encoding="utf-8")
+    migration_readme = (REPO_ROOT / "docs" / "migration" / "README.md").read_text(encoding="utf-8")
+
+    assert METADATA_RECOVERY_DOC.is_file()
+    assert METADATA_RECOVERY_PLAN.is_file()
+    assert "SQLite- Backup-API" in normalized_doc
+    assert "run_control_execution_attempts" in doc
+    assert "run_control_execution_results" in doc
+    assert "python -m ims.api.workbench_metadata_recovery backup" in doc
+    assert "python -m ims.api.workbench_metadata_recovery restore" in doc
+    assert "recovery_contract_version = \"pr68-v1\"" in doc
+    assert "kein In-place-Restore" in doc
+    assert "keine Simulation und keine neue Fachlogik" in doc
+    assert "keine historische Vollgleichheitsbehauptung" in doc
+    assert "PR 69 erstellt den Abschlussbericht" in plan
+    assert "python -m ims.api.workbench_metadata_recovery verify" in readme
+    assert "workbench_metadata_recovery_plan.md" in plans_readme
+    assert "workbench_metadata_recovery.md" in migration_readme
 
 
 def test_readme_documents_local_workbench_start_commands():

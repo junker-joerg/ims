@@ -184,6 +184,13 @@ def _included_paths(
             required=True,
             excluded_paths=excluded_paths,
         ),
+        _manifest_path(
+            "metadata_recovery_doc",
+            root / "docs" / "migration" / "workbench_metadata_recovery.md",
+            kind="file",
+            required=True,
+            excluded_paths=excluded_paths,
+        ),
     )
 
 

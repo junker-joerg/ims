@@ -241,14 +241,15 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 60 hat den ersten schmalen berechneten Aggregat-/Export-Output" in plan
     assert "PR 66 hat diesen sichtbaren Pfad" in plan
     assert "PR 67 hat Packaging, Staging und den normalen Produktionsstart" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 68" in plan
+    assert "PR 68 hat Backup/Restore sowie Update/Rollback" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 69" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "3-9" in plan
+    assert "2-8" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -285,7 +286,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "3-9" in plan
+    assert "2-8" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
@@ -298,11 +299,12 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "erledigt: isolierter Loopback-Server" in plan.replace("\n", " ")
     assert "PR 67: Packaging-/Staging-/Startskript-Smoke" in plan
     assert "erledigt: Checklistenvertrag" in plan.replace("\n", " ")
-    assert "PR 68 prueft Backup/Restore sowie Update/Rollback" in plan.replace("\n", " ")
+    assert "PR 68: Backup-/Restore- und Update-/Rollback-Probe" in plan.replace("\n", " ")
+    assert "PR 69 erstellt den Abschlussbericht" in plan.replace("\n", " ")
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
-    assert "ohne automatische SQLite-Migration, Simulation oder historische Vollgleichheitsbehauptung" in plan.replace("\n", " ")
+    assert "weder fehlende berechnete Exporte als validiert darstellen" in plan.replace("\n", " ")
 
 
 def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:

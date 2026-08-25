@@ -257,6 +257,24 @@ python -m ims.api.workbench_readiness --frontend-dist frontend/dist --db .\.ims_
 
 Ein Restore ist aktuell manuell und explizit: Workbench stoppen, bestehende Metadatenquelle sichern oder ersetzen, wiederhergestellte Datei pruefen und erst danach die Workbench neu starten. Es gibt keine automatische Backup-Funktion, keine SQLite-Migration, keinen Updater, keinen HTTP- oder UI-Schreibpfad und keine Simulation. Backup und Restore enthalten keine Fachlogikdaten, keine Simulationsergebnisse und keine historische Vollgleichheitsbehauptung.
 
+PR 68 ergaenzt fuer einen vollstaendigen validierten Ergebnisstand eine
+explizite SQLite-Recovery-Probe. Anders als der JSON-Export erhaelt sie auch
+Queue-, Attempt- und Resultatzeilen:
+
+```powershell
+python -m ims.api.workbench_metadata_recovery inspect --db .\.ims_workbench\metadata.sqlite --queue-id baseline-python-tests
+python -m ims.api.workbench_metadata_recovery backup --source-db .\.ims_workbench\metadata.sqlite --out .\backup\metadata.sqlite --queue-id baseline-python-tests
+python -m ims.api.workbench_metadata_recovery restore --backup-db .\backup\metadata.sqlite --out .\restore\metadata.sqlite --queue-id baseline-python-tests
+python -m ims.api.workbench_metadata_recovery verify --source-db .\.ims_workbench\metadata.sqlite --candidate-db .\restore\metadata.sqlite --queue-id baseline-python-tests
+```
+
+`backup` und `restore` schreiben nur einen neuen expliziten Zielpfad und
+veroeffentlichen ihn erst nach erfolgreicher Zustandspruefung. `inspect` und
+`verify` sind rein lesend. Der Vertrag `pr68-v1` verlangt ein persistiertes
+validiertes Resultat, sperrt Simulationsmarker und behauptet keine historische
+Vollgleichheit. Details stehen in
+`docs/migration/workbench_metadata_recovery.md`.
+
 ## Update und Rollback lokaler Workbench-Versionen
 
 Lokale Workbench-Versionen werden bis auf Weiteres manuell aktualisiert. Eine neue Version soll neben der bisherigen Version in einen eigenen Ordner gelegt werden, nicht direkt ueber eine bestehende Installation. Die Anwendung und die lokalen Metadaten bleiben getrennt: Repo- oder ZIP-Inhalt, `python_port`, `frontend/dist` und Startskripte gehoeren zur Anwendung; `.ims_workbench` enthaelt die lokale Metadatenablage.
@@ -549,6 +567,11 @@ Die in PR 67 eingefrorene Release-Checkliste steht unter
 lesend, verlangt die Checkliste selbst im ZIP, vergleicht die ZIP-Skripte mit
 dem Checkout und blockiert jede Referenz auf den isolierten PR-66-Demo-Adapter
 in den Produktionsskripten.
+
+Die in PR 68 ergaenzte Recovery-Dokumentation wird als erforderliche Datei in
+das Workbench-Artefakt aufgenommen. Die Recovery-Probe selbst bleibt ein
+manuell aufgerufener CLI-Betriebsweg und ist nicht Teil des automatischen
+Produktionsstarts.
 
 ## SQLite-Vorbereitung
 

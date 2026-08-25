@@ -100,7 +100,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   `pr67-v1`, read-only Sammelcheck, Produktionsskript-/Artefaktabgleich und
   normaler Loopback-Start ohne PR-66-Fake-Adapter oder Simulation).
 - PR 68: Backup-/Restore- und Update-/Rollback-Probe fuer lokale Metadaten mit
-  einem validierten Ergebnisstand pruefen.
+  einem validierten Ergebnisstand pruefen (erledigt: SQLite-Backup/Restore,
+  Digest ueber fuenf Tabellen und getrennte Repo-/Portable-Anwendungspfade).
 - PR 69: Abschlussbericht fuer den ersten Produktionsfreigabekorpus erstellen:
   Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad.
 - PR 70+: Review-Fixes, CI-/Windows-Haertung und blockierende
@@ -108,14 +109,14 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 67 bleiben grob `3-9` reviewbare PRs bis zu einer konservativen
+Nach PR 68 bleiben grob `2-8` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 68 prueft Backup/Restore sowie Update/Rollback fuer lokale Metadaten mit
-einem bereits validierten Ergebnisstand. Die Probe arbeitet mit expliziten
-Anwendungs- und Datenpfaden und bleibt ohne automatische SQLite-Migration,
-Simulation oder historische Vollgleichheitsbehauptung.
+PR 69 erstellt den Abschlussbericht fuer den ersten Produktionsfreigabekorpus.
+Er fasst Altdatenumfang, belegte Tests, bekannte Abweichungen, Betriebsgrenzen
+und den Bedienpfad zusammen. Er darf weder fehlende berechnete Exporte als
+validiert darstellen noch eine historische Vollgleichheit behaupten.
