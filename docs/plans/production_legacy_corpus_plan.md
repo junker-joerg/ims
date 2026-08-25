@@ -175,6 +175,10 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 17. PR 68 darf Backup/Restore und getrennte Anwendungspfade pruefen, aber weder
     den Altdatenkorpus noch Fachlogik oder Gleichheitsaussage erweitern
     (erledigt mit SQLite-Recovery-Vertrag `pr68-v1` ohne Simulation).
+18. PR 69 darf den Freigabestand zusammenfassen, aber 6.300 ausgerichtete
+    Referenzzeilen nicht als unabhaengigen berechneten Gesamtvergleich
+    darstellen (erledigt mit Bericht `pr69-v1`, 15 Exportblockern und
+    `production_release_approved = false`).
 
 ## Offene Risiken
 

@@ -274,6 +274,11 @@ Metadatenquelle mit ihrem jeweiligen `python_port` und muessen denselben
 `critical_digest` liefern. Beide Pfade enthalten dabei denselben PR-68-Code;
 der Nachweis ist deshalb kein allgemeiner Versionskompatibilitaetstest.
 
+Der PR-69-Abschlussbericht `docs/migration/production_release_corpus_report.md`
+ist Teil des lokalen Artefakts. Seine technische Auslieferung aendert die
+Freigabeentscheidung nicht: 15 fehlende berechnete Kernexporte bleiben
+blockierend und `production_release_approved` bleibt `false`.
+
 Rollback heisst entsprechend: neue Workbench stoppen, alte Version wieder
 starten und bei Bedarf die zuvor gesicherte Metadatenquelle zuruecklegen. Der
 Rollback ist kein Datenbank-Migrationsmechanismus und kein automatischer

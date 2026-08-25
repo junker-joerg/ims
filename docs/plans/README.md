@@ -42,11 +42,15 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR 66 prueft den freigegebenen lokalen Demo-Run mit injiziertem Fake-Adapter
   im Browser. PR 67 friert Packaging-, Staging- und Produktionsstart-Smoke als
   Release-Checkliste `pr67-v1` ein; PR 68 prueft Backup/Restore und
-  Update/Rollback lokaler Metadaten. PR 69 erstellt als naechstes den
-  Abschlussbericht fuer den ersten Produktionsfreigabekorpus.
+  Update/Rollback lokaler Metadaten. PR 69 erstellt den Abschlussbericht fuer
+  den ersten Produktionsfreigabekorpus; PR 70 haertet als naechstes die
+  technische CI-/Windows-Pruefkette.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,
   Restore und Side-by-Side-Update/Rollback eines validierten Ergebnisstands,
   weiterhin ohne Simulation oder Schemamigration.
+- `production_release_corpus_report_plan.md`: enger PR-69-Plan fuer den
+  read-only Abschlussbericht, der technische Demo-Reife von der wegen 15
+  fehlender berechneter Exporte blockierten Produktionsfreigabe trennt.
 - `workbench_release_smoke_plan.md`: enger PR-67-Plan fuer ZIP-, Staging- und
   Produktionsstart-Smoke mit harter Trennung vom PR-66-Fake-Adapter.
 - `run_control_ui_start_plan.md`: enger PR-64-Plan fuer zweistufige

@@ -103,20 +103,24 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   einem validierten Ergebnisstand pruefen (erledigt: SQLite-Backup/Restore,
   Digest ueber fuenf Tabellen und getrennte Repo-/Portable-Anwendungspfade).
 - PR 69: Abschlussbericht fuer den ersten Produktionsfreigabekorpus erstellen:
-  Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad.
+  Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad (erledigt:
+  read-only Vertrag `pr69-v1`, 19/6.300 Coverage und 15 explizite
+  Exportblocker ohne Produktionsfreigabe).
 - PR 70+: Review-Fixes, CI-/Windows-Haertung und blockierende
   Abweichungskorrekturen.
 
 ## Grobe Anzahl
 
-Nach PR 68 bleiben grob `2-8` reviewbare PRs bis zu einer konservativen
+Nach PR 69 bleiben grob `1-7` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
-Review-Funde blockieren.
+Review-Funde blockieren. Die Schaetzung setzt ausserdem voraus, dass die 15
+berechneten Kernexporte aus einer belegten externen Quelle vorliegen; ohne sie
+bleibt die fachliche Freigabe unabhaengig von der PR-Anzahl blockiert.
 
 ## Naechster Schritt
 
-PR 69 erstellt den Abschlussbericht fuer den ersten Produktionsfreigabekorpus.
-Er fasst Altdatenumfang, belegte Tests, bekannte Abweichungen, Betriebsgrenzen
-und den Bedienpfad zusammen. Er darf weder fehlende berechnete Exporte als
-validiert darstellen noch eine historische Vollgleichheit behaupten.
+PR 70 haertet den Abschlussstand als CI-/Windows-Freigabegate fuer Python-
+Tests, Frontend-Build, read-only Korpusbericht und Release-Smoke. Dieser
+technische Schritt darf keine fehlenden berechneten Exporte erzeugen oder eine
+historische Vollgleichheit behaupten.

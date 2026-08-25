@@ -456,6 +456,13 @@ Zaehlschnitt: grob `2-8` reviewbare PRs bis zur konservativen Produktionsreife.
 PR 69 erstellt als naechstes den Abschlussbericht fuer den ersten
 Produktionsfreigabekorpus.
 
+PR 69 ist erledigt. Der read-only Bericht `pr69-v1` trennt 19/19 abgedeckte
+Referenzen und 6.300 eingetragene Perioden von den 15 weiterhin fehlenden
+berechneten Kernexporten; eine fachliche Produktionsfreigabe wird nicht
+erteilt. Neuer Zaehlschnitt: grob `1-7` reviewbare PRs, zuzueglich der externen
+Datenvoraussetzung. PR 70 haertet als naechstes die technische CI-/Windows-
+Pruefkette.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:

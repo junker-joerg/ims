@@ -621,17 +621,21 @@ Aktualisierte grobe Restplanung:
   geprueft und die Release-Checkliste als `pr67-v1` eingefroren;
 - PR 68 hat Backup/Restore sowie Update/Rollback lokaler Metadaten mit einem
   validierten Ergebnisstand und getrennten Anwendungspfaden geprueft;
-- vorgeschlagener naechster Schritt ist PR 69: Abschlussbericht fuer den
-  ersten Produktionsfreigabekorpus erstellen;
+- PR 69 hat den Abschlussbericht fuer den ersten Produktionsfreigabekorpus als
+  read-only Vertrag erstellt und die 15 fehlenden berechneten Kernexporte als
+  Freigabeblocker festgehalten;
+- vorgeschlagener naechster Schritt ist PR 70: CI-/Windows-Freigabegate fuer
+  Python-Tests, Frontend-Build, Korpusbericht und Release-Smoke haerten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der umgesetzten Recovery-Probe bleiben grob ca. `2-8`
+Nach dem umgesetzten Abschlussbericht bleiben grob ca. `1-7`
 reviewbare PRs bis zu konservativer
-Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
-Schaetzung ersetzt keine Vollgleichheitspruefung.
+Produktionsreife mit validiertem Altdaten-Korpus und laufender UI, sofern die
+15 berechneten Kernexporte extern bereitgestellt werden. Diese Schaetzung
+ersetzt keine Vollgleichheitspruefung.
 
 ## Grenzen
 

@@ -149,6 +149,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             requires_explicit_db=True,
         ),
         WorkbenchCliCommand(
+            name="production_release_corpus_report",
+            command="python -m ims.api.production_release_corpus_report --repo-root .",
+            purpose="PR-69-Freigabestand des historischen Kernkorpus rein lesend zusammenfassen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -286,6 +292,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "workbench_release_smoke",
                 "workbench_metadata_recovery inspect",
                 "workbench_metadata_recovery verify",
+                "production_release_corpus_report",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",

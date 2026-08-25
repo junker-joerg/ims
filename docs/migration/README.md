@@ -91,4 +91,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `run_control_browser_demo_smoke.md`: isolierter PR-66-Browser-Smoke fuer Freigabe, Fake-Adapterstart, persistiertes Ergebnis und Verlauf ohne Engine-Runner oder Simulation
 - `workbench_release_checklist.md`: eingefrorener PR-67-Vertrag `pr67-v1` fuer ZIP, portables Staging und normalen Produktionsstart ohne Demo-Adapter oder Simulation
 - `workbench_metadata_recovery.md`: PR-68-Probe fuer SQLite-Backup, Restore und Side-by-Side-Update/Rollback eines validierten lokalen Ergebnisstands
+- `production_release_corpus_report.md`: PR-69-Abschlussbericht mit 19-/6.300-Korpus, technischen Betriebsnachweisen und weiterhin 15 fehlenden berechneten Kernexporten
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -573,6 +573,18 @@ das Workbench-Artefakt aufgenommen. Die Recovery-Probe selbst bleibt ein
 manuell aufgerufener CLI-Betriebsweg und ist nicht Teil des automatischen
 Produktionsstarts.
 
+Der PR-69-Abschlussbericht wird ebenfalls als erforderliche Datei ausgeliefert
+und kann aus dem Repo rein lesend erzeugt werden:
+
+```powershell
+python -m ims.api.production_release_corpus_report --repo-root .
+```
+
+Ein technischer Release-Smoke mit `release_ready = true` und ein vollstaendiger
+19-/6.300-Referenzkorpus reichen nicht fuer eine fachliche Produktionsfreigabe.
+Der Bericht haelt `production_release_approved = false`, solange die 15
+berechneten Kernexporte fehlen, und startet weder Adapter noch Simulation.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.

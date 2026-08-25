@@ -242,14 +242,15 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 66 hat diesen sichtbaren Pfad" in plan
     assert "PR 67 hat Packaging, Staging und den normalen Produktionsstart" in plan
     assert "PR 68 hat Backup/Restore sowie Update/Rollback" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 69" in plan
+    assert "PR 69 hat den Abschlussbericht" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 70" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "2-8" in plan
+    assert "1-7" in plan
     assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
@@ -286,7 +287,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "2-8" in plan
+    assert "1-7" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
@@ -300,11 +301,14 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 67: Packaging-/Staging-/Startskript-Smoke" in plan
     assert "erledigt: Checklistenvertrag" in plan.replace("\n", " ")
     assert "PR 68: Backup-/Restore- und Update-/Rollback-Probe" in plan.replace("\n", " ")
-    assert "PR 69 erstellt den Abschlussbericht" in plan.replace("\n", " ")
+    assert "PR 69: Abschlussbericht fuer den ersten Produktionsfreigabekorpus" in plan.replace("\n", " ")
+    assert "Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad (erledigt:" in plan
+    assert "read-only Vertrag `pr69-v1`" in plan
+    assert "PR 70 haertet den Abschlussstand" in plan.replace("\n", " ")
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
-    assert "weder fehlende berechnete Exporte als validiert darstellen" in plan.replace("\n", " ")
+    assert "15 berechneten Kernexporte aus einer belegten externen Quelle" in plan.replace("\n", " ")
 
 
 def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:

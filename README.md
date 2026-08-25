@@ -49,7 +49,7 @@ Die lokale Workbench-v1 ist als Modernisierungs-Meilenstein abgeschlossen. Diese
 - Lokale CLI-Adapter decken Diagnose, Import-Check, Preview, Dry-Run, Export, Roundtrip, Snapshot, expliziten Importbericht und Run-Control-Preflight ab.
 - Keine Fachlogikaenderung, keine Simulation, kein UI-Schreibpfad und keine historische Vollgleichheitsbehauptung.
 
-Die spaetere Run-Steuerung und Gesamtplanung bis zum vollstaendigen Abschluss sind unter `docs/migration/workbench_run_control_plan.md` beschrieben. Der separate Packaging- und Bereitstellungsblock ist unter `docs/migration/workbench_packaging_plan.md` als lokaler ZIP-/Staging-Abschlussstatus konsolidiert. Die in PR 68 umgesetzte technische Recovery-Probe ist unter `docs/migration/workbench_metadata_recovery.md` dokumentiert. Diese Plaene und Checks starten keine Simulation.
+Die spaetere Run-Steuerung und Gesamtplanung bis zum vollstaendigen Abschluss sind unter `docs/migration/workbench_run_control_plan.md` beschrieben. Der separate Packaging- und Bereitstellungsblock ist unter `docs/migration/workbench_packaging_plan.md` als lokaler ZIP-/Staging-Abschlussstatus konsolidiert. Die in PR 68 umgesetzte technische Recovery-Probe ist unter `docs/migration/workbench_metadata_recovery.md` dokumentiert. Der PR-69-Abschlussbericht unter `docs/migration/production_release_corpus_report.md` trennt den reviewbaren technischen Demo-Stand von der weiterhin blockierten fachlichen Produktionsfreigabe. Diese Plaene und Checks starten keine Simulation.
 
 Die PR-Roadmap bis zu einer konservativen Produktionsreife steht unter
 `docs/plans/production_readiness_pr_plan.md`. PR 50 waehlt als naechsten
@@ -599,5 +599,13 @@ python -m ims.api.workbench_metadata_recovery verify --source-db .\.ims_workbenc
 ```
 
 Die Probe verwendet die SQLite-Backup-API, beruecksichtigt committed WAL-Inhalt und veroeffentlicht nur einen vorher nicht vorhandenen Zielpfad nach erfolgreicher Digestpruefung. Der JSON-Export bleibt fuer Szenario- und Run-Bundles geeignet, umfasst aber nicht den vollstaendigen Run-Control-Ergebnisstand. Es gibt keine automatische Backup-Funktion, keine SQLite-Migration und keine Simulation.
+
+Der aktuelle Produktionskorpus-Freigabestand wird rein lesend zusammengefasst:
+
+```powershell
+python -m ims.api.production_release_corpus_report --repo-root .
+```
+
+Der Bericht meldet 19/19 abgedeckte Kernreferenzen und 6.300/6.300 eingetragene Perioden, aber 0/15 gelieferte berechnete Kernexporte. Deshalb bleiben `production_release_approved = false` und `historical_full_equality_claimed = false`, obwohl die lokale Workbench technisch reviewbar und stabil bereitgestellt werden kann.
 
 Update und Rollback lokaler Workbench-Versionen bleiben ebenfalls manuell. Eine neue Workbench-Version soll neben der bisherigen Version in einen eigenen Ordner gelegt werden. Die Checks sollen mit explizitem neuem Anwendungspfad und explizitem bestehendem Metadatenpfad laufen, etwa mit `workbench_portable_readiness`, `workbench_readiness --db <alter-metadata-pfad>` und `workbench_metadata_recovery inspect`. Repo-Side-by-Side-Checks muessen ausserdem den Python-Kontext der neuen Version nutzen, etwa ueber `PYTHONPATH` auf den neuen `python_port`-Pfad oder eine explizite Installation aus dem neuen Checkout. Rollback heisst: neue Version stoppen, alte Version wieder starten und bei Bedarf die zuvor gesicherte Metadatenquelle zuruecklegen. Es gibt keinen automatischen Updater, keine In-place-Aktualisierung, keine automatische SQLite-Migration und keine historische Vollgleichheitsbehauptung.

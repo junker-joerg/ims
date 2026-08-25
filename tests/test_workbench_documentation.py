@@ -15,6 +15,12 @@ RELEASE_CHECKLIST = REPO_ROOT / "docs" / "migration" / "workbench_release_checkl
 RELEASE_SMOKE_PLAN = REPO_ROOT / "docs" / "plans" / "workbench_release_smoke_plan.md"
 METADATA_RECOVERY_DOC = REPO_ROOT / "docs" / "migration" / "workbench_metadata_recovery.md"
 METADATA_RECOVERY_PLAN = REPO_ROOT / "docs" / "plans" / "workbench_metadata_recovery_plan.md"
+PRODUCTION_RELEASE_CORPUS_REPORT = (
+    REPO_ROOT / "docs" / "migration" / "production_release_corpus_report.md"
+)
+PRODUCTION_RELEASE_CORPUS_REPORT_PLAN = (
+    REPO_ROOT / "docs" / "plans" / "production_release_corpus_report_plan.md"
+)
 LEGACY_BACKLOG = REPO_ROOT / "docs" / "plans" / "legacy_file_family_validation_backlog.md"
 CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
 START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
@@ -69,6 +75,34 @@ def test_pr68_metadata_recovery_docs_cover_result_state_and_boundaries():
     assert "python -m ims.api.workbench_metadata_recovery verify" in readme
     assert "workbench_metadata_recovery_plan.md" in plans_readme
     assert "workbench_metadata_recovery.md" in migration_readme
+
+
+def test_pr69_corpus_report_blocks_production_release_without_exports():
+    report = PRODUCTION_RELEASE_CORPUS_REPORT.read_text(encoding="utf-8")
+    plan = PRODUCTION_RELEASE_CORPUS_REPORT_PLAN.read_text(encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
+    plans_readme = (REPO_ROOT / "docs" / "plans" / "README.md").read_text(encoding="utf-8")
+    migration_readme = (REPO_ROOT / "docs" / "migration" / "README.md").read_text(encoding="utf-8")
+
+    assert PRODUCTION_RELEASE_CORPUS_REPORT.is_file()
+    assert PRODUCTION_RELEASE_CORPUS_REPORT_PLAN.is_file()
+    assert "Berichtsvertrag: `pr69-v1`" in report
+    assert "Eine fachliche Produktionsfreigabe" in report
+    assert "wird **nicht** erteilt" in report
+    assert "19/19 Referenzen" in report
+    assert "6.300/6.300" in report
+    assert "0/15" in report
+    assert "VUSK1L1.DAT" in report and "Aggregatstufe IV" in report
+    assert "production_release_approved = false" in report
+    assert "historical_full_equality_claimed = false" in report
+    assert "python -m ims.api.production_release_corpus_report --repo-root ." in report
+    assert "1.151 Tests bestanden" in report
+    assert "frischer ZIP-Build: 114 Eintraege" in report
+    assert "PR 70 haertet" in report
+    assert "keine Simulation" in plan
+    assert "production_release_corpus_report_plan.md" in plans_readme
+    assert "production_release_corpus_report.md" in migration_readme
+    assert "docs/migration/production_release_corpus_report.md" in readme
 
 
 def test_readme_documents_local_workbench_start_commands():
