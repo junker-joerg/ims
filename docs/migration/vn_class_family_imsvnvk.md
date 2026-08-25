@@ -61,3 +61,9 @@ aktuelle Bundle 19 Referenzziele mit 6300 konkret verglichenen Zeilen.
 Nach diesem Schnitt ist `policyholder_class` im Legacy-Coverage-Backlog belegt.
 Die danach vorbereiteten Versicherer-Klassenaggregate `IMSVUVK*.DAT` belegen
 zusaetzlich `insurer_class`.
+
+PR 85 erzeugt die drei VN-Klassen und VN-SK1/all fuer Perioden 1-100 nun aus
+dem kontrollierten `Vdefmd6`-Zustand. Der Vergleich trifft 1.234/5.200 Felder
+beziehungsweise 434/4.400 Fachwerte, aber keine vollstaendige Zeile. Die
+historische klassenuebergreifende Akkumulatorsemantik und die konkrete
+`WVEMOD1`-Laufidentitaet bleiben offen.

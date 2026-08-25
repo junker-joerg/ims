@@ -659,16 +659,20 @@ Aktualisierte grobe Restplanung:
 - PR 84 hat `imsvnr04.dat` bis `imsvnr06.dat` aus demselben Zustand
   klassifiziert; 926/3.900 Felder beziehungsweise 326/3.300 Fachwerte treffen,
   ohne volle Vergleichszeile, und die `WVEMOD1`-Laufidentitaet bleibt offen;
-- vorgeschlagener naechster Schritt ist PR 85: die drei VN-Klassen und
-  VN-SK1/all aus demselben Zustand vergleichen;
+- PR 85 hat die drei VN-Klassen und VN-SK1/all aus demselben Zustand
+  klassifiziert; 1.234/5.200 Felder beziehungsweise 434/4.400 Fachwerte
+  treffen, ohne volle Vergleichszeile, und die historische VN-
+  Klassenakkumulatorsemantik bleibt offen;
+- vorgeschlagener naechster Schritt ist PR 86: alle 15 Kernexporte gemeinsam
+  klassifizieren und die fachliche Freigabe menschlich neu bewerten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem PR-84-Regelgruppenlauf bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `2`
-reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
+Nach dem PR-85-Aggregatlauf bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg ist mindestens `1`
+reviewbarer PR bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.
 

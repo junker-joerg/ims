@@ -60,6 +60,12 @@ VDEFMD6_VN_RULE_GROUP_2_FILENAMES = (
     "imsvnr05.dat",
     "imsvnr06.dat",
 )
+VDEFMD6_VN_AGGREGATE_FILENAMES = (
+    "imsvnsk1.dat",
+    "imsvnvk1.dat",
+    "imsvnvk2.dat",
+    "imsvnvk3.dat",
+)
 _VDEFMD6_VU_EXPORT_FILENAMES = ("imsvu014.dat", *VDEFMD6_VU_AGGREGATE_FILENAMES)
 
 
@@ -93,6 +99,7 @@ class Vdefmd6PreShockRunResult:
     vu_aggregate_export_tables: tuple[ExportTable, ...]
     vn_rule_group_1_export_tables: tuple[ExportTable, ...]
     vn_rule_group_2_export_tables: tuple[ExportTable, ...]
+    vn_aggregate_export_tables: tuple[ExportTable, ...]
     total_information_cost: float
     total_information_cost_policyholders: int
     total_vu_rule_applications: int
@@ -169,6 +176,14 @@ def _run_vdefmd6_periods(
     vn_rule_group_2_tables_by_filename = {
         filename: [table]
         for filename, table in _vn_rule_group_2_export_tables(
+            population,
+            bav,
+            period=1,
+        ).items()
+    }
+    vn_aggregate_tables_by_filename = {
+        filename: [table]
+        for filename, table in _vn_aggregate_export_tables(
             population,
             bav,
             period=1,
@@ -266,6 +281,12 @@ def _run_vdefmd6_periods(
             period=period,
         ).items():
             vn_rule_group_2_tables_by_filename[filename].append(table)
+        for filename, table in _vn_aggregate_export_tables(
+            population,
+            bav,
+            period=period,
+        ).items():
+            vn_aggregate_tables_by_filename[filename].append(table)
 
     vu14_export_table = _merge_export_tables(
         vu_tables_by_filename["imsvu014.dat"]
@@ -282,6 +303,10 @@ def _run_vdefmd6_periods(
         _merge_export_tables(vn_rule_group_2_tables_by_filename[filename])
         for filename in VDEFMD6_VN_RULE_GROUP_2_FILENAMES
     )
+    vn_aggregate_export_tables = tuple(
+        _merge_export_tables(vn_aggregate_tables_by_filename[filename])
+        for filename in VDEFMD6_VN_AGGREGATE_FILENAMES
+    )
     return Vdefmd6PreShockRunResult(
         base_seed=base_seed,
         execution_order=execution_order,
@@ -291,6 +316,7 @@ def _run_vdefmd6_periods(
         vu_aggregate_export_tables=vu_aggregate_export_tables,
         vn_rule_group_1_export_tables=vn_rule_group_1_export_tables,
         vn_rule_group_2_export_tables=vn_rule_group_2_export_tables,
+        vn_aggregate_export_tables=vn_aggregate_export_tables,
         total_information_cost=sum(item.information_cost for item in period_results),
         total_information_cost_policyholders=sum(
             item.information_cost_policyholder_count for item in period_results
@@ -557,6 +583,33 @@ def _vn_rule_group_2_export_tables(
     if missing:
         raise ValueError(
             "missing Vdefmd6 VN rule group 2 export tables: "
+            + ", ".join(sorted(missing))
+        )
+    return tables
+
+
+def _vn_aggregate_export_tables(
+    population: Vdefmd6Population,
+    bav: BAV,
+    *,
+    period: int,
+) -> dict[str, ExportTable]:
+    context = SimulationContext(period=period, max_periods=VDEFMD6_MAX_PERIODS)
+    records = collect_extended_agrsich_records(
+        context,
+        bav,
+        population.insurers,
+        population.policyholders,
+    )
+    tables = {
+        table.spec.filename: table
+        for table in build_agrsich_export_tables(context, records)
+        if table.spec.filename in VDEFMD6_VN_AGGREGATE_FILENAMES
+    }
+    missing = set(VDEFMD6_VN_AGGREGATE_FILENAMES) - tables.keys()
+    if missing:
+        raise ValueError(
+            "missing Vdefmd6 VN aggregate export tables: "
             + ", ".join(sorted(missing))
         )
     return tables

@@ -190,3 +190,14 @@ Ausgabefamilien aus unterschiedlichen Modellvarianten.
 3-6, enthaelt keinen solchen Runreport. PR 84 uebertraegt den Seed deshalb
 nicht zwischen den Archivfamilien und behauptet keine konkrete historische
 Laufidentitaet fuer die Referenzwerte.
+
+## PR-85-Provenienzpruefung
+
+Die versionierte `IMSVNSK1.DAT` stimmt bytegenau mit
+`WVEMOD1.ZIP/IMSVNSK1.DAT` ueberein. Die drei versionierten
+`IMSVNVK1.DAT` bis `IMSVNVK3.DAT` stammen ebenfalls gezielt aus dieser
+Archivfamilie. Gleichnamige `IMSVNSK1`-Varianten aus `WVEMOD2.ZIP`,
+`WVEMOD3.ZIP`, `VDEFMOD5.ZIP`, `VDEFMD5A.ZIP` und den ZINS-Archiven weichen
+ab und werden nicht vermischt. Weil `WVEMOD1.ZIP` weiterhin keinen
+zugeordneten Runreport enthaelt, bleibt die konkrete historische
+Laufidentitaet offen.

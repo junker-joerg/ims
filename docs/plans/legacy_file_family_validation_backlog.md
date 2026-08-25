@@ -498,7 +498,10 @@ reviewbare PRs bis PR 86; VN-Regelakkumulator und `Ev`-Feldbedeutung sind offen.
 PR 84 hat anschliessend `imsvnr04.dat` bis `imsvnr06.dat` mit 926/3.900
 Feldtreffern und 326/3.300 Fachwerttreffern klassifiziert. Danach bleiben zwei
 reviewbare PRs bis PR 86; die konkrete `WVEMOD1`-Laufidentitaet ist ebenfalls
-offen.
+offen. PR 85 hat danach `imsvnvk1.dat` bis `imsvnvk3.dat` und `imsvnsk1.dat`
+mit 1.234/5.200 Feldtreffern beziehungsweise 434/4.400 Fachwerttreffern
+klassifiziert. Danach bleibt ein reviewbarer PR bis PR 86; die historische
+VN-Klassenakkumulatorsemantik und die Laufidentitaet bleiben offen.
 
 ## Validierungsregel
 

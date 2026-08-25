@@ -181,6 +181,8 @@ Akkumulatorsemantik als offenen Blocker festgehalten. PR 83 hat die VN-Regeln
 klassifiziert; keine Zeile trifft vollstaendig. PR 84 hat die Regeln 4-6 mit
 926/3.900 Feldtreffern beziehungsweise 326/3.300 Fachwerttreffern
 klassifiziert. Auch hier trifft keine Zeile vollstaendig; die Laufidentitaet
-der `WVEMOD1`-Referenz bleibt offen. Danach bleiben mindestens zwei reviewbare
-PRs bis zur erneuten fachlichen Freigabepruefung; konkrete Funde koennen
-weitere kleine Slices erfordern.
+der `WVEMOD1`-Referenz bleibt offen. PR 85 hat die drei VN-Klassen und
+VN-SK1/all mit 1.234/5.200 Feldtreffern beziehungsweise 434/4.400
+Fachwerttreffern klassifiziert; keine Zeile trifft vollstaendig. Danach bleibt
+mindestens ein reviewbarer PR bis zur erneuten fachlichen Freigabepruefung;
+konkrete Funde koennen weitere kleine Slices erfordern.
