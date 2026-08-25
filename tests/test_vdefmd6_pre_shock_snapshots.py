@@ -6,6 +6,7 @@ from ims.model.vdefmd6_population import build_vdefmd6_population
 from ims.model.vdefmd6_pre_shock_snapshots import (
     VDEFMD6_PRE_SHOCK_DRAW_POLICY_ID,
     build_vdefmd6_pre_shock_snapshot_batch,
+    build_vdefmd6_shock_snapshot_batch,
 )
 from ims.model.vn_insurance_rules import (
     VNInsuranceRuleKind,
@@ -121,4 +122,41 @@ def test_vdefmd6_pre_shock_snapshot_batch_requires_current_active_state() -> Non
             population,
             period=2,
             rng=random.Random(780001),
+        )
+
+
+def test_vdefmd6_shock_snapshot_batch_activates_shock_inputs() -> None:
+    population = build_vdefmd6_population()
+    for policyholder in population.policyholders:
+        policyholder.active = True
+
+    batch = build_vdefmd6_shock_snapshot_batch(
+        population,
+        period=50,
+        rng=random.Random(810002),
+    )
+
+    assert batch.change_shock is True
+    assert len(batch.insurance_snapshots) == 200
+    assert len(batch.damage_snapshots) == 200
+    assert all(snapshot.change_shock for snapshot in batch.insurance_snapshots)
+    assert all(snapshot.change_shock for snapshot in batch.damage_snapshots)
+    sample_search = batch.insurance_snapshots[90]
+    assert [len(items) for items in sample_search.draws.insurer_choice_draws_by_sector] == [
+        10,
+        10,
+    ]
+    assert batch.draw_summary.uniform_values == 1330
+    assert batch.draw_summary.normal_values == 800
+
+
+@pytest.mark.parametrize("period", [49, 101])
+def test_vdefmd6_shock_snapshot_batch_rejects_out_of_scope_periods(
+    period: int,
+) -> None:
+    with pytest.raises(ValueError, match="between 50 and 100"):
+        build_vdefmd6_shock_snapshot_batch(
+            build_vdefmd6_population(),
+            period=period,
+            rng=random.Random(810002),
         )

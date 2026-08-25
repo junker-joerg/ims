@@ -53,5 +53,6 @@ VN-/Schaden-/Settlement-Grenze klassifiziert. PR 77 hat diesen Pfad fuer alle
 sechs VN-Regeln kartiert. PR 78 hat explizite VN-Vorschock-Snapshots und eine
 moderne Drawfolge fuer eine einzelne Periode abgeleitet. PR 79 hat danach die
 VU- und BAV-Eingangsseite vorbereitet. PR 80 hat die Informationskosten an das
-Settlement gebunden und den Vorschockpfad kontrolliert angewendet. PR 81
-schliesst als naechstes Schockgrenze und Perioden 50-100.
+Settlement gebunden und den Vorschockpfad kontrolliert angewendet. PR 81 hat
+Schockgrenze und Perioden 50-100 geschlossen. PR 82 verbreitert als naechstes
+den Versichererzustand auf SK1/all und VU-Klassen.

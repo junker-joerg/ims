@@ -66,4 +66,5 @@ Pfad kartiert; PR 78 hat die VN-Vorschock-Snapshots und moderne Drawfolge fuer
 eine einzelne Periode abgeleitet. PR 79 hat die Snapshotseite aller 25
 VU-Regeln und die BAV-Vorperiodeninputs vorbereitet. PR 80 hat die
 Informationskosten- und Vorschock-Mehrperiodenanwendung geschlossen. PR 81
-folgt mit Schockgrenze und Perioden 50-100.
+hat Schockgrenze, Aktivierung der VN `151-200` und Perioden 50-100
+geschlossen. PR 82 verbreitert als naechstes den Versichererzustand.

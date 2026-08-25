@@ -60,4 +60,5 @@ VN-/Schaden-/Settlement-Eingaben und ihre Draw-Reihenfolge fuer die
 Vorschockperiode. PR 78 hat daraus die VN-Snapshots einer einzelnen Periode
 materialisiert. PR 79 hat alle VU- und BAV-Eingaben vorbereitet. PR 80 hat die
 Informationskosten angebunden und VU14/2-49 kontrolliert geschlossen. PR 81
-uebernimmt Schockgrenze und Nachschockpfad.
+hat Schockgrenze und Nachschockpfad bis Periode 100 geschlossen. PR 82
+verbreitert als naechstes den Versichererzustand auf die VU-Aggregatfamilien.

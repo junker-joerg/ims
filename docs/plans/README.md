@@ -61,6 +61,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   BAV-Vorperiodeninputs und die explizite Informationskostengrenze.
 - `vdefmd6_pre_shock_run_plan.md`: PR-80-Plan fuer Informationskosten,
   kontrollierte Perioden 2-49 und die VU14-Abweichungsklassifikation.
+- `vdefmd6_shock_run_plan.md`: PR-81-Plan fuer die Schockgrenze, Aktivierung
+  der spaeten VN und die kontrollierten VU14-Perioden 50-100.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

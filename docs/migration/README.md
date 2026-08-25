@@ -101,5 +101,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vdefmd6_pre_shock_snapshot_contract.md`: PR-78-Vertrag fuer 150 VN-Regel- und 150 Schaden-Snapshots einer Vorschockperiode mit expliziter moderner Drawfolge
 - `vdefmd6_vu_snapshot_contract.md`: PR-79-Vertrag fuer 25 VU-Snapshots, BAV-Vorperiodeninputs und die belegte offene Informationskostenanwendung
 - `vdefmd6_pre_shock_run_contract.md`: PR-80-Vertrag fuer Informationskosten und den kontrollierten VU14-Vollzustand der Perioden 1-49
+- `vdefmd6_100_period_run_contract.md`: PR-81-Vertrag fuer Schockgrenze,
+  Aktivierung der spaeten VN und kontrollierten VU14-Vollzustand 1-100
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

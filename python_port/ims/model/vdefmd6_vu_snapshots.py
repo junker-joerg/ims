@@ -6,6 +6,7 @@ import random
 from ims.engine.rng import rand_normal_standard, rand_uniform_0_1
 from ims.model.entities import Insurer, Policyholder
 from ims.model.vdefmd6_population import (
+    VDEFMD6_MAX_PERIODS,
     Vdefmd6InsurerDefinition,
     Vdefmd6Population,
 )
@@ -31,6 +32,7 @@ from ims.model.vu_rules import (
 VDEFMD6_VU_DRAW_POLICY_ID = "vdefmd6-modern-vu-id-major-v1"
 VDEFMD6_INTEREST_RATE = 0.02
 VDEFMD6_INFORMATION_COST = 0.8
+VDEFMD6_SHOCK_PERIOD = 50
 
 _FOREIGN_INFO_KINDS = {
     7: VUForeignInfoRuleKind.DUMPING,
@@ -137,6 +139,42 @@ def build_vdefmd6_vu_snapshot_batch(
 
     if type(period) is not int or not 2 <= period <= 49:
         raise ValueError("Vdefmd6 VU snapshot period must be between 2 and 49")
+    return _build_vdefmd6_vu_snapshot_batch(
+        population,
+        period=period,
+        rng=rng,
+        change_shock=False,
+    )
+
+
+def build_vdefmd6_shock_vu_snapshot_batch(
+    population: Vdefmd6Population,
+    *,
+    period: int,
+    rng: random.Random,
+) -> Vdefmd6VUSnapshotBatch:
+    """Materialize one Vdefmd6 VU batch in the period-50 shock regime."""
+
+    if (
+        type(period) is not int
+        or not VDEFMD6_SHOCK_PERIOD <= period <= VDEFMD6_MAX_PERIODS
+    ):
+        raise ValueError("Vdefmd6 shock VU snapshot period must be between 50 and 100")
+    return _build_vdefmd6_vu_snapshot_batch(
+        population,
+        period=period,
+        rng=rng,
+        change_shock=True,
+    )
+
+
+def _build_vdefmd6_vu_snapshot_batch(
+    population: Vdefmd6Population,
+    *,
+    period: int,
+    rng: random.Random,
+    change_shock: bool,
+) -> Vdefmd6VUSnapshotBatch:
     if not isinstance(rng, random.Random):
         raise TypeError("Vdefmd6 VU snapshots require an explicit random.Random")
 
@@ -194,6 +232,7 @@ def build_vdefmd6_vu_snapshot_batch(
             insurer_by_id[definition.entity_id],
             active_policyholder_count=len(active_policyholder_ids),
             draws=draws,
+            change_shock=change_shock,
         )
         if isinstance(snapshot, VURandomUniformRuleSnapshot):
             random_uniform.append(snapshot)
@@ -324,6 +363,7 @@ def _build_snapshot(
     *,
     active_policyholder_count: int,
     draws: _DrawCounter,
+    change_shock: bool,
 ) -> object:
     rule_id = definition.action.rule_id
     values = definition.parameters
@@ -332,7 +372,7 @@ def _build_snapshot(
     common = {
         "insurer_id": definition.entity_id,
         "interest_rate": VDEFMD6_INTEREST_RATE,
-        "change_shock": False,
+        "change_shock": change_shock,
     }
     if rule_id == 1:
         return VURandomUniformRuleSnapshot(

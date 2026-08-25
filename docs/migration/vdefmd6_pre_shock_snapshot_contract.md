@@ -36,8 +36,10 @@ ist daher reproduzierbar, aber nicht historisch RNG-identisch.
 Geschlossen sind die typisierte Ableitung fuer 150 aktive Vorschock-VN, die
 Parameterabbildung, die moderne Reihenfolge und die Seed-Reproduzierbarkeit.
 PR 79 hat die VU-Snapshots ergaenzt. PR 80 hat Informationskosten und die
-kontrollierte Mehrperiodenanwendung fuer 2-49 geschlossen. Offen bleiben die
-historische RNG- und Same-Slot-Reihenfolge sowie der Schockpfad 50-100.
+kontrollierte Mehrperiodenanwendung fuer 2-49 geschlossen. PR 81 hat einen
+getrennten Shock-Snapshotpfad fuer 50-100 ergaenzt. Offen bleiben die
+historische RNG- und Same-Slot-Reihenfolge sowie die BAV-Versicherungsgrad-
+Ableitung.
 
 Damit sind `independent_periods_2_49_ready` und
 `full_state_projection_ready` im PR-80-Bericht wahr; `generation_ready` bleibt

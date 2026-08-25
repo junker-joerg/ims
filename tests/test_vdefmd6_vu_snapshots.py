@@ -5,6 +5,7 @@ import pytest
 from ims.model.vdefmd6_population import build_vdefmd6_population
 from ims.model.vdefmd6_vu_snapshots import (
     VDEFMD6_VU_DRAW_POLICY_ID,
+    build_vdefmd6_shock_vu_snapshot_batch,
     build_vdefmd6_vu_snapshot_batch,
 )
 from ims.model.vu_rules import VUForeignInfoRuleKind
@@ -147,4 +148,38 @@ def test_vdefmd6_vu_snapshot_batch_requires_current_active_insurer_state() -> No
             population,
             period=2,
             rng=random.Random(790001),
+        )
+
+
+def test_vdefmd6_shock_vu_snapshot_batch_selects_period_50_parameters() -> None:
+    population = build_vdefmd6_population()
+    for policyholder in population.policyholders:
+        policyholder.active = True
+
+    batch = build_vdefmd6_shock_vu_snapshot_batch(
+        population,
+        period=50,
+        rng=random.Random(810001),
+    )
+
+    assert batch.snapshot_count == 25
+    assert batch.bav_previous_period_inputs.active_policyholder_ids_t_minus_1 == tuple(
+        range(1, 201)
+    )
+    assert batch.random_uniform_snapshots[0].change_shock is True
+    assert batch.random_normal_snapshots[0].change_shock is True
+    assert batch.expected_claim_snapshots[0].change_shock is True
+    assert batch.foreign_info_snapshots[-1].change_shock is True
+    assert batch.market_share_markup_snapshots[0].active_policyholder_count == 200
+
+
+@pytest.mark.parametrize("period", [49, 101])
+def test_vdefmd6_shock_vu_snapshot_batch_rejects_out_of_scope_periods(
+    period: int,
+) -> None:
+    with pytest.raises(ValueError, match="between 50 and 100"):
+        build_vdefmd6_shock_vu_snapshot_batch(
+            build_vdefmd6_population(),
+            period=period,
+            rng=random.Random(810001),
         )

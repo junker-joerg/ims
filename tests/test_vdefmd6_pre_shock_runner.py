@@ -1,8 +1,11 @@
 import pytest
 
 from ims.engine.vdefmd6_pre_shock_runner import (
+    VDEFMD6_100_PERIOD_EXECUTION_ORDER,
+    VDEFMD6_100_PERIOD_STATE_POLICY_ID,
     VDEFMD6_PRE_SHOCK_EXECUTION_ORDER,
     VDEFMD6_PRE_SHOCK_STATE_POLICY_ID,
+    run_vdefmd6_100_periods,
     run_vdefmd6_pre_shock_periods,
 )
 
@@ -65,3 +68,39 @@ def test_vdefmd6_pre_shock_runner_is_seed_reproducible() -> None:
 def test_vdefmd6_pre_shock_runner_rejects_invalid_seed(seed: object) -> None:
     with pytest.raises(ValueError, match="non-negative integer"):
         run_vdefmd6_pre_shock_periods(base_seed=seed)  # type: ignore[arg-type]
+
+
+def test_vdefmd6_100_period_runner_closes_shock_boundary() -> None:
+    result = run_vdefmd6_100_periods(base_seed=20260001)
+
+    assert len(result.vu14_export_table.rows) == 100
+    assert [item.period for item in result.period_results] == list(range(2, 101))
+    period_49 = result.period_results[47]
+    period_50 = result.period_results[48]
+    assert period_49.change_shock is False
+    assert period_49.active_policyholder_count == 150
+    assert period_50.change_shock is True
+    assert period_50.active_policyholder_count == 200
+    assert period_50.activated_policyholder_ids == tuple(range(151, 201))
+    assert result.period_results[49].activated_policyholder_ids == ()
+    assert all(item.change_shock for item in result.period_results[48:])
+    assert all(item.active_policyholder_count == 200 for item in result.period_results[48:])
+
+
+def test_vdefmd6_100_period_runner_counts_controlled_applications() -> None:
+    result = run_vdefmd6_100_periods(base_seed=20260001)
+
+    assert result.execution_order == VDEFMD6_100_PERIOD_EXECUTION_ORDER
+    assert result.state_policy_id == VDEFMD6_100_PERIOD_STATE_POLICY_ID
+    assert result.total_vu_rule_applications == 2475
+    assert result.total_vn_insurance_rule_applications == 17400
+    assert result.total_vn_damage_settlement_applications == 17400
+    assert result.total_uniform_value_count == 116142
+    assert result.total_normal_value_count == 70392
+    assert result.total_information_cost == 161712.0
+    assert result.total_information_cost_policyholders == 5940
+    assert result.legacy_rows_used_as_generation_input is False
+    assert result.writes_performed is False
+    assert result.scheduler_started is False
+    assert result.simulation_performed is False
+    assert result.historical_full_equality_claimed is False

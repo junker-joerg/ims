@@ -122,9 +122,9 @@ Der erwartete PR-71-Befund lautet:
 ## Restplanung
 
 Fuer eine interne, reviewbare Erzeugung reicht die aktualisierte Mindestserie
-von PR 72 bis PR 86. PR 80 hat nach den Einzelperioden-Snapshots den
-kontrollierten VU14-Vorschockzustand geschlossen; danach bleiben mindestens
-sechs PRs offen:
+von PR 72 bis PR 86. PR 81 hat nach dem VU14-Vorschockzustand die Schockgrenze
+und den kontrollierten VU14-Zustand bis Periode 100 geschlossen; danach bleiben
+mindestens fuenf PRs offen:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
@@ -141,7 +141,8 @@ sechs PRs offen:
    vorbereiten (erledigt, `pr79-v1`);
 9. PR 80: VU14-Vollzustand fuer Perioden 2-49 schliessen (erledigt,
    `pr80-v1`, 236/686 Feldtreffer);
-10. PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen;
+10. PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen (erledigt,
+    `pr81-v1`, 488/1.400 Feldtreffer);
 11. PR 82: dieselbe Versicherer-Population auf `imsvusk1.dat` und
    `imsvuvk1-3.dat` fuer das geforderte Fenster verbreitern;
 12. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;

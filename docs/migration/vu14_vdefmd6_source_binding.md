@@ -88,14 +88,14 @@ Die Regelausgaben treffen nur bis Periode 16; der fehlende VN-/Schaden-/
 Settlement-Pfad wird in Periode 17 entscheidungsrelevant. PR 77 hat den Pfad
 kartiert und PR 78 die VN-Snapshots einer Einzelperiode materialisiert. PR 79
 hat alle VU-Snapshots und BAV-Vorperiodeninputs geschlossen. PR 80 hat den
-modernen Vorschockpfad 1-49 mit 236/686 Feldtreffern klassifiziert. Ab PR 81
-verbleiben mindestens sechs reviewbare Schritte:
+modernen Vorschockpfad 1-49 klassifiziert. PR 81 hat Schockgrenze und
+VU14/1-100 mit 488/1.400 Feldtreffern geschlossen. Ab PR 82 verbleiben
+mindestens fuenf reviewbare Schritte:
 
-1. PR 81: Schockgrenze und Perioden 50-100 schliessen;
-2. PR 82: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
-3. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-4. PR 85: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
-5. PR 86: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
+1. PR 82: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
+2. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+3. PR 85: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
+4. PR 86: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
 
 Funde koennen diese Schritte weiter teilen. Eine fehlende historische
 Seed-Aufzeichnung wird nicht durch eine erfundene Gleichheitsannahme ersetzt.

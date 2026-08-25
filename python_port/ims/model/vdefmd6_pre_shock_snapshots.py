@@ -6,7 +6,7 @@ import random
 
 from ims.engine.rng import rand_normal_standard, rand_uniform_0_1
 from ims.model.entities import Policyholder
-from ims.model.vdefmd6_population import Vdefmd6Population
+from ims.model.vdefmd6_population import VDEFMD6_MAX_PERIODS, Vdefmd6Population
 from ims.model.vn_damage_rules import VNDamageRuleDraws, VNDamageRuleParameters
 from ims.model.vn_insurance_rules import (
     VNBestInfoInsuranceRuleParameters,
@@ -30,6 +30,7 @@ from ims.model.vn_rules import VNDamageSettlementSnapshot, VNInsuranceDecision
 
 VDEFMD6_PRE_SHOCK_DRAW_POLICY_ID = "vdefmd6-modern-period-major-v1"
 VDEFMD6_INFORMATION_COST = 0.8
+VDEFMD6_SHOCK_PERIOD = 50
 
 _RULE_KINDS = {
     1: VNInsuranceRuleKind.COMPULSORY,
@@ -54,6 +55,7 @@ class Vdefmd6PreShockSnapshotBatch:
     period: int
     draw_policy_id: str
     active_insurer_ids: tuple[int, ...]
+    change_shock: bool
     insurance_snapshots: tuple[VNInsuranceRuleSnapshot, ...]
     damage_snapshots: tuple[VNDamageSettlementSnapshot, ...]
     draw_summary: Vdefmd6PreShockDrawSummary
@@ -92,8 +94,58 @@ def build_vdefmd6_pre_shock_snapshot_batch(
 
     if type(period) is not int or not 2 <= period <= 49:
         raise ValueError("Vdefmd6 pre-shock snapshot period must be between 2 and 49")
+    return _build_vdefmd6_vn_snapshot_batch(
+        population,
+        period=period,
+        rng=rng,
+        search_history_by_policyholder=search_history_by_policyholder,
+        market_damage_indicator=market_damage_indicator,
+        change_shock=False,
+    )
+
+
+def build_vdefmd6_shock_snapshot_batch(
+    population: Vdefmd6Population,
+    *,
+    period: int,
+    rng: random.Random,
+    search_history_by_policyholder: Mapping[
+        int, list[VNSearchInsuranceHistoryEntry]
+    ]
+    | None = None,
+    market_damage_indicator: float = 0.0,
+) -> Vdefmd6PreShockSnapshotBatch:
+    """Materialize one modern Vdefmd6 VN batch in the shock regime."""
+
+    if (
+        type(period) is not int
+        or not VDEFMD6_SHOCK_PERIOD <= period <= VDEFMD6_MAX_PERIODS
+    ):
+        raise ValueError("Vdefmd6 shock snapshot period must be between 50 and 100")
+    return _build_vdefmd6_vn_snapshot_batch(
+        population,
+        period=period,
+        rng=rng,
+        search_history_by_policyholder=search_history_by_policyholder,
+        market_damage_indicator=market_damage_indicator,
+        change_shock=True,
+    )
+
+
+def _build_vdefmd6_vn_snapshot_batch(
+    population: Vdefmd6Population,
+    *,
+    period: int,
+    rng: random.Random,
+    search_history_by_policyholder: Mapping[
+        int, list[VNSearchInsuranceHistoryEntry]
+    ]
+    | None,
+    market_damage_indicator: float,
+    change_shock: bool,
+) -> Vdefmd6PreShockSnapshotBatch:
     if not isinstance(rng, random.Random):
-        raise TypeError("Vdefmd6 pre-shock snapshots require an explicit random.Random")
+        raise TypeError("Vdefmd6 VN snapshots require an explicit random.Random")
     if market_damage_indicator < 0.0:
         raise ValueError("market_damage_indicator must be non-negative")
 
@@ -164,6 +216,7 @@ def build_vdefmd6_pre_shock_snapshot_batch(
                 sample_inputs=sample_inputs,
                 history=list(history_by_id.get(definition.entity_id, [])),
                 market_damage_indicator=market_damage_indicator,
+                change_shock=change_shock,
             )
         )
         damage_snapshots.append(
@@ -182,7 +235,7 @@ def build_vdefmd6_pre_shock_snapshot_batch(
                     if policyholder.end_wealth_sector_current
                     else None
                 ),
-                change_shock=False,
+                change_shock=change_shock,
             )
         )
 
@@ -191,6 +244,7 @@ def build_vdefmd6_pre_shock_snapshot_batch(
         period=period,
         draw_policy_id=VDEFMD6_PRE_SHOCK_DRAW_POLICY_ID,
         active_insurer_ids=active_insurer_ids,
+        change_shock=change_shock,
         insurance_snapshots=tuple(insurance_snapshots),
         damage_snapshots=tuple(damage_snapshots),
         draw_summary=Vdefmd6PreShockDrawSummary(
@@ -254,6 +308,7 @@ def _insurance_snapshot(
     sample_inputs: list[VNSampleSearchInsurerInput],
     history: list[VNSearchInsuranceHistoryEntry],
     market_damage_indicator: float,
+    change_shock: bool,
 ) -> VNInsuranceRuleSnapshot:
     parameters = _insurance_parameters(values)
     common = {
@@ -261,7 +316,7 @@ def _insurance_snapshot(
         "rule_kind": _RULE_KINDS[rule_id],
         "active_insurer_ids": list(active_insurer_ids),
         "initial_decisions": initial_decisions,
-        "change_shock": False,
+        "change_shock": change_shock,
     }
     if rule_id == 1:
         return VNInsuranceRuleSnapshot(
@@ -309,7 +364,11 @@ def _insurance_snapshot(
             history=history,
         )
     if rule_id == 5:
-        sample_sizes = parameters["sample_sizes_normal"]
+        sample_sizes = (
+            parameters["sample_sizes_shock"]
+            if change_shock
+            else parameters["sample_sizes_normal"]
+        )
         return VNInsuranceRuleSnapshot(
             **common,
             parameters=VNSampleSearchInsuranceRuleParameters(

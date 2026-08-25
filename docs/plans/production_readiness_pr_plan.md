@@ -141,7 +141,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   ausfuehren und VU14-Abweichungen klassifizieren (erledigt: `pr80-v1`,
   1.200/7.200/7.200 Anwendungen, 76.032 Suchkosten und 236/686 Feldtreffer;
   keine historische Gleichheitsaussage).
-- PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen.
+- PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen (erledigt:
+  `pr81-v1`, 50 spaete VN in Periode 50 aktiviert, 17.400 VN-Anwendungen und
+  488/1.400 VU14-Feldtreffer; keine historische Gleichheitsaussage).
 - PR 82: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
   verbreitern.
 - PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen.
@@ -151,16 +153,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 80 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 81 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`6` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`5` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 81 schliesst als naechstes die Schockgrenze bei Periode 50, aktiviert die 50
-spaeten VN und erzeugt VU14 fuer Perioden 50-100. Die offene historische
-Reihenfolge und RNG-Grenze bleiben Blocker; Legacy-Ausgaben werden nicht
-zurueckgefuehrt.
+PR 82 verbreitert als naechstes denselben kontrollierten Versichererzustand
+auf `imsvusk1.dat` und `imsvuvk1-3.dat`. Die offene historische Reihenfolge,
+RNG-Grenze und BAV-Versicherungsgrad-Ableitung bleiben Blocker; Legacy-Ausgaben
+werden nicht zurueckgefuehrt.

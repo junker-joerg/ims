@@ -54,6 +54,10 @@ geschlossen. Die Kosten werden genau einmal vom kumulierten VN-Vermoegen
 abgezogen. Der kontrollierte Vorschockpfad erzeugt VU14 fuer Perioden 1-49 und
 klassifiziert 236/686 Feldtreffer; die historische Reihenfolge bleibt offen.
 
+PR 81 hat getrennte VU-Shock-Snapshots fuer Perioden 50-100 ergaenzt und den
+kontrollierten VU14-Zustand auf 100 Perioden erweitert. Die historische
+Reihenfolge und RNG-Gleichheit bleiben weiterhin offen.
+
 ## Grenzen
 
 Der Bericht materialisiert 8 uniforme und 8 normale moderne RNG-Werte. Er

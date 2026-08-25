@@ -648,15 +648,17 @@ Aktualisierte grobe Restplanung:
 - PR 80 hat Suchkosten an das Settlement gebunden und den kontrollierten
   Vorschockpfad 2-49 als `pr80-v1` ausgefuehrt; VU14 trifft 236/686 Felder,
   nur Periode 1 vollstaendig;
-- vorgeschlagener naechster Schritt ist PR 81: Schockgrenze und VU14-Perioden
-  50-100 mit den 50 spaet aktivierten VN schliessen;
+- PR 81 hat Schockgrenze und VU14-Perioden 50-100 als `pr81-v1` geschlossen;
+  50 VN werden in Periode 50 aktiviert und VU14 trifft 488/1.400 Felder;
+- vorgeschlagener naechster Schritt ist PR 82: denselben Versichererzustand
+  auf SK1/all und die drei VU-Klassenaggregate verbreitern;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem PR-80-Vorschocklauf bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `6`
+Nach dem PR-81-Schocklauf bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `5`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

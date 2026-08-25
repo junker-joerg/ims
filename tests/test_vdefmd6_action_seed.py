@@ -168,5 +168,5 @@ def test_vdefmd6_action_seed_cli_and_plan_keep_execution_closed(capsys) -> None:
     assert "keine historische Vollgleichheitsbehauptung" in plan
     assert "PR 76" in plan
     assert "20.250 wirksame Aufrufe" in migration
-    assert "mindestens sechs Schritte" in migration
+    assert "mindestens fuenf Schritte" in migration
     assert "bis PR 86" in migration

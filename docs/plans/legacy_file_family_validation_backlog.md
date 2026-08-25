@@ -487,8 +487,9 @@ Vorschock-VN und der explizit offenen historischen Draw-Reihenfolge erledigt.
 PR 78 hat darauf 150 VN-Regel- und 150 Schaden-Snapshots fuer eine einzelne
 Vorschockperiode materialisiert. PR 79 hat die 25 VU-Snapshots und
 BAV-Vorperiodeninputs geschlossen. PR 80 hat die Informationskosten angewendet
-und VU14/1-49 mit 236/686 Feldtreffern klassifiziert. Ab PR 81 bleiben
-mindestens sechs reviewbare PRs bis PR 86.
+und VU14/1-49 mit 236/686 Feldtreffern klassifiziert. PR 81 hat Schockgrenze,
+50 spaete VN und VU14/1-100 mit 488/1.400 Feldtreffern geschlossen. Ab PR 82
+bleiben mindestens fuenf reviewbare PRs bis PR 86.
 
 ## Validierungsregel
 

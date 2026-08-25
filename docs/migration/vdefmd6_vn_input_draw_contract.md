@@ -98,3 +98,7 @@ PR 80 hat auf dieser Eingangsoberflaeche den modernen Vorschockzustand 1-49
 kontrolliert erzeugt. Die historische Draw- und Same-Slot-Reihenfolge bleibt
 trotzdem offen; der PR-77-Herkunftsvertrag wird dadurch nicht rueckwirkend zu
 einem historischen Gleichheitsnachweis.
+
+PR 81 hat die vorhandenen Schockparameter, Schock-Stichprobengroessen und 50
+spaet aktivierten VN fuer Perioden 50-100 kontrolliert angewendet. Auch daraus
+folgt keine historische RNG- oder Vollgleichheitsaussage.

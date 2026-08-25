@@ -82,6 +82,7 @@ hat die VU14-Vorschock-Regelprojektion klassifiziert. PR 77 hat danach den
 offenen VN-/Schaden-/Settlement-Pfad read-only kartiert. PR 78 hat explizite
 VN-Snapshots und eine moderne Drawfolge fuer eine Vorschockperiode abgeleitet.
 PR 79 hat alle VU- und BAV-Eingaben vorbereitet. PR 80 hat Informationskosten
-und kontrollierte Vorschock-Mehrperiodenanwendung angebunden. PR 81 schliesst
-als naechstes die Schockgrenze, weiterhin ohne vorgezogene
+und kontrollierte Vorschock-Mehrperiodenanwendung angebunden. PR 81 hat die
+Schockgrenze und VU14 bis Periode 100 geschlossen. PR 82 verbreitert als
+naechstes den Versichererzustand, weiterhin ohne vorgezogene
 Vollgleichheitsbehauptung.

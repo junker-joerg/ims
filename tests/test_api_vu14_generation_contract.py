@@ -240,7 +240,8 @@ def test_vu14_generation_contract_documents_origin_and_remaining_plan() -> None:
     assert "contract_ready = true" in migration
     assert "generation_ready = false" in migration
     assert "acceptable_as_generation_input = false" in migration
-    assert "Ab PR 81 verbleiben mindestens sechs Schritte" in migration
+    assert "Ab PR 82 verbleiben mindestens" in migration
+    assert "fuenf Schritte" in migration
     assert "bis PR 86" in migration
     assert "ims-modern-explicit-run-v1" in migration
     assert "Eine fachliche Freigabe" in migration

@@ -1,0 +1,86 @@
+{
+  "schema_version": "pr81-v1",
+  "model_id": "Vdefmd6",
+  "scope": "controlled_periods_1_100_with_shock",
+  "expected": {
+    "base_seed": 20260001,
+    "generated_period_count": 100,
+    "followup_period_count": 99,
+    "total_information_cost": 161712.0,
+    "total_information_cost_policyholders": 5940,
+    "total_vu_rule_applications": 2475,
+    "total_vn_insurance_rule_applications": 17400,
+    "total_vn_damage_settlement_applications": 17400,
+    "total_uniform_value_count": 116142,
+    "total_normal_value_count": 70392,
+    "compared_row_count": 100,
+    "compared_field_count": 1400,
+    "matched_field_count": 488,
+    "full_row_match_periods": [1],
+    "rule_output_match_periods": [1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 23, 27, 34, 35, 37, 40, 41, 42, 43, 44, 45, 47, 49, 59, 72, 88, 89, 91, 96, 97],
+    "first_full_state_divergence_period": 2,
+    "first_rule_output_divergence_period": 10,
+    "field_match_counts": {
+      "header": 100,
+      "global_period": 100,
+      "Pr1": 55,
+      "Wa1": 79,
+      "Rs1": 1,
+      "Vn1": 7,
+      "Sa1": 3,
+      "Sh1": 1,
+      "Pr2": 45,
+      "Wa2": 81,
+      "Rs2": 1,
+      "Vn2": 11,
+      "Sa2": 3,
+      "Sh2": 1
+    }
+  },
+  "shock_boundary": {
+    "shock_period": 50,
+    "shock_period_count": 51,
+    "activated_policyholder_count": 50,
+    "activated_policyholder_ids": [151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200],
+    "active_policyholder_count": 200
+  },
+  "execution_order": [
+    "activate_subjects",
+    "bav_foreign_information",
+    "insurer_rules_by_id",
+    "policyholder_rules_by_id",
+    "aggregate_export"
+  ],
+  "state_policy_id": "vdefmd6-modern-100-period-state-v1",
+  "blocker_codes": [
+    "historical_same_slot_execution_order_open",
+    "historical_rng_draw_order_open",
+    "market_insurance_degree_derivation_open"
+  ],
+  "source_anchors": [
+    {"path": "IMS.E", "needle": "Bavauin( 50,0, 0.8, 0.02,1);", "meaning": "period-50 shock boundary"},
+    {"path": "IMS.E", "needle": "if ( j < p )", "meaning": "Bavauin period comparison"},
+    {"path": "IMS.E", "needle": "Vnauini( j,3,50,100", "meaning": "late preference activation"},
+    {"path": "IMS.E", "needle": "Vnauini( j,2,50,100", "meaning": "late random activation"},
+    {"path": "IMS.E", "needle": "gperiod>=((VN[gOwnnr].DatenVN->Ap)", "meaning": "executable VN activation comparison"},
+    {"path": "python_port/ims/model/vdefmd6_population.py", "needle": "_LATE_DAMAGE_PARAMETERS + (0.9", "meaning": "late population groups"},
+    {"path": "python_port/ims/model/vdefmd6_vu_snapshots.py", "needle": "def build_vdefmd6_shock_vu_snapshot_batch", "meaning": "shock VU materializer"},
+    {"path": "python_port/ims/model/vdefmd6_pre_shock_snapshots.py", "needle": "def build_vdefmd6_shock_snapshot_batch", "meaning": "shock VN materializer"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "def run_vdefmd6_100_periods", "meaning": "controlled full path"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "def _activate_policyholders", "meaning": "explicit activation boundary"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "simulation_performed: bool = False", "meaning": "simulation boundary"},
+    {"path": "tests/references/legacy_agrsich/VU14L1.DAT", "needle": "0100", "meaning": "comparison-only 100-period reference"}
+  ],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "comparison_started_after_generation": true,
+    "controlled_execution_performed": true,
+    "writes_performed": false,
+    "scheduler_started": false,
+    "simulation_performed": false,
+    "historical_same_slot_order_claimed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_full_equality_claimed": false,
+    "production_release_approved": false
+  }
+}

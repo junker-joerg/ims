@@ -72,5 +72,6 @@ den offenen VN-/Schaden-/Settlement-Pfad ab Periode 2 belegt. PR 77 hat diesen
 Pfad fuer sechs Regeln und 150 aktive Vorschock-VN kartiert. PR 78 hat die
 VN-Snapshots einer einzelnen Vorschockperiode materialisiert. PR 79 hat die
 25 VU-Snapshots und BAV-Vorperiodeninputs geschlossen. PR 80 hat den modernen
-Vorschockpfad mit Basis-Seed `20260001` kontrolliert ausgefuehrt. Ab PR 81
-bleiben mindestens sechs Schritte bis PR 86.
+Vorschockpfad mit Basis-Seed `20260001` kontrolliert ausgefuehrt. PR 81 hat
+diesen Seedpfad ueber Schock und Aktivierung bis Periode 100 fortgesetzt. Ab
+PR 82 bleiben mindestens fuenf Schritte bis PR 86.

@@ -18,9 +18,11 @@ from ims.model.vdefmd6_population import (
 from ims.model.vdefmd6_pre_shock_snapshots import (
     Vdefmd6PreShockSnapshotBatch,
     build_vdefmd6_pre_shock_snapshot_batch,
+    build_vdefmd6_shock_snapshot_batch,
 )
 from ims.model.vdefmd6_vu_snapshots import (
     Vdefmd6VUSnapshotBatch,
+    build_vdefmd6_shock_vu_snapshot_batch,
     build_vdefmd6_vu_snapshot_batch,
 )
 from ims.model.vn_insurance_rules import VNSearchInsuranceHistoryEntry
@@ -28,6 +30,8 @@ from ims.model.vn_insurance_rules import VNSearchInsuranceHistoryEntry
 
 VDEFMD6_PRE_SHOCK_PERIOD_START = 2
 VDEFMD6_PRE_SHOCK_PERIOD_END = 49
+VDEFMD6_SHOCK_PERIOD_START = 50
+VDEFMD6_SHOCK_PERIOD_END = VDEFMD6_MAX_PERIODS
 VDEFMD6_PRE_SHOCK_EXECUTION_ORDER = (
     "bav_foreign_information",
     "insurer_rules_by_id",
@@ -35,11 +39,19 @@ VDEFMD6_PRE_SHOCK_EXECUTION_ORDER = (
     "aggregate_export",
 )
 VDEFMD6_PRE_SHOCK_STATE_POLICY_ID = "vdefmd6-modern-pre-shock-state-v1"
+VDEFMD6_100_PERIOD_EXECUTION_ORDER = (
+    "activate_subjects",
+    *VDEFMD6_PRE_SHOCK_EXECUTION_ORDER,
+)
+VDEFMD6_100_PERIOD_STATE_POLICY_ID = "vdefmd6-modern-100-period-state-v1"
 
 
 @dataclass(frozen=True, slots=True)
 class Vdefmd6PreShockPeriodResult:
     period: int
+    change_shock: bool
+    active_policyholder_count: int
+    activated_policyholder_ids: tuple[int, ...]
     vu_snapshot_count: int
     vn_insurance_snapshot_count: int
     vn_damage_snapshot_count: int
@@ -80,8 +92,39 @@ class Vdefmd6PreShockRunResult:
 def run_vdefmd6_pre_shock_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult:
     """Run the explicit modern Vdefmd6 state path for periods 2 through 49."""
 
+    _validate_base_seed(base_seed)
+    return _run_vdefmd6_periods(
+        base_seed=base_seed,
+        period_end=VDEFMD6_PRE_SHOCK_PERIOD_END,
+        execution_order=VDEFMD6_PRE_SHOCK_EXECUTION_ORDER,
+        state_policy_id=VDEFMD6_PRE_SHOCK_STATE_POLICY_ID,
+    )
+
+
+def run_vdefmd6_100_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult:
+    """Run the controlled modern Vdefmd6 state path through period 100."""
+
+    _validate_base_seed(base_seed)
+    return _run_vdefmd6_periods(
+        base_seed=base_seed,
+        period_end=VDEFMD6_SHOCK_PERIOD_END,
+        execution_order=VDEFMD6_100_PERIOD_EXECUTION_ORDER,
+        state_policy_id=VDEFMD6_100_PERIOD_STATE_POLICY_ID,
+    )
+
+
+def _validate_base_seed(base_seed: int) -> None:
     if type(base_seed) is not int or base_seed < 0:
-        raise ValueError("Vdefmd6 pre-shock base_seed must be a non-negative integer")
+        raise ValueError("Vdefmd6 base_seed must be a non-negative integer")
+
+
+def _run_vdefmd6_periods(
+    *,
+    base_seed: int,
+    period_end: int,
+    execution_order: tuple[str, ...],
+    state_policy_id: str,
+) -> Vdefmd6PreShockRunResult:
 
     population = build_vdefmd6_population()
     bav = BAV(entity_id=1, name="BAV")
@@ -90,11 +133,17 @@ def run_vdefmd6_pre_shock_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult
     vu14_tables = [_vu14_export_table(population, bav, period=1)]
     period_results: list[Vdefmd6PreShockPeriodResult] = []
 
-    for period in range(VDEFMD6_PRE_SHOCK_PERIOD_START, VDEFMD6_PRE_SHOCK_PERIOD_END + 1):
-        vu_batch = build_vdefmd6_vu_snapshot_batch(
+    for period in range(VDEFMD6_PRE_SHOCK_PERIOD_START, period_end + 1):
+        activated_policyholder_ids = _activate_policyholders(
+            population,
+            period=period,
+        )
+        change_shock = period >= VDEFMD6_SHOCK_PERIOD_START
+        vu_batch = _build_vu_batch(
             population,
             period=period,
             rng=rng,
+            change_shock=change_shock,
         )
         _shift_current_state_to_previous(population)
         context = SimulationContext(
@@ -107,11 +156,12 @@ def run_vdefmd6_pre_shock_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult
         )
 
         _reset_insurer_period_accumulators(population.insurers)
-        vn_batch = build_vdefmd6_pre_shock_snapshot_batch(
+        vn_batch = _build_vn_batch(
             population,
             period=period,
             rng=rng,
             search_history_by_policyholder=search_history,
+            change_shock=change_shock,
         )
         vn_result = run_vn_settlement_period(
             context,
@@ -130,6 +180,11 @@ def run_vdefmd6_pre_shock_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult
         period_results.append(
             Vdefmd6PreShockPeriodResult(
                 period=period,
+                change_shock=change_shock,
+                active_policyholder_count=sum(
+                    policyholder.active for policyholder in population.policyholders
+                ),
+                activated_policyholder_ids=activated_policyholder_ids,
                 vu_snapshot_count=vu_batch.snapshot_count,
                 vn_insurance_snapshot_count=len(vn_batch.insurance_snapshots),
                 vn_damage_snapshot_count=len(vn_batch.damage_snapshots),
@@ -159,8 +214,8 @@ def run_vdefmd6_pre_shock_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult
     )
     return Vdefmd6PreShockRunResult(
         base_seed=base_seed,
-        execution_order=VDEFMD6_PRE_SHOCK_EXECUTION_ORDER,
-        state_policy_id=VDEFMD6_PRE_SHOCK_STATE_POLICY_ID,
+        execution_order=execution_order,
+        state_policy_id=state_policy_id,
         period_results=tuple(period_results),
         vu14_export_table=vu14_export_table,
         total_information_cost=sum(item.information_cost for item in period_results),
@@ -185,6 +240,62 @@ def run_vdefmd6_pre_shock_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult
             for item in period_results
         ),
     )
+
+
+def _build_vu_batch(
+    population: Vdefmd6Population,
+    *,
+    period: int,
+    rng: random.Random,
+    change_shock: bool,
+) -> Vdefmd6VUSnapshotBatch:
+    builder = (
+        build_vdefmd6_shock_vu_snapshot_batch
+        if change_shock
+        else build_vdefmd6_vu_snapshot_batch
+    )
+    return builder(population, period=period, rng=rng)
+
+
+def _build_vn_batch(
+    population: Vdefmd6Population,
+    *,
+    period: int,
+    rng: random.Random,
+    search_history_by_policyholder: dict[
+        int, list[VNSearchInsuranceHistoryEntry]
+    ],
+    change_shock: bool,
+) -> Vdefmd6PreShockSnapshotBatch:
+    builder = (
+        build_vdefmd6_shock_snapshot_batch
+        if change_shock
+        else build_vdefmd6_pre_shock_snapshot_batch
+    )
+    return builder(
+        population,
+        period=period,
+        rng=rng,
+        search_history_by_policyholder=search_history_by_policyholder,
+    )
+
+
+def _activate_policyholders(
+    population: Vdefmd6Population,
+    *,
+    period: int,
+) -> tuple[int, ...]:
+    policyholders_by_id = {item.entity_id: item for item in population.policyholders}
+    activated: list[int] = []
+    for definition in population.policyholder_definitions:
+        policyholder = policyholders_by_id[definition.entity_id]
+        if (
+            definition.activation.activation_period <= period
+            and not policyholder.active
+        ):
+            policyholder.active = True
+            activated.append(policyholder.entity_id)
+    return tuple(activated)
 
 
 def _loaded_vu_period(

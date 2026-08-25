@@ -107,7 +107,7 @@ def build_vdefmd6_pre_shock_run_report(
     issues: list[Vdefmd6PreShockRunIssue] = []
     contract = _load_contract(contract_file, issues)
     result = _run(issues)
-    summary = _build_summary(result, reference_file, issues)
+    summary = build_vdefmd6_run_summary(result, reference_file, issues)
     anchor_count = _validate_contract(
         root,
         contract_file,
@@ -211,7 +211,7 @@ def _empty_summary() -> dict[str, object]:
     }
 
 
-def _build_summary(
+def build_vdefmd6_run_summary(
     result: Vdefmd6PreShockRunResult | None,
     reference_path: Path,
     issues: list[Vdefmd6PreShockRunIssue],
@@ -222,7 +222,6 @@ def _build_summary(
         legacy_rows = {
             row.global_period: row
             for row in parse_legacy_insurer_dat(reference_path).rows
-            if 1 <= row.global_period <= 49
         }
         comparisons = [
             (
@@ -333,10 +332,10 @@ def _validate_contract(
     for key, value in expected.items():
         if contract.get(key) != value:
             _issue(issues, f"{key}_mismatch", f"contract field differs: {key}", path)
-    return _validate_source_anchors(root, contract, issues)
+    return validate_vdefmd6_run_source_anchors(root, contract, issues)
 
 
-def _validate_source_anchors(
+def validate_vdefmd6_run_source_anchors(
     root: Path,
     contract: dict[str, object],
     issues: list[Vdefmd6PreShockRunIssue],
