@@ -117,6 +117,12 @@ Packaging-Fehler: Die Projekt-README liegt nun innerhalb von `python_port/`.
 Ein Regressionstest friert diese Build-Grenze sowie die Node-24-faehigen
 Action-Versionen ein.
 
+Der danach erreichbare FastAPI-Lauf hat zusaetzlich die bereits fuer andere
+gemischte Response-Routen verwendete Grenze an der Root-Route erzwungen:
+`response_model=None` verhindert dort ausschliesslich die unpassende
+Pydantic-Modellableitung fuer `FileResponse | JSONResponse`. Auslieferung und
+Fallback-Antwort bleiben unveraendert.
+
 ## Grenzen
 
 - kein Browser- oder Serverstart;

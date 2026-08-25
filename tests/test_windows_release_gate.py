@@ -4,6 +4,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PYTHON_PROJECT = REPO_ROOT / "python_port" / "pyproject.toml"
 PYTHON_README = REPO_ROOT / "python_port" / "README.md"
+API_APP = REPO_ROOT / "python_port" / "ims" / "api" / "app.py"
 GATE_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "test-release-gate.ps1"
 WORKFLOW = REPO_ROOT / ".github" / "workflows" / "windows-release-gate.yml"
 PLAN = REPO_ROOT / "docs" / "plans" / "windows_release_gate_plan.md"
@@ -32,6 +33,12 @@ def test_python_package_metadata_stays_inside_build_root() -> None:
     assert PYTHON_README.is_file()
     assert 'readme = "README.md"' in project
     assert 'readme = "../' not in project
+
+
+def test_fastapi_root_route_disables_response_model_inference() -> None:
+    source = API_APP.read_text(encoding="utf-8")
+
+    assert '@app.get("/", response_model=None)' in source
 
 
 def test_windows_release_gate_runs_existing_checks_in_order() -> None:

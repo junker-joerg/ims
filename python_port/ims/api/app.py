@@ -673,7 +673,7 @@ def create_app(
         if (dist_dir / "assets").is_dir():
             app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
 
-        @app.get("/")
+        @app.get("/", response_model=None)
         def index() -> FileResponse | JSONResponse:
             return index_response()
 
