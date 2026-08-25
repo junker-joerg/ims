@@ -485,9 +485,9 @@ VU14-Vorschock-Regelprojektion klassifiziert und den fehlenden VN-/Schaden-/
 Settlement-Pfad belegt. PR 77 ist nun mit sechs Regelabbildungen, 150 aktiven
 Vorschock-VN und der explizit offenen historischen Draw-Reihenfolge erledigt.
 PR 78 hat darauf 150 VN-Regel- und 150 Schaden-Snapshots fuer eine einzelne
-Vorschockperiode materialisiert. Wegen der nun belegten Abhaengigkeit von allen
-25 VU-Regeln und der offenen Informationskostenanwendung bleiben ab PR 79
-mindestens acht reviewbare PRs bis PR 86.
+Vorschockperiode materialisiert. PR 79 hat die 25 VU-Snapshots und
+BAV-Vorperiodeninputs geschlossen sowie die offene Informationskostenanwendung
+quellengebunden. Ab PR 80 bleiben mindestens sieben reviewbare PRs bis PR 86.
 
 ## Validierungsregel
 

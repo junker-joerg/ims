@@ -57,6 +57,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   und explizite moderne Seed-Ableitung ohne Schedulerstart oder RNG-Ziehung.
 - `vdefmd6_pre_shock_snapshot_plan.md`: PR-78-Plan fuer 150 explizite VN-
   Vorschock-Snapshots und die moderne Drawfolge ohne Runnerstart.
+- `vdefmd6_vu_snapshot_plan.md`: PR-79-Plan fuer alle 25 VU-Snapshots,
+  BAV-Vorperiodeninputs und die explizite Informationskostengrenze.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

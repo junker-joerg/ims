@@ -135,7 +135,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   einzelne Periode materialisieren (erledigt: `pr78-v1`, 150 Regel- und 150
   Schaden-Snapshots; kein Runner oder Simulationsstart).
 - PR 79: Snapshotableitung aller 25 VU-Regeln, BAV-Vorperiodeninputs und
-  Informationskostengrenze schliessen.
+  Informationskostengrenze schliessen (erledigt: `pr79-v1`, 25 VU-Snapshots,
+  25/150 Vorperiodeninputs und belegte, noch nicht angewendete Suchkosten).
 - PR 80: kontrollierten VU-/VN-/Schaden-/Settlement-Pfad fuer Perioden 2-49
   ausfuehren und VU14-Abweichungen klassifizieren.
 - PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen.
@@ -148,18 +149,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 78 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 79 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`8` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`7` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 79 leitet als naechstes die periodenspezifischen Snapshots aller 25 VU-Regeln
-sowie die benoetigten BAV-Vorperiodeninputs ab. Zugleich wird geklaert, wie die
-in `Vdefmd6` belegten Informationskosten an den vorhandenen VN-Zustand
-angeschlossen werden. Erst PR 80 wendet den gemeinsamen Vorschockpfad fuer
-Perioden 2-49 kontrolliert an. Die offene historische Reihenfolge bleibt ein
-Blocker; Legacy-Ausgaben werden nicht zurueckgefuehrt.
+PR 80 bindet als naechstes die nun quellenbelegten Informationskosten explizit
+an den VN-Settlement-Zustand und wendet danach den gemeinsamen Vorschockpfad
+fuer Perioden 2-49 kontrolliert an. Die offene historische Reihenfolge bleibt
+ein Blocker; Legacy-Ausgaben werden nicht zurueckgefuehrt.

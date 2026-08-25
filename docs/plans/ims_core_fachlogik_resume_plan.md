@@ -643,15 +643,17 @@ Aktualisierte grobe Restplanung:
   Same-Slot-Reihenfolge bleiben offen;
 - PR 78 hat 150 VN-Regel- und 150 Schaden-Snapshots fuer eine einzelne
   Vorschockperiode mit moderner reproduzierbarer Drawfolge materialisiert;
-- vorgeschlagener naechster Schritt ist PR 79: Snapshots aller 25 VU-Regeln,
-  BAV-Vorperiodeninputs und die Informationskostengrenze ableiten;
+- PR 79 hat Snapshots aller 25 VU-Regeln, BAV-Vorperiodeninputs und die
+  quellenbelegte Informationskostengrenze als `pr79-v1` geschlossen;
+- vorgeschlagener naechster Schritt ist PR 80: Suchkosten explizit an den
+  Settlement-Zustand anbinden und den Vorschockpfad 2-49 kontrolliert anwenden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der PR-78-Snapshotmaterialisierung bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `8`
+Nach der PR-79-VU-Snapshotmaterialisierung bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

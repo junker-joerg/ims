@@ -171,6 +171,7 @@ aufgebaut. PR 75 hat 200 wirksame Aktionsslots und eine moderne explizite
 Seed-Policy gebunden. PR 76 hat die VU14-Vorschock-Regelprojektion
 klassifiziert und den fehlenden VN-/Schaden-/Settlement-Pfad belegt. PR 77 hat
 diesen Pfad read-only kartiert. PR 78 hat die VN-Snapshots fuer eine einzelne
-Vorschockperiode materialisiert. Ab PR 79 bleiben mindestens acht reviewbare
-PRs bis zur erneuten fachlichen Freigabepruefung; konkrete Funde koennen
+Vorschockperiode materialisiert. PR 79 hat alle 25 VU-Snapshots und die
+BAV-Vorperiodeninputs geschlossen. Ab PR 80 bleiben mindestens sieben
+reviewbare PRs bis zur erneuten fachlichen Freigabepruefung; konkrete Funde koennen
 weitere kleine Slices erfordern.

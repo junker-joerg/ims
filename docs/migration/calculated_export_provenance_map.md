@@ -122,8 +122,9 @@ Der erwartete PR-71-Befund lautet:
 ## Restplanung
 
 Fuer eine interne, reviewbare Erzeugung reicht die aktualisierte Mindestserie
-von PR 72 bis PR 86. PR 78 hat die Einzelperioden-VN-Snapshots geschlossen;
-danach bleiben mindestens acht PRs offen:
+von PR 72 bis PR 86. PR 79 hat die Einzelperioden-Snapshots fuer VN und VU
+sowie die BAV-Vorperiodeninputs geschlossen; danach bleiben mindestens sieben
+PRs offen:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
@@ -137,7 +138,7 @@ danach bleiben mindestens acht PRs offen:
 7. PR 78: VN-Snapshots einer Vorschockperiode materialisieren (erledigt,
    `pr78-v1`);
 8. PR 79: alle VU-Snapshots, BAV-Vorperiodeninputs und Informationskosten
-   vorbereiten;
+   vorbereiten (erledigt, `pr79-v1`);
 9. PR 80: VU14-Vollzustand fuer Perioden 2-49 schliessen;
 10. PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen;
 11. PR 82: dieselbe Versicherer-Population auf `imsvusk1.dat` und

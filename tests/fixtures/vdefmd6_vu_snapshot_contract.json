@@ -1,0 +1,69 @@
+{
+  "schema_version": "pr79-v1",
+  "model_id": "Vdefmd6",
+  "scope": "single_pre_shock_period_vu_snapshot_materialization",
+  "expected": {
+    "contract_period": 2,
+    "contract_seed": 790001,
+    "snapshot_count": 25,
+    "snapshot_family_counts": {
+      "random_uniform": 2,
+      "random_normal": 2,
+      "reserve_markup": 3,
+      "net_switcher_markup": 3,
+      "market_share_markup": 3,
+      "expected_claim": 3,
+      "foreign_info": 9
+    },
+    "foreign_info_kind_counts": {"dumping": 3, "average": 3, "attack": 3},
+    "active_insurer_input_count": 25,
+    "active_policyholder_input_count": 150,
+    "uniform_value_count": 8,
+    "normal_value_count": 8,
+    "interest_rate": 0.02,
+    "information_cost_per_lookup": 0.8,
+    "historical_information_cost_rules": [5, 6],
+    "historical_wealth_subtraction_evidenced": true,
+    "python_settlement_snapshot_accepts_cost": false
+  },
+  "draw_policy_id": "vdefmd6-modern-vu-id-major-v1",
+  "draw_order": [
+    "insurer_id_ascending",
+    "rule_1_four_uniform_values",
+    "rule_2_four_normal_values",
+    "rules_3_to_9_no_rng_values"
+  ],
+  "blocker_codes": [
+    "information_cost_settlement_application_missing",
+    "combined_vu_vn_period_application_missing",
+    "historical_same_slot_rng_order_open"
+  ],
+  "source_anchors": [
+    {"path": "IMS.E", "needle": "act Vrvu01 {", "meaning": "random uniform VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu02 {", "meaning": "random normal VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu03 {", "meaning": "reserve markup VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu04 {", "meaning": "net switcher VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu05 {", "meaning": "market share VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu06 {", "meaning": "expected claim VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu07 {", "meaning": "dumping VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu08 {", "meaning": "average VU rule"},
+    {"path": "IMS.E", "needle": "act Vrvu09 {", "meaning": "attack VU rule"},
+    {"path": "IMS.E", "needle": "Bavauin( 50,0, 0.8, 0.02,1);", "meaning": "Vdefmd6 cost and interest"},
+    {"path": "IMS.E", "needle": "ik                                        ;    /* Suchkosten", "meaning": "historical information-cost subtraction"},
+    {"path": "python_port/ims/model/vu_rules.py", "needle": "class VURandomUniformRuleSnapshot:", "meaning": "first VU snapshot family"},
+    {"path": "python_port/ims/model/vu_rules.py", "needle": "class VUForeignInfoRuleSnapshot:", "meaning": "foreign-info snapshot family"},
+    {"path": "python_port/ims/model/vn_insurance_rules.py", "needle": "information_cost: float", "meaning": "diagnostic Python cost result"},
+    {"path": "python_port/ims/model/vn_rules.py", "needle": "class VNDamageSettlementSnapshot:", "meaning": "settlement surface without information cost"},
+    {"path": "python_port/ims/model/vdefmd6_vu_snapshots.py", "needle": "def build_vdefmd6_vu_snapshot_batch", "meaning": "PR79 materializer"}
+  ],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "snapshot_materialization_performed": true,
+    "bav_service_executed": false,
+    "rng_draws_performed": true,
+    "runner_started": false,
+    "simulation_performed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_full_equality_claimed": false
+  }
+}

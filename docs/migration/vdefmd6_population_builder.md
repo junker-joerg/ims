@@ -63,5 +63,6 @@ PR 75 hat die Aktionsslots und eine explizite, reproduzierbare moderne
 Seed-Policy lesend gebunden. PR 76 hat danach die VU14-Regelprojektion fuer
 Perioden 1-49 klassifiziert. PR 77 hat den offenen VN-/Schaden-/Settlement-
 Pfad kartiert; PR 78 hat die VN-Vorschock-Snapshots und moderne Drawfolge fuer
-eine einzelne Periode abgeleitet. PR 79 bereitet als naechstes die Snapshotseite
-aller 25 VU-Regeln und die BAV-Vorperiodeninputs vor.
+eine einzelne Periode abgeleitet. PR 79 hat die Snapshotseite aller 25
+VU-Regeln und die BAV-Vorperiodeninputs vorbereitet. PR 80 schliesst als
+naechstes die Informationskosten- und Mehrperiodenanwendung.

@@ -70,5 +70,6 @@ Draw-Reihenfolge und Draw-Anzahl nicht belegt.
 PR 76 hat die VU14-Regelprojektion fuer Perioden 1-49 klassifiziert und dabei
 den offenen VN-/Schaden-/Settlement-Pfad ab Periode 2 belegt. PR 77 hat diesen
 Pfad fuer sechs Regeln und 150 aktive Vorschock-VN kartiert. PR 78 hat die
-VN-Snapshots einer einzelnen Vorschockperiode materialisiert. Ab PR 79 bleiben
-mindestens acht Schritte bis PR 86.
+VN-Snapshots einer einzelnen Vorschockperiode materialisiert. PR 79 hat die
+25 VU-Snapshots und BAV-Vorperiodeninputs geschlossen. Ab PR 80 bleiben
+mindestens sieben Schritte bis PR 86.
