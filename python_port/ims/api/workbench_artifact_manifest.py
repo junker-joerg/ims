@@ -177,6 +177,13 @@ def _included_paths(
             required=True,
             excluded_paths=excluded_paths,
         ),
+        _manifest_path(
+            "release_checklist",
+            root / "docs" / "migration" / "workbench_release_checklist.md",
+            kind="file",
+            required=True,
+            excluded_paths=excluded_paths,
+        ),
     )
 
 

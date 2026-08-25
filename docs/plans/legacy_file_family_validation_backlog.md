@@ -443,6 +443,12 @@ Zaehlschnitt: grob `4-10` reviewbare PRs bis zur konservativen
 Produktionsreife. PR 67 haertet als naechstes Packaging, Staging und
 Startskripte fuer den sichtbar geprueften Demo-Stand.
 
+PR 67 ist erledigt. Die Release-Checkliste `pr67-v1`, das lokale ZIP, das
+portable Staging und der normale Produktionsstart sind getrennt vom
+PR-66-Fake-Adapter geprueft. Neuer Zaehlschnitt: grob `3-9` reviewbare PRs bis
+zur konservativen Produktionsreife. PR 68 prueft als naechstes Backup/Restore
+und Update/Rollback lokaler Metadaten mit validiertem Ergebnisstand.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:

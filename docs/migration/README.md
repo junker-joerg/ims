@@ -89,4 +89,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `run_control_execution_result_view.md`: read-only API- und Workbench-Ergebnisanzeige fuer persistierte Run-Control-Adapterresultate, weiterhin ohne Upload, Adapterstart, Queue-Worker oder Simulation
 - `run_control_execution_history.md`: read-only PR-65-Verlauf fuer vorhandene Adapterstart-Audit-, Zeit- und Fehlerdaten ohne Retry, Queue-Worker oder Simulation
 - `run_control_browser_demo_smoke.md`: isolierter PR-66-Browser-Smoke fuer Freigabe, Fake-Adapterstart, persistiertes Ergebnis und Verlauf ohne Engine-Runner oder Simulation
+- `workbench_release_checklist.md`: eingefrorener PR-67-Vertrag `pr67-v1` fuer ZIP, portables Staging und normalen Produktionsstart ohne Demo-Adapter oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

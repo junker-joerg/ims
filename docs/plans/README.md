@@ -40,7 +40,11 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Backend-Start-/Status-/Ergebnisgrenze. PR 64 bindet den vorbereiteten UI-Flow
   kontrolliert an; PR 65 stabilisiert Ergebnisverlauf und Fehlerzustaende.
   PR 66 prueft den freigegebenen lokalen Demo-Run mit injiziertem Fake-Adapter
-  im Browser. PR 67 haertet als naechstes Packaging, Staging und Startskripte.
+  im Browser. PR 67 friert Packaging-, Staging- und Produktionsstart-Smoke als
+  Release-Checkliste `pr67-v1` ein; PR 68 prueft als naechstes Backup/Restore
+  und Update/Rollback lokaler Metadaten.
+- `workbench_release_smoke_plan.md`: enger PR-67-Plan fuer ZIP-, Staging- und
+  Produktionsstart-Smoke mit harter Trennung vom PR-66-Fake-Adapter.
 - `run_control_ui_start_plan.md`: enger PR-64-Plan fuer zweistufige
   Freigabepruefung und manuellen UI-Start ohne Queue-Worker oder Simulation.
 - `run_control_execution_history_plan.md`: enger PR-65-Plan fuer read-only

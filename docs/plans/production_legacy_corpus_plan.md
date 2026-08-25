@@ -169,6 +169,9 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 15. PR 66 darf den kontrollierten Browser-E2E-Smoke ausfuehren, aber den
     historischen Korpus und die Gleichheitsaussage nicht erweitern (erledigt
     mit injiziertem Fake-Adapter ohne Engine-Runner oder Simulation).
+16. PR 67 darf Packaging, Staging und normalen Produktionsstart pruefen, aber
+    weder Altdatenkorpus noch Gleichheitsaussage erweitern (erledigt mit
+    Release-Checkliste `pr67-v1` und ohne Simulation).
 
 ## Offene Risiken
 

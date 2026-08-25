@@ -59,6 +59,7 @@ Dieser Schritt eroeffnet den Modernisierungsblock fuer eine kleine lokale IMS Wo
 - `ims.api.workbench_bundle_smoke` prueft ein erzeugtes ZIP auf erwartete Eintraege, Ausschluesse, stabile Metadaten und lesbare Payloads.
 - `ims.api.workbench_portable_staging` staged ein geprueftes ZIP in eine portable Zielstruktur.
 - `ims.api.workbench_portable_staging_smoke` prueft eine gestagte portable Zielstruktur und ihre Startskriptgrenzen rein lesend.
+- `ims.api.workbench_release_smoke` prueft ZIP, Staging und Produktionsskripte gemeinsam gegen den eingefrorenen Vertrag `pr67-v1`.
 - `ims.api.workbench_cli_overview` listet lokale Workbench-CLI-Befehle und ihre Grenzen, fuehrt aber keinen davon aus.
 - Die gebaute Vite-Anwendung aus `frontend/dist` wird lokal ueber `/` und `/assets` ausgeliefert.
 - `frontend/` enthaelt eine Vite/React/TypeScript-Oberflaeche mit einer ruhigen Dashboard-Ansicht, die Listen- und Detailmetadaten liest.
@@ -516,13 +517,14 @@ Der lokale Release-Ablauf fuer ein ZIP-Artefakt buendelt die vorhandenen
 Packaging-Grenzen in einer festen Reihenfolge:
 
 ```powershell
-npm.cmd run build
+npm.cmd run build --prefix .\frontend
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
 python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench
 python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+python -m ims.api.workbench_release_smoke --repo-root . --zip-path .\dist\ims-workbench-local.zip --portable-root .\ims-workbench
 ```
 
 Der Ablauf prueft den tatsaechlich erzeugten ZIP-Inhalt und staged ihn danach
@@ -541,6 +543,12 @@ Struktur unter `app\` und `data\.ims_workbench`. Das ZIP bleibt ein lokales
 Bereitstellungsartefakt: Es ist kein Installer, kein automatischer Updater,
 keine SQLite-Migration, keine Fachvalidierung und keine historische
 Vollgleichheitsbehauptung.
+
+Die in PR 67 eingefrorene Release-Checkliste steht unter
+`docs/migration/workbench_release_checklist.md`. Der Sammelcheck ist rein
+lesend, verlangt die Checkliste selbst im ZIP, vergleicht die ZIP-Skripte mit
+dem Checkout und blockiert jede Referenz auf den isolierten PR-66-Demo-Adapter
+in den Produktionsskripten.
 
 ## SQLite-Vorbereitung
 
@@ -903,6 +911,7 @@ Start und Diagnose:
 | `python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip` | Explizit erzeugtes ZIP direkt pruefen | schreibt nicht |
 | `python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench` | Geprueftes ZIP in eine portable Zielstruktur stagen | schreibt nur in den expliziten leeren Zielordner |
 | `python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench` | Gestagte portable Struktur und Startskriptgrenzen pruefen | schreibt nicht |
+| `python -m ims.api.workbench_release_smoke --repo-root . --zip-path .\dist\ims-workbench-local.zip --portable-root .\ims-workbench` | Eingefrorene ZIP-/Staging-/Produktionsskript-Checkliste pruefen | schreibt nicht |
 | `python -m ims.api.workbench_cli_overview` | Lokale Workbench-CLI-Befehle und Grenzen auflisten | schreibt nicht |
 
 Vertraege und Grenzen:

@@ -26,3 +26,6 @@ cd ..
 ```
 
 Die Skripte sind kein Installer, kein Release-Artefakt, kein Szenario-Editor und kein Run-Start.
+Die eingefrorene lokale Release-Reihenfolge und die Trennung vom isolierten
+PR-66-Demo-Adapter stehen in
+`docs/migration/workbench_release_checklist.md`.

@@ -617,14 +617,16 @@ Aktualisierte grobe Restplanung:
   fuer den explizit freigegebenen lokalen Demo-Run;
 - PR 66 hat diesen sichtbaren Pfad mit einem isolierten Loopback-Server und
   injiziertem Fake-Adapter geprueft, ohne Engine-Runner oder Simulation;
-- vorgeschlagener naechster Schritt ist PR 67: Packaging-, Staging- und
-  Startskript-Smoke wiederholen und Release-Checkliste einfrieren;
+- PR 67 hat Packaging, Staging und den normalen Produktionsstart erneut
+  geprueft und die Release-Checkliste als `pr67-v1` eingefroren;
+- vorgeschlagener naechster Schritt ist PR 68: Backup/Restore sowie
+  Update/Rollback lokaler Metadaten mit validiertem Ergebnisstand pruefen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem umgesetzten Browser-Smoke bleiben grob ca. `4-10`
+Nach dem umgesetzten Release-Smoke bleiben grob ca. `3-9`
 reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.

@@ -115,6 +115,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="workbench_release_smoke",
+            command="python -m ims.api.workbench_release_smoke --repo-root . --zip-path .\\dist\\ims-workbench-local.zip --portable-root .\\ims-workbench",
+            purpose="Eingefrorene ZIP-, Staging- und Produktionsskript-Checkliste pruefen.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",
@@ -249,6 +255,7 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
                 "workbench_bundle_plan",
                 "workbench_bundle_smoke",
                 "workbench_portable_staging_smoke",
+                "workbench_release_smoke",
                 "metadata_import_cli check",
                 "metadata_import_cli preview",
                 "metadata_import_cli snapshot",

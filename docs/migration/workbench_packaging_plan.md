@@ -282,13 +282,14 @@ Bereitstellungscheck. Er fuehrt die bestehenden Packaging-Adapter zusammen,
 ohne neue Produktfunktion zu ergaenzen:
 
 ```powershell
-npm.cmd run build
+npm.cmd run build --prefix .\frontend
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
 python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench
 python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+python -m ims.api.workbench_release_smoke --repo-root . --zip-path .\dist\ims-workbench-local.zip --portable-root .\ims-workbench
 ```
 
 Dieser Ablauf prueft das tatsaechlich erzeugte ZIP. Er erzeugt keine portable
@@ -305,7 +306,8 @@ portablen Startskriptgrenzen rein lesend.
 
 Die Grenzen bleiben getrennt:
 
-- Repo-Build: `npm.cmd run build` und `frontend/dist` im Checkout.
+- Repo-Build: `npm.cmd run build --prefix .\frontend` und `frontend/dist` im
+  Checkout.
 - ZIP-Artefakt: expliziter Zielpfad unter einem vorbereiteten Ausgabeordner.
 - Portable Zielstruktur: erst nach separatem, explizitem Staging oder
   Entpackschritt; dann nutzt Readiness `app\frontend\dist`.
@@ -317,10 +319,17 @@ fachlicher Gleichheitsnachweis. Bestehende Metadaten werden nur ueber explizite
 
 ## Release-Checkliste fuer lokale ZIP-Artefakte
 
+PR 67 friert diese Checkliste als Vertrag `pr67-v1` ein. Die ausfuehrliche
+Pflichtreihenfolge, Freigabegates und lokalen Nachweise stehen in
+`docs/migration/workbench_release_checklist.md`. Der read-only Sammelcheck
+`workbench_release_smoke` verlangt diese Datei selbst im ZIP, vergleicht die
+ZIP-Skripte mit dem Checkout und haelt den normalen Produktionsstart strikt vom
+isolierten PR-66-Demo-Adapter getrennt.
+
 Ein lokales ZIP- oder Ordnerartefakt soll vor einer Weitergabe mit einer kurzen
 Checkliste geprueft werden:
 
-1. Frontend wurde gebaut: `npm.cmd run build`.
+1. Frontend wurde gebaut: `npm.cmd run build --prefix .\frontend`.
 2. ZIP-Ausgabeordner wurde explizit vorbereitet:
    `New-Item -ItemType Directory .\dist -Force`.
 3. ZIP-Build nutzt einen expliziten Zielpfad:
@@ -365,12 +374,14 @@ Der Packaging-/Bereitstellungsblock steht bei `0` geplanten PRs, abgesehen von R
 10. Update-/Rollback-Doku fuer lokale Workbench-Versionen: vorbereitet.
 11. Windows-Pfadhaertung und Leerzeichenpfade: umgesetzt in PR 49 fuer
     Repo- und portable Start-/Check-Skripte.
-12. Release-Checkliste: vorbereitet.
+12. Release-Checkliste: in PR 67 als `pr67-v1` eingefroren und automatisiert
+    geprueft.
 13. Lokale Release-Bereitstellung: konsolidiert.
 14. Portables Staging fuer ZIP-Artefakte: vorbereitet.
 15. Staging-Smoke fuer portable Zielstruktur und Startskriptgrenzen: vorbereitet.
-16. Abschlusskonsolidierung: erledigt.
-17. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
+16. Release-Smoke fuer ZIP, Staging und Produktionsskripte: in PR 67 erledigt.
+17. Abschlusskonsolidierung: erledigt.
+18. Puffer fuer Review-Fixes und CI-/Plattformhaertung.
 
 ## Gesamtplanung
 
@@ -401,6 +412,8 @@ Packaging-Schritte sollen jeweils kleine, automatisierte Checks ergaenzen:
 - ZIP-Payload-/CRC-Pruefung fuer beschaedigte Eintragsbytes,
 - portables Staging aus einem geprueften ZIP in eine leere Zielstruktur,
 - Staging-Smoke fuer zentrale Backend-Module, Backend-Importfaehigkeit, Frontend-Dist und portable Startskriptgrenzen,
+- read-only Release-Smoke mit Checklistenvertrag, Skriptidentitaet und harter
+  Trennung vom PR-66-Demo-Adapter,
 - Startskript-Haertung fuer ueberschreibbare Host-/Port-, Frontend- und
   Metadatenpfade,
 - Backup-/Restore-Doku fuer `metadata.sqlite`, WAL-/SHM-Grenzen, Snapshot, Export, Roundtrip und Readiness,

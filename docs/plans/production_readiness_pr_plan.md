@@ -96,7 +96,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 ### Phase D: Freigabehaertung
 
 - PR 67: Packaging-/Staging-/Startskript-Smoke fuer den freigegebenen Stand
-  wiederholen und Release-Checkliste einfrieren.
+  wiederholen und Release-Checkliste einfrieren (erledigt: Checklistenvertrag
+  `pr67-v1`, read-only Sammelcheck, Produktionsskript-/Artefaktabgleich und
+  normaler Loopback-Start ohne PR-66-Fake-Adapter oder Simulation).
 - PR 68: Backup-/Restore- und Update-/Rollback-Probe fuer lokale Metadaten mit
   einem validierten Ergebnisstand pruefen.
 - PR 69: Abschlussbericht fuer den ersten Produktionsfreigabekorpus erstellen:
@@ -106,15 +108,14 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 66 bleiben grob `4-10` reviewbare PRs bis zu einer konservativen
+Nach PR 67 bleiben grob `3-9` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 67 wiederholt Packaging-, Staging- und Startskript-Smoke fuer den nun
-sichtbar geprueften Demo-Stand und friert die Release-Checkliste ein. Der
-Produktionsstart bleibt vom isolierten PR66-Fake-Adapter getrennt. Freier
-Browser-Upload, Queue-Worker, Simulation und historische
-Vollgleichheitsbehauptung bleiben gesperrt.
+PR 68 prueft Backup/Restore sowie Update/Rollback fuer lokale Metadaten mit
+einem bereits validierten Ergebnisstand. Die Probe arbeitet mit expliziten
+Anwendungs- und Datenpfaden und bleibt ohne automatische SQLite-Migration,
+Simulation oder historische Vollgleichheitsbehauptung.

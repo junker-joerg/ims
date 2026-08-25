@@ -349,18 +349,20 @@ Der ZIP-Zielpfad darf nicht unter eingeschlossenen Quellbaeumen wie `python_port
 Lokaler Release-Ablauf fuer ein ZIP-Artefakt:
 
 ```powershell
-npm.cmd run build
+npm.cmd run build --prefix .\frontend
 New-Item -ItemType Directory .\dist -Force
 python -m ims.api.workbench_bundle_build --root . --frontend-dist frontend/dist --out .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_bundle_smoke --zip-path .\dist\ims-workbench-local.zip
 python -m ims.api.workbench_portable_staging --zip-path .\dist\ims-workbench-local.zip --out .\ims-workbench
 python -m ims.api.workbench_portable_staging_smoke --root .\ims-workbench
 python -m ims.api.workbench_portable_readiness --root .\ims-workbench --layout portable
+python -m ims.api.workbench_release_smoke --repo-root . --zip-path .\dist\ims-workbench-local.zip --portable-root .\ims-workbench
 ```
 
 Dieser Ablauf ist ein lokaler Bereitstellungscheck fuer den tatsaechlich erzeugten ZIP-Inhalt und eine daraus explizit gestagte portable Zielstruktur unter `.\ims-workbench`. Portable Readiness mit `app\frontend\dist` ist erst nach diesem Staging-Schritt sinnvoll. Der Ablauf startet keine Simulation, oeffnet keinen HTTP- oder UI-Schreibpfad, installiert nichts automatisch und migriert keine SQLite-Datenbank.
 Der ZIP-Smoke prueft erwartete Eintraege, ausgeschlossene lokale Daten, stabile ZIP-Metadaten sowie die Lesbarkeit der ZIP-Payloads inklusive CRC-Pruefung.
 Das portable Staging erwartet einen fehlenden oder leeren Zielordner und ueberschreibt keine lokalen Nutzerdaten wie `metadata.sqlite`, WAL-/SHM-Dateien oder Logs. Der Staging-Smoke prueft danach die gestagte Backend-/Frontend-Struktur, die Backend-Importfaehigkeit aus dem gestagten Workbench-Root fuer die Check-/Startskriptgrenze und die portablen Startskriptgrenzen rein lesend. Die generierten portablen Skripte setzen dieselben ueberschreibbaren Defaults fuer Frontend-Dist, lokale Metadatenablage, Host und Port.
+Der eingefrorene Checklistenvertrag `pr67-v1` steht in `docs/migration/workbench_release_checklist.md`. Sein Sammelcheck vergleicht die Produktionsskripte im Checkout und ZIP, prueft das portable Staging und blockiert Referenzen auf den isolierten PR-66-Demo-Adapter. Der Sammelcheck schreibt nicht und startet selbst keinen Server oder Run.
 
 Eine lokale CLI-Uebersicht listet die vorhandenen Befehle und ihre Grenzen, ohne Import, Snapshot oder Serverstart auszufuehren:
 

@@ -113,6 +113,7 @@ def _build_repo_fixture(tmp_path: Path, *, include_frontend: bool = True) -> Non
     _touch(tmp_path / "README.md", "readme")
     _touch(tmp_path / "docs" / "migration" / "workbench_shell.md", "workbench doc")
     _touch(tmp_path / "docs" / "migration" / "workbench_packaging_plan.md", "packaging plan")
+    _touch(tmp_path / "docs" / "migration" / "workbench_release_checklist.md", "release checklist")
     if include_frontend:
         _touch(tmp_path / "frontend" / "dist" / "index.html", "<html></html>")
 

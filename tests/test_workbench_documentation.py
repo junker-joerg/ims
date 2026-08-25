@@ -11,10 +11,37 @@ EXECUTION_HISTORY_DOC = REPO_ROOT / "docs" / "migration" / "run_control_executio
 EXECUTION_HISTORY_PLAN = REPO_ROOT / "docs" / "plans" / "run_control_execution_history_plan.md"
 BROWSER_DEMO_SMOKE_DOC = REPO_ROOT / "docs" / "migration" / "run_control_browser_demo_smoke.md"
 BROWSER_DEMO_SMOKE_PLAN = REPO_ROOT / "docs" / "plans" / "run_control_browser_demo_smoke_plan.md"
+RELEASE_CHECKLIST = REPO_ROOT / "docs" / "migration" / "workbench_release_checklist.md"
+RELEASE_SMOKE_PLAN = REPO_ROOT / "docs" / "plans" / "workbench_release_smoke_plan.md"
 LEGACY_BACKLOG = REPO_ROOT / "docs" / "plans" / "legacy_file_family_validation_backlog.md"
 CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
 START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
 SCRIPT_README = REPO_ROOT / "scripts" / "workbench" / "README.md"
+
+
+def test_pr67_release_smoke_docs_freeze_checklist_and_boundaries():
+    checklist = RELEASE_CHECKLIST.read_text(encoding="utf-8")
+    plan = RELEASE_SMOKE_PLAN.read_text(encoding="utf-8")
+    packaging = PACKAGING_PLAN.read_text(encoding="utf-8")
+    plans_readme = (REPO_ROOT / "docs" / "plans" / "README.md").read_text(encoding="utf-8")
+    migration_readme = (REPO_ROOT / "docs" / "migration" / "README.md").read_text(encoding="utf-8")
+
+    assert RELEASE_CHECKLIST.is_file()
+    assert RELEASE_SMOKE_PLAN.is_file()
+    assert "technische Freigabevertrag `pr67-v1`" in checklist
+    assert "python -m ims.api.workbench_release_smoke" in checklist
+    assert "artifact_scripts_match_repo = true" in checklist
+    assert "pr66_demo_adapter_separated = true" in checklist
+    assert "GET /api/health" in checklist
+    assert "keine Run-Control-Aktion, kein Adapterstart und keine Simulation" in checklist
+    assert "read-only Release-Smoke" in plan
+    assert "startet ausschliesslich `ims.api.app:app`" in plan
+    assert "kein Start von `controlled_execution_adapter`" in plan
+    assert "keine historische Vollgleichheitsbehauptung" in plan
+    assert "PR 68 prueft Backup/Restore" in plan
+    assert "Release-Checkliste: in PR 67 als `pr67-v1` eingefroren" in packaging
+    assert "workbench_release_smoke_plan.md" in plans_readme
+    assert "workbench_release_checklist.md" in migration_readme
 
 
 def test_readme_documents_local_workbench_start_commands():
@@ -38,6 +65,8 @@ def test_readme_documents_local_workbench_start_commands():
     assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in readme
     assert "python -m ims.api.workbench_portable_staging_smoke --root .\\ims-workbench" in readme
     assert "python -m ims.api.workbench_portable_readiness --root .\\ims-workbench --layout portable" in readme
+    assert "python -m ims.api.workbench_release_smoke --repo-root ." in readme
+    assert "Checklistenvertrag `pr67-v1`" in readme
     assert "tatsaechlich erzeugten ZIP-Inhalt" in readme
     assert "explizit gestagte portable Zielstruktur" in readme
     assert "fehlenden oder leeren Zielordner" in readme
@@ -50,6 +79,7 @@ def test_readme_documents_local_workbench_start_commands():
     assert "nicht unter eingeschlossenen Quellbaeumen wie `python_port` oder `frontend/dist`" in readme
     assert "`zip_sha256`-Pruefsumme bei identischem Inhalt reproduzierbar" in readme
     assert "python -m ims.api.workbench_cli_overview" in readme
+    assert "workbench_release_smoke" in readme
     assert "Kurzstart fuer die lokale Browser-Workbench" in readme
     assert "Start und Diagnose" in readme
     assert "Vertraege und Run-Control-Grenzen" in readme
@@ -168,7 +198,9 @@ def test_workbench_doc_groups_local_cli_boundaries():
     assert "python -m ims.api.workbench_bundle_smoke --zip-path .\\dist\\ims-workbench-local.zip" in doc
     assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in doc
     assert "python -m ims.api.workbench_portable_staging_smoke --root .\\ims-workbench" in doc
+    assert "python -m ims.api.workbench_release_smoke --repo-root ." in doc
     assert "python -m ims.api.workbench_cli_overview" in doc
+    assert "workbench_release_smoke" in doc
     assert "python -m ims.api.metadata_write_contracts" in doc
     assert "python -m ims.api.metadata_write_contracts check .\\metadata_import.json" in doc
     assert "python -m ims.api.run_control_contracts" in doc
@@ -262,6 +294,8 @@ def test_workbench_doc_keeps_modernization_boundaries_conservative():
     assert "erst nach" in doc
     assert "diesem Staging-Schritt" in doc
     assert "Staging-Smoke liest die gestagte portable Zielstruktur" in doc
+    assert "eingefrorene Release-Checkliste" in doc
+    assert "isolierten PR-66-Demo-Adapter" in doc
     assert "Backend-Module" in doc
     assert "Importfaehigkeit aus dem gestagten Workbench-Root ueber `app\\python_port`" in doc
     assert "app\\frontend\\dist" in doc
@@ -822,7 +856,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "python -m ims.api.workbench_portable_staging --zip-path .\\dist\\ims-workbench-local.zip --out .\\ims-workbench" in plan
     assert "python -m ims.api.workbench_portable_staging_smoke --root .\\ims-workbench" in plan
     assert "python -m ims.api.workbench_portable_readiness --root .\\ims-workbench --layout portable" in plan
-    assert "Repo-Build: `npm.cmd run build`" in plan
+    assert "Repo-Build: `npm.cmd run build --prefix .\\frontend`" in plan
     assert "ZIP-Artefakt: expliziter Zielpfad" in plan
     assert "staged sie erst ueber den expliziten" in plan
     assert "Portable Zielstruktur: erst nach separatem" in plan
@@ -841,7 +875,7 @@ def test_workbench_packaging_plan_documents_portable_delivery_block():
     assert "Lokale Nutzerdaten werden nicht ueberschrieben" in plan
     assert "Staging, ZIP-Build und ZIP-Smoke bleiben getrennte Grenzen" in plan
     assert "kopiert nur die definierten Workbench-Anwendungsartefakte" in plan
-    assert "Frontend wurde gebaut: `npm.cmd run build`" in plan
+    assert "Frontend wurde gebaut: `npm.cmd run build --prefix .\\frontend`" in plan
     assert "New-Item -ItemType Directory .\\dist -Force" in plan
     assert "workbench_bundle_build --root . --frontend-dist frontend/dist --out .\\dist\\ims-workbench-local.zip" in plan
     assert "ZIP-Build erzeugt den Output-Parent nicht automatisch" in plan
