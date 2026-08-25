@@ -122,9 +122,9 @@ Der erwartete PR-71-Befund lautet:
 ## Restplanung
 
 Fuer eine interne, reviewbare Erzeugung reicht die aktualisierte Mindestserie
-von PR 72 bis PR 86. PR 85 hat nach dem VU14-Schockpfad, den VU-Aggregaten und
-allen sechs VN-Regeln auch die drei VN-Klassen und VN-SK1/all aus demselben
-Zustand klassifiziert; danach bleibt mindestens ein PR offen:
+von PR 72 bis PR 86. PR 86 hat alle 15 Identitaeten fuer das gemeinsame
+Fenster 1-100 durch den vorhandenen Abweichungsbericht gefuehrt. Die Serie ist
+damit abgeschlossen:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
@@ -154,12 +154,13 @@ Zustand klassifiziert; danach bleibt mindestens ein PR offen:
     (erledigt, `pr85-v1`, 1.234/5.200 Feldtreffer und 434/4.400
     Fachwerttreffer);
 15. PR 86: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
-   die fachliche Freigabe erneut menschlich bewerten.
+    die fachliche Freigabe erneut menschlich bewerten (erledigt, `pr86-v1`,
+    Empfehlung `keep_blocked`).
 
-Der verbleibende PR ist eine Mindestplanung. Funde zum Scheduler,
-zum RNG oder zur Zustandsfortschreibung duerfen eigene kleine Korrektur-PRs
-erzwingen. Werden stattdessen unabhaengig berechnete Tabellen extern mit
-belegter Herkunft geliefert, kann die interne Erzeugungsserie verkuerzt werden.
+Es verbleibt kein vorab geplanter Pflicht-PR. Funde zur Referenzprovenienz, zum
+Scheduler, zum RNG oder zur Zustandsfortschreibung duerfen neue kleine
+Korrektur-PRs erfordern. Der gemeinsame 1-100-Befund ersetzt weiterhin nicht
+die fehlenden Vollfenster bis Periode 300 oder 500.
 
 ## PR-71-Pruefnachweis
 

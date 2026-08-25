@@ -501,7 +501,12 @@ reviewbare PRs bis PR 86; die konkrete `WVEMOD1`-Laufidentitaet ist ebenfalls
 offen. PR 85 hat danach `imsvnvk1.dat` bis `imsvnvk3.dat` und `imsvnsk1.dat`
 mit 1.234/5.200 Feldtreffern beziehungsweise 434/4.400 Fachwerttreffern
 klassifiziert. Danach bleibt ein reviewbarer PR bis PR 86; die historische
-VN-Klassenakkumulatorsemantik und die Laufidentitaet bleiben offen.
+VN-Klassenakkumulatorsemantik und die Laufidentitaet bleiben offen. PR 86 hat
+alle 15 Kernexportidentitaeten fuer 1-100 gemeinsam durch den bestehenden
+Abweichungsbericht gefuehrt. 4.492/20.000 Felder und 1.492/17.000 Fachwerte
+treffen; die Empfehlung bleibt `keep_blocked`. Damit ist die vorab geplante
+PR-72- bis PR-86-Serie abgeschlossen. Weitere Slices werden aus den offenen
+Provenienz- und Kompatibilitaetsfragen neu abgeleitet.
 
 ## Validierungsregel
 

@@ -114,5 +114,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vdefmd6_vn_aggregate_run_contract.md`: PR-85-Vertrag fuer die drei
   VN-Klassen und VN-SK1/all mit klassifizierten Abweichungen und offener
   historischer Klassenakkumulatorsemantik
+- `vdefmd6_core_export_review.md`: PR-86-Gesamtbewertung aller 15
+  Kernexportidentitaeten fuer Perioden 1-100 mit Abweichungsklassen,
+  Vollfenstergrenze und Empfehlung `keep_blocked`
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

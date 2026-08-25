@@ -158,21 +158,21 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   Fachwerttreffer; historische Klassenakkumulator- und Laufidentitaet bleiben
   offen).
 - PR 86: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
-  neu bewerten.
+  neu bewerten (erledigt: `pr86-v1`, 4.492/20.000 Feldtreffer,
+  1.492/17.000 Fachwerttreffer und Empfehlung `keep_blocked`).
 
 ## Grobe Anzahl
 
-Nach PR 85 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
-Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`1` weiterer PR bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
-Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
-erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
-interne Erzeugungsserie verkuerzen.
+Nach PR 86 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Pruefkette und `0` vorab geplante PRs der internen Erzeugungsserie offen. Neue
+Funde zu Provenienz, Scheduler, RNG, Akkumulatoren oder
+Zustandsfortschreibung werden als eigene kleine Slices geplant. Diese Zahl ist
+keine Aussage historischer Gleichheit oder fachlicher Produktionsreife.
 
 ## Naechster Schritt
 
-PR 86 fuehrt als naechstes alle 15 Kernexporte in einer gemeinsamen
-Klassifikation zusammen und bereitet die menschliche Freigabebewertung vor.
-Historische Laufidentitaet, Reihenfolge, RNG-Grenze, BAV-Versicherungsgrad-
-Ableitung, VU-/VN-Akkumulatoren und die `Ev`-Feldbedeutung bleiben Blocker;
-Legacy-Ausgaben werden nicht zurueckgefuehrt.
+Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. Der naechste groessere
+Block wird erst aus dem PR-86-Befund geschnitten. Vorrangig ist die historische
+Lauf- und Referenzprovenienz; erst danach werden Akkumulator-, Scheduler- oder
+RNG-Kompatibilitaet geplant. Legacy-Ausgaben werden nicht als Erzeugungsinput
+zurueckgefuehrt.

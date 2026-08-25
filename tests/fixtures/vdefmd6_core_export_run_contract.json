@@ -1,0 +1,385 @@
+{
+  "schema_version": "pr86-v1",
+  "model_id": "Vdefmd6",
+  "scope": "joint_core_exports_periods_1_100_release_review",
+  "window_bundle": "vdefmd6_core_export_window_bundle.json",
+  "expected_target_filenames": [
+    "imsvu014.dat",
+    "imsvusk1.dat",
+    "imsvuvk1.dat",
+    "imsvuvk2.dat",
+    "imsvuvk3.dat",
+    "imsvnr01.dat",
+    "imsvnr02.dat",
+    "imsvnr03.dat",
+    "imsvnr04.dat",
+    "imsvnr05.dat",
+    "imsvnr06.dat",
+    "imsvnsk1.dat",
+    "imsvnvk1.dat",
+    "imsvnvk2.dat",
+    "imsvnvk3.dat"
+  ],
+  "expected_summary": {
+    "controlled_period_start": 1,
+    "controlled_period_end": 100,
+    "controlled_export_count": 15,
+    "compared_row_count": 1500,
+    "full_row_match_count": 3,
+    "mismatched_row_count": 1497,
+    "compared_field_count": 20000,
+    "matched_field_count": 4492,
+    "structural_field_count": 3000,
+    "matched_structural_field_count": 3000,
+    "fach_field_count": 17000,
+    "matched_fach_field_count": 1492,
+    "deviation_status": "differences",
+    "exact_field_match_count": 3839,
+    "tolerated_numeric_difference_count": 653,
+    "blocking_numeric_difference_count": 14752,
+    "open_field_question_count": 756
+  },
+  "expected_targets": [
+    {
+      "export_filename": "imsvu014.dat",
+      "subject_type": "insurer",
+      "level": "I",
+      "selector_kind": "entity",
+      "selector_value": 14,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 488,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1200,
+      "matched_fach_field_count": 288,
+      "full_row_match_periods": [
+        1
+      ]
+    },
+    {
+      "export_filename": "imsvusk1.dat",
+      "subject_type": "insurer",
+      "level": "IV",
+      "selector_kind": "all",
+      "selector_value": "all",
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 232,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1200,
+      "matched_fach_field_count": 32,
+      "full_row_match_periods": [
+        1
+      ]
+    },
+    {
+      "export_filename": "imsvuvk1.dat",
+      "subject_type": "insurer",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 1,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 229,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1200,
+      "matched_fach_field_count": 29,
+      "full_row_match_periods": [
+        1
+      ]
+    },
+    {
+      "export_filename": "imsvuvk2.dat",
+      "subject_type": "insurer",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 2,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 222,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1200,
+      "matched_fach_field_count": 22,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvuvk3.dat",
+      "subject_type": "insurer",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 3,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 215,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1200,
+      "matched_fach_field_count": 15,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnr01.dat",
+      "subject_type": "policyholder",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 1,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 316,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 116,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnr02.dat",
+      "subject_type": "policyholder",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 2,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 241,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 41,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnr03.dat",
+      "subject_type": "policyholder",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 3,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 389,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 189,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnr04.dat",
+      "subject_type": "policyholder",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 4,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 263,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 63,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnr05.dat",
+      "subject_type": "policyholder",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 5,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 209,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 9,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnr06.dat",
+      "subject_type": "policyholder",
+      "level": "II",
+      "selector_kind": "rule",
+      "selector_value": 6,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 454,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 254,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnsk1.dat",
+      "subject_type": "policyholder",
+      "level": "IV",
+      "selector_kind": "all",
+      "selector_value": "all",
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 264,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 64,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnvk1.dat",
+      "subject_type": "policyholder",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 1,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 289,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 89,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnvk2.dat",
+      "subject_type": "policyholder",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 2,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 387,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 187,
+      "full_row_match_periods": []
+    },
+    {
+      "export_filename": "imsvnvk3.dat",
+      "subject_type": "policyholder",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 3,
+      "compared_row_count": 100,
+      "compared_field_count": 1300,
+      "matched_field_count": 294,
+      "structural_field_count": 200,
+      "matched_structural_field_count": 200,
+      "fach_field_count": 1100,
+      "matched_fach_field_count": 94,
+      "full_row_match_periods": []
+    }
+  ],
+  "execution_order": [
+    "activate_subjects",
+    "bav_foreign_information",
+    "insurer_rules_by_id",
+    "policyholder_rules_by_id",
+    "aggregate_export"
+  ],
+  "state_policy_id": "vdefmd6-modern-100-period-state-v1",
+  "blocker_codes": [
+    "full_required_period_windows_missing",
+    "historical_reference_run_identity_open",
+    "historical_reference_family_coherence_open",
+    "historical_same_slot_execution_order_open",
+    "historical_rng_draw_order_open",
+    "market_insurance_degree_derivation_open",
+    "historical_vu_class_accumulator_semantics_open",
+    "historical_vn_rule_accumulator_semantics_open",
+    "historical_vn_class_accumulator_semantics_open",
+    "historical_vn_aggregate_initialization_semantics_open",
+    "policyholder_ev_field_semantics_open"
+  ],
+  "review_recommendation": "keep_blocked",
+  "source_anchors": [
+    {
+      "path": "docs/plans/vdefmd6_core_export_review_plan.md",
+      "needle": "`VUSK1L5.DAT` bleibt dabei das Referenzfenster 1-100",
+      "meaning": "controlled common window"
+    },
+    {
+      "path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py",
+      "needle": "def run_vdefmd6_100_periods",
+      "meaning": "single controlled run"
+    },
+    {
+      "path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py",
+      "needle": "VDEFMD6_VU_AGGREGATE_FILENAMES",
+      "meaning": "four VU aggregate targets"
+    },
+    {
+      "path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py",
+      "needle": "VDEFMD6_VN_RULE_GROUP_1_FILENAMES",
+      "meaning": "first VN rule targets"
+    },
+    {
+      "path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py",
+      "needle": "VDEFMD6_VN_RULE_GROUP_2_FILENAMES",
+      "meaning": "second VN rule targets"
+    },
+    {
+      "path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py",
+      "needle": "VDEFMD6_VN_AGGREGATE_FILENAMES",
+      "meaning": "four VN aggregate targets"
+    },
+    {
+      "path": "python_port/ims/model/legacy_calculated_deviation_report.py",
+      "needle": "def build_calculated_legacy_deviation_report",
+      "meaning": "existing deviation classification"
+    },
+    {
+      "path": "python_port/ims/model/legacy_export_identity.py",
+      "needle": "def canonicalize_legacy_export_selector",
+      "meaning": "Level IV all and SK1 identity"
+    },
+    {
+      "path": "docs/plans/historical_testdata_inventory.md",
+      "needle": "WVEMOD1.ZIP/IMSVU014.DAT",
+      "meaning": "VU14 archive overlap"
+    },
+    {
+      "path": "docs/migration/vdefmd6_100_period_run_contract.md",
+      "needle": "Der Vergleich trifft `488/1400` Felder.",
+      "meaning": "VU14 frozen result"
+    },
+    {
+      "path": "docs/migration/vdefmd6_vu_aggregate_run_contract.md",
+      "needle": "Insgesamt treffen 898 von 5.600",
+      "meaning": "VU aggregate frozen result"
+    },
+    {
+      "path": "docs/migration/vn_rule_family_imsvnr.md",
+      "needle": "1.872/7.800 Felder beziehungsweise 672/6.600 Fachwerte.",
+      "meaning": "VN rule frozen result"
+    },
+    {
+      "path": "docs/migration/vdefmd6_vn_aggregate_run_contract.md",
+      "needle": "Insgesamt treffen 1.234 von 5.200",
+      "meaning": "VN aggregate frozen result"
+    }
+  ],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "comparison_started_after_generation": true,
+    "controlled_execution_performed": true,
+    "writes_performed": false,
+    "scheduler_started": false,
+    "simulation_performed": false,
+    "automatic_historical_rule_selection_performed": false,
+    "controlled_100_period_window_complete": true,
+    "full_legacy_corpus_window_complete": false,
+    "historical_reference_run_identity_claimed": false,
+    "historical_reference_family_coherence_claimed": false,
+    "historical_same_slot_order_claimed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_vu_class_accumulator_compatibility_applied": false,
+    "historical_vn_rule_accumulator_compatibility_applied": false,
+    "historical_vn_class_accumulator_compatibility_applied": false,
+    "historical_vn_aggregate_initialization_compatibility_applied": false,
+    "historical_full_equality_claimed": false,
+    "production_release_approved": false
+  }
+}

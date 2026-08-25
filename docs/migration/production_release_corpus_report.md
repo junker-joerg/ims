@@ -11,15 +11,19 @@ historischen Kernkorpus wird **nicht** erteilt.
 
 Der Grund ist eindeutig: Alle 19 historischen Kernreferenzen sind vorhanden
 und ihre 6.300 eingetragenen Perioden sind durch Parser-, Header-, Fenster- und
-Coverage-Tests erfasst. Fuer einen unabhaengigen berechneten Alt-/Neu-Vergleich
-fehlen jedoch weiterhin alle 15 erforderlichen Kernexporttabellen.
+Coverage-Tests erfasst. PR 86 erzeugt und vergleicht inzwischen alle 15
+Kernexportidentitaeten gemeinsam fuer Perioden 1-100. Dem strikten
+6.300-Zeilen-Produktionskorpus fehlen jedoch weiterhin 15 vollstaendige
+Exporttabellen bis zu ihren Pflichtgrenzen 100, 300 oder 500.
 
 | Bereich | Befund | Entscheidung |
 | --- | --- | --- |
 | Historischer Kernkorpus | 19/19 Referenzen vorhanden und abgedeckt | abgegrenzter Referenzbestand belegt |
 | Bundle-Perioden | 6.300/6.300 eingetragene Perioden ausgerichtet | Parser-/Mapping-Nachweis belegt |
-| Berechnete Kernexporte | 0/15 vollstaendig geliefert | blockierend |
-| Berechneter Kernvergleich | nicht ausgefuehrt | fachliche Produktionsfreigabe gesperrt |
+| Kontrolliertes 1-100-Fenster | 15/15 Exporte, 1.500 Zielzeilen verglichen | Abweichungskarte belegt |
+| Vollstaendige Korpusexporte | 0/15 bis zur jeweiligen Pflichtgrenze geliefert | blockierend |
+| Gemeinsamer 1-100-Vergleich | 4.492/20.000 Felder, 1.492/17.000 Fachwerte | `keep_blocked` |
+| Vollstaendiger 6.300-Zeilen-Vergleich | nicht ausgefuehrt | fachliche Produktionsfreigabe gesperrt |
 | Lokale UI und Startpfad | gebaut, getestet und lokal bereitstellbar | reviewbare Demo belegt |
 | Packaging und Recovery | ZIP/Staging/Start sowie Backup/Restore geprueft | technischer Betriebsnachweis belegt |
 | Historische Vollgleichheit | nicht nachgewiesen | wird nicht behauptet |
@@ -183,6 +187,11 @@ klassifiziert; keine Zeile trifft vollstaendig. PR 84 hat die Regeln 4-6 mit
 klassifiziert. Auch hier trifft keine Zeile vollstaendig; die Laufidentitaet
 der `WVEMOD1`-Referenz bleibt offen. PR 85 hat die drei VN-Klassen und
 VN-SK1/all mit 1.234/5.200 Feldtreffern beziehungsweise 434/4.400
-Fachwerttreffern klassifiziert; keine Zeile trifft vollstaendig. Danach bleibt
-mindestens ein reviewbarer PR bis zur erneuten fachlichen Freigabepruefung;
-konkrete Funde koennen weitere kleine Slices erfordern.
+Fachwerttreffern klassifiziert; keine Zeile trifft vollstaendig. PR 86 hat
+anschliessend alle 15 Identitaeten fuer 1-100 gemeinsam klassifiziert:
+4.492/20.000 Felder und 1.492/17.000 Fachwerte treffen, nur drei von 1.500
+Zielzeilen vollstaendig. Die Empfehlung bleibt `keep_blocked`.
+
+Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. Es verbleibt kein vorab
+nummerierter Pflicht-PR. Neue Slices werden aus den offenen Provenienz-,
+Akkumulator-, Scheduler-, RNG- und Vollfensterfragen abgeleitet.

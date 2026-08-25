@@ -71,6 +71,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   zusaetzlicher offener `WVEMOD1`-Lauf- und Seed-Provenienz.
 - `vdefmd6_vn_aggregate_run_plan.md`: PR-85-Plan fuer die drei VN-Klassen
   und VN-SK1/all mit getrennten historischen Akkumulatorgrenzen.
+- `vdefmd6_core_export_review_plan.md`: PR-86-Abschlussplan fuer den
+  gemeinsamen 1-100-Abweichungsbericht aller 15 Kernexportidentitaeten und
+  die konservative Freigabeempfehlung `keep_blocked`.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

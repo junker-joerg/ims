@@ -201,3 +201,13 @@ Archivfamilie. Gleichnamige `IMSVNSK1`-Varianten aus `WVEMOD2.ZIP`,
 ab und werden nicht vermischt. Weil `WVEMOD1.ZIP` weiterhin keinen
 zugeordneten Runreport enthaelt, bleibt die konkrete historische
 Laufidentitaet offen.
+
+## PR-86-Gesamtgrenze
+
+PR 86 verwendet fuer alle 15 Exportidentitaeten ausschliesslich das gemeinsame
+Fenster 1-100. Dass VU14 in diesem Fenster auch in `WVEMOD1.ZIP` belegt ist und
+mehrere Regel- und Klassenfamilien aus diesem Archiv stammen, beweist noch
+keine gemeinsame historische Laufidentitaet aller versionierten Referenzen.
+Der Gesamtbericht fuehrt deshalb
+`historical_reference_family_coherence_open` als eigenen Blocker und
+vermischt keine alternativen Archivvarianten.

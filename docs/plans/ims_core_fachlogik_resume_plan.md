@@ -663,18 +663,21 @@ Aktualisierte grobe Restplanung:
   klassifiziert; 1.234/5.200 Felder beziehungsweise 434/4.400 Fachwerte
   treffen, ohne volle Vergleichszeile, und die historische VN-
   Klassenakkumulatorsemantik bleibt offen;
-- vorgeschlagener naechster Schritt ist PR 86: alle 15 Kernexporte gemeinsam
-  klassifizieren und die fachliche Freigabe menschlich neu bewerten;
+- PR 86 hat alle 15 Kernexporte fuer Perioden 1-100 gemeinsam durch den
+  vorhandenen Abweichungsbericht gefuehrt; 4.492/20.000 Felder und
+  1.492/17.000 Fachwerte treffen, die Freigabeempfehlung bleibt
+  `keep_blocked`;
+- vorgeschlagener naechster groesserer Block ist die historische Lauf- und
+  Referenzprovenienz, noch ohne vorab vergebene PR-Nummer;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem PR-85-Aggregatlauf bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg ist mindestens `1`
-reviewbarer PR bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
-RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
-Diese Einordnung ersetzt keine Vollgleichheitspruefung.
+Nach PR 86 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `0` vorab geplante PRs der internen Erzeugungsserie. Scheduler-, RNG-,
+Provenienz- oder Zustandsfunde koennen neue kleine Slices erfordern. Diese
+Einordnung ersetzt keine Vollgleichheitspruefung.
 
 ## Grenzen
 
