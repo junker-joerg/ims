@@ -132,6 +132,7 @@ def test_pr70_windows_release_gate_docs_share_local_and_ci_contract():
     assert ".\\scripts\\workbench\\test-release-gate.ps1" in readme
     assert "test-release-gate.ps1" in script_readme
     assert "PR 71" in plan
+    assert "PR 72" in plan and "100-Perioden-Erzeugungsvertrag" in plan
 
 
 def test_readme_documents_local_workbench_start_commands():

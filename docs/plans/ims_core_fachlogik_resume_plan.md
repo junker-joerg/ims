@@ -626,18 +626,20 @@ Aktualisierte grobe Restplanung:
   Freigabeblocker festgehalten;
 - PR 70 hat Python-Tests, Frontend-Build, den blockierten Korpusbericht und
   Release-Smoke als lokales und GitHub-Actions-Windows-Gate gebuendelt;
-- vorgeschlagener naechster Schritt ist PR 71: Herkunfts- und
-  Erzeugungswegkarte fuer die 15 fehlenden berechneten Kernexporte erstellen;
+- PR 71 hat die 15 Kernexporte auf historische Ausgabestellen, vorhandene
+  Python-Anschluesse und zwei gemeinsame, noch offene Zustandswege abgebildet;
+- vorgeschlagener naechster Schritt ist PR 72: vollstaendigen
+  100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vorbereiten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem umgesetzten Windows-Gate bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Bei externer vollstaendiger Exportlieferung bleiben
-grob `0-6` Review-/Vergleichs-PRs; eine repo-interne Erzeugung braucht erst die
-PR-71-Kartierung und kann weitere fachliche Slices erfordern. Diese Einordnung
-ersetzt keine Vollgleichheitspruefung.
+Nach der PR-71-Kartierung bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
+reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
+RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
+Diese Einordnung ersetzt keine Vollgleichheitspruefung.
 
 ## Grenzen
 

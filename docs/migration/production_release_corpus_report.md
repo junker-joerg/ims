@@ -161,8 +161,9 @@ PR 70 hat den Abschlussstand als CI-/Windows-Freigabegate fuer Python-Tests,
 Frontend-Build, read-only Korpusbericht und Release-Smoke gebuendelt. Damit
 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette.
 
-PR 71 kartiert als naechstes Herkunft, vorhandenen Runner-Anschluss und
-Erzeugungsluecke jeder der 15 berechneten Exportidentitaeten. Erst danach ist
-eine belastbare Rest-PR-Zahl fuer die fachliche Produktionsreife moeglich. Bei
-vollstaendiger externer Lieferung bleiben grob `0-6` Review-/Vergleichs-PRs;
-eine Erzeugung im Python-Port kann weitere fachliche Slices erfordern.
+PR 71 hat Herkunft, vorhandenen Runner-/Writer-Anschluss und Erzeugungsluecke
+jeder der 15 Exportidentitaeten kartiert. Alle Writer sind angeschlossen, aber
+die unabhaengige Vollfenstererzeugung bleibt `0/15`. Fuer den internen Weg sind
+ab PR 72 mindestens sieben reviewbare PRs bis zur erneuten fachlichen
+Freigabepruefung geplant; konkrete Scheduler-, RNG-, Populations- oder
+Zustandsfunde koennen weitere kleine Slices erfordern.

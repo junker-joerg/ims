@@ -75,6 +75,7 @@ def test_workbench_bundle_build_zip_smoke_covers_expected_bundle_boundaries(tmp_
     assert "docs/migration/workbench_metadata_recovery.md" in names
     assert "docs/migration/production_release_corpus_report.md" in names
     assert "docs/migration/windows_release_gate.md" in names
+    assert "docs/migration/calculated_export_provenance_map.md" in names
     assert "python_port/ims/__pycache__/ignored.pyc" not in names
     assert "frontend/node_modules/pkg/ignored.js" not in names
     assert ".ims_workbench/metadata.sqlite" not in names
@@ -287,6 +288,7 @@ def _build_repo_fixture(tmp_path: Path, *, include_frontend: bool = True) -> Non
     _touch(tmp_path / "docs" / "migration" / "workbench_metadata_recovery.md", "metadata recovery")
     _touch(tmp_path / "docs" / "migration" / "production_release_corpus_report.md", "report")
     _touch(tmp_path / "docs" / "migration" / "windows_release_gate.md", "gate doc")
+    _touch(tmp_path / "docs" / "migration" / "calculated_export_provenance_map.md", "map")
     if include_frontend:
         _touch(tmp_path / "frontend" / "dist" / "index.html", "<html></html>")
 

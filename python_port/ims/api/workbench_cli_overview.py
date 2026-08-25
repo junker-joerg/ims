@@ -155,6 +155,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="calculated_export_provenance_report",
+            command="python -m ims.api.calculated_export_provenance_report --repo-root .",
+            purpose="Herkunft und Erzeugungsluecken der 15 Kernexporte rein lesend kartieren.",
+            writes_enabled=False,
+        ),
+        WorkbenchCliCommand(
             name="windows_release_gate",
             command="powershell -NoProfile -File .\\scripts\\workbench\\test-release-gate.ps1",
             purpose="Python-, Frontend-, Korpus- und Release-Pruefungen unter Windows buendeln.",

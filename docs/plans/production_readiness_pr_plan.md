@@ -110,23 +110,33 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   ZIP/Staging und Release-Smoke (erledigt; lokales PowerShell-Gate und GitHub
   Actions auf `windows-latest`, ohne Server- oder Simulationsstart).
 - PR 71: Herkunfts- und Erzeugungswegkarte fuer die 15 fehlenden berechneten
-  Kernexporte erstellen; vorhandene Runner-Abdeckung und echte Luecken je
-  Exportidentitaet benennen, noch ohne Simulation.
-- PR 72+: berechnete Exportslices, Abweichungskorrekturen und Review-Fixes nur
-  nach dem PR-71-Entscheid.
+  Kernexporte erstellen (erledigt: 15/19/6.300-Vertrag, Writer-Anschluss fuer
+  alle Identitaeten, zwei gemeinsame Zustandsfamilien und null unabhaengig
+  erzeugte Vollfenster).
+- PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat`
+  mit belegten Eingaben und Negativgrenzen vorbereiten.
+- PR 73: unabhaengigen VU14-Zustandsweg fuer `1-100` umsetzen und vergleichen.
+- PR 74: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
+  verbreitern.
+- PR 75: VN-Regelzustand fuer `imsvnr01-03.dat` schliessen.
+- PR 76: VN-Regelzustand fuer `imsvnr04-06.dat` schliessen.
+- PR 77: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
+- PR 78: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
+  neu bewerten.
 
 ## Grobe Anzahl
 
-Nach PR 70 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
-Pruefkette offen. Bis zur fachlichen Produktionsreife ist keine belastbare
-Gesamtzahl mehr angebbar, solange Herkunft und Erzeugungsweg der 15 berechneten
-Kernexporte ungeklaert sind. Bei externer vollstaendiger Lieferung bleiben grob
-`0-6` Review-/Vergleichs-PRs; bei Erzeugung im Python-Port kommen die in PR 71
-zu kartierenden fachlichen Exportslices hinzu.
+Nach PR 71 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
+`7` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
+erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
+interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 71 kartiert fuer jede der 15 fehlenden Exportidentitaeten die belegte Quelle,
-den vorhandenen Python-Runner-Anschluss und die verbleibende Erzeugungsluecke.
-Der Schritt erzeugt noch keine Exporttabellen, startet keine Simulation und
-behauptet keine historische Vollgleichheit.
+PR 72 bereitet den vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
+`imsvu014.dat` vor. Der Schritt muss Eingangsherkunft, erforderliche VU-/VN-
+Population, Regelparameter, Periodenfortschreibung, RNG-Grenze und verbotene
+Referenz-Echos pruefbar festlegen, noch ohne Produktlauf oder
+Vollgleichheitsbehauptung.

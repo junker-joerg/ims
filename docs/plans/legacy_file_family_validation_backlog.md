@@ -466,9 +466,14 @@ Pruefkette.
 PR 70 ist erledigt. Das lokale PowerShell-Gate und GitHub Actions pruefen den
 Python-Satz, Frontend-Build, blockierten Korpusbericht, ZIP/Staging und
 Release-Smoke unter Windows. Damit bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. PR 71 kartiert als naechstes Herkunft und
-Erzeugungsweg der 15 fehlenden berechneten Kernexporte; die fachliche
-Produktionsfreigabe bleibt bis zu deren Vergleich blockiert.
+eingefrorene Pruefkette.
+
+PR 71 ist erledigt. Die Herkunfts- und Erzeugungswegkarte ordnet alle 15
+Kernexportidentitaeten den 19 Referenzzielen, historischen Agrsich-Ankern und
+zwei gemeinsamen Python-Zustandsfamilien zu. Writer und expliziter Runner sind
+fuer alle Identitaeten angeschlossen; unabhaengig erzeugte Vollfenster bleiben
+`0/15`. PR 72 bereitet als naechstes den 100-Perioden-Erzeugungsvertrag fuer
+`imsvu014.dat` vor.
 
 ## Validierungsregel
 

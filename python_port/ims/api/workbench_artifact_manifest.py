@@ -212,6 +212,13 @@ def _included_paths(
             required=True,
             excluded_paths=excluded_paths,
         ),
+        _manifest_path(
+            "calculated_export_provenance_doc",
+            root / "docs" / "migration" / "calculated_export_provenance_map.md",
+            kind="file",
+            required=True,
+            excluded_paths=excluded_paths,
+        ),
     )
 
 

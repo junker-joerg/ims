@@ -182,6 +182,10 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
 19. PR 70 darf die technische Windows-Pruefkette automatisieren, aber weder
     Referenzkorpus noch berechneten Vergleich oder Freigabeentscheidung
     veraendern (erledigt mit lokalem/CI-Gate und weiter 15 Exportblockern).
+20. PR 71 darf Herkunft und Erzeugungsweg kartieren, aber vorhandene Writer-
+    und Snapshot-Anschluesse nicht als unabhaengige Vollfenster ausgeben
+    (erledigt mit Vertrag `pr71-v1`, zwei Zustandsfamilien und `0/15`
+    unabhaengig erzeugten Vollfenstern).
 
 ## Offene Risiken
 

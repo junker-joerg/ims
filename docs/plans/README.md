@@ -44,8 +44,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Release-Checkliste `pr67-v1` ein; PR 68 prueft Backup/Restore und
   Update/Rollback lokaler Metadaten. PR 69 erstellt den Abschlussbericht fuer
   den ersten Produktionsfreigabekorpus; PR 70 haertet die technische CI-/
-  Windows-Pruefkette. PR 71 kartiert als naechstes Herkunft und Erzeugungsweg
-  der 15 fehlenden berechneten Kernexporte.
+  Windows-Pruefkette. PR 71 kartiert alle 15 Kernexporte auf zwei gemeinsame
+  Zustandsfamilien und offene Vollfensterluecken. PR 72 bereitet als naechstes
+  den 100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vor.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,
   Restore und Side-by-Side-Update/Rollback eines validierten Ergebnisstands,
   weiterhin ohne Simulation oder Schemamigration.
@@ -55,6 +56,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `windows_release_gate_plan.md`: PR-70-Plan fuer die gemeinsame lokale und
   GitHub-Actions-Windows-Pruefkette ohne Server-, Adapter- oder
   Simulationsstart.
+- `calculated_export_provenance_plan.md`: PR-71-Plan fuer die read-only
+  Herkunfts- und Erzeugungswegkarte der 15 Kernexportidentitaeten.
 - `workbench_release_smoke_plan.md`: enger PR-67-Plan fuer ZIP-, Staging- und
   Produktionsstart-Smoke mit harter Trennung vom PR-66-Fake-Adapter.
 - `run_control_ui_start_plan.md`: enger PR-64-Plan fuer zweistufige
