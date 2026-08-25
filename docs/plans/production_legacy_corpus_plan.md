@@ -179,6 +179,9 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
     Referenzzeilen nicht als unabhaengigen berechneten Gesamtvergleich
     darstellen (erledigt mit Bericht `pr69-v1`, 15 Exportblockern und
     `production_release_approved = false`).
+19. PR 70 darf die technische Windows-Pruefkette automatisieren, aber weder
+    Referenzkorpus noch berechneten Vergleich oder Freigabeentscheidung
+    veraendern (erledigt mit lokalem/CI-Gate und weiter 15 Exportblockern).
 
 ## Offene Risiken
 

@@ -243,15 +243,18 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 67 hat Packaging, Staging und den normalen Produktionsstart" in plan
     assert "PR 68 hat Backup/Restore sowie Update/Rollback" in plan
     assert "PR 69 hat den Abschlussbericht" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 70" in plan
+    assert "PR 70 hat Python-Tests, Frontend-Build" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 71" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "1-7" in plan
-    assert "Produktionsreife mit validiertem Altdaten-Korpus und laufender UI" in plan
+    assert "0-6" in plan
+    assert "Nach dem umgesetzten Windows-Gate bleiben `0` technische Pflicht-PRs" in plan
+    assert "eingefrorene Pruefkette" in plan
+    assert "PR-71-Kartierung" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
 
 
@@ -272,8 +275,8 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
 
     assert PRODUCTION_READINESS_PLAN.is_file()
     assert "Plan: PRs bis zur Produktionsreife" in plan
-    assert "validiertem Altdaten-Korpus" in plan
-    assert "laufender UI" in plan
+    assert "historischer Altdaten-Korpus reproduzierbar validiert" in plan
+    assert "UI stabil laufen" in plan
     assert "PR 50: sechsten fachlichen Slice waehlen" in plan
     assert "PR 51: sechsten fachlichen Regressionstest fuer Vrvn04" in plan
     assert "Phase A: Fachliche Slice-Abdeckung erweitern" in plan
@@ -287,7 +290,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "1-7" in plan
+    assert "0-6" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
@@ -304,11 +307,12 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 69: Abschlussbericht fuer den ersten Produktionsfreigabekorpus" in plan.replace("\n", " ")
     assert "Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad (erledigt:" in plan
     assert "read-only Vertrag `pr69-v1`" in plan
-    assert "PR 70 haertet den Abschlussstand" in plan.replace("\n", " ")
+    assert "PR 70: CI-/Windows-Gate" in plan.replace("\n", " ")
+    assert "PR 71: Herkunfts- und Erzeugungswegkarte" in plan.replace("\n", " ")
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
-    assert "15 berechneten Kernexporte aus einer belegten externen Quelle" in plan.replace("\n", " ")
+    assert "Herkunft und Erzeugungsweg der 15 berechneten Kernexporte" in plan.replace("\n", " ")
 
 
 def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:

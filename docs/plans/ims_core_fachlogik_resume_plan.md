@@ -624,17 +624,19 @@ Aktualisierte grobe Restplanung:
 - PR 69 hat den Abschlussbericht fuer den ersten Produktionsfreigabekorpus als
   read-only Vertrag erstellt und die 15 fehlenden berechneten Kernexporte als
   Freigabeblocker festgehalten;
-- vorgeschlagener naechster Schritt ist PR 70: CI-/Windows-Freigabegate fuer
-  Python-Tests, Frontend-Build, Korpusbericht und Release-Smoke haerten;
+- PR 70 hat Python-Tests, Frontend-Build, den blockierten Korpusbericht und
+  Release-Smoke als lokales und GitHub-Actions-Windows-Gate gebuendelt;
+- vorgeschlagener naechster Schritt ist PR 71: Herkunfts- und
+  Erzeugungswegkarte fuer die 15 fehlenden berechneten Kernexporte erstellen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem umgesetzten Abschlussbericht bleiben grob ca. `1-7`
-reviewbare PRs bis zu konservativer
-Produktionsreife mit validiertem Altdaten-Korpus und laufender UI, sofern die
-15 berechneten Kernexporte extern bereitgestellt werden. Diese Schaetzung
+Nach dem umgesetzten Windows-Gate bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Bei externer vollstaendiger Exportlieferung bleiben
+grob `0-6` Review-/Vergleichs-PRs; eine repo-interne Erzeugung braucht erst die
+PR-71-Kartierung und kann weitere fachliche Slices erfordern. Diese Einordnung
 ersetzt keine Vollgleichheitspruefung.
 
 ## Grenzen

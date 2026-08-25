@@ -155,6 +155,12 @@ def build_workbench_cli_overview() -> WorkbenchCliOverviewResult:
             writes_enabled=False,
         ),
         WorkbenchCliCommand(
+            name="windows_release_gate",
+            command="powershell -NoProfile -File .\\scripts\\workbench\\test-release-gate.ps1",
+            purpose="Python-, Frontend-, Korpus- und Release-Pruefungen unter Windows buendeln.",
+            writes_enabled=True,
+        ),
+        WorkbenchCliCommand(
             name="metadata_import_cli check",
             command="python -m ims.api.metadata_import_cli check .\\metadata_import.json",
             purpose="Importformat validieren.",

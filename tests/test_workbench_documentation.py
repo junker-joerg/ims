@@ -21,6 +21,8 @@ PRODUCTION_RELEASE_CORPUS_REPORT = (
 PRODUCTION_RELEASE_CORPUS_REPORT_PLAN = (
     REPO_ROOT / "docs" / "plans" / "production_release_corpus_report_plan.md"
 )
+WINDOWS_RELEASE_GATE_DOC = REPO_ROOT / "docs" / "migration" / "windows_release_gate.md"
+WINDOWS_RELEASE_GATE_PLAN = REPO_ROOT / "docs" / "plans" / "windows_release_gate_plan.md"
 LEGACY_BACKLOG = REPO_ROOT / "docs" / "plans" / "legacy_file_family_validation_backlog.md"
 CHECK_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "check-workbench.cmd"
 START_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "start-workbench.cmd"
@@ -98,11 +100,38 @@ def test_pr69_corpus_report_blocks_production_release_without_exports():
     assert "python -m ims.api.production_release_corpus_report --repo-root ." in report
     assert "1.151 Tests bestanden" in report
     assert "frischer ZIP-Build: 114 Eintraege" in report
-    assert "PR 70 haertet" in report
+    assert "PR 70 hat den Abschlussstand" in report
     assert "keine Simulation" in plan
     assert "production_release_corpus_report_plan.md" in plans_readme
     assert "production_release_corpus_report.md" in migration_readme
     assert "docs/migration/production_release_corpus_report.md" in readme
+
+
+def test_pr70_windows_release_gate_docs_share_local_and_ci_contract():
+    doc = WINDOWS_RELEASE_GATE_DOC.read_text(encoding="utf-8")
+    plan = WINDOWS_RELEASE_GATE_PLAN.read_text(encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
+    script_readme = SCRIPT_README.read_text(encoding="utf-8")
+    plans_readme = (REPO_ROOT / "docs" / "plans" / "README.md").read_text(encoding="utf-8")
+    migration_readme = (REPO_ROOT / "docs" / "migration" / "README.md").read_text(encoding="utf-8")
+
+    assert WINDOWS_RELEASE_GATE_DOC.is_file()
+    assert WINDOWS_RELEASE_GATE_PLAN.is_file()
+    assert "scripts/workbench/test-release-gate.ps1" in doc
+    assert ".github/workflows/windows-release-gate.yml" in doc
+    assert "Python 3.12" in doc
+    assert "Node.js 22" in doc
+    assert 'status = "blocked"' in doc
+    assert "15 fehlende berechnete Kernexporte" in doc
+    assert "production_release_approved = false" in doc
+    assert "Das Gate startet keinen Produktionsserver" in doc
+    assert "kein Adapter-, Runner-, Queue- oder Simulationsstart" in doc
+    assert "keine historische Vollgleichheitsbehauptung" in doc
+    assert "windows_release_gate_plan.md" in plans_readme
+    assert "windows_release_gate.md" in migration_readme
+    assert ".\\scripts\\workbench\\test-release-gate.ps1" in readme
+    assert "test-release-gate.ps1" in script_readme
+    assert "PR 71" in plan
 
 
 def test_readme_documents_local_workbench_start_commands():

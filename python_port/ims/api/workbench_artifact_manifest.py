@@ -162,6 +162,13 @@ def _included_paths(
             required=True,
             excluded_paths=excluded_paths,
         ),
+        _manifest_path(
+            "windows_release_gate_script",
+            root / "scripts" / "workbench" / "test-release-gate.ps1",
+            kind="file",
+            required=True,
+            excluded_paths=excluded_paths,
+        ),
         _manifest_path("readme", root / "README.md", kind="file", required=True, excluded_paths=excluded_paths),
         _manifest_path(
             "workbench_doc",
@@ -194,6 +201,13 @@ def _included_paths(
         _manifest_path(
             "production_release_corpus_report",
             root / "docs" / "migration" / "production_release_corpus_report.md",
+            kind="file",
+            required=True,
+            excluded_paths=excluded_paths,
+        ),
+        _manifest_path(
+            "windows_release_gate_doc",
+            root / "docs" / "migration" / "windows_release_gate.md",
             kind="file",
             required=True,
             excluded_paths=excluded_paths,

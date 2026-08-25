@@ -279,6 +279,11 @@ ist Teil des lokalen Artefakts. Seine technische Auslieferung aendert die
 Freigabeentscheidung nicht: 15 fehlende berechnete Kernexporte bleiben
 blockierend und `production_release_approved` bleibt `false`.
 
+PR 70 buendelt Build, Bericht, ZIP/Staging, Release-Smoke und portables
+Checkskript unter `scripts/workbench/test-release-gate.ps1`. Der gleiche Aufruf
+wird auf `windows-latest` in GitHub Actions verwendet. Das Gate startet keinen
+Server und behaelt den blockierten PR-69-Fachstatus bei.
+
 Rollback heisst entsprechend: neue Workbench stoppen, alte Version wieder
 starten und bei Bedarf die zuvor gesicherte Metadatenquelle zuruecklegen. Der
 Rollback ist kein Datenbank-Migrationsmechanismus und kein automatischer

@@ -203,12 +203,14 @@ def _build_repo_fixture(tmp_path: Path) -> None:
     _touch(tmp_path / "scripts" / "workbench" / "check-workbench.cmd", "check")
     _touch(tmp_path / "scripts" / "workbench" / "start-workbench.cmd", "start")
     _touch(tmp_path / "scripts" / "workbench" / "README.md", "scripts")
+    _touch(tmp_path / "scripts" / "workbench" / "test-release-gate.ps1", "gate")
     _touch(tmp_path / "README.md", "readme")
     _touch(tmp_path / "docs" / "migration" / "workbench_shell.md", "workbench doc")
     _touch(tmp_path / "docs" / "migration" / "workbench_packaging_plan.md", "packaging plan")
     _touch(tmp_path / "docs" / "migration" / "workbench_release_checklist.md", "release checklist")
     _touch(tmp_path / "docs" / "migration" / "workbench_metadata_recovery.md", "metadata recovery")
     _touch(tmp_path / "docs" / "migration" / "production_release_corpus_report.md", "report")
+    _touch(tmp_path / "docs" / "migration" / "windows_release_gate.md", "gate doc")
 
 
 def _touch(path: Path, content: str = "") -> None:

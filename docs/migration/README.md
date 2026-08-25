@@ -92,4 +92,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `workbench_release_checklist.md`: eingefrorener PR-67-Vertrag `pr67-v1` fuer ZIP, portables Staging und normalen Produktionsstart ohne Demo-Adapter oder Simulation
 - `workbench_metadata_recovery.md`: PR-68-Probe fuer SQLite-Backup, Restore und Side-by-Side-Update/Rollback eines validierten lokalen Ergebnisstands
 - `production_release_corpus_report.md`: PR-69-Abschlussbericht mit 19-/6.300-Korpus, technischen Betriebsnachweisen und weiterhin 15 fehlenden berechneten Kernexporten
+- `windows_release_gate.md`: PR-70-Windows-Gate fuer Python-Tests, Frontend-Build, blockierten Korpusbericht, ZIP/Staging und Release-Smoke
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

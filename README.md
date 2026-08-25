@@ -36,6 +36,16 @@ scripts\workbench\check-workbench.cmd
 scripts\workbench\start-workbench.cmd
 ```
 
+Das technische PR-70-Freigabegate buendelt Python-Tests, Frontend-Build,
+Korpusbericht, ZIP/Staging und Release-Smoke unter Windows:
+
+```powershell
+.\scripts\workbench\test-release-gate.ps1
+```
+
+Das Gate startet keinen Server oder Adapter und erteilt keine fachliche
+Produktionsfreigabe.
+
 Die Skripte setzen ein gebautes `frontend/dist` voraus. Das Check-Skript fuehrt Diagnose und Readiness aus, startet aber keinen dauerhaften Server. Es nutzt `IMS_METADATA_DB` nur, wenn die Datei bereits existiert. Das Start-Skript startet nur den lokalen Backend-Server. Beide Skripte setzen bei Bedarf ueberschreibbare Defaults fuer `IMS_FRONTEND_DIST`, `IMS_METADATA_DB`, `IMS_WORKBENCH_HOST` und `IMS_WORKBENCH_PORT`.
 
 Lokaler Workbench-v1 Abschlussstatus:

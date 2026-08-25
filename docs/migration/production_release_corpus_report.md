@@ -157,13 +157,12 @@ Exportblocker gegenueber. Beide Befunde sind gleichzeitig gueltig.
 
 ## Restplanung
 
-Nach PR 69 bleiben grob `1-7` reviewbare PRs bis zu einer konservativen
-Produktionsreife, **zuzueglich der externen Voraussetzung**, dass die 15
-berechneten Kernexporte aus einer belegten Quelle bereitgestellt werden. Ohne
-diese Daten bleibt die fachliche Freigabe unabhaengig von der PR-Anzahl
-blockiert.
+PR 70 hat den Abschlussstand als CI-/Windows-Freigabegate fuer Python-Tests,
+Frontend-Build, read-only Korpusbericht und Release-Smoke gebuendelt. Damit
+bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette.
 
-PR 70 haertet als naechstes den Abschlussstand als CI-/Windows-Freigabegate:
-Python-Tests, Frontend-Build, read-only Korpusbericht und Release-Smoke sollen
-in einer reproduzierbaren technischen Pruefkette zusammenlaufen. Dieser Schritt
-erzeugt keine fehlenden Kernexporte und erweitert keine Gleichheitsaussage.
+PR 71 kartiert als naechstes Herkunft, vorhandenen Runner-Anschluss und
+Erzeugungsluecke jeder der 15 berechneten Exportidentitaeten. Erst danach ist
+eine belastbare Rest-PR-Zahl fuer die fachliche Produktionsreife moeglich. Bei
+vollstaendiger externer Lieferung bleiben grob `0-6` Review-/Vergleichs-PRs;
+eine Erzeugung im Python-Port kann weitere fachliche Slices erfordern.

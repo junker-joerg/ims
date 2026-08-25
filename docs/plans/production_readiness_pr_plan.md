@@ -106,21 +106,27 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   Altdatenumfang, Tests, Abweichungen, Grenzen und Bedienpfad (erledigt:
   read-only Vertrag `pr69-v1`, 19/6.300 Coverage und 15 explizite
   Exportblocker ohne Produktionsfreigabe).
-- PR 70+: Review-Fixes, CI-/Windows-Haertung und blockierende
-  Abweichungskorrekturen.
+- PR 70: CI-/Windows-Gate fuer Python-Tests, Frontend-Build, Korpusbericht,
+  ZIP/Staging und Release-Smoke (erledigt; lokales PowerShell-Gate und GitHub
+  Actions auf `windows-latest`, ohne Server- oder Simulationsstart).
+- PR 71: Herkunfts- und Erzeugungswegkarte fuer die 15 fehlenden berechneten
+  Kernexporte erstellen; vorhandene Runner-Abdeckung und echte Luecken je
+  Exportidentitaet benennen, noch ohne Simulation.
+- PR 72+: berechnete Exportslices, Abweichungskorrekturen und Review-Fixes nur
+  nach dem PR-71-Entscheid.
 
 ## Grobe Anzahl
 
-Nach PR 69 bleiben grob `1-7` reviewbare PRs bis zu einer konservativen
-Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
-steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
-Review-Funde blockieren. Die Schaetzung setzt ausserdem voraus, dass die 15
-berechneten Kernexporte aus einer belegten externen Quelle vorliegen; ohne sie
-bleibt die fachliche Freigabe unabhaengig von der PR-Anzahl blockiert.
+Nach PR 70 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Pruefkette offen. Bis zur fachlichen Produktionsreife ist keine belastbare
+Gesamtzahl mehr angebbar, solange Herkunft und Erzeugungsweg der 15 berechneten
+Kernexporte ungeklaert sind. Bei externer vollstaendiger Lieferung bleiben grob
+`0-6` Review-/Vergleichs-PRs; bei Erzeugung im Python-Port kommen die in PR 71
+zu kartierenden fachlichen Exportslices hinzu.
 
 ## Naechster Schritt
 
-PR 70 haertet den Abschlussstand als CI-/Windows-Freigabegate fuer Python-
-Tests, Frontend-Build, read-only Korpusbericht und Release-Smoke. Dieser
-technische Schritt darf keine fehlenden berechneten Exporte erzeugen oder eine
-historische Vollgleichheit behaupten.
+PR 71 kartiert fuer jede der 15 fehlenden Exportidentitaeten die belegte Quelle,
+den vorhandenen Python-Runner-Anschluss und die verbleibende Erzeugungsluecke.
+Der Schritt erzeugt noch keine Exporttabellen, startet keine Simulation und
+behauptet keine historische Vollgleichheit.

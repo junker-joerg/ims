@@ -463,6 +463,13 @@ erteilt. Neuer Zaehlschnitt: grob `1-7` reviewbare PRs, zuzueglich der externen
 Datenvoraussetzung. PR 70 haertet als naechstes die technische CI-/Windows-
 Pruefkette.
 
+PR 70 ist erledigt. Das lokale PowerShell-Gate und GitHub Actions pruefen den
+Python-Satz, Frontend-Build, blockierten Korpusbericht, ZIP/Staging und
+Release-Smoke unter Windows. Damit bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. PR 71 kartiert als naechstes Herkunft und
+Erzeugungsweg der 15 fehlenden berechneten Kernexporte; die fachliche
+Produktionsfreigabe bleibt bis zu deren Vergleich blockiert.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:

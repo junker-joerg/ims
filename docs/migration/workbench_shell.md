@@ -585,6 +585,17 @@ Ein technischer Release-Smoke mit `release_ready = true` und ein vollstaendiger
 Der Bericht haelt `production_release_approved = false`, solange die 15
 berechneten Kernexporte fehlen, und startet weder Adapter noch Simulation.
 
+PR 70 buendelt die technische Windows-Pruefkette lokal und in GitHub Actions:
+
+```powershell
+.\scripts\workbench\test-release-gate.ps1
+```
+
+Das Gate fuehrt Python-Tests, Frontend-Build, den blockierten Korpusbericht,
+ZIP/Staging, Release-Smoke und das portable Checkskript aus. Es startet keinen
+Server, Adapter oder Produktlauf. Details stehen in
+`docs/migration/windows_release_gate.md`.
+
 ## SQLite-Vorbereitung
 
 Die SQLite-Schicht definiert Tabellen fuer Szenarien und Runs und seedet sie deterministisch aus den statischen Metadaten. Das Seeding ist nicht-destruktiv: bestehende lokale Zeilen werden nicht durch Defaultwerte ueberschrieben. Die API liest dieselbe DTO-Form aus dem Repository wie zuvor aus den statischen Objekten.

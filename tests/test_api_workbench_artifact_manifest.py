@@ -38,12 +38,14 @@ def test_workbench_artifact_manifest_reports_included_and_excluded_paths(tmp_pat
         "check_script",
         "start_script",
         "script_readme",
+        "windows_release_gate_script",
         "readme",
         "workbench_doc",
         "packaging_plan",
         "release_checklist",
         "metadata_recovery_doc",
         "production_release_corpus_report",
+        "windows_release_gate_doc",
     ]
     assert str(tmp_path / "frontend" / "node_modules") in payload["excluded_paths"]
     assert str(tmp_path / ".ims_workbench") in payload["excluded_paths"]
@@ -182,12 +184,14 @@ def _build_repo_fixture(
     _touch(root / "scripts" / "workbench" / "check-workbench.cmd")
     _touch(root / "scripts" / "workbench" / "start-workbench.cmd")
     _touch(root / "scripts" / "workbench" / "README.md", "scripts")
+    _touch(root / "scripts" / "workbench" / "test-release-gate.ps1", "gate")
     _touch(root / "README.md", "readme")
     _touch(root / "docs" / "migration" / "workbench_shell.md", "workbench")
     _touch(root / "docs" / "migration" / "workbench_packaging_plan.md", "packaging")
     _touch(root / "docs" / "migration" / "workbench_release_checklist.md", "checklist")
     _touch(root / "docs" / "migration" / "workbench_metadata_recovery.md", "recovery")
     _touch(root / "docs" / "migration" / "production_release_corpus_report.md", "report")
+    _touch(root / "docs" / "migration" / "windows_release_gate.md", "gate doc")
 
 
 def _touch(path: Path, content: str = "") -> None:
