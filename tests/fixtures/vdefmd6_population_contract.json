@@ -1,0 +1,52 @@
+{
+  "schema_version": "pr74-v1",
+  "model_id": "Vdefmd6",
+  "initial_period": 1,
+  "max_periods": 100,
+  "expected": {
+    "insurer_count": 25,
+    "policyholder_count": 200,
+    "active_insurer_count": 25,
+    "active_policyholder_count": 150,
+    "insurer_rule_counts": {"1": 2, "2": 2, "3": 3, "4": 3, "5": 3, "6": 3, "7": 3, "8": 3, "9": 3},
+    "insurer_rule_class_counts": {"1": 4, "2": 12, "3": 9},
+    "policyholder_rule_counts": {"1": 15, "2": 25, "3": 70, "4": 30, "5": 30, "6": 30},
+    "policyholder_rule_class_counts": {"1": 40, "2": 100, "3": 60},
+    "policyholder_activation_period_counts": {"1": 150, "50": 50}
+  },
+  "vu14": {
+    "entity_id": 14,
+    "name": "Allianz",
+    "rule_id": 6,
+    "rule_class": 2,
+    "activation_period": 1,
+    "logical_action_time": 1,
+    "initial_premiums": [40.0, 40.0],
+    "initial_advertising": [10.0, 10.0],
+    "parameters": [1.02, 1.03, 0.98, 0.99, 1.02, 1.01, 0.98, 0.99, 1.0, 1.06, 1.03, 1.06, 1.0, 1.06, 1.03, 1.06]
+  },
+  "source_anchors": [
+    {"path": "IMSDATA.C", "needle": "#define SIMLAENGE  100", "meaning": "period limit"},
+    {"path": "IMSDATA.C", "needle": "#define MAXVU      25", "meaning": "insurer count"},
+    {"path": "IMSDATA.C", "needle": "#define MAXVN      200", "meaning": "policyholder count"},
+    {"path": "IMSDATA.C", "needle": "int vkrvu[11] = {0,1,1,2,2,2,2,3,3,3,0};", "meaning": "insurer rule classes"},
+    {"path": "IMSDATA.C", "needle": "int vkrvn[8]  = {0,1,1,2,2,3,3,0};", "meaning": "policyholder rule classes"},
+    {"path": "IMS.E", "needle": "VU[i].DatenVU->Ac[1].lt = 1;", "meaning": "insurer action time"},
+    {"path": "IMS.E", "needle": "VN[i].DatenVN->Ac[1].lt = 1;", "meaning": "policyholder action time"},
+    {"path": "IMS.E", "needle": "func Vdefmd6()", "meaning": "model entry"},
+    {"path": "IMS.E", "needle": "Vuauini( 14,6,1,100", "meaning": "VU14 special definition"},
+    {"path": "IMS.E", "needle": "for ( j = 23; j <= MAXVU; j++)", "meaning": "last insurer group"},
+    {"path": "IMS.E", "needle": "for( j = 1;   j <= 15  ; j++ )", "meaning": "first policyholder group"},
+    {"path": "IMS.E", "needle": "for( j =151;  j <= 190 ; j++ )", "meaning": "late preference group"},
+    {"path": "IMS.E", "needle": "for( j =191;  j<= MAXVN; j++ )", "meaning": "late random-II group"}
+  ],
+  "known_source_conflicts": [
+    "The executable loops assign policyholders 151-190 to rule 3 and 191-200 to rule 2; the later screen text says 151-180 and 181-200. The executable loop boundaries are used."
+  ],
+  "boundaries": {
+    "runner_started": false,
+    "simulation_performed": false,
+    "historical_full_equality_claimed": false,
+    "legacy_output_used_as_input": false
+  }
+}

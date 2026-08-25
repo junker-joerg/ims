@@ -10,7 +10,7 @@ from typing import Sequence
 from ims.engine.context import SimulationContext
 from ims.model.agrsich_export import build_agrsich_export_tables
 from ims.model.agrsich_service import collect_extended_agrsich_records
-from ims.model.entities import BAV, Insurer
+from ims.model.entities import BAV
 from ims.model.legacy_agrsich_reference import (
     compare_export_record_to_legacy_row,
     extract_legacy_row,
@@ -20,6 +20,7 @@ from ims.model.vu_rules import (
     apply_vu_expected_claim_rule_to_insurer,
     vu_expected_claim_rule_parameters_from_mapping,
 )
+from ims.model.vdefmd6_population import build_vdefmd6_population
 
 
 SOURCE_BINDING_VERSION = "pr73-v1"
@@ -276,21 +277,26 @@ def _build_period_one_comparison(
     bav_data = profile.get("bav") if isinstance(profile.get("bav"), dict) else {}
     reference = profile.get("reference") if isinstance(profile.get("reference"), dict) else {}
     try:
-        insurer = Insurer(
-            entity_id=14,
-            name=str(vu14.get("name", "")),
-            rule_id=6,
-            rule_class=2,
-            premiums_current_sector=[float(item) for item in state["premiums_current_sector"]],
-            advertising_current_sector=[float(item) for item in state["advertising_current_sector"]],
-            reserves_current=[float(item) for item in state["reserves_current"]],
-            policyholders_current_sector=[float(item) for item in state["policyholders_current_sector"]],
-            claims_count_current=[int(item) for item in state["claims_count_current"]],
-            claims_sum_current=[float(item) for item in state["claims_sum_current"]],
+        population = build_vdefmd6_population()
+        insurer = next(item for item in population.insurers if item.entity_id == 14)
+        actual_state = (
+            insurer.premiums_current_sector,
+            insurer.advertising_current_sector,
+            insurer.reserves_current,
+            insurer.policyholders_current_sector,
+            insurer.claims_count_current,
+            insurer.claims_sum_current,
         )
-        insurer.premiums_current = insurer.premiums_current_sector[0]
-        insurer.advertising_current = insurer.advertising_current_sector[0]
-        insurer.policyholders_current = insurer.policyholders_current_sector[0]
+        expected_state = (
+            [float(item) for item in state["premiums_current_sector"]],
+            [float(item) for item in state["advertising_current_sector"]],
+            [float(item) for item in state["reserves_current"]],
+            [float(item) for item in state["policyholders_current_sector"]],
+            [int(item) for item in state["claims_count_current"]],
+            [float(item) for item in state["claims_sum_current"]],
+        )
+        if actual_state != expected_state:
+            raise ValueError("VU14 population state differs from source binding")
         apply_vu_expected_claim_rule_to_insurer(
             insurer,
             vu_expected_claim_rule_parameters_from_mapping(parameters),

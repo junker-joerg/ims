@@ -70,10 +70,10 @@ ein Referenz-Echo und kein unabhaengiger Zustandsweg.
 
 ## Offene Erzeugungsblocker
 
-1. vollstaendig belegte VU-/VN-/BAV-Population;
-2. belegte VU14-Regelparameter und logische Aktionsfolge;
-3. belegte RNG-Quelle mit Seed-, Ziehungs- und Verbrauchsreihenfolge;
-4. unabhaengige, durchgaengige Zustandsfortschreibung;
+1. angebundene logische Aktionsfolge und moderne Seed-Policy;
+2. belegte RNG-Ziehungs- und Verbrauchsreihenfolge;
+3. VN-/Schadenpfad fuer die Ergebnisfelder;
+4. unabhaengige, durchgaengige Zustandsfortschreibung fuer Perioden 2-100;
 5. daraus berechnete Exporttabelle fuer alle 100 Perioden.
 
 Historische RNG-Vollgleichheit ist keine Annahme des Vertrags. Eine spaetere
@@ -99,11 +99,12 @@ Zustandsursprung an `Vdefmd6` gebunden. Die echte VU14-Referenz ersetzt die
 zuvor linear konstruierte Testreihe. Eine unabhaengig erzeugte Periode 1 stimmt
 in 14/14 Feldern; RNG und VN-/Schadenpfad fuer Perioden 2-100 bleiben offen.
 
-## Restplanung nach PR 73
+## Fortschreibung durch PR 74
 
-Nach PR 73 verbleiben mindestens neun reviewbare Schritte bis zur gemeinsamen
-fachlichen Bewertung. Die aktuelle Detailplanung steht in
-`vu14_vdefmd6_source_binding.md`.
+PR 74 hat die `Vdefmd6`-Population mit 25 VU und 200 VN typisiert aufgebaut
+und den VU14-Perioden-1-Pfad daran angeschlossen. Nach PR 74 verbleiben
+mindestens acht reviewbare Schritte bis zur gemeinsamen fachlichen Bewertung.
+Die aktuelle Detailplanung steht in `vu14_vdefmd6_source_binding.md`.
 
 Eine fachliche Freigabe oder historische Vollgleichheit folgt weder aus PR 72
-noch aus der Quellenbindung in PR 73.
+noch aus Quellenbindung oder Populationsbuilder in PR 73 und PR 74.

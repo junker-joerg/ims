@@ -72,6 +72,13 @@ def test_vu14_source_binding_generates_period_one_before_comparison() -> None:
     assert payload["historical_full_equality_claimed"] is False
 
 
+def test_vu14_source_binding_uses_population_builder_state() -> None:
+    payload = build_vu14_source_binding_report(REPO_ROOT).to_dict()
+
+    assert payload["period_one_comparison"]["state_origin"] == "Vdefmd6_initialization"
+    assert payload["period_one_comparison"]["matches"] is True
+
+
 def test_vu14_source_binding_rejects_rule_drift(tmp_path: Path) -> None:
     binding = _binding_data()
     binding["vu14"]["rule_id"] = 14

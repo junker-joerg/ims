@@ -96,4 +96,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `calculated_export_provenance_map.md`: PR-71-Karte der 15 Kernexportidentitaeten mit C-/Python-Ankern, zwei Zustandsfamilien und offenen Vollfensterluecken
 - `vu14_100_period_generation_contract.md`: PR-72-Abnahmevertrag fuer den unabhaengigen VU14-Zustandsweg ueber Perioden `1-100` ohne Exporterzeugung oder Vollgleichheitsbehauptung
 - `vu14_vdefmd6_source_binding.md`: PR-73-Quellenbindung fuer VU14/`Vrvu06`, korrigierte historische Referenz und unabhaengige Perioden-1-Probe
+- `vdefmd6_population_builder.md`: PR-74-Builder fuer die typisierte 25-VU-/200-VN-Ausgangspopulation mit konservativer VN-Gruppengrenze
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -62,9 +62,13 @@ def test_vu14_generation_contract_requires_provenance_for_every_input_group() ->
         "vu14_rule_schedule_origin",
         "state_transition_origin",
     ]
-    assert payload["source_evidence_count"] == 8
+    assert payload["source_evidence_count"] == 10
     assert payload["source_binding"]["status"] == "source_bound"
     assert payload["source_binding"]["independent_period_one_ready"] is True
+    assert payload["population_builder"]["status"] == "population_built"
+    assert payload["population_builder"]["population_ready"] is True
+    assert payload["population_builder"]["summary"]["insurer_count"] == 25
+    assert payload["population_builder"]["summary"]["policyholder_count"] == 200
 
 
 def test_vu14_generation_contract_rejects_existing_output_echo_as_generation_input() -> None:
@@ -178,6 +182,6 @@ def test_vu14_generation_contract_documents_origin_and_remaining_plan() -> None:
     assert "contract_ready = true" in migration
     assert "generation_ready = false" in migration
     assert "acceptable_as_generation_input = false" in migration
-    assert "mindestens neun reviewbare Schritte" in migration
+    assert "mindestens acht reviewbare Schritte" in migration
     assert "Eine fachliche Freigabe" in migration
     assert "weder aus PR 72" in migration

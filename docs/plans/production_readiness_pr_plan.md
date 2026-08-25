@@ -119,7 +119,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   `generation_ready = false`).
 - PR 73: VU14 an `Vdefmd6` binden, die echte Referenz korrigieren und Periode 1
   unabhaengig pruefen (erledigt).
-- PR 74: `Vdefmd6`-Population fuer 25 VU und 200 VN typisiert aufbauen.
+- PR 74: `Vdefmd6`-Population fuer 25 VU und 200 VN typisiert aufbauen
+  (erledigt: `pr74-v1`, 225 Entitaeten und 13 gepruefte Quellanker).
 - PR 75: Aktionsfolge und moderne reproduzierbare Seed-Policy anbinden.
 - PR 76: VU14-Perioden 2-49 erzeugen und Abweichungen klassifizieren.
 - PR 77: Schockgrenze und VU14-Perioden 50-100 schliessen.
@@ -132,15 +133,16 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 73 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 74 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`9` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`8` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 74 baut als naechstes die in `Vdefmd6` belegte Population aus 25 VU und 200
-VN typisiert auf. Der konkrete historische Seed bleibt unbekannt; er darf nicht
-aus den Legacy-Ergebniszeilen erfunden werden.
+PR 75 bindet als naechstes die historische logische Aktionsfolge und eine
+explizite reproduzierbare moderne Seed-Policy an. Der konkrete historische
+Seed bleibt unbekannt; er darf nicht aus den Legacy-Ergebniszeilen erfunden
+werden.

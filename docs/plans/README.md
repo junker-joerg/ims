@@ -47,7 +47,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Windows-Pruefkette. PR 71 kartiert alle 15 Kernexporte auf zwei gemeinsame
   Zustandsfamilien und offene Vollfensterluecken. PR 72 hat den read-only
   100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vorbereitet; PR 73 hat
-  die Quellenbindung, echte Referenz und unabhaengige Periode 1 ergaenzt.
+  die Quellenbindung, echte Referenz und unabhaengige Periode 1 ergaenzt;
+  PR 74 baut die typisierte `Vdefmd6`-Population fuer 25 VU und 200 VN.
+- `vdefmd6_population_builder_plan.md`: enger PR-74-Plan fuer die typisierte
+  Ausgangspopulation ohne Scheduler-, RNG-, Schaden- oder Regelausfuehrung.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,
   Restore und Side-by-Side-Update/Rollback eines validierten Ergebnisstands,
   weiterhin ohne Simulation oder Schemamigration.

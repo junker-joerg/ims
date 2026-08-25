@@ -633,15 +633,16 @@ Aktualisierte grobe Restplanung:
   bleibt wegen direkter Output-Vorgaben kein unabhaengiger Erzeugungsinput;
 - PR 73 hat VU14 an `Vdefmd6` gebunden, die echte Referenz korrigiert und
   Periode 1 unabhaengig in 14/14 Feldern geprueft;
-- vorgeschlagener naechster Schritt ist PR 74: die belegte Population aus
-  25 VU und 200 VN typisiert aufbauen;
+- PR 74 hat die belegte Population aus 25 VU und 200 VN typisiert aufgebaut;
+- vorgeschlagener naechster Schritt ist PR 75: logische Aktionsfolge und
+  reproduzierbare moderne Seed-Policy anbinden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der PR-73-Quellenbindung bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `9`
+Nach dem PR-74-Populationsbuilder bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `8`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

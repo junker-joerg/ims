@@ -28,6 +28,6 @@ identisch mit dem dreifach bestaetigten lokalen Altdatenkandidaten.
 
 ## Danach
 
-PR 74 baut die belegte `Vdefmd6`-Population typisiert auf. Aktionsfolge,
-reproduzierbare moderne Seed-Policy und Perioden 2-100 folgen in getrennten
-Slices.
+PR 74 hat die belegte `Vdefmd6`-Population typisiert aufgebaut. PR 75 bindet
+als naechstes Aktionsfolge und reproduzierbare moderne Seed-Policy an;
+Perioden 2-100 folgen weiterhin in getrennten Slices.

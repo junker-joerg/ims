@@ -76,21 +76,23 @@ Perioden-1-Erzeugung ist belegt, nicht das vollstaendige Zeitfenster.
   ausgerichtete Writer-/Vergleichsproben und keine Erzeugungsinputs.
 - Es gibt keine Freigabe und keine historische Vollgleichheit.
 
-## Restplanung
+## Fortschreibung durch PR 74
 
-Nach PR 73 verbleiben mindestens neun reviewbare Schritte:
+PR 74 hat den ersten Schritt dieser Restplanung mit dem typisierten
+`Vdefmd6`-Builder fuer 25 VU und 200 VN geschlossen. Der Perioden-1-Vergleich
+bezieht VU14 nun aus diesem Builder.
 
-1. PR 74: `Vdefmd6`-Population als typisierten, rein quellgestuetzten Builder
-   fuer 25 VU und 200 VN vorbereiten;
-2. PR 75: logische Aktionsfolge und explizite moderne Seed-Policy anbinden,
+Danach verbleiben mindestens acht reviewbare Schritte:
+
+1. PR 75: logische Aktionsfolge und explizite moderne Seed-Policy anbinden,
    ohne den unbekannten historischen Seed zu behaupten;
-3. PR 76: VU14-Zustandsweg fuer Perioden 2-49 schliessen und Abweichungen
+2. PR 76: VU14-Zustandsweg fuer Perioden 2-49 schliessen und Abweichungen
    klassifizieren;
-4. PR 77: Schockgrenze und Perioden 50-100 schliessen;
-5. PR 78: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
-6. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-7. PR 81: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
-8. PR 82: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
+3. PR 77: Schockgrenze und Perioden 50-100 schliessen;
+4. PR 78: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
+5. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+6. PR 81: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
+7. PR 82: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
 
 Funde koennen diese Schritte weiter teilen. Eine fehlende historische
 Seed-Aufzeichnung wird nicht durch eine erfundene Gleichheitsannahme ersetzt.
