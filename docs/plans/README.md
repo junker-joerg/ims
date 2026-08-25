@@ -55,6 +55,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Ausgangspopulation ohne Scheduler-, RNG-, Schaden- oder Regelausfuehrung.
 - `vdefmd6_action_seed_plan.md`: enger PR-75-Plan fuer wirksame Aktionsslots
   und explizite moderne Seed-Ableitung ohne Schedulerstart oder RNG-Ziehung.
+- `vdefmd6_pre_shock_snapshot_plan.md`: PR-78-Plan fuer 150 explizite VN-
+  Vorschock-Snapshots und die moderne Drawfolge ohne Runnerstart.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

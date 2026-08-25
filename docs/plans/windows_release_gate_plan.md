@@ -79,6 +79,7 @@ VU14-Quellenbindung und Periode 1 geschlossen. PR 74 hat die belegte
 `Vdefmd6`-Population aus 25 VU und 200 VN aufgebaut. PR 75 hat danach die
 wirksamen Aktionsslots und eine moderne Seed-Policy read-only gebunden. PR 76
 hat die VU14-Vorschock-Regelprojektion klassifiziert. PR 77 hat danach den
-offenen VN-/Schaden-/Settlement-Pfad read-only kartiert. PR 78 leitet als
-naechstes explizite Vorschock-Snapshots und eine moderne Drawfolge ab,
-weiterhin ohne vorgezogene Vollgleichheitsbehauptung.
+offenen VN-/Schaden-/Settlement-Pfad read-only kartiert. PR 78 hat explizite
+VN-Snapshots und eine moderne Drawfolge fuer eine Vorschockperiode abgeleitet.
+PR 79 bereitet als naechstes alle VU- und BAV-Eingaben vor, weiterhin ohne
+vorgezogene Vollgleichheitsbehauptung.

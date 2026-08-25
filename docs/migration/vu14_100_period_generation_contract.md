@@ -125,8 +125,8 @@ Periode 2 durch den VN-/Schaden-/Settlement-Pfad offen.
 
 Der Bericht ist `rule_projection_ready = true`, aber weiterhin
 `independent_periods_2_49_ready = false` und `generation_ready = false`.
-Der Befund teilt die Restplanung: Nach PR 76 bleiben mindestens acht Schritte
-bis PR 84.
+Der Befund teilte die damalige Restplanung; die Fortschreibung durch PR 78
+unten ersetzt inzwischen deren Nummerierung und Umfang.
 
 ## Fortschreibung durch PR 77
 
@@ -136,7 +136,8 @@ aktiven VN verursachen historisch mindestens 7.200 uniforme Basisziehungen je
 Periode allein im Schadenteil. Die Reihenfolge der zwei `normal()`-Aufrufe
 innerhalb einer C-Schadenformel sowie die historische VN-Same-Slot-Reihenfolge
 bleiben unbestimmt. Deshalb bleiben Erzeugung und historische RNG-Gleichheit
-gesperrt. Ab PR 78 verbleiben mindestens sieben Schritte bis PR 84.
+gesperrt. PR 78 hat darauf die VN-Snapshots einer einzelnen Vorschockperiode
+materialisiert. Ab PR 79 verbleiben mindestens acht Schritte bis PR 86.
 
 Eine fachliche Freigabe oder historische Vollgleichheit folgt weder aus PR 72
 noch aus Quellenbindung, Populationsbuilder, Aktions-/Seed-Vertrag oder

@@ -641,15 +641,17 @@ Aktualisierte grobe Restplanung:
 - PR 77 hat VN-/Schaden-/Settlement-Eingaben fuer alle sechs Regeln und 150
   aktive Vorschock-VN kartiert; die C-interne Normal- und historische
   Same-Slot-Reihenfolge bleiben offen;
-- vorgeschlagener naechster Schritt ist PR 78: explizite Vdefmd6-Snapshots und
-  eine moderne reproduzierbare Drawfolge fuer Perioden 2-49 ableiten;
+- PR 78 hat 150 VN-Regel- und 150 Schaden-Snapshots fuer eine einzelne
+  Vorschockperiode mit moderner reproduzierbarer Drawfolge materialisiert;
+- vorgeschlagener naechster Schritt ist PR 79: Snapshots aller 25 VU-Regeln,
+  BAV-Vorperiodeninputs und die Informationskostengrenze ableiten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der PR-77-Herkunftskartierung bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
+Nach der PR-78-Snapshotmaterialisierung bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `8`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

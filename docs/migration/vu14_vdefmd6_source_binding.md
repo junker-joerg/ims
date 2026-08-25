@@ -85,17 +85,18 @@ bezieht VU14 nun aus diesem Builder.
 PR 75 hat 200 Aktionsslots und eine explizite moderne Seed-Policy gebunden.
 PR 76 hat danach den VU14-Regelpfad fuer Perioden 1-49 unabhaengig projiziert.
 Die Regelausgaben treffen nur bis Periode 16; der fehlende VN-/Schaden-/
-Settlement-Pfad wird in Periode 17 entscheidungsrelevant. Danach verbleiben
-mindestens acht reviewbare Schritte:
+Settlement-Pfad wird in Periode 17 entscheidungsrelevant. PR 77 hat den Pfad
+kartiert und PR 78 die VN-Snapshots einer Einzelperiode materialisiert. Ab
+PR 79 verbleiben mindestens acht reviewbare Schritte:
 
-1. PR 77: Vorschock-VN-/Schaden-/Settlement-Eingaben und Draw-Reihenfolge
-   kartieren;
-2. PR 78: VU14-Vollzustand fuer Perioden 2-49 schliessen;
-3. PR 79: Schockgrenze und Perioden 50-100 schliessen;
-4. PR 80: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
-5. PR 81 und PR 82: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-6. PR 83: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
-7. PR 84: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
+1. PR 79: VU-Snapshots, BAV-Vorperiodeninputs und Informationskosten
+   vorbereiten;
+2. PR 80: VU14-Vollzustand fuer Perioden 2-49 schliessen;
+3. PR 81: Schockgrenze und Perioden 50-100 schliessen;
+4. PR 82: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
+5. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+6. PR 85: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
+7. PR 86: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
 
 Funde koennen diese Schritte weiter teilen. Eine fehlende historische
 Seed-Aufzeichnung wird nicht durch eine erfundene Gleichheitsannahme ersetzt.

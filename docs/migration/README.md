@@ -98,5 +98,6 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vu14_vdefmd6_source_binding.md`: PR-73-Quellenbindung fuer VU14/`Vrvu06`, korrigierte historische Referenz und unabhaengige Perioden-1-Probe
 - `vdefmd6_population_builder.md`: PR-74-Builder fuer die typisierte 25-VU-/200-VN-Ausgangspopulation mit konservativer VN-Gruppengrenze
 - `vdefmd6_action_seed_contract.md`: PR-75-Vertrag fuer 200 wirksame Aktionsslots und eine explizite moderne Seed-Policy ohne Ausfuehrungs- oder historische RNG-Gleichheitsbehauptung
+- `vdefmd6_pre_shock_snapshot_contract.md`: PR-78-Vertrag fuer 150 VN-Regel- und 150 Schaden-Snapshots einer Vorschockperiode mit expliziter moderner Drawfolge
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

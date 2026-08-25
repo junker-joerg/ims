@@ -76,7 +76,9 @@ Der heutige explizite Runner verarbeitet zuerst
 bereits materialisierte Draws und Entscheidungen deterministisch, entspricht
 aber nicht automatisch der historischen Zufallsverbrauchsfolge. PR 78 muss
 deshalb die Vdefmd6-Snapshotableitung und eine explizite moderne Drawfolge vor
-dem Runner bereitstellen. PR 77 markiert den Pfad nur als kartiert:
+dem Runner bereitstellen. PR 78 hat diese Ableitung inzwischen fuer eine
+einzelne Vorschockperiode als `pr78-v1` geschlossen. PR 77 markiert den
+Ursprungspfad weiterhin nur als kartiert:
 
 - `mapping_ready = true`;
 - `policyholder_claim_path_mapped = true`;
@@ -85,7 +87,9 @@ dem Runner bereitstellen. PR 77 markiert den Pfad nur als kartiert:
 - `independent_periods_2_49_ready = false`;
 - `generation_ready = false`.
 
-Die Kartierung ist kein Herkunftsnachweis fuer einen bereits erzeugten
+Die Kartierung und die neue Snapshotmaterialisierung sind kein
+Herkunftsnachweis fuer einen bereits erzeugten
 Vollzustand. Es wurden keine Legacy-Ausgaben als Eingabe verwendet, keine
-Draws gezogen, kein Runner und keine Simulation gestartet.
+Runner und keine Simulation gestartet. PR 78 zieht moderne RNG-Werte nur fuer
+die expliziten Snapshots; historische RNG-Gleichheit wird nicht behauptet.
 Es gibt keine historische Vollgleichheitsbehauptung.

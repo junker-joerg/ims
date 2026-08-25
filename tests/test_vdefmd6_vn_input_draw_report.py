@@ -107,6 +107,6 @@ def test_vdefmd6_vn_input_draw_cli_and_docs_keep_pr78_boundary(capsys) -> None:
     assert payload["mapping_ready"] is True
     assert payload["execution_performed"] is False
     assert "PR 78" in plan
-    assert "sieben" in plan
+    assert "acht" in plan
     assert "nicht festgelegt" in migration
     assert "keine historische Vollgleichheitsbehauptung" in migration

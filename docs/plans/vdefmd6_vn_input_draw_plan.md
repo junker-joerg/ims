@@ -34,18 +34,12 @@ historischer RNG-Gleichheit.
 
 ## Restplanung
 
-Nach PR 77 bleiben mindestens sieben reviewbare PRs bis PR 84:
-
-1. PR 78: Vdefmd6-Eingaben und explizite Draws fuer den modernen,
-   reproduzierbaren VU14-Vollzustand der Perioden 2-49 ableiten und
-   Abweichungen klassifizieren;
-2. PR 79: Schockgrenze und VU14-Perioden 50-100 schliessen;
-3. PR 80: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
-4. PR 81: erste VN-Regelzustandsgruppe schliessen;
-5. PR 82: zweite VN-Regelzustandsgruppe schliessen;
-6. PR 83: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
-7. PR 84: alle 15 Kernexporte gemeinsam vergleichen und die fachliche Freigabe
-   menschlich neu bewerten.
+PR 78 hat die VN-Snapshots und moderne Drawfolge fuer eine einzelne Periode
+materialisiert. Die dabei belegte Abhaengigkeit von allen 25 VU-Regeln und der
+offenen Informationskostenanwendung trennt den Mehrperiodenschritt. Nach PR 78
+bleiben deshalb mindestens acht reviewbare PRs bis PR 86; die aktuelle Folge
+steht in `vdefmd6_pre_shock_snapshot_plan.md` und
+`production_readiness_pr_plan.md`.
 
 Konkrete Funde koennen weitere kleine Slices erfordern. Es gilt weiterhin:
 keine Simulation in diesem Schritt, keine neue Fachlogik und keine historische

@@ -1,0 +1,66 @@
+{
+  "schema_version": "pr78-v1",
+  "model_id": "Vdefmd6",
+  "scope": "single_pre_shock_period_snapshot_materialization",
+  "expected": {
+    "contract_period": 2,
+    "contract_seed": 780001,
+    "active_insurer_count": 25,
+    "insurance_snapshot_count": 150,
+    "damage_snapshot_count": 150,
+    "policyholder_id_start": 1,
+    "policyholder_id_end": 150,
+    "rule_counts": {
+      "best_info": 30,
+      "compulsory": 15,
+      "preference": 30,
+      "random": 15,
+      "sample_search": 30,
+      "search_history": 30
+    },
+    "uniform_value_count": 990,
+    "normal_value_count": 600,
+    "damage_threshold_uniform_value_count": 300,
+    "insurance_uniform_value_count": 690
+  },
+  "draw_policy_id": "vdefmd6-modern-period-major-v1",
+  "draw_order": [
+    "policyholder_id_ascending",
+    "damage_threshold_sector_1",
+    "damage_threshold_sector_2",
+    "damage_sector_1_trigger",
+    "damage_sector_1_amount",
+    "damage_sector_2_trigger",
+    "damage_sector_2_amount",
+    "rule_specific_insurance_draws"
+  ],
+  "blocker_codes": [
+    "all_insurer_period_rule_snapshots_missing",
+    "information_cost_wealth_application_open",
+    "multi_period_state_projection_missing",
+    "historical_rng_and_same_slot_order_open"
+  ],
+  "source_anchors": [
+    {"path": "IMS.E", "needle": "act Myinitvn {", "meaning": "historical VN run initialization"},
+    {"path": "IMS.E", "needle": "VN[gOwnnr].DatenVN->Rk[1].l.Sw[i]=myrndf();", "meaning": "sector-1 threshold origin"},
+    {"path": "IMS.E", "needle": "VN[gOwnnr].DatenVN->Rk[2].k.Sw[i]=myrndf();", "meaning": "sector-2 threshold origin"},
+    {"path": "IMS.E", "needle": "func Vdefmd6() {", "meaning": "source model"},
+    {"path": "IMS.E", "needle": "Bavauin( 50,0, 0.8, 0.02,1);", "meaning": "shock and information cost"},
+    {"path": "python_port/ims/model/vdefmd6_population.py", "needle": "def build_vdefmd6_population()", "meaning": "typed source population"},
+    {"path": "python_port/ims/model/vn_insurance_rules.py", "needle": "class VNInsuranceRuleSnapshot:", "meaning": "insurance snapshot surface"},
+    {"path": "python_port/ims/model/vn_rules.py", "needle": "class VNDamageSettlementSnapshot:", "meaning": "damage snapshot surface"},
+    {"path": "python_port/ims/engine/rng.py", "needle": "def rand_uniform_0_1", "meaning": "modern uniform API"},
+    {"path": "python_port/ims/engine/rng.py", "needle": "def rand_normal_standard", "meaning": "modern normal API"},
+    {"path": "python_port/ims/model/vdefmd6_pre_shock_snapshots.py", "needle": "def build_vdefmd6_pre_shock_snapshot_batch", "meaning": "PR78 materializer"},
+    {"path": "python_port/ims/model/vdefmd6_pre_shock_snapshots.py", "needle": "runner_started: bool = False", "meaning": "no-runner boundary"}
+  ],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "snapshot_materialization_performed": true,
+    "rng_draws_performed": true,
+    "runner_started": false,
+    "simulation_performed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_full_equality_claimed": false
+  }
+}

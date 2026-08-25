@@ -50,6 +50,7 @@ Aktionen noch Zufallsziehungen oder eine Simulation aus.
 
 PR 76 hat den VU14-Regelpfad fuer Perioden 1-49 projiziert und die offene
 VN-/Schaden-/Settlement-Grenze klassifiziert. PR 77 hat diesen Pfad fuer alle
-sechs VN-Regeln kartiert. PR 78 leitet als naechstes explizite Vorschock-
-Snapshots und eine moderne Drawfolge ab, bevor ein vollstaendiger Folgezustand
-behauptet werden darf.
+sechs VN-Regeln kartiert. PR 78 hat explizite VN-Vorschock-Snapshots und eine
+moderne Drawfolge fuer eine einzelne Periode abgeleitet. PR 79 bereitet als
+naechstes die VU- und BAV-Eingangsseite vor, bevor ein vollstaendiger
+Folgezustand behauptet werden darf.

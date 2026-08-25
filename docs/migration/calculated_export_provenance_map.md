@@ -122,7 +122,8 @@ Der erwartete PR-71-Befund lautet:
 ## Restplanung
 
 Fuer eine interne, reviewbare Erzeugung reicht die aktualisierte Mindestserie
-von PR 72 bis PR 84. Nach PR 76 bleiben davon mindestens acht PRs offen:
+von PR 72 bis PR 86. PR 78 hat die Einzelperioden-VN-Snapshots geschlossen;
+danach bleiben mindestens acht PRs offen:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
@@ -132,14 +133,18 @@ von PR 72 bis PR 84. Nach PR 76 bleiben davon mindestens acht PRs offen:
 3. PR 74: Population typisiert aufbauen (erledigt, `pr74-v1`);
 4. PR 75: Aktions-/Seed-Grenze read-only schliessen (erledigt, `pr75-v1`);
 5. PR 76: Vorschock-Regelprojektion klassifizieren (erledigt, `pr76-v1`);
-6. PR 77 und PR 78: VN-/Schaden-/Settlement-Herkunft kartieren und den
-   VU14-Vollzustand fuer Perioden 2-49 schliessen;
-7. PR 79: Schockgrenze und VU14-Perioden 50-100 schliessen;
-8. PR 80: dieselbe Versicherer-Population auf `imsvusk1.dat` und
+6. PR 77: VN-/Schaden-/Settlement-Herkunft kartieren (erledigt, `pr77-v1`);
+7. PR 78: VN-Snapshots einer Vorschockperiode materialisieren (erledigt,
+   `pr78-v1`);
+8. PR 79: alle VU-Snapshots, BAV-Vorperiodeninputs und Informationskosten
+   vorbereiten;
+9. PR 80: VU14-Vollzustand fuer Perioden 2-49 schliessen;
+10. PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen;
+11. PR 82: dieselbe Versicherer-Population auf `imsvusk1.dat` und
    `imsvuvk1-3.dat` fuer das geforderte Fenster verbreitern;
-9. PR 81 und PR 82: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-10. PR 83: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
-11. PR 84: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
+12. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+13. PR 85: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
+14. PR 86: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
    die fachliche Freigabe erneut menschlich bewerten.
 
 Die verbleibenden acht PRs sind eine Mindestplanung. Funde zum Scheduler,

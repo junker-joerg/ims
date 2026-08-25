@@ -131,28 +131,35 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   Vorschockperiode kartieren (erledigt: `pr77-v1`, sechs Regeln und 150 aktive
   VN gebunden; C-interne Normalreihenfolge und Same-Slot-Reihenfolge bleiben
   explizit offen).
-- PR 78: VU14-Vollzustand fuer Perioden 2-49 schliessen.
-- PR 79: Schockgrenze und VU14-Perioden 50-100 schliessen.
-- PR 80: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
+- PR 78: explizite VN-Vorschock-Snapshots und moderne Drawfolge fuer eine
+  einzelne Periode materialisieren (erledigt: `pr78-v1`, 150 Regel- und 150
+  Schaden-Snapshots; kein Runner oder Simulationsstart).
+- PR 79: Snapshotableitung aller 25 VU-Regeln, BAV-Vorperiodeninputs und
+  Informationskostengrenze schliessen.
+- PR 80: kontrollierten VU-/VN-/Schaden-/Settlement-Pfad fuer Perioden 2-49
+  ausfuehren und VU14-Abweichungen klassifizieren.
+- PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen.
+- PR 82: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
   verbreitern.
-- PR 81 und PR 82: VN-Regelzustand in zwei kleinen Gruppen schliessen.
-- PR 83: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
-- PR 84: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
+- PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen.
+- PR 85: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
+- PR 86: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
   neu bewerten.
 
 ## Grobe Anzahl
 
-Nach PR 77 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 78 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`7` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`8` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 78 leitet als naechstes aus der kartierten `Vdefmd6`-Population die
-expliziten Vorschock-Snapshots und eine dokumentierte moderne Drawfolge ab.
-Der bestehende Runner soll damit den VU14-Vollzustand fuer Perioden 2-49
-reproduzierbar bilden und Abweichungen klassifizieren. Die offene historische
-Reihenfolge bleibt ein Blocker; Legacy-Ausgaben werden nicht zurueckgefuehrt.
+PR 79 leitet als naechstes die periodenspezifischen Snapshots aller 25 VU-Regeln
+sowie die benoetigten BAV-Vorperiodeninputs ab. Zugleich wird geklaert, wie die
+in `Vdefmd6` belegten Informationskosten an den vorhandenen VN-Zustand
+angeschlossen werden. Erst PR 80 wendet den gemeinsamen Vorschockpfad fuer
+Perioden 2-49 kontrolliert an. Die offene historische Reihenfolge bleibt ein
+Blocker; Legacy-Ausgaben werden nicht zurueckgefuehrt.

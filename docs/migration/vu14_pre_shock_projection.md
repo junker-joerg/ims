@@ -68,17 +68,17 @@ Offen bleiben:
 
 ## Restplanung
 
-Der Quellenbefund teilt die bisherige Planung. Nach PR 76 bleiben mindestens
-acht Schritte bis PR 84:
+Der Quellenbefund hat die bisherige Planung weiter geteilt. PR 77 und PR 78
+sind erledigt; ab PR 79 bleiben mindestens acht Schritte bis PR 86:
 
-1. PR 77: VN-/Schaden-/Settlement-Eingaben und Draw-Reihenfolge fuer die
-   Vorschockperiode kartieren;
-2. PR 78: daraus den unabhaengigen VU14-Vollzustand fuer Perioden 2-49 bilden;
-3. PR 79: Schockgrenze und VU14-Perioden 50-100 schliessen;
-4. PR 80: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
-5. PR 81 und PR 82: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-6. PR 83: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
-7. PR 84: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
+1. PR 79: alle VU-Snapshots, BAV-Vorperiodeninputs und Informationskosten
+   vorbereiten;
+2. PR 80: den unabhaengigen VU14-Vollzustand fuer Perioden 2-49 bilden;
+3. PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen;
+4. PR 82: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
+5. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+6. PR 85: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
+7. PR 86: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
    neu bewerten.
 
 Weitere Quellenfunde duerfen diese Mindestplanung erneut teilen.
