@@ -66,3 +66,13 @@ Alignment-Zeile dokumentiert werden.
 - keine neue VN-Regelentscheidung;
 - kein Import weiterer nicht versionierter Rohdaten in diesem Schritt;
 - keine Umdeutung von Writer-Referenzen als historische Baseline.
+
+## Kontrollierter Erzeugungsstand
+
+PR 83 erzeugt `imsvnr01.dat` bis `imsvnr03.dat` fuer Perioden 1-100 aus dem
+kontrollierten modernen `Vdefmd6`-Zustand. Der Vergleich trifft 946/3.900
+Felder, aber keine vollstaendige Zeile. Der historische, zwischen Regeln nicht
+zurueckgesetzte Akkumulator und die Bedeutung der `Ev`-Spalten bleiben offene
+fachliche Grenzen. Die Referenzen werden nicht als Erzeugungsinput verwendet.
+
+PR 84 soll als naechstes die Regeln 4-6 unter denselben Grenzen vergleichen.

@@ -490,8 +490,11 @@ BAV-Vorperiodeninputs geschlossen. PR 80 hat die Informationskosten angewendet
 und VU14/1-49 mit 236/686 Feldtreffern klassifiziert. PR 81 hat Schockgrenze,
 50 spaete VN und VU14/1-100 mit 488/1.400 Feldtreffern geschlossen. PR 82 hat
 SK1/all und die drei VU-Klassen fuer 1-100 mit 898/5.600 Feldtreffern
-klassifiziert. Danach bleiben mindestens vier reviewbare PRs bis PR 86; die
+klassifiziert. Nach PR 82 waren vier reviewbare PRs bis PR 86 offen; die
 historische VU-Klassenakkumulatorsemantik ist als eigener Blocker dokumentiert.
+PR 83 hat anschliessend `imsvnr01.dat` bis `imsvnr03.dat` fuer Perioden 1-100
+mit 946/3.900 Feldtreffern klassifiziert. Danach bleiben mindestens drei
+reviewbare PRs bis PR 86; VN-Regelakkumulator und `Ev`-Feldbedeutung sind offen.
 
 ## Validierungsregel
 

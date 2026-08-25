@@ -60,7 +60,7 @@ class LegacyPolicyholderTable:
 @dataclass(slots=True)
 class LegacyPolicyholderFieldComparison:
     name: str
-    actual: str | float | int
+    actual: str | float | int | None
     expected: str | float | int
     matches: bool
 
@@ -159,14 +159,17 @@ def compare_policyholder_export_record_to_legacy_row(
         export_values[1:],
         legacy_row.metric_values(),
     ):
-        actual_value = float(actual)
+        actual_value = None if actual is None else float(actual)
         expected_value = float(expected)
         field_comparisons.append(
             LegacyPolicyholderFieldComparison(
                 name=name,
                 actual=actual_value,
                 expected=expected_value,
-                matches=abs(actual_value - expected_value) <= tolerance,
+                matches=(
+                    actual_value is not None
+                    and abs(actual_value - expected_value) <= tolerance
+                ),
             )
         )
 

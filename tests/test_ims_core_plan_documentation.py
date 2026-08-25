@@ -247,16 +247,17 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 71 hat die 15 Kernexporte" in plan
     assert "PR 72 hat den vollstaendigen read-only 100-Perioden-Erzeugungsvertrag" in plan
     assert "PR 82 hat denselben Versichererzustand" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 83" in plan
-    assert "mindestens `4`" in plan
+    assert "PR 83 hat `imsvnr01.dat` bis `imsvnr03.dat`" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 84" in plan
+    assert "mindestens `3`" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "mindestens `4`" in plan
-    assert "Nach dem PR-82-Aggregatlauf bleiben `0` technische Pflicht-PRs" in plan
+    assert "mindestens `3`" in plan
+    assert "Nach dem PR-83-Regelgruppenlauf bleiben `0` technische Pflicht-PRs" in plan
     assert "eingefrorene Pruefkette" in plan
     assert "100-Perioden-Erzeugungsvertrag" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
@@ -294,8 +295,8 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "mindestens" in plan and "`4` weitere PRs" in plan
-    assert "PR 83 schliesst als naechstes" in plan
+    assert "mindestens" in plan and "`3` weitere PRs" in plan
+    assert "PR 84 schliesst als naechstes" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
@@ -317,6 +318,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag" in plan.replace("\n", " ")
     assert "PR 81: Schockgrenze und VU14-Perioden 50-100" in plan.replace("\n", " ")
     assert "PR 82: Versicherer-Population" in plan.replace("\n", " ")
+    assert "PR 83: VN-Regelzustand" in plan.replace("\n", " ")
     assert "PR 86: alle 15 Exporte gemeinsam vergleichen" in plan.replace("\n", " ")
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan

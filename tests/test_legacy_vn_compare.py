@@ -188,3 +188,28 @@ def test_compare_policyholder_export_record_to_legacy_row_detects_difference() -
 
     assert comparison.matches is False
     assert any(field.name == "Vp1" and field.matches is False for field in comparison.field_comparisons)
+
+
+def test_compare_policyholder_export_record_classifies_missing_mode_as_difference() -> None:
+    legacy_table = parse_legacy_policyholder_dat(
+        Path("tests/references/legacy_agrsich/IMSVNR01.DAT")
+    )
+    legacy_row = extract_legacy_policyholder_row(legacy_table, 1)
+
+    assert legacy_row is not None
+    export_table = _export_table_from_legacy_row(
+        legacy_row,
+        filename="imsvnr01.dat",
+        selector_value=1,
+    )
+    export_table.rows[0].values[1] = None
+    comparison = compare_policyholder_export_record_to_legacy_row(
+        export_table,
+        legacy_row,
+    )
+
+    assert comparison.matches is False
+    assert any(
+        field.name == "Vu1" and field.actual is None and field.matches is False
+        for field in comparison.field_comparisons
+    )

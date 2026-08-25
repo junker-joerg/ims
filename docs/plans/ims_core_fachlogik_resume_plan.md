@@ -653,15 +653,18 @@ Aktualisierte grobe Restplanung:
 - PR 82 hat denselben Versichererzustand auf SK1/all und die drei VU-
   Klassenaggregate verbreitert; 898/5.600 Felder treffen, waehrend die
   historische klassenuebergreifende Akkumulatorsemantik offen bleibt;
-- vorgeschlagener naechster Schritt ist PR 83: die erste kleine Gruppe der
-  VN-Regelaggregate aus demselben Zustand schliessen;
+- PR 83 hat `imsvnr01.dat` bis `imsvnr03.dat` aus demselben Zustand
+  klassifiziert; 946/3.900 Felder treffen, ohne volle Vergleichszeile, und der
+  historische VN-Regelakkumulator sowie die `Ev`-Feldbedeutung bleiben offen;
+- vorgeschlagener naechster Schritt ist PR 84: `imsvnr04.dat` bis
+  `imsvnr06.dat` aus demselben Zustand schliessen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem PR-82-Aggregatlauf bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `4`
+Nach dem PR-83-Regelgruppenlauf bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `3`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

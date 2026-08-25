@@ -122,9 +122,9 @@ Der erwartete PR-71-Befund lautet:
 ## Restplanung
 
 Fuer eine interne, reviewbare Erzeugung reicht die aktualisierte Mindestserie
-von PR 72 bis PR 86. PR 82 hat nach dem VU14-Schockpfad auch SK1/all und die
-drei VU-Klassenaggregate aus demselben Zustand klassifiziert; danach bleiben
-mindestens vier PRs offen:
+von PR 72 bis PR 86. PR 83 hat nach dem VU14-Schockpfad, SK1/all und den drei
+VU-Klassen auch die ersten drei VN-Regelaggregate aus demselben Zustand
+klassifiziert; danach bleiben mindestens drei PRs offen:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
@@ -146,12 +146,14 @@ mindestens vier PRs offen:
 11. PR 82: dieselbe Versicherer-Population auf `imsvusk1.dat` und
    `imsvuvk1-3.dat` fuer das geforderte Fenster verbreitern (erledigt,
    `pr82-v1`, 898/5.600 Feldtreffer);
-12. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-13. PR 85: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
-14. PR 86: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
+12. PR 83: `imsvnr01.dat` bis `imsvnr03.dat` schliessen (erledigt,
+    `pr83-v1`, 946/3.900 Feldtreffer);
+13. PR 84: `imsvnr04.dat` bis `imsvnr06.dat` schliessen;
+14. PR 85: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
+15. PR 86: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
    die fachliche Freigabe erneut menschlich bewerten.
 
-Die verbleibenden vier PRs sind eine Mindestplanung. Funde zum Scheduler,
+Die verbleibenden drei PRs sind eine Mindestplanung. Funde zum Scheduler,
 zum RNG oder zur Zustandsfortschreibung duerfen eigene kleine Korrektur-PRs
 erzwingen. Werden stattdessen unabhaengig berechnete Tabellen extern mit
 belegter Herkunft geliefert, kann die interne Erzeugungsserie verkuerzt werden.

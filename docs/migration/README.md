@@ -105,5 +105,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   Aktivierung der spaeten VN und kontrollierten VU14-Vollzustand 1-100
 - `vdefmd6_vu_aggregate_run_contract.md`: PR-82-Vertrag fuer SK1/all und die
   drei VU-Klassenaggregate mit offener historischer Akkumulatorsemantik
+- `vdefmd6_vn_rule_group_1_run_contract.md`: PR-83-Vertrag fuer
+  `imsvnr01.dat` bis `imsvnr03.dat` mit klassifizierten Abweichungen und
+  offener VN-Regelakkumulator-/`Ev`-Feldgrenze
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
