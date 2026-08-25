@@ -42,6 +42,14 @@ Windows-Temp- oder Repo-Cache-Rechten ab.
 Der Workflow laeuft auf `windows-latest` fuer Pull Requests, Pushes nach
 `main` und manuelle Starts. Er verwendet Python 3.12, Node.js 22, den Python-
 Extra-Satz `dev` und `npm.cmd ci` gegen das versionierte Lockfile.
+Die verwendeten GitHub-Actions liegen auf Version 6 und laufen intern auf
+Node.js 24. Das beseitigt die Abkuendigungswarnung der frueheren Versionen,
+ohne die fuer den Frontend-Build festgelegte Node.js-Version 22 zu veraendern.
+
+Die Paketmetadaten referenzieren ausschliesslich die paketlokale
+`python_port/README.md`. Damit funktioniert die isolierte Installation auch
+auf einem frischen Runner; Dateien ausserhalb des Build-Wurzelverzeichnisses
+werden nicht vorausgesetzt.
 
 Danach ruft der Workflow ausschliesslich das lokale Gate-Skript auf. Damit
 bleiben lokale und entfernte Reihenfolge sowie Feldpruefungen identisch.
@@ -103,6 +111,11 @@ Der lokale Windows-Gesamtlauf fuer PR 70 war erfolgreich:
 - fachlicher Korpusbericht weiter `status = "blocked"` mit 15 fehlenden
   berechneten Exporten und `production_release_approved = false`;
 - keine Ausfuehrung und keine Simulation gestartet.
+
+Ein CI-Nachtrag behebt den im ersten entfernten Lauf sichtbaren
+Packaging-Fehler: Die Projekt-README liegt nun innerhalb von `python_port/`.
+Ein Regressionstest friert diese Build-Grenze sowie die Node-24-faehigen
+Action-Versionen ein.
 
 ## Grenzen
 

@@ -2,6 +2,8 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+PYTHON_PROJECT = REPO_ROOT / "python_port" / "pyproject.toml"
+PYTHON_README = REPO_ROOT / "python_port" / "README.md"
 GATE_SCRIPT = REPO_ROOT / "scripts" / "workbench" / "test-release-gate.ps1"
 WORKFLOW = REPO_ROOT / ".github" / "workflows" / "windows-release-gate.yml"
 PLAN = REPO_ROOT / "docs" / "plans" / "windows_release_gate_plan.md"
@@ -12,6 +14,9 @@ def test_windows_release_gate_workflow_uses_locked_windows_toolchain() -> None:
 
     assert WORKFLOW.is_file()
     assert "runs-on: windows-latest" in workflow
+    assert "uses: actions/checkout@v6" in workflow
+    assert "uses: actions/setup-python@v6" in workflow
+    assert "uses: actions/setup-node@v6" in workflow
     assert 'python-version: "3.12"' in workflow
     assert 'node-version: "22"' in workflow
     assert 'python -m pip install -e ".\\python_port[dev]"' in workflow
@@ -19,6 +24,14 @@ def test_windows_release_gate_workflow_uses_locked_windows_toolchain() -> None:
     assert ".\\scripts\\workbench\\test-release-gate.ps1" in workflow
     assert "contents: read" in workflow
     assert "timeout-minutes: 30" in workflow
+
+
+def test_python_package_metadata_stays_inside_build_root() -> None:
+    project = PYTHON_PROJECT.read_text(encoding="utf-8")
+
+    assert PYTHON_README.is_file()
+    assert 'readme = "README.md"' in project
+    assert 'readme = "../' not in project
 
 
 def test_windows_release_gate_runs_existing_checks_in_order() -> None:

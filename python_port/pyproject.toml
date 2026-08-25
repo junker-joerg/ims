@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "ims-port"
 version = "0.1.0"
 description = "Schrittweise Python-Portierung des historischen IMS/ESS-Modells"
-readme = "../docs/migration/README.md"
+readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
 

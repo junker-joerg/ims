@@ -29,6 +29,7 @@ Repo-Cache-Rechten ab.
 ## CI-Umgebung
 
 - GitHub Actions auf `windows-latest`;
+- GitHub-Actions-Version 6 mit Node-24-Laufzeit;
 - Python 3.12;
 - Node.js 22;
 - Python-Installation aus `python_port[dev]`;
