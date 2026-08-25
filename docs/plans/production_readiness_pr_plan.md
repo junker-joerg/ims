@@ -145,7 +145,8 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   `pr81-v1`, 50 spaete VN in Periode 50 aktiviert, 17.400 VN-Anwendungen und
   488/1.400 VU14-Feldtreffer; keine historische Gleichheitsaussage).
 - PR 82: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
-  verbreitern.
+  verbreitern (erledigt: `pr82-v1`, 898/5.600 Feldtreffer; die historische
+  klassenuebergreifende Akkumulatorsemantik bleibt offen).
 - PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen.
 - PR 85: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
 - PR 86: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
@@ -153,16 +154,17 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 81 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 82 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`5` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`4` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 82 verbreitert als naechstes denselben kontrollierten Versichererzustand
-auf `imsvusk1.dat` und `imsvuvk1-3.dat`. Die offene historische Reihenfolge,
-RNG-Grenze und BAV-Versicherungsgrad-Ableitung bleiben Blocker; Legacy-Ausgaben
-werden nicht zurueckgefuehrt.
+PR 83 schliesst als naechstes die erste kleine Gruppe der VN-Regelaggregate
+aus demselben kontrollierten Zustand. Die historische Reihenfolge, RNG-Grenze,
+BAV-Versicherungsgrad-Ableitung und die neu sichtbar gemachte VU-
+Klassenakkumulatorsemantik bleiben Blocker; Legacy-Ausgaben werden nicht
+zurueckgefuehrt.

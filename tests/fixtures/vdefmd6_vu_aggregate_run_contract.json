@@ -1,0 +1,104 @@
+{
+  "schema_version": "pr82-v1",
+  "model_id": "Vdefmd6",
+  "scope": "controlled_vu_aggregates_periods_1_100",
+  "expected_targets": [
+    {
+      "export_filename": "imsvusk1.dat",
+      "reference_filename": "VUSK1L5.DAT",
+      "level": "IV",
+      "selector_kind": "all",
+      "selector_value": "all",
+      "generated_period_count": 100,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 232,
+      "full_row_match_periods": [1],
+      "first_full_state_divergence_period": 2,
+      "field_match_counts": {"header": 100, "global_period": 100, "Pr1": 1, "Wa1": 7, "Rs1": 1, "Vn1": 2, "Sa1": 3, "Sh1": 2, "Pr2": 1, "Wa2": 9, "Rs2": 1, "Vn2": 3, "Sa2": 1, "Sh2": 1}
+    },
+    {
+      "export_filename": "imsvuvk1.dat",
+      "reference_filename": "IMSVUVK1.DAT",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 1,
+      "generated_period_count": 100,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 229,
+      "full_row_match_periods": [1],
+      "first_full_state_divergence_period": 2,
+      "field_match_counts": {"header": 100, "global_period": 100, "Pr1": 1, "Wa1": 2, "Rs1": 1, "Vn1": 3, "Sa1": 8, "Sh1": 2, "Pr2": 1, "Wa2": 3, "Rs2": 1, "Vn2": 2, "Sa2": 4, "Sh2": 1}
+    },
+    {
+      "export_filename": "imsvuvk2.dat",
+      "reference_filename": "IMSVUVK2.DAT",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 2,
+      "generated_period_count": 100,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 222,
+      "full_row_match_periods": [],
+      "first_full_state_divergence_period": 1,
+      "field_match_counts": {"header": 100, "global_period": 100, "Pr1": 0, "Wa1": 1, "Rs1": 1, "Vn1": 4, "Sa1": 4, "Sh1": 1, "Pr2": 0, "Wa2": 1, "Rs2": 1, "Vn2": 4, "Sa2": 4, "Sh2": 1}
+    },
+    {
+      "export_filename": "imsvuvk3.dat",
+      "reference_filename": "IMSVUVK3.DAT",
+      "level": "III",
+      "selector_kind": "rule_class",
+      "selector_value": 3,
+      "generated_period_count": 100,
+      "compared_row_count": 100,
+      "compared_field_count": 1400,
+      "matched_field_count": 215,
+      "full_row_match_periods": [],
+      "first_full_state_divergence_period": 1,
+      "field_match_counts": {"header": 100, "global_period": 100, "Pr1": 0, "Wa1": 0, "Rs1": 1, "Vn1": 1, "Sa1": 4, "Sh1": 1, "Pr2": 0, "Wa2": 0, "Rs2": 1, "Vn2": 2, "Sa2": 4, "Sh2": 1}
+    }
+  ],
+  "execution_order": [
+    "activate_subjects",
+    "bav_foreign_information",
+    "insurer_rules_by_id",
+    "policyholder_rules_by_id",
+    "aggregate_export"
+  ],
+  "state_policy_id": "vdefmd6-modern-100-period-state-v1",
+  "blocker_codes": [
+    "historical_same_slot_execution_order_open",
+    "historical_rng_draw_order_open",
+    "market_insurance_degree_derivation_open",
+    "historical_vu_class_accumulator_semantics_open"
+  ],
+  "source_anchors": [
+    {"path": "IMSDATA.C", "needle": "int vkrvu[11] = {0,1,1,2,2,2,2,3,3,3,0};", "meaning": "VU rule class mapping"},
+    {"path": "IMS.E", "needle": "if (( VU[i].DatenVU->Vk == j )", "meaning": "historical class selection"},
+    {"path": "IMS.E", "needle": "if ( BAV[Ownnr()].DatenBAV.Vuag3[j] != 0 )", "meaning": "historical class divisor"},
+    {"path": "IMS.E", "needle": "if ( agvu4[1] == 1 )", "meaning": "historical all-insurer aggregate"},
+    {"path": "python_port/ims/model/agrsich_service.py", "needle": "insurer_by_class.setdefault(insurer.rule_class, []).append(insurer)", "meaning": "modern independent class grouping"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "VDEFMD6_VU_AGGREGATE_FILENAMES", "meaning": "controlled aggregate target set"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "def _vu_export_tables", "meaning": "in-memory aggregate materialization"},
+    {"path": "python_port/ims/api/vdefmd6_vu_aggregate_run_report.py", "needle": "VUSK1L5.DAT", "meaning": "periods 1-100 SK1 window"},
+    {"path": "tests/references/legacy_agrsich/VUSK1L5.DAT", "needle": "0001 040.0 006.8", "meaning": "SK1 initial row"},
+    {"path": "tests/references/legacy_agrsich/IMSVUVK1.DAT", "needle": "0001 040.0 005.0", "meaning": "class 1 initial row"},
+    {"path": "tests/references/legacy_agrsich/IMSVUVK2.DAT", "needle": "0001 043.3 010.4", "meaning": "class 2 accumulator evidence"},
+    {"path": "tests/references/legacy_agrsich/IMSVUVK3.DAT", "needle": "0001 044.8 004.5", "meaning": "class 3 accumulator evidence"}
+  ],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "comparison_started_after_generation": true,
+    "controlled_execution_performed": true,
+    "writes_performed": false,
+    "scheduler_started": false,
+    "simulation_performed": false,
+    "historical_same_slot_order_claimed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_vu_class_accumulator_compatibility_applied": false,
+    "historical_full_equality_claimed": false,
+    "production_release_approved": false
+  }
+}

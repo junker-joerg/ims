@@ -5,6 +5,7 @@ from ims.engine.vdefmd6_pre_shock_runner import (
     VDEFMD6_100_PERIOD_STATE_POLICY_ID,
     VDEFMD6_PRE_SHOCK_EXECUTION_ORDER,
     VDEFMD6_PRE_SHOCK_STATE_POLICY_ID,
+    VDEFMD6_VU_AGGREGATE_FILENAMES,
     run_vdefmd6_100_periods,
     run_vdefmd6_pre_shock_periods,
 )
@@ -104,3 +105,22 @@ def test_vdefmd6_100_period_runner_counts_controlled_applications() -> None:
     assert result.scheduler_started is False
     assert result.simulation_performed is False
     assert result.historical_full_equality_claimed is False
+
+
+def test_vdefmd6_100_period_runner_materializes_vu_aggregates() -> None:
+    result = run_vdefmd6_100_periods(base_seed=20260001)
+    tables = {table.spec.filename: table for table in result.vu_aggregate_export_tables}
+
+    assert tuple(tables) == VDEFMD6_VU_AGGREGATE_FILENAMES
+    assert all(len(table.rows) == 100 for table in tables.values())
+    assert all(
+        [row.values[0] for row in table.rows] == list(range(1, 101))
+        for table in tables.values()
+    )
+    assert tables["imsvusk1.dat"].spec.level == "IV"
+    assert tables["imsvusk1.dat"].spec.selector_value == "all"
+    assert tables["imsvusk1.dat"].rows[0].values[1:3] == [40.0, 6.8]
+    assert [
+        tables[f"imsvuvk{class_id}.dat"].spec.selector_value
+        for class_id in range(1, 4)
+    ] == [1, 2, 3]

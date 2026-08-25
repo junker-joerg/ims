@@ -488,8 +488,10 @@ PR 78 hat darauf 150 VN-Regel- und 150 Schaden-Snapshots fuer eine einzelne
 Vorschockperiode materialisiert. PR 79 hat die 25 VU-Snapshots und
 BAV-Vorperiodeninputs geschlossen. PR 80 hat die Informationskosten angewendet
 und VU14/1-49 mit 236/686 Feldtreffern klassifiziert. PR 81 hat Schockgrenze,
-50 spaete VN und VU14/1-100 mit 488/1.400 Feldtreffern geschlossen. Ab PR 82
-bleiben mindestens fuenf reviewbare PRs bis PR 86.
+50 spaete VN und VU14/1-100 mit 488/1.400 Feldtreffern geschlossen. PR 82 hat
+SK1/all und die drei VU-Klassen fuer 1-100 mit 898/5.600 Feldtreffern
+klassifiziert. Danach bleiben mindestens vier reviewbare PRs bis PR 86; die
+historische VU-Klassenakkumulatorsemantik ist als eigener Blocker dokumentiert.
 
 ## Validierungsregel
 

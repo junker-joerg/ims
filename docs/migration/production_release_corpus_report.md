@@ -174,6 +174,8 @@ diesen Pfad read-only kartiert. PR 78 hat die VN-Snapshots fuer eine einzelne
 Vorschockperiode materialisiert. PR 79 hat alle 25 VU-Snapshots und die
 BAV-Vorperiodeninputs geschlossen. PR 80 hat VU14/1-49 kontrolliert erzeugt.
 PR 81 hat Schockgrenze, 50 spaete VN und VU14/1-100 mit 488/1.400 Feldtreffern
-geschlossen. Ab PR 82 bleiben mindestens fuenf reviewbare PRs bis zur erneuten
-fachlichen Freigabepruefung; konkrete Funde koennen weitere kleine Slices
-erfordern.
+geschlossen. PR 82 hat SK1/all und die drei VU-Klassen fuer 1-100 mit
+898/5.600 Feldtreffern klassifiziert und die historische klassenuebergreifende
+Akkumulatorsemantik als offenen Blocker festgehalten. Danach bleiben mindestens
+vier reviewbare PRs bis zur erneuten fachlichen Freigabepruefung; konkrete
+Funde koennen weitere kleine Slices erfordern.
