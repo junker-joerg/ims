@@ -47,6 +47,13 @@ Wert jedoch noch nicht. Daher gilt:
 PR 80 muss die Kosten explizit und getestet an das Settlement anbinden, bevor
 der Mehrperiodenpfad als geschlossen gelten kann.
 
+## Fortschreibung durch PR 80
+
+PR 80 hat diese Luecke mit einem nichtnegativen `information_cost`-Feld
+geschlossen. Die Kosten werden genau einmal vom kumulierten VN-Vermoegen
+abgezogen. Der kontrollierte Vorschockpfad erzeugt VU14 fuer Perioden 1-49 und
+klassifiziert 236/686 Feldtreffer; die historische Reihenfolge bleibt offen.
+
 ## Grenzen
 
 Der Bericht materialisiert 8 uniforme und 8 normale moderne RNG-Werte. Er

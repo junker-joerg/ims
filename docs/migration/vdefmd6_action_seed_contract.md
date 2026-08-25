@@ -71,5 +71,6 @@ PR 76 hat die VU14-Regelprojektion fuer Perioden 1-49 klassifiziert und dabei
 den offenen VN-/Schaden-/Settlement-Pfad ab Periode 2 belegt. PR 77 hat diesen
 Pfad fuer sechs Regeln und 150 aktive Vorschock-VN kartiert. PR 78 hat die
 VN-Snapshots einer einzelnen Vorschockperiode materialisiert. PR 79 hat die
-25 VU-Snapshots und BAV-Vorperiodeninputs geschlossen. Ab PR 80 bleiben
-mindestens sieben Schritte bis PR 86.
+25 VU-Snapshots und BAV-Vorperiodeninputs geschlossen. PR 80 hat den modernen
+Vorschockpfad mit Basis-Seed `20260001` kontrolliert ausgefuehrt. Ab PR 81
+bleiben mindestens sechs Schritte bis PR 86.

@@ -138,7 +138,8 @@ innerhalb einer C-Schadenformel sowie die historische VN-Same-Slot-Reihenfolge
 bleiben unbestimmt. Deshalb bleiben Erzeugung und historische RNG-Gleichheit
 gesperrt. PR 78 hat darauf die VN-Snapshots einer einzelnen Vorschockperiode
 materialisiert. PR 79 hat alle VU-Snapshots und BAV-Vorperiodeninputs
-geschlossen. Ab PR 80 verbleiben mindestens sieben Schritte bis PR 86.
+geschlossen. PR 80 hat den kontrollierten VU14-Vollzustand 1-49 erzeugt und
+klassifiziert. Ab PR 81 verbleiben mindestens sechs Schritte bis PR 86.
 
 Eine fachliche Freigabe oder historische Vollgleichheit folgt weder aus PR 72
 noch aus Quellenbindung, Populationsbuilder, Aktions-/Seed-Vertrag oder

@@ -38,7 +38,8 @@ Der Regressionstest prueft:
 - Schaden-/Settlement-Grenze mit `damages = [9.0, 0.0]`;
 - `chosen_insurer_sector_current = [12, None]`;
 - `paid_premium_current = [4.0, 0.0]`;
-- `end_wealth_current = 87.0`.
+- `end_wealth_current = 83.0` nach einmaligem Abzug der gemeinsamen
+  `information_cost = 4.0`.
 
 ## Grenzen
 
@@ -53,6 +54,7 @@ Nicht enthalten:
 - kein API-/UI-/Run-Control-Startpfad;
 - keine neue Fachregel;
 - keine automatische historische Regelwahl;
+- keine unbelegte sektorale Aufteilung der gemeinsamen Informationskosten;
 - kein Vergleich gegen eine historische DAT-Vollausgabe.
 
 ## Offene Folgearbeit

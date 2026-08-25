@@ -44,7 +44,8 @@ Der Regressionstest prueft:
 - `chosen_insurer_sector_current = [12, None]`;
 - `paid_premium_current = [4.0, 0.0]`;
 - `claim_sum_current = [9.0, 0.0]`;
-- `end_wealth_current = 87.0`;
+- `end_wealth_current = 84.0` nach einmaligem Abzug der gemeinsamen
+  `information_cost = 3.0`;
 - Reserven- und Policyholder-Aktualisierung beim gewaehlten Versicherer `12`.
 
 ## Grenzen
@@ -60,6 +61,7 @@ Nicht enthalten:
 - kein API-/UI-/Run-Control-Startpfad;
 - keine neue Fachregel;
 - keine automatische historische Regelwahl;
+- keine unbelegte sektorale Aufteilung der gemeinsamen Informationskosten;
 - keine Uebernahme weiterer historischer Referenzdateien;
 - kein Vergleich gegen eine historische DAT-Vollausgabe.
 

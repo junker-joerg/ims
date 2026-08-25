@@ -58,6 +58,6 @@ Feldgruppen und Periodengrenzen klassifiziert.
 Der Befund teilt den bisherigen Folgeschritt konservativ. PR 77 kartiert die
 VN-/Schaden-/Settlement-Eingaben und ihre Draw-Reihenfolge fuer die
 Vorschockperiode. PR 78 hat daraus die VN-Snapshots einer einzelnen Periode
-materialisiert. PR 79 hat alle VU- und BAV-Eingaben vorbereitet; PR 80 bindet
-die Informationskosten an und schliesst danach VU14/2-49. Der Schock- und
-Nachschockpfad folgt erst danach.
+materialisiert. PR 79 hat alle VU- und BAV-Eingaben vorbereitet. PR 80 hat die
+Informationskosten angebunden und VU14/2-49 kontrolliert geschlossen. PR 81
+uebernimmt Schockgrenze und Nachschockpfad.

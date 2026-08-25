@@ -172,6 +172,7 @@ Seed-Policy gebunden. PR 76 hat die VU14-Vorschock-Regelprojektion
 klassifiziert und den fehlenden VN-/Schaden-/Settlement-Pfad belegt. PR 77 hat
 diesen Pfad read-only kartiert. PR 78 hat die VN-Snapshots fuer eine einzelne
 Vorschockperiode materialisiert. PR 79 hat alle 25 VU-Snapshots und die
-BAV-Vorperiodeninputs geschlossen. Ab PR 80 bleiben mindestens sieben
+BAV-Vorperiodeninputs geschlossen. PR 80 hat VU14/1-49 kontrolliert erzeugt
+und 236/686 Feldtreffer klassifiziert. Ab PR 81 bleiben mindestens sechs
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung; konkrete Funde koennen
 weitere kleine Slices erfordern.

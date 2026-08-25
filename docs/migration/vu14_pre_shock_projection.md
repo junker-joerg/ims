@@ -63,21 +63,20 @@ Offen bleiben:
 - keine neue Fachlogik;
 - keine RNG-Ziehung;
 - kein Scheduler- oder Simulationsstart;
-- Perioden 2-49 bleiben als Vollzustand `independent_periods_2_49_ready = false`;
+- PR 80 setzt fuer den kontrollierten modernen Vollzustand
+  `independent_periods_2_49_ready = true`;
 - keine historische Vollgleichheits- oder Produktionsfreigabe.
 
 ## Restplanung
 
-Der Quellenbefund hat die bisherige Planung weiter geteilt. PR 77 bis PR 79
-sind erledigt; ab PR 80 bleiben mindestens sieben Schritte bis PR 86:
+Der Quellenbefund hat die bisherige Planung weiter geteilt. PR 77 bis PR 80
+sind erledigt; ab PR 81 bleiben mindestens sechs Schritte bis PR 86:
 
-1. PR 80: Informationskosten anbinden und den unabhaengigen VU14-Vollzustand
-   fuer Perioden 2-49 bilden;
-2. PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen;
-3. PR 82: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
-4. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-5. PR 85: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
-6. PR 86: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
+1. PR 81: Schockgrenze und VU14-Perioden 50-100 schliessen;
+2. PR 82: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
+3. PR 83 und PR 84: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+4. PR 85: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
+5. PR 86: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
    neu bewerten.
 
 Weitere Quellenfunde duerfen diese Mindestplanung erneut teilen.

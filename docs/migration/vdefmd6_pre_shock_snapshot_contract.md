@@ -35,15 +35,13 @@ ist daher reproduzierbar, aber nicht historisch RNG-identisch.
 
 Geschlossen sind die typisierte Ableitung fuer 150 aktive Vorschock-VN, die
 Parameterabbildung, die moderne Reihenfolge und die Seed-Reproduzierbarkeit.
-Offen bleiben:
+PR 79 hat die VU-Snapshots ergaenzt. PR 80 hat Informationskosten und die
+kontrollierte Mehrperiodenanwendung fuer 2-49 geschlossen. Offen bleiben die
+historische RNG- und Same-Slot-Reihenfolge sowie der Schockpfad 50-100.
 
-- periodenspezifische Snapshots und Zustandsfortschreibung aller 25 VU-Regeln;
-- die fachlich belegte Anwendung der Informationskosten auf den VN-Zustand;
-- die kontrollierte Mehrperiodenanwendung fuer 2-49;
-- historische RNG- und Same-Slot-Reihenfolge.
-
-Deshalb bleiben `independent_periods_2_49_ready`,
-`full_state_projection_ready` und `generation_ready` falsch. Der Bericht zieht
+Damit sind `independent_periods_2_49_ready` und
+`full_state_projection_ready` im PR-80-Bericht wahr; `generation_ready` bleibt
+falsch. Der PR-78-Bericht zieht
 RNG-Werte nur zur Snapshotmaterialisierung; er startet keinen Runner und keine
 Simulation. Historische Referenzzeilen werden nicht als Erzeugungsinput
 verwendet. Es gibt keine historische Vollgleichheitsbehauptung.

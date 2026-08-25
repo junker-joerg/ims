@@ -59,6 +59,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Vorschock-Snapshots und die moderne Drawfolge ohne Runnerstart.
 - `vdefmd6_vu_snapshot_plan.md`: PR-79-Plan fuer alle 25 VU-Snapshots,
   BAV-Vorperiodeninputs und die explizite Informationskostengrenze.
+- `vdefmd6_pre_shock_run_plan.md`: PR-80-Plan fuer Informationskosten,
+  kontrollierte Perioden 2-49 und die VU14-Abweichungsklassifikation.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

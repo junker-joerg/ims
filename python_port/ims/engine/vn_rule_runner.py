@@ -126,19 +126,36 @@ def _resolve_damage_settlement_snapshots_from_rule_applications(
     }
     resolved_snapshots: list[VNDamageSettlementSnapshot] = []
     for snapshot in damage_settlement_snapshots:
-        if snapshot.insurance_decisions is not None:
+        application = applications_by_policyholder.get(snapshot.policyholder_id)
+        if snapshot.insurance_decisions is not None and application is None:
             resolved_snapshots.append(snapshot)
             continue
-        application = applications_by_policyholder.get(snapshot.policyholder_id)
         if application is None:
             raise ValueError(
                 "VN damage settlement snapshot requires insurance decisions or "
                 f"matching VN insurance rule snapshot for policyholder: {snapshot.policyholder_id}"
             )
         resolved_snapshots.append(
-            replace(snapshot, insurance_decisions=list(application.decisions))
+            replace(
+                snapshot,
+                insurance_decisions=(
+                    list(snapshot.insurance_decisions)
+                    if snapshot.insurance_decisions is not None
+                    else list(application.decisions)
+                ),
+                information_cost=_rule_application_information_cost(application),
+            )
         )
     return resolved_snapshots
+
+
+def _rule_application_information_cost(
+    application: VNInsuranceRuleApplication,
+) -> float:
+    information_cost = float(getattr(application.result, "information_cost", 0.0))
+    if information_cost < 0.0:
+        raise ValueError("VN insurance rule information_cost must be non-negative")
+    return information_cost
 
 
 def run_vn_settlement_period(

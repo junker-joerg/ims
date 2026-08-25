@@ -41,6 +41,7 @@ class VNSettlementSnapshot:
     decisions: list[VNSectorSettlementDecision]
     previous_wealth: float
     previous_wealth_sector: list[float] | None = None
+    information_cost: float = 0.0
 
 
 @dataclass(slots=True)
@@ -54,6 +55,7 @@ class VNSettlementResult:
     claim_sum_current: list[float]
     end_wealth_sector_current: list[float]
     end_wealth_current: float
+    information_cost: float = 0.0
 
 
 @dataclass(slots=True)
@@ -76,6 +78,7 @@ class VNDamageSettlementSnapshot:
     draws: VNDamageRuleDraws | None = None
     previous_wealth_sector: list[float] | None = None
     change_shock: bool = False
+    information_cost: float = 0.0
 
 
 @dataclass(slots=True)
@@ -231,6 +234,7 @@ def vn_settlement_snapshot_from_mapping(mapping: dict[str, object]) -> VNSettlem
         decisions=_decision_list(mapping.get("decisions")),
         previous_wealth=float(mapping["previous_wealth"]),
         previous_wealth_sector=_optional_two_float_values(mapping.get("previous_wealth_sector")),
+        information_cost=_non_negative_information_cost(mapping),
     )
 
 
@@ -269,7 +273,15 @@ def vn_damage_settlement_snapshot_from_mapping(mapping: dict[str, object]) -> VN
         previous_wealth=float(mapping["previous_wealth"]),
         previous_wealth_sector=_optional_two_float_values(mapping.get("previous_wealth_sector")),
         change_shock=bool(mapping.get("change_shock", False)),
+        information_cost=_non_negative_information_cost(mapping),
     )
+
+
+def _non_negative_information_cost(mapping: dict[str, object]) -> float:
+    information_cost = float(mapping.get("information_cost", 0.0))
+    if information_cost < 0.0:
+        raise ValueError("VN settlement information_cost must be non-negative")
+    return information_cost
 
 
 def load_vn_damage_settlement_snapshots_from_mapping(value: object) -> list[VNDamageSettlementSnapshot]:
@@ -289,6 +301,7 @@ def build_vn_settlement_snapshot_from_damage_result(
     insurance_decisions: list[VNInsuranceDecision],
     damage_result: VNDamageRuleResult,
     previous_wealth_sector: list[float] | None = None,
+    information_cost: float = 0.0,
 ) -> VNSettlementSnapshot:
     """
     Verbindet explizite VN-Versicherungsentscheidungen mit portierten Schaeden.
@@ -297,12 +310,15 @@ def build_vn_settlement_snapshot_from_damage_result(
     und die historischen Normalziehungen muessen bereits ausserhalb feststehen.
     """
 
+    if information_cost < 0.0:
+        raise ValueError("VN settlement information_cost must be non-negative")
     decisions = _insurance_decision_list(insurance_decisions)
     damages = _two_float_values(damage_result.damages, fallback=0.0)
     return VNSettlementSnapshot(
         policyholder_id=int(policyholder_id),
         previous_wealth=float(previous_wealth),
         previous_wealth_sector=_optional_two_float_values(previous_wealth_sector),
+        information_cost=float(information_cost),
         decisions=[
             VNSectorSettlementDecision(
                 sector_index=decision.sector_index,
@@ -362,6 +378,7 @@ def apply_vn_damage_settlement_snapshot(
         previous_wealth_sector=snapshot.previous_wealth_sector,
         insurance_decisions=snapshot.insurance_decisions,
         damage_result=damage_result,
+        information_cost=snapshot.information_cost,
     )
     settlement_result = apply_vn_settlement_snapshot(policyholder, insurers, settlement_snapshot)
     return VNDamageSettlementApplication(
@@ -461,6 +478,8 @@ def apply_vn_settlement_snapshot(
             "VN settlement snapshot policyholder_id does not match policyholder: "
             f"{snapshot.policyholder_id} != {policyholder.entity_id}"
         )
+    if snapshot.information_cost < 0.0:
+        raise ValueError("VN settlement information_cost must be non-negative")
 
     insurers_by_id = {insurer.entity_id: insurer for insurer in insurers}
     chosen_insurers: list[int | None] = [None, None]
@@ -508,7 +527,13 @@ def apply_vn_settlement_snapshot(
         self_damage_current=self_damages,
         claim_sum_current=claim_sums,
         end_wealth_sector_current=sector_wealth,
-        end_wealth_current=snapshot.previous_wealth - sum(claim_sums) - sum(paid_premiums),
+        end_wealth_current=(
+            snapshot.previous_wealth
+            - sum(claim_sums)
+            - sum(paid_premiums)
+            - snapshot.information_cost
+        ),
+        information_cost=snapshot.information_cost,
     )
     policyholder.chosen_insurer_sector_current = result.chosen_insurer_sector_current
     policyholder.chosen_insurer_current = result.chosen_insurer_sector_current[0]

@@ -104,4 +104,4 @@ def test_second_fachlicher_vn_best_info_snapshot_feeds_runner_boundary() -> None
     assert damage_application.damage_result.damages == [9.0, 0.0]
     assert damage_application.settlement_result.chosen_insurer_sector_current == [12, None]
     assert result.policyholders[0].paid_premium_current == [4.0, 0.0]
-    assert result.policyholders[0].end_wealth_current == 87.0
+    assert result.policyholders[0].end_wealth_current == 83.0

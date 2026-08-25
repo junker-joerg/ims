@@ -486,8 +486,9 @@ Settlement-Pfad belegt. PR 77 ist nun mit sechs Regelabbildungen, 150 aktiven
 Vorschock-VN und der explizit offenen historischen Draw-Reihenfolge erledigt.
 PR 78 hat darauf 150 VN-Regel- und 150 Schaden-Snapshots fuer eine einzelne
 Vorschockperiode materialisiert. PR 79 hat die 25 VU-Snapshots und
-BAV-Vorperiodeninputs geschlossen sowie die offene Informationskostenanwendung
-quellengebunden. Ab PR 80 bleiben mindestens sieben reviewbare PRs bis PR 86.
+BAV-Vorperiodeninputs geschlossen. PR 80 hat die Informationskosten angewendet
+und VU14/1-49 mit 236/686 Feldtreffern klassifiziert. Ab PR 81 bleiben
+mindestens sechs reviewbare PRs bis PR 86.
 
 ## Validierungsregel
 

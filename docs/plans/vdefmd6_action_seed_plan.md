@@ -52,6 +52,6 @@ PR 76 hat den VU14-Regelpfad fuer Perioden 1-49 projiziert und die offene
 VN-/Schaden-/Settlement-Grenze klassifiziert. PR 77 hat diesen Pfad fuer alle
 sechs VN-Regeln kartiert. PR 78 hat explizite VN-Vorschock-Snapshots und eine
 moderne Drawfolge fuer eine einzelne Periode abgeleitet. PR 79 hat danach die
-VU- und BAV-Eingangsseite vorbereitet. PR 80 bindet als naechstes die
-Informationskosten an das Settlement und wendet den Vorschockpfad kontrolliert
-an, bevor ein vollstaendiger Folgezustand behauptet werden darf.
+VU- und BAV-Eingangsseite vorbereitet. PR 80 hat die Informationskosten an das
+Settlement gebunden und den Vorschockpfad kontrolliert angewendet. PR 81
+schliesst als naechstes Schockgrenze und Perioden 50-100.

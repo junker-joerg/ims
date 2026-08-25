@@ -130,7 +130,7 @@ def test_fourth_fachlicher_vn_best_info_result_is_carried_to_next_period() -> No
     assert first_period.policyholders[0].paid_premium_current == [4.0, 0.0]
     assert first_period.policyholders[0].self_damage_current == [0.0, 0.0]
     assert first_period.policyholders[0].claim_sum_current == [9.0, 0.0]
-    assert first_period.policyholders[0].end_wealth_current == 87.0
+    assert first_period.policyholders[0].end_wealth_current == 83.0
 
     second_period = result.period_results[1]
     assert second_period.insurance_rule_applications == []
@@ -147,4 +147,4 @@ def test_fourth_fachlicher_vn_best_info_result_is_carried_to_next_period() -> No
     assert carried_policyholder.self_damage_current == [0.0, 0.0]
     assert carried_policyholder.claim_sum_current == [9.0, 0.0]
     assert carried_policyholder.end_wealth_sector_current == [87.0, 100.0]
-    assert carried_policyholder.end_wealth_current == 87.0
+    assert carried_policyholder.end_wealth_current == 83.0

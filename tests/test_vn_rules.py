@@ -108,6 +108,35 @@ def test_vn_settlement_uses_explicit_premium_and_counts_no_zero_damage_claim() -
     assert insurer.claims_sum_current == [0.0, 3.0]
 
 
+def test_vn_settlement_subtracts_information_cost_once_from_aggregate_wealth() -> None:
+    policyholder = Policyholder(entity_id=311)
+    snapshot = VNSettlementSnapshot(
+        policyholder_id=311,
+        previous_wealth=100.0,
+        previous_wealth_sector=[60.0, 40.0],
+        information_cost=12.8,
+        decisions=[
+            VNSectorSettlementDecision(
+                sector_index=0,
+                insured=False,
+                damage=5.0,
+            ),
+            VNSectorSettlementDecision(
+                sector_index=1,
+                insured=False,
+                damage=7.0,
+            ),
+        ],
+    )
+
+    result = apply_vn_settlement_snapshot(policyholder, [], snapshot)
+
+    assert result.information_cost == 12.8
+    assert result.end_wealth_sector_current == [55.0, 33.0]
+    assert result.end_wealth_current == pytest.approx(75.2)
+    assert policyholder.end_wealth_current == pytest.approx(75.2)
+
+
 def test_vn_settlement_preserves_scalar_policyholder_count_when_sector_vector_absent() -> None:
     insurer = Insurer(
         entity_id=12,
@@ -286,6 +315,7 @@ def test_vn_settlement_loader_validates_required_shape() -> None:
     assert snapshots[0].decisions[0].sector_index == 0
     assert snapshots[0].decisions[0].insured is True
     assert snapshots[0].decisions[1].insurer_id is None
+    assert snapshots[0].information_cost == 0.0
 
     with pytest.raises(ValueError, match="exactly one decision"):
         load_vn_settlement_snapshots_from_mapping(
@@ -296,6 +326,21 @@ def test_vn_settlement_loader_validates_required_shape() -> None:
                     "decisions": [
                         {"sector_index": 0, "insured": False, "damage": 1.0},
                         {"sector_index": 0, "insured": False, "damage": 2.0},
+                    ],
+                }
+            ]
+        )
+
+    with pytest.raises(ValueError, match="information_cost must be non-negative"):
+        load_vn_settlement_snapshots_from_mapping(
+            [
+                {
+                    "policyholder_id": 60,
+                    "previous_wealth": 25.0,
+                    "information_cost": -0.1,
+                    "decisions": [
+                        {"sector_index": 0, "insured": False, "damage": 1.0},
+                        {"sector_index": 1, "insured": False, "damage": 2.0},
                     ],
                 }
             ]
@@ -334,6 +379,7 @@ def test_vn_damage_settlement_loader_reads_explicit_snapshot() -> None:
                 "previous_wealth_sector": [180.0],
                 "damage_thresholds": [0.7, 0.4],
                 "change_shock": True,
+                "information_cost": 4.5,
                 "parameters": {
                     "damage_intercept_normal": [1.0, 2.0],
                     "damage_factor_normal": [3.0, 4.0],
@@ -356,6 +402,7 @@ def test_vn_damage_settlement_loader_reads_explicit_snapshot() -> None:
     assert snapshots[0].previous_wealth_sector == [180.0, 180.0]
     assert snapshots[0].damage_thresholds == [0.7, 0.4]
     assert snapshots[0].change_shock is True
+    assert snapshots[0].information_cost == 4.5
     assert snapshots[0].parameters.damage_factor_shock == [7.0, 8.0]
     assert snapshots[0].draws.amount_draws == [0.3, 0.4]
     assert snapshots[0].insurance_decisions[0].insurer_id == 90

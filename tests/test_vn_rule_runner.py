@@ -191,6 +191,10 @@ def test_vn_rule_runner_applies_explicit_insurance_rule_snapshots() -> None:
     assert [decision.insurer_id for decision in application.decisions] == [12, None]
     assert application.result.information_cost == 4.0
     assert result.total_settlement_applications == 1
+    settlement = result.damage_settlement_applications[0].settlement_result
+    assert settlement.information_cost == 4.0
+    assert settlement.end_wealth_current == 83.0
+    assert result.policyholders[0].end_wealth_current == 83.0
 
 
 def test_vn_rule_runner_feeds_insurance_rule_decisions_into_damage_settlement() -> None:

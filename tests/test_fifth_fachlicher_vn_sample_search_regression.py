@@ -116,6 +116,6 @@ def test_fifth_fachlicher_vn_sample_search_snapshot_feeds_runner_boundary() -> N
     assert damage_application.settlement_result.chosen_insurer_sector_current == [12, None]
     assert result.policyholders[0].paid_premium_current == [4.0, 0.0]
     assert result.policyholders[0].claim_sum_current == [9.0, 0.0]
-    assert result.policyholders[0].end_wealth_current == 87.0
+    assert result.policyholders[0].end_wealth_current == 84.0
     assert result.insurers[1].reserves_current == [35.0, 60.0]
     assert result.insurers[1].policyholders_current_sector == [2.0, 2.0]

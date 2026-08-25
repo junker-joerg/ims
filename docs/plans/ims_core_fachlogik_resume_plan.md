@@ -468,14 +468,14 @@ Simulation.
     ist umgesetzt:
     `tests/test_fourth_fachlicher_vn_best_info_carryover_regression.py` prueft
     die `best_info`-Entscheidung `[12, None]`, `information_cost = 4.0`,
-    `damages = [9.0, 0.0]`, `end_wealth_current = 87.0` und den
+    `damages = [9.0, 0.0]`, `end_wealth_current = 83.0` nach Kostenabzug und den
     weitergetragenen VN-Zustand in Periode `6` ohne neue VN-Snapshots.
 34. Fuenften fachlichen VN-Slice als Regressionstest ausfuehren. Dieser
     Schnitt ist umgesetzt:
     `tests/test_fifth_fachlicher_vn_sample_search_regression.py` prueft
     `sample_search` / Vrvn05, `sampled_insurer_ids = [[11, 12], [11]]`,
     `information_cost = 3.0`, `damages = [9.0, 0.0]` und
-    `end_wealth_current = 87.0`.
+    `end_wealth_current = 84.0` nach Kostenabzug.
 35. Run-Control-Ausfuehrungsfreigabe planen. Dieser Schnitt ist umgesetzt:
     `docs/plans/run_control_execution_release_plan.md` benennt Preconditions,
     verbotene Pfade und die PR-Reihenfolge bis zur benutzbaren kontrollierten
@@ -645,15 +645,18 @@ Aktualisierte grobe Restplanung:
   Vorschockperiode mit moderner reproduzierbarer Drawfolge materialisiert;
 - PR 79 hat Snapshots aller 25 VU-Regeln, BAV-Vorperiodeninputs und die
   quellenbelegte Informationskostengrenze als `pr79-v1` geschlossen;
-- vorgeschlagener naechster Schritt ist PR 80: Suchkosten explizit an den
-  Settlement-Zustand anbinden und den Vorschockpfad 2-49 kontrolliert anwenden;
+- PR 80 hat Suchkosten an das Settlement gebunden und den kontrollierten
+  Vorschockpfad 2-49 als `pr80-v1` ausgefuehrt; VU14 trifft 236/686 Felder,
+  nur Periode 1 vollstaendig;
+- vorgeschlagener naechster Schritt ist PR 81: Schockgrenze und VU14-Perioden
+  50-100 mit den 50 spaet aktivierten VN schliessen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der PR-79-VU-Snapshotmaterialisierung bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
+Nach dem PR-80-Vorschocklauf bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `6`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

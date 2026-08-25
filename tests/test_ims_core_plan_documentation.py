@@ -246,15 +246,15 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 70 hat Python-Tests, Frontend-Build" in plan
     assert "PR 71 hat die 15 Kernexporte" in plan
     assert "PR 72 hat den vollstaendigen read-only 100-Perioden-Erzeugungsvertrag" in plan
-    assert "vorgeschlagener naechster Schritt ist PR 80" in plan
+    assert "vorgeschlagener naechster Schritt ist PR 81" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "mindestens `7`" in plan
-    assert "Nach der PR-79-VU-Snapshotmaterialisierung bleiben `0` technische Pflicht-PRs" in plan
+    assert "mindestens `6`" in plan
+    assert "Nach dem PR-80-Vorschocklauf bleiben `0` technische Pflicht-PRs" in plan
     assert "eingefrorene Pruefkette" in plan
     assert "100-Perioden-Erzeugungsvertrag" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
@@ -292,7 +292,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "mindestens" in plan and "`7` weitere PRs" in plan
+    assert "mindestens" in plan and "`6` weitere PRs" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
     assert "Vier VU14-Perioden" in plan
@@ -655,7 +655,7 @@ def test_second_fachlicher_regression_doc_scopes_second_test() -> None:
     assert "selected_insurer_ids = [12, 11]" in doc
     assert "information_cost = 4.0" in doc
     assert "chosen_insurer_sector_current = [12, None]" in doc
-    assert "end_wealth_current = 87.0" in doc
+    assert "end_wealth_current = 83.0" in doc
     assert "kein historischer Vollgleichheitsnachweis" in doc
     assert "kein API-/UI-/Run-Control-Startpfad" in doc
     assert "keine neue Fachregel" in doc
@@ -731,7 +731,8 @@ def test_fourth_fachlicher_regression_doc_scopes_fourth_test() -> None:
     assert "chosen_insurer_ids = [12, None]" in doc
     assert "information_cost = 4.0" in doc
     assert "damages = [9.0, 0.0]" in doc
-    assert "end_wealth_current = 87.0" in doc
+    assert "end_wealth_current = 83.0" in doc
+    assert "end_wealth_sector_current = [87.0, 100.0]" in doc
     assert "kein historischer Vollgleichheitsnachweis" in doc
     assert "kein API-/UI-/Run-Control-Startpfad" in doc
     assert "keine neue Fachregel" in doc
@@ -753,7 +754,7 @@ def test_fifth_fachlicher_regression_doc_scopes_fifth_test() -> None:
     assert "used_insurer_choice_draws_by_sector = [[0.0, 0.99], [0.0]]" in doc
     assert "information_cost = 3.0" in doc
     assert "damages = [9.0, 0.0]" in doc
-    assert "end_wealth_current = 87.0" in doc
+    assert "end_wealth_current = 84.0" in doc
     assert "kein historischer Vollgleichheitsnachweis" in doc
     assert "kein API-/UI-/Run-Control-Startpfad" in doc
     assert "keine neue Fachregel" in doc

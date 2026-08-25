@@ -172,7 +172,7 @@ def build_vdefmd6_pre_shock_snapshot_batch(
                 parameters=_damage_parameters(definition.parameters),
                 damage_thresholds=damage_thresholds,
                 previous_wealth=policyholder.end_wealth_current,
-                insurance_decisions=initial_decisions,
+                insurance_decisions=None,
                 draws=VNDamageRuleDraws(
                     trigger_draws=[sector_1_trigger, sector_2_trigger],
                     amount_draws=[sector_1_amount, sector_2_amount],

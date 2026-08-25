@@ -83,6 +83,8 @@ def test_vdefmd6_pre_shock_snapshot_batch_maps_parameters_and_draw_shapes() -> N
 
     assert damage_snapshot.parameters.damage_intercept_normal == [30.0, 30.0]
     assert damage_snapshot.parameters.damage_factor_normal == [5.0, 5.0]
+    assert damage_snapshot.insurance_decisions is None
+    assert damage_snapshot.information_cost == 0.0
     assert damage_snapshot.change_shock is False
     assert len(damage_snapshot.damage_thresholds) == 2
     assert len(damage_snapshot.draws.trigger_draws) == 2

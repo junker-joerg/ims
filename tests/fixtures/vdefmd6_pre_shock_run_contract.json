@@ -1,0 +1,80 @@
+{
+  "schema_version": "pr80-v1",
+  "model_id": "Vdefmd6",
+  "scope": "controlled_pre_shock_periods_2_49",
+  "expected": {
+    "base_seed": 20260001,
+    "generated_period_count": 49,
+    "followup_period_count": 48,
+    "total_information_cost": 76032.0,
+    "total_information_cost_policyholders": 2880,
+    "total_vu_rule_applications": 1200,
+    "total_vn_insurance_rule_applications": 7200,
+    "total_vn_damage_settlement_applications": 7200,
+    "total_uniform_value_count": 47904,
+    "total_normal_value_count": 29184,
+    "compared_row_count": 49,
+    "compared_field_count": 686,
+    "matched_field_count": 236,
+    "full_row_match_periods": [1],
+    "rule_output_match_periods": [1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 23, 27, 34, 35, 37, 40, 41, 42, 43, 44, 45, 47, 49],
+    "first_full_state_divergence_period": 2,
+    "first_rule_output_divergence_period": 10,
+    "field_match_counts": {
+      "header": 49,
+      "global_period": 49,
+      "Pr1": 29,
+      "Wa1": 29,
+      "Rs1": 1,
+      "Vn1": 4,
+      "Sa1": 2,
+      "Sh1": 1,
+      "Pr2": 31,
+      "Wa2": 31,
+      "Rs2": 1,
+      "Vn2": 6,
+      "Sa2": 2,
+      "Sh2": 1
+    }
+  },
+  "execution_order": [
+    "bav_foreign_information",
+    "insurer_rules_by_id",
+    "policyholder_rules_by_id",
+    "aggregate_export"
+  ],
+  "state_policy_id": "vdefmd6-modern-pre-shock-state-v1",
+  "blocker_codes": [
+    "historical_same_slot_execution_order_open",
+    "historical_rng_draw_order_open",
+    "shock_periods_50_100_missing"
+  ],
+  "source_anchors": [
+    {"path": "IMS.E", "needle": "act Vrvn05 {", "meaning": "sample-search rule"},
+    {"path": "IMS.E", "needle": "act Vrvn06 {", "meaning": "best-info rule"},
+    {"path": "IMS.E", "needle": "ik                                        ;    /* Suchkosten", "meaning": "information cost wealth subtraction"},
+    {"path": "IMS.E", "needle": "act Vrvu06", "meaning": "VU14 expected-claim rule"},
+    {"path": "IMS.E", "needle": "Bavauin( 50,0, 0.8, 0.02,1);", "meaning": "shock, cost and interest inputs"},
+    {"path": "python_port/ims/model/vn_rules.py", "needle": "information_cost: float = 0.0", "meaning": "settlement cost surface"},
+    {"path": "python_port/ims/engine/vn_rule_runner.py", "needle": "def _rule_application_information_cost", "meaning": "rule-to-settlement cost binding"},
+    {"path": "python_port/ims/model/vdefmd6_population.py", "needle": "def build_vdefmd6_population()", "meaning": "typed population"},
+    {"path": "python_port/ims/model/vdefmd6_vu_snapshots.py", "needle": "def build_vdefmd6_vu_snapshot_batch", "meaning": "VU snapshot materializer"},
+    {"path": "python_port/ims/model/vdefmd6_pre_shock_snapshots.py", "needle": "def build_vdefmd6_pre_shock_snapshot_batch", "meaning": "VN snapshot materializer"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "def run_vdefmd6_pre_shock_periods", "meaning": "controlled pre-shock path"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "VDEFMD6_PRE_SHOCK_EXECUTION_ORDER", "meaning": "explicit modern order"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "scheduler_started: bool = False", "meaning": "scheduler boundary"},
+    {"path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py", "needle": "simulation_performed: bool = False", "meaning": "simulation boundary"},
+    {"path": "tests/references/legacy_agrsich/VU14L1.DAT", "needle": "0002 039.2 010.3", "meaning": "comparison-only VU14 reference"}
+  ],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "comparison_started_after_generation": true,
+    "controlled_execution_performed": true,
+    "writes_performed": false,
+    "scheduler_started": false,
+    "simulation_performed": false,
+    "historical_same_slot_order_claimed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_full_equality_claimed": false
+  }
+}

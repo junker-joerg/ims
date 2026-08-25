@@ -93,3 +93,8 @@ Vollzustand. Es wurden keine Legacy-Ausgaben als Eingabe verwendet, keine
 Runner und keine Simulation gestartet. PR 78 zieht moderne RNG-Werte nur fuer
 die expliziten Snapshots; historische RNG-Gleichheit wird nicht behauptet.
 Es gibt keine historische Vollgleichheitsbehauptung.
+
+PR 80 hat auf dieser Eingangsoberflaeche den modernen Vorschockzustand 1-49
+kontrolliert erzeugt. Die historische Draw- und Same-Slot-Reihenfolge bleibt
+trotzdem offen; der PR-77-Herkunftsvertrag wird dadurch nicht rueckwirkend zu
+einem historischen Gleichheitsnachweis.
