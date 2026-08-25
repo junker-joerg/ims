@@ -157,10 +157,12 @@ damit abgeschlossen:
     die fachliche Freigabe erneut menschlich bewerten (erledigt, `pr86-v1`,
     Empfehlung `keep_blocked`).
 
-Es verbleibt kein vorab geplanter Pflicht-PR. Funde zur Referenzprovenienz, zum
-Scheduler, zum RNG oder zur Zustandsfortschreibung duerfen neue kleine
-Korrektur-PRs erfordern. Der gemeinsame 1-100-Befund ersetzt weiterhin nicht
-die fehlenden Vollfenster bis Periode 300 oder 500.
+PR 87 schneidet die Folgephase nun in PR 88 bis PR 101. PR 88 bis PR 91
+erstellen Archivmanifest, Koharenzmatrix, Laufmetadatenbefund und
+Referenzschicht-Vertrag. Erst danach erweitern PR 92 bis PR 100 die
+berechneten Tabellen kontrolliert auf ihre Pflichtgrenzen 100, 300 oder 500;
+PR 101 bewertet den gemeinsamen 6.300-Zeilen-Bericht. Die 14 geplanten PRs
+enthalten keine heute noch unbekannten fachlichen Korrekturen.
 
 ## PR-71-Pruefnachweis
 

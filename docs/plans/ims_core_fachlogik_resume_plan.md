@@ -667,17 +667,21 @@ Aktualisierte grobe Restplanung:
   vorhandenen Abweichungsbericht gefuehrt; 4.492/20.000 Felder und
   1.492/17.000 Fachwerte treffen, die Freigabeempfehlung bleibt
   `keep_blocked`;
-- vorgeschlagener naechster groesserer Block ist die historische Lauf- und
-  Referenzprovenienz, noch ohne vorab vergebene PR-Nummer;
+- PR 87 plant den naechsten groesseren Block fuer historische Lauf- und
+  Referenzprovenienz sowie die vollstaendigen 100-/300-/500-Periodenfenster;
+- PR 88 ist der naechste Umsetzungsschritt: ein read-only Archivmanifest fuer
+  sieben ZIP-Archive, ohne Import aus `incomming/`;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 86 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `0` vorab geplante PRs der internen Erzeugungsserie. Scheduler-, RNG-,
-Provenienz- oder Zustandsfunde koennen neue kleine Slices erfordern. Diese
-Einordnung ersetzt keine Vollgleichheitspruefung.
+Nach PR 87 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `14` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. Davon klaeren vier zuerst die Referenzprovenienz. Erst
+danach duerfen zehn PRs die 100-/300-/500-Fenster und den Abschlussbericht
+schliessen. Scheduler-, RNG-, Akkumulator- oder Zustandsfunde koennen weitere
+kleine Slices erfordern; die Zahl ersetzt keine Vollgleichheitspruefung.
 
 ## Grenzen
 

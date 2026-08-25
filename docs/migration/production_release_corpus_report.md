@@ -192,6 +192,8 @@ anschliessend alle 15 Identitaeten fuer 1-100 gemeinsam klassifiziert:
 4.492/20.000 Felder und 1.492/17.000 Fachwerte treffen, nur drei von 1.500
 Zielzeilen vollstaendig. Die Empfehlung bleibt `keep_blocked`.
 
-Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. Es verbleibt kein vorab
-nummerierter Pflicht-PR. Neue Slices werden aus den offenen Provenienz-,
-Akkumulator-, Scheduler-, RNG- und Vollfensterfragen abgeleitet.
+Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant die Folgephase
+bis PR 101: vier Provenienz- und Referenzschicht-PRs, danach gestaffelte
+100-/300-/500-Vollfenster und ein neuer gemeinsamer 6.300-Zeilen-Bericht.
+Nach PR 87 sind 14 PRs dieser Mindestfolge offen. Fachliche Korrekturen aus
+den Abweichungsbefunden sind darin noch nicht enthalten.

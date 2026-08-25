@@ -251,15 +251,16 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 84 hat `imsvnr04.dat` bis `imsvnr06.dat`" in plan
     assert "PR 85 hat die drei VN-Klassen und VN-SK1/all" in plan
     assert "PR 86 hat alle 15 Kernexporte" in plan
-    assert "vorgeschlagener naechster groesserer Block ist die historische Lauf-" in plan
-    assert "`0` vorab geplante PRs" in plan
+    assert "PR 87 plant den naechsten groesseren Block" in plan
+    assert "PR 88 ist der naechste Umsetzungsschritt" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "Nach PR 86 bleiben `0` technische Pflicht-PRs" in plan
+    assert "Nach PR 87 bleiben `0` technische Pflicht-PRs" in plan
+    assert "`14` geplante PRs" in plan
     assert "eingefrorene Pruefkette" in plan
     assert "100-Perioden-Erzeugungsvertrag" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
@@ -297,7 +298,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "`0` vorab geplante PRs der internen Erzeugungsserie" in plan
+    assert "`14` PRs bis zum" in plan
     assert "Die Mindestserie PR 72 bis PR 86 ist abgeschlossen" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
@@ -324,6 +325,10 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 84: VN-Regelzustand" in plan.replace("\n", " ")
     assert "PR 85: VN-Klassen- und SK1/all-Exporte" in plan.replace("\n", " ")
     assert "PR 86: alle 15 Exporte gemeinsam vergleichen" in plan.replace("\n", " ")
+    assert "PR 88 erstellt als naechstes ein read-only Archivmanifest" in plan.replace("\n", " ")
+    assert "PR 88 bis PR 91" in plan
+    assert "PR 92 bis PR 100" in plan
+    assert "PR 101" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan

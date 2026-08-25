@@ -163,16 +163,20 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 86 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
-Pruefkette und `0` vorab geplante PRs der internen Erzeugungsserie offen. Neue
-Funde zu Provenienz, Scheduler, RNG, Akkumulatoren oder
-Zustandsfortschreibung werden als eigene kleine Slices geplant. Diese Zahl ist
-keine Aussage historischer Gleichheit oder fachlicher Produktionsreife.
+Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant den daraus
+abgeleiteten Provenienz- und Vollfensterblock.
+
+PR 87 plant den naechsten groesseren Block. Danach sind `14` PRs bis zum
+ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht vorgesehen: PR 88 bis PR 91
+fuer Provenienz und Referenzschichten, PR 92 bis PR 100 fuer die gestaffelten
+100-/300-/500-Fenster und PR 101 fuer den Abschlussbericht. Unbekannte
+fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
 
 ## Naechster Schritt
 
-Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. Der naechste groessere
-Block wird erst aus dem PR-86-Befund geschnitten. Vorrangig ist die historische
-Lauf- und Referenzprovenienz; erst danach werden Akkumulator-, Scheduler- oder
-RNG-Kompatibilitaet geplant. Legacy-Ausgaben werden nicht als Erzeugungsinput
-zurueckgefuehrt.
+PR 88 erstellt als naechstes ein read-only Archivmanifest fuer die sieben
+bekannten ZIP-Archive. Das Provenienz-Entscheidungstor unterscheidet einen
+belegten gemeinsamen Lauf strikt von einer blossen Archivfamilie oder einem
+gemischten Referenzkorpus. Erst nach PR 91 darf die Vollfensterphase beginnen.
+Der verbindliche Ablauf steht in
+`docs/plans/historical_reference_provenance_and_full_window_plan.md`.

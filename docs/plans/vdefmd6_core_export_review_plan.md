@@ -63,8 +63,8 @@ fachliche Produktionsfreigabe folgt daraus nicht. PR 86 empfiehlt weiterhin
 
 ## Abschluss und Folgephase
 
-PR 86 schliesst die geplante Mindestserie PR 72 bis PR 86 ab. Danach gibt es
-keinen weiteren vorab nummerierten Pflicht-PR. Neue Slices werden aus den im
-gemeinsamen Bericht belegten Blockern abgeleitet und jeweils separat geplant;
-der erste sinnvolle Kandidat ist die historische Lauf-/Referenzprovenienz,
-bevor Akkumulator- oder RNG-Kompatibilitaet implementiert wird.
+PR 86 schliesst die geplante Mindestserie PR 72 bis PR 86 ab. PR 87 hat den
+Folgeblock inzwischen in PR 88 bis PR 101 geschnitten: zuerst vier
+Provenienz- und Referenzschicht-PRs, danach die kontrollierten Pflichtfenster
+100, 300 und 500 sowie ein gemeinsamer 6.300-Zeilen-Abschlussbericht. Der Plan
+steht in `docs/plans/historical_reference_provenance_and_full_window_plan.md`.

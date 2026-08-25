@@ -211,3 +211,16 @@ keine gemeinsame historische Laufidentitaet aller versionierten Referenzen.
 Der Gesamtbericht fuehrt deshalb
 `historical_reference_family_coherence_open` als eigenen Blocker und
 vermischt keine alternativen Archivvarianten.
+
+## PR-87-Planungsbefund
+
+Die read-only Verzeichnissichtung bestaetigt sieben ZIP-Archive mit zusammen
+165 DAT-Eintraegen. `WVEMOD1.ZIP`, `WVEMOD2.ZIP` und `WVEMOD3.ZIP` enthalten
+jeweils alle 15 Kernexportnamen. Keines dieser drei Archive enthaelt einen
+zugeordneten `IMSREPOR.DAT`. `VDEFMD5A.ZIP` enthaelt einen solchen Bericht,
+aber nur fuenf Kernexportnamen.
+
+Der neue Plan behandelt deshalb `same_run_proven`, `archive_family_only`,
+`mixed_reference_layers` und `contradictory_or_unresolved` als getrennte
+Ergebnisse. PR 88 beginnt mit einem read-only Archivmanifest. Lokale Dateien
+werden dabei weder importiert noch versioniert.

@@ -74,6 +74,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `vdefmd6_core_export_review_plan.md`: PR-86-Abschlussplan fuer den
   gemeinsamen 1-100-Abweichungsbericht aller 15 Kernexportidentitaeten und
   die konservative Freigabeempfehlung `keep_blocked`.
+- `historical_reference_provenance_and_full_window_plan.md`: PR-87-Plan fuer
+  vier Provenienz-PRs, gestaffelte 100-/300-/500-Vollfenster und den
+  abschliessenden 6.300-Zeilen-Bericht ohne Vollgleichheitsbehauptung.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,
