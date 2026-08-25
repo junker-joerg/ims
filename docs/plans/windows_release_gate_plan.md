@@ -73,6 +73,7 @@ fachliche Produktionsfreigabe bleibt an die extern bereitgestellten 15
 berechneten Kernexporte und deren separaten Vergleich gebunden.
 
 PR 71 hat Herkunft, vorhandenen Runner-/Writer-Anschluss und Erzeugungsluecke
-jeder dieser 15 Exportidentitaeten kartiert. PR 72 bereitet als naechstes den
-100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vor, weiterhin ohne
+jeder dieser 15 Exportidentitaeten kartiert. PR 72 hat danach den read-only
+100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vorbereitet. PR 73 setzt
+als naechstes den unabhaengigen VU14-Zustandsweg um, weiterhin ohne vorgezogene
 Vollgleichheitsbehauptung.

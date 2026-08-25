@@ -45,8 +45,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Update/Rollback lokaler Metadaten. PR 69 erstellt den Abschlussbericht fuer
   den ersten Produktionsfreigabekorpus; PR 70 haertet die technische CI-/
   Windows-Pruefkette. PR 71 kartiert alle 15 Kernexporte auf zwei gemeinsame
-  Zustandsfamilien und offene Vollfensterluecken. PR 72 bereitet als naechstes
-  den 100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vor.
+  Zustandsfamilien und offene Vollfensterluecken. PR 72 hat den read-only
+  100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vorbereitet; PR 73 setzt
+  als naechstes den unabhaengigen VU14-Zustandsweg um.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,
   Restore und Side-by-Side-Update/Rollback eines validierten Ergebnisstands,
   weiterhin ohne Simulation oder Schemamigration.
@@ -58,6 +59,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Simulationsstart.
 - `calculated_export_provenance_plan.md`: PR-71-Plan fuer die read-only
   Herkunfts- und Erzeugungswegkarte der 15 Kernexportidentitaeten.
+- `vu14_generation_contract_plan.md`: PR-72-Plan fuer Zielidentitaet,
+  Eingangsherkunft, Periodenfolge und Referenz-Echo-Grenze von
+  `imsvu014.dat` fuer Perioden `1-100`.
 - `workbench_release_smoke_plan.md`: enger PR-67-Plan fuer ZIP-, Staging- und
   Produktionsstart-Smoke mit harter Trennung vom PR-66-Fake-Adapter.
 - `run_control_ui_start_plan.md`: enger PR-64-Plan fuer zweistufige

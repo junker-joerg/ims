@@ -120,11 +120,12 @@ Der erwartete PR-71-Befund lautet:
 
 ## Restplanung
 
-Fuer eine interne, reviewbare Erzeugung ergibt sich ab PR 72 eine Mindestserie
-von sieben PRs:
+Fuer eine interne, reviewbare Erzeugung ergab sich ab PR 72 eine Mindestserie
+von sieben PRs. PR 72 ist inzwischen erledigt; sechs Mindestschritte bleiben:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
-   `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten;
+   `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
+   (erledigt, `pr72-v1`);
 2. PR 73: unabhaengigen VU14-Zustandsweg fuer `1-100` umsetzen und vergleichen;
 3. PR 74: dieselbe Versicherer-Population auf `imsvusk1.dat` und
    `imsvuvk1-3.dat` fuer das geforderte Fenster verbreitern;
@@ -134,7 +135,7 @@ von sieben PRs:
 7. PR 78: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
    die fachliche Freigabe erneut menschlich bewerten.
 
-Diese sieben PRs sind eine Mindestplanung. Funde zur Population, zum Scheduler,
+Die verbleibenden sechs PRs sind eine Mindestplanung. Funde zur Population, zum Scheduler,
 zum RNG oder zur Zustandsfortschreibung duerfen eigene kleine Korrektur-PRs
 erzwingen. Werden stattdessen unabhaengig berechnete Tabellen extern mit
 belegter Herkunft geliefert, kann die interne Erzeugungsserie verkuerzt werden.

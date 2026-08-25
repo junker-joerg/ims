@@ -163,7 +163,8 @@ bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette.
 
 PR 71 hat Herkunft, vorhandenen Runner-/Writer-Anschluss und Erzeugungsluecke
 jeder der 15 Exportidentitaeten kartiert. Alle Writer sind angeschlossen, aber
-die unabhaengige Vollfenstererzeugung bleibt `0/15`. Fuer den internen Weg sind
-ab PR 72 mindestens sieben reviewbare PRs bis zur erneuten fachlichen
-Freigabepruefung geplant; konkrete Scheduler-, RNG-, Populations- oder
-Zustandsfunde koennen weitere kleine Slices erfordern.
+die unabhaengige Vollfenstererzeugung bleibt `0/15`. PR 72 hat den
+VU14-Erzeugungsvertrag `pr72-v1` vorbereitet. Ab PR 73 bleiben mindestens sechs
+reviewbare PRs bis zur erneuten fachlichen Freigabepruefung; konkrete
+Scheduler-, RNG-, Populations- oder Zustandsfunde koennen weitere kleine
+Slices erfordern.

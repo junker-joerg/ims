@@ -1,0 +1,68 @@
+{
+  "schema_version": "pr72-v1",
+  "target": {
+    "subject_type": "insurer",
+    "level": "I",
+    "selector_kind": "entity",
+    "selector_value": 14,
+    "export_filename": "imsvu014.dat",
+    "legacy_reference": "VU14L1.DAT",
+    "period_start": 1,
+    "period_end": 100,
+    "period_count": 100
+  },
+  "required_output_fields": [
+    "premiums_current_sector",
+    "advertising_current_sector",
+    "reserves_current",
+    "policyholders_current_sector",
+    "claims_count_current",
+    "claims_sum_current"
+  ],
+  "input_requirements": [
+    {
+      "code": "complete_population_origin",
+      "origin_required": true,
+      "fields": ["bav", "insurers", "policyholders", "active_entities"]
+    },
+    {
+      "code": "initial_state_origin",
+      "origin_required": true,
+      "fields": ["previous_period_state", "sector_state", "run_index"]
+    },
+    {
+      "code": "vu14_rule_schedule_origin",
+      "origin_required": true,
+      "fields": ["rule_id", "rule_parameters", "logical_action_times"]
+    },
+    {
+      "code": "rng_stream_origin",
+      "origin_required": true,
+      "fields": ["algorithm", "seed", "draw_order", "draw_count_by_period"]
+    },
+    {
+      "code": "state_transition_origin",
+      "origin_required": true,
+      "fields": ["carryover", "premium_transition", "advertising_transition", "reserve_transition"]
+    },
+    {
+      "code": "policyholder_claim_origin",
+      "origin_required": true,
+      "fields": ["policyholder_assignment", "claim_count", "claim_sum"]
+    }
+  ],
+  "reference_boundary": {
+    "comparison_only_after_generation": true,
+    "forbidden_input_kinds": [
+      "legacy_export_rows",
+      "calculated_export_echo",
+      "period_by_period_output_state_updates"
+    ]
+  },
+  "acceptance": {
+    "independent_state_evolution_required": true,
+    "complete_period_window_required": true,
+    "historical_rng_equality_required": false,
+    "historical_full_equality_claim_allowed": false
+  }
+}

@@ -628,15 +628,18 @@ Aktualisierte grobe Restplanung:
   Release-Smoke als lokales und GitHub-Actions-Windows-Gate gebuendelt;
 - PR 71 hat die 15 Kernexporte auf historische Ausgabestellen, vorhandene
   Python-Anschluesse und zwei gemeinsame, noch offene Zustandswege abgebildet;
-- vorgeschlagener naechster Schritt ist PR 72: vollstaendigen
-  100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vorbereiten;
+- PR 72 hat den vollstaendigen read-only 100-Perioden-Erzeugungsvertrag fuer
+  `imsvu014.dat` als `pr72-v1` vorbereitet; der vorhandene Vier-Perioden-Slice
+  bleibt wegen direkter Output-Vorgaben kein unabhaengiger Erzeugungsinput;
+- vorgeschlagener naechster Schritt ist PR 73: unabhaengigen VU14-Zustandsweg
+  fuer `1-100` mit belegter Eingangsherkunft umsetzen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der PR-71-Kartierung bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
+Nach dem PR-72-Vertrag bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `6`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

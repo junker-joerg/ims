@@ -114,7 +114,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   alle Identitaeten, zwei gemeinsame Zustandsfamilien und null unabhaengig
   erzeugte Vollfenster).
 - PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat`
-  mit belegten Eingaben und Negativgrenzen vorbereiten.
+  mit belegten Eingaben und Negativgrenzen vorbereiten (erledigt: Vertrag
+  `pr72-v1`, sechs Herkunftsgruppen, Referenz-Echo-Sperre und weiter
+  `generation_ready = false`).
 - PR 73: unabhaengigen VU14-Zustandsweg fuer `1-100` umsetzen und vergleichen.
 - PR 74: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
   verbreitern.
@@ -126,17 +128,17 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 71 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 72 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`7` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`6` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 72 bereitet den vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
-`imsvu014.dat` vor. Der Schritt muss Eingangsherkunft, erforderliche VU-/VN-
-Population, Regelparameter, Periodenfortschreibung, RNG-Grenze und verbotene
-Referenz-Echos pruefbar festlegen, noch ohne Produktlauf oder
-Vollgleichheitsbehauptung.
+PR 73 setzt als naechstes den unabhaengigen VU14-Zustandsweg fuer `1-100` auf
+Basis des Vertrags `pr72-v1` um. Legacy-Zeilen duerfen erst nach der
+Berechnung zum Vergleich gelesen werden; fehlende Populations-, Regel-,
+Scheduler- oder RNG-Belege muessen den Schritt blockieren oder in weitere
+kleine PRs teilen.

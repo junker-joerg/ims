@@ -472,8 +472,12 @@ PR 71 ist erledigt. Die Herkunfts- und Erzeugungswegkarte ordnet alle 15
 Kernexportidentitaeten den 19 Referenzzielen, historischen Agrsich-Ankern und
 zwei gemeinsamen Python-Zustandsfamilien zu. Writer und expliziter Runner sind
 fuer alle Identitaeten angeschlossen; unabhaengig erzeugte Vollfenster bleiben
-`0/15`. PR 72 bereitet als naechstes den 100-Perioden-Erzeugungsvertrag fuer
-`imsvu014.dat` vor.
+`0/15`.
+
+PR 72 ist erledigt. Der Vertrag `pr72-v1` friert fuer `imsvu014.dat` genau
+Stufe I, VU 14, Perioden `1-100`, sechs Herkunftsgruppen und die Sperre gegen
+Legacy-/Output-Echos ein. PR 73 setzt als naechstes den unabhaengigen
+VU14-Zustandsweg um; mindestens sechs PRs bis PR 78 bleiben.
 
 ## Validierungsregel
 

@@ -94,4 +94,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `production_release_corpus_report.md`: PR-69-Abschlussbericht mit 19-/6.300-Korpus, technischen Betriebsnachweisen und weiterhin 15 fehlenden berechneten Kernexporten
 - `windows_release_gate.md`: PR-70-Windows-Gate fuer Python-Tests, Frontend-Build, blockierten Korpusbericht, ZIP/Staging und Release-Smoke
 - `calculated_export_provenance_map.md`: PR-71-Karte der 15 Kernexportidentitaeten mit C-/Python-Ankern, zwei Zustandsfamilien und offenen Vollfensterluecken
+- `vu14_100_period_generation_contract.md`: PR-72-Abnahmevertrag fuer den unabhaengigen VU14-Zustandsweg ueber Perioden `1-100` ohne Exporterzeugung oder Vollgleichheitsbehauptung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
