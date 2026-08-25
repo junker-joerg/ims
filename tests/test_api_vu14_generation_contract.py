@@ -9,12 +9,17 @@ from ims.api.vu14_generation_contract import (
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CONTRACT_PATH = REPO_ROOT / "tests" / "fixtures" / "vu14_100_period_generation_contract.json"
+ACTION_SEED_CONTRACT_PATH = REPO_ROOT / "tests" / "fixtures" / "vdefmd6_action_seed_contract.json"
 PLAN_DOC = REPO_ROOT / "docs" / "plans" / "vu14_generation_contract_plan.md"
 MIGRATION_DOC = REPO_ROOT / "docs" / "migration" / "vu14_100_period_generation_contract.md"
 
 
 def _contract_data() -> dict:
     return json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
+
+
+def _action_seed_contract_data() -> dict:
+    return json.loads(ACTION_SEED_CONTRACT_PATH.read_text(encoding="utf-8"))
 
 
 def test_vu14_generation_contract_prepares_exact_100_period_target() -> None:
@@ -62,13 +67,17 @@ def test_vu14_generation_contract_requires_provenance_for_every_input_group() ->
         "vu14_rule_schedule_origin",
         "state_transition_origin",
     ]
-    assert payload["source_evidence_count"] == 10
+    assert payload["source_evidence_count"] == 12
     assert payload["source_binding"]["status"] == "source_bound"
     assert payload["source_binding"]["independent_period_one_ready"] is True
     assert payload["population_builder"]["status"] == "population_built"
     assert payload["population_builder"]["population_ready"] is True
     assert payload["population_builder"]["summary"]["insurer_count"] == 25
     assert payload["population_builder"]["summary"]["policyholder_count"] == 200
+    assert payload["action_seed_plan"]["status"] == "action_seed_plan_built"
+    assert payload["action_seed_plan"]["action_seed_plan_ready"] is True
+    assert payload["action_seed_plan"]["historical_seed_known"] is False
+    assert payload["action_seed_plan"]["rng_draws_performed"] is False
 
 
 def test_vu14_generation_contract_rejects_existing_output_echo_as_generation_input() -> None:
@@ -159,6 +168,25 @@ def test_vu14_generation_contract_detects_missing_input_origin_boundary(tmp_path
     assert "input_origin_requirement_missing" in {issue.code for issue in report.issues}
 
 
+def test_vu14_generation_contract_propagates_action_seed_contract_drift(
+    tmp_path: Path,
+) -> None:
+    contract = _action_seed_contract_data()
+    contract["boundaries"]["rng_draws_performed"] = True
+    path = tmp_path / "bad_action_seed_contract.json"
+    path.write_text(json.dumps(contract), encoding="utf-8")
+
+    report = build_vu14_generation_contract_report(
+        REPO_ROOT,
+        action_seed_contract_path=path,
+    )
+
+    assert report.status == "error"
+    assert "action_seed_plan_execution_boundary_mismatch" in {
+        issue.code for issue in report.issues
+    }
+
+
 def test_vu14_generation_contract_cli_is_read_only(capsys) -> None:
     exit_code = main(["--repo-root", str(REPO_ROOT)])
     payload = json.loads(capsys.readouterr().out)
@@ -182,6 +210,7 @@ def test_vu14_generation_contract_documents_origin_and_remaining_plan() -> None:
     assert "contract_ready = true" in migration
     assert "generation_ready = false" in migration
     assert "acceptable_as_generation_input = false" in migration
-    assert "mindestens acht reviewbare Schritte" in migration
+    assert "sieben geplante PRs" in migration
+    assert "ims-modern-explicit-run-v1" in migration
     assert "Eine fachliche Freigabe" in migration
     assert "weder aus PR 72" in migration

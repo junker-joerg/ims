@@ -1,0 +1,51 @@
+{
+  "schema_version": "pr75-v1",
+  "model_id": "Vdefmd6",
+  "expected": {
+    "period_start": 1,
+    "period_end": 100,
+    "slot_count": 200,
+    "invocation_count": 20250,
+    "period_1_rule_invocation_count": 176,
+    "period_49_rule_invocation_count": 176,
+    "period_50_rule_invocation_count": 226,
+    "period_100_rule_invocation_count": 226,
+    "export_invocation_count": 100
+  },
+  "seed_policy": {
+    "policy_id": "ims-modern-explicit-run-v1",
+    "base_seed_required": true,
+    "derivation": "base_seed + run_number - 1",
+    "max_runs": 100,
+    "historical_seed_known": false,
+    "example_base_seed": 20260001,
+    "example_run_seeds": {"1": 20260001, "2": 20260002, "100": 20260100}
+  },
+  "same_slot": {
+    "serialization": ["central", "insurer", "policyholder"],
+    "serialization_is_execution_order": false,
+    "historical_order_claimed": false
+  },
+  "source_anchors": [
+    {"path": "IMS.E", "needle": "act: 1 Newinibv Frmdinf", "meaning": "BAV information at logical time 1"},
+    {"path": "IMS.E", "needle": "10 Agrsich", "meaning": "BAV export at logical time 10"},
+    {"path": "imsvu.e", "needle": "act: 1 Newinivu PlanVU", "meaning": "VU coordinator at logical time 1"},
+    {"path": "imsvu.e", "needle": "10 PlanVU", "meaning": "VU coordinator scheduled through logical time 10"},
+    {"path": "imsvn.e", "needle": "act: 1 Newinivn PlanVN", "meaning": "VN coordinator at logical time 1"},
+    {"path": "imsvn.e", "needle": "10 PlanVN", "meaning": "VN coordinator scheduled through logical time 10"},
+    {"path": "IMS.E", "needle": "VU[i].DatenVU->Ac[1].lt = 1;", "meaning": "effective VU action time"},
+    {"path": "IMS.E", "needle": "VN[i].DatenVN->Ac[1].lt = 1;", "meaning": "effective VN action time"},
+    {"path": "IMS.E", "needle": "VU[ gOwnnr ].DatenVU->Ac[i].lt  == glogtime", "meaning": "VU rule logical-time guard"},
+    {"path": "IMS.E", "needle": "VN[ gOwnnr ].DatenVN->Ac[i].lt == glogtime", "meaning": "VN rule logical-time guard"},
+    {"path": "IMS.E", "needle": "seed = (t->tm_sec +1) * (t->tm_min +1) * (t->tm_mday+1);", "meaning": "historical time-derived seed"},
+    {"path": "IMS.E", "needle": "srand(seed);", "meaning": "historical generator initialization"},
+    {"path": "IMS.E", "needle": "gperiod>=((VN[gOwnnr].DatenVN->Ap)*(VN[gOwnnr].DatenVN->Al[rl]))", "meaning": "VN activation guard before rule body"}
+  ],
+  "boundaries": {
+    "scheduler_started": false,
+    "rng_draws_performed": false,
+    "simulation_performed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_full_equality_claimed": false
+  }
+}

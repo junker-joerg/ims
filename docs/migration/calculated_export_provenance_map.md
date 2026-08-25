@@ -122,7 +122,7 @@ Der erwartete PR-71-Befund lautet:
 ## Restplanung
 
 Fuer eine interne, reviewbare Erzeugung reicht die aktuelle Mindestserie von
-PR 72 bis PR 82. Nach PR 74 bleiben davon mindestens acht PRs offen:
+PR 72 bis PR 82. Nach PR 75 bleiben davon mindestens sieben PRs offen:
 
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
@@ -130,16 +130,16 @@ PR 72 bis PR 82. Nach PR 74 bleiben davon mindestens acht PRs offen:
 2. PR 73: VU14 an `Vdefmd6` binden und Periode 1 unabhaengig pruefen
    (erledigt);
 3. PR 74: Population typisiert aufbauen (erledigt, `pr74-v1`);
-4. PR 75 bis PR 77: Aktions-/Seed-Grenze und VU14-Perioden 2-100 in kleinen
-   Slices schliessen;
-5. PR 78: dieselbe Versicherer-Population auf `imsvusk1.dat` und
+4. PR 75: Aktions-/Seed-Grenze read-only schliessen (erledigt, `pr75-v1`);
+5. PR 76 und PR 77: VU14-Perioden 2-100 in kleinen Slices schliessen;
+6. PR 78: dieselbe Versicherer-Population auf `imsvusk1.dat` und
    `imsvuvk1-3.dat` fuer das geforderte Fenster verbreitern;
-6. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-7. PR 81: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
-8. PR 82: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
+7. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+8. PR 81: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
+9. PR 82: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
    die fachliche Freigabe erneut menschlich bewerten.
 
-Die verbleibenden acht PRs sind eine Mindestplanung. Funde zum Scheduler,
+Die verbleibenden sieben PRs sind eine Mindestplanung. Funde zum Scheduler,
 zum RNG oder zur Zustandsfortschreibung duerfen eigene kleine Korrektur-PRs
 erzwingen. Werden stattdessen unabhaengig berechnete Tabellen extern mit
 belegter Herkunft geliefert, kann die interne Erzeugungsserie verkuerzt werden.

@@ -167,6 +167,7 @@ die unabhaengige Vollfenstererzeugung bleibt `0/15`. PR 72 hat den
 VU14-Erzeugungsvertrag `pr72-v1` vorbereitet. PR 73 hat die echte VU14-Reihe
 dreifach belegt, VU14 an `Vdefmd6` gebunden und Periode 1 unabhaengig in 14/14
 Feldern bestaetigt. PR 74 hat die 25-VU-/200-VN-Ausgangspopulation typisiert
-aufgebaut. Ab PR 75 bleiben mindestens acht reviewbare PRs bis zur erneuten
+aufgebaut. PR 75 hat 200 wirksame Aktionsslots und eine moderne explizite
+Seed-Policy gebunden. Ab PR 76 bleiben sieben reviewbare PRs bis zur erneuten
 fachlichen Freigabepruefung; konkrete Scheduler-, RNG- oder Zustandsfunde
 koennen weitere kleine Slices erfordern.

@@ -76,6 +76,7 @@ PR 71 hat Herkunft, vorhandenen Runner-/Writer-Anschluss und Erzeugungsluecke
 jeder dieser 15 Exportidentitaeten kartiert. PR 72 hat danach den read-only
 100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vorbereitet. PR 73 hat die
 VU14-Quellenbindung und Periode 1 geschlossen. PR 74 hat die belegte
-`Vdefmd6`-Population aus 25 VU und 200 VN aufgebaut. PR 75 bindet als naechstes
-Aktionsfolge und moderne Seed-Policy an, weiterhin ohne vorgezogene
-Vollgleichheitsbehauptung.
+`Vdefmd6`-Population aus 25 VU und 200 VN aufgebaut. PR 75 hat danach die
+wirksamen Aktionsslots und eine moderne Seed-Policy read-only gebunden. PR 76
+schliesst als naechstes VU14-Perioden 2-49, weiterhin ohne
+vorgezogene Vollgleichheitsbehauptung.

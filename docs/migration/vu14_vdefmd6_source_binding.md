@@ -82,17 +82,17 @@ PR 74 hat den ersten Schritt dieser Restplanung mit dem typisierten
 `Vdefmd6`-Builder fuer 25 VU und 200 VN geschlossen. Der Perioden-1-Vergleich
 bezieht VU14 nun aus diesem Builder.
 
-Danach verbleiben mindestens acht reviewbare Schritte:
+PR 75 hat den ersten Schritt dieser Liste mit einem read-only Vertrag fuer
+200 Aktionsslots und einer expliziten modernen Seed-Policy geschlossen.
+Danach verbleiben sieben reviewbare Schritte:
 
-1. PR 75: logische Aktionsfolge und explizite moderne Seed-Policy anbinden,
-   ohne den unbekannten historischen Seed zu behaupten;
-2. PR 76: VU14-Zustandsweg fuer Perioden 2-49 schliessen und Abweichungen
+1. PR 76: VU14-Zustandsweg fuer Perioden 2-49 schliessen und Abweichungen
    klassifizieren;
-3. PR 77: Schockgrenze und Perioden 50-100 schliessen;
-4. PR 78: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
-5. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-6. PR 81: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
-7. PR 82: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
+2. PR 77: Schockgrenze und Perioden 50-100 schliessen;
+3. PR 78: dieselbe VU-Population auf SK1/all und VU-Klassen verbreitern;
+4. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+5. PR 81: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
+6. PR 82: alle 15 Exporte gemeinsam und anschliessend manuell bewerten.
 
 Funde koennen diese Schritte weiter teilen. Eine fehlende historische
 Seed-Aufzeichnung wird nicht durch eine erfundene Gleichheitsannahme ersetzt.

@@ -50,7 +50,8 @@ ausgefuehrten Schleifen und dokumentiert den Widerspruch im Vertrag
 ## Grenzen
 
 - Der Builder ist noch nicht an einen vollstaendigen Schedulerlauf angebunden.
-- Die moderne Seed-Policy und die historische Ziehungsreihenfolge sind offen.
+- PR 75 beschreibt die Aktionsslots und moderne Seed-Policy; die historische
+  Ziehungsreihenfolge bleibt offen.
 - VN-Entscheidungen, Schadenentstehung und Zustandsfortschreibung werden nicht
   ausgefuehrt.
 - Legacy-Ausgabezeilen werden nicht als Eingabe verwendet.
@@ -58,6 +59,6 @@ ausgefuehrten Schleifen und dokumentiert den Widerspruch im Vertrag
 
 ## Danach
 
-PR 75 bindet die logische Aktionsfolge und eine explizite, reproduzierbare
-moderne Seed-Policy an. Der unbekannte Seed des historischen Referenzlaufs wird
-dabei nicht erfunden.
+PR 75 hat die Aktionsslots und eine explizite, reproduzierbare moderne
+Seed-Policy lesend gebunden. PR 76 schliesst als naechstes den unabhaengigen
+VU14-Zustandsweg fuer Perioden 2-49.

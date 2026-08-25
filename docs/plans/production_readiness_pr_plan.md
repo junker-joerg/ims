@@ -121,7 +121,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   unabhaengig pruefen (erledigt).
 - PR 74: `Vdefmd6`-Population fuer 25 VU und 200 VN typisiert aufbauen
   (erledigt: `pr74-v1`, 225 Entitaeten und 13 gepruefte Quellanker).
-- PR 75: Aktionsfolge und moderne reproduzierbare Seed-Policy anbinden.
+- PR 75: Aktionsslots und moderne reproduzierbare Seed-Policy anbinden
+  (erledigt: `pr75-v1`, 200 Slots, 20.250 wirksame Aufrufe und 13 Quellanker;
+  keine historische Same-Slot- oder RNG-Gleichheitsbehauptung).
 - PR 76: VU14-Perioden 2-49 erzeugen und Abweichungen klassifizieren.
 - PR 77: Schockgrenze und VU14-Perioden 50-100 schliessen.
 - PR 78: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
@@ -133,16 +135,15 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 74 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 75 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`8` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`7` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 75 bindet als naechstes die historische logische Aktionsfolge und eine
-explizite reproduzierbare moderne Seed-Policy an. Der konkrete historische
-Seed bleibt unbekannt; er darf nicht aus den Legacy-Ergebniszeilen erfunden
-werden.
+PR 76 schliesst als naechstes den unabhaengigen VU14-Zustandsweg fuer Perioden
+2-49 und klassifiziert Abweichungen. Der konkrete historische Seed und die
+historische Draw-Reihenfolge bleiben unbekannt.

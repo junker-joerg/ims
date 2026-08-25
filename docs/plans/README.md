@@ -48,9 +48,12 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Zustandsfamilien und offene Vollfensterluecken. PR 72 hat den read-only
   100-Perioden-Erzeugungsvertrag fuer `imsvu014.dat` vorbereitet; PR 73 hat
   die Quellenbindung, echte Referenz und unabhaengige Periode 1 ergaenzt;
-  PR 74 baut die typisierte `Vdefmd6`-Population fuer 25 VU und 200 VN.
+  PR 74 baut die typisierte `Vdefmd6`-Population fuer 25 VU und 200 VN;
+  PR 75 bindet deren wirksame Aktionsslots und moderne Seed-Policy read-only.
 - `vdefmd6_population_builder_plan.md`: enger PR-74-Plan fuer die typisierte
   Ausgangspopulation ohne Scheduler-, RNG-, Schaden- oder Regelausfuehrung.
+- `vdefmd6_action_seed_plan.md`: enger PR-75-Plan fuer wirksame Aktionsslots
+  und explizite moderne Seed-Ableitung ohne Schedulerstart oder RNG-Ziehung.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,
   Restore und Side-by-Side-Update/Rollback eines validierten Ergebnisstands,
   weiterhin ohne Simulation oder Schemamigration.

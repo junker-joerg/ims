@@ -70,11 +70,10 @@ ein Referenz-Echo und kein unabhaengiger Zustandsweg.
 
 ## Offene Erzeugungsblocker
 
-1. angebundene logische Aktionsfolge und moderne Seed-Policy;
-2. belegte RNG-Ziehungs- und Verbrauchsreihenfolge;
-3. VN-/Schadenpfad fuer die Ergebnisfelder;
-4. unabhaengige, durchgaengige Zustandsfortschreibung fuer Perioden 2-100;
-5. daraus berechnete Exporttabelle fuer alle 100 Perioden.
+1. belegte RNG-Ziehungs- und Verbrauchsreihenfolge;
+2. VN-/Schadenpfad fuer die Ergebnisfelder;
+3. unabhaengige, durchgaengige Zustandsfortschreibung fuer Perioden 2-100;
+4. daraus berechnete Exporttabelle fuer alle 100 Perioden.
 
 Historische RNG-Vollgleichheit ist keine Annahme des Vertrags. Eine spaetere
 Abweichung muss als RNG-, Scheduler-, Populations-, Daten- oder
@@ -106,5 +105,15 @@ und den VU14-Perioden-1-Pfad daran angeschlossen. Nach PR 74 verbleiben
 mindestens acht reviewbare Schritte bis zur gemeinsamen fachlichen Bewertung.
 Die aktuelle Detailplanung steht in `vu14_vdefmd6_source_binding.md`.
 
+## Fortschreibung durch PR 75
+
+PR 75 hat 200 wirksame Aktionsslots fuer Perioden 1-100 und die moderne Policy
+`ims-modern-explicit-run-v1` gebunden. Der Basis-Seed ist zwingend explizit;
+Run `n` verwendet reproduzierbar `base_seed + n - 1`. Diese Policy belegt
+weder den historischen Seed noch Algorithmus, Draw-Reihenfolge oder
+Draw-Anzahl. Deshalb bleiben vier Erzeugungsblocker und sieben geplante PRs
+bis PR 82 offen.
+
 Eine fachliche Freigabe oder historische Vollgleichheit folgt weder aus PR 72
-noch aus Quellenbindung oder Populationsbuilder in PR 73 und PR 74.
+noch aus Quellenbindung, Populationsbuilder oder Aktions-/Seed-Vertrag in
+PR 73 bis PR 75.

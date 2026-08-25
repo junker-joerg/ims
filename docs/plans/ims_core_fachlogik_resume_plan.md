@@ -634,15 +634,17 @@ Aktualisierte grobe Restplanung:
 - PR 73 hat VU14 an `Vdefmd6` gebunden, die echte Referenz korrigiert und
   Periode 1 unabhaengig in 14/14 Feldern geprueft;
 - PR 74 hat die belegte Population aus 25 VU und 200 VN typisiert aufgebaut;
-- vorgeschlagener naechster Schritt ist PR 75: logische Aktionsfolge und
-  reproduzierbare moderne Seed-Policy anbinden;
+- PR 75 hat 200 wirksame Aktionsslots und eine explizite moderne Seed-Policy
+  ohne historische Same-Slot- oder RNG-Gleichheitsbehauptung gebunden;
+- vorgeschlagener naechster Schritt ist PR 76: unabhaengigen
+  VU14-Zustandsweg fuer Perioden 2-49 schliessen;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach dem PR-74-Populationsbuilder bleiben `0` technische Pflicht-PRs fuer die
-eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `8`
+Nach dem PR-75-Aktions-/Seed-Vertrag bleiben `0` technische Pflicht-PRs fuer die
+eingefrorene Pruefkette. Fuer den internen Erzeugungsweg sind mindestens `7`
 reviewbare PRs bis zur erneuten fachlichen Freigabepruefung geplant; Scheduler-,
 RNG-, Populations- oder Zustandsfunde koennen weitere kleine Slices erfordern.
 Diese Einordnung ersetzt keine Vollgleichheitspruefung.

@@ -97,4 +97,5 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vu14_100_period_generation_contract.md`: PR-72-Abnahmevertrag fuer den unabhaengigen VU14-Zustandsweg ueber Perioden `1-100` ohne Exporterzeugung oder Vollgleichheitsbehauptung
 - `vu14_vdefmd6_source_binding.md`: PR-73-Quellenbindung fuer VU14/`Vrvu06`, korrigierte historische Referenz und unabhaengige Perioden-1-Probe
 - `vdefmd6_population_builder.md`: PR-74-Builder fuer die typisierte 25-VU-/200-VN-Ausgangspopulation mit konservativer VN-Gruppengrenze
+- `vdefmd6_action_seed_contract.md`: PR-75-Vertrag fuer 200 wirksame Aktionsslots und eine explizite moderne Seed-Policy ohne Ausfuehrungs- oder historische RNG-Gleichheitsbehauptung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
