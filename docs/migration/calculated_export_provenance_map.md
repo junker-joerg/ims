@@ -126,16 +126,18 @@ von sieben PRs. PR 72 ist inzwischen erledigt; sechs Mindestschritte bleiben:
 1. PR 72: vollstaendigen 100-Perioden-Erzeugungsvertrag fuer
    `imsvu014.dat` mit belegten Eingaben und Negativgrenzen vorbereiten
    (erledigt, `pr72-v1`);
-2. PR 73: unabhaengigen VU14-Zustandsweg fuer `1-100` umsetzen und vergleichen;
-3. PR 74: dieselbe Versicherer-Population auf `imsvusk1.dat` und
+2. PR 73: VU14 an `Vdefmd6` binden und Periode 1 unabhaengig pruefen
+   (erledigt);
+3. PR 74 bis PR 77: Population, Aktions-/Seed-Grenze und VU14-Perioden 2-100
+   in kleinen Slices schliessen;
+4. PR 78: dieselbe Versicherer-Population auf `imsvusk1.dat` und
    `imsvuvk1-3.dat` fuer das geforderte Fenster verbreitern;
-4. PR 75: VN-Regelzustand fuer `imsvnr01-03.dat` schliessen;
-5. PR 76: VN-Regelzustand fuer `imsvnr04-06.dat` schliessen;
-6. PR 77: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
-7. PR 78: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
+5. PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen;
+6. PR 81: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen;
+7. PR 82: alle 15 Tabellen gemeinsam durch den Abweichungsbericht fuehren und
    die fachliche Freigabe erneut menschlich bewerten.
 
-Die verbleibenden sechs PRs sind eine Mindestplanung. Funde zur Population, zum Scheduler,
+Die verbleibenden neun PRs sind eine Mindestplanung. Funde zur Population, zum Scheduler,
 zum RNG oder zur Zustandsfortschreibung duerfen eigene kleine Korrektur-PRs
 erzwingen. Werden stattdessen unabhaengig berechnete Tabellen extern mit
 belegter Herkunft geliefert, kann die interne Erzeugungsserie verkuerzt werden.

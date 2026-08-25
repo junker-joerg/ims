@@ -63,9 +63,9 @@ def test_explicit_vu14_slice_feeds_calculated_deviation_report() -> None:
     assert adapter_result.ignored_source_export_table_count == 16
     assert adapter_result.ignored_export_identities == [
         "imsvnsk1.dat (policyholder/IV/all=all)",
-        "imsvur14.dat (insurer/II/rule=14)",
+        "imsvur06.dat (insurer/II/rule=6)",
         "imsvusk1.dat (insurer/IV/all=all)",
-        "imsvuvk1.dat (insurer/III/rule_class=1)",
+        "imsvuvk2.dat (insurer/III/rule_class=2)",
     ]
     assert adapter_result.source_execution_performed is True
     assert adapter_result.source_writes_performed is False

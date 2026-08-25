@@ -86,7 +86,7 @@ def test_load_scenario_from_mapping_matches_file_loader_shape() -> None:
     assert scenario.context.max_periods == 100
     assert scenario.bav.entity_id == 1
     assert [insurer.entity_id for insurer in scenario.insurers] == [14]
-    assert scenario.insurers[0].reserves_current == [202.0, 252.0]
+    assert scenario.insurers[0].reserves_current == [0.0, 0.0]
 
 
 def test_replay_runner_appends_vu14_window_and_matches_legacy(tmp_path: Path) -> None:

@@ -320,7 +320,7 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
             global_period=2,
             field_name="Rs1",
             actual=999.0,
-            expected=204.0,
+            expected=47.8,
         )
     ]
     assert report.file_summaries[0].field_summaries == [
@@ -330,7 +330,7 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
             deviation_count=1,
             periods_with_differences=[2],
             numeric_deviation_count=1,
-            max_abs_delta=795.0,
+            max_abs_delta=951.2,
         )
     ]
     assert report.field_summaries == report.file_summaries[0].field_summaries
@@ -339,7 +339,7 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert report_data["deviation_index"][0]["global_period"] == 2
     assert report_data["deviation_index"][0]["field_name"] == "Rs1"
     assert report_data["field_summaries"][0]["deviation_count"] == 1
-    assert report_data["field_summaries"][0]["max_abs_delta"] == 795.0
+    assert report_data["field_summaries"][0]["max_abs_delta"] == 951.2
     assert report_data["group_summaries"][0]["fields_with_differences"] == ["Rs1"]
     assert report.group_summaries[0].fields_with_differences == ["Rs1"]
     assert report.period_summaries[1].global_period == 2
@@ -355,7 +355,7 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert field_rows[0]["filename"] == "imsvu014.dat"
     assert field_rows[0]["field_name"] == "Rs1"
     assert field_rows[0]["deviation_count"] == "1"
-    assert field_rows[0]["max_abs_delta"] == "795.000000"
+    assert field_rows[0]["max_abs_delta"] == "951.200000"
 
     deviation_csv_path = write_legacy_validation_deviation_index_csv(report, tmp_path / "report_deviations.csv")
     with deviation_csv_path.open("r", encoding="utf-8", newline="") as handle:
@@ -364,7 +364,7 @@ def test_validation_report_captures_period_and_field_deviations(tmp_path: Path) 
     assert deviation_rows[0]["global_period"] == "2"
     assert deviation_rows[0]["field_name"] == "Rs1"
     assert deviation_rows[0]["actual"] == "999.0"
-    assert deviation_rows[0]["expected"] == "204.0"
+    assert deviation_rows[0]["expected"] == "47.8"
 
 
 def test_validation_report_summarizes_vu_and_vn_file_families() -> None:

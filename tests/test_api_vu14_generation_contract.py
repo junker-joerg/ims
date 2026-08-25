@@ -44,7 +44,7 @@ def test_vu14_generation_contract_requires_provenance_for_every_input_group() ->
     payload = report.to_dict()
 
     assert payload["input_requirement_count"] == 6
-    assert payload["currently_evidenced_input_requirement_count"] == 0
+    assert payload["currently_evidenced_input_requirement_count"] == 4
     assert [item["code"] for item in payload["input_requirements"]] == [
         "complete_population_origin",
         "initial_state_origin",
@@ -54,7 +54,17 @@ def test_vu14_generation_contract_requires_provenance_for_every_input_group() ->
         "policyholder_claim_origin",
     ]
     assert all(item["origin_required"] is True for item in payload["input_requirements"])
+    assert [
+        item["code"] for item in payload["input_requirements"] if item["currently_evidenced"]
+    ] == [
+        "complete_population_origin",
+        "initial_state_origin",
+        "vu14_rule_schedule_origin",
+        "state_transition_origin",
+    ]
     assert payload["source_evidence_count"] == 8
+    assert payload["source_binding"]["status"] == "source_bound"
+    assert payload["source_binding"]["independent_period_one_ready"] is True
 
 
 def test_vu14_generation_contract_rejects_existing_output_echo_as_generation_input() -> None:
@@ -85,10 +95,9 @@ def test_vu14_generation_contract_keeps_generation_and_release_blocked() -> None
     payload = build_vu14_generation_contract_report(REPO_ROOT).to_dict()
 
     assert payload["generation_blocker_codes"] == [
-        "complete_population_origin_missing",
-        "vu14_rule_schedule_origin_missing",
         "rng_stream_origin_missing",
-        "independent_state_evolution_missing",
+        "policyholder_claim_origin_missing",
+        "independent_periods_2_100_missing",
         "independent_100_period_export_missing",
     ]
     assert payload["generation_ready"] is False
@@ -169,6 +178,6 @@ def test_vu14_generation_contract_documents_origin_and_remaining_plan() -> None:
     assert "contract_ready = true" in migration
     assert "generation_ready = false" in migration
     assert "acceptable_as_generation_input = false" in migration
-    assert "mindestens sechs reviewbare Schritte" in migration
+    assert "mindestens neun reviewbare Schritte" in migration
     assert "Eine fachliche Freigabe" in migration
-    assert "folgt aus PR 72 nicht" in migration
+    assert "weder aus PR 72" in migration

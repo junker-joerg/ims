@@ -82,10 +82,10 @@ def test_period_plan_builds_replay_snapshots_from_start_state() -> None:
     assert replay_fixture["carry_forward_insurer_state"] is False
     assert [snapshot["context"]["period"] for snapshot in replay_fixture["snapshots"]] == [1, 2, 3, 4]
     assert [snapshot["insurers"][0]["premiums_current"] for snapshot in replay_fixture["snapshots"]] == [
-        101.0,
-        102.0,
-        103.0,
-        104.0,
+        40.0,
+        39.2,
+        38.4,
+        37.6,
     ]
     assert replay_fixture["snapshots"][0]["insurers"][0]["name"] == "Replay VU 14"
 
@@ -142,7 +142,7 @@ def test_period_plan_replay_matches_vusk1_legacy_window(tmp_path: Path) -> None:
 def test_period_plan_replay_detects_bad_update(tmp_path: Path) -> None:
     data = json.loads((FIXTURE_DIR / "replay_vu14_period_plan.json").read_text(encoding="utf-8"))
     data["legacy_window"]["legacy_path"] = str(Path("tests/references/legacy_agrsich/VU14L1.DAT").resolve())
-    data["period_updates"][1]["insurers"][0]["reserves_current"] = [999.0, 254.0]
+    data["period_updates"][1]["insurers"][0]["reserves_current"] = [999.0, 36.7]
     plan_path = tmp_path / "bad_plan.json"
     plan_path.write_text(json.dumps(data), encoding="utf-8")
 

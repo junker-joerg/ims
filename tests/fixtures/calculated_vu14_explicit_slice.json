@@ -9,7 +9,7 @@
       "context": {"period": 1, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1401},
       "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
       "insurers": [
-        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 101.0, "advertising_current": 10.1, "reserves_current": [202.0, 252.0], "policyholders_current": 51.0, "claims_count_current": [2, 3], "claims_sum_current": [20.5, 25.5]}
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 6, "rule_class": 2, "premiums_current": 40.0, "advertising_current": 10.0, "reserves_current": [0.0, 0.0], "policyholders_current": 0.0, "policyholders_current_sector": [0.0, 0.0], "claims_count_current": [0, 0], "claims_sum_current": [0.0, 0.0]}
       ],
       "policyholders": []
     },
@@ -17,7 +17,7 @@
       "context": {"period": 2, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1402},
       "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
       "insurers": [
-        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 102.0, "advertising_current": 10.2, "reserves_current": [204.0, 254.0], "policyholders_current": 52.0, "claims_count_current": [3, 4], "claims_sum_current": [21.0, 26.0]}
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 6, "rule_class": 2, "premiums_current": 39.2, "advertising_current": 10.3, "reserves_current": [47.8, 36.7], "policyholders_current": 2.0, "policyholders_current_sector": [2.0, 4.0], "claims_count_current": [1, 4], "claims_sum_current": [30.6, 120.1]}
       ],
       "policyholders": []
     },
@@ -25,7 +25,7 @@
       "context": {"period": 3, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1403},
       "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
       "insurers": [
-        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 103.0, "advertising_current": 10.3, "reserves_current": [206.0, 256.0], "policyholders_current": 53.0, "claims_count_current": [4, 5], "claims_sum_current": [21.5, 26.5]}
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 6, "rule_class": 2, "premiums_current": 38.4, "advertising_current": 10.6, "reserves_current": [57.5, 46.5], "policyholders_current": 1.0, "policyholders_current_sector": [1.0, 1.0], "claims_count_current": [1, 1], "claims_sum_current": [29.7, 29.3]}
       ],
       "policyholders": []
     },
@@ -33,7 +33,7 @@
       "context": {"period": 4, "logtime": 0, "max_periods": 100, "run_index": 0, "rng_seed": 1404},
       "bav": {"entity_id": 1, "name": "Calculated-VU14-BAV"},
       "insurers": [
-        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 14, "rule_class": 1, "premiums_current": 104.0, "advertising_current": 10.4, "reserves_current": [208.0, 258.0], "policyholders_current": 54.0, "claims_count_current": [5, 6], "claims_sum_current": [22.0, 27.0]}
+        {"entity_id": 14, "name": "Calculated VU 14", "active": true, "active_prev": true, "rule_id": 6, "rule_class": 2, "premiums_current": 37.6, "advertising_current": 10.9, "reserves_current": [66.7, 77.9], "policyholders_current": 1.0, "policyholders_current_sector": [1.0, 4.0], "claims_count_current": [1, 4], "claims_sum_current": [29.6, 120.1]}
       ],
       "policyholders": []
     }

@@ -1,0 +1,105 @@
+{
+  "schema_version": "pr73-v1",
+  "model": {
+    "model_id": "Vdefmd6",
+    "title": "Komplexer Marktschock: Die Wiedervereinigung",
+    "simulation_periods": 100,
+    "insurer_count": 25,
+    "policyholder_count": 200
+  },
+  "bav": {
+    "change_shock_period": 50,
+    "change_shock_run": 0,
+    "search_cost": 0.8,
+    "interest_rate": 0.02,
+    "repetitions_allowed": true
+  },
+  "vu14": {
+    "entity_id": 14,
+    "name": "Allianz",
+    "rule_id": 6,
+    "rule_name": "Erwartungsschaden",
+    "rule_class": 2,
+    "activation_period": 1,
+    "active_through_run": 100,
+    "logical_action_time": 1,
+    "initial_state": {
+      "premiums_current_sector": [40.0, 40.0],
+      "advertising_current_sector": [10.0, 10.0],
+      "reserves_current": [0.0, 0.0],
+      "policyholders_current_sector": [0.0, 0.0],
+      "claims_count_current": [0, 0],
+      "claims_sum_current": [0.0, 0.0]
+    },
+    "parameters": {
+      "premium_below_normal": [1.02, 1.02],
+      "premium_above_normal": [0.98, 0.98],
+      "advertising_below_normal": [1.0, 1.0],
+      "advertising_above_normal": [1.03, 1.03],
+      "premium_below_shock": [1.03, 1.01],
+      "premium_above_shock": [0.99, 0.99],
+      "advertising_below_shock": [1.06, 1.06],
+      "advertising_above_shock": [1.06, 1.06]
+    }
+  },
+  "insurer_rule_ranges": [
+    {"start": 1, "end": 2, "rule_id": 1},
+    {"start": 3, "end": 4, "rule_id": 2},
+    {"start": 5, "end": 7, "rule_id": 3},
+    {"start": 8, "end": 10, "rule_id": 4},
+    {"start": 11, "end": 13, "rule_id": 5},
+    {"start": 14, "end": 16, "rule_id": 6},
+    {"start": 17, "end": 19, "rule_id": 7},
+    {"start": 20, "end": 22, "rule_id": 8},
+    {"start": 23, "end": 25, "rule_id": 9}
+  ],
+  "policyholder_rule_ranges": [
+    {"start": 1, "end": 15, "rule_id": 1, "activation_period": 1},
+    {"start": 16, "end": 30, "rule_id": 2, "activation_period": 1},
+    {"start": 31, "end": 60, "rule_id": 3, "activation_period": 1},
+    {"start": 61, "end": 90, "rule_id": 4, "activation_period": 1},
+    {"start": 91, "end": 120, "rule_id": 5, "activation_period": 1},
+    {"start": 121, "end": 150, "rule_id": 6, "activation_period": 1},
+    {"start": 151, "end": 190, "rule_id": 3, "activation_period": 50},
+    {"start": 191, "end": 200, "rule_id": 2, "activation_period": 50}
+  ],
+  "evidenced_requirement_codes": [
+    "complete_population_origin",
+    "initial_state_origin",
+    "vu14_rule_schedule_origin",
+    "state_transition_origin"
+  ],
+  "open_requirement_codes": [
+    "rng_stream_origin",
+    "policyholder_claim_origin"
+  ],
+  "source_anchors": [
+    {"path": "IMS.E", "needle": "func Vdefmd6()", "meaning": "model entry"},
+    {"path": "IMS.E", "needle": "Bavauin( 50,0, 0.8, 0.02,1);", "meaning": "BAV parameters"},
+    {"path": "IMS.E", "needle": "Vuauini( 14,6,1,100", "meaning": "VU14 rule and activation"},
+    {"path": "IMS.E", "needle": "agvu1[ 14] = 1;", "meaning": "VU14 export selection"},
+    {"path": "IMS.E", "needle": "VU[i].DatenVU->Ac[1].lt = 1;", "meaning": "logical action time"},
+    {"path": "IMS.E", "needle": "act Vrvu06", "meaning": "expected-claim rule"},
+    {"path": "IMSDATA.C", "needle": "int vkrvu[11] = {0,1,1,2,2,2,2,3,3,3,0};", "meaning": "rule class mapping"},
+    {"path": "IMSRND.C", "needle": "double myrndf()", "meaning": "historical RNG algorithm"},
+    {"path": "IMS.E", "needle": "srand(seed);", "meaning": "runtime seed boundary"}
+  ],
+  "reference": {
+    "path": "tests/references/legacy_agrsich/VU14L1.DAT",
+    "normalized_sha256": "f568e2ec989e66832cd979591df95ad40c650b44774a05573f317322e587f49c",
+    "period_start": 1,
+    "period_end": 100,
+    "period_count": 100,
+    "comparison_only_after_generation": true
+  },
+  "source_observations": {
+    "incoming_vu14l1_sha256": "9cf9f137ae16d6a296c713141bf9d084edb5aeadca7d1fadd911f367d4f86ba0",
+    "incoming_vu14p2_periods": [1, 50],
+    "incoming_vu14p1_periods": [51, 100],
+    "wvemod1_imsvu014_periods": [1, 500],
+    "all_three_sources_match_for_periods_1_100": true
+  },
+  "known_source_conflicts": [
+    "Vdefmd6 executable loops assign policyholders 151-190 to rule 3 and 191-200 to rule 2; the later screen text says 151-180 and 181-200. The executable loop boundaries are used."
+  ]
+}

@@ -476,8 +476,10 @@ fuer alle Identitaeten angeschlossen; unabhaengig erzeugte Vollfenster bleiben
 
 PR 72 ist erledigt. Der Vertrag `pr72-v1` friert fuer `imsvu014.dat` genau
 Stufe I, VU 14, Perioden `1-100`, sechs Herkunftsgruppen und die Sperre gegen
-Legacy-/Output-Echos ein. PR 73 setzt als naechstes den unabhaengigen
-VU14-Zustandsweg um; mindestens sechs PRs bis PR 78 bleiben.
+Legacy-/Output-Echos ein. PR 73 hat VU14 an `Vdefmd6` gebunden, die zuvor
+kuenstliche Referenz durch die dreifach belegte historische Reihe ersetzt und
+Periode 1 unabhaengig in 14/14 Feldern bestaetigt. PR 74 baut als naechstes die
+25-VU-/200-VN-Population; mindestens neun PRs bis PR 82 bleiben.
 
 ## Validierungsregel
 

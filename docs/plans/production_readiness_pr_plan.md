@@ -117,28 +117,30 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   mit belegten Eingaben und Negativgrenzen vorbereiten (erledigt: Vertrag
   `pr72-v1`, sechs Herkunftsgruppen, Referenz-Echo-Sperre und weiter
   `generation_ready = false`).
-- PR 73: unabhaengigen VU14-Zustandsweg fuer `1-100` umsetzen und vergleichen.
-- PR 74: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
+- PR 73: VU14 an `Vdefmd6` binden, die echte Referenz korrigieren und Periode 1
+  unabhaengig pruefen (erledigt).
+- PR 74: `Vdefmd6`-Population fuer 25 VU und 200 VN typisiert aufbauen.
+- PR 75: Aktionsfolge und moderne reproduzierbare Seed-Policy anbinden.
+- PR 76: VU14-Perioden 2-49 erzeugen und Abweichungen klassifizieren.
+- PR 77: Schockgrenze und VU14-Perioden 50-100 schliessen.
+- PR 78: Versicherer-Population auf `imsvusk1.dat` und `imsvuvk1-3.dat`
   verbreitern.
-- PR 75: VN-Regelzustand fuer `imsvnr01-03.dat` schliessen.
-- PR 76: VN-Regelzustand fuer `imsvnr04-06.dat` schliessen.
-- PR 77: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
-- PR 78: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
+- PR 79 und PR 80: VN-Regelzustand in zwei kleinen Gruppen schliessen.
+- PR 81: VN-Klassen- und SK1/all-Exporte aus demselben Zustand vergleichen.
+- PR 82: alle 15 Exporte gemeinsam vergleichen und die Freigabe menschlich
   neu bewerten.
 
 ## Grobe Anzahl
 
-Nach PR 72 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
+Nach PR 73 sind `0` technische Pflicht-PRs fuer die eingefrorene Windows-
 Pruefkette offen. Fuer eine interne, reviewbare Erzeugung sind mindestens
-`6` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
+`9` weitere PRs bis zur erneuten fachlichen Freigabepruefung geplant. Funde zu
 Population, Scheduler, RNG oder Zustandsfortschreibung koennen diese Zahl
 erhoehen. Eine unabhaengige externe Vollieferung mit belegter Herkunft kann die
 interne Erzeugungsserie verkuerzen.
 
 ## Naechster Schritt
 
-PR 73 setzt als naechstes den unabhaengigen VU14-Zustandsweg fuer `1-100` auf
-Basis des Vertrags `pr72-v1` um. Legacy-Zeilen duerfen erst nach der
-Berechnung zum Vergleich gelesen werden; fehlende Populations-, Regel-,
-Scheduler- oder RNG-Belege muessen den Schritt blockieren oder in weitere
-kleine PRs teilen.
+PR 74 baut als naechstes die in `Vdefmd6` belegte Population aus 25 VU und 200
+VN typisiert auf. Der konkrete historische Seed bleibt unbekannt; er darf nicht
+aus den Legacy-Ergebniszeilen erfunden werden.

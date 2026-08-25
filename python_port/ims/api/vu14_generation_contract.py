@@ -9,6 +9,10 @@ from typing import Sequence
 from ims.api.calculated_export_provenance_report import (
     build_calculated_export_provenance_report,
 )
+from ims.api.vu14_source_binding import (
+    DEFAULT_SOURCE_BINDING_PATH,
+    build_vu14_source_binding_report,
+)
 
 
 CONTRACT_VERSION = "pr72-v1"
@@ -73,10 +77,9 @@ _SOURCE_PATHS = (
     Path("tests/references/legacy_agrsich/VU14L1.DAT"),
 )
 _BLOCKERS = (
-    "complete_population_origin_missing",
-    "vu14_rule_schedule_origin_missing",
     "rng_stream_origin_missing",
-    "independent_state_evolution_missing",
+    "policyholder_claim_origin_missing",
+    "independent_periods_2_100_missing",
     "independent_100_period_export_missing",
 )
 
@@ -98,6 +101,7 @@ class VU14GenerationContractReport:
     bundle_path: str
     input_requirements: tuple[dict[str, object], ...]
     existing_slice: dict[str, object]
+    source_binding: dict[str, object]
     source_evidence_paths: tuple[str, ...]
     status: str
     issues: tuple[VU14GenerationContractIssue, ...]
@@ -115,10 +119,13 @@ class VU14GenerationContractReport:
             "required_period_count": 100,
             "required_output_fields": list(_OUTPUT_FIELDS),
             "input_requirement_count": len(self.input_requirements),
-            "currently_evidenced_input_requirement_count": 0,
+            "currently_evidenced_input_requirement_count": sum(
+                item.get("currently_evidenced") is True for item in self.input_requirements
+            ),
             "input_requirements": [dict(item) for item in self.input_requirements],
             "forbidden_input_kinds": list(_FORBIDDEN_INPUT_KINDS),
             "existing_slice": dict(self.existing_slice),
+            "source_binding": dict(self.source_binding),
             "source_evidence_paths": list(self.source_evidence_paths),
             "source_evidence_count": len(self.source_evidence_paths),
             "generation_blocker_codes": list(_BLOCKERS),
@@ -142,6 +149,7 @@ def build_vu14_generation_contract_report(
     contract_path: Path | str | None = None,
     bundle_path: Path | str | None = None,
     slice_path: Path | str | None = None,
+    source_binding_path: Path | str | None = None,
 ) -> VU14GenerationContractReport:
     root = Path(repo_root).expanduser().resolve()
     contract_file = _resolve(root, contract_path, DEFAULT_CONTRACT_PATH)
@@ -151,6 +159,21 @@ def build_vu14_generation_contract_report(
 
     contract = _load_json_object(contract_file, "contract", issues)
     requirements = _validate_contract(contract, contract_file, issues)
+    binding_file = _resolve(root, source_binding_path, DEFAULT_SOURCE_BINDING_PATH)
+    binding_report = build_vu14_source_binding_report(root, binding_path=binding_file)
+    for binding_issue in binding_report.issues:
+        issues.append(
+            VU14GenerationContractIssue(
+                code=f"source_binding_{binding_issue.code}",
+                message=binding_issue.message,
+                path=binding_issue.path,
+            )
+        )
+    evidenced = set(binding_report.evidenced_requirement_codes) if not binding_report.issues else set()
+    requirements = tuple(
+        {**item, "currently_evidenced": item["code"] in evidenced}
+        for item in requirements
+    )
     _validate_bundle_target(root, bundle_file, issues)
     source_paths = _source_evidence(root, issues)
     existing_slice = _slice_evidence(slice_file, issues)
@@ -161,6 +184,7 @@ def build_vu14_generation_contract_report(
         bundle_path=str(bundle_file),
         input_requirements=requirements,
         existing_slice=existing_slice,
+        source_binding=binding_report.to_dict(),
         source_evidence_paths=source_paths,
         status="error" if issues else "prepared",
         issues=tuple(issues),
@@ -176,12 +200,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--contract", type=Path)
     parser.add_argument("--bundle", type=Path)
     parser.add_argument("--slice", type=Path)
+    parser.add_argument("--source-binding", type=Path)
     args = parser.parse_args(argv)
     report = build_vu14_generation_contract_report(
         args.repo_root,
         contract_path=args.contract,
         bundle_path=args.bundle,
         slice_path=args.slice,
+        source_binding_path=args.source_binding,
     )
     print(json.dumps(report.to_dict(), ensure_ascii=True, sort_keys=True))
     return 1 if report.status == "error" else 0

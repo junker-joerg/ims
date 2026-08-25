@@ -50,7 +50,7 @@ Der erwartete Befund lautet:
 - `status = "prepared"` und `contract_ready = true`;
 - `required_period_count = 100`;
 - `input_requirement_count = 6`;
-- `currently_evidenced_input_requirement_count = 0`;
+- `currently_evidenced_input_requirement_count = 4` nach der PR-73-Quellenbindung;
 - `generation_ready = false`;
 - `independent_full_window_ready = false`;
 - keine Schreib-, Runner-, Ausfuehrungs- oder Simulationsflags.
@@ -92,18 +92,18 @@ Am 2026-08-25 wurden ausgefuehrt:
 - Bundle-, Staging-, Readiness- und Release-Smoke;
 - keine Ausfuehrung, keine Simulation und keine fachliche Freigabe.
 
-## Restplanung
+## Fortschreibung durch PR 73
 
-Nach PR 72 verbleiben mindestens sechs reviewbare Schritte:
+PR 73 hat Population, Startzustand, VU14-Regel/Aktionszeit und
+Zustandsursprung an `Vdefmd6` gebunden. Die echte VU14-Referenz ersetzt die
+zuvor linear konstruierte Testreihe. Eine unabhaengig erzeugte Periode 1 stimmt
+in 14/14 Feldern; RNG und VN-/Schadenpfad fuer Perioden 2-100 bleiben offen.
 
-1. PR 73: unabhaengigen VU14-Zustandsweg fuer `1-100` auf Basis belegter
-   Population, Regel-/Aktionsdaten und RNG-Grenze umsetzen und vergleichen;
-2. PR 74: dieselbe Versicherer-Population auf SK1/all und VU-Klassen
-   verbreitern;
-3. PR 75 und PR 76: VN-Regelzustand in zwei kleinen Gruppen schliessen;
-4. PR 77: VN-Klassen und SK1/all aus demselben Zustand vergleichen;
-5. PR 78: alle 15 Exporte gemeinsam bewerten.
+## Restplanung nach PR 73
 
-Funde in Population, Scheduler, RNG oder Zustandsfortschreibung koennen PR 73
-in weitere kleine Slices teilen. Eine fachliche Freigabe oder historische
-Vollgleichheit folgt aus PR 72 nicht.
+Nach PR 73 verbleiben mindestens neun reviewbare Schritte bis zur gemeinsamen
+fachlichen Bewertung. Die aktuelle Detailplanung steht in
+`vu14_vdefmd6_source_binding.md`.
+
+Eine fachliche Freigabe oder historische Vollgleichheit folgt weder aus PR 72
+noch aus der Quellenbindung in PR 73.

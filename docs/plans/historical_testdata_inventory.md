@@ -87,8 +87,10 @@ wurden abweichende Groessen und SHA-256-Hashes beobachtet. Das ist kein
 Ablehnungsgrund, aber ein Hinweis, dass jede Uebernahme Quelle, Archivfamilie,
 Periodenfenster und Vergleichsannahme explizit dokumentieren muss.
 
-Es werden keine vorhandenen Referenzdateien ueberschrieben. Neue historische
-Dateifamilien sollen in separaten PRs aufgenommen werden.
+Bis PR 72 wurden vorhandene Referenzen nicht ueberschrieben. PR 73 korrigiert
+gezielt die faelschlich lineare `VU14L1.DAT`, nachdem Zeitfenster, Teildateien
+und Archivfassung dieselbe historische Reihe dreifach belegt haben. Neue
+Dateifamilien werden weiterhin nur in separaten PRs aufgenommen.
 
 ## Empfohlene Reihenfolge
 
@@ -164,3 +166,15 @@ belegte Fenster `1-4`. Es werden keine weiteren historischen Dateien
 uebernommen. Vier explizite, referenzausgerichtete Zustandsinputs liefern einen
 passenden Aggregat-/Exportvergleich; eine unabhaengige historische
 Zustandsentwicklung ist dadurch nicht belegt.
+
+## VU14-Quellenkorrektur PR 73
+
+PR 73 ersetzt die damals verwendete linear konstruierte VU14-Testreihe durch
+den gezielt geprueften Kandidaten `incomming/IMS.DAT/VU14L1.DAT`. Dessen
+Perioden 1-50 und 51-100 stimmen tokenweise mit `VU14P2.DAT` und `VU14P1.DAT`
+ueberein; zusaetzlich stimmt `WVEMOD1.ZIP/IMSVU014.DAT` in 1-100. Nur die
+100-zeilige Zielreferenz wurde versioniert, `incomming/` bleibt unversioniert.
+
+Die bisherigen Vier-Perioden-Fixtures sind auf die echten Zeilen 1-4
+ausgerichtet. Sie bleiben direkte Vergleichseingaben. Nur Periode 1 wird
+zusaetzlich unabhaengig aus der `Vdefmd6`-Initialisierung erzeugt.

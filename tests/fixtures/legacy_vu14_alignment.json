@@ -16,25 +16,26 @@
       "name": "Legacy VU 14",
       "active": true,
       "active_prev": true,
-      "rule_id": 14,
-      "rule_class": 1,
+      "rule_id": 6,
+      "rule_class": 2,
       "premiums_prev": 0.0,
       "advertising_prev": 0.0,
       "reserves_prev": 0.0,
-      "premiums_current": 102.0,
-      "advertising_current": 10.2,
+      "premiums_current": 39.2,
+      "advertising_current": 10.3,
       "reserves_current": [
-        204.0,
-        254.0
+        47.8,
+        36.7
       ],
-      "policyholders_current": 52.0,
+      "policyholders_current": 2.0,
+      "policyholders_current_sector": [2.0, 4.0],
       "claims_count_current": [
-        3,
+        1,
         4
       ],
       "claims_sum_current": [
-        21.0,
-        26.0
+        30.6,
+        120.1
       ]
     }
   ],

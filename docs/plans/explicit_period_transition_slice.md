@@ -26,7 +26,7 @@ Die ersten belegbaren Eingaben sind:
 
 - `tests/fixtures/replay_vu14_period_plan.json`
   - Legacy-Fenster: `VU14L1.DAT`, globale Perioden `1` bis `4`;
-  - ein Versicherer: `entity_id = 14`, `rule_id = 14`, `rule_class = 1`;
+  - ein Versicherer: `entity_id = 14`, `rule_id = 6`, `rule_class = 2`;
   - keine VN-Policyholder.
 - `tests/fixtures/replay_vusk1_period_plan.json`
   - Legacy-Fenster: `VUSK1L4.DAT`, globale Perioden `101` bis `104`;
