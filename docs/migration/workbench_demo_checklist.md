@@ -133,6 +133,30 @@ nicht. Er prueft aber die API-Signale, die der sichtbare UI-Durchlauf anzeigen
 soll, ohne Simulation, ohne Adapterstart und ohne historische
 Vollgleichheitsbehauptung.
 
+## Kontrollierter PR66-Browser-Smoke
+
+PR 66 ergaenzt den sichtbaren Startpfad separat vom normalen Workbench-Server.
+Der isolierte Startpunkt legt eine frische SQLite-Datei mit genau einem
+`validated` Queue-Eintrag an und injiziert einen Fake-Adapter:
+
+```powershell
+npm.cmd run build --prefix .\frontend
+$env:PYTHONPATH = ".\python_port"
+python -m ims.api.run_control_browser_demo_smoke --db .\.ims_workbench\pr66-browser-smoke.sqlite --frontend-dist .\frontend\dist --host 127.0.0.1 --port 8011
+```
+
+Im Browser werden `Freigabe pruefen` und `Adapter starten` genau einmal
+betaetigt. Danach muessen Ergebnisanzeige und Verlauf `result_persisted` sowie
+genau einen Attempt zeigen. `Ergebnis neu laden` fuehrt nur GET-Abfragen aus
+und darf keinen zweiten Attempt erzeugen. Der Desktop-Screenshot und die
+390-px-Pruefung belegen nur Bedienbarkeit und sichtbare Grenzen.
+
+Der Fake-Adapter ruft keinen Engine-Runner auf. Er meldet
+`simulation_performed = false`, keine automatische historische Regelwahl und
+keine historische Vollgleichheit. Der Smoke-Server akzeptiert nur Loopback,
+eine frische Datenbank und ein bereits gebautes Frontend; er ist kein
+Produktionsstartskript.
+
 ## Was demo-faehig ist
 
 - lokale Browser-Workbench mit gebautem Frontend

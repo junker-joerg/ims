@@ -541,6 +541,23 @@ Der Demo-Smoke nutzt den bekannten Run `baseline-python-tests` und das Szenario 
 
 Der zugehoerige Browser-/Screenshot-Smoke nutzt stabile UI-Anker fuer Dry-Run-Schaltflaeche, Queue-Schaltflaeche, Queue-Ergebnis, Aktionsplankarte, `run-control-execution-flow`, `run-control-execution-result`, `run-control-execution-history`, `run-control-execution-result-refresh`, `run-control-core-bridge`, `carryover-probe-contract` und `adapter-result-contract`. Der Screenshot soll belegen, dass die lokale UI den Demo-Pfad, den kontrollierten Ausfuehrungsflow, die read-only Ergebnis- und Verlaufssicht, die gesperrte Brueckenkarte, den gesperrten Carryover-Probe-Vertrag und den gesperrten Adapter-Resultat-Vertrag sichtbar macht; er ist kein fachlicher Ergebnisnachweis.
 
+Der isolierte PR66-Smoke startet eine frische lokale Testschale mit injiziertem
+Fake-Adapter. Nur gegen diesen Startpunkt darf der Browser den kontrollierten
+Startbutton betaetigen:
+
+```powershell
+npm.cmd run build --prefix .\frontend
+$env:PYTHONPATH = ".\python_port"
+python -m ims.api.run_control_browser_demo_smoke --db .\.ims_workbench\pr66-browser-smoke.sqlite --frontend-dist .\frontend\dist --host 127.0.0.1 --port 8011
+```
+
+Der Smoke-Server akzeptiert nur Loopback, verweigert vorhandene Datenbanken und
+ruft keinen Engine-Runner auf. Sein synthetisches Resultat haelt
+`simulation_performed = false` und `historical_full_equality_claimed = false`.
+Der Ablauf ist in
+`docs/migration/run_control_browser_demo_smoke.md` dokumentiert und ist kein
+Produktionsstartskript.
+
 Metadaten-CLI:
 
 Ein lokaler Metadatenexport kann das bestehende Importformat reproduzierbar ausgeben. Ohne `--out` schreibt er nur nach stdout, mit `--out` nur in den expliziten Zielpfad:

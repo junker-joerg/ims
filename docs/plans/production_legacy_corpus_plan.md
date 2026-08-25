@@ -167,7 +167,8 @@ Vor dem Mehrperiodenvergleich muessen folgende Punkte gruen sein:
     Korpus erweitern noch aus persistierten Teilergebnissen historische
     Vollgleichheit ableiten (erledigt durch read-only Attempt-Verlauf).
 15. PR 66 darf den kontrollierten Browser-E2E-Smoke ausfuehren, aber den
-    historischen Korpus und die Gleichheitsaussage nicht erweitern.
+    historischen Korpus und die Gleichheitsaussage nicht erweitern (erledigt
+    mit injiziertem Fake-Adapter ohne Engine-Runner oder Simulation).
 
 ## Offene Risiken
 

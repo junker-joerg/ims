@@ -615,12 +615,16 @@ Aktualisierte grobe Restplanung:
   Ergebnisanzeige ohne Retry stabilisiert;
 - vorgeschlagener naechster Schritt ist PR 66: Browser-/Screenshot-E2E-Smoke
   fuer den explizit freigegebenen lokalen Demo-Run;
+- PR 66 hat diesen sichtbaren Pfad mit einem isolierten Loopback-Server und
+  injiziertem Fake-Adapter geprueft, ohne Engine-Runner oder Simulation;
+- vorgeschlagener naechster Schritt ist PR 67: Packaging-, Staging- und
+  Startskript-Smoke wiederholen und Release-Checkliste einfrieren;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach der umgesetzten Verlaufssicht bleiben grob ca. `5-11`
+Nach dem umgesetzten Browser-Smoke bleiben grob ca. `4-10`
 reviewbare PRs bis zu konservativer
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Diese
 Schaetzung ersetzt keine Vollgleichheitspruefung.

@@ -39,12 +39,16 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   den read-only Run-Control-Freigabecheck um; PR 63 schliesst die atomare
   Backend-Start-/Status-/Ergebnisgrenze. PR 64 bindet den vorbereiteten UI-Flow
   kontrolliert an; PR 65 stabilisiert Ergebnisverlauf und Fehlerzustaende.
-  PR 66 prueft als naechstes den freigegebenen lokalen Demo-Run im Browser.
+  PR 66 prueft den freigegebenen lokalen Demo-Run mit injiziertem Fake-Adapter
+  im Browser. PR 67 haertet als naechstes Packaging, Staging und Startskripte.
 - `run_control_ui_start_plan.md`: enger PR-64-Plan fuer zweistufige
   Freigabepruefung und manuellen UI-Start ohne Queue-Worker oder Simulation.
 - `run_control_execution_history_plan.md`: enger PR-65-Plan fuer read-only
   Attempt-Verlauf, Fehleranzeige und manuelles Neuladen ohne Retry oder
   Simulation.
+- `run_control_browser_demo_smoke_plan.md`: enger PR-66-Plan fuer den
+  sichtbaren Freigabe-, Fake-Adapterstart-, Ergebnis- und Verlaufspfad ohne
+  Engine-Runner oder Simulation.
 - `sixth_fachlicher_slice_test_plan.md`: PR-50-Auswahl des sechsten
   fachlichen Slice fuer Vrvn04 / `search_history`; die Testumsetzung ist
   separat in PR 51 umgesetzt.

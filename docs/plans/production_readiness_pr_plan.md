@@ -89,7 +89,9 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
   persistierte Runs stabilisieren (erledigt: read-only Attempt-Verlauf,
   Fehlermeldung und manueller GET-Neuladepfad ohne Retry).
 - PR 66: Browser-/Screenshot-E2E-Smoke fuer den freigegebenen lokalen Demo-Run
-  ergaenzen.
+  ergaenzen (erledigt: isolierter Loopback-Server, injizierter Fake-Adapter,
+  sichtbare Freigabe, genau ein Start, persistiertes Ergebnis und Verlauf ohne
+  Engine-Runner oder Simulation).
 
 ### Phase D: Freigabehaertung
 
@@ -104,15 +106,15 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 
 ## Grobe Anzahl
 
-Nach PR 65 bleiben grob `5-11` reviewbare PRs bis zu einer konservativen
+Nach PR 66 bleiben grob `4-10` reviewbare PRs bis zu einer konservativen
 Produktionsreife mit validiertem Altdaten-Korpus und laufender UI. Die Zahl kann
 steigen, wenn historische Feldfragen, RNG-/Scheduler-Abweichungen oder
 Review-Funde blockieren.
 
 ## Naechster Schritt
 
-PR 66 ergaenzt einen Browser-/Screenshot-E2E-Smoke fuer den explizit
-freigegebenen lokalen Demo-Run. Der Smoke muss Freigabe, Start, Verlauf und
-persistiertes Ergebnis sichtbar pruefen, mit injiziertem kontrolliertem Adapter
-und ohne automatische Wiederholung. Freier Browser-Upload, Queue-Worker,
-Simulation und historische Vollgleichheitsbehauptung bleiben gesperrt.
+PR 67 wiederholt Packaging-, Staging- und Startskript-Smoke fuer den nun
+sichtbar geprueften Demo-Stand und friert die Release-Checkliste ein. Der
+Produktionsstart bleibt vom isolierten PR66-Fake-Adapter getrennt. Freier
+Browser-Upload, Queue-Worker, Simulation und historische
+Vollgleichheitsbehauptung bleiben gesperrt.

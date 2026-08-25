@@ -437,6 +437,12 @@ konservativen Produktionsreife. PR 66 prueft als naechstes den explizit
 freigegebenen lokalen Demo-Run im Browser, weiterhin ohne Erweiterung des
 Altdatenkorpus oder historische Vollgleichheitsbehauptung.
 
+PR 66 ist erledigt. Der isolierte Browser-Smoke nutzt einen injizierten
+Fake-Adapter und erweitert weder Altdatenkorpus noch Gleichheitsaussage. Neuer
+Zaehlschnitt: grob `4-10` reviewbare PRs bis zur konservativen
+Produktionsreife. PR 67 haertet als naechstes Packaging, Staging und
+Startskripte fuer den sichtbar geprueften Demo-Stand.
+
 ## Validierungsregel
 
 Jede Dateifamilie bekommt:
