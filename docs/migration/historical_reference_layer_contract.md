@@ -15,6 +15,13 @@ werden nicht erneut geoeffnet, `incomming/` wird nicht benoetigt und das
 Legacy-Bundle bleibt unveraendert. Es wird nichts geschrieben, keine
 Ausfuehrung gestartet und keine Simulation durchgefuehrt.
 
+Die eingefrorenen Referenz-SHA-256-Werte bleiben unveraendert massgeblich.
+Bei der Pruefung werden ausschliesslich die inhaltlich gleichen LF- und
+CRLF-Checkout-Varianten akzeptiert. Damit bleibt derselbe historische Text in
+Windows- und LF-Checkouts identisch gebunden; andere Inhaltsaenderungen
+bleiben Hashfehler. Archiv- und Quellmitglied-Hashes werden unveraendert als
+rohe PR-89-/PR-90-Evidenz uebernommen.
+
 ## Entscheidung
 
 Der Vertrag prueft 19 von 19 Zielen und vier getrennte Referenzschichten. Der

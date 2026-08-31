@@ -609,6 +609,7 @@ def _inspect_target(
         reference_path,
         display_path,
         spec,
+        binding.reference_sha256,
         issues,
     )
     binding_valid = _validate_binding(binding, layer, display_path, issues)
@@ -663,6 +664,7 @@ def _inspect_reference(
     path: Path,
     display_path: str,
     spec: HistoricalReferenceSpec,
+    expected_sha256: str,
     issues: list[HistoricalReferenceLayerIssue],
 ) -> tuple[str | None, int | None, bool]:
     if not path.is_file():
@@ -676,7 +678,7 @@ def _inspect_reference(
         )
         return None, None, False
     data = path.read_bytes()
-    actual_hash = hashlib.sha256(data).hexdigest()
+    actual_hash = _checkout_stable_reference_sha256(data, expected_sha256)
     try:
         if spec.subject_type == "insurer":
             table = parse_legacy_insurer_dat(path)
@@ -876,6 +878,18 @@ def _invalid_layer(layer_id: str) -> HistoricalReferenceLayerDefinition:
 
 def _normalize_whitespace(value: str) -> str:
     return " ".join(value.split())
+
+
+def _checkout_stable_reference_sha256(data: bytes, expected_sha256: str) -> str:
+    raw_sha256 = hashlib.sha256(data).hexdigest()
+    if raw_sha256 == expected_sha256:
+        return raw_sha256
+    normalized_lf = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    checkout_variants = (
+        hashlib.sha256(normalized_lf).hexdigest(),
+        hashlib.sha256(normalized_lf.replace(b"\n", b"\r\n")).hexdigest(),
+    )
+    return expected_sha256 if expected_sha256 in checkout_variants else raw_sha256
 
 
 def _resolve_against_root(root: Path, path: Path | str) -> Path:

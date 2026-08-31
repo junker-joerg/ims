@@ -17,6 +17,8 @@ def test_layer_contract_document_fixes_pr91_decision() -> None:
     assert "der Gesamtkorpus ist `mixed_reference_layers`" in document
     assert "`go_separate_reference_tests`" in document
     assert "`full_window_phase_allowed = true`" in document
+    assert "LF- und" in document and "CRLF-Checkout-Varianten" in document
+    assert "Windows- und LF-Checkouts identisch" in normalized
 
 
 def test_layer_contract_document_records_all_target_hashes() -> None:

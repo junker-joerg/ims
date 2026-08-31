@@ -128,6 +128,24 @@ def test_layer_contract_rejects_missing_and_changed_versioned_references(
     assert "reference_hash_mismatch" in issue_codes
 
 
+def test_layer_contract_accepts_lf_checkout_with_canonical_reference_hashes(
+    tmp_path: Path,
+) -> None:
+    reference_dir = tmp_path / "references"
+    shutil.copytree(REFERENCE_DIR, reference_dir)
+    for path in reference_dir.glob("*.DAT"):
+        path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
+
+    payload = build_historical_reference_layer_contract(
+        root=tmp_path,
+        reference_dir=reference_dir,
+    ).to_dict()
+
+    assert payload["status"] == "warning"
+    assert payload["verified_target_count"] == 19
+    assert payload["gate_decision"] == "go_separate_reference_tests"
+
+
 def test_layer_contract_rejects_same_run_claim_without_local_report() -> None:
     layers = (
         replace(LAYER_DEFINITIONS[0], coherence_class="same_run_proven"),
