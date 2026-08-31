@@ -121,5 +121,5 @@ zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden. PR94 hat den
 modernen Zustand bis 300 mit stabilem Prefix erweitert; die historischen
 Schichten bleiben weiterhin getrennt. PR95 hat die beiden ZINS000-Regelfenster
 vollstaendig und weiterhin getrennt verglichen. PR96 hat den modernen Zustand
-bis 500 erweitert. PR97 bindet als Naechstes die VU-SK1-Zeitfenster weiterhin
-getrennt an.
+bis 500 erweitert. PR97 hat die VU-SK1-Zeitfenster weiterhin getrennt
+angebunden. PR98 bindet als Naechstes die VN-Regeltabellen 3-6 an.

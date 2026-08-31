@@ -92,6 +92,6 @@ im Speicher. Er schreibt keine Ergebnisdateien und startet keine Simulation.
 ## Naechster Schritt
 
 PR96 hat denselben kontrollierten Zustand deterministisch bis Periode 500
-erweitert und die Prefixe 1-100 sowie 1-300 exakt stabil gehalten. PR97 bindet
-als Naechstes die VU-SK1-Zeitfenster als getrennte historische Referenztests
-an.
+erweitert und die Prefixe 1-100 sowie 1-300 exakt stabil gehalten. PR97 hat die
+VU-SK1-Zeitfenster als getrennte historische Referenztests angebunden. PR98
+bindet als Naechstes `IMSVNR03.DAT` bis `IMSVNR06.DAT` an.

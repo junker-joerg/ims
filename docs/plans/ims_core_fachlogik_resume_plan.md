@@ -701,17 +701,20 @@ Aktualisierte grobe Restplanung:
 - PR 96 hat den kontrollierten modernen Zustand bis Periode 500 erweitert:
   15 Tabellen / 7.500 Zeilen im Speicher und die Prefixe 1-100 sowie 1-300
   fuer Zustandsresultate und Exportzeilen exakt stabil;
-- PR 97 ist der naechste Umsetzungsschritt: die berechnete
-  `imsvusk1.dat` gegen fuenf getrennte historische SK1/all-Zeitfenster
-  ausrichten, ohne gemeinsame historische Laufidentitaet zu behaupten;
+- PR 97 hat die berechnete `imsvusk1.dat` gegen fuenf getrennte historische
+  SK1/all-Zeitfenster ausgerichtet: 499/500 Zeilen abweichend, kumulativ 5/15
+  Tabellen und 1.300/6.300 Perioden, ohne gemeinsame historische
+  Laufidentitaet zu behaupten;
+- PR 98 ist der naechste Umsetzungsschritt: `imsvnr03.dat` bis
+  `imsvnr06.dat` als vier getrennte 500er-Regeltabellen anbinden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 96 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `5` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. PR 97 bis PR 101 duerfen die 500er-Fenster und den
+Nach PR 97 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `4` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. PR 98 bis PR 101 duerfen die 500er-Fenster und den
 Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
 Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
 Zahl ersetzt keine Vollgleichheitspruefung.

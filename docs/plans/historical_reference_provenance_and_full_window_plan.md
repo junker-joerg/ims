@@ -2,7 +2,7 @@
 
 Stand: 2026-08-31
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 96
+Umsetzungsstand: PR 97
 
 ## Ziel
 
@@ -168,12 +168,16 @@ betroffenen Ziele getrennt oder neu belegt sind.
     RNG- oder Akkumulatorsemantik wird nicht ergaenzt; ein historischer
     500er-Vergleich wurde nicht ausgefuehrt. Der Befund steht in
     `docs/migration/vdefmd6_500_period_state_contract.md`.
-11. **PR 97: VU-SK1-Zeitfenster anbinden.**
-    Eine berechnete `imsvusk1.dat` mit 500 Perioden gegen `VUSK1L5` bis
-    `VUSK1L1` als fuenf getrennte Referenztests ausrichten. `VUSK1L4.DAT`
-    bleibt dabei die isolierte Direktreferenz; es wird keine koharente
-    historische 500-Perioden-Archivquelle behauptet. Erwarteter Fortschritt:
-    5/15 Tabellen und 1.300/6.300 Zielzeilen.
+11. **PR 97: VU-SK1-Zeitfenster anbinden (umgesetzt).**
+    Eine berechnete `imsvusk1.dat` mit 500 Perioden wurde gegen `VUSK1L5` bis
+    `VUSK1L1` als fuenf getrennte Referenztests ausgerichtet. `VUSK1L4.DAT`
+    bleibt die isolierte Direktreferenz `vusk1l4_direct_04410ef`; die vier
+    anderen Fenster bleiben `wvemod2_archive`. 499/500 Zeilen unterscheiden
+    sich, 1.021/7.000 Felder treffen exakt und 5.950 Abweichungen blockieren.
+    Kumuliert sind 5/15 Tabellen und 1.300/6.300 Zielzeilen geliefert; eine
+    koharente historische 500-Perioden-Laufquelle wird nicht behauptet. Der
+    Befund steht in
+    `docs/migration/historical_500_period_vusk1_delivery.md`.
 12. **PR 98: VN-Regeln 3-6 anbinden.**
     Vier 500er-Tabellen vollstaendig vergleichen. Erwarteter Fortschritt:
     9/15 Tabellen und 3.300/6.300 Zielzeilen.
@@ -202,22 +206,23 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 bis PR 96 haben Archivmanifest,
+PR 87 ist der Planungs-PR; PR 88 bis PR 97 haben Archivmanifest,
 Referenzkohaerenz, archivlokale Laufmetadaten, den getrennten
 Referenzschicht-Vertrag, den Horizontvertrag und die erste 100er-Korpuslieferung
 abgeschlossen, den modernen Zustand bis 500 fortgeschrieben und die zwei
-ZINS000-Regelfenster verglichen. Danach sind **5 geplante PRs** bis zum ersten
-gemeinsamen 6.300-Zeilen-Vollfensterbericht offen: vier historische
+ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster verglichen. Danach sind
+**4 geplante PRs** bis zum ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht
+offen: drei historische
 Vollfenster-Liefer-PRs und ein Bewertungs-PR.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 97 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 98 bis PR 101:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
-| Python-Produktionscode | 75-350 LoC |
-| Tests | 200-600 LoC |
-| Vertraege, Fixtures und Dokumentation | 250-650 LoC |
-| Gesamt | 525-1.600 LoC |
+| Python-Produktionscode | 50-275 LoC |
+| Tests | 150-450 LoC |
+| Vertraege, Fixtures und Dokumentation | 200-500 LoC |
+| Gesamt | 400-1.225 LoC |
 
 Die Schaetzung umfasst keine noch unbekannten fachlichen Korrektur-PRs fuer
 Akkumulatoren, Scheduler, RNG, Versicherungsgrad oder `Ev`-Felder. Solche PRs

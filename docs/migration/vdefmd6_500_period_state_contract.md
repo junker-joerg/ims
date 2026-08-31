@@ -105,8 +105,8 @@ Der Aufruf materialisiert die kontrollierten Tabellen nur im Speicher.
 
 ## Naechster Schritt
 
-PR97 bindet als Naechstes die eine berechnete 500-Perioden-Tabelle
-`imsvusk1.dat` gegen die fuenf getrennten Zeitfenster `VUSK1L5.DAT` bis
-`VUSK1L1.DAT` an. `VUSK1L4.DAT` behaelt dabei seine isolierte
-Referenzschicht; eine zusammengehoerige historische 500er-Laufquelle wird
-nicht behauptet.
+PR97 hat die eine berechnete 500-Perioden-Tabelle `imsvusk1.dat` gegen die
+fuenf getrennten Zeitfenster `VUSK1L5.DAT` bis `VUSK1L1.DAT` angebunden.
+`VUSK1L4.DAT` behaelt dabei seine isolierte Referenzschicht; eine
+zusammengehoerige historische 500er-Laufquelle wird nicht behauptet. PR98
+bindet als Naechstes die vier VN-Regeltabellen 3-6 an.

@@ -103,13 +103,13 @@ entschieden werden.
 
 ## Folgen fuer die Vollfensterphase
 
-PR 93 bis PR 101 duerfen unter folgenden Grenzen fortfahren; PR 93 ist
-inzwischen unter genau diesen Grenzen umgesetzt:
+PR 93 bis PR 101 duerfen unter folgenden Grenzen fortfahren; PR 93 bis PR 97
+sind inzwischen unter genau diesen Grenzen umgesetzt:
 
 1. Jede Auswertung traegt `layer_id` und zulaessige Aussage weiter.
 2. Ergebnisse verschiedener Layer werden getrennt berichtet.
 3. PR 97 vergleicht die berechnete `imsvusk1.dat` gegen fuenf einzelne
-   Fenster; es behauptet keine gemeinsame historische Archivquelle.
+   Fenster (umgesetzt); es behauptet keine gemeinsame historische Archivquelle.
 4. `VUSK1L4.DAT` zaehlt nur als `versioned_fixture_regression_only`.
 5. Keine Layerkombination darf `same_run_proven`, historische Vollgleichheit
    oder Produktionsfreigabe setzen.
@@ -136,4 +136,5 @@ Periode 300 mit stabilem Prefix 1-100 erweitert. PR95 hat die beiden
 300er-Regelfenster aus `zins000_archive` getrennt und vollstaendig verglichen;
 ihre Laufidentitaet bleibt unbewiesen. PR96 hat den kontrollierten modernen
 Zustand bis 500 erweitert und beide Prefixgrenzen exakt stabil gehalten. PR97
-bindet als Naechstes die VU-SK1-Zeitfenster getrennt an.
+hat die VU-SK1-Zeitfenster getrennt angebunden. PR98 bindet als Naechstes die
+vier VN-Regeltabellen 3-6 an.

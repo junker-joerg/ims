@@ -201,12 +201,13 @@ anschliessend alle 15 Identitaeten fuer 1-100 gemeinsam klassifiziert:
 Zielzeilen vollstaendig. Die Empfehlung bleibt `keep_blocked`.
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant die Folgephase
-bis PR 101; PR 88 bis PR 96 haben Archivmanifest, Referenzkohaerenz,
+bis PR 101; PR 88 bis PR 97 haben Archivmanifest, Referenzkohaerenz,
 archivlokale Laufmetadaten, vier getrennte Referenzschichten und den
 Horizontvertrag 100/300/500 umgesetzt, die ersten zwei 100er-Tabellen an den
 Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
-ZINS000-Regelfenster vollstaendig verglichen. Es folgen vier gestaffelte
-historische 500er-Vollfenster und ein neuer gemeinsamer 6.300-Zeilen-Bericht.
-Nach PR 96 sind 5 PRs dieser Mindestfolge offen.
+ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster vollstaendig
+verglichen. Es folgen drei gestaffelte historische 500er-Vollfenster und ein
+neuer gemeinsamer 6.300-Zeilen-Bericht. Nach PR 97 sind 4 PRs dieser
+Mindestfolge offen.
 Fachliche Korrekturen aus den Abweichungsbefunden sind darin noch nicht
 enthalten.

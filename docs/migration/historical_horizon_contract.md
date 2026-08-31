@@ -101,5 +101,6 @@ blockiert. PR94 hat den kontrollierten Zustand bis 300 erweitert und den
 Prefix 1-100 fuer alle 15 Tabellen exakt stabil gehalten. PR95 hat
 `imsvnr01.dat` und `imsvnr02.dat` als getrennte 300er-Regelfenster
 vollstaendig verglichen. PR96 hat den kontrollierten Zustand bis 500 erweitert
-und beide Prefixgrenzen 100 und 300 exakt stabil gehalten. PR97 bindet als
-Naechstes die VU-SK1-Zeitfenster an.
+und beide Prefixgrenzen 100 und 300 exakt stabil gehalten. PR97 hat die
+VU-SK1-Zeitfenster getrennt angebunden. PR98 bindet als Naechstes die vier
+VN-Regeltabellen 3-6 an.

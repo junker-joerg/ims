@@ -224,7 +224,7 @@ def test_500_period_documentation_separates_modern_state_from_history() -> None:
     assert "kein historischer 500-Perioden-Vergleich" in document
     assert "keine historische Vollgleichheitsbehauptung" in document
     assert "keine Produktionsfreigabe" in document
-    assert "PR97 bindet als Naechstes" in normalized
+    assert "PR97 hat die eine berechnete 500-Perioden-Tabelle" in normalized
     assert "vdefmd6_500_period_state_contract.md" in readme
 
 

@@ -142,5 +142,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   deterministische moderne Fortsetzung aller 15 Kernexporte bis Periode 500
   mit exakt stabilen Prefixen 1-100 und 1-300, noch ohne historischen
   500er-Vergleich
+- `historical_500_period_vusk1_delivery.md`: PR-97-Liefer- und
+  Abweichungsvertrag fuer eine berechnete `imsvusk1.dat` gegen fuenf getrennte
+  SK1/all-Zeitfenster, kumulativ 5/15 Tabellen und 1.300/6.300 Perioden
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
