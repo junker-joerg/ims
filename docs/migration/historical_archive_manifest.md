@@ -148,7 +148,9 @@ Archive sowie die Nicht-Extraktionsgrenze. Sie benoetigen `incomming/` nicht.
 
 ## Naechster Schritt
 
-PR 89 baut auf den beobachteten Hash- und Fensterdaten eine getrennte
-Referenz-zu-Archiv-Koharenzmatrix. Erst dort werden die 19 versionierten
-Referenzen byteweise und tokennormalisiert verglichen; `VUSK1L1-5` bleiben
-fuenf Zeitfenster desselben `SK1/all`-Aggregats auf Stufe IV.
+PR 89 hat auf den beobachteten Hash- und Fensterdaten eine getrennte
+Referenz-zu-Archiv-Koharenzmatrix aufgebaut. Die 19 versionierten Referenzen
+werden in `historical_reference_archive_coherence.md` byteweise und
+tokennormalisiert eingeordnet; `VUSK1L1-5` bleiben fuenf Zeitfenster desselben
+`SK1/all`-Aggregats auf Stufe IV. PR 90 wertet als naechstes Laufmetadaten und
+Begleitdateien archivlokal aus.

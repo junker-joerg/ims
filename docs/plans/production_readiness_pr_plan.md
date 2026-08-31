@@ -164,20 +164,20 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 ## Grobe Anzahl
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant den daraus
-abgeleiteten Provenienz- und Vollfensterblock; PR 88 hat das read-only
-Archivmanifest umgesetzt.
+abgeleiteten Provenienz- und Vollfensterblock; PR 88 und PR 89 haben das
+read-only Archivmanifest und die Referenzkohaerenz umgesetzt.
 
-Nach PR 88 sind `13` PRs bis zum ersten gemeinsamen
-6.300-Zeilen-Vollfensterbericht vorgesehen: PR 89 bis PR 91 fuer Provenienz
+Nach PR 89 sind `12` PRs bis zum ersten gemeinsamen
+6.300-Zeilen-Vollfensterbericht vorgesehen: PR 90 bis PR 91 fuer Provenienz
 und Referenzschichten, PR 92 bis PR 100 fuer die gestaffelten
 100-/300-/500-Fenster und PR 101 fuer den Abschlussbericht. Unbekannte
 fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
 
 ## Naechster Schritt
 
-PR 89 erstellt als naechstes die Referenz-zu-Archiv-Koharenzmatrix fuer die 19
-versionierten Ziele. Das Provenienz-Entscheidungstor unterscheidet einen
+PR 90 wertet als naechstes Laufmetadaten und Begleitdateien ausschliesslich
+innerhalb ihres jeweiligen Archivs aus. Das Provenienz-Entscheidungstor unterscheidet einen
 belegten gemeinsamen Lauf strikt von einer blossen Archivfamilie oder einem
 gemischten Referenzkorpus. Erst nach PR 91 darf die Vollfensterphase beginnen.
-Der verbindliche Ablauf und der PR-88-Befund stehen in
+Der verbindliche Ablauf sowie die PR-88-/PR-89-Befunde stehen in
 `docs/plans/historical_reference_provenance_and_full_window_plan.md`.

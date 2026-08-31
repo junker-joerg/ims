@@ -2,7 +2,7 @@
 
 Stand: 2026-08-31
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 88
+Umsetzungsstand: PR 89
 
 ## Ziel
 
@@ -92,12 +92,16 @@ betroffenen Ziele getrennt oder neu belegt sind.
    Kernexportnamen. Tests verwenden kleine synthetische Archive; lokale
    Rohdaten bleiben unversioniert. Der Befund steht in
    `docs/migration/historical_archive_manifest.md`.
-3. **PR 89: Referenz-zu-Archiv-Koharenzmatrix bauen.**
+3. **PR 89: Referenz-zu-Archiv-Koharenzmatrix bauen (umgesetzt).**
    Die 19 versionierten Referenzen byteweise und tokennormalisiert gegen
    gleichnamige Archiveintraege vergleichen. Fuer `VUSK1L1-5` zusaetzlich
    die fuenf Fenster gegen passende Abschnitte einer 500-zeiligen
    `IMSVUSK1.DAT` pruefen. Ergebnisse nur als `exact_archive_member`,
    `exact_window_slice`, `same_name_divergent` oder `unresolved` einordnen.
+   Der Vertrag `pr89-v1` klassifiziert 13 Ziele als bytegenaue Eintraege,
+   fuenf als tokennormalisierte Fenster und `VUSK1L4.DAT` als
+   `same_name_divergent`. Der Befund steht in
+   `docs/migration/historical_reference_archive_coherence.md`.
 4. **PR 90: Laufmetadaten und Begleitdateien auswerten.**
    `IMSREPOR.DAT` sowie vorhandene Modell-, Definitions- und Parameterdateien
    archivlokal zuordnen. Seed oder Laufparameter duerfen nicht zwischen
@@ -160,12 +164,13 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR, PR 88 das abgeschlossene Archivmanifest. Danach
-sind **13 geplante PRs** bis zum ersten gemeinsamen
-6.300-Zeilen-Vollfensterbericht offen: drei Provenienz-PRs und zehn
+PR 87 ist der Planungs-PR; PR 88 und PR 89 haben Archivmanifest und
+Referenzkohaerenz abgeschlossen. Danach sind **12 geplante PRs** bis zum
+ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht offen: zwei
+Provenienz-PRs und zehn
 Vollfenster-/Bewertungs-PRs.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 89 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 90 bis PR 101:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |

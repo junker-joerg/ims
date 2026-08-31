@@ -47,6 +47,7 @@ def test_archive_manifest_document_records_all_archive_hashes_and_core_rows() ->
 
 def test_archive_manifest_document_keeps_provenance_claims_blocked() -> None:
     document = DOCUMENT.read_text(encoding="utf-8")
+    normalized = document.replace("\n", " ")
 
     assert "extrahiert keine Datei" in document
     assert "bleiben unversioniert" in document
@@ -54,4 +55,4 @@ def test_archive_manifest_document_keeps_provenance_claims_blocked() -> None:
     assert "weder historische Vollgleichheit noch eine" in document
     assert "PR 89" in document
     assert "VUSK1L1-5" in document
-    assert "desselben `SK1/all`-Aggregats auf Stufe IV" in document
+    assert "desselben `SK1/all`-Aggregats auf Stufe IV" in normalized

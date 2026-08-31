@@ -672,16 +672,19 @@ Aktualisierte grobe Restplanung:
 - PR 88 hat sieben ZIP-Archive read-only inventarisiert: 165 Eintraege,
   64 Kerntreffer und drei vollstaendige 15er-Archivfamilien, ohne Import aus
   `incomming/`;
-- PR 89 ist der naechste Umsetzungsschritt: die getrennte Referenz-zu-Archiv-
-  Koharenzmatrix fuer die 19 versionierten Ziele;
+- PR 89 hat die 19 versionierten Ziele gegen 92 gleichnamige
+  Archivkandidaten geprueft: 13 bytegenaue Eintraege, fuenf
+  tokennormalisierte Fenster und ein divergentes `VUSK1L4`-Fenster;
+- PR 90 ist der naechste Umsetzungsschritt: die archivlokale Auswertung von
+  Laufmetadaten und Begleitdateien ohne Seed-Uebertragung;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 88 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `13` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. Davon klaeren drei zuerst die Referenzprovenienz. Erst
+Nach PR 89 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `12` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. Davon klaeren zwei zuerst die Referenzprovenienz. Erst
 danach duerfen zehn PRs die 100-/300-/500-Fenster und den Abschlussbericht
 schliessen. Scheduler-, RNG-, Akkumulator- oder Zustandsfunde koennen weitere
 kleine Slices erfordern; die Zahl ersetzt keine Vollgleichheitspruefung.

@@ -53,8 +53,8 @@ def test_plan_orders_provenance_before_full_window_execution() -> None:
     assert "2/15 Tabellen und 200/6.300 Zielzeilen" in plan
     assert "4/15 Tabellen und 800/6.300 Zielzeilen" in plan
     assert "15/15 Tabellen und 6.300/6.300 Zielzeilen" in plan
-    assert "Umsetzungsstand: PR 88" in plan
-    assert "13 geplante PRs" in plan
+    assert "Umsetzungsstand: PR 89" in plan
+    assert "12 geplante PRs" in plan
 
 
 def test_plan_keeps_current_change_read_only_and_conservative() -> None:
@@ -75,8 +75,8 @@ def test_central_plans_and_index_reference_pr87_series() -> None:
 
     assert PLAN.is_file()
     assert "historical_reference_provenance_and_full_window_plan.md" in readme
-    assert "PR 89 bis PR 91" in production
+    assert "PR 90 bis PR 91" in production
     assert "PR 92 bis PR 100" in production
     assert "PR 101" in production
-    assert "Nach PR 88" in core
-    assert "`13` geplante PRs" in core
+    assert "Nach PR 89" in core
+    assert "`12` geplante PRs" in core
