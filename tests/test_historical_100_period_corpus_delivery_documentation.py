@@ -38,6 +38,6 @@ def test_delivery_documentation_names_pr94_and_stable_prefix() -> None:
 
     assert DOCUMENT.is_file()
     assert "historical_100_period_corpus_delivery.md" in readme
-    assert "PR94 erweitert den kontrollierten Zustand" in normalized
+    assert "PR94 hat den kontrollierten Zustand" in normalized
     assert "Perioden 1-100" in normalized
     assert "exakt unveraendert" in normalized

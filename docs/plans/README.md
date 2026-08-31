@@ -82,8 +82,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Laufmetadaten und Begleitdateien. PR 91 friert vier getrennte
   Referenzschichten fuer alle 19 Ziele ein; PR 92 setzt den Horizontvertrag
   100/300/500 um. PR 93 bindet zwei vollstaendige 100-Perioden-Tabellen an
-  den Korpusbericht. PR 94 erweitert als naechstes den kontrollierten Zustand
-  bis Periode 300 und muss den 100er-Prefix exakt stabil halten.
+  den Korpusbericht. PR 94 erweitert den kontrollierten Zustand bis Periode
+  300 mit exakt stabilem 100er-Prefix. PR 95 bindet als naechstes die beiden
+  300er-Regelfenster `imsvnr01.dat` und `imsvnr02.dat` an.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

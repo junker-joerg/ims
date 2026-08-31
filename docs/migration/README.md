@@ -132,5 +132,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `historical_100_period_corpus_delivery.md`: PR-93-Liefervertrag fuer
   `imsvu014.dat` und `imsvnsk1.dat`, 2/15 Tabellen und 200/6.300 Perioden mit
   kanonischer Level-IV-Identitaet und weiterhin blockierter Freigabe
+- `vdefmd6_300_period_state_contract.md`: PR-94-Zustandsvertrag fuer die
+  deterministische moderne Fortsetzung aller 15 Kernexporte bis Periode 300
+  mit exakt stabilem Prefix 1-100, noch ohne historischen 300er-Vergleich
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

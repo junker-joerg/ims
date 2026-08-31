@@ -280,4 +280,16 @@ erzeugten VN-SK1-Tabelle wird durch den bestehenden kanonischen Vertrag als
 Damit sind 2/15 Tabellen und 200/6.300 Zielperioden geliefert. Dies ist keine
 Feldgleichheitsbehauptung: 13 Tabellen und 6.100 Perioden fehlen weiterhin,
 der gemeinsame Vergleich ist nicht ausgefuehrt und die Freigabe bleibt
-`blocked`. PR94 erweitert als naechstes den kontrollierten Zustand bis 300.
+`blocked`.
+
+## PR-94-300-Perioden-Zustand
+
+Der Vertrag `pr94-v1` setzt denselben modernen Vdefmd6-Zustand mit Basis-Seed
+`20260001` bis Periode 300 fort. Alle 15 Tabellen enthalten lueckenlos 300
+Zeilen; der Prefix 1-100 ist fuer alle 1.500 Exportzeilen und 99
+Zustandsresultate exakt stabil. Es wurden keine historischen Referenzzeilen
+gelesen oder verglichen.
+
+Der direkte Archivbericht mit drei Sequenzen 1-100 bleibt davon getrennt und
+belegt keinen historischen 300er-Lauf. PR95 bindet als naechstes nur
+`imsvnr01.dat` und `imsvnr02.dat` aus `zins000_archive` an.

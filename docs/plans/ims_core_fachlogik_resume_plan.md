@@ -691,16 +691,19 @@ Aktualisierte grobe Restplanung:
   100er-Tabellen streng an den Produktionskorpusbericht gebunden: 2/15
   Tabellen und 200/6.300 Perioden geliefert, 13 Tabellen und 6.100 Perioden
   offen, Freigabe weiterhin `blocked`;
-- PR 94 ist der naechste Umsetzungsschritt: den kontrollierten Zustand bis
-  Periode 300 erweitern und den Prefix 1-100 exakt stabil halten;
+- PR 94 hat den kontrollierten modernen Zustand mit festem Seed bis Periode
+  300 erweitert: 15 Tabellen / 4.500 Zeilen im Speicher und der Prefix 1-100
+  fuer 99 Zustandsresultate / 1.500 Exportzeilen exakt stabil;
+- PR 95 ist der naechste Umsetzungsschritt: `imsvnr01.dat` und
+  `imsvnr02.dat` als getrennte 300er-Referenztests anbinden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 93 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `8` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. PR 94 bis PR 101 duerfen die 100-/300-/500-Fenster und den
+Nach PR 94 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `7` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. PR 95 bis PR 101 duerfen die 300-/500-Fenster und den
 Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
 Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
 Zahl ersetzt keine Vollgleichheitspruefung.

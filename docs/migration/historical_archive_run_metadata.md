@@ -109,5 +109,6 @@ ausgewaehlten Quellen weiterhin keine Klasse `same_run_proven`;
 `pr92-v1` vorzubereiten. Das Legacy-Bundle wird erst nach einem getrennten,
 belegten Entscheid geaendert; PR 92 hat keine solche Aenderung vorgenommen.
 Ein gemeinsamer historischer Lauf bleibt weiterhin unbelegt. PR93 hat nur die
-zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden; PR94
-erweitert als naechstes den kontrollierten Zustand bis Periode 300.
+zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden. PR94 hat den
+modernen kontrollierten Zustand bis 300 erweitert, ohne die drei beobachteten
+historischen 1-100-Sequenzen in einen historischen 300er-Lauf umzudeuten.

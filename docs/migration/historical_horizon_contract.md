@@ -97,5 +97,6 @@ aufgerufen.
 PR93 hat `imsvu014.dat` und `imsvnsk1.dat` als die zwei vollstaendigen
 100-Perioden-Ziele streng an den Produktionskorpusbericht gebunden. Der
 Fortschritt betraegt 2/15 Tabellen und 200/6.300 Perioden; die Freigabe bleibt
-blockiert. PR94 erweitert als naechstes den kontrollierten Zustand bis 300
-und muss den Prefix 1-100 exakt stabil halten.
+blockiert. PR94 hat den kontrollierten Zustand bis 300 erweitert und den
+Prefix 1-100 fuer alle 15 Tabellen exakt stabil gehalten. PR95 bindet als
+naechstes nur `imsvnr01.dat` und `imsvnr02.dat` als 300er-Regelfenster an.

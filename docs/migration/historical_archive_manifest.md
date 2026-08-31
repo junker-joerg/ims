@@ -156,5 +156,6 @@ Laufmetadaten festgehalten. PR 91 hat anschliessend vier getrennte
 Referenzschichten fuer alle 19 Ziele eingefroren. PR 92 hat den
 Horizontvertrag 100/300/500 umgesetzt; `VUSK1L1-5` bleiben dabei fuenf
 Zeitfenster desselben `SK1/all`-Aggregats auf Stufe IV. PR93 hat die zwei
-vollstaendigen 100er-Tabellen an den Korpusbericht gebunden; PR94 erweitert
-als naechstes den kontrollierten Zustand bis Periode 300.
+vollstaendigen 100er-Tabellen an den Korpusbericht gebunden. PR94 hat den
+modernen Zustand bis 300 erweitert, ohne daraus einen gemeinsamen
+historischen Lauf der Archivquellen abzuleiten.

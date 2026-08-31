@@ -59,6 +59,7 @@ class Vdefmd6Population:
     policyholders: list[Policyholder]
     insurer_definitions: tuple[Vdefmd6InsurerDefinition, ...]
     policyholder_definitions: tuple[Vdefmd6PolicyholderDefinition, ...]
+    max_periods: int = VDEFMD6_MAX_PERIODS
 
 
 @dataclass(frozen=True, slots=True)
@@ -251,10 +252,30 @@ _POLICYHOLDER_GROUPS = (
 def build_vdefmd6_population() -> Vdefmd6Population:
     """Build the source-bound Vdefmd6 entities at the start of period one."""
 
-    insurer_definitions = tuple(_expand_insurer_group(group) for group in _INSURER_GROUPS)
+    return _build_vdefmd6_population(max_periods=VDEFMD6_MAX_PERIODS)
+
+
+def build_vdefmd6_population_for_horizon(
+    *,
+    max_periods: int,
+) -> Vdefmd6Population:
+    """Build the same source population with an explicit modern run horizon."""
+
+    if type(max_periods) is not int or max_periods < VDEFMD6_MAX_PERIODS:
+        raise ValueError("Vdefmd6 max_periods must be an integer of at least 100")
+    return _build_vdefmd6_population(max_periods=max_periods)
+
+
+def _build_vdefmd6_population(*, max_periods: int) -> Vdefmd6Population:
+
+    insurer_definitions = tuple(
+        _expand_insurer_group(group, max_periods=max_periods)
+        for group in _INSURER_GROUPS
+    )
     insurer_definitions = tuple(item for group in insurer_definitions for item in group)
     policyholder_definitions = tuple(
-        _expand_policyholder_group(group) for group in _POLICYHOLDER_GROUPS
+        _expand_policyholder_group(group, max_periods=max_periods)
+        for group in _POLICYHOLDER_GROUPS
     )
     policyholder_definitions = tuple(
         item for group in policyholder_definitions for item in group
@@ -265,11 +286,14 @@ def build_vdefmd6_population() -> Vdefmd6Population:
         policyholders=[_build_policyholder(item) for item in policyholder_definitions],
         insurer_definitions=insurer_definitions,
         policyholder_definitions=policyholder_definitions,
+        max_periods=max_periods,
     )
 
 
 def _expand_insurer_group(
     group: _InsurerGroup,
+    *,
+    max_periods: int,
 ) -> tuple[Vdefmd6InsurerDefinition, ...]:
     return tuple(
         Vdefmd6InsurerDefinition(
@@ -277,7 +301,7 @@ def _expand_insurer_group(
             name="Allianz" if entity_id == 14 else "",
             action=LegacyActionDefinition(rule_id=group.rule_id),
             rule_class=_VU_RULE_CLASSES[group.rule_id],
-            activation=LegacyActivationDefinition(1, VDEFMD6_MAX_PERIODS),
+            activation=LegacyActivationDefinition(1, max_periods),
             aspiration_sector_1=group.aspiration_sector_1,
             aspiration_sector_2=group.aspiration_sector_2,
             initial_premiums=group.initial_premiums,
@@ -290,6 +314,8 @@ def _expand_insurer_group(
 
 def _expand_policyholder_group(
     group: _PolicyholderGroup,
+    *,
+    max_periods: int,
 ) -> tuple[Vdefmd6PolicyholderDefinition, ...]:
     return tuple(
         Vdefmd6PolicyholderDefinition(
@@ -298,7 +324,7 @@ def _expand_policyholder_group(
             rule_class=_VN_RULE_CLASSES[group.rule_id],
             activation=LegacyActivationDefinition(
                 group.activation_period,
-                VDEFMD6_MAX_PERIODS,
+                max_periods,
             ),
             initial_insurance_status=(0, 0),
             initial_insurer_ids=(0, 0),

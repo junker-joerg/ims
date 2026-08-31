@@ -14,6 +14,7 @@ from ims.model.vdefmd6_population import (
     VDEFMD6_MAX_PERIODS,
     Vdefmd6Population,
     build_vdefmd6_population,
+    build_vdefmd6_population_for_horizon,
 )
 from ims.model.vdefmd6_pre_shock_snapshots import (
     Vdefmd6PreShockSnapshotBatch,
@@ -44,6 +45,9 @@ VDEFMD6_100_PERIOD_EXECUTION_ORDER = (
     *VDEFMD6_PRE_SHOCK_EXECUTION_ORDER,
 )
 VDEFMD6_100_PERIOD_STATE_POLICY_ID = "vdefmd6-modern-100-period-state-v1"
+VDEFMD6_300_PERIOD_END = 300
+VDEFMD6_300_PERIOD_EXECUTION_ORDER = VDEFMD6_100_PERIOD_EXECUTION_ORDER
+VDEFMD6_300_PERIOD_STATE_POLICY_ID = "vdefmd6-modern-300-period-state-v1"
 VDEFMD6_VU_AGGREGATE_FILENAMES = (
     "imsvusk1.dat",
     "imsvuvk1.dat",
@@ -92,6 +96,7 @@ class Vdefmd6PreShockPeriodResult:
 @dataclass(frozen=True, slots=True)
 class Vdefmd6PreShockRunResult:
     base_seed: int
+    max_periods: int
     execution_order: tuple[str, ...]
     state_policy_id: str
     period_results: tuple[Vdefmd6PreShockPeriodResult, ...]
@@ -140,6 +145,19 @@ def run_vdefmd6_100_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult:
     )
 
 
+def run_vdefmd6_300_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult:
+    """Continue the controlled modern Vdefmd6 state path through period 300."""
+
+    _validate_base_seed(base_seed)
+    return _run_vdefmd6_periods(
+        base_seed=base_seed,
+        period_end=VDEFMD6_300_PERIOD_END,
+        execution_order=VDEFMD6_300_PERIOD_EXECUTION_ORDER,
+        state_policy_id=VDEFMD6_300_PERIOD_STATE_POLICY_ID,
+        max_periods=VDEFMD6_300_PERIOD_END,
+    )
+
+
 def _validate_base_seed(base_seed: int) -> None:
     if type(base_seed) is not int or base_seed < 0:
         raise ValueError("Vdefmd6 base_seed must be a non-negative integer")
@@ -151,9 +169,14 @@ def _run_vdefmd6_periods(
     period_end: int,
     execution_order: tuple[str, ...],
     state_policy_id: str,
+    max_periods: int = VDEFMD6_MAX_PERIODS,
 ) -> Vdefmd6PreShockRunResult:
 
-    population = build_vdefmd6_population()
+    population = (
+        build_vdefmd6_population()
+        if max_periods == VDEFMD6_MAX_PERIODS
+        else build_vdefmd6_population_for_horizon(max_periods=max_periods)
+    )
     bav = BAV(entity_id=1, name="BAV")
     rng = random.Random(base_seed)
     search_history = _initial_search_history(population)
@@ -206,7 +229,7 @@ def _run_vdefmd6_periods(
         _shift_current_state_to_previous(population)
         context = SimulationContext(
             period=period,
-            max_periods=VDEFMD6_MAX_PERIODS,
+            max_periods=population.max_periods,
             rng_seed=base_seed,
         )
         vu_result = run_loaded_vu_foreign_info_period(
@@ -309,6 +332,7 @@ def _run_vdefmd6_periods(
     )
     return Vdefmd6PreShockRunResult(
         base_seed=base_seed,
+        max_periods=population.max_periods,
         execution_order=execution_order,
         state_policy_id=state_policy_id,
         period_results=tuple(period_results),
@@ -514,7 +538,7 @@ def _vu_export_tables(
     *,
     period: int,
 ) -> dict[str, ExportTable]:
-    context = SimulationContext(period=period, max_periods=VDEFMD6_MAX_PERIODS)
+    context = SimulationContext(period=period, max_periods=population.max_periods)
     records = collect_extended_agrsich_records(
         context,
         bav,
@@ -540,7 +564,7 @@ def _vn_rule_group_1_export_tables(
     *,
     period: int,
 ) -> dict[str, ExportTable]:
-    context = SimulationContext(period=period, max_periods=VDEFMD6_MAX_PERIODS)
+    context = SimulationContext(period=period, max_periods=population.max_periods)
     records = collect_extended_agrsich_records(
         context,
         bav,
@@ -567,7 +591,7 @@ def _vn_rule_group_2_export_tables(
     *,
     period: int,
 ) -> dict[str, ExportTable]:
-    context = SimulationContext(period=period, max_periods=VDEFMD6_MAX_PERIODS)
+    context = SimulationContext(period=period, max_periods=population.max_periods)
     records = collect_extended_agrsich_records(
         context,
         bav,
@@ -594,7 +618,7 @@ def _vn_aggregate_export_tables(
     *,
     period: int,
 ) -> dict[str, ExportTable]:
-    context = SimulationContext(period=period, max_periods=VDEFMD6_MAX_PERIODS)
+    context = SimulationContext(period=period, max_periods=population.max_periods)
     records = collect_extended_agrsich_records(
         context,
         bav,

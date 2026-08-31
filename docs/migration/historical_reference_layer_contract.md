@@ -131,5 +131,6 @@ PR 92 hat den Horizontvertrag 100/300/500 als `pr92-v1` umgesetzt. Er stellt
 den exakten Prefix-Pruefer bereit und laesst die vier Referenzschichten
 durchgehend getrennt. Noch wird kein 300-/500-Vollvergleich ausgefuehrt.
 PR93 hat die zwei vollstaendigen 100er-Tabellen streng an den
-Produktionskorpusbericht gebunden. PR94 erweitert als naechstes den
-kontrollierten Zustand bis Periode 300 und muss den Prefix 1-100 stabil halten.
+Produktionskorpusbericht gebunden. PR94 hat den kontrollierten Zustand bis
+Periode 300 mit stabilem Prefix 1-100 erweitert. PR95 bindet als naechstes die
+beiden 300er-Regelfenster aus `zins000_archive` getrennt an.

@@ -85,7 +85,7 @@ Ergebnisdateien.
 
 ## Naechster Schritt
 
-PR94 erweitert den kontrollierten Zustand deterministisch bis Periode 300.
-Die bereits gelieferten Perioden 1-100 muessen dabei fuer alle betroffenen
-Tabellen exakt unveraendert bleiben. Eine historische Scheduler-, RNG- oder
-Akkumulatorsemantik wird nicht still ergaenzt.
+PR94 hat den kontrollierten Zustand deterministisch bis Periode 300 erweitert.
+Die Perioden 1-100 bleiben fuer alle 15 Tabellen exakt unveraendert. PR95
+bindet als naechstes nur die beiden belegten 300er-Regelfenster an; eine
+historische Scheduler-, RNG- oder Akkumulatorsemantik wird nicht ergaenzt.

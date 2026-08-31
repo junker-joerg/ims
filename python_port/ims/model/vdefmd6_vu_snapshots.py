@@ -6,7 +6,6 @@ import random
 from ims.engine.rng import rand_normal_standard, rand_uniform_0_1
 from ims.model.entities import Insurer, Policyholder
 from ims.model.vdefmd6_population import (
-    VDEFMD6_MAX_PERIODS,
     Vdefmd6InsurerDefinition,
     Vdefmd6Population,
 )
@@ -157,9 +156,12 @@ def build_vdefmd6_shock_vu_snapshot_batch(
 
     if (
         type(period) is not int
-        or not VDEFMD6_SHOCK_PERIOD <= period <= VDEFMD6_MAX_PERIODS
+        or not VDEFMD6_SHOCK_PERIOD <= period <= population.max_periods
     ):
-        raise ValueError("Vdefmd6 shock VU snapshot period must be between 50 and 100")
+        raise ValueError(
+            "Vdefmd6 shock VU snapshot period must be between 50 and "
+            f"{population.max_periods}"
+        )
     return _build_vdefmd6_vu_snapshot_batch(
         population,
         period=period,

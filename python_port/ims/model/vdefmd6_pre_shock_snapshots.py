@@ -6,7 +6,7 @@ import random
 
 from ims.engine.rng import rand_normal_standard, rand_uniform_0_1
 from ims.model.entities import Policyholder
-from ims.model.vdefmd6_population import VDEFMD6_MAX_PERIODS, Vdefmd6Population
+from ims.model.vdefmd6_population import Vdefmd6Population
 from ims.model.vn_damage_rules import VNDamageRuleDraws, VNDamageRuleParameters
 from ims.model.vn_insurance_rules import (
     VNBestInfoInsuranceRuleParameters,
@@ -119,9 +119,12 @@ def build_vdefmd6_shock_snapshot_batch(
 
     if (
         type(period) is not int
-        or not VDEFMD6_SHOCK_PERIOD <= period <= VDEFMD6_MAX_PERIODS
+        or not VDEFMD6_SHOCK_PERIOD <= period <= population.max_periods
     ):
-        raise ValueError("Vdefmd6 shock snapshot period must be between 50 and 100")
+        raise ValueError(
+            "Vdefmd6 shock snapshot period must be between 50 and "
+            f"{population.max_periods}"
+        )
     return _build_vdefmd6_vn_snapshot_batch(
         population,
         period=period,
