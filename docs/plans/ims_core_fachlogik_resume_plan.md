@@ -669,16 +669,19 @@ Aktualisierte grobe Restplanung:
   `keep_blocked`;
 - PR 87 plant den naechsten groesseren Block fuer historische Lauf- und
   Referenzprovenienz sowie die vollstaendigen 100-/300-/500-Periodenfenster;
-- PR 88 ist der naechste Umsetzungsschritt: ein read-only Archivmanifest fuer
-  sieben ZIP-Archive, ohne Import aus `incomming/`;
+- PR 88 hat sieben ZIP-Archive read-only inventarisiert: 165 Eintraege,
+  64 Kerntreffer und drei vollstaendige 15er-Archivfamilien, ohne Import aus
+  `incomming/`;
+- PR 89 ist der naechste Umsetzungsschritt: die getrennte Referenz-zu-Archiv-
+  Koharenzmatrix fuer die 19 versionierten Ziele;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 87 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `14` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. Davon klaeren vier zuerst die Referenzprovenienz. Erst
+Nach PR 88 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `13` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. Davon klaeren drei zuerst die Referenzprovenienz. Erst
 danach duerfen zehn PRs die 100-/300-/500-Fenster und den Abschlussbericht
 schliessen. Scheduler-, RNG-, Akkumulator- oder Zustandsfunde koennen weitere
 kleine Slices erfordern; die Zahl ersetzt keine Vollgleichheitspruefung.

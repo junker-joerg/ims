@@ -193,7 +193,8 @@ anschliessend alle 15 Identitaeten fuer 1-100 gemeinsam klassifiziert:
 Zielzeilen vollstaendig. Die Empfehlung bleibt `keep_blocked`.
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant die Folgephase
-bis PR 101: vier Provenienz- und Referenzschicht-PRs, danach gestaffelte
+bis PR 101; PR 88 hat das read-only Archivmanifest fuer sieben ZIPs umgesetzt.
+Es folgen drei Provenienz- und Referenzschicht-PRs, danach gestaffelte
 100-/300-/500-Vollfenster und ein neuer gemeinsamer 6.300-Zeilen-Bericht.
-Nach PR 87 sind 14 PRs dieser Mindestfolge offen. Fachliche Korrekturen aus
+Nach PR 88 sind 13 PRs dieser Mindestfolge offen. Fachliche Korrekturen aus
 den Abweichungsbefunden sind darin noch nicht enthalten.

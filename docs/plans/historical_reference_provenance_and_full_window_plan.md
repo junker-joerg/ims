@@ -1,7 +1,8 @@
 # Plan: Historische Referenzprovenienz und Vollfenster
 
-Stand: 2026-08-25
+Stand: 2026-08-31
 Planungsschnitt: PR 87
+Umsetzungsstand: PR 88
 
 ## Ziel
 
@@ -83,11 +84,14 @@ betroffenen Ziele getrennt oder neu belegt sind.
 1. **PR 87: Block planen und Grenzen einfrieren.**
    Diese Notiz, Zielmatrix, Entscheidungsklassen, Stop/Go-Regeln und
    Restzaehlung dokumentieren. Keine Datei aus `incomming/` uebernehmen.
-2. **PR 88: read-only Archivmanifest erstellen.**
+2. **PR 88: read-only Archivmanifest erstellen (umgesetzt).**
    Fuer die sieben bekannten ZIP-Archive Archivhash, Eintragspfad,
    Eintragshash, Groesse, Zeitstempel, Header, Zeilenzahl und Periodenfenster
-   der 15 Kernexportnamen erfassen. Tests verwenden kleine synthetische
-   Archive; lokale Rohdaten bleiben unversioniert.
+   der 15 Kernexportnamen erfassen. Der Vertrag `pr88-v1` inventarisiert
+   165 Eintraege und 64 Kerntreffer; drei Archive enthalten alle 15
+   Kernexportnamen. Tests verwenden kleine synthetische Archive; lokale
+   Rohdaten bleiben unversioniert. Der Befund steht in
+   `docs/migration/historical_archive_manifest.md`.
 3. **PR 89: Referenz-zu-Archiv-Koharenzmatrix bauen.**
    Die 19 versionierten Referenzen byteweise und tokennormalisiert gegen
    gleichnamige Archiveintraege vergleichen. Fuer `VUSK1L1-5` zusaetzlich
@@ -156,11 +160,12 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR. Danach sind **14 geplante PRs** bis zum ersten
-gemeinsamen 6.300-Zeilen-Vollfensterbericht offen: vier Provenienz-PRs und zehn
+PR 87 ist der Planungs-PR, PR 88 das abgeschlossene Archivmanifest. Danach
+sind **13 geplante PRs** bis zum ersten gemeinsamen
+6.300-Zeilen-Vollfensterbericht offen: drei Provenienz-PRs und zehn
 Vollfenster-/Bewertungs-PRs.
 
-Grobe Bruttoabschaetzung fuer PR 88 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 89 bis PR 101:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
