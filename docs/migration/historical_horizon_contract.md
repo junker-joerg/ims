@@ -100,5 +100,6 @@ Fortschritt betraegt 2/15 Tabellen und 200/6.300 Perioden; die Freigabe bleibt
 blockiert. PR94 hat den kontrollierten Zustand bis 300 erweitert und den
 Prefix 1-100 fuer alle 15 Tabellen exakt stabil gehalten. PR95 hat
 `imsvnr01.dat` und `imsvnr02.dat` als getrennte 300er-Regelfenster
-vollstaendig verglichen. PR96 erweitert als naechstes den kontrollierten
-Zustand bis 500 und prueft beide Prefixgrenzen 100 und 300.
+vollstaendig verglichen. PR96 hat den kontrollierten Zustand bis 500 erweitert
+und beide Prefixgrenzen 100 und 300 exakt stabil gehalten. PR97 bindet als
+Naechstes die VU-SK1-Zeitfenster an.

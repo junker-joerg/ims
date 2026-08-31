@@ -157,13 +157,13 @@ damit abgeschlossen:
     die fachliche Freigabe erneut menschlich bewerten (erledigt, `pr86-v1`,
     Empfehlung `keep_blocked`).
 
-PR 87 schneidet die Folgephase in PR 88 bis PR 101. PR 88 bis PR 95 haben
+PR 87 schneidet die Folgephase in PR 88 bis PR 101. PR 88 bis PR 96 haben
 Archivmanifest, Koharenzmatrix, Laufmetadatenbefund, Referenzschicht-Vertrag
 und Horizontvertrag abgeschlossen, die ersten zwei 100er-Tabellen an den
-Korpusbericht gebunden, den modernen Zustand bis 300 erweitert und die zwei
-ZINS000-Regelfenster vollstaendig verglichen. PR 96 bis PR 100 binden die
-verbleibenden berechneten Tabellen an ihre Pflichtgrenze 500; PR 101 bewertet
-den gemeinsamen 6.300-Zeilen-Bericht. Nach PR 95 sind davon 6 PRs offen. Diese
+Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
+ZINS000-Regelfenster vollstaendig verglichen. PR 97 bis PR 100 binden die
+verbleibenden berechneten Tabellen an ihre historische Pflichtgrenze 500; PR
+101 bewertet den gemeinsamen 6.300-Zeilen-Bericht. Nach PR 96 sind davon 5 PRs offen. Diese
 Mindestfolge enthaelt keine heute noch unbekannten fachlichen Korrekturen.
 
 ## PR-71-Pruefnachweis

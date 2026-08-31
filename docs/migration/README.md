@@ -138,5 +138,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `historical_300_period_rule_delivery.md`: PR-95-Liefer- und
   Abweichungsvertrag fuer `imsvnr01.dat` und `imsvnr02.dat`, 4/15 kumulierte
   Tabellen und den vollstaendigen Vergleich von 600 ZINS000-Zeilen
+- `vdefmd6_500_period_state_contract.md`: PR-96-Zustandsvertrag fuer die
+  deterministische moderne Fortsetzung aller 15 Kernexporte bis Periode 500
+  mit exakt stabilen Prefixen 1-100 und 1-300, noch ohne historischen
+  500er-Vergleich
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

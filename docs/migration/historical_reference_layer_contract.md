@@ -134,5 +134,6 @@ PR93 hat die zwei vollstaendigen 100er-Tabellen streng an den
 Produktionskorpusbericht gebunden. PR94 hat den kontrollierten Zustand bis
 Periode 300 mit stabilem Prefix 1-100 erweitert. PR95 hat die beiden
 300er-Regelfenster aus `zins000_archive` getrennt und vollstaendig verglichen;
-ihre Laufidentitaet bleibt unbewiesen. PR96 erweitert als naechstes nur den
-kontrollierten modernen Zustand bis 500.
+ihre Laufidentitaet bleibt unbewiesen. PR96 hat den kontrollierten modernen
+Zustand bis 500 erweitert und beide Prefixgrenzen exakt stabil gehalten. PR97
+bindet als Naechstes die VU-SK1-Zeitfenster getrennt an.

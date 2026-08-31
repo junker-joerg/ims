@@ -48,6 +48,9 @@ VDEFMD6_100_PERIOD_STATE_POLICY_ID = "vdefmd6-modern-100-period-state-v1"
 VDEFMD6_300_PERIOD_END = 300
 VDEFMD6_300_PERIOD_EXECUTION_ORDER = VDEFMD6_100_PERIOD_EXECUTION_ORDER
 VDEFMD6_300_PERIOD_STATE_POLICY_ID = "vdefmd6-modern-300-period-state-v1"
+VDEFMD6_500_PERIOD_END = 500
+VDEFMD6_500_PERIOD_EXECUTION_ORDER = VDEFMD6_300_PERIOD_EXECUTION_ORDER
+VDEFMD6_500_PERIOD_STATE_POLICY_ID = "vdefmd6-modern-500-period-state-v1"
 VDEFMD6_VU_AGGREGATE_FILENAMES = (
     "imsvusk1.dat",
     "imsvuvk1.dat",
@@ -155,6 +158,19 @@ def run_vdefmd6_300_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult:
         execution_order=VDEFMD6_300_PERIOD_EXECUTION_ORDER,
         state_policy_id=VDEFMD6_300_PERIOD_STATE_POLICY_ID,
         max_periods=VDEFMD6_300_PERIOD_END,
+    )
+
+
+def run_vdefmd6_500_periods(*, base_seed: int) -> Vdefmd6PreShockRunResult:
+    """Continue the controlled modern Vdefmd6 state path through period 500."""
+
+    _validate_base_seed(base_seed)
+    return _run_vdefmd6_periods(
+        base_seed=base_seed,
+        period_end=VDEFMD6_500_PERIOD_END,
+        execution_order=VDEFMD6_500_PERIOD_EXECUTION_ORDER,
+        state_policy_id=VDEFMD6_500_PERIOD_STATE_POLICY_ID,
+        max_periods=VDEFMD6_500_PERIOD_END,
     )
 
 

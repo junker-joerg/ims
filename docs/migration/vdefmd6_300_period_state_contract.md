@@ -103,6 +103,6 @@ Der Aufruf erzeugt die Tabellen nur im Speicher.
 
 PR95 hat ausschliesslich `imsvnr01.dat` und `imsvnr02.dat` als die beiden im
 Horizontvertrag belegten 300er-Regelfenster vollstaendig verglichen und an den
-weiterhin gesperrten Korpusbericht gebunden. PR96 erweitert denselben
-kontrollierten Zustand bis 500 und muss die Prefixe 1-100 und 1-300 exakt
-stabil halten.
+weiterhin gesperrten Korpusbericht gebunden. PR96 hat denselben kontrollierten
+Zustand bis 500 erweitert und die Prefixe 1-100 und 1-300 exakt stabil
+gehalten. PR97 bindet als Naechstes die VU-SK1-Zeitfenster getrennt an.

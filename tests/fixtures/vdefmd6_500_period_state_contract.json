@@ -1,0 +1,127 @@
+{
+  "schema_version": "pr96-v1",
+  "model_id": "Vdefmd6",
+  "scope": "controlled_modern_periods_1_500_with_stable_1_100_and_1_300_prefixes",
+  "base_seed": 20260001,
+  "execution_order": [
+    "activate_subjects",
+    "bav_foreign_information",
+    "insurer_rules_by_id",
+    "policyholder_rules_by_id",
+    "aggregate_export"
+  ],
+  "state_policy_id": "vdefmd6-modern-500-period-state-v1",
+  "expected": {
+    "max_periods": 500,
+    "transition_period_start": 2,
+    "transition_period_end": 500,
+    "transition_period_count": 499,
+    "export_count": 15,
+    "export_period_count": 7500,
+    "total_vu_rule_applications": 12475,
+    "total_vn_insurance_rule_applications": 97400,
+    "total_vn_damage_settlement_applications": 97400,
+    "total_uniform_value_count": 651342,
+    "total_normal_value_count": 393592,
+    "total_information_cost": 833712.0,
+    "total_information_cost_policyholders": 29940
+  },
+  "prefixes": {
+    "periods_1_100": {
+      "period_start": 1,
+      "period_end": 100,
+      "state_transition_count": 99,
+      "state_prefix_stable": true,
+      "export_count": 15,
+      "export_period_count": 1500,
+      "export_prefix_stable": true
+    },
+    "periods_1_300": {
+      "period_start": 1,
+      "period_end": 300,
+      "state_transition_count": 299,
+      "state_prefix_stable": true,
+      "export_count": 15,
+      "export_period_count": 4500,
+      "export_prefix_stable": true
+    }
+  },
+  "export_filenames": [
+    "imsvu014.dat",
+    "imsvusk1.dat",
+    "imsvuvk1.dat",
+    "imsvuvk2.dat",
+    "imsvuvk3.dat",
+    "imsvnr01.dat",
+    "imsvnr02.dat",
+    "imsvnr03.dat",
+    "imsvnr04.dat",
+    "imsvnr05.dat",
+    "imsvnr06.dat",
+    "imsvnsk1.dat",
+    "imsvnvk1.dat",
+    "imsvnvk2.dat",
+    "imsvnvk3.dat"
+  ],
+  "source_contracts": ["pr81-v1", "pr86-v1", "pr92-v1", "pr94-v1"],
+  "boundaries": {
+    "legacy_rows_used_as_generation_input": false,
+    "controlled_execution_performed": true,
+    "writes_performed": false,
+    "scheduler_started": false,
+    "simulation_performed": false,
+    "historical_comparison_performed": false,
+    "full_500_period_legacy_comparison_performed": false,
+    "historical_run_identity_claimed": false,
+    "historical_rng_equality_claimed": false,
+    "historical_full_equality_claimed": false,
+    "production_release_approved": false
+  },
+  "source_anchors": [
+    {
+      "path": "python_port/ims/model/vdefmd6_population.py",
+      "needle": "def build_vdefmd6_population_for_horizon(",
+      "meaning": "explicit modern population horizon"
+    },
+    {
+      "path": "python_port/ims/model/vdefmd6_pre_shock_snapshots.py",
+      "needle": "period <= population.max_periods",
+      "meaning": "VN shock snapshot horizon"
+    },
+    {
+      "path": "python_port/ims/model/vdefmd6_vu_snapshots.py",
+      "needle": "period <= population.max_periods",
+      "meaning": "VU shock snapshot horizon"
+    },
+    {
+      "path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py",
+      "needle": "VDEFMD6_500_PERIOD_STATE_POLICY_ID",
+      "meaning": "separate modern state policy"
+    },
+    {
+      "path": "python_port/ims/engine/vdefmd6_pre_shock_runner.py",
+      "needle": "def run_vdefmd6_500_periods",
+      "meaning": "controlled 500-period entry point"
+    },
+    {
+      "path": "python_port/ims/api/vdefmd6_500_period_state_report.py",
+      "needle": "def build_vdefmd6_500_period_state_report",
+      "meaning": "versioned PR96 state report"
+    },
+    {
+      "path": "tests/test_vdefmd6_500_period_state_report.py",
+      "needle": "def test_500_period_runner_is_deterministic_and_keeps_both_prefixes",
+      "meaning": "determinism and double-prefix regression"
+    },
+    {
+      "path": "docs/migration/vdefmd6_500_period_state_contract.md",
+      "needle": "keine historische 500-Perioden-Laufidentitaet",
+      "meaning": "historical boundary documentation"
+    },
+    {
+      "path": "docs/plans/historical_reference_provenance_and_full_window_plan.md",
+      "needle": "PR 96: Zustandsfortschreibung bis Periode 500 schliessen (umgesetzt)",
+      "meaning": "remaining PR plan"
+    }
+  ]
+}

@@ -91,7 +91,7 @@ im Speicher. Er schreibt keine Ergebnisdateien und startet keine Simulation.
 
 ## Naechster Schritt
 
-PR96 erweitert denselben kontrollierten Zustand deterministisch bis Periode
-500. Dabei muessen sowohl der Prefix 1-100 als auch der Prefix 1-300 exakt
-stabil bleiben. Historische 500er-Tabellen werden erst in den nachfolgenden,
-getrennten Referenz-PRs angebunden.
+PR96 hat denselben kontrollierten Zustand deterministisch bis Periode 500
+erweitert und die Prefixe 1-100 sowie 1-300 exakt stabil gehalten. PR97 bindet
+als Naechstes die VU-SK1-Zeitfenster als getrennte historische Referenztests
+an.
