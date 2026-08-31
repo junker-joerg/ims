@@ -36,10 +36,10 @@ Status ist bewusst `warning`:
 - `full_window_phase_allowed = true` gilt ausschliesslich fuer getrennte
   Referenztests.
 
-Damit darf PR 92 den technischen Horizontvertrag vorbereiten. Nicht erlaubt
-sind eine Zusammenfassung der vier Schichten zu einem historischen Lauf, eine
-Seed-Uebertragung, eine historische Vollgleichheitsbehauptung oder eine
-Produktionsfreigabe.
+Damit durfte PR 92 den technischen Horizontvertrag vorbereiten. Nicht erlaubt
+sind weiterhin eine Zusammenfassung der vier Schichten zu einem historischen
+Lauf, eine Seed-Uebertragung, eine historische Vollgleichheitsbehauptung oder
+eine Produktionsfreigabe.
 
 ## Schichten
 
@@ -103,7 +103,7 @@ entschieden werden.
 
 ## Folgen fuer die Vollfensterphase
 
-PR 92 bis PR 101 duerfen unter folgenden Grenzen fortfahren:
+PR 93 bis PR 101 duerfen unter folgenden Grenzen fortfahren:
 
 1. Jede Auswertung traegt `layer_id` und zulaessige Aussage weiter.
 2. Ergebnisse verschiedener Layer werden getrennt berichtet.
@@ -126,7 +126,8 @@ Exitcode 0.
 
 ## Naechster Schritt
 
-PR 92 bereitet den Horizontvertrag 100/300/500 vor. Er muss die Ergebnisse
-1-100 unveraendert halten, Prefix-Stabilitaet pruefen und die vier
-Referenzschichten aus diesem Vertrag durchgehend getrennt lassen. Noch wird
-kein 300-/500-Vollvergleich ausgefuehrt.
+PR 92 hat den Horizontvertrag 100/300/500 als `pr92-v1` umgesetzt. Er stellt
+den exakten Prefix-Pruefer bereit und laesst die vier Referenzschichten
+durchgehend getrennt. Noch wird kein 300-/500-Vollvergleich ausgefuehrt.
+PR93 bindet als naechstes die zwei vollstaendigen 100er-Tabellen streng an den
+Produktionskorpusbericht.

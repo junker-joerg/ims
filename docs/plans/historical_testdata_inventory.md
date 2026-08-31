@@ -252,5 +252,18 @@ historischer Lauf belegt.
 Regressionen verwendet werden und erbt weder die Archivquelle noch
 Laufmetadaten der anderen vier `VUSK1`-Fenster. Alle fuenf Dateien bleiben
 Zeitfenster desselben `SK1/all`-Aggregats auf Aggregatstufe IV. Das Tor
-`go_separate_reference_tests` erlaubt PR 92, den Horizontvertrag vorzubereiten;
-es belegt keine historische Vollgleichheit oder Produktionsfreigabe.
+`go_separate_reference_tests` erlaubt getrennte Vollfenstertests; es belegt
+keine historische Vollgleichheit oder Produktionsfreigabe.
+
+## PR-92-Horizontvertrag
+
+Der Vertrag `pr92-v1` leitet aus dem versionierten Bundle 15
+Exportidentitaeten, 19 Referenzziele und 6.300 Zielperioden ab. Zwei Exporte
+enden bei 100, zwei bei 300 und elf bei 500 Perioden. Bereits berechnete
+Tabellensnapshots koennen exakt auf stabile Prefixe 1-100 und 1-300 geprueft
+werden; PR92 selbst berechnet oder vergleicht keine 300-/500-Periodentabelle.
+
+Die fuenf `VUSK1`-Zeitfenster bleiben demselben SK1/all-Aggregat auf Stufe IV
+zugeordnet. Ihre zwei Herkunftsschichten werden dabei nicht zusammengelegt.
+PR93 bindet als naechstes nur die beiden vollstaendigen 100er-Ziele
+`imsvu014.dat` und `imsvnsk1.dat` an den Produktionskorpusbericht.

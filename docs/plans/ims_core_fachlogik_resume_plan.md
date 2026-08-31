@@ -683,17 +683,21 @@ Aktualisierte grobe Restplanung:
   umgesetzt: vier getrennte Schichten, 18 Ziele `archive_family_only`,
   `VUSK1L4.DAT` als isolierte ungeklaerte Direktreferenz und das Tor
   `go_separate_reference_tests`;
-- PR 92 ist der naechste Umsetzungsschritt: der Horizontvertrag 100/300/500
-  mit Prefix-Stabilitaet und durchgaengiger `layer_id`, noch ohne
+- PR 92 hat den Horizontvertrag `pr92-v1` fuer 15 Exportidentitaeten,
+  19 Referenzziele und 6.300 Zielperioden umgesetzt; der exakte
+  Prefix-Pruefer verlangt durchgaengige `layer_id`, noch ohne
   300-/500-Vollvergleich;
+- PR 93 ist der naechste Umsetzungsschritt: `imsvu014.dat` und
+  `imsvnsk1.dat` als zwei vollstaendige 100er-Tabellen streng an den
+  Produktionskorpusbericht binden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 91 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `10` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. PR 92 bis PR 101 duerfen die 100-/300-/500-Fenster und den
+Nach PR 92 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `9` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. PR 93 bis PR 101 duerfen die 100-/300-/500-Fenster und den
 Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
 Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
 Zahl ersetzt keine Vollgleichheitspruefung.

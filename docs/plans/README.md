@@ -80,8 +80,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   hat das read-only Archivmanifest fuer sieben ZIPs umgesetzt, PR 89 die
   Referenz-zu-Archiv-Koharenzmatrix und PR 90 die archivlokale Auswertung von
   Laufmetadaten und Begleitdateien. PR 91 friert vier getrennte
-  Referenzschichten fuer alle 19 Ziele ein; PR 92 bereitet als naechstes den
-  Horizontvertrag 100/300/500 vor.
+  Referenzschichten fuer alle 19 Ziele ein; PR 92 setzt den Horizontvertrag
+  100/300/500 um. PR 93 bindet als naechstes die zwei vollstaendigen
+  100-Perioden-Tabellen an den Korpusbericht.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

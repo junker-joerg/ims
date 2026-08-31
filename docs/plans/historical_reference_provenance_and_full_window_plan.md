@@ -2,7 +2,7 @@
 
 Stand: 2026-08-31
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 91
+Umsetzungsstand: PR 92
 
 ## Ziel
 
@@ -125,10 +125,15 @@ betroffenen Ziele getrennt oder neu belegt sind.
 
 ### Phase B: Kontrollierte Vollfenster
 
-6. **PR 92: Horizontvertrag 100/300/500 vorbereiten.**
-   Periodengrenzen konfigurierbar machen, Prefix-Stabilitaet und identische
-   1-100-Ergebnisse vertraglich pruefen. Jede Tabelle muss dabei ihre
-   `layer_id` aus `pr91-v1` mitfuehren. Noch kein 300-/500-Vollvergleich.
+6. **PR 92: Horizontvertrag 100/300/500 vorbereiten (umgesetzt).**
+   Der Vertrag `pr92-v1` bindet 15 Exportidentitaeten, 19 Referenzziele und
+   6.300 Zielperioden an die Pflichtgrenzen 100, 300 und 500. Ein generischer
+   Pruefer vergleicht bereits berechnete `ExportTable`-Snapshots exakt auf
+   stabile 100er- und 300er-Prefixe und verlangt die `layer_id` aus
+   `pr91-v1`. `VUSK1L1-5` bleiben Zeitfenster desselben SK1/all-Aggregats auf
+   Stufe IV, waehrend `VUSK1L4` seine isolierte Herkunftsschicht behaelt. Es
+   wurde kein 300-/500-Vollvergleich ausgefuehrt. Der Befund steht in
+   `docs/migration/historical_horizon_contract.md`.
 7. **PR 93: bestehende 100-Perioden-Tabellen streng anbinden.**
    `imsvu014.dat` und `imsvnsk1.dat` als die zwei bereits vollstaendigen
    100er-Ziele an den Produktionskorpusbericht uebergeben. Erwarteter
@@ -177,20 +182,20 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 bis PR 91 haben Archivmanifest,
-Referenzkohaerenz, archivlokale Laufmetadaten und den getrennten
-Referenzschicht-Vertrag abgeschlossen. Danach sind **10 geplante PRs** bis
-zum ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht offen: neun
-Vollfenster-PRs und ein Bewertungs-PR.
+PR 87 ist der Planungs-PR; PR 88 bis PR 92 haben Archivmanifest,
+Referenzkohaerenz, archivlokale Laufmetadaten, den getrennten
+Referenzschicht-Vertrag und den Horizontvertrag abgeschlossen. Danach sind
+**9 geplante PRs** bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht offen: acht Vollfenster-PRs und ein Bewertungs-PR.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 92 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 93 bis PR 101:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
-| Python-Produktionscode | 400-1.100 LoC |
-| Tests | 600-1.400 LoC |
-| Vertraege, Fixtures und Dokumentation | 700-1.700 LoC |
-| Gesamt | 1.700-4.200 LoC |
+| Python-Produktionscode | 300-900 LoC |
+| Tests | 500-1.200 LoC |
+| Vertraege, Fixtures und Dokumentation | 600-1.400 LoC |
+| Gesamt | 1.400-3.500 LoC |
 
 Die Schaetzung umfasst keine noch unbekannten fachlichen Korrektur-PRs fuer
 Akkumulatoren, Scheduler, RNG, Versicherungsgrad oder `Ev`-Felder. Solche PRs

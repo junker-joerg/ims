@@ -105,7 +105,8 @@ PR 91 hat fuer jedes der 19 Referenzziele den expliziten
 Referenzschicht-Vertrag eingefroren. Der PR-90-Befund erlaubt fuer die
 ausgewaehlten Quellen weiterhin keine Klasse `same_run_proven`;
 `VUSK1L4.DAT` bleibt als eigene ungeklaerte Direktreferenz isoliert. Das Tor
-`go_separate_reference_tests` erlaubt PR 92, den Horizontvertrag
-vorzubereiten. Das Legacy-Bundle wird erst nach einem getrennten, belegten
-Entscheid geaendert; PR 91 hat keine solche Aenderung vorgenommen. Ein
-gemeinsamer historischer Lauf bleibt weiterhin unbelegt.
+`go_separate_reference_tests` hat PR 92 erlaubt, den Horizontvertrag
+`pr92-v1` vorzubereiten. Das Legacy-Bundle wird erst nach einem getrennten,
+belegten Entscheid geaendert; PR 92 hat keine solche Aenderung vorgenommen.
+Ein gemeinsamer historischer Lauf bleibt weiterhin unbelegt. PR93 bindet als
+naechstes nur die zwei vollstaendigen 100er-Tabellen an den Korpusbericht.
