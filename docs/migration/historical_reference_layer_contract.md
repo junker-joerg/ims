@@ -103,7 +103,8 @@ entschieden werden.
 
 ## Folgen fuer die Vollfensterphase
 
-PR 93 bis PR 101 duerfen unter folgenden Grenzen fortfahren:
+PR 93 bis PR 101 duerfen unter folgenden Grenzen fortfahren; PR 93 ist
+inzwischen unter genau diesen Grenzen umgesetzt:
 
 1. Jede Auswertung traegt `layer_id` und zulaessige Aussage weiter.
 2. Ergebnisse verschiedener Layer werden getrennt berichtet.
@@ -129,5 +130,6 @@ Exitcode 0.
 PR 92 hat den Horizontvertrag 100/300/500 als `pr92-v1` umgesetzt. Er stellt
 den exakten Prefix-Pruefer bereit und laesst die vier Referenzschichten
 durchgehend getrennt. Noch wird kein 300-/500-Vollvergleich ausgefuehrt.
-PR93 bindet als naechstes die zwei vollstaendigen 100er-Tabellen streng an den
-Produktionskorpusbericht.
+PR93 hat die zwei vollstaendigen 100er-Tabellen streng an den
+Produktionskorpusbericht gebunden. PR94 erweitert als naechstes den
+kontrollierten Zustand bis Periode 300 und muss den Prefix 1-100 stabil halten.

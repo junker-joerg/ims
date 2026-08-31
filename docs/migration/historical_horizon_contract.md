@@ -94,6 +94,8 @@ aufgerufen.
 
 ## Naechster Schritt
 
-PR93 bindet `imsvu014.dat` und `imsvnsk1.dat` als die zwei bereits
-vollstaendigen 100-Perioden-Ziele streng an den Produktionskorpusbericht. Er
-erweitert den Zustand noch nicht auf 300 oder 500 Perioden.
+PR93 hat `imsvu014.dat` und `imsvnsk1.dat` als die zwei vollstaendigen
+100-Perioden-Ziele streng an den Produktionskorpusbericht gebunden. Der
+Fortschritt betraegt 2/15 Tabellen und 200/6.300 Perioden; die Freigabe bleibt
+blockiert. PR94 erweitert als naechstes den kontrollierten Zustand bis 300
+und muss den Prefix 1-100 exakt stabil halten.

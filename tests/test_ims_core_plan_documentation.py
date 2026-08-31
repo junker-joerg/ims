@@ -257,15 +257,16 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 90 hat den einzigen direkten Laufbericht" in plan
     assert "PR 91 hat den expliziten Referenzschicht-Vertrag" in plan
     assert "PR 92 hat den Horizontvertrag `pr92-v1`" in plan
-    assert "PR 93 ist der naechste Umsetzungsschritt" in plan
+    assert "PR 93 hat `imsvu014.dat` und `imsvnsk1.dat`" in plan
+    assert "PR 94 ist der naechste Umsetzungsschritt" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "Nach PR 92 bleiben `0` technische Pflicht-PRs" in plan
-    assert "`9` geplante PRs" in plan
+    assert "Nach PR 93 bleiben `0` technische Pflicht-PRs" in plan
+    assert "`8` geplante PRs" in plan
     assert "eingefrorene Pruefkette" in plan
     assert "100-Perioden-Erzeugungsvertrag" in plan
     assert "automatic_historical_rule_selection_performed` auf `false`" in plan
@@ -303,7 +304,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "`9` PRs bis zum" in plan
+    assert "Nach PR 93 sind `8` PRs bis zum" in plan
     assert "Die Mindestserie PR 72 bis PR 86 ist abgeschlossen" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
@@ -330,10 +331,10 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 84: VN-Regelzustand" in plan.replace("\n", " ")
     assert "PR 85: VN-Klassen- und SK1/all-Exporte" in plan.replace("\n", " ")
     assert "PR 86: alle 15 Exporte gemeinsam vergleichen" in plan.replace("\n", " ")
-    assert "PR 88 bis PR 92 haben das read-only" in plan.replace("\n", " ")
-    assert "PR 93 bindet als naechstes" in plan.replace("\n", " ")
-    assert "Nach PR 92 sind `9` PRs" in plan
-    assert "PR 93 bis PR 100" in plan
+    assert "PR 88 bis PR 93 haben das" in plan.replace("\n", " ")
+    assert "zwei vollstaendigen 100er-Tabellen" in plan.replace("\n", " ")
+    assert "Nach PR 93 sind `8` PRs" in plan
+    assert "PR 94 bis PR 100" in plan
     assert "PR 101" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan

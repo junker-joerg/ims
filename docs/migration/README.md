@@ -91,7 +91,10 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `run_control_browser_demo_smoke.md`: isolierter PR-66-Browser-Smoke fuer Freigabe, Fake-Adapterstart, persistiertes Ergebnis und Verlauf ohne Engine-Runner oder Simulation
 - `workbench_release_checklist.md`: eingefrorener PR-67-Vertrag `pr67-v1` fuer ZIP, portables Staging und normalen Produktionsstart ohne Demo-Adapter oder Simulation
 - `workbench_metadata_recovery.md`: PR-68-Probe fuer SQLite-Backup, Restore und Side-by-Side-Update/Rollback eines validierten lokalen Ergebnisstands
-- `production_release_corpus_report.md`: PR-69-Abschlussbericht mit 19-/6.300-Korpus, technischen Betriebsnachweisen und weiterhin 15 fehlenden berechneten Kernexporten
+- `production_release_corpus_report.md`: PR-69-Abschlussbericht mit
+  19-/6.300-Korpus und technischen Betriebsnachweisen; PR 93 ergaenzt die
+  explizite Teillieferung von 2 Tabellen / 200 Perioden bei weiter blockierter
+  Freigabe
 - `windows_release_gate.md`: PR-70-Windows-Gate fuer Python-Tests, Frontend-Build, blockierten Korpusbericht, ZIP/Staging und Release-Smoke
 - `calculated_export_provenance_map.md`: PR-71-Karte der 15 Kernexportidentitaeten mit C-/Python-Ankern, zwei Zustandsfamilien und offenen Vollfensterluecken
 - `vu14_100_period_generation_contract.md`: PR-72-Abnahmevertrag fuer den unabhaengigen VU14-Zustandsweg ueber Perioden `1-100` ohne Exporterzeugung oder Vollgleichheitsbehauptung
@@ -126,5 +129,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `historical_horizon_contract.md`: PR-92-Vertrag fuer 15 Exportidentitaeten,
   19 Referenzziele und die exakten Prefix-Grenzen 100/300/500, weiterhin ohne
   300-/500-Ausfuehrung oder Vollgleichheitsbehauptung
+- `historical_100_period_corpus_delivery.md`: PR-93-Liefervertrag fuer
+  `imsvu014.dat` und `imsvnsk1.dat`, 2/15 Tabellen und 200/6.300 Perioden mit
+  kanonischer Level-IV-Identitaet und weiterhin blockierter Freigabe
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

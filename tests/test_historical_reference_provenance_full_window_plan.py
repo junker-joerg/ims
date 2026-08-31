@@ -50,12 +50,13 @@ def test_plan_orders_provenance_before_full_window_execution() -> None:
     assert plan.index("PR 88: read-only Archivmanifest") < plan.index(
         "PR 92: Horizontvertrag"
     )
-    assert "2/15 Tabellen und 200/6.300 Zielzeilen" in plan
+    assert "2/15 Tabellen und 200/6.300" in plan
+    assert "Zielperioden vollstaendig geliefert" in plan
     assert "4/15 Tabellen und 800/6.300 Zielzeilen" in plan
     assert "15/15 Tabellen und 6.300/6.300 Zielzeilen" in plan
-    assert "Umsetzungsstand: PR 92" in plan
-    assert "9 geplante PRs" in plan
-    assert "Verbleibende grobe Bruttoabschaetzung fuer PR 93 bis PR 101" in plan
+    assert "Umsetzungsstand: PR 93" in plan
+    assert "8 geplante PRs" in plan
+    assert "Verbleibende grobe Bruttoabschaetzung fuer PR 94 bis PR 101" in plan
     assert "`go_separate_reference_tests`" in plan
 
 
@@ -66,7 +67,7 @@ def test_plan_keeps_current_change_read_only_and_conservative() -> None:
     assert "keine Runner-, Scheduler-, Adapter-, Server- oder Simulationsausfuehrung" in plan
     assert "keine neue Fachlogik" in plan
     assert "keine historische Vollgleichheits- oder Produktionsfreigabebehauptung" in plan
-    assert "1.400-3.500 LoC" in plan
+    assert "1.100-2.900 LoC" in plan
     assert "unbekannten fachlichen Korrektur-PRs" in plan
 
 
@@ -77,8 +78,8 @@ def test_central_plans_and_index_reference_pr87_series() -> None:
 
     assert PLAN.is_file()
     assert "historical_reference_provenance_and_full_window_plan.md" in readme
-    assert "Nach PR 92 sind `9` PRs" in production
-    assert "PR 93 bis PR 100" in production
+    assert "Nach PR 93 sind `8` PRs" in production
+    assert "PR 94 bis PR 100" in production
     assert "PR 101" in production
-    assert "Nach PR 92" in core
-    assert "`9` geplante PRs" in core
+    assert "Nach PR 93" in core
+    assert "`8` geplante PRs" in core

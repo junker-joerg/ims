@@ -20,6 +20,7 @@ from ims.model.legacy_calculated_comparison import (
     RequiredCalculatedExport,
     build_calculated_legacy_comparison_plan,
 )
+from ims.model.legacy_export_identity import canonicalize_legacy_export_selector
 from ims.model.legacy_validation_run import (
     LegacyValidationTarget,
     load_legacy_validation_targets_from_fixture,
@@ -623,7 +624,11 @@ def _validate_snapshot(
         snapshot.table.spec.subject_type,
         snapshot.table.spec.level,
         snapshot.table.spec.selector_kind,
-        snapshot.table.spec.selector_value,
+        canonicalize_legacy_export_selector(
+            snapshot.table.spec.level,
+            snapshot.table.spec.selector_kind,
+            snapshot.table.spec.selector_value,
+        ),
     )
     if actual_identity != entry.identity:
         issues.append(

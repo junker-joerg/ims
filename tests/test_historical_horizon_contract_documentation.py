@@ -21,7 +21,7 @@ def test_horizon_contract_documentation_fixes_scope_and_limits() -> None:
     assert "keine neue Fachlogik" in normalized
     assert "keine historische Vollgleichheit" in normalized
     assert "keine fachliche Produktionsfreigabe" in normalized
-    assert "PR93 bindet `imsvu014.dat` und `imsvnsk1.dat`" in normalized
+    assert "PR93 hat `imsvu014.dat` und `imsvnsk1.dat`" in normalized
 
 
 def test_horizon_contract_documentation_keeps_vusk1_as_one_level_iv_export() -> None:

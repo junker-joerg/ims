@@ -687,17 +687,20 @@ Aktualisierte grobe Restplanung:
   19 Referenzziele und 6.300 Zielperioden umgesetzt; der exakte
   Prefix-Pruefer verlangt durchgaengige `layer_id`, noch ohne
   300-/500-Vollvergleich;
-- PR 93 ist der naechste Umsetzungsschritt: `imsvu014.dat` und
-  `imsvnsk1.dat` als zwei vollstaendige 100er-Tabellen streng an den
-  Produktionskorpusbericht binden;
+- PR 93 hat `imsvu014.dat` und `imsvnsk1.dat` als zwei vollstaendige
+  100er-Tabellen streng an den Produktionskorpusbericht gebunden: 2/15
+  Tabellen und 200/6.300 Perioden geliefert, 13 Tabellen und 6.100 Perioden
+  offen, Freigabe weiterhin `blocked`;
+- PR 94 ist der naechste Umsetzungsschritt: den kontrollierten Zustand bis
+  Periode 300 erweitern und den Prefix 1-100 exakt stabil halten;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 92 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `9` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. PR 93 bis PR 101 duerfen die 100-/300-/500-Fenster und den
+Nach PR 93 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `8` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. PR 94 bis PR 101 duerfen die 100-/300-/500-Fenster und den
 Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
 Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
 Zahl ersetzt keine Vollgleichheitspruefung.

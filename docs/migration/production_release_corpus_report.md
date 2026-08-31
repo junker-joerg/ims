@@ -129,6 +129,14 @@ Der erwartete aktuelle Kernbefund ist:
 - `simulation_performed = false`;
 - `historical_full_equality_claimed = false`.
 
+Der Standardaufruf uebergibt weiterhin keine berechneten Tabellen und behaelt
+damit `missing_calculated_export_count = 15`. PR 93 ergaenzt eine explizite
+Teillieferungsgrenze: Der neue Vertrag `pr93-v1` uebergibt ausschliesslich
+`imsvu014.dat` und `imsvnsk1.dat` aus dem kontrollierten 100-Perioden-Pfad.
+Dieser Berichtszweig meldet 2 gelieferte Tabellen / 200 Perioden sowie 13
+fehlende Tabellen / 6.100 Perioden. Status und Freigabeentscheidung bleiben
+`blocked_calculated_core_validation`.
+
 Die lokale technische Workbench wird weiterhin ueber die dokumentierten
 Check-/Startskripte geprueft und gestartet. Der Anwender darf den technischen
 Demo-Status nicht als validierte historische Simulation interpretieren.
@@ -193,10 +201,11 @@ anschliessend alle 15 Identitaeten fuer 1-100 gemeinsam klassifiziert:
 Zielzeilen vollstaendig. Die Empfehlung bleibt `keep_blocked`.
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant die Folgephase
-bis PR 101; PR 88 bis PR 92 haben Archivmanifest, Referenzkohaerenz,
+bis PR 101; PR 88 bis PR 93 haben Archivmanifest, Referenzkohaerenz,
 archivlokale Laufmetadaten, vier getrennte Referenzschichten und den
-Horizontvertrag 100/300/500 umgesetzt.
+Horizontvertrag 100/300/500 umgesetzt sowie die ersten zwei 100er-Tabellen an
+den Korpusbericht gebunden.
 Es folgen gestaffelte 100-/300-/500-Vollfenster und ein neuer gemeinsamer
-6.300-Zeilen-Bericht. Nach PR 92 sind 9 PRs dieser Mindestfolge offen.
+6.300-Zeilen-Bericht. Nach PR 93 sind 8 PRs dieser Mindestfolge offen.
 Fachliche Korrekturen aus den Abweichungsbefunden sind darin noch nicht
 enthalten.

@@ -265,5 +265,19 @@ werden; PR92 selbst berechnet oder vergleicht keine 300-/500-Periodentabelle.
 
 Die fuenf `VUSK1`-Zeitfenster bleiben demselben SK1/all-Aggregat auf Stufe IV
 zugeordnet. Ihre zwei Herkunftsschichten werden dabei nicht zusammengelegt.
-PR93 bindet als naechstes nur die beiden vollstaendigen 100er-Ziele
-`imsvu014.dat` und `imsvnsk1.dat` an den Produktionskorpusbericht.
+PR93 hat nur die beiden vollstaendigen 100er-Ziele `imsvu014.dat` und
+`imsvnsk1.dat` an den Produktionskorpusbericht gebunden.
+
+## PR-93-100-Perioden-Lieferung
+
+Der Vertrag `pr93-v1` bindet `imsvu014.dat` und `imsvnsk1.dat` aus dem
+kontrollierten Vdefmd6-Zustandspfad an den Produktionskorpusbericht. Beide
+Tabellen enthalten die lueckenlosen Perioden 1-100 und tragen die
+Referenzschicht `wvemod1_archive`. Der Level-IV-Selektorwert `all` der
+erzeugten VN-SK1-Tabelle wird durch den bestehenden kanonischen Vertrag als
+`SK1` erkannt.
+
+Damit sind 2/15 Tabellen und 200/6.300 Zielperioden geliefert. Dies ist keine
+Feldgleichheitsbehauptung: 13 Tabellen und 6.100 Perioden fehlen weiterhin,
+der gemeinsame Vergleich ist nicht ausgefuehrt und die Freigabe bleibt
+`blocked`. PR94 erweitert als naechstes den kontrollierten Zustand bis 300.

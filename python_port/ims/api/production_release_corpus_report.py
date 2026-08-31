@@ -6,9 +6,24 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Sequence
 
+from ims.model.agrsich_export import (
+    INSURER_HEADER,
+    POLICYHOLDER_HEADER,
+    ExportTable,
+)
+from ims.model.legacy_calculated_comparison import (
+    CalculatedLegacyComparisonPlan,
+    RequiredCalculatedExport,
+    build_calculated_legacy_comparison_plan,
+)
 from ims.model.legacy_calculated_deviation_report import (
     CalculatedLegacyDeviationReport,
     build_calculated_legacy_deviation_report,
+)
+from ims.model.legacy_export_identity import (
+    ExportIdentity,
+    build_legacy_export_identity,
+    format_legacy_export_identity,
 )
 from ims.model.legacy_validation_coverage import (
     build_legacy_validation_coverage_matrix,
@@ -75,8 +90,12 @@ class ProductionReleaseCorpusReport:
     coverage_complete: bool
     required_calculated_export_count: int
     supplied_calculated_export_count: int
+    supplied_calculated_period_count: int
+    supplied_calculated_exports: tuple[str, ...]
     missing_calculated_export_count: int
+    missing_calculated_period_count: int
     missing_calculated_exports: tuple[str, ...]
+    calculated_delivery_origin: str
     calculated_comparison_status: str
     calculated_comparison_performed: bool
     calculated_core_validation_complete: bool
@@ -103,8 +122,12 @@ class ProductionReleaseCorpusReport:
             "coverage_complete": self.coverage_complete,
             "required_calculated_export_count": self.required_calculated_export_count,
             "supplied_calculated_export_count": self.supplied_calculated_export_count,
+            "supplied_calculated_period_count": self.supplied_calculated_period_count,
+            "supplied_calculated_exports": list(self.supplied_calculated_exports),
             "missing_calculated_export_count": self.missing_calculated_export_count,
+            "missing_calculated_period_count": self.missing_calculated_period_count,
             "missing_calculated_exports": list(self.missing_calculated_exports),
+            "calculated_delivery_origin": self.calculated_delivery_origin,
             "calculated_comparison_status": self.calculated_comparison_status,
             "calculated_comparison_performed": self.calculated_comparison_performed,
             "calculated_core_validation_complete": self.calculated_core_validation_complete,
@@ -128,6 +151,10 @@ def build_production_release_corpus_report(
     *,
     fixture_path: Path | str | None = None,
     reference_dir: Path | str | None = None,
+    calculated_export_tables: Sequence[ExportTable] = (),
+    calculation_origin: str = (
+        "production_release_corpus_report_no_exports_supplied"
+    ),
 ) -> ProductionReleaseCorpusReport:
     root = Path(repo_root).expanduser().resolve()
     resolved_fixture = _resolve_path(root, fixture_path, DEFAULT_BUNDLE_PATH)
@@ -165,12 +192,16 @@ def build_production_release_corpus_report(
     )
 
     deviation = None
+    comparison_plan = None
     if coverage.status != "error":
         try:
+            comparison_plan = build_calculated_legacy_comparison_plan(
+                resolved_fixture
+            )
             deviation = build_calculated_legacy_deviation_report(
                 resolved_fixture,
-                [],
-                calculation_origin="production_release_corpus_report_no_exports_supplied",
+                list(calculated_export_tables),
+                calculation_origin=calculation_origin,
             )
         except (OSError, TypeError, ValueError) as exc:
             issues.append(
@@ -181,9 +212,20 @@ def build_production_release_corpus_report(
                 )
             )
 
-    required_export_count = deviation.required_export_count if deviation is not None else 0
-    supplied_export_count = deviation.supplied_export_count if deviation is not None else 0
-    missing_exports = _missing_calculated_exports(deviation)
+    required_export_count = (
+        comparison_plan.required_export_count if comparison_plan is not None else 0
+    )
+    (
+        supplied_exports,
+        supplied_period_count,
+        missing_exports,
+        missing_period_count,
+    ) = _calculated_delivery_summary(
+        comparison_plan,
+        calculated_export_tables,
+        deviation,
+    )
+    supplied_export_count = len(supplied_exports)
     calculated_complete = bool(
         deviation is not None
         and deviation.comparison_performed
@@ -230,8 +272,12 @@ def build_production_release_corpus_report(
         coverage_complete=coverage_complete,
         required_calculated_export_count=required_export_count,
         supplied_calculated_export_count=supplied_export_count,
+        supplied_calculated_period_count=supplied_period_count,
+        supplied_calculated_exports=supplied_exports,
         missing_calculated_export_count=len(missing_exports),
+        missing_calculated_period_count=missing_period_count,
         missing_calculated_exports=missing_exports,
+        calculated_delivery_origin=calculation_origin.strip(),
         calculated_comparison_status=(deviation.status if deviation is not None else "not_available"),
         calculated_comparison_performed=(
             deviation.comparison_performed if deviation is not None else False
@@ -294,17 +340,94 @@ def _operational_issues(
     ]
 
 
-def _missing_calculated_exports(
+def _calculated_delivery_summary(
+    plan: CalculatedLegacyComparisonPlan | None,
+    tables: Sequence[ExportTable],
     deviation: CalculatedLegacyDeviationReport | None,
-) -> tuple[str, ...]:
-    if deviation is None:
-        return ()
-    return tuple(
-        sorted(
-            str(issue.export_identity)
-            for issue in deviation.input_issues
-            if issue.code == "required_export_missing" and issue.export_identity is not None
+) -> tuple[tuple[str, ...], int, tuple[str, ...], int]:
+    if plan is None or deviation is None:
+        return (), 0, (), 0
+    required_by_identity = {
+        _required_identity(item): item for item in plan.required_exports
+    }
+    tables_by_identity: dict[ExportIdentity, list[ExportTable]] = {}
+    for table in tables:
+        identity = _table_identity(table)
+        tables_by_identity.setdefault(identity, []).append(table)
+    invalid_labels = {
+        issue.export_identity
+        for issue in deviation.input_issues
+        if issue.code != "required_export_missing"
+        and issue.export_identity is not None
+    }
+    global_input_error = any(
+        issue.code != "required_export_missing" and issue.export_identity is None
+        for issue in deviation.input_issues
+    )
+    accepted = {
+        identity
+        for identity in required_by_identity
+        if not global_input_error
+        and len(tables_by_identity.get(identity, ())) == 1
+        and format_legacy_export_identity(identity) not in invalid_labels
+        and _table_matches_delivery_shape(
+            tables_by_identity[identity][0],
+            required_by_identity[identity],
         )
+    }
+    supplied_exports = tuple(
+        sorted(required_by_identity[identity].filename for identity in accepted)
+    )
+    supplied_period_count = sum(
+        len(required_by_identity[identity].periods) for identity in accepted
+    )
+    missing_identities = required_by_identity.keys() - accepted
+    missing_exports = tuple(
+        sorted(format_legacy_export_identity(identity) for identity in missing_identities)
+    )
+    missing_period_count = sum(
+        len(required_by_identity[identity].periods)
+        for identity in missing_identities
+    )
+    return (
+        supplied_exports,
+        supplied_period_count,
+        missing_exports,
+        missing_period_count,
+    )
+
+
+def _required_identity(item: RequiredCalculatedExport) -> ExportIdentity:
+    return build_legacy_export_identity(
+        item.filename,
+        item.subject_type,
+        item.level,
+        item.selector_kind,
+        item.selector_value,
+    )
+
+
+def _table_identity(table: ExportTable) -> ExportIdentity:
+    return build_legacy_export_identity(
+        table.spec.filename,
+        table.spec.subject_type,
+        table.spec.level,
+        table.spec.selector_kind,
+        table.spec.selector_value,
+    )
+
+
+def _table_matches_delivery_shape(
+    table: ExportTable,
+    required: RequiredCalculatedExport,
+) -> bool:
+    expected_header = (
+        INSURER_HEADER
+        if required.subject_type == "insurer"
+        else POLICYHOLDER_HEADER
+    )
+    return table.header == expected_header and all(
+        len(row.values) == len(expected_header.split()) for row in table.rows
     )
 
 

@@ -116,5 +116,6 @@ Der einzige direkte Bericht gehoert zu `VDEFMD5A.ZIP`; `ZINS000`, `WVEMOD1`
 und `WVEMOD2` enthalten keinen eigenen Beleg. Seed oder Laufparameter werden
 nicht uebertragen. PR 91 hat fuer alle 19 Ziele vier getrennte Schichten und
 das Tor `go_separate_reference_tests` eingefroren. PR 92 hat den
-Horizontvertrag 100/300/500 umgesetzt, noch ohne Vollvergleich. PR93 bindet
-als naechstes die zwei vollstaendigen 100er-Tabellen an den Korpusbericht.
+Horizontvertrag 100/300/500 umgesetzt, noch ohne Vollvergleich. PR93 hat die
+zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden; PR94
+erweitert als naechstes den kontrollierten Zustand bis Periode 300.

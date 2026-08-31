@@ -8,6 +8,13 @@ from ims.api.production_release_corpus_report import (
     build_production_release_corpus_report,
     main,
 )
+from ims.model.agrsich_export import (
+    INSURER_HEADER,
+    POLICYHOLDER_HEADER,
+    ExportFileSpec,
+    ExportRow,
+    ExportTable,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -31,7 +38,10 @@ def test_production_release_corpus_report_separates_coverage_from_release() -> N
     assert payload["coverage_complete"] is True
     assert payload["required_calculated_export_count"] == 15
     assert payload["supplied_calculated_export_count"] == 0
+    assert payload["supplied_calculated_period_count"] == 0
+    assert payload["supplied_calculated_exports"] == []
     assert payload["missing_calculated_export_count"] == 15
+    assert payload["missing_calculated_period_count"] == 6300
     assert len(payload["missing_calculated_exports"]) == 15
     assert payload["calculated_comparison_status"] == "blocked_input"
     assert payload["calculated_comparison_performed"] is False
@@ -44,6 +54,69 @@ def test_production_release_corpus_report_separates_coverage_from_release() -> N
     assert payload["simulation_performed"] is False
     assert payload["automatic_historical_rule_selection_performed"] is False
     assert payload["historical_full_equality_claimed"] is False
+
+
+def test_production_release_corpus_report_accepts_two_valid_partial_tables() -> None:
+    payload = build_production_release_corpus_report(
+        REPO_ROOT,
+        calculated_export_tables=(
+            _table("imsvu014.dat", "insurer", "I", "entity", 14),
+            _table("imsvnsk1.dat", "policyholder", "IV", "all", "all"),
+        ),
+        calculation_origin="unit_test_pr93_partial_delivery",
+    ).to_dict()
+
+    assert payload["status"] == "blocked"
+    assert payload["supplied_calculated_export_count"] == 2
+    assert payload["supplied_calculated_period_count"] == 200
+    assert payload["supplied_calculated_exports"] == [
+        "imsvnsk1.dat",
+        "imsvu014.dat",
+    ]
+    assert payload["missing_calculated_export_count"] == 13
+    assert payload["missing_calculated_period_count"] == 6100
+    assert payload["calculated_comparison_status"] == "blocked_input"
+    assert payload["calculated_comparison_performed"] is False
+    assert payload["calculated_core_validation_complete"] is False
+    assert payload["production_release_approved"] is False
+
+
+def test_production_release_corpus_report_rejects_incomplete_partial_table() -> None:
+    incomplete = _table(
+        "imsvu014.dat",
+        "insurer",
+        "I",
+        "entity",
+        14,
+        periods=range(1, 100),
+    )
+
+    payload = build_production_release_corpus_report(
+        REPO_ROOT,
+        calculated_export_tables=(incomplete,),
+        calculation_origin="unit_test_incomplete_partial_delivery",
+    ).to_dict()
+
+    assert payload["supplied_calculated_export_count"] == 0
+    assert payload["supplied_calculated_period_count"] == 0
+    assert payload["missing_calculated_export_count"] == 15
+    assert payload["missing_calculated_period_count"] == 6300
+
+
+def test_production_release_corpus_report_rejects_wrong_partial_header() -> None:
+    malformed = _table("imsvu014.dat", "insurer", "I", "entity", 14)
+    malformed.header = POLICYHOLDER_HEADER
+
+    payload = build_production_release_corpus_report(
+        REPO_ROOT,
+        calculated_export_tables=(malformed,),
+        calculation_origin="unit_test_wrong_partial_header",
+    ).to_dict()
+
+    assert payload["supplied_calculated_export_count"] == 0
+    assert payload["supplied_calculated_period_count"] == 0
+    assert payload["missing_calculated_export_count"] == 15
+    assert payload["missing_calculated_period_count"] == 6300
 
 
 def test_production_release_corpus_report_lists_expected_export_blockers() -> None:
@@ -124,3 +197,30 @@ def test_production_release_corpus_report_public_types_are_importable() -> None:
     assert ProductionReleaseCorpusReport.__name__ == "ProductionReleaseCorpusReport"
     assert ProductionReleaseCorpusIssue.__name__ == "ProductionReleaseCorpusIssue"
     assert ProductionReleaseEvidence.__name__ == "ProductionReleaseEvidence"
+
+
+def _table(
+    filename: str,
+    subject_type: str,
+    level: str,
+    selector_kind: str,
+    selector_value: int | str,
+    *,
+    periods=range(1, 101),
+) -> ExportTable:
+    column_count = 13 if subject_type == "insurer" else 12
+    header = INSURER_HEADER if subject_type == "insurer" else POLICYHOLDER_HEADER
+    return ExportTable(
+        spec=ExportFileSpec(
+            filename=filename,
+            subject_type=subject_type,
+            level=level,
+            selector_kind=selector_kind,
+            selector_value=selector_value,
+        ),
+        header=header,
+        rows=[
+            ExportRow(values=[period, *([0.0] * (column_count - 1))])
+            for period in periods
+        ],
+    )

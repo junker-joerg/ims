@@ -108,5 +108,6 @@ ausgewaehlten Quellen weiterhin keine Klasse `same_run_proven`;
 `go_separate_reference_tests` hat PR 92 erlaubt, den Horizontvertrag
 `pr92-v1` vorzubereiten. Das Legacy-Bundle wird erst nach einem getrennten,
 belegten Entscheid geaendert; PR 92 hat keine solche Aenderung vorgenommen.
-Ein gemeinsamer historischer Lauf bleibt weiterhin unbelegt. PR93 bindet als
-naechstes nur die zwei vollstaendigen 100er-Tabellen an den Korpusbericht.
+Ein gemeinsamer historischer Lauf bleibt weiterhin unbelegt. PR93 hat nur die
+zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden; PR94
+erweitert als naechstes den kontrollierten Zustand bis Periode 300.

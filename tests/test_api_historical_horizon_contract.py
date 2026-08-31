@@ -180,6 +180,22 @@ def test_prefix_validation_rejects_empty_snapshot_set() -> None:
     ]
 
 
+def test_horizon_snapshot_accepts_canonical_level_iv_all_alias() -> None:
+    contract = build_historical_horizon_contract(root=REPO_ROOT)
+    entry = _entry(contract, "imsvnsk1.dat")
+    snapshot = _snapshot(entry, 100)
+    snapshot.table.spec.selector_value = "all"
+
+    payload = validate_historical_horizon_prefixes(
+        contract,
+        (snapshot,),
+    ).to_dict()
+
+    assert "snapshot_identity_mismatch" not in {
+        issue["code"] for issue in payload["issues"]
+    }
+
+
 def test_prefix_validation_rejects_wrong_layers_and_period_boundaries() -> None:
     contract = build_historical_horizon_contract(root=REPO_ROOT)
     entry = _entry(contract, "imsvusk1.dat")
