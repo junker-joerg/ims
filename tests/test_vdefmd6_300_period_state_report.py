@@ -244,7 +244,8 @@ def test_300_period_documentation_separates_modern_state_from_history() -> None:
     assert "kein historischer 300-Perioden-Vergleich" in document
     assert "keine historische Vollgleichheitsbehauptung" in document
     assert "keine Produktionsfreigabe" in document
-    assert "PR95 bindet ausschliesslich `imsvnr01.dat`" in normalized
+    assert "PR95 hat ausschliesslich `imsvnr01.dat`" in normalized
+    assert "PR96 erweitert denselben kontrollierten Zustand bis 500" in normalized
     assert "vdefmd6_300_period_state_contract.md" in readme
 
 

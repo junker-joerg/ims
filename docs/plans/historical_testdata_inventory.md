@@ -291,5 +291,18 @@ Zustandsresultate exakt stabil. Es wurden keine historischen Referenzzeilen
 gelesen oder verglichen.
 
 Der direkte Archivbericht mit drei Sequenzen 1-100 bleibt davon getrennt und
-belegt keinen historischen 300er-Lauf. PR95 bindet als naechstes nur
-`imsvnr01.dat` und `imsvnr02.dat` aus `zins000_archive` an.
+belegt keinen historischen 300er-Lauf.
+
+## PR-95-ZINS000-Regelfenster
+
+Der Vertrag `pr95-v1` vergleicht `imsvnr01.dat` und `imsvnr02.dat`
+vollstaendig gegen die zwei bytegenau an `ZINS000.ZIP` gebundenen
+300-Perioden-Referenzen. Beide modernen Tabellen halten den kontrollierten
+Prefix 1-100 exakt. Im historischen Vergleich unterscheiden sich 600/600
+Zeilen in mindestens einem Fachfeld; die fehlenden Laufmetadaten der
+`zins000_archive`-Schicht bleiben offen.
+
+Kumuliert sind 4/15 Tabellen und 800/6.300 Zielperioden an den
+Produktionskorpusbericht geliefert. Die Freigabe bleibt blockiert. PR96
+erweitert als naechstes nur den kontrollierten modernen Zustand bis Periode
+500 und prueft die Prefixe 1-100 sowie 1-300.

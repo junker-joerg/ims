@@ -2,7 +2,7 @@
 
 Stand: 2026-08-31
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 94
+Umsetzungsstand: PR 95
 
 ## Ziel
 
@@ -151,9 +151,14 @@ betroffenen Ziele getrennt oder neu belegt sind.
    Scheduler-, RNG- oder Akkumulatorsemantik wird nicht ergaenzt; ein
    historischer 300er-Vergleich wurde nicht ausgefuehrt. Der Befund steht in
    `docs/migration/vdefmd6_300_period_state_contract.md`.
-9. **PR 95: 300er-Regelfenster anbinden.**
-   `imsvnr01.dat` und `imsvnr02.dat` vollstaendig vergleichen. Erwarteter
-   kumulierter Fortschritt: 4/15 Tabellen und 800/6.300 Zielzeilen.
+9. **PR 95: 300er-Regelfenster anbinden (umgesetzt).**
+   `imsvnr01.dat` und `imsvnr02.dat` wurden als getrennte
+   `zins000_archive`-Referenzen vollstaendig verglichen. Beide kontrollierten
+   Tabellen halten ihren exakten 100er-Prefix; der historische Vergleich
+   deckt 600 Zeilen und 7.800 Felder ab. 600/600 Zeilen unterscheiden sich in
+   mindestens einem Fachfeld. Kumuliert sind 4/15 Tabellen und 800/6.300
+   Zielzeilen geliefert; die Freigabe bleibt blockiert. Der Befund steht in
+   `docs/migration/historical_300_period_rule_delivery.md`.
 10. **PR 96: Zustandsfortschreibung bis Periode 500 schliessen.**
     Den 300er-Zustand deterministisch bis 500 erweitern und Prefix-Stabilitaet
     fuer 1-100 und 1-300 pruefen.
@@ -191,22 +196,22 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 bis PR 94 haben Archivmanifest,
+PR 87 ist der Planungs-PR; PR 88 bis PR 95 haben Archivmanifest,
 Referenzkohaerenz, archivlokale Laufmetadaten, den getrennten
 Referenzschicht-Vertrag, den Horizontvertrag und die erste 100er-Korpuslieferung
-abgeschlossen sowie den modernen Zustand bis 300 fortgeschrieben. Danach sind
-**7 geplante PRs** bis zum ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht
-offen: sechs Vollfenster-PRs und ein
-Bewertungs-PR.
+abgeschlossen, den modernen Zustand bis 300 fortgeschrieben und die zwei
+ZINS000-Regelfenster verglichen. Danach sind **6 geplante PRs** bis zum ersten
+gemeinsamen 6.300-Zeilen-Vollfensterbericht offen: fuenf Vollfenster-PRs und
+ein Bewertungs-PR.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 95 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 96 bis PR 101:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
-| Python-Produktionscode | 150-550 LoC |
-| Tests | 300-850 LoC |
-| Vertraege, Fixtures und Dokumentation | 350-900 LoC |
-| Gesamt | 800-2.300 LoC |
+| Python-Produktionscode | 100-450 LoC |
+| Tests | 250-700 LoC |
+| Vertraege, Fixtures und Dokumentation | 300-750 LoC |
+| Gesamt | 650-1.900 LoC |
 
 Die Schaetzung umfasst keine noch unbekannten fachlichen Korrektur-PRs fuer
 Akkumulatoren, Scheduler, RNG, Versicherungsgrad oder `Ev`-Felder. Solche PRs

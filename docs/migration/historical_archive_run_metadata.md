@@ -112,3 +112,6 @@ Ein gemeinsamer historischer Lauf bleibt weiterhin unbelegt. PR93 hat nur die
 zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden. PR94 hat den
 modernen kontrollierten Zustand bis 300 erweitert, ohne die drei beobachteten
 historischen 1-100-Sequenzen in einen historischen 300er-Lauf umzudeuten.
+PR95 hat die zwei ZINS000-Regelfenster vollstaendig verglichen; 600/600
+abweichende Zeilen liefern weiterhin keinen Laufidentitaetsbeleg. PR96
+erweitert als naechstes nur den modernen Zustand bis 500.

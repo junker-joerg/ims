@@ -119,4 +119,6 @@ das Tor `go_separate_reference_tests` eingefroren. PR 92 hat den
 Horizontvertrag 100/300/500 umgesetzt, noch ohne Vollvergleich. PR93 hat die
 zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden. PR94 hat den
 modernen Zustand bis 300 mit stabilem Prefix erweitert; die historischen
-Schichten bleiben weiterhin getrennt.
+Schichten bleiben weiterhin getrennt. PR95 hat die beiden ZINS000-Regelfenster
+vollstaendig und weiterhin getrennt verglichen. PR96 erweitert als naechstes
+nur den modernen Zustand bis 500.

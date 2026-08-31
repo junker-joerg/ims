@@ -164,22 +164,22 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 ## Grobe Anzahl
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant den daraus
-abgeleiteten Provenienz- und Vollfensterblock; PR 88 bis PR 94 haben das
+abgeleiteten Provenienz- und Vollfensterblock; PR 88 bis PR 95 haben das
 read-only Archivmanifest, die Referenzkohaerenz, die archivlokale
 Laufmetadatenauswertung, den Referenzschicht-Vertrag und den Horizontvertrag
 umgesetzt, die zwei vollstaendigen 100er-Tabellen an den Korpusbericht
-gebunden und den modernen Zustand mit stabilem 100er-Prefix bis 300 erweitert.
+gebunden, den modernen Zustand mit stabilem 100er-Prefix bis 300 erweitert und
+die zwei ZINS000-Regelfenster vollstaendig als getrennte Referenzen verglichen.
 
-Nach PR 94 sind `7` PRs bis zum ersten gemeinsamen
-6.300-Zeilen-Vollfensterbericht vorgesehen: PR 95 bis PR 100 fuer die
-gestaffelten 100-/300-/500-Fenster und PR 101 fuer den Abschlussbericht.
+Nach PR 95 sind `6` PRs bis zum ersten gemeinsamen
+6.300-Zeilen-Vollfensterbericht vorgesehen: PR 96 bis PR 100 fuer die
+gestaffelten 500er-Fenster und PR 101 fuer den Abschlussbericht.
 Unbekannte fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
 
 ## Naechster Schritt
 
-PR 95 bindet als naechstes `imsvnr01.dat` und `imsvnr02.dat` als die beiden
-belegten 300er-Regelfenster an den weiterhin gesperrten Korpusbericht. Die
-Referenzschicht `zins000_archive` bleibt getrennt; Tabellenvollstaendigkeit ist
-keine Feldgleichheit. Der verbindliche Ablauf sowie die PR-88-bis-PR-94-
-Befunde stehen in
+PR 96 erweitert als naechstes den kontrollierten modernen Zustand
+deterministisch bis Periode 500. Die Prefixe 1-100 und 1-300 muessen exakt
+stabil bleiben. Historische 500er-Referenzen werden dabei noch nicht
+angebunden. Der verbindliche Ablauf sowie die PR-88-bis-PR-95-Befunde stehen in
 `docs/plans/historical_reference_provenance_and_full_window_plan.md`.

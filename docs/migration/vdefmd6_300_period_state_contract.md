@@ -101,6 +101,8 @@ Der Aufruf erzeugt die Tabellen nur im Speicher.
 
 ## Naechster Schritt
 
-PR95 bindet ausschliesslich `imsvnr01.dat` und `imsvnr02.dat` als die beiden
-im Horizontvertrag belegten 300er-Regelfenster an den weiterhin gesperrten
-Korpusbericht. Erst dort beginnt der historische 300-Perioden-Vergleich.
+PR95 hat ausschliesslich `imsvnr01.dat` und `imsvnr02.dat` als die beiden im
+Horizontvertrag belegten 300er-Regelfenster vollstaendig verglichen und an den
+weiterhin gesperrten Korpusbericht gebunden. PR96 erweitert denselben
+kontrollierten Zustand bis 500 und muss die Prefixe 1-100 und 1-300 exakt
+stabil halten.

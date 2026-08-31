@@ -158,4 +158,6 @@ Horizontvertrag 100/300/500 umgesetzt; `VUSK1L1-5` bleiben dabei fuenf
 Zeitfenster desselben `SK1/all`-Aggregats auf Stufe IV. PR93 hat die zwei
 vollstaendigen 100er-Tabellen an den Korpusbericht gebunden. PR94 hat den
 modernen Zustand bis 300 erweitert, ohne daraus einen gemeinsamen
-historischen Lauf der Archivquellen abzuleiten.
+historischen Lauf der Archivquellen abzuleiten. PR95 hat die zwei
+ZINS000-Regelfenster getrennt verglichen und dabei 600/600 abweichende Zeilen
+dokumentiert. PR96 erweitert als naechstes nur den modernen Zustand bis 500.
