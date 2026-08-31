@@ -1,5 +1,9 @@
 # Abschlussbericht: erster Produktionsfreigabekorpus
 
+> Korrektur ab PR98: Die 6.300 Eintraege sind laufuebergreifend nummerierte
+> Ergebniszeilen. Ein historischer Lauf umfasst hoechstens 100 Perioden.
+> Anschluss- und Zeilenabdeckung sind deshalb keine fachliche Gleichheitsquote.
+
 Stand: 2026-08-25  
 Berichtsvertrag: `pr69-v1`
 
@@ -10,7 +14,7 @@ Workbench-Demo nutzbar. Eine fachliche Produktionsfreigabe fuer den
 historischen Kernkorpus wird **nicht** erteilt.
 
 Der Grund ist eindeutig: Alle 19 historischen Kernreferenzen sind vorhanden
-und ihre 6.300 eingetragenen Perioden sind durch Parser-, Header-, Fenster- und
+und ihre 6.300 eingetragenen Ergebniszeilen sind durch Parser-, Header-, Lauf- und
 Coverage-Tests erfasst. PR 86 erzeugt und vergleicht inzwischen alle 15
 Kernexportidentitaeten gemeinsam fuer Perioden 1-100. Dem strikten
 6.300-Zeilen-Produktionskorpus fehlen jedoch weiterhin 15 vollstaendige
@@ -19,7 +23,7 @@ Exporttabellen bis zu ihren Pflichtgrenzen 100, 300 oder 500.
 | Bereich | Befund | Entscheidung |
 | --- | --- | --- |
 | Historischer Kernkorpus | 19/19 Referenzen vorhanden und abgedeckt | abgegrenzter Referenzbestand belegt |
-| Bundle-Perioden | 6.300/6.300 eingetragene Perioden ausgerichtet | Parser-/Mapping-Nachweis belegt |
+| Bundle-Zeilen | 6.300/6.300 eingetragene Ergebniszeilen ausgerichtet | Parser-/Mapping-Nachweis belegt |
 | Kontrolliertes 1-100-Fenster | 15/15 Exporte, 1.500 Zielzeilen verglichen | Abweichungskarte belegt |
 | Vollstaendige Korpusexporte | 0/15 bis zur jeweiligen Pflichtgrenze geliefert | blockierend |
 | Gemeinsamer 1-100-Vergleich | 4.492/20.000 Felder, 1.492/17.000 Fachwerte | `keep_blocked` |
@@ -31,9 +35,9 @@ Exporttabellen bis zu ihren Pflichtgrenzen 100, 300 oder 500.
 ## Korpusumfang
 
 Der verbindliche Kernkorpus v1 bleibt unveraendert bei 19 Dateien und 6.300
-eingetragenen Vergleichsperioden:
+eingetragenen Vergleichszeilen:
 
-| Familie | Dateien | Perioden |
+| Familie | Dateien | Ergebniszeilen |
 | --- | ---: | ---: |
 | Versicherer einzeln | 1 | 100 |
 | Versicherer SK1-Zeitfenster auf Stufe IV | 5 | 500 |
@@ -43,13 +47,13 @@ eingetragenen Vergleichsperioden:
 | VU-Klassen | 3 | 1.500 |
 | **Summe** | **19** | **6.300** |
 
-Die Dateien `VUSK1L1.DAT` bis `VUSK1L5.DAT` bleiben Zeitfenster desselben
+Die Dateien `VUSK1L1.DAT` bis `VUSK1L5.DAT` bleiben Laufabschnitte desselben
 `SK1`-/`all`-Aggregats auf Aggregatstufe IV. Sie sind keine verschiedenen
 Aggregatebenen.
 
 Die physisch vorhandenen 6.700 Datenzeilen werden nicht pauschal als validiert
 behandelt. Insbesondere bleibt das nicht eingetragene Restfenster von
-`IMSVNSK1.DAT` ausserhalb der 6.300 belegten Perioden.
+`IMSVNSK1.DAT` ausserhalb der 6.300 belegten Ergebniszeilen.
 
 Das getrennte ZINS000-Paar `IMSVU014.DAT` und `IMSVUSK1.DAT` ist versioniert,
 gehoert aber nicht zum 19-Dateien-Kernkorpus. `incomming/` bleibt lokaler,
@@ -64,7 +68,7 @@ erweitert.
   Dateiluecke, 6.300 abgedeckte Zeilen und Perioden.
 - Fixturegetriebener Legacy-Report: 6.300 ausgerichtete Referenzzeilen.
 - Strikter berechneter Vergleichsvertrag: 15 Exporttabellen, 19 Ziele und
-  6.300 Zielperioden; Legacy-Zeilen duerfen nicht als berechnete Neu-Ausgabe
+  6.300 Zielzeilen; Legacy-Zeilen duerfen nicht als berechnete Neu-Ausgabe
   zurueckgespiegelt werden.
 - Read-only Abweichungsbericht: fehlende berechnete Exporte werden als
   `required_export_missing` blockiert.
@@ -201,13 +205,15 @@ anschliessend alle 15 Identitaeten fuer 1-100 gemeinsam klassifiziert:
 Zielzeilen vollstaendig. Die Empfehlung bleibt `keep_blocked`.
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant die Folgephase
-bis PR 101; PR 88 bis PR 97 haben Archivmanifest, Referenzkohaerenz,
+bis PR 102; PR 88 bis PR 98 haben Archivmanifest, Referenzkohaerenz,
 archivlokale Laufmetadaten, vier getrennte Referenzschichten und den
-Horizontvertrag 100/300/500 umgesetzt, die ersten zwei 100er-Tabellen an den
+Ergebniszeilenvertrag 100/300/500 umgesetzt, die ersten zwei 100er-Tabellen an den
 Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
-ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster vollstaendig
-verglichen. Es folgen drei gestaffelte historische 500er-Vollfenster und ein
-neuer gemeinsamer 6.300-Zeilen-Bericht. Nach PR 97 sind 4 PRs dieser
+ZINS000-Regeltabellen sowie die fuenf VU-SK1-Laufabschnitte diagnostisch
+verglichen. PR 98 stellt alle 300/500-Zeilen-Dateien als drei beziehungsweise
+fuenf getrennte 100-Perioden-Laeufe klar. Es folgen drei gestaffelte
+Tabellenfamilien und ein neuer gemeinsamer 6.300-Zeilen-Bericht. Damit sind
+4 PRs dieser
 Mindestfolge offen.
 Fachliche Korrekturen aus den Abweichungsbefunden sind darin noch nicht
 enthalten.

@@ -10,21 +10,17 @@ from typing import Sequence
 from ims.api.historical_horizon_contract import (
     HistoricalHorizonContractResult,
     HistoricalHorizonExportContract,
-    HistoricalPrefixValidationResult,
-    LayeredExportTableSnapshot,
     build_historical_horizon_contract,
-    validate_historical_horizon_prefixes,
 )
 from ims.api.production_release_corpus_report import (
     ProductionReleaseCorpusReport,
     build_production_release_corpus_report,
 )
-from ims.engine.vdefmd6_pre_shock_runner import (
-    VDEFMD6_100_PERIOD_STATE_POLICY_ID,
-    VDEFMD6_300_PERIOD_STATE_POLICY_ID,
-    Vdefmd6PreShockRunResult,
-    run_vdefmd6_100_periods,
-    run_vdefmd6_300_periods,
+from ims.engine.vdefmd6_repeat_corpus import (
+    HISTORICAL_PERIODS_PER_RUN,
+    REPEAT_CORPUS_POLICY_ID,
+    Vdefmd6RepeatCorpusResult,
+    run_vdefmd6_100_period_repetitions,
 )
 from ims.model.agrsich_export import POLICYHOLDER_HEADER, ExportTable
 from ims.model.legacy_agrsich_multi_period import (
@@ -44,9 +40,10 @@ from ims.model.legacy_validation_run import (
 from ims.model.legacy_vn_reference import parse_legacy_policyholder_dat
 
 
-CONTRACT_VERSION = "pr95-v1"
+CONTRACT_VERSION = "pr98-v1"
 CONTROLLED_BASE_SEED = 20260001
-CALCULATION_ORIGIN = "vdefmd6_controlled_100_300_rule_delivery_pr95"
+HISTORICAL_RUN_COUNT = 3
+CALCULATION_ORIGIN = "vdefmd6_controlled_3x100_rule_repeat_diagnostics_pr98"
 RULE_FILENAMES = ("imsvnr01.dat", "imsvnr02.dat")
 CUMULATIVE_FILENAMES = (
     "imsvu014.dat",
@@ -71,20 +68,20 @@ EXPECTED_COMPARISON = {
         "matched_rows": 0,
         "mismatched_rows": 300,
         "field_count": 3900,
-        "exact_field_match_count": 931,
-        "tolerated_numeric_difference_count": 0,
-        "blocking_numeric_difference_count": 2967,
-        "open_field_question_count": 2,
+        "exact_field_match_count": 946,
+        "tolerated_numeric_difference_count": 1,
+        "blocking_numeric_difference_count": 2947,
+        "open_field_question_count": 6,
     },
     "imsvnr02.dat": {
         "period_count": 300,
         "matched_rows": 0,
         "mismatched_rows": 300,
         "field_count": 3900,
-        "exact_field_match_count": 608,
-        "tolerated_numeric_difference_count": 79,
-        "blocking_numeric_difference_count": 2628,
-        "open_field_question_count": 585,
+        "exact_field_match_count": 615,
+        "tolerated_numeric_difference_count": 127,
+        "blocking_numeric_difference_count": 2600,
+        "open_field_question_count": 558,
     },
 }
 
@@ -129,9 +126,14 @@ class Historical300RuleDeliveryTarget:
             "selector_value": self.selector_value,
             "layer_ids": list(self.layer_ids),
             "allowed_claims": list(self.allowed_claims),
-            "period_start": 1,
-            "period_end": 300,
-            "period_count": self.period_count,
+            "result_row_start": 1,
+            "result_row_end": 300,
+            "result_row_count": self.period_count,
+            "run_start": 1,
+            "run_end": HISTORICAL_RUN_COUNT,
+            "local_period_start": 1,
+            "local_period_end": HISTORICAL_PERIODS_PER_RUN,
+            "numbering_semantics": "cumulative_result_rows_across_100_period_runs",
             "matched_rows": self.matched_rows,
             "mismatched_rows": self.mismatched_rows,
             "field_count": self.field_count,
@@ -151,12 +153,12 @@ class Historical300RuleDeliveryTarget:
 class Historical300RuleDeliveryResult:
     root: str
     targets: tuple[Historical300RuleDeliveryTarget, ...]
-    prefix_validation: HistoricalPrefixValidationResult | None
     historical_report: LegacyValidationReport | None
     production_report: ProductionReleaseCorpusReport
+    run_seeds: tuple[int, ...]
     controlled_execution_performed: bool
     issues: tuple[Historical300RuleDeliveryIssue, ...]
-    mode: str = "historical_300_period_rule_delivery"
+    mode: str = "historical_300_row_rule_repeat_diagnostics"
 
     @property
     def status(self) -> str:
@@ -164,11 +166,6 @@ class Historical300RuleDeliveryResult:
 
     def to_dict(self) -> dict[str, object]:
         production = self.production_report.to_dict()
-        prefix = (
-            self.prefix_validation.to_dict()
-            if self.prefix_validation is not None
-            else {}
-        )
         historical = self.historical_report
         return {
             "status": self.status,
@@ -176,8 +173,13 @@ class Historical300RuleDeliveryResult:
             "contract_version": CONTRACT_VERSION,
             "root": self.root,
             "calculation_origin": CALCULATION_ORIGIN,
-            "source_contracts": ["pr91-v1", "pr92-v1", "pr93-v1", "pr94-v1"],
+            "source_contracts": ["pr91-v1", "pr98-v1"],
             "controlled_base_seed": CONTROLLED_BASE_SEED,
+            "controlled_run_seeds": list(self.run_seeds),
+            "historical_run_count": HISTORICAL_RUN_COUNT,
+            "historical_periods_per_run": HISTORICAL_PERIODS_PER_RUN,
+            "historical_result_row_count": 300,
+            "repeat_corpus_policy_id": REPEAT_CORPUS_POLICY_ID,
             "current_delivery_export_count": len(self.targets),
             "current_delivery_period_count": sum(
                 target.period_count for target in self.targets
@@ -198,9 +200,9 @@ class Historical300RuleDeliveryResult:
                 "missing_calculated_period_count"
             ],
             "targets": [target.to_dict() for target in self.targets],
-            "prefix_validation_status": prefix.get("status", "not_available"),
-            "prefix_comparison_count": prefix.get("comparison_count", 0),
-            "prefix_compared_row_count": prefix.get("compared_row_count", 0),
+            "prefix_validation_status": "not_applicable_repeated_runs",
+            "prefix_comparison_count": 0,
+            "prefix_compared_row_count": 0,
             "historical_comparison_status": (
                 "documented_differences"
                 if historical is not None and not historical.matches
@@ -233,6 +235,8 @@ class Historical300RuleDeliveryResult:
             "scheduler_started": False,
             "simulation_performed": False,
             "historical_run_identity_claimed": False,
+            "historical_single_run_horizon_claimed": False,
+            "historical_rng_reproduction_required": False,
             "historical_rng_equality_claimed": False,
             "historical_full_equality_claimed": False,
             "production_release_approved": False,
@@ -242,55 +246,40 @@ class Historical300RuleDeliveryResult:
 def build_historical_300_period_rule_delivery(
     root: Path | str = ".",
     *,
-    baseline_result: Vdefmd6PreShockRunResult | None = None,
-    extended_result: Vdefmd6PreShockRunResult | None = None,
-    baseline_rule_tables: Sequence[ExportTable] | None = None,
-    extended_rule_tables: Sequence[ExportTable] | None = None,
+    repeat_corpus: Vdefmd6RepeatCorpusResult | None = None,
+    repeat_rule_tables: Sequence[ExportTable] | None = None,
 ) -> Historical300RuleDeliveryResult:
     resolved_root = Path(root).expanduser().resolve()
     issues: list[Historical300RuleDeliveryIssue] = []
     horizon_contract = build_historical_horizon_contract(resolved_root)
     entries = _validate_horizon_contract(horizon_contract, issues)
 
-    controlled_execution = baseline_result is None or extended_result is None
-    baseline = baseline_result or _run_controlled(100, issues)
-    extended = extended_result or _run_controlled(300, issues)
-    _validate_run_boundaries(baseline, extended, issues)
-
-    baseline_tables = tuple(
-        baseline_rule_tables
-        if baseline_rule_tables is not None
-        else _select_rule_tables(baseline)
+    controlled_execution = repeat_corpus is None
+    corpus = repeat_corpus or _run_controlled_repetitions(issues)
+    _validate_repeat_corpus(corpus, issues)
+    repeated_tables = tuple(
+        repeat_rule_tables
+        if repeat_rule_tables is not None
+        else _select_rule_tables(corpus)
     )
-    extended_tables = tuple(
-        extended_rule_tables
-        if extended_rule_tables is not None
-        else _select_rule_tables(extended)
-    )
-    valid_baseline = _validate_rule_tables(
-        "baseline", baseline_tables, 100, entries, issues
-    )
-    valid_extended = _validate_rule_tables(
-        "extended", extended_tables, 300, entries, issues
-    )
-    prefix_validation = _validate_prefixes(
-        horizon_contract,
-        valid_baseline,
-        valid_extended,
+    valid_repeated = _validate_rule_tables(
+        "repeat_corpus",
+        repeated_tables,
+        300,
         entries,
         issues,
     )
     targets, historical_report = _compare_historical_targets(
         resolved_root,
         horizon_contract,
-        valid_extended,
+        valid_repeated,
         entries,
         issues,
     )
 
     cumulative_tables = _collect_cumulative_tables(
-        baseline,
-        valid_extended,
+        corpus,
+        valid_repeated,
         issues,
     )
     production_report = build_production_release_corpus_report(
@@ -302,9 +291,9 @@ def build_historical_300_period_rule_delivery(
     return Historical300RuleDeliveryResult(
         root=str(resolved_root),
         targets=targets,
-        prefix_validation=prefix_validation,
         historical_report=historical_report,
         production_report=production_report,
+        run_seeds=corpus.run_seeds if corpus is not None else (),
         controlled_execution_performed=controlled_execution,
         issues=tuple(issues),
     )
@@ -325,16 +314,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     return 0 if result.status == "ready" else 1
 
 
-def _run_controlled(
-    horizon: int,
+def _run_controlled_repetitions(
     issues: list[Historical300RuleDeliveryIssue],
-) -> Vdefmd6PreShockRunResult | None:
+) -> Vdefmd6RepeatCorpusResult | None:
     try:
-        if horizon == 100:
-            return run_vdefmd6_100_periods(base_seed=CONTROLLED_BASE_SEED)
-        return run_vdefmd6_300_periods(base_seed=CONTROLLED_BASE_SEED)
+        return run_vdefmd6_100_period_repetitions(
+            base_seed=CONTROLLED_BASE_SEED,
+            run_count=HISTORICAL_RUN_COUNT,
+        )
     except (TypeError, ValueError, StopIteration) as error:
-        _issue(issues, "controlled_run_failed", f"Vdefmd6@{horizon}", str(error))
+        _issue(issues, "controlled_repeat_corpus_failed", "Vdefmd6@3x100", str(error))
         return None
 
 
@@ -347,7 +336,7 @@ def _validate_horizon_contract(
             issues,
             "horizon_contract_not_ready",
             contract.fixture_path,
-            "PR92 horizon contract must be ready",
+            "PR98 repeat corpus contract must be ready",
         )
     entries = {
         entry.filename: entry
@@ -359,12 +348,13 @@ def _validate_horizon_contract(
             issues,
             "horizon_target_set_mismatch",
             contract.fixture_path,
-            "300-period horizon targets differ from the PR95 rule set",
+            "300-row repeat targets differ from the rule diagnostics set",
         )
     for filename, entry in entries.items():
         if (
             entry.level != "II"
             or entry.selector_kind != "rule"
+            or entry.required_run_count != HISTORICAL_RUN_COUNT
             or entry.layer_ids != ("zins000_archive",)
             or entry.allowed_claims != ("archive_content_match_only",)
         ):
@@ -372,73 +362,44 @@ def _validate_horizon_contract(
                 issues,
                 "horizon_layer_boundary_mismatch",
                 filename,
-                "PR95 targets must remain isolated ZINS000 rule references",
+                "repeat targets must remain three-run ZINS000 rule references",
             )
     return entries
 
 
-def _validate_run_boundaries(
-    baseline: Vdefmd6PreShockRunResult | None,
-    extended: Vdefmd6PreShockRunResult | None,
+def _validate_repeat_corpus(
+    corpus: Vdefmd6RepeatCorpusResult | None,
     issues: list[Historical300RuleDeliveryIssue],
 ) -> None:
-    if baseline is None or extended is None:
+    if corpus is None:
         return
-    expected = (
-        ("baseline", baseline, 100, VDEFMD6_100_PERIOD_STATE_POLICY_ID),
-        ("extended", extended, 300, VDEFMD6_300_PERIOD_STATE_POLICY_ID),
+    expected_seeds = tuple(
+        CONTROLLED_BASE_SEED + index for index in range(HISTORICAL_RUN_COUNT)
     )
-    for name, result, horizon, policy_id in expected:
-        if result.base_seed != CONTROLLED_BASE_SEED:
-            _issue(issues, "controlled_seed_mismatch", name, "base seed differs")
-        if result.max_periods != horizon:
-            _issue(issues, "controlled_horizon_mismatch", name, "horizon differs")
-        if result.state_policy_id != policy_id:
-            _issue(issues, "state_policy_mismatch", name, "state policy differs")
-        if tuple(item.period for item in result.period_results) != tuple(
-            range(2, horizon + 1)
-        ):
-            _issue(
-                issues,
-                "controlled_period_boundary_mismatch",
-                name,
-                f"state transitions must cover periods 2 through {horizon}",
-            )
-        if (
-            result.legacy_rows_used_as_generation_input
-            or result.writes_performed
-            or result.scheduler_started
-            or result.simulation_performed
-            or result.historical_same_slot_order_claimed
-            or result.historical_rng_equality_claimed
-            or result.historical_full_equality_claimed
-        ):
-            _issue(
-                issues,
-                "controlled_run_boundary_violation",
-                name,
-                "controlled delivery must not use legacy rows, write, schedule or simulate",
-            )
-    if baseline.period_results != extended.period_results[:99]:
+    if (
+        corpus.base_seed != CONTROLLED_BASE_SEED
+        or corpus.run_count != HISTORICAL_RUN_COUNT
+        or corpus.periods_per_run != HISTORICAL_PERIODS_PER_RUN
+        or corpus.result_row_count != 300
+        or corpus.run_seeds != expected_seeds
+        or corpus.policy_id != REPEAT_CORPUS_POLICY_ID
+    ):
         _issue(
             issues,
-            "state_prefix_mismatch",
-            "Vdefmd6@1-100",
-            "extended state changed the exact baseline prefix",
+            "repeat_corpus_boundary_mismatch",
+            "Vdefmd6@3x100",
+            "controlled corpus must contain three independent 100-period runs",
         )
 
 
 def _select_rule_tables(
-    result: Vdefmd6PreShockRunResult | None,
+    corpus: Vdefmd6RepeatCorpusResult | None,
 ) -> tuple[ExportTable, ...]:
-    if result is None:
+    if corpus is None:
         return ()
     return tuple(
         table
-        for table in (
-            *result.vn_rule_group_1_export_tables,
-            *result.vn_rule_group_2_export_tables,
-        )
+        for table in corpus.export_tables
         if table.spec.filename.lower() in RULE_FILENAMES
     )
 
@@ -490,7 +451,7 @@ def _validate_rule_tables(
                 issues,
                 f"{name}_identity_mismatch",
                 filename,
-                "calculated rule identity differs from the horizon contract",
+                "calculated rule identity differs from the result-row contract",
             )
             table_valid = False
         if table.header != POLICYHOLDER_HEADER:
@@ -514,56 +475,12 @@ def _validate_rule_tables(
                 issues,
                 f"{name}_period_boundary_mismatch",
                 filename,
-                f"calculated rule periods must cover 1 through {horizon}",
+                f"calculated rule result rows must cover 1 through {horizon}",
             )
             table_valid = False
         if table_valid:
             valid[filename] = table
     return valid
-
-
-def _validate_prefixes(
-    contract: HistoricalHorizonContractResult,
-    baseline: dict[str, ExportTable],
-    extended: dict[str, ExportTable],
-    entries: dict[str, HistoricalHorizonExportContract],
-    issues: list[Historical300RuleDeliveryIssue],
-) -> HistoricalPrefixValidationResult | None:
-    snapshots: list[LayeredExportTableSnapshot] = []
-    for filename in RULE_FILENAMES:
-        entry = entries.get(filename)
-        if entry is None or filename not in baseline or filename not in extended:
-            continue
-        layer_ids = dict(entry.horizon_layer_ids)
-        if 100 not in layer_ids or 300 not in layer_ids:
-            _issue(
-                issues,
-                "prefix_layer_binding_missing",
-                filename,
-                "PR95 prefix snapshots require layer bindings at 100 and 300",
-            )
-            continue
-        snapshots.extend(
-            (
-                LayeredExportTableSnapshot(100, layer_ids[100], baseline[filename]),
-                LayeredExportTableSnapshot(300, layer_ids[300], extended[filename]),
-            )
-        )
-    if not snapshots:
-        return None
-    result = validate_historical_horizon_prefixes(contract, snapshots)
-    if (
-        result.status != "ok"
-        or result.comparison_count != 2
-        or result.compared_row_count != 200
-    ):
-        _issue(
-            issues,
-            "prefix_validation_failed",
-            contract.fixture_path,
-            "both 300-period rules must keep their exact 100-period prefix",
-        )
-    return result
 
 
 def _compare_historical_targets(
@@ -636,7 +553,7 @@ def _compare_historical_targets(
                 issues,
                 "legacy_reference_contract_mismatch",
                 filename,
-                "legacy target identity or 300-period boundary differs",
+                "legacy target identity or 300-result-row boundary differs",
             )
         if table is None:
             continue
@@ -747,12 +664,13 @@ def _validate_expected_comparison(
 
 
 def _collect_cumulative_tables(
-    baseline: Vdefmd6PreShockRunResult | None,
+    corpus: Vdefmd6RepeatCorpusResult | None,
     extended_rules: dict[str, ExportTable],
     issues: list[Historical300RuleDeliveryIssue],
 ) -> tuple[ExportTable, ...]:
-    if baseline is None:
+    if corpus is None:
         return tuple(extended_rules.values())
+    baseline = corpus.runs[0]
     policyholder_table = next(
         (
             table

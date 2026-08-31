@@ -35,6 +35,14 @@ def test_production_release_corpus_report_separates_coverage_from_release() -> N
     assert payload["covered_file_count"] == 19
     assert payload["covered_rows"] == 6300
     assert payload["covered_periods"] == 6300
+    assert payload["historical_periods_per_run"] == 100
+    assert (
+        payload["calculated_row_count_semantics"]
+        == "cumulative_result_rows_across_100_period_runs"
+    )
+    assert payload["coverage_is_fachliche_gleichheit"] is False
+    assert payload["historical_300_500_single_run_claimed"] is False
+    assert payload["historical_rng_reproduction_required"] is False
     assert payload["coverage_complete"] is True
     assert payload["required_calculated_export_count"] == 15
     assert payload["supplied_calculated_export_count"] == 0

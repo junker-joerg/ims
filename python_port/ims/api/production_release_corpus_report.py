@@ -119,6 +119,13 @@ class ProductionReleaseCorpusReport:
             "covered_file_count": self.covered_file_count,
             "covered_rows": self.covered_rows,
             "covered_periods": self.covered_periods,
+            "historical_periods_per_run": 100,
+            "calculated_row_count_semantics": (
+                "cumulative_result_rows_across_100_period_runs"
+            ),
+            "coverage_is_fachliche_gleichheit": False,
+            "historical_300_500_single_run_claimed": False,
+            "historical_rng_reproduction_required": False,
             "coverage_complete": self.coverage_complete,
             "required_calculated_export_count": self.required_calculated_export_count,
             "supplied_calculated_export_count": self.supplied_calculated_export_count,

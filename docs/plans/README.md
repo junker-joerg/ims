@@ -75,17 +75,19 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   gemeinsamen 1-100-Abweichungsbericht aller 15 Kernexportidentitaeten und
   die konservative Freigabeempfehlung `keep_blocked`.
 - `historical_reference_provenance_and_full_window_plan.md`: PR-87-Plan fuer
-  vier Provenienz-PRs, gestaffelte 100-/300-/500-Vollfenster und den
+  vier Provenienz-PRs, gestaffelte 100-/300-/500-Ergebniszeilen und den
   abschliessenden 6.300-Zeilen-Bericht ohne Vollgleichheitsbehauptung; PR 88
   hat das read-only Archivmanifest fuer sieben ZIPs umgesetzt, PR 89 die
   Referenz-zu-Archiv-Koharenzmatrix und PR 90 die archivlokale Auswertung von
   Laufmetadaten und Begleitdateien. PR 91 friert vier getrennte
-  Referenzschichten fuer alle 19 Ziele ein; PR 92 setzt den Horizontvertrag
+  Referenzschichten fuer alle 19 Ziele ein; PR 92 setzt den Ergebniszeilenvertrag
   100/300/500 um. PR 93 bindet zwei vollstaendige 100-Perioden-Tabellen an
   den Korpusbericht. PR 94 erweitert den kontrollierten Zustand bis Periode
   300 mit exakt stabilem 100er-Prefix. PR 95 vergleicht die beiden
-  300er-Regelfenster `imsvnr01.dat` und `imsvnr02.dat` vollstaendig. PR 96
-  erweitert als naechstes den kontrollierten Zustand bis Periode 500.
+  300er-Regeltabellen `imsvnr01.dat` und `imsvnr02.dat` vollstaendig. PR 96
+  erweitert den kontrollierten Zustand bis Periode 500. PR 97 bindet die
+  VU-SK1-Tabelle an; PR 98 korrigiert alle 300/500-Zeilen-Vergleiche auf drei
+  beziehungsweise fuenf unabhaengige Laeufe mit maximal 100 Perioden.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

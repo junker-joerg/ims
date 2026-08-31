@@ -230,8 +230,9 @@ werden dabei weder importiert noch versioniert.
 Der einzige direkte Laufbericht der sieben Archive liegt in
 `VDEFMD5A.ZIP/IMSREPOR.DAT`. Er belegt archivlokal Seed `5616`, 25 VU, 200 VN
 und drei beobachtete, jeweils zusammenhaengende Periodensequenzen `1-100`.
-Die wiederholten Periodennummern werden nicht als ein fortlaufender
-300-Perioden-Lauf oder als drei fachlich bestimmte Wiederholungen gedeutet.
+Die wiederholten Periodennummern belegen drei getrennte Laeufe von jeweils
+100 Perioden. Die konkrete fachliche Parametrierung und RNG-Folge jedes Laufs
+bleiben ohne eigenen Laufbericht offen.
 
 Die anderen sechs Archive enthalten ausschliesslich `IMSV*.DAT`-Ausgaben und
 keine separaten Modell-, Definitions- oder Parameterdateien. Insbesondere
@@ -255,15 +256,19 @@ Zeitfenster desselben `SK1/all`-Aggregats auf Aggregatstufe IV. Das Tor
 `go_separate_reference_tests` erlaubt getrennte Vollfenstertests; es belegt
 keine historische Vollgleichheit oder Produktionsfreigabe.
 
-## PR-92-Horizontvertrag
+## PR-92/PR-98-Ergebniszeilenvertrag
 
-Der Vertrag `pr92-v1` leitet aus dem versionierten Bundle 15
-Exportidentitaeten, 19 Referenzziele und 6.300 Zielperioden ab. Zwei Exporte
-enden bei 100, zwei bei 300 und elf bei 500 Perioden. Bereits berechnete
-Tabellensnapshots koennen exakt auf stabile Prefixe 1-100 und 1-300 geprueft
-werden; PR92 selbst berechnet oder vergleicht keine 300-/500-Periodentabelle.
+Der in PR 98 korrigierte Vertrag `pr98-v1` leitet aus dem versionierten Bundle
+15 Exportidentitaeten, 19 Referenzziele und 6.300 Zielzeilen ab. Zwei Exporte
+enthalten einen, zwei enthalten drei und elf enthalten fuenf Laeufe von
+jeweils hoechstens 100 Perioden. Die Altcodeformel nummeriert die Ergebniszeile
+als `(Lauf - 1) * Simulationslaenge + lokale Periode`.
 
-Die fuenf `VUSK1`-Zeitfenster bleiben demselben SK1/all-Aggregat auf Stufe IV
+Bereits berechnete moderne Tabellensnapshots koennen weiterhin exakt auf
+stabile Prefixe 1-100 und 1-300 geprueft werden. Dieser Test belegt nur die
+Stabilitaet der modernen Langlaeufer, keine historische 300-/500-Trajektorie.
+
+Die fuenf `VUSK1`-Laufabschnitte bleiben demselben SK1/all-Aggregat auf Stufe IV
 zugeordnet. Ihre zwei Herkunftsschichten werden dabei nicht zusammengelegt.
 PR93 hat nur die beiden vollstaendigen 100er-Ziele `imsvu014.dat` und
 `imsvnsk1.dat` an den Produktionskorpusbericht gebunden.
@@ -293,16 +298,15 @@ gelesen oder verglichen.
 Der direkte Archivbericht mit drei Sequenzen 1-100 bleibt davon getrennt und
 belegt keinen historischen 300er-Lauf.
 
-## PR-95-ZINS000-Regelfenster
+## PR-95/PR-98-ZINS000-Regelzeilen
 
-Der Vertrag `pr95-v1` vergleicht `imsvnr01.dat` und `imsvnr02.dat`
-vollstaendig gegen die zwei bytegenau an `ZINS000.ZIP` gebundenen
-300-Perioden-Referenzen. Beide modernen Tabellen halten den kontrollierten
-Prefix 1-100 exakt. Im historischen Vergleich unterscheiden sich 600/600
-Zeilen in mindestens einem Fachfeld; die fehlenden Laufmetadaten der
-`zins000_archive`-Schicht bleiben offen.
+Der in PR 98 korrigierte Diagnosevertrag vergleicht `imsvnr01.dat` und
+`imsvnr02.dat` gegen die zwei bytegenau an `ZINS000.ZIP` gebundenen
+300-Zeilen-Referenzen. Jede moderne Tabelle wird aus drei unabhaengigen
+100-Perioden-Laeufen aufgebaut. Historischer Seed, RNG-Ziehfolge und
+Parametervarianten bleiben mangels Laufbericht offen.
 
-Kumuliert sind 4/15 Tabellen und 800/6.300 Zielperioden an den
-Produktionskorpusbericht geliefert. Die Freigabe bleibt blockiert. PR96
-erweitert als naechstes nur den kontrollierten modernen Zustand bis Periode
-500 und prueft die Prefixe 1-100 sowie 1-300.
+Kumuliert sind 4/15 Tabellen und 800/6.300 Zielzeilen an den
+Produktionskorpusbericht geliefert. Die Freigabe bleibt blockiert. PR 99
+bindet als naechstes die vier VN-Regeltabellen 3-6 aus je fuenf
+100-Perioden-Laeufen an.

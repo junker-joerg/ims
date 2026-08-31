@@ -34,30 +34,32 @@ def test_plan_fixes_required_full_window_matrix() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     normalized = plan.replace("\n", " ")
 
-    assert "| 100 | `imsvu014.dat`, `imsvnsk1.dat` | 2 | 200 |" in plan
-    assert "| 300 | `imsvnr01.dat`, `imsvnr02.dat` | 2 | 600 |" in plan
+    assert "| 100 | `imsvu014.dat`, `imsvnsk1.dat` | 2 | 200 / je 1 |" in plan
+    assert "| 300 | `imsvnr01.dat`, `imsvnr02.dat` | 2 | 600 / je 3 |" in plan
     assert "| Gesamt | 15 Exportidentitaeten / 19 Referenzziele | 15 | 6.300 |" in plan
-    assert "| 11 | 5.500 |" in plan
+    assert "| 11 | 5.500 / je 5 |" in plan
     assert "eine einzige 500-zeilige berechnete Tabelle" in plan
     assert "nicht als fuenf Aggregate oder Aggregatebenen" in normalized
+    assert "fuenf getrennten modernen 100-Perioden-Laeufen" in normalized
 
 
 def test_plan_orders_provenance_before_full_window_execution() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     normalized = " ".join(plan.split())
 
-    for pr_number in range(87, 102):
+    for pr_number in range(87, 103):
         assert f"PR {pr_number}" in plan
     assert plan.index("PR 88: read-only Archivmanifest") < plan.index(
-        "PR 92: Horizontvertrag"
+        "PR 92: Ergebniszeilenvertrag"
     )
     assert "2/15 Tabellen und 200/6.300" in plan
     assert "Zielperioden vollstaendig geliefert" in plan
     assert "4/15 Tabellen und 800/6.300 Zielzeilen" in normalized
     assert "15/15 Tabellen und 6.300/6.300 Zielzeilen" in plan
-    assert "Umsetzungsstand: PR 97" in plan
+    assert "Umsetzungsstand: PR 98" in plan
     assert "4 geplante PRs" in plan
-    assert "Verbleibende grobe Bruttoabschaetzung fuer PR 98 bis PR 101" in plan
+    assert "Verbleibende grobe Bruttoabschaetzung fuer PR 99 bis PR 102" in plan
+    assert "maximal 100 Perioden je Lauf" in normalized
     assert "`go_separate_reference_tests`" in plan
 
 
@@ -79,8 +81,8 @@ def test_central_plans_and_index_reference_pr87_series() -> None:
 
     assert PLAN.is_file()
     assert "historical_reference_provenance_and_full_window_plan.md" in readme
-    assert "Nach PR 97 sind `4` PRs" in production
-    assert "PR 98 bis PR 100" in production
-    assert "PR 101" in production
-    assert "Nach PR 97" in core
+    assert "Nach PR 98 sind `4` PRs" in production
+    assert "PR 99 bis PR 101" in production
+    assert "PR 102" in production
+    assert "Nach PR 98" in core
     assert "`4` geplante PRs" in core

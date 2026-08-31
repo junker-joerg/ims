@@ -137,7 +137,7 @@ def test_vdefmd6_core_export_review_docs_keep_release_boundaries() -> None:
     migration = MIGRATION_PATH.read_text(encoding="utf-8")
 
     assert "keine Gleichsetzung von 1.500 kontrollierten Zielzeilen" in plan
-    assert "Folgeblock inzwischen in PR 88 bis PR 101 geschnitten" in plan.replace("\n", " ")
+    assert "Folgeblock inzwischen in PR 88 bis PR 102 geschnitten" in plan.replace("\n", " ")
     assert "4.492/20.000" in migration
     assert "1.492/17.000" in migration
     assert "14.752" in migration

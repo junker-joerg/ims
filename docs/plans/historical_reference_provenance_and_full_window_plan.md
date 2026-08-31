@@ -2,18 +2,19 @@
 
 Stand: 2026-08-31
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 97
+Umsetzungsstand: PR 98
 
 ## Ziel
 
 Dieser Block klaert zuerst, aus welchen historischen Archiv- und Laufschichten
 die 19 versionierten Kernreferenzen stammen. Erst nach einer ausdruecklichen
-Provenienzentscheidung wird der kontrollierte moderne Zustand von 100 auf 300
-und 500 Perioden erweitert und fuer alle 15 Kernexportidentitaeten an den
-bestehenden Abweichungsbericht gebunden.
+Provenienzentscheidung werden alle 15 Kernexportidentitaeten an den
+bestehenden Abweichungsbericht gebunden. Die historischen Dateien zaehlen
+Ergebniszeilen ueber getrennte Laeufe von hoechstens 100 Perioden; sie sind
+keine fortlaufenden 300- oder 500-Perioden-Trajektorien.
 
 Der Block soll am Ende 15 vollstaendige berechnete Tabellen fuer die 19 Ziele
-und 6.300 Referenzperioden liefern. Das ist ein Vollfenstervergleich, aber noch
+und 6.300 Referenzergebniszeilen liefern. Das ist ein Vollkorpusvergleich, aber noch
 kein Nachweis historischer Modellgleichheit und keine automatische
 Produktionsfreigabe.
 
@@ -31,8 +32,9 @@ Lauf belegte Referenzsammlung:
   ueberein;
 - `VU14L1.DAT` ist fuer 1-100 dreifach belegt, darunter durch
   `WVEMOD1.ZIP/IMSVU014.DAT`;
-- `VUSK1L1.DAT` bis `VUSK1L5.DAT` sind die Fenster 401-500 bis 1-100
-  desselben SK1-/all-Aggregats auf Stufe IV;
+- `VUSK1L1.DAT` bis `VUSK1L5.DAT` sind die Ergebniszeilen 401-500 bis
+  1-100 aus fuenf 100-Perioden-Laeufen desselben SK1-/all-Aggregats auf
+  Stufe IV, keine unterschiedlichen Aggregatebenen;
 - `WVEMOD1.ZIP`, `WVEMOD2.ZIP` und `WVEMOD3.ZIP` enthalten jeweils alle
   15 Kernexportnamen, aber keinen zugeordneten `IMSREPOR.DAT`;
 - nur `VDEFMD5A.ZIP` enthaelt im bekannten Bestand einen `IMSREPOR.DAT` mit
@@ -44,21 +46,29 @@ historischen Lauf noch Seed, Scheduler-Reihenfolge oder RNG-Ziehfolge.
 
 ## Verbindliche Zielmatrix
 
-| Pflichtgrenze | Exportidentitaeten | Tabellen | Zielzeilen |
+| Ergebniszeilengrenze | Exportidentitaeten | Tabellen | Zielzeilen / Laeufe |
 | --- | --- | ---: | ---: |
-| 100 | `imsvu014.dat`, `imsvnsk1.dat` | 2 | 200 |
-| 300 | `imsvnr01.dat`, `imsvnr02.dat` | 2 | 600 |
-| 500 | `imsvusk1.dat`, `imsvnr03.dat` bis `imsvnr06.dat`, `imsvnvk1.dat` bis `imsvnvk3.dat`, `imsvuvk1.dat` bis `imsvuvk3.dat` | 11 | 5.500 |
+| 100 | `imsvu014.dat`, `imsvnsk1.dat` | 2 | 200 / je 1 |
+| 300 | `imsvnr01.dat`, `imsvnr02.dat` | 2 | 600 / je 3 |
+| 500 | `imsvusk1.dat`, `imsvnr03.dat` bis `imsvnr06.dat`, `imsvnvk1.dat` bis `imsvnvk3.dat`, `imsvuvk1.dat` bis `imsvuvk3.dat` | 11 | 5.500 / je 5 |
 | Gesamt | 15 Exportidentitaeten / 19 Referenzziele | 15 | 6.300 |
 
-`imsvusk1.dat` bleibt eine einzige 500-zeilige berechnete Tabelle. Im
-Legacy-Bundle wird sie gegen die fuenf historischen 100-Perioden-Zeitfenster
-`VUSK1L5` bis `VUSK1L1` ausgerichtet. Die Fenster werden nicht als fuenf
-Aggregate oder Aggregatebenen gezaehlt.
+`imsvusk1.dat` bleibt eine einzige 500-zeilige berechnete Tabelle. Ihre Zeilen
+werden aus fuenf getrennten modernen 100-Perioden-Laeufen zusammengesetzt und
+gegen die fuenf historischen Laufabschnitte `VUSK1L5` bis `VUSK1L1`
+ausgerichtet. Die Abschnitte werden nicht als fuenf Aggregate oder
+Aggregatebenen gezaehlt.
+
+Die Formel des Altprogramms nummeriert eine Ausgabezeile als
+`(Lauf - 1) * Simulationslaenge + lokale Periode`. `SIMLAENGE` ist im
+historischen Quellstand auf maximal 100 begrenzt. Die modernen 300- und
+500-Perioden-Zustandsfortschreibungen aus PR 94 und PR 96 bleiben wertvolle
+deterministische Stabilitaetstests, sind aber keine historischen
+Vergleichslaeufe.
 
 ## Entscheidungstor Provenienz
 
-Vor jeder Erweiterung ueber Periode 100 muss ein versionierter Bericht jede
+Vor jeder Lieferung von mehr als 100 Ergebniszeilen muss ein versionierter Bericht jede
 Referenzschicht einer der folgenden Klassen zuordnen:
 
 - `same_run_proven`: gemeinsamer Lauf durch direkte Laufmetadaten und
@@ -125,14 +135,13 @@ betroffenen Ziele getrennt oder neu belegt sind.
 
 ### Phase B: Kontrollierte Vollfenster
 
-6. **PR 92: Horizontvertrag 100/300/500 vorbereiten (umgesetzt).**
-   Der Vertrag `pr92-v1` bindet 15 Exportidentitaeten, 19 Referenzziele und
-   6.300 Zielperioden an die Pflichtgrenzen 100, 300 und 500. Ein generischer
-   Pruefer vergleicht bereits berechnete `ExportTable`-Snapshots exakt auf
-   stabile 100er- und 300er-Prefixe und verlangt die `layer_id` aus
-   `pr91-v1`. `VUSK1L1-5` bleiben Zeitfenster desselben SK1/all-Aggregats auf
-   Stufe IV, waehrend `VUSK1L4` seine isolierte Herkunftsschicht behaelt. Es
-   wurde kein 300-/500-Vollvergleich ausgefuehrt. Der Befund steht in
+6. **PR 92: Ergebniszeilenvertrag 100/300/500 vorbereiten (korrigiert in PR 98).**
+   Der Vertrag bindet 15 Exportidentitaeten, 19 Referenzziele und 6.300
+   Zielzeilen an ein, drei oder fuenf getrennte Laeufe mit jeweils hoechstens
+   100 Perioden. `VUSK1L1-5` bleiben Laufabschnitte desselben
+   SK1/all-Aggregats auf Stufe IV, waehrend `VUSK1L4` seine isolierte
+   Herkunftsschicht behaelt. Der weiterhin vorhandene Prefix-Pruefer bewertet
+   ausschliesslich moderne 300-/500-Perioden-Stabilitaet. Der Befund steht in
    `docs/migration/historical_horizon_contract.md`.
 7. **PR 93: bestehende 100-Perioden-Tabellen streng anbinden (umgesetzt).**
    Der Vertrag `pr93-v1` uebergibt `imsvu014.dat` und `imsvnsk1.dat` aus dem
@@ -151,13 +160,13 @@ betroffenen Ziele getrennt oder neu belegt sind.
    Scheduler-, RNG- oder Akkumulatorsemantik wird nicht ergaenzt; ein
    historischer 300er-Vergleich wurde nicht ausgefuehrt. Der Befund steht in
    `docs/migration/vdefmd6_300_period_state_contract.md`.
-9. **PR 95: 300er-Regelfenster anbinden (umgesetzt).**
-   `imsvnr01.dat` und `imsvnr02.dat` wurden als getrennte
-   `zins000_archive`-Referenzen vollstaendig verglichen. Beide kontrollierten
-   Tabellen halten ihren exakten 100er-Prefix; der historische Vergleich
-   deckt 600 Zeilen und 7.800 Felder ab. 600/600 Zeilen unterscheiden sich in
-   mindestens einem Fachfeld. Kumuliert sind 4/15 Tabellen und 800/6.300
-   Zielzeilen geliefert; die Freigabe bleibt blockiert. Der Befund steht in
+9. **PR 95: 300er-Regelzeilen anbinden (korrigiert in PR 98).**
+   `imsvnr01.dat` und `imsvnr02.dat` werden als getrennte
+   `zins000_archive`-Referenzen gegen je drei unabhaengige moderne
+   100-Perioden-Laeufe verglichen. Dieser diagnostische Vergleich deckt 600
+   Ergebniszeilen ab, reproduziert aber weder historischen Seed noch
+   Zufallsfolge. Kumuliert sind 4/15 Tabellen und 800/6.300 Zielzeilen
+   geliefert; die Freigabe bleibt blockiert. Der Befund steht in
    `docs/migration/historical_300_period_rule_delivery.md`.
 10. **PR 96: Zustandsfortschreibung bis Periode 500 schliessen (umgesetzt).**
     Der Vertrag `pr96-v1` setzt denselben kontrollierten modernen Zustand mit
@@ -168,26 +177,37 @@ betroffenen Ziele getrennt oder neu belegt sind.
     RNG- oder Akkumulatorsemantik wird nicht ergaenzt; ein historischer
     500er-Vergleich wurde nicht ausgefuehrt. Der Befund steht in
     `docs/migration/vdefmd6_500_period_state_contract.md`.
-11. **PR 97: VU-SK1-Zeitfenster anbinden (umgesetzt).**
-    Eine berechnete `imsvusk1.dat` mit 500 Perioden wurde gegen `VUSK1L5` bis
-    `VUSK1L1` als fuenf getrennte Referenztests ausgerichtet. `VUSK1L4.DAT`
+11. **PR 97: VU-SK1-Ergebniszeilen anbinden (korrigiert in PR 98).**
+    Eine berechnete `imsvusk1.dat` aus fuenf unabhaengigen 100-Perioden-Laeufen
+    wurde gegen `VUSK1L5` bis `VUSK1L1` als fuenf getrennte Referenztests
+    ausgerichtet. `VUSK1L4.DAT`
     bleibt die isolierte Direktreferenz `vusk1l4_direct_04410ef`; die vier
-    anderen Fenster bleiben `wvemod2_archive`. 499/500 Zeilen unterscheiden
-    sich, 1.021/7.000 Felder treffen exakt und 5.950 Abweichungen blockieren.
+    anderen Abschnitte bleiben `wvemod2_archive`. Vier Anfangszustaende treffen
+    vollstaendig; 1.052/7.000 Felder treffen exakt und 5.884 Abweichungen
+    blockieren.
     Kumuliert sind 5/15 Tabellen und 1.300/6.300 Zielzeilen geliefert; eine
-    koharente historische 500-Perioden-Laufquelle wird nicht behauptet. Der
+    koharente historische 500-Perioden-Lauf wird nicht behauptet. Der
     Befund steht in
     `docs/migration/historical_500_period_vusk1_delivery.md`.
-12. **PR 98: VN-Regeln 3-6 anbinden.**
-    Vier 500er-Tabellen vollstaendig vergleichen. Erwarteter Fortschritt:
+12. **PR 98: Wiederholungsvertrag und Langlaufdeutung korrigieren (umgesetzt).**
+    Historische Quellanker, Dissertation und Ausgabeformel belegen maximal
+    100 Perioden je Lauf. Der Vertrag `pr98-v1` bildet deshalb 300/500
+    Ergebniszeilen als drei/fuenf unabhaengige 100er-Laeufe ab; PR 94 und
+    PR 96 bleiben getrennte moderne Stabilitaetstests. Keine historische
+    Zufallsfolge oder Vollgleichheit wird verlangt.
+13. **PR 99: VN-Regeln 3-6 anbinden.**
+    Vier Tabellen aus je fuenf 100er-Laeufen vollstaendig vergleichen.
+    Erwarteter Fortschritt:
     9/15 Tabellen und 3.300/6.300 Zielzeilen.
-13. **PR 99: VN-Klassen 1-3 anbinden.**
-    Drei 500er-Tabellen vollstaendig vergleichen. Erwarteter Fortschritt:
+14. **PR 100: VN-Klassen 1-3 anbinden.**
+    Drei Tabellen aus je fuenf 100er-Laeufen vollstaendig vergleichen.
+    Erwarteter Fortschritt:
     12/15 Tabellen und 4.800/6.300 Zielzeilen.
-14. **PR 100: VU-Klassen 1-3 anbinden.**
-    Die letzten drei 500er-Tabellen vollstaendig vergleichen. Erwarteter
+15. **PR 101: VU-Klassen 1-3 anbinden.**
+    Die letzten drei Tabellen aus je fuenf 100er-Laeufen vollstaendig
+    vergleichen. Erwarteter
     Fortschritt: 15/15 Tabellen und 6.300/6.300 Zielzeilen.
-15. **PR 101: gemeinsamen Vollfensterbericht bewerten.**
+16. **PR 102: gemeinsamen Vollkorpusbericht bewerten.**
     Alle 19 Ziele in einem read-only Bericht klassifizieren, Abweichungen nach
     Referenzschicht trennen und die menschliche Freigabe neu entscheiden.
     Vollstaendige Eingabe ist dabei nicht automatisch Feldgleichheit oder
@@ -206,16 +226,16 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 bis PR 97 haben Archivmanifest,
+PR 87 ist der Planungs-PR; PR 88 bis PR 98 haben Archivmanifest,
 Referenzkohaerenz, archivlokale Laufmetadaten, den getrennten
 Referenzschicht-Vertrag, den Horizontvertrag und die erste 100er-Korpuslieferung
-abgeschlossen, den modernen Zustand bis 500 fortgeschrieben und die zwei
-ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster verglichen. Danach sind
-**4 geplante PRs** bis zum ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht
-offen: drei historische
-Vollfenster-Liefer-PRs und ein Bewertungs-PR.
+abgeschlossen, den modernen Zustand bis 500 fortgeschrieben und die
+historischen 300/500-Zeilen-Dateien als Wiederholungen von 100-Perioden-Laeufen
+korrigiert. Danach sind **4 geplante PRs** bis zum ersten gemeinsamen
+6.300-Zeilen-Vollkorpusbericht offen: drei historische Tabellenfamilien-PRs
+und ein Bewertungs-PR.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 98 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 99 bis PR 102:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |

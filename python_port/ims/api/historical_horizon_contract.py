@@ -27,10 +27,15 @@ from ims.model.legacy_validation_run import (
 )
 
 
-CONTRACT_VERSION = "pr92-v1"
+CONTRACT_VERSION = "pr98-v1"
 DEFAULT_FIXTURE_PATH = Path("tests/fixtures/legacy_validation_bundle.json")
 SUPPORTED_HORIZONS = (100, 300, 500)
 EXPECTED_HORIZON_EXPORT_COUNTS = {100: 2, 300: 2, 500: 11}
+HISTORICAL_PERIODS_PER_RUN = 100
+HISTORICAL_SIM_LENGTH_SOURCE = Path("IMSDATA.C")
+HISTORICAL_RESULT_NUMBERING_SOURCE = Path("IMS.E")
+HISTORICAL_SIM_LENGTH_NEEDLE = "#define SIMLAENGE  100"
+HISTORICAL_RESULT_NUMBERING_NEEDLE = "(rl-1)*sl+period"
 
 
 @dataclass(frozen=True)
@@ -53,15 +58,39 @@ class HistoricalHorizonReferenceSlice:
     coherence_class: str
     allowed_claim: str
 
+    @property
+    def run_start(self) -> int:
+        return (self.period_start - 1) // HISTORICAL_PERIODS_PER_RUN + 1
+
+    @property
+    def run_end(self) -> int:
+        return (self.period_end - 1) // HISTORICAL_PERIODS_PER_RUN + 1
+
+    @property
+    def local_period_start(self) -> int:
+        return (self.period_start - 1) % HISTORICAL_PERIODS_PER_RUN + 1
+
+    @property
+    def local_period_end(self) -> int:
+        return (self.period_end - 1) % HISTORICAL_PERIODS_PER_RUN + 1
+
     def to_dict(self) -> dict[str, object]:
         return {
             "reference_filename": self.reference_filename,
+            "result_row_start": self.period_start,
+            "result_row_end": self.period_end,
+            "result_row_count": self.row_count,
             "period_start": self.period_start,
             "period_end": self.period_end,
             "row_count": self.row_count,
+            "run_start": self.run_start,
+            "run_end": self.run_end,
+            "local_period_start": self.local_period_start,
+            "local_period_end": self.local_period_end,
             "layer_id": self.layer_id,
             "coherence_class": self.coherence_class,
             "allowed_claim": self.allowed_claim,
+            "numbering_semantics": "cumulative_result_rows_across_100_period_runs",
         }
 
 
@@ -89,6 +118,10 @@ class HistoricalHorizonExportContract:
             self.selector_value,
         )
 
+    @property
+    def required_run_count(self) -> int:
+        return self.required_period_count // HISTORICAL_PERIODS_PER_RUN
+
     def to_dict(self) -> dict[str, object]:
         return {
             "filename": self.filename,
@@ -96,9 +129,13 @@ class HistoricalHorizonExportContract:
             "level": self.level,
             "selector_kind": self.selector_kind,
             "selector_value": self.selector_value,
-            "required_horizon": self.required_horizon,
-            "required_period_count": self.required_period_count,
-            "prefix_checkpoints": list(self.prefix_checkpoints),
+            "required_result_row_count": self.required_period_count,
+            "required_run_count": self.required_run_count,
+            "historical_periods_per_run": HISTORICAL_PERIODS_PER_RUN,
+            "legacy_required_horizon_value": self.required_horizon,
+            "legacy_required_period_count": self.required_period_count,
+            "result_row_boundaries": list(self.prefix_checkpoints),
+            "historical_prefix_relationship_claimed": False,
             "layer_ids": list(self.layer_ids),
             "horizon_layer_ids": {
                 str(horizon): list(layer_ids)
@@ -120,7 +157,7 @@ class HistoricalHorizonContractResult:
     reference_layer_status: str
     reference_layer_gate_decision: str
     issues: tuple[HistoricalHorizonIssue, ...]
-    mode: str = "historical_horizon_contract"
+    mode: str = "historical_repeat_corpus_contract"
 
     def to_dict(self) -> dict[str, object]:
         horizon_counts = {
@@ -135,7 +172,17 @@ class HistoricalHorizonContractResult:
             "contract_version": CONTRACT_VERSION,
             "root": self.root,
             "fixture_path": self.fixture_path,
+            "historical_periods_per_run": HISTORICAL_PERIODS_PER_RUN,
+            "historical_single_run_max_periods": HISTORICAL_PERIODS_PER_RUN,
+            "historical_result_numbering_formula": (
+                "(run_index - 1) * run_period_count + local_period"
+            ),
+            "historical_sim_length_source": str(HISTORICAL_SIM_LENGTH_SOURCE),
+            "historical_result_numbering_source": str(
+                HISTORICAL_RESULT_NUMBERING_SOURCE
+            ),
             "configured_horizons": list(self.configured_horizons),
+            "configured_result_row_counts": list(self.configured_horizons),
             "required_export_count": len(self.entries),
             "reference_target_count": sum(
                 len(entry.reference_slices) for entry in self.entries
@@ -144,13 +191,16 @@ class HistoricalHorizonContractResult:
                 entry.required_period_count for entry in self.entries
             ),
             "horizon_export_counts": horizon_counts,
+            "result_row_export_counts": horizon_counts,
             "prefix_checkpoints": list(self.configured_horizons[:-1]),
+            "result_row_boundaries": list(self.configured_horizons[:-1]),
             "reference_layer_contract_version": "pr91-v1",
             "reference_layer_status": self.reference_layer_status,
             "reference_layer_gate_decision": self.reference_layer_gate_decision,
             "entries": [entry.to_dict() for entry in self.entries],
             "issues": [issue.to_dict() for issue in self.issues],
-            "prefix_validation_available": True,
+            "prefix_validation_available": False,
+            "modern_extension_prefix_validation_available": True,
             "prefix_validation_performed": False,
             "full_window_comparison_performed": False,
             "legacy_bundle_changed": False,
@@ -159,6 +209,8 @@ class HistoricalHorizonContractResult:
             "runner_started": False,
             "simulation_performed": False,
             "historical_run_identity_claimed": False,
+            "historical_300_500_single_run_claimed": False,
+            "historical_rng_reproduction_required": False,
             "historical_full_equality_claimed": False,
             "production_release_approved": False,
         }
@@ -179,7 +231,7 @@ class HistoricalPrefixValidationResult:
     compared_row_count: int
     one_hundred_prefix_comparison_count: int
     issues: tuple[HistoricalHorizonIssue, ...]
-    mode: str = "historical_horizon_prefix_validation"
+    mode: str = "modern_extension_prefix_validation"
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -195,6 +247,7 @@ class HistoricalPrefixValidationResult:
             "prefix_stable": self.status == "ok",
             "issues": [issue.to_dict() for issue in self.issues],
             "comparison_is_exact": True,
+            "historical_repeat_relationship_claimed": False,
             "tolerance_applied": False,
             "writes_performed": False,
             "execution_performed": False,
@@ -215,6 +268,7 @@ def build_historical_horizon_contract(
     horizons = tuple(configured_horizons)
     issues: list[HistoricalHorizonIssue] = []
     _validate_horizons(horizons, issues)
+    _validate_historical_run_evidence(resolved_root, issues)
 
     layer_contract = build_historical_reference_layer_contract(root=resolved_root)
     if (
@@ -415,6 +469,14 @@ def _build_export_contract(
                 message=f"required horizon is not configured: {required_horizon}",
             )
         )
+    if required_horizon % HISTORICAL_PERIODS_PER_RUN != 0:
+        issues.append(
+            HistoricalHorizonIssue(
+                code="result_rows_not_complete_runs",
+                path=required.filename,
+                message="historical result rows must contain complete 100-period runs",
+            )
+        )
     matching_targets = [
         target
         for target in targets
@@ -541,7 +603,9 @@ def _validate_horizons(
                 message="configured horizons must be non-empty, unique and sorted",
             )
         )
-    unexpected = tuple(horizon for horizon in horizons if horizon not in SUPPORTED_HORIZONS)
+    unexpected = tuple(
+        horizon for horizon in horizons if horizon not in SUPPORTED_HORIZONS
+    )
     if unexpected:
         issues.append(
             HistoricalHorizonIssue(
@@ -550,6 +614,44 @@ def _validate_horizons(
                 message=f"unsupported horizon values: {unexpected}",
             )
         )
+
+
+def _validate_historical_run_evidence(
+    root: Path,
+    issues: list[HistoricalHorizonIssue],
+) -> None:
+    anchors = (
+        (
+            root / HISTORICAL_SIM_LENGTH_SOURCE,
+            HISTORICAL_SIM_LENGTH_NEEDLE,
+            "historical_sim_length_anchor_missing",
+        ),
+        (
+            root / HISTORICAL_RESULT_NUMBERING_SOURCE,
+            HISTORICAL_RESULT_NUMBERING_NEEDLE,
+            "historical_result_numbering_anchor_missing",
+        ),
+    )
+    for path, needle, code in anchors:
+        try:
+            source = path.read_text(encoding="latin-1")
+        except (OSError, UnicodeError) as error:
+            issues.append(
+                HistoricalHorizonIssue(
+                    code=code,
+                    path=str(path),
+                    message=f"historical run evidence is unreadable: {error}",
+                )
+            )
+            continue
+        if needle not in source:
+            issues.append(
+                HistoricalHorizonIssue(
+                    code=code,
+                    path=str(path),
+                    message=f"historical run evidence is missing: {needle}",
+                )
+            )
 
 
 def _validate_complete_contract(

@@ -1,5 +1,11 @@
 # Kontrollierter Vdefmd6-Zustandsvertrag bis Periode 300
 
+> Einordnung ab PR98: Dies ist ausschliesslich ein moderner deterministischer
+> Langzeit- und Prefix-Stresstest. Historisches IMS war auf 100 Perioden je
+> Lauf begrenzt. Historische Dateien mit 300 Ergebniszeilen enthalten drei
+> getrennte 100-Perioden-Laeufe und werden nicht als ein historischer
+> 300-Perioden-Lauf bewertet.
+
 Stand: 2026-08-31
 Vertrag: `pr94-v1`
 
@@ -105,5 +111,5 @@ PR95 hat ausschliesslich `imsvnr01.dat` und `imsvnr02.dat` als die beiden im
 Horizontvertrag belegten 300er-Regelfenster vollstaendig verglichen und an den
 weiterhin gesperrten Korpusbericht gebunden. PR96 hat denselben kontrollierten
 Zustand bis 500 erweitert und die Prefixe 1-100 und 1-300 exakt stabil
-gehalten. PR97 hat die VU-SK1-Zeitfenster getrennt angebunden. PR98 bindet als
-Naechstes die vier VN-Regeltabellen 3-6 an.
+gehalten. PR98 hat die historische Wiederholungslesart korrigiert. PR99 bindet
+als Naechstes die vier VN-Regeltabellen 3-6 an.

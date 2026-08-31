@@ -32,10 +32,14 @@ Im versionierten Referenzbestand sind derzeit `IMSVNR01.DAT` bis
 ganze Familie unter `policyholder_rule` und zeigt fuer diese Familie keine
 fehlende historische Quelle mehr.
 
+Die erste Spalte zaehlt historische Ergebniszeilen ueber getrennte Laeufe.
+`1-300` entspricht drei, `1-500` fuenf Laeufen mit jeweils hoechstens 100
+Perioden; es handelt sich nicht um fortlaufende 300-/500-Perioden-Laeufe.
+
 `IMSVNR01.DAT` und `IMSVNR02.DAT` wurden aus dem lokalen Kandidatenpfad
 `incomming/ZINS000/` uebernommen. Beide Dateien sind mit dem vorhandenen
 VN-Parser lesbar, haben den erwarteten Header, 300 Datenzeilen und den
-Periodenbereich `1-300`.
+Ergebniszeilenbereich `1-300`.
 
 `IMSVNR03.DAT`, `IMSVNR04.DAT` und `IMSVNR06.DAT` wurden gezielt aus
 `incomming/IMS.DAT/WVEMOD1.ZIP` uebernommen. Dieser ZIP-Kandidat wurde
@@ -44,7 +48,7 @@ bereits versionierten Referenz `tests/references/legacy_agrsich/IMSVNR05.DAT`
 ist. `IMSVNR05.DAT` wird im Bundle nun ebenfalls ueber das volle
 `1-500`-Fenster der Archivfamilie validiert. Die Dateien sind mit dem
 vorhandenen VN-Parser lesbar, haben den erwarteten Header, 500 Datenzeilen und
-den Periodenbereich `1-500`.
+den Ergebniszeilenbereich `1-500`.
 
 | Datei | Zeilen | Perioden | SHA-256 |
 | --- | ---: | --- | --- |

@@ -43,11 +43,12 @@ def test_layer_contract_document_keeps_vusk1_and_claim_boundaries() -> None:
     document = DOCUMENT.read_text(encoding="utf-8")
     normalized = document.replace("\n", " ")
 
-    assert "Zeitfenster derselben Exportidentitaet" in normalized
+    assert "Laufabschnitte derselben Exportidentitaet" in normalized
     assert "desselben `SK1/all`-Aggregats" in document
     assert "derselben Aggregatstufe IV" in normalized
     assert "`4ec1473063895eb5bad6e4bf5d9cc5f1856f94166070a8d28ad07356815357b7`" in document
     assert "stabile versionierte Fixture-Regression" in normalized
-    assert "keine koharente historische 500-Perioden-Reihe" in normalized
-    assert "keine gemeinsame historische Archivquelle" in normalized
-    assert "Noch wird kein 300-/500-Vollvergleich ausgefuehrt" in normalized
+    assert "500 laufuebergreifend nummerierten Ergebniszeilen" in normalized
+    assert "keine gemeinsame" in normalized
+    assert "historische Archivquelle" in normalized
+    assert "drei beziehungsweise fuenf 100-Perioden-Laeufen" in normalized

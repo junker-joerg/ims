@@ -126,24 +126,24 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `historical_reference_layer_contract.md`: PR-91-Vertrag fuer alle 19 Ziele
   in vier getrennten Referenzschichten, mit isolierter `VUSK1L4.DAT` und dem
   Tor `go_separate_reference_tests`
-- `historical_horizon_contract.md`: PR-92-Vertrag fuer 15 Exportidentitaeten,
-  19 Referenzziele und die exakten Prefix-Grenzen 100/300/500, weiterhin ohne
-  300-/500-Ausfuehrung oder Vollgleichheitsbehauptung
+- `historical_horizon_contract.md`: PR-98-Korrekturvertrag fuer 15
+  Exportidentitaeten, 19 Referenzziele und 6.300 Ergebniszeilen aus getrennten
+  100-Perioden-Laeufen statt historischen 300-/500-Perioden-Horizonten
 - `historical_100_period_corpus_delivery.md`: PR-93-Liefervertrag fuer
   `imsvu014.dat` und `imsvnsk1.dat`, 2/15 Tabellen und 200/6.300 Perioden mit
   kanonischer Level-IV-Identitaet und weiterhin blockierter Freigabe
 - `vdefmd6_300_period_state_contract.md`: PR-94-Zustandsvertrag fuer die
   deterministische moderne Fortsetzung aller 15 Kernexporte bis Periode 300
   mit exakt stabilem Prefix 1-100, noch ohne historischen 300er-Vergleich
-- `historical_300_period_rule_delivery.md`: PR-95-Liefer- und
-  Abweichungsvertrag fuer `imsvnr01.dat` und `imsvnr02.dat`, 4/15 kumulierte
-  Tabellen und den vollstaendigen Vergleich von 600 ZINS000-Zeilen
+- `historical_300_period_rule_delivery.md`: PR-98-korrigierte Diagnostik fuer
+  `imsvnr01.dat` und `imsvnr02.dat` als je drei getrennte
+  100-Perioden-Laeufe aus ZINS000
 - `vdefmd6_500_period_state_contract.md`: PR-96-Zustandsvertrag fuer die
   deterministische moderne Fortsetzung aller 15 Kernexporte bis Periode 500
   mit exakt stabilen Prefixen 1-100 und 1-300, noch ohne historischen
   500er-Vergleich
-- `historical_500_period_vusk1_delivery.md`: PR-97-Liefer- und
-  Abweichungsvertrag fuer eine berechnete `imsvusk1.dat` gegen fuenf getrennte
-  SK1/all-Zeitfenster, kumulativ 5/15 Tabellen und 1.300/6.300 Perioden
+- `historical_500_period_vusk1_delivery.md`: PR-98-korrigierte Diagnostik fuer
+  `imsvusk1.dat` gegen fuenf getrennte 100-Perioden-Laeufe, kumulativ 5/15
+  Tabellen und 1.300/6.300 technisch angeschlossene Ergebniszeilen
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

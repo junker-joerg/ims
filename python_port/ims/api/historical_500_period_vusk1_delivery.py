@@ -11,23 +11,17 @@ from ims.api.historical_horizon_contract import (
     HistoricalHorizonContractResult,
     HistoricalHorizonExportContract,
     HistoricalHorizonReferenceSlice,
-    HistoricalPrefixValidationResult,
-    LayeredExportTableSnapshot,
     build_historical_horizon_contract,
-    validate_historical_horizon_prefixes,
 )
 from ims.api.production_release_corpus_report import (
     ProductionReleaseCorpusReport,
     build_production_release_corpus_report,
 )
-from ims.engine.vdefmd6_pre_shock_runner import (
-    VDEFMD6_100_PERIOD_STATE_POLICY_ID,
-    VDEFMD6_300_PERIOD_STATE_POLICY_ID,
-    VDEFMD6_500_PERIOD_STATE_POLICY_ID,
-    Vdefmd6PreShockRunResult,
-    run_vdefmd6_100_periods,
-    run_vdefmd6_300_periods,
-    run_vdefmd6_500_periods,
+from ims.engine.vdefmd6_repeat_corpus import (
+    HISTORICAL_PERIODS_PER_RUN,
+    REPEAT_CORPUS_POLICY_ID,
+    Vdefmd6RepeatCorpusResult,
+    run_vdefmd6_100_period_repetitions,
 )
 from ims.model.agrsich_export import INSURER_HEADER, ExportTable
 from ims.model.legacy_agrsich_multi_period import (
@@ -42,9 +36,10 @@ from ims.model.legacy_validation_run import (
 )
 
 
-CONTRACT_VERSION = "pr97-v1"
+CONTRACT_VERSION = "pr98-v1"
 CONTROLLED_BASE_SEED = 20260001
-CALCULATION_ORIGIN = "vdefmd6_controlled_100_300_500_vusk1_delivery_pr97"
+HISTORICAL_RUN_COUNT = 5
+CALCULATION_ORIGIN = "vdefmd6_controlled_5x100_vusk1_repeat_diagnostics_pr98"
 EXPORT_FILENAME = "imsvusk1.dat"
 REFERENCE_FILENAMES = (
     "VUSK1L5.DAT",
@@ -99,42 +94,42 @@ EXPECTED_COMPARISON = {
         "matched_rows": 0,
         "mismatched_rows": 100,
         "field_count": 1400,
-        "exact_field_match_count": 201,
-        "tolerated_numeric_difference_count": 2,
-        "blocking_numeric_difference_count": 1197,
+        "exact_field_match_count": 200,
+        "tolerated_numeric_difference_count": 0,
+        "blocking_numeric_difference_count": 1200,
         "open_field_question_count": 0,
     },
     "VUSK1L3.DAT": {
         "period_start": 201,
         "period_end": 300,
-        "matched_rows": 0,
-        "mismatched_rows": 100,
+        "matched_rows": 1,
+        "mismatched_rows": 99,
         "field_count": 1400,
-        "exact_field_match_count": 200,
-        "tolerated_numeric_difference_count": 1,
-        "blocking_numeric_difference_count": 1199,
+        "exact_field_match_count": 213,
+        "tolerated_numeric_difference_count": 15,
+        "blocking_numeric_difference_count": 1172,
         "open_field_question_count": 0,
     },
     "VUSK1L2.DAT": {
         "period_start": 301,
         "period_end": 400,
-        "matched_rows": 0,
-        "mismatched_rows": 100,
+        "matched_rows": 1,
+        "mismatched_rows": 99,
         "field_count": 1400,
-        "exact_field_match_count": 202,
-        "tolerated_numeric_difference_count": 5,
-        "blocking_numeric_difference_count": 1193,
+        "exact_field_match_count": 212,
+        "tolerated_numeric_difference_count": 21,
+        "blocking_numeric_difference_count": 1167,
         "open_field_question_count": 0,
     },
     "VUSK1L1.DAT": {
         "period_start": 401,
         "period_end": 500,
-        "matched_rows": 0,
-        "mismatched_rows": 100,
+        "matched_rows": 1,
+        "mismatched_rows": 99,
         "field_count": 1400,
-        "exact_field_match_count": 203,
-        "tolerated_numeric_difference_count": 4,
-        "blocking_numeric_difference_count": 1193,
+        "exact_field_match_count": 212,
+        "tolerated_numeric_difference_count": 11,
+        "blocking_numeric_difference_count": 1177,
         "open_field_question_count": 0,
     },
 }
@@ -173,6 +168,10 @@ class Historical500VUSK1DeliveryTarget:
     def period_count(self) -> int:
         return self.period_end - self.period_start + 1
 
+    @property
+    def run_index(self) -> int:
+        return (self.period_start - 1) // HISTORICAL_PERIODS_PER_RUN + 1
+
     def to_dict(self) -> dict[str, object]:
         return {
             "filename": EXPORT_FILENAME,
@@ -183,9 +182,13 @@ class Historical500VUSK1DeliveryTarget:
             "level": "IV",
             "selector_kind": "all",
             "selector_value": "SK1",
-            "period_start": self.period_start,
-            "period_end": self.period_end,
-            "period_count": self.period_count,
+            "result_row_start": self.period_start,
+            "result_row_end": self.period_end,
+            "result_row_count": self.period_count,
+            "run_index": self.run_index,
+            "local_period_start": 1,
+            "local_period_end": HISTORICAL_PERIODS_PER_RUN,
+            "numbering_semantics": "cumulative_result_rows_across_100_period_runs",
             "layer_id": self.layer_id,
             "coherence_class": self.coherence_class,
             "allowed_claim": self.allowed_claim,
@@ -208,11 +211,11 @@ class Historical500VUSK1DeliveryTarget:
 class Historical500VUSK1DeliveryResult:
     root: str
     targets: tuple[Historical500VUSK1DeliveryTarget, ...]
-    prefix_validation: HistoricalPrefixValidationResult | None
     production_report: ProductionReleaseCorpusReport
+    run_seeds: tuple[int, ...]
     controlled_execution_performed: bool
     issues: tuple[Historical500VUSK1DeliveryIssue, ...]
-    mode: str = "historical_500_period_vusk1_delivery"
+    mode: str = "historical_500_row_vusk1_repeat_diagnostics"
 
     @property
     def status(self) -> str:
@@ -220,11 +223,6 @@ class Historical500VUSK1DeliveryResult:
 
     def to_dict(self) -> dict[str, object]:
         production = self.production_report.to_dict()
-        prefix = (
-            self.prefix_validation.to_dict()
-            if self.prefix_validation is not None
-            else {}
-        )
         compared_rows = sum(target.period_count for target in self.targets)
         matched_rows = sum(target.matched_rows for target in self.targets)
         return {
@@ -235,13 +233,15 @@ class Historical500VUSK1DeliveryResult:
             "calculation_origin": CALCULATION_ORIGIN,
             "source_contracts": [
                 "pr91-v1",
-                "pr92-v1",
                 "pr93-v1",
-                "pr94-v1",
-                "pr95-v1",
-                "pr96-v1",
+                "pr98-v1",
             ],
             "controlled_base_seed": CONTROLLED_BASE_SEED,
+            "controlled_run_seeds": list(self.run_seeds),
+            "historical_run_count": HISTORICAL_RUN_COUNT,
+            "historical_periods_per_run": HISTORICAL_PERIODS_PER_RUN,
+            "historical_result_row_count": 500,
+            "repeat_corpus_policy_id": REPEAT_CORPUS_POLICY_ID,
             "current_delivery_export_count": 1 if self.targets else 0,
             "current_delivery_reference_test_count": len(self.targets),
             "current_delivery_period_count": compared_rows,
@@ -255,10 +255,10 @@ class Historical500VUSK1DeliveryResult:
             "missing_export_count": production["missing_calculated_export_count"],
             "missing_period_count": production["missing_calculated_period_count"],
             "targets": [target.to_dict() for target in self.targets],
-            "prefix_validation_status": prefix.get("status", "not_available"),
-            "prefix_snapshot_count": prefix.get("snapshot_count", 0),
-            "prefix_comparison_count": prefix.get("comparison_count", 0),
-            "prefix_compared_row_count": prefix.get("compared_row_count", 0),
+            "prefix_validation_status": "not_applicable_repeated_runs",
+            "prefix_snapshot_count": 0,
+            "prefix_comparison_count": 0,
+            "prefix_compared_row_count": 0,
             "historical_comparison_status": (
                 "documented_differences"
                 if self.targets and matched_rows != compared_rows
@@ -300,6 +300,8 @@ class Historical500VUSK1DeliveryResult:
             "scheduler_started": False,
             "simulation_performed": False,
             "historical_run_identity_claimed": False,
+            "historical_single_run_horizon_claimed": False,
+            "historical_rng_reproduction_required": False,
             "historical_rng_equality_claimed": False,
             "historical_full_equality_claimed": False,
             "production_release_approved": False,
@@ -309,67 +311,26 @@ class Historical500VUSK1DeliveryResult:
 def build_historical_500_period_vusk1_delivery(
     root: Path | str = ".",
     *,
-    baseline_100_result: Vdefmd6PreShockRunResult | None = None,
-    baseline_300_result: Vdefmd6PreShockRunResult | None = None,
-    extended_result: Vdefmd6PreShockRunResult | None = None,
-    baseline_100_tables: Sequence[ExportTable] | None = None,
-    baseline_300_tables: Sequence[ExportTable] | None = None,
-    extended_tables: Sequence[ExportTable] | None = None,
+    repeat_corpus: Vdefmd6RepeatCorpusResult | None = None,
+    repeat_tables: Sequence[ExportTable] | None = None,
 ) -> Historical500VUSK1DeliveryResult:
     resolved_root = Path(root).expanduser().resolve()
     issues: list[Historical500VUSK1DeliveryIssue] = []
     horizon_contract = build_historical_horizon_contract(resolved_root)
     entry = _validate_horizon_contract(horizon_contract, issues)
 
-    controlled_execution = (
-        baseline_100_result is None
-        or baseline_300_result is None
-        or extended_result is None
-    )
-    baseline_100 = baseline_100_result or _run_controlled(100, issues)
-    baseline_300 = baseline_300_result or _run_controlled(300, issues)
-    extended = extended_result or _run_controlled(500, issues)
-    _validate_run_boundaries(baseline_100, baseline_300, extended, issues)
-
-    table_100 = _validate_calculated_tables(
-        "baseline_100",
-        tuple(
-            baseline_100_tables
-            if baseline_100_tables is not None
-            else _select_vusk1_tables(baseline_100)
-        ),
-        100,
-        entry,
-        issues,
-    )
-    table_300 = _validate_calculated_tables(
-        "baseline_300",
-        tuple(
-            baseline_300_tables
-            if baseline_300_tables is not None
-            else _select_vusk1_tables(baseline_300)
-        ),
-        300,
-        entry,
-        issues,
-    )
+    controlled_execution = repeat_corpus is None
+    corpus = repeat_corpus or _run_controlled_repetitions(issues)
+    _validate_repeat_corpus(corpus, issues)
     table_500 = _validate_calculated_tables(
-        "extended",
+        "repeat_corpus",
         tuple(
-            extended_tables
-            if extended_tables is not None
-            else _select_vusk1_tables(extended)
+            repeat_tables
+            if repeat_tables is not None
+            else _select_vusk1_tables(corpus)
         ),
         500,
         entry,
-        issues,
-    )
-    prefix_validation = _validate_prefixes(
-        horizon_contract,
-        entry,
-        table_100,
-        table_300,
-        table_500,
         issues,
     )
     targets = _compare_historical_targets(
@@ -380,8 +341,7 @@ def build_historical_500_period_vusk1_delivery(
         issues,
     )
     cumulative_tables = _collect_cumulative_tables(
-        baseline_100,
-        baseline_300,
+        corpus,
         table_500,
         issues,
     )
@@ -394,8 +354,8 @@ def build_historical_500_period_vusk1_delivery(
     return Historical500VUSK1DeliveryResult(
         root=str(resolved_root),
         targets=targets,
-        prefix_validation=prefix_validation,
         production_report=production_report,
+        run_seeds=corpus.run_seeds if corpus is not None else (),
         controlled_execution_performed=controlled_execution,
         issues=tuple(issues),
     )
@@ -425,7 +385,7 @@ def _validate_horizon_contract(
             issues,
             "horizon_contract_not_ready",
             contract.fixture_path,
-            "PR92 horizon contract must be ready",
+            "PR98 repeat-corpus contract must be ready",
         )
     matches = [entry for entry in contract.entries if entry.filename == EXPORT_FILENAME]
     if len(matches) != 1:
@@ -433,7 +393,7 @@ def _validate_horizon_contract(
             issues,
             "horizon_target_set_mismatch",
             contract.fixture_path,
-            "PR97 requires exactly one imsvusk1.dat horizon target",
+            "PR98 requires exactly one imsvusk1.dat result-row target",
         )
         return None
     entry = matches[0]
@@ -464,7 +424,7 @@ def _validate_horizon_contract(
         entry.identity != ("insurer", "IV", "all", "SK1")
         or entry.required_horizon != 500
         or entry.required_period_count != 500
-        or entry.prefix_checkpoints != (100, 300)
+        or entry.required_run_count != HISTORICAL_RUN_COUNT
         or entry.layer_ids != ("wvemod2_archive", "vusk1l4_direct_04410ef")
         or entry.allowed_claims
         != ("archive_content_match_only", "versioned_fixture_regression_only")
@@ -474,108 +434,57 @@ def _validate_horizon_contract(
             issues,
             "horizon_layer_boundary_mismatch",
             EXPORT_FILENAME,
-            "PR97 must preserve five SK1/all windows and the isolated L4 layer",
+            "repeat corpus must preserve five SK1/all runs and the isolated L4 layer",
         )
     return entry
 
 
-def _run_controlled(
-    horizon: int,
+def _run_controlled_repetitions(
     issues: list[Historical500VUSK1DeliveryIssue],
-) -> Vdefmd6PreShockRunResult | None:
+) -> Vdefmd6RepeatCorpusResult | None:
     try:
-        if horizon == 100:
-            return run_vdefmd6_100_periods(base_seed=CONTROLLED_BASE_SEED)
-        if horizon == 300:
-            return run_vdefmd6_300_periods(base_seed=CONTROLLED_BASE_SEED)
-        return run_vdefmd6_500_periods(base_seed=CONTROLLED_BASE_SEED)
+        return run_vdefmd6_100_period_repetitions(
+            base_seed=CONTROLLED_BASE_SEED,
+            run_count=HISTORICAL_RUN_COUNT,
+        )
     except (TypeError, ValueError, StopIteration) as error:
-        _issue(issues, "controlled_run_failed", f"Vdefmd6@{horizon}", str(error))
+        _issue(issues, "controlled_repeat_corpus_failed", "Vdefmd6@5x100", str(error))
         return None
 
 
-def _validate_run_boundaries(
-    baseline_100: Vdefmd6PreShockRunResult | None,
-    baseline_300: Vdefmd6PreShockRunResult | None,
-    extended: Vdefmd6PreShockRunResult | None,
+def _validate_repeat_corpus(
+    corpus: Vdefmd6RepeatCorpusResult | None,
     issues: list[Historical500VUSK1DeliveryIssue],
 ) -> None:
-    if baseline_100 is None or baseline_300 is None or extended is None:
+    if corpus is None:
         return
-    expected = (
-        (
-            "baseline_100",
-            baseline_100,
-            100,
-            VDEFMD6_100_PERIOD_STATE_POLICY_ID,
-        ),
-        (
-            "baseline_300",
-            baseline_300,
-            300,
-            VDEFMD6_300_PERIOD_STATE_POLICY_ID,
-        ),
-        ("extended", extended, 500, VDEFMD6_500_PERIOD_STATE_POLICY_ID),
+    expected_seeds = tuple(
+        CONTROLLED_BASE_SEED + index for index in range(HISTORICAL_RUN_COUNT)
     )
-    for name, result, horizon, policy_id in expected:
-        if result.base_seed != CONTROLLED_BASE_SEED:
-            _issue(issues, "controlled_seed_mismatch", name, "base seed differs")
-        if result.max_periods != horizon:
-            _issue(issues, "controlled_horizon_mismatch", name, "horizon differs")
-        if result.state_policy_id != policy_id:
-            _issue(issues, "state_policy_mismatch", name, "state policy differs")
-        if tuple(item.period for item in result.period_results) != tuple(
-            range(2, horizon + 1)
-        ):
-            _issue(
-                issues,
-                "controlled_period_boundary_mismatch",
-                name,
-                f"state transitions must cover periods 2 through {horizon}",
-            )
-        if _crosses_closed_boundary(result):
-            _issue(
-                issues,
-                "controlled_run_boundary_violation",
-                name,
-                "controlled delivery crossed an execution or historical boundary",
-            )
-    if baseline_100.period_results != extended.period_results[:99]:
+    if (
+        corpus.base_seed != CONTROLLED_BASE_SEED
+        or corpus.run_count != HISTORICAL_RUN_COUNT
+        or corpus.periods_per_run != HISTORICAL_PERIODS_PER_RUN
+        or corpus.result_row_count != 500
+        or corpus.run_seeds != expected_seeds
+        or corpus.policy_id != REPEAT_CORPUS_POLICY_ID
+    ):
         _issue(
             issues,
-            "state_100_prefix_mismatch",
-            "Vdefmd6@1-100",
-            "500-period state changed the exact 100-period prefix",
+            "repeat_corpus_boundary_mismatch",
+            "Vdefmd6@5x100",
+            "controlled corpus must contain five independent 100-period runs",
         )
-    if baseline_300.period_results != extended.period_results[:299]:
-        _issue(
-            issues,
-            "state_300_prefix_mismatch",
-            "Vdefmd6@1-300",
-            "500-period state changed the exact 300-period prefix",
-        )
-
-
-def _crosses_closed_boundary(result: Vdefmd6PreShockRunResult) -> bool:
-    return bool(
-        result.legacy_rows_used_as_generation_input
-        or result.writes_performed
-        or result.scheduler_started
-        or result.simulation_performed
-        or result.historical_same_slot_order_claimed
-        or result.historical_rng_equality_claimed
-        or result.historical_full_equality_claimed
-    )
 
 
 def _select_vusk1_tables(
-    result: Vdefmd6PreShockRunResult | None,
+    corpus: Vdefmd6RepeatCorpusResult | None,
 ) -> tuple[ExportTable, ...]:
-    if result is None:
+    if corpus is None:
         return ()
     return tuple(
         table
-        for table in result.vu_aggregate_export_tables
+        for table in corpus.export_tables
         if table.spec.filename.lower() == EXPORT_FILENAME
     )
 
@@ -621,7 +530,7 @@ def _validate_calculated_tables(
             issues,
             f"{name}_identity_mismatch",
             EXPORT_FILENAME,
-            "calculated SK1/all identity differs from the horizon contract",
+            "calculated SK1/all identity differs from the result-row contract",
         )
         valid = False
     if table.header != INSURER_HEADER:
@@ -645,42 +554,10 @@ def _validate_calculated_tables(
             issues,
             f"{name}_period_boundary_mismatch",
             EXPORT_FILENAME,
-            f"calculated periods must cover 1 through {horizon}",
+            f"calculated result rows must cover 1 through {horizon}",
         )
         valid = False
     return table if valid else None
-
-
-def _validate_prefixes(
-    contract: HistoricalHorizonContractResult,
-    entry: HistoricalHorizonExportContract | None,
-    table_100: ExportTable | None,
-    table_300: ExportTable | None,
-    table_500: ExportTable | None,
-    issues: list[Historical500VUSK1DeliveryIssue],
-) -> HistoricalPrefixValidationResult | None:
-    if entry is None or table_100 is None or table_300 is None or table_500 is None:
-        return None
-    layer_ids = dict(entry.horizon_layer_ids)
-    snapshots = tuple(
-        LayeredExportTableSnapshot(horizon, layer_ids[horizon], table)
-        for horizon, table in ((100, table_100), (300, table_300), (500, table_500))
-    )
-    result = validate_historical_horizon_prefixes(contract, snapshots)
-    if (
-        result.status != "ok"
-        or result.snapshot_count != 3
-        or result.comparison_count != 3
-        or result.compared_row_count != 500
-        or result.one_hundred_prefix_comparison_count != 2
-    ):
-        _issue(
-            issues,
-            "prefix_validation_failed",
-            EXPORT_FILENAME,
-            "PR97 requires exact 100- and 300-period prefixes",
-        )
-    return result
 
 
 def _compare_historical_targets(
@@ -708,7 +585,7 @@ def _compare_historical_targets(
             issues,
             "legacy_target_set_mismatch",
             contract.fixture_path,
-            "legacy bundle must contain the five PR97 windows exactly once",
+            "legacy bundle must contain the five 100-run result blocks exactly once",
         )
         return ()
     slices = {item.reference_filename: item for item in entry.reference_slices}
@@ -729,12 +606,12 @@ def _compare_historical_targets(
     if len(delivery_targets) == 5:
         matched = sum(target.matched_rows for target in delivery_targets)
         rows = sum(target.period_count for target in delivery_targets)
-        if rows != 500 or matched != 1:
+        if rows != 500 or matched != 4:
             _issue(
                 issues,
                 "historical_comparison_summary_mismatch",
                 EXPORT_FILENAME,
-                "PR97 observation must cover 500 rows with one current full match",
+                "repeat diagnostic must cover 500 rows with four initial-state matches",
             )
     return tuple(delivery_targets)
 
@@ -781,7 +658,7 @@ def _compare_historical_target(
             issues,
             "legacy_reference_contract_mismatch",
             filename,
-            "legacy target identity or 100-period window differs",
+            "legacy target identity or 100-row run boundary differs",
         )
     sliced_table = ExportTable(
         spec=table.spec,
@@ -885,13 +762,13 @@ def _validate_expected_comparison(
 
 
 def _collect_cumulative_tables(
-    baseline_100: Vdefmd6PreShockRunResult | None,
-    baseline_300: Vdefmd6PreShockRunResult | None,
+    corpus: Vdefmd6RepeatCorpusResult | None,
     table_500: ExportTable | None,
     issues: list[Historical500VUSK1DeliveryIssue],
 ) -> tuple[ExportTable, ...]:
     selected: list[ExportTable] = []
-    if baseline_100 is not None:
+    if corpus is not None:
+        baseline_100 = corpus.runs[0]
         selected.append(baseline_100.vu14_export_table)
         _append_named_table(
             selected,
@@ -899,16 +776,13 @@ def _collect_cumulative_tables(
             "imsvnsk1.dat",
             issues,
         )
-    if baseline_300 is not None:
         for filename in ("imsvnr01.dat", "imsvnr02.dat"):
             _append_named_table(
                 selected,
-                (
-                    *baseline_300.vn_rule_group_1_export_tables,
-                    *baseline_300.vn_rule_group_2_export_tables,
-                ),
+                corpus.export_tables,
                 filename,
                 issues,
+                row_count=300,
             )
     if table_500 is not None:
         selected.append(table_500)
@@ -920,6 +794,8 @@ def _append_named_table(
     tables: Sequence[ExportTable],
     filename: str,
     issues: list[Historical500VUSK1DeliveryIssue],
+    *,
+    row_count: int | None = None,
 ) -> None:
     matches = [table for table in tables if table.spec.filename.lower() == filename]
     if len(matches) != 1:
@@ -930,7 +806,16 @@ def _append_named_table(
             "earlier cumulative delivery target is missing or duplicated",
         )
         return
-    selected.append(matches[0])
+    table = matches[0]
+    selected.append(
+        table
+        if row_count is None
+        else ExportTable(
+            spec=table.spec,
+            header=table.header,
+            rows=list(table.rows[:row_count]),
+        )
+    )
 
 
 def _validate_production_delivery(

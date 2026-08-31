@@ -102,12 +102,14 @@ Legende: `E/B` = `exact_archive_member`/`byte_exact`, `W/T` =
 - `VUSK1L4.DAT` fuer 101-200 entspricht keinem der sieben bekannten
   `IMSVUSK1.DAT`-Eintraege.
 
-Die fuenf `VUSK1L1-5`-Dateien bleiben fachlich Zeitfenster derselben
+Die fuenf `VUSK1L1-5`-Dateien bleiben fachlich Ergebnisbloecke derselben
 Exportidentitaet `IMSVUSK1.DAT`, desselben `SK1/all`-Aggregats und derselben
-Aggregatstufe IV. Der Befund zeigt jedoch, dass die aktuell versionierten
-Fenster nicht als ein byte- oder tokenkohaerenter 500-Perioden-Archiveintrag
-belegt sind. Diese fehlende Quellkohaerenz darf nicht als neue Aggregatebene
-oder als Beleg eines gemeinsamen Laufs umgedeutet werden.
+Aggregatstufe IV. Die Nummernbereiche bilden die Laeufe 1 bis 5 mit jeweils
+lokalen Perioden 1-100 ab; sie sind kein 500-Perioden-Lauf. Der Befund zeigt
+zusaetzlich, dass die aktuell versionierten Bloecke nicht als ein byte- oder
+tokenkohaerenter Archiveintrag belegt sind. Diese fehlende Quellkohaerenz darf
+nicht als neue Aggregatebene oder als Beleg gemeinsamer Parameter umgedeutet
+werden.
 
 ## Naechster Schritt
 
@@ -115,11 +117,13 @@ PR 90 hat `IMSREPOR.DAT` und alle archivlokalen Begleitdateien ausgewertet.
 Der einzige direkte Bericht gehoert zu `VDEFMD5A.ZIP`; `ZINS000`, `WVEMOD1`
 und `WVEMOD2` enthalten keinen eigenen Beleg. Seed oder Laufparameter werden
 nicht uebertragen. PR 91 hat fuer alle 19 Ziele vier getrennte Schichten und
-das Tor `go_separate_reference_tests` eingefroren. PR 92 hat den
-Horizontvertrag 100/300/500 umgesetzt, noch ohne Vollvergleich. PR93 hat die
+das Tor `go_separate_reference_tests` eingefroren. PR 92 hatte den
+Zeilenvertrag 100/300/500 umgesetzt. PR98 hat ihn als Wiederholungsvertrag
+korrigiert. PR93 hat die
 zwei vollstaendigen 100er-Tabellen an den Korpusbericht gebunden. PR94 hat den
 modernen Zustand bis 300 mit stabilem Prefix erweitert; die historischen
 Schichten bleiben weiterhin getrennt. PR95 hat die beiden ZINS000-Regelfenster
 vollstaendig und weiterhin getrennt verglichen. PR96 hat den modernen Zustand
 bis 500 erweitert. PR97 hat die VU-SK1-Zeitfenster weiterhin getrennt
-angebunden. PR98 bindet als Naechstes die VN-Regeltabellen 3-6 an.
+angebunden; PR98 hat den Vergleich auf fuenf getrennte 100er-Laeufe
+umgestellt. PR99 bindet als Naechstes die VN-Regeltabellen 3-6 an.

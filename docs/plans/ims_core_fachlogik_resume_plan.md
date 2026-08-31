@@ -668,7 +668,7 @@ Aktualisierte grobe Restplanung:
   1.492/17.000 Fachwerte treffen, die Freigabeempfehlung bleibt
   `keep_blocked`;
 - PR 87 plant den naechsten groesseren Block fuer historische Lauf- und
-  Referenzprovenienz sowie die vollstaendigen 100-/300-/500-Periodenfenster;
+  Referenzprovenienz sowie die vollstaendigen 100-/300-/500-Ergebniszeilen;
 - PR 88 hat sieben ZIP-Archive read-only inventarisiert: 165 Eintraege,
   64 Kerntreffer und drei vollstaendige 15er-Archivfamilien, ohne Import aus
   `incomming/`;
@@ -683,10 +683,10 @@ Aktualisierte grobe Restplanung:
   umgesetzt: vier getrennte Schichten, 18 Ziele `archive_family_only`,
   `VUSK1L4.DAT` als isolierte ungeklaerte Direktreferenz und das Tor
   `go_separate_reference_tests`;
-- PR 92 hat den Horizontvertrag `pr92-v1` fuer 15 Exportidentitaeten,
-  19 Referenzziele und 6.300 Zielperioden umgesetzt; der exakte
-  Prefix-Pruefer verlangt durchgaengige `layer_id`, noch ohne
-  300-/500-Vollvergleich;
+- PR 92 hat den Ergebniszeilenvertrag fuer 15 Exportidentitaeten,
+  19 Referenzziele und 6.300 Zielzeilen vorbereitet; PR 98 korrigiert ihn
+  auf getrennte historische Laeufe mit maximal 100 Perioden, waehrend der
+  Prefix-Pruefer nur moderne Langlaufstabilitaet bewertet;
 - PR 93 hat `imsvu014.dat` und `imsvnsk1.dat` als zwei vollstaendige
   100er-Tabellen streng an den Produktionskorpusbericht gebunden: 2/15
   Tabellen und 200/6.300 Perioden geliefert, 13 Tabellen und 6.100 Perioden
@@ -695,27 +695,32 @@ Aktualisierte grobe Restplanung:
   300 erweitert: 15 Tabellen / 4.500 Zeilen im Speicher und der Prefix 1-100
   fuer 99 Zustandsresultate / 1.500 Exportzeilen exakt stabil;
 - PR 95 hat `imsvnr01.dat` und `imsvnr02.dat` als getrennte
-  `zins000_archive`-Referenztests vollstaendig verglichen: 600/600 Zeilen mit
-  mindestens einer Feldabweichung, 4/15 Tabellen und 800/6.300 Perioden
-  kumuliert geliefert, Freigabe weiterhin `blocked`;
+  `zins000_archive`-Referenztests verglichen; PR 98 stellt sie als je drei
+  unabhaengige 100-Perioden-Laeufe dar, ohne historische RNG-Reproduktion,
+  4/15 Tabellen und 800/6.300 Ergebniszeilen kumuliert geliefert;
 - PR 96 hat den kontrollierten modernen Zustand bis Periode 500 erweitert:
   15 Tabellen / 7.500 Zeilen im Speicher und die Prefixe 1-100 sowie 1-300
   fuer Zustandsresultate und Exportzeilen exakt stabil;
 - PR 97 hat die berechnete `imsvusk1.dat` gegen fuenf getrennte historische
-  SK1/all-Zeitfenster ausgerichtet: 499/500 Zeilen abweichend, kumulativ 5/15
-  Tabellen und 1.300/6.300 Perioden, ohne gemeinsame historische
-  Laufidentitaet zu behaupten;
-- PR 98 ist der naechste Umsetzungsschritt: `imsvnr03.dat` bis
-  `imsvnr06.dat` als vier getrennte 500er-Regeltabellen anbinden;
+  SK1/all-Laufabschnitte ausgerichtet; PR 98 erzeugt die Vergleichstabelle
+  korrekt aus fuenf unabhaengigen 100-Perioden-Laeufen: vier Anfangszustaende
+  treffen, kumulativ 5/15 Tabellen und 1.300/6.300 Ergebniszeilen;
+- PR 98 hat den historischen Wiederholungsvertrag `pr98-v1` umgesetzt:
+  Spalte eins zaehlt Ergebniszeilen nach der Formel
+  `(Lauf - 1) * Simulationslaenge + lokale Periode`, bei maximal 100 Perioden
+  pro Lauf; weder ein historischer 300/500-Lauf noch RNG-Gleichheit wird
+  behauptet;
+- PR 99 ist der naechste Umsetzungsschritt: `imsvnr03.dat` bis
+  `imsvnr06.dat` als vier Tabellen aus je fuenf 100er-Laeufen anbinden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 97 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+Nach PR 98 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
 und `4` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. PR 98 bis PR 101 duerfen die 500er-Fenster und den
-Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
+Vollkorpusbericht. PR 99 bis PR 102 duerfen die verbleibenden Tabellenfamilien
+und den Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
 Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
 Zahl ersetzt keine Vollgleichheitspruefung.
 

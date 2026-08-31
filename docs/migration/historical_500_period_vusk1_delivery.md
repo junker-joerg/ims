@@ -1,111 +1,78 @@
-# Historische VU-SK1-Zeitfenster bis Periode 500
+# Historische VU-SK1-Diagnostik ueber fuenf Wiederholungen
 
 Stand: 2026-08-31
-Vertrag: `pr97-v1`
+Korrekturvertrag: `pr98-v1`
 
-## Ziel
+## Korrigierte Bedeutung
 
-PR97 bindet die eine kontrolliert berechnete Tabelle `imsvusk1.dat` fuer die
-Perioden 1-500 an fuenf getrennte historische Referenztests. Die berechnete
-Tabelle stammt aus dem modernen Zustandsvertrag `pr96-v1`; die historischen
-Zeilen werden erst nach ihrer Erzeugung gelesen und verglichen.
+Die Ergebnisnummern 1-500 sind kein historischer 500-Perioden-Lauf. Sie
+repraesentieren fuenf getrennte 100-Perioden-Laeufe. Der Altcode schreibt die
+Nummer als `(rl-1)*sl+period`; `SIMLAENGE` ist auf 100 begrenzt.
 
-Der Lieferbericht
-`ims.api.historical_500_period_vusk1_delivery` uebergibt damit kumulativ 5/15
-Tabellen und 1.300/6.300 Zielperioden an den weiterhin gesperrten
-Produktionskorpusbericht.
+`imsvusk1.dat` bleibt dabei eine Exportidentitaet auf Aggregatstufe IV mit
+`all = SK1`. Die Dateien sind keine unterschiedlichen Aggregatebenen.
 
-## Historischer Ursprung
+| Referenz | Ergebniszeilen | Lauf | Lokale Perioden | Schicht |
+| --- | --- | ---: | --- | --- |
+| `VUSK1L5.DAT` | 1-100 | 1 | 1-100 | `wvemod2_archive` |
+| `VUSK1L4.DAT` | 101-200 | 2 | 1-100 | `vusk1l4_direct_04410ef` |
+| `VUSK1L3.DAT` | 201-300 | 3 | 1-100 | `wvemod2_archive` |
+| `VUSK1L2.DAT` | 301-400 | 4 | 1-100 | `wvemod2_archive` |
+| `VUSK1L1.DAT` | 401-500 | 5 | 1-100 | `wvemod2_archive` |
 
-Alle fuenf Referenzen beschreiben dieselbe Exportidentitaet
-`IMSVUSK1.DAT`, dasselbe SK1/all-Aggregat und dieselbe Aggregatstufe IV:
+Vier Bloecke sind tokennormalisierte Ausschnitte aus
+`WVEMOD2.ZIP/IMSVUSK1.DAT`. `VUSK1L4.DAT` stimmt nicht mit dem entsprechenden
+Archiveintrag ueberein und bleibt `versioned_fixture_regression_only`.
 
-| Referenz | Fenster | Schicht | Beleggrenze |
-| --- | --- | --- | --- |
-| `VUSK1L5.DAT` | 1-100 | `wvemod2_archive` | `archive_content_match_only` |
-| `VUSK1L4.DAT` | 101-200 | `vusk1l4_direct_04410ef` | `versioned_fixture_regression_only` |
-| `VUSK1L3.DAT` | 201-300 | `wvemod2_archive` | `archive_content_match_only` |
-| `VUSK1L2.DAT` | 301-400 | `wvemod2_archive` | `archive_content_match_only` |
-| `VUSK1L1.DAT` | 401-500 | `wvemod2_archive` | `archive_content_match_only` |
+## Moderner Wiederholungskorpus
 
-`VUSK1L5.DAT`, `VUSK1L3.DAT`, `VUSK1L2.DAT` und `VUSK1L1.DAT` sind
-tokennormalisierte Zeitfenster von `WVEMOD2.ZIP/IMSVUSK1.DAT`.
-`VUSK1L4.DAT` stimmt dagegen mit keinem bekannten Archiveintrag ueberein und
-bleibt deshalb in seiner isolierten direkten Referenzschicht. Die fuenf
-Fenster werden weder als unterschiedliche Aggregatebenen noch als eine
-koharente historische 500-Perioden-Laufdatei behandelt.
+Die Diagnostik erzeugt fuenf getrennte 100-Perioden-Laeufe mit den modernen
+Seeds `20260001` bis `20260005`. Jeder Lauf beginnt mit demselben
+kontrollierten Anfangszustand. Die globale Ergebnisnummer wird erst fuer den
+Dateivergleich aus Laufnummer und lokaler Periode gebildet.
 
-## Kontrollierter Vergleich
+Diese Seeds sichern heutige Reproduzierbarkeit. Sie behaupten keine
+historische RNG-Folge und keine Gleichheit mit `rand()` aus DOS-, Linux- oder
+Solaris-C-Libraries.
 
-Der moderne Zustand wird mit Basis-Seed `20260001` getrennt fuer die
-Horizonte 100, 300 und 500 erzeugt. Der generische Horizontpruefer bestaetigt:
+## Diagnostischer Befund
 
-- drei eindeutige Snapshots fuer `imsvusk1.dat`;
-- exakte Prefixe 1-100 und 1-300;
-- drei Prefixvergleiche ueber insgesamt 500 Zeilen;
-- lueckenlose berechnete Perioden 1-500;
-- exakte Level-IV-Identitaet `all = SK1`.
-
-Danach wird jede berechnete 100-Perioden-Scheibe nur gegen ihre eigene
-versionierte Referenz und deren eigene Schicht verglichen.
-
-## Beobachteter Befund
-
-| Referenz | Zeilen gleich | Zeilen abweichend | Exakte Felder | Toleriert | Blockierend |
+| Referenz | Zeilen gleich | Zeilen abweichend | Exakt | Toleriert | Numerisch abweichend |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `VUSK1L5.DAT` | 1 | 99 | 215 | 17 | 1.168 |
-| `VUSK1L4.DAT` | 0 | 100 | 201 | 2 | 1.197 |
-| `VUSK1L3.DAT` | 0 | 100 | 200 | 1 | 1.199 |
-| `VUSK1L2.DAT` | 0 | 100 | 202 | 5 | 1.193 |
-| `VUSK1L1.DAT` | 0 | 100 | 203 | 4 | 1.193 |
-| Gesamt | 1 | 499 | 1.021 | 29 | 5.950 |
+| `VUSK1L4.DAT` | 0 | 100 | 200 | 0 | 1.200 |
+| `VUSK1L3.DAT` | 1 | 99 | 213 | 15 | 1.172 |
+| `VUSK1L2.DAT` | 1 | 99 | 212 | 21 | 1.167 |
+| `VUSK1L1.DAT` | 1 | 99 | 212 | 11 | 1.177 |
+| **Gesamt** | **4** | **496** | **1.052** | **64** | **5.884** |
 
-Damit unterscheiden sich 499 von 500 Zeilen in mindestens einem Fachfeld.
-Von 7.000 Feldvergleichen sind 1.021 exakt, 29 liegen innerhalb der bereits
-bestehenden numerischen Toleranz und 5.950 sind blockierende numerische
-Abweichungen. Es gibt keine offenen nichtnumerischen Feldfragen.
+Die vier vollstaendigen Treffer sind die Anfangszustaende der vier belegten
+WVEMOD2-Laeufe. Dass der isolierte L4-Block keinen solchen Treffer besitzt,
+passt zu seiner ungeklaerten Herkunft. Die uebrigen Abweichungen bleiben
+diagnostisch; sie sind wegen unbekannter Parameter- und RNG-Kontexte kein
+Beweis gegen die portierte Fachlogik.
 
-Der eine vollstaendige Zeilentreffer ist Periode 1 in `VUSK1L5.DAT`. Er
-belegt keine Gleichheit der uebrigen Perioden oder des historischen Modells.
-
-## Kumulative Lieferung
-
-Der Produktionskorpusbericht erhaelt read-only:
-
-- `imsvu014.dat`, Perioden 1-100;
-- `imsvnsk1.dat`, Perioden 1-100;
-- `imsvnr01.dat` und `imsvnr02.dat`, Perioden 1-300;
-- `imsvusk1.dat`, Perioden 1-500.
-
-Damit sind 5/15 Tabellen und 1.300/6.300 Zielperioden geliefert. Zehn Tabellen
-und 5.000 Perioden bleiben offen. Der Korpusstatus bleibt `blocked` und die
-Entscheidung `blocked_calculated_core_validation`.
+Kumulativ sind weiterhin 5/15 Tabellen und 1.300/6.300 Ergebniszeilen
+technisch angeschlossen. Das ist Anschlussabdeckung, keine fachliche
+Gleichheitsquote.
 
 ## Grenzen
 
 - keine Legacy-Zeile als Erzeugungsinput;
-- keine neue Fachlogik oder historische Regelwahl;
-- keine Zusammenfuehrung der beiden Referenzschichten;
+- keine historische RNG-Reproduktion;
+- keine Gleichsetzung der Wiederholungen mit einem langen Lauf;
 - keine gemeinsame historische Laufidentitaet;
-- keine historische Scheduler- oder RNG-Gleichheit;
 - keine historische Vollgleichheit;
+- keine Produktionsfreigabe;
 - keine Datei- oder Datenbankschreibvorgaenge;
-- kein Schedulerstart und keine Simulation;
-- keine Produktionsfreigabe.
+- kein Schedulerstart und keine Simulation.
 
-## Reproduzierbarer Aufruf
+## Aufruf
 
 ```powershell
 $env:PYTHONPATH = "python_port"
 python -m ims.api.historical_500_period_vusk1_delivery --root .
 ```
 
-Der Aufruf erzeugt kontrollierte Tabellen im Speicher, liest nur versionierte
-Referenzen und schreibt keine Ergebnisdateien.
-
-## Naechster Schritt
-
-PR98 bindet als Naechstes `IMSVNR03.DAT` bis `IMSVNR06.DAT` als vier
-getrennte 500-Perioden-Regeltabellen aus der Schicht `wvemod1_archive` an.
-Auch dort bleibt ein vollstaendiger Vergleich eine Abweichungsbeobachtung und
-keine historische Vollgleichheits- oder Produktionsfreigabebehauptung.
+PR99 bindet als Naechstes `imsvnr03.dat` bis `imsvnr06.dat` als je fuenf
+getrennte 100-Perioden-Laeufe an.

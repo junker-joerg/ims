@@ -1,97 +1,69 @@
-# Historische 300-Perioden-Regelfenster aus ZINS000
+# Historische VN-Regeldiagnostik ueber drei Wiederholungen
 
-## Ziel
+Stand: 2026-08-31
+Vertrag: `pr98-v1`
 
-PR95 bindet `imsvnr01.dat` und `imsvnr02.dat` als die zwei im
-Horizontvertrag `pr92-v1` belegten 300-Perioden-Ziele an den weiterhin
-gesperrten Produktionskorpusbericht. Der neue read-only Bericht
-`ims.api.historical_300_period_rule_delivery` vergleicht beide Tabellen
-vollstaendig mit den versionierten historischen Referenzen.
+## Korrigierte Bedeutung
 
-Der kumulierte Lieferstand steigt damit auf **4/15 Tabellen und 800/6.300
-Zielperioden**. Die restlichen elf Tabellen mit 5.500 Zielperioden fehlen
-weiterhin.
+`IMSVNR01.DAT` und `IMSVNR02.DAT` enthalten je 300 fortlaufend nummerierte
+Ergebniszeilen. Nach Altcode und Dissertation sind dies drei getrennte
+100-Perioden-Laeufe, kein historischer 300-Perioden-Lauf.
 
-## Historischer Ursprung
+Die Ergebnisnummern werden deshalb so gelesen:
 
-| Referenz | Export | Identitaet | Fenster | SHA-256 |
+| Ergebniszeilen | Lauf | Lokale Perioden |
+| --- | ---: | --- |
+| 1-100 | 1 | 1-100 |
+| 101-200 | 2 | 1-100 |
+| 201-300 | 3 | 1-100 |
+
+Der moderne Diagnosekorpus erzeugt drei voneinander getrennt initialisierte
+100-Perioden-Laeufe mit den expliziten Seeds `20260001`, `20260002` und
+`20260003`. Diese Seedfolge ist eine moderne Reproduzierbarkeitspolitik und
+keine behauptete historische RNG-Folge.
+
+## Referenzen
+
+| Referenz | Export | Identitaet | Ergebniszeilen | Schicht |
 | --- | --- | --- | ---: | --- |
-| `IMSVNR01.DAT` | `imsvnr01.dat` | VN / II / Regel 1 | 1-300 | `79cff0463c0bd9489459fd92694e4650b59c0a52c0703d879e5142aeaea4b9c9` |
-| `IMSVNR02.DAT` | `imsvnr02.dat` | VN / II / Regel 2 | 1-300 | `695ca328675b1eb46bcb6e15c0e8c41ce78a48c98ac5216c7644423ced5a4eec` |
+| `IMSVNR01.DAT` | `imsvnr01.dat` | VN / II / Regel 1 | 300 | `zins000_archive` |
+| `IMSVNR02.DAT` | `imsvnr02.dat` | VN / II / Regel 2 | 300 | `zins000_archive` |
 
-PR89 und PR91 binden beide Dateien bytegenau an `ZINS000.ZIP` und halten sie
-in der getrennten Referenzschicht `zins000_archive`. Fuer dieses Archiv sind
-keine Laufmetadaten, kein Seed und keine gemeinsame Laufidentitaet mit den
-anderen Referenzschichten belegt. Der erlaubte Provenienzanspruch bleibt daher
-`archive_content_match_only`.
+ZINS000 ist eine eigene Parameterschicht. Andere Archive duerfen nicht als
+Fortsetzung oder derselbe Lauf behandelt werden.
 
-## Kontrollierter Vergleich
+## Diagnostischer Befund
 
-Der moderne Zustand stammt aus `pr94-v1`:
+| Export | Zeilen gleich | Zeilen abweichend | Exakt | Toleriert | Numerisch abweichend | Offene nichtnumerische Felder |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `imsvnr01.dat` | 0 | 300 | 946 | 1 | 2.947 | 6 |
+| `imsvnr02.dat` | 0 | 300 | 615 | 127 | 2.600 | 558 |
 
-- fester Seed `20260001`;
-- Zustandspfad bis Periode 300;
-- VN-Regeltabellen fuer Regel 1 und Regel 2 mit jeweils 300 Zeilen;
-- keine historischen Zeilen als Erzeugungseingabe;
-- keine Writer-, Scheduler- oder Simulationsausfuehrung.
+Diese Zahlen frieren den aktuellen Diagnosezustand ein. Sie sind kein
+Freigabekriterium und kein Nachweis falscher Fachlogik, weil Parameter,
+historische Seeds, C-Library und konkrete Laufidentitaet nicht vollstaendig
+bekannt sind.
 
-Vor dem historischen Vergleich prueft PR95 fuer beide Ziele:
+Kumulativ sind weiterhin vier Tabellen und 800 von 6.300 Ergebniszeilen
+technisch an den Korpusbericht angeschlossen. Diese Kennzahl beschreibt
+Anschlussabdeckung, nicht fachliche Gleichheit.
 
-- kanonische Exportidentitaet;
-- VN-Header und Zeilenbreite;
-- lueckenlose Perioden 1-300;
-- Referenzpfad und SHA-256;
-- Bindung an `zins000_archive`;
-- exakte Stabilitaet des kontrollierten Prefixes 1-100.
+## Grenzen
 
-## Beobachteter Feldbefund
-
-Der Vergleich wurde fuer alle 600 historischen Zeilen und alle 7.800
-Feldvergleiche ausgefuehrt. **600 von 600 Zeilen** unterscheiden sich in
-mindestens einem Feld.
-
-| Export | exakt gleiche Felder | tolerierte numerische Unterschiede | blockierende numerische Unterschiede | offene Feldfragen |
-| --- | ---: | ---: | ---: | ---: |
-| `imsvnr01.dat` | 931 | 0 | 2.967 | 2 |
-| `imsvnr02.dat` | 608 | 79 | 2.628 | 585 |
-| **Gesamt** | **1.539** | **79** | **5.595** | **587** |
-
-Die zwei Header- und Periodenfelder je Zeile sind Teil der Feldzaehlung. Die
-Abweichungen betreffen die fachlichen VN-Ausgabefelder. Sie sind ein
-reproduzierbarer Befund zwischen dem kontrollierten modernen Zustand und den
-getrennten ZINS000-Referenzen, aber noch keine Erklaerung ihrer Ursache.
-
-Insbesondere folgt daraus weder, dass der moderne Kern fachlich falsch ist,
-noch dass die ZINS000-Dateien zu demselben historischen Lauf wie andere
-Referenzen gehoeren. Scheduler-, RNG-, Akkumulator- und Zustandsprovenienz
-bleiben offen und werden durch PR95 nicht ergaenzt.
-
-## Produktionsgrenze
-
-Der Produktionskorpusbericht akzeptiert nun vier strukturell vollstaendige
-Tabellen. Er bleibt mit elf fehlenden Tabellen und 5.500 fehlenden Perioden auf
-`blocked_calculated_core_validation`.
-
-PR95 behauptet ausdruecklich:
-
-- keine historische Laufidentitaet;
-- keine historische RNG-Gleichheit;
+- keine Legacy-Zeile als Erzeugungsinput;
+- keine historische RNG-Reproduktion;
+- keine Gleichsetzung der drei Wiederholungen mit einem langen Lauf;
 - keine historische Vollgleichheit;
-- keine Produktionsfreigabe.
+- keine Produktionsfreigabe;
+- keine Datei- oder Datenbankschreibvorgaenge;
+- kein Schedulerstart und keine Simulation.
 
-## Reproduzierbarer Aufruf
+## Aufruf
 
 ```powershell
 $env:PYTHONPATH = "python_port"
 python -m ims.api.historical_300_period_rule_delivery --root .
 ```
 
-Der Aufruf liest nur versionierte Referenzen und erzeugt kontrollierte Tabellen
-im Speicher. Er schreibt keine Ergebnisdateien und startet keine Simulation.
-
-## Naechster Schritt
-
-PR96 hat denselben kontrollierten Zustand deterministisch bis Periode 500
-erweitert und die Prefixe 1-100 sowie 1-300 exakt stabil gehalten. PR97 hat die
-VU-SK1-Zeitfenster als getrennte historische Referenztests angebunden. PR98
-bindet als Naechstes `IMSVNR03.DAT` bis `IMSVNR06.DAT` an.
+PR99 uebertraegt dieselbe korrigierte Lesart auf die VN-Regeln 3-6 mit je
+fuenf getrennten 100-Perioden-Laeufen.

@@ -256,20 +256,21 @@ def test_ims_core_resume_plan_names_next_reviewable_core_block() -> None:
     assert "PR 89 hat die 19 versionierten Ziele" in plan
     assert "PR 90 hat den einzigen direkten Laufbericht" in plan
     assert "PR 91 hat den expliziten Referenzschicht-Vertrag" in plan
-    assert "PR 92 hat den Horizontvertrag `pr92-v1`" in plan
+    assert "PR 92 hat den Ergebniszeilenvertrag" in plan
     assert "PR 93 hat `imsvu014.dat` und `imsvnsk1.dat`" in plan
     assert "PR 94 hat den kontrollierten modernen Zustand" in plan
     assert "PR 95 hat `imsvnr01.dat` und `imsvnr02.dat`" in plan
     assert "PR 96 hat den kontrollierten modernen Zustand" in plan
     assert "PR 97 hat die berechnete `imsvusk1.dat`" in plan
-    assert "PR 98 ist der naechste Umsetzungsschritt" in plan
+    assert "PR 98 hat den historischen Wiederholungsvertrag" in plan
+    assert "PR 99 ist der naechste Umsetzungsschritt" in plan
     assert "`IMSVU014.DAT` und" in plan
     assert "`IMSVUSK1.DAT`" in plan
     assert "Produktions-Altdatenkorpus" in plan
     assert "Run-Control-Ergebnisanzeige fuer persistierte Adapterresultate anbinden" in plan
     assert "Queue-/Status-/Resultat-Persistenz" in plan
     assert "0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo" in plan
-    assert "Nach PR 97 bleiben `0` technische Pflicht-PRs" in plan
+    assert "Nach PR 98 bleiben `0` technische Pflicht-PRs" in plan
     assert "`4` geplante PRs" in plan
     assert "eingefrorene Pruefkette" in plan
     assert "100-Perioden-Erzeugungsvertrag" in plan
@@ -308,7 +309,7 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "6.300 eingetragene" in plan
     assert "genau `IMSVU014.DAT` und `IMSVUSK1.DAT`" in plan
     assert "getrennte ZINS000-Schicht" in plan
-    assert "Nach PR 97 sind `4` PRs bis zum" in plan
+    assert "Nach PR 98 sind `4` PRs bis zum" in plan
     assert "Die Mindestserie PR 72 bis PR 86 ist abgeschlossen" in plan
     assert "15 Exporten, 19 Zielen und 6.300 Perioden" in plan
     assert "15 fehlende berechnete" in plan
@@ -337,9 +338,9 @@ def test_production_readiness_plan_scopes_remaining_prs() -> None:
     assert "PR 86: alle 15 Exporte gemeinsam vergleichen" in plan.replace("\n", " ")
     assert "PR 88 bis PR 97 haben das" in plan.replace("\n", " ")
     assert "zwei vollstaendigen 100er-Tabellen" in plan.replace("\n", " ")
-    assert "Nach PR 97 sind `4` PRs" in plan
-    assert "PR 98 bis PR 100" in plan
-    assert "PR 101" in plan
+    assert "Nach PR 98 sind `4` PRs" in plan
+    assert "PR 99 bis PR 101" in plan
+    assert "PR 102" in plan
     assert "keine aktuelle Behauptung historischer Vollgleichheit" in plan
     assert "keine automatische historische Regelwahl" in plan
     assert "UI-Startpfad" in plan
@@ -353,7 +354,8 @@ def test_production_legacy_corpus_plan_fixes_release_boundaries() -> None:
     assert PRODUCTION_LEGACY_CORPUS_PLAN.is_file()
     assert "Produktions-Altdatenkorpus fuer die erste Freigabe" in plan
     assert "19 bereits versionierten Dateien" in plan
-    assert "6.300 konkret eingetragenen Vergleichsperioden" in plan
+    assert "6.300 konkret eingetragenen Vergleichszeilen" in plan
+    assert "begrenzt einen Lauf auf 100 Perioden" in plan
     assert "physisch 6.700 Datenzeilen" in plan
     assert "`IMSVNSK1.DAT` 500 Zeilen" in plan
     assert "belegte Fenster `1-100`" in plan

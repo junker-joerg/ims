@@ -14,7 +14,14 @@ aendert keine Fachlogik und behauptet keine historische Vollgleichheit.
 Quelle der maschinenlesbaren Zielgrenzen bleibt
 `tests/fixtures/legacy_validation_bundle.json`. Der Kernkorpus besteht aus den
 19 bereits versionierten Dateien unter `tests/references/legacy_agrsich/` und
-6.300 konkret eingetragenen Vergleichsperioden.
+6.300 konkret eingetragenen Vergleichszeilen.
+
+Historische Zeilennummern oberhalb 100 sind keine Belege fuer einen einzelnen
+300- oder 500-Perioden-Lauf. Der Altcode begrenzt einen Lauf auf 100 Perioden
+und nummeriert Ausgaben mit
+`(Lauf - 1) * Simulationslaenge + lokale Periode`. Die 300-/500-Zeilen-Dateien
+enthalten damit drei beziehungsweise fuenf Laeufe. Konkrete Seed-, RNG- und
+Parametergleichheit bleibt ohne lauflokale Metadaten offen.
 
 | Familie | Dateien | Subjekt / Stufe / Selektor | Fenster | Vergleichszeilen |
 | --- | --- | --- | --- | ---: |
@@ -30,7 +37,7 @@ auf der unterstuetzten Aggregatstufe IV. Sie sind keine unterschiedlichen
 Aggregatebenen.
 
 Die 19 Dateien enthalten physisch 6.700 Datenzeilen. Der Freigabekorpus zaehlt
-nur die 6.300 im Bundle eingetragenen Perioden. Insbesondere enthaelt die
+nur die 6.300 im Bundle eingetragenen Ergebniszeilen. Insbesondere enthaelt die
 versionierte `IMSVNSK1.DAT` 500 Zeilen, waehrend der Kernkorpus bewusst nur das
 belegte Fenster `1-100` verwendet. Physisch vorhandene Restzeilen werden nicht
 stillschweigend als validiert behandelt.
@@ -80,7 +87,7 @@ Die Coverage-Matrix meldet fuer den Kernkorpus 19 vorhandene und 19 abgedeckte
 Referenzen ohne Dateiluecke. Der fixturegetriebene Validierungsreport meldet
 6.300 von 6.300 ausgerichteten Referenzzeilen als Treffer.
 
-Dieser Befund prueft Referenzpfade, Parser, Header, Periodenfenster,
+Dieser Befund prueft Referenzpfade, Parser, Header, Ergebniszeilengrenzen,
 Target-Metadaten und Reportbildung. Der Validierungslauf baut seine
 Vergleichstabellen aus den gelesenen Referenzzeilen auf. Er ist deshalb noch
 kein unabhaengiger Neu-/Alt-Vergleich eines berechneten historischen Modells.

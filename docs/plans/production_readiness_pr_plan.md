@@ -166,21 +166,25 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant den daraus
 abgeleiteten Provenienz- und Vollfensterblock; PR 88 bis PR 97 haben das
 read-only Archivmanifest, die Referenzkohaerenz, die archivlokale
-Laufmetadatenauswertung, den Referenzschicht-Vertrag und den Horizontvertrag
+Laufmetadatenauswertung, den Referenzschicht-Vertrag und den Ergebniszeilenvertrag
 umgesetzt, die zwei vollstaendigen 100er-Tabellen an den Korpusbericht
 gebunden, den modernen Zustand mit stabilem 100er-Prefix bis 300 erweitert und
-die zwei ZINS000-Regelfenster vollstaendig als getrennte Referenzen verglichen.
+die zwei ZINS000-Regeltabellen vollstaendig als getrennte Referenzen verglichen.
 Der moderne Zustand reicht mit stabilen Prefixen 1-100 und 1-300 bis 500; die
-fuenf VU-SK1-Zeitfenster sind als getrennte Referenztests angebunden.
+fuenf VU-SK1-Laufabschnitte sind als getrennte Referenztests angebunden. PR 98
+hat klargestellt, dass historische Zeilen 101-300/500 weitere Laeufe von
+hoechstens 100 Perioden zaehlen; die modernen Langlaeufe bleiben davon
+getrennte Stabilitaetstests.
 
-Nach PR 97 sind `4` PRs bis zum ersten gemeinsamen
-6.300-Zeilen-Vollfensterbericht vorgesehen: PR 98 bis PR 100 fuer die
-gestaffelten historischen 500er-Fenster und PR 101 fuer den Abschlussbericht.
+Nach PR 98 sind `4` PRs bis zum ersten gemeinsamen
+6.300-Zeilen-Vollkorpusbericht vorgesehen: PR 99 bis PR 101 fuer die
+gestaffelten historischen Tabellenfamilien und PR 102 fuer den Abschlussbericht.
 Unbekannte fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
 
 ## Naechster Schritt
 
-PR 98 bindet als naechstes `imsvnr03.dat` bis `imsvnr06.dat` als vier
-getrennte historische 500er-Regeltabellen aus `wvemod1_archive` an. Der
-verbindliche Ablauf sowie die PR-88-bis-PR-97-Befunde stehen in
+PR 99 bindet als naechstes `imsvnr03.dat` bis `imsvnr06.dat` als vier
+getrennte historische Regeltabellen aus je fuenf 100-Perioden-Laeufen der
+Schicht `wvemod1_archive` an. Der verbindliche Ablauf sowie die
+PR-88-bis-PR-98-Befunde stehen in
 `docs/plans/historical_reference_provenance_and_full_window_plan.md`.

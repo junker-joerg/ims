@@ -25,8 +25,9 @@ Die Zuordnung entspricht dem bereits vorhandenen Agrsich-Exportpfad fuer
 
 Als Quelle wird gezielt `incomming/IMS.DAT/WVEMOD1.ZIP` verwendet. Dieses Archiv
 passt zu den bereits angebundenen `IMSVNR`- und `IMSVNVK`-Familien und enthaelt
-die drei `IMSVUVK`-Dateien jeweils mit 500 Periodenzeilen fuer das Fenster
-`1-500`.
+die drei `IMSVUVK`-Dateien jeweils mit 500 Ergebniszeilen. Diese zaehlen fuenf
+getrennte Laeufe mit jeweils hoechstens 100 Perioden, keinen fortlaufenden
+500er-Lauf.
 
 Alle drei Dateien verwenden denselben Versicherer-Agrsich-Header:
 

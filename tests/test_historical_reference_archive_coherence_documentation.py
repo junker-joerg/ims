@@ -35,11 +35,12 @@ def test_coherence_document_keeps_sk1_and_run_boundaries_conservative() -> None:
     document = DOCUMENT.read_text(encoding="utf-8")
     normalized = document.replace("\n", " ")
 
-    assert "Zeitfenster derselben Exportidentitaet `IMSVUSK1.DAT`" in normalized
+    assert "Ergebnisbloecke derselben Exportidentitaet `IMSVUSK1.DAT`" in normalized
+    assert "Laeufe 1 bis 5 mit jeweils lokalen Perioden 1-100" in normalized
     assert "`SK1/all`-Aggregats" in document
     assert "Aggregatstufe IV" in document
     assert "keinem der sieben bekannten" in normalized
     assert "nicht als neue Aggregatebene" in normalized
-    assert "kein Nachweis eines gemeinsamen historischen" in normalized
+    assert "kein 500-Perioden-Lauf" in normalized
     assert "startet keine Ausfuehrung oder" in normalized
     assert "PR 90" in document

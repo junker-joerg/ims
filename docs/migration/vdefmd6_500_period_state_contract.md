@@ -1,5 +1,11 @@
 # Kontrollierter Vdefmd6-Zustandsvertrag bis Periode 500
 
+> Einordnung ab PR98: Dies ist ausschliesslich ein moderner deterministischer
+> Langzeit- und Prefix-Stresstest. Historisches IMS war auf 100 Perioden je
+> Lauf begrenzt. Historische Dateien mit 500 Ergebniszeilen enthalten fuenf
+> getrennte 100-Perioden-Laeufe und werden nicht als ein historischer
+> 500-Perioden-Lauf bewertet.
+
 Stand: 2026-08-31
 Vertrag: `pr96-v1`
 
@@ -108,5 +114,6 @@ Der Aufruf materialisiert die kontrollierten Tabellen nur im Speicher.
 PR97 hat die eine berechnete 500-Perioden-Tabelle `imsvusk1.dat` gegen die
 fuenf getrennten Zeitfenster `VUSK1L5.DAT` bis `VUSK1L1.DAT` angebunden.
 `VUSK1L4.DAT` behaelt dabei seine isolierte Referenzschicht; eine
-zusammengehoerige historische 500er-Laufquelle wird nicht behauptet. PR98
-bindet als Naechstes die vier VN-Regeltabellen 3-6 an.
+zusammengehoerige historische 500er-Laufquelle wird nicht behauptet. PR98 hat
+diese Interpretation korrigiert und auf fuenf getrennte 100er-Laeufe
+umgestellt. PR99 bindet als Naechstes die vier VN-Regeltabellen 3-6 an.

@@ -1,5 +1,9 @@
 # Vertrag fuer berechnete Legacy-Mehrperiodenvergleiche
 
+> Korrektur ab PR98: `Perioden` oberhalb von 100 in diesem Vertrag sind
+> fortlaufende Ergebnisnummern ueber mehrere 100-Perioden-Laeufe. Die 6.300
+> Zielwerte sind Ergebniszeilen, keine durchgehenden historischen Perioden.
+
 ## Ziel
 
 PR 58 trennt den kuenftigen berechneten Neu-/Alt-Vergleich technisch vom
@@ -39,7 +43,7 @@ liefert fuer das aktuelle Kernbundle:
 - 19 historische Ziele;
 - 6.300 Zielperioden;
 - 15 eindeutig benoetigte berechnete Exporttabellen;
-- fuer `imsvusk1.dat` genau die Perioden `1-500`, zusammengesetzt aus den
+- fuer `imsvusk1.dat` genau die Ergebniszeilen `1-500`, zusammengesetzt aus den
   fuenf Zeitfenstern desselben `SK1`-/`all`-Aggregats auf Stufe IV;
 - fuer `imsvnsk1.dat` weiterhin nur das belegte Fenster `1-100`.
 

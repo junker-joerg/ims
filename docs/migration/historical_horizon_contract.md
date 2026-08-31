@@ -1,106 +1,95 @@
-# Historischer Horizontvertrag 100/300/500
+# Historischer Ergebniszeilen- und Wiederholungsvertrag
 
 Stand: 2026-08-31
-Vertrag: `pr92-v1`
+Vertrag: `pr98-v1`
 
-## Ziel und Herkunft
+## Korrektur
 
-Der read-only Vertrag `ims.api.historical_horizon_contract` friert die
-Pflichtgrenzen 100, 300 und 500 fuer die 15 berechneten Kernexporte ein. Er
-leitet die Exportidentitaeten und Periodenmengen aus dem versionierten
-`legacy_validation_bundle.json` ab und bindet jedes Referenzfenster an seine
-in `pr91-v1` festgelegte `layer_id`.
+Die bisher als historische Horizonte 100, 300 und 500 bezeichneten Werte sind
+keine Lauflaengen. IMS 1995 begrenzt einen einzelnen Simulationslauf auf
+maximal 100 Perioden:
 
-Der Vertrag berechnet keine Exporttabelle. Er startet weder Runner noch
-Simulation und aendert weder das Legacy-Bundle noch historische Referenzen.
-`incomming/` wird nicht gelesen oder versioniert.
+- `IMSDATA.C` setzt `SIMLAENGE` auf 100;
+- `IMS.E` fragt Perioden je Einzelsimulation und Anzahl der Wiederholungen
+  getrennt ab;
+- die Dissertation nennt maximal 100 Perioden je Lauf und fuer die
+  Hauptauswertung 30 Laeufe mit jeweils 100 Perioden;
+- `IMS.E` schreibt die Ergebnisnummer als `(rl-1)*sl+period`.
 
-## Eingefrorene Matrix
+Bei `sl = 100` bezeichnen die Ergebnisnummern 101-200 daher den zweiten Lauf,
+201-300 den dritten Lauf und 401-500 den fuenften Lauf. Sie sind keine
+Perioden eines historischen 300- oder 500-Perioden-Laufs.
 
-| Pflichtgrenze | Exporte | Tabellen | Zielperioden | Prefix-Pruefpunkte |
-| --- | --- | ---: | ---: | --- |
-| 100 | `imsvu014.dat`, `imsvnsk1.dat` | 2 | 200 | keine |
-| 300 | `imsvnr01.dat`, `imsvnr02.dat` | 2 | 600 | 100 |
-| 500 | `imsvusk1.dat`, `imsvnr03.dat` bis `imsvnr06.dat`, `imsvnvk1.dat` bis `imsvnvk3.dat`, `imsvuvk1.dat` bis `imsvuvk3.dat` | 11 | 5.500 | 100 und 300 |
-| Gesamt | 15 Exportidentitaeten / 19 Referenzziele | 15 | 6.300 | - |
+## Verbindliche Lesart
 
-Die Pflichtgrenze kommt aus der belegten Zielmenge des Bundles. Daher bleibt
-`imsvnsk1.dat` in diesem Vertrag ein 100-Perioden-Ziel, obwohl die physische
-Referenzdatei weitere Zeilen enthaelt. Nicht eingetragene Perioden werden
-nicht still in den Vergleich aufgenommen.
+| Ergebniszeilen | Historische Laeufe | Lokale Perioden je Lauf | Exporte | Zielzeilen |
+| ---: | ---: | --- | ---: | ---: |
+| 100 | 1 | 1-100 | 2 | 200 |
+| 300 | 3 | jeweils 1-100 | 2 | 600 |
+| 500 | 5 | jeweils 1-100 | 11 | 5.500 |
+| **Gesamt** | - | - | **15 Exportidentitaeten / 19 Referenzziele** | **6.300** |
 
-## Prefix-Vertrag
+Der bestehende Python-Feldname `required_horizon` bleibt intern vorerst als
+Kompatibilitaetsname erhalten. Seine Bedeutung ist ab `pr98-v1`
+`required_result_row_count`. Der Vertrag meldet zusaetzlich die Laufnummern
+und die lokalen Periodengrenzen.
 
-Der generische Prefix-Pruefer akzeptiert ausschliesslich bereits berechnete
-`ExportTable`-Snapshots. Fuer jeden Snapshot werden geprueft:
+## VUSK1
 
-- Exportidentitaet aus Subjekttyp, Aggregatstufe und Selektor;
-- exakte, bis zum jeweiligen Horizont beruehrte `layer_id`-Folge aus
-  `pr91-v1`;
-- Header passend zu VU oder VN;
-- lueckenlose Periodenfolge von 1 bis zur Snapshot-Grenze;
-- Vorhandensein aller kleineren Pflicht-Pruefpunkte;
-- exakte Gleichheit aller Zeilen im gemeinsamen Prefix ohne Toleranz.
+`VUSK1L5.DAT` bis `VUSK1L1.DAT` bleiben dieselbe Exportidentitaet
+`imsvusk1.dat`, Aggregatstufe IV, `selector_kind = all` und
+`selector_value = SK1`. Sie sind keine unterschiedlichen Aggregate oder
+Aggregatebenen.
 
-Ein 300er-Snapshot muss daher mit seinem 100er-Snapshot uebereinstimmen. Ein
-500er-Snapshot muss sowohl den 100er- als auch den 300er-Snapshot exakt als
-Prefix enthalten. PR92 stellt diesen Pruefer bereit, fuehrt aber noch keinen
-300-/500-Periodenlauf und keinen Vollfenstervergleich aus.
+| Referenz | Ergebniszeilen | Lauf | Lokale Perioden | Schicht |
+| --- | --- | ---: | --- | --- |
+| `VUSK1L5.DAT` | 1-100 | 1 | 1-100 | `wvemod2_archive` |
+| `VUSK1L4.DAT` | 101-200 | 2 | 1-100 | `vusk1l4_direct_04410ef` |
+| `VUSK1L3.DAT` | 201-300 | 3 | 1-100 | `wvemod2_archive` |
+| `VUSK1L2.DAT` | 301-400 | 4 | 1-100 | `wvemod2_archive` |
+| `VUSK1L1.DAT` | 401-500 | 5 | 1-100 | `wvemod2_archive` |
 
-## VUSK1-Grenze
+`VUSK1L4.DAT` bleibt wegen seiner abweichenden Herkunft
+`versioned_fixture_regression_only`. Der Vertrag behauptet weder eine
+gemeinsame historische Archivquelle noch identische Parameter der Laeufe.
 
-`imsvusk1.dat` bleibt eine Exportidentitaet auf Aggregatstufe IV mit
-`selector_kind = all` und `selector_value = SK1`. Die fuenf Dateien
-`VUSK1L5.DAT` bis `VUSK1L1.DAT` sind ihre aufeinanderfolgenden
-100-Perioden-Zeitfenster 1-100 bis 401-500, keine unterschiedlichen Aggregate
-oder Aggregatebenen.
+## Moderne Langzeitpruefungen
 
-Die Herkunftsschichten bleiben trotzdem getrennt:
+Die vorhandenen modernen 300- und 500-Perioden-Runner bleiben als
+deterministische Stresstests erhalten. Ihre exakten Prefixpruefungen sind
+technisch sinnvoll, stellen aber keinen historischen Wiederholungsvergleich
+dar. Ein moderner 500-Perioden-Zustand darf deshalb nicht mehr unmittelbar
+gegen fuenf historische 100-Perioden-Laeufe bewertet werden.
 
-- `VUSK1L5`, `VUSK1L3`, `VUSK1L2` und `VUSK1L1` tragen
-  `wvemod2_archive` mit `archive_content_match_only`;
-- `VUSK1L4` traegt die isolierte Schicht `vusk1l4_direct_04410ef` mit
-  `versioned_fixture_regression_only`.
+## Zufallszahlen
 
-Der 500er-Horizont verbindet diese Fenster nur technisch mit derselben
-berechneten Exportidentitaet. Er belegt weder eine gemeinsame historische
-Archivquelle noch einen gemeinsamen historischen Lauf.
+Der historische Seed wurde aus Datum und Uhrzeit abgeleitet. Die Zahlenfolge
+hing zusaetzlich vom plattformabhaengigen C-`rand()` ab. Der Vertrag verlangt
+daher keine Reproduktion der historischen RNG-Folge. Verbindlich sind:
 
-Fuer `imsvusk1.dat` traegt der 100er-Snapshot deshalb nur
-`wvemod2_archive`. Ab dem 300er-Snapshot werden `wvemod2_archive` und
-`vusk1l4_direct_04410ef` gemeinsam, aber weiterhin als getrennte Schichten,
-ausgewiesen.
+- reproduzierbare moderne Laeufe mit expliziten Seeds;
+- korrekte Verteilungen und Ziehstellen der portierten Fachlogik;
+- fachliche Invarianten, Zustandsuebergaenge und Aggregatdefinitionen;
+- historische Zahlenvergleiche nur diagnostisch und mit bekannter
+  Parameterschicht.
 
 ## Aussagegrenzen
 
-Der Status `ready` bedeutet ausschliesslich, dass Zielmenge, Horizonte,
-Referenzschichten und Prefix-Regeln widerspruchsfrei gebunden sind. Er bedeutet
-nicht, dass berechnete Tabellen vorliegen oder historische Werte treffen.
+`ready` bedeutet, dass 15 Exportidentitaeten, 19 Referenzziele und 6.300
+Ergebniszeilen widerspruchsfrei auf 100-Perioden-Laeufe abgebildet sind. Es
+bedeutet keine historische Vollgleichheit, keine historische RNG-Gleichheit,
+keine gemeinsame Laufidentitaet und keine fachliche Produktionsfreigabe.
 
-Insbesondere behauptet PR92 keine neue Fachlogik, keine Seed- oder
-Laufidentitaet, keine historische Vollgleichheit und keine fachliche
-Produktionsfreigabe. Der bestehende Befund `keep_blocked` bleibt unberuehrt.
-
-## Reproduzierbarer Aufruf
+Der Aufruf ist read-only und startet keine Simulation:
 
 ```powershell
 $env:PYTHONPATH = "python_port"
 python -m ims.api.historical_horizon_contract --root .
 ```
 
-Der Aufruf liest nur versionierte Vertrage und Referenzen. Die Prefix-Pruefung
-wird separat von Tests mit vorberechneten oder synthetischen Tabellen
-aufgerufen.
-
 ## Naechster Schritt
 
-PR93 hat `imsvu014.dat` und `imsvnsk1.dat` als die zwei vollstaendigen
-100-Perioden-Ziele streng an den Produktionskorpusbericht gebunden. Der
-Fortschritt betraegt 2/15 Tabellen und 200/6.300 Perioden; die Freigabe bleibt
-blockiert. PR94 hat den kontrollierten Zustand bis 300 erweitert und den
-Prefix 1-100 fuer alle 15 Tabellen exakt stabil gehalten. PR95 hat
-`imsvnr01.dat` und `imsvnr02.dat` als getrennte 300er-Regelfenster
-vollstaendig verglichen. PR96 hat den kontrollierten Zustand bis 500 erweitert
-und beide Prefixgrenzen 100 und 300 exakt stabil gehalten. PR97 hat die
-VU-SK1-Zeitfenster getrennt angebunden. PR98 bindet als Naechstes die vier
-VN-Regeltabellen 3-6 an.
+PR99 bindet `imsvnr03.dat` bis `imsvnr06.dat` als je fuenf getrennte
+100-Perioden-Laeufe an. Auch dort bleiben Einzelwertabweichungen diagnostisch;
+die Freigabe soll spaeter auf Struktur-, Invarianten- und
+Mehrlaufvergleichen beruhen.

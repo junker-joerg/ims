@@ -20,6 +20,14 @@ wertet keine Begleitdatei inhaltlich aus und ordnet keine Archive demselben
 historischen Lauf zu. Er behauptet weder historische Vollgleichheit noch eine
 Produktionsfreigabe.
 
+## Korrigierte Nummernlesart ab PR98
+
+Die in den Tabellen ausgewiesenen Bereiche `1-300`, `1-500` und `1-3000`
+sind fortlaufende Ergebnisnummern, keine Lauflaengen. Bei 100 Perioden je
+Lauf entsprechen sie drei, fuenf beziehungsweise dreissig getrennten
+Simulationslaeufen. Die Manifestdaten bleiben unveraendert; nur ihre
+fachliche Interpretation wurde korrigiert.
+
 ## Ergebnis
 
 - Status: `ok`, sieben von sieben Archiven lesbar, keine Strukturfehler.

@@ -1,5 +1,10 @@
 # Herkunfts- und Erzeugungswegkarte der Kernexporte
 
+> Korrektur ab PR98: Bereiche `1-300` und `1-500` bezeichnen kumulierte
+> Ergebniszeilen aus drei beziehungsweise fuenf 100-Perioden-Laeufen. Sie sind
+> keine historischen 300-/500-Perioden-Horizonte. Moderne Langzeitrunner
+> bleiben davon getrennte Stresstests.
+
 Stand: 2026-08-25
 Berichtsvertrag: `pr71-v1`
 
@@ -157,14 +162,15 @@ damit abgeschlossen:
     die fachliche Freigabe erneut menschlich bewerten (erledigt, `pr86-v1`,
     Empfehlung `keep_blocked`).
 
-PR 87 schneidet die Folgephase in PR 88 bis PR 101. PR 88 bis PR 97 haben
+PR 87 schneidet die Folgephase in PR 88 bis PR 102. PR 88 bis PR 98 haben
 Archivmanifest, Koharenzmatrix, Laufmetadatenbefund, Referenzschicht-Vertrag
 und Horizontvertrag abgeschlossen, die ersten zwei 100er-Tabellen an den
 Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
 ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster vollstaendig
-verglichen. PR 98 bis PR 100 binden die verbleibenden berechneten Tabellen an
-ihre historische Pflichtgrenze 500; PR 101 bewertet den gemeinsamen
-6.300-Zeilen-Bericht. Nach PR 97 sind davon 4 PRs offen. Diese
+diagnostisch verglichen. PR 99 bis PR 101 binden die verbleibenden berechneten Tabellen an
+je fuenf historische 100-Perioden-Laeufe; PR 102 bewertet den gemeinsamen
+6.300-Zeilen-Bericht. Nach der PR98-Korrektur sind drei Anschluss-PRs und ein
+Abschluss-PR offen. Diese
 Mindestfolge enthaelt keine heute noch unbekannten fachlichen Korrekturen.
 
 ## PR-71-Pruefnachweis

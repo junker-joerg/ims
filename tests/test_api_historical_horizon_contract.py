@@ -1,6 +1,9 @@
 import json
 from pathlib import Path
 
+import pytest
+
+import ims.api.historical_horizon_contract as contract_module
 from ims.api.historical_horizon_contract import (
     CONTRACT_VERSION,
     LayeredExportTableSnapshot,
@@ -20,13 +23,19 @@ from ims.model.agrsich_export import (
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
-def test_horizon_contract_freezes_fifteen_exports_and_three_horizons() -> None:
+def test_repeat_contract_freezes_fifteen_exports_and_three_row_counts() -> None:
     payload = build_historical_horizon_contract(root=REPO_ROOT).to_dict()
 
     assert payload["status"] == "ready"
     assert payload["contract_version"] == CONTRACT_VERSION
     assert payload["configured_horizons"] == [100, 300, 500]
+    assert payload["configured_result_row_counts"] == [100, 300, 500]
     assert payload["prefix_checkpoints"] == [100, 300]
+    assert payload["historical_periods_per_run"] == 100
+    assert payload["historical_single_run_max_periods"] == 100
+    assert payload["historical_result_numbering_formula"] == (
+        "(run_index - 1) * run_period_count + local_period"
+    )
     assert payload["required_export_count"] == 15
     assert payload["reference_target_count"] == 19
     assert payload["required_period_count"] == 6300
@@ -34,7 +43,8 @@ def test_horizon_contract_freezes_fifteen_exports_and_three_horizons() -> None:
     assert payload["reference_layer_status"] == "warning"
     assert payload["reference_layer_gate_decision"] == "go_separate_reference_tests"
     assert payload["issues"] == []
-    assert payload["prefix_validation_available"] is True
+    assert payload["prefix_validation_available"] is False
+    assert payload["modern_extension_prefix_validation_available"] is True
     assert payload["prefix_validation_performed"] is False
     assert payload["full_window_comparison_performed"] is False
     assert payload["legacy_bundle_changed"] is False
@@ -42,11 +52,13 @@ def test_horizon_contract_freezes_fifteen_exports_and_three_horizons() -> None:
     assert payload["runner_started"] is False
     assert payload["simulation_performed"] is False
     assert payload["historical_run_identity_claimed"] is False
+    assert payload["historical_300_500_single_run_claimed"] is False
+    assert payload["historical_rng_reproduction_required"] is False
     assert payload["historical_full_equality_claimed"] is False
     assert payload["production_release_approved"] is False
 
 
-def test_horizon_contract_assigns_expected_exports_to_each_horizon() -> None:
+def test_repeat_contract_assigns_expected_exports_to_each_result_row_count() -> None:
     contract = build_historical_horizon_contract(root=REPO_ROOT)
     exports_by_horizon = {
         horizon: {
@@ -74,12 +86,13 @@ def test_horizon_contract_assigns_expected_exports_to_each_horizon() -> None:
     }
 
 
-def test_horizon_contract_keeps_vusk1_windows_and_layers_separate() -> None:
+def test_repeat_contract_maps_vusk1_blocks_to_five_runs_and_keeps_layers_separate() -> None:
     contract = build_historical_horizon_contract(root=REPO_ROOT)
     entry = _entry(contract, "imsvusk1.dat")
 
     assert entry.identity == ("insurer", "IV", "all", "SK1")
     assert entry.required_horizon == 500
+    assert entry.required_run_count == 5
     assert entry.prefix_checkpoints == (100, 300)
     assert entry.layer_ids == ("wvemod2_archive", "vusk1l4_direct_04410ef")
     assert dict(entry.horizon_layer_ids) == {
@@ -101,6 +114,10 @@ def test_horizon_contract_keeps_vusk1_windows_and_layers_separate() -> None:
     assert [
         (item.period_start, item.period_end) for item in entry.reference_slices
     ] == [(1, 100), (101, 200), (201, 300), (301, 400), (401, 500)]
+    assert [item.run_start for item in entry.reference_slices] == [1, 2, 3, 4, 5]
+    assert [item.run_end for item in entry.reference_slices] == [1, 2, 3, 4, 5]
+    assert all(item.local_period_start == 1 for item in entry.reference_slices)
+    assert all(item.local_period_end == 100 for item in entry.reference_slices)
     assert entry.reference_slices[1].coherence_class == (
         "contradictory_or_unresolved"
     )
@@ -123,6 +140,8 @@ def test_prefix_validation_accepts_exact_100_300_500_snapshots() -> None:
     assert payload["one_hundred_prefix_comparison_count"] == 2
     assert payload["prefix_stable"] is True
     assert payload["comparison_is_exact"] is True
+    assert payload["mode"] == "modern_extension_prefix_validation"
+    assert payload["historical_repeat_relationship_claimed"] is False
     assert payload["tolerance_applied"] is False
     assert payload["issues"] == []
     assert payload["execution_performed"] is False
@@ -236,12 +255,29 @@ def test_horizon_contract_rejects_missing_or_unsorted_horizons() -> None:
     }
 
 
+def test_repeat_contract_rejects_missing_historical_numbering_anchor(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        contract_module,
+        "HISTORICAL_RESULT_NUMBERING_NEEDLE",
+        "missing-result-numbering-formula",
+    )
+
+    payload = build_historical_horizon_contract(root=REPO_ROOT).to_dict()
+
+    assert payload["status"] == "error"
+    assert "historical_result_numbering_anchor_missing" in {
+        issue["code"] for issue in payload["issues"]
+    }
+
+
 def test_horizon_contract_cli_is_read_only(capsys) -> None:
     exit_code = main(["--root", str(REPO_ROOT)])
     payload = json.loads(capsys.readouterr().out)
 
     assert exit_code == 0
-    assert payload["mode"] == "historical_horizon_contract"
+    assert payload["mode"] == "historical_repeat_corpus_contract"
     assert payload["status"] == "ready"
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False

@@ -1,5 +1,9 @@
 # Historischer Referenzschicht-Vertrag
 
+> Korrektur ab PR98: Die Bereiche 1-300 und 1-500 sind kumulierte
+> Ergebnisnummern aus drei beziehungsweise fuenf 100-Perioden-Laeufen, keine
+> historischen Laufhorizonte. Die Herkunftsschichten bleiben unveraendert.
+
 Stand: 2026-08-31
 Vertrag: `pr91-v1`
 
@@ -78,10 +82,10 @@ bleiben Seed, Scheduler-, RNG- und konkrete Laufidentitaet offen.
 | `IMSVUVK2.DAT` | `619fc2e5624ab575c9b73ab0891ab88b1883317efbab262b726f1237f0cc3b3d` | `wvemod1_archive` | `IMSVUVK2.DAT` | `exact_archive_member` | `byte_exact` | 1-500 |
 | `IMSVUVK3.DAT` | `ed280b96d3f6daf4cf64de88c8de17b79b595d7ec928f8ca2df0ef0635a595bc` | `wvemod1_archive` | `IMSVUVK3.DAT` | `exact_archive_member` | `byte_exact` | 1-500 |
 
-Alle fuenf `VUSK1L1-5`-Ziele bleiben Zeitfenster derselben Exportidentitaet
+Alle fuenf `VUSK1L1-5`-Ziele bleiben Laufabschnitte derselben Exportidentitaet
 `IMSVUSK1.DAT`, desselben `SK1/all`-Aggregats und derselben Aggregatstufe IV.
 Die Quellschichten sind trotzdem nicht zu einer koharenten historischen
-500-Perioden-Datei zusammengefuehrt.
+Datei mit 500 laufuebergreifend nummerierten Ergebniszeilen zusammengefuehrt.
 
 ## Sondergrenze VUSK1L4
 
@@ -97,19 +101,20 @@ PR 89 hat ausserdem gegen alle sieben `IMSVUSK1.DAT`-Archiveintraege
 Darum bleibt der historische Lauf- und Archivursprung offen. Die Datei darf
 als stabile versionierte Fixture-Regression fuer Perioden 101-200 verwendet
 werden. Sie darf die Archivquelle der anderen vier Fenster nicht erben und
-keine koharente historische 500-Perioden-Reihe belegen. Eine spaetere bessere
+keine kohaerente historische Fuenf-Lauf-Reihe belegen. Eine spaetere bessere
 Quelle darf nur in einem eigenen Review-PR mit neuem Hash- und Fensterbeleg
 entschieden werden.
 
 ## Folgen fuer die Vollfensterphase
 
-PR 93 bis PR 101 duerfen unter folgenden Grenzen fortfahren; PR 93 bis PR 97
+PR 93 bis PR 102 duerfen unter folgenden Grenzen fortfahren; PR 93 bis PR 97
 sind inzwischen unter genau diesen Grenzen umgesetzt:
 
 1. Jede Auswertung traegt `layer_id` und zulaessige Aussage weiter.
 2. Ergebnisse verschiedener Layer werden getrennt berichtet.
 3. PR 97 vergleicht die berechnete `imsvusk1.dat` gegen fuenf einzelne
-   Fenster (umgesetzt); es behauptet keine gemeinsame historische Archivquelle.
+   Laufabschnitte (in PR 98 korrigiert); es behauptet keine gemeinsame
+   historische Archivquelle.
 4. `VUSK1L4.DAT` zaehlt nur als `versioned_fixture_regression_only`.
 5. Keine Layerkombination darf `same_run_proven`, historische Vollgleichheit
    oder Produktionsfreigabe setzen.
@@ -127,14 +132,16 @@ Exitcode 0.
 
 ## Naechster Schritt
 
-PR 92 hat den Horizontvertrag 100/300/500 als `pr92-v1` umgesetzt. Er stellt
-den exakten Prefix-Pruefer bereit und laesst die vier Referenzschichten
-durchgehend getrennt. Noch wird kein 300-/500-Vollvergleich ausgefuehrt.
+PR 98 hat den Ergebniszeilenvertrag 100/300/500 als `pr98-v1` korrigiert. Er
+laesst die vier Referenzschichten durchgehend getrennt und ordnet die Zeilen
+drei beziehungsweise fuenf 100-Perioden-Laeufen zu. Der exakte Prefix-Pruefer
+bleibt ein davon getrennter moderner Stabilitaetstest.
 PR93 hat die zwei vollstaendigen 100er-Tabellen streng an den
 Produktionskorpusbericht gebunden. PR94 hat den kontrollierten Zustand bis
 Periode 300 mit stabilem Prefix 1-100 erweitert. PR95 hat die beiden
-300er-Regelfenster aus `zins000_archive` getrennt und vollstaendig verglichen;
+300er-Regelzeilen aus `zins000_archive` getrennt und diagnostisch verglichen;
 ihre Laufidentitaet bleibt unbewiesen. PR96 hat den kontrollierten modernen
 Zustand bis 500 erweitert und beide Prefixgrenzen exakt stabil gehalten. PR97
-hat die VU-SK1-Zeitfenster getrennt angebunden. PR98 bindet als Naechstes die
+hat die VU-SK1-Laufabschnitte getrennt angebunden. PR98 hat die Zeilen als
+getrennte 100er-Laeufe korrigiert. PR99 bindet als Naechstes die
 vier VN-Regeltabellen 3-6 an.
