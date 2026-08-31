@@ -111,7 +111,8 @@ oder als Beleg eines gemeinsamen Laufs umgedeutet werden.
 
 ## Naechster Schritt
 
-PR 90 wertet `IMSREPOR.DAT` sowie archivlokale Modell-, Definitions- und
-Parameterdateien aus. Metadaten werden nur ihrem eigenen Archiv zugeordnet;
-insbesondere duerfen Seed- oder Laufparameter nicht auf `ZINS000`, `WVEMOD1`
-oder `WVEMOD2` uebertragen werden, wenn dort kein eigener Beleg vorliegt.
+PR 90 hat `IMSREPOR.DAT` und alle archivlokalen Begleitdateien ausgewertet.
+Der einzige direkte Bericht gehoert zu `VDEFMD5A.ZIP`; `ZINS000`, `WVEMOD1`
+und `WVEMOD2` enthalten keinen eigenen Beleg. Seed oder Laufparameter werden
+nicht uebertragen. PR 91 entscheidet als naechstes fuer jedes Ziel den
+expliziten Referenzschicht-Vertrag und das Stop/Go-Tor der Vollfensterphase.

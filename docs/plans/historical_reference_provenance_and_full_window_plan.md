@@ -2,7 +2,7 @@
 
 Stand: 2026-08-31
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 89
+Umsetzungsstand: PR 90
 
 ## Ziel
 
@@ -102,11 +102,16 @@ betroffenen Ziele getrennt oder neu belegt sind.
    fuenf als tokennormalisierte Fenster und `VUSK1L4.DAT` als
    `same_name_divergent`. Der Befund steht in
    `docs/migration/historical_reference_archive_coherence.md`.
-4. **PR 90: Laufmetadaten und Begleitdateien auswerten.**
+4. **PR 90: Laufmetadaten und Begleitdateien auswerten (umgesetzt).**
    `IMSREPOR.DAT` sowie vorhandene Modell-, Definitions- und Parameterdateien
    archivlokal zuordnen. Seed oder Laufparameter duerfen nicht zwischen
    Archiven uebertragen werden. Fehlende Metadaten bleiben ein eigener
-   Befund, kein impliziter Standardwert.
+   Befund, kein impliziter Standardwert. Der Vertrag `pr90-v1` findet genau
+   einen direkten Laufbericht in `VDEFMD5A.ZIP`, keine separaten Modell-,
+   Definitions- oder Parameterdateien und sechs Archive ohne direkte
+   Laufmetadaten. Der Report belegt Seed `5616` sowie drei beobachtete
+   Sequenzen `1-100` nur fuer sein eigenes Archiv. Der Befund steht in
+   `docs/migration/historical_archive_run_metadata.md`.
 5. **PR 91: Referenzschicht-Vertrag entscheiden.**
    Fuer jedes der 19 Ziele `layer_id`, Quellarchiv oder Direktquelle,
    Hashbezug, Koharenzklasse und zulaessige Aussage einfrieren. Das bestehende
@@ -164,20 +169,20 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 und PR 89 haben Archivmanifest und
-Referenzkohaerenz abgeschlossen. Danach sind **12 geplante PRs** bis zum
-ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht offen: zwei
-Provenienz-PRs und zehn
+PR 87 ist der Planungs-PR; PR 88 bis PR 90 haben Archivmanifest,
+Referenzkohaerenz und archivlokale Laufmetadaten abgeschlossen. Danach sind
+**11 geplante PRs** bis zum ersten gemeinsamen
+6.300-Zeilen-Vollfensterbericht offen: ein Provenienz-PR und zehn
 Vollfenster-/Bewertungs-PRs.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 90 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 91 bis PR 101:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
-| Python-Produktionscode | 900-1.800 LoC |
-| Tests | 1.000-2.000 LoC |
-| Vertraege, Fixtures und Dokumentation | 1.200-2.600 LoC |
-| Gesamt | 3.100-6.400 LoC |
+| Python-Produktionscode | 600-1.400 LoC |
+| Tests | 800-1.700 LoC |
+| Vertraege, Fixtures und Dokumentation | 900-2.200 LoC |
+| Gesamt | 2.300-5.300 LoC |
 
 Die Schaetzung umfasst keine noch unbekannten fachlichen Korrektur-PRs fuer
 Akkumulatoren, Scheduler, RNG, Versicherungsgrad oder `Ev`-Felder. Solche PRs

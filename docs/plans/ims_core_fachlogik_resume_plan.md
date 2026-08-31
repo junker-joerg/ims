@@ -675,16 +675,21 @@ Aktualisierte grobe Restplanung:
 - PR 89 hat die 19 versionierten Ziele gegen 92 gleichnamige
   Archivkandidaten geprueft: 13 bytegenaue Eintraege, fuenf
   tokennormalisierte Fenster und ein divergentes `VUSK1L4`-Fenster;
-- PR 90 ist der naechste Umsetzungsschritt: die archivlokale Auswertung von
-  Laufmetadaten und Begleitdateien ohne Seed-Uebertragung;
+- PR 90 hat den einzigen direkten Laufbericht ausschliesslich
+  `VDEFMD5A.ZIP` zugeordnet: Seed `5616`, drei beobachtete Sequenzen `1-100`,
+  keine separaten Modell-/Definitions-/Parameterdateien und keine
+  Metadatenuebertragung auf die sechs Archive ohne eigenen Bericht;
+- PR 91 ist der naechste Umsetzungsschritt: der explizite
+  Referenzschicht-Vertrag fuer alle 19 Ziele und das Stop/Go-Tor fuer die
+  Vollfensterphase;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 89 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `12` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. Davon klaeren zwei zuerst die Referenzprovenienz. Erst
+Nach PR 90 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `11` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. Davon schliesst PR 91 zuerst die Referenzprovenienz. Erst
 danach duerfen zehn PRs die 100-/300-/500-Fenster und den Abschlussbericht
 schliessen. Scheduler-, RNG-, Akkumulator- oder Zustandsfunde koennen weitere
 kleine Slices erfordern; die Zahl ersetzt keine Vollgleichheitspruefung.

@@ -30,7 +30,8 @@ Produktionsfreigabe.
 - Alle 64 Kerneintraege haben den erwarteten VU- beziehungsweise VN-Header,
   numerische Zeilen und ein streng aufsteigendes, lueckenloses Periodenfenster.
 - Ein Metadatenkandidat wurde nur ueber den Dateinamen erkannt:
-  `VDEFMD5A.ZIP/IMSREPOR.DAT`. Inhaltliche Auswertung folgt getrennt in PR 90.
+  `VDEFMD5A.ZIP/IMSREPOR.DAT`. PR 90 hat ihn anschliessend ausschliesslich
+  archivlokal ausgewertet.
 
 Erwartete Header:
 
@@ -149,8 +150,8 @@ Archive sowie die Nicht-Extraktionsgrenze. Sie benoetigen `incomming/` nicht.
 ## Naechster Schritt
 
 PR 89 hat auf den beobachteten Hash- und Fensterdaten eine getrennte
-Referenz-zu-Archiv-Koharenzmatrix aufgebaut. Die 19 versionierten Referenzen
-werden in `historical_reference_archive_coherence.md` byteweise und
-tokennormalisiert eingeordnet; `VUSK1L1-5` bleiben fuenf Zeitfenster desselben
-`SK1/all`-Aggregats auf Stufe IV. PR 90 wertet als naechstes Laufmetadaten und
-Begleitdateien archivlokal aus.
+Referenz-zu-Archiv-Koharenzmatrix aufgebaut. PR 90 hat den einzigen direkten
+Laufbericht ausschliesslich `VDEFMD5A.ZIP` zugeordnet und sechs Archive ohne
+Laufmetadaten festgehalten. PR 91 entscheidet als naechstes den
+Referenzschicht-Vertrag; `VUSK1L1-5` bleiben dabei fuenf Zeitfenster desselben
+`SK1/all`-Aggregats auf Stufe IV.

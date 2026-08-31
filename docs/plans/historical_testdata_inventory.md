@@ -224,3 +224,17 @@ Der neue Plan behandelt deshalb `same_run_proven`, `archive_family_only`,
 `mixed_reference_layers` und `contradictory_or_unresolved` als getrennte
 Ergebnisse. PR 88 beginnt mit einem read-only Archivmanifest. Lokale Dateien
 werden dabei weder importiert noch versioniert.
+
+## PR-90-Laufmetadatenbefund
+
+Der einzige direkte Laufbericht der sieben Archive liegt in
+`VDEFMD5A.ZIP/IMSREPOR.DAT`. Er belegt archivlokal Seed `5616`, 25 VU, 200 VN
+und drei beobachtete, jeweils zusammenhaengende Periodensequenzen `1-100`.
+Die wiederholten Periodennummern werden nicht als ein fortlaufender
+300-Perioden-Lauf oder als drei fachlich bestimmte Wiederholungen gedeutet.
+
+Die anderen sechs Archive enthalten ausschliesslich `IMSV*.DAT`-Ausgaben und
+keine separaten Modell-, Definitions- oder Parameterdateien. Insbesondere
+haben `ZINS000.ZIP`, `WVEMOD1.ZIP` und `WVEMOD2.ZIP` keinen eigenen
+Laufbericht. Seed und Initialisierungswerte aus `VDEFMD5A.ZIP` werden deshalb
+nicht auf die in PR 89 ausgewaehlten Referenzquellen uebertragen.

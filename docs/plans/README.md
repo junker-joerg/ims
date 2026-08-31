@@ -78,8 +78,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   vier Provenienz-PRs, gestaffelte 100-/300-/500-Vollfenster und den
   abschliessenden 6.300-Zeilen-Bericht ohne Vollgleichheitsbehauptung; PR 88
   hat das read-only Archivmanifest fuer sieben ZIPs umgesetzt, PR 89 die
-  Referenz-zu-Archiv-Koharenzmatrix. PR 90 folgt mit der archivlokalen
-  Auswertung von Laufmetadaten und Begleitdateien.
+  Referenz-zu-Archiv-Koharenzmatrix und PR 90 die archivlokale Auswertung von
+  Laufmetadaten und Begleitdateien. PR 91 entscheidet als naechstes den
+  Referenzschicht-Vertrag.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

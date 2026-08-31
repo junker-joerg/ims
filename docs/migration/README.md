@@ -117,5 +117,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vdefmd6_core_export_review.md`: PR-86-Gesamtbewertung aller 15
   Kernexportidentitaeten fuer Perioden 1-100 mit Abweichungsklassen,
   Vollfenstergrenze und Empfehlung `keep_blocked`
+- `historical_archive_run_metadata.md`: PR-90-Auswertung des einzigen
+  direkten `IMSREPOR.DAT`, sechs Archive ohne Laufmetadaten und die gesperrte
+  archivuebergreifende Seed-/Parameteruebertragung
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
