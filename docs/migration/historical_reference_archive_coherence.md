@@ -114,5 +114,6 @@ oder als Beleg eines gemeinsamen Laufs umgedeutet werden.
 PR 90 hat `IMSREPOR.DAT` und alle archivlokalen Begleitdateien ausgewertet.
 Der einzige direkte Bericht gehoert zu `VDEFMD5A.ZIP`; `ZINS000`, `WVEMOD1`
 und `WVEMOD2` enthalten keinen eigenen Beleg. Seed oder Laufparameter werden
-nicht uebertragen. PR 91 entscheidet als naechstes fuer jedes Ziel den
-expliziten Referenzschicht-Vertrag und das Stop/Go-Tor der Vollfensterphase.
+nicht uebertragen. PR 91 hat fuer alle 19 Ziele vier getrennte Schichten und
+das Tor `go_separate_reference_tests` eingefroren. PR 92 bereitet als
+naechstes den Horizontvertrag 100/300/500 vor, noch ohne Vollvergleich.

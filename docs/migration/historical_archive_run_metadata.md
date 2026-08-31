@@ -101,8 +101,11 @@ benoetigen `incomming/` nicht.
 
 ## Naechster Schritt
 
-PR 91 entscheidet fuer jedes der 19 Referenzziele den expliziten
-Referenzschicht-Vertrag. Der PR-90-Befund erlaubt fuer die ausgewaehlten
-Quellen keine Klasse `same_run_proven` allein aus dem vorhandenen Report.
-Das Legacy-Bundle wird erst nach einem getrennten, belegten Entscheid
-geaendert. Bis dahin bleibt die Vollfensterphase gesperrt.
+PR 91 hat fuer jedes der 19 Referenzziele den expliziten
+Referenzschicht-Vertrag eingefroren. Der PR-90-Befund erlaubt fuer die
+ausgewaehlten Quellen weiterhin keine Klasse `same_run_proven`;
+`VUSK1L4.DAT` bleibt als eigene ungeklaerte Direktreferenz isoliert. Das Tor
+`go_separate_reference_tests` erlaubt PR 92, den Horizontvertrag
+vorzubereiten. Das Legacy-Bundle wird erst nach einem getrennten, belegten
+Entscheid geaendert; PR 91 hat keine solche Aenderung vorgenommen. Ein
+gemeinsamer historischer Lauf bleibt weiterhin unbelegt.

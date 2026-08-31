@@ -120,5 +120,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `historical_archive_run_metadata.md`: PR-90-Auswertung des einzigen
   direkten `IMSREPOR.DAT`, sechs Archive ohne Laufmetadaten und die gesperrte
   archivuebergreifende Seed-/Parameteruebertragung
+- `historical_reference_layer_contract.md`: PR-91-Vertrag fuer alle 19 Ziele
+  in vier getrennten Referenzschichten, mit isolierter `VUSK1L4.DAT` und dem
+  Tor `go_separate_reference_tests`
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

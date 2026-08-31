@@ -238,3 +238,19 @@ keine separaten Modell-, Definitions- oder Parameterdateien. Insbesondere
 haben `ZINS000.ZIP`, `WVEMOD1.ZIP` und `WVEMOD2.ZIP` keinen eigenen
 Laufbericht. Seed und Initialisierungswerte aus `VDEFMD5A.ZIP` werden deshalb
 nicht auf die in PR 89 ausgewaehlten Referenzquellen uebertragen.
+
+## PR-91-Referenzschichtvertrag
+
+Der Vertrag `pr91-v1` ordnet alle 19 versionierten Ziele vier getrennten
+Schichten zu. 18 Ziele sind nur `archive_family_only`: zwei Ziele stammen aus
+dem hashgebundenen Archiv `ZINS000.ZIP`, zwoelf aus `WVEMOD1.ZIP` und vier
+`VUSK1`-Fenster aus `WVEMOD2.ZIP`. Keine dieser Schichten ist als gemeinsamer
+historischer Lauf belegt.
+
+`VUSK1L4.DAT` bleibt als eigene versionierte Direktreferenz
+`contradictory_or_unresolved`. Sie darf nur fuer getrennte Fixture-
+Regressionen verwendet werden und erbt weder die Archivquelle noch
+Laufmetadaten der anderen vier `VUSK1`-Fenster. Alle fuenf Dateien bleiben
+Zeitfenster desselben `SK1/all`-Aggregats auf Aggregatstufe IV. Das Tor
+`go_separate_reference_tests` erlaubt PR 92, den Horizontvertrag vorzubereiten;
+es belegt keine historische Vollgleichheit oder Produktionsfreigabe.

@@ -164,21 +164,20 @@ eine Roadmap zu einem spaeteren, belegten Produktionsfreigabestand.
 ## Grobe Anzahl
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant den daraus
-abgeleiteten Provenienz- und Vollfensterblock; PR 88 bis PR 90 haben das
-read-only Archivmanifest, die Referenzkohaerenz und die archivlokale
-Laufmetadatenauswertung umgesetzt.
+abgeleiteten Provenienz- und Vollfensterblock; PR 88 bis PR 91 haben das
+read-only Archivmanifest, die Referenzkohaerenz, die archivlokale
+Laufmetadatenauswertung und den Referenzschicht-Vertrag umgesetzt.
 
-Nach PR 90 sind `11` PRs bis zum ersten gemeinsamen
-6.300-Zeilen-Vollfensterbericht vorgesehen: PR 91 fuer den
-Referenzschicht-Vertrag, PR 92 bis PR 100 fuer die gestaffelten
-100-/300-/500-Fenster und PR 101 fuer den Abschlussbericht. Unbekannte
-fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
+Nach PR 91 sind `10` PRs bis zum ersten gemeinsamen
+6.300-Zeilen-Vollfensterbericht vorgesehen: PR 92 bis PR 100 fuer die
+gestaffelten 100-/300-/500-Fenster und PR 101 fuer den Abschlussbericht.
+Unbekannte fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
 
 ## Naechster Schritt
 
-PR 91 friert als naechstes fuer alle 19 Ziele den Referenzschicht-Vertrag ein.
-Der PR-90-Befund ordnet den einzigen direkten Laufbericht ausschliesslich
-`VDEFMD5A.ZIP` zu; fuer die ausgewaehlten Referenzquellen bleibt konkrete
-Laufidentitaet unbelegt. Erst nach PR 91 darf die Vollfensterphase beginnen.
-Der verbindliche Ablauf sowie die PR-88-bis-PR-90-Befunde stehen in
+PR 92 bereitet als naechstes den Horizontvertrag 100/300/500 vor. Er muss die
+Ergebnisse 1-100 unveraendert halten, Prefix-Stabilitaet pruefen und die vier
+in `pr91-v1` eingefrorenen Referenzschichten getrennt weiterfuehren. Noch wird
+kein 300-/500-Vollvergleich ausgefuehrt. Der verbindliche Ablauf sowie die
+PR-88-bis-PR-91-Befunde stehen in
 `docs/plans/historical_reference_provenance_and_full_window_plan.md`.

@@ -152,6 +152,7 @@ Archive sowie die Nicht-Extraktionsgrenze. Sie benoetigen `incomming/` nicht.
 PR 89 hat auf den beobachteten Hash- und Fensterdaten eine getrennte
 Referenz-zu-Archiv-Koharenzmatrix aufgebaut. PR 90 hat den einzigen direkten
 Laufbericht ausschliesslich `VDEFMD5A.ZIP` zugeordnet und sechs Archive ohne
-Laufmetadaten festgehalten. PR 91 entscheidet als naechstes den
-Referenzschicht-Vertrag; `VUSK1L1-5` bleiben dabei fuenf Zeitfenster desselben
-`SK1/all`-Aggregats auf Stufe IV.
+Laufmetadaten festgehalten. PR 91 hat anschliessend vier getrennte
+Referenzschichten fuer alle 19 Ziele eingefroren. PR 92 bereitet als naechstes
+den Horizontvertrag 100/300/500 vor; `VUSK1L1-5` bleiben dabei fuenf
+Zeitfenster desselben `SK1/all`-Aggregats auf Stufe IV.

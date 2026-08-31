@@ -2,7 +2,7 @@
 
 Stand: 2026-08-31
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 90
+Umsetzungsstand: PR 91
 
 ## Ziel
 
@@ -112,17 +112,23 @@ betroffenen Ziele getrennt oder neu belegt sind.
    Laufmetadaten. Der Report belegt Seed `5616` sowie drei beobachtete
    Sequenzen `1-100` nur fuer sein eigenes Archiv. Der Befund steht in
    `docs/migration/historical_archive_run_metadata.md`.
-5. **PR 91: Referenzschicht-Vertrag entscheiden.**
-   Fuer jedes der 19 Ziele `layer_id`, Quellarchiv oder Direktquelle,
-   Hashbezug, Koharenzklasse und zulaessige Aussage einfrieren. Das bestehende
-   Kernbundle wird nur nach separatem, belegtem Entscheid geaendert. Dieses
-   PR setzt das Stop/Go-Tor fuer die Vollfensterphase.
+5. **PR 91: Referenzschicht-Vertrag entscheiden (umgesetzt).**
+   Der Vertrag `pr91-v1` friert fuer jedes der 19 Ziele `layer_id`,
+   Quellarchiv oder Direktquelle, Hashbezug, Koharenzklasse und zulaessige
+   Aussage ein. 18 Ziele sind `archive_family_only`; `VUSK1L4.DAT` bleibt
+   als eigene Schicht `contradictory_or_unresolved` und darf nur fuer
+   versionierte Fixture-Regressionen verwendet werden. Das Tor lautet
+   `go_separate_reference_tests`: getrennte Vollfenstertests duerfen
+   vorbereitet werden, ein gemeinsamer historischer Lauf bleibt unbelegt.
+   Das Kernbundle wurde nicht geaendert. Der Befund steht in
+   `docs/migration/historical_reference_layer_contract.md`.
 
 ### Phase B: Kontrollierte Vollfenster
 
 6. **PR 92: Horizontvertrag 100/300/500 vorbereiten.**
    Periodengrenzen konfigurierbar machen, Prefix-Stabilitaet und identische
-   1-100-Ergebnisse vertraglich pruefen. Noch kein 300-/500-Vollvergleich.
+   1-100-Ergebnisse vertraglich pruefen. Jede Tabelle muss dabei ihre
+   `layer_id` aus `pr91-v1` mitfuehren. Noch kein 300-/500-Vollvergleich.
 7. **PR 93: bestehende 100-Perioden-Tabellen streng anbinden.**
    `imsvu014.dat` und `imsvnsk1.dat` als die zwei bereits vollstaendigen
    100er-Ziele an den Produktionskorpusbericht uebergeben. Erwarteter
@@ -139,8 +145,10 @@ betroffenen Ziele getrennt oder neu belegt sind.
     fuer 1-100 und 1-300 pruefen.
 11. **PR 97: VU-SK1-Zeitfenster anbinden.**
     Eine berechnete `imsvusk1.dat` mit 500 Perioden gegen `VUSK1L5` bis
-    `VUSK1L1` ausrichten. Erwarteter Fortschritt: 5/15 Tabellen und
-    1.300/6.300 Zielzeilen.
+    `VUSK1L1` als fuenf getrennte Referenztests ausrichten. `VUSK1L4.DAT`
+    bleibt dabei die isolierte Direktreferenz; es wird keine koharente
+    historische 500-Perioden-Archivquelle behauptet. Erwarteter Fortschritt:
+    5/15 Tabellen und 1.300/6.300 Zielzeilen.
 12. **PR 98: VN-Regeln 3-6 anbinden.**
     Vier 500er-Tabellen vollstaendig vergleichen. Erwarteter Fortschritt:
     9/15 Tabellen und 3.300/6.300 Zielzeilen.
@@ -169,20 +177,20 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 bis PR 90 haben Archivmanifest,
-Referenzkohaerenz und archivlokale Laufmetadaten abgeschlossen. Danach sind
-**11 geplante PRs** bis zum ersten gemeinsamen
-6.300-Zeilen-Vollfensterbericht offen: ein Provenienz-PR und zehn
-Vollfenster-/Bewertungs-PRs.
+PR 87 ist der Planungs-PR; PR 88 bis PR 91 haben Archivmanifest,
+Referenzkohaerenz, archivlokale Laufmetadaten und den getrennten
+Referenzschicht-Vertrag abgeschlossen. Danach sind **10 geplante PRs** bis
+zum ersten gemeinsamen 6.300-Zeilen-Vollfensterbericht offen: neun
+Vollfenster-PRs und ein Bewertungs-PR.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 91 bis PR 101:
+Verbleibende grobe Bruttoabschaetzung fuer PR 92 bis PR 101:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
-| Python-Produktionscode | 600-1.400 LoC |
-| Tests | 800-1.700 LoC |
-| Vertraege, Fixtures und Dokumentation | 900-2.200 LoC |
-| Gesamt | 2.300-5.300 LoC |
+| Python-Produktionscode | 400-1.100 LoC |
+| Tests | 600-1.400 LoC |
+| Vertraege, Fixtures und Dokumentation | 700-1.700 LoC |
+| Gesamt | 1.700-4.200 LoC |
 
 Die Schaetzung umfasst keine noch unbekannten fachlichen Korrektur-PRs fuer
 Akkumulatoren, Scheduler, RNG, Versicherungsgrad oder `Ev`-Felder. Solche PRs

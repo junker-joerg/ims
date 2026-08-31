@@ -679,20 +679,24 @@ Aktualisierte grobe Restplanung:
   `VDEFMD5A.ZIP` zugeordnet: Seed `5616`, drei beobachtete Sequenzen `1-100`,
   keine separaten Modell-/Definitions-/Parameterdateien und keine
   Metadatenuebertragung auf die sechs Archive ohne eigenen Bericht;
-- PR 91 ist der naechste Umsetzungsschritt: der explizite
-  Referenzschicht-Vertrag fuer alle 19 Ziele und das Stop/Go-Tor fuer die
-  Vollfensterphase;
+- PR 91 hat den expliziten Referenzschicht-Vertrag fuer alle 19 Ziele
+  umgesetzt: vier getrennte Schichten, 18 Ziele `archive_family_only`,
+  `VUSK1L4.DAT` als isolierte ungeklaerte Direktreferenz und das Tor
+  `go_separate_reference_tests`;
+- PR 92 ist der naechste Umsetzungsschritt: der Horizontvertrag 100/300/500
+  mit Prefix-Stabilitaet und durchgaengiger `layer_id`, noch ohne
+  300-/500-Vollvergleich;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 90 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `11` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollfensterbericht. Davon schliesst PR 91 zuerst die Referenzprovenienz. Erst
-danach duerfen zehn PRs die 100-/300-/500-Fenster und den Abschlussbericht
-schliessen. Scheduler-, RNG-, Akkumulator- oder Zustandsfunde koennen weitere
-kleine Slices erfordern; die Zahl ersetzt keine Vollgleichheitspruefung.
+Nach PR 91 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `10` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollfensterbericht. PR 92 bis PR 101 duerfen die 100-/300-/500-Fenster und den
+Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
+Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
+Zahl ersetzt keine Vollgleichheitspruefung.
 
 ## Grenzen
 
