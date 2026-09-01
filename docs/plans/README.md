@@ -91,6 +91,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   bindet die vier VN-Regeltabellen 3-6 an und hebt den kumulierten Stand auf
   9/15 Tabellen beziehungsweise 3.300/6.300 Ergebniszeilen. PR 100 fuehrt mit
   den drei VN-Klassenaggregaten fort.
+- `user_installation_handbook_plan.md`: HB1 inventarisiert die vorhandenen
+  Bedien-, Windows-Release- und Recovery-Quellen, legt die neue
+  Benutzerhandbuchstruktur fest und plant HB2 bis HB6. Windows ist belegt;
+  Linux bleibt ungeprueft und iOS/Juno eine offene Machbarkeitsentscheidung.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,
