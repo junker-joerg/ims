@@ -2,7 +2,7 @@
 
 Stand: 2026-09-01
 Planungsschnitt: HB1
-Umsetzungsstand: HB2
+Umsetzungsstand: HB3
 
 ## Ziel
 
@@ -86,9 +86,9 @@ Codekartierungen verbleiben in `docs/migration/` und werden nur verlinkt.
 
 ## Plattformstatus
 
-| Plattform | Status nach HB1 | Belegt | Offen vor einer Handbuchfreigabe |
+| Plattform | Aktueller Status | Belegt | Offen vor einer Handbuchfreigabe |
 | --- | --- | --- | --- |
-| Windows | `verified_local_workbench_path` | Frontend-Build, ZIP/Staging, Checkskript, Startskript, Loopback-Health und Release-Gate | sauberer Benutzer-Kurzstart, Voraussetzungen, Deinstallation und frischer Abnahmelauf fuer die Handbuchversion |
+| Windows | `verified_windows_hb3` | Benutzer-Kurzstart, Entwickler-Checkout, Frontend-Build, ZIP/Staging, Leerzeichenpfad, Checkskript, Startskript, Loopback-Health, Browseransicht, Datenpflege und Deinstallation | konsolidierte Fehlerhilfe und abschliessende Handbuchabnahme in HB6 |
 | Linux | `not_verified` | Python-/Webarchitektur ist grundsaetzlich plattformneutral angelegt | Shell-Startskript, Pfade, Node-/Python-Installation, ZIP-Layout, Browser-Smoke, CI oder reale Testmaschine |
 | iOS/Juno | `feasibility_open` | keine lokale IMS-Installation belegt | Entscheidung zwischen Browser-Client zu einem extern laufenden IMS und lokaler Juno-Ausfuehrung; Abhaengigkeiten, Loopback-Server, Frontend-Artefakt, Dateizugriff und Metadatenhaltung pruefen |
 
@@ -121,7 +121,7 @@ iOS/Juno nicht als unterstuetzte Installation bezeichnet werden.
   automatisch reproduzierbarer Ursprungslauf.
 - `incomming/` bleibt unversioniert und ist kein Benutzer-Datenimportpfad.
 
-## Umsetzungsstand HB2 und Restplanung HB3 bis HB6
+## Umsetzungsstand HB3 und Restplanung HB4 bis HB6
 
 ### HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad (umgesetzt)
 
@@ -139,17 +139,24 @@ iOS/Juno nicht als unterstuetzte Installation bezeichnet werden.
 
 Umgesetzt in `docs/handbook/` und `tests/test_user_handbook.py`.
 
-### HB3: Windows-Installationshandbuch
+### HB3: Windows-Installationshandbuch (umgesetzt)
 
-- Voraussetzungen und zwei Wege trennen: Entwickler-Checkout und portables
-  ZIP;
-- Check, Start, Stop, Datenablage, Backup, Update, Rollback und Deinstallation
-  dokumentieren;
-- Befehle auf einem frischen Windows-Zielpfad mit Leerzeichen pruefen;
-- Benutzer-Screenshots fuer Start und Health-/Workbench-Zustand aufnehmen.
+- Voraussetzungen und zwei Wege getrennt: Entwickler-Checkout und
+  vorbereiteter portabler ZIP-/Ordnerweg;
+- Check, Start, Stop, Datenablage, Backup, Restore, Side-by-Side-Update,
+  Rollback und Deinstallation dokumentiert;
+- portablen Zielpfad mit Leerzeichen mit PowerShell 7.6.4, Python 3.13.7,
+  Node.js 22.18.0 und npm 10.9.3 geprueft;
+- Frontend-Build mit 1.578 Modulen, portables Checkskript, Startskript,
+  HTTP-Health und Browseransicht erfolgreich;
+- zwei datierte Benutzer-Screenshots fuer Start- und Validierungszustand
+  aufgenommen;
+- Server nach dem Smoke kontrolliert beendet, ohne Queue-Aktion, Adapter oder
+  Simulation.
 
-Erwarteter Umfang: 220-420 Dokumentationszeilen, 40-120 Testzeilen und nur bei
-Bedarf kleine Skriptkorrekturen.
+Umgesetzt in `docs/handbook/`, `tests/test_user_handbook.py` und
+`tests/test_windows_handbook.py`. Es waren keine Skriptkorrekturen und keine
+neue Fachlogik erforderlich.
 
 ### HB4: Linux-Plattformnachweis und Installationskapitel
 
@@ -187,15 +194,15 @@ Erwarteter Umfang: 160-320 Dokumentationszeilen und 40-120 Testzeilen.
 
 ## Aufwand und Reihenfolge
 
-Nach HB2 bleiben **4 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
-HB3 bis HB6 liegt bei 840-1.860 LoC in Dokumentation, Dokumentationstests und
+Nach HB3 bleiben **3 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
+HB4 bis HB6 liegt bei 580-1.320 LoC in Dokumentation, Dokumentationstests und
 kleinen plattformspezifischen Skripten. Nicht enthalten sind ein nativer
 Installer, Signierung, App-Store-Verteilung, ein automatischer Updater oder
 groessere Plattformanpassungen.
 
-PR100 und HB2 sind als getrennte reviewbare Commits umgesetzt. PR101 und HB3
-koennen als naechste getrennte Schnitte vorbereitet werden. Plattformzusagen
-aus HB4/HB5 duerfen die Kernvalidierungsplanung PR101-PR102 nicht vorwegnehmen.
+PR101 und HB3 sind als getrennte reviewbare Commits vorbereitet. PR102 und
+HB4 sind die naechsten getrennten Schnitte. Plattformzusagen aus HB4/HB5
+duerfen die Kernvalidierungsbewertung in PR102 nicht vorwegnehmen.
 
 ## Abnahme HB1
 
@@ -219,3 +226,19 @@ aus HB4/HB5 duerfen die Kernvalidierungsplanung PR101-PR102 nicht vorwegnehmen.
   dupliziert;
 - Plattformstatus und verbleibende HB3-bis-HB6-Schnitte sind aktualisiert;
 - Dokumentationstests pruefen Navigation, Grenzen, Links und Restplanung.
+
+## Abnahme HB3
+
+- Windows-Kurzstart und vollstaendige Installation trennen Benutzerweg und
+  Entwickler-Build;
+- Python- und Node-Anforderungen sind aus den versionierten Paket- und
+  CI-Vertraegen abgeleitet;
+- Check, Start, Health und Browseransicht sind auf einem frischen portablen
+  Leerzeichenpfad belegt;
+- Stop, Datenablage, Backup, Restore, Side-by-Side-Update, Rollback und
+  Deinstallation sind dokumentiert;
+- Screenshots tragen Ansicht, Handbuchstand und Aufnahmedatum;
+- Windows ist `verified_windows_hb3`, Linux bleibt `not_verified` und
+  iOS/Juno bleibt `feasibility_open`;
+- keine Simulation, keine neue Fachlogik und keine historische
+  Vollgleichheitsbehauptung.

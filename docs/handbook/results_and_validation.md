@@ -1,7 +1,7 @@
 # Ergebnisse und historische Validierung verstehen
 
 Stand: 2026-09-01
-Kernvalidierungsstand: PR100
+Kernvalidierungsstand: PR101
 
 ## Zwei verschiedene Fragen
 
@@ -18,25 +18,26 @@ Ein gruener technischer Check beantwortet die zweite Frage nicht automatisch.
 Ein blockierter historischer Vergleich bedeutet umgekehrt nicht automatisch,
 dass die Browseranwendung technisch defekt ist.
 
-## Stand nach PR100
+## Stand nach PR101
 
 Der kontrollierte historische Kernkorpus umfasst insgesamt 15 berechnete
 Tabellen und 6.300 eingetragene Ergebniszeilen. Davon sind derzeit:
 
 | Stand | Tabellen | Ergebniszeilen |
 | --- | ---: | ---: |
-| angeschlossen | 12/15 | 4.800/6.300 |
-| noch offen | 3/15 | 1.500/6.300 |
+| angeschlossen | 15/15 | 6.300/6.300 |
+| noch offen | 0/15 | 0/6.300 |
 
-Die drei in PR100 angeschlossenen VN-Klassenaggregate umfassen 1.500 Zeilen
-und 19.500 verglichene Felder. Davon sind 3.917 exakt, 881 innerhalb der
-bestehenden Toleranz, 13.367 blockierend abweichend und 1.335 fachlich offen.
-Keine der 1.500 Zeilen stimmt in allen Feldern ueberein.
+Die drei in PR101 angeschlossenen VU-Klassenaggregate umfassen 1.500 Zeilen
+und 21.000 verglichene Felder. Davon sind 3.330 exakt, 41 innerhalb der
+bestehenden Toleranz und 17.629 blockierend abweichend. Fuenf der 1.500 Zeilen
+stimmen in allen Feldern ueberein.
 
-Dieser Stand lautet weiterhin `blocked_calculated_core_validation`. PR101
-schliesst die letzten drei VU-Klassenaggregate an. PR102 bewertet danach den
-gemeinsamen Vollkorpus. Auch ein vollstaendig angeschlossener Korpus ist nicht
-automatisch eine Produktionsfreigabe.
+Damit sind alle vorgesehenen Tabellen und Ergebniszeilen technisch an den
+kontrollierten Vergleich angeschlossen. Dieser Stand lautet trotzdem weiterhin
+`blocked_calculated_core_validation`: PR102 bewertet den gemeinsamen
+Vollkorpus und seine Abweichungsgruppen. Vollstaendige Anschlussabdeckung ist
+weder historische Vollgleichheit noch automatisch eine Produktionsfreigabe.
 
 ## Was die Vergleichsbegriffe bedeuten
 

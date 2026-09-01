@@ -18,11 +18,11 @@ def test_hb1_inventories_existing_handbook_sources() -> None:
     assert "scripts/workbench/README.md" in plan
 
 
-def test_hb1_separates_platform_evidence_from_plans() -> None:
+def test_hb3_separates_platform_evidence_from_plans() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     normalized = " ".join(plan.split())
 
-    assert "Windows | `verified_local_workbench_path`" in plan
+    assert "Windows | `verified_windows_hb3`" in plan
     assert "Linux | `not_verified`" in plan
     assert "iOS/Juno | `feasibility_open`" in plan
     assert "Browser-Client" in plan
@@ -30,7 +30,7 @@ def test_hb1_separates_platform_evidence_from_plans() -> None:
     assert "nicht als unterstuetzte Installation bezeichnet" in normalized
 
 
-def test_hb2_keeps_target_structure_and_updates_remaining_slices() -> None:
+def test_hb3_keeps_target_structure_and_updates_remaining_slices() -> None:
     plan = PLAN.read_text(encoding="utf-8")
 
     for chapter in (
@@ -46,8 +46,8 @@ def test_hb2_keeps_target_structure_and_updates_remaining_slices() -> None:
         assert chapter in plan
     for slice_name in range(2, 7):
         assert f"HB{slice_name}" in plan
-    assert "4 Handbuch-Schnitte" in plan
-    assert "840-1.860 LoC" in plan
+    assert "3 Handbuch-Schnitte" in plan
+    assert "580-1.320 LoC" in plan
 
 
 def test_hb1_keeps_user_docs_and_migration_docs_separate() -> None:
@@ -64,10 +64,11 @@ def test_hb1_keeps_user_docs_and_migration_docs_separate() -> None:
     assert "keine historische Vollgleichheitsbehauptung" in normalized
 
 
-def test_plans_index_lists_hb1_and_hb2() -> None:
+def test_plans_index_lists_hb1_through_hb3() -> None:
     readme = PLANS_README.read_text(encoding="utf-8")
 
     assert PLAN.is_file()
     assert "user_installation_handbook_plan.md" in readme
     assert "HB1" in readme
     assert "HB2" in readme
+    assert "HB3" in readme

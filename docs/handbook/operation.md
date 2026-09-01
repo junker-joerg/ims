@@ -1,14 +1,15 @@
 # Workbench bedienen
 
 Stand: 2026-09-01
-Gilt fuer: lokale IMS-Workbench, Handbuchstand HB2
+Gilt fuer: lokale IMS-Workbench, Handbuchstand HB3
 
 ## Vor dem Bedienpfad
 
 Die Workbench muss bereits lokal gestartet und im Browser erreichbar sein.
-Der gepruefte Windows-Installations- und Startweg wird in HB3 als eigener
-Kurzstart dokumentiert. Linux ist noch nicht verifiziert; iOS/Juno ist noch
-eine offene Machbarkeitsfrage.
+Unter Windows fuehren [Windows-Kurzstart](quickstart_windows.md) und
+[Windows installieren](installation_windows.md) durch den geprueften Startweg.
+Linux ist noch nicht verifiziert; iOS/Juno ist noch eine offene
+Machbarkeitsfrage.
 
 Beginne nur, wenn im `Dashboard` mindestens Folgendes sichtbar ist:
 
@@ -44,9 +45,9 @@ Browser-Upload und keine freie Aenderung historischer Eingaben.
 5. Wechsle zur `Run-Control-Uebersicht` und kontrolliere den ausgewaehlten
    Queue-Eintrag oder den Hinweis, dass noch keiner vorhanden ist.
 
-Der oben sichtbare Knopf `Neuer Lauf` gehoert in HB2 nicht zum freigegebenen
-Bedienpfad. Fuer kontrollierte Aktionen ist ausschliesslich der nachfolgende
-Run-Control-Ablauf massgeblich.
+Der oben sichtbare Knopf `Neuer Lauf` gehoert weiterhin nicht zum
+freigegebenen Bedienpfad. Fuer kontrollierte Aktionen ist ausschliesslich der
+nachfolgende Run-Control-Ablauf massgeblich.
 
 ## 3. Validierungsstatus lesen
 

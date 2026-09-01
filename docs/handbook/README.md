@@ -1,7 +1,7 @@
 # IMS-Benutzerhandbuch
 
 Stand: 2026-09-01
-Handbuchstand: HB2
+Handbuchstand: HB3
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
 wie Bedienstatus und historische Vergleichsergebnisse zu lesen sind. Es ist
@@ -12,22 +12,24 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 
 | Bereich | Status | Bedeutung |
 | --- | --- | --- |
-| Windows-Workbench | `verified_local_workbench_path` | Build, portable Ablage, Startskript und technisches Release-Gate sind vorhanden; der zusammenhaengende Installationsweg folgt in HB3 |
+| Windows-Workbench | `verified_windows_hb3` | Kurzstart, portable Ablage, Entwickler-Checkout, Check, Start, Health, Stop, Datenpflege und Deinstallation sind dokumentiert und auf einem Leerzeichenpfad geprueft |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
-| Historische Kernvalidierung | `blocked_calculated_core_validation` | Nach PR100 sind 12/15 Tabellen und 4.800/6.300 Ergebniszeilen angeschlossen; das ist keine Produktionsfreigabe |
+| Historische Kernvalidierung | `blocked_calculated_core_validation` | Nach PR101 sind 15/15 Tabellen und 6.300/6.300 Ergebniszeilen angeschlossen; die gemeinsame fachliche Bewertung folgt in PR102 |
 
 ## Kapitel
 
-1. [Workbench bedienen](operation.md)
-2. [Ergebnisse und historische Validierung verstehen](results_and_validation.md)
-3. [Technische Quellen und Nachweise](technical_reference.md)
+1. [Windows-Kurzstart](quickstart_windows.md)
+2. [Windows installieren](installation_windows.md)
+3. [Workbench bedienen](operation.md)
+4. [Ergebnisse und historische Validierung verstehen](results_and_validation.md)
+5. [Daten, Backup und Updates](data_and_updates.md)
+6. [Technische Quellen und Nachweise](technical_reference.md)
 
-Der Windows-Kurzstart, die vollstaendige Windows-Installation, Datensicherung,
-Fehlerhilfe sowie die geprueften Plattformkapitel werden in den folgenden
-Handbuchschnitten ergaenzt. Bis dahin bleiben die bestehenden technischen
-Quellen massgeblich; sie sind in der technischen Referenz verlinkt.
+Die zusammengefasste Fehlerhilfe sowie gepruefte Linux- und iOS/Juno-Aussagen
+folgen in HB4 bis HB6. Bis dahin bleiben fuer diese Plattformen die in der
+technischen Referenz ausgewiesenen offenen Statuswerte massgeblich.
 
 ## Navigation in der Workbench
 

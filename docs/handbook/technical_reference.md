@@ -1,7 +1,7 @@
 # Technische Quellen und Nachweise
 
 Stand: 2026-09-01
-Handbuchstand: HB2
+Handbuchstand: HB3
 
 Dieses Kapitel vermeidet doppelte Entwickleranleitungen. Es verweist auf die
 versionierten Quellen, aus denen Installations-, Bedien- und
@@ -17,6 +17,9 @@ Validierungsaussagen des Benutzerhandbuchs abgeleitet sind.
 
 ## Windows, Packaging und Recovery
 
+- [Windows-Kurzstart](quickstart_windows.md)
+- [Windows-Installation](installation_windows.md)
+- [Daten, Backup und Updates](data_and_updates.md)
 - [Windows-Release-Gate](../migration/windows_release_gate.md)
 - [Release-Checkliste](../migration/workbench_release_checklist.md)
 - [Packaging-Plan](../migration/workbench_packaging_plan.md)
@@ -33,6 +36,7 @@ HB4 `not_verified`; iOS/Juno bleibt bis HB5 `feasibility_open`.
 - [Referenzschicht-Vertrag](../migration/historical_reference_layer_contract.md)
 - [Ergebniszeilenvertrag 100/300/500](../migration/historical_horizon_contract.md)
 - [PR100: VN-Klassenlieferung](../migration/historical_500_period_vn_class_delivery.md)
+- [PR101: VU-Klassenlieferung](../migration/historical_500_period_vu_class_delivery.md)
 
 Die Migrationsdokumente sind fuer Reviewer und Entwickler verbindlich. Das
 Benutzerhandbuch uebersetzt ihren aktuellen Stand, ersetzt aber weder Tests
@@ -42,7 +46,7 @@ noch maschinenlesbare Vertraege.
 
 | Plattform | Handbuchstatus | Naechster Nachweis |
 | --- | --- | --- |
-| Windows | technischer Pfad belegt, Benutzerkapitel noch offen | HB3: frischer Kurzstart, Installation, Stop und Deinstallation |
+| Windows | `verified_windows_hb3` | HB3: Kurzstart, Installation, Leerzeichenpfad, Health, Stop, Datenpflege und Deinstallation geprueft |
 | Linux | nicht verifiziert | HB4: Distribution, Shellpfad, Build, Health und Browser-Smoke |
 | iOS/Juno | Machbarkeit offen | HB5: Browser-Client und lokale Juno-Ausfuehrung getrennt bewerten |
 
