@@ -35,6 +35,16 @@ def test_portable_user_guide_is_at_most_ten_pages_and_honest_about_scope() -> No
     assert "kein historischer Vollgleichheitsnachweis" in guide
     assert "Management-Simulation" in guide
     assert "Regulierungs-Wirkungsanalyse" in guide
+    assert guide.count("![") == 5
+    for image_name in (
+        "windows_workbench_dashboard_hb3a_2026-09-01.png",
+        "windows_workbench_scenarios_hb3a_2026-09-01.png",
+        "windows_workbench_runs_hb3a_2026-09-01.png",
+        "windows_workbench_validation_hb3a_2026-09-01.png",
+        "windows_workbench_run_control_hb3a_2026-09-01.png",
+    ):
+        assert image_name in guide
+        assert (HANDBOOK_ROOT / "images" / image_name).is_file()
 
 
 def test_portable_handbook_pdfs_have_the_documented_page_limits() -> None:
@@ -45,6 +55,7 @@ def test_portable_handbook_pdfs_have_the_documented_page_limits() -> None:
     assert guide_pdf.read_bytes().startswith(b"%PDF")
     assert _pdf_page_count(installation_pdf) == 2
     assert _pdf_page_count(guide_pdf) == 8
+    assert guide_pdf.read_bytes().count(b"/Subtype /Image") >= 5
 
 
 def test_user_test_package_build_is_separate_from_simulation_and_pr102() -> None:

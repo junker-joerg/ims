@@ -36,41 +36,24 @@ Invarianten und erklaerbare Wirkungsrichtungen.
 
 ## Seite 2 - Der Rundgang in zehn Minuten
 
-### 1. Dashboard
+Starten Sie auf `Dashboard` und pruefen Sie die drei Statusfelder. `Backend`
+muss `bereit` sein. `Fachlogik abgegrenzt` und `Persistenz vorbereitet` sind
+bewusste Hinweise auf den Teststand, keine fachliche Produktionsfreigabe.
 
-Starten Sie auf `Dashboard`. Pruefen Sie zuerst:
+![Dashboard mit Systemstatus](images/windows_workbench_dashboard_hb3a_2026-09-01.png)
 
-- Backend: `bereit`;
-- Frontend: `gebaut`;
-- Metadatenquelle: erwartete lokale oder statische Quelle;
-- keine unerwartete Schreib- oder Simulationsfreigabe.
+*Abbildung 1: Dashboard, Handbuchstand HB3a, Aufnahme 2026-09-01.*
 
-Das Dashboard beantwortet: Ist die Anwendung technisch benutzbar und welchen
-Datenstand sehe ich? Es beantwortet noch nicht: Ist ein konkretes Modell fuer
-eine Management- oder Regulierungsentscheidung fachlich freigegeben?
+Gehen Sie danach in dieser Reihenfolge durch die Navigation:
 
-### 2. Szenarien
+1. `Szenarien`: Referenz oder Entwurf auswaehlen und Herkunft lesen.
+2. `Runs`: vorhandenen Lauf, Szenario und Periodenfenster zuordnen.
+3. `Validierung`: Abdeckung und fachliche Aussagegrenzen unterscheiden.
+4. `Runs`: nur bei vorbereiteten Metadaten den kontrollierten Dry-Run lesen.
 
-Wechseln Sie zu `Szenarien`, waehlen Sie das `Agrsich Referenzfenster` und
-lesen Sie Quelle, Umfang und Validierungshinweis. Der `Lokale Workbench-Entwurf`
-zeigt den technischen Entwicklungsstand, nicht eine reale Marktprognose.
-
-### 3. Validierung
-
-Wechseln Sie zu `Validierung`. Lesen Sie Korpusabdeckung und offene Grenzen
-getrennt. `15/15 Tabellen` bedeutet vollstaendige Bereitstellung der
-vereinbarten Referenztabellen. Es bedeutet nicht, dass jede historische Zahl
-identisch neu berechnet wurde.
-
-### 4. Runs
-
-Wechseln Sie zu `Runs`, waehlen Sie einen vorhandenen Eintrag und pruefen Sie
-Szenario, Periodenfenster, Status und Ergebnisanzeige. Ohne vorbereitete lokale
-Metadaten bleibt der kontrollierte Startpfad bewusst eingeschraenkt.
-
-Beenden Sie den Rundgang mit der Frage: Sind Status, Grenzen und naechste
-Aktion fuer eine fachfremde Person verstaendlich? Genau dieses Feedback ist
-fuer das Testpaket wertvoll.
+Der Knopf `Neuer Lauf` gehoert noch nicht zum freigegebenen Anwenderpfad. Ein
+guter Test beantwortet deshalb zuerst: Ist klar, was nur angesehen werden kann,
+was gesperrt ist und welche Aussage ein angezeigter Status tatsaechlich traegt?
 
 <!-- PAGE BREAK -->
 
@@ -79,13 +62,16 @@ fuer das Testpaket wertvoll.
 Ein Szenario beschreibt einen fachlichen Ausgangsstand und dessen Herkunft.
 Es ist nicht automatisch ein bereits ausgefuehrter Simulationslauf.
 
-In der `Szenario-Uebersicht` koennen Sie:
+In der `Szenario-Uebersicht`:
 
 1. nach Name oder ID suchen;
 2. nach Status, Quelle oder Umfang filtern;
-3. eine Zeile auswaehlen;
-4. im `Metadaten-Detail` Herkunft und Validierungsangabe lesen;
-5. die `Auswahlzusammenfassung` kontrollieren.
+3. eine Zeile auswaehlen und die `Auswahlzusammenfassung` kontrollieren;
+4. Herkunft, Umfang und Validierungsangabe lesen.
+
+![Szenarioauswahl und Filter](images/windows_workbench_scenarios_hb3a_2026-09-01.png)
+
+*Abbildung 2: Szenarioauswahl, Handbuchstand HB3a, Aufnahme 2026-09-01.*
 
 Beachten Sie drei Statusarten:
 
@@ -93,55 +79,36 @@ Beachten Sie drei Statusarten:
 - `draft`: vorbereiteter Entwurf ohne fachliche Freigabe;
 - `planned`: beschriebener, aber noch nicht nutzbarer Ausbau.
 
-Fragen, die Sie heute beantworten koennen:
-
-- Welche Referenz wird gezeigt?
-- Aus welcher Quelle stammt sie?
-- Welcher fachliche Ausschnitt ist gemeint?
-- Welche Aussage wird ausdruecklich nicht erhoben?
-
-Fragen, die Sie heute noch nicht beantworten koennen:
-
-- Wie veraendert ein selbst eingegebener Zinssatz den Markt?
-- Welche Strategie maximiert den Erfolg eines Versicherers?
-- Welche Regulierungsvariante wirkt im realen deutschen Markt am besten?
-
-Die Szenarioansicht ist derzeit bewusst kein Editor. Sie nimmt keine Dateien
-aus `incomming/` und keine beliebigen Browser-Uploads an. Damit bleibt die
-Herkunft jedes sichtbaren Stands kontrollierbar.
+Sie koennen heute beantworten, welche Referenz gezeigt wird, aus welcher Quelle
+sie stammt und welcher Ausschnitt gemeint ist. Eigene Zinssaetze, Strategien
+oder Regulierungsvarianten koennen noch nicht eingegeben werden. Die Ansicht ist
+bewusst kein Editor und nimmt weder `incomming/` noch Browser-Uploads an.
 
 <!-- PAGE BREAK -->
 
-## Seite 4 - Runs und kontrollierte Ausfuehrung
+## Seite 4 - Vorhandene Runs lesen
 
 Ein Run ist einem Szenario zugeordnet und besitzt ein Periodenfenster, einen
 Status und eine Validierungsaussage. Ein vorhandener Run kann ein
 Regressionstest, eine Vorschau oder ein kontrolliert vorbereitetes Ergebnis
 sein. Er ist nicht automatisch eine historische Simulation.
 
-### Sicherer Lesepfad
+![Run-Uebersicht mit Auswahl](images/windows_workbench_runs_hb3a_2026-09-01.png)
+
+*Abbildung 3: Run-Auswahl, Handbuchstand HB3a, Aufnahme 2026-09-01.*
+
+Gehen Sie fuer einen sicheren Lesepfad so vor:
 
 1. Run in der `Run-Uebersicht` auswaehlen.
-2. Szenario-ID und Periodenfenster pruefen.
-3. Status und Quelle lesen.
-4. Im Run-Control-Bereich die vorgeschlagene naechste Aktion kontrollieren.
-5. Vorhandenes Ergebnis und Verlauf nur lesend oeffnen.
+2. Szenario, Fenster, Quelle und Status gemeinsam pruefen.
+3. `validated` nur als Aussage fuer den konkret bezeichneten Test lesen.
+4. `prepared` als vorbereiteten Stand ohne fachliche Freigabe verstehen.
+5. Gesperrte Ausfuehrung nicht durch andere Startwege umgehen.
 
-### Kontrollierter Aktionspfad
-
-Nur wenn eine ausdruecklich vorbereitete lokale Metadatenquelle vorhanden ist:
-
-1. `Dry-Run pruefen` validiert den Request ohne Ausfuehrung.
-2. `Queue vormerken` schreibt einen kontrollierten Queue-Eintrag.
-3. `Freigabe pruefen` verlangt Person, Begruendung und Bestaetigung.
-4. `Adapter starten` wird nur bei erfuellten Vorbedingungen aktiv.
-5. `Ergebnis neu laden` liest Status und Verlauf erneut.
-
-Der Start ist manuell und gegen Doppelstarts abgesichert. Es gibt keinen
-automatischen Queue-Worker. Der derzeitige Adapterpfad ist ein kontrollierter
-technischer Ausfuehrungspfad und keine freie historische Marktsimulation.
-
-Der Knopf `Neuer Lauf` gehoert noch nicht zum freigegebenen Anwenderpfad.
+Die `Python-Regressionssuite` belegt automatisierte technische Tests. Die
+`Workbench-Shell Vorschau` zeigt den Bedienstand ohne Simulation. Erst ein
+zusaetzliches, versioniertes Run-Manifest koennte spaeter einen fachlichen
+Szenariolauf mit Annahmen, Seed und Ergebnisgrenzen belegen.
 
 <!-- PAGE BREAK -->
 
@@ -150,6 +117,10 @@ Der Knopf `Neuer Lauf` gehoert noch nicht zum freigegebenen Anwenderpfad.
 Die historischen Dateien sind wertvoll, aber sie stammen nicht sicher aus
 einem einzigen identischen Lauf. Parameter, Zinssaetze, Compilerplattform und
 Zufallszahlengenerator koennen sich unterschieden haben.
+
+![Validierungsstatus und Konsistenz](images/windows_workbench_validation_hb3a_2026-09-01.png)
+
+*Abbildung 4: Validierungsstatus, Handbuchstand HB3a, Aufnahme 2026-09-01.*
 
 Der aktuelle Korpus umfasst:
 
@@ -169,16 +140,22 @@ Lesen Sie die Kennzahlen so:
   technisch funktionieren.
 
 Eine abweichende stochastische Trajektorie ist nicht automatisch ein
-fachlicher Fehler. Weiter untersucht werden insbesondere verletzte Bilanz-,
-Bestands- oder Aggregatinvarianten, nicht reproduzierbare moderne Laeufe und
-unerwartete Wirkungsrichtungen.
-
-Die Zahl `6.300/6.300` ist deshalb ein Vollstaendigkeitsnachweis des
+fachlicher Fehler. Entscheidend sind verletzte Bilanz-, Bestands- oder
+Aggregatinvarianten, nicht reproduzierbare moderne Laeufe und unerwartete
+Wirkungsrichtungen. `6.300/6.300` ist ein Vollstaendigkeitsnachweis des
 Vergleichskorpus, kein historischer Vollgleichheitsnachweis.
 
 <!-- PAGE BREAK -->
 
-## Seite 6 - Ergebnisse fachlich einordnen
+## Seite 6 - Kontrollierter Dry-Run und Ergebnisse
+
+`Dry-Run pruefen` kontrolliert Request, Zuordnung und Vorbedingungen, ohne eine
+Simulation auszufuehren. `Queue vormerken` bleibt gesperrt, bis diese Pruefung
+erfolgreich ist und eine passende lokale Metadatenquelle bereitsteht.
+
+![Dry-Run-Vertrag und gesperrte Grenzen](images/windows_workbench_run_control_hb3a_2026-09-01.png)
+
+*Abbildung 5: Kontrollierter Dry-Run, Handbuchstand HB3a, Aufnahme 2026-09-01.*
 
 Ein Ergebnis ist erst dann belastbar, wenn vier Dinge gemeinsam sichtbar sind:
 
@@ -188,24 +165,12 @@ Ein Ergebnis ist erst dann belastbar, wenn vier Dinge gemeinsam sichtbar sind:
 4. **Aussagegrenze:** Was darf aus diesem Lauf geschlossen werden?
 
 Bei vorbereiteten Adapterresultaten zeigt die Workbench Queue, Run, Szenario,
-Summary-Modus, Persistenzzeitpunkt und Verlauf. Pruefen Sie, ob diese Angaben
-zum erwarteten Auftrag passen. Ein technisch erfolgreiches Resultat ist noch
-keine fachliche Freigabe.
-
-Fuer IMS 2.x sollen deterministische Formeln weiterhin exakt getestet werden.
-Stochastische Ergebnisse sollen dagegen ueber Verteilungen, Quantile,
-Wirkungsrichtung, Effektstaerke und Robustheit mehrerer Seeds bewertet werden.
-
-Eine gute fachliche Ergebnisfrage lautet zum Beispiel:
-
-- Bleibt die Aggregation konsistent?
-- Ist der moderne Lauf bei gleichem Manifest reproduzierbar?
-- Wirkt eine kontrollierte Parameteraenderung in die erwartete Richtung?
-- Bleibt der Befund ueber mehrere Seeds stabil?
-- Ist die Unsicherheit sichtbar und erklaerbar?
-
-Eine schlechte Ergebnisfrage lautet: Ist jede zufallsgetriebene Einzelzahl
-aus einem nicht vollstaendig dokumentierten Lauf von 1995 bytegleich?
+Summary-Modus, Persistenzzeitpunkt und Verlauf. Ein technisch erfolgreiches
+Resultat ist noch keine fachliche Freigabe. Fuer IMS 2.x sollen deterministische
+Formeln exakt getestet und stochastische Ergebnisse ueber Verteilungen,
+Wirkungsrichtung, Effektstaerke und mehrere Seeds bewertet werden. Die
+bytegleiche Einzelzahl eines unvollstaendig dokumentierten Laufs von 1995 ist
+dagegen kein Produktziel.
 
 <!-- PAGE BREAK -->
 

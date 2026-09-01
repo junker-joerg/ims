@@ -13,7 +13,7 @@ Python 3.12+, beim ersten Installieren Internetzugang und einen Browser.
 | `workbench_portable_staging.py` | generiertes Installationsskript und `.venv`-Auswahl | lokale Web-Abhaengigkeiten ohne globale Installation |
 | `frontend/dist` | unveraendert ins portable Layout | kein Node.js-Build auf dem Zielrechner |
 | `python_port/requirements-web.txt` | Installation in `.venv` | FastAPI-/Uvicorn-Laufzeit fuer die lokale Workbench ohne Paket-Build |
-| Handbuchquellen | zwei PDF-Dateien im Paket | 2 Seiten Installation und 8 Seiten Bedienung |
+| Handbuchquellen | zwei PDF-Dateien im Paket | 2 Seiten Installation und 8 Seiten Bedienung mit 5 datierten UI-Abbildungen |
 | `build-user-test-package.ps1` | finales ZIP mit Rootordner | ein Artefakt zum Kopieren und Entpacken |
 
 Es wird keine historische C-Logik portiert oder geaendert. Der Schnitt betrifft

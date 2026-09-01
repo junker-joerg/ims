@@ -13,7 +13,7 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | Bereich | Status | Bedeutung |
 | --- | --- | --- |
 | Windows-Workbench | `verified_windows_hb3` | Kurzstart, portable Ablage, Entwickler-Checkout, Check, Start, Health, Stop, Datenpflege und Deinstallation sind dokumentiert und auf einem Leerzeichenpfad geprueft |
-| Windows-Anwender-Testpaket | `documented_windows_hb3a` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 8 Seiten Bedienungsanleitung sind vorbereitet und geprueft |
+| Windows-Anwender-Testpaket | `documented_windows_hb3a` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 8 Seiten Bedienungsanleitung mit 5 datierten UI-Abbildungen sind vorbereitet und geprueft |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |

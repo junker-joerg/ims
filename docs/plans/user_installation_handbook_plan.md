@@ -165,6 +165,8 @@ neue Fachlogik erforderlich.
 - Check und Start verwenden diese Umgebung ohne erneute PATH-Anpassung;
 - 2-seitige Installationsdoku und 8-seitige Bedienungsanleitung als PDF
   erzeugt und visuell geprueft;
+- Dashboard, Szenarien, Runs, Validierung und kontrollierten Dry-Run mit fuenf
+  datierten UI-Abbildungen direkt im Bedienpfad gezeigt;
 - Anwendernutzen und noch nicht verfuegbare Simulation ehrlich getrennt;
 - PR102 und die fachliche Korpusbewertung bleiben ein eigener Schritt.
 
