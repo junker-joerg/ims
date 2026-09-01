@@ -1,7 +1,7 @@
 # IMS-Benutzerhandbuch
 
 Stand: 2026-09-01
-Handbuchstand: HB3
+Handbuchstand: HB3a
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
 wie Bedienstatus und historische Vergleichsergebnisse zu lesen sind. Es ist
@@ -13,6 +13,7 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | Bereich | Status | Bedeutung |
 | --- | --- | --- |
 | Windows-Workbench | `verified_windows_hb3` | Kurzstart, portable Ablage, Entwickler-Checkout, Check, Start, Health, Stop, Datenpflege und Deinstallation sind dokumentiert und auf einem Leerzeichenpfad geprueft |
+| Windows-Anwender-Testpaket | `documented_windows_hb3a` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 8 Seiten Bedienungsanleitung sind vorbereitet und geprueft |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
@@ -20,12 +21,14 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 
 ## Kapitel
 
-1. [Windows-Kurzstart](quickstart_windows.md)
-2. [Windows installieren](installation_windows.md)
-3. [Workbench bedienen](operation.md)
-4. [Ergebnisse und historische Validierung verstehen](results_and_validation.md)
-5. [Daten, Backup und Updates](data_and_updates.md)
-6. [Technische Quellen und Nachweise](technical_reference.md)
+1. [Testpaket in zwei Seiten installieren](installation_test_package_windows.md)
+2. [Testpaket in acht Seiten bedienen](user_guide_test_package.md)
+3. [Windows-Kurzstart](quickstart_windows.md)
+4. [Windows installieren](installation_windows.md)
+5. [Workbench bedienen](operation.md)
+6. [Ergebnisse und historische Validierung verstehen](results_and_validation.md)
+7. [Daten, Backup und Updates](data_and_updates.md)
+8. [Technische Quellen und Nachweise](technical_reference.md)
 
 Die zusammengefasste Fehlerhilfe sowie gepruefte Linux- und iOS/Juno-Aussagen
 folgen in HB4 bis HB6. Bis dahin bleiben fuer diese Plattformen die in der

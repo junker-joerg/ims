@@ -2,7 +2,7 @@
 
 Stand: 2026-09-01
 Planungsschnitt: HB1
-Umsetzungsstand: HB3
+Umsetzungsstand: HB3a
 
 ## Ziel
 
@@ -19,8 +19,8 @@ Das Handbuch muss jederzeit unterscheiden zwischen:
 - noch nicht belegter historischer Parameter-, RNG- oder Vollgleichheit;
 - tatsaechlich gepruefter und nur geplanter Plattformunterstuetzung.
 
-HB1 aendert keine Fachlogik, startet keine Simulation und behauptet keine
-historische Vollgleichheit.
+HB1 und HB3a aendern keine Fachlogik, starten keine Simulation und behaupten
+keine historische Vollgleichheit.
 
 ## Zielgruppen
 
@@ -121,7 +121,7 @@ iOS/Juno nicht als unterstuetzte Installation bezeichnet werden.
   automatisch reproduzierbarer Ursprungslauf.
 - `incomming/` bleibt unversioniert und ist kein Benutzer-Datenimportpfad.
 
-## Umsetzungsstand HB3 und Restplanung HB4 bis HB6
+## Umsetzungsstand HB3a und Restplanung HB4 bis HB6
 
 ### HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad (umgesetzt)
 
@@ -157,6 +157,18 @@ Umgesetzt in `docs/handbook/` und `tests/test_user_handbook.py`.
 Umgesetzt in `docs/handbook/`, `tests/test_user_handbook.py` und
 `tests/test_windows_handbook.py`. Es waren keine Skriptkorrekturen und keine
 neue Fachlogik erforderlich.
+
+### HB3a: Portables Windows-Anwender-Testpaket (umgesetzt)
+
+- finales ZIP mit eigenem Rootordner und gebautem Frontend vorbereitet;
+- `install-workbench.cmd` richtet eine lokale `.venv` ein;
+- Check und Start verwenden diese Umgebung ohne erneute PATH-Anpassung;
+- 2-seitige Installationsdoku und 8-seitige Bedienungsanleitung als PDF
+  erzeugt und visuell geprueft;
+- Anwendernutzen und noch nicht verfuegbare Simulation ehrlich getrennt;
+- PR102 und die fachliche Korpusbewertung bleiben ein eigener Schritt.
+
+Umgesetzt unter `docs/plans/portable_user_test_package_plan.md`.
 
 ### HB4: Linux-Plattformnachweis und Installationskapitel
 
@@ -194,14 +206,14 @@ Erwarteter Umfang: 160-320 Dokumentationszeilen und 40-120 Testzeilen.
 
 ## Aufwand und Reihenfolge
 
-Nach HB3 bleiben **3 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
+Nach HB3a bleiben **3 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
 HB4 bis HB6 liegt bei 580-1.320 LoC in Dokumentation, Dokumentationstests und
 kleinen plattformspezifischen Skripten. Nicht enthalten sind ein nativer
 Installer, Signierung, App-Store-Verteilung, ein automatischer Updater oder
 groessere Plattformanpassungen.
 
-PR101 und HB3 sind als getrennte reviewbare Commits vorbereitet. PR102 und
-HB4 sind die naechsten getrennten Schnitte. Plattformzusagen aus HB4/HB5
+PR101, HB3 und HB3a sind als getrennte reviewbare Schnitte vorbereitet. PR102
+und HB4 sind die naechsten getrennten Schnitte. Plattformzusagen aus HB4/HB5
 duerfen die Kernvalidierungsbewertung in PR102 nicht vorwegnehmen.
 
 ## Abnahme HB1

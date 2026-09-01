@@ -15,6 +15,8 @@ Der Packaging-/Bereitstellungsblock ist fuer die lokale Workbench-v1 abgeschloss
 - portables Staging aus geprueftem ZIP in einen fehlenden oder leeren Zielordner,
 - Staging-Smoke fuer Struktur, Startskriptgrenzen und Backend-Importfaehigkeit aus dem gestagten Workbench-Root,
 - manuelle Backup-/Restore-, Update-/Rollback- und Release-Checklisten.
+- ein finales Windows-Anwender-Testpaket mit `install-workbench.cmd`,
+  automatisch verwendeter lokaler `.venv` und 2-/8-seitiger PDF-Dokumentation.
 
 Der Abschlussstatus ist kein Installer, kein automatischer Updater, keine SQLite-Migration, kein Release-Tag und kein fachlicher Gleichheitsnachweis.
 

@@ -50,7 +50,7 @@ def test_windows_quickstart_is_complete_and_non_executing() -> None:
     for text in (
         'Set-Location "C:\\IMS Tests\\IMS Workbench 2026"',
         "python --version",
-        'pip install -e ".\\app\\python_port[web]"',
+        ".\\install-workbench.cmd",
         ".\\check-workbench.cmd",
         ".\\start-workbench.cmd",
         "http://127.0.0.1:8000/",
@@ -73,6 +73,8 @@ def test_windows_installation_separates_portable_and_checkout_paths() -> None:
     assert "## Weg B: Entwickler-Checkout" in installation
     assert "Python 3.12 oder neuer" in installation
     assert "Node.js 22" in installation
+    assert ".\\install-workbench.cmd" in installation
+    assert "`app\\python_port\\requirements-web.txt` lokal" in installation
     assert "npm.cmd ci --prefix .\\frontend" in installation
     assert "npm.cmd run build --prefix .\\frontend" in installation
     assert "Ein fehlendes `tsc`" in normalized
@@ -136,5 +138,5 @@ def test_hb3_links_resolve_and_platform_limits_remain_open() -> None:
     assert "verified_windows_hb3" in reference
     assert "Linux bleibt bis HB4 `not_verified`" in normalized_reference
     assert "iOS/Juno bleibt bis HB5 `feasibility_open`" in normalized_reference
-    assert "Nach HB3 bleiben **3 Handbuch-Schnitte**" in normalized_plan
+    assert "Nach HB3a bleiben **3 Handbuch-Schnitte**" in normalized_plan
     assert "PR102 und HB4 sind die naechsten getrennten Schnitte" in normalized_plan

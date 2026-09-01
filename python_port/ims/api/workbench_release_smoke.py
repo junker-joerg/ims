@@ -290,11 +290,18 @@ def _production_script_issues(label: str, content: str, *, portable: bool) -> li
 
     if label.endswith("start-workbench.cmd"):
         app_dir = "app/python_port" if portable else "python_port"
-        required = (
-            "python -m uvicorn ims.api.app:app",
-            f"--app-dir {app_dir}",
-            'IMS_WORKBENCH_HOST=127.0.0.1'.lower(),
+        interpreter = (
+            '"%IMS_PYTHON%" -m uvicorn ims.api.app:app'
+            if portable
+            else "python -m uvicorn ims.api.app:app"
         )
+        required = [
+            interpreter,
+            f"--app-dir {app_dir}",
+            "IMS_WORKBENCH_HOST=127.0.0.1",
+        ]
+        if portable:
+            required.append("IMS_PYTHON=%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe")
     else:
         required = (
             "ims.api.workbench_diagnostics",

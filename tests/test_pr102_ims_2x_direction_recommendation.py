@@ -11,8 +11,8 @@ def test_strategy_index_links_pr102_recommendation() -> None:
 
     assert RECOMMENDATION.is_file()
     assert "pr102_ims_2x_direction_recommendation.md" in index
-    assert "keine aktive" in index
-    assert "ausdruecklichen Entscheidung" in index
+    assert "Grundlage fuer PR102" in index
+    assert "noch keine aktive PR-Roadmap" in index
 
 
 def test_recommendation_closes_legacy_equality_as_non_product_target() -> None:
@@ -67,7 +67,7 @@ def test_recommendation_keeps_future_sequence_out_of_active_roadmap() -> None:
     normalized = " ".join(document.split())
 
     assert "Kandidatenfolge, keine aktive PR-Roadmap" in normalized
-    assert "Erst nach der Richtungsentscheidung" in normalized
+    assert "Die Richtungsentscheidung ist erfolgt" in normalized
     assert "keine Aufnahme der Kandidatenfolge in die aktive Rest-PR-Planung" in normalized
     assert "keine Simulation oder Runnerausfuehrung" in normalized
     assert "keine Aenderung der Fachlogik" in normalized

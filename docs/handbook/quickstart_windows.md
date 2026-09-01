@@ -1,7 +1,7 @@
 # Windows-Kurzstart
 
 Stand: 2026-09-01
-Handbuchstand: HB3
+Handbuchstand: HB3a
 Gepruefter Pfad: vorbereiteter portabler Workbench-Ordner unter Windows
 
 Dieser Kurzstart fuehrt von einem bereits bereitgestellten portablen Ordner
@@ -18,8 +18,8 @@ oder eine Simulation.
 
 Node.js ist fuer diesen Weg nicht erforderlich, weil das Frontend bereits
 gebaut im portablen Ordner liegt. Das Paket ist portabel, aber kein
-eigenstaendiger Installer: Python und die Web-Abhaengigkeiten muessen auf dem
-Rechner vorhanden sein.
+eigenstaendiger Installer: Python muss auf dem Rechner vorhanden sein. Das
+mitgelieferte Installationsskript richtet die Web-Abhaengigkeiten lokal ein.
 
 ## 1. Ordner oeffnen und Python pruefen
 
@@ -32,19 +32,17 @@ python --version
 
 Die Ausgabe muss mindestens Python 3.12 nennen.
 
-## 2. Eigene Python-Umgebung vorbereiten
+## 2. Lokale Python-Umgebung einrichten
 
 Einmalig im portablen Workbench-Ordner:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".\app\python_port[web]"
-$env:Path = "$(Resolve-Path .\.venv\Scripts);$env:Path"
+.\install-workbench.cmd
 ```
 
-Die letzte Zeile sorgt dafuer, dass die Startskripte in diesem PowerShell-
-Fenster genau diese Python-Umgebung verwenden. Nach dem Oeffnen eines neuen
-Fensters muss nur diese Zeile erneut ausgefuehrt werden.
+Das Skript legt `.venv` nur im Workbench-Ordner an, installiert das Web-Extra
+und fuehrt den technischen Check aus. Check und Start verwenden diese Umgebung
+danach automatisch.
 
 ## 3. Workbench pruefen
 

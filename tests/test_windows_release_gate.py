@@ -53,6 +53,7 @@ def test_windows_release_gate_runs_existing_checks_in_order() -> None:
         "python -m ims.api.workbench_portable_staging_smoke",
         "python -m ims.api.workbench_portable_readiness",
         "python -m ims.api.workbench_release_smoke",
+        'scripts\\workbench\\build-user-test-package.ps1',
         'Join-Path $portableRoot "check-workbench.cmd"',
     ]
 
@@ -74,6 +75,9 @@ def test_windows_release_gate_freezes_conservative_report_boundary() -> None:
     assert "$report.production_release_approved -ne $false" in script
     assert "$report.simulation_performed -ne $false" in script
     assert "$report.historical_full_equality_claimed -ne $false" in script
+    assert "$userPackage.install_pages -ne 2" in script
+    assert "$userPackage.user_guide_pages -ne 8" in script
+    assert "$userPackage.simulation_performed -ne $false" in script
     assert "production_release_approved = $false" in script
 
 

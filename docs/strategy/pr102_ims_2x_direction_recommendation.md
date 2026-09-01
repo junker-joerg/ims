@@ -1,8 +1,8 @@
 # Entscheidungsvorlage: PR102 und Zielbild IMS 2.x
 
 Stand: 2026-09-01
-Status: Empfehlung vorbereitet, noch nicht beschlossen
-Planungswirkung: nicht in die aktive PR-Restplanung uebernommen
+Status: Empfehlung am 2026-09-01 angenommen
+Planungswirkung: verbindliche Grundlage fuer PR102; IMS-2.x-Ausbau folgt erst in eigenen Planungs-PRs
 
 ## Kurzempfehlung
 
@@ -12,7 +12,7 @@ versuchen, 35 Jahre alte, von damaligen `rnd()`-Implementierungen,
 Bibliotheken, Compilern und teilweise unterschiedlichen Parametern gepraegte
 Zahlenfolgen exakt zu reproduzieren.
 
-Die empfohlene Entscheidung lautet:
+Die angenommene Entscheidung lautet:
 
 1. Die historische Referenzsammlung bleibt als Herkunfts-, Format-,
    Plausibilitaets- und Regressionsnachweis erhalten.
@@ -26,7 +26,7 @@ Die empfohlene Entscheidung lautet:
 5. IMS 2.x wird als gemeinsame, erweiterbare Plattform entwickelt, nicht als
    Sammlung voneinander abweichender Spezialprogramme.
 
-## Vorgeschlagener Beschluss
+## Beschluss
 
 Der historische IMS-Korpus ist mit 15/15 Tabellen und 6.300/6.300
 Ergebniszeilen strukturell vollstaendig an den modernen Diagnosepfad
@@ -250,7 +250,7 @@ Exakte Werte bleiben fuer deterministische Formeln, Vertraege und Invarianten
 wichtig. Fuer stochastische Markttrajektorien werden Verteilungen, Quantile,
 Wirkungsrichtungen, Effektgroessen und Robustheit bewertet.
 
-## Empfohlene Reihenfolge nach einer Entscheidung
+## Kandidatenfolge nach PR102
 
 Diese Reihenfolge ist eine Kandidatenfolge, keine aktive PR-Roadmap:
 
@@ -268,7 +268,8 @@ Diese Reihenfolge ist eine Kandidatenfolge, keine aktive PR-Roadmap:
 8. Forschungs-, Publikations- und read-only Showcase-Modi konsolidieren die
    Aussendarstellung.
 
-Erst nach der Richtungsentscheidung werden daraus kleine, reviewbare PRs mit
+Die Richtungsentscheidung ist erfolgt. Aus den Kandidaten nach PR102 werden
+dennoch erst in eigenen Planungsschnitten kleine, reviewbare PRs mit
 Umfangsschaetzung und Abnahmekriterien gebildet.
 
 ## Nicht-Ziele dieser Empfehlung

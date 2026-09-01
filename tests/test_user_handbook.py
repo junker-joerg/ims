@@ -12,7 +12,9 @@ def _read(filename: str) -> str:
 def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     index = _read("README.md")
 
-    assert "Handbuchstand: HB3" in index
+    assert "Handbuchstand: HB3a" in index
+    assert "[Testpaket in zwei Seiten installieren]" in index
+    assert "[Testpaket in acht Seiten bedienen]" in index
     assert "[Windows-Kurzstart](quickstart_windows.md)" in index
     assert "[Windows installieren](installation_windows.md)" in index
     assert "[Workbench bedienen](operation.md)" in index
@@ -94,9 +96,9 @@ def test_handbook_plan_records_hb3_and_remaining_slices() -> None:
     )
     normalized = " ".join(plan.split())
 
-    assert "Umsetzungsstand: HB3" in plan
+    assert "Umsetzungsstand: HB3a" in plan
     assert "HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad (umgesetzt)" in plan
     assert "HB3: Windows-Installationshandbuch (umgesetzt)" in plan
-    assert "Nach HB3 bleiben **3 Handbuch-Schnitte**" in normalized
+    assert "Nach HB3a bleiben **3 Handbuch-Schnitte**" in normalized
     assert "HB4 bis HB6" in plan
     assert "580-1.320 LoC" in plan

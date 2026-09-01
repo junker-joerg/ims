@@ -41,6 +41,9 @@ def test_workbench_release_smoke_accepts_prepared_release(tmp_path):
     assert payload["production_scripts_ready"] is True
     assert payload["artifact_scripts_match_repo"] is True
     assert payload["pr66_demo_adapter_separated"] is True
+    portable_start = (portable_root / "start-workbench.cmd").read_text(encoding="utf-8")
+    assert '"%IMS_PYTHON%" -m uvicorn ims.api.app:app' in portable_start
+    assert "IMS_PYTHON=%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe" in portable_start
     assert payload["writes_performed"] is False
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False

@@ -103,6 +103,18 @@ def test_portable_staging_smoke_reports_repo_scripts(tmp_path):
     assert "portable_script_not_portable" in issue_codes
 
 
+def test_portable_staging_smoke_reports_missing_installer(tmp_path):
+    root = _stage_valid_bundle(tmp_path)
+    (root / "install-workbench.cmd").unlink()
+
+    payload = smoke_workbench_portable_staging(root).to_dict()
+    issue_codes = {issue["code"] for issue in payload["issues"]}
+
+    assert payload["status"] == "error"
+    assert payload["scripts_ready"] is False
+    assert "portable_script_missing" in issue_codes
+
+
 def test_portable_staging_smoke_does_not_create_missing_root(tmp_path):
     root = tmp_path / "missing"
 

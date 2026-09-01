@@ -17,6 +17,10 @@ scripts\workbench\start-workbench.cmd
 - Das Check-Skript uebergibt `IMS_METADATA_DB` nur, wenn die Datei bereits
   existiert; ein Erstcheck ohne lokale Datenbank bleibt dadurch read-only und
   erfolgreich.
+- `build-user-test-package.ps1` erzeugt aus dem gebauten Frontend ein finales
+  Windows-ZIP mit Installationsskript und den kurzen PDF-Handbuechern.
+- Das portable `install-workbench.cmd` legt `.venv` lokal an; Check und Start
+  verwenden diese Umgebung danach automatisch.
 - `test-release-gate.ps1` fuehrt Python-Tests, Frontend-Build, den blockierten
   PR-69-Korpusbericht, ZIP/Staging, Release-Smoke und das portable Checkskript
   in einer Windows-Kette aus. Es startet keinen Server oder Adapter.

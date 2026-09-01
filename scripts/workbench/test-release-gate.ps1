@@ -22,6 +22,7 @@ $pytestTempRoot = Join-Path $resolvedWorkRoot "pytest-temp"
 $pytestCacheRoot = Join-Path $resolvedWorkRoot "pytest-cache"
 $zipPath = Join-Path $resolvedWorkRoot "ims-workbench-local.zip"
 $portableRoot = Join-Path $resolvedWorkRoot "ims-workbench"
+$userPackagePath = Join-Path $resolvedWorkRoot "IMS-Workbench-2026-Windows-Test.zip"
 $previousPythonPath = $env:PYTHONPATH
 
 function Assert-NativeSuccess {
@@ -161,6 +162,23 @@ try {
             throw "PR70 Windows release gate rejects release smoke result"
         }
 
+        $userPackageJson = & (Join-Path $resolvedRepoRoot "scripts\workbench\build-user-test-package.ps1") `
+            -RepoRoot $resolvedRepoRoot `
+            -OutPath $userPackagePath
+        Assert-NativeSuccess -Step "user test package build"
+        $userPackage = $userPackageJson | ConvertFrom-Json
+        if (
+            $userPackage.status -ne "ok" -or
+            $userPackage.install_pages -ne 2 -or
+            $userPackage.user_guide_pages -ne 8 -or
+            $userPackage.target_requires_node -ne $false -or
+            $userPackage.execution_performed -ne $false -or
+            $userPackage.simulation_performed -ne $false -or
+            $userPackage.historical_full_equality_claimed -ne $false
+        ) {
+            throw "PR70 Windows release gate rejects user test package"
+        }
+
         & (Join-Path $portableRoot "check-workbench.cmd")
         Assert-NativeSuccess -Step "portable check script"
 
@@ -172,6 +190,7 @@ try {
             production_release_approved = $false
             missing_calculated_export_count = $report.missing_calculated_export_count
             release_ready = $release.release_ready
+            user_test_package_ready = $true
             writes_performed = $false
             execution_performed = $false
             simulation_performed = $false

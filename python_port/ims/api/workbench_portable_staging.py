@@ -279,6 +279,10 @@ def _write_archive_member(archive: zipfile.ZipFile, info: zipfile.ZipInfo, targe
 
 def _write_portable_scripts(out_path: Path) -> list[WorkbenchPortableStagingFile]:
     scripts = {
+        "generated:portable/install-workbench.cmd": (
+            out_path / "install-workbench.cmd",
+            _portable_install_script(),
+        ),
         "generated:portable/check-workbench.cmd": (
             out_path / "check-workbench.cmd",
             _portable_check_script(),
@@ -287,12 +291,76 @@ def _write_portable_scripts(out_path: Path) -> list[WorkbenchPortableStagingFile
             out_path / "start-workbench.cmd",
             _portable_start_script(),
         ),
+        "generated:portable/BITTE-ZUERST-LESEN.txt": (
+            out_path / "BITTE-ZUERST-LESEN.txt",
+            _portable_readme(),
+        ),
     }
     staged_files: list[WorkbenchPortableStagingFile] = []
     for source_entry, (target_path, content) in scripts.items():
         target_path.write_text(content, encoding="utf-8", newline="\r\n")
         staged_files.append(WorkbenchPortableStagingFile(source_entry=source_entry, target_path=str(target_path)))
     return staged_files
+
+
+def _portable_install_script() -> str:
+    return r"""@echo off
+setlocal
+
+set "SCRIPT_DIR=%~dp0"
+for %%I in ("%SCRIPT_DIR%.") do set "WORKBENCH_ROOT=%%~fI"
+
+pushd "%WORKBENCH_ROOT%" >nul
+if errorlevel 1 (
+  echo IMS Workbench installation failed: portable root not found.
+  exit /b 1
+)
+
+where python >nul 2>nul
+if errorlevel 1 (
+  echo IMS Workbench installation failed: Python 3.12 or newer was not found.
+  echo Install Python from https://www.python.org/downloads/windows/ and enable Add python.exe to PATH.
+  popd >nul
+  exit /b 1
+)
+
+python -c "import sys; raise SystemExit(0 if sys.version_info >= (3, 12) else 1)"
+if errorlevel 1 (
+  echo IMS Workbench installation failed: Python 3.12 or newer is required.
+  python --version
+  popd >nul
+  exit /b 1
+)
+
+if not exist "%WORKBENCH_ROOT%\.venv\Scripts\python.exe" (
+  echo Creating local Python environment...
+  python -m venv "%WORKBENCH_ROOT%\.venv"
+  if errorlevel 1 (
+    echo IMS Workbench installation failed while creating the local Python environment.
+    popd >nul
+    exit /b 1
+  )
+)
+
+echo Installing IMS web dependencies into the local environment...
+"%WORKBENCH_ROOT%\.venv\Scripts\python.exe" -m pip install --disable-pip-version-check -r "%WORKBENCH_ROOT%\app\python_port\requirements-web.txt"
+if errorlevel 1 (
+  echo IMS Workbench installation failed while installing Python dependencies.
+  echo Check the internet connection and see Dokumentation\INSTALLATION.pdf.
+  popd >nul
+  exit /b 1
+)
+
+call "%WORKBENCH_ROOT%\check-workbench.cmd"
+set "EXIT_CODE=%ERRORLEVEL%"
+if "%EXIT_CODE%"=="0" (
+  echo.
+  echo IMS Workbench is ready. Start it with start-workbench.cmd.
+)
+
+popd >nul
+exit /b %EXIT_CODE%
+"""
 
 
 def _portable_check_script() -> str:
@@ -320,11 +388,18 @@ if not exist "%IMS_FRONTEND_DIST%\\index.html" (
 )
 
 set "PYTHONPATH=%WORKBENCH_ROOT%\\app\\python_port;%PYTHONPATH%"
+if not defined IMS_PYTHON (
+  if exist "%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe" (
+    set "IMS_PYTHON=%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe"
+  ) else (
+    set "IMS_PYTHON=python"
+  )
+)
 
 if exist "%IMS_METADATA_DB%" (
-  python -m ims.api.workbench_diagnostics --frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"
+  "%IMS_PYTHON%" -m ims.api.workbench_diagnostics --frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"
 ) else (
-  python -m ims.api.workbench_diagnostics --frontend-dist "%IMS_FRONTEND_DIST%"
+  "%IMS_PYTHON%" -m ims.api.workbench_diagnostics --frontend-dist "%IMS_FRONTEND_DIST%"
 )
 if errorlevel 1 (
   popd >nul
@@ -332,9 +407,9 @@ if errorlevel 1 (
 )
 
 if exist "%IMS_METADATA_DB%" (
-  python -m ims.api.workbench_readiness --frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"
+  "%IMS_PYTHON%" -m ims.api.workbench_readiness --frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"
 ) else (
-  python -m ims.api.workbench_readiness --frontend-dist "%IMS_FRONTEND_DIST%"
+  "%IMS_PYTHON%" -m ims.api.workbench_readiness --frontend-dist "%IMS_FRONTEND_DIST%"
 )
 set "EXIT_CODE=%ERRORLEVEL%"
 
@@ -368,13 +443,45 @@ if not exist "%IMS_FRONTEND_DIST%\\index.html" (
 )
 
 set "PYTHONPATH=%WORKBENCH_ROOT%\\app\\python_port;%PYTHONPATH%"
+if not defined IMS_PYTHON (
+  if exist "%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe" (
+    set "IMS_PYTHON=%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe"
+  ) else (
+    set "IMS_PYTHON=python"
+  )
+)
 
 echo Starting IMS Workbench at http://%IMS_WORKBENCH_HOST%:%IMS_WORKBENCH_PORT%/
-python -m uvicorn ims.api.app:app --app-dir app/python_port --host "%IMS_WORKBENCH_HOST%" --port "%IMS_WORKBENCH_PORT%"
+"%IMS_PYTHON%" -m uvicorn ims.api.app:app --app-dir app/python_port --host "%IMS_WORKBENCH_HOST%" --port "%IMS_WORKBENCH_PORT%"
 set "EXIT_CODE=%ERRORLEVEL%"
 
 popd >nul
 exit /b %EXIT_CODE%
+"""
+
+
+def _portable_readme() -> str:
+    return """IMS Workbench 2026 - Windows-Testpaket
+=========================================
+
+Zum ersten Start:
+
+1. Diesen Ordner vollstaendig entpacken.
+2. install-workbench.cmd doppelt anklicken. Fuer diesen Schritt werden
+   Python 3.12 oder neuer und eine Internetverbindung benoetigt.
+3. start-workbench.cmd doppelt anklicken.
+4. Im Browser http://127.0.0.1:8000/ oeffnen.
+5. Zum Beenden im schwarzen Serverfenster Strg+C druecken.
+
+Node.js, npm und Git sind auf dem Testrechner nicht erforderlich.
+
+Die Kurzanleitung steht unter Dokumentation\\INSTALLATION.pdf. Was ein
+fachlicher Anwender mit diesem Stand tun kann und was noch nicht, steht unter
+Dokumentation\\BEDIENUNGSANLEITUNG.pdf.
+
+Dieses Paket ist ein lokaler Teststand. Es ist keine fachliche
+Produktionsfreigabe und behauptet keine exakte Reproduktion historischer
+Zufallszahlen oder Ergebnislaeufe.
 """
 
 

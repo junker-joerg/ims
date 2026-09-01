@@ -37,6 +37,18 @@ scripts\workbench\check-workbench.cmd
 scripts\workbench\start-workbench.cmd
 ```
 
+Ein weitergebbares Windows-Testpaket mit gebautem Frontend, lokaler
+Python-Einrichtung und PDF-Handbuch entsteht mit:
+
+```powershell
+.\scripts\workbench\build-user-test-package.ps1
+```
+
+Das Ergebnis liegt standardmaessig unter
+`dist\IMS-Workbench-2026-Windows-Test.zip`. Auf dem Zielrechner werden Python
+3.12+ und beim ersten Installieren Internetzugang benoetigt, aber weder Node.js
+noch Git. Der Paketbau und die Installation starten keine Simulation.
+
 Das technische PR-70-Freigabegate buendelt Python-Tests, Frontend-Build,
 Korpusbericht, ZIP/Staging und Release-Smoke unter Windows:
 

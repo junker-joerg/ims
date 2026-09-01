@@ -1,7 +1,7 @@
 # Windows installieren
 
 Stand: 2026-09-01
-Handbuchstand: HB3
+Handbuchstand: HB3a
 Supportstufe: `verified_windows_hb3`
 
 IMS wird derzeit als lokale Browser-Workbench bereitgestellt. Es gibt keinen
@@ -48,8 +48,10 @@ IMS Workbench 2026/
     python_port/
   data/.ims_workbench/
   logs/
+  install-workbench.cmd
   check-workbench.cmd
   start-workbench.cmd
+  Dokumentation/
 ```
 
 Wenn dieser Ordner fuer den Transport nochmals als ZIP verpackt wurde, muss er
@@ -60,10 +62,14 @@ nicht in eine vorhandene Workbench-Version kopiert werden.
 
 ```powershell
 Set-Location "C:\IMS Tests\IMS Workbench 2026"
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".\app\python_port[web]"
-$env:Path = "$(Resolve-Path .\.venv\Scripts);$env:Path"
+.\install-workbench.cmd
 ```
+
+Das Skript erzeugt `.venv`, installiert die Pakete aus
+`app\python_port\requirements-web.txt` lokal und
+fuehrt `check-workbench.cmd` aus. Check und Start waehlen `.venv` danach
+automatisch. Die manuelle Einrichtung bleibt nur als Fehlerdiagnose im
+technischen Handbuch relevant.
 
 Danach:
 
@@ -98,6 +104,7 @@ TypeScript ist nicht erforderlich.
 
 | Schritt | Wirkung |
 | --- | --- |
+| `install-workbench.cmd` | legt eine lokale `.venv` an, installiert Web-Abhaengigkeiten und ruft den Check auf |
 | `check-workbench.cmd` | prueft Frontend, Python-Import, Web-Abhaengigkeiten und Readiness; startet keinen Server |
 | `start-workbench.cmd` | startet den lokalen FastAPI-/Uvicorn-Server und liefert das gebaute Frontend aus |
 | `GET /api/health` | bestaetigt Backendstatus und Verfuegbarkeit des Frontends |

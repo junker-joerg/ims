@@ -165,9 +165,16 @@ def _backend_import_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssu
 def _script_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssue]:
     issues: list[WorkbenchPortableStagingSmokeIssue] = []
     checks = {
+        root / "install-workbench.cmd": (
+            "Python 3.12 or newer",
+            "\\.venv\\Scripts\\python.exe",
+            "app\\python_port\\requirements-web.txt",
+            "check-workbench.cmd",
+        ),
         root / "check-workbench.cmd": (
             "IMS_FRONTEND_DIST=%WORKBENCH_ROOT%\\app\\frontend\\dist",
             "IMS_METADATA_DB=%WORKBENCH_ROOT%\\data\\.ims_workbench\\metadata.sqlite",
+            "IMS_PYTHON=%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe",
             "%IMS_FRONTEND_DIST%\\index.html",
             "app\\python_port",
             '--frontend-dist "%IMS_FRONTEND_DIST%" --db "%IMS_METADATA_DB%"',
@@ -177,6 +184,7 @@ def _script_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssue]:
             "IMS_METADATA_DB=%WORKBENCH_ROOT%\\data\\.ims_workbench\\metadata.sqlite",
             "IMS_WORKBENCH_HOST=127.0.0.1",
             "IMS_WORKBENCH_PORT=8000",
+            "IMS_PYTHON=%WORKBENCH_ROOT%\\.venv\\Scripts\\python.exe",
             "%IMS_FRONTEND_DIST%\\index.html",
             "app\\python_port",
             "--app-dir app/python_port",
@@ -201,6 +209,26 @@ def _script_issues(root: Path) -> list[WorkbenchPortableStagingSmokeIssue]:
                         code="portable_script_not_portable",
                         severity="error",
                         message=f"portable script does not reference expected portable path {fragment}: {script_path}",
+                    )
+                )
+    readme_path = root / "BITTE-ZUERST-LESEN.txt"
+    if not readme_path.is_file():
+        issues.append(
+            WorkbenchPortableStagingSmokeIssue(
+                code="portable_script_missing",
+                severity="error",
+                message=f"portable first-read document is missing: {readme_path}",
+            )
+        )
+    else:
+        readme = readme_path.read_text(encoding="utf-8")
+        for fragment in ("install-workbench.cmd", "start-workbench.cmd", "Dokumentation\\INSTALLATION.pdf"):
+            if fragment not in readme:
+                issues.append(
+                    WorkbenchPortableStagingSmokeIssue(
+                        code="portable_script_not_portable",
+                        severity="error",
+                        message=f"portable first-read document is missing expected text {fragment}: {readme_path}",
                     )
                 )
     return issues

@@ -180,6 +180,10 @@ Nach PR 101 ist `1` PR bis zum ersten gemeinsamen
 6.300-Zeilen-Vollkorpusbericht vorgesehen: PR 102 fuer den Abschlussbericht.
 Unbekannte fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
 
+Parallel wurde vor PR102 ein Windows-Anwender-Testpaket als HB3a abgeschlossen.
+Es verbessert ZIP, Installation und Bedienungsdokumentation, aendert aber weder
+den Korpusbefund noch die Anzahl der fachlichen PRs.
+
 ## Naechster Schritt
 
 PR 101 hat `imsvuvk1.dat` bis `imsvuvk3.dat` als letzte drei historische
@@ -188,3 +192,5 @@ angebunden. Kumuliert sind 15/15 Tabellen und 6.300/6.300 Zeilen geliefert.
 PR 102 bewertet als naechstes den gemeinsamen Vollkorpus. Der verbindliche
 Ablauf sowie die PR-88-bis-PR-101-Befunde stehen in
 `docs/plans/historical_reference_provenance_and_full_window_plan.md`.
+Die dafuer am 2026-09-01 angenommene Produkt- und Validierungsentscheidung
+steht unter `docs/strategy/pr102_ims_2x_direction_recommendation.md`.
