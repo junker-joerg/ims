@@ -129,7 +129,7 @@ try {
             zip_bytes = (Get-Item -LiteralPath $resolvedOutPath).Length
             zip_sha256 = $hash
             install_pages = 2
-            user_guide_pages = 8
+            user_guide_pages = 10
             target_requires_python = "3.12+"
             target_requires_node = $false
             target_requires_git = $false

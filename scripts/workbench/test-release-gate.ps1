@@ -170,7 +170,7 @@ try {
         if (
             $userPackage.status -ne "ok" -or
             $userPackage.install_pages -ne 2 -or
-            $userPackage.user_guide_pages -ne 8 -or
+            $userPackage.user_guide_pages -ne 10 -or
             $userPackage.target_requires_node -ne $false -or
             $userPackage.execution_performed -ne $false -or
             $userPackage.simulation_performed -ne $false -or

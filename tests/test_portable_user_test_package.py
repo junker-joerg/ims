@@ -27,21 +27,27 @@ def test_portable_installation_is_two_pages_and_user_facing() -> None:
 def test_portable_user_guide_is_at_most_ten_pages_and_honest_about_scope() -> None:
     guide = _read(HANDBOOK_ROOT / "user_guide_test_package.md")
 
-    assert guide.count("## Seite ") == 8
-    assert "Was kann ich mit IMS heute machen?" in guide
-    assert "Noch nicht moeglich sind ein freier Szenarioeditor" in guide
-    assert "15 von 15 vereinbarten Tabellen" in guide
-    assert "6.300 von 6.300 vereinbarten Ergebniszeilen" in guide
-    assert "kein historischer Vollgleichheitsnachweis" in guide
-    assert "Management-Simulation" in guide
-    assert "Regulierungs-Wirkungsanalyse" in guide
-    assert guide.count("![") == 5
+    assert guide.count("## Seite ") == 10
+    assert "Die urspruengliche Idee" in guide
+    assert "Was kann das Modell?" in guide
+    assert "Was ist ein Schock?" in guide
+    assert "Wo ist der Output?" in guide
+    assert "keinen fachlichen Modelloutput" in guide
+    assert "Aktivierungsschock" in guide
+    assert "Aenderungsschock" in guide
+    assert "Indirekter Schock" in guide
+    assert "Prozessrealitaet" in guide
+    assert "Kein Ergebnis der modernisierten Workbench" in guide
+    assert guide.count("![") == 8
     for image_name in (
+        "ims_market_cycle_diss_2026-09-01.png",
+        "ims_shock_types_diss_2026-09-01.png",
+        "diss_figure_5_8_market_share.png",
+        "diss_figure_5_9_before_after.png",
+        "diss_figure_5_10_aggregation.png",
         "windows_workbench_dashboard_hb3a_2026-09-01.png",
         "windows_workbench_scenarios_hb3a_2026-09-01.png",
         "windows_workbench_runs_hb3a_2026-09-01.png",
-        "windows_workbench_validation_hb3a_2026-09-01.png",
-        "windows_workbench_run_control_hb3a_2026-09-01.png",
     ):
         assert image_name in guide
         assert (HANDBOOK_ROOT / "images" / image_name).is_file()
@@ -54,8 +60,8 @@ def test_portable_handbook_pdfs_have_the_documented_page_limits() -> None:
     assert installation_pdf.read_bytes().startswith(b"%PDF")
     assert guide_pdf.read_bytes().startswith(b"%PDF")
     assert _pdf_page_count(installation_pdf) == 2
-    assert _pdf_page_count(guide_pdf) == 8
-    assert guide_pdf.read_bytes().count(b"/Subtype /Image") >= 5
+    assert _pdf_page_count(guide_pdf) == 10
+    assert guide_pdf.read_bytes().count(b"/Subtype /Image") >= 8
 
 
 def test_user_test_package_build_is_separate_from_simulation_and_pr102() -> None:

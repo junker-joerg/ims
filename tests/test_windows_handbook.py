@@ -138,5 +138,5 @@ def test_hb3_links_resolve_and_platform_limits_remain_open() -> None:
     assert "verified_windows_hb3" in reference
     assert "Linux bleibt bis HB4 `not_verified`" in normalized_reference
     assert "iOS/Juno bleibt bis HB5 `feasibility_open`" in normalized_reference
-    assert "Nach HB3a bleiben **3 Handbuch-Schnitte**" in normalized_plan
+    assert "Nach HB3b bleiben **3 Handbuch-Schnitte**" in normalized_plan
     assert "PR102 und HB4 sind die naechsten getrennten Schnitte" in normalized_plan

@@ -100,8 +100,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Validierungsdeutung um. HB3 belegt Windows-Kurzstart, Installation,
   Leerzeichenpfad, Health, Datenpflege und Deinstallation. HB3a ergaenzt das
   weitergebbare Windows-Anwender-Testpaket; `portable_user_test_package_plan.md`
-  dokumentiert ZIP, lokale `.venv` und die zwei kurzen PDF-Handbuecher. HB4 bis HB6
-  behandeln Linux-Nachweis, iOS/Juno-Entscheidung und Abnahme.
+  dokumentiert ZIP, lokale `.venv` und die zwei kurzen PDF-Handbuecher. HB3b
+  richtet die Bedienungsanleitung an `DISS.pdf`, Schockmodell und
+  Ergebnisdaten aus. HB4 bis HB6 behandeln Linux-Nachweis,
+  iOS/Juno-Entscheidung und Abnahme.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

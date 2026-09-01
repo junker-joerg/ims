@@ -1,249 +1,334 @@
-# IMS Workbench 2026 - Bedienungsanleitung fuer das Testpaket
+# IMS 1995-2026 - Modell verstehen, Experimente planen, Ergebnisse lesen
 
 Stand: 2026-09-01
-Umfang: 8 Seiten
-Zielgruppe: Versicherungsfachleute, Wissenschaftler und Entscheider ohne Kenntnis der Dissertation oder des Quellcodes
+Umfang: 10 Seiten
+Zielgruppe: Forscher, Versicherungsmanager und fachlich interessierte Anwender ohne Kenntnis der Dissertation oder des Quellcodes
+Fachliche Quelle: `DISS.pdf`, insbesondere S. 2-3, 31-43, 81-95 und 103-109
 
-## Seite 1 - Was kann ich mit IMS heute machen?
+## Seite 1 - Die urspruengliche Idee
 
-Die IMS Workbench macht den modernisierten Stand des historischen
-Versicherungsmarktmodells sichtbar und pruefbar. Sie ist derzeit vor allem ein
-transparentes Analyse- und Demonstrationswerkzeug.
+IMS fragt nicht zuerst: **Wie hoch ist morgen eine bestimmte Marktziffer?**
+Die Forschungsfrage lautet vielmehr:
 
-Als Anwender koennen Sie heute:
+> Was geschieht in einem Versicherungsmarkt, wenn sich seine
+> Rahmenbedingungen sprunghaft aendern und unterschiedlich informierte
+> Marktteilnehmer darauf reagieren?
 
-- die technische Betriebsbereitschaft der Anwendung pruefen;
-- vorbereitete Szenarien und Runs suchen, auswaehlen und einordnen;
-- Herkunft, Zeitraum und Validierungsstatus eines Datenstands nachvollziehen;
-- den historischen Vergleich fuer 15 Tabellen und 6.300 Ergebniszeilen lesen;
-- erkennen, welche Unterschiede exakt, toleriert oder fachlich offen sind;
-- einen vorbereiteten Run-Control-Pfad per Dry-Run und expliziter Freigabe
-  kontrollieren, sofern eine passende lokale Metadatenquelle bereitgestellt ist;
-- gespeicherte Adapterresultate und ihren Ausfuehrungsverlauf lesen;
-- die Oberflaeche und den kuenftigen Bedienablauf aus fachlicher Sicht bewerten.
+Die Dissertation bezeichnet die Computersimulation sinngemaess als
+Forschungslabor. In diesem Labor entsteht ein kuenstlicher Versicherungsmarkt
+aus einzelnen Versicherern und Versicherungsnehmern. Ihre Entscheidungen
+werden Periode fuer Periode wiederholt. Das Ergebnis einer Periode veraendert
+die Informationsgrundlage der naechsten Periode.
 
-Noch nicht moeglich sind ein freier Szenarioeditor, der Upload eigener
-Marktdaten, eine beliebige neue Simulation im Browser, eine automatische
-Kalibrierung auf reale Marktdaten oder eine belastbare Wirkungsanalyse neuer
-Regulierung. Diese Funktionen gehoeren zum Ausbau von IMS 2.x.
+![Periodischer Marktprozess des IMS-Modells](images/ims_market_cycle_diss_2026-09-01.png)
 
-Das historische Material dient als diagnostischer Legacy-Benchmark. Exakte
-Zufallsfolgen aus 35 Jahre alten Bibliotheken sind kein Produktziel. Wichtig
-sind nachvollziehbare Annahmen, moderne Reproduzierbarkeit, fachliche
-Invarianten und erklaerbare Wirkungsrichtungen.
+*Abbildung 1: Vereinfachter Marktprozess nach `DISS.pdf`, S. 2-3 und 33.*
 
-<!-- PAGE BREAK -->
+IMS berechnet deshalb keinen Gleichgewichtspreis und unterstellt keine
+vollstaendig informierten Optimierer. Der Markt ist dauerhaft in Bewegung.
+Beobachtet wird, wie einfache Verhaltensregeln zusammen Marktdynamik erzeugen
+und wie gut sie ploetzliche Aenderungen verarbeiten.
 
-## Seite 2 - Der Rundgang in zehn Minuten
-
-Starten Sie auf `Dashboard` und pruefen Sie die drei Statusfelder. `Backend`
-muss `bereit` sein. `Fachlogik abgegrenzt` und `Persistenz vorbereitet` sind
-bewusste Hinweise auf den Teststand, keine fachliche Produktionsfreigabe.
-
-![Dashboard mit Systemstatus](images/windows_workbench_dashboard_hb3a_2026-09-01.png)
-
-*Abbildung 1: Dashboard, Handbuchstand HB3a, Aufnahme 2026-09-01.*
-
-Gehen Sie danach in dieser Reihenfolge durch die Navigation:
-
-1. `Szenarien`: Referenz oder Entwurf auswaehlen und Herkunft lesen.
-2. `Runs`: vorhandenen Lauf, Szenario und Periodenfenster zuordnen.
-3. `Validierung`: Abdeckung und fachliche Aussagegrenzen unterscheiden.
-4. `Runs`: nur bei vorbereiteten Metadaten den kontrollierten Dry-Run lesen.
-
-Der Knopf `Neuer Lauf` gehoert noch nicht zum freigegebenen Anwenderpfad. Ein
-guter Test beantwortet deshalb zuerst: Ist klar, was nur angesehen werden kann,
-was gesperrt ist und welche Aussage ein angezeigter Status tatsaechlich traegt?
+Das urspruengliche Ziel ist **Prozessrealitaet**: Ein plausibler Marktprozess
+ist wichtiger als die punktgenaue Reproduktion realer Marktzahlen. Ergebnisse
+sind Szenarioaussagen und keine Prognosen oder historischen Rekonstruktionen.
 
 <!-- PAGE BREAK -->
 
-## Seite 3 - Szenarien verstehen
+## Seite 2 - Was kann das Modell?
 
-Ein Szenario beschreibt einen fachlichen Ausgangsstand und dessen Herkunft.
-Es ist nicht automatisch ein bereits ausgefuehrter Simulationslauf.
+Das historische IMS bildet einen disaggregierten Versicherungsmarkt mit zwei
+Schadenversicherungssparten ab. Jeder Marktteilnehmer besitzt eine eigene
+Verhaltensregel und nur die darin vorgesehene Information.
 
-In der `Szenario-Uebersicht`:
+### Versicherungsnehmer entscheiden in jeder Periode
 
-1. nach Name oder ID suchen;
-2. nach Status, Quelle oder Umfang filtern;
-3. eine Zeile auswaehlen und die `Auswahlzusammenfassung` kontrollieren;
-4. Herkunft, Umfang und Validierungsangabe lesen.
+1. Trage ich mein Risiko selbst oder versichere ich mich?
+2. Wenn ich mich versichere: Welchen Versicherer waehle ich?
 
-![Szenarioauswahl und Filter](images/windows_workbench_scenarios_hb3a_2026-09-01.png)
+Die Wahl kann zufaellig, praferenzgesteuert, erinnerungsbasiert oder ueber die
+Suche nach Praemieninformationen erfolgen. Ein Versicherungsnehmer kann den
+Versicherungsstatus und den Anbieter in jeder Periode wechseln.
 
-*Abbildung 2: Szenarioauswahl, Handbuchstand HB3a, Aufnahme 2026-09-01.*
+### Versicherer entscheiden in jeder Periode
 
-Beachten Sie drei Statusarten:
+- welche Praemie sie in jeder der beiden Sparten verlangen;
+- wie viel sie in jeder Sparte fuer Werbung ausgeben.
 
-- `reference`: historischer oder versionierter Vergleichsstand;
-- `draft`: vorbereiteter Entwurf ohne fachliche Freigabe;
-- `planned`: beschriebener, aber noch nicht nutzbarer Ausbau.
+Sie tragen die Schaeden ihrer Versicherten und bilden daraus Reserven. Ihre
+Regeln koennen ohne Information, mit eigenen Vergangenheitswerten oder mit
+Informationen ueber andere Anbieter arbeiten. So lassen sich monopolistische
+Konkurrenz, oligopolistisches Verhalten und Mischformen untersuchen.
 
-Sie koennen heute beantworten, welche Referenz gezeigt wird, aus welcher Quelle
-sie stammt und welcher Ausschnitt gemeint ist. Eigene Zinssaetze, Strategien
-oder Regulierungsvarianten koennen noch nicht eingegeben werden. Die Ansicht ist
-bewusst kein Editor und nimmt weder `incomming/` noch Browser-Uploads an.
+| Informationsbasis | Versicherer-Regeln | Versicherungsnehmer-Regeln |
+| --- | --- | --- |
+| ohne Information | Zufall I/II | Zufall I/II |
+| eigene Information | Mark-Up I-III, Erwartungsschaden | Praeferenz, Totale Erinnerung |
+| fremde Information | Dumping, Durchschnitt, Angriff | Suche, Beste Information |
 
-<!-- PAGE BREAK -->
+### Damit lassen sich Fragen untersuchen wie
 
-## Seite 4 - Vorhandene Runs lesen
+- Welche Strategien gewinnen oder verlieren nach einem Nachfrageschock
+  Marktanteile?
+- Wie schnell passen sich Praemien an eine veraenderte Schadenlage an?
+- Welche Versicherer geraten bei gleicher Marktveraenderung unter
+  Reservendruck?
+- Welche Versicherungsnehmer tragen hoehere Praemien oder mehr Eigenschaden?
+- Sieht der Effekt beim einzelnen Akteur anders aus als im Gesamtmarkt?
 
-Ein Run ist einem Szenario zugeordnet und besitzt ein Periodenfenster, einen
-Status und eine Validierungsaussage. Ein vorhandener Run kann ein
-Regressionstest, eine Vorschau oder ein kontrolliert vorbereitetes Ergebnis
-sein. Er ist nicht automatisch eine historische Simulation.
-
-![Run-Uebersicht mit Auswahl](images/windows_workbench_runs_hb3a_2026-09-01.png)
-
-*Abbildung 3: Run-Auswahl, Handbuchstand HB3a, Aufnahme 2026-09-01.*
-
-Gehen Sie fuer einen sicheren Lesepfad so vor:
-
-1. Run in der `Run-Uebersicht` auswaehlen.
-2. Szenario, Fenster, Quelle und Status gemeinsam pruefen.
-3. `validated` nur als Aussage fuer den konkret bezeichneten Test lesen.
-4. `prepared` als vorbereiteten Stand ohne fachliche Freigabe verstehen.
-5. Gesperrte Ausfuehrung nicht durch andere Startwege umgehen.
-
-Die `Python-Regressionssuite` belegt automatisierte technische Tests. Die
-`Workbench-Shell Vorschau` zeigt den Bedienstand ohne Simulation. Erst ein
-zusaetzliches, versioniertes Run-Manifest koennte spaeter einen fachlichen
-Szenariolauf mit Annahmen, Seed und Ergebnisgrenzen belegen.
+Das Modell liefert keine automatisch optimale Strategie. Es zeigt
+Wirkungsverlaeufe unter offen gelegten Annahmen.
 
 <!-- PAGE BREAK -->
 
-## Seite 5 - Historische Validierung richtig lesen
+## Seite 3 - Was ist ein Schock?
 
-Die historischen Dateien sind wertvoll, aber sie stammen nicht sicher aus
-einem einzigen identischen Lauf. Parameter, Zinssaetze, Compilerplattform und
-Zufallszahlengenerator koennen sich unterschieden haben.
+Die Dissertation definiert einen Schock als sprunghafte Aenderung einer
+verhaltensrelevanten Information von einer Periode zur naechsten. Der Schock
+ist also kein roter Alarm im Programm, sondern ein klar benannter Eingriff in
+den laufenden Marktprozess.
 
-![Validierungsstatus und Konsistenz](images/windows_workbench_validation_hb3a_2026-09-01.png)
+![Drei Schockarten und zeitlicher Verlauf](images/ims_shock_types_diss_2026-09-01.png)
 
-*Abbildung 4: Validierungsstatus, Handbuchstand HB3a, Aufnahme 2026-09-01.*
+*Abbildung 2: Schockbegriff nach `DISS.pdf`, S. 41-43.*
 
-Der aktuelle Korpus umfasst:
+### Drei Schockarten
 
-- 15 von 15 vereinbarten Tabellen;
-- 6.300 von 6.300 vereinbarten Ergebniszeilen;
-- mehrere getrennte Laeufe von jeweils hoechstens 100 Perioden;
-- VU-, VN-, Klassen- und SK1/all-Sichten.
+1. **Aktivierungsschock:** Ein Versicherer oder Versicherungsnehmer wird erst
+   in einer spaeteren Periode aktiv. Dadurch entstehen neues Angebot, neue
+   Nachfrage und moegliche Wechselbewegungen.
+2. **Aenderungsschock:** Ein Marktteilnehmer wechselt am Schockzeitpunkt vom
+   bisherigen zum vorbereiteten Parametersatz seiner Verhaltensregel.
+3. **Indirekter Schock:** Die Reaktion einer Marktseite wirkt ueber Preise,
+   Werbung, Nachfrage oder Schaeden auf die andere Marktseite weiter.
 
-Lesen Sie die Kennzahlen so:
+Auch allgemeine Marktparameter wie der Zins auf Reserven oder die Kosten einer
+Praemieninformation koennen veraendert werden. Mehrere Schockarten koennen zu
+einem Szenario verbunden werden.
 
-- `Abdeckung`: Die vereinbarten Referenzdaten sind vorhanden und parserfaehig.
-- `exakt`: Ein modernes Feld entspricht innerhalb des Vertrags der Referenz.
-- `toleriert`: Eine kleine, vorher definierte numerische Differenz ist
-  akzeptiert.
-- `abweichend`: Das Feld unterscheidet sich und benoetigt Einordnung.
-- `blocked`: Eine Freigabe ist nicht erteilt; die Anwendung kann trotzdem
-  technisch funktionieren.
-
-Eine abweichende stochastische Trajektorie ist nicht automatisch ein
-fachlicher Fehler. Entscheidend sind verletzte Bilanz-, Bestands- oder
-Aggregatinvarianten, nicht reproduzierbare moderne Laeufe und unerwartete
-Wirkungsrichtungen. `6.300/6.300` ist ein Vollstaendigkeitsnachweis des
-Vergleichskorpus, kein historischer Vollgleichheitsnachweis.
+Ein Schock wird sichtbar, indem man einen Referenzpfad vor dem Eingriff mit dem
+Anpassungspfad danach vergleicht. Relevant sind Niveau, Streuung,
+Anpassungsgeschwindigkeit, Wirkungsrichtung und Unterschiede zwischen
+Akteursgruppen.
 
 <!-- PAGE BREAK -->
 
-## Seite 6 - Kontrollierter Dry-Run und Ergebnisse
+## Seite 4 - Experiment aufsetzen
 
-`Dry-Run pruefen` kontrolliert Request, Zuordnung und Vorbedingungen, ohne eine
-Simulation auszufuehren. `Queue vormerken` bleibt gesperrt, bis diese Pruefung
-erfolgreich ist und eine passende lokale Metadatenquelle bereitsteht.
+Die Dissertation gliedert eine Untersuchung in vier Phasen:
 
-![Dry-Run-Vertrag und gesperrte Grenzen](images/windows_workbench_run_control_hb3a_2026-09-01.png)
+1. **Modell konfigurieren:** Verhaltensregeln zuordnen, Startwerte und
+   Parameter setzen, Schockzeitpunkt und Schockparameter bestimmen.
+2. **Messgroessen waehlen:** Zum Beispiel Marktanteil, Praemie, Reserve,
+   Versicherungsstatus oder Vermoegen.
+3. **Messmethoden festlegen:** Zeitreihen, Vorher/Nachher-Vergleich,
+   Verteilungen, mehrere Laeufe und Aggregationsebenen.
+4. **Aussagen ableiten:** Ergebnisse fachlich interpretieren und ihre Grenzen
+   benennen.
 
-*Abbildung 5: Kontrollierter Dry-Run, Handbuchstand HB3a, Aufnahme 2026-09-01.*
+![Szenarioauswahl der heutigen Workbench](images/windows_workbench_scenarios_hb3a_2026-09-01.png)
 
-Ein Ergebnis ist erst dann belastbar, wenn vier Dinge gemeinsam sichtbar sind:
+*Abbildung 3: Die heutige Szenarioansicht zeigt Herkunft und Status, ist aber noch kein fachlicher Szenarioeditor.*
 
-1. **Ausgangslage:** Datenquelle, Zeitraum und Population.
-2. **Annahmen:** Regeln, Parameter, Regulierung und Strategien.
-3. **Reproduzierbarkeit:** Version, Seed-Policy und Run-Manifest.
-4. **Aussagegrenze:** Was darf aus diesem Lauf geschlossen werden?
+Im Wiedervereinigungsbeispiel umfasst jeder Lauf genau 100 Perioden. Der
+Schock liegt in Periode 50. Die Dissertation wertet 30 Laeufe zu je 100
+Perioden aus; dadurch enthaelt eine Aggregatdatei 3.000 Periodenergebnisse.
 
-Bei vorbereiteten Adapterresultaten zeigt die Workbench Queue, Run, Szenario,
-Summary-Modus, Persistenzzeitpunkt und Verlauf. Ein technisch erfolgreiches
-Resultat ist noch keine fachliche Freigabe. Fuer IMS 2.x sollen deterministische
-Formeln exakt getestet und stochastische Ergebnisse ueber Verteilungen,
-Wirkungsrichtung, Effektstaerke und mehrere Seeds bewertet werden. Die
-bytegleiche Einzelzahl eines unvollstaendig dokumentierten Laufs von 1995 ist
-dagegen kein Produktziel.
-
-<!-- PAGE BREAK -->
-
-## Seite 7 - Wofuer soll IMS 2.x ausgebaut werden?
-
-Das Zielbild ist eine gemeinsame, erweiterbare Plattform fuer
-Versicherungsmarktsimulationen. Der heutige Teststand zeigt die technische und
-wissenschaftliche Grundlage; die folgenden Anwendungen benoetigen weitere,
-jeweils eigene Validierung.
-
-### Kalibrierte Marktrekonstruktion
-
-Reale Marktkennzahlen dienen als Kalibrierungs- und Backtesting-Ziele. IMS soll
-nicht behaupten, die Realitaet punktgenau vorherzusagen, sondern erklaeren,
-welche Modellannahmen beobachtete Strukturen plausibel erzeugen.
-
-### Management-Simulation
-
-Versichererstrategien koennen spaeter als kontrollierte Szenarien verglichen
-werden, etwa Preis, Werbung, Reservepolitik oder Informationssuche. Ergebnisse
-muessen relativ zu einer Basislinie und mit Unsicherheit gezeigt werden.
-
-### Regulierungs-Wirkungsanalyse
-
-Regeln oder Eingriffe koennen als versionierte Gegenwelten verglichen werden.
-Wichtig sind Wirkungsrichtung, Verteilungsfolgen, Robustheit und erklaerbare
-Annahmen. Dies ist das empfohlene erste oeffentliche Leuchtturmthema.
-
-### Forschung und Publikation
-
-Kuratierte, schreibgeschuetzte Szenarien koennen Methoden, historische
-Entwicklung und moderne Erweiterungen nachvollziehbar zeigen. Provenienz und
-Run-Manifeste machen Ergebnisse zitier- und reviewbar.
-
-Die vier Richtungen sollen denselben Kern, dasselbe Szenarioformat und dieselbe
-Ergebnis- und Nachweisschicht verwenden. So bleibt IMS ausbaubar, ohne zu vier
-unvereinbaren Spezialprogrammen zu werden.
+Fuer eine neue Untersuchung muessen Basis- und Schockszenario bis auf den
+bewusst veraenderten Eingriff vergleichbar sein. Seed-Policy, Modellversion,
+Parameter und Messgroessen gehoeren in ein Run-Manifest. Erst dann kann ein
+Forscher oder Manager einen Unterschied dem Szenario statt einem verdeckten
+Eingabewechsel zuschreiben.
 
 <!-- PAGE BREAK -->
 
-## Seite 8 - Grenzen, Feedback und Kurzglossar
+## Seite 5 - Wo ist der Output?
 
-### Bitte testen Sie besonders
+Die kurze und ehrliche Antwort fuer das aktuelle Windows-Testpaket lautet:
+**Die Workbench zeigt noch keinen fachlichen Modelloutput als Zeitreihe oder
+Diagramm.** Sie zeigt Szenarien, Run-Metadaten, technische Ausfuehrungsgrenzen
+und historische Validierung.
 
-- Ist nach dem Start sofort klar, wo Szenarien, Validierung und Runs liegen?
-- Verstehen Sie den Unterschied zwischen technischer Bereitschaft und
-  fachlicher Freigabe?
-- Ist bei jeder Kennzahl erkennbar, worauf sie sich bezieht?
-- Finden Sie einen vorbereiteten Run und dessen Herkunft ohne Zusatzwissen?
-- Bleiben gesperrte oder noch geplante Funktionen ehrlich erkennbar?
-- Welche zwei fachlichen Diagramme oder Vergleiche wuerden Ihnen fuer eine
-  echte Management- oder Regulierungsfrage zuerst fehlen?
+![Run-Uebersicht ohne fachlichen Ergebnisbrowser](images/windows_workbench_runs_hb3a_2026-09-01.png)
 
-### Nicht mit diesem Testpaket tun
+*Abbildung 4: Die Run-Uebersicht weist einen Lauf nach; sie zeigt noch keine Praemien-, Marktanteils- oder Reservenreihe.*
 
-- keine vertraulichen oder personenbezogenen Daten einspielen;
-- den lokalen Server nicht ins Netzwerk freigeben;
-- historische Referenzdateien nicht ueberschreiben;
-- angezeigte Vergleichswerte nicht als Prognose oder Produktfreigabe verwenden;
-- `incomming/` nicht als Benutzerimport behandeln.
+Die Dissertation beschreibt den historischen Output als
+**Aggregationsdateien mit Simulationsrohdaten**. Grafiken konnten
+programmintern vorbereitet werden; statistische Auswertungen erfolgten mit
+externen Programmen (`DISS.pdf`, S. 106-107).
 
-### Kurzglossar
+Heute sind drei Orte zu unterscheiden:
 
-| Begriff | Bedeutung |
+| Ort | Inhalt | Anwenderbedeutung |
+| --- | --- | --- |
+| `tests/references/legacy_agrsich/` | historische `.DAT`-Referenzen | Diagnosematerial, kein neuer Lauf |
+| explizit gewaehltes `output_dir` eines Diagnose-Runners | neu berechnete `.dat`-Tabellen | nur bei gezieltem Entwickler-/Validierungslauf |
+| Workbench `Runs` / Ergebnisanzeige | Status, Herkunft, Freigabe und Adapterprotokoll | noch keine fachliche Datenanalyse |
+
+Beim normalen Start des ZIP-Testpakets wird keine Simulation gestartet und
+deshalb auch kein neuer Ergebnisordner erzeugt. Ein sichtbarer
+Ergebnis-Arbeitsbereich mit Diagrammen, Tabellen und Export ist eine noch
+offene Produktfunktion von IMS 2.x.
+
+<!-- PAGE BREAK -->
+
+## Seite 6 - Welche Daten liefert IMS?
+
+Jede Zeile einer historischen Aggregationsdatei beschreibt eine Periode. Die
+Spalten mit der Endung `1` oder `2` gehoeren zur jeweiligen Sparte.
+
+### Daten der Versicherer
+
+| Gruppe | Fachliche Groessen |
 | --- | --- |
-| Szenario | dokumentierte Ausgangslage mit Annahmen und Herkunft |
-| Run | einem Szenario zugeordneter Lauf- oder Ergebnisdatensatz |
-| Queue | kontrollierte Vormerkung fuer einen Ausfuehrungsschritt |
-| Dry-Run | Request-Pruefung ohne Ausfuehrung |
-| Adapter | eng begrenzte technische Verbindung zum vorbereiteten Laufpfad |
-| Legacy-Benchmark | historische Daten fuer Herkunft, Struktur und Diagnose |
-| Seed | Startwert einer modernen reproduzierbaren Zufallsfolge |
-| Invariant | fachliche Bedingung, die unabhaengig vom Zufall gelten muss |
+| Entscheidungen | Praemie `Pr`, Werbeaufwand `Wa` |
+| Ergebnisse | Reserve `Rs`, Anzahl Versicherungsnehmer `Vn` |
+| Folgewirkungen | Schadenanzahl `Sa`, Schadenhoehe `Sh` |
 
-Zum Beenden wechseln Sie in das Serverfenster und druecken `Strg+C`. Installation
-und Fehlerhilfe stehen in `INSTALLATION.pdf`.
+### Daten der Versicherungsnehmer
+
+| Gruppe | Fachliche Groessen |
+| --- | --- |
+| Entscheidungen | gewaehlter Versicherer `Vu`, Versicherungsstatus `Vs` |
+| Ergebnisse | gezahlte Praemie `Vp`, selbst getragener Schaden |
+| Folgewirkungen | Schadenhoehe `Sh`, Endvermoegen je Risiko `Ev` und gesamt `Vm` |
+
+Die Dateinamen kennzeichnen die Betrachtungsebene:
+
+| Muster | Sicht |
+| --- | --- |
+| `imsvuNNN.dat` / `imsvnNNN.dat` | einzelner Versicherer / Versicherungsnehmer |
+| `imsvurNN.dat` / `imsvnrNN.dat` | eine Verhaltensregel |
+| `imsvuvkN.dat` / `imsvnvkN.dat` | eine Regelklasse |
+| `imsvusk1.dat` / `imsvnsk1.dat` | Gesamtmarkt `SK1/all` |
+
+Eine Zahl wird erst durch ihren Kontext aussagefaehig: Akteur oder Aggregat,
+Sparte, Periode, Szenario, Schockzeitpunkt, Lauf und Seed. Fuer Manager sollte
+die kuenftige UI diese technischen Spalten in fachliche Kennzahlen uebersetzen:
+Marktanteil, Praemienbelastung, Reservenentwicklung, Schadenlast,
+Wechselbewegung und Erholungsdauer nach dem Schock.
+
+<!-- PAGE BREAK -->
+
+## Seite 7 - Wie sieht ein Schock in einer Zeitreihe aus?
+
+Die folgende Originalgrafik aus der Dissertation zeigt den Marktanteil des
+Versicherers VU[14] ueber 100 Perioden. Die duenne Linie ist der beobachtete
+Periodenwert, die dicke Linie ein gleitender Durchschnitt. Der Schock liegt in
+Periode 50.
+
+![Historische Marktanteilszeitreihe mit gleitendem Durchschnitt](images/diss_figure_5_8_market_share.png)
+
+*Abbildung 5: Historisches Beispiel aus `DISS.pdf`, Abb. 5.8, S. 92. Kein Ergebnis der modernisierten Workbench.*
+
+So wird die Grafik gelesen:
+
+- **Vor dem Schock:** Der Marktanteil schwankt stark und besitzt einen
+  erkennbaren Referenzverlauf.
+- **Am Schock:** Es erscheint kein einzelner magischer Messpunkt. Entscheidend
+  ist, ob sich Verlauf, Niveau oder Streuung danach nachhaltig aendern.
+- **Nach dem Schock:** Der geglaettete Marktanteil liegt in diesem Beispiel
+  hoeher und schwankt weniger stark.
+
+Ein einzelner stochastischer Lauf kann Zufall und Wirkung vermischen. Deshalb
+werden mehrere Laeufe und robuste Kennzahlen benoetigt. Der gleitende
+Durchschnitt hilft beim Sehen des Verlaufs, beweist allein aber noch keine
+kausale Wirkung.
+
+<!-- PAGE BREAK -->
+
+## Seite 8 - Vom Bild zur Aussage
+
+Die Dissertation teilt die Zeitreihe am Schockzeitpunkt in einen Vorher- und
+einen Nachher-Abschnitt. Danach werden nicht nur zwei Einzelwerte, sondern
+Mittelwerte, Streuungen und Verteilungen verglichen.
+
+![Historischer Vorher-Nachher-Vergleich](images/diss_figure_5_9_before_after.png)
+
+*Abbildung 6: Historischer Vergleich von Mittelwert und Verteilung aus `DISS.pdf`, Abb. 5.9, S. 93. Kein aktueller Programmlauf.*
+
+Fuer einen heutigen Schockversuch bedeutet das:
+
+1. Definiere eine Basislinie ohne Schock und ein sonst gleiches
+   Schockszenario.
+2. Wiederhole beide Szenarien mit einer dokumentierten Seed-Policy.
+3. Vergleiche Niveau, Streuung und Verteilung der Zielgroesse.
+4. Berichte Effektstaerke und Unsicherheit, nicht nur einen p-Wert.
+5. Pruefe, ob der Befund in beiden Sparten und bei anderen
+   Aggregationsebenen bestehen bleibt.
+
+Die historische Grafik zeigt, wie aus dem sichtbaren Niveausprung eine
+pruefbare Aussage wird. Sie ist kein Beleg, dass derselbe Effekt mit heutigen
+Parametern oder Zufallszahlen erneut auftreten muss.
+
+<!-- PAGE BREAK -->
+
+## Seite 9 - Warum die Aggregationsebene entscheidend ist
+
+Die Dissertation vergleicht Aggregatstufen mit den Vergroesserungsstufen eines
+Mikroskops. Stufe I zeigt ein Einzelsubjekt, Stufe II eine Verhaltensregel,
+Stufe III eine Regelklasse und Stufe IV den Gesamtmarkt `SK1/all`.
+
+![Historischer Reservenvergleich ueber Aggregationsebenen](images/diss_figure_5_10_aggregation.png)
+
+*Abbildung 7: Historischer Reservenvergleich aus `DISS.pdf`, Abb. 5.10, S. 93. VU[14], Regelgruppe und Gesamtmarkt reagieren verschieden.*
+
+Die Abbildung macht die eigentliche Staerke des Modells sichtbar: Beim
+einzelnen Versicherer kann der Schock deutlich sein, waehrend der Mittelwert
+einer Regelgruppe oder des Gesamtmarkts wenig zeigt oder sogar in die andere
+Richtung laeuft.
+
+Das beantwortet eine typische Managementfrage: **Wer ist betroffen, auch wenn
+der Markt insgesamt stabil aussieht?** Ein Gesamtmittel kann Gewinner und
+Verlierer verdecken. Deshalb sollte eine Wirkungsanalyse mindestens auf vier
+Ebenen lesen:
+
+- einzelner Versicherer oder Versicherungsnehmer;
+- konkrete Verhaltensregel;
+- Informations-/Regelklasse;
+- Gesamtmarkt.
+
+Die Dissertation fand entsprechend Schockwirkungen, die auf hoher Aggregation
+kaum nachweisbar, in staerker disaggregierten Daten aber deutlich waren.
+
+<!-- PAGE BREAK -->
+
+## Seite 10 - Beispiel und heutiger Nutzen
+
+Die deutsche Wiedervereinigung war das Anwendungsbeispiel, nicht die Grenze
+des Programms. Im historischen Szenario:
+
+- umfasst jeder Lauf 100 Perioden;
+- werden in Periode 50 die Versicherungsnehmer VN[151] bis VN[200] aktiviert,
+  also 25 Prozent zusaetzliche Nachfrage;
+- erzeugt ein als Allianz-Effekt bezeichneter Verhaltensunterschied bei VU[14]
+  eine staerkere Werbereaktion und bindet neue praferenzgesteuerte Nachfrage;
+- werden Marktanteile, Praemien und Reserven vor und nach dem Schock sowie auf
+  mehreren Aggregationsebenen untersucht.
+
+Die Dissertation berichtet unter diesen Annahmen unter anderem einen hoeheren
+durchschnittlichen Praemienwert nach dem Schock, unterschiedliche Belastungen
+der Versicherungsnehmer-Regelgruppen und einen hoeher stabilisierten
+Marktanteil von VU[14]. Das sind Aussagen des damaligen kuenstlichen
+Experiments, keine Rekonstruktion realer Versicherungsmarktzahlen.
+
+![Dashboard des heutigen Testpakets](images/windows_workbench_dashboard_hb3a_2026-09-01.png)
+
+*Abbildung 8: Die heutige Workbench macht Betriebs- und Nachweisstatus sichtbar; fachliche Schockkonfiguration und Ergebnisanalyse fehlen noch.*
+
+### Was ein Forscher oder Manager damit kuenftig tun soll
+
+- alternative Markt- und Regulierungsschocks gegen eine Basislinie vergleichen;
+- erkennen, welche Akteure gewinnen, verlieren oder sich langsam anpassen;
+- Praemienbelastung, Marktanteil und Reservenstress gemeinsam beurteilen;
+- robuste Wirkungsrichtungen ueber mehrere Laeufe und Seeds pruefen;
+- Annahmen, Modellversion und Ergebnisgrenzen nachvollziehbar publizieren.
+
+Im aktuellen Testpaket koennen Sie Bedienweg, Quellen, Referenzkorpus und
+technische Nachweise pruefen. Einen neuen fachlichen Schock konfigurieren,
+ausfuehren und als Diagramm auswerten koennen Sie dort noch nicht. Genau diese
+drei Schritte bilden den benoetigten Anwenderpfad fuer IMS 2.x:
+**Szenario bauen -> Schock ausfuehren -> Wirkung erklaeren.**
+
+Installation und Fehlerhilfe stehen in `INSTALLATION.pdf`.

@@ -1,7 +1,7 @@
 # IMS-Benutzerhandbuch
 
 Stand: 2026-09-01
-Handbuchstand: HB3a
+Handbuchstand: HB3b
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
 wie Bedienstatus und historische Vergleichsergebnisse zu lesen sind. Es ist
@@ -13,7 +13,7 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | Bereich | Status | Bedeutung |
 | --- | --- | --- |
 | Windows-Workbench | `verified_windows_hb3` | Kurzstart, portable Ablage, Entwickler-Checkout, Check, Start, Health, Stop, Datenpflege und Deinstallation sind dokumentiert und auf einem Leerzeichenpfad geprueft |
-| Windows-Anwender-Testpaket | `documented_windows_hb3a` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 8 Seiten Bedienungsanleitung mit 5 datierten UI-Abbildungen sind vorbereitet und geprueft |
+| Windows-Anwender-Testpaket | `documented_windows_hb3b` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 10 Seiten fachliche Bedienungsanleitung mit 8 Abbildungen sind vorbereitet und geprueft |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
@@ -22,7 +22,7 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 ## Kapitel
 
 1. [Testpaket in zwei Seiten installieren](installation_test_package_windows.md)
-2. [Testpaket in acht Seiten bedienen](user_guide_test_package.md)
+2. [Testpaket in zehn Seiten bedienen](user_guide_test_package.md)
 3. [Windows-Kurzstart](quickstart_windows.md)
 4. [Windows installieren](installation_windows.md)
 5. [Workbench bedienen](operation.md)

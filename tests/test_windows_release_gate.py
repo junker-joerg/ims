@@ -76,7 +76,7 @@ def test_windows_release_gate_freezes_conservative_report_boundary() -> None:
     assert "$report.simulation_performed -ne $false" in script
     assert "$report.historical_full_equality_claimed -ne $false" in script
     assert "$userPackage.install_pages -ne 2" in script
-    assert "$userPackage.user_guide_pages -ne 8" in script
+    assert "$userPackage.user_guide_pages -ne 10" in script
     assert "$userPackage.simulation_performed -ne $false" in script
     assert "production_release_approved = $false" in script
 

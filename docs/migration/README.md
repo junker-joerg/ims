@@ -93,7 +93,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `run_control_execution_history.md`: read-only PR-65-Verlauf fuer vorhandene Adapterstart-Audit-, Zeit- und Fehlerdaten ohne Retry, Queue-Worker oder Simulation
 - `run_control_browser_demo_smoke.md`: isolierter PR-66-Browser-Smoke fuer Freigabe, Fake-Adapterstart, persistiertes Ergebnis und Verlauf ohne Engine-Runner oder Simulation
 - `workbench_release_checklist.md`: eingefrorener PR-67-Vertrag `pr67-v1` fuer ZIP, portables Staging und normalen Produktionsstart ohne Demo-Adapter oder Simulation
-- `portable_user_test_package.md`: HB3a-Abschluss fuer ein weitergebbares Windows-ZIP mit lokaler Python-Umgebung und kurzen Anwender-PDFs
+- `portable_user_test_package.md`: HB3b-Stand fuer ein weitergebbares Windows-ZIP mit lokaler Python-Umgebung und fachlich neu ausgerichteten Anwender-PDFs
 - `workbench_metadata_recovery.md`: PR-68-Probe fuer SQLite-Backup, Restore und Side-by-Side-Update/Rollback eines validierten lokalen Ergebnisstands
 - `production_release_corpus_report.md`: PR-69-Abschlussbericht mit
   19-/6.300-Korpus und technischen Betriebsnachweisen; PR 93 ergaenzt die
