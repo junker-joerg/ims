@@ -176,15 +176,16 @@ hat klargestellt, dass historische Zeilen 101-300/500 weitere Laeufe von
 hoechstens 100 Perioden zaehlen; die modernen Langlaeufe bleiben davon
 getrennte Stabilitaetstests.
 
-Nach PR 98 sind `4` PRs bis zum ersten gemeinsamen
-6.300-Zeilen-Vollkorpusbericht vorgesehen: PR 99 bis PR 101 fuer die
-gestaffelten historischen Tabellenfamilien und PR 102 fuer den Abschlussbericht.
+Nach PR 99 sind `3` PRs bis zum ersten gemeinsamen
+6.300-Zeilen-Vollkorpusbericht vorgesehen: PR 100 und PR 101 fuer die
+verbleibenden historischen Tabellenfamilien und PR 102 fuer den Abschlussbericht.
 Unbekannte fachliche Korrekturen sind in dieser Mindestzahl nicht enthalten.
 
 ## Naechster Schritt
 
-PR 99 bindet als naechstes `imsvnr03.dat` bis `imsvnr06.dat` als vier
-getrennte historische Regeltabellen aus je fuenf 100-Perioden-Laeufen der
-Schicht `wvemod1_archive` an. Der verbindliche Ablauf sowie die
-PR-88-bis-PR-98-Befunde stehen in
+PR 99 hat `imsvnr03.dat` bis `imsvnr06.dat` als vier getrennte historische
+Regeltests aus je fuenf 100-Perioden-Laeufen der Schicht `wvemod1_archive`
+angebunden. Kumuliert sind 9/15 Tabellen und 3.300/6.300 Zeilen geliefert.
+PR 100 bindet als naechstes die drei VN-Klassenaggregate an. Der verbindliche
+Ablauf sowie die PR-88-bis-PR-99-Befunde stehen in
 `docs/plans/historical_reference_provenance_and_full_window_plan.md`.

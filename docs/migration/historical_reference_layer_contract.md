@@ -143,5 +143,5 @@ Periode 300 mit stabilem Prefix 1-100 erweitert. PR95 hat die beiden
 ihre Laufidentitaet bleibt unbewiesen. PR96 hat den kontrollierten modernen
 Zustand bis 500 erweitert und beide Prefixgrenzen exakt stabil gehalten. PR97
 hat die VU-SK1-Laufabschnitte getrennt angebunden. PR98 hat die Zeilen als
-getrennte 100er-Laeufe korrigiert. PR99 bindet als Naechstes die
-vier VN-Regeltabellen 3-6 an.
+getrennte 100er-Laeufe korrigiert. PR99 hat die vier VN-Regeltabellen 3-6
+angebunden. PR100 bindet als Naechstes die drei VN-Klassenaggregate an.

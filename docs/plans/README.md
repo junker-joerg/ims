@@ -87,7 +87,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   300er-Regeltabellen `imsvnr01.dat` und `imsvnr02.dat` vollstaendig. PR 96
   erweitert den kontrollierten Zustand bis Periode 500. PR 97 bindet die
   VU-SK1-Tabelle an; PR 98 korrigiert alle 300/500-Zeilen-Vergleiche auf drei
-  beziehungsweise fuenf unabhaengige Laeufe mit maximal 100 Perioden.
+  beziehungsweise fuenf unabhaengige Laeufe mit maximal 100 Perioden. PR 99
+  bindet die vier VN-Regeltabellen 3-6 an und hebt den kumulierten Stand auf
+  9/15 Tabellen beziehungsweise 3.300/6.300 Ergebniszeilen. PR 100 fuehrt mit
+  den drei VN-Klassenaggregaten fort.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

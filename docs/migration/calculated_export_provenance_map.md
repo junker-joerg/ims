@@ -162,15 +162,16 @@ damit abgeschlossen:
     die fachliche Freigabe erneut menschlich bewerten (erledigt, `pr86-v1`,
     Empfehlung `keep_blocked`).
 
-PR 87 schneidet die Folgephase in PR 88 bis PR 102. PR 88 bis PR 98 haben
+PR 87 schneidet die Folgephase in PR 88 bis PR 102. PR 88 bis PR 99 haben
 Archivmanifest, Koharenzmatrix, Laufmetadatenbefund, Referenzschicht-Vertrag
 und Horizontvertrag abgeschlossen, die ersten zwei 100er-Tabellen an den
 Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
 ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster vollstaendig
-diagnostisch verglichen. PR 99 bis PR 101 binden die verbleibenden berechneten Tabellen an
-je fuenf historische 100-Perioden-Laeufe; PR 102 bewertet den gemeinsamen
-6.300-Zeilen-Bericht. Nach der PR98-Korrektur sind drei Anschluss-PRs und ein
-Abschluss-PR offen. Diese
+diagnostisch verglichen. PR 99 hat die Regeln 3-6 aus je fuenf modernen
+100-Perioden-Laeufen angebunden. PR 100 und PR 101 binden die verbleibenden
+berechneten Tabellen an; PR 102 bewertet den gemeinsamen
+6.300-Zeilen-Bericht. Nach PR 99 sind zwei Anschluss-PRs und ein Abschluss-PR
+offen. Diese
 Mindestfolge enthaelt keine heute noch unbekannten fachlichen Korrekturen.
 
 ## PR-71-Pruefnachweis

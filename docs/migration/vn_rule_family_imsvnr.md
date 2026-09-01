@@ -85,5 +85,8 @@ erneut keine vollstaendige Zeile. Fuer das Quellarchiv `WVEMOD1.ZIP` ist kein
 zugeordneter Runreport mit Seed belegt. Ueber alle sechs Regeln treffen damit
 1.872/7.800 Felder beziehungsweise 672/6.600 Fachwerte.
 
-PR 85 soll als naechstes VN-Klassen und VN-SK1/all unter denselben Grenzen
-vergleichen.
+PR 99 vergleicht die Regeln 3-6 vollstaendig als je fuenf getrennte
+100-Perioden-Laeufe. Von 26.000 Feldern treffen 5.678 exakt und 809 innerhalb
+der Toleranz; keine der 2.000 Gesamtzeilen trifft vollstaendig. Historische
+Parameter- oder RNG-Gleichheit wird nicht behauptet. PR 100 bindet als
+naechstes die drei VN-Klassenaggregate unter denselben Grenzen an.

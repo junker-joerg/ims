@@ -111,5 +111,6 @@ PR95 hat ausschliesslich `imsvnr01.dat` und `imsvnr02.dat` als die beiden im
 Horizontvertrag belegten 300er-Regelfenster vollstaendig verglichen und an den
 weiterhin gesperrten Korpusbericht gebunden. PR96 hat denselben kontrollierten
 Zustand bis 500 erweitert und die Prefixe 1-100 und 1-300 exakt stabil
-gehalten. PR98 hat die historische Wiederholungslesart korrigiert. PR99 bindet
-als Naechstes die vier VN-Regeltabellen 3-6 an.
+gehalten. PR98 hat die historische Wiederholungslesart korrigiert. PR99 hat
+die vier VN-Regeltabellen 3-6 angebunden. PR100 bindet als Naechstes die drei
+VN-Klassenaggregate an.

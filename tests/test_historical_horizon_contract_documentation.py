@@ -20,7 +20,8 @@ def test_repeat_contract_documentation_fixes_scope_and_limits() -> None:
     assert "modernen 300- und 500-Perioden-Runner" in normalized
     assert "keine historische Vollgleichheit" in normalized
     assert "keine fachliche Produktionsfreigabe" in normalized
-    assert "PR99 bindet `imsvnr03.dat` bis `imsvnr06.dat`" in normalized
+    assert "PR99 hat `imsvnr03.dat` bis `imsvnr06.dat`" in normalized
+    assert "PR100" in normalized
 
 
 def test_repeat_contract_documentation_keeps_vusk1_as_one_level_iv_export() -> None:

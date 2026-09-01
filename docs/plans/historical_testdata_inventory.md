@@ -307,6 +307,14 @@ Der in PR 98 korrigierte Diagnosevertrag vergleicht `imsvnr01.dat` und
 Parametervarianten bleiben mangels Laufbericht offen.
 
 Kumuliert sind 4/15 Tabellen und 800/6.300 Zielzeilen an den
-Produktionskorpusbericht geliefert. Die Freigabe bleibt blockiert. PR 99
+Produktionskorpusbericht geliefert. Die Freigabe bleibt blockiert. Der anschliessende Schnitt PR 99
 bindet als naechstes die vier VN-Regeltabellen 3-6 aus je fuenf
-100-Perioden-Laeufen an.
+100-Perioden-Laeufen an und ist abgeschlossen.
+
+## PR-99-WVEMOD1-Regelzeilen
+
+PR 99 vergleicht `imsvnr03.dat` bis `imsvnr06.dat` mit den vier bytegenau an
+`WVEMOD1.ZIP` gebundenen 500-Zeilen-Referenzen. Historische Parameter, Seed
+und RNG-Ziehfolge bleiben offen. Kumuliert sind nun 9/15 Tabellen und
+3.300/6.300 Zielzeilen geliefert; die Freigabe bleibt blockiert. PR 100 bindet
+als naechstes die drei VN-Klassenaggregate an.

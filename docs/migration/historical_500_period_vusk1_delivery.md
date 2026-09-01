@@ -74,5 +74,6 @@ $env:PYTHONPATH = "python_port"
 python -m ims.api.historical_500_period_vusk1_delivery --root .
 ```
 
-PR99 bindet als Naechstes `imsvnr03.dat` bis `imsvnr06.dat` als je fuenf
-getrennte 100-Perioden-Laeufe an.
+PR99 hat `imsvnr03.dat` bis `imsvnr06.dat` als je fuenf getrennte
+100-Perioden-Laeufe angebunden. PR100 bindet als Naechstes die drei
+VN-Klassenaggregate an.

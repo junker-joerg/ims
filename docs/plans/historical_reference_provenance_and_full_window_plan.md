@@ -1,8 +1,8 @@
 # Plan: Historische Referenzprovenienz und Vollfenster
 
-Stand: 2026-08-31
+Stand: 2026-09-01
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 98
+Umsetzungsstand: PR 99
 
 ## Ziel
 
@@ -195,10 +195,12 @@ betroffenen Ziele getrennt oder neu belegt sind.
     Ergebniszeilen als drei/fuenf unabhaengige 100er-Laeufe ab; PR 94 und
     PR 96 bleiben getrennte moderne Stabilitaetstests. Keine historische
     Zufallsfolge oder Vollgleichheit wird verlangt.
-13. **PR 99: VN-Regeln 3-6 anbinden.**
-    Vier Tabellen aus je fuenf 100er-Laeufen vollstaendig vergleichen.
-    Erwarteter Fortschritt:
-    9/15 Tabellen und 3.300/6.300 Zielzeilen.
+13. **PR 99: VN-Regeln 3-6 anbinden (umgesetzt).**
+    Vier Tabellen aus je fuenf 100er-Laeufen wurden vollstaendig verglichen.
+    Keine der 2.000 Gesamtzeilen trifft vollstaendig; 5.678/26.000 Felder
+    treffen exakt und 809 weitere innerhalb der Toleranz. Kumuliert sind
+    9/15 Tabellen und 3.300/6.300 Zielzeilen geliefert. Gleiche historische
+    Parameter oder Zufallsfolgen werden nicht behauptet.
 14. **PR 100: VN-Klassen 1-3 anbinden.**
     Drei Tabellen aus je fuenf 100er-Laeufen vollstaendig vergleichen.
     Erwarteter Fortschritt:
@@ -226,23 +228,23 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 bis PR 98 haben Archivmanifest,
+PR 87 ist der Planungs-PR; PR 88 bis PR 99 haben Archivmanifest,
 Referenzkohaerenz, archivlokale Laufmetadaten, den getrennten
 Referenzschicht-Vertrag, den Horizontvertrag und die erste 100er-Korpuslieferung
 abgeschlossen, den modernen Zustand bis 500 fortgeschrieben und die
 historischen 300/500-Zeilen-Dateien als Wiederholungen von 100-Perioden-Laeufen
-korrigiert. Danach sind **4 geplante PRs** bis zum ersten gemeinsamen
-6.300-Zeilen-Vollkorpusbericht offen: drei historische Tabellenfamilien-PRs
-und ein Bewertungs-PR.
+korrigiert und die vier VN-Regeltabellen 3-6 angebunden. Danach sind **3
+geplante PRs** bis zum ersten gemeinsamen 6.300-Zeilen-Vollkorpusbericht
+offen: zwei historische Tabellenfamilien-PRs und ein Bewertungs-PR.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 99 bis PR 102:
+Verbleibende grobe Bruttoabschaetzung fuer PR 100 bis PR 102:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
-| Python-Produktionscode | 50-275 LoC |
-| Tests | 150-450 LoC |
-| Vertraege, Fixtures und Dokumentation | 200-500 LoC |
-| Gesamt | 400-1.225 LoC |
+| Python-Produktionscode | 40-210 LoC |
+| Tests | 110-330 LoC |
+| Vertraege, Fixtures und Dokumentation | 140-360 LoC |
+| Gesamt | 290-900 LoC |
 
 Die Schaetzung umfasst keine noch unbekannten fachlichen Korrektur-PRs fuer
 Akkumulatoren, Scheduler, RNG, Versicherungsgrad oder `Ev`-Felder. Solche PRs

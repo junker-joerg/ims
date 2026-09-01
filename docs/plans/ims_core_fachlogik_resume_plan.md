@@ -710,16 +710,20 @@ Aktualisierte grobe Restplanung:
   `(Lauf - 1) * Simulationslaenge + lokale Periode`, bei maximal 100 Perioden
   pro Lauf; weder ein historischer 300/500-Lauf noch RNG-Gleichheit wird
   behauptet;
-- PR 99 ist der naechste Umsetzungsschritt: `imsvnr03.dat` bis
-  `imsvnr06.dat` als vier Tabellen aus je fuenf 100er-Laeufen anbinden;
+- PR 99 hat `imsvnr03.dat` bis `imsvnr06.dat` als vier Tabellen aus je fuenf
+  100er-Laeufen angebunden: 0/2.000 Gesamtzeilen, aber 5.678/26.000 Felder
+  treffen exakt; kumulativ sind 9/15 Tabellen und 3.300/6.300 Ergebniszeilen
+  geliefert;
+- PR 100 ist der naechste Umsetzungsschritt: `imsvnvk1.dat` bis
+  `imsvnvk3.dat` als drei Tabellen aus je fuenf 100er-Laeufen anbinden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 98 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `4` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollkorpusbericht. PR 99 bis PR 102 duerfen die verbleibenden Tabellenfamilien
+Nach PR 99 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `3` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollkorpusbericht. PR 100 bis PR 102 duerfen die verbleibenden Tabellenfamilien
 und den Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
 Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
 Zahl ersetzt keine Vollgleichheitspruefung.
