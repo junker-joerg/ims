@@ -2,7 +2,7 @@
 
 Stand: 2026-09-01
 Planungsschnitt: PR 87
-Umsetzungsstand: PR 100
+Umsetzungsstand: PR 101
 
 ## Ziel
 
@@ -207,10 +207,12 @@ betroffenen Ziele getrennt oder neu belegt sind.
     treffen exakt und 881 weitere innerhalb der Toleranz. Kumuliert sind
     12/15 Tabellen und 4.800/6.300 Zielzeilen geliefert. Gleiche historische
     Parameter oder Zufallsfolgen werden nicht behauptet.
-15. **PR 101: VU-Klassen 1-3 anbinden.**
-    Die letzten drei Tabellen aus je fuenf 100er-Laeufen vollstaendig
-    vergleichen. Erwarteter
-    Fortschritt: 15/15 Tabellen und 6.300/6.300 Zielzeilen.
+15. **PR 101: VU-Klassen 1-3 anbinden (umgesetzt).**
+    Die letzten drei Tabellen aus je fuenf 100er-Laeufen wurden vollstaendig
+    verglichen. Fuenf der 1.500 Gesamtzeilen treffen vollstaendig;
+    3.330/21.000 Felder treffen exakt und 41 weitere innerhalb der Toleranz.
+    Kumuliert sind 15/15 Tabellen und 6.300/6.300 Zielzeilen geliefert. Gleiche
+    historische Parameter oder Zufallsfolgen werden nicht behauptet.
 16. **PR 102: gemeinsamen Vollkorpusbericht bewerten.**
     Alle 19 Ziele in einem read-only Bericht klassifizieren, Abweichungen nach
     Referenzschicht trennen und die menschliche Freigabe neu entscheiden.
@@ -230,24 +232,24 @@ Produktionsfreigabe umgedeutet werden.
 
 ## Aufwand und Restzahl
 
-PR 87 ist der Planungs-PR; PR 88 bis PR 100 haben Archivmanifest,
+PR 87 ist der Planungs-PR; PR 88 bis PR 101 haben Archivmanifest,
 Referenzkohaerenz, archivlokale Laufmetadaten, den getrennten
 Referenzschicht-Vertrag, den Horizontvertrag und die erste 100er-Korpuslieferung
 abgeschlossen, den modernen Zustand bis 500 fortgeschrieben und die
 historischen 300/500-Zeilen-Dateien als Wiederholungen von 100-Perioden-Laeufen
-korrigiert, die vier VN-Regeltabellen 3-6 und die drei VN-Klassenaggregate
-angebunden. Danach sind **2 geplante PRs** bis zum ersten gemeinsamen
-6.300-Zeilen-Vollkorpusbericht offen: ein historischer Tabellenfamilien-PR und
-ein Bewertungs-PR.
+korrigiert sowie die vier VN-Regeltabellen 3-6, die drei VN-Klassenaggregate
+und die drei VU-Klassenaggregate angebunden. Danach ist **1 geplanter PR** bis
+zum ersten gemeinsamen 6.300-Zeilen-Vollkorpusbericht offen: der
+Bewertungs-PR.
 
-Verbleibende grobe Bruttoabschaetzung fuer PR 101 bis PR 102:
+Verbleibende grobe Bruttoabschaetzung fuer PR 102:
 
 | Anteil | Erwarteter Umfang |
 | --- | ---: |
-| Python-Produktionscode | 20-120 LoC |
-| Tests | 70-220 LoC |
-| Vertraege, Fixtures und Dokumentation | 80-240 LoC |
-| Gesamt | 170-580 LoC |
+| Python-Produktionscode | 20-80 LoC |
+| Tests | 40-120 LoC |
+| Vertraege, Fixtures und Dokumentation | 50-150 LoC |
+| Gesamt | 110-350 LoC |
 
 Die Schaetzung umfasst keine noch unbekannten fachlichen Korrektur-PRs fuer
 Akkumulatoren, Scheduler, RNG, Versicherungsgrad oder `Ev`-Felder. Solche PRs

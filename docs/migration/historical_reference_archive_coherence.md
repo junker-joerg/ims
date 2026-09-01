@@ -126,6 +126,6 @@ Schichten bleiben weiterhin getrennt. PR95 hat die beiden ZINS000-Regelfenster
 vollstaendig und weiterhin getrennt verglichen. PR96 hat den modernen Zustand
 bis 500 erweitert. PR97 hat die VU-SK1-Zeitfenster weiterhin getrennt
 angebunden; PR98 hat den Vergleich auf fuenf getrennte 100er-Laeufe
-umgestellt. PR99 hat die VN-Regeltabellen 3-6 und PR100 die drei
-VN-Klassenaggregate angebunden. PR101 bindet als Naechstes die drei
-VU-Klassenaggregate an.
+umgestellt. PR99 hat die VN-Regeltabellen 3-6, PR100 die drei
+VN-Klassenaggregate und PR101 die drei VU-Klassenaggregate angebunden. PR102
+bewertet den gemeinsamen Vollkorpus.

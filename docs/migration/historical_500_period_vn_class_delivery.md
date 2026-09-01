@@ -66,6 +66,7 @@ Vollgleichheit und eine Produktionsfreigabe bleiben `false`.
 
 ## Naechster Schritt
 
-PR101 bindet die drei VU-Klassenaggregate `imsvuvk1.dat` bis `imsvuvk3.dat`
-nach demselben getrennten 5-mal-100-Vertrag an. Erwarteter kumulierter Stand:
-15/15 Tabellen und 6.300/6.300 Ergebniszeilen.
+PR101 hat die drei VU-Klassenaggregate `imsvuvk1.dat` bis `imsvuvk3.dat`
+nach demselben getrennten 5-mal-100-Vertrag angebunden. Der kumulierte Stand
+liegt bei 15/15 Tabellen und 6.300/6.300 Ergebniszeilen. PR102 bewertet den
+gemeinsamen Vollkorpus.

@@ -56,9 +56,9 @@ def test_plan_orders_provenance_before_full_window_execution() -> None:
     assert "Zielperioden vollstaendig geliefert" in plan
     assert "4/15 Tabellen und 800/6.300 Zielzeilen" in normalized
     assert "15/15 Tabellen und 6.300/6.300 Zielzeilen" in plan
-    assert "Umsetzungsstand: PR 100" in plan
-    assert "2 geplante PRs" in normalized
-    assert "Verbleibende grobe Bruttoabschaetzung fuer PR 101 bis PR 102" in plan
+    assert "Umsetzungsstand: PR 101" in plan
+    assert "1 geplanter PR" in normalized
+    assert "Verbleibende grobe Bruttoabschaetzung fuer PR 102" in plan
     assert "maximal 100 Perioden je Lauf" in normalized
     assert "`go_separate_reference_tests`" in plan
 
@@ -70,7 +70,7 @@ def test_plan_keeps_current_change_read_only_and_conservative() -> None:
     assert "keine Runner-, Scheduler-, Adapter-, Server- oder Simulationsausfuehrung" in plan
     assert "keine neue Fachlogik" in plan
     assert "keine historische Vollgleichheits- oder Produktionsfreigabebehauptung" in plan
-    assert "170-580 LoC" in plan
+    assert "110-350 LoC" in plan
     assert "unbekannten fachlichen Korrektur-PRs" in plan
 
 
@@ -81,8 +81,7 @@ def test_central_plans_and_index_reference_pr87_series() -> None:
 
     assert PLAN.is_file()
     assert "historical_reference_provenance_and_full_window_plan.md" in readme
-    assert "Nach PR 100 sind `2` PRs" in production
-    assert "PR 101" in production
+    assert "Nach PR 101 ist `1` PR" in production
     assert "PR 102" in production
-    assert "Nach PR 100" in core
-    assert "`2` geplante PRs" in core
+    assert "Nach PR 101" in core
+    assert "`1` geplanter PR" in core

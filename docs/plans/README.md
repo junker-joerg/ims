@@ -91,8 +91,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   bindet die vier VN-Regeltabellen 3-6 an und hebt den kumulierten Stand auf
   9/15 Tabellen beziehungsweise 3.300/6.300 Ergebniszeilen. PR 100 bindet die
   drei VN-Klassenaggregate an und hebt den kumulierten Stand auf 12/15 Tabellen
-  beziehungsweise 4.800/6.300 Ergebniszeilen. PR 101 fuehrt mit den drei
-  VU-Klassenaggregaten fort.
+  beziehungsweise 4.800/6.300 Ergebniszeilen. PR 101 bindet die drei
+  VU-Klassenaggregate an und schliesst damit 15/15 Tabellen sowie
+  6.300/6.300 Ergebniszeilen. PR 102 bewertet den gemeinsamen Vollkorpus.
 - `user_installation_handbook_plan.md`: HB1 inventarisiert die vorhandenen
   Bedien-, Windows-Release- und Recovery-Quellen. HB2 setzt das
   Benutzerhandbuch-Grundgeruest, den sichtbaren Bedienpfad und die einfache

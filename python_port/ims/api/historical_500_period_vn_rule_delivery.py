@@ -22,11 +22,13 @@ from ims.engine.vdefmd6_repeat_corpus import (
     Vdefmd6RepeatCorpusResult,
     run_vdefmd6_100_period_repetitions,
 )
-from ims.model.agrsich_export import POLICYHOLDER_HEADER, ExportTable
+from ims.model.agrsich_export import INSURER_HEADER, POLICYHOLDER_HEADER, ExportTable
 from ims.model.legacy_agrsich_multi_period import (
     LegacyTableComparison,
+    compare_insurer_export_table_to_legacy,
     compare_policyholder_export_table_to_legacy,
 )
+from ims.model.legacy_agrsich_reference import parse_legacy_insurer_dat
 from ims.model.legacy_export_identity import build_legacy_export_identity
 from ims.model.legacy_validation_run import (
     LegacyValidationTarget,
@@ -116,7 +118,7 @@ EXPECTED_COMPARISON = {
 
 
 @dataclass(frozen=True)
-class Historical500PolicyholderDeliveryProfile:
+class Historical500AggregateDeliveryProfile:
     contract_version: str
     calculation_origin: str
     mode: str
@@ -124,8 +126,11 @@ class Historical500PolicyholderDeliveryProfile:
     target_label: str
     summary_path: str
     filenames: tuple[str, ...]
+    subject_type: str
     level: str
     selector_kind: str
+    expected_header: str
+    expected_row_width: int
     layer_ids: tuple[str, ...]
     allowed_claims: tuple[str, ...]
     expected_reference_paths: Mapping[str, Path]
@@ -134,7 +139,10 @@ class Historical500PolicyholderDeliveryProfile:
     cumulative_row_counts: Mapping[str, int]
 
 
-VN_RULE_PROFILE = Historical500PolicyholderDeliveryProfile(
+Historical500PolicyholderDeliveryProfile = Historical500AggregateDeliveryProfile
+
+
+VN_RULE_PROFILE = Historical500AggregateDeliveryProfile(
     contract_version=CONTRACT_VERSION,
     calculation_origin=CALCULATION_ORIGIN,
     mode="historical_500_row_vn_rule_repeat_diagnostics",
@@ -142,8 +150,11 @@ VN_RULE_PROFILE = Historical500PolicyholderDeliveryProfile(
     target_label="PR99 VN rule",
     summary_path="IMSVNR03-06",
     filenames=RULE_FILENAMES,
+    subject_type="policyholder",
     level="II",
     selector_kind="rule",
+    expected_header=POLICYHOLDER_HEADER,
+    expected_row_width=12,
     layer_ids=("wvemod1_archive",),
     allowed_claims=("archive_content_match_only",),
     expected_reference_paths=EXPECTED_REFERENCE_PATHS,
@@ -168,6 +179,7 @@ class Historical500VNRuleDeliveryTarget:
     filename: str
     reference_path: str
     reference_sha256: str
+    subject_type: str
     level: str
     selector_kind: str
     selector_value: int
@@ -188,7 +200,7 @@ class Historical500VNRuleDeliveryTarget:
             "filename": self.filename,
             "reference_path": self.reference_path,
             "reference_sha256": self.reference_sha256,
-            "subject_type": "policyholder",
+            "subject_type": self.subject_type,
             "level": self.level,
             "selector_kind": self.selector_kind,
             "selector_value": self.selector_value,
@@ -227,7 +239,7 @@ class Historical500VNRuleDeliveryResult:
     run_seeds: tuple[int, ...]
     controlled_execution_performed: bool
     issues: tuple[Historical500VNRuleDeliveryIssue, ...]
-    profile: Historical500PolicyholderDeliveryProfile
+    profile: Historical500AggregateDeliveryProfile
 
     @property
     def status(self) -> str:
@@ -323,7 +335,7 @@ def build_historical_500_period_vn_rule_delivery(
     repeat_corpus: Vdefmd6RepeatCorpusResult | None = None,
     repeat_rule_tables: Sequence[ExportTable] | None = None,
 ) -> Historical500VNRuleDeliveryResult:
-    return build_historical_500_period_policyholder_delivery(
+    return build_historical_500_period_aggregate_delivery(
         root,
         profile=VN_RULE_PROFILE,
         repeat_corpus=repeat_corpus,
@@ -331,10 +343,10 @@ def build_historical_500_period_vn_rule_delivery(
     )
 
 
-def build_historical_500_period_policyholder_delivery(
+def build_historical_500_period_aggregate_delivery(
     root: Path | str,
     *,
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
     repeat_corpus: Vdefmd6RepeatCorpusResult | None = None,
     repeat_tables: Sequence[ExportTable] | None = None,
 ) -> Historical500VNRuleDeliveryResult:
@@ -349,9 +361,9 @@ def build_historical_500_period_policyholder_delivery(
     repeated_tables = tuple(
         repeat_tables
         if repeat_tables is not None
-        else _select_policyholder_tables(corpus, profile)
+        else _select_aggregate_tables(corpus, profile)
     )
-    valid_tables = _validate_policyholder_tables(
+    valid_tables = _validate_aggregate_tables(
         repeated_tables,
         entries,
         issues,
@@ -388,6 +400,21 @@ def build_historical_500_period_policyholder_delivery(
     )
 
 
+def build_historical_500_period_policyholder_delivery(
+    root: Path | str,
+    *,
+    profile: Historical500AggregateDeliveryProfile,
+    repeat_corpus: Vdefmd6RepeatCorpusResult | None = None,
+    repeat_tables: Sequence[ExportTable] | None = None,
+) -> Historical500VNRuleDeliveryResult:
+    return build_historical_500_period_aggregate_delivery(
+        root,
+        profile=profile,
+        repeat_corpus=repeat_corpus,
+        repeat_tables=repeat_tables,
+    )
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m ims.api.historical_500_period_vn_rule_delivery",
@@ -419,7 +446,7 @@ def _run_controlled_repetitions(
 def _validate_horizon_contract(
     contract: HistoricalHorizonContractResult,
     issues: list[Historical500VNRuleDeliveryIssue],
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> dict[str, HistoricalHorizonExportContract]:
     if contract.status != "ready":
         _issue(
@@ -442,7 +469,7 @@ def _validate_horizon_contract(
         )
     for filename, entry in entries.items():
         if (
-            entry.subject_type != "policyholder"
+            entry.subject_type != profile.subject_type
             or entry.level != profile.level
             or entry.selector_kind != profile.selector_kind
             or entry.required_horizon != 500
@@ -484,9 +511,9 @@ def _validate_repeat_corpus(
         )
 
 
-def _select_policyholder_tables(
+def _select_aggregate_tables(
     corpus: Vdefmd6RepeatCorpusResult | None,
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> tuple[ExportTable, ...]:
     if corpus is None:
         return ()
@@ -497,11 +524,11 @@ def _select_policyholder_tables(
     )
 
 
-def _validate_policyholder_tables(
+def _validate_aggregate_tables(
     tables: Sequence[ExportTable],
     entries: dict[str, HistoricalHorizonExportContract],
     issues: list[Historical500VNRuleDeliveryIssue],
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> dict[str, ExportTable]:
     grouped: dict[str, list[ExportTable]] = {}
     for table in tables:
@@ -524,7 +551,7 @@ def _validate_policyholder_tables(
         table = matches[0]
         expected_identity = build_legacy_export_identity(
             filename,
-            "policyholder",
+            profile.subject_type,
             profile.level,
             profile.selector_kind,
             entry.selector_value,
@@ -546,20 +573,23 @@ def _validate_policyholder_tables(
                 f"calculated identity differs from the {profile.target_label} contract",
             )
             table_valid = False
-        if table.header != POLICYHOLDER_HEADER:
+        if table.header != profile.expected_header:
             _issue(
                 issues,
                 "repeat_corpus_header_mismatch",
                 filename,
-                "calculated header differs from the policyholder contract",
+                f"calculated header differs from the {profile.subject_type} contract",
             )
             table_valid = False
-        if any(len(row.values) != 12 for row in table.rows):
+        if any(len(row.values) != profile.expected_row_width for row in table.rows):
             _issue(
                 issues,
                 "repeat_corpus_row_width_mismatch",
                 filename,
-                "calculated policyholder rows must contain 12 values",
+                (
+                    f"calculated {profile.subject_type} rows must contain "
+                    f"{profile.expected_row_width} values"
+                ),
             )
             table_valid = False
         if periods != list(range(1, 501)):
@@ -581,7 +611,7 @@ def _compare_historical_targets(
     tables: dict[str, ExportTable],
     entries: dict[str, HistoricalHorizonExportContract],
     issues: list[Historical500VNRuleDeliveryIssue],
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> tuple[Historical500VNRuleDeliveryTarget, ...]:
     try:
         fixture_targets = load_legacy_validation_targets_from_fixture(
@@ -644,11 +674,10 @@ def _compare_historical_targets(
         if table is None or entry is None:
             continue
         try:
-            legacy_table = parse_legacy_policyholder_dat(target.legacy_path)
-            comparison = compare_policyholder_export_table_to_legacy(
+            comparison = _compare_export_table_to_legacy(
                 table,
-                legacy_table,
-                require_complete_legacy_periods=True,
+                target.legacy_path,
+                profile.subject_type,
             )
         except (OSError, UnicodeError, TypeError, ValueError) as error:
             _issue(issues, "historical_comparison_failed", filename, str(error))
@@ -662,29 +691,52 @@ def _compare_historical_targets(
         )
         _validate_expected_comparison(delivery_target, issues, profile)
         delivery_targets.append(delivery_target)
+    expected_matched_rows = sum(
+        values["matched_rows"] for values in profile.expected_comparison.values()
+    )
     if len(delivery_targets) != len(profile.filenames) or sum(
         target.matched_rows for target in delivery_targets
-    ) != 0:
+    ) != expected_matched_rows:
         _issue(
             issues,
             "historical_comparison_summary_mismatch",
             profile.summary_path,
             (
                 f"{profile.target_label} observation must cover "
-                f"{500 * len(profile.filenames):,} currently differing rows"
+                f"{500 * len(profile.filenames):,} frozen comparison rows"
             ),
         )
     return tuple(delivery_targets)
 
 
+def _compare_export_table_to_legacy(
+    table: ExportTable,
+    reference_path: Path,
+    subject_type: str,
+) -> LegacyTableComparison:
+    if subject_type == "insurer":
+        return compare_insurer_export_table_to_legacy(
+            table,
+            parse_legacy_insurer_dat(reference_path),
+            require_complete_legacy_periods=True,
+        )
+    if subject_type == "policyholder":
+        return compare_policyholder_export_table_to_legacy(
+            table,
+            parse_legacy_policyholder_dat(reference_path),
+            require_complete_legacy_periods=True,
+        )
+    raise ValueError(f"unsupported historical subject type: {subject_type}")
+
+
 def _legacy_target_matches_contract(
     target: LegacyValidationTarget,
     entry: HistoricalHorizonExportContract | None,
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> bool:
     return bool(
         entry is not None
-        and target.subject_type == "policyholder"
+        and target.subject_type == profile.subject_type
         and target.level == profile.level
         and target.selector_kind == profile.selector_kind
         and target.selector_value == entry.selector_value
@@ -697,7 +749,7 @@ def _build_delivery_target(
     entry: HistoricalHorizonExportContract,
     digest: str,
     comparison: LegacyTableComparison,
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> Historical500VNRuleDeliveryTarget:
     counts = _field_counts(comparison)
     matched_rows = sum(row.matches for row in comparison.row_comparisons)
@@ -715,6 +767,7 @@ def _build_delivery_target(
         filename=target.export_filename,
         reference_path=str(target.legacy_path.resolve()),
         reference_sha256=digest,
+        subject_type=profile.subject_type,
         level=profile.level,
         selector_kind=profile.selector_kind,
         selector_value=int(target.selector_value),
@@ -767,7 +820,7 @@ def _field_counts(comparison: LegacyTableComparison) -> dict[str, int]:
 def _validate_expected_comparison(
     target: Historical500VNRuleDeliveryTarget,
     issues: list[Historical500VNRuleDeliveryIssue],
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> None:
     actual = {
         key: getattr(target, key)
@@ -786,7 +839,7 @@ def _collect_cumulative_tables(
     corpus: Vdefmd6RepeatCorpusResult | None,
     current_tables: dict[str, ExportTable],
     issues: list[Historical500VNRuleDeliveryIssue],
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> tuple[ExportTable, ...]:
     if corpus is None:
         return tuple(current_tables.values())
@@ -827,7 +880,7 @@ def _collect_cumulative_tables(
 def _validate_production_delivery(
     report: ProductionReleaseCorpusReport,
     issues: list[Historical500VNRuleDeliveryIssue],
-    profile: Historical500PolicyholderDeliveryProfile,
+    profile: Historical500AggregateDeliveryProfile,
 ) -> None:
     supplied_count = len(profile.cumulative_row_counts)
     supplied_periods = sum(profile.cumulative_row_counts.values())

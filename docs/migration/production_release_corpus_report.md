@@ -205,16 +205,16 @@ anschliessend alle 15 Identitaeten fuer 1-100 gemeinsam klassifiziert:
 Zielzeilen vollstaendig. Die Empfehlung bleibt `keep_blocked`.
 
 Die Mindestserie PR 72 bis PR 86 ist abgeschlossen. PR 87 plant die Folgephase
-bis PR 102; PR 88 bis PR 100 haben Archivmanifest, Referenzkohaerenz,
+bis PR 102; PR 88 bis PR 101 haben Archivmanifest, Referenzkohaerenz,
 archivlokale Laufmetadaten, vier getrennte Referenzschichten und den
 Ergebniszeilenvertrag 100/300/500 umgesetzt, die ersten zwei 100er-Tabellen an den
 Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
 ZINS000-Regeltabellen sowie die fuenf VU-SK1-Laufabschnitte diagnostisch
 verglichen. PR 98 stellt alle 300/500-Zeilen-Dateien als drei beziehungsweise
-fuenf getrennte 100-Perioden-Laeufe klar. PR 99 bindet die Regeln 3-6 und
-PR 100 die VN-Klassen 1-3 an. Der kumulierte Stand liegt bei 12/15 Tabellen
-und 4.800/6.300 Zeilen. Es folgen eine Tabellenfamilie und ein neuer
-gemeinsamer 6.300-Zeilen-Bericht. Damit sind 2 PRs dieser
+fuenf getrennte 100-Perioden-Laeufe klar. PR 99 bindet die Regeln 3-6, PR 100
+die VN-Klassen 1-3 und PR 101 die VU-Klassen 1-3 an. Der kumulierte Stand liegt
+bei 15/15 Tabellen und 6.300/6.300 Zeilen. Es folgt der neue gemeinsame
+6.300-Zeilen-Bericht. Damit ist 1 PR dieser
 Mindestfolge offen.
 Fachliche Korrekturen aus den Abweichungsbefunden sind darin noch nicht
 enthalten.

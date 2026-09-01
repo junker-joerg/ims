@@ -718,17 +718,21 @@ Aktualisierte grobe Restplanung:
   100er-Laeufen angebunden: 0/1.500 Gesamtzeilen, aber 3.917/19.500 Felder
   treffen exakt; kumulativ sind 12/15 Tabellen und 4.800/6.300 Ergebniszeilen
   geliefert;
-- PR 101 ist der naechste Umsetzungsschritt: `imsvuvk1.dat` bis
-  `imsvuvk3.dat` als letzte drei Tabellen aus je fuenf 100er-Laeufen anbinden;
+- PR 101 hat `imsvuvk1.dat` bis `imsvuvk3.dat` als letzte drei Tabellen aus je
+  fuenf 100er-Laeufen angebunden: 5/1.500 Gesamtzeilen und 3.330/21.000 Felder
+  treffen exakt; kumulativ sind 15/15 Tabellen und 6.300/6.300 Ergebniszeilen
+  geliefert;
+- PR 102 ist der naechste Umsetzungsschritt: den gemeinsamen read-only
+  Vollkorpusbericht bewerten und die menschliche Freigabe neu entscheiden;
 - 0 weitere Pflicht-PRs bis zu einer startbar verpackten kontrollierten Demo;
 - read-only Execution-Summary-Vertrag, Kernvalidierungsueberblick und
   Run-Control-Bruecke sind umgesetzt; offen bleiben nur spaetere echte
   Ausfuehrungsadapter nach separater Freigabe.
 
-Nach PR 100 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
-und `2` geplante PRs bis zum ersten gemeinsamen 6.300-Zeilen-
-Vollkorpusbericht. PR 101 bis PR 102 duerfen die verbleibende Tabellenfamilie
-und den Abschlussbericht nur als getrennte Referenztests schliessen. Scheduler-, RNG-,
+Nach PR 101 bleiben `0` technische Pflicht-PRs fuer die eingefrorene Pruefkette
+und `1` geplanter PR bis zum ersten gemeinsamen 6.300-Zeilen-
+Vollkorpusbericht. PR 102 darf den Abschlussbericht nur als getrennte
+Referenztests schliessen. Scheduler-, RNG-,
 Akkumulator- oder Zustandsfunde koennen weitere kleine Slices erfordern; die
 Zahl ersetzt keine Vollgleichheitspruefung.
 

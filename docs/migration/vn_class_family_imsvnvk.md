@@ -69,4 +69,5 @@ vollstaendig als je fuenf getrennte 100-Perioden-Laeufe. Von 19.500 Feldern
 treffen 3.917 exakt und 881 innerhalb der Toleranz; keine der 1.500
 Gesamtzeilen trifft vollstaendig. Die historische klassenuebergreifende
 Akkumulatorsemantik, Parameter, RNG-Folge und konkrete `WVEMOD1`-Laufidentitaet
-bleiben offen. PR 101 fuehrt mit den drei VU-Klassenaggregaten fort.
+bleiben offen. PR 101 hat die drei VU-Klassenaggregate angebunden; PR 102
+bewertet den gemeinsamen Vollkorpus.

@@ -68,6 +68,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `vn_class_family_imsvnvk.md`: Vorbereitung der historischen VN-Klassenaggregate `IMSVNVK1.DAT` bis `IMSVNVK3.DAT`
 - `historical_500_period_vn_class_delivery.md`: PR-100-Vergleich der VN-Klassen 1-3 als je fuenf getrennte 100-Perioden-Laeufe
 - `insurer_class_family_imsvuvk.md`: Vorbereitung der historischen Versicherer-Klassenaggregate `IMSVUVK1.DAT` bis `IMSVUVK3.DAT`
+- `historical_500_period_vu_class_delivery.md`: PR-101-Vergleich der VU-Klassen 1-3 als je fuenf getrennte 100-Perioden-Laeufe
 - `parameter_output_vu014pr1.md`: Inventar und offene Feldklaerung fuer die historische Parameterausgabe `VU014PR1.DAT`
 - `zins000_reference_layer.md`: getrennte historische Referenzschicht fuer `IMSVU014.DAT` und `IMSVUSK1.DAT` ohne Erweiterung des Kernbundles
 - `calculated_legacy_multi_period_contract.md`: strikter PR-58-Eingangsvertrag fuer berechnete Mehrperiodenergebnisse ohne Legacy-Selbstvergleich oder Simulation
@@ -96,7 +97,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `production_release_corpus_report.md`: PR-69-Abschlussbericht mit
   19-/6.300-Korpus und technischen Betriebsnachweisen; PR 93 ergaenzt die
   explizite Teillieferung von 2 Tabellen / 200 Perioden bei weiter blockierter
-  Freigabe; PR 100 hebt den kumulierten Stand auf 12 Tabellen / 4.800 Perioden
+  Freigabe; PR 101 schliesst 15 Tabellen / 6.300 Perioden bei weiterhin
+  blockierter menschlicher Freigabe
 - `windows_release_gate.md`: PR-70-Windows-Gate fuer Python-Tests, Frontend-Build, blockierten Korpusbericht, ZIP/Staging und Release-Smoke
 - `calculated_export_provenance_map.md`: PR-71-Karte der 15 Kernexportidentitaeten mit C-/Python-Ankern, zwei Zustandsfamilien und offenen Vollfensterluecken
 - `vu14_100_period_generation_contract.md`: PR-72-Abnahmevertrag fuer den unabhaengigen VU14-Zustandsweg ueber Perioden `1-100` ohne Exporterzeugung oder Vollgleichheitsbehauptung

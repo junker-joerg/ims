@@ -169,9 +169,9 @@ Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
 ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster vollstaendig
 diagnostisch verglichen. PR 99 hat die Regeln 3-6 und PR 100 die VN-Klassen
 1-3 aus je fuenf modernen 100-Perioden-Laeufen angebunden. PR 101 bindet die
-verbleibenden berechneten Tabellen an; PR 102 bewertet den gemeinsamen
-6.300-Zeilen-Bericht. Nach PR 100 sind ein Anschluss-PR und ein Abschluss-PR
-offen. Diese
+VU-Klassen 1-3 an und schliesst damit alle 15 berechneten Tabellen. PR 102
+bewertet den gemeinsamen 6.300-Zeilen-Bericht. Nach PR 101 ist nur der
+Abschluss-PR offen. Diese
 Mindestfolge enthaelt keine heute noch unbekannten fachlichen Korrekturen.
 
 ## PR-71-Pruefnachweis

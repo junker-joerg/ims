@@ -57,9 +57,17 @@ historische Referenzziele mit 6300 konkret verglichenen Zeilen.
   Vergleichstoleranz.
 - `incomming/` bleibt lokaler Kandidatenbestand und wird nicht versioniert.
 
+## Vollstaendiger Vergleich
+
+PR 101 vergleicht die drei Klassen vollstaendig als je fuenf getrennte
+100-Perioden-Laeufe. Von 21.000 Feldern treffen 3.330 exakt und 41 innerhalb
+der Toleranz; fuenf der 1.500 Gesamtzeilen treffen vollstaendig. Historische
+Parameter-, RNG- oder Modellgleichheit wird daraus nicht behauptet.
+
 ## Naechster Schritt
 
-Nach diesem Schnitt ist `insurer_class` im Legacy-Coverage-Backlog belegt. Der
-naechste groessere Kandidat ist ein schmaler Kernlogik-/Planfixture-Schnitt.
-Parameterausgaben wie `VU014PR1.DAT` bleiben bis zu einer belastbaren
-Feldklaerung geparkt und werden nicht als Agrsich-Referenz importiert.
+Nach diesem Schnitt ist `insurer_class` im Legacy-Coverage-Backlog belegt und
+alle 15 berechneten Kernexporttabellen sind geliefert. PR 102 bewertet den
+gemeinsamen Vollkorpus. Parameterausgaben wie `VU014PR1.DAT` bleiben bis zu
+einer belastbaren Feldklaerung geparkt und werden nicht als
+Agrsich-Referenz importiert.

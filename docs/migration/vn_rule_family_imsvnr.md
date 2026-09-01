@@ -89,5 +89,5 @@ PR 99 vergleicht die Regeln 3-6 vollstaendig als je fuenf getrennte
 100-Perioden-Laeufe. Von 26.000 Feldern treffen 5.678 exakt und 809 innerhalb
 der Toleranz; keine der 2.000 Gesamtzeilen trifft vollstaendig. Historische
 Parameter- oder RNG-Gleichheit wird nicht behauptet. PR 100 hat die drei
-VN-Klassenaggregate unter denselben Grenzen angebunden; PR 101 fuehrt mit den
-drei VU-Klassenaggregaten fort.
+VN-Klassenaggregate und PR 101 die drei VU-Klassenaggregate unter denselben
+Grenzen angebunden; PR 102 bewertet den gemeinsamen Vollkorpus.

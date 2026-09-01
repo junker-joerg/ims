@@ -324,5 +324,13 @@ PR 100 vergleicht `imsvnvk1.dat` bis `imsvnvk3.dat` mit den drei bytegenau an
 `WVEMOD1.ZIP` gebundenen 500-Zeilen-Referenzen. Jede berechnete Tabelle besteht
 aus fuenf unabhaengigen 100-Perioden-Laeufen. Historische Parameter, Seed und
 RNG-Ziehfolge bleiben offen. Kumuliert sind nun 12/15 Tabellen und
-4.800/6.300 Zielzeilen geliefert; die Freigabe bleibt blockiert. PR 101 bindet
-als naechstes die drei VU-Klassenaggregate an.
+4.800/6.300 Zielzeilen geliefert; die Freigabe bleibt blockiert.
+
+## PR-101-WVEMOD1-VU-Klassenzeilen
+
+PR 101 vergleicht `imsvuvk1.dat` bis `imsvuvk3.dat` mit den drei bytegenau an
+`WVEMOD1.ZIP` gebundenen 500-Zeilen-Referenzen. Jede berechnete Tabelle besteht
+aus fuenf unabhaengigen 100-Perioden-Laeufen. Historische Parameter, Seed und
+RNG-Ziehfolge bleiben offen. Kumuliert sind nun 15/15 Tabellen und
+6.300/6.300 Zielzeilen geliefert; wegen der Feldabweichungen bleibt die
+Freigabe blockiert. PR 102 bewertet als naechstes den gemeinsamen Vollkorpus.
