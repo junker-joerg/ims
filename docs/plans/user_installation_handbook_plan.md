@@ -2,7 +2,7 @@
 
 Stand: 2026-09-01
 Planungsschnitt: HB1
-Umsetzungsstand: Bestand und Zielbild festgelegt
+Umsetzungsstand: HB2
 
 ## Ziel
 
@@ -121,18 +121,23 @@ iOS/Juno nicht als unterstuetzte Installation bezeichnet werden.
   automatisch reproduzierbarer Ursprungslauf.
 - `incomming/` bleibt unversioniert und ist kein Benutzer-Datenimportpfad.
 
-## Restplanung HB2 bis HB6
+## Umsetzungsstand HB2 und Restplanung HB3 bis HB6
 
-### HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad
+### HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad (umgesetzt)
 
-- `docs/handbook/` anlegen;
-- Begriffe, Navigation und aktuellen UI-Ablauf konsolidieren;
-- Bedienpfad von Start bis Ergebnisanzeige mit vorhandenen stabilen UI-Ankern
-  beschreiben;
-- bestehende Migrationsdoku nur verlinken;
-- keine Simulation fuer Screenshots starten.
+- `docs/handbook/` mit Einstieg, Bedienpfad, Ergebnisdeutung und technischer
+  Verweisuebersicht angelegt;
+- Begriffe sowie die Navigation `Dashboard`, `Szenarien`, `Validierung` und
+  `Runs` konsolidiert;
+- Bedienpfad von Auswahl und Dry-Run ueber Queue und explizite Freigabe bis
+  zur Ergebnisanzeige anhand der vorhandenen UI-Begriffe beschrieben;
+- historischen Stand nach PR100 als 12/15 Tabellen und 4.800/6.300
+  Ergebniszeilen in einfache Sprache uebersetzt;
+- Windows nur als technisch belegten Pfad, Linux als `not_verified` und
+  iOS/Juno als `feasibility_open` ausgewiesen;
+- keine Simulation und keine Screenshot-Aufnahme gestartet.
 
-Erwarteter Umfang: 220-420 Dokumentationszeilen und 30-80 Testzeilen.
+Umgesetzt in `docs/handbook/` und `tests/test_user_handbook.py`.
 
 ### HB3: Windows-Installationshandbuch
 
@@ -182,15 +187,15 @@ Erwarteter Umfang: 160-320 Dokumentationszeilen und 40-120 Testzeilen.
 
 ## Aufwand und Reihenfolge
 
-Nach HB1 bleiben **5 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
-HB2 bis HB6 liegt bei 900-1.900 LoC in Dokumentation, Dokumentationstests und
+Nach HB2 bleiben **4 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
+HB3 bis HB6 liegt bei 840-1.860 LoC in Dokumentation, Dokumentationstests und
 kleinen plattformspezifischen Skripten. Nicht enthalten sind ein nativer
 Installer, Signierung, App-Store-Verteilung, ein automatischer Updater oder
 groessere Plattformanpassungen.
 
-PR100 und HB2 koennen parallel vorbereitet werden, solange Code- und
-Handbuchdateien getrennte reviewbare Commits bleiben. Plattformzusagen aus
-HB4/HB5 duerfen die Kernvalidierungsplanung PR100-PR102 nicht vorwegnehmen.
+PR100 und HB2 sind als getrennte reviewbare Commits umgesetzt. PR101 und HB3
+koennen als naechste getrennte Schnitte vorbereitet werden. Plattformzusagen
+aus HB4/HB5 duerfen die Kernvalidierungsplanung PR101-PR102 nicht vorwegnehmen.
 
 ## Abnahme HB1
 
@@ -202,3 +207,15 @@ HB4/HB5 duerfen die Kernvalidierungsplanung PR100-PR102 nicht vorwegnehmen.
   klar getrennt;
 - keine Simulation, keine neue Fachlogik und keine historische
   Vollgleichheitsbehauptung.
+
+## Abnahme HB2
+
+- der Einstieg verlinkt alle vorhandenen Handbuchkapitel;
+- der Bedienpfad verwendet die in der Workbench sichtbaren Begriffe und
+  trennt pruefende, schreibende und startende Aktionen;
+- der historische Vergleichsstand ist allgemein verstaendlich, aber ohne
+  Vollgleichheits- oder Produktionsfreigabebehauptung eingeordnet;
+- technische Details werden verlinkt und nicht als zweite Entwicklerdoku
+  dupliziert;
+- Plattformstatus und verbleibende HB3-bis-HB6-Schnitte sind aktualisiert;
+- Dokumentationstests pruefen Navigation, Grenzen, Links und Restplanung.

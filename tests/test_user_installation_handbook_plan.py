@@ -30,7 +30,7 @@ def test_hb1_separates_platform_evidence_from_plans() -> None:
     assert "nicht als unterstuetzte Installation bezeichnet" in normalized
 
 
-def test_hb1_fixes_handbook_structure_and_remaining_slices() -> None:
+def test_hb2_keeps_target_structure_and_updates_remaining_slices() -> None:
     plan = PLAN.read_text(encoding="utf-8")
 
     for chapter in (
@@ -46,8 +46,8 @@ def test_hb1_fixes_handbook_structure_and_remaining_slices() -> None:
         assert chapter in plan
     for slice_name in range(2, 7):
         assert f"HB{slice_name}" in plan
-    assert "5 Handbuch-Schnitte" in plan
-    assert "900-1.900 LoC" in plan
+    assert "4 Handbuch-Schnitte" in plan
+    assert "840-1.860 LoC" in plan
 
 
 def test_hb1_keeps_user_docs_and_migration_docs_separate() -> None:
@@ -64,9 +64,10 @@ def test_hb1_keeps_user_docs_and_migration_docs_separate() -> None:
     assert "keine historische Vollgleichheitsbehauptung" in normalized
 
 
-def test_plans_index_lists_hb1() -> None:
+def test_plans_index_lists_hb1_and_hb2() -> None:
     readme = PLANS_README.read_text(encoding="utf-8")
 
     assert PLAN.is_file()
     assert "user_installation_handbook_plan.md" in readme
     assert "HB1" in readme
+    assert "HB2" in readme
