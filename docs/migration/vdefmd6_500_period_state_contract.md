@@ -116,5 +116,6 @@ fuenf getrennten Zeitfenster `VUSK1L5.DAT` bis `VUSK1L1.DAT` angebunden.
 `VUSK1L4.DAT` behaelt dabei seine isolierte Referenzschicht; eine
 zusammengehoerige historische 500er-Laufquelle wird nicht behauptet. PR98 hat
 diese Interpretation korrigiert und auf fuenf getrennte 100er-Laeufe
-umgestellt. PR99 hat die vier VN-Regeltabellen 3-6 angebunden. PR100 bindet als
-Naechstes die drei VN-Klassenaggregate an.
+umgestellt. PR99 hat die vier VN-Regeltabellen 3-6 und PR100 die drei
+VN-Klassenaggregate angebunden. PR101 bindet als Naechstes die drei
+VU-Klassenaggregate an.

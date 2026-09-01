@@ -89,8 +89,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   VU-SK1-Tabelle an; PR 98 korrigiert alle 300/500-Zeilen-Vergleiche auf drei
   beziehungsweise fuenf unabhaengige Laeufe mit maximal 100 Perioden. PR 99
   bindet die vier VN-Regeltabellen 3-6 an und hebt den kumulierten Stand auf
-  9/15 Tabellen beziehungsweise 3.300/6.300 Ergebniszeilen. PR 100 fuehrt mit
-  den drei VN-Klassenaggregaten fort.
+  9/15 Tabellen beziehungsweise 3.300/6.300 Ergebniszeilen. PR 100 bindet die
+  drei VN-Klassenaggregate an und hebt den kumulierten Stand auf 12/15 Tabellen
+  beziehungsweise 4.800/6.300 Ergebniszeilen. PR 101 fuehrt mit den drei
+  VU-Klassenaggregaten fort.
 - `user_installation_handbook_plan.md`: HB1 inventarisiert die vorhandenen
   Bedien-, Windows-Release- und Recovery-Quellen, legt die neue
   Benutzerhandbuchstruktur fest und plant HB2 bis HB6. Windows ist belegt;

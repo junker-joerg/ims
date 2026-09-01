@@ -316,5 +316,13 @@ bindet als naechstes die vier VN-Regeltabellen 3-6 aus je fuenf
 PR 99 vergleicht `imsvnr03.dat` bis `imsvnr06.dat` mit den vier bytegenau an
 `WVEMOD1.ZIP` gebundenen 500-Zeilen-Referenzen. Historische Parameter, Seed
 und RNG-Ziehfolge bleiben offen. Kumuliert sind nun 9/15 Tabellen und
-3.300/6.300 Zielzeilen geliefert; die Freigabe bleibt blockiert. PR 100 bindet
-als naechstes die drei VN-Klassenaggregate an.
+3.300/6.300 Zielzeilen geliefert; die Freigabe bleibt blockiert.
+
+## PR-100-WVEMOD1-VN-Klassenzeilen
+
+PR 100 vergleicht `imsvnvk1.dat` bis `imsvnvk3.dat` mit den drei bytegenau an
+`WVEMOD1.ZIP` gebundenen 500-Zeilen-Referenzen. Jede berechnete Tabelle besteht
+aus fuenf unabhaengigen 100-Perioden-Laeufen. Historische Parameter, Seed und
+RNG-Ziehfolge bleiben offen. Kumuliert sind nun 12/15 Tabellen und
+4.800/6.300 Zielzeilen geliefert; die Freigabe bleibt blockiert. PR 101 bindet
+als naechstes die drei VU-Klassenaggregate an.

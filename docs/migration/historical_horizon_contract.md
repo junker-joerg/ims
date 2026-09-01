@@ -89,6 +89,7 @@ python -m ims.api.historical_horizon_contract --root .
 
 ## Naechster Schritt
 
-PR99 hat `imsvnr03.dat` bis `imsvnr06.dat` als je fuenf getrennte
-100-Perioden-Laeufe angebunden. Einzelwertabweichungen bleiben diagnostisch.
-PR100 fuehrt den Vertrag fuer die drei VN-Klassenaggregate fort.
+PR99 hat `imsvnr03.dat` bis `imsvnr06.dat` und PR100 die drei
+VN-Klassenaggregate als je fuenf getrennte 100-Perioden-Laeufe angebunden.
+Einzelwertabweichungen bleiben diagnostisch. PR101 fuehrt den Vertrag fuer die
+drei VU-Klassenaggregate fort.

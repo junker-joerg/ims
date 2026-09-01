@@ -167,10 +167,10 @@ Archivmanifest, Koharenzmatrix, Laufmetadatenbefund, Referenzschicht-Vertrag
 und Horizontvertrag abgeschlossen, die ersten zwei 100er-Tabellen an den
 Korpusbericht gebunden, den modernen Zustand bis 500 erweitert und die zwei
 ZINS000-Regelfenster sowie die fuenf VU-SK1-Zeitfenster vollstaendig
-diagnostisch verglichen. PR 99 hat die Regeln 3-6 aus je fuenf modernen
-100-Perioden-Laeufen angebunden. PR 100 und PR 101 binden die verbleibenden
-berechneten Tabellen an; PR 102 bewertet den gemeinsamen
-6.300-Zeilen-Bericht. Nach PR 99 sind zwei Anschluss-PRs und ein Abschluss-PR
+diagnostisch verglichen. PR 99 hat die Regeln 3-6 und PR 100 die VN-Klassen
+1-3 aus je fuenf modernen 100-Perioden-Laeufen angebunden. PR 101 bindet die
+verbleibenden berechneten Tabellen an; PR 102 bewertet den gemeinsamen
+6.300-Zeilen-Bericht. Nach PR 100 sind ein Anschluss-PR und ein Abschluss-PR
 offen. Diese
 Mindestfolge enthaelt keine heute noch unbekannten fachlichen Korrekturen.
 

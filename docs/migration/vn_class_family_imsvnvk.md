@@ -64,7 +64,9 @@ Die danach vorbereiteten Versicherer-Klassenaggregate `IMSVUVK*.DAT` belegen
 zusaetzlich `insurer_class`.
 
 PR 85 erzeugt die drei VN-Klassen und VN-SK1/all fuer Perioden 1-100 nun aus
-dem kontrollierten `Vdefmd6`-Zustand. Der Vergleich trifft 1.234/5.200 Felder
-beziehungsweise 434/4.400 Fachwerte, aber keine vollstaendige Zeile. Die
-historische klassenuebergreifende Akkumulatorsemantik und die konkrete
-`WVEMOD1`-Laufidentitaet bleiben offen.
+dem kontrollierten `Vdefmd6`-Zustand. PR 100 vergleicht die drei Klassen
+vollstaendig als je fuenf getrennte 100-Perioden-Laeufe. Von 19.500 Feldern
+treffen 3.917 exakt und 881 innerhalb der Toleranz; keine der 1.500
+Gesamtzeilen trifft vollstaendig. Die historische klassenuebergreifende
+Akkumulatorsemantik, Parameter, RNG-Folge und konkrete `WVEMOD1`-Laufidentitaet
+bleiben offen. PR 101 fuehrt mit den drei VU-Klassenaggregaten fort.

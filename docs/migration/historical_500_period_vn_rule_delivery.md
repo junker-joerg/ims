@@ -66,6 +66,7 @@ Produktionsfreigabe bleiben `false`.
 
 ## Naechster Schritt
 
-PR100 bindet die drei VN-Klassenaggregate `imsvnvk1.dat` bis `imsvnvk3.dat`
-nach demselben getrennten 5-mal-100-Vertrag an. Erwarteter kumulierter Stand:
-12/15 Tabellen und 4.800/6.300 Ergebniszeilen.
+PR100 hat die drei VN-Klassenaggregate `imsvnvk1.dat` bis `imsvnvk3.dat`
+nach demselben getrennten 5-mal-100-Vertrag angebunden. Der kumulierte Stand
+liegt bei 12/15 Tabellen und 4.800/6.300 Ergebniszeilen. PR101 fuehrt mit den
+drei VU-Klassenaggregaten fort.

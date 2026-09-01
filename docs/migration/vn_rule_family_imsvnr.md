@@ -88,5 +88,6 @@ zugeordneter Runreport mit Seed belegt. Ueber alle sechs Regeln treffen damit
 PR 99 vergleicht die Regeln 3-6 vollstaendig als je fuenf getrennte
 100-Perioden-Laeufe. Von 26.000 Feldern treffen 5.678 exakt und 809 innerhalb
 der Toleranz; keine der 2.000 Gesamtzeilen trifft vollstaendig. Historische
-Parameter- oder RNG-Gleichheit wird nicht behauptet. PR 100 bindet als
-naechstes die drei VN-Klassenaggregate unter denselben Grenzen an.
+Parameter- oder RNG-Gleichheit wird nicht behauptet. PR 100 hat die drei
+VN-Klassenaggregate unter denselben Grenzen angebunden; PR 101 fuehrt mit den
+drei VU-Klassenaggregaten fort.

@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
-from typing import Sequence
+from typing import Mapping, Sequence
 
 from ims.api.historical_horizon_contract import (
     HistoricalHorizonContractResult,
@@ -116,6 +116,44 @@ EXPECTED_COMPARISON = {
 
 
 @dataclass(frozen=True)
+class Historical500PolicyholderDeliveryProfile:
+    contract_version: str
+    calculation_origin: str
+    mode: str
+    source_contracts: tuple[str, ...]
+    target_label: str
+    summary_path: str
+    filenames: tuple[str, ...]
+    level: str
+    selector_kind: str
+    layer_ids: tuple[str, ...]
+    allowed_claims: tuple[str, ...]
+    expected_reference_paths: Mapping[str, Path]
+    reference_sha256: Mapping[str, str]
+    expected_comparison: Mapping[str, Mapping[str, int]]
+    cumulative_row_counts: Mapping[str, int]
+
+
+VN_RULE_PROFILE = Historical500PolicyholderDeliveryProfile(
+    contract_version=CONTRACT_VERSION,
+    calculation_origin=CALCULATION_ORIGIN,
+    mode="historical_500_row_vn_rule_repeat_diagnostics",
+    source_contracts=("pr91-v1", "pr98-v1", "pr99-v1"),
+    target_label="PR99 VN rule",
+    summary_path="IMSVNR03-06",
+    filenames=RULE_FILENAMES,
+    level="II",
+    selector_kind="rule",
+    layer_ids=("wvemod1_archive",),
+    allowed_claims=("archive_content_match_only",),
+    expected_reference_paths=EXPECTED_REFERENCE_PATHS,
+    reference_sha256=REFERENCE_SHA256,
+    expected_comparison=EXPECTED_COMPARISON,
+    cumulative_row_counts=CUMULATIVE_ROW_COUNTS,
+)
+
+
+@dataclass(frozen=True)
 class Historical500VNRuleDeliveryIssue:
     code: str
     path: str
@@ -130,6 +168,8 @@ class Historical500VNRuleDeliveryTarget:
     filename: str
     reference_path: str
     reference_sha256: str
+    level: str
+    selector_kind: str
     selector_value: int
     layer_ids: tuple[str, ...]
     allowed_claims: tuple[str, ...]
@@ -149,8 +189,8 @@ class Historical500VNRuleDeliveryTarget:
             "reference_path": self.reference_path,
             "reference_sha256": self.reference_sha256,
             "subject_type": "policyholder",
-            "level": "II",
-            "selector_kind": "rule",
+            "level": self.level,
+            "selector_kind": self.selector_kind,
             "selector_value": self.selector_value,
             "layer_ids": list(self.layer_ids),
             "allowed_claims": list(self.allowed_claims),
@@ -187,7 +227,7 @@ class Historical500VNRuleDeliveryResult:
     run_seeds: tuple[int, ...]
     controlled_execution_performed: bool
     issues: tuple[Historical500VNRuleDeliveryIssue, ...]
-    mode: str = "historical_500_row_vn_rule_repeat_diagnostics"
+    profile: Historical500PolicyholderDeliveryProfile
 
     @property
     def status(self) -> str:
@@ -199,11 +239,11 @@ class Historical500VNRuleDeliveryResult:
         matched_rows = sum(target.matched_rows for target in self.targets)
         return {
             "status": self.status,
-            "mode": self.mode,
-            "contract_version": CONTRACT_VERSION,
+            "mode": self.profile.mode,
+            "contract_version": self.profile.contract_version,
             "root": self.root,
-            "calculation_origin": CALCULATION_ORIGIN,
-            "source_contracts": ["pr91-v1", "pr98-v1", "pr99-v1"],
+            "calculation_origin": self.profile.calculation_origin,
+            "source_contracts": list(self.profile.source_contracts),
             "controlled_base_seed": CONTROLLED_BASE_SEED,
             "controlled_run_seeds": list(self.run_seeds),
             "historical_run_count": HISTORICAL_RUN_COUNT,
@@ -283,34 +323,60 @@ def build_historical_500_period_vn_rule_delivery(
     repeat_corpus: Vdefmd6RepeatCorpusResult | None = None,
     repeat_rule_tables: Sequence[ExportTable] | None = None,
 ) -> Historical500VNRuleDeliveryResult:
+    return build_historical_500_period_policyholder_delivery(
+        root,
+        profile=VN_RULE_PROFILE,
+        repeat_corpus=repeat_corpus,
+        repeat_tables=repeat_rule_tables,
+    )
+
+
+def build_historical_500_period_policyholder_delivery(
+    root: Path | str,
+    *,
+    profile: Historical500PolicyholderDeliveryProfile,
+    repeat_corpus: Vdefmd6RepeatCorpusResult | None = None,
+    repeat_tables: Sequence[ExportTable] | None = None,
+) -> Historical500VNRuleDeliveryResult:
     resolved_root = Path(root).expanduser().resolve()
     issues: list[Historical500VNRuleDeliveryIssue] = []
     horizon_contract = build_historical_horizon_contract(resolved_root)
-    entries = _validate_horizon_contract(horizon_contract, issues)
+    entries = _validate_horizon_contract(horizon_contract, issues, profile)
 
     controlled_execution = repeat_corpus is None
     corpus = repeat_corpus or _run_controlled_repetitions(issues)
     _validate_repeat_corpus(corpus, issues)
     repeated_tables = tuple(
-        repeat_rule_tables
-        if repeat_rule_tables is not None
-        else _select_rule_tables(corpus)
+        repeat_tables
+        if repeat_tables is not None
+        else _select_policyholder_tables(corpus, profile)
     )
-    valid_tables = _validate_rule_tables(repeated_tables, entries, issues)
+    valid_tables = _validate_policyholder_tables(
+        repeated_tables,
+        entries,
+        issues,
+        profile,
+    )
     targets = _compare_historical_targets(
         resolved_root,
         horizon_contract,
         valid_tables,
         entries,
         issues,
+        profile,
     )
-    cumulative_tables = _collect_cumulative_tables(corpus, valid_tables, issues)
+    cumulative_tables = _collect_cumulative_tables(
+        corpus,
+        valid_tables,
+        issues,
+        profile,
+    )
     production_report = build_production_release_corpus_report(
         resolved_root,
         calculated_export_tables=cumulative_tables,
-        calculation_origin=CALCULATION_ORIGIN,
+        calculation_origin=profile.calculation_origin,
     )
-    _validate_production_delivery(production_report, issues)
+    _validate_production_delivery(production_report, issues, profile)
     return Historical500VNRuleDeliveryResult(
         root=str(resolved_root),
         targets=targets,
@@ -318,6 +384,7 @@ def build_historical_500_period_vn_rule_delivery(
         run_seeds=corpus.run_seeds if corpus is not None else (),
         controlled_execution_performed=controlled_execution,
         issues=tuple(issues),
+        profile=profile,
     )
 
 
@@ -352,6 +419,7 @@ def _run_controlled_repetitions(
 def _validate_horizon_contract(
     contract: HistoricalHorizonContractResult,
     issues: list[Historical500VNRuleDeliveryIssue],
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> dict[str, HistoricalHorizonExportContract]:
     if contract.status != "ready":
         _issue(
@@ -363,30 +431,30 @@ def _validate_horizon_contract(
     entries = {
         entry.filename: entry
         for entry in contract.entries
-        if entry.filename in RULE_FILENAMES
+        if entry.filename in profile.filenames
     }
-    if set(entries) != set(RULE_FILENAMES):
+    if set(entries) != set(profile.filenames):
         _issue(
             issues,
             "horizon_target_set_mismatch",
             contract.fixture_path,
-            "500-row rule targets differ from the PR99 diagnostics set",
+            f"500-row targets differ from the {profile.target_label} set",
         )
     for filename, entry in entries.items():
         if (
             entry.subject_type != "policyholder"
-            or entry.level != "II"
-            or entry.selector_kind != "rule"
+            or entry.level != profile.level
+            or entry.selector_kind != profile.selector_kind
             or entry.required_horizon != 500
             or entry.required_run_count != HISTORICAL_RUN_COUNT
-            or entry.layer_ids != ("wvemod1_archive",)
-            or entry.allowed_claims != ("archive_content_match_only",)
+            or entry.layer_ids != profile.layer_ids
+            or entry.allowed_claims != profile.allowed_claims
         ):
             _issue(
                 issues,
                 "horizon_layer_boundary_mismatch",
                 filename,
-                "PR99 targets must remain five-run WVEMOD1 rule references",
+                f"{profile.target_label} targets changed layer or identity",
             )
     return entries
 
@@ -416,37 +484,39 @@ def _validate_repeat_corpus(
         )
 
 
-def _select_rule_tables(
+def _select_policyholder_tables(
     corpus: Vdefmd6RepeatCorpusResult | None,
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> tuple[ExportTable, ...]:
     if corpus is None:
         return ()
     return tuple(
         table
         for table in corpus.export_tables
-        if table.spec.filename.lower() in RULE_FILENAMES
+        if table.spec.filename.lower() in profile.filenames
     )
 
 
-def _validate_rule_tables(
+def _validate_policyholder_tables(
     tables: Sequence[ExportTable],
     entries: dict[str, HistoricalHorizonExportContract],
     issues: list[Historical500VNRuleDeliveryIssue],
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> dict[str, ExportTable]:
     grouped: dict[str, list[ExportTable]] = {}
     for table in tables:
         grouped.setdefault(table.spec.filename.lower(), []).append(table)
-    if set(grouped) != set(RULE_FILENAMES) or any(
+    if set(grouped) != set(profile.filenames) or any(
         len(items) != 1 for items in grouped.values()
     ):
         _issue(
             issues,
             "repeat_corpus_target_set_mismatch",
             "repeat_corpus",
-            "rule delivery must contain all four PR99 targets exactly once",
+            f"delivery must contain every {profile.target_label} target once",
         )
     valid: dict[str, ExportTable] = {}
-    for filename in RULE_FILENAMES:
+    for filename in profile.filenames:
         matches = grouped.get(filename, ())
         entry = entries.get(filename)
         if len(matches) != 1 or entry is None:
@@ -455,8 +525,8 @@ def _validate_rule_tables(
         expected_identity = build_legacy_export_identity(
             filename,
             "policyholder",
-            "II",
-            "rule",
+            profile.level,
+            profile.selector_kind,
             entry.selector_value,
         )
         actual_identity = build_legacy_export_identity(
@@ -473,7 +543,7 @@ def _validate_rule_tables(
                 issues,
                 "repeat_corpus_identity_mismatch",
                 filename,
-                "calculated rule identity differs from the PR99 contract",
+                f"calculated identity differs from the {profile.target_label} contract",
             )
             table_valid = False
         if table.header != POLICYHOLDER_HEADER:
@@ -481,7 +551,7 @@ def _validate_rule_tables(
                 issues,
                 "repeat_corpus_header_mismatch",
                 filename,
-                "calculated rule header differs from the policyholder contract",
+                "calculated header differs from the policyholder contract",
             )
             table_valid = False
         if any(len(row.values) != 12 for row in table.rows):
@@ -489,7 +559,7 @@ def _validate_rule_tables(
                 issues,
                 "repeat_corpus_row_width_mismatch",
                 filename,
-                "calculated rule rows must contain 12 values",
+                "calculated policyholder rows must contain 12 values",
             )
             table_valid = False
         if periods != list(range(1, 501)):
@@ -497,7 +567,7 @@ def _validate_rule_tables(
                 issues,
                 "repeat_corpus_period_boundary_mismatch",
                 filename,
-                "calculated rule result rows must cover 1 through 500",
+                "calculated result rows must cover 1 through 500",
             )
             table_valid = False
         if table_valid:
@@ -511,6 +581,7 @@ def _compare_historical_targets(
     tables: dict[str, ExportTable],
     entries: dict[str, HistoricalHorizonExportContract],
     issues: list[Historical500VNRuleDeliveryIssue],
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> tuple[Historical500VNRuleDeliveryTarget, ...]:
     try:
         fixture_targets = load_legacy_validation_targets_from_fixture(
@@ -522,44 +593,48 @@ def _compare_historical_targets(
     selected = [
         target
         for target in fixture_targets
-        if target.export_filename in RULE_FILENAMES
+        if target.export_filename in profile.filenames
     ]
     targets = {target.export_filename: target for target in selected}
-    if len(selected) != len(RULE_FILENAMES) or set(targets) != set(RULE_FILENAMES):
+    if len(selected) != len(profile.filenames) or set(targets) != set(
+        profile.filenames
+    ):
         _issue(
             issues,
             "legacy_target_set_mismatch",
             contract.fixture_path,
-            "legacy bundle must contain all four PR99 targets exactly once",
+            f"legacy bundle must contain every {profile.target_label} target once",
         )
         return ()
 
     delivery_targets: list[Historical500VNRuleDeliveryTarget] = []
-    for filename in RULE_FILENAMES:
+    for filename in profile.filenames:
         target = targets[filename]
         table = tables.get(filename)
         entry = entries.get(filename)
-        expected_path = (root / EXPECTED_REFERENCE_PATHS[filename]).resolve()
+        expected_path = (
+            root / profile.expected_reference_paths[filename]
+        ).resolve()
         if target.legacy_path.resolve() != expected_path:
             _issue(
                 issues,
                 "legacy_reference_path_mismatch",
                 filename,
-                "PR99 reference path differs from the versioned contract",
+                f"{profile.target_label} path differs from the versioned contract",
             )
         try:
             digest = hashlib.sha256(target.legacy_path.read_bytes()).hexdigest()
         except OSError as error:
             _issue(issues, "legacy_reference_unreadable", filename, str(error))
             continue
-        if digest != REFERENCE_SHA256[filename]:
+        if digest != profile.reference_sha256[filename]:
             _issue(
                 issues,
                 "legacy_reference_hash_mismatch",
                 filename,
-                "PR99 reference hash differs from the archive-bound contract",
+                f"{profile.target_label} hash differs from the archive contract",
             )
-        if not _legacy_target_matches_contract(target, entry):
+        if not _legacy_target_matches_contract(target, entry, profile):
             _issue(
                 issues,
                 "legacy_reference_contract_mismatch",
@@ -583,17 +658,21 @@ def _compare_historical_targets(
             entry,
             digest,
             comparison,
+            profile,
         )
-        _validate_expected_comparison(delivery_target, issues)
+        _validate_expected_comparison(delivery_target, issues, profile)
         delivery_targets.append(delivery_target)
-    if len(delivery_targets) != 4 or sum(
+    if len(delivery_targets) != len(profile.filenames) or sum(
         target.matched_rows for target in delivery_targets
     ) != 0:
         _issue(
             issues,
             "historical_comparison_summary_mismatch",
-            "IMSVNR03-06",
-            "PR99 observation must cover 2,000 currently differing rows",
+            profile.summary_path,
+            (
+                f"{profile.target_label} observation must cover "
+                f"{500 * len(profile.filenames):,} currently differing rows"
+            ),
         )
     return tuple(delivery_targets)
 
@@ -601,12 +680,13 @@ def _compare_historical_targets(
 def _legacy_target_matches_contract(
     target: LegacyValidationTarget,
     entry: HistoricalHorizonExportContract | None,
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> bool:
     return bool(
         entry is not None
         and target.subject_type == "policyholder"
-        and target.level == "II"
-        and target.selector_kind == "rule"
+        and target.level == profile.level
+        and target.selector_kind == profile.selector_kind
         and target.selector_value == entry.selector_value
         and target.periods == list(range(1, 501))
     )
@@ -617,6 +697,7 @@ def _build_delivery_target(
     entry: HistoricalHorizonExportContract,
     digest: str,
     comparison: LegacyTableComparison,
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> Historical500VNRuleDeliveryTarget:
     counts = _field_counts(comparison)
     matched_rows = sum(row.matches for row in comparison.row_comparisons)
@@ -634,6 +715,8 @@ def _build_delivery_target(
         filename=target.export_filename,
         reference_path=str(target.legacy_path.resolve()),
         reference_sha256=digest,
+        level=profile.level,
+        selector_kind=profile.selector_kind,
         selector_value=int(target.selector_value),
         layer_ids=entry.layer_ids,
         allowed_claims=entry.allowed_claims,
@@ -684,12 +767,13 @@ def _field_counts(comparison: LegacyTableComparison) -> dict[str, int]:
 def _validate_expected_comparison(
     target: Historical500VNRuleDeliveryTarget,
     issues: list[Historical500VNRuleDeliveryIssue],
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> None:
     actual = {
         key: getattr(target, key)
-        for key in EXPECTED_COMPARISON[target.filename]
+        for key in profile.expected_comparison[target.filename]
     }
-    if actual != EXPECTED_COMPARISON[target.filename]:
+    if actual != profile.expected_comparison[target.filename]:
         _issue(
             issues,
             "historical_observation_fingerprint_mismatch",
@@ -702,6 +786,7 @@ def _collect_cumulative_tables(
     corpus: Vdefmd6RepeatCorpusResult | None,
     current_tables: dict[str, ExportTable],
     issues: list[Historical500VNRuleDeliveryIssue],
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> tuple[ExportTable, ...]:
     if corpus is None:
         return tuple(current_tables.values())
@@ -711,10 +796,10 @@ def _collect_cumulative_tables(
             for table in corpus.export_tables
             if table.spec.filename.lower() == filename
         ]
-        for filename in CUMULATIVE_ROW_COUNTS
+        for filename in profile.cumulative_row_counts
     }
     selected: list[ExportTable] = []
-    for filename, row_count in CUMULATIVE_ROW_COUNTS.items():
+    for filename, row_count in profile.cumulative_row_counts.items():
         matches = (
             [current_tables[filename]]
             if filename in current_tables
@@ -742,12 +827,15 @@ def _collect_cumulative_tables(
 def _validate_production_delivery(
     report: ProductionReleaseCorpusReport,
     issues: list[Historical500VNRuleDeliveryIssue],
+    profile: Historical500PolicyholderDeliveryProfile,
 ) -> None:
+    supplied_count = len(profile.cumulative_row_counts)
+    supplied_periods = sum(profile.cumulative_row_counts.values())
     expected = {
-        "supplied_calculated_export_count": 9,
-        "supplied_calculated_period_count": 3300,
-        "missing_calculated_export_count": 6,
-        "missing_calculated_period_count": 3000,
+        "supplied_calculated_export_count": supplied_count,
+        "supplied_calculated_period_count": supplied_periods,
+        "missing_calculated_export_count": 15 - supplied_count,
+        "missing_calculated_period_count": 6300 - supplied_periods,
     }
     for name, value in expected.items():
         if getattr(report, name) != value:
@@ -757,12 +845,14 @@ def _validate_production_delivery(
                 name,
                 f"expected {value}, got {getattr(report, name)}",
             )
-    if set(report.supplied_calculated_exports) != set(CUMULATIVE_ROW_COUNTS):
+    if set(report.supplied_calculated_exports) != set(
+        profile.cumulative_row_counts
+    ):
         _issue(
             issues,
             "production_delivery_target_mismatch",
             "production_release_corpus_report",
-            "production report did not accept the nine cumulative targets",
+            f"production report did not accept {supplied_count} cumulative targets",
         )
     if (
         report.status != "blocked"
