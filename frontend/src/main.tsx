@@ -113,6 +113,100 @@ type StrategyCatalog = {
   strategies: StrategyDefinition[];
 };
 
+type StrategyWorkbenchView = "catalog" | "assignments" | "parameters";
+
+type StrategySectorContract = {
+  mode: "legacy_two_position_vector";
+  position_count: number;
+  position_keys: string[];
+  python_indices: number[];
+  named_sectors_available: boolean;
+  strategy_shared_across_positions: boolean;
+  sector_specific_strategy_supported: boolean;
+  additional_sectors_supported: boolean;
+};
+
+type StrategyAssignmentTarget = {
+  actor_type: StrategyActorType;
+  entity_type: string;
+  entity_id_field: string;
+  legacy_rule_id_field: string;
+  legacy_rule_class_field: string;
+  assignment_scope: "individual_actor";
+  assignment_cardinality: "zero_or_one_catalog_strategy_per_actor";
+  eligible_strategy_ids: string[];
+  group_assignment_supported: boolean;
+  scheduled_strategy_switch_supported: boolean;
+};
+
+type StrategyParameterField = {
+  field_name: string;
+  display_name: string;
+  python_type: string;
+  value_shape: "legacy_two_sector_vector";
+  required_by_existing_loader: boolean;
+  existing_validation: string;
+};
+
+type StrategyParameterSchema = {
+  schema_id: string;
+  actor_type: StrategyActorType;
+  module: string;
+  loader_entrypoint: string;
+  strategy_ids: string[];
+  fields: StrategyParameterField[];
+  editing_enabled: boolean;
+  defaults_declared: boolean;
+  new_domain_bounds_declared: boolean;
+};
+
+type StrategySourceProfile = {
+  profile_id: string;
+  source_model: string;
+  actor_type: StrategyActorType;
+  target_id_start: number;
+  target_id_end: number;
+  target_count: number;
+  strategy_id: string;
+  historical_rule_id: number;
+  historical_rule_class: number;
+  activation_period: number;
+  active_through_run: number;
+  logical_time: number;
+  parameter_schema: string | null;
+  legacy_parameter_value_count: number;
+  legacy_parameter_fingerprint: string;
+  parameter_values_exposed: boolean;
+};
+
+type StrategyAssignmentContract = {
+  schema_version: string;
+  catalog_schema_version: string;
+  mode: "strategy_assignment_contract_read_only";
+  scope: "eligibility_parameter_shapes_and_vdefmd6_source_profiles";
+  selection_enabled: boolean;
+  assignment_editing_enabled: boolean;
+  parameter_editing_enabled: boolean;
+  group_assignment_enabled: boolean;
+  sector_specific_strategy_enabled: boolean;
+  scheduled_strategy_switch_enabled: boolean;
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+  sector_contract: StrategySectorContract;
+  assignment_targets: StrategyAssignmentTarget[];
+  parameter_schemas: StrategyParameterSchema[];
+  source_profiles: StrategySourceProfile[];
+  source_summary: {
+    model: string;
+    profile_count: number;
+    insurer_count: number;
+    policyholder_count: number;
+    parameter_values_exposed: boolean;
+  };
+};
+
 type MetadataCapabilities = {
   writes: {
     scenario_metadata: CapabilityState;
@@ -727,6 +821,27 @@ function strategyCapabilityLabel(capability: string): string {
   return strategyCapabilityLabels[capability] ?? capability.replaceAll("_", " ");
 }
 
+function strategyValidationLabel(validation: string): string {
+  if (validation === "non_negative_integer_coercion") {
+    return "nichtnegative ganze Zahlen";
+  }
+  if (validation === "numeric_coercion_without_domain_bounds") {
+    return "numerisch, noch ohne fachliche Wertebereiche";
+  }
+  return validation.replaceAll("_", " ");
+}
+
+function strategyTargetRangeLabel(profile: StrategySourceProfile): string {
+  const prefix = profile.actor_type === "insurer" ? "VU" : "VN";
+  return profile.target_id_start === profile.target_id_end
+    ? `${prefix} ${profile.target_id_start}`
+    : `${prefix} ${profile.target_id_start}-${profile.target_id_end}`;
+}
+
+function shortStrategyFingerprint(fingerprint: string): string {
+  return fingerprint.replace("sha256:", "").slice(0, 10);
+}
+
 function createUiIdempotencyKey(queueId: string): string {
   const suffix = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`;
   return `workbench-ui-${queueId}-${suffix}`;
@@ -773,6 +888,11 @@ function App() {
   const [strategyCatalog, setStrategyCatalog] = useState<StrategyCatalog | null>(null);
   const [strategyCatalogState, setStrategyCatalogState] = useState<DetailState>("loading");
   const [strategyCatalogError, setStrategyCatalogError] = useState<string | null>(null);
+  const [strategyAssignmentContract, setStrategyAssignmentContract] =
+    useState<StrategyAssignmentContract | null>(null);
+  const [strategyAssignmentState, setStrategyAssignmentState] = useState<DetailState>("loading");
+  const [strategyAssignmentError, setStrategyAssignmentError] = useState<string | null>(null);
+  const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
   const [runControlDryRunContract, setRunControlDryRunContract] = useState<RunControlDryRunContract | null>(null);
@@ -1090,6 +1210,39 @@ function App() {
   useEffect(() => {
     let active = true;
 
+    async function loadStrategyAssignmentContract() {
+      setStrategyAssignmentState("loading");
+      setStrategyAssignmentError(null);
+      try {
+        const response = await fetch("/api/strategies/assignment-contract");
+        if (!response.ok) {
+          throw new Error("Strategiezuordnungen nicht erreichbar");
+        }
+        const payload = (await response.json()) as StrategyAssignmentContract;
+        if (active) {
+          setStrategyAssignmentContract(payload);
+          setStrategyAssignmentState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyAssignmentContract(null);
+          setStrategyAssignmentError(
+            error instanceof Error ? error.message : "Strategiezuordnungen nicht erreichbar"
+          );
+          setStrategyAssignmentState("error");
+        }
+      }
+    }
+
+    loadStrategyAssignmentContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
     async function loadQueueDetail() {
       if (!selectedQueueId) {
         setQueueDetail(null);
@@ -1230,6 +1383,24 @@ function App() {
         !strategyCatalog.simulation_performed
       ? "Nur lesen"
       : "Grenze pruefen";
+  const strategyAssignmentStatusLabel =
+    strategyAssignmentState === "error"
+      ? strategyAssignmentError ?? "nicht erreichbar"
+      : strategyAssignmentState === "ready"
+        ? "bereit"
+        : "laedt";
+  const strategyAssignmentBoundaryLabel = !strategyAssignmentContract
+    ? "wird geladen"
+    : !strategyAssignmentContract.assignment_editing_enabled &&
+        !strategyAssignmentContract.parameter_editing_enabled &&
+        !strategyAssignmentContract.writes_enabled &&
+        !strategyAssignmentContract.execution_enabled &&
+        !strategyAssignmentContract.simulation_performed
+      ? "Nur lesen"
+      : "Grenze pruefen";
+  const strategyDefinitionById = new Map(
+    (strategyCatalog?.strategies ?? []).map((strategy) => [strategy.strategy_id, strategy])
+  );
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
   const scenarioNameById = new Map(scenarios.map((scenario) => [scenario.id, scenario.display_name]));
   const scenarioStatusOptions = uniqueSorted(scenarios.map((scenario) => scenario.status));
@@ -2265,80 +2436,329 @@ function App() {
             </div>
           </div>
 
-          {strategyCatalogState === "error" ? (
-            <div className="empty-state" role="alert">{strategyCatalogError}</div>
-          ) : strategyCatalogState === "loading" ? (
-            <div className="empty-state">Strategiekatalog wird geladen</div>
-          ) : (
-            <div className="strategy-actor-list">
+          <div className="strategy-workbench-tabs" role="tablist" aria-label="Strategieansichten">
+            <button
+              className={strategyWorkbenchView === "catalog" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "catalog"}
+              onClick={() => setStrategyWorkbenchView("catalog")}
+            >
+              <ListTree size={17} aria-hidden="true" />
+              Katalog
+            </button>
+            <button
+              className={strategyWorkbenchView === "assignments" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "assignments"}
+              onClick={() => setStrategyWorkbenchView("assignments")}
+            >
+              <GitBranch size={17} aria-hidden="true" />
+              Zuordnungen
+            </button>
+            <button
+              className={strategyWorkbenchView === "parameters" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "parameters"}
+              onClick={() => setStrategyWorkbenchView("parameters")}
+            >
+              <Braces size={17} aria-hidden="true" />
+              Parameterschemata
+            </button>
+          </div>
+
+          {strategyWorkbenchView === "catalog" ? (
+            strategyCatalogState === "error" ? (
+              <div className="empty-state" role="alert">{strategyCatalogError}</div>
+            ) : strategyCatalogState === "loading" ? (
+              <div className="empty-state">Strategiekatalog wird geladen</div>
+            ) : (
+              <div className="strategy-actor-list">
+                {STRATEGY_ACTOR_ORDER.map((actorType) => {
+                  const actorStrategies = strategyCatalog?.strategies.filter(
+                    (strategy) => strategy.actor_type === actorType
+                  ) ?? [];
+                  const actorFamilies = strategyCatalog?.families.filter(
+                    (family) => family.actor_type === actorType
+                  ) ?? [];
+                  return (
+                    <section className="strategy-actor-section" key={actorType}>
+                      <div className="strategy-actor-heading">
+                        <h3>{strategyActorLabel(actorType)}</h3>
+                        <strong>{actorStrategies.length} Regeln</strong>
+                      </div>
+                      {actorFamilies.map((family) => {
+                        const familyStrategies = actorStrategies.filter(
+                          (strategy) => strategy.family_id === family.family_id
+                        );
+                        return (
+                          <div className="strategy-family" key={family.family_id}>
+                            <div className="strategy-family-heading">
+                              <div>
+                                <h4>{family.display_name}</h4>
+                                <p>{family.description}</p>
+                              </div>
+                              <strong>{familyStrategies.length}</strong>
+                            </div>
+                            <div className="strategy-table" role="table" aria-label={family.display_name}>
+                              <div className="strategy-table-head" role="row">
+                                <span role="columnheader">Regel</span>
+                                <span role="columnheader">Herkunft</span>
+                                <span role="columnheader">Parameter</span>
+                                <span role="columnheader">Teststand</span>
+                              </div>
+                              {familyStrategies.map((strategy) => (
+                                <div className="strategy-table-row" role="row" key={strategy.strategy_id}>
+                                  <div role="cell">
+                                    <strong>{strategy.display_name}</strong>
+                                    <small>{strategy.strategy_id}</small>
+                                  </div>
+                                  <div role="cell">
+                                    <strong>{strategy.historical_action}</strong>
+                                    <small>
+                                      Kap. {strategy.source_chapter} · {strategy.included_in_vdefmd6
+                                        ? `Vdefmd6 Klasse ${strategy.historical_rule_class}`
+                                        : "nicht in Vdefmd6"}
+                                    </small>
+                                  </div>
+                                  <div role="cell">
+                                    <strong>{strategy.parameterized ? "parametrisierbar" : "feste Regel"}</strong>
+                                    <small>
+                                      {strategy.parameter_capabilities.map(strategyCapabilityLabel).join(", ")}
+                                    </small>
+                                  </div>
+                                  <div role="cell">
+                                    <strong>{strategyTestStatusLabel(strategy.test_status)}</strong>
+                                    <small>{strategy.implementation_status === "ported_explicit_core"
+                                      ? "expliziter Regelkern"
+                                      : strategy.implementation_status}</small>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </section>
+                  );
+                })}
+              </div>
+            )
+          ) : strategyAssignmentState === "error" ? (
+            <div className="empty-state" role="alert">{strategyAssignmentError}</div>
+          ) : strategyAssignmentState === "loading" ? (
+            <div className="empty-state">Strategiezuordnungen werden geladen</div>
+          ) : strategyWorkbenchView === "assignments" ? (
+            <div className="strategy-contract-view" data-testid="strategy-assignment-profiles">
+              <div className="strategy-contract-summary" aria-label="Zuordnungsvertrag-Status">
+                <div>
+                  <span>Status</span>
+                  <strong>{strategyAssignmentStatusLabel}</strong>
+                </div>
+                <div>
+                  <span>Quellmodell</span>
+                  <strong>{strategyAssignmentContract?.source_summary.model ?? "-"}</strong>
+                </div>
+                <div>
+                  <span>Quellprofile</span>
+                  <strong>{strategyAssignmentContract?.source_summary.profile_count ?? 0}</strong>
+                </div>
+                <div>
+                  <span>Akteure</span>
+                  <strong>
+                    {strategyAssignmentContract
+                      ? `${strategyAssignmentContract.source_summary.insurer_count} VU · ${strategyAssignmentContract.source_summary.policyholder_count} VN`
+                      : "-"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="strategy-boundary-band">
+                <div>
+                  <strong>{strategyAssignmentContract?.sector_contract.position_count ?? 0} historische Sektorpositionen</strong>
+                  <span>
+                    Eine Strategie gilt gemeinsam fuer beide Positionen; moderne Spartennamen sind noch nicht zugeordnet.
+                  </span>
+                </div>
+                <span className="readonly-marker">
+                  <LockKeyhole size={16} aria-hidden="true" />
+                  {strategyAssignmentBoundaryLabel}
+                </span>
+              </div>
+
+              <div className="strategy-target-list" aria-label="Zulaessige Strategiezuordnungen">
+                {(strategyAssignmentContract?.assignment_targets ?? []).map((target) => (
+                  <div className="strategy-target-row" key={target.actor_type}>
+                    <div>
+                      <strong>{strategyActorLabel(target.actor_type)}</strong>
+                      <small>Einzelzuordnung je Akteur</small>
+                    </div>
+                    <div>
+                      <strong>{target.eligible_strategy_ids.length} zulaessige Strategien</strong>
+                      <small>keine Gruppenbearbeitung</small>
+                    </div>
+                    <div>
+                      <strong>0 oder 1 Strategie</strong>
+                      <small>keine geplanten Wechsel</small>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               {STRATEGY_ACTOR_ORDER.map((actorType) => {
-                const actorStrategies = strategyCatalog?.strategies.filter(
-                  (strategy) => strategy.actor_type === actorType
-                ) ?? [];
-                const actorFamilies = strategyCatalog?.families.filter(
-                  (family) => family.actor_type === actorType
+                const profiles = strategyAssignmentContract?.source_profiles.filter(
+                  (profile) => profile.actor_type === actorType
                 ) ?? [];
                 return (
                   <section className="strategy-actor-section" key={actorType}>
                     <div className="strategy-actor-heading">
                       <h3>{strategyActorLabel(actorType)}</h3>
-                      <strong>{actorStrategies.length} Regeln</strong>
+                      <strong>{profiles.length} Quellprofile</strong>
                     </div>
-                    {actorFamilies.map((family) => {
-                      const familyStrategies = actorStrategies.filter(
-                        (strategy) => strategy.family_id === family.family_id
-                      );
-                      return (
-                        <div className="strategy-family" key={family.family_id}>
-                          <div className="strategy-family-heading">
-                            <div>
-                              <h4>{family.display_name}</h4>
-                              <p>{family.description}</p>
+                    <div className="strategy-profile-table" role="table" aria-label={`${strategyActorLabel(actorType)} Quellprofile`}>
+                      <div className="strategy-profile-head" role="row">
+                        <span role="columnheader">Akteure</span>
+                        <span role="columnheader">Historische Strategie</span>
+                        <span role="columnheader">Laufbindung</span>
+                        <span role="columnheader">Parameterprofil</span>
+                      </div>
+                      {profiles.map((profile) => {
+                        const strategy = strategyDefinitionById.get(profile.strategy_id);
+                        return (
+                          <div className="strategy-profile-row" role="row" key={profile.profile_id}>
+                            <div role="cell">
+                              <strong>{strategyTargetRangeLabel(profile)}</strong>
+                              <small>
+                                {profile.target_count} {profile.target_count === 1 ? "Akteur" : "Akteure"} · {profile.profile_id}
+                              </small>
                             </div>
-                            <strong>{familyStrategies.length}</strong>
+                            <div role="cell">
+                              <strong>{strategy?.display_name ?? profile.strategy_id}</strong>
+                              <small>Regel {profile.historical_rule_id} · Klasse {profile.historical_rule_class}</small>
+                            </div>
+                            <div role="cell">
+                              <strong>ab Periode {profile.activation_period}</strong>
+                              <small>Laufhorizont {profile.active_through_run} · Logtime {profile.logical_time}</small>
+                            </div>
+                            <div role="cell">
+                              <strong>{profile.parameter_schema ? "Strategieschema vorhanden" : "kein Strategieschema"}</strong>
+                              <small>
+                                {profile.parameter_schema ? `${profile.parameter_schema} · ` : ""}
+                                {profile.parameter_values_exposed
+                                  ? `${profile.legacy_parameter_value_count} Quellwerte sichtbar`
+                                  : `${profile.legacy_parameter_value_count} Quellwerte geschuetzt · Profil ${shortStrategyFingerprint(profile.legacy_parameter_fingerprint)}`}
+                              </small>
+                            </div>
                           </div>
-                          <div className="strategy-table" role="table" aria-label={family.display_name}>
-                            <div className="strategy-table-head" role="row">
-                              <span role="columnheader">Regel</span>
-                              <span role="columnheader">Herkunft</span>
-                              <span role="columnheader">Parameter</span>
-                              <span role="columnheader">Teststand</span>
+                        );
+                      })}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="strategy-contract-view" data-testid="strategy-parameter-schemas">
+              <div className="strategy-contract-summary" aria-label="Parameterschema-Status">
+                <div>
+                  <span>Vertrag</span>
+                  <strong>{strategyAssignmentContract?.schema_version ?? "-"}</strong>
+                </div>
+                <div>
+                  <span>Schemata</span>
+                  <strong>{strategyAssignmentContract?.parameter_schemas.length ?? 0}</strong>
+                </div>
+                <div>
+                  <span>Feldform</span>
+                  <strong>2 historische Positionen</strong>
+                </div>
+                <div>
+                  <span>Parameterwerte</span>
+                  <strong>
+                    {strategyAssignmentContract?.source_summary.parameter_values_exposed ? "sichtbar" : "nicht offengelegt"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="strategy-boundary-band">
+                <div>
+                  <strong>Vorhandene Loaderformen, keine neuen Fachgrenzen</strong>
+                  <span>
+                    Die Ansicht zeigt Feldnamen und bestehende technische Pruefungen, aber keine konkreten Werte oder Defaults.
+                  </span>
+                </div>
+                <span className="readonly-marker">
+                  <LockKeyhole size={16} aria-hidden="true" />
+                  {strategyAssignmentBoundaryLabel}
+                </span>
+              </div>
+
+              {STRATEGY_ACTOR_ORDER.map((actorType) => {
+                const schemas = strategyAssignmentContract?.parameter_schemas.filter(
+                  (schema) => schema.actor_type === actorType
+                ) ?? [];
+                return (
+                  <section className="strategy-actor-section" key={actorType}>
+                    <div className="strategy-actor-heading">
+                      <h3>{strategyActorLabel(actorType)}</h3>
+                      <strong>{schemas.length} Schemata</strong>
+                    </div>
+                    <div className="strategy-schema-list">
+                      {schemas.map((schema, index) => (
+                        <details className="strategy-schema" key={schema.schema_id} open={index === 0}>
+                          <summary>
+                            <div>
+                              <strong>{schema.schema_id}</strong>
+                              <small>
+                                {schema.strategy_ids.map((strategyId) =>
+                                  strategyDefinitionById.get(strategyId)?.display_name ?? strategyId
+                                ).join(", ")}
+                              </small>
                             </div>
-                            {familyStrategies.map((strategy) => (
-                              <div className="strategy-table-row" role="row" key={strategy.strategy_id}>
+                            <span>{schema.fields.length} Felder</span>
+                          </summary>
+                          <div className="strategy-schema-source">
+                            <span>{schema.module}</span>
+                            <strong>{schema.loader_entrypoint}</strong>
+                          </div>
+                          <div className="strategy-schema-fields" role="table" aria-label={`${schema.schema_id} Felder`}>
+                            <div className="strategy-schema-field-head" role="row">
+                              <span role="columnheader">Feld</span>
+                              <span role="columnheader">Form</span>
+                              <span role="columnheader">Bestehende Pruefung</span>
+                            </div>
+                            {schema.fields.map((field) => (
+                              <div className="strategy-schema-field-row" role="row" key={field.field_name}>
                                 <div role="cell">
-                                  <strong>{strategy.display_name}</strong>
-                                  <small>{strategy.strategy_id}</small>
+                                  <strong>{field.display_name}</strong>
+                                  <small>{field.field_name}</small>
                                 </div>
                                 <div role="cell">
-                                  <strong>{strategy.historical_action}</strong>
-                                  <small>
-                                    Kap. {strategy.source_chapter} · {strategy.included_in_vdefmd6
-                                      ? `Vdefmd6 Klasse ${strategy.historical_rule_class}`
-                                      : "nicht in Vdefmd6"}
-                                  </small>
+                                  <strong>{field.python_type}</strong>
+                                  <small>2 historische Positionen</small>
                                 </div>
                                 <div role="cell">
-                                  <strong>{strategy.parameterized ? "parametrisierbar" : "feste Regel"}</strong>
-                                  <small>
-                                    {strategy.parameter_capabilities.map(strategyCapabilityLabel).join(", ")}
-                                  </small>
-                                </div>
-                                <div role="cell">
-                                  <strong>{strategyTestStatusLabel(strategy.test_status)}</strong>
-                                  <small>{strategy.implementation_status === "ported_explicit_core"
-                                    ? "expliziter Regelkern"
-                                    : strategy.implementation_status}</small>
+                                  <strong>{strategyValidationLabel(field.existing_validation)}</strong>
+                                  <small>{field.required_by_existing_loader ? "Pflichtfeld im Loader" : "optional"}</small>
                                 </div>
                               </div>
                             ))}
                           </div>
-                        </div>
-                      );
-                    })}
+                        </details>
+                      ))}
+                    </div>
                   </section>
                 );
               })}
+
+              <div className="strategy-unparameterized-note">
+                <strong>Vrvn01: Pflichtversicherung</strong>
+                <span>
+                  Kein eigenes Strategieschema. Explizite Versichererwahl-Ziehungen bleiben Laufeingaben und werden hier nicht als Parameter dargestellt.
+                </span>
+              </div>
             </div>
           )}
         </section>

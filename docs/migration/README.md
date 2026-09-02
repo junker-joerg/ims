@@ -23,6 +23,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_strategy_assignment_ui.md`: read-only Workbench-Ansicht fuer
+  Vdefmd6-Zuordnungsprofile und vorhandene Parameterschemata
 - `ims_inventory.md`: Inventar und grobe Klassifikation der Altdateien
 - `python_target_architecture.md`: geplante Zielstruktur des Python-Ports
 - `legacy_agrsich_validation_step.md`: erster echter Versicherer-Agrsich-Vergleich

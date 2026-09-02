@@ -73,9 +73,9 @@ ohne daraus neue Semantik abzuleiten.
 
 ## Anschlussplanung
 
-PR107 soll die Quellprofile und Parameterschemata in einer kompakten
-read-only Workbench-Ansicht darstellen. PR108 kann danach ein versioniertes
-Entwurfsformat fuer konkrete Zuordnungen und Parameterwerte samt reiner
-Validierung vorbereiten. Erst ein weiterer eigener PR darf einen validierten
-Entwurf in bestehende Regel-Snapshots uebersetzen; UI-Schreiben und
-Ausfuehrung bleiben davon getrennte Freigaben.
+PR107 setzt die kompakte read-only Workbench-Ansicht fuer Quellprofile und
+Parameterschemata um. PR108 kann danach ein versioniertes Entwurfsformat fuer
+konkrete Zuordnungen und Parameterwerte samt reiner Validierung vorbereiten.
+Erst ein weiterer eigener PR darf einen validierten Entwurf in bestehende
+Regel-Snapshots uebersetzen; UI-Schreiben und Ausfuehrung bleiben davon
+getrennte Freigaben.

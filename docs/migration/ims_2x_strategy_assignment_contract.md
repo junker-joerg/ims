@@ -108,6 +108,6 @@ abgewiesen. Der Vertrag behauptet keine historische Vollgleichheit.
 
 ## Anschluss
 
-PR107 kann diese Informationen in der Workbench lesbar machen. Ein danach
-moegliches Entwurfsformat muss Strategie-ID, Ziel-ID, Gueltigkeit und
-Parameterwerte versionieren und zunaechst ohne Ausfuehrung validieren.
+PR107 macht diese Informationen in der Workbench lesbar. Ein danach moegliches
+Entwurfsformat muss Strategie-ID, Ziel-ID, Gueltigkeit und Parameterwerte
+versionieren und zunaechst ohne Ausfuehrung validieren.

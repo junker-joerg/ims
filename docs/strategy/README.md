@@ -24,3 +24,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 - [PR106 Strategiezuordnungs- und Parametervertrag](../migration/ims_2x_strategy_assignment_contract.md):
   Akteurs-, Sektor- und Parametergrenzen sowie die belegten
   Vdefmd6-Zuordnungsprofile, weiterhin ohne Bearbeitung oder Ausfuehrung.
+- [PR107 Strategiezuordnungen in der Workbench](../migration/ims_2x_strategy_assignment_ui.md):
+  rein lesende Tabs fuer Vdefmd6-Quellprofile und vorhandene
+  Parameterschemata, weiterhin ohne konkrete Werte, Schreiben oder
+  Ausfuehrung.

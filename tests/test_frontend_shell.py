@@ -93,6 +93,37 @@ def test_frontend_shell_declares_readonly_strategy_catalog():
     assert 'fetch("/api/strategies/catalog", {' not in source
 
 
+def test_frontend_shell_declares_readonly_strategy_assignment_views():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert 'fetch("/api/strategies/assignment-contract")' in source
+    assert 'data-testid="strategy-assignment-profiles"' in source
+    assert 'data-testid="strategy-parameter-schemas"' in source
+    assert 'aria-label="Strategieansichten"' in source
+    assert "Zuordnungen" in source
+    assert "Parameterschemata" in source
+    assert "source_profiles" in source
+    assert "parameter_schemas" in source
+    assert "assignment_targets" in source
+    assert "sector_contract" in source
+    assert "parameter_values_exposed" in source
+    assert "shortStrategyFingerprint" in source
+    assert "Quellwerte geschuetzt" in source
+    assert "Vrvn01: Pflichtversicherung" in source
+    assert "keine neuen Fachgrenzen" in source
+    assert "strategyAssignmentContract.assignment_editing_enabled" in source
+    assert "strategyAssignmentContract.parameter_editing_enabled" in source
+    assert "strategyAssignmentContract.writes_enabled" in source
+    assert "strategyAssignmentContract.execution_enabled" in source
+    assert "strategyAssignmentContract.simulation_performed" in source
+    assert 'fetch("/api/strategies/assignment-contract", {' not in source
+    assert "strategy-workbench-tabs" in styles
+    assert "strategy-profile-table" in styles
+    assert "strategy-schema-list" in styles
+    assert "strategy-schema-field-row" in styles
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 
