@@ -44,7 +44,10 @@ from ims.api.run_control_queue_action_plan import build_run_control_queue_action
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
 from ims.engine.core_validation_overview import build_core_validation_overview
-from ims.strategies import strategy_catalog_payload
+from ims.strategies import (
+    strategy_assignment_contract_payload,
+    strategy_catalog_payload,
+)
 
 try:
     from fastapi import FastAPI
@@ -570,6 +573,10 @@ def create_app(
         def strategies_catalog() -> dict[str, object]:
             return strategy_catalog_payload()
 
+        @app.get("/api/strategies/assignment-contract")
+        def strategies_assignment_contract() -> dict[str, object]:
+            return strategy_assignment_contract_payload()
+
         @app.get("/api/scenarios")
         def scenarios() -> dict[str, object]:
             return repository.list_scenarios()
@@ -688,6 +695,10 @@ def create_app(
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/strategies/catalog", lambda request: JSONResponse(strategy_catalog_payload())),
+        Route(
+            "/api/strategies/assignment-contract",
+            lambda request: JSONResponse(strategy_assignment_contract_payload()),
+        ),
         Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),
         Route(
             "/api/scenarios/{scenario_id}",

@@ -50,6 +50,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_catalog_ui.md`: PR105-Mapping des read-only
   Strategiekatalogs auf `GET /api/strategies/catalog` und die responsive
   Workbench-Anzeige ohne Auswahl, Schreibpfad oder Simulation
+- `ims_2x_strategy_assignment_contract.md`: PR106-Vertrag fuer
+  Akteurszuordnung, dreizehn vorhandene Parameterformen und achtzehn
+  Vdefmd6-Quellprofile mit weiterhin geschlossenen Schreib- und Laufpfaden
 - `vn_damage_core.md`: gemeinsamer VN-Schadenerzeugungskern aus Vrvn01 bis Vrvn03
 - `vn_damage_draw_basis.md`: reproduzierbare Python-Draw-Basis fuer VN-Schadensnapshots ohne explizite Draws
 - `vn_compulsory_insurance_rule.md`: Vrvn01-Baustein fuer Pflichtversicherung und Startentscheidungen

@@ -21,3 +21,6 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 - [PR105 Strategiekatalog in der Workbench](../migration/ims_2x_strategy_catalog_ui.md):
   rein lesender API- und Anzeigeweg fuer den Katalog, weiterhin ohne
   Strategieauswahl, Parameterbearbeitung oder Ausfuehrung.
+- [PR106 Strategiezuordnungs- und Parametervertrag](../migration/ims_2x_strategy_assignment_contract.md):
+  Akteurs-, Sektor- und Parametergrenzen sowie die belegten
+  Vdefmd6-Zuordnungsprofile, weiterhin ohne Bearbeitung oder Ausfuehrung.

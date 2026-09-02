@@ -1,5 +1,19 @@
 """Versionierter, read-only Strategiekatalog fuer IMS 2.x."""
 
+from ims.strategies.assignment_contract import (
+    STRATEGY_ASSIGNMENT_CONTRACT_VERSION,
+    STRATEGY_ASSIGNMENT_TARGETS,
+    STRATEGY_PARAMETER_SCHEMAS,
+    StrategyAssignmentTargetDefinition,
+    StrategyParameterFieldDefinition,
+    StrategyParameterSchemaDefinition,
+    StrategySectorContract,
+    StrategySourceAssignmentProfile,
+    build_vdefmd6_strategy_assignment_profiles,
+    strategy_assignment_contract_issues,
+    strategy_assignment_contract_payload,
+)
+
 from ims.strategies.catalog import (
     STRATEGY_CATALOG_VERSION,
     STRATEGY_DEFINITIONS,
@@ -16,16 +30,27 @@ from ims.strategies.catalog import (
 )
 
 __all__ = [
+    "STRATEGY_ASSIGNMENT_CONTRACT_VERSION",
+    "STRATEGY_ASSIGNMENT_TARGETS",
     "STRATEGY_CATALOG_VERSION",
     "STRATEGY_DEFINITIONS",
     "STRATEGY_FAMILIES",
+    "STRATEGY_PARAMETER_SCHEMAS",
     "StrategyActorType",
+    "StrategyAssignmentTargetDefinition",
     "StrategyDefinition",
     "StrategyFamilyDefinition",
     "StrategyImplementationStatus",
+    "StrategyParameterFieldDefinition",
+    "StrategyParameterSchemaDefinition",
+    "StrategySectorContract",
+    "StrategySourceAssignmentProfile",
     "StrategyTestStatus",
+    "build_vdefmd6_strategy_assignment_profiles",
     "get_strategy_definition",
     "list_strategy_definitions",
+    "strategy_assignment_contract_issues",
+    "strategy_assignment_contract_payload",
     "strategy_catalog_issues",
     "strategy_catalog_payload",
 ]

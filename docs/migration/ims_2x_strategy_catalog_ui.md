@@ -54,7 +54,7 @@ Frontend-Build sowie eine visuelle Desktop- und Mobilpruefung sichern die
 Darstellung ab. Diese Pruefungen starten keine Simulation und belegen keine
 vollstaendige Gleichheit mit historischen stochastischen Laeufen.
 
-PR106 kann auf dieser Anzeige einen versionierten Zuordnungs- und
-Parametrisierungsvertrag aufbauen. Eine editierbare Auswahl oder wirksame
-Strategieaenderung bleibt danach weiterhin ein eigener, fachlich zu
-validierender Schritt.
+PR106 baut darauf den versionierten, weiterhin rein lesenden
+[Zuordnungs- und Parametrisierungsvertrag](ims_2x_strategy_assignment_contract.md)
+auf. Eine editierbare Auswahl oder wirksame Strategieaenderung bleibt danach
+weiterhin ein eigener, fachlich zu validierender Schritt.
