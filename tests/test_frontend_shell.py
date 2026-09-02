@@ -156,6 +156,34 @@ def test_frontend_shell_declares_local_strategy_draft_editor_and_validation():
     assert "strategy-draft-report" in styles
 
 
+def test_frontend_shell_declares_readonly_snapshot_translation_preview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert '"/api/strategies/assignment-snapshot-translation-contract"' in source
+    assert "strategySnapshotTranslationContract?.translation_endpoint" in source
+    assert 'method: "POST"' in source
+    assert "JSON.stringify(draft)" in source
+    assert 'strategyWorkbenchView === "translation"' in source
+    assert 'data-testid="strategy-snapshot-translation-preview"' in source
+    assert "Bauplaene" in source
+    assert "Bauplaene anzeigen" in source
+    assert "Zuerst den Entwurf erfolgreich pruefen" in source
+    assert "Aus dem Entwurf vorbereitet" in source
+    assert "Vor Materialisierung erforderlich" in source
+    assert "unresolved_snapshot_fields" in source
+    assert "strategySnapshotFieldLabel" in source
+    assert "Snapshottyp" in source
+    assert "Zinssatz der Periode" in source
+    assert "Snapshots:" in source
+    assert "Ausfuehrung:" in source
+    assert "Simulation:" in source
+    assert "localStorage" not in source
+    assert "strategy-snapshot-action" in styles
+    assert "strategy-snapshot-row" in styles
+    assert "strategy-snapshot-fields" in styles
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

@@ -3,11 +3,14 @@ import { createRoot } from "react-dom/client";
 import {
   Activity,
   Archive,
+  Boxes,
   Braces,
   CheckCircle2,
+  CircleAlert,
   ClipboardCheck,
   CircleDot,
   Database,
+  Eye,
   FileText,
   GitBranch,
   ListTree,
@@ -118,7 +121,7 @@ type StrategyCatalog = {
   strategies: StrategyDefinition[];
 };
 
-type StrategyWorkbenchView = "catalog" | "assignments" | "parameters" | "draft";
+type StrategyWorkbenchView = "catalog" | "assignments" | "parameters" | "draft" | "translation";
 
 type StrategySectorContract = {
   mode: "legacy_two_position_vector";
@@ -275,6 +278,72 @@ type StrategyAssignmentDraftValidationReport = {
   validated_assignment_count: number;
   issue_count: number;
   issues: StrategyAssignmentDraftValidationIssue[];
+  writes_performed: boolean;
+  snapshots_created: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategySnapshotTarget = {
+  strategy_id: string;
+  actor_type: StrategyActorType;
+  snapshot_module: string;
+  snapshot_type: string;
+  snapshot_loader: string;
+  snapshot_collection: string;
+  target_id_field: string;
+  rule_kind: string | null;
+  provided_snapshot_fields: string[];
+  unresolved_snapshot_fields: string[];
+};
+
+type StrategySnapshotTranslationContract = {
+  schema_version: string;
+  draft_schema_version: string;
+  mode: "strategy_assignment_snapshot_translation_contract_read_only";
+  scope: "validated_draft_to_existing_snapshot_construction_plan";
+  translation_endpoint: string;
+  strategy_mappings: StrategySnapshotTarget[];
+  mapping_issue_count: number;
+  partial_snapshot_payloads: boolean;
+  typed_parameter_loading_enabled: boolean;
+  snapshot_loader_invocation_enabled: boolean;
+  defaults_applied: boolean;
+  persistence_enabled: boolean;
+  snapshot_materialization_enabled: boolean;
+  execution_enabled: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategySnapshotTranslationEntry = StrategyDraftAssignment & {
+  snapshot_module: string;
+  snapshot_type: string;
+  snapshot_loader: string;
+  snapshot_collection: string;
+  snapshot_payload: Record<string, unknown>;
+  provided_snapshot_fields: string[];
+  unresolved_snapshot_fields: string[];
+  snapshot_materialized: boolean;
+  execution_ready: boolean;
+};
+
+type StrategySnapshotTranslationReport = {
+  schema_version: string;
+  mode: "strategy_assignment_snapshot_translation";
+  status: "ok" | "error";
+  draft_valid: boolean;
+  translation_complete: boolean;
+  draft_id: string | null;
+  label: string | null;
+  assignment_count: number;
+  translated_assignment_count: number;
+  issue_count: number;
+  issues: StrategyAssignmentDraftValidationIssue[];
+  entries: StrategySnapshotTranslationEntry[];
+  defaults_applied: boolean;
+  snapshot_materialization_ready: boolean;
   writes_performed: boolean;
   snapshots_created: boolean;
   execution_performed: boolean;
@@ -845,6 +914,31 @@ const strategyCapabilityLabels: Record<string, string> = {
   full_market_information: "vollstaendige Marktinformation"
 };
 
+const strategySnapshotFieldLabels: Record<string, string> = {
+  insurer_id: "VU-Ziel",
+  policyholder_id: "VN-Ziel",
+  rule_kind: "Regelvariante",
+  parameters: "Strategieparameter",
+  random_draws: "Gleichverteilte Ziehungen",
+  normal_draws: "Normalverteilte Ziehungen",
+  reserve_thresholds: "Reserveschwellen",
+  net_switcher_thresholds: "Wechslerschwellen",
+  previous_policyholders_sector: "VN-Zahlen der Vorperiode",
+  market_share_thresholds: "Marktanteilsschwellen",
+  active_policyholder_count: "Anzahl aktiver VN",
+  interest_rate: "Zinssatz der Periode",
+  change_shock: "Schockstatus der Periode",
+  draws: "Regelbezogene Zufallsziehungen",
+  active_insurer_ids: "Aktive Versicherer",
+  initial_decisions: "Anfangsentscheidungen",
+  damage_probabilities: "Schadenwahrscheinlichkeiten",
+  insurer_inputs: "VU-Marktwerte",
+  history: "Versicherungshistorie",
+  market_damage_indicator: "Marktschadenindikator",
+  information_cost_per_sample: "Informationskosten je Stichprobe",
+  information_cost_per_insurer: "Informationskosten je Versicherer"
+};
+
 export function filterScenarios(scenarios: ScenarioMetadata[], filters: ScenarioFilters): ScenarioMetadata[] {
   const query = filters.query.trim().toLocaleLowerCase();
   return scenarios.filter((scenario) => {
@@ -925,6 +1019,10 @@ function strategyTargetRangeLabel(profile: StrategySourceProfile): string {
 
 function shortStrategyFingerprint(fingerprint: string): string {
   return fingerprint.replace("sha256:", "").slice(0, 10);
+}
+
+function strategySnapshotFieldLabel(fieldName: string): string {
+  return strategySnapshotFieldLabels[fieldName] ?? fieldName.replaceAll("_", " ");
 }
 
 function createEmptyStrategyDraftEditor(actorType: StrategyActorType = "insurer"): StrategyDraftEditor {
@@ -1031,6 +1129,18 @@ function App() {
     useState<StrategyAssignmentDraftValidationReport | null>(null);
   const [strategyDraftValidationState, setStrategyDraftValidationState] = useState<DetailState>("idle");
   const [strategyDraftValidationError, setStrategyDraftValidationError] = useState<string | null>(null);
+  const [strategySnapshotTranslationContract, setStrategySnapshotTranslationContract] =
+    useState<StrategySnapshotTranslationContract | null>(null);
+  const [strategySnapshotTranslationContractState, setStrategySnapshotTranslationContractState] =
+    useState<DetailState>("loading");
+  const [strategySnapshotTranslationContractError, setStrategySnapshotTranslationContractError] =
+    useState<string | null>(null);
+  const [strategySnapshotTranslation, setStrategySnapshotTranslation] =
+    useState<StrategySnapshotTranslationReport | null>(null);
+  const [strategySnapshotTranslationState, setStrategySnapshotTranslationState] =
+    useState<DetailState>("idle");
+  const [strategySnapshotTranslationError, setStrategySnapshotTranslationError] =
+    useState<string | null>(null);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
@@ -1415,6 +1525,41 @@ function App() {
   useEffect(() => {
     let active = true;
 
+    async function loadStrategySnapshotTranslationContract() {
+      setStrategySnapshotTranslationContractState("loading");
+      setStrategySnapshotTranslationContractError(null);
+      try {
+        const response = await fetch(
+          "/api/strategies/assignment-snapshot-translation-contract"
+        );
+        if (!response.ok) {
+          throw new Error("Snapshot-Bauplanvertrag nicht erreichbar");
+        }
+        const payload = (await response.json()) as StrategySnapshotTranslationContract;
+        if (active) {
+          setStrategySnapshotTranslationContract(payload);
+          setStrategySnapshotTranslationContractState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategySnapshotTranslationContract(null);
+          setStrategySnapshotTranslationContractError(
+            error instanceof Error ? error.message : "Snapshot-Bauplanvertrag nicht erreichbar"
+          );
+          setStrategySnapshotTranslationContractState("error");
+        }
+      }
+    }
+
+    loadStrategySnapshotTranslationContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
     async function loadQueueDetail() {
       if (!selectedQueueId) {
         setQueueDetail(null);
@@ -1630,11 +1775,36 @@ function App() {
             ? "gueltig"
             : "Fehler gefunden"
           : "noch nicht geprueft";
+  const strategySnapshotOpenFieldCount = (strategySnapshotTranslation?.entries ?? []).reduce(
+    (total, entry) => total + entry.unresolved_snapshot_fields.length,
+    0
+  );
+  const strategySnapshotTranslationStatusLabel =
+    strategySnapshotTranslationState === "error"
+      ? "nicht erreichbar"
+      : strategySnapshotTranslationState === "loading"
+        ? "wird erstellt"
+        : strategySnapshotTranslation?.translation_complete
+          ? "vollstaendig zugeordnet"
+          : "noch keine Vorschau";
+  const canTranslateStrategyDraft = Boolean(
+    strategySnapshotTranslationContract &&
+    strategySnapshotTranslationContractState === "ready" &&
+    strategyDraftValidation?.valid &&
+    strategySnapshotTranslationState !== "loading"
+  );
+
+  const invalidateStrategySnapshotTranslation = () => {
+    setStrategySnapshotTranslation(null);
+    setStrategySnapshotTranslationState("idle");
+    setStrategySnapshotTranslationError(null);
+  };
 
   const invalidateStrategyDraftValidation = () => {
     setStrategyDraftValidation(null);
     setStrategyDraftValidationState("idle");
     setStrategyDraftValidationError(null);
+    invalidateStrategySnapshotTranslation();
   };
 
   const selectStrategyDraftActor = (actorType: StrategyActorType) => {
@@ -1745,11 +1915,11 @@ function App() {
     invalidateStrategyDraftValidation();
   };
 
-  const validateStrategyDraft = async () => {
-    if (!strategyDraftContract || !canValidateStrategyDraft) {
-      return;
+  const buildStrategyDraftDocument = (): StrategyAssignmentDraftDocument | null => {
+    if (!strategyDraftContract) {
+      return null;
     }
-    const draft: StrategyAssignmentDraftDocument = {
+    return {
       schema_version: strategyDraftContract.schema_version,
       catalog_schema_version: strategyDraftContract.catalog_schema_version,
       assignment_contract_schema_version: strategyDraftContract.assignment_contract_schema_version,
@@ -1759,6 +1929,14 @@ function App() {
       label: strategyDraftLabel.trim(),
       assignments: strategyDraftAssignments
     };
+  };
+
+  const validateStrategyDraft = async () => {
+    const draft = buildStrategyDraftDocument();
+    if (!draft || !canValidateStrategyDraft) {
+      return;
+    }
+    invalidateStrategySnapshotTranslation();
     setStrategyDraftValidation(null);
     setStrategyDraftValidationState("loading");
     setStrategyDraftValidationError(null);
@@ -1780,6 +1958,39 @@ function App() {
         error instanceof Error ? error.message : "Strategieentwurf konnte nicht geprueft werden"
       );
       setStrategyDraftValidationState("error");
+    }
+  };
+
+  const translateStrategyDraft = async () => {
+    const draft = buildStrategyDraftDocument();
+    const endpoint = strategySnapshotTranslationContract?.translation_endpoint;
+    if (!draft || !endpoint || !canTranslateStrategyDraft) {
+      return;
+    }
+    setStrategySnapshotTranslation(null);
+    setStrategySnapshotTranslationState("loading");
+    setStrategySnapshotTranslationError(null);
+    try {
+      const response = await fetch(
+        endpoint,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(draft)
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Snapshot-Bauplaene konnten nicht erstellt werden");
+      }
+      const payload = (await response.json()) as StrategySnapshotTranslationReport;
+      setStrategySnapshotTranslation(payload);
+      setStrategySnapshotTranslationState("ready");
+    } catch (error) {
+      setStrategySnapshotTranslation(null);
+      setStrategySnapshotTranslationError(
+        error instanceof Error ? error.message : "Snapshot-Bauplaene konnten nicht erstellt werden"
+      );
+      setStrategySnapshotTranslationState("error");
     }
   };
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
@@ -2783,7 +2994,11 @@ function App() {
             </div>
             <span className="readonly-marker">
               <LockKeyhole size={16} aria-hidden="true" />
-              {strategyWorkbenchView === "draft" ? "Lokal, nicht gespeichert" : "Nur lesen"}
+              {strategyWorkbenchView === "draft"
+                ? "Lokal, nicht gespeichert"
+                : strategyWorkbenchView === "translation"
+                  ? "Nur Vorschau"
+                  : "Nur lesen"}
             </span>
           </div>
           <div className="strategy-catalog-summary" aria-label="Strategiekatalog-Status">
@@ -2857,6 +3072,16 @@ function App() {
             >
               <ClipboardCheck size={17} aria-hidden="true" />
               Entwurf
+            </button>
+            <button
+              className={strategyWorkbenchView === "translation" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "translation"}
+              onClick={() => setStrategyWorkbenchView("translation")}
+            >
+              <Boxes size={17} aria-hidden="true" />
+              Bauplaene
             </button>
           </div>
 
@@ -3151,6 +3376,195 @@ function App() {
                 </span>
               </div>
             </div>
+          ) : strategyWorkbenchView === "translation" ? (
+            strategySnapshotTranslationContractState === "error" ? (
+              <div className="empty-state" role="alert">{strategySnapshotTranslationContractError}</div>
+            ) : strategySnapshotTranslationContractState === "loading" ? (
+              <div className="empty-state">Snapshot-Bauplanvertrag wird geladen</div>
+            ) : (
+              <div
+                className="strategy-contract-view strategy-snapshot-view"
+                data-testid="strategy-snapshot-translation-preview"
+              >
+                <div className="strategy-contract-summary" aria-label="Snapshot-Bauplan-Status">
+                  <div>
+                    <span>Uebersetzungsvertrag</span>
+                    <strong>{strategySnapshotTranslationContract?.schema_version ?? "-"}</strong>
+                  </div>
+                  <div>
+                    <span>Regel-Mappings</span>
+                    <strong>{strategySnapshotTranslationContract?.strategy_mappings.length ?? 0}</strong>
+                  </div>
+                  <div>
+                    <span>Bauplaene</span>
+                    <strong>{strategySnapshotTranslation?.translated_assignment_count ?? 0}</strong>
+                  </div>
+                  <div>
+                    <span>Offene Werte</span>
+                    <strong>{strategySnapshotOpenFieldCount}</strong>
+                  </div>
+                </div>
+
+                <div className="strategy-boundary-band">
+                  <div>
+                    <strong>Strukturelle Vorschau, noch nicht ausfuehrbar</strong>
+                    <span>
+                      Unbekannte Laufzeitwerte bleiben offen. Es werden keine Defaults eingesetzt und keine Snapshots erzeugt.
+                    </span>
+                  </div>
+                  <span className="readonly-marker">
+                    <LockKeyhole size={16} aria-hidden="true" />
+                    Keine Materialisierung
+                  </span>
+                </div>
+
+                <section className="strategy-snapshot-action" aria-label="Snapshot-Bauplaene anzeigen">
+                  <div>
+                    <strong>Geprueften Entwurf uebersetzen</strong>
+                    <span>
+                      Die Vorschau ordnet den lokalen Entwurf vorhandenen Regel-Snapshottypen zu.
+                    </span>
+                  </div>
+                  <button
+                    className="primary-action"
+                    type="button"
+                    disabled={!canTranslateStrategyDraft}
+                    onClick={translateStrategyDraft}
+                  >
+                    <Eye size={17} aria-hidden="true" />
+                    {strategySnapshotTranslationState === "loading"
+                      ? "Bauplaene werden erstellt"
+                      : "Bauplaene anzeigen"}
+                  </button>
+                </section>
+
+                {!strategyDraftValidation?.valid ? (
+                  <div className="strategy-snapshot-prerequisite">
+                    <ClipboardCheck size={20} aria-hidden="true" />
+                    <div>
+                      <strong>Zuerst den Entwurf erfolgreich pruefen</strong>
+                      <span>Die Vorschau verwendet nur einen unveraenderten, gueltigen Entwurf aus dem Tab Entwurf.</span>
+                    </div>
+                  </div>
+                ) : strategySnapshotTranslationError ? (
+                  <div className="empty-state" role="alert">{strategySnapshotTranslationError}</div>
+                ) : strategySnapshotTranslationState === "loading" ? (
+                  <div className="empty-state">Snapshot-Bauplaene werden erstellt</div>
+                ) : strategySnapshotTranslation ? (
+                  strategySnapshotTranslation.translation_complete ? (
+                    <div className="strategy-snapshot-list" aria-label="Snapshot-Bauplanvorschau">
+                      <div className="strategy-snapshot-list-heading">
+                        <div>
+                          <h3>{strategySnapshotTranslation.label}</h3>
+                          <span>{strategySnapshotTranslation.draft_id}</span>
+                        </div>
+                        <strong>{strategySnapshotTranslationStatusLabel}</strong>
+                      </div>
+                      {strategySnapshotTranslation.entries.map((entry) => {
+                        const strategy = strategyDefinitionById.get(entry.strategy_id);
+                        const actorLabel = entry.actor_type === "insurer" ? "VU" : "VN";
+                        return (
+                          <article
+                            className="strategy-snapshot-row"
+                            key={`${entry.actor_type}-${entry.target_id}`}
+                          >
+                            <div className="strategy-snapshot-row-heading">
+                              <div>
+                                <strong>{actorLabel} {entry.target_id} · {strategy?.display_name ?? entry.strategy_id}</strong>
+                                <span>{entry.strategy_id}</span>
+                              </div>
+                              <span className="strategy-snapshot-open-marker">
+                                <CircleAlert size={16} aria-hidden="true" />
+                                Kontext offen
+                              </span>
+                            </div>
+
+                            <div className="strategy-snapshot-meta">
+                              <div>
+                                <span>Snapshottyp</span>
+                                <strong>{entry.snapshot_type}</strong>
+                              </div>
+                              <div>
+                                <span>Zeitbindung</span>
+                                <strong>ab Periode {entry.activation_period}, bis Lauf {entry.active_through_run}</strong>
+                                <small>Logtime {entry.logical_time}</small>
+                              </div>
+                              <div>
+                                <span>Zielcontainer</span>
+                                <strong>{entry.snapshot_collection}</strong>
+                              </div>
+                            </div>
+
+                            <div className="strategy-snapshot-fields">
+                              <section aria-label={`Vorbereitete Werte fuer ${actorLabel} ${entry.target_id}`}>
+                                <div className="strategy-snapshot-field-heading prepared">
+                                  <CheckCircle2 size={17} aria-hidden="true" />
+                                  <strong>Aus dem Entwurf vorbereitet</strong>
+                                </div>
+                                <ul>
+                                  {entry.provided_snapshot_fields.map((fieldName) => (
+                                    <li key={fieldName}>
+                                      <span>{strategySnapshotFieldLabel(fieldName)}</span>
+                                      <small>{fieldName}</small>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </section>
+                              <section aria-label={`Offene Laufzeitwerte fuer ${actorLabel} ${entry.target_id}`}>
+                                <div className="strategy-snapshot-field-heading open">
+                                  <CircleAlert size={17} aria-hidden="true" />
+                                  <strong>Vor Materialisierung erforderlich</strong>
+                                </div>
+                                <ul>
+                                  {entry.unresolved_snapshot_fields.map((fieldName) => (
+                                    <li key={fieldName}>
+                                      <span>{strategySnapshotFieldLabel(fieldName)}</span>
+                                      <small>{fieldName}</small>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </section>
+                            </div>
+                          </article>
+                        );
+                      })}
+                      <div className="strategy-draft-report-boundaries">
+                        <span>Defaults: {strategySnapshotTranslation.defaults_applied ? "ja" : "nein"}</span>
+                        <span>Snapshots: {strategySnapshotTranslation.snapshots_created ? "ja" : "nein"}</span>
+                        <span>Ausfuehrung: {strategySnapshotTranslation.execution_performed ? "ja" : "nein"}</span>
+                        <span>Simulation: {strategySnapshotTranslation.simulation_performed ? "ja" : "nein"}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="strategy-draft-report invalid">
+                      <div className="strategy-draft-report-summary">
+                        <CircleAlert size={20} aria-hidden="true" />
+                        <div>
+                          <strong>Bauplaene konnten nicht vollstaendig zugeordnet werden</strong>
+                          <span>{strategySnapshotTranslation.issue_count} Vertragsfehler</span>
+                        </div>
+                      </div>
+                      <div className="strategy-draft-issues">
+                        {strategySnapshotTranslation.issues.map((issue) => (
+                          <div key={`${issue.path}-${issue.code}`}>
+                            <strong>{issue.path}</strong>
+                            <span>{issue.message}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <div className="strategy-snapshot-prerequisite ready">
+                    <Boxes size={20} aria-hidden="true" />
+                    <div>
+                      <strong>Entwurf ist bereit fuer die Vorschau</strong>
+                      <span>Bauplaene werden erst nach dem ausdruecklichen Anzeigen berechnet.</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
           ) : strategyDraftContractState === "error" ? (
             <div className="empty-state" role="alert">{strategyDraftContractError}</div>
           ) : strategyDraftContractState === "loading" ? (

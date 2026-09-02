@@ -30,6 +30,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   die deterministische, atomare Uebersetzung gueltiger Entwuerfe in typisierte
   Bauplaene vorhandener VU-/VN-Regel-Snapshots, ohne Defaults,
   Materialisierung oder Ausfuehrung.
+- `ims_2x_strategy_assignment_snapshot_translation_ui_plan.md`: PR111-Plan
+  fuer den read-only Workbench-Tab mit vorbereiteten und offenen
+  Snapshotfeldern, weiterhin ohne Defaults, Materialisierung oder
+  Ausfuehrung.
 
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne

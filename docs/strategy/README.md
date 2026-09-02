@@ -39,3 +39,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   deterministische Zuordnung gueltiger Entwuerfe zu vorhandenen
   VU-/VN-Regel-Snapshottypen mit typisierten Parametern und explizit offenen
   Laufzeitfeldern, weiterhin ohne Defaults, Materialisierung oder Ausfuehrung.
+- [PR111 Snapshot-Bauplaene in der Workbench](../migration/ims_2x_strategy_assignment_snapshot_translation_ui.md):
+  read-only Vorschau fuer einen erfolgreich geprueften lokalen Entwurf mit
+  vorbereiteten und offenen Snapshotfeldern, weiterhin ohne Speicherung,
+  Materialisierung oder Ausfuehrung.
