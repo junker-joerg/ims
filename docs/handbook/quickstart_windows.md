@@ -84,7 +84,7 @@ In einem zweiten PowerShell-Fenster:
 Erwartet wird eine Antwort mit:
 
 ```json
-{"status":"ok","service":"ims-workbench-api","version":"0.1.0","frontend_available":true}
+{"status":"ok","service":"ims-workbench-api","version":"2.0.0-alpha.1","frontend_available":true}
 ```
 
 Unter `Validierung` bleiben technische Bereitschaft und historische Aussage

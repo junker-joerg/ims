@@ -4,6 +4,15 @@ Dieses Repository enthält das Arbeitsgerüst für eine schrittweise, PR-basiert
 Das neue Anwenderhandbuch beginnt unter `docs/handbook/README.md`; technische
 Migrationshinweise stehen unter `docs/migration/README.md`.
 
+## Versionslinien
+
+- `ims-legacy-baseline-2026-09-01` friert den technisch release-bereiten
+  IMS-1995-2026-Migrationsstand auf Commit `2e92637` ein. Das ist keine
+  fachliche Produktionsfreigabe und keine historische Vollgleichheitsbehauptung.
+- Die aktive Entwicklungslinie ist `IMS 2.x Insurance Market Simulation Lab`
+  in der Alpha-Version `2.0.0-alpha.1`. Der erste Architekturstand ist unter
+  `docs/plans/ims_2x_module_package_audit.md` dokumentiert.
+
 ## Lokale Workbench
 
 Die lokale Workbench-v1 ist unter `docs/migration/workbench_shell.md` beschrieben. Sie laeuft zuerst lokal im Browser und bleibt bewusst von der Fachlogik getrennt.

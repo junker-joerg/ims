@@ -3,6 +3,11 @@
 Dieses Verzeichnis ist für kleine, nachvollziehbare Arbeitspläne der IMS-Migration reserviert.
 Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumentiert werden.
 
+- `ims_2x_module_package_audit.md`: PR103-Audit der 136 Python-Dateien,
+  Zielpakete, konkrete Konsolidierungskandidaten und die fehlenden gemeinsamen
+  Zustaende fuer die Regulierungssimulation. Das zugehoerige JSON-Inventar ist
+  eine Planungsgrundlage und kein automatischer Refactoring-Auftrag.
+
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne
   neue Ausfuehrung.

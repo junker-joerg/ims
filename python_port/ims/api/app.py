@@ -51,7 +51,7 @@ except ModuleNotFoundError:  # pragma: no cover - exercised implicitly when Fast
     FastAPI = None  # type: ignore[assignment]
 
 APP_NAME = "IMS Workbench"
-APP_VERSION = "0.1.0"
+APP_VERSION = "2.0.0-alpha.1"
 
 
 class MetadataRepositoryReader(Protocol):
