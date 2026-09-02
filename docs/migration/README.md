@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_strategy_assignment_draft.md`: versioniertes PR108-Entwurfsformat
+  fuer konkrete VU-/VN-Strategien und Parameterwerte mit reiner In-Memory-
+  Validierung ohne Speicherung, Snapshot-Uebersetzung oder Ausfuehrung
 - `ims_2x_strategy_assignment_ui.md`: read-only Workbench-Ansicht fuer
   Vdefmd6-Zuordnungsprofile und vorhandene Parameterschemata
 - `ims_inventory.md`: Inventar und grobe Klassifikation der Altdateien

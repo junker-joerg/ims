@@ -1,0 +1,51 @@
+{
+  "schema_version": "ims.strategy-assignment-draft.v1",
+  "catalog_schema_version": "ims.strategy-catalog.v1",
+  "assignment_contract_schema_version": "ims.strategy-assignment-contract.v1",
+  "base_model": "Vdefmd6",
+  "scope": "partial_actor_assignments",
+  "draft_id": "synthetic-pr108-example",
+  "label": "Synthetischer Strukturtest",
+  "assignments": [
+    {
+      "actor_type": "insurer",
+      "target_id": 1,
+      "strategy_id": "vu.vrvu01",
+      "activation_period": 1,
+      "active_through_run": 100,
+      "logical_time": 1,
+      "parameter_schema": "VURandomUniformRuleParameters",
+      "parameter_values": {
+        "premium_factor_normal": [1.0, 1.0],
+        "advertising_factor_normal": [1.0, 1.0],
+        "premium_factor_shock": [1.0, 1.0],
+        "advertising_factor_shock": [1.0, 1.0]
+      }
+    },
+    {
+      "actor_type": "policyholder",
+      "target_id": 91,
+      "strategy_id": "vn.vrvn05",
+      "activation_period": 1,
+      "active_through_run": 100,
+      "logical_time": 1,
+      "parameter_schema": "VNSampleSearchInsuranceRuleParameters",
+      "parameter_values": {
+        "insurance_thresholds_normal": [0.2, 0.3],
+        "insurance_thresholds_shock": [0.2, 0.3],
+        "sample_sizes_normal": [5, 5],
+        "sample_sizes_shock": [5, 5]
+      }
+    },
+    {
+      "actor_type": "policyholder",
+      "target_id": 1,
+      "strategy_id": "vn.vrvn01",
+      "activation_period": 1,
+      "active_through_run": 100,
+      "logical_time": 1,
+      "parameter_schema": null,
+      "parameter_values": null
+    }
+  ]
+}

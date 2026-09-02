@@ -45,8 +45,11 @@ from ims.api.run_control_queue_overview import run_control_queue_detail_payload,
 from ims.api.run_control_requests import run_control_request_contract_payload
 from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.strategies import (
+    STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
     strategy_assignment_contract_payload,
+    strategy_assignment_draft_contract_payload,
     strategy_catalog_payload,
+    validate_strategy_assignment_draft,
 )
 
 try:
@@ -132,6 +135,31 @@ def _run_control_dry_run_error_payload(message: str) -> dict[str, object]:
         "issues": [message],
         "writes_performed": False,
         "execution_performed": False,
+    }
+
+
+def _strategy_assignment_draft_invalid_json_payload() -> dict[str, object]:
+    return {
+        "schema_version": STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
+        "mode": "strategy_assignment_draft_validation",
+        "status": "error",
+        "valid": False,
+        "submitted_schema_version": None,
+        "assignment_count": 0,
+        "validated_assignment_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "path": "$",
+                "code": "invalid_json",
+                "message": "Strategiezuordnungsentwurf ist kein gueltiges JSON",
+            }
+        ],
+        "writes_performed": False,
+        "snapshots_created": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_full_equality_claim": False,
     }
 
 
@@ -419,6 +447,16 @@ def create_app(
         except MetadataImportError as exc:
             return JSONResponse(_run_control_dry_run_error_payload(str(exc)), status_code=400)
 
+    async def strategy_assignment_draft_validation_response(request: Request) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_assignment_draft_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(validate_strategy_assignment_draft(payload).to_dict())
+
     async def queue_enqueue_response(request: Request) -> JSONResponse:
         if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
             return JSONResponse(
@@ -577,6 +615,14 @@ def create_app(
         def strategies_assignment_contract() -> dict[str, object]:
             return strategy_assignment_contract_payload()
 
+        @app.get("/api/strategies/assignment-draft-contract")
+        def strategies_assignment_draft_contract() -> dict[str, object]:
+            return strategy_assignment_draft_contract_payload()
+
+        @app.post("/api/strategies/assignment-draft-validation", response_model=None)
+        async def strategies_assignment_draft_validation(request: Request) -> JSONResponse:
+            return await strategy_assignment_draft_validation_response(request)
+
         @app.get("/api/scenarios")
         def scenarios() -> dict[str, object]:
             return repository.list_scenarios()
@@ -698,6 +744,15 @@ def create_app(
         Route(
             "/api/strategies/assignment-contract",
             lambda request: JSONResponse(strategy_assignment_contract_payload()),
+        ),
+        Route(
+            "/api/strategies/assignment-draft-contract",
+            lambda request: JSONResponse(strategy_assignment_draft_contract_payload()),
+        ),
+        Route(
+            "/api/strategies/assignment-draft-validation",
+            strategy_assignment_draft_validation_response,
+            methods=["POST"],
         ),
         Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),
         Route(

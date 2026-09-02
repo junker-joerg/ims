@@ -13,6 +13,17 @@ from ims.strategies.assignment_contract import (
     strategy_assignment_contract_issues,
     strategy_assignment_contract_payload,
 )
+from ims.strategies.assignment_draft import (
+    STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
+    STRATEGY_ASSIGNMENT_DRAFT_VERSION,
+    StrategyAssignmentDraft,
+    StrategyAssignmentDraftEntry,
+    StrategyAssignmentDraftIssue,
+    StrategyAssignmentDraftValidationReport,
+    load_strategy_assignment_draft,
+    strategy_assignment_draft_contract_payload,
+    validate_strategy_assignment_draft,
+)
 
 from ims.strategies.catalog import (
     STRATEGY_CATALOG_VERSION,
@@ -31,6 +42,8 @@ from ims.strategies.catalog import (
 
 __all__ = [
     "STRATEGY_ASSIGNMENT_CONTRACT_VERSION",
+    "STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION",
+    "STRATEGY_ASSIGNMENT_DRAFT_VERSION",
     "STRATEGY_ASSIGNMENT_TARGETS",
     "STRATEGY_CATALOG_VERSION",
     "STRATEGY_DEFINITIONS",
@@ -38,6 +51,10 @@ __all__ = [
     "STRATEGY_PARAMETER_SCHEMAS",
     "StrategyActorType",
     "StrategyAssignmentTargetDefinition",
+    "StrategyAssignmentDraft",
+    "StrategyAssignmentDraftEntry",
+    "StrategyAssignmentDraftIssue",
+    "StrategyAssignmentDraftValidationReport",
     "StrategyDefinition",
     "StrategyFamilyDefinition",
     "StrategyImplementationStatus",
@@ -49,8 +66,11 @@ __all__ = [
     "build_vdefmd6_strategy_assignment_profiles",
     "get_strategy_definition",
     "list_strategy_definitions",
+    "load_strategy_assignment_draft",
     "strategy_assignment_contract_issues",
     "strategy_assignment_contract_payload",
+    "strategy_assignment_draft_contract_payload",
     "strategy_catalog_issues",
     "strategy_catalog_payload",
+    "validate_strategy_assignment_draft",
 ]

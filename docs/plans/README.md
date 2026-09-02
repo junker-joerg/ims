@@ -19,6 +19,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_assignment_ui_plan.md`: PR107-Plan fuer die rein lesenden
   Workbench-Tabs mit Quellprofilen und Parameterschemata, ohne Parameterwerte,
   Schreiben oder Ausfuehrung.
+- `ims_2x_strategy_assignment_draft_plan.md`: PR108-Plan fuer das versionierte
+  Vdefmd6-Entwurfsformat und seine zustandslose Validierung, ohne Speicherung,
+  Snapshot-Uebersetzung oder Ausfuehrung.
 
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne
