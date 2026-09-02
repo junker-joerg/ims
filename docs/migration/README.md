@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_strategy_assignment_snapshot_context.md`: PR112-Vertrag fuer einen
+  expliziten Einperiodenkontext zu den offenen Snapshotfeldern mit reiner
+  Validierung ohne Defaults, Materialisierung oder Ausfuehrung
 - `ims_2x_strategy_assignment_snapshot_translation_ui.md`: PR111-Workbench-
   Vorschau fuer vorhandene Snapshottypen sowie vorbereitete und offene
   Laufzeitwerte, ohne Speicherung, Materialisierung oder Ausfuehrung

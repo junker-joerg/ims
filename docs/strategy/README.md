@@ -43,3 +43,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   read-only Vorschau fuer einen erfolgreich geprueften lokalen Entwurf mit
   vorbereiteten und offenen Snapshotfeldern, weiterhin ohne Speicherung,
   Materialisierung oder Ausfuehrung.
+- [PR112 Snapshot-Kontextvertrag](../migration/ims_2x_strategy_assignment_snapshot_context.md):
+  versionierter Einperiodenkontext fuer Ziehungen, Zins, Schock-, Markt- und
+  Vorperiodenwerte mit zustandsloser Validierung, weiterhin ohne Defaults,
+  Materialisierung oder Ausfuehrung.

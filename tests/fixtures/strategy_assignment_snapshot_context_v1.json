@@ -1,0 +1,64 @@
+{
+  "schema_version": "ims.strategy-assignment-snapshot-context.v1",
+  "translation_schema_version": "ims.strategy-assignment-snapshot-translation.v1",
+  "base_model": "Vdefmd6",
+  "scope": "explicit_single_period_snapshot_context",
+  "draft_id": "synthetic-pr108-example",
+  "period": 1,
+  "entries": [
+    {
+      "actor_type": "insurer",
+      "target_id": 1,
+      "strategy_id": "vu.vrvu01",
+      "values": {
+        "random_draws": [0.1, 0.2, 0.3, 0.4],
+        "interest_rate": 0.02,
+        "change_shock": false
+      }
+    },
+    {
+      "actor_type": "policyholder",
+      "target_id": 91,
+      "strategy_id": "vn.vrvn05",
+      "values": {
+        "draws": {
+          "insurer_choice_draws_by_sector": [[0.1, 0.2], [0.3, 0.4]]
+        },
+        "active_insurer_ids": [1, 2],
+        "initial_decisions": [
+          {"sector_index": 0, "insured": false, "insurer_id": null},
+          {"sector_index": 1, "insured": false, "insurer_id": null}
+        ],
+        "damage_probabilities": [0.2, 0.3],
+        "insurer_inputs": [
+          {"insurer_id": 1, "premiums_current_sector": [1.0, 1.1]}
+        ],
+        "history": [],
+        "market_damage_indicator": 0.25,
+        "change_shock": false,
+        "information_cost_per_sample": 0.02,
+        "information_cost_per_insurer": 0.02
+      }
+    },
+    {
+      "actor_type": "policyholder",
+      "target_id": 1,
+      "strategy_id": "vn.vrvn01",
+      "values": {
+        "draws": {"insurer_choice_draws": [0.2, 0.4]},
+        "active_insurer_ids": [1, 2],
+        "initial_decisions": [
+          {"sector_index": 0, "insured": false, "insurer_id": null},
+          {"sector_index": 1, "insured": false, "insurer_id": null}
+        ],
+        "damage_probabilities": [0.2, 0.3],
+        "insurer_inputs": [],
+        "history": [],
+        "market_damage_indicator": 0.25,
+        "change_shock": false,
+        "information_cost_per_sample": 0.0,
+        "information_cost_per_insurer": 0.0
+      }
+    }
+  ]
+}

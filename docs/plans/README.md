@@ -34,6 +34,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   fuer den read-only Workbench-Tab mit vorbereiteten und offenen
   Snapshotfeldern, weiterhin ohne Defaults, Materialisierung oder
   Ausfuehrung.
+- `ims_2x_strategy_assignment_snapshot_context_plan.md`: PR112-Plan fuer den
+  versionierten Einperiodenkontext aus Ziehungen, Zins, Schock-, Markt- und
+  Vorperiodenwerten mit reiner Validierung ohne Materialisierung oder
+  Ausfuehrung.
 
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne
