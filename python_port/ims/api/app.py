@@ -46,9 +46,12 @@ from ims.api.run_control_requests import run_control_request_contract_payload
 from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
+    STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION,
     strategy_assignment_contract_payload,
     strategy_assignment_draft_contract_payload,
+    strategy_assignment_snapshot_translation_contract_payload,
     strategy_catalog_payload,
+    translate_strategy_assignment_draft,
     validate_strategy_assignment_draft,
 )
 
@@ -155,6 +158,36 @@ def _strategy_assignment_draft_invalid_json_payload() -> dict[str, object]:
                 "message": "Strategiezuordnungsentwurf ist kein gueltiges JSON",
             }
         ],
+        "writes_performed": False,
+        "snapshots_created": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_assignment_snapshot_translation_invalid_json_payload() -> dict[str, object]:
+    return {
+        "schema_version": STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION,
+        "mode": "strategy_assignment_snapshot_translation",
+        "status": "error",
+        "draft_valid": False,
+        "translation_complete": False,
+        "draft_id": None,
+        "label": None,
+        "assignment_count": 0,
+        "translated_assignment_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "path": "$",
+                "code": "invalid_json",
+                "message": "Strategiezuordnungsentwurf ist kein gueltiges JSON",
+            }
+        ],
+        "entries": [],
+        "defaults_applied": False,
+        "snapshot_materialization_ready": False,
         "writes_performed": False,
         "snapshots_created": False,
         "execution_performed": False,
@@ -457,6 +490,18 @@ def create_app(
             )
         return JSONResponse(validate_strategy_assignment_draft(payload).to_dict())
 
+    async def strategy_assignment_snapshot_translation_response(
+        request: Request,
+    ) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_assignment_snapshot_translation_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(translate_strategy_assignment_draft(payload).to_dict())
+
     async def queue_enqueue_response(request: Request) -> JSONResponse:
         if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
             return JSONResponse(
@@ -623,6 +668,14 @@ def create_app(
         async def strategies_assignment_draft_validation(request: Request) -> JSONResponse:
             return await strategy_assignment_draft_validation_response(request)
 
+        @app.get("/api/strategies/assignment-snapshot-translation-contract")
+        def strategies_assignment_snapshot_translation_contract() -> dict[str, object]:
+            return strategy_assignment_snapshot_translation_contract_payload()
+
+        @app.post("/api/strategies/assignment-snapshot-translation", response_model=None)
+        async def strategies_assignment_snapshot_translation(request: Request) -> JSONResponse:
+            return await strategy_assignment_snapshot_translation_response(request)
+
         @app.get("/api/scenarios")
         def scenarios() -> dict[str, object]:
             return repository.list_scenarios()
@@ -752,6 +805,17 @@ def create_app(
         Route(
             "/api/strategies/assignment-draft-validation",
             strategy_assignment_draft_validation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/assignment-snapshot-translation-contract",
+            lambda request: JSONResponse(
+                strategy_assignment_snapshot_translation_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/strategies/assignment-snapshot-translation",
+            strategy_assignment_snapshot_translation_response,
             methods=["POST"],
         ),
         Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),

@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_strategy_assignment_snapshot_translation.md`: PR110-Mapping aller
+  16 Katalogstrategien auf vorhandene VU-/VN-Regel-Snapshottypen mit
+  expliziten offenen Laufzeitfeldern, ohne Materialisierung oder Ausfuehrung
 - `ims_2x_strategy_assignment_draft_ui.md`: PR109-Workbench-Formular fuer
   fluechtige Strategieentwuerfe und serverseitige PR108-Pruefung ohne
   Speicherung, Snapshot-Uebersetzung oder Ausfuehrung
