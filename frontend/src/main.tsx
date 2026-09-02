@@ -5,17 +5,22 @@ import {
   Archive,
   Braces,
   CheckCircle2,
+  ClipboardCheck,
   CircleDot,
   Database,
   FileText,
   GitBranch,
   ListTree,
   LockKeyhole,
+  Pencil,
   Play,
+  Plus,
   RefreshCw,
   Search,
   ServerCog,
-  ShieldCheck
+  ShieldCheck,
+  Trash2,
+  X
 } from "lucide-react";
 import "./styles.css";
 
@@ -113,7 +118,7 @@ type StrategyCatalog = {
   strategies: StrategyDefinition[];
 };
 
-type StrategyWorkbenchView = "catalog" | "assignments" | "parameters";
+type StrategyWorkbenchView = "catalog" | "assignments" | "parameters" | "draft";
 
 type StrategySectorContract = {
   mode: "legacy_two_position_vector";
@@ -205,6 +210,86 @@ type StrategyAssignmentContract = {
     policyholder_count: number;
     parameter_values_exposed: boolean;
   };
+};
+
+type StrategyAssignmentDraftContract = {
+  schema_version: string;
+  catalog_schema_version: string;
+  assignment_contract_schema_version: string;
+  mode: "strategy_assignment_draft_contract_read_only";
+  base_model: "Vdefmd6";
+  scope: "partial_actor_assignments";
+  validation_endpoint: string;
+  target_limits: Record<StrategyActorType, { minimum: number; maximum: number }>;
+  parameter_value_shape: {
+    mode: "legacy_two_position_vector";
+    length: number;
+    position_keys: string[];
+    named_sectors_available: boolean;
+  };
+  defaults_applied: boolean;
+  persistence_enabled: boolean;
+  workbench_editing_enabled: boolean;
+  snapshot_translation_enabled: boolean;
+  execution_enabled: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategyDraftParameterValues = Record<string, [number, number]>;
+
+type StrategyDraftAssignment = {
+  actor_type: StrategyActorType;
+  target_id: number;
+  strategy_id: string;
+  activation_period: number;
+  active_through_run: number;
+  logical_time: number;
+  parameter_schema: string | null;
+  parameter_values: StrategyDraftParameterValues | null;
+};
+
+type StrategyAssignmentDraftDocument = {
+  schema_version: string;
+  catalog_schema_version: string;
+  assignment_contract_schema_version: string;
+  base_model: "Vdefmd6";
+  scope: "partial_actor_assignments";
+  draft_id: string;
+  label: string;
+  assignments: StrategyDraftAssignment[];
+};
+
+type StrategyAssignmentDraftValidationIssue = {
+  path: string;
+  code: string;
+  message: string;
+};
+
+type StrategyAssignmentDraftValidationReport = {
+  schema_version: string;
+  mode: "strategy_assignment_draft_validation";
+  status: "ok" | "error";
+  valid: boolean;
+  assignment_count: number;
+  validated_assignment_count: number;
+  issue_count: number;
+  issues: StrategyAssignmentDraftValidationIssue[];
+  writes_performed: boolean;
+  snapshots_created: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategyDraftEditor = {
+  actorType: StrategyActorType;
+  targetId: string;
+  strategyId: string;
+  activationPeriod: string;
+  activeThroughRun: string;
+  logicalTime: string;
+  parameterValues: Record<string, [string, string]>;
 };
 
 type MetadataCapabilities = {
@@ -842,6 +927,45 @@ function shortStrategyFingerprint(fingerprint: string): string {
   return fingerprint.replace("sha256:", "").slice(0, 10);
 }
 
+function createEmptyStrategyDraftEditor(actorType: StrategyActorType = "insurer"): StrategyDraftEditor {
+  return {
+    actorType,
+    targetId: "",
+    strategyId: "",
+    activationPeriod: "",
+    activeThroughRun: "",
+    logicalTime: "",
+    parameterValues: {}
+  };
+}
+
+function createEmptyStrategyParameterValues(
+  schema: StrategyParameterSchema | null
+): Record<string, [string, string]> {
+  return Object.fromEntries(
+    (schema?.fields ?? []).map((field) => [field.field_name, ["", ""]])
+  ) as Record<string, [string, string]>;
+}
+
+function parsePositiveInteger(value: string): number | null {
+  if (!/^\d+$/.test(value.trim())) {
+    return null;
+  }
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : null;
+}
+
+function parseStrategyParameterValue(value: string, integerOnly: boolean): number | null {
+  if (!value.trim()) {
+    return null;
+  }
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || (integerOnly && (!Number.isInteger(parsed) || parsed < 0))) {
+    return null;
+  }
+  return parsed;
+}
+
 function createUiIdempotencyKey(queueId: string): string {
   const suffix = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`;
   return `workbench-ui-${queueId}-${suffix}`;
@@ -892,6 +1016,21 @@ function App() {
     useState<StrategyAssignmentContract | null>(null);
   const [strategyAssignmentState, setStrategyAssignmentState] = useState<DetailState>("loading");
   const [strategyAssignmentError, setStrategyAssignmentError] = useState<string | null>(null);
+  const [strategyDraftContract, setStrategyDraftContract] =
+    useState<StrategyAssignmentDraftContract | null>(null);
+  const [strategyDraftContractState, setStrategyDraftContractState] = useState<DetailState>("loading");
+  const [strategyDraftContractError, setStrategyDraftContractError] = useState<string | null>(null);
+  const [strategyDraftId, setStrategyDraftId] = useState("");
+  const [strategyDraftLabel, setStrategyDraftLabel] = useState("");
+  const [strategyDraftAssignments, setStrategyDraftAssignments] = useState<StrategyDraftAssignment[]>([]);
+  const [strategyDraftEditor, setStrategyDraftEditor] = useState<StrategyDraftEditor>(
+    createEmptyStrategyDraftEditor
+  );
+  const [strategyDraftEditingIndex, setStrategyDraftEditingIndex] = useState<number | null>(null);
+  const [strategyDraftValidation, setStrategyDraftValidation] =
+    useState<StrategyAssignmentDraftValidationReport | null>(null);
+  const [strategyDraftValidationState, setStrategyDraftValidationState] = useState<DetailState>("idle");
+  const [strategyDraftValidationError, setStrategyDraftValidationError] = useState<string | null>(null);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
@@ -1243,6 +1382,39 @@ function App() {
   useEffect(() => {
     let active = true;
 
+    async function loadStrategyDraftContract() {
+      setStrategyDraftContractState("loading");
+      setStrategyDraftContractError(null);
+      try {
+        const response = await fetch("/api/strategies/assignment-draft-contract");
+        if (!response.ok) {
+          throw new Error("Strategieentwurfsformat nicht erreichbar");
+        }
+        const payload = (await response.json()) as StrategyAssignmentDraftContract;
+        if (active) {
+          setStrategyDraftContract(payload);
+          setStrategyDraftContractState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyDraftContract(null);
+          setStrategyDraftContractError(
+            error instanceof Error ? error.message : "Strategieentwurfsformat nicht erreichbar"
+          );
+          setStrategyDraftContractState("error");
+        }
+      }
+    }
+
+    loadStrategyDraftContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
     async function loadQueueDetail() {
       if (!selectedQueueId) {
         setQueueDetail(null);
@@ -1401,6 +1573,215 @@ function App() {
   const strategyDefinitionById = new Map(
     (strategyCatalog?.strategies ?? []).map((strategy) => [strategy.strategy_id, strategy])
   );
+  const strategyDraftEligibleStrategies = (strategyCatalog?.strategies ?? []).filter(
+    (strategy) => strategy.actor_type === strategyDraftEditor.actorType
+  );
+  const selectedStrategyDraftDefinition = strategyDefinitionById.get(strategyDraftEditor.strategyId) ?? null;
+  const selectedStrategyDraftSchema = strategyAssignmentContract?.parameter_schemas.find(
+    (schema) => schema.schema_id === selectedStrategyDraftDefinition?.parameter_schema
+  ) ?? null;
+  const strategyDraftTargetLimit = strategyDraftContract?.target_limits[strategyDraftEditor.actorType] ?? null;
+  const strategyDraftTargetId = parsePositiveInteger(strategyDraftEditor.targetId);
+  const strategyDraftActivationPeriod = parsePositiveInteger(strategyDraftEditor.activationPeriod);
+  const strategyDraftActiveThroughRun = parsePositiveInteger(strategyDraftEditor.activeThroughRun);
+  const strategyDraftLogicalTime = parsePositiveInteger(strategyDraftEditor.logicalTime);
+  const strategyDraftTargetDuplicate = strategyDraftAssignments.some(
+    (assignment, index) =>
+      index !== strategyDraftEditingIndex &&
+      assignment.actor_type === strategyDraftEditor.actorType &&
+      assignment.target_id === strategyDraftTargetId
+  );
+  const strategyDraftParametersComplete = (selectedStrategyDraftSchema?.fields ?? []).every((field) => {
+    const values = strategyDraftEditor.parameterValues[field.field_name];
+    const integerOnly = field.python_type === "list[int]";
+    return Boolean(
+      values &&
+      parseStrategyParameterValue(values[0], integerOnly) !== null &&
+      parseStrategyParameterValue(values[1], integerOnly) !== null
+    );
+  });
+  const canApplyStrategyDraftAssignment = Boolean(
+    strategyDraftTargetId &&
+    strategyDraftTargetLimit &&
+    strategyDraftTargetId >= strategyDraftTargetLimit.minimum &&
+    strategyDraftTargetId <= strategyDraftTargetLimit.maximum &&
+    !strategyDraftTargetDuplicate &&
+    selectedStrategyDraftDefinition?.actor_type === strategyDraftEditor.actorType &&
+    strategyDraftActivationPeriod &&
+    strategyDraftActiveThroughRun &&
+    strategyDraftActiveThroughRun >= strategyDraftActivationPeriod &&
+    strategyDraftLogicalTime &&
+    strategyDraftParametersComplete
+  );
+  const canValidateStrategyDraft = Boolean(
+    strategyDraftContract &&
+    strategyDraftId.trim() &&
+    strategyDraftLabel.trim() &&
+    strategyDraftAssignments.length > 0 &&
+    strategyDraftValidationState !== "loading"
+  );
+  const strategyDraftValidationLabel =
+    strategyDraftValidationState === "error"
+      ? "nicht erreichbar"
+      : strategyDraftValidationState === "loading"
+        ? "wird geprueft"
+        : strategyDraftValidation
+          ? strategyDraftValidation.valid
+            ? "gueltig"
+            : "Fehler gefunden"
+          : "noch nicht geprueft";
+
+  const invalidateStrategyDraftValidation = () => {
+    setStrategyDraftValidation(null);
+    setStrategyDraftValidationState("idle");
+    setStrategyDraftValidationError(null);
+  };
+
+  const selectStrategyDraftActor = (actorType: StrategyActorType) => {
+    setStrategyDraftEditor(createEmptyStrategyDraftEditor(actorType));
+    setStrategyDraftEditingIndex(null);
+  };
+
+  const selectStrategyDraftStrategy = (strategyId: string) => {
+    const strategy = strategyDefinitionById.get(strategyId) ?? null;
+    const schema = strategyAssignmentContract?.parameter_schemas.find(
+      (candidate) => candidate.schema_id === strategy?.parameter_schema
+    ) ?? null;
+    setStrategyDraftEditor((current) => ({
+      ...current,
+      strategyId,
+      parameterValues: createEmptyStrategyParameterValues(schema)
+    }));
+  };
+
+  const resetStrategyDraftEditor = () => {
+    setStrategyDraftEditor(createEmptyStrategyDraftEditor(strategyDraftEditor.actorType));
+    setStrategyDraftEditingIndex(null);
+  };
+
+  const buildStrategyDraftAssignment = (): StrategyDraftAssignment | null => {
+    if (
+      !canApplyStrategyDraftAssignment ||
+      strategyDraftTargetId === null ||
+      strategyDraftActivationPeriod === null ||
+      strategyDraftActiveThroughRun === null ||
+      strategyDraftLogicalTime === null ||
+      !selectedStrategyDraftDefinition
+    ) {
+      return null;
+    }
+
+    let parameterValues: StrategyDraftParameterValues | null = null;
+    if (selectedStrategyDraftSchema) {
+      parameterValues = {};
+      for (const field of selectedStrategyDraftSchema.fields) {
+        const values = strategyDraftEditor.parameterValues[field.field_name];
+        const integerOnly = field.python_type === "list[int]";
+        const first = values ? parseStrategyParameterValue(values[0], integerOnly) : null;
+        const second = values ? parseStrategyParameterValue(values[1], integerOnly) : null;
+        if (first === null || second === null) {
+          return null;
+        }
+        parameterValues[field.field_name] = [first, second];
+      }
+    }
+
+    return {
+      actor_type: strategyDraftEditor.actorType,
+      target_id: strategyDraftTargetId,
+      strategy_id: selectedStrategyDraftDefinition.strategy_id,
+      activation_period: strategyDraftActivationPeriod,
+      active_through_run: strategyDraftActiveThroughRun,
+      logical_time: strategyDraftLogicalTime,
+      parameter_schema: selectedStrategyDraftSchema?.schema_id ?? null,
+      parameter_values: parameterValues
+    };
+  };
+
+  const applyStrategyDraftAssignment = () => {
+    const assignment = buildStrategyDraftAssignment();
+    if (!assignment) {
+      return;
+    }
+    setStrategyDraftAssignments((current) => {
+      if (strategyDraftEditingIndex === null) {
+        return [...current, assignment];
+      }
+      return current.map((entry, index) => index === strategyDraftEditingIndex ? assignment : entry);
+    });
+    resetStrategyDraftEditor();
+    invalidateStrategyDraftValidation();
+  };
+
+  const editStrategyDraftAssignment = (index: number) => {
+    const assignment = strategyDraftAssignments[index];
+    if (!assignment) {
+      return;
+    }
+    setStrategyDraftEditor({
+      actorType: assignment.actor_type,
+      targetId: String(assignment.target_id),
+      strategyId: assignment.strategy_id,
+      activationPeriod: String(assignment.activation_period),
+      activeThroughRun: String(assignment.active_through_run),
+      logicalTime: String(assignment.logical_time),
+      parameterValues: Object.fromEntries(
+        Object.entries(assignment.parameter_values ?? {}).map(([fieldName, values]) => [
+          fieldName,
+          [String(values[0]), String(values[1])]
+        ])
+      ) as Record<string, [string, string]>
+    });
+    setStrategyDraftEditingIndex(index);
+  };
+
+  const removeStrategyDraftAssignment = (index: number) => {
+    setStrategyDraftAssignments((current) => current.filter((_, candidateIndex) => candidateIndex !== index));
+    if (strategyDraftEditingIndex === index) {
+      resetStrategyDraftEditor();
+    } else if (strategyDraftEditingIndex !== null && strategyDraftEditingIndex > index) {
+      setStrategyDraftEditingIndex(strategyDraftEditingIndex - 1);
+    }
+    invalidateStrategyDraftValidation();
+  };
+
+  const validateStrategyDraft = async () => {
+    if (!strategyDraftContract || !canValidateStrategyDraft) {
+      return;
+    }
+    const draft: StrategyAssignmentDraftDocument = {
+      schema_version: strategyDraftContract.schema_version,
+      catalog_schema_version: strategyDraftContract.catalog_schema_version,
+      assignment_contract_schema_version: strategyDraftContract.assignment_contract_schema_version,
+      base_model: strategyDraftContract.base_model,
+      scope: strategyDraftContract.scope,
+      draft_id: strategyDraftId.trim(),
+      label: strategyDraftLabel.trim(),
+      assignments: strategyDraftAssignments
+    };
+    setStrategyDraftValidation(null);
+    setStrategyDraftValidationState("loading");
+    setStrategyDraftValidationError(null);
+    try {
+      const response = await fetch("/api/strategies/assignment-draft-validation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(draft)
+      });
+      if (!response.ok) {
+        throw new Error("Strategieentwurf konnte nicht geprueft werden");
+      }
+      const payload = (await response.json()) as StrategyAssignmentDraftValidationReport;
+      setStrategyDraftValidation(payload);
+      setStrategyDraftValidationState("ready");
+    } catch (error) {
+      setStrategyDraftValidation(null);
+      setStrategyDraftValidationError(
+        error instanceof Error ? error.message : "Strategieentwurf konnte nicht geprueft werden"
+      );
+      setStrategyDraftValidationState("error");
+    }
+  };
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
   const scenarioNameById = new Map(scenarios.map((scenario) => [scenario.id, scenario.display_name]));
   const scenarioStatusOptions = uniqueSorted(scenarios.map((scenario) => scenario.status));
@@ -2402,7 +2783,7 @@ function App() {
             </div>
             <span className="readonly-marker">
               <LockKeyhole size={16} aria-hidden="true" />
-              Nur lesen
+              {strategyWorkbenchView === "draft" ? "Lokal, nicht gespeichert" : "Nur lesen"}
             </span>
           </div>
           <div className="strategy-catalog-summary" aria-label="Strategiekatalog-Status">
@@ -2466,6 +2847,16 @@ function App() {
             >
               <Braces size={17} aria-hidden="true" />
               Parameterschemata
+            </button>
+            <button
+              className={strategyWorkbenchView === "draft" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "draft"}
+              onClick={() => setStrategyWorkbenchView("draft")}
+            >
+              <ClipboardCheck size={17} aria-hidden="true" />
+              Entwurf
             </button>
           </div>
 
@@ -2659,7 +3050,7 @@ function App() {
                 );
               })}
             </div>
-          ) : (
+          ) : strategyWorkbenchView === "parameters" ? (
             <div className="strategy-contract-view" data-testid="strategy-parameter-schemas">
               <div className="strategy-contract-summary" aria-label="Parameterschema-Status">
                 <div>
@@ -2759,6 +3150,363 @@ function App() {
                   Kein eigenes Strategieschema. Explizite Versichererwahl-Ziehungen bleiben Laufeingaben und werden hier nicht als Parameter dargestellt.
                 </span>
               </div>
+            </div>
+          ) : strategyDraftContractState === "error" ? (
+            <div className="empty-state" role="alert">{strategyDraftContractError}</div>
+          ) : strategyDraftContractState === "loading" ? (
+            <div className="empty-state">Strategieentwurfsformat wird geladen</div>
+          ) : (
+            <div className="strategy-contract-view strategy-draft-view" data-testid="strategy-assignment-draft-editor">
+              <div className="strategy-contract-summary" aria-label="Strategieentwurf-Status">
+                <div>
+                  <span>Entwurfsformat</span>
+                  <strong>{strategyDraftContract?.schema_version ?? "-"}</strong>
+                </div>
+                <div>
+                  <span>Basismodell</span>
+                  <strong>{strategyDraftContract?.base_model ?? "-"}</strong>
+                </div>
+                <div>
+                  <span>Zuordnungen</span>
+                  <strong>{strategyDraftAssignments.length}</strong>
+                </div>
+                <div>
+                  <span>Pruefstatus</span>
+                  <strong>{strategyDraftValidationLabel}</strong>
+                </div>
+              </div>
+
+              <div className="strategy-boundary-band">
+                <div>
+                  <strong>Lokaler Entwurf im aktuellen Browserfenster</strong>
+                  <span>
+                    Die Pruefung speichert nichts und erzeugt weder Regel-Snapshots noch einen Simulationslauf.
+                  </span>
+                </div>
+                <span className="readonly-marker">
+                  <LockKeyhole size={16} aria-hidden="true" />
+                  Nicht gespeichert
+                </span>
+              </div>
+
+              <div className="strategy-draft-metadata" aria-label="Entwurfskopf">
+                <label>
+                  <span>Entwurfs-ID</span>
+                  <input
+                    type="text"
+                    value={strategyDraftId}
+                    onChange={(event) => {
+                      setStrategyDraftId(event.target.value);
+                      invalidateStrategyDraftValidation();
+                    }}
+                    placeholder="z. B. marktvergleich-01"
+                  />
+                </label>
+                <label>
+                  <span>Bezeichnung</span>
+                  <input
+                    type="text"
+                    value={strategyDraftLabel}
+                    onChange={(event) => {
+                      setStrategyDraftLabel(event.target.value);
+                      invalidateStrategyDraftValidation();
+                    }}
+                    placeholder="Bezeichnung des Entwurfs"
+                  />
+                </label>
+              </div>
+
+              <section className="strategy-draft-editor" aria-label="Strategiezuordnung erfassen">
+                <div className="strategy-draft-section-heading">
+                  <div>
+                    <h3>{strategyDraftEditingIndex === null ? "Zuordnung erfassen" : "Zuordnung bearbeiten"}</h3>
+                    <span>Ein Akteur, eine Strategie und die vorhandenen technischen Zeitangaben.</span>
+                  </div>
+                  {strategyDraftEditingIndex !== null ? <strong>Eintrag {strategyDraftEditingIndex + 1}</strong> : null}
+                </div>
+
+                <div className="strategy-draft-actor" role="group" aria-label="Akteurstyp">
+                  {STRATEGY_ACTOR_ORDER.map((actorType) => (
+                    <button
+                      className={strategyDraftEditor.actorType === actorType ? "active" : ""}
+                      type="button"
+                      aria-pressed={strategyDraftEditor.actorType === actorType}
+                      onClick={() => selectStrategyDraftActor(actorType)}
+                      key={actorType}
+                    >
+                      {strategyActorLabel(actorType)}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="strategy-draft-fields">
+                  <label>
+                    <span>Ziel-ID</span>
+                    <input
+                      aria-label="Ziel-ID"
+                      type="number"
+                      min={strategyDraftTargetLimit?.minimum ?? 1}
+                      max={strategyDraftTargetLimit?.maximum}
+                      step="1"
+                      value={strategyDraftEditor.targetId}
+                      onChange={(event) => setStrategyDraftEditor((current) => ({
+                        ...current,
+                        targetId: event.target.value
+                      }))}
+                      placeholder={strategyDraftTargetLimit
+                        ? `${strategyDraftTargetLimit.minimum}-${strategyDraftTargetLimit.maximum}`
+                        : "ID"}
+                    />
+                    <small>
+                      {strategyDraftTargetDuplicate
+                        ? "Dieser Akteur ist bereits zugeordnet."
+                        : strategyDraftTargetLimit
+                          ? `Zulaessig: ${strategyDraftTargetLimit.minimum}-${strategyDraftTargetLimit.maximum}`
+                          : "Zielgrenze wird geladen"}
+                    </small>
+                  </label>
+                  <label className="strategy-draft-strategy-field">
+                    <span>Strategie</span>
+                    <select
+                      aria-label="Strategie"
+                      value={strategyDraftEditor.strategyId}
+                      onChange={(event) => selectStrategyDraftStrategy(event.target.value)}
+                    >
+                      <option value="">Strategie waehlen</option>
+                      {strategyDraftEligibleStrategies.map((strategy) => (
+                        <option value={strategy.strategy_id} key={strategy.strategy_id}>
+                          {strategy.display_name}
+                        </option>
+                      ))}
+                    </select>
+                    <small>{selectedStrategyDraftDefinition?.strategy_id ?? "Noch keine Strategie ausgewaehlt"}</small>
+                  </label>
+                  <label>
+                    <span>Aktiv ab Periode</span>
+                    <input
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={strategyDraftEditor.activationPeriod}
+                      onChange={(event) => setStrategyDraftEditor((current) => ({
+                        ...current,
+                        activationPeriod: event.target.value
+                      }))}
+                      placeholder="Periode"
+                    />
+                  </label>
+                  <label>
+                    <span>Aktiv bis Lauf</span>
+                    <input
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={strategyDraftEditor.activeThroughRun}
+                      onChange={(event) => setStrategyDraftEditor((current) => ({
+                        ...current,
+                        activeThroughRun: event.target.value
+                      }))}
+                      placeholder="Laufgrenze"
+                    />
+                  </label>
+                  <label>
+                    <span>Logische Zeit</span>
+                    <input
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={strategyDraftEditor.logicalTime}
+                      onChange={(event) => setStrategyDraftEditor((current) => ({
+                        ...current,
+                        logicalTime: event.target.value
+                      }))}
+                      placeholder="Zeitpunkt"
+                    />
+                  </label>
+                </div>
+
+                {selectedStrategyDraftDefinition ? (
+                  selectedStrategyDraftSchema ? (
+                    <div className="strategy-draft-parameters" aria-label="Strategieparameter">
+                      <div className="strategy-draft-parameter-head">
+                        <div>
+                          <strong>Strategieparameter</strong>
+                          <small>{selectedStrategyDraftSchema.schema_id}</small>
+                        </div>
+                        <span>Historische Position 1</span>
+                        <span>Historische Position 2</span>
+                      </div>
+                      {selectedStrategyDraftSchema.fields.map((field) => {
+                        const values = strategyDraftEditor.parameterValues[field.field_name] ?? ["", ""];
+                        return (
+                          <div className="strategy-draft-parameter-row" key={field.field_name}>
+                            <div>
+                              <strong>{field.display_name}</strong>
+                              <small>{field.field_name}</small>
+                            </div>
+                            {[0, 1].map((position) => (
+                              <label key={position}>
+                                <span>Position {position + 1}</span>
+                                <input
+                                  aria-label={`${field.display_name}, Position ${position + 1}`}
+                                  type="number"
+                                  min={field.python_type === "list[int]" ? "0" : undefined}
+                                  step={field.python_type === "list[int]" ? "1" : "any"}
+                                  value={values[position]}
+                                  onChange={(event) => setStrategyDraftEditor((current) => {
+                                    const currentValues = current.parameterValues[field.field_name] ?? ["", ""];
+                                    const nextValues = position === 0
+                                      ? [event.target.value, currentValues[1]]
+                                      : [currentValues[0], event.target.value];
+                                    return {
+                                      ...current,
+                                      parameterValues: {
+                                        ...current.parameterValues,
+                                        [field.field_name]: nextValues as [string, string]
+                                      }
+                                    };
+                                  })}
+                                />
+                              </label>
+                            ))}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="strategy-draft-no-parameters">
+                      <strong>Keine Strategieparameter</strong>
+                      <span>Diese Regel besitzt im vorhandenen Vertrag keinen Parameterblock.</span>
+                    </div>
+                  )
+                ) : null}
+
+                <div className="strategy-draft-editor-actions">
+                  <button className="secondary-action" type="button" onClick={resetStrategyDraftEditor}>
+                    <X size={17} aria-hidden="true" />
+                    {strategyDraftEditingIndex === null ? "Eingaben leeren" : "Bearbeitung abbrechen"}
+                  </button>
+                  <button
+                    className="primary-action"
+                    type="button"
+                    disabled={!canApplyStrategyDraftAssignment}
+                    onClick={applyStrategyDraftAssignment}
+                  >
+                    <Plus size={17} aria-hidden="true" />
+                    {strategyDraftEditingIndex === null ? "Zuordnung uebernehmen" : "Aenderung uebernehmen"}
+                  </button>
+                </div>
+              </section>
+
+              <section className="strategy-draft-assignments" aria-label="Erfasste Zuordnungen">
+                <div className="strategy-draft-section-heading">
+                  <div>
+                    <h3>Erfasste Zuordnungen</h3>
+                    <span>Nur im aktuellen Browserzustand.</span>
+                  </div>
+                  <strong>{strategyDraftAssignments.length}</strong>
+                </div>
+                {strategyDraftAssignments.length === 0 ? (
+                  <div className="empty-state">Noch keine Zuordnung erfasst</div>
+                ) : (
+                  <div className="strategy-draft-table" role="table" aria-label="Strategieentwurf-Zuordnungen">
+                    <div className="strategy-draft-table-head" role="row">
+                      <span role="columnheader">Akteur</span>
+                      <span role="columnheader">Strategie</span>
+                      <span role="columnheader">Zeit</span>
+                      <span role="columnheader">Parameter</span>
+                      <span role="columnheader">Aktionen</span>
+                    </div>
+                    {strategyDraftAssignments.map((assignment, index) => (
+                      <div className="strategy-draft-table-row" role="row" key={`${assignment.actor_type}-${assignment.target_id}`}>
+                        <div role="cell">
+                          <strong>{assignment.actor_type === "insurer" ? "VU" : "VN"} {assignment.target_id}</strong>
+                          <small>{strategyActorLabel(assignment.actor_type)}</small>
+                        </div>
+                        <div role="cell">
+                          <strong>{strategyDefinitionById.get(assignment.strategy_id)?.display_name ?? assignment.strategy_id}</strong>
+                          <small>{assignment.strategy_id}</small>
+                        </div>
+                        <div role="cell">
+                          <strong>Periode {assignment.activation_period}</strong>
+                          <small>bis Lauf {assignment.active_through_run} · Logtime {assignment.logical_time}</small>
+                        </div>
+                        <div role="cell">
+                          <strong>{assignment.parameter_schema ? `${Object.keys(assignment.parameter_values ?? {}).length} Felder` : "ohne Parameter"}</strong>
+                          <small>{assignment.parameter_schema ?? "kein Schema"}</small>
+                        </div>
+                        <div className="strategy-draft-row-actions" role="cell">
+                          <button
+                            type="button"
+                            title="Zuordnung bearbeiten"
+                            aria-label={`Zuordnung ${index + 1} bearbeiten`}
+                            onClick={() => editStrategyDraftAssignment(index)}
+                          >
+                            <Pencil size={16} aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            title="Zuordnung entfernen"
+                            aria-label={`Zuordnung ${index + 1} entfernen`}
+                            onClick={() => removeStrategyDraftAssignment(index)}
+                          >
+                            <Trash2 size={16} aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              <section className="strategy-draft-validation" aria-label="Entwurf pruefen">
+                <div className="strategy-draft-validation-action">
+                  <div>
+                    <strong>Serverseitige Vertragspruefung</strong>
+                    <span>Prueft Struktur, Zielgrenzen und vorhandene Parameterloader.</span>
+                  </div>
+                  <button
+                    className="primary-action"
+                    type="button"
+                    disabled={!canValidateStrategyDraft}
+                    onClick={validateStrategyDraft}
+                  >
+                    <ClipboardCheck size={17} aria-hidden="true" />
+                    {strategyDraftValidationState === "loading" ? "Pruefung laeuft" : "Entwurf pruefen"}
+                  </button>
+                </div>
+                {strategyDraftValidationError ? (
+                  <div className="empty-state" role="alert">{strategyDraftValidationError}</div>
+                ) : strategyDraftValidation ? (
+                  <div className={`strategy-draft-report ${strategyDraftValidation.valid ? "valid" : "invalid"}`}>
+                    <div className="strategy-draft-report-summary">
+                      <CheckCircle2 size={20} aria-hidden="true" />
+                      <div>
+                        <strong>{strategyDraftValidation.valid ? "Entwurf ist gueltig" : "Entwurf enthaelt Fehler"}</strong>
+                        <span>
+                          {strategyDraftValidation.validated_assignment_count} von {strategyDraftValidation.assignment_count} Zuordnungen geprueft
+                        </span>
+                      </div>
+                    </div>
+                    {strategyDraftValidation.issues.length > 0 ? (
+                      <div className="strategy-draft-issues">
+                        {strategyDraftValidation.issues.map((issue) => (
+                          <div key={`${issue.path}-${issue.code}`}>
+                            <strong>{issue.path}</strong>
+                            <span>{issue.message}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                    <div className="strategy-draft-report-boundaries">
+                      <span>Speichern: {strategyDraftValidation.writes_performed ? "ja" : "nein"}</span>
+                      <span>Snapshots: {strategyDraftValidation.snapshots_created ? "ja" : "nein"}</span>
+                      <span>Ausfuehrung: {strategyDraftValidation.execution_performed ? "ja" : "nein"}</span>
+                      <span>Simulation: {strategyDraftValidation.simulation_performed ? "ja" : "nein"}</span>
+                    </div>
+                  </div>
+                ) : null}
+              </section>
             </div>
           )}
         </section>

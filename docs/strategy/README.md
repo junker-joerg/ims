@@ -32,3 +32,6 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   versioniertes Format fuer konkrete Strategie- und Parameterentwuerfe mit
   zustandsloser Validierung, weiterhin ohne Speicherung, Snapshot-Uebersetzung
   oder Ausfuehrung.
+- [PR109 Strategieentwurf in der Workbench](../migration/ims_2x_strategy_assignment_draft_ui.md):
+  lokaler Formular- und Pruefpfad fuer einzelne VU-/VN-Zuordnungen, weiterhin
+  ohne Speicherung, Snapshot-Uebersetzung oder Ausfuehrung.

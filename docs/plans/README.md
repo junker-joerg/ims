@@ -3,6 +3,10 @@
 Dieses Verzeichnis ist für kleine, nachvollziehbare Arbeitspläne der IMS-Migration reserviert.
 Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumentiert werden.
 
+- `ims_2x_strategy_assignment_draft_ui_plan.md`: PR109-Plan fuer die lokale
+  Erfassung und serverseitige Pruefung von Strategieentwuerfen in der
+  Workbench, weiterhin ohne Speicherung, Snapshot-Uebersetzung oder
+  Ausfuehrung.
 - `ims_2x_module_package_audit.md`: PR103-Audit der 136 Python-Dateien,
   Zielpakete, konkrete Konsolidierungskandidaten und die fehlenden gemeinsamen
   Zustaende fuer die Regulierungssimulation. Das zugehoerige JSON-Inventar ist

@@ -124,6 +124,38 @@ def test_frontend_shell_declares_readonly_strategy_assignment_views():
     assert "strategy-schema-field-row" in styles
 
 
+def test_frontend_shell_declares_local_strategy_draft_editor_and_validation():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert 'fetch("/api/strategies/assignment-draft-contract")' in source
+    assert 'fetch("/api/strategies/assignment-draft-validation", {' in source
+    assert 'method: "POST"' in source
+    assert "JSON.stringify(draft)" in source
+    assert 'data-testid="strategy-assignment-draft-editor"' in source
+    assert 'strategyWorkbenchView === "draft"' in source
+    assert "Entwurf" in source
+    assert "Entwurfs-ID" in source
+    assert "Akteurstyp" in source
+    assert "Ziel-ID" in source
+    assert "Aktiv ab Periode" in source
+    assert "Historische Position 1" in source
+    assert "Historische Position 2" in source
+    assert "Zuordnung uebernehmen" in source
+    assert "Zuordnung bearbeiten" in source
+    assert "Zuordnung entfernen" in source
+    assert "Entwurf pruefen" in source
+    assert "writes_performed" in source
+    assert "snapshots_created" in source
+    assert "execution_performed" in source
+    assert "simulation_performed" in source
+    assert "localStorage" not in source
+    assert "strategy-draft-editor" in styles
+    assert "strategy-draft-parameter-row" in styles
+    assert "strategy-draft-table-row" in styles
+    assert "strategy-draft-report" in styles
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 
