@@ -94,8 +94,14 @@ def test_strategy_catalog_payload_is_stable_read_only_metadata() -> None:
     payload = strategy_catalog_payload()
 
     assert payload["schema_version"] == STRATEGY_CATALOG_VERSION
+    assert payload["mode"] == "strategy_catalog_read_only"
     assert payload["scope"] == "read_only_strategy_metadata"
     assert payload["historical_full_equality_claim"] is False
+    assert payload["selection_enabled"] is False
+    assert payload["parameter_editing_enabled"] is False
+    assert payload["writes_enabled"] is False
+    assert payload["execution_enabled"] is False
+    assert payload["simulation_performed"] is False
     assert len(payload["families"]) == 8
     assert len(payload["strategies"]) == 16
     assert json.loads(json.dumps(payload, sort_keys=True))["schema_version"] == STRATEGY_CATALOG_VERSION

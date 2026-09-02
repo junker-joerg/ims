@@ -10,6 +10,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_catalog_plan.md`: PR104-Plan fuer sechzehn historische
   VU-/VN-Regeln, acht reine Taxonomie-Familien sowie Herkunfts-, Parameter-
   und Teststatus ohne Regel- oder UI-Aenderung.
+- `ims_2x_strategy_catalog_ui_plan.md`: PR105-Plan fuer den rein lesenden
+  API- und Workbench-Pfad des Strategiekatalogs sowie den weiterhin
+  beschreibenden Anschluss in PR106.
 
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne

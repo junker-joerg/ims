@@ -71,7 +71,8 @@ reproduzierbarer Eingang, aber noch keine frei parametrisierbare Strategie.
 - Filterung nach Akteur oder Familie;
 - Lookup ueber stabile Strategie-ID;
 - eine I/O-freie Integritaetspruefung;
-- ein JSON-serialisierbares read-only Payload.
+- ein JSON-serialisierbares read-only Payload, das PR105 ueber
+  `GET /api/strategies/catalog` in der Workbench anzeigt.
 
 Das Payload traegt ausdruecklich
 `historical_full_equality_claim = false`. Es startet weder Regelkern noch

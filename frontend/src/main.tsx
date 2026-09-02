@@ -9,6 +9,8 @@ import {
   Database,
   FileText,
   GitBranch,
+  ListTree,
+  LockKeyhole,
   Play,
   RefreshCw,
   Search,
@@ -62,6 +64,53 @@ type MetadataResponse<T> = {
   schema_version: string;
   generated_at: string;
   items: T[];
+};
+
+type StrategyActorType = "insurer" | "policyholder";
+
+type StrategyFamily = {
+  family_id: string;
+  actor_type: StrategyActorType;
+  display_name: string;
+  description: string;
+  taxonomy_only: boolean;
+};
+
+type StrategyDefinition = {
+  strategy_id: string;
+  actor_type: StrategyActorType;
+  display_name: string;
+  family_id: string;
+  historical_action: string;
+  historical_rule_id: number;
+  historical_rule_class: number | null;
+  included_in_vdefmd6: boolean;
+  source_file: string;
+  source_chapter: string;
+  implementation_status: "ported_explicit_core";
+  implementation_module: string;
+  implementation_entrypoint: string;
+  parameter_schema: string | null;
+  parameterized: boolean;
+  parameter_capabilities: string[];
+  test_status: "unit_tested" | "unit_and_regression_tested";
+  test_evidence: string[];
+  notes: string;
+  implementation_variant: string | null;
+};
+
+type StrategyCatalog = {
+  schema_version: string;
+  mode: "strategy_catalog_read_only";
+  scope: "read_only_strategy_metadata";
+  historical_full_equality_claim: boolean;
+  selection_enabled: boolean;
+  parameter_editing_enabled: boolean;
+  writes_enabled: boolean;
+  execution_enabled: boolean;
+  simulation_performed: boolean;
+  families: StrategyFamily[];
+  strategies: StrategyDefinition[];
 };
 
 type MetadataCapabilities = {
@@ -595,6 +644,27 @@ const importShapeRows = [
 const ALL_SCENARIO_FILTERS = "alle";
 const ALL_RUN_FILTERS = "alle";
 const ALL_QUEUE_FILTERS = "alle";
+const STRATEGY_ACTOR_ORDER: StrategyActorType[] = ["insurer", "policyholder"];
+
+const strategyCapabilityLabels: Record<string, string> = {
+  two_sector: "zwei Sparten",
+  normal_and_change_shock: "Normal- und Schockzweig",
+  explicit_uniform_draws: "explizite Gleichverteilung",
+  explicit_normal_draws: "explizite Normalverteilung",
+  reserve_threshold: "Reserveschwelle",
+  net_switcher_threshold: "Wechslerschwelle",
+  market_share_threshold: "Marktanteilsschwelle",
+  expected_claim: "Erwartungsschaden",
+  market_foreign_information: "Marktinformation",
+  linear_price_and_advertising: "lineare Praemie und Werbung",
+  explicit_insurer_choice_draws: "explizite Versichererwahl",
+  explicit_status_and_choice_draws: "expliziter Status und Versichererwahl",
+  advertising_preference: "Werbepraeferenz",
+  own_premium_history: "eigene Praemienhistorie",
+  sample_size: "Stichprobengroesse",
+  information_cost: "Informationskosten",
+  full_market_information: "vollstaendige Marktinformation"
+};
 
 export function filterScenarios(scenarios: ScenarioMetadata[], filters: ScenarioFilters): ScenarioMetadata[] {
   const query = filters.query.trim().toLocaleLowerCase();
@@ -645,6 +715,18 @@ function uniqueSorted(values: string[]): string[] {
   return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
 }
 
+function strategyActorLabel(actorType: StrategyActorType): string {
+  return actorType === "insurer" ? "Versicherer (VU)" : "Versicherungsnehmer (VN)";
+}
+
+function strategyTestStatusLabel(status: StrategyDefinition["test_status"]): string {
+  return status === "unit_and_regression_tested" ? "Unit + Regression" : "Unit-getestet";
+}
+
+function strategyCapabilityLabel(capability: string): string {
+  return strategyCapabilityLabels[capability] ?? capability.replaceAll("_", " ");
+}
+
 function createUiIdempotencyKey(queueId: string): string {
   const suffix = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`;
   return `workbench-ui-${queueId}-${suffix}`;
@@ -688,6 +770,9 @@ function App() {
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
   const [metadataSource, setMetadataSource] = useState<MetadataSourceStatus | null>(null);
   const [metadataConsistency, setMetadataConsistency] = useState<MetadataConsistency | null>(null);
+  const [strategyCatalog, setStrategyCatalog] = useState<StrategyCatalog | null>(null);
+  const [strategyCatalogState, setStrategyCatalogState] = useState<DetailState>("loading");
+  const [strategyCatalogError, setStrategyCatalogError] = useState<string | null>(null);
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
   const [runControlDryRunContract, setRunControlDryRunContract] = useState<RunControlDryRunContract | null>(null);
@@ -974,6 +1059,37 @@ function App() {
   useEffect(() => {
     let active = true;
 
+    async function loadStrategyCatalog() {
+      setStrategyCatalogState("loading");
+      setStrategyCatalogError(null);
+      try {
+        const response = await fetch("/api/strategies/catalog");
+        if (!response.ok) {
+          throw new Error("Strategiekatalog nicht erreichbar");
+        }
+        const payload = (await response.json()) as StrategyCatalog;
+        if (active) {
+          setStrategyCatalog(payload);
+          setStrategyCatalogState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyCatalog(null);
+          setStrategyCatalogError(error instanceof Error ? error.message : "Strategiekatalog nicht erreichbar");
+          setStrategyCatalogState("error");
+        }
+      }
+    }
+
+    loadStrategyCatalog();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
     async function loadQueueDetail() {
       if (!selectedQueueId) {
         setQueueDetail(null);
@@ -1099,6 +1215,21 @@ function App() {
   const executionLabel = capabilities?.simulation_execution.enabled ? "aktiv" : "gesperrt";
   const storageLabel = metadataSource?.storage_kind === "sqlite" ? "SQLite-Datei" : "Memory";
   const storagePath = metadataSource?.path ?? "nicht konfiguriert";
+  const strategyCatalogStatusLabel =
+    strategyCatalogState === "error"
+      ? strategyCatalogError ?? "nicht erreichbar"
+      : strategyCatalogState === "ready"
+        ? "bereit"
+        : "laedt";
+  const strategyCatalogBoundaryLabel = !strategyCatalog
+    ? "wird geladen"
+    : !strategyCatalog.selection_enabled &&
+        !strategyCatalog.parameter_editing_enabled &&
+        !strategyCatalog.writes_enabled &&
+        !strategyCatalog.execution_enabled &&
+        !strategyCatalog.simulation_performed
+      ? "Nur lesen"
+      : "Grenze pruefen";
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
   const scenarioNameById = new Map(scenarios.map((scenario) => [scenario.id, scenario.display_name]));
   const scenarioStatusOptions = uniqueSorted(scenarios.map((scenario) => scenario.status));
@@ -1905,6 +2036,9 @@ function App() {
           <a href="#scenarios">
             <FileText size={18} aria-hidden="true" /> Szenarien
           </a>
+          <a href="#strategies">
+            <ListTree size={18} aria-hidden="true" /> Strategien
+          </a>
           <a href="#validation">
             <ShieldCheck size={18} aria-hidden="true" /> Validierung
           </a>
@@ -2082,6 +2216,131 @@ function App() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section
+          className="panel strategy-catalog-panel"
+          id="strategies"
+          aria-label="Strategiekatalog"
+          data-testid="strategy-catalog"
+        >
+          <div className="panel-heading strategy-catalog-heading">
+            <div>
+              <ListTree size={20} aria-hidden="true" />
+              <h2>Strategiekatalog</h2>
+            </div>
+            <span className="readonly-marker">
+              <LockKeyhole size={16} aria-hidden="true" />
+              Nur lesen
+            </span>
+          </div>
+          <div className="strategy-catalog-summary" aria-label="Strategiekatalog-Status">
+            <div>
+              <span>Status</span>
+              <strong>{strategyCatalogStatusLabel}</strong>
+            </div>
+            <div>
+              <span>Vertrag</span>
+              <strong>{strategyCatalog?.schema_version ?? "wird geladen"}</strong>
+            </div>
+            <div>
+              <span>Regeln</span>
+              <strong>{strategyCatalog?.strategies.length ?? 0}</strong>
+            </div>
+            <div>
+              <span>Familien</span>
+              <strong>{strategyCatalog?.families.length ?? 0}</strong>
+            </div>
+            <div>
+              <span>Bedienmodus</span>
+              <strong>{strategyCatalogBoundaryLabel}</strong>
+            </div>
+            <div>
+              <span>Historische Vollgleichheit</span>
+              <strong>{strategyCatalog
+                ? strategyCatalog.historical_full_equality_claim
+                  ? "behauptet"
+                  : "nicht behauptet"
+                : "wird geladen"}</strong>
+            </div>
+          </div>
+
+          {strategyCatalogState === "error" ? (
+            <div className="empty-state" role="alert">{strategyCatalogError}</div>
+          ) : strategyCatalogState === "loading" ? (
+            <div className="empty-state">Strategiekatalog wird geladen</div>
+          ) : (
+            <div className="strategy-actor-list">
+              {STRATEGY_ACTOR_ORDER.map((actorType) => {
+                const actorStrategies = strategyCatalog?.strategies.filter(
+                  (strategy) => strategy.actor_type === actorType
+                ) ?? [];
+                const actorFamilies = strategyCatalog?.families.filter(
+                  (family) => family.actor_type === actorType
+                ) ?? [];
+                return (
+                  <section className="strategy-actor-section" key={actorType}>
+                    <div className="strategy-actor-heading">
+                      <h3>{strategyActorLabel(actorType)}</h3>
+                      <strong>{actorStrategies.length} Regeln</strong>
+                    </div>
+                    {actorFamilies.map((family) => {
+                      const familyStrategies = actorStrategies.filter(
+                        (strategy) => strategy.family_id === family.family_id
+                      );
+                      return (
+                        <div className="strategy-family" key={family.family_id}>
+                          <div className="strategy-family-heading">
+                            <div>
+                              <h4>{family.display_name}</h4>
+                              <p>{family.description}</p>
+                            </div>
+                            <strong>{familyStrategies.length}</strong>
+                          </div>
+                          <div className="strategy-table" role="table" aria-label={family.display_name}>
+                            <div className="strategy-table-head" role="row">
+                              <span role="columnheader">Regel</span>
+                              <span role="columnheader">Herkunft</span>
+                              <span role="columnheader">Parameter</span>
+                              <span role="columnheader">Teststand</span>
+                            </div>
+                            {familyStrategies.map((strategy) => (
+                              <div className="strategy-table-row" role="row" key={strategy.strategy_id}>
+                                <div role="cell">
+                                  <strong>{strategy.display_name}</strong>
+                                  <small>{strategy.strategy_id}</small>
+                                </div>
+                                <div role="cell">
+                                  <strong>{strategy.historical_action}</strong>
+                                  <small>
+                                    Kap. {strategy.source_chapter} · {strategy.included_in_vdefmd6
+                                      ? `Vdefmd6 Klasse ${strategy.historical_rule_class}`
+                                      : "nicht in Vdefmd6"}
+                                  </small>
+                                </div>
+                                <div role="cell">
+                                  <strong>{strategy.parameterized ? "parametrisierbar" : "feste Regel"}</strong>
+                                  <small>
+                                    {strategy.parameter_capabilities.map(strategyCapabilityLabel).join(", ")}
+                                  </small>
+                                </div>
+                                <div role="cell">
+                                  <strong>{strategyTestStatusLabel(strategy.test_status)}</strong>
+                                  <small>{strategy.implementation_status === "ported_explicit_core"
+                                    ? "expliziter Regelkern"
+                                    : strategy.implementation_status}</small>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </section>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         <section className="panel scenario-overview-panel" aria-label="Szenario-Uebersicht">

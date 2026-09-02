@@ -68,6 +68,31 @@ def test_frontend_shell_declares_metadata_source_status():
     assert "writes_enabled" in source
 
 
+def test_frontend_shell_declares_readonly_strategy_catalog():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert 'fetch("/api/strategies/catalog")' in source
+    assert 'id="strategies"' in source
+    assert 'data-testid="strategy-catalog"' in source
+    assert "Strategiekatalog" in source
+    assert "Nur lesen" in source
+    assert "Historische Vollgleichheit" in source
+    assert "historical_action" in source
+    assert "source_chapter" in source
+    assert "historical_rule_class" in source
+    assert "included_in_vdefmd6" in source
+    assert "parameterized" in source
+    assert "parameter_capabilities" in source
+    assert "test_status" in source
+    assert "strategy-catalog-panel" in styles
+    assert "strategy-table-row" in styles
+    assert "strategyCatalog.selection_enabled" in source
+    assert "strategyCatalog.parameter_editing_enabled" in source
+    assert "strategyCatalog.simulation_performed" in source
+    assert 'fetch("/api/strategies/catalog", {' not in source
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

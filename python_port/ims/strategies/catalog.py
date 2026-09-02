@@ -540,12 +540,18 @@ def strategy_catalog_issues(
 
 
 def strategy_catalog_payload() -> dict[str, object]:
-    """Erzeugt den serialisierbaren Vertrag fuer spaetere API-/UI-Nutzung."""
+    """Erzeugt den serialisierbaren Vertrag fuer die API-/UI-Nutzung."""
 
     return {
         "schema_version": STRATEGY_CATALOG_VERSION,
+        "mode": "strategy_catalog_read_only",
         "scope": "read_only_strategy_metadata",
         "historical_full_equality_claim": False,
+        "selection_enabled": False,
+        "parameter_editing_enabled": False,
+        "writes_enabled": False,
+        "execution_enabled": False,
+        "simulation_performed": False,
         "families": [asdict(family) for family in STRATEGY_FAMILIES],
         "strategies": [asdict(strategy) for strategy in STRATEGY_DEFINITIONS],
     }

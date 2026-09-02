@@ -18,3 +18,6 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 - [PR104 Strategiekatalog](../migration/ims_2x_strategy_catalog.md):
   versionierter read-only Vertrag fuer alle historischen VU-/VN-Regeln,
   moderne Familien, Parameterfaehigkeit und Teststatus.
+- [PR105 Strategiekatalog in der Workbench](../migration/ims_2x_strategy_catalog_ui.md):
+  rein lesender API- und Anzeigeweg fuer den Katalog, weiterhin ohne
+  Strategieauswahl, Parameterbearbeitung oder Ausfuehrung.
