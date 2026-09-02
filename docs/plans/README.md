@@ -7,6 +7,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Zielpakete, konkrete Konsolidierungskandidaten und die fehlenden gemeinsamen
   Zustaende fuer die Regulierungssimulation. Das zugehoerige JSON-Inventar ist
   eine Planungsgrundlage und kein automatischer Refactoring-Auftrag.
+- `ims_2x_strategy_catalog_plan.md`: PR104-Plan fuer sechzehn historische
+  VU-/VN-Regeln, acht reine Taxonomie-Familien sowie Herkunfts-, Parameter-
+  und Teststatus ohne Regel- oder UI-Aenderung.
 
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne

@@ -15,3 +15,6 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 - [PR103 Modul- und Paketaudit](../plans/ims_2x_module_package_audit.md):
   gemessener Python-Bestand, Zielpakete und Schutzgrenzen fuer den Aufbau der
   Strategie-, Bilanz- und Regulierungsschichten.
+- [PR104 Strategiekatalog](../migration/ims_2x_strategy_catalog.md):
+  versionierter read-only Vertrag fuer alle historischen VU-/VN-Regeln,
+  moderne Familien, Parameterfaehigkeit und Teststatus.

@@ -44,6 +44,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `period_plan_input_validation.md`: kontrollierte Validierung von Entity-Update-Listen in Periodenplaenen
 - `period_plan_context_overrides.md`: explizite Kontext-Overrides fuer Periodenplaene
 - `vu_free_linear_rule.md`: Vrvu10-Slice fuer frei definierbare lineare VU-Fortschreibung
+- `ims_2x_strategy_catalog.md`: PR104-Vertrag fuer stabile Strategie-IDs,
+  historische VU-/VN-Herkunft, moderne Taxonomie, Parameterfaehigkeit und
+  konservativen Teststatus ohne Regelausfuehrung
 - `vn_damage_core.md`: gemeinsamer VN-Schadenerzeugungskern aus Vrvn01 bis Vrvn03
 - `vn_damage_draw_basis.md`: reproduzierbare Python-Draw-Basis fuer VN-Schadensnapshots ohne explizite Draws
 - `vn_compulsory_insurance_rule.md`: Vrvn01-Baustein fuer Pflichtversicherung und Startentscheidungen
