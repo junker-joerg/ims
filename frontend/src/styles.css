@@ -1459,6 +1459,330 @@ h2 {
   font-size: 0.76rem;
 }
 
+.strategy-context-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #d8e2dd;
+}
+
+.strategy-context-action > div {
+  min-width: 0;
+}
+
+.strategy-context-action strong,
+.strategy-context-action span {
+  display: block;
+}
+
+.strategy-context-action strong {
+  color: #143b2d;
+}
+
+.strategy-context-action span {
+  margin-top: 4px;
+  color: #66736c;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.strategy-context-period {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.45fr) minmax(280px, 1.4fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 14px 10px;
+  border-top: 1px solid #d8e2dd;
+  border-bottom: 1px solid #d8e2dd;
+  background: #f7faf8;
+}
+
+.strategy-context-period label {
+  display: grid;
+  gap: 6px;
+  color: #52625a;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.strategy-context-period input,
+.strategy-context-field input,
+.strategy-context-field select,
+.strategy-context-field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #b8c8c0;
+  border-radius: 5px;
+  color: #17201b;
+  background: #ffffff;
+  font: inherit;
+}
+
+.strategy-context-field textarea {
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.strategy-context-period input:focus,
+.strategy-context-field input:focus,
+.strategy-context-field select:focus,
+.strategy-context-field textarea:focus {
+  border-color: #1e5b45;
+  outline: 2px solid #c3d9ce;
+  outline-offset: 1px;
+}
+
+.strategy-context-field input:disabled,
+.strategy-context-field select:disabled,
+.strategy-context-field textarea:disabled {
+  color: #718078;
+  background: #edf1ef;
+}
+
+.strategy-context-period > div,
+.strategy-context-period > div strong,
+.strategy-context-period > div span {
+  display: block;
+  min-width: 0;
+}
+
+.strategy-context-period > div strong {
+  color: #143b2d;
+}
+
+.strategy-context-period > div span {
+  margin-top: 3px;
+  color: #66736c;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.strategy-context-period > span,
+.strategy-context-entry summary > span {
+  padding: 4px 8px;
+  border: 1px solid #e7d8b8;
+  border-radius: 4px;
+  color: #845e20;
+  background: #fffaf0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.strategy-context-period > span.valid {
+  border-color: #c8ddd1;
+  color: #245f38;
+  background: #f4f9f5;
+}
+
+.strategy-context-list {
+  margin-top: 20px;
+  border-top: 1px solid #cfdad4;
+}
+
+.strategy-context-entry {
+  border-bottom: 1px solid #cfdad4;
+  background: #ffffff;
+}
+
+.strategy-context-entry summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 62px;
+  padding: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.strategy-context-entry summary::-webkit-details-marker {
+  display: none;
+}
+
+.strategy-context-entry[open] summary {
+  border-bottom: 1px solid #d8e2dd;
+  background: #eef5f1;
+}
+
+.strategy-context-entry summary > div,
+.strategy-context-entry summary strong,
+.strategy-context-entry summary div > span {
+  display: block;
+  min-width: 0;
+}
+
+.strategy-context-entry summary strong {
+  color: #143b2d;
+}
+
+.strategy-context-entry summary div > span {
+  margin-top: 4px;
+  color: #66736c;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.strategy-context-entry summary > span.invalid {
+  border-color: #eadad7;
+  color: #7f3029;
+  background: #fbf7f6;
+}
+
+.strategy-context-source + .strategy-context-source {
+  border-top: 1px solid #d8e2dd;
+}
+
+.strategy-context-source-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px;
+  background: #f7faf8;
+}
+
+.strategy-context-source-heading > div,
+.strategy-context-source-heading strong,
+.strategy-context-source-heading span {
+  display: block;
+  min-width: 0;
+}
+
+.strategy-context-source-heading strong {
+  color: #315746;
+  font-size: 0.88rem;
+}
+
+.strategy-context-source-heading span,
+.strategy-context-source-heading small {
+  color: #66736c;
+  font-size: 0.8rem;
+}
+
+.strategy-context-source-heading span {
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.strategy-context-source-heading small {
+  flex: 0 0 auto;
+}
+
+.strategy-context-field {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.75fr) minmax(260px, 1.35fr) minmax(145px, 0.55fr);
+  gap: 14px;
+  align-items: start;
+  padding: 11px 10px;
+  border-top: 1px solid #e4ebe7;
+}
+
+.strategy-context-field.invalid {
+  box-shadow: inset 3px 0 #9c4b42;
+  background: #fbf7f6;
+}
+
+.strategy-context-field-name strong,
+.strategy-context-field-name small,
+.strategy-context-field-name span {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.strategy-context-field-name strong {
+  color: #143b2d;
+  font-size: 0.88rem;
+}
+
+.strategy-context-field-name small {
+  margin-top: 3px;
+  color: #718078;
+  font-size: 0.76rem;
+}
+
+.strategy-context-field-name span {
+  margin-top: 5px;
+  color: #51748a;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.strategy-context-field-control {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.strategy-context-field-error {
+  color: #7f3029;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.strategy-context-null-toggle {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 2px 8px;
+  align-items: center;
+  min-height: 40px;
+  color: #52625a;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.strategy-context-null-toggle input {
+  width: 16px;
+  min-height: 16px;
+  margin: 0;
+}
+
+.strategy-context-null-toggle small {
+  grid-column: 2;
+  color: #718078;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.strategy-context-required {
+  display: inline-flex;
+  justify-self: start;
+  padding: 4px 8px;
+  border-left: 3px solid #51748a;
+  color: #52625a;
+  background: #f1f5f7;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.strategy-context-validation {
+  margin-top: 22px;
+}
+
+.strategy-context-report-boundaries {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid #d8e2dd;
+  background: #d8e2dd;
+}
+
+.strategy-context-report-boundaries span {
+  padding: 9px 10px;
+  color: #52625a;
+  background: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
 .scenario-overview-panel {
   margin-bottom: 18px;
 }
@@ -2301,6 +2625,9 @@ code {
   .strategy-snapshot-meta,
   .strategy-snapshot-fields,
   .strategy-snapshot-fields li,
+  .strategy-context-period,
+  .strategy-context-field,
+  .strategy-context-report-boundaries,
   .run-control-summary,
   .run-control-boundary-grid,
   .run-control-detail-grid,
@@ -2384,13 +2711,17 @@ code {
   }
 
   .strategy-draft-validation-action .primary-action,
-  .strategy-snapshot-action .primary-action {
+  .strategy-snapshot-action .primary-action,
+  .strategy-context-action button {
     width: 100%;
   }
 
   .strategy-snapshot-action,
   .strategy-snapshot-list-heading,
-  .strategy-snapshot-row-heading {
+  .strategy-snapshot-row-heading,
+  .strategy-context-action,
+  .strategy-context-entry summary,
+  .strategy-context-source-heading {
     align-items: flex-start;
     flex-direction: column;
   }

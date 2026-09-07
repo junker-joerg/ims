@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_strategy_assignment_snapshot_context_ui.md`: PR113-Workbench-
+  Editor fuer einen lokalen Einperiodenkontext mit feldbezogener PR112-
+  Validierung, ohne Speicherung, Materialisierung oder Ausfuehrung
 - `ims_2x_strategy_assignment_snapshot_context.md`: PR112-Vertrag fuer einen
   expliziten Einperiodenkontext zu den offenen Snapshotfeldern mit reiner
   Validierung ohne Defaults, Materialisierung oder Ausfuehrung

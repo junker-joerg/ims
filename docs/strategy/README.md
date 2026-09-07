@@ -47,3 +47,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   versionierter Einperiodenkontext fuer Ziehungen, Zins, Schock-, Markt- und
   Vorperiodenwerte mit zustandsloser Validierung, weiterhin ohne Defaults,
   Materialisierung oder Ausfuehrung.
+- [PR113 Snapshot-Kontext in der Workbench](../migration/ims_2x_strategy_assignment_snapshot_context_ui.md):
+  lokaler Editor fuer Periode und offene Bauplanwerte mit feldbezogener
+  PR112-Pruefung, weiterhin ohne Speicherung, Materialisierung oder
+  Ausfuehrung.

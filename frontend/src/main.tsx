@@ -121,7 +121,13 @@ type StrategyCatalog = {
   strategies: StrategyDefinition[];
 };
 
-type StrategyWorkbenchView = "catalog" | "assignments" | "parameters" | "draft" | "translation";
+type StrategyWorkbenchView =
+  | "catalog"
+  | "assignments"
+  | "parameters"
+  | "draft"
+  | "translation"
+  | "context";
 
 type StrategySectorContract = {
   mode: "legacy_two_position_vector";
@@ -343,6 +349,113 @@ type StrategySnapshotTranslationReport = {
   issues: StrategyAssignmentDraftValidationIssue[];
   entries: StrategySnapshotTranslationEntry[];
   defaults_applied: boolean;
+  snapshot_materialization_ready: boolean;
+  writes_performed: boolean;
+  snapshots_created: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategySnapshotContextSource =
+  | "draw"
+  | "period_finance"
+  | "shock"
+  | "strategy_state"
+  | "market_state"
+  | "previous_period";
+
+type StrategySnapshotContextValueShape =
+  | "array"
+  | "boolean"
+  | "finite_number"
+  | "integer"
+  | "number_array"
+  | "object"
+  | "positive_integer_array";
+
+type StrategySnapshotContextFieldDefinition = {
+  field_name: string;
+  source: StrategySnapshotContextSource;
+  value_shape: StrategySnapshotContextValueShape;
+  fixed_length: number | null;
+  nullable: boolean;
+};
+
+type StrategySnapshotContextContract = {
+  schema_version: string;
+  validation_schema_version: string;
+  draft_schema_version: string;
+  translation_schema_version: string;
+  mode: "strategy_assignment_snapshot_context_contract_read_only";
+  base_model: "Vdefmd6";
+  scope: "explicit_single_period_snapshot_context";
+  validation_endpoint: string;
+  field_definitions: StrategySnapshotContextFieldDefinition[];
+  source_categories: StrategySnapshotContextSource[];
+  contract_issue_count: number;
+  exact_draft_entry_match_required: boolean;
+  exact_open_field_match_required: boolean;
+  explicit_null_keeps_value_open: boolean;
+  defaults_applied: boolean;
+  context_values_consumed: boolean;
+  snapshot_loader_invocation_enabled: boolean;
+  persistence_enabled: boolean;
+  snapshot_materialization_enabled: boolean;
+  execution_enabled: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategySnapshotContextEditorValue = {
+  raw: string;
+  explicitlyOpen: boolean;
+};
+
+type StrategySnapshotContextEditorEntry = {
+  actor_type: StrategyActorType;
+  target_id: number;
+  strategy_id: string;
+  values: Record<string, StrategySnapshotContextEditorValue>;
+};
+
+type StrategySnapshotContextDocument = {
+  schema_version: string;
+  translation_schema_version: string;
+  base_model: "Vdefmd6";
+  scope: "explicit_single_period_snapshot_context";
+  draft_id: string;
+  period: number;
+  entries: Array<{
+    actor_type: StrategyActorType;
+    target_id: number;
+    strategy_id: string;
+    values: Record<string, unknown>;
+  }>;
+};
+
+type StrategySnapshotContextValidationReport = {
+  schema_version: string;
+  mode: "strategy_assignment_snapshot_context_validation";
+  status: "ok" | "error";
+  valid: boolean;
+  draft_valid: boolean;
+  translation_complete: boolean;
+  submitted_schema_version: string | null;
+  draft_id: string | null;
+  period: number | null;
+  expected_entry_count: number;
+  validated_entry_count: number;
+  expected_value_count: number;
+  validated_value_count: number;
+  resolved_value_count: number;
+  explicitly_open_value_count: number;
+  all_context_values_supplied: boolean;
+  issue_count: number;
+  issues: StrategyAssignmentDraftValidationIssue[];
+  defaults_applied: boolean;
+  context_values_consumed: boolean;
+  snapshot_loader_invocation_performed: boolean;
   snapshot_materialization_ready: boolean;
   writes_performed: boolean;
   snapshots_created: boolean;
@@ -939,6 +1052,24 @@ const strategySnapshotFieldLabels: Record<string, string> = {
   information_cost_per_insurer: "Informationskosten je Versicherer"
 };
 
+const strategySnapshotContextSourceLabels: Record<StrategySnapshotContextSource, string> = {
+  draw: "Ziehungen",
+  period_finance: "Zins und Periodenkosten",
+  shock: "Schockstatus",
+  strategy_state: "Strategieschwellen",
+  market_state: "Marktwerte",
+  previous_period: "Vorperiodenwerte"
+};
+
+const strategySnapshotContextSourceDescriptions: Record<StrategySnapshotContextSource, string> = {
+  draw: "Explizite Zufallswerte des konkreten Regelaufrufs",
+  period_finance: "Finanz- und Informationskosten der gewaehlten Periode",
+  shock: "Expliziter Normal- oder Aenderungsschockzweig",
+  strategy_state: "Schwellenwerte aus dem belegten Strategiezustand",
+  market_state: "Aktive Marktteilnehmer und periodische Marktinformationen",
+  previous_period: "Explizit uebernommene Entscheidungen und Historien"
+};
+
 export function filterScenarios(scenarios: ScenarioMetadata[], filters: ScenarioFilters): ScenarioMetadata[] {
   const query = filters.query.trim().toLocaleLowerCase();
   return scenarios.filter((scenario) => {
@@ -1023,6 +1154,74 @@ function shortStrategyFingerprint(fingerprint: string): string {
 
 function strategySnapshotFieldLabel(fieldName: string): string {
   return strategySnapshotFieldLabels[fieldName] ?? fieldName.replaceAll("_", " ");
+}
+
+function strategySnapshotContextShapeLabel(
+  definition: StrategySnapshotContextFieldDefinition
+): string {
+  if (definition.value_shape === "boolean") {
+    return "Ja oder nein";
+  }
+  if (definition.value_shape === "finite_number") {
+    return "Endliche Zahl";
+  }
+  if (definition.value_shape === "integer") {
+    return "Ganze Zahl";
+  }
+  if (definition.value_shape === "object") {
+    return "JSON-Objekt";
+  }
+  if (definition.value_shape === "positive_integer_array") {
+    return "Liste positiver IDs";
+  }
+  if (definition.value_shape === "number_array" && definition.fixed_length) {
+    return `${definition.fixed_length} Zahlen`;
+  }
+  return "JSON-Liste";
+}
+
+function strategySnapshotContextPlaceholder(
+  definition: StrategySnapshotContextFieldDefinition
+): string {
+  if (definition.value_shape === "object") {
+    return '{"feld": [0.1, 0.2]}';
+  }
+  if (definition.value_shape === "positive_integer_array") {
+    return "[1, 2, 3]";
+  }
+  if (definition.value_shape === "number_array") {
+    const length = definition.fixed_length ?? 2;
+    return `[${Array.from({ length }, (_, index) => (index + 1) / 10).join(", ")}]`;
+  }
+  if (definition.value_shape === "array") {
+    return "[]";
+  }
+  return "Wert eingeben";
+}
+
+function parseStrategySnapshotContextEditorValue(
+  editorValue: StrategySnapshotContextEditorValue,
+  definition: StrategySnapshotContextFieldDefinition
+): unknown {
+  if (editorValue.explicitlyOpen) {
+    return null;
+  }
+  const raw = editorValue.raw.trim();
+  if (!raw) {
+    return undefined;
+  }
+  if (definition.value_shape === "boolean") {
+    return raw === "true" ? true : raw === "false" ? false : raw;
+  }
+  if (definition.value_shape === "finite_number" || definition.value_shape === "integer") {
+    const parsed = Number(raw);
+    return Number.isFinite(parsed) ? parsed : raw;
+  }
+  try {
+    return JSON.parse(raw) as unknown;
+  } catch {
+    return raw;
+  }
 }
 
 function createEmptyStrategyDraftEditor(actorType: StrategyActorType = "insurer"): StrategyDraftEditor {
@@ -1140,6 +1339,21 @@ function App() {
   const [strategySnapshotTranslationState, setStrategySnapshotTranslationState] =
     useState<DetailState>("idle");
   const [strategySnapshotTranslationError, setStrategySnapshotTranslationError] =
+    useState<string | null>(null);
+  const [strategySnapshotContextContract, setStrategySnapshotContextContract] =
+    useState<StrategySnapshotContextContract | null>(null);
+  const [strategySnapshotContextContractState, setStrategySnapshotContextContractState] =
+    useState<DetailState>("loading");
+  const [strategySnapshotContextContractError, setStrategySnapshotContextContractError] =
+    useState<string | null>(null);
+  const [strategySnapshotContextPeriod, setStrategySnapshotContextPeriod] = useState("");
+  const [strategySnapshotContextEntries, setStrategySnapshotContextEntries] =
+    useState<StrategySnapshotContextEditorEntry[]>([]);
+  const [strategySnapshotContextValidation, setStrategySnapshotContextValidation] =
+    useState<StrategySnapshotContextValidationReport | null>(null);
+  const [strategySnapshotContextValidationState, setStrategySnapshotContextValidationState] =
+    useState<DetailState>("idle");
+  const [strategySnapshotContextValidationError, setStrategySnapshotContextValidationError] =
     useState<string | null>(null);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
@@ -1560,6 +1774,41 @@ function App() {
   useEffect(() => {
     let active = true;
 
+    async function loadStrategySnapshotContextContract() {
+      setStrategySnapshotContextContractState("loading");
+      setStrategySnapshotContextContractError(null);
+      try {
+        const response = await fetch(
+          "/api/strategies/assignment-snapshot-context-contract"
+        );
+        if (!response.ok) {
+          throw new Error("Snapshot-Kontextvertrag nicht erreichbar");
+        }
+        const payload = (await response.json()) as StrategySnapshotContextContract;
+        if (active) {
+          setStrategySnapshotContextContract(payload);
+          setStrategySnapshotContextContractState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategySnapshotContextContract(null);
+          setStrategySnapshotContextContractError(
+            error instanceof Error ? error.message : "Snapshot-Kontextvertrag nicht erreichbar"
+          );
+          setStrategySnapshotContextContractState("error");
+        }
+      }
+    }
+
+    loadStrategySnapshotContextContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
     async function loadQueueDetail() {
       if (!selectedQueueId) {
         setQueueDetail(null);
@@ -1794,10 +2043,66 @@ function App() {
     strategySnapshotTranslationState !== "loading"
   );
 
+  const strategySnapshotContextFieldByName = new Map(
+    (strategySnapshotContextContract?.field_definitions ?? []).map((definition) => [
+      definition.field_name,
+      definition
+    ])
+  );
+  const strategySnapshotContextExpectedValueCount = strategySnapshotContextEntries.reduce(
+    (total, entry) => total + Object.keys(entry.values).length,
+    0
+  );
+  const strategySnapshotContextEnteredValueCount = strategySnapshotContextEntries.reduce(
+    (total, entry) => total + Object.values(entry.values).filter(
+      (value) => value.explicitlyOpen || Boolean(value.raw.trim())
+    ).length,
+    0
+  );
+  const strategySnapshotContextValidationLabel =
+    strategySnapshotContextValidationState === "error"
+      ? "nicht erreichbar"
+      : strategySnapshotContextValidationState === "loading"
+        ? "wird geprueft"
+        : strategySnapshotContextValidation
+          ? strategySnapshotContextValidation.valid
+            ? "formal gueltig"
+            : "Fehler gefunden"
+          : strategySnapshotContextEntries.length > 0
+            ? "noch nicht geprueft"
+            : "noch nicht angelegt";
+  const strategySnapshotContextPeriodValue = parsePositiveInteger(strategySnapshotContextPeriod);
+  const canInitializeStrategySnapshotContext = Boolean(
+    strategySnapshotContextContract &&
+    strategySnapshotContextContractState === "ready" &&
+    strategyDraftValidation?.valid &&
+    strategySnapshotTranslation?.translation_complete &&
+    strategySnapshotTranslation.entries.length > 0
+  );
+  const canValidateStrategySnapshotContext = Boolean(
+    canInitializeStrategySnapshotContext &&
+    strategySnapshotContextPeriodValue &&
+    strategySnapshotContextEntries.length === strategySnapshotTranslation?.entries.length &&
+    strategySnapshotContextValidationState !== "loading"
+  );
+
+  const invalidateStrategySnapshotContextValidation = () => {
+    setStrategySnapshotContextValidation(null);
+    setStrategySnapshotContextValidationState("idle");
+    setStrategySnapshotContextValidationError(null);
+  };
+
+  const discardStrategySnapshotContext = () => {
+    setStrategySnapshotContextPeriod("");
+    setStrategySnapshotContextEntries([]);
+    invalidateStrategySnapshotContextValidation();
+  };
+
   const invalidateStrategySnapshotTranslation = () => {
     setStrategySnapshotTranslation(null);
     setStrategySnapshotTranslationState("idle");
     setStrategySnapshotTranslationError(null);
+    discardStrategySnapshotContext();
   };
 
   const invalidateStrategyDraftValidation = () => {
@@ -1967,6 +2272,7 @@ function App() {
     if (!draft || !endpoint || !canTranslateStrategyDraft) {
       return;
     }
+    discardStrategySnapshotContext();
     setStrategySnapshotTranslation(null);
     setStrategySnapshotTranslationState("loading");
     setStrategySnapshotTranslationError(null);
@@ -1991,6 +2297,116 @@ function App() {
         error instanceof Error ? error.message : "Snapshot-Bauplaene konnten nicht erstellt werden"
       );
       setStrategySnapshotTranslationState("error");
+    }
+  };
+
+  const initializeStrategySnapshotContext = () => {
+    if (!canInitializeStrategySnapshotContext || !strategySnapshotTranslation) {
+      return;
+    }
+    setStrategySnapshotContextPeriod("");
+    setStrategySnapshotContextEntries(
+      strategySnapshotTranslation.entries.map((entry) => ({
+        actor_type: entry.actor_type,
+        target_id: entry.target_id,
+        strategy_id: entry.strategy_id,
+        values: Object.fromEntries(
+          entry.unresolved_snapshot_fields.map((fieldName) => [
+            fieldName,
+            { raw: "", explicitlyOpen: false }
+          ])
+        ) as Record<string, StrategySnapshotContextEditorValue>
+      }))
+    );
+    invalidateStrategySnapshotContextValidation();
+  };
+
+  const updateStrategySnapshotContextValue = (
+    entryIndex: number,
+    fieldName: string,
+    update: Partial<StrategySnapshotContextEditorValue>
+  ) => {
+    setStrategySnapshotContextEntries((current) => current.map((entry, index) => {
+      if (index !== entryIndex) {
+        return entry;
+      }
+      const previous = entry.values[fieldName] ?? { raw: "", explicitlyOpen: false };
+      return {
+        ...entry,
+        values: {
+          ...entry.values,
+          [fieldName]: { ...previous, ...update }
+        }
+      };
+    }));
+    invalidateStrategySnapshotContextValidation();
+  };
+
+  const buildStrategySnapshotContextDocument = (): StrategySnapshotContextDocument | null => {
+    if (
+      !strategySnapshotContextContract ||
+      !strategySnapshotContextPeriodValue ||
+      strategySnapshotContextEntries.length === 0
+    ) {
+      return null;
+    }
+    return {
+      schema_version: strategySnapshotContextContract.schema_version,
+      translation_schema_version: strategySnapshotContextContract.translation_schema_version,
+      base_model: strategySnapshotContextContract.base_model,
+      scope: strategySnapshotContextContract.scope,
+      draft_id: strategyDraftId.trim(),
+      period: strategySnapshotContextPeriodValue,
+      entries: strategySnapshotContextEntries.map((entry) => {
+        const values: Record<string, unknown> = {};
+        for (const [fieldName, editorValue] of Object.entries(entry.values)) {
+          const definition = strategySnapshotContextFieldByName.get(fieldName);
+          if (!definition) {
+            continue;
+          }
+          const parsed = parseStrategySnapshotContextEditorValue(editorValue, definition);
+          if (parsed !== undefined) {
+            values[fieldName] = parsed;
+          }
+        }
+        return {
+          actor_type: entry.actor_type,
+          target_id: entry.target_id,
+          strategy_id: entry.strategy_id,
+          values
+        };
+      })
+    };
+  };
+
+  const validateStrategySnapshotContext = async () => {
+    const draft = buildStrategyDraftDocument();
+    const context = buildStrategySnapshotContextDocument();
+    const endpoint = strategySnapshotContextContract?.validation_endpoint;
+    if (!draft || !context || !endpoint || !canValidateStrategySnapshotContext) {
+      return;
+    }
+    setStrategySnapshotContextValidation(null);
+    setStrategySnapshotContextValidationState("loading");
+    setStrategySnapshotContextValidationError(null);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ draft, context })
+      });
+      if (!response.ok) {
+        throw new Error("Snapshot-Kontext konnte nicht geprueft werden");
+      }
+      const payload = (await response.json()) as StrategySnapshotContextValidationReport;
+      setStrategySnapshotContextValidation(payload);
+      setStrategySnapshotContextValidationState("ready");
+    } catch (error) {
+      setStrategySnapshotContextValidation(null);
+      setStrategySnapshotContextValidationError(
+        error instanceof Error ? error.message : "Snapshot-Kontext konnte nicht geprueft werden"
+      );
+      setStrategySnapshotContextValidationState("error");
     }
   };
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
@@ -2998,6 +3414,8 @@ function App() {
                 ? "Lokal, nicht gespeichert"
                 : strategyWorkbenchView === "translation"
                   ? "Nur Vorschau"
+                  : strategyWorkbenchView === "context"
+                    ? "Lokal, nur Pruefung"
                   : "Nur lesen"}
             </span>
           </div>
@@ -3082,6 +3500,16 @@ function App() {
             >
               <Boxes size={17} aria-hidden="true" />
               Bauplaene
+            </button>
+            <button
+              className={strategyWorkbenchView === "context" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "context"}
+              onClick={() => setStrategyWorkbenchView("context")}
+            >
+              <Database size={17} aria-hidden="true" />
+              Kontext
             </button>
           </div>
 
@@ -3376,6 +3804,345 @@ function App() {
                 </span>
               </div>
             </div>
+          ) : strategyWorkbenchView === "context" ? (
+            strategySnapshotContextContractState === "error" ? (
+              <div className="empty-state" role="alert">{strategySnapshotContextContractError}</div>
+            ) : strategySnapshotContextContractState === "loading" ? (
+              <div className="empty-state">Snapshot-Kontextvertrag wird geladen</div>
+            ) : (
+              <div
+                className="strategy-contract-view strategy-context-view"
+                data-testid="strategy-snapshot-context-editor"
+              >
+                <div className="strategy-contract-summary" aria-label="Snapshot-Kontext-Status">
+                  <div>
+                    <span>Kontextvertrag</span>
+                    <strong>{strategySnapshotContextContract?.schema_version ?? "-"}</strong>
+                  </div>
+                  <div>
+                    <span>Periode</span>
+                    <strong>{strategySnapshotContextPeriodValue ?? "noch offen"}</strong>
+                  </div>
+                  <div>
+                    <span>Erfasste Werte</span>
+                    <strong>
+                      {strategySnapshotContextEnteredValueCount} / {strategySnapshotContextExpectedValueCount || strategySnapshotOpenFieldCount}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Pruefstatus</span>
+                    <strong>{strategySnapshotContextValidationLabel}</strong>
+                  </div>
+                </div>
+
+                <div className="strategy-boundary-band">
+                  <div>
+                    <strong>Einperiodenkontext im aktuellen Browserfenster</strong>
+                    <span>
+                      Werte werden nur formal geprueft. Sie werden nicht verwendet und nicht in Snapshots ueberfuehrt.
+                    </span>
+                  </div>
+                  <span className="readonly-marker">
+                    <LockKeyhole size={16} aria-hidden="true" />
+                    Nicht gespeichert
+                  </span>
+                </div>
+
+                <section className="strategy-context-action" aria-label="Snapshot-Kontext anlegen">
+                  <div>
+                    <strong>Kontext aus den offenen Bauplanfeldern anlegen</strong>
+                    <span>Jeder Eintrag bleibt leer, bis ein Wert eingegeben oder bewusst als offen markiert wird.</span>
+                  </div>
+                  {strategySnapshotContextEntries.length === 0 ? (
+                    <button
+                      className="primary-action"
+                      type="button"
+                      disabled={!canInitializeStrategySnapshotContext}
+                      onClick={initializeStrategySnapshotContext}
+                    >
+                      <Plus size={17} aria-hidden="true" />
+                      Kontext anlegen
+                    </button>
+                  ) : (
+                    <button
+                      className="secondary-action"
+                      type="button"
+                      onClick={discardStrategySnapshotContext}
+                    >
+                      <X size={17} aria-hidden="true" />
+                      Kontext verwerfen
+                    </button>
+                  )}
+                </section>
+
+                {!strategyDraftValidation?.valid ? (
+                  <div className="strategy-snapshot-prerequisite">
+                    <ClipboardCheck size={20} aria-hidden="true" />
+                    <div>
+                      <strong>Zuerst den Entwurf erfolgreich pruefen</strong>
+                      <span>Der Kontext bleibt atomar an den gueltigen Strategieentwurf gebunden.</span>
+                    </div>
+                  </div>
+                ) : !strategySnapshotTranslation?.translation_complete ? (
+                  <div className="strategy-snapshot-prerequisite">
+                    <Boxes size={20} aria-hidden="true" />
+                    <div>
+                      <strong>Zuerst die Snapshot-Bauplaene anzeigen</strong>
+                      <span>Die offene Feldmenge wird unveraendert aus der Bauplanvorschau uebernommen.</span>
+                    </div>
+                  </div>
+                ) : strategySnapshotContextEntries.length === 0 ? (
+                  <div className="strategy-snapshot-prerequisite ready">
+                    <Database size={20} aria-hidden="true" />
+                    <div>
+                      <strong>{strategySnapshotTranslation.entries.length} Bauplaene sind bereit</strong>
+                      <span>Der Kontext wird erst nach der ausdruecklichen Aktion lokal angelegt.</span>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <section className="strategy-context-period" aria-label="Kontextperiode">
+                      <label>
+                        <span>Periode</span>
+                        <input
+                          aria-label="Periode des Snapshot-Kontexts"
+                          type="number"
+                          min="1"
+                          step="1"
+                          value={strategySnapshotContextPeriod}
+                          onChange={(event) => {
+                            setStrategySnapshotContextPeriod(event.target.value);
+                            invalidateStrategySnapshotContextValidation();
+                          }}
+                          placeholder="z. B. 1"
+                        />
+                      </label>
+                      <div>
+                        <strong>Genau eine positive IMS-Periode</strong>
+                        <span>
+                          Aktivierungsperiode, Laufgrenze und Logtime werden nicht als Kontextperiode umgedeutet.
+                        </span>
+                      </div>
+                      <span className={strategySnapshotContextPeriodValue ? "valid" : "open"}>
+                        {strategySnapshotContextPeriodValue ? "gesetzt" : "erforderlich"}
+                      </span>
+                    </section>
+
+                    <div className="strategy-context-list" aria-label="Kontexteintraege">
+                      {strategySnapshotContextEntries.map((entry, entryIndex) => {
+                        const actorLabel = entry.actor_type === "insurer" ? "VU" : "VN";
+                        const strategy = strategyDefinitionById.get(entry.strategy_id);
+                        const entryValueCount = Object.values(entry.values).filter(
+                          (value) => value.explicitlyOpen || Boolean(value.raw.trim())
+                        ).length;
+                        const entryPath = `$.context.entries[${entryIndex}]`;
+                        const entryIssueCount = strategySnapshotContextValidation?.issues.filter(
+                          (issue) => issue.path.startsWith(entryPath)
+                        ).length ?? 0;
+                        return (
+                          <details
+                            className="strategy-context-entry"
+                            key={`${entry.actor_type}-${entry.target_id}`}
+                          >
+                            <summary>
+                              <div>
+                                <strong>
+                                  {actorLabel} {entry.target_id} · {strategy?.display_name ?? entry.strategy_id}
+                                </strong>
+                                <span>{entry.strategy_id}</span>
+                              </div>
+                              <span className={entryIssueCount > 0 ? "invalid" : "open"}>
+                                {entryValueCount} / {Object.keys(entry.values).length} Werte
+                              </span>
+                            </summary>
+                            <div className="strategy-context-entry-body">
+                              {(strategySnapshotContextContract?.source_categories ?? []).map((source) => {
+                                const fieldNames = Object.keys(entry.values).filter(
+                                  (fieldName) => strategySnapshotContextFieldByName.get(fieldName)?.source === source
+                                );
+                                if (fieldNames.length === 0) {
+                                  return null;
+                                }
+                                return (
+                                  <section className="strategy-context-source" key={source}>
+                                    <div className="strategy-context-source-heading">
+                                      <div>
+                                        <strong>{strategySnapshotContextSourceLabels[source]}</strong>
+                                        <span>{strategySnapshotContextSourceDescriptions[source]}</span>
+                                      </div>
+                                      <small>{fieldNames.length} Felder</small>
+                                    </div>
+                                    {fieldNames.map((fieldName) => {
+                                      const definition = strategySnapshotContextFieldByName.get(fieldName);
+                                      const editorValue = entry.values[fieldName];
+                                      if (!definition || !editorValue) {
+                                        return null;
+                                      }
+                                      const fieldPath = `${entryPath}.values.${fieldName}`;
+                                      const fieldIssues = strategySnapshotContextValidation?.issues.filter(
+                                        (issue) => issue.path === fieldPath
+                                      ) ?? [];
+                                      const inputLabel = `${strategySnapshotFieldLabel(fieldName)} fuer ${actorLabel} ${entry.target_id}`;
+                                      return (
+                                        <div
+                                          className={`strategy-context-field ${fieldIssues.length > 0 ? "invalid" : ""}`}
+                                          key={fieldName}
+                                        >
+                                          <div className="strategy-context-field-name">
+                                            <strong>{strategySnapshotFieldLabel(fieldName)}</strong>
+                                            <small>{fieldName}</small>
+                                            <span>{strategySnapshotContextShapeLabel(definition)}</span>
+                                          </div>
+                                          <div className="strategy-context-field-control">
+                                            {definition.value_shape === "boolean" ? (
+                                              <select
+                                                aria-label={inputLabel}
+                                                disabled={editorValue.explicitlyOpen}
+                                                value={editorValue.raw}
+                                                onChange={(event) => updateStrategySnapshotContextValue(
+                                                  entryIndex,
+                                                  fieldName,
+                                                  { raw: event.target.value }
+                                                )}
+                                              >
+                                                <option value="">Bitte waehlen</option>
+                                                <option value="false">Nein</option>
+                                                <option value="true">Ja</option>
+                                              </select>
+                                            ) : definition.value_shape === "finite_number" ||
+                                                definition.value_shape === "integer" ? (
+                                              <input
+                                                aria-label={inputLabel}
+                                                type="number"
+                                                step={definition.value_shape === "integer" ? "1" : "any"}
+                                                disabled={editorValue.explicitlyOpen}
+                                                value={editorValue.raw}
+                                                onChange={(event) => updateStrategySnapshotContextValue(
+                                                  entryIndex,
+                                                  fieldName,
+                                                  { raw: event.target.value }
+                                                )}
+                                                placeholder={strategySnapshotContextPlaceholder(definition)}
+                                              />
+                                            ) : (
+                                              <textarea
+                                                aria-label={inputLabel}
+                                                rows={definition.value_shape === "object" ? 3 : 2}
+                                                disabled={editorValue.explicitlyOpen}
+                                                value={editorValue.raw}
+                                                onChange={(event) => updateStrategySnapshotContextValue(
+                                                  entryIndex,
+                                                  fieldName,
+                                                  { raw: event.target.value }
+                                                )}
+                                                placeholder={strategySnapshotContextPlaceholder(definition)}
+                                                spellCheck={false}
+                                              />
+                                            )}
+                                            {fieldIssues.map((issue) => (
+                                              <span className="strategy-context-field-error" key={issue.code}>
+                                                {issue.message}
+                                              </span>
+                                            ))}
+                                          </div>
+                                          {definition.nullable ? (
+                                            <label className="strategy-context-null-toggle">
+                                              <input
+                                                type="checkbox"
+                                                checked={editorValue.explicitlyOpen}
+                                                onChange={(event) => updateStrategySnapshotContextValue(
+                                                  entryIndex,
+                                                  fieldName,
+                                                  { explicitlyOpen: event.target.checked }
+                                                )}
+                                              />
+                                              <span>Bewusst offen</span>
+                                              <small><code>null</code> bleibt unaufgeloest</small>
+                                            </label>
+                                          ) : (
+                                            <span className="strategy-context-required">Pflichtwert</span>
+                                          )}
+                                        </div>
+                                      );
+                                    })}
+                                  </section>
+                                );
+                              })}
+                            </div>
+                          </details>
+                        );
+                      })}
+                    </div>
+
+                    <section className="strategy-draft-validation strategy-context-validation" aria-label="Kontext pruefen">
+                      <div className="strategy-draft-validation-action">
+                        <div>
+                          <strong>Serverseitige Kontextpruefung</strong>
+                          <span>Prueft Periode, Zielbindung, Feldmenge und eindeutige Wertformen atomar.</span>
+                        </div>
+                        <button
+                          className="primary-action"
+                          type="button"
+                          disabled={!canValidateStrategySnapshotContext}
+                          onClick={validateStrategySnapshotContext}
+                        >
+                          <ClipboardCheck size={17} aria-hidden="true" />
+                          {strategySnapshotContextValidationState === "loading"
+                            ? "Pruefung laeuft"
+                            : "Kontext pruefen"}
+                        </button>
+                      </div>
+                      {strategySnapshotContextValidationError ? (
+                        <div className="empty-state" role="alert">
+                          {strategySnapshotContextValidationError}
+                        </div>
+                      ) : strategySnapshotContextValidation ? (
+                        <div className={`strategy-draft-report ${strategySnapshotContextValidation.valid ? "valid" : "invalid"}`}>
+                          <div className="strategy-draft-report-summary">
+                            {strategySnapshotContextValidation.valid ? (
+                              <CheckCircle2 size={20} aria-hidden="true" />
+                            ) : (
+                              <CircleAlert size={20} aria-hidden="true" />
+                            )}
+                            <div>
+                              <strong>
+                                {strategySnapshotContextValidation.valid
+                                  ? "Kontext ist formal gueltig"
+                                  : "Kontext enthaelt Fehler"}
+                              </strong>
+                              <span>
+                                {strategySnapshotContextValidation.resolved_value_count} von {strategySnapshotContextValidation.expected_value_count} Werten gesetzt
+                                {strategySnapshotContextValidation.explicitly_open_value_count > 0
+                                  ? `, ${strategySnapshotContextValidation.explicitly_open_value_count} bewusst offen`
+                                  : ""}
+                              </span>
+                            </div>
+                          </div>
+                          {strategySnapshotContextValidation.issues.length > 0 ? (
+                            <div className="strategy-draft-issues">
+                              {strategySnapshotContextValidation.issues.map((issue) => (
+                                <div key={`${issue.path}-${issue.code}`}>
+                                  <strong>{issue.path}</strong>
+                                  <span>{issue.message}</span>
+                                </div>
+                              ))}
+                            </div>
+                          ) : null}
+                          <div className="strategy-context-report-boundaries">
+                            <span>Defaults: {strategySnapshotContextValidation.defaults_applied ? "ja" : "nein"}</span>
+                            <span>Werte verwendet: {strategySnapshotContextValidation.context_values_consumed ? "ja" : "nein"}</span>
+                            <span>Loader: {strategySnapshotContextValidation.snapshot_loader_invocation_performed ? "ja" : "nein"}</span>
+                            <span>Snapshots: {strategySnapshotContextValidation.snapshots_created ? "ja" : "nein"}</span>
+                            <span>Ausfuehrung: {strategySnapshotContextValidation.execution_performed ? "ja" : "nein"}</span>
+                            <span>Simulation: {strategySnapshotContextValidation.simulation_performed ? "ja" : "nein"}</span>
+                          </div>
+                        </div>
+                      ) : null}
+                    </section>
+                  </>
+                )}
+              </div>
+            )
           ) : strategyWorkbenchView === "translation" ? (
             strategySnapshotTranslationContractState === "error" ? (
               <div className="empty-state" role="alert">{strategySnapshotTranslationContractError}</div>

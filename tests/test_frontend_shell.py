@@ -582,7 +582,9 @@ def test_frontend_shell_declares_controlled_run_control_dry_run_check():
     assert "run-control-dry-run-result-grid" in styles
     assert "run-control-dry-run-result-row" in styles
     assert "startRun" not in source
-    assert "submit" not in source
+    assert 'type="submit"' not in source
+    assert "onSubmit=" not in source
+    assert "submitRun" not in source
     assert 'type="file"' not in source
 
 
