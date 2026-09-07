@@ -55,3 +55,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   read-only Merge- und Loadervertrag mit neun fachlich geklaerten,
   verschachtelten VN-Kontextformen und periodenabhaengigen Anforderungen,
   weiterhin ohne Snapshot-Erzeugung, Runner oder Simulation.
+- [PR115 Materialisierungseingang validieren](../migration/ims_2x_strategy_assignment_snapshot_materialization_validation.md):
+  atomare serverseitige Pruefung der regelabhaengigen VN-Kontextformen,
+  Fallbacks und Periodenbedingungen, weiterhin ohne Snapshot-Erzeugung,
+  Runner oder Simulation.

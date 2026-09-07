@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_strategy_assignment_snapshot_materialization_validation.md`: PR115-
+  Validierung der verschachtelten VN-Kontextformen und Periodenbedingungen
+  mit atomarem Gesamtbericht, ohne Snapshot-Erzeugung oder Ausfuehrung
 - `ims_2x_strategy_assignment_snapshot_materialization_contract.md`: PR114-
   Vertrag fuer die spaetere atomare Snapshot-Materialisierung und die
   periodenabhaengigen verschachtelten VN-Kontextformen, ohne Loaderaufruf,

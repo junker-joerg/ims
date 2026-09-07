@@ -1,0 +1,219 @@
+{
+  "draft": {
+    "schema_version": "ims.strategy-assignment-draft.v1",
+    "catalog_schema_version": "ims.strategy-catalog.v1",
+    "assignment_contract_schema_version": "ims.strategy-assignment-contract.v1",
+    "base_model": "Vdefmd6",
+    "scope": "partial_actor_assignments",
+    "draft_id": "synthetic-pr115-vn-rules",
+    "label": "Synthetischer VN-Materialisierungs-Validierungstest",
+    "assignments": [
+      {
+        "actor_type": "policyholder",
+        "target_id": 1,
+        "strategy_id": "vn.vrvn01",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": null,
+        "parameter_values": null
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 2,
+        "strategy_id": "vn.vrvn02",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": "VNRandomInsuranceRuleParameters",
+        "parameter_values": {
+          "insurance_thresholds_normal": [0.2, 0.3],
+          "insurance_thresholds_shock": [0.4, 0.5]
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 3,
+        "strategy_id": "vn.vrvn03",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": "VNPreferenceInsuranceRuleParameters",
+        "parameter_values": {
+          "insurance_thresholds_normal": [0.2, 0.3],
+          "insurance_thresholds_shock": [0.4, 0.5]
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 4,
+        "strategy_id": "vn.vrvn04",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": "VNSearchInsuranceRuleParameters",
+        "parameter_values": {
+          "insurance_thresholds_normal": [0.2, 0.3],
+          "insurance_thresholds_shock": [0.4, 0.5]
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 5,
+        "strategy_id": "vn.vrvn05",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": "VNSampleSearchInsuranceRuleParameters",
+        "parameter_values": {
+          "insurance_thresholds_normal": [0.2, 0.3],
+          "insurance_thresholds_shock": [0.4, 0.5],
+          "sample_sizes_normal": [2, 2],
+          "sample_sizes_shock": [3, 3]
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 6,
+        "strategy_id": "vn.vrvn06",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": "VNBestInfoInsuranceRuleParameters",
+        "parameter_values": {
+          "insurance_thresholds_normal": [0.2, 0.3],
+          "insurance_thresholds_shock": [0.4, 0.5]
+        }
+      }
+    ]
+  },
+  "context": {
+    "schema_version": "ims.strategy-assignment-snapshot-context.v1",
+    "translation_schema_version": "ims.strategy-assignment-snapshot-translation.v1",
+    "base_model": "Vdefmd6",
+    "scope": "explicit_single_period_snapshot_context",
+    "draft_id": "synthetic-pr115-vn-rules",
+    "period": 2,
+    "entries": [
+      {
+        "actor_type": "policyholder",
+        "target_id": 1,
+        "strategy_id": "vn.vrvn01",
+        "values": {
+          "draws": {"insurer_choice_draws": [0.1, 0.9]},
+          "active_insurer_ids": [1, 2],
+          "initial_decisions": null,
+          "damage_probabilities": null,
+          "insurer_inputs": null,
+          "history": null,
+          "market_damage_indicator": null,
+          "change_shock": false,
+          "information_cost_per_sample": 0.0,
+          "information_cost_per_insurer": 0.0
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 2,
+        "strategy_id": "vn.vrvn02",
+        "values": {
+          "draws": {
+            "status_draws": [0.2, 0.8],
+            "insurer_choice_draws": [0.3, 0.7]
+          },
+          "active_insurer_ids": [1, 2],
+          "initial_decisions": null,
+          "damage_probabilities": null,
+          "insurer_inputs": null,
+          "history": null,
+          "market_damage_indicator": null,
+          "change_shock": false,
+          "information_cost_per_sample": 0.0,
+          "information_cost_per_insurer": 0.0
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 3,
+        "strategy_id": "vn.vrvn03",
+        "values": {
+          "draws": null,
+          "active_insurer_ids": null,
+          "initial_decisions": null,
+          "damage_probabilities": [0.2, 0.3],
+          "insurer_inputs": [
+            {"insurer_id": 1, "advertising_current_sector": [1.0, 0.5]},
+            {"insurer_id": 2, "advertising_current_sector": [0.5, 1.0]}
+          ],
+          "history": null,
+          "market_damage_indicator": null,
+          "change_shock": false,
+          "information_cost_per_sample": 0.0,
+          "information_cost_per_insurer": 0.0
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 4,
+        "strategy_id": "vn.vrvn04",
+        "values": {
+          "draws": null,
+          "active_insurer_ids": [1, 2],
+          "initial_decisions": null,
+          "damage_probabilities": [0.2, 0.3],
+          "insurer_inputs": null,
+          "history": [
+            {"period": 1, "sector_index": 0, "insured": true, "insurer_id": 1, "premium": 1.1},
+            {"period": 1, "sector_index": 1, "insured": true, "insurer_id": 2, "premium": 1.2}
+          ],
+          "market_damage_indicator": null,
+          "change_shock": false,
+          "information_cost_per_sample": 0.0,
+          "information_cost_per_insurer": 0.0
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 5,
+        "strategy_id": "vn.vrvn05",
+        "values": {
+          "draws": {
+            "insurer_choice_draws_by_sector": [[0.1, 0.4], [0.6, 0.9]]
+          },
+          "active_insurer_ids": null,
+          "initial_decisions": null,
+          "damage_probabilities": null,
+          "insurer_inputs": [
+            {"insurer_id": 1, "premiums_current_sector": [1.0, 1.2]},
+            {"insurer_id": 2, "premiums_current_sector": [1.1, 1.1]}
+          ],
+          "history": null,
+          "market_damage_indicator": 0.25,
+          "change_shock": false,
+          "information_cost_per_sample": 0.02,
+          "information_cost_per_insurer": 0.0
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 6,
+        "strategy_id": "vn.vrvn06",
+        "values": {
+          "draws": null,
+          "active_insurer_ids": null,
+          "initial_decisions": null,
+          "damage_probabilities": null,
+          "insurer_inputs": [
+            {"insurer_id": 1, "premiums_current_sector": [1.0, 1.2]},
+            {"insurer_id": 2, "premiums_current_sector": [1.1, 1.1]}
+          ],
+          "history": null,
+          "market_damage_indicator": 0.25,
+          "change_shock": false,
+          "information_cost_per_sample": 0.0,
+          "information_cost_per_insurer": 0.03
+        }
+      }
+    ]
+  }
+}

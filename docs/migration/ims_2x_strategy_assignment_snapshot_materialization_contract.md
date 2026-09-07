@@ -112,7 +112,7 @@ historische Vollgleichheit.
 
 ## Naechster Schritt
 
-PR115 kann die verschachtelten Formen samt Periodenbedingungen rein
-validierend in den Kontextpfad integrieren. Erst danach kann PR116 die
-atomare Snapshot-Materialisierung als eigenen, weiterhin nicht ausfuehrenden
-Schritt freigeben.
+PR115 hat die verschachtelten Formen samt Periodenbedingungen rein
+validierend in den Kontextpfad integriert. Erst danach kann PR116 die atomare
+Snapshot-Materialisierung als eigenen, weiterhin nicht ausfuehrenden Schritt
+freigeben.

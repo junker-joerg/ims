@@ -56,6 +56,13 @@ from ims.strategies.assignment_snapshot_materialization_contract import (
     strategy_assignment_snapshot_materialization_contract_payload,
     strategy_snapshot_materialization_contract_issues,
 )
+from ims.strategies.assignment_snapshot_materialization_validation import (
+    STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
+    StrategySnapshotMaterializationValidationIssue,
+    StrategySnapshotMaterializationValidationReport,
+    strategy_assignment_snapshot_materialization_validation_contract_payload,
+    validate_strategy_assignment_snapshot_materialization_input,
+)
 
 from ims.strategies.catalog import (
     STRATEGY_CATALOG_VERSION,
@@ -79,6 +86,7 @@ __all__ = [
     "STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_CONTRACT_VERSION",
+    "STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION",
     "STRATEGY_ASSIGNMENT_TARGETS",
     "STRATEGY_CATALOG_VERSION",
@@ -111,6 +119,8 @@ __all__ = [
     "StrategySnapshotContextValidationReport",
     "StrategySnapshotConditionalField",
     "StrategySnapshotNestedValueDefinition",
+    "StrategySnapshotMaterializationValidationIssue",
+    "StrategySnapshotMaterializationValidationReport",
     "StrategyTestStatus",
     "VNSnapshotMaterializationRuleDefinition",
     "build_vdefmd6_strategy_assignment_profiles",
@@ -123,6 +133,7 @@ __all__ = [
     "strategy_assignment_snapshot_translation_contract_payload",
     "strategy_assignment_snapshot_context_contract_payload",
     "strategy_assignment_snapshot_materialization_contract_payload",
+    "strategy_assignment_snapshot_materialization_validation_contract_payload",
     "strategy_catalog_issues",
     "strategy_catalog_payload",
     "strategy_snapshot_translation_issues",
@@ -130,5 +141,6 @@ __all__ = [
     "strategy_snapshot_materialization_contract_issues",
     "translate_strategy_assignment_draft",
     "validate_strategy_assignment_snapshot_context",
+    "validate_strategy_assignment_snapshot_materialization_input",
     "validate_strategy_assignment_draft",
 ]

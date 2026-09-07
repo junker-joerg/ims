@@ -87,8 +87,8 @@ Kontextwert und erzeugt keinen Snapshot.
 
 ## Anschlussplanung
 
-PR115 soll die neun PR114-Formen und die periodenabhaengigen Bedingungen in
+PR115 hat die neun PR114-Formen und die periodenabhaengigen Bedingungen in
 eine atomare, rein validierende Erweiterung des Einperiodenkontexts
-ueberfuehren. Erst PR116 darf danach gueltige Bauplaene und Kontexte ueber die
+ueberfuehrt. Erst PR116 darf danach gueltige Bauplaene und Kontexte ueber die
 vorhandenen Snapshotloader materialisieren. Run-Control, Runner und Simulation
 bleiben weitere getrennte Freigaben.

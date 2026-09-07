@@ -47,16 +47,19 @@ from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VALIDATION_VERSION,
+    STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION,
     strategy_assignment_contract_payload,
     strategy_assignment_draft_contract_payload,
     strategy_assignment_snapshot_context_contract_payload,
     strategy_assignment_snapshot_materialization_contract_payload,
+    strategy_assignment_snapshot_materialization_validation_contract_payload,
     strategy_assignment_snapshot_translation_contract_payload,
     strategy_catalog_payload,
     translate_strategy_assignment_draft,
     validate_strategy_assignment_draft,
     validate_strategy_assignment_snapshot_context,
+    validate_strategy_assignment_snapshot_materialization_input,
 )
 
 try:
@@ -228,6 +231,46 @@ def _strategy_assignment_snapshot_context_invalid_json_payload() -> dict[str, ob
         ],
         "defaults_applied": False,
         "context_values_consumed": False,
+        "snapshot_loader_invocation_performed": False,
+        "snapshot_materialization_ready": False,
+        "writes_performed": False,
+        "snapshots_created": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_assignment_snapshot_materialization_invalid_json_payload() -> dict[
+    str, object
+]:
+    return {
+        "schema_version": (
+            STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION
+        ),
+        "mode": "strategy_assignment_snapshot_materialization_validation",
+        "status": "error",
+        "valid": False,
+        "base_context_valid": False,
+        "draft_id": None,
+        "period": None,
+        "expected_vn_entry_count": 0,
+        "validated_vn_entry_count": 0,
+        "validated_nested_value_count": 0,
+        "nested_loader_invocation_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "stage": "base_context",
+                "path": "$",
+                "code": "invalid_json",
+                "message": "Materialisierungspruefung ist kein gueltiges JSON",
+            }
+        ],
+        "materialization_input_valid": False,
+        "context_values_inspected": False,
+        "context_values_consumed": False,
+        "nested_loader_results_retained": False,
         "snapshot_loader_invocation_performed": False,
         "snapshot_materialization_ready": False,
         "writes_performed": False,
@@ -558,6 +601,22 @@ def create_app(
             validate_strategy_assignment_snapshot_context(payload).to_dict()
         )
 
+    async def strategy_assignment_snapshot_materialization_validation_response(
+        request: Request,
+    ) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_assignment_snapshot_materialization_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(
+            validate_strategy_assignment_snapshot_materialization_input(
+                payload
+            ).to_dict()
+        )
+
     async def queue_enqueue_response(request: Request) -> JSONResponse:
         if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
             return JSONResponse(
@@ -742,6 +801,16 @@ def create_app(
         ]:
             return strategy_assignment_snapshot_materialization_contract_payload()
 
+        @app.get(
+            "/api/strategies/assignment-snapshot-materialization-validation-contract"
+        )
+        def strategies_assignment_snapshot_materialization_validation_contract() -> dict[
+            str, object
+        ]:
+            return (
+                strategy_assignment_snapshot_materialization_validation_contract_payload()
+            )
+
         @app.post(
             "/api/strategies/assignment-snapshot-context-validation",
             response_model=None,
@@ -751,6 +820,19 @@ def create_app(
         ) -> JSONResponse:
             return await strategy_assignment_snapshot_context_validation_response(
                 request
+            )
+
+        @app.post(
+            "/api/strategies/assignment-snapshot-materialization-validation",
+            response_model=None,
+        )
+        async def strategies_assignment_snapshot_materialization_validation(
+            request: Request,
+        ) -> JSONResponse:
+            return await (
+                strategy_assignment_snapshot_materialization_validation_response(
+                    request
+                )
             )
 
         @app.get("/api/scenarios")
@@ -908,8 +990,19 @@ def create_app(
             ),
         ),
         Route(
+            "/api/strategies/assignment-snapshot-materialization-validation-contract",
+            lambda request: JSONResponse(
+                strategy_assignment_snapshot_materialization_validation_contract_payload()
+            ),
+        ),
+        Route(
             "/api/strategies/assignment-snapshot-context-validation",
             strategy_assignment_snapshot_context_validation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/assignment-snapshot-materialization-validation",
+            strategy_assignment_snapshot_materialization_validation_response,
             methods=["POST"],
         ),
         Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),
