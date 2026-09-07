@@ -90,9 +90,8 @@ vollstaendigen Pruefbericht.
 
 ## Anschlussplanung
 
-PR114 kann einen versionierten, deterministischen Materialisierungsvertrag
-fuer vollstaendig gueltige Entwurfs- und Kontextpaare vorbereiten. Vor der
-eigentlichen Materialisierung muss insbesondere die fachliche Struktur der
-regelabhaengigen VN-Ziehungs-, Markt- und Historienwerte explizit belegt
-werden. Run-Control, Runner und Simulation bleiben weitere, getrennte
-Freigaben.
+PR114 hat den versionierten, deterministischen Materialisierungsvertrag und
+die fachliche Struktur der regelabhaengigen VN-Ziehungs-, Markt- und
+Historienwerte read-only festgelegt. PR115 kann diese engeren Formen
+serverseitig validieren. Run-Control, Runner und Simulation bleiben weitere,
+getrennte Freigaben.

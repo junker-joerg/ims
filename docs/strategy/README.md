@@ -51,3 +51,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   lokaler Editor fuer Periode und offene Bauplanwerte mit feldbezogener
   PR112-Pruefung, weiterhin ohne Speicherung, Materialisierung oder
   Ausfuehrung.
+- [PR114 Materialisierungsvertrag](../migration/ims_2x_strategy_assignment_snapshot_materialization_contract.md):
+  read-only Merge- und Loadervertrag mit neun fachlich geklaerten,
+  verschachtelten VN-Kontextformen und periodenabhaengigen Anforderungen,
+  weiterhin ohne Snapshot-Erzeugung, Runner oder Simulation.

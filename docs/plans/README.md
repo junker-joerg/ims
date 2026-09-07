@@ -42,6 +42,10 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   den lokalen Workbench-Editor des PR112-Einperiodenkontexts mit
   feldbezogener Validierung, weiterhin ohne Speicherung, Materialisierung
   oder Ausfuehrung.
+- `ims_2x_strategy_assignment_snapshot_materialization_contract_plan.md`:
+  PR114-Plan fuer die atomare spaetere Merge-/Loaderfolge sowie neun
+  loadergebundene verschachtelte VN-Kontextformen, weiterhin ohne
+  Materialisierung, Runner oder Simulation.
 
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne

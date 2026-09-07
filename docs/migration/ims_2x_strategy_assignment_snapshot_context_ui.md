@@ -84,7 +84,8 @@ keine Simulation. Historische RNG- oder Vollgleichheit wird nicht behauptet.
 
 ## Naechster Schritt
 
-PR114 soll zunaechst den Materialisierungsvertrag und die noch zu belegenden
-verschachtelten VN-Wertformen dokumentieren und testen. Erst ein danach
+PR114 hat den Materialisierungsvertrag und die verschachtelten VN-Wertformen
+dokumentiert und gegen vorhandene Loader getestet. PR115 kann diese Formen
+zunaechst rein validierend in den Kontextpfad integrieren. Erst ein danach
 ausdruecklich freigegebener Schritt darf gueltige Kontextwerte in vorhandene
 Snapshot-Dataclasses uebernehmen. Eine Runner-Kopplung bleibt separat.

@@ -1,0 +1,37 @@
+{
+  "schema_version": "ims.strategy-assignment-snapshot-materialization-contract.v1",
+  "nested_value_samples": {
+    "vn.initial-decisions.v1": [
+      {"sector_index": 0, "insured": true, "insurer_id": 1, "premium": 1.1},
+      {"sector_index": 1, "insured": false, "insurer_id": null, "premium": null}
+    ],
+    "vn.compulsory-draws.v1": {
+      "insurer_choice_draws": [0.1, 0.9]
+    },
+    "vn.random-draws.v1": {
+      "status_draws": [0.2, 0.8],
+      "insurer_choice_draws": [0.3, 0.7]
+    },
+    "vn.preference-draws.v1": {
+      "fallback_insurer_choice_draws": [0.4, 0.6]
+    },
+    "vn.preference-insurer-inputs.v1": [
+      {"insurer_id": 1, "advertising_current_sector": [2.0, 1.0]},
+      {"insurer_id": 2, "advertising_current_sector": [1.0, 3.0]}
+    ],
+    "vn.search-draws.v1": {
+      "fallback_insurer_choice_draws": [0.25, 0.75]
+    },
+    "vn.search-history.v1": [
+      {"period": 1, "sector_index": 0, "insured": true, "insurer_id": 2, "premium": 1.2},
+      {"period": 1, "sector_index": 1, "insured": false, "insurer_id": null, "premium": 0.0}
+    ],
+    "vn.sample-search-draws.v1": {
+      "insurer_choice_draws_by_sector": [[0.1, 0.3], [0.6, 0.8]]
+    },
+    "vn.premium-insurer-inputs.v1": [
+      {"insurer_id": 1, "premiums_current_sector": [1.0, 1.3]},
+      {"insurer_id": 2, "premiums_current_sector": [1.1, 1.2]}
+    ]
+  }
+}
