@@ -51,6 +51,7 @@ from ims.strategies import (
     STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION,
     STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
+    STRATEGY_ASSIGNMENT_VU_SNAPSHOT_STATE_VALIDATION_VERSION,
     materialize_strategy_assignment_snapshots,
     strategy_assignment_contract_payload,
     strategy_assignment_draft_contract_payload,
@@ -61,12 +62,14 @@ from ims.strategies import (
     strategy_assignment_snapshot_translation_contract_payload,
     strategy_assignment_vu_snapshot_materialization_contract_payload,
     strategy_assignment_vu_snapshot_materialization_validation_contract_payload,
+    strategy_assignment_vu_snapshot_state_contract_payload,
     strategy_catalog_payload,
     translate_strategy_assignment_draft,
     validate_strategy_assignment_draft,
     validate_strategy_assignment_snapshot_context,
     validate_strategy_assignment_snapshot_materialization_input,
     validate_strategy_assignment_vu_snapshot_materialization_input,
+    validate_strategy_assignment_vu_snapshot_state,
 )
 
 try:
@@ -320,6 +323,49 @@ def _strategy_assignment_vu_snapshot_materialization_validation_invalid_json_pay
         "threshold_values_cross_checked_against_actor_state": False,
         "context_values_inspected": False,
         "context_values_consumed": False,
+        "snapshot_loader_invocation_performed": False,
+        "snapshot_materialization_ready": False,
+        "writes_performed": False,
+        "snapshots_created": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_rng_equality_claim": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_assignment_vu_snapshot_state_validation_invalid_json_payload() -> dict[
+    str, object
+]:
+    return {
+        "schema_version": STRATEGY_ASSIGNMENT_VU_SNAPSHOT_STATE_VALIDATION_VERSION,
+        "mode": "strategy_assignment_vu_snapshot_state_validation",
+        "status": "error",
+        "valid": False,
+        "input_valid": False,
+        "state_shape_valid": False,
+        "submitted_state_schema_version": None,
+        "draft_id": None,
+        "period": None,
+        "expected_state_entry_count": 0,
+        "validated_state_entry_count": 0,
+        "expected_provenance_check_count": 0,
+        "matched_provenance_check_count": 0,
+        "expected_threshold_check_count": 0,
+        "matched_threshold_check_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "stage": "request_contract",
+                "path": "$",
+                "code": "invalid_json",
+                "message": "VU-Zustandspruefung ist kein gueltiges JSON",
+            }
+        ],
+        "threshold_values_cross_checked_against_actor_state": False,
+        "draw_values_cross_checked_against_draw_plan": False,
+        "state_values_inspected": False,
+        "state_values_consumed": False,
         "snapshot_loader_invocation_performed": False,
         "snapshot_materialization_ready": False,
         "writes_performed": False,
@@ -722,6 +768,20 @@ def create_app(
             ).to_dict()
         )
 
+    async def strategy_assignment_vu_snapshot_state_validation_response(
+        request: Request,
+    ) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_assignment_vu_snapshot_state_validation_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(
+            validate_strategy_assignment_vu_snapshot_state(payload).to_dict()
+        )
+
     async def strategy_assignment_snapshot_materialization_response(
         request: Request,
     ) -> JSONResponse:
@@ -952,6 +1012,21 @@ def create_app(
                 request
             )
 
+        @app.get("/api/strategies/assignment-vu-snapshot-state-contract")
+        def strategies_assignment_vu_snapshot_state_contract() -> dict[str, object]:
+            return strategy_assignment_vu_snapshot_state_contract_payload()
+
+        @app.post(
+            "/api/strategies/assignment-vu-snapshot-state-validation",
+            response_model=None,
+        )
+        async def strategies_assignment_vu_snapshot_state_validation(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_assignment_vu_snapshot_state_validation_response(
+                request
+            )
+
         @app.get(
             "/api/strategies/assignment-snapshot-materialization-validation-contract"
         )
@@ -1169,6 +1244,17 @@ def create_app(
         Route(
             "/api/strategies/assignment-vu-snapshot-materialization-validation",
             strategy_assignment_vu_snapshot_materialization_validation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/assignment-vu-snapshot-state-contract",
+            lambda request: JSONResponse(
+                strategy_assignment_vu_snapshot_state_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/strategies/assignment-vu-snapshot-state-validation",
+            strategy_assignment_vu_snapshot_state_validation_response,
             methods=["POST"],
         ),
         Route(

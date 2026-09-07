@@ -201,4 +201,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR119-Vertrag und atomare Pruefung fuer explizite VU-Schwellen,
   Ziehungen und Laufzeitwerte ohne Loader-/Runner-Fallbacks, weiterhin ohne
   Snapshot-Erzeugung, Speicherung oder Simulation
+- `ims_2x_strategy_assignment_vu_snapshot_state_validation.md`:
+  PR120-Zustandsbeleg und Herkunftspruefung fuer VU-Periodenwerte,
+  Anspruchsprofile, Bestand `t-2` und aktive VN-Zahl, weiterhin ohne
+  Snapshot-Erzeugung, Speicherung, Runner oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

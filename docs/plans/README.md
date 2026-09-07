@@ -246,3 +246,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR119-Plan fuer den versionierten VU-Eingang mit expliziten Schwellen- und
   Ziehungsquellen sowie gesperrten Loader-/Runner-Fallbacks, weiterhin ohne
   Snapshot-Erzeugung, Runner oder Simulation.
+- `ims_2x_strategy_assignment_vu_snapshot_state_validation_plan.md`:
+  PR120-Plan fuer den versionierten VU-Zustandsbeleg und den atomaren
+  Herkunftsabgleich von Periodenwerten, Anspruchsprofilen, Bestand `t-2` und
+  aktiver VN-Zahl, weiterhin ohne Materialisierung, Runner oder Simulation.

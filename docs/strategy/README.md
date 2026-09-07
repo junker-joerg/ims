@@ -75,3 +75,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   versionierter Eingang und atomare Pruefung mit belegten Schwellenquellen,
   expliziten Ziehungen und gesperrten technischen Fallbacks, weiterhin ohne
   Snapshot-Erzeugung, Speicherung, Runner oder Simulation.
+- [PR120 VU-Zustand und Herkunft](../migration/ims_2x_strategy_assignment_vu_snapshot_state_validation.md):
+  versionierter Zustandsbeleg und atomarer Abgleich von Periodenwerten,
+  Anspruchsprofilen, Bestand `t-2` und aktiver VN-Zahl, weiterhin ohne
+  Snapshot-Erzeugung, Speicherung, Runner oder Simulation.
