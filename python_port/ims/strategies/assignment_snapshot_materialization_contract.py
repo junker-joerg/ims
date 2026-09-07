@@ -18,6 +18,9 @@ from ims.strategies.catalog import StrategyActorType
 STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_CONTRACT_VERSION = (
     "ims.strategy-assignment-snapshot-materialization-contract.v1"
 )
+STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VERSION = (
+    "ims.strategy-assignment-snapshot-materialization.v1"
+)
 
 _VN_NESTED_FIELDS = frozenset(
     {"draws", "initial_decisions", "insurer_inputs", "history"}
@@ -469,7 +472,7 @@ def strategy_snapshot_materialization_contract_issues(
 
 
 def strategy_assignment_snapshot_materialization_contract_payload() -> dict[str, Any]:
-    """Beschreibt die spaetere atomare Materialisierung, fuehrt sie aber nicht aus."""
+    """Beschreibt die atomare Materialisierung, ohne sie beim Lesen auszufuehren."""
 
     open_fields = _vn_open_fields()
     return {
@@ -486,6 +489,12 @@ def strategy_assignment_snapshot_materialization_contract_payload() -> dict[str,
         "scope": "validated_single_period_context_to_existing_snapshot_loaders",
         "contract_endpoint": (
             "/api/strategies/assignment-snapshot-materialization-contract"
+        ),
+        "materialization_schema_version": (
+            STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VERSION
+        ),
+        "materialization_endpoint": (
+            "/api/strategies/assignment-snapshot-materialization"
         ),
         "materialization_steps": (
             "validate_draft_atomically",
@@ -519,9 +528,11 @@ def strategy_assignment_snapshot_materialization_contract_payload() -> dict[str,
         "nested_contract_definitions_complete": True,
         "existing_nested_loaders_reused": True,
         "context_validator_uses_nested_contract": False,
-        "nested_values_consumed": False,
-        "snapshot_loader_invocation_enabled": False,
-        "snapshot_materialization_enabled": False,
+        "materialization_validation_required": True,
+        "nested_values_consumed": True,
+        "snapshot_loader_invocation_enabled": True,
+        "snapshot_materialization_enabled": True,
+        "partial_results_allowed": False,
         "persistence_enabled": False,
         "execution_enabled": False,
         "runner_enabled": False,

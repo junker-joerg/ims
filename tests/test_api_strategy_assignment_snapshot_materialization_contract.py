@@ -20,7 +20,10 @@ def test_assignment_snapshot_materialization_contract_endpoint_is_read_only(
     assert len(payload["vn_rule_definitions"]) == 6
     assert len(payload["nested_value_definitions"]) == 9
     assert payload["context_validator_uses_nested_contract"] is False
-    assert payload["snapshot_materialization_enabled"] is False
+    assert payload["materialization_validation_required"] is True
+    assert payload["snapshot_materialization_enabled"] is True
+    assert payload["partial_results_allowed"] is False
+    assert payload["operation"]["validation_required"] is True
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
     assert client.post(endpoint, json={}).status_code == 405

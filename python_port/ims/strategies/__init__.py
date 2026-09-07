@@ -48,6 +48,7 @@ from ims.strategies.assignment_snapshot_context import (
 )
 from ims.strategies.assignment_snapshot_materialization_contract import (
     STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_CONTRACT_VERSION,
+    STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VERSION,
     STRATEGY_SNAPSHOT_NESTED_VALUE_DEFINITIONS,
     VN_SNAPSHOT_MATERIALIZATION_RULES,
     StrategySnapshotConditionalField,
@@ -55,6 +56,13 @@ from ims.strategies.assignment_snapshot_materialization_contract import (
     VNSnapshotMaterializationRuleDefinition,
     strategy_assignment_snapshot_materialization_contract_payload,
     strategy_snapshot_materialization_contract_issues,
+)
+from ims.strategies.assignment_snapshot_materialization import (
+    StrategyAssignmentMaterializedSnapshot,
+    StrategyAssignmentSnapshotMaterializationIssue,
+    StrategyAssignmentSnapshotMaterializationReport,
+    materialize_strategy_assignment_snapshots,
+    strategy_assignment_snapshot_materialization_operation_contract_payload,
 )
 from ims.strategies.assignment_snapshot_materialization_validation import (
     STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
@@ -86,6 +94,7 @@ __all__ = [
     "STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_CONTRACT_VERSION",
+    "STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION",
     "STRATEGY_ASSIGNMENT_TARGETS",
@@ -105,6 +114,9 @@ __all__ = [
     "StrategyAssignmentDraftValidationReport",
     "StrategyAssignmentSnapshotTranslationEntry",
     "StrategyAssignmentSnapshotTranslationReport",
+    "StrategyAssignmentMaterializedSnapshot",
+    "StrategyAssignmentSnapshotMaterializationIssue",
+    "StrategyAssignmentSnapshotMaterializationReport",
     "StrategyDefinition",
     "StrategyFamilyDefinition",
     "StrategyImplementationStatus",
@@ -127,12 +139,14 @@ __all__ = [
     "get_strategy_definition",
     "list_strategy_definitions",
     "load_strategy_assignment_draft",
+    "materialize_strategy_assignment_snapshots",
     "strategy_assignment_contract_issues",
     "strategy_assignment_contract_payload",
     "strategy_assignment_draft_contract_payload",
     "strategy_assignment_snapshot_translation_contract_payload",
     "strategy_assignment_snapshot_context_contract_payload",
     "strategy_assignment_snapshot_materialization_contract_payload",
+    "strategy_assignment_snapshot_materialization_operation_contract_payload",
     "strategy_assignment_snapshot_materialization_validation_contract_payload",
     "strategy_catalog_issues",
     "strategy_catalog_payload",

@@ -59,3 +59,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   atomare serverseitige Pruefung der regelabhaengigen VN-Kontextformen,
   Fallbacks und Periodenbedingungen, weiterhin ohne Snapshot-Erzeugung,
   Runner oder Simulation.
+- [PR116 VN-Snapshots materialisieren](../migration/ims_2x_strategy_assignment_snapshot_materialization.md):
+  atomare Erzeugung typisierter VN-Regel-Snapshots aus einem vollstaendig
+  gueltigen Einperiodenkontext, weiterhin ohne Speicherung, Runner oder
+  Simulation.

@@ -39,8 +39,10 @@ def test_materialization_contract_covers_all_vn_rules_and_nested_values() -> Non
     assert len(payload["nested_value_definitions"]) == 9
     assert payload["contract_issue_count"] == 0
     assert payload["context_validator_uses_nested_contract"] is False
-    assert payload["snapshot_loader_invocation_enabled"] is False
-    assert payload["snapshot_materialization_enabled"] is False
+    assert payload["materialization_validation_required"] is True
+    assert payload["snapshot_loader_invocation_enabled"] is True
+    assert payload["snapshot_materialization_enabled"] is True
+    assert payload["partial_results_allowed"] is False
     assert payload["runner_enabled"] is False
     assert payload["simulation_performed"] is False
     assert payload["historical_full_equality_claim"] is False
@@ -102,7 +104,7 @@ def test_documented_nested_samples_are_accepted_by_existing_loaders() -> None:
         assert loader(deepcopy(samples[definition.schema_id])) is not None
 
 
-def test_contract_is_descriptive_and_does_not_invoke_snapshot_loader(
+def test_contract_advertises_materializer_without_invoking_snapshot_loader(
     monkeypatch,
 ) -> None:
     module = importlib.import_module("ims.model.vn_insurance_rules")
@@ -118,8 +120,8 @@ def test_contract_is_descriptive_and_does_not_invoke_snapshot_loader(
 
     payload = strategy_assignment_snapshot_materialization_contract_payload()
 
-    assert payload["nested_values_consumed"] is False
-    assert payload["snapshot_loader_invocation_enabled"] is False
+    assert payload["nested_values_consumed"] is True
+    assert payload["snapshot_loader_invocation_enabled"] is True
 
 
 def test_pr112_validator_remains_generic_until_later_integration() -> None:

@@ -49,6 +49,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_assignment_snapshot_materialization_validation_plan.md`:
   PR115-Plan fuer die atomare, regel- und periodenabhaengige Pruefung dieser
   VN-Kontextformen, weiterhin ohne Snapshot-Erzeugung, Runner oder Simulation.
+- `ims_2x_strategy_assignment_snapshot_materialization_plan.md`: PR116-Plan
+  fuer die atomare Erzeugung typisierter VN-Regel-Snapshots im Speicher,
+  weiterhin ohne Speicherung, Runner oder Simulation.
 
 - `ims_core_fachlogik_resume_plan.md`: IMS-Kern-Fachlogik nach Workbench-v1,
   mit konservativem Anschluss an vorhandene VU/VN-Periodenplaene und ohne

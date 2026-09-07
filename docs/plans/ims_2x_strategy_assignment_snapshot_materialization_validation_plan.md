@@ -92,7 +92,7 @@ Fachdefaults.
 
 ## Anschlussplanung
 
-PR116 kann ausschliesslich einen erfolgreich validierten PR115-Eingang
-atomar mit den in PR110 deklarierten Snapshotloadern materialisieren. Die
-Snapshotliste darf erst nach Erfolg aller Eintraege sichtbar werden. Eine
-Speicherung, Runner-Kopplung und Simulation bleiben danach eigene Freigaben.
+PR116 materialisiert inzwischen ausschließlich einen erfolgreich validierten
+PR115-Eingang atomar mit den in PR110 deklarierten Snapshotloadern. Die
+Snapshotliste wird erst nach Erfolg aller Eintraege sichtbar. Speicherung,
+Runner-Kopplung und Simulation bleiben danach eigene Freigaben.

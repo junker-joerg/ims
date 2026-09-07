@@ -106,6 +106,6 @@ RNG- oder Vollgleichheitsbehauptung.
 
 ## Naechster Schritt
 
-PR116 kann den gueltigen Gesamteingang atomar in vorhandene Snapshot-
-Dataclasses uebertragen. Auch dieser Schritt soll zunaechst weder speichern
-noch einen Runner oder eine Simulation starten.
+PR116 uebertraegt den gueltigen Gesamteingang inzwischen atomar in vorhandene
+Snapshot-Dataclasses. Der Schritt speichert weiterhin nicht und startet weder
+einen Runner noch eine Simulation.

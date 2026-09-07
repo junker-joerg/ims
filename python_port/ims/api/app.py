@@ -47,12 +47,15 @@ from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VALIDATION_VERSION,
+    STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION,
+    materialize_strategy_assignment_snapshots,
     strategy_assignment_contract_payload,
     strategy_assignment_draft_contract_payload,
     strategy_assignment_snapshot_context_contract_payload,
     strategy_assignment_snapshot_materialization_contract_payload,
+    strategy_assignment_snapshot_materialization_operation_contract_payload,
     strategy_assignment_snapshot_materialization_validation_contract_payload,
     strategy_assignment_snapshot_translation_contract_payload,
     strategy_catalog_payload,
@@ -241,7 +244,7 @@ def _strategy_assignment_snapshot_context_invalid_json_payload() -> dict[str, ob
     }
 
 
-def _strategy_assignment_snapshot_materialization_invalid_json_payload() -> dict[
+def _strategy_assignment_snapshot_materialization_validation_invalid_json_payload() -> dict[
     str, object
 ]:
     return {
@@ -276,6 +279,45 @@ def _strategy_assignment_snapshot_materialization_invalid_json_payload() -> dict
         "writes_performed": False,
         "snapshots_created": False,
         "execution_performed": False,
+        "simulation_performed": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_assignment_snapshot_materialization_invalid_json_payload() -> dict[
+    str, object
+]:
+    return {
+        "schema_version": STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VERSION,
+        "mode": "strategy_assignment_snapshot_materialization",
+        "status": "error",
+        "input_valid": False,
+        "materialization_complete": False,
+        "draft_id": None,
+        "period": None,
+        "expected_snapshot_count": 0,
+        "snapshot_count": 0,
+        "snapshot_loader_invocation_count": 0,
+        "nested_loader_invocation_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "stage": "input_validation.base_context",
+                "path": "$",
+                "code": "invalid_json",
+                "message": "Snapshot-Materialisierung ist kein gueltiges JSON",
+            }
+        ],
+        "snapshots": [],
+        "context_values_consumed": False,
+        "nested_loader_results_retained": False,
+        "snapshot_loader_invocation_performed": False,
+        "partial_results_returned": False,
+        "writes_performed": False,
+        "persistence_performed": False,
+        "execution_ready": False,
+        "execution_performed": False,
+        "runner_invoked": False,
         "simulation_performed": False,
         "historical_full_equality_claim": False,
     }
@@ -608,13 +650,27 @@ def create_app(
             payload = await request.json()
         except ValueError:
             return JSONResponse(
-                _strategy_assignment_snapshot_materialization_invalid_json_payload(),
+                _strategy_assignment_snapshot_materialization_validation_invalid_json_payload(),
                 status_code=400,
             )
         return JSONResponse(
             validate_strategy_assignment_snapshot_materialization_input(
                 payload
             ).to_dict()
+        )
+
+    async def strategy_assignment_snapshot_materialization_response(
+        request: Request,
+    ) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_assignment_snapshot_materialization_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(
+            materialize_strategy_assignment_snapshots(payload).to_dict()
         )
 
     async def queue_enqueue_response(request: Request) -> JSONResponse:
@@ -799,7 +855,12 @@ def create_app(
         def strategies_assignment_snapshot_materialization_contract() -> dict[
             str, object
         ]:
-            return strategy_assignment_snapshot_materialization_contract_payload()
+            return {
+                **strategy_assignment_snapshot_materialization_contract_payload(),
+                "operation": (
+                    strategy_assignment_snapshot_materialization_operation_contract_payload()
+                ),
+            }
 
         @app.get(
             "/api/strategies/assignment-snapshot-materialization-validation-contract"
@@ -834,6 +895,15 @@ def create_app(
                     request
                 )
             )
+
+        @app.post(
+            "/api/strategies/assignment-snapshot-materialization",
+            response_model=None,
+        )
+        async def strategies_assignment_snapshot_materialization(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_assignment_snapshot_materialization_response(request)
 
         @app.get("/api/scenarios")
         def scenarios() -> dict[str, object]:
@@ -986,7 +1056,12 @@ def create_app(
         Route(
             "/api/strategies/assignment-snapshot-materialization-contract",
             lambda request: JSONResponse(
-                strategy_assignment_snapshot_materialization_contract_payload()
+                {
+                    **strategy_assignment_snapshot_materialization_contract_payload(),
+                    "operation": (
+                        strategy_assignment_snapshot_materialization_operation_contract_payload()
+                    ),
+                }
             ),
         ),
         Route(
@@ -1003,6 +1078,11 @@ def create_app(
         Route(
             "/api/strategies/assignment-snapshot-materialization-validation",
             strategy_assignment_snapshot_materialization_validation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/assignment-snapshot-materialization",
+            strategy_assignment_snapshot_materialization_response,
             methods=["POST"],
         ),
         Route("/api/scenarios", lambda request: JSONResponse(repository.list_scenarios())),
