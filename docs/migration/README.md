@@ -197,4 +197,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR118-Vertrag fuer zehn katalogisierte VU-Strategien, acht vorhandene
   Snapshottypen und die getrennte Grenze zwischen offenen Feldern und
   Runnerzustand, weiterhin ohne Validierung, Materialisierung oder Simulation
+- `ims_2x_strategy_assignment_vu_snapshot_materialization_validation.md`:
+  PR119-Vertrag und atomare Pruefung fuer explizite VU-Schwellen,
+  Ziehungen und Laufzeitwerte ohne Loader-/Runner-Fallbacks, weiterhin ohne
+  Snapshot-Erzeugung, Speicherung oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

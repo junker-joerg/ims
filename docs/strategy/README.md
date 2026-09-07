@@ -71,3 +71,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   getrennte read-only Bestandsaufnahme der zehn VU-Strategien, acht
   Snapshottypen, offenen Laufzeitfelder und externen Zustaende, weiterhin
   ohne Eingabevalidierung, Materialisierung, Runner oder Simulation.
+- [PR119 VU-Materialisierungseingang](../migration/ims_2x_strategy_assignment_vu_snapshot_materialization_validation.md):
+  versionierter Eingang und atomare Pruefung mit belegten Schwellenquellen,
+  expliziten Ziehungen und gesperrten technischen Fallbacks, weiterhin ohne
+  Snapshot-Erzeugung, Speicherung, Runner oder Simulation.

@@ -82,6 +82,17 @@ from ims.strategies.assignment_vu_snapshot_materialization_contract import (
     strategy_assignment_vu_snapshot_materialization_contract_payload,
     strategy_vu_snapshot_materialization_contract_issues,
 )
+from ims.strategies.assignment_vu_snapshot_materialization_validation import (
+    STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_INPUT_VERSION,
+    STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
+    VU_DRAW_SOURCE_POLICY_ID,
+    VU_FALLBACK_POLICY_ID,
+    VU_THRESHOLD_SOURCE_POLICY_ID,
+    VUSnapshotMaterializationValidationIssue,
+    VUSnapshotMaterializationValidationReport,
+    strategy_assignment_vu_snapshot_materialization_validation_contract_payload,
+    validate_strategy_assignment_vu_snapshot_materialization_input,
+)
 
 from ims.strategies.catalog import (
     STRATEGY_CATALOG_VERSION,
@@ -109,6 +120,8 @@ __all__ = [
     "STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION",
     "STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_CONTRACT_VERSION",
+    "STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_INPUT_VERSION",
+    "STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_TARGETS",
     "STRATEGY_CATALOG_VERSION",
     "STRATEGY_DEFINITIONS",
@@ -119,8 +132,11 @@ __all__ = [
     "STRATEGY_SNAPSHOT_NESTED_VALUE_DEFINITIONS",
     "VN_SNAPSHOT_MATERIALIZATION_RULES",
     "VU_EXTERNAL_STATE_DEPENDENCIES",
+    "VU_DRAW_SOURCE_POLICY_ID",
+    "VU_FALLBACK_POLICY_ID",
     "VU_SNAPSHOT_MATERIALIZATION_TARGETS",
     "VU_SNAPSHOT_RUNTIME_FIELDS",
+    "VU_THRESHOLD_SOURCE_POLICY_ID",
     "StrategyActorType",
     "StrategyAssignmentTargetDefinition",
     "StrategyAssignmentDraft",
@@ -152,6 +168,8 @@ __all__ = [
     "VNSnapshotMaterializationRuleDefinition",
     "VUExternalStateDependencyDefinition",
     "VUSnapshotMaterializationTargetDefinition",
+    "VUSnapshotMaterializationValidationIssue",
+    "VUSnapshotMaterializationValidationReport",
     "VUSnapshotRuntimeFieldDefinition",
     "build_vdefmd6_strategy_assignment_profiles",
     "get_strategy_definition",
@@ -163,6 +181,7 @@ __all__ = [
     "strategy_assignment_draft_contract_payload",
     "strategy_assignment_snapshot_translation_contract_payload",
     "strategy_assignment_vu_snapshot_materialization_contract_payload",
+    "strategy_assignment_vu_snapshot_materialization_validation_contract_payload",
     "strategy_assignment_snapshot_context_contract_payload",
     "strategy_assignment_snapshot_materialization_contract_payload",
     "strategy_assignment_snapshot_materialization_operation_contract_payload",
@@ -176,5 +195,6 @@ __all__ = [
     "translate_strategy_assignment_draft",
     "validate_strategy_assignment_snapshot_context",
     "validate_strategy_assignment_snapshot_materialization_input",
+    "validate_strategy_assignment_vu_snapshot_materialization_input",
     "validate_strategy_assignment_draft",
 ]
