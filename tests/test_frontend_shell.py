@@ -184,6 +184,28 @@ def test_frontend_shell_declares_readonly_snapshot_translation_preview():
     assert "strategy-snapshot-fields" in styles
 
 
+def test_frontend_shell_declares_readonly_snapshot_materialization_preview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert '"/api/strategies/assignment-snapshot-materialization-contract"' in source
+    assert "strategySnapshotMaterializationContract?.operation.materialization_endpoint" in source
+    assert 'strategyWorkbenchView === "snapshots"' in source
+    assert 'data-testid="strategy-snapshot-materialization-preview"' in source
+    assert "VN-Snapshots anzeigen" in source
+    assert "Zuerst einen gueltigen Kontext in VN-Snapshots ueberfuehren" in source
+    assert "StrategySnapshotPreviewValue" in source
+    assert "snapshot_loader_invocation_count" in source
+    assert "persistence_performed" in source
+    assert "execution_ready" in source
+    assert "runner_invoked" in source
+    assert "simulation_performed" in source
+    assert "localStorage" not in source
+    assert "strategy-materialized-list" in styles
+    assert "strategy-materialized-fields" in styles
+    assert "strategy-materialized-boundaries" in styles
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

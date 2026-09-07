@@ -570,13 +570,14 @@ h2 {
 }
 
 .strategy-workbench-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 4px;
   min-width: 0;
   max-width: 100%;
   margin-top: 18px;
   padding: 4px;
-  overflow-x: auto;
+  overflow-x: visible;
   border: 1px solid #d8e2dd;
   border-radius: 6px;
   background: #f3f6f4;
@@ -587,7 +588,8 @@ h2 {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  flex: 1 0 max-content;
+  width: 100%;
+  min-width: 0;
   min-height: 38px;
   padding: 7px 12px;
   border: 1px solid transparent;
@@ -1783,6 +1785,235 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+.strategy-materialization-action {
+  margin-top: 18px;
+  padding: 16px 10px;
+  border-top: 1px solid #b8cbd5;
+  border-bottom: 1px solid #b8cbd5;
+  background: #f3f7f9;
+}
+
+.strategy-materialization-errors {
+  margin-top: 12px;
+}
+
+.strategy-materialized-view .strategy-snapshot-prerequisite > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.strategy-materialized-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 12px 10px;
+  border-top: 1px solid #b8cbd5;
+  border-bottom: 1px solid #b8cbd5;
+  background: #f3f7f9;
+}
+
+.strategy-materialized-list-heading div,
+.strategy-materialized-list-heading strong,
+.strategy-materialized-list-heading span {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.strategy-materialized-list-heading strong {
+  color: #173f55;
+}
+
+.strategy-materialized-list-heading span {
+  margin-top: 4px;
+  color: #66736c;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.strategy-materialized-list-heading > span {
+  flex: 0 0 auto;
+  margin-top: 0;
+  color: #315f76;
+  font-weight: 700;
+}
+
+.strategy-materialized-list {
+  border-bottom: 1px solid #cfdad4;
+}
+
+.strategy-materialized-entry {
+  border-bottom: 1px solid #cfdad4;
+  background: #ffffff;
+}
+
+.strategy-materialized-entry:last-child {
+  border-bottom: 0;
+}
+
+.strategy-materialized-entry summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.strategy-materialized-entry summary::-webkit-details-marker {
+  display: none;
+}
+
+.strategy-materialized-entry[open] summary {
+  border-bottom: 1px solid #cbdbe3;
+  background: #eef4f7;
+}
+
+.strategy-materialized-entry summary div,
+.strategy-materialized-entry summary strong,
+.strategy-materialized-entry summary div > span {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.strategy-materialized-entry summary strong {
+  color: #173f55;
+}
+
+.strategy-materialized-entry summary div > span {
+  margin-top: 4px;
+  color: #66736c;
+  font-size: 0.8rem;
+}
+
+.strategy-materialized-entry summary > span {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border: 1px solid #aac2cf;
+  border-radius: 4px;
+  color: #315f76;
+  background: #f5f9fb;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.strategy-materialized-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 10px;
+  color: #66736c;
+  background: #f8faf9;
+  font-size: 0.78rem;
+}
+
+.strategy-materialized-meta strong {
+  color: #315746;
+}
+
+.strategy-materialized-group + .strategy-materialized-group {
+  border-top: 1px solid #d8e2dd;
+}
+
+.strategy-materialized-group h3 {
+  margin: 0;
+  padding: 10px;
+  color: #315746;
+  background: #f7faf8;
+  font-size: 0.86rem;
+}
+
+.strategy-materialized-fields > div {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.65fr) minmax(280px, 1.35fr);
+  gap: 16px;
+  padding: 11px 10px;
+  border-top: 1px solid #e4ebe7;
+}
+
+.strategy-materialized-fields > div > div:first-child strong,
+.strategy-materialized-fields > div > div:first-child small {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.strategy-materialized-fields > div > div:first-child strong {
+  color: #143b2d;
+  font-size: 0.85rem;
+}
+
+.strategy-materialized-fields > div > div:first-child small {
+  margin-top: 3px;
+  color: #718078;
+  font-size: 0.74rem;
+}
+
+.strategy-materialized-value {
+  min-width: 0;
+  color: #28352f;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.strategy-materialized-object {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.strategy-materialized-object > div {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(180px, 1.3fr);
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #edf1ef;
+}
+
+.strategy-materialized-object > div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.strategy-materialized-object dt {
+  color: #52625a;
+  font-weight: 700;
+}
+
+.strategy-materialized-object dd {
+  min-width: 0;
+  margin: 0;
+}
+
+.strategy-materialized-records {
+  display: grid;
+  gap: 8px;
+}
+
+.strategy-materialized-records > div {
+  padding: 8px;
+  border-left: 3px solid #b8cbd5;
+  background: #f7fafb;
+}
+
+.strategy-materialized-records > div > small {
+  display: block;
+  margin-bottom: 5px;
+  color: #51748a;
+  font-weight: 700;
+}
+
+.strategy-materialized-boundaries {
+  margin-top: 18px;
+  border-bottom: 1px solid #d8e2dd;
+}
+
 .scenario-overview-panel {
   margin-bottom: 18px;
 }
@@ -2628,6 +2859,8 @@ code {
   .strategy-context-period,
   .strategy-context-field,
   .strategy-context-report-boundaries,
+  .strategy-materialized-fields > div,
+  .strategy-materialized-object > div,
   .run-control-summary,
   .run-control-boundary-grid,
   .run-control-detail-grid,
@@ -2712,7 +2945,8 @@ code {
 
   .strategy-draft-validation-action .primary-action,
   .strategy-snapshot-action .primary-action,
-  .strategy-context-action button {
+  .strategy-context-action button,
+  .strategy-materialized-view .strategy-snapshot-prerequisite button {
     width: 100%;
   }
 
@@ -2721,9 +2955,16 @@ code {
   .strategy-snapshot-row-heading,
   .strategy-context-action,
   .strategy-context-entry summary,
-  .strategy-context-source-heading {
+  .strategy-context-source-heading,
+  .strategy-materialized-list-heading,
+  .strategy-materialized-entry summary,
+  .strategy-materialized-view .strategy-snapshot-prerequisite {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .strategy-materialized-list-heading > span {
+    flex: 1 1 auto;
   }
 
   .strategy-snapshot-fields > section + section {

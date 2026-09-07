@@ -63,3 +63,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   atomare Erzeugung typisierter VN-Regel-Snapshots aus einem vollstaendig
   gueltigen Einperiodenkontext, weiterhin ohne Speicherung, Runner oder
   Simulation.
+- [PR117 VN-Snapshots in der Workbench](../migration/ims_2x_strategy_assignment_snapshot_materialization_ui.md):
+  rein lesende Vorschau der vollstaendig materialisierten VN-Snapshots mit
+  fachlich gruppierten Werten, weiterhin ohne Speicherung, Runner oder
+  Simulation.

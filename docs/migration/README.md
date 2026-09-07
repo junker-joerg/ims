@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_strategy_assignment_snapshot_materialization_ui.md`: PR117-
+  Workbench-Vorschau fuer vollstaendig materialisierte VN-Snapshots mit
+  lesbaren Wertgruppen, ohne Speicherung oder Ausfuehrung
 - `ims_2x_strategy_assignment_snapshot_materialization.md`: PR116-
   Materialisierung vollstaendig validierter VN-Einperiodenkontexte in
   typisierte In-Memory-Snapshots, ohne Speicherung oder Ausfuehrung

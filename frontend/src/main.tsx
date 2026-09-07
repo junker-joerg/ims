@@ -127,7 +127,8 @@ type StrategyWorkbenchView =
   | "parameters"
   | "draft"
   | "translation"
-  | "context";
+  | "context"
+  | "snapshots";
 
 type StrategySectorContract = {
   mode: "legacy_two_position_vector";
@@ -460,6 +461,80 @@ type StrategySnapshotContextValidationReport = {
   writes_performed: boolean;
   snapshots_created: boolean;
   execution_performed: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategySnapshotMaterializationOperationContract = {
+  schema_version: string;
+  mode: "strategy_assignment_snapshot_materialization_contract";
+  scope: "validated_vn_single_period_context_to_typed_snapshots";
+  materialization_endpoint: string;
+  validated_rule_count: number;
+  snapshot_collection: "vn_insurance_rule_snapshots";
+  persistence_enabled: boolean;
+  execution_enabled: boolean;
+  runner_enabled: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategySnapshotMaterializationContract = {
+  schema_version: string;
+  operation: StrategySnapshotMaterializationOperationContract;
+};
+
+type StrategyMaterializedVNSnapshotPayload = {
+  policyholder_id: number;
+  rule_kind: string;
+  parameters: unknown;
+  draws: unknown;
+  active_insurer_ids: unknown;
+  initial_decisions: unknown;
+  damage_probabilities: unknown;
+  insurer_inputs: unknown;
+  history: unknown;
+  market_damage_indicator: unknown;
+  change_shock: unknown;
+  information_cost_per_sample: unknown;
+  information_cost_per_insurer: unknown;
+};
+
+type StrategyMaterializedVNSnapshot = {
+  strategy_id: string;
+  snapshot_collection: string;
+  snapshot_type: string;
+  snapshot: StrategyMaterializedVNSnapshotPayload;
+};
+
+type StrategySnapshotMaterializationIssue = StrategyAssignmentDraftValidationIssue & {
+  stage: string;
+};
+
+type StrategySnapshotMaterializationReport = {
+  schema_version: string;
+  mode: "strategy_assignment_snapshot_materialization";
+  status: "ok" | "error";
+  input_valid: boolean;
+  materialization_complete: boolean;
+  draft_id: string | null;
+  period: number | null;
+  expected_snapshot_count: number;
+  snapshot_count: number;
+  snapshot_loader_invocation_count: number;
+  nested_loader_invocation_count: number;
+  issue_count: number;
+  issues: StrategySnapshotMaterializationIssue[];
+  snapshots: StrategyMaterializedVNSnapshot[];
+  context_values_consumed: boolean;
+  nested_loader_results_retained: boolean;
+  snapshot_loader_invocation_performed: boolean;
+  partial_results_returned: boolean;
+  writes_performed: boolean;
+  persistence_performed: boolean;
+  execution_ready: boolean;
+  execution_performed: boolean;
+  runner_invoked: boolean;
   simulation_performed: boolean;
   historical_full_equality_claim: boolean;
 };
@@ -1049,7 +1124,69 @@ const strategySnapshotFieldLabels: Record<string, string> = {
   history: "Versicherungshistorie",
   market_damage_indicator: "Marktschadenindikator",
   information_cost_per_sample: "Informationskosten je Stichprobe",
-  information_cost_per_insurer: "Informationskosten je Versicherer"
+  information_cost_per_insurer: "Informationskosten je Versicherer",
+  insurance_thresholds_normal: "Versicherungsschwellen im Normalzustand",
+  insurance_thresholds_shock: "Versicherungsschwellen im Schockzustand",
+  sample_sizes_normal: "Stichprobengroessen im Normalzustand",
+  sample_sizes_shock: "Stichprobengroessen im Schockzustand",
+  insurer_choice_draws: "Ziehungen fuer die Versichererwahl",
+  status_draws: "Ziehungen fuer den Versicherungsstatus",
+  fallback_insurer_choice_draws: "Fallback-Ziehungen fuer die Versichererwahl",
+  insurer_choice_draws_by_sector: "Ziehungen je historischer Position",
+  advertising_current_sector: "Werbung je historischer Position",
+  premiums_current_sector: "Praemien je historischer Position",
+  period: "Historienperiode",
+  sector_index: "Historische Position",
+  insured: "Versichert",
+  premium: "Praemie"
+};
+
+const strategyMaterializedSnapshotGroups = [
+  {
+    label: "Strategieparameter",
+    fields: ["parameters"]
+  },
+  {
+    label: "Ziehungen und Auswahl",
+    fields: ["draws", "active_insurer_ids", "initial_decisions"]
+  },
+  {
+    label: "Markt und Historie",
+    fields: ["damage_probabilities", "insurer_inputs", "history", "market_damage_indicator"]
+  },
+  {
+    label: "Schock und Kosten",
+    fields: ["change_shock", "information_cost_per_sample", "information_cost_per_insurer"]
+  }
+] as const;
+
+const strategyMaterializedFieldsByRuleKind: Record<string, string[]> = {
+  compulsory: ["draws", "active_insurer_ids"],
+  random: ["parameters", "draws", "active_insurer_ids", "change_shock"],
+  preference: ["parameters", "draws", "damage_probabilities", "insurer_inputs", "change_shock"],
+  search_history: [
+    "parameters",
+    "draws",
+    "active_insurer_ids",
+    "damage_probabilities",
+    "history",
+    "change_shock"
+  ],
+  sample_search: [
+    "parameters",
+    "draws",
+    "insurer_inputs",
+    "market_damage_indicator",
+    "change_shock",
+    "information_cost_per_sample"
+  ],
+  best_info: [
+    "parameters",
+    "insurer_inputs",
+    "market_damage_indicator",
+    "change_shock",
+    "information_cost_per_insurer"
+  ]
 };
 
 const strategySnapshotContextSourceLabels: Record<StrategySnapshotContextSource, string> = {
@@ -1154,6 +1291,63 @@ function shortStrategyFingerprint(fingerprint: string): string {
 
 function strategySnapshotFieldLabel(fieldName: string): string {
   return strategySnapshotFieldLabels[fieldName] ?? fieldName.replaceAll("_", " ");
+}
+
+function strategyMaterializedSnapshotFields(
+  snapshot: StrategyMaterializedVNSnapshotPayload,
+  period: number | null
+): Set<string> {
+  if (period === 1) {
+    return new Set(["initial_decisions"]);
+  }
+  return new Set(strategyMaterializedFieldsByRuleKind[snapshot.rule_kind] ?? []);
+}
+
+function strategySnapshotScalarLabel(value: unknown): string {
+  if (value === null || value === undefined) {
+    return "nicht benoetigt oder nicht belegt";
+  }
+  if (typeof value === "boolean") {
+    return value ? "Ja" : "Nein";
+  }
+  if (typeof value === "number") {
+    return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 6 }).format(value);
+  }
+  return String(value);
+}
+
+function StrategySnapshotPreviewValue({ value }: { value: unknown }) {
+  if (!Array.isArray(value) && (value === null || typeof value !== "object")) {
+    return <span>{strategySnapshotScalarLabel(value)}</span>;
+  }
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return <span>keine Eintraege</span>;
+    }
+    if (value.every((entry) => !Array.isArray(entry) && (entry === null || typeof entry !== "object"))) {
+      return <span>{value.map(strategySnapshotScalarLabel).join(" · ")}</span>;
+    }
+    return (
+      <div className="strategy-materialized-records">
+        {value.map((entry, index) => (
+          <div key={index}>
+            <small>{Array.isArray(entry) ? `Position ${index + 1}` : `Eintrag ${index + 1}`}</small>
+            <StrategySnapshotPreviewValue value={entry} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <dl className="strategy-materialized-object">
+      {Object.entries(value as Record<string, unknown>).map(([fieldName, nestedValue]) => (
+        <div key={fieldName}>
+          <dt>{strategySnapshotFieldLabel(fieldName)}</dt>
+          <dd><StrategySnapshotPreviewValue value={nestedValue} /></dd>
+        </div>
+      ))}
+    </dl>
+  );
 }
 
 function strategySnapshotContextShapeLabel(
@@ -1354,6 +1548,18 @@ function App() {
   const [strategySnapshotContextValidationState, setStrategySnapshotContextValidationState] =
     useState<DetailState>("idle");
   const [strategySnapshotContextValidationError, setStrategySnapshotContextValidationError] =
+    useState<string | null>(null);
+  const [strategySnapshotMaterializationContract, setStrategySnapshotMaterializationContract] =
+    useState<StrategySnapshotMaterializationContract | null>(null);
+  const [strategySnapshotMaterializationContractState, setStrategySnapshotMaterializationContractState] =
+    useState<DetailState>("loading");
+  const [strategySnapshotMaterializationContractError, setStrategySnapshotMaterializationContractError] =
+    useState<string | null>(null);
+  const [strategySnapshotMaterialization, setStrategySnapshotMaterialization] =
+    useState<StrategySnapshotMaterializationReport | null>(null);
+  const [strategySnapshotMaterializationState, setStrategySnapshotMaterializationState] =
+    useState<DetailState>("idle");
+  const [strategySnapshotMaterializationError, setStrategySnapshotMaterializationError] =
     useState<string | null>(null);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
@@ -1809,6 +2015,41 @@ function App() {
   useEffect(() => {
     let active = true;
 
+    async function loadStrategySnapshotMaterializationContract() {
+      setStrategySnapshotMaterializationContractState("loading");
+      setStrategySnapshotMaterializationContractError(null);
+      try {
+        const response = await fetch(
+          "/api/strategies/assignment-snapshot-materialization-contract"
+        );
+        if (!response.ok) {
+          throw new Error("VN-Snapshotvertrag nicht erreichbar");
+        }
+        const payload = (await response.json()) as StrategySnapshotMaterializationContract;
+        if (active) {
+          setStrategySnapshotMaterializationContract(payload);
+          setStrategySnapshotMaterializationContractState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategySnapshotMaterializationContract(null);
+          setStrategySnapshotMaterializationContractError(
+            error instanceof Error ? error.message : "VN-Snapshotvertrag nicht erreichbar"
+          );
+          setStrategySnapshotMaterializationContractState("error");
+        }
+      }
+    }
+
+    loadStrategySnapshotMaterializationContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
     async function loadQueueDetail() {
       if (!selectedQueueId) {
         setQueueDetail(null);
@@ -2086,10 +2327,34 @@ function App() {
     strategySnapshotContextValidationState !== "loading"
   );
 
+  const strategySnapshotMaterializationStatusLabel =
+    strategySnapshotMaterializationState === "error"
+      ? "nicht erreichbar"
+      : strategySnapshotMaterializationState === "loading"
+        ? "wird erzeugt"
+        : strategySnapshotMaterialization?.materialization_complete
+          ? "vollstaendig"
+          : strategySnapshotMaterialization?.issue_count
+            ? "Eingaben unvollstaendig"
+            : "noch keine Vorschau";
+  const canMaterializeStrategySnapshots = Boolean(
+    strategySnapshotMaterializationContract &&
+    strategySnapshotMaterializationContractState === "ready" &&
+    strategySnapshotContextValidation?.valid &&
+    strategySnapshotMaterializationState !== "loading"
+  );
+
+  const invalidateStrategySnapshotMaterialization = () => {
+    setStrategySnapshotMaterialization(null);
+    setStrategySnapshotMaterializationState("idle");
+    setStrategySnapshotMaterializationError(null);
+  };
+
   const invalidateStrategySnapshotContextValidation = () => {
     setStrategySnapshotContextValidation(null);
     setStrategySnapshotContextValidationState("idle");
     setStrategySnapshotContextValidationError(null);
+    invalidateStrategySnapshotMaterialization();
   };
 
   const discardStrategySnapshotContext = () => {
@@ -2386,6 +2651,7 @@ function App() {
     if (!draft || !context || !endpoint || !canValidateStrategySnapshotContext) {
       return;
     }
+    invalidateStrategySnapshotMaterialization();
     setStrategySnapshotContextValidation(null);
     setStrategySnapshotContextValidationState("loading");
     setStrategySnapshotContextValidationError(null);
@@ -2407,6 +2673,40 @@ function App() {
         error instanceof Error ? error.message : "Snapshot-Kontext konnte nicht geprueft werden"
       );
       setStrategySnapshotContextValidationState("error");
+    }
+  };
+
+  const materializeStrategySnapshots = async () => {
+    const draft = buildStrategyDraftDocument();
+    const context = buildStrategySnapshotContextDocument();
+    const endpoint = strategySnapshotMaterializationContract?.operation.materialization_endpoint;
+    if (!draft || !context || !endpoint || !canMaterializeStrategySnapshots) {
+      return;
+    }
+    setStrategySnapshotMaterialization(null);
+    setStrategySnapshotMaterializationState("loading");
+    setStrategySnapshotMaterializationError(null);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ draft, context })
+      });
+      if (!response.ok) {
+        throw new Error("VN-Snapshots konnten nicht erzeugt werden");
+      }
+      const payload = (await response.json()) as StrategySnapshotMaterializationReport;
+      setStrategySnapshotMaterialization(payload);
+      setStrategySnapshotMaterializationState("ready");
+      if (payload.materialization_complete) {
+        setStrategyWorkbenchView("snapshots");
+      }
+    } catch (error) {
+      setStrategySnapshotMaterialization(null);
+      setStrategySnapshotMaterializationError(
+        error instanceof Error ? error.message : "VN-Snapshots konnten nicht erzeugt werden"
+      );
+      setStrategySnapshotMaterializationState("error");
     }
   };
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
@@ -3412,7 +3712,7 @@ function App() {
               <LockKeyhole size={16} aria-hidden="true" />
               {strategyWorkbenchView === "draft"
                 ? "Lokal, nicht gespeichert"
-                : strategyWorkbenchView === "translation"
+                : strategyWorkbenchView === "translation" || strategyWorkbenchView === "snapshots"
                   ? "Nur Vorschau"
                   : strategyWorkbenchView === "context"
                     ? "Lokal, nur Pruefung"
@@ -3510,6 +3810,16 @@ function App() {
             >
               <Database size={17} aria-hidden="true" />
               Kontext
+            </button>
+            <button
+              className={strategyWorkbenchView === "snapshots" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "snapshots"}
+              onClick={() => setStrategyWorkbenchView("snapshots")}
+            >
+              <Eye size={17} aria-hidden="true" />
+              VN-Snapshots
             </button>
           </div>
 
@@ -3804,6 +4114,151 @@ function App() {
                 </span>
               </div>
             </div>
+          ) : strategyWorkbenchView === "snapshots" ? (
+            strategySnapshotMaterializationContractState === "error" ? (
+              <div className="empty-state" role="alert">
+                {strategySnapshotMaterializationContractError}
+              </div>
+            ) : strategySnapshotMaterializationContractState === "loading" ? (
+              <div className="empty-state">VN-Snapshotvertrag wird geladen</div>
+            ) : (
+              <div
+                className="strategy-contract-view strategy-materialized-view"
+                data-testid="strategy-snapshot-materialization-preview"
+              >
+                <div className="strategy-contract-summary" aria-label="VN-Snapshot-Vorschau-Status">
+                  <div>
+                    <span>Materialisierung</span>
+                    <strong>{strategySnapshotMaterializationContract?.operation.schema_version ?? "-"}</strong>
+                  </div>
+                  <div>
+                    <span>Periode</span>
+                    <strong>{strategySnapshotMaterialization?.period ?? "noch offen"}</strong>
+                  </div>
+                  <div>
+                    <span>VN-Snapshots</span>
+                    <strong>
+                      {strategySnapshotMaterialization
+                        ? `${strategySnapshotMaterialization.snapshot_count} / ${strategySnapshotMaterialization.expected_snapshot_count}`
+                        : "noch keine"}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Status</span>
+                    <strong>{strategySnapshotMaterializationStatusLabel}</strong>
+                  </div>
+                </div>
+
+                <div className="strategy-boundary-band">
+                  <div>
+                    <strong>Typisierte Eingabevorschau fuer eine VN-Regelperiode</strong>
+                    <span>
+                      Die Ansicht zeigt nur vollstaendig erzeugte In-Memory-Snapshots. Sie speichert nichts und fuehrt keine Regel aus.
+                    </span>
+                  </div>
+                  <span className="readonly-marker">
+                    <LockKeyhole size={16} aria-hidden="true" />
+                    Vorschau ohne Ausfuehrung
+                  </span>
+                </div>
+
+                {!strategySnapshotMaterialization?.materialization_complete ? (
+                  <div className="strategy-snapshot-prerequisite">
+                    <Database size={20} aria-hidden="true" />
+                    <div>
+                      <strong>Zuerst einen gueltigen Kontext in VN-Snapshots ueberfuehren</strong>
+                      <span>Die Vorschau entsteht im Kontext-Tab nach der serverseitigen Pruefung.</span>
+                    </div>
+                    <button
+                      className="secondary-action"
+                      type="button"
+                      onClick={() => setStrategyWorkbenchView("context")}
+                    >
+                      <Database size={17} aria-hidden="true" />
+                      Zum Kontext
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="strategy-materialized-list-heading">
+                      <div>
+                        <strong>{strategySnapshotMaterialization.snapshot_count} VN-Snapshots vollstaendig erzeugt</strong>
+                        <span>
+                          {strategySnapshotMaterialization.snapshot_loader_invocation_count} Snapshot-Loader und {strategySnapshotMaterialization.nested_loader_invocation_count} verschachtelte Loader wurden aufgerufen.
+                        </span>
+                      </div>
+                      <span>Entwurf {strategySnapshotMaterialization.draft_id}</span>
+                    </div>
+                    <div className="strategy-materialized-list" aria-label="Materialisierte VN-Snapshots">
+                      {strategySnapshotMaterialization.snapshots.map((entry, index) => {
+                        const strategy = strategyDefinitionById.get(entry.strategy_id);
+                        const visibleFields = strategyMaterializedSnapshotFields(
+                          entry.snapshot,
+                          strategySnapshotMaterialization.period
+                        );
+                        return (
+                          <details
+                            className="strategy-materialized-entry"
+                            open={index === 0}
+                            key={`${entry.strategy_id}-${entry.snapshot.policyholder_id}`}
+                          >
+                            <summary>
+                              <div>
+                                <strong>
+                                  VN {entry.snapshot.policyholder_id} · {strategy?.display_name ?? entry.strategy_id}
+                                </strong>
+                                <span>{entry.strategy_id} · {entry.snapshot.rule_kind}</span>
+                              </div>
+                              <span>typisiert</span>
+                            </summary>
+                            <div className="strategy-materialized-entry-body">
+                              <div className="strategy-materialized-meta">
+                                <span>Snapshottyp <strong>{entry.snapshot_type}</strong></span>
+                                <span>Sammlung <strong>{entry.snapshot_collection}</strong></span>
+                              </div>
+                              {strategyMaterializedSnapshotGroups.map((group) => {
+                                const fields = group.fields.filter((fieldName) => visibleFields.has(fieldName));
+                                if (fields.length === 0) {
+                                  return null;
+                                }
+                                return (
+                                  <section className="strategy-materialized-group" key={group.label}>
+                                    <h3>{group.label}</h3>
+                                    <div className="strategy-materialized-fields">
+                                      {fields.map((fieldName) => (
+                                        <div key={fieldName}>
+                                          <div>
+                                            <strong>{strategySnapshotFieldLabel(fieldName)}</strong>
+                                            <small>{fieldName}</small>
+                                          </div>
+                                          <div className="strategy-materialized-value">
+                                            <StrategySnapshotPreviewValue
+                                              value={entry.snapshot[fieldName as keyof StrategyMaterializedVNSnapshotPayload]}
+                                            />
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </section>
+                                );
+                              })}
+                            </div>
+                          </details>
+                        );
+                      })}
+                    </div>
+                    <div className="strategy-context-report-boundaries strategy-materialized-boundaries">
+                      <span>Teilresultate: {strategySnapshotMaterialization.partial_results_returned ? "ja" : "nein"}</span>
+                      <span>Speicherung: {strategySnapshotMaterialization.persistence_performed ? "ja" : "nein"}</span>
+                      <span>Ausfuehrungsbereit: {strategySnapshotMaterialization.execution_ready ? "ja" : "nein"}</span>
+                      <span>Runner: {strategySnapshotMaterialization.runner_invoked ? "ja" : "nein"}</span>
+                      <span>Ausfuehrung: {strategySnapshotMaterialization.execution_performed ? "ja" : "nein"}</span>
+                      <span>Simulation: {strategySnapshotMaterialization.simulation_performed ? "ja" : "nein"}</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            )
           ) : strategyWorkbenchView === "context" ? (
             strategySnapshotContextContractState === "error" ? (
               <div className="empty-state" role="alert">{strategySnapshotContextContractError}</div>
@@ -3839,7 +4294,7 @@ function App() {
                   <div>
                     <strong>Einperiodenkontext im aktuellen Browserfenster</strong>
                     <span>
-                      Werte werden nur formal geprueft. Sie werden nicht verwendet und nicht in Snapshots ueberfuehrt.
+                      Die allgemeine Pruefung verwendet keine Werte. Erst die ausdrueckliche Vorschau erzeugt VN-Snapshots im Speicher.
                     </span>
                   </div>
                   <span className="readonly-marker">
@@ -4139,6 +4594,54 @@ function App() {
                         </div>
                       ) : null}
                     </section>
+
+                    {strategySnapshotContextValidation?.valid ? (
+                      <section
+                        className="strategy-context-action strategy-materialization-action"
+                        aria-label="VN-Snapshot-Vorschau erzeugen"
+                      >
+                        <div>
+                          <strong>VN-Snapshots im Speicher erzeugen</strong>
+                          <span>
+                            Prueft die strengeren VN-Wertformen und zeigt nur bei vollstaendigem Erfolg eine Vorschau.
+                          </span>
+                        </div>
+                        <button
+                          className="primary-action"
+                          type="button"
+                          disabled={!canMaterializeStrategySnapshots}
+                          onClick={materializeStrategySnapshots}
+                        >
+                          <Eye size={17} aria-hidden="true" />
+                          {strategySnapshotMaterializationState === "loading"
+                            ? "Snapshots werden erzeugt"
+                            : "VN-Snapshots anzeigen"}
+                        </button>
+                      </section>
+                    ) : null}
+                    {strategySnapshotMaterializationError ? (
+                      <div className="empty-state" role="alert">
+                        {strategySnapshotMaterializationError}
+                      </div>
+                    ) : strategySnapshotMaterialization && !strategySnapshotMaterialization.materialization_complete ? (
+                      <div className="strategy-draft-report invalid strategy-materialization-errors" role="alert">
+                        <div className="strategy-draft-report-summary">
+                          <CircleAlert size={20} aria-hidden="true" />
+                          <div>
+                            <strong>VN-Snapshots noch nicht erzeugt</strong>
+                            <span>Die strengere Materialisierungspruefung meldet {strategySnapshotMaterialization.issue_count} Fehler.</span>
+                          </div>
+                        </div>
+                        <div className="strategy-draft-issues">
+                          {strategySnapshotMaterialization.issues.map((issue) => (
+                            <div key={`${issue.stage}-${issue.path}-${issue.code}`}>
+                              <strong>{issue.path}</strong>
+                              <span>{issue.message}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
                   </>
                 )}
               </div>
