@@ -193,4 +193,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   `imsvusk1.dat` gegen fuenf getrennte 100-Perioden-Laeufe, kumulativ 5/15
   Tabellen und 1.300/6.300 technisch angeschlossene Ergebniszeilen
 - `vu14_pre_shock_projection.md`: PR-76-Projektion fuer VU14/Perioden 1-49 mit Regeltreffern bis 16 und offenem VN-/Schaden-/Settlement-Pfad
+- `ims_2x_strategy_assignment_vu_snapshot_materialization_contract.md`:
+  PR118-Vertrag fuer zehn katalogisierte VU-Strategien, acht vorhandene
+  Snapshottypen und die getrennte Grenze zwischen offenen Feldern und
+  Runnerzustand, weiterhin ohne Validierung, Materialisierung oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

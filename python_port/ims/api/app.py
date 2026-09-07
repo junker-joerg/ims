@@ -58,6 +58,7 @@ from ims.strategies import (
     strategy_assignment_snapshot_materialization_operation_contract_payload,
     strategy_assignment_snapshot_materialization_validation_contract_payload,
     strategy_assignment_snapshot_translation_contract_payload,
+    strategy_assignment_vu_snapshot_materialization_contract_payload,
     strategy_catalog_payload,
     translate_strategy_assignment_draft,
     validate_strategy_assignment_draft,
@@ -862,6 +863,12 @@ def create_app(
                 ),
             }
 
+        @app.get("/api/strategies/assignment-vu-snapshot-materialization-contract")
+        def strategies_assignment_vu_snapshot_materialization_contract() -> dict[
+            str, object
+        ]:
+            return strategy_assignment_vu_snapshot_materialization_contract_payload()
+
         @app.get(
             "/api/strategies/assignment-snapshot-materialization-validation-contract"
         )
@@ -1062,6 +1069,12 @@ def create_app(
                         strategy_assignment_snapshot_materialization_operation_contract_payload()
                     ),
                 }
+            ),
+        ),
+        Route(
+            "/api/strategies/assignment-vu-snapshot-materialization-contract",
+            lambda request: JSONResponse(
+                strategy_assignment_vu_snapshot_materialization_contract_payload()
             ),
         ),
         Route(

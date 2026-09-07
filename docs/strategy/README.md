@@ -67,3 +67,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   rein lesende Vorschau der vollstaendig materialisierten VN-Snapshots mit
   fachlich gruppierten Werten, weiterhin ohne Speicherung, Runner oder
   Simulation.
+- [PR118 VU-Snapshot-Materialisierungsbestand](../migration/ims_2x_strategy_assignment_vu_snapshot_materialization_contract.md):
+  getrennte read-only Bestandsaufnahme der zehn VU-Strategien, acht
+  Snapshottypen, offenen Laufzeitfelder und externen Zustaende, weiterhin
+  ohne Eingabevalidierung, Materialisierung, Runner oder Simulation.

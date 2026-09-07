@@ -238,3 +238,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `../migration/run_control_execution_result_view.md`: PR-47-read-only
   Ergebnisanzeige fuer persistierte Run-Control-Adapterresultate, weiterhin
   ohne Upload, UI-Startbutton, Queue-Worker, Adapterstart oder Simulation.
+- `ims_2x_strategy_assignment_vu_snapshot_materialization_contract_plan.md`:
+  PR118-Plan fuer die getrennte Bestandsaufnahme der zehn VU-Strategien,
+  acht Snapshottypen, offenen Felder und Laufzeitzustaende, weiterhin ohne
+  Eingabevalidierung, Materialisierung, Runner oder Simulation.
