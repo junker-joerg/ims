@@ -63,8 +63,8 @@ keinen Runner.
 
 ## Naechster Schritt
 
-PR125 hat einen zustandslosen, atomaren Validator fuer den gemeinsamen
-Kandidateneingang eingefuehrt. PR126 darf als naechstes nur einen gueltigen
-Eingang verwenden, das bekannte lokale Szenarioprofil serverseitig aufloesen,
-VU und VN neu materialisieren sowie ein kanonisches `LoadedScenario` samt
-Digest bauen. Speicherung und Ausfuehrung bleiben gesperrt.
+PR126 loest das bekannte lokale Szenarioprofil serverseitig auf,
+materialisiert VU und VN neu und baut ein kanonisches `LoadedScenario` samt
+Digest. PR127 ergaenzt als naechstes eine gesondert freizugebende,
+unveraenderliche Kandidatenablage mit erneuter Digest-Pruefung. Ausfuehrung
+und Runner bleiben gesperrt.

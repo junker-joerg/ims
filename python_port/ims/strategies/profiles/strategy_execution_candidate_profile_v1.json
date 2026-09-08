@@ -1,0 +1,67 @@
+{
+  "schema_version": "ims.strategy-execution-scenario-profile.v1",
+  "profile_id": "synthetic-joint-single-period-v1",
+  "base_model": "Vdefmd6",
+  "scope": "single_period_joint_vu_vn_market_ground_state",
+  "period": 2,
+  "context": {
+    "period": 2,
+    "logtime": 0,
+    "max_periods": 100,
+    "run_index": 0,
+    "rng_seed": 0
+  },
+  "bav": {
+    "entity_id": 1,
+    "name": "Synthetische BAV"
+  },
+  "insurers": [
+    {
+      "entity_id": 1,
+      "name": "Synthetisches VU 1",
+      "active": true,
+      "active_prev": true,
+      "rule_id": 1,
+      "rule_class": 1,
+      "premiums_prev": 10.0,
+      "advertising_prev": 1.0,
+      "reserves_prev": 100.0,
+      "premiums_prev_sector": [5.0, 5.0],
+      "advertising_prev_sector": [0.5, 0.5],
+      "reserves_prev_sector": [50.0, 50.0],
+      "policyholders_prev": 1.0,
+      "policyholders_prev_sector": [1.0, 0.0],
+      "premiums_current": 10.0,
+      "advertising_current": 1.0,
+      "premiums_current_sector": [5.0, 5.0],
+      "advertising_current_sector": [0.5, 0.5],
+      "reserves_current": [50.0, 50.0],
+      "policyholders_current": 1.0,
+      "policyholders_current_sector": [1.0, 0.0],
+      "claims_count_current": [0, 0],
+      "claims_sum_current": [0.0, 0.0]
+    }
+  ],
+  "policyholders": [
+    {
+      "entity_id": 1,
+      "name": "Synthetisches VN 1",
+      "insurer_id": 1,
+      "active": true,
+      "active_prev": true,
+      "rule_id": 1,
+      "rule_class": 1,
+      "insured_prev": 0.5,
+      "insured_prev_sector": [0.25, 0.25],
+      "insured_current": 0.5,
+      "insured_current_sector": [0.25, 0.25],
+      "chosen_insurer_current": 1,
+      "chosen_insurer_sector_current": [1, 1],
+      "paid_premium_current": [0.0, 0.0],
+      "self_damage_current": [0.0, 0.0],
+      "claim_sum_current": [0.0, 0.0],
+      "end_wealth_sector_current": [50.0, 50.0],
+      "end_wealth_current": 100.0
+    }
+  ]
+}

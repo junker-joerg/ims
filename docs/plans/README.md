@@ -271,3 +271,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   die zustandslose atomare Pruefung eines gemeinsamen Entwurfs und Kontexts,
   der VU-Herkunft, einer lokalen Profilreferenz und expliziter VN-
   Prozesseingaenge, weiterhin ohne Kandidatenbau, Digest oder Runner.
+- `ims_2x_strategy_execution_candidate_build_plan.md`: PR126-Plan fuer die
+  serverseitige Aufloesung eines registrierten Marktprofils, erneute VU-/VN-
+  Materialisierung und den kanonischen fluechtigen Kandidaten samt Digest,
+  weiterhin ohne Speicherung, Run-Control, Runner oder Simulation.

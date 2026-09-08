@@ -79,7 +79,7 @@ STRATEGY_EXECUTION_CANDIDATE_SECTIONS = (
         section_id="identity",
         fields=("candidate_id", "draft_id", "period", "content_digest"),
         source="server_side_candidate_builder",
-        availability="planned_pr126",
+        availability="implemented_pr126",
     ),
     StrategyExecutionCandidateSectionDefinition(
         section_id="contract_versions",
@@ -110,31 +110,31 @@ STRATEGY_EXECUTION_CANDIDATE_SECTIONS = (
             "scenario_profile_id",
         ),
         source="original_versioned_documents_not_browser_materialization_reports",
-        availability="validation_planned_pr125",
+        availability="validated_pr125_built_pr126",
     ),
     StrategyExecutionCandidateSectionDefinition(
         section_id="market_ground_state",
         fields=("simulation_context", "bav", "insurers", "policyholders"),
         source="server_side_known_local_scenario_profile",
-        availability="resolution_planned_pr126",
+        availability="implemented_pr126",
     ),
     StrategyExecutionCandidateSectionDefinition(
         section_id="vu_rule_snapshots",
         fields=("collections",),
         source="server_side_pr121_rematerialization",
-        availability="planned_pr126",
+        availability="implemented_pr126",
     ),
     StrategyExecutionCandidateSectionDefinition(
         section_id="vn_rule_snapshots",
         fields=("collections",),
         source="server_side_pr116_rematerialization",
-        availability="planned_pr126",
+        availability="implemented_pr126",
     ),
     StrategyExecutionCandidateSectionDefinition(
         section_id="vn_process_snapshots",
         fields=("collections", "explicit_draw_provenance"),
         source="separate_explicit_vn_process_input",
-        availability="input_contract_planned_pr125",
+        availability="validated_pr125_built_pr126",
     ),
     StrategyExecutionCandidateSectionDefinition(
         section_id="execution_boundaries",
@@ -202,18 +202,6 @@ STRATEGY_EXECUTION_CANDIDATE_COLLECTIONS = (
 
 STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS = (
     StrategyExecutionCandidateOpenRequirement(
-        requirement_id="server_side_scenario_profile_resolution",
-        planned_pr=126,
-        blocks=("market_ground_state", "candidate_build"),
-        decision="resolve_only_a_known_local_profile_by_stable_id",
-    ),
-    StrategyExecutionCandidateOpenRequirement(
-        requirement_id="server_side_rematerialization_and_digest",
-        planned_pr=126,
-        blocks=("candidate_identity", "canonical_loaded_scenario"),
-        decision="rematerialize_from_sources_and_digest_the_canonical_candidate",
-    ),
-    StrategyExecutionCandidateOpenRequirement(
         requirement_id="immutable_candidate_persistence",
         planned_pr=127,
         blocks=("candidate_storage",),
@@ -235,18 +223,18 @@ STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS = (
 
 
 def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
-    """Beschreibt den PR124-Kandidatenvertrag ohne Eingabe oder Ausfuehrung."""
+    """Beschreibt den Kandidatenvertrag und seine geschlossenen Ausfuehrungsgrenzen."""
 
     boundary_flags = {
         "browser_materialization_report_authoritative": False,
         "candidate_input_validation_enabled": True,
-        "scenario_profile_resolution_enabled": False,
-        "server_side_rematerialization_enabled": False,
-        "digest_calculation_enabled": False,
-        "candidate_creation_enabled": False,
+        "scenario_profile_resolution_enabled": True,
+        "server_side_rematerialization_enabled": True,
+        "digest_calculation_enabled": True,
+        "candidate_creation_enabled": True,
         "candidate_persistence_enabled": False,
         "run_control_enabled": False,
-        "snapshot_loader_invocation_enabled": False,
+        "snapshot_loader_invocation_enabled": True,
         "runner_enabled": False,
         "execution_enabled": False,
         "carryover_enabled": False,
@@ -269,6 +257,12 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         ),
         "candidate_validation_endpoint": (
             "/api/strategies/execution-candidate-validation"
+        ),
+        "candidate_build_contract_endpoint": (
+            "/api/strategies/execution-candidate-build-contract"
+        ),
+        "candidate_build_endpoint": (
+            "/api/strategies/execution-candidate-build"
         ),
         "execution_anchor": {
             "module": "ims.engine.explicit_period_runner",

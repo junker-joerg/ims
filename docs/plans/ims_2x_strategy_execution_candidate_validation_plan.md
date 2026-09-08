@@ -97,8 +97,8 @@ behalten; Snapshotloader werden nicht aufgerufen.
 
 ## Naechster Schritt
 
-PR126 darf ausschliesslich einen vollstaendig gueltigen PR125-Eingang nehmen,
-das referenzierte bekannte lokale Szenarioprofil serverseitig aufloesen, VN
-und VU erneut materialisieren und daraus ein kanonisches `LoadedScenario`
-samt stabilem Inhaltsdigest bauen. Runner, Speicherung und Run-Control bleiben
-weiterhin gesperrt.
+PR126 nimmt ausschliesslich einen vollstaendig gueltigen PR125-Eingang,
+loest das referenzierte bekannte lokale Szenarioprofil serverseitig auf,
+materialisiert VN und VU erneut und baut daraus ein kanonisches
+`LoadedScenario` samt stabilem Inhaltsdigest. PR127 ergaenzt als naechstes
+eine gesondert freizugebende Ablage; Runner und Run-Control bleiben gesperrt.

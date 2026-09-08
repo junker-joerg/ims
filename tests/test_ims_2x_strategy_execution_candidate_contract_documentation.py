@@ -29,7 +29,7 @@ def test_pr124_documentation_records_sources_collections_and_boundaries() -> Non
     assert "historische RNG- oder Vollgleichheitsbehauptung" in plan
 
 
-def test_pr124_documentation_is_indexed_and_names_pr125() -> None:
+def test_pr124_documentation_is_indexed_and_names_current_next_pr() -> None:
     plan_index = (ROOT / "docs" / "plans" / "README.md").read_text(
         encoding="utf-8"
     )
@@ -43,4 +43,4 @@ def test_pr124_documentation_is_indexed_and_names_pr125() -> None:
     assert PLAN.name in plan_index
     assert MIGRATION.name in migration_index
     assert MIGRATION.name in strategy_index
-    assert "PR125" in PLAN.read_text(encoding="utf-8")
+    assert "PR127" in PLAN.read_text(encoding="utf-8")

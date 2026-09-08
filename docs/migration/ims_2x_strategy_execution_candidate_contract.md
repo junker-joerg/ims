@@ -55,27 +55,30 @@ Der spaetere Anschlussanker
 nur als `planned_only` benannt. Daraus folgt noch kein Runneraufruf und keine
 vollstaendige historische Simulation.
 
-## Offene Anschlussarbeiten
+## Anschlussfortschritt
 
-- PR125: atomare Eingabevalidierung ohne Teilkandidat;
-- PR126: bekanntes lokales Szenarioprofil aufloesen, serverseitig neu
-  materialisieren und Digest berechnen;
+- PR125 (umgesetzt): atomare Eingabevalidierung ohne Teilkandidat;
+- PR126 (umgesetzt): bekanntes lokales Szenarioprofil aufloesen,
+  serverseitig neu materialisieren und Digest berechnen;
 - PR127: Kandidat nach eigener Freigabe unveraenderlich speichern;
 - PR129: Kandidaten-ID und Digest an Run-Control anbinden;
 - PR130: Einperioden-Wirkungsprobe auf einer isolierten Zustandskopie.
 
 ## API und Schutzgrenze
 
-`GET /api/strategies/execution-candidate-contract` liefert nur die
-Vertragsbeschreibung. `POST`, `PUT` und `DELETE` sind nicht zugelassen.
+`GET /api/strategies/execution-candidate-contract` liefert weiterhin nur die
+Vertragsbeschreibung. `POST`, `PUT` und `DELETE` sind an diesem Endpunkt nicht
+zugelassen. PR125 und PR126 besitzen eigene Validierungs- und Bauendpunkte.
 
-Kandidateneingabe, Validierung, Szenarioprofil-Aufloesung,
-Neumaterialisierung, Digest, Kandidatenerzeugung, Speicherung, Run-Control,
-Runner, Carryover, Ausgabedateien und Legacy-Vergleich bleiben deaktiviert.
-Der Schritt startet keine Simulation und behauptet weder historische
-RNG-Gleichheit noch historische Vollgleichheit.
+PR126 hat Eingabevalidierung, registrierte Szenarioprofil-Aufloesung,
+Neumaterialisierung, Digest und fluechtige Kandidatenerzeugung umgesetzt.
+Speicherung, Run-Control, Runner, Carryover, Ausgabedateien und
+Legacy-Vergleich bleiben deaktiviert. Der Schritt startet keine Simulation
+und behauptet weder historische RNG-Gleichheit noch historische
+Vollgleichheit.
 
 ## Naechster Schritt
 
-PR125 darf die hier beschriebene gemeinsame Eingabe atomar pruefen. Auch ein
-gueltiger Bericht ist dann noch kein Kandidat und keine Ausfuehrungsfreigabe.
+PR127 darf einen vollstaendigen PR126-Kandidaten nach eigener Freigabe
+unveraenderlich speichern und muss seinen Digest erneut pruefen. Auch ein
+gespeicherter Kandidat ist noch keine Ausfuehrungsfreigabe.

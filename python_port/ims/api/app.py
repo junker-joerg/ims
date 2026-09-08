@@ -53,9 +53,12 @@ from ims.strategies import (
     STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VERSION,
     STRATEGY_ASSIGNMENT_VU_SNAPSHOT_STATE_VALIDATION_VERSION,
+    STRATEGY_EXECUTION_CANDIDATE_BUILD_VERSION,
     STRATEGY_EXECUTION_CANDIDATE_INPUT_VERSION,
     STRATEGY_EXECUTION_CANDIDATE_VALIDATION_VERSION,
     STRATEGY_EXECUTION_CANDIDATE_VERSION,
+    build_default_strategy_execution_scenario_profiles,
+    build_strategy_execution_candidate,
     materialize_strategy_assignment_snapshots,
     materialize_strategy_assignment_vu_snapshots,
     strategy_assignment_contract_payload,
@@ -71,6 +74,8 @@ from ims.strategies import (
     strategy_assignment_vu_snapshot_state_contract_payload,
     strategy_catalog_payload,
     strategy_execution_candidate_contract_payload,
+    strategy_execution_candidate_build_contract_payload,
+    strategy_execution_scenario_profile_root,
     strategy_execution_candidate_validation_contract_payload,
     translate_strategy_assignment_draft,
     validate_strategy_assignment_draft,
@@ -442,6 +447,58 @@ def _strategy_execution_candidate_validation_invalid_json_payload() -> dict[
         "digest_calculation_performed": False,
         "candidate_created": False,
         "candidate_persisted": False,
+        "run_control_connected": False,
+        "runner_invocation_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_rng_equality_claim": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_execution_candidate_build_invalid_json_payload() -> dict[
+    str, object
+]:
+    return {
+        "schema_version": STRATEGY_EXECUTION_CANDIDATE_BUILD_VERSION,
+        "input_schema_version": STRATEGY_EXECUTION_CANDIDATE_INPUT_VERSION,
+        "candidate_schema_version": STRATEGY_EXECUTION_CANDIDATE_VERSION,
+        "mode": "strategy_execution_candidate_build",
+        "status": "error",
+        "build_complete": False,
+        "input_valid": False,
+        "draft_id": None,
+        "period": None,
+        "profile_id": None,
+        "profile_content_digest": None,
+        "expected_vu_snapshot_count": 0,
+        "vu_snapshot_count": 0,
+        "expected_vn_snapshot_count": 0,
+        "vn_snapshot_count": 0,
+        "vn_process_snapshot_count": 0,
+        "rematerialization_snapshot_loader_invocation_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "stage": "input_contract",
+                "path": "$",
+                "code": "invalid_json",
+                "message": "Kandidatenbau-Eingang ist kein gueltiges JSON",
+            }
+        ],
+        "candidate": None,
+        "partial_candidate_returned": False,
+        "scenario_profile_resolved": False,
+        "source_values_consumed": False,
+        "snapshot_loader_invocation_performed": False,
+        "snapshots_created": False,
+        "server_side_rematerialization_performed": False,
+        "canonical_loaded_scenario_created": False,
+        "profile_digest_calculation_performed": False,
+        "digest_calculation_performed": False,
+        "candidate_created": False,
+        "candidate_persisted": False,
+        "writes_performed": False,
         "run_control_connected": False,
         "runner_invocation_performed": False,
         "execution_performed": False,
@@ -910,6 +967,24 @@ def create_app(
             validate_strategy_execution_candidate_input(payload).to_dict()
         )
 
+    async def strategy_execution_candidate_build_response(
+        request: Request,
+    ) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_execution_candidate_build_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(
+            build_strategy_execution_candidate(
+                payload,
+                profiles=build_default_strategy_execution_scenario_profiles(),
+                trusted_profile_root=strategy_execution_scenario_profile_root(),
+            ).to_dict()
+        )
+
     async def strategy_assignment_vu_snapshot_materialization_response(
         request: Request,
     ) -> JSONResponse:
@@ -1141,6 +1216,15 @@ def create_app(
         def strategies_execution_candidate_validation_contract() -> dict[str, object]:
             return strategy_execution_candidate_validation_contract_payload()
 
+        @app.get("/api/strategies/execution-candidate-build-contract")
+        def strategies_execution_candidate_build_contract() -> dict[str, object]:
+            profile_ids = tuple(
+                build_default_strategy_execution_scenario_profiles()
+            )
+            return strategy_execution_candidate_build_contract_payload(
+                known_profile_ids=profile_ids
+            )
+
         @app.post(
             "/api/strategies/execution-candidate-validation",
             response_model=None,
@@ -1149,6 +1233,15 @@ def create_app(
             request: Request,
         ) -> JSONResponse:
             return await strategy_execution_candidate_validation_response(request)
+
+        @app.post(
+            "/api/strategies/execution-candidate-build",
+            response_model=None,
+        )
+        async def strategies_execution_candidate_build(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_candidate_build_response(request)
 
         @app.get(
             "/api/strategies/assignment-vu-snapshot-materialization-validation-contract"
@@ -1418,8 +1511,23 @@ def create_app(
             ),
         ),
         Route(
+            "/api/strategies/execution-candidate-build-contract",
+            lambda request: JSONResponse(
+                strategy_execution_candidate_build_contract_payload(
+                    known_profile_ids=tuple(
+                        build_default_strategy_execution_scenario_profiles()
+                    )
+                )
+            ),
+        ),
+        Route(
             "/api/strategies/execution-candidate-validation",
             strategy_execution_candidate_validation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/execution-candidate-build",
+            strategy_execution_candidate_build_response,
             methods=["POST"],
         ),
         Route(

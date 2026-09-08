@@ -221,4 +221,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR125-Format und zustandslose atomare Pruefung fuer gemeinsamen Entwurf,
   Kontext, VU-Herkunft, Szenarioprofil-Referenz und expliziten VN-Prozess,
   weiterhin ohne Profilaufloesung, Kandidatenbau, Digest oder Ausfuehrung
+- `ims_2x_strategy_execution_candidate_build.md`:
+  PR126-Aufloesung eines serverseitig registrierten Marktgrundprofils,
+  erneute VU-/VN-Materialisierung und kanonischer fluechtiger Kandidat mit
+  stabilem SHA-256-Digest, weiterhin ohne Speicherung oder Ausfuehrung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

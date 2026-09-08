@@ -99,3 +99,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   zustandslose atomare Pruefung eines gemeinsamen Entwurfs und Kontexts, der
   VU-Herkunft, einer lokalen Profilreferenz und expliziter VN-Prozesswerte;
   weiterhin ohne Kandidatenbau, Digest, Speicherung oder Runner.
+- [PR126 Ausfuehrungskandidaten bauen](../migration/ims_2x_strategy_execution_candidate_build.md):
+  serverseitige Aufloesung eines registrierten Marktgrundprofils, erneute
+  VU-/VN-Materialisierung und kanonischer fluechtiger Kandidat samt
+  SHA-256-Digest; weiterhin ohne Speicherung, Run-Control oder Runner.

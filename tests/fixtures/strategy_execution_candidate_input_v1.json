@@ -105,7 +105,7 @@
   "scenario_profile_reference": {
     "schema_version": "ims.strategy-execution-scenario-profile-reference.v1",
     "source_policy": "server-known-local-scenario-profile-v1",
-    "profile_id": "synthetic-pr125-local-profile",
+    "profile_id": "synthetic-joint-single-period-v1",
     "period": 2,
     "expected_bav_id": 1,
     "expected_insurer_ids": [1],

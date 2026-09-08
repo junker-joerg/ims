@@ -159,8 +159,9 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
   Validierung.
 - **PR125 (umgesetzt):** gemeinsamen Kandidateneingang zustandslos und atomar
   validieren; noch keine Snapshot-Loader, Ablage oder Ausfuehrung.
-- **PR126:** VN und VU serverseitig erneut materialisieren und ein kanonisches
-  `LoadedScenario` aufbauen; Digest berechnen, aber keinen Runner aufrufen.
+- **PR126 (umgesetzt):** VN und VU serverseitig erneut materialisieren, das
+  registrierte Marktprofil aufloesen und ein kanonisches `LoadedScenario`
+  samt Digest bauen; kein Runneraufruf.
 - **PR127:** unveraenderliche Kandidatenablage mit expliziter Speicherfreigabe
   und Digest-Pruefung ergaenzen; kein Start.
 - **PR128:** Kandidatenreife und Herkunft rein lesend in der Workbench zeigen.
@@ -173,10 +174,10 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer diesen
   eng benannten Einperiodenpfad abschliessen.
 
-Damit sind nach diesem Plan neun kleine Folge-PRs bis zu einer kontrolliert
-bedienbaren Einperioden-Wirkungsprobe vorgesehen. Das ist weder die Zusage
-einer vollstaendigen Mehrperiodensimulation noch eine Schaetzung bis zur
-fachlichen Produktionsreife des Regulationslabors.
+Nach PR126 verbleiben sechs kleine PRs bis zur kontrolliert bedienbaren
+Einperioden-Wirkungsprobe. Das ist weder die Zusage einer vollstaendigen
+Mehrperiodensimulation noch eine Schaetzung bis zur fachlichen
+Produktionsreife des Regulationslabors.
 
 Mehrperiodenlauf, Carryover, Bilanz, ResultBundle/XLSX und
 Regulierungsszenarien werden erst nach der Einperiodenabnahme in eigenen
@@ -203,7 +204,7 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR124 hat den read-only Vertrag fuer den gemeinsamen Einperioden-
-Ausfuehrungskandidaten versioniert. PR125 prueft als naechstes den gemeinsamen
-Kandidateneingang zustandslos und atomar. Snapshotloader, Kandidatenbau,
-Digest, Speicherung und Ausfuehrung bleiben dabei gesperrt.
+PR126 baut aus einem gueltigen gemeinsamen Eingang einen fluechtigen,
+kanonischen Kandidaten samt Digest. PR127 ergaenzt als naechstes eine
+gesondert freizugebende unveraenderliche Ablage mit erneuter Digest-Pruefung;
+Runner und Ausfuehrung bleiben dabei gesperrt.

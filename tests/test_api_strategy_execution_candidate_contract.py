@@ -19,9 +19,13 @@ def test_strategy_execution_candidate_contract_endpoint_is_read_only(tmp_path) -
     )
     assert payload["required_section_count"] == 8
     assert payload["collection_count"] == 11
-    assert payload["open_requirement_count"] == 5
+    assert payload["open_requirement_count"] == 3
     assert payload["candidate_input_validation_enabled"] is True
-    assert payload["candidate_creation_enabled"] is False
+    assert payload["scenario_profile_resolution_enabled"] is True
+    assert payload["server_side_rematerialization_enabled"] is True
+    assert payload["digest_calculation_enabled"] is True
+    assert payload["candidate_creation_enabled"] is True
+    assert payload["candidate_persistence_enabled"] is False
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
