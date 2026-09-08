@@ -213,4 +213,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR122-Workbench-Vorschau der vollstaendig materialisierten VU-Snapshots mit
   sichtbarem Herkunftsabgleich und weiterhin gesperrter Speicherung,
   Regelanwendung, Runner- und Simulationskopplung
+- `ims_2x_strategy_execution_candidate_contract.md`:
+  PR124-read-only Vertrag fuer Pflichtabschnitte, Upstream-Versionen und elf
+  kanonische Sammlungen des spaeteren gemeinsamen Einperioden-Kandidaten,
+  weiterhin ohne Validierung, Kandidatenbau, Speicherung oder Ausfuehrung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

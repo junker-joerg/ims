@@ -91,3 +91,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   Architektur- und Freigabeplan fuer einen unveraenderlichen, gehashten
   Einperioden-Ausfuehrungskandidaten aus VU-/VN-Snapshots, Marktgrundzustand
   und VN-Prozesseingaben; noch ohne Vertragscode, Speicherung oder Runner.
+- [PR124 Vertrag fuer den Ausfuehrungskandidaten](../migration/ims_2x_strategy_execution_candidate_contract.md):
+  versionierter read-only Vertrag fuer Pflichtabschnitte, Quellversionen und
+  elf `LoadedScenario`-Sammlungen; Kandidatenbau, Speicherung, Run-Control und
+  Runner bleiben gesperrt.

@@ -67,6 +67,7 @@ from ims.strategies import (
     strategy_assignment_vu_snapshot_materialization_validation_contract_payload,
     strategy_assignment_vu_snapshot_state_contract_payload,
     strategy_catalog_payload,
+    strategy_execution_candidate_contract_payload,
     translate_strategy_assignment_draft,
     validate_strategy_assignment_draft,
     validate_strategy_assignment_snapshot_context,
@@ -1059,6 +1060,10 @@ def create_app(
         ]:
             return _strategy_assignment_vu_snapshot_materialization_contract_payload()
 
+        @app.get("/api/strategies/execution-candidate-contract")
+        def strategies_execution_candidate_contract() -> dict[str, object]:
+            return strategy_execution_candidate_contract_payload()
+
         @app.get(
             "/api/strategies/assignment-vu-snapshot-materialization-validation-contract"
         )
@@ -1312,6 +1317,12 @@ def create_app(
             "/api/strategies/assignment-vu-snapshot-materialization-contract",
             lambda request: JSONResponse(
                 _strategy_assignment_vu_snapshot_materialization_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/strategies/execution-candidate-contract",
+            lambda request: JSONResponse(
+                strategy_execution_candidate_contract_payload()
             ),
         ),
         Route(

@@ -112,6 +112,17 @@ from ims.strategies.assignment_vu_snapshot_state_validation import (
     strategy_vu_snapshot_state_contract_issues,
     validate_strategy_assignment_vu_snapshot_state,
 )
+from ims.strategies.execution_candidate_contract import (
+    STRATEGY_EXECUTION_CANDIDATE_COLLECTIONS,
+    STRATEGY_EXECUTION_CANDIDATE_CONTRACT_VERSION,
+    STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS,
+    STRATEGY_EXECUTION_CANDIDATE_SECTIONS,
+    STRATEGY_EXECUTION_CANDIDATE_VERSION,
+    StrategyExecutionCandidateCollectionDefinition,
+    StrategyExecutionCandidateOpenRequirement,
+    StrategyExecutionCandidateSectionDefinition,
+    strategy_execution_candidate_contract_payload,
+)
 
 from ims.strategies.catalog import (
     STRATEGY_CATALOG_VERSION,
@@ -144,6 +155,11 @@ __all__ = [
     "STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_VU_SNAPSHOT_STATE_VALIDATION_VERSION",
     "STRATEGY_ASSIGNMENT_VU_SNAPSHOT_STATE_VERSION",
+    "STRATEGY_EXECUTION_CANDIDATE_COLLECTIONS",
+    "STRATEGY_EXECUTION_CANDIDATE_CONTRACT_VERSION",
+    "STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS",
+    "STRATEGY_EXECUTION_CANDIDATE_SECTIONS",
+    "STRATEGY_EXECUTION_CANDIDATE_VERSION",
     "STRATEGY_ASSIGNMENT_TARGETS",
     "STRATEGY_CATALOG_VERSION",
     "STRATEGY_DEFINITIONS",
@@ -172,6 +188,9 @@ __all__ = [
     "StrategyAssignmentSnapshotMaterializationIssue",
     "StrategyAssignmentSnapshotMaterializationReport",
     "StrategyDefinition",
+    "StrategyExecutionCandidateCollectionDefinition",
+    "StrategyExecutionCandidateOpenRequirement",
+    "StrategyExecutionCandidateSectionDefinition",
     "StrategyFamilyDefinition",
     "StrategyImplementationStatus",
     "StrategyParameterFieldDefinition",
@@ -220,6 +239,7 @@ __all__ = [
     "strategy_assignment_snapshot_materialization_validation_contract_payload",
     "strategy_catalog_issues",
     "strategy_catalog_payload",
+    "strategy_execution_candidate_contract_payload",
     "strategy_snapshot_translation_issues",
     "strategy_snapshot_context_contract_issues",
     "strategy_snapshot_materialization_contract_issues",

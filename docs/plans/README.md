@@ -263,3 +263,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   serverseitig erneut materialisierten VU-/VN-Snapshots und bekanntem
   Marktgrundzustand; neun kleine Folge-PRs bis zur kontrollierten
   Einperioden-Wirkungsprobe, weiterhin ohne Ausfuehrung in diesem Plan-PR.
+- `ims_2x_strategy_execution_candidate_contract_plan.md`: PR124-Plan fuer den
+  versionierten read-only Vertrag des gemeinsamen Einperioden-
+  Ausfuehrungskandidaten mit acht Pflichtabschnitten, elf kanonischen
+  Snapshot-Sammlungen und weiterhin gesperrtem Kandidatenbau und Runner.

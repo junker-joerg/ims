@@ -154,8 +154,9 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 
 ## Folge-PRs
 
-- **PR124:** read-only Kandidatenvertrag mit Pflichtteilen, offenen Teilen,
-  Sammlungen und Sperrfeldern versionieren; noch keine Validierung.
+- **PR124 (umgesetzt):** read-only Kandidatenvertrag mit Pflichtteilen,
+  offenen Teilen, elf Sammlungen und Sperrfeldern versionieren; noch keine
+  Validierung.
 - **PR125:** gemeinsamen Kandidateneingang zustandslos und atomar validieren;
   noch keine Snapshot-Loader, Ablage oder Ausfuehrung.
 - **PR126:** VN und VU serverseitig erneut materialisieren und ein kanonisches
@@ -202,7 +203,7 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR124 versioniert den read-only Vertrag fuer den gemeinsamen
-Einperioden-Ausfuehrungskandidaten. Der Vertrag muss insbesondere die Grenze
-zwischen Strategie-Snapshotkontext, Marktgrundzustand und VN-Prozesseingaben
-sichtbar halten und alle Ausfuehrungsflags auf `false` setzen.
+PR124 hat den read-only Vertrag fuer den gemeinsamen Einperioden-
+Ausfuehrungskandidaten versioniert. PR125 prueft als naechstes den gemeinsamen
+Kandidateneingang zustandslos und atomar. Snapshotloader, Kandidatenbau,
+Digest, Speicherung und Ausfuehrung bleiben dabei gesperrt.
