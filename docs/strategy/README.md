@@ -107,3 +107,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   explizit freizugebende, unveraenderliche SQLite-Ablage mit serverseitigem
   Neubau und wiederholter Digest-Pruefung; weiterhin ohne Run-Control,
   Runner oder Simulation.
+- [PR128 Ausfuehrungskandidaten beobachten](../migration/ims_2x_strategy_execution_candidate_ui.md):
+  rein lesende Workbench-Uebersicht fuer Reife, Herkunft, Digest und
+  Speicherstatus mit erneuter Integritaetspruefung; weiterhin ohne Freigabe,
+  Runner oder Simulation.

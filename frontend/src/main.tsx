@@ -129,7 +129,8 @@ type StrategyWorkbenchView =
   | "translation"
   | "context"
   | "snapshots"
-  | "vu-snapshots";
+  | "vu-snapshots"
+  | "candidates";
 
 type StrategySectorContract = {
   mode: "legacy_two_position_vector";
@@ -630,6 +631,59 @@ type StrategyVUSnapshotMaterializationReport = {
   runner_invoked: boolean;
   simulation_performed: boolean;
   historical_rng_equality_claim: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategyExecutionCandidateOverviewEntry = {
+  candidate_id: string;
+  draft_id: string;
+  draft_label: string;
+  period: number;
+  profile_id: string;
+  profile_content_digest: string;
+  content_digest: string;
+  digest_algorithm: "sha256";
+  digest_verified: boolean;
+  stored_at: string;
+  storage_status: "persisted_immutable";
+  source_document_count: number;
+  contract_version_count: number;
+  insurer_count: number;
+  policyholder_count: number;
+  vu_snapshot_count: number;
+  vn_rule_snapshot_count: number;
+  vn_process_snapshot_count: number;
+  readiness: {
+    candidate_complete: boolean;
+    source_documents_present: boolean;
+    market_ground_state_present: boolean;
+    storage_integrity_verified: boolean;
+    run_control_ready: boolean;
+    execution_ready: boolean;
+    next_gate: string;
+  };
+};
+
+type StrategyExecutionCandidateOverview = {
+  schema_version: string;
+  candidate_schema_version: string;
+  mode: "strategy_execution_candidate_overview_read_only";
+  status: "ok";
+  storage: {
+    kind: "memory" | "sqlite";
+    configured: boolean;
+    path: string | null;
+    store_initialized: boolean;
+    immutable: boolean;
+  };
+  candidate_count: number;
+  candidates: StrategyExecutionCandidateOverviewEntry[];
+  all_candidate_digests_verified: boolean;
+  writes_performed: boolean;
+  run_control_connected: boolean;
+  runner_invocation_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
   historical_full_equality_claim: boolean;
 };
 
@@ -1414,6 +1468,22 @@ function shortStrategyFingerprint(fingerprint: string): string {
   return fingerprint.replace("sha256:", "").slice(0, 10);
 }
 
+function shortCandidateDigest(digest: string): string {
+  const value = digest.replace("sha256:", "");
+  return `${value.slice(0, 12)}...${value.slice(-8)}`;
+}
+
+function formatCandidateStoredAt(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.valueOf())) {
+    return value;
+  }
+  return new Intl.DateTimeFormat("de-DE", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  }).format(date);
+}
+
 function strategySnapshotFieldLabel(fieldName: string): string {
   return strategySnapshotFieldLabels[fieldName] ?? fieldName.replaceAll("_", " ");
 }
@@ -1732,6 +1802,16 @@ function App() {
     useState<DetailState>("idle");
   const [strategyVUMaterializationError, setStrategyVUMaterializationError] =
     useState<string | null>(null);
+  const [strategyCandidateOverview, setStrategyCandidateOverview] =
+    useState<StrategyExecutionCandidateOverview | null>(null);
+  const [strategyCandidateOverviewState, setStrategyCandidateOverviewState] =
+    useState<DetailState>("loading");
+  const [strategyCandidateOverviewError, setStrategyCandidateOverviewError] =
+    useState<string | null>(null);
+  const [selectedStrategyCandidateId, setSelectedStrategyCandidateId] =
+    useState<string | null>(null);
+  const [strategyCandidateOverviewRevision, setStrategyCandidateOverviewRevision] =
+    useState(0);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
   const [runControlRequestContract, setRunControlRequestContract] = useState<RunControlRequestContract | null>(null);
@@ -2015,6 +2095,45 @@ function App() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyCandidateOverview() {
+      setStrategyCandidateOverviewState("loading");
+      setStrategyCandidateOverviewError(null);
+      try {
+        const response = await fetch("/api/strategies/execution-candidates");
+        if (!response.ok) {
+          throw new Error("Kandidatenablage nicht lesbar");
+        }
+        const payload = (await response.json()) as StrategyExecutionCandidateOverview;
+        if (active) {
+          setStrategyCandidateOverview(payload);
+          setSelectedStrategyCandidateId((current) => (
+            payload.candidates.some((candidate) => candidate.candidate_id === current)
+              ? current
+              : payload.candidates[0]?.candidate_id ?? null
+          ));
+          setStrategyCandidateOverviewState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyCandidateOverview(null);
+          setSelectedStrategyCandidateId(null);
+          setStrategyCandidateOverviewError(
+            error instanceof Error ? error.message : "Kandidatenablage nicht erreichbar"
+          );
+          setStrategyCandidateOverviewState("error");
+        }
+      }
+    }
+
+    loadStrategyCandidateOverview();
+    return () => {
+      active = false;
+    };
+  }, [strategyCandidateOverviewRevision]);
 
   useEffect(() => {
     let active = true;
@@ -2421,6 +2540,25 @@ function App() {
         !strategyAssignmentContract.simulation_performed
       ? "Nur lesen"
       : "Grenze pruefen";
+  const selectedStrategyCandidate = strategyCandidateOverview?.candidates.find(
+    (candidate) => candidate.candidate_id === selectedStrategyCandidateId
+  ) ?? null;
+  const strategyCandidateStorageLabel = !strategyCandidateOverview
+    ? "wird geladen"
+    : strategyCandidateOverview.storage.kind !== "sqlite"
+      ? "nicht konfiguriert"
+      : strategyCandidateOverview.storage.store_initialized
+        ? "SQLite bereit"
+        : "noch leer";
+  const strategyCandidateIntegrityLabel = strategyCandidateOverviewState === "error"
+    ? "Pruefung fehlgeschlagen"
+    : strategyCandidateOverviewState !== "ready"
+      ? "wird geladen"
+      : strategyCandidateOverview?.candidate_count === 0
+        ? "keine Kandidaten"
+        : strategyCandidateOverview?.all_candidate_digests_verified
+          ? "Digests geprueft"
+          : "Pruefung offen";
   const strategyDefinitionById = new Map(
     (strategyCatalog?.strategies ?? []).map((strategy) => [strategy.strategy_id, strategy])
   );
@@ -4223,6 +4361,16 @@ function App() {
               <ShieldCheck size={17} aria-hidden="true" />
               VU-Snapshots
             </button>
+            <button
+              className={strategyWorkbenchView === "candidates" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "candidates"}
+              onClick={() => setStrategyWorkbenchView("candidates")}
+            >
+              <Archive size={17} aria-hidden="true" />
+              Kandidaten
+            </button>
           </div>
 
           {strategyWorkbenchView === "catalog" ? (
@@ -4302,6 +4450,185 @@ function App() {
                 })}
               </div>
             )
+          ) : strategyWorkbenchView === "candidates" ? (
+            <div className="strategy-contract-view strategy-candidate-view" data-testid="strategy-candidate-overview">
+              <div className="strategy-contract-summary" aria-label="Kandidatenablage-Status">
+                <div>
+                  <span>Speicher</span>
+                  <strong>{strategyCandidateStorageLabel}</strong>
+                </div>
+                <div>
+                  <span>Kandidaten</span>
+                  <strong>{strategyCandidateOverview?.candidate_count ?? 0}</strong>
+                </div>
+                <div>
+                  <span>Integritaet</span>
+                  <strong>{strategyCandidateIntegrityLabel}</strong>
+                </div>
+                <div>
+                  <span>Ausfuehrung</span>
+                  <strong>gesperrt</strong>
+                </div>
+              </div>
+
+              <div className="strategy-boundary-band">
+                <div>
+                  <strong>Unveraenderlich gespeichert, noch nicht freigegeben</strong>
+                  <span>
+                    Diese Ansicht belegt Herkunft und Integritaet. Sie speichert nichts und startet keinen Lauf.
+                  </span>
+                </div>
+                <span className="readonly-marker">
+                  <LockKeyhole size={16} aria-hidden="true" />
+                  Nur lesen
+                </span>
+              </div>
+
+              <div className="strategy-candidate-toolbar">
+                <div>
+                  <strong>Gespeicherte Ausfuehrungskandidaten</strong>
+                  <span>Neueste Ablage zuerst, jeder Digest wird serverseitig erneut geprueft.</span>
+                </div>
+                <button
+                  className="secondary-action"
+                  type="button"
+                  disabled={strategyCandidateOverviewState === "loading"}
+                  onClick={() => setStrategyCandidateOverviewRevision((current) => current + 1)}
+                >
+                  <RefreshCw size={16} aria-hidden="true" />
+                  Aktualisieren
+                </button>
+              </div>
+
+              {strategyCandidateOverviewState === "error" ? (
+                <div className="empty-state" role="alert">{strategyCandidateOverviewError}</div>
+              ) : strategyCandidateOverviewState === "loading" ? (
+                <div className="empty-state">Kandidatenablage wird gelesen</div>
+              ) : !strategyCandidateOverview?.storage.configured ? (
+                <div className="empty-state">
+                  Keine lokale SQLite-Ablage konfiguriert. Die Workbench bleibt vollstaendig read-only.
+                </div>
+              ) : strategyCandidateOverview.candidate_count === 0 ? (
+                <div className="empty-state">
+                  Noch keine gespeicherten Kandidaten. Diese Ansicht erzeugt oder speichert keine neuen Eintraege.
+                </div>
+              ) : (
+                <div className="strategy-candidate-layout">
+                  <div className="strategy-candidate-list" aria-label="Gespeicherte Kandidaten">
+                    {strategyCandidateOverview.candidates.map((candidate) => (
+                      <button
+                        className={candidate.candidate_id === selectedStrategyCandidateId ? "active" : ""}
+                        type="button"
+                        aria-pressed={candidate.candidate_id === selectedStrategyCandidateId}
+                        key={candidate.candidate_id}
+                        onClick={() => setSelectedStrategyCandidateId(candidate.candidate_id)}
+                      >
+                        <span>
+                          <strong>{candidate.draft_label}</strong>
+                          <small>Periode {candidate.period} / {formatCandidateStoredAt(candidate.stored_at)}</small>
+                        </span>
+                        <CheckCircle2 size={17} aria-label="Digest geprueft" />
+                      </button>
+                    ))}
+                  </div>
+
+                  {selectedStrategyCandidate ? (
+                    <article className="strategy-candidate-detail" aria-label="Kandidatendetails">
+                      <div className="strategy-candidate-heading">
+                        <div>
+                          <span>Ausfuehrungskandidat</span>
+                          <h3>{selectedStrategyCandidate.candidate_id}</h3>
+                        </div>
+                        <span className="strategy-candidate-verified">
+                          <CheckCircle2 size={16} aria-hidden="true" />
+                          Digest geprueft
+                        </span>
+                      </div>
+
+                      <div className="strategy-candidate-readiness" aria-label="Kandidatenreife">
+                        <div>
+                          <CheckCircle2 size={17} aria-hidden="true" />
+                          <span><strong>Eingang</strong><small>vollstaendig</small></span>
+                        </div>
+                        <div>
+                          <CheckCircle2 size={17} aria-hidden="true" />
+                          <span><strong>Marktprofil</strong><small>belegt</small></span>
+                        </div>
+                        <div>
+                          <CheckCircle2 size={17} aria-hidden="true" />
+                          <span><strong>Speicher</strong><small>intakt</small></span>
+                        </div>
+                        <div className="locked">
+                          <LockKeyhole size={17} aria-hidden="true" />
+                          <span><strong>Run-Control</strong><small>PR129</small></span>
+                        </div>
+                      </div>
+
+                      <dl className="strategy-candidate-provenance">
+                        <div>
+                          <dt>Entwurf</dt>
+                          <dd>
+                            <strong>{selectedStrategyCandidate.draft_label}</strong>
+                            <small>{selectedStrategyCandidate.draft_id}</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Marktprofil</dt>
+                          <dd>
+                            <strong>{selectedStrategyCandidate.profile_id}</strong>
+                            <small title={selectedStrategyCandidate.profile_content_digest}>
+                              {shortCandidateDigest(selectedStrategyCandidate.profile_content_digest)}
+                            </small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Umfang</dt>
+                          <dd>
+                            <strong>
+                              Periode {selectedStrategyCandidate.period}, {selectedStrategyCandidate.insurer_count} VU,
+                              {" "}{selectedStrategyCandidate.policyholder_count} VN
+                            </strong>
+                            <small>
+                              {selectedStrategyCandidate.vu_snapshot_count} VU-Snapshots / {selectedStrategyCandidate.vn_rule_snapshot_count} VN-Regeln / {selectedStrategyCandidate.vn_process_snapshot_count} VN-Prozesse
+                            </small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Herkunft</dt>
+                          <dd>
+                            <strong>{selectedStrategyCandidate.source_document_count} Quelldokumente</strong>
+                            <small>{selectedStrategyCandidate.contract_version_count} versionierte Vertraege</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Speicherstatus</dt>
+                          <dd>
+                            <strong>unveraenderlich gespeichert</strong>
+                            <small>{formatCandidateStoredAt(selectedStrategyCandidate.stored_at)}</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Inhalts-Digest</dt>
+                          <dd>
+                            <code title={selectedStrategyCandidate.content_digest}>
+                              {selectedStrategyCandidate.content_digest}
+                            </code>
+                          </dd>
+                        </div>
+                      </dl>
+
+                      <div className="strategy-candidate-lock-note">
+                        <LockKeyhole size={18} aria-hidden="true" />
+                        <div>
+                          <strong>Ausfuehrung bleibt gesperrt</strong>
+                          <span>Die Freigabegrenze zum Run-Control wird erst in {selectedStrategyCandidate.readiness.next_gate} festgelegt.</span>
+                        </div>
+                      </div>
+                    </article>
+                  ) : null}
+                </div>
+              )}
+            </div>
           ) : strategyAssignmentState === "error" ? (
             <div className="empty-state" role="alert">{strategyAssignmentError}</div>
           ) : strategyAssignmentState === "loading" ? (

@@ -10,6 +10,7 @@ from ims.api.strategy_execution_candidate_store import (
     STRATEGY_EXECUTION_CANDIDATE_STORE_VERSION,
     StrategyExecutionCandidateStoreError,
     get_strategy_execution_candidate,
+    list_strategy_execution_candidates,
     persist_strategy_execution_candidate,
     strategy_execution_candidate_store_contract_payload,
 )
@@ -223,6 +224,73 @@ def test_store_contract_opens_only_explicit_immutable_persistence() -> None:
     assert payload["candidate_update_enabled"] is False
     assert payload["browser_candidate_payloads_accepted"] is False
     assert payload["candidate_persistence_enabled"] is True
+    assert payload["overview_endpoint"] == "/api/strategies/execution-candidates"
     assert payload["run_control_enabled"] is False
     assert payload["runner_enabled"] is False
     assert payload["simulation_performed"] is False
+
+
+def test_overview_does_not_create_missing_store(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+
+    result = list_strategy_execution_candidates(db_path=db_path)
+
+    payload = result.to_dict()
+    assert payload["mode"] == "strategy_execution_candidate_overview_read_only"
+    assert payload["storage"]["store_initialized"] is False
+    assert payload["candidate_count"] == 0
+    assert payload["candidates"] == []
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+    assert not db_path.exists()
+
+
+def test_overview_reports_verified_readiness_and_provenance(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    request = _store_request()
+    persisted = _persist(request, db_path)
+
+    payload = list_strategy_execution_candidates(db_path=db_path).to_dict()
+
+    assert payload["storage"]["store_initialized"] is True
+    assert payload["candidate_count"] == 1
+    assert payload["all_candidate_digests_verified"] is True
+    candidate = payload["candidates"][0]
+    assert candidate["candidate_id"] == persisted.record.candidate_id
+    assert candidate["draft_label"] == "Synthetischer gemeinsamer Kandidateneingang"
+    assert candidate["period"] == 2
+    assert candidate["profile_id"] == "synthetic-joint-single-period-v1"
+    assert candidate["digest_verified"] is True
+    assert candidate["storage_status"] == "persisted_immutable"
+    assert candidate["insurer_count"] == 1
+    assert candidate["policyholder_count"] == 1
+    assert candidate["vu_snapshot_count"] == 1
+    assert candidate["vn_rule_snapshot_count"] == 1
+    assert candidate["vn_process_snapshot_count"] == 1
+    assert candidate["readiness"] == {
+        "candidate_complete": True,
+        "source_documents_present": True,
+        "market_ground_state_present": True,
+        "storage_integrity_verified": True,
+        "run_control_ready": False,
+        "execution_ready": False,
+        "next_gate": "PR129",
+    }
+    assert payload["run_control_connected"] is False
+    assert payload["simulation_performed"] is False
+
+
+def test_overview_rejects_corrupted_candidate_atomically(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    request = _store_request()
+    _persist(request, db_path)
+    with sqlite3.connect(db_path) as connection:
+        connection.execute(
+            "UPDATE strategy_execution_candidates SET content_digest = ?",
+            ("sha256:" + "0" * 64,),
+        )
+
+    with pytest.raises(StrategyExecutionCandidateStoreError) as exc_info:
+        list_strategy_execution_candidates(db_path=db_path)
+
+    assert exc_info.value.code == "stored_candidate_metadata_mismatch"

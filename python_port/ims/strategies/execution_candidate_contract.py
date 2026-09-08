@@ -230,6 +230,8 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "explicit_storage_release_required": True,
         "immutable_candidate_storage_enabled": True,
         "candidate_digest_reverification_enabled": True,
+        "candidate_overview_enabled": True,
+        "candidate_workbench_read_only_enabled": True,
         "run_control_enabled": False,
         "snapshot_loader_invocation_enabled": True,
         "runner_enabled": False,
@@ -269,6 +271,9 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         ),
         "candidate_read_endpoint_template": (
             "/api/strategies/execution-candidates/{candidate_id}"
+        ),
+        "candidate_overview_endpoint": (
+            "/api/strategies/execution-candidates"
         ),
         "execution_anchor": {
             "module": "ims.engine.explicit_period_runner",

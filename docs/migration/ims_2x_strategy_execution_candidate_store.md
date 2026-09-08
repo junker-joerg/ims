@@ -63,7 +63,8 @@ Ausfuehrung erfolgt.
 
 ## Offene Punkte
 
-- PR128 visualisiert Reife und Herkunft eines gespeicherten Kandidaten.
+- PR128 visualisiert Reife, Herkunft, Digest und Speicherstatus eines
+  gespeicherten Kandidaten read-only.
 - PR129 darf Run-Control nur ueber Kandidaten-ID plus erneut geprueften
   Digest anbinden.
 - PR130 bleibt der erste geplante, eng kontrollierte Einperioden-Aufruf auf

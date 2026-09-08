@@ -571,7 +571,7 @@ h2 {
 
 .strategy-workbench-tabs {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 4px;
   min-width: 0;
   max-width: 100%;
@@ -2891,6 +2891,260 @@ code {
   color: #66736c;
 }
 
+.strategy-candidate-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #d8e2dd;
+}
+
+.strategy-candidate-toolbar > div {
+  min-width: 0;
+}
+
+.strategy-candidate-toolbar strong,
+.strategy-candidate-toolbar span {
+  display: block;
+}
+
+.strategy-candidate-toolbar strong {
+  color: #143b2d;
+}
+
+.strategy-candidate-toolbar span {
+  margin-top: 4px;
+  color: #66736c;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.strategy-candidate-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.8fr) minmax(0, 2fr);
+  min-width: 0;
+  border-bottom: 1px solid #d8e2dd;
+}
+
+.strategy-candidate-list {
+  min-width: 0;
+  border-right: 1px solid #d8e2dd;
+}
+
+.strategy-candidate-list button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 66px;
+  padding: 11px 12px;
+  border: 0;
+  border-bottom: 1px solid #e4ebe7;
+  border-left: 3px solid transparent;
+  color: #52625a;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.strategy-candidate-list button:hover,
+.strategy-candidate-list button.active {
+  border-left-color: #1e5b45;
+  background: #eef5f1;
+}
+
+.strategy-candidate-list button > span {
+  min-width: 0;
+}
+
+.strategy-candidate-list strong,
+.strategy-candidate-list small {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.strategy-candidate-list strong {
+  color: #143b2d;
+}
+
+.strategy-candidate-list small {
+  margin-top: 4px;
+  color: #66736c;
+  line-height: 1.35;
+}
+
+.strategy-candidate-list svg {
+  flex: 0 0 auto;
+  color: #287252;
+}
+
+.strategy-candidate-detail {
+  min-width: 0;
+  padding: 18px;
+}
+
+.strategy-candidate-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.strategy-candidate-heading > div {
+  min-width: 0;
+}
+
+.strategy-candidate-heading > div > span {
+  color: #66736c;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.strategy-candidate-heading h3 {
+  margin: 4px 0 0;
+  color: #143b2d;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.strategy-candidate-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  padding: 6px 8px;
+  border: 1px solid #aac9b8;
+  border-radius: 5px;
+  color: #1e5b45;
+  background: #eef7f2;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.strategy-candidate-readiness {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 18px;
+  border-top: 1px solid #d8e2dd;
+  border-bottom: 1px solid #d8e2dd;
+}
+
+.strategy-candidate-readiness > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 11px 9px;
+  border-right: 1px solid #d8e2dd;
+  color: #287252;
+}
+
+.strategy-candidate-readiness > div:last-child {
+  border-right: 0;
+}
+
+.strategy-candidate-readiness > div.locked {
+  color: #845e20;
+}
+
+.strategy-candidate-readiness span,
+.strategy-candidate-readiness strong,
+.strategy-candidate-readiness small {
+  display: block;
+  min-width: 0;
+}
+
+.strategy-candidate-readiness strong {
+  color: #143b2d;
+}
+
+.strategy-candidate-readiness small {
+  margin-top: 2px;
+  color: #66736c;
+}
+
+.strategy-candidate-provenance {
+  margin: 18px 0 0;
+  border-top: 1px solid #d8e2dd;
+}
+
+.strategy-candidate-provenance > div {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.45fr) minmax(0, 1.55fr);
+  gap: 16px;
+  min-width: 0;
+  padding: 11px 8px;
+  border-bottom: 1px solid #e4ebe7;
+}
+
+.strategy-candidate-provenance dt {
+  color: #66736c;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.strategy-candidate-provenance dd {
+  min-width: 0;
+  margin: 0;
+}
+
+.strategy-candidate-provenance strong,
+.strategy-candidate-provenance small,
+.strategy-candidate-provenance code {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.strategy-candidate-provenance strong {
+  color: #143b2d;
+}
+
+.strategy-candidate-provenance small {
+  margin-top: 3px;
+  color: #66736c;
+}
+
+.strategy-candidate-provenance code {
+  color: #234f62;
+  font-size: 0.82rem;
+  white-space: normal;
+}
+
+.strategy-candidate-lock-note {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 18px;
+  padding: 13px 11px;
+  border-top: 1px solid #e7d8b8;
+  border-bottom: 1px solid #e7d8b8;
+  color: #845e20;
+  background: #fffaf0;
+}
+
+.strategy-candidate-lock-note > div {
+  min-width: 0;
+}
+
+.strategy-candidate-lock-note strong,
+.strategy-candidate-lock-note span {
+  display: block;
+}
+
+.strategy-candidate-lock-note span {
+  margin-top: 3px;
+  color: #6d614c;
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 1360px) {
   .topbar {
     align-items: flex-start;
@@ -2958,6 +3212,8 @@ code {
   .strategy-draft-table-row,
   .strategy-draft-issues > div,
   .strategy-draft-report-boundaries,
+  .strategy-candidate-readiness,
+  .strategy-candidate-provenance > div,
   .strategy-snapshot-meta,
   .strategy-snapshot-fields,
   .strategy-snapshot-fields li,
@@ -3046,6 +3302,38 @@ code {
   .strategy-draft-validation-action {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .strategy-candidate-toolbar,
+  .strategy-candidate-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .strategy-candidate-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .strategy-candidate-list {
+    border-right: 0;
+    border-bottom: 1px solid #d8e2dd;
+  }
+
+  .strategy-candidate-toolbar .secondary-action {
+    width: 100%;
+  }
+
+  .strategy-candidate-verified {
+    align-self: flex-start;
+  }
+
+  .strategy-candidate-readiness > div {
+    border-right: 0;
+    border-bottom: 1px solid #d8e2dd;
+  }
+
+  .strategy-candidate-readiness > div:last-child {
+    border-bottom: 0;
   }
 
   .strategy-draft-validation-action .primary-action,

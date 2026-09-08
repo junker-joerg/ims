@@ -104,6 +104,11 @@ def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> N
     assert payload["explicit_storage_release_required"] is True
     assert payload["immutable_candidate_storage_enabled"] is True
     assert payload["candidate_digest_reverification_enabled"] is True
+    assert payload["candidate_overview_enabled"] is True
+    assert payload["candidate_workbench_read_only_enabled"] is True
+    assert payload["candidate_overview_endpoint"] == (
+        "/api/strategies/execution-candidates"
+    )
     assert payload["run_control_enabled"] is False
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False

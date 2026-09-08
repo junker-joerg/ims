@@ -165,7 +165,8 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR127 (umgesetzt):** unveraenderliche Kandidatenablage mit expliziter
   Speicherfreigabe, serverseitigem Neubau und Digest-Pruefung vor und nach
   dem Schreiben; kein Start.
-- **PR128:** Kandidatenreife und Herkunft rein lesend in der Workbench zeigen.
+- **PR128 (umgesetzt):** Kandidatenreife, Herkunft, Digest und Speicherstatus
+  rein lesend in der Workbench zeigen.
 - **PR129:** Run-Control-Resolver und Freigabecheck fuer Kandidaten-ID plus
   Digest anbinden; Start weiterhin gesperrt.
 - **PR130:** kontrollierte Einperioden-Wirkungsprobe auf isolierter Kopie im
@@ -175,7 +176,7 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer diesen
   eng benannten Einperiodenpfad abschliessen.
 
-Nach PR127 verbleiben fuenf kleine PRs bis zur kontrolliert bedienbaren
+Nach PR128 verbleiben vier kleine PRs bis zur kontrolliert bedienbaren
 Einperioden-Wirkungsprobe. Das ist weder die Zusage einer vollstaendigen
 Mehrperiodensimulation noch eine Schaetzung bis zur fachlichen
 Produktionsreife des Regulationslabors.
@@ -205,6 +206,6 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR128 zeigt als naechstes Reife, Herkunft, Digest und Speicherstatus eines
-gespeicherten Kandidaten rein lesend in der Workbench. Runner und Ausfuehrung
-bleiben dabei gesperrt.
+PR129 bindet als naechstes einen gespeicherten Kandidaten ueber Kandidaten-ID
+und erneut geprueften Digest an die Run-Control-Freigabegrenze an. Start,
+Runner und Ausfuehrung bleiben dabei gesperrt.

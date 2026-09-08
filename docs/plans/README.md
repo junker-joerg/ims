@@ -279,3 +279,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   explizit freizugebende, unveraenderliche SQLite-Ablage mit serverseitigem
   Neubau sowie Digest-Pruefung vor und nach dem Schreiben, weiterhin ohne
   Run-Control, Runner oder Simulation.
+- `ims_2x_strategy_execution_candidate_ui_plan.md`: PR128-Plan fuer die rein
+  lesende Workbench-Uebersicht von Kandidatenreife, Herkunft, Digest und
+  unveraenderlichem Speicherstatus, weiterhin ohne Freigabe, Runner oder
+  Simulation.

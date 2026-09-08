@@ -229,4 +229,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR127-explizit freizugebende, unveraenderliche Kandidatenablage mit
   serverseitigem Neubau und Digest-Pruefung vor dem Schreiben, nach dem
   Schreiben und bei jedem Abruf, weiterhin ohne Run-Control oder Ausfuehrung
+- `ims_2x_strategy_execution_candidate_ui.md`:
+  PR128-read-only Workbench-Uebersicht fuer Kandidatenreife, Herkunft,
+  SHA-256-Digest und unveraenderlichen Speicherstatus mit erneuter
+  Integritaetspruefung, weiterhin ohne Freigabe, Runner oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

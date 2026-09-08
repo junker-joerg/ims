@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import sqlite3
 
 from fastapi.testclient import TestClient
 
@@ -143,3 +144,70 @@ def test_candidate_read_reports_unknown_id(monkeypatch, tmp_path) -> None:
     assert response.status_code == 404
     assert response.json()["issues"][0]["code"] == "candidate_not_found"
     assert response.json()["candidate_persisted"] is False
+
+
+def test_candidate_overview_reports_unconfigured_memory_store(tmp_path) -> None:
+    client = TestClient(create_app(frontend_dist=tmp_path))
+
+    response = client.get("/api/strategies/execution-candidates")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["mode"] == "strategy_execution_candidate_overview_read_only"
+    assert payload["storage"]["kind"] == "memory"
+    assert payload["storage"]["configured"] is False
+    assert payload["candidate_count"] == 0
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False
+
+
+def test_candidate_overview_lists_verified_candidate_read_only(
+    monkeypatch,
+    tmp_path,
+) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    monkeypatch.setenv("IMS_METADATA_DB", str(db_path))
+    client = TestClient(create_app(frontend_dist=tmp_path))
+    request = _store_request(client)
+    client.post("/api/strategies/execution-candidate-store", json=request)
+
+    response = client.get("/api/strategies/execution-candidates")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["candidate_count"] == 1
+    assert payload["all_candidate_digests_verified"] is True
+    assert payload["candidates"][0]["candidate_id"] == request["expected_candidate_id"]
+    assert payload["candidates"][0]["digest_verified"] is True
+    assert payload["candidates"][0]["readiness"]["run_control_ready"] is False
+    assert payload["writes_performed"] is False
+    assert payload["simulation_performed"] is False
+    assert client.post("/api/strategies/execution-candidates", json={}).status_code == 405
+    assert client.put("/api/strategies/execution-candidates", json={}).status_code == 405
+    assert client.delete("/api/strategies/execution-candidates").status_code == 405
+
+
+def test_candidate_overview_reports_storage_integrity_conflict(
+    monkeypatch,
+    tmp_path,
+) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    monkeypatch.setenv("IMS_METADATA_DB", str(db_path))
+    client = TestClient(create_app(frontend_dist=tmp_path))
+    request = _store_request(client)
+    client.post("/api/strategies/execution-candidate-store", json=request)
+    with sqlite3.connect(db_path) as connection:
+        connection.execute(
+            "UPDATE strategy_execution_candidates SET draft_id = ?",
+            ("modified-draft",),
+        )
+
+    response = client.get("/api/strategies/execution-candidates")
+
+    assert response.status_code == 409
+    payload = response.json()
+    assert payload["mode"] == "strategy_execution_candidate_overview_read_only"
+    assert payload["candidate_count"] == 0
+    assert payload["issues"][0]["code"] == "stored_candidate_metadata_mismatch"
+    assert payload["writes_performed"] is False
+    assert payload["execution_performed"] is False

@@ -28,6 +28,9 @@ STRATEGY_EXECUTION_CANDIDATE_STORE_VERSION = (
 STRATEGY_EXECUTION_CANDIDATE_STORE_REQUEST_VERSION = (
     "ims.strategy-execution-candidate-store-request.v1"
 )
+STRATEGY_EXECUTION_CANDIDATE_OVERVIEW_VERSION = (
+    "ims.strategy-execution-candidate-overview.v1"
+)
 
 STRATEGY_EXECUTION_CANDIDATE_STORE_SCHEMA = """
 CREATE TABLE IF NOT EXISTS strategy_execution_candidates (
@@ -135,6 +138,40 @@ class StrategyExecutionCandidateStoreResult:
             "new_record_created": self.new_record_created,
             "replayed": self.replayed,
             "writes_performed": self.new_record_created,
+            "run_control_connected": False,
+            "runner_invocation_performed": False,
+            "execution_performed": False,
+            "simulation_performed": False,
+            "historical_rng_equality_claim": False,
+            "historical_full_equality_claim": False,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class StrategyExecutionCandidateOverviewResult:
+    db_path: str
+    store_initialized: bool
+    candidates: tuple[dict[str, object], ...]
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "schema_version": STRATEGY_EXECUTION_CANDIDATE_OVERVIEW_VERSION,
+            "candidate_schema_version": STRATEGY_EXECUTION_CANDIDATE_VERSION,
+            "mode": "strategy_execution_candidate_overview_read_only",
+            "storage": {
+                "kind": "sqlite",
+                "configured": True,
+                "path": self.db_path,
+                "store_initialized": self.store_initialized,
+                "immutable": True,
+            },
+            "candidate_count": len(self.candidates),
+            "candidates": [deepcopy(candidate) for candidate in self.candidates],
+            "all_candidate_digests_verified": all(
+                candidate["digest_verified"] for candidate in self.candidates
+            ),
+            "writes_performed": False,
             "run_control_connected": False,
             "runner_invocation_performed": False,
             "execution_performed": False,
@@ -392,6 +429,107 @@ def get_strategy_execution_candidate(
     )
 
 
+def list_strategy_execution_candidates(
+    *,
+    db_path: Path | str,
+) -> StrategyExecutionCandidateOverviewResult:
+    """Liest verifizierte Kandidatenkurzsaetze ohne die Ablage anzulegen."""
+
+    resolved_path = Path(db_path).expanduser().resolve()
+    if not resolved_path.is_file():
+        return StrategyExecutionCandidateOverviewResult(
+            db_path=str(resolved_path),
+            store_initialized=False,
+            candidates=(),
+        )
+    connection = sqlite3.connect(
+        readonly_sqlite_uri(
+            resolved_path,
+            description="strategy execution candidate overview",
+        ),
+        uri=True,
+        check_same_thread=False,
+    )
+    connection.row_factory = sqlite3.Row
+    try:
+        try:
+            table_exists = connection.execute(
+                """
+                SELECT 1
+                FROM sqlite_master
+                WHERE type = 'table' AND name = 'strategy_execution_candidates'
+                """
+            ).fetchone()
+            if table_exists is None:
+                return StrategyExecutionCandidateOverviewResult(
+                    db_path=str(resolved_path),
+                    store_initialized=False,
+                    candidates=(),
+                )
+            rows = connection.execute(
+                """
+                SELECT
+                    candidate_id,
+                    candidate_schema_version,
+                    draft_id,
+                    period,
+                    profile_id,
+                    profile_content_digest,
+                    content_digest,
+                    stored_at,
+                    candidate_payload_json
+                FROM strategy_execution_candidates
+                ORDER BY stored_at DESC, candidate_id
+                """
+            ).fetchall()
+        except sqlite3.DatabaseError as exc:
+            raise StrategyExecutionCandidateStoreError(
+                "candidate_store_unreadable",
+                f"Kandidatenspeicher ist nicht lesbar oder initialisiert: {exc}",
+            ) from exc
+        candidates = tuple(
+            _candidate_overview_payload(_row_to_verified_record(row))
+            for row in rows
+        )
+    finally:
+        connection.close()
+    return StrategyExecutionCandidateOverviewResult(
+        db_path=str(resolved_path),
+        store_initialized=True,
+        candidates=candidates,
+    )
+
+
+def strategy_execution_candidate_overview_unavailable_payload(
+    *,
+    storage_kind: str,
+    configured: bool,
+) -> dict[str, object]:
+    return {
+        "status": "ok",
+        "schema_version": STRATEGY_EXECUTION_CANDIDATE_OVERVIEW_VERSION,
+        "candidate_schema_version": STRATEGY_EXECUTION_CANDIDATE_VERSION,
+        "mode": "strategy_execution_candidate_overview_read_only",
+        "storage": {
+            "kind": storage_kind,
+            "configured": configured,
+            "path": None,
+            "store_initialized": False,
+            "immutable": True,
+        },
+        "candidate_count": 0,
+        "candidates": [],
+        "all_candidate_digests_verified": True,
+        "writes_performed": False,
+        "run_control_connected": False,
+        "runner_invocation_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_rng_equality_claim": False,
+        "historical_full_equality_claim": False,
+    }
+
+
 def strategy_execution_candidate_store_contract_payload() -> dict[str, object]:
     boundary_flags = {
         "explicit_storage_release_required": True,
@@ -422,12 +560,62 @@ def strategy_execution_candidate_store_contract_payload() -> dict[str, object]:
         "contract_endpoint": "/api/strategies/execution-candidate-store-contract",
         "persist_endpoint": "/api/strategies/execution-candidate-store",
         "read_endpoint_template": "/api/strategies/execution-candidates/{candidate_id}",
+        "overview_endpoint": "/api/strategies/execution-candidates",
         "request_fields": sorted(_STORE_REQUEST_FIELDS),
         "storage_kind": "configured_workbench_sqlite",
         "immutable_identity": ["candidate_id", "content_digest"],
         "digest_checks": ["before_insert", "after_insert_or_exact_replay", "on_read"],
         "boundary_flags": boundary_flags,
         **boundary_flags,
+    }
+
+
+def _candidate_overview_payload(
+    record: StrategyExecutionCandidateStoreRecord,
+) -> dict[str, object]:
+    candidate = record.candidate
+    source_documents = _mapping(candidate, "source_documents")
+    assignment_draft = _mapping(source_documents, "assignment_draft")
+    market_ground_state = _mapping(candidate, "market_ground_state")
+    contract_versions = _mapping(candidate, "contract_versions")
+    vu_rule_snapshots = _mapping(candidate, "vu_rule_snapshots")
+    vn_rule_snapshots = _mapping(candidate, "vn_rule_snapshots")
+    vn_process_snapshots = _mapping(candidate, "vn_process_snapshots")
+    vu_collections = _mapping(vu_rule_snapshots, "collections")
+    vn_rule_collections = _mapping(vn_rule_snapshots, "collections")
+    vn_process_collections = _mapping(vn_process_snapshots, "collections")
+    insurers = market_ground_state.get("insurers")
+    policyholders = market_ground_state.get("policyholders")
+    return {
+        "candidate_id": record.candidate_id,
+        "draft_id": record.draft_id,
+        "draft_label": str(assignment_draft.get("label", record.draft_id)),
+        "period": record.period,
+        "profile_id": record.profile_id,
+        "profile_content_digest": record.profile_content_digest,
+        "content_digest": record.content_digest,
+        "digest_algorithm": "sha256",
+        "digest_verified": True,
+        "stored_at": record.stored_at,
+        "storage_status": "persisted_immutable",
+        "source_document_count": len(source_documents),
+        "contract_version_count": len(contract_versions),
+        "insurer_count": len(insurers) if isinstance(insurers, list) else 0,
+        "policyholder_count": (
+            len(policyholders) if isinstance(policyholders, list) else 0
+        ),
+        "vu_snapshot_count": _snapshot_count(vu_collections),
+        "vn_rule_snapshot_count": _snapshot_count(vn_rule_collections),
+        "vn_process_snapshot_count": _snapshot_count(vn_process_collections),
+        "readiness": {
+            "candidate_complete": True,
+            "source_documents_present": bool(source_documents),
+            "market_ground_state_present": bool(market_ground_state),
+            "storage_integrity_verified": True,
+            "run_control_ready": False,
+            "execution_ready": False,
+            "next_gate": "PR129",
+        },
     }
 
 
@@ -619,6 +807,19 @@ def _required_text(
             f"{field_name} muss eine nichtleere Zeichenkette sein",
         )
     return field_value
+
+
+def _mapping(value: Mapping[str, object], field_name: str) -> dict[str, object]:
+    nested = value.get(field_name)
+    return nested if isinstance(nested, dict) else {}
+
+
+def _snapshot_count(collections: Mapping[str, object]) -> int:
+    return sum(
+        len(snapshots)
+        for snapshots in collections.values()
+        if isinstance(snapshots, list)
+    )
 
 
 def _validate_timestamp(value: str) -> None:

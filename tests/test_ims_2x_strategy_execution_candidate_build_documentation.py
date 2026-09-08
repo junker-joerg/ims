@@ -52,5 +52,5 @@ def test_pr126_documentation_is_indexed_and_names_pr127() -> None:
     assert MIGRATION.name in migration_index
     assert MIGRATION.name in strategy_index
     assert "PR126 (umgesetzt)" in connection_plan
-    assert "fuenf kleine PRs" in connection_plan
+    assert "vier kleine PRs" in connection_plan
     assert "PR127" in PLAN.read_text(encoding="utf-8")

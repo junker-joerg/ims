@@ -230,6 +230,24 @@ def test_frontend_shell_declares_readonly_vu_snapshot_materialization_preview():
     assert "strategy-vu-provenance-band" in styles
 
 
+def test_frontend_shell_declares_readonly_execution_candidate_overview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert 'fetch("/api/strategies/execution-candidates")' in source
+    assert 'fetch("/api/strategies/execution-candidates", {' not in source
+    assert 'strategyWorkbenchView === "candidates"' in source
+    assert 'data-testid="strategy-candidate-overview"' in source
+    assert "Gespeicherte Ausfuehrungskandidaten" in source
+    assert "Inhalts-Digest" in source
+    assert "unveraenderlich gespeichert" in source
+    assert "Run-Control</strong><small>PR129" in source
+    assert "Ausfuehrung bleibt gesperrt" in source
+    assert "strategy-candidate-layout" in styles
+    assert "strategy-candidate-readiness" in styles
+    assert "strategy-candidate-provenance" in styles
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

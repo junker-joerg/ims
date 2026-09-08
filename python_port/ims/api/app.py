@@ -44,10 +44,13 @@ from ims.api.run_control_queue_action_plan import build_run_control_queue_action
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
 from ims.api.strategy_execution_candidate_store import (
+    STRATEGY_EXECUTION_CANDIDATE_OVERVIEW_VERSION,
     STRATEGY_EXECUTION_CANDIDATE_STORE_VERSION,
     StrategyExecutionCandidateStoreError,
     get_strategy_execution_candidate,
+    list_strategy_execution_candidates,
     persist_strategy_execution_candidate,
+    strategy_execution_candidate_overview_unavailable_payload,
     strategy_execution_candidate_store_contract_payload,
 )
 from ims.engine.core_validation_overview import build_core_validation_overview
@@ -533,6 +536,29 @@ def _strategy_execution_candidate_store_error_payload(
         "candidate_persisted": False,
         "new_record_created": False,
         "replayed": False,
+        "writes_performed": False,
+        "run_control_connected": False,
+        "runner_invocation_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_rng_equality_claim": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_execution_candidate_overview_error_payload(
+    code: str,
+    message: str,
+) -> dict[str, object]:
+    return {
+        "schema_version": STRATEGY_EXECUTION_CANDIDATE_OVERVIEW_VERSION,
+        "mode": "strategy_execution_candidate_overview_read_only",
+        "status": "error",
+        "candidate_count": 0,
+        "candidates": [],
+        "all_candidate_digests_verified": False,
+        "issue_count": 1,
+        "issues": [{"code": code, "message": message}],
         "writes_performed": False,
         "run_control_connected": False,
         "runner_invocation_performed": False,
@@ -1063,6 +1089,30 @@ def create_app(
             status_code=200 if result.replayed else 201,
         )
 
+    def strategy_execution_candidate_overview_response() -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_candidate_overview_unavailable_payload(
+                    storage_kind=str(metadata_source.get("storage_kind", "memory")),
+                    configured=bool(metadata_source.get("configured", False)),
+                )
+            )
+        try:
+            result = list_strategy_execution_candidates(
+                db_path=Path(str(metadata_source["path"])),
+            )
+        except StrategyExecutionCandidateStoreError as exc:
+            return JSONResponse(
+                _strategy_execution_candidate_overview_error_payload(
+                    exc.code,
+                    str(exc),
+                ),
+                status_code=409,
+            )
+        return JSONResponse(result.to_dict())
+
     def strategy_execution_candidate_read_response(
         candidate_id: str,
     ) -> JSONResponse:
@@ -1362,6 +1412,13 @@ def create_app(
             request: Request,
         ) -> JSONResponse:
             return await strategy_execution_candidate_store_response(request)
+
+        @app.get(
+            "/api/strategies/execution-candidates",
+            response_model=None,
+        )
+        def strategies_execution_candidate_overview() -> JSONResponse:
+            return strategy_execution_candidate_overview_response()
 
         @app.get(
             "/api/strategies/execution-candidates/{candidate_id}",
@@ -1669,6 +1726,10 @@ def create_app(
             "/api/strategies/execution-candidate-store",
             strategy_execution_candidate_store_response,
             methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/execution-candidates",
+            lambda request: strategy_execution_candidate_overview_response(),
         ),
         Route(
             "/api/strategies/execution-candidates/{candidate_id}",

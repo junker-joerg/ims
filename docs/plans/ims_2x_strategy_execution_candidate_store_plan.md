@@ -85,6 +85,7 @@ Workbench-SQLite-Datei. Die API akzeptiert keinen Datenbankpfad im Request.
 
 ## Naechster Schritt
 
-PR128 zeigt Kandidatenreife, Herkunft, Digest und Speicherstatus rein lesend
-in der Workbench. Speichern, Starten und Ausfuehren werden dort nicht als
-neue UI-Aktion freigeschaltet.
+PR128 zeigt Kandidatenreife, Herkunft, Digest und Speicherstatus jetzt rein
+lesend in der Workbench. Als naechstes bindet PR129 Kandidaten-ID und erneut
+geprueften Digest an die Run-Control-Freigabegrenze an; Start und Ausfuehrung
+bleiben dort noch gesperrt.
