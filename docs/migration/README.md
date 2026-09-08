@@ -233,4 +233,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR128-read-only Workbench-Uebersicht fuer Kandidatenreife, Herkunft,
   SHA-256-Digest und unveraenderlichen Speicherstatus mit erneuter
   Integritaetspruefung, weiterhin ohne Freigabe, Runner oder Simulation
+- `ims_2x_strategy_execution_candidate_run_control.md`:
+  PR129-Run-Control-Freigabecheck fuer Kandidaten-ID, erneut geprueften
+  Volldigest und geschlossene Kandidatengrenzen, weiterhin ohne Queue,
+  Start, Runner oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

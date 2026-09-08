@@ -173,6 +173,7 @@ class StrategyExecutionCandidateOverviewResult:
             ),
             "writes_performed": False,
             "run_control_connected": False,
+            "run_control_release_check_available": True,
             "runner_invocation_performed": False,
             "execution_performed": False,
             "simulation_performed": False,
@@ -522,6 +523,7 @@ def strategy_execution_candidate_overview_unavailable_payload(
         "all_candidate_digests_verified": True,
         "writes_performed": False,
         "run_control_connected": False,
+        "run_control_release_check_available": True,
         "runner_invocation_performed": False,
         "execution_performed": False,
         "simulation_performed": False,
@@ -613,8 +615,9 @@ def _candidate_overview_payload(
             "market_ground_state_present": bool(market_ground_state),
             "storage_integrity_verified": True,
             "run_control_ready": False,
+            "run_control_release_check_available": True,
             "execution_ready": False,
-            "next_gate": "PR129",
+            "next_gate": "PR130",
         },
     }
 

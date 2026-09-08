@@ -50,7 +50,7 @@ Der Strategiebereich erhaelt den neunten Tab `Kandidaten`. Die Liste ist nach
 Speicherzeitpunkt sortiert; ein ausgewaehlter Kandidat zeigt:
 
 - Eingang, Marktprofil und Speicherintegritaet als belegte Reifestufen;
-- Run-Control als gesperrte naechste Stufe `PR129`;
+- die ab PR129 verfuegbare, weiterhin read-only Run-Control-Pruefgrenze;
 - Herkunft, Akteurs- und Snapshotumfang;
 - SHA-256-Digest und Zeitpunkt der unveraenderlichen Ablage.
 
@@ -78,8 +78,9 @@ Speicher-, Freigabe- oder Startbutton.
 
 ## Restplanung
 
-- **PR129:** Run-Control-Resolver und Freigabecheck fuer Kandidaten-ID plus
-  erneut geprueften Digest anbinden; Start bleibt gesperrt.
+- **PR129 (umgesetzt):** Run-Control-Resolver und Freigabecheck fuer
+  Kandidaten-ID plus erneut geprueften Digest anbinden; Start bleibt
+  gesperrt.
 - **PR130:** kontrollierte Einperioden-Wirkungsprobe auf isolierter Kopie im
   Backend ausfuehren.
 - **PR131:** manuellen Workbench-Start und read-only Ergebnisansicht an die
@@ -87,12 +88,12 @@ Speicher-, Freigabe- oder Startbutton.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer den eng
   benannten Einperiodenpfad abschliessen.
 
-Nach PR128 verbleiben vier kleine PRs bis zur kontrolliert bedienbaren
+Nach PR129 verbleiben drei kleine PRs bis zur kontrolliert bedienbaren
 Einperioden-Wirkungsprobe. Mehrperiodenlauf und Regulierungssimulation bleiben
 eigene spaetere Ausbaubloecke.
 
 ## Naechster Schritt
 
-PR129 bindet einen gespeicherten Kandidaten ausschliesslich ueber
-Kandidaten-ID und erneut geprueften Digest an die bestehende Run-Control-
-Freigabegrenze an. Der Start bleibt in diesem Schritt weiterhin gesperrt.
+PR130 fuehrt einen erneut verifizierten Kandidaten erstmals kontrolliert auf
+einer isolierten Kopie fuer genau eine Periode aus. Dateien, Legacy-Vergleich
+und Carryover bleiben gesperrt.

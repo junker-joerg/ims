@@ -28,7 +28,8 @@ Kandidatenpayload, Digest und relationale Metadaten wiederverwendet.
 
 Die Workbench zeigt den Ablagezustand, die belegten Reifestufen, die Herkunft
 aus Entwurf und Marktprofil, Akteurs- und Snapshotzahlen, Speicherzeitpunkt
-sowie den vollstaendigen SHA-256-Digest. Die Run-Control-Stufe bleibt sichtbar
+sowie den vollstaendigen SHA-256-Digest. Seit PR129 zeigt die Run-Control-
+Stufe die verfuegbare API-Pruefung; Start und Ausfuehrung bleiben sichtbar
 gesperrt. `Aktualisieren` fuehrt nur denselben GET-Abruf erneut aus.
 
 ## Grenzen
@@ -52,7 +53,7 @@ Browser-Smoke pruefen die Darstellung auf Desktop und schmalem Viewport.
 ## Offene Punkte
 
 - PR129 verbindet Kandidaten-ID und erneut geprueften Digest mit der
-  Run-Control-Freigabegrenze, ohne bereits zu starten.
+  Run-Control-Freigabegrenze, ohne zu starten.
 - PR130 bleibt der erste geplante, eng kontrollierte Einperioden-Aufruf auf
   einer isolierten Kopie.
 - Mehrperiodenfolge, Carryover und fachliche Regulierungsszenarien gehoeren

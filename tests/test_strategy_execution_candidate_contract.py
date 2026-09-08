@@ -83,12 +83,9 @@ def test_candidate_contract_covers_loaded_scenario_snapshot_collections() -> Non
 def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> None:
     payload = strategy_execution_candidate_contract_payload()
 
-    assert payload["open_requirement_count"] == 2
-    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 2
-    assert {item["planned_pr"] for item in payload["open_requirements"]} == {
-        129,
-        130,
-    }
+    assert payload["open_requirement_count"] == 1
+    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 1
+    assert {item["planned_pr"] for item in payload["open_requirements"]} == {130}
     assert payload["execution_anchor"] == {
         "module": "ims.engine.explicit_period_runner",
         "symbol": "run_loaded_explicit_period",
@@ -109,7 +106,18 @@ def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> N
     assert payload["candidate_overview_endpoint"] == (
         "/api/strategies/execution-candidates"
     )
-    assert payload["run_control_enabled"] is False
+    assert payload["run_control_enabled"] is True
+    assert payload["run_control_candidate_resolution_enabled"] is True
+    assert payload["run_control_release_check_enabled"] is True
+    assert payload["run_control_queue_enabled"] is False
+    assert payload["run_control_preflight_enabled"] is False
+    assert payload["adapter_start_allowed"] is False
+    assert payload["candidate_run_control_contract_endpoint"] == (
+        "/api/run-control/strategy-candidate-contract"
+    )
+    assert payload["candidate_run_control_release_check_endpoint"] == (
+        "/api/run-control/strategy-candidate-release-check"
+    )
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False

@@ -53,6 +53,13 @@ from ims.api.strategy_execution_candidate_store import (
     strategy_execution_candidate_overview_unavailable_payload,
     strategy_execution_candidate_store_contract_payload,
 )
+from ims.api.strategy_execution_candidate_run_control import (
+    StrategyExecutionCandidateRunControlError,
+    check_strategy_execution_candidate_run_control_release,
+    parse_strategy_execution_candidate_run_control_request,
+    strategy_execution_candidate_run_control_contract_payload,
+    strategy_execution_candidate_run_control_error_payload,
+)
 from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
@@ -561,6 +568,7 @@ def _strategy_execution_candidate_overview_error_payload(
         "issues": [{"code": code, "message": message}],
         "writes_performed": False,
         "run_control_connected": False,
+        "run_control_release_check_available": True,
         "runner_invocation_performed": False,
         "execution_performed": False,
         "simulation_performed": False,
@@ -1142,6 +1150,51 @@ def create_app(
             )
         return JSONResponse(result.to_dict())
 
+    async def strategy_execution_candidate_run_control_response(
+        request: Request,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_candidate_run_control_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Run-Control-Kandidatenpruefung erfordert eine explizite SQLite-Metadatenquelle",
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                strategy_execution_candidate_run_control_error_payload(
+                    "invalid_json",
+                    "Run-Control-Kandidateneingang ist kein gueltiges JSON",
+                ),
+                status_code=400,
+            )
+        try:
+            parsed = parse_strategy_execution_candidate_run_control_request(payload)
+        except StrategyExecutionCandidateRunControlError as exc:
+            return JSONResponse(
+                strategy_execution_candidate_run_control_error_payload(
+                    exc.code,
+                    str(exc),
+                ),
+                status_code=400,
+            )
+        result = check_strategy_execution_candidate_run_control_release(
+            parsed,
+            db_path=Path(str(metadata_source["path"])),
+        )
+        if result.release_ready:
+            status_code = 200
+        elif any(issue["code"] == "candidate_not_found" for issue in result.issues):
+            status_code = 404
+        else:
+            status_code = 409
+        return JSONResponse(result.to_dict(), status_code=status_code)
+
     async def strategy_assignment_vu_snapshot_materialization_response(
         request: Request,
     ) -> JSONResponse:
@@ -1601,6 +1654,19 @@ def create_app(
         def run_control_adapter_start_contract() -> dict[str, object]:
             return run_control_adapter_start_contract_payload()
 
+        @app.get("/api/run-control/strategy-candidate-contract")
+        def run_control_strategy_candidate_contract() -> dict[str, object]:
+            return strategy_execution_candidate_run_control_contract_payload()
+
+        @app.post(
+            "/api/run-control/strategy-candidate-release-check",
+            response_model=None,
+        )
+        async def run_control_strategy_candidate_release_check(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_candidate_run_control_response(request)
+
         @app.post("/api/run-control/adapter-release-check", response_model=None)
         async def run_control_adapter_release_check(request: Request) -> JSONResponse:
             return await execution_release_check_response(request)
@@ -1824,6 +1890,17 @@ def create_app(
         Route(
             "/api/run-control/adapter-start-contract",
             lambda request: JSONResponse(run_control_adapter_start_contract_payload()),
+        ),
+        Route(
+            "/api/run-control/strategy-candidate-contract",
+            lambda request: JSONResponse(
+                strategy_execution_candidate_run_control_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/run-control/strategy-candidate-release-check",
+            strategy_execution_candidate_run_control_response,
+            methods=["POST"],
         ),
         Route(
             "/api/run-control/adapter-release-check",

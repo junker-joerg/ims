@@ -659,6 +659,7 @@ type StrategyExecutionCandidateOverviewEntry = {
     market_ground_state_present: boolean;
     storage_integrity_verified: boolean;
     run_control_ready: boolean;
+    run_control_release_check_available: boolean;
     execution_ready: boolean;
     next_gate: string;
   };
@@ -4560,7 +4561,14 @@ function App() {
                         </div>
                         <div className="locked">
                           <LockKeyhole size={17} aria-hidden="true" />
-                          <span><strong>Run-Control</strong><small>PR129</small></span>
+                          <span>
+                            <strong>Run-Control</strong>
+                            <small>
+                              {selectedStrategyCandidate.readiness.run_control_release_check_available
+                                ? "Pruefung bereit"
+                                : "gesperrt"}
+                            </small>
+                          </span>
                         </div>
                       </div>
 
@@ -4621,7 +4629,7 @@ function App() {
                         <LockKeyhole size={18} aria-hidden="true" />
                         <div>
                           <strong>Ausfuehrung bleibt gesperrt</strong>
-                          <span>Die Freigabegrenze zum Run-Control wird erst in {selectedStrategyCandidate.readiness.next_gate} festgelegt.</span>
+                          <span>Die Kandidatenfreigabe kann per API geprueft werden. Start und Ausfuehrung bleiben bis {selectedStrategyCandidate.readiness.next_gate} gesperrt.</span>
                         </div>
                       </div>
                     </article>

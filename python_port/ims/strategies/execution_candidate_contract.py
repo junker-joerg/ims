@@ -202,12 +202,6 @@ STRATEGY_EXECUTION_CANDIDATE_COLLECTIONS = (
 
 STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS = (
     StrategyExecutionCandidateOpenRequirement(
-        requirement_id="run_control_candidate_resolution",
-        planned_pr=129,
-        blocks=("run_control_release",),
-        decision="reference_candidate_id_and_digest_only",
-    ),
-    StrategyExecutionCandidateOpenRequirement(
         requirement_id="single_period_effect_probe",
         planned_pr=130,
         blocks=("runner_execution",),
@@ -232,7 +226,12 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "candidate_digest_reverification_enabled": True,
         "candidate_overview_enabled": True,
         "candidate_workbench_read_only_enabled": True,
-        "run_control_enabled": False,
+        "run_control_enabled": True,
+        "run_control_candidate_resolution_enabled": True,
+        "run_control_release_check_enabled": True,
+        "run_control_queue_enabled": False,
+        "run_control_preflight_enabled": False,
+        "adapter_start_allowed": False,
         "snapshot_loader_invocation_enabled": True,
         "runner_enabled": False,
         "execution_enabled": False,
@@ -274,6 +273,12 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         ),
         "candidate_overview_endpoint": (
             "/api/strategies/execution-candidates"
+        ),
+        "candidate_run_control_contract_endpoint": (
+            "/api/run-control/strategy-candidate-contract"
+        ),
+        "candidate_run_control_release_check_endpoint": (
+            "/api/run-control/strategy-candidate-release-check"
         ),
         "execution_anchor": {
             "module": "ims.engine.explicit_period_runner",

@@ -111,3 +111,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   rein lesende Workbench-Uebersicht fuer Reife, Herkunft, Digest und
   Speicherstatus mit erneuter Integritaetspruefung; weiterhin ohne Freigabe,
   Runner oder Simulation.
+- [PR129 Run-Control-Freigabecheck](../migration/ims_2x_strategy_execution_candidate_run_control.md):
+  kontrollierte Aufloesung eines gespeicherten Kandidaten ueber ID und
+  erneut geprueften SHA-256-Digest; Queue, Start, Runner und Simulation
+  bleiben gesperrt.

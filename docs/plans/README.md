@@ -283,3 +283,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   lesende Workbench-Uebersicht von Kandidatenreife, Herkunft, Digest und
   unveraenderlichem Speicherstatus, weiterhin ohne Freigabe, Runner oder
   Simulation.
+- `ims_2x_strategy_execution_candidate_run_control_plan.md`: PR129-Plan fuer
+  die kontrollierte read-only Aufloesung eines gespeicherten Kandidaten ueber
+  ID und erneut geprueften Volldigest; Queue, Start, Runner und Simulation
+  bleiben gesperrt.
