@@ -83,3 +83,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   atomare Erzeugung aller zehn VU-Strategien in acht vorhandene Snapshottypen
   nach erfolgreicher Herkunftspruefung, weiterhin ohne Speicherung,
   Regelanwendung, Runner oder Simulation.
+- [PR122 VU-Snapshots in der Workbench](../migration/ims_2x_strategy_assignment_vu_snapshot_materialization_ui.md):
+  rein lesende Vorschau der vollstaendig materialisierten VU-Snapshots mit
+  getrennt erfasstem Zustandsbeleg und sichtbarer Herkunftsgrenze, weiterhin
+  ohne Speicherung, Regelanwendung, Runner oder Simulation.

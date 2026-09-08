@@ -209,4 +209,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR121-Materialisierung aller zehn VU-Strategien in acht vorhandene
   Snapshottypen mit atomarer Fehlergrenze, weiterhin ohne Speicherung,
   Regelanwendung, Runner oder Simulation
+- `ims_2x_strategy_assignment_vu_snapshot_materialization_ui.md`:
+  PR122-Workbench-Vorschau der vollstaendig materialisierten VU-Snapshots mit
+  sichtbarem Herkunftsabgleich und weiterhin gesperrter Speicherung,
+  Regelanwendung, Runner- und Simulationskopplung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

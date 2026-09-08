@@ -128,7 +128,8 @@ type StrategyWorkbenchView =
   | "draft"
   | "translation"
   | "context"
-  | "snapshots";
+  | "snapshots"
+  | "vu-snapshots";
 
 type StrategySectorContract = {
   mode: "legacy_two_position_vector";
@@ -536,6 +537,99 @@ type StrategySnapshotMaterializationReport = {
   execution_performed: boolean;
   runner_invoked: boolean;
   simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategyVUSnapshotInputContract = {
+  input_schema_version: string;
+  threshold_source_policy: { policy_id: string };
+  draw_source_policy: { policy_id: string };
+  fallback_policy: { policy_id: string };
+};
+
+type StrategyVUSnapshotStateContract = {
+  schema_version: string;
+  state_schema_version: string;
+  materialization_input_schema_version: string;
+  base_model: "Vdefmd6";
+  scope: "vu_snapshot_materialization_provenance_state";
+  state_value_fields_by_strategy: Record<string, string[]>;
+  provenance_definition_count: number;
+  draw_values_cross_checked_against_draw_plan: boolean;
+};
+
+type StrategyVUSnapshotMaterializationOperationContract = {
+  schema_version: string;
+  mode: "strategy_assignment_vu_snapshot_materialization_contract";
+  scope: "validated_vu_single_period_context_to_typed_snapshots";
+  materialization_endpoint: string;
+  validated_strategy_count: number;
+  snapshot_type_count: number;
+  state_provenance_validation_required: boolean;
+  persistence_enabled: boolean;
+  execution_enabled: boolean;
+  runner_enabled: boolean;
+  simulation_performed: boolean;
+  historical_rng_equality_claim: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategyVUSnapshotMaterializationContract = {
+  schema_version: string;
+  operation: StrategyVUSnapshotMaterializationOperationContract;
+};
+
+type StrategyVUStateEditorEntry = {
+  insurer_id: number;
+  strategy_id: string;
+  values: Record<string, string>;
+};
+
+type StrategyVUStateEditor = {
+  interestRate: string;
+  changeShock: string;
+  activePolicyholderCount: string;
+  entries: StrategyVUStateEditorEntry[];
+};
+
+type StrategyMaterializedVUSnapshotPayload = Record<string, unknown> & {
+  insurer_id: number;
+  rule_kind?: string;
+};
+
+type StrategyMaterializedVUSnapshot = {
+  strategy_id: string;
+  snapshot_collection: string;
+  snapshot_type: string;
+  snapshot: StrategyMaterializedVUSnapshotPayload;
+};
+
+type StrategyVUSnapshotMaterializationReport = {
+  schema_version: string;
+  mode: "strategy_assignment_vu_snapshot_materialization";
+  status: "ok" | "error";
+  input_valid: boolean;
+  materialization_complete: boolean;
+  draft_id: string | null;
+  period: number | null;
+  expected_snapshot_count: number;
+  snapshot_count: number;
+  snapshot_loader_invocation_count: number;
+  issue_count: number;
+  issues: StrategySnapshotMaterializationIssue[];
+  snapshots: StrategyMaterializedVUSnapshot[];
+  state_provenance_validated: boolean;
+  context_values_consumed: boolean;
+  state_values_consumed: boolean;
+  snapshot_loader_invocation_performed: boolean;
+  partial_results_returned: boolean;
+  writes_performed: boolean;
+  persistence_performed: boolean;
+  execution_ready: boolean;
+  execution_performed: boolean;
+  runner_invoked: boolean;
+  simulation_performed: boolean;
+  historical_rng_equality_claim: boolean;
   historical_full_equality_claim: boolean;
 };
 
@@ -1189,6 +1283,37 @@ const strategyMaterializedFieldsByRuleKind: Record<string, string[]> = {
   ]
 };
 
+const strategyMaterializedVUSnapshotGroups = [
+  {
+    label: "Strategieparameter",
+    fields: ["parameters"]
+  },
+  {
+    label: "Ziehungen",
+    fields: ["random_draws", "normal_draws"]
+  },
+  {
+    label: "Schwellen und Markt",
+    fields: [
+      "reserve_thresholds",
+      "net_switcher_thresholds",
+      "previous_policyholders_sector",
+      "market_share_thresholds",
+      "active_policyholder_count"
+    ]
+  },
+  {
+    label: "Periode",
+    fields: ["interest_rate", "change_shock"]
+  }
+] as const;
+
+const strategyVUStateFieldLabels: Record<string, string> = {
+  aspiration_sector_1: "Anspruchsprofil Sparte 1",
+  aspiration_sector_2: "Anspruchsprofil Sparte 2",
+  policyholders_t_minus_2: "VU-Bestand aus t-2"
+};
+
 const strategySnapshotContextSourceLabels: Record<StrategySnapshotContextSource, string> = {
   draw: "Ziehungen",
   period_finance: "Zins und Periodenkosten",
@@ -1348,6 +1473,34 @@ function StrategySnapshotPreviewValue({ value }: { value: unknown }) {
       ))}
     </dl>
   );
+}
+
+function createEmptyStrategyVUStateEditor(): StrategyVUStateEditor {
+  return {
+    interestRate: "",
+    changeShock: "",
+    activePolicyholderCount: "",
+    entries: []
+  };
+}
+
+function parseStrategyVUStateValue(raw: string, kind: "number" | "integer" | "array"): unknown {
+  const trimmed = raw.trim();
+  if (!trimmed) {
+    return null;
+  }
+  if (kind === "array") {
+    try {
+      return JSON.parse(trimmed) as unknown;
+    } catch {
+      return trimmed;
+    }
+  }
+  const parsed = Number(trimmed);
+  if (!Number.isFinite(parsed) || (kind === "integer" && !Number.isInteger(parsed))) {
+    return trimmed;
+  }
+  return parsed;
 }
 
 function strategySnapshotContextShapeLabel(
@@ -1560,6 +1713,24 @@ function App() {
   const [strategySnapshotMaterializationState, setStrategySnapshotMaterializationState] =
     useState<DetailState>("idle");
   const [strategySnapshotMaterializationError, setStrategySnapshotMaterializationError] =
+    useState<string | null>(null);
+  const [strategyVUInputContract, setStrategyVUInputContract] =
+    useState<StrategyVUSnapshotInputContract | null>(null);
+  const [strategyVUStateContract, setStrategyVUStateContract] =
+    useState<StrategyVUSnapshotStateContract | null>(null);
+  const [strategyVUMaterializationContract, setStrategyVUMaterializationContract] =
+    useState<StrategyVUSnapshotMaterializationContract | null>(null);
+  const [strategyVUContractsState, setStrategyVUContractsState] =
+    useState<DetailState>("loading");
+  const [strategyVUContractsError, setStrategyVUContractsError] =
+    useState<string | null>(null);
+  const [strategyVUStateEditor, setStrategyVUStateEditor] =
+    useState<StrategyVUStateEditor>(createEmptyStrategyVUStateEditor);
+  const [strategyVUMaterialization, setStrategyVUMaterialization] =
+    useState<StrategyVUSnapshotMaterializationReport | null>(null);
+  const [strategyVUMaterializationState, setStrategyVUMaterializationState] =
+    useState<DetailState>("idle");
+  const [strategyVUMaterializationError, setStrategyVUMaterializationError] =
     useState<string | null>(null);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
@@ -2050,6 +2221,51 @@ function App() {
   useEffect(() => {
     let active = true;
 
+    async function loadStrategyVUContracts() {
+      setStrategyVUContractsState("loading");
+      setStrategyVUContractsError(null);
+      try {
+        const [inputResponse, stateResponse, materializationResponse] = await Promise.all([
+          fetch("/api/strategies/assignment-vu-snapshot-materialization-validation-contract"),
+          fetch("/api/strategies/assignment-vu-snapshot-state-contract"),
+          fetch("/api/strategies/assignment-vu-snapshot-materialization-contract")
+        ]);
+        if (!inputResponse.ok || !stateResponse.ok || !materializationResponse.ok) {
+          throw new Error("VU-Snapshotvertraege nicht erreichbar");
+        }
+        const [input, state, materialization] = await Promise.all([
+          inputResponse.json() as Promise<StrategyVUSnapshotInputContract>,
+          stateResponse.json() as Promise<StrategyVUSnapshotStateContract>,
+          materializationResponse.json() as Promise<StrategyVUSnapshotMaterializationContract>
+        ]);
+        if (active) {
+          setStrategyVUInputContract(input);
+          setStrategyVUStateContract(state);
+          setStrategyVUMaterializationContract(materialization);
+          setStrategyVUContractsState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyVUInputContract(null);
+          setStrategyVUStateContract(null);
+          setStrategyVUMaterializationContract(null);
+          setStrategyVUContractsError(
+            error instanceof Error ? error.message : "VU-Snapshotvertraege nicht erreichbar"
+          );
+          setStrategyVUContractsState("error");
+        }
+      }
+    }
+
+    loadStrategyVUContracts();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
     async function loadQueueDetail() {
       if (!selectedQueueId) {
         setQueueDetail(null);
@@ -2343,6 +2559,34 @@ function App() {
     strategySnapshotContextValidation?.valid &&
     strategySnapshotMaterializationState !== "loading"
   );
+  const strategyVUTranslationEntries = (strategySnapshotTranslation?.entries ?? []).filter(
+    (entry) => entry.actor_type === "insurer"
+  );
+  const strategyVUMaterializationStatusLabel =
+    strategyVUMaterializationState === "error"
+      ? "nicht erreichbar"
+      : strategyVUMaterializationState === "loading"
+        ? "wird erzeugt"
+        : strategyVUMaterialization?.materialization_complete
+          ? "vollstaendig"
+          : strategyVUMaterialization?.issue_count
+            ? "Herkunft oder Eingabe fehlerhaft"
+            : strategyVUStateEditor.entries.length > 0
+              ? "Zustandsbeleg offen"
+              : "noch keine Vorschau";
+  const canInitializeStrategyVUState = Boolean(
+    strategyVUContractsState === "ready" &&
+    strategyVUStateContract &&
+    strategySnapshotContextValidation?.valid &&
+    strategyVUTranslationEntries.length > 0
+  );
+  const canMaterializeStrategyVUSnapshots = Boolean(
+    canInitializeStrategyVUState &&
+    strategyVUInputContract &&
+    strategyVUMaterializationContract &&
+    strategyVUStateEditor.entries.length === strategyVUTranslationEntries.length &&
+    strategyVUMaterializationState !== "loading"
+  );
 
   const invalidateStrategySnapshotMaterialization = () => {
     setStrategySnapshotMaterialization(null);
@@ -2350,11 +2594,23 @@ function App() {
     setStrategySnapshotMaterializationError(null);
   };
 
+  const invalidateStrategyVUMaterialization = () => {
+    setStrategyVUMaterialization(null);
+    setStrategyVUMaterializationState("idle");
+    setStrategyVUMaterializationError(null);
+  };
+
+  const discardStrategyVUState = () => {
+    setStrategyVUStateEditor(createEmptyStrategyVUStateEditor());
+    invalidateStrategyVUMaterialization();
+  };
+
   const invalidateStrategySnapshotContextValidation = () => {
     setStrategySnapshotContextValidation(null);
     setStrategySnapshotContextValidationState("idle");
     setStrategySnapshotContextValidationError(null);
     invalidateStrategySnapshotMaterialization();
+    discardStrategyVUState();
   };
 
   const discardStrategySnapshotContext = () => {
@@ -2652,6 +2908,7 @@ function App() {
       return;
     }
     invalidateStrategySnapshotMaterialization();
+    invalidateStrategyVUMaterialization();
     setStrategySnapshotContextValidation(null);
     setStrategySnapshotContextValidationState("loading");
     setStrategySnapshotContextValidationError(null);
@@ -2707,6 +2964,139 @@ function App() {
         error instanceof Error ? error.message : "VN-Snapshots konnten nicht erzeugt werden"
       );
       setStrategySnapshotMaterializationState("error");
+    }
+  };
+
+  const initializeStrategyVUState = () => {
+    if (!canInitializeStrategyVUState || !strategyVUStateContract) {
+      return;
+    }
+    setStrategyVUStateEditor({
+      interestRate: "",
+      changeShock: "",
+      activePolicyholderCount: "",
+      entries: strategyVUTranslationEntries.map((entry) => ({
+        insurer_id: entry.target_id,
+        strategy_id: entry.strategy_id,
+        values: Object.fromEntries(
+          (strategyVUStateContract.state_value_fields_by_strategy[entry.strategy_id] ?? []).map(
+            (fieldName) => [fieldName, ""]
+          )
+        )
+      }))
+    });
+    invalidateStrategyVUMaterialization();
+  };
+
+  const updateStrategyVUPeriodState = (
+    fieldName: "interestRate" | "changeShock" | "activePolicyholderCount",
+    value: string
+  ) => {
+    setStrategyVUStateEditor((current) => ({ ...current, [fieldName]: value }));
+    invalidateStrategyVUMaterialization();
+  };
+
+  const updateStrategyVUEntryState = (
+    entryIndex: number,
+    fieldName: string,
+    value: string
+  ) => {
+    setStrategyVUStateEditor((current) => ({
+      ...current,
+      entries: current.entries.map((entry, index) => index === entryIndex
+        ? { ...entry, values: { ...entry.values, [fieldName]: value } }
+        : entry)
+    }));
+    invalidateStrategyVUMaterialization();
+  };
+
+  const buildStrategyVUMaterializationRequest = (): object | null => {
+    const draft = buildStrategyDraftDocument();
+    const context = buildStrategySnapshotContextDocument();
+    if (
+      !draft ||
+      !context ||
+      !strategyVUInputContract ||
+      !strategyVUStateContract ||
+      strategyVUStateEditor.entries.length === 0
+    ) {
+      return null;
+    }
+    return {
+      input: {
+        schema_version: strategyVUInputContract.input_schema_version,
+        threshold_source_policy: strategyVUInputContract.threshold_source_policy.policy_id,
+        draw_source_policy: strategyVUInputContract.draw_source_policy.policy_id,
+        fallback_policy: strategyVUInputContract.fallback_policy.policy_id,
+        draft,
+        context
+      },
+      state: {
+        schema_version: strategyVUStateContract.state_schema_version,
+        input_schema_version: strategyVUStateContract.materialization_input_schema_version,
+        base_model: strategyVUStateContract.base_model,
+        scope: strategyVUStateContract.scope,
+        draft_id: draft.draft_id,
+        period: context.period,
+        period_state: {
+          interest_rate: parseStrategyVUStateValue(
+            strategyVUStateEditor.interestRate,
+            "number"
+          ),
+          change_shock: strategyVUStateEditor.changeShock === "true"
+            ? true
+            : strategyVUStateEditor.changeShock === "false"
+              ? false
+              : null,
+          active_policyholder_count: parseStrategyVUStateValue(
+            strategyVUStateEditor.activePolicyholderCount,
+            "integer"
+          )
+        },
+        entries: strategyVUStateEditor.entries.map((entry) => ({
+          insurer_id: entry.insurer_id,
+          strategy_id: entry.strategy_id,
+          values: Object.fromEntries(
+            Object.entries(entry.values).map(([fieldName, value]) => [
+              fieldName,
+              parseStrategyVUStateValue(value, "array")
+            ])
+          )
+        }))
+      }
+    };
+  };
+
+  const materializeStrategyVUSnapshots = async () => {
+    const request = buildStrategyVUMaterializationRequest();
+    const endpoint = strategyVUMaterializationContract?.operation.materialization_endpoint;
+    if (!request || !endpoint || !canMaterializeStrategyVUSnapshots) {
+      return;
+    }
+    setStrategyVUMaterialization(null);
+    setStrategyVUMaterializationState("loading");
+    setStrategyVUMaterializationError(null);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request)
+      });
+      if (!response.ok) {
+        throw new Error("VU-Snapshots konnten nicht erzeugt werden");
+      }
+      const payload = (await response.json()) as StrategyVUSnapshotMaterializationReport;
+      setStrategyVUMaterialization(payload);
+      setStrategyVUMaterializationState("ready");
+      if (payload.materialization_complete) {
+        setStrategyWorkbenchView("vu-snapshots");
+      }
+    } catch (error) {
+      setStrategyVUMaterialization(null);
+      setStrategyVUMaterializationError(
+        error instanceof Error ? error.message : "VU-Snapshots konnten nicht erzeugt werden"
+      );
+      setStrategyVUMaterializationState("error");
     }
   };
   const detailStatusLabel = detailState === "error" ? "nicht gefunden" : detailState === "loading" ? "laedt" : "lesend";
@@ -3712,7 +4102,9 @@ function App() {
               <LockKeyhole size={16} aria-hidden="true" />
               {strategyWorkbenchView === "draft"
                 ? "Lokal, nicht gespeichert"
-                : strategyWorkbenchView === "translation" || strategyWorkbenchView === "snapshots"
+                : strategyWorkbenchView === "translation" ||
+                    strategyWorkbenchView === "snapshots" ||
+                    strategyWorkbenchView === "vu-snapshots"
                   ? "Nur Vorschau"
                   : strategyWorkbenchView === "context"
                     ? "Lokal, nur Pruefung"
@@ -3820,6 +4212,16 @@ function App() {
             >
               <Eye size={17} aria-hidden="true" />
               VN-Snapshots
+            </button>
+            <button
+              className={strategyWorkbenchView === "vu-snapshots" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "vu-snapshots"}
+              onClick={() => setStrategyWorkbenchView("vu-snapshots")}
+            >
+              <ShieldCheck size={17} aria-hidden="true" />
+              VU-Snapshots
             </button>
           </div>
 
@@ -4255,6 +4657,420 @@ function App() {
                       <span>Ausfuehrung: {strategySnapshotMaterialization.execution_performed ? "ja" : "nein"}</span>
                       <span>Simulation: {strategySnapshotMaterialization.simulation_performed ? "ja" : "nein"}</span>
                     </div>
+                  </>
+                )}
+              </div>
+            )
+          ) : strategyWorkbenchView === "vu-snapshots" ? (
+            strategyVUContractsState === "error" ? (
+              <div className="empty-state" role="alert">{strategyVUContractsError}</div>
+            ) : strategyVUContractsState === "loading" ? (
+              <div className="empty-state">VU-Snapshotvertraege werden geladen</div>
+            ) : (
+              <div
+                className="strategy-contract-view strategy-materialized-view"
+                data-testid="strategy-vu-snapshot-materialization-preview"
+              >
+                <div className="strategy-contract-summary" aria-label="VU-Snapshot-Vorschau-Status">
+                  <div>
+                    <span>Materialisierung</span>
+                    <strong>{strategyVUMaterializationContract?.operation.schema_version ?? "-"}</strong>
+                  </div>
+                  <div>
+                    <span>Periode</span>
+                    <strong>
+                      {strategyVUMaterialization?.period ??
+                        strategySnapshotContextPeriodValue ??
+                        "noch offen"}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>VU-Snapshots</span>
+                    <strong>
+                      {strategyVUMaterialization
+                        ? `${strategyVUMaterialization.snapshot_count} / ${
+                            strategyVUMaterialization.expected_snapshot_count
+                          }`
+                        : `0 / ${strategyVUTranslationEntries.length}`}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Status</span>
+                    <strong>{strategyVUMaterializationStatusLabel}</strong>
+                  </div>
+                </div>
+
+                <div className="strategy-boundary-band">
+                  <div>
+                    <strong>Typisierte Eingabevorschau fuer eine VU-Regelperiode</strong>
+                    <span>
+                      Der getrennte Zustandsbeleg wird nur gegen den Kontext geprueft.
+                      Snapshotwerte stammen weiterhin aus dem Kontext.
+                    </span>
+                  </div>
+                  <span className="readonly-marker">
+                    <LockKeyhole size={16} aria-hidden="true" />
+                    Vorschau ohne Ausfuehrung
+                  </span>
+                </div>
+
+                {!strategySnapshotContextValidation?.valid ? (
+                  <div className="strategy-snapshot-prerequisite">
+                    <Database size={20} aria-hidden="true" />
+                    <div>
+                      <strong>Zuerst Entwurf, Bauplaene und Kontext gueltig pruefen</strong>
+                      <span>Die VU-Vorschau bleibt an denselben lokalen Einperiodenkontext gebunden.</span>
+                    </div>
+                    <button
+                      className="secondary-action"
+                      type="button"
+                      onClick={() => setStrategyWorkbenchView("context")}
+                    >
+                      <Database size={17} aria-hidden="true" />
+                      Zum Kontext
+                    </button>
+                  </div>
+                ) : strategyVUTranslationEntries.length === 0 ? (
+                  <div className="strategy-snapshot-prerequisite">
+                    <ShieldCheck size={20} aria-hidden="true" />
+                    <div>
+                      <strong>Der gepruefte Entwurf enthaelt keinen Versicherer</strong>
+                      <span>VU-Snapshots entstehen nur fuer VU-Strategiezuordnungen.</span>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <section className="strategy-context-action" aria-label="VU-Zustandsbeleg anlegen">
+                      <div>
+                        <strong>Getrennten VU-Zustandsbeleg erfassen</strong>
+                        <span>
+                          Der Beleg bestaetigt Zins, Schock, Marktbestand und
+                          regelabhaengige VU-Zustaende, ohne sie als Snapshotquelle zu verwenden.
+                        </span>
+                      </div>
+                      {strategyVUStateEditor.entries.length === 0 ? (
+                        <button
+                          className="primary-action"
+                          type="button"
+                          disabled={!canInitializeStrategyVUState}
+                          onClick={initializeStrategyVUState}
+                        >
+                          <Plus size={17} aria-hidden="true" />
+                          Zustandsbeleg anlegen
+                        </button>
+                      ) : (
+                        <button
+                          className="secondary-action"
+                          type="button"
+                          onClick={discardStrategyVUState}
+                        >
+                          <X size={17} aria-hidden="true" />
+                          Zustandsbeleg verwerfen
+                        </button>
+                      )}
+                    </section>
+
+                    {strategyVUStateEditor.entries.length === 0 ? (
+                      <div className="strategy-snapshot-prerequisite ready">
+                        <ShieldCheck size={20} aria-hidden="true" />
+                        <div>
+                          <strong>{strategyVUTranslationEntries.length} VU-Bauplaene sind bereit</strong>
+                          <span>Der Herkunftsbeleg wird erst nach der ausdruecklichen Aktion lokal angelegt.</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <section className="strategy-vu-period-state" aria-label="Gemeinsamer VU-Periodenzustand">
+                          <div className="strategy-vu-state-heading">
+                            <strong>Gemeinsamer Periodenzustand</strong>
+                            <span>Diese Werte muessen mit jedem betroffenen Kontextwert identisch sein.</span>
+                          </div>
+                          <div className="strategy-vu-period-state-fields">
+                            <label>
+                              <span>Zinssatz</span>
+                              <input
+                                aria-label="Zinssatz im VU-Zustandsbeleg"
+                                type="number"
+                                step="any"
+                                value={strategyVUStateEditor.interestRate}
+                                onChange={(event) => updateStrategyVUPeriodState(
+                                  "interestRate",
+                                  event.target.value
+                                )}
+                                placeholder="z. B. 0,02"
+                              />
+                            </label>
+                            <label>
+                              <span>Schockstatus</span>
+                              <select
+                                aria-label="Schockstatus im VU-Zustandsbeleg"
+                                value={strategyVUStateEditor.changeShock}
+                                onChange={(event) => updateStrategyVUPeriodState(
+                                  "changeShock",
+                                  event.target.value
+                                )}
+                              >
+                                <option value="">Bitte waehlen</option>
+                                <option value="false">Normalzustand</option>
+                                <option value="true">Aenderungsschock</option>
+                              </select>
+                            </label>
+                            <label>
+                              <span>Aktive VN</span>
+                              <input
+                                aria-label="Aktive VN im VU-Zustandsbeleg"
+                                type="number"
+                                min="0"
+                                step="1"
+                                value={strategyVUStateEditor.activePolicyholderCount}
+                                onChange={(event) => updateStrategyVUPeriodState(
+                                  "activePolicyholderCount",
+                                  event.target.value
+                                )}
+                                placeholder="Anzahl"
+                              />
+                            </label>
+                          </div>
+                        </section>
+
+                        <div className="strategy-context-list" aria-label="VU-Zustandseintraege">
+                          {strategyVUStateEditor.entries.map((entry, entryIndex) => {
+                            const strategy = strategyDefinitionById.get(entry.strategy_id);
+                            const fields = Object.keys(entry.values);
+                            return (
+                              <details
+                                className="strategy-context-entry"
+                                open={fields.length > 0}
+                                key={`${entry.strategy_id}-${entry.insurer_id}`}
+                              >
+                                <summary>
+                                  <div>
+                                    <strong>
+                                      VU {entry.insurer_id} · {strategy?.display_name ?? entry.strategy_id}
+                                    </strong>
+                                    <span>{entry.strategy_id}</span>
+                                  </div>
+                                  <span className="open">
+                                    {fields.length === 0 ? "kein Zusatzwert" : `${fields.length} Herkunftswerte`}
+                                  </span>
+                                </summary>
+                                <div className="strategy-context-entry-body">
+                                  {fields.length === 0 ? (
+                                    <div className="strategy-vu-empty-state-values">
+                                      Fuer diese Regel genuegt der gemeinsame Periodenzustand.
+                                    </div>
+                                  ) : fields.map((fieldName) => (
+                                    <div className="strategy-context-field" key={fieldName}>
+                                      <div className="strategy-context-field-name">
+                                        <strong>{strategyVUStateFieldLabels[fieldName] ?? fieldName}</strong>
+                                        <small>{fieldName}</small>
+                                        <span>Getrennter Herkunftsbeleg</span>
+                                      </div>
+                                      <div className="strategy-context-field-control">
+                                        <textarea
+                                          aria-label={`${
+                                            strategyVUStateFieldLabels[fieldName] ?? fieldName
+                                          } fuer VU ${entry.insurer_id}`}
+                                          rows={2}
+                                          value={entry.values[fieldName]}
+                                          onChange={(event) => updateStrategyVUEntryState(
+                                            entryIndex,
+                                            fieldName,
+                                            event.target.value
+                                          )}
+                                          placeholder={fieldName === "policyholders_t_minus_2"
+                                            ? "[0, 0]"
+                                            : "[0, 0, 0]"}
+                                          spellCheck={false}
+                                        />
+                                      </div>
+                                      <span className="strategy-context-required">Pflichtwert</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </details>
+                            );
+                          })}
+                        </div>
+
+                        <section
+                          className="strategy-context-action strategy-materialization-action"
+                          aria-label="VU-Snapshot-Vorschau erzeugen"
+                        >
+                          <div>
+                            <strong>VU-Snapshots atomar im Speicher erzeugen</strong>
+                            <span>
+                              PR121 prueft zuerst den gesamten Herkunftsbeleg und zeigt keine Teilresultate.
+                            </span>
+                          </div>
+                          <button
+                            className="primary-action"
+                            type="button"
+                            disabled={!canMaterializeStrategyVUSnapshots}
+                            onClick={materializeStrategyVUSnapshots}
+                          >
+                            <Eye size={17} aria-hidden="true" />
+                            {strategyVUMaterializationState === "loading"
+                              ? "Snapshots werden erzeugt"
+                              : "VU-Snapshots anzeigen"}
+                          </button>
+                        </section>
+
+                        {strategyVUMaterializationError ? (
+                          <div className="empty-state" role="alert">
+                            {strategyVUMaterializationError}
+                          </div>
+                        ) : strategyVUMaterialization && !strategyVUMaterialization.materialization_complete ? (
+                          <div className="strategy-draft-report invalid strategy-materialization-errors" role="alert">
+                            <div className="strategy-draft-report-summary">
+                              <CircleAlert size={20} aria-hidden="true" />
+                              <div>
+                                <strong>VU-Snapshots noch nicht erzeugt</strong>
+                                <span>
+                                  Eingabe oder Herkunft meldet {strategyVUMaterialization.issue_count} Fehler.
+                                </span>
+                              </div>
+                            </div>
+                            <div className="strategy-draft-issues">
+                              {strategyVUMaterialization.issues.map((issue) => (
+                                <div key={`${issue.stage}-${issue.path}-${issue.code}`}>
+                                  <strong>{issue.path}</strong>
+                                  <span>{issue.message}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : null}
+
+                        {strategyVUMaterialization?.materialization_complete ? (
+                          <>
+                            <div className="strategy-vu-provenance-band">
+                              <span>
+                                Herkunftsabgleich
+                                <strong>
+                                  {strategyVUMaterialization.state_provenance_validated
+                                    ? "vollstaendig"
+                                    : "offen"}
+                                </strong>
+                              </span>
+                              <span>
+                                Kontextwerte
+                                <strong>
+                                  {strategyVUMaterialization.context_values_consumed
+                                    ? "verwendet"
+                                    : "nicht verwendet"}
+                                </strong>
+                              </span>
+                              <span>
+                                Zustandswerte
+                                <strong>
+                                  {strategyVUMaterialization.state_values_consumed
+                                    ? "verwendet"
+                                    : "nur geprueft"}
+                                </strong>
+                              </span>
+                              <span>
+                                Ziehungsherkunft
+                                <strong>
+                                  {strategyVUStateContract?.draw_values_cross_checked_against_draw_plan
+                                    ? "abgeglichen"
+                                    : "nicht abgeglichen"}
+                                </strong>
+                              </span>
+                            </div>
+                            <div className="strategy-materialized-list-heading">
+                              <div>
+                                <strong>
+                                  {strategyVUMaterialization.snapshot_count} VU-Snapshots vollstaendig erzeugt
+                                </strong>
+                                <span>
+                                  {strategyVUMaterialization.snapshot_loader_invocation_count}
+                                  {" vorhandene Snapshot-Loader wurden atomar aufgerufen."}
+                                </span>
+                              </div>
+                              <span>Entwurf {strategyVUMaterialization.draft_id}</span>
+                            </div>
+                            <div className="strategy-materialized-list" aria-label="Materialisierte VU-Snapshots">
+                              {strategyVUMaterialization.snapshots.map((entry, index) => {
+                                const strategy = strategyDefinitionById.get(entry.strategy_id);
+                                return (
+                                  <details
+                                    className="strategy-materialized-entry"
+                                    open={index === 0}
+                                    key={`${entry.strategy_id}-${entry.snapshot.insurer_id}`}
+                                  >
+                                    <summary>
+                                      <div>
+                                        <strong>
+                                          VU {entry.snapshot.insurer_id} ·{" "}
+                                          {strategy?.display_name ?? entry.strategy_id}
+                                        </strong>
+                                        <span>
+                                          {entry.strategy_id}
+                                          {entry.snapshot.rule_kind ? ` · ${entry.snapshot.rule_kind}` : ""}
+                                        </span>
+                                      </div>
+                                      <span>typisiert</span>
+                                    </summary>
+                                    <div className="strategy-materialized-entry-body">
+                                      <div className="strategy-materialized-meta">
+                                        <span>Snapshottyp <strong>{entry.snapshot_type}</strong></span>
+                                        <span>Sammlung <strong>{entry.snapshot_collection}</strong></span>
+                                      </div>
+                                      {strategyMaterializedVUSnapshotGroups.map((group) => {
+                                        const fields = group.fields.filter((fieldName) => (
+                                          Object.prototype.hasOwnProperty.call(entry.snapshot, fieldName)
+                                        ));
+                                        if (fields.length === 0) {
+                                          return null;
+                                        }
+                                        return (
+                                          <section className="strategy-materialized-group" key={group.label}>
+                                            <h3>{group.label}</h3>
+                                            <div className="strategy-materialized-fields">
+                                              {fields.map((fieldName) => (
+                                                <div key={fieldName}>
+                                                  <div>
+                                                    <strong>{strategySnapshotFieldLabel(fieldName)}</strong>
+                                                    <small>{fieldName}</small>
+                                                  </div>
+                                                  <div className="strategy-materialized-value">
+                                                    <StrategySnapshotPreviewValue
+                                                      value={entry.snapshot[fieldName]}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          </section>
+                                        );
+                                      })}
+                                    </div>
+                                  </details>
+                                );
+                              })}
+                            </div>
+                            <div className="strategy-context-report-boundaries strategy-materialized-boundaries">
+                              <span>
+                                Teilresultate:{" "}
+                                {strategyVUMaterialization.partial_results_returned ? "ja" : "nein"}
+                              </span>
+                              <span>
+                                Speicherung:{" "}
+                                {strategyVUMaterialization.persistence_performed ? "ja" : "nein"}
+                              </span>
+                              <span>
+                                Ausfuehrungsbereit:{" "}
+                                {strategyVUMaterialization.execution_ready ? "ja" : "nein"}
+                              </span>
+                              <span>Runner: {strategyVUMaterialization.runner_invoked ? "ja" : "nein"}</span>
+                              <span>Ausfuehrung: {strategyVUMaterialization.execution_performed ? "ja" : "nein"}</span>
+                              <span>Simulation: {strategyVUMaterialization.simulation_performed ? "ja" : "nein"}</span>
+                            </div>
+                          </>
+                        ) : null}
+                      </>
+                    )}
                   </>
                 )}
               </div>

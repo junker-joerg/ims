@@ -206,6 +206,30 @@ def test_frontend_shell_declares_readonly_snapshot_materialization_preview():
     assert "strategy-materialized-boundaries" in styles
 
 
+def test_frontend_shell_declares_readonly_vu_snapshot_materialization_preview():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert '"/api/strategies/assignment-vu-snapshot-state-contract"' in source
+    assert '"/api/strategies/assignment-vu-snapshot-materialization-contract"' in source
+    assert "strategyVUMaterializationContract?.operation.materialization_endpoint" in source
+    assert 'strategyWorkbenchView === "vu-snapshots"' in source
+    assert 'data-testid="strategy-vu-snapshot-materialization-preview"' in source
+    assert "Zustandsbeleg anlegen" in source
+    assert "VU-Snapshots anzeigen" in source
+    assert "StrategySnapshotPreviewValue" in source
+    assert "state_provenance_validated" in source
+    assert "state_values_consumed" in source
+    assert "partial_results_returned" in source
+    assert "persistence_performed" in source
+    assert "execution_ready" in source
+    assert "runner_invoked" in source
+    assert "simulation_performed" in source
+    assert "localStorage" not in source
+    assert "strategy-vu-period-state" in styles
+    assert "strategy-vu-provenance-band" in styles
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

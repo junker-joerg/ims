@@ -254,3 +254,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR121-Plan fuer die atomare Erzeugung aller vorhandenen VU-Snapshottypen
   aus einem vollstaendig gueltigen PR120-Eingang, weiterhin ohne Speicherung,
   Regelanwendung, Runner oder Simulation.
+- `ims_2x_strategy_assignment_vu_snapshot_materialization_ui_plan.md`:
+  PR122-Plan fuer die rein lesende Workbench-Vorschau materialisierter
+  VU-Snapshots mit getrennt erfasstem Herkunftsbeleg, weiterhin ohne
+  Speicherung, Regelanwendung, Runner oder Simulation.
