@@ -79,3 +79,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   versionierter Zustandsbeleg und atomarer Abgleich von Periodenwerten,
   Anspruchsprofilen, Bestand `t-2` und aktiver VN-Zahl, weiterhin ohne
   Snapshot-Erzeugung, Speicherung, Runner oder Simulation.
+- [PR121 VU-Snapshots materialisieren](../migration/ims_2x_strategy_assignment_vu_snapshot_materialization.md):
+  atomare Erzeugung aller zehn VU-Strategien in acht vorhandene Snapshottypen
+  nach erfolgreicher Herkunftspruefung, weiterhin ohne Speicherung,
+  Regelanwendung, Runner oder Simulation.

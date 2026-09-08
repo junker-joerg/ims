@@ -205,4 +205,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR120-Zustandsbeleg und Herkunftspruefung fuer VU-Periodenwerte,
   Anspruchsprofile, Bestand `t-2` und aktive VN-Zahl, weiterhin ohne
   Snapshot-Erzeugung, Speicherung, Runner oder Simulation
+- `ims_2x_strategy_assignment_vu_snapshot_materialization.md`:
+  PR121-Materialisierung aller zehn VU-Strategien in acht vorhandene
+  Snapshottypen mit atomarer Fehlergrenze, weiterhin ohne Speicherung,
+  Regelanwendung, Runner oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

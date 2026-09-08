@@ -51,8 +51,10 @@ from ims.strategies import (
     STRATEGY_ASSIGNMENT_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_TRANSLATION_VERSION,
     STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VALIDATION_VERSION,
+    STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VERSION,
     STRATEGY_ASSIGNMENT_VU_SNAPSHOT_STATE_VALIDATION_VERSION,
     materialize_strategy_assignment_snapshots,
+    materialize_strategy_assignment_vu_snapshots,
     strategy_assignment_contract_payload,
     strategy_assignment_draft_contract_payload,
     strategy_assignment_snapshot_context_contract_payload,
@@ -61,6 +63,7 @@ from ims.strategies import (
     strategy_assignment_snapshot_materialization_validation_contract_payload,
     strategy_assignment_snapshot_translation_contract_payload,
     strategy_assignment_vu_snapshot_materialization_contract_payload,
+    strategy_assignment_vu_snapshot_materialization_operation_contract_payload,
     strategy_assignment_vu_snapshot_materialization_validation_contract_payload,
     strategy_assignment_vu_snapshot_state_contract_payload,
     strategy_catalog_payload,
@@ -334,6 +337,17 @@ def _strategy_assignment_vu_snapshot_materialization_validation_invalid_json_pay
     }
 
 
+def _strategy_assignment_vu_snapshot_materialization_contract_payload() -> dict[
+    str, object
+]:
+    return {
+        **strategy_assignment_vu_snapshot_materialization_contract_payload(),
+        "operation": (
+            strategy_assignment_vu_snapshot_materialization_operation_contract_payload()
+        ),
+    }
+
+
 def _strategy_assignment_vu_snapshot_state_validation_invalid_json_payload() -> dict[
     str, object
 ]:
@@ -371,6 +385,46 @@ def _strategy_assignment_vu_snapshot_state_validation_invalid_json_payload() -> 
         "writes_performed": False,
         "snapshots_created": False,
         "execution_performed": False,
+        "simulation_performed": False,
+        "historical_rng_equality_claim": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_assignment_vu_snapshot_materialization_invalid_json_payload() -> dict[
+    str, object
+]:
+    return {
+        "schema_version": STRATEGY_ASSIGNMENT_VU_SNAPSHOT_MATERIALIZATION_VERSION,
+        "mode": "strategy_assignment_vu_snapshot_materialization",
+        "status": "error",
+        "input_valid": False,
+        "materialization_complete": False,
+        "draft_id": None,
+        "period": None,
+        "expected_snapshot_count": 0,
+        "snapshot_count": 0,
+        "snapshot_loader_invocation_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "stage": "input_validation.request_contract",
+                "path": "$",
+                "code": "invalid_json",
+                "message": "VU-Snapshot-Materialisierung ist kein gueltiges JSON",
+            }
+        ],
+        "snapshots": [],
+        "state_provenance_validated": False,
+        "context_values_consumed": False,
+        "state_values_consumed": False,
+        "snapshot_loader_invocation_performed": False,
+        "partial_results_returned": False,
+        "writes_performed": False,
+        "persistence_performed": False,
+        "execution_ready": False,
+        "execution_performed": False,
+        "runner_invoked": False,
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
@@ -782,6 +836,20 @@ def create_app(
             validate_strategy_assignment_vu_snapshot_state(payload).to_dict()
         )
 
+    async def strategy_assignment_vu_snapshot_materialization_response(
+        request: Request,
+    ) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_assignment_vu_snapshot_materialization_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(
+            materialize_strategy_assignment_vu_snapshots(payload).to_dict()
+        )
+
     async def strategy_assignment_snapshot_materialization_response(
         request: Request,
     ) -> JSONResponse:
@@ -989,7 +1057,7 @@ def create_app(
         def strategies_assignment_vu_snapshot_materialization_contract() -> dict[
             str, object
         ]:
-            return strategy_assignment_vu_snapshot_materialization_contract_payload()
+            return _strategy_assignment_vu_snapshot_materialization_contract_payload()
 
         @app.get(
             "/api/strategies/assignment-vu-snapshot-materialization-validation-contract"
@@ -1024,6 +1092,17 @@ def create_app(
             request: Request,
         ) -> JSONResponse:
             return await strategy_assignment_vu_snapshot_state_validation_response(
+                request
+            )
+
+        @app.post(
+            "/api/strategies/assignment-vu-snapshot-materialization",
+            response_model=None,
+        )
+        async def strategies_assignment_vu_snapshot_materialization(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_assignment_vu_snapshot_materialization_response(
                 request
             )
 
@@ -1232,7 +1311,7 @@ def create_app(
         Route(
             "/api/strategies/assignment-vu-snapshot-materialization-contract",
             lambda request: JSONResponse(
-                strategy_assignment_vu_snapshot_materialization_contract_payload()
+                _strategy_assignment_vu_snapshot_materialization_contract_payload()
             ),
         ),
         Route(
@@ -1255,6 +1334,11 @@ def create_app(
         Route(
             "/api/strategies/assignment-vu-snapshot-state-validation",
             strategy_assignment_vu_snapshot_state_validation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/assignment-vu-snapshot-materialization",
+            strategy_assignment_vu_snapshot_materialization_response,
             methods=["POST"],
         ),
         Route(

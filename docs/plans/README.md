@@ -250,3 +250,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR120-Plan fuer den versionierten VU-Zustandsbeleg und den atomaren
   Herkunftsabgleich von Periodenwerten, Anspruchsprofilen, Bestand `t-2` und
   aktiver VN-Zahl, weiterhin ohne Materialisierung, Runner oder Simulation.
+- `ims_2x_strategy_assignment_vu_snapshot_materialization_plan.md`:
+  PR121-Plan fuer die atomare Erzeugung aller vorhandenen VU-Snapshottypen
+  aus einem vollstaendig gueltigen PR120-Eingang, weiterhin ohne Speicherung,
+  Regelanwendung, Runner oder Simulation.
