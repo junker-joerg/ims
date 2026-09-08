@@ -202,12 +202,6 @@ STRATEGY_EXECUTION_CANDIDATE_COLLECTIONS = (
 
 STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS = (
     StrategyExecutionCandidateOpenRequirement(
-        requirement_id="atomic_candidate_input_validation",
-        planned_pr=125,
-        blocks=("candidate_build", "candidate_publish"),
-        decision="validate_all_source_documents_and_explicit_draws_without_partial_result",
-    ),
-    StrategyExecutionCandidateOpenRequirement(
         requirement_id="server_side_scenario_profile_resolution",
         planned_pr=126,
         blocks=("market_ground_state", "candidate_build"),
@@ -245,7 +239,7 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
 
     boundary_flags = {
         "browser_materialization_report_authoritative": False,
-        "candidate_input_validation_enabled": False,
+        "candidate_input_validation_enabled": True,
         "scenario_profile_resolution_enabled": False,
         "server_side_rematerialization_enabled": False,
         "digest_calculation_enabled": False,
@@ -270,6 +264,12 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "base_model": "Vdefmd6",
         "scope": "single_period_joint_vu_vn_candidate",
         "contract_endpoint": "/api/strategies/execution-candidate-contract",
+        "candidate_validation_contract_endpoint": (
+            "/api/strategies/execution-candidate-validation-contract"
+        ),
+        "candidate_validation_endpoint": (
+            "/api/strategies/execution-candidate-validation"
+        ),
         "execution_anchor": {
             "module": "ims.engine.explicit_period_runner",
             "symbol": "run_loaded_explicit_period",

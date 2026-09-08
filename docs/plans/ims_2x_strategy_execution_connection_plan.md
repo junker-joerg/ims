@@ -157,8 +157,8 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR124 (umgesetzt):** read-only Kandidatenvertrag mit Pflichtteilen,
   offenen Teilen, elf Sammlungen und Sperrfeldern versionieren; noch keine
   Validierung.
-- **PR125:** gemeinsamen Kandidateneingang zustandslos und atomar validieren;
-  noch keine Snapshot-Loader, Ablage oder Ausfuehrung.
+- **PR125 (umgesetzt):** gemeinsamen Kandidateneingang zustandslos und atomar
+  validieren; noch keine Snapshot-Loader, Ablage oder Ausfuehrung.
 - **PR126:** VN und VU serverseitig erneut materialisieren und ein kanonisches
   `LoadedScenario` aufbauen; Digest berechnen, aber keinen Runner aufrufen.
 - **PR127:** unveraenderliche Kandidatenablage mit expliziter Speicherfreigabe

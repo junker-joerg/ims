@@ -95,3 +95,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   versionierter read-only Vertrag fuer Pflichtabschnitte, Quellversionen und
   elf `LoadedScenario`-Sammlungen; Kandidatenbau, Speicherung, Run-Control und
   Runner bleiben gesperrt.
+- [PR125 Kandidateneingang validieren](../migration/ims_2x_strategy_execution_candidate_validation.md):
+  zustandslose atomare Pruefung eines gemeinsamen Entwurfs und Kontexts, der
+  VU-Herkunft, einer lokalen Profilreferenz und expliziter VN-Prozesswerte;
+  weiterhin ohne Kandidatenbau, Digest, Speicherung oder Runner.

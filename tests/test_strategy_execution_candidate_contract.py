@@ -82,10 +82,9 @@ def test_candidate_contract_covers_loaded_scenario_snapshot_collections() -> Non
 def test_candidate_contract_keeps_all_builder_and_execution_steps_open() -> None:
     payload = strategy_execution_candidate_contract_payload()
 
-    assert payload["open_requirement_count"] == 6
-    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 6
+    assert payload["open_requirement_count"] == 5
+    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 5
     assert {item["planned_pr"] for item in payload["open_requirements"]} == {
-        125,
         126,
         127,
         129,
@@ -96,7 +95,7 @@ def test_candidate_contract_keeps_all_builder_and_execution_steps_open() -> None
         "symbol": "run_loaded_explicit_period",
         "status": "planned_only",
     }
-    assert payload["candidate_input_validation_enabled"] is False
+    assert payload["candidate_input_validation_enabled"] is True
     assert payload["server_side_rematerialization_enabled"] is False
     assert payload["digest_calculation_enabled"] is False
     assert payload["candidate_creation_enabled"] is False
@@ -107,7 +106,11 @@ def test_candidate_contract_keeps_all_builder_and_execution_steps_open() -> None
     assert payload["simulation_performed"] is False
     assert payload["historical_rng_equality_claim"] is False
     assert payload["historical_full_equality_claim"] is False
-    assert all(value is False for value in payload["boundary_flags"].values())
+    assert all(
+        value is False
+        for key, value in payload["boundary_flags"].items()
+        if key != "candidate_input_validation_enabled"
+    )
 
 
 def test_candidate_contract_does_not_invoke_materializers_or_runner(monkeypatch) -> None:

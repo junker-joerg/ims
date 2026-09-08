@@ -1,0 +1,142 @@
+{
+  "schema_version": "ims.strategy-execution-candidate-input.v1",
+  "candidate_schema_version": "ims.strategy-execution-candidate.v1",
+  "base_model": "Vdefmd6",
+  "scope": "single_period_joint_vu_vn_candidate_input",
+  "assignment_draft": {
+    "schema_version": "ims.strategy-assignment-draft.v1",
+    "catalog_schema_version": "ims.strategy-catalog.v1",
+    "assignment_contract_schema_version": "ims.strategy-assignment-contract.v1",
+    "base_model": "Vdefmd6",
+    "scope": "partial_actor_assignments",
+    "draft_id": "synthetic-pr125-joint-candidate",
+    "label": "Synthetischer gemeinsamer Kandidateneingang",
+    "assignments": [
+      {
+        "actor_type": "insurer",
+        "target_id": 1,
+        "strategy_id": "vu.vrvu01",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": "VURandomUniformRuleParameters",
+        "parameter_values": {
+          "premium_factor_normal": [1.0, 1.0],
+          "advertising_factor_normal": [1.0, 1.0],
+          "premium_factor_shock": [1.0, 1.0],
+          "advertising_factor_shock": [1.0, 1.0]
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 1,
+        "strategy_id": "vn.vrvn01",
+        "activation_period": 1,
+        "active_through_run": 100,
+        "logical_time": 1,
+        "parameter_schema": null,
+        "parameter_values": null
+      }
+    ]
+  },
+  "snapshot_context": {
+    "schema_version": "ims.strategy-assignment-snapshot-context.v1",
+    "translation_schema_version": "ims.strategy-assignment-snapshot-translation.v1",
+    "base_model": "Vdefmd6",
+    "scope": "explicit_single_period_snapshot_context",
+    "draft_id": "synthetic-pr125-joint-candidate",
+    "period": 2,
+    "entries": [
+      {
+        "actor_type": "insurer",
+        "target_id": 1,
+        "strategy_id": "vu.vrvu01",
+        "values": {
+          "random_draws": [0.1, 0.2, 0.3, 0.4],
+          "interest_rate": 0.02,
+          "change_shock": false
+        }
+      },
+      {
+        "actor_type": "policyholder",
+        "target_id": 1,
+        "strategy_id": "vn.vrvn01",
+        "values": {
+          "draws": {"insurer_choice_draws": [0.2, 0.4]},
+          "active_insurer_ids": [1],
+          "initial_decisions": null,
+          "damage_probabilities": null,
+          "insurer_inputs": null,
+          "history": null,
+          "market_damage_indicator": null,
+          "change_shock": false,
+          "information_cost_per_sample": 0.0,
+          "information_cost_per_insurer": 0.0
+        }
+      }
+    ]
+  },
+  "vu_input_policy": {
+    "schema_version": "ims.strategy-assignment-vu-snapshot-materialization-input.v1",
+    "threshold_source_policy": "insurer-aspiration-profile-v1",
+    "draw_source_policy": "explicit-context-draws-v1",
+    "fallback_policy": "reject-loader-and-runner-fallbacks-v1"
+  },
+  "vu_state_provenance": {
+    "schema_version": "ims.strategy-assignment-vu-snapshot-state.v1",
+    "input_schema_version": "ims.strategy-assignment-vu-snapshot-materialization-input.v1",
+    "base_model": "Vdefmd6",
+    "scope": "vu_snapshot_materialization_provenance_state",
+    "draft_id": "synthetic-pr125-joint-candidate",
+    "period": 2,
+    "period_state": {
+      "interest_rate": 0.02,
+      "change_shock": false,
+      "active_policyholder_count": 1
+    },
+    "entries": [
+      {
+        "insurer_id": 1,
+        "strategy_id": "vu.vrvu01",
+        "values": {}
+      }
+    ]
+  },
+  "scenario_profile_reference": {
+    "schema_version": "ims.strategy-execution-scenario-profile-reference.v1",
+    "source_policy": "server-known-local-scenario-profile-v1",
+    "profile_id": "synthetic-pr125-local-profile",
+    "period": 2,
+    "expected_bav_id": 1,
+    "expected_insurer_ids": [1],
+    "expected_policyholder_ids": [1]
+  },
+  "vn_process_input": {
+    "schema_version": "ims.strategy-execution-vn-process-input.v1",
+    "draft_id": "synthetic-pr125-joint-candidate",
+    "period": 2,
+    "draw_source_policy": "explicit-vn-process-draws-v1",
+    "decision_source_policy": "server-rematerialized-vn-rule-snapshots-v1",
+    "information_cost_source_policy": "vn-rule-application-v1",
+    "damage_settlement_snapshots": [
+      {
+        "policyholder_id": 1,
+        "previous_wealth": 100.0,
+        "previous_wealth_sector": [50.0, 50.0],
+        "damage_thresholds": [0.2, 0.3],
+        "change_shock": false,
+        "parameters": {
+          "damage_intercept_normal": [1.0, 2.0],
+          "damage_factor_normal": [3.0, 4.0],
+          "damage_intercept_shock": [5.0, 6.0],
+          "damage_factor_shock": [7.0, 8.0]
+        },
+        "draws": {
+          "trigger_draws": [-0.5, 0.5],
+          "amount_draws": [0.25, -0.25]
+        }
+      }
+    ],
+    "settlement_snapshots": []
+  }
+}

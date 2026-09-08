@@ -267,3 +267,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   versionierten read-only Vertrag des gemeinsamen Einperioden-
   Ausfuehrungskandidaten mit acht Pflichtabschnitten, elf kanonischen
   Snapshot-Sammlungen und weiterhin gesperrtem Kandidatenbau und Runner.
+- `ims_2x_strategy_execution_candidate_validation_plan.md`: PR125-Plan fuer
+  die zustandslose atomare Pruefung eines gemeinsamen Entwurfs und Kontexts,
+  der VU-Herkunft, einer lokalen Profilreferenz und expliziter VN-
+  Prozesseingaenge, weiterhin ohne Kandidatenbau, Digest oder Runner.

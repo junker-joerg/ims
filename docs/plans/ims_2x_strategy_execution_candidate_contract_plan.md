@@ -63,8 +63,8 @@ keinen Runner.
 
 ## Naechster Schritt
 
-PR125 fuehrt einen zustandslosen, atomaren Validator fuer den gemeinsamen
-Kandidateneingang ein. Ein Fehler in Entwurf, Kontext, Zustandsbeleg,
-Szenarioprofil-Referenz oder expliziten VN-Prozesswerten muss jeden
-Kandidatenbau verhindern. Snapshotloader, Digest, Speicherung und Ausfuehrung
-bleiben auch dort gesperrt.
+PR125 hat einen zustandslosen, atomaren Validator fuer den gemeinsamen
+Kandidateneingang eingefuehrt. PR126 darf als naechstes nur einen gueltigen
+Eingang verwenden, das bekannte lokale Szenarioprofil serverseitig aufloesen,
+VU und VN neu materialisieren sowie ein kanonisches `LoadedScenario` samt
+Digest bauen. Speicherung und Ausfuehrung bleiben gesperrt.

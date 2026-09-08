@@ -217,4 +217,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR124-read-only Vertrag fuer Pflichtabschnitte, Upstream-Versionen und elf
   kanonische Sammlungen des spaeteren gemeinsamen Einperioden-Kandidaten,
   weiterhin ohne Validierung, Kandidatenbau, Speicherung oder Ausfuehrung
+- `ims_2x_strategy_execution_candidate_validation.md`:
+  PR125-Format und zustandslose atomare Pruefung fuer gemeinsamen Entwurf,
+  Kontext, VU-Herkunft, Szenarioprofil-Referenz und expliziten VN-Prozess,
+  weiterhin ohne Profilaufloesung, Kandidatenbau, Digest oder Ausfuehrung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs
