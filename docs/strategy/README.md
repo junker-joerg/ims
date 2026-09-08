@@ -87,3 +87,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   rein lesende Vorschau der vollstaendig materialisierten VU-Snapshots mit
   getrennt erfasstem Zustandsbeleg und sichtbarer Herkunftsgrenze, weiterhin
   ohne Speicherung, Regelanwendung, Runner oder Simulation.
+- [PR123 gemeinsamer Ausfuehrungsanschluss](../plans/ims_2x_strategy_execution_connection_plan.md):
+  Architektur- und Freigabeplan fuer einen unveraenderlichen, gehashten
+  Einperioden-Ausfuehrungskandidaten aus VU-/VN-Snapshots, Marktgrundzustand
+  und VN-Prozesseingaben; noch ohne Vertragscode, Speicherung oder Runner.

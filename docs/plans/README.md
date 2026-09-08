@@ -258,3 +258,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR122-Plan fuer die rein lesende Workbench-Vorschau materialisierter
   VU-Snapshots mit getrennt erfasstem Herkunftsbeleg, weiterhin ohne
   Speicherung, Regelanwendung, Runner oder Simulation.
+- `ims_2x_strategy_execution_connection_plan.md`: PR123-Plan fuer einen
+  unveraenderlichen gemeinsamen Einperioden-Ausfuehrungskandidaten aus
+  serverseitig erneut materialisierten VU-/VN-Snapshots und bekanntem
+  Marktgrundzustand; neun kleine Folge-PRs bis zur kontrollierten
+  Einperioden-Wirkungsprobe, weiterhin ohne Ausfuehrung in diesem Plan-PR.
