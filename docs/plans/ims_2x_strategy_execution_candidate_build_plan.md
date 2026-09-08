@@ -99,6 +99,7 @@ einen vollstaendigen Fehlerbericht ohne Teilkandidat.
 
 ## Naechster Schritt
 
-PR127 ergaenzt fuer vollstaendige PR126-Kandidaten eine gesondert
-freizugebende, unveraenderliche Ablage mit erneuter Digest-Pruefung. Ein Start
-oder Runneraufruf bleibt auch dort gesperrt.
+PR127 hat fuer vollstaendige PR126-Kandidaten eine gesondert freizugebende,
+unveraenderliche Ablage mit erneuter Digest-Pruefung ergaenzt. PR128 zeigt
+Reife, Herkunft, Digest und Speicherstatus als naechstes rein lesend in der
+Workbench; Start und Runneraufruf bleiben gesperrt.

@@ -162,8 +162,9 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR126 (umgesetzt):** VN und VU serverseitig erneut materialisieren, das
   registrierte Marktprofil aufloesen und ein kanonisches `LoadedScenario`
   samt Digest bauen; kein Runneraufruf.
-- **PR127:** unveraenderliche Kandidatenablage mit expliziter Speicherfreigabe
-  und Digest-Pruefung ergaenzen; kein Start.
+- **PR127 (umgesetzt):** unveraenderliche Kandidatenablage mit expliziter
+  Speicherfreigabe, serverseitigem Neubau und Digest-Pruefung vor und nach
+  dem Schreiben; kein Start.
 - **PR128:** Kandidatenreife und Herkunft rein lesend in der Workbench zeigen.
 - **PR129:** Run-Control-Resolver und Freigabecheck fuer Kandidaten-ID plus
   Digest anbinden; Start weiterhin gesperrt.
@@ -174,7 +175,7 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer diesen
   eng benannten Einperiodenpfad abschliessen.
 
-Nach PR126 verbleiben sechs kleine PRs bis zur kontrolliert bedienbaren
+Nach PR127 verbleiben fuenf kleine PRs bis zur kontrolliert bedienbaren
 Einperioden-Wirkungsprobe. Das ist weder die Zusage einer vollstaendigen
 Mehrperiodensimulation noch eine Schaetzung bis zur fachlichen
 Produktionsreife des Regulationslabors.
@@ -204,7 +205,6 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR126 baut aus einem gueltigen gemeinsamen Eingang einen fluechtigen,
-kanonischen Kandidaten samt Digest. PR127 ergaenzt als naechstes eine
-gesondert freizugebende unveraenderliche Ablage mit erneuter Digest-Pruefung;
-Runner und Ausfuehrung bleiben dabei gesperrt.
+PR128 zeigt als naechstes Reife, Herkunft, Digest und Speicherstatus eines
+gespeicherten Kandidaten rein lesend in der Workbench. Runner und Ausfuehrung
+bleiben dabei gesperrt.

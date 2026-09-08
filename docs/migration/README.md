@@ -225,4 +225,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR126-Aufloesung eines serverseitig registrierten Marktgrundprofils,
   erneute VU-/VN-Materialisierung und kanonischer fluechtiger Kandidat mit
   stabilem SHA-256-Digest, weiterhin ohne Speicherung oder Ausfuehrung
+- `ims_2x_strategy_execution_candidate_store.md`:
+  PR127-explizit freizugebende, unveraenderliche Kandidatenablage mit
+  serverseitigem Neubau und Digest-Pruefung vor dem Schreiben, nach dem
+  Schreiben und bei jedem Abruf, weiterhin ohne Run-Control oder Ausfuehrung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -103,3 +103,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   serverseitige Aufloesung eines registrierten Marktgrundprofils, erneute
   VU-/VN-Materialisierung und kanonischer fluechtiger Kandidat samt
   SHA-256-Digest; weiterhin ohne Speicherung, Run-Control oder Runner.
+- [PR127 Ausfuehrungskandidaten speichern](../migration/ims_2x_strategy_execution_candidate_store.md):
+  explizit freizugebende, unveraenderliche SQLite-Ablage mit serverseitigem
+  Neubau und wiederholter Digest-Pruefung; weiterhin ohne Run-Control,
+  Runner oder Simulation.

@@ -280,6 +280,39 @@ def _content_digest(value: object) -> str:
     return f"sha256:{sha256(_canonical_bytes(value)).hexdigest()}"
 
 
+def calculate_strategy_execution_candidate_content_digest(
+    *,
+    draft_id: str,
+    period: int,
+    sections: Mapping[str, object],
+    candidate_schema_version: str = STRATEGY_EXECUTION_CANDIDATE_VERSION,
+) -> str:
+    """Berechnet den kanonischen Digest eines Kandidaten ohne Identitaetsfelder."""
+
+    return _content_digest(
+        {
+            "candidate_schema_version": candidate_schema_version,
+            "draft_id": draft_id,
+            "period": period,
+            **deepcopy(dict(sections)),
+        }
+    )
+
+
+def strategy_execution_candidate_id_from_digest(content_digest: str) -> str:
+    """Leitet die stabile Kandidaten-ID aus einem vollstaendigen Digest ab."""
+
+    prefix = "sha256:"
+    digest_hex = content_digest.removeprefix(prefix)
+    if not content_digest.startswith(prefix) or len(digest_hex) != 64:
+        raise ValueError("candidate content digest must be a sha256 digest")
+    try:
+        int(digest_hex, 16)
+    except ValueError as exc:
+        raise ValueError("candidate content digest must be a sha256 digest") from exc
+    return f"strategy-candidate-{digest_hex[:24]}"
+
+
 def _sorted_payloads(
     values: list[object],
     *,
@@ -944,14 +977,12 @@ def build_strategy_execution_candidate(
             "simulation_performed": False,
         },
     }
-    digest_basis = {
-        "candidate_schema_version": STRATEGY_EXECUTION_CANDIDATE_VERSION,
-        "draft_id": validation.draft_id,
-        "period": validation.period,
-        **sections,
-    }
     try:
-        content_digest = _content_digest(digest_basis)
+        content_digest = calculate_strategy_execution_candidate_content_digest(
+            draft_id=str(validation.draft_id),
+            period=int(validation.period),
+            sections=sections,
+        )
     except (TypeError, ValueError, OverflowError) as exc:
         _issue(
             issues,
@@ -982,9 +1013,8 @@ def build_strategy_execution_candidate(
             ),
             issues=issues,
         )
-    digest_hex = content_digest.removeprefix("sha256:")
     candidate = StrategyExecutionCandidate(
-        candidate_id=f"strategy-candidate-{digest_hex[:24]}",
+        candidate_id=strategy_execution_candidate_id_from_digest(content_digest),
         draft_id=str(validation.draft_id),
         period=int(validation.period),
         content_digest=content_digest,

@@ -97,9 +97,9 @@ kein Nachweis einer historischen RNG- oder Ergebnisgleichheit.
 Der POST-Endpunkt liefert den Kandidaten nur in der Antwort. Er schreibt
 weder Datei noch Datenbank.
 
-## Weiterhin gesperrt
+## Am Bauendpunkt weiterhin gesperrt
 
-- Kandidatenpersistenz und spaetere Wiederauflosung;
+- automatische Kandidatenpersistenz ohne separaten PR127-Speichervertrag;
 - Run-Control, Queue und Freigabe;
 - Regelanwendung, Einperiodenrunner und Mehrperiodenlauf;
 - Carryover, Ergebnisdateien und Legacy-Vergleich;
@@ -107,6 +107,7 @@ weder Datei noch Datenbank.
 
 ## Naechster Schritt
 
-PR127 soll einen erfolgreichen PR126-Kandidaten nur nach eigener expliziter
-Speicherfreigabe unveraenderlich ablegen. Vor und nach der Ablage wird sein
-Digest erneut geprueft. Runner und Simulation bleiben weiterhin gesperrt.
+PR127 legt einen erfolgreichen PR126-Kandidaten nur nach eigener expliziter
+Speicherfreigabe unveraenderlich ab und prueft seinen Digest vor und nach der
+Ablage. PR128 zeigt die Kandidatenreife als naechstes rein lesend; Runner und
+Simulation bleiben weiterhin gesperrt.

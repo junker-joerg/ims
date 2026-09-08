@@ -275,3 +275,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   serverseitige Aufloesung eines registrierten Marktprofils, erneute VU-/VN-
   Materialisierung und den kanonischen fluechtigen Kandidaten samt Digest,
   weiterhin ohne Speicherung, Run-Control, Runner oder Simulation.
+- `ims_2x_strategy_execution_candidate_store_plan.md`: PR127-Plan fuer die
+  explizit freizugebende, unveraenderliche SQLite-Ablage mit serverseitigem
+  Neubau sowie Digest-Pruefung vor und nach dem Schreiben, weiterhin ohne
+  Run-Control, Runner oder Simulation.

@@ -43,6 +43,13 @@ from ims.api.run_control_queue import (
 from ims.api.run_control_queue_action_plan import build_run_control_queue_action_plan
 from ims.api.run_control_queue_overview import run_control_queue_detail_payload, run_control_queue_overview_payload
 from ims.api.run_control_requests import run_control_request_contract_payload
+from ims.api.strategy_execution_candidate_store import (
+    STRATEGY_EXECUTION_CANDIDATE_STORE_VERSION,
+    StrategyExecutionCandidateStoreError,
+    get_strategy_execution_candidate,
+    persist_strategy_execution_candidate,
+    strategy_execution_candidate_store_contract_payload,
+)
 from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
@@ -498,6 +505,34 @@ def _strategy_execution_candidate_build_invalid_json_payload() -> dict[
         "digest_calculation_performed": False,
         "candidate_created": False,
         "candidate_persisted": False,
+        "writes_performed": False,
+        "run_control_connected": False,
+        "runner_invocation_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_rng_equality_claim": False,
+        "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_execution_candidate_store_error_payload(
+    code: str,
+    message: str,
+) -> dict[str, object]:
+    return {
+        "schema_version": STRATEGY_EXECUTION_CANDIDATE_STORE_VERSION,
+        "mode": "strategy_execution_candidate_store",
+        "status": "error",
+        "issue_count": 1,
+        "issues": [{"code": code, "message": message}],
+        "record": None,
+        "storage_release_confirmed": False,
+        "candidate_rebuilt": False,
+        "pre_storage_digest_verified": False,
+        "post_storage_digest_verified": False,
+        "candidate_persisted": False,
+        "new_record_created": False,
+        "replayed": False,
         "writes_performed": False,
         "run_control_connected": False,
         "runner_invocation_performed": False,
@@ -985,6 +1020,78 @@ def create_app(
             ).to_dict()
         )
 
+    async def strategy_execution_candidate_store_response(
+        request: Request,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                _strategy_execution_candidate_store_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Kandidatenspeicherung erfordert eine explizite SQLite-Metadatenquelle",
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_execution_candidate_store_error_payload(
+                    "invalid_json",
+                    "Kandidatenspeicher-Eingang ist kein gueltiges JSON",
+                ),
+                status_code=400,
+            )
+        try:
+            result = persist_strategy_execution_candidate(
+                payload,
+                db_path=Path(str(metadata_source["path"])),
+                profiles=build_default_strategy_execution_scenario_profiles(),
+                trusted_profile_root=strategy_execution_scenario_profile_root(),
+            )
+        except StrategyExecutionCandidateStoreError as exc:
+            return JSONResponse(
+                _strategy_execution_candidate_store_error_payload(
+                    exc.code,
+                    str(exc),
+                ),
+                status_code=409,
+            )
+        return JSONResponse(
+            result.to_dict(),
+            status_code=200 if result.replayed else 201,
+        )
+
+    def strategy_execution_candidate_read_response(
+        candidate_id: str,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                _strategy_execution_candidate_store_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Kandidatenabruf erfordert eine explizite SQLite-Metadatenquelle",
+                ),
+                status_code=404,
+            )
+        try:
+            result = get_strategy_execution_candidate(
+                candidate_id,
+                db_path=Path(str(metadata_source["path"])),
+            )
+        except StrategyExecutionCandidateStoreError as exc:
+            status_code = 404 if exc.code == "candidate_not_found" else 409
+            return JSONResponse(
+                _strategy_execution_candidate_store_error_payload(
+                    exc.code,
+                    str(exc),
+                ),
+                status_code=status_code,
+            )
+        return JSONResponse(result.to_dict())
+
     async def strategy_assignment_vu_snapshot_materialization_response(
         request: Request,
     ) -> JSONResponse:
@@ -1225,6 +1332,10 @@ def create_app(
                 known_profile_ids=profile_ids
             )
 
+        @app.get("/api/strategies/execution-candidate-store-contract")
+        def strategies_execution_candidate_store_contract() -> dict[str, object]:
+            return strategy_execution_candidate_store_contract_payload()
+
         @app.post(
             "/api/strategies/execution-candidate-validation",
             response_model=None,
@@ -1242,6 +1353,24 @@ def create_app(
             request: Request,
         ) -> JSONResponse:
             return await strategy_execution_candidate_build_response(request)
+
+        @app.post(
+            "/api/strategies/execution-candidate-store",
+            response_model=None,
+        )
+        async def strategies_execution_candidate_store(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_candidate_store_response(request)
+
+        @app.get(
+            "/api/strategies/execution-candidates/{candidate_id}",
+            response_model=None,
+        )
+        def strategies_execution_candidate_read(
+            candidate_id: str,
+        ) -> JSONResponse:
+            return strategy_execution_candidate_read_response(candidate_id)
 
         @app.get(
             "/api/strategies/assignment-vu-snapshot-materialization-validation-contract"
@@ -1521,6 +1650,12 @@ def create_app(
             ),
         ),
         Route(
+            "/api/strategies/execution-candidate-store-contract",
+            lambda request: JSONResponse(
+                strategy_execution_candidate_store_contract_payload()
+            ),
+        ),
+        Route(
             "/api/strategies/execution-candidate-validation",
             strategy_execution_candidate_validation_response,
             methods=["POST"],
@@ -1529,6 +1664,17 @@ def create_app(
             "/api/strategies/execution-candidate-build",
             strategy_execution_candidate_build_response,
             methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/execution-candidate-store",
+            strategy_execution_candidate_store_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/execution-candidates/{candidate_id}",
+            lambda request: strategy_execution_candidate_read_response(
+                request.path_params["candidate_id"]
+            ),
         ),
         Route(
             "/api/strategies/assignment-vu-snapshot-materialization-validation-contract",

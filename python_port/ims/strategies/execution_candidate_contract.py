@@ -202,12 +202,6 @@ STRATEGY_EXECUTION_CANDIDATE_COLLECTIONS = (
 
 STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS = (
     StrategyExecutionCandidateOpenRequirement(
-        requirement_id="immutable_candidate_persistence",
-        planned_pr=127,
-        blocks=("candidate_storage",),
-        decision="require_separate_storage_release_and_digest_check",
-    ),
-    StrategyExecutionCandidateOpenRequirement(
         requirement_id="run_control_candidate_resolution",
         planned_pr=129,
         blocks=("run_control_release",),
@@ -232,7 +226,10 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "server_side_rematerialization_enabled": True,
         "digest_calculation_enabled": True,
         "candidate_creation_enabled": True,
-        "candidate_persistence_enabled": False,
+        "candidate_persistence_enabled": True,
+        "explicit_storage_release_required": True,
+        "immutable_candidate_storage_enabled": True,
+        "candidate_digest_reverification_enabled": True,
         "run_control_enabled": False,
         "snapshot_loader_invocation_enabled": True,
         "runner_enabled": False,
@@ -264,6 +261,15 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "candidate_build_endpoint": (
             "/api/strategies/execution-candidate-build"
         ),
+        "candidate_store_contract_endpoint": (
+            "/api/strategies/execution-candidate-store-contract"
+        ),
+        "candidate_store_endpoint": (
+            "/api/strategies/execution-candidate-store"
+        ),
+        "candidate_read_endpoint_template": (
+            "/api/strategies/execution-candidates/{candidate_id}"
+        ),
         "execution_anchor": {
             "module": "ims.engine.explicit_period_runner",
             "symbol": "run_loaded_explicit_period",
@@ -277,6 +283,7 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
             "browser_materialization_reports_accepted": False,
             "free_fixture_paths_accepted": False,
             "free_output_paths_accepted": False,
+            "browser_candidate_payloads_accepted": False,
         },
         "upstream_contract_versions": {
             "assignment_draft": STRATEGY_ASSIGNMENT_DRAFT_VERSION,

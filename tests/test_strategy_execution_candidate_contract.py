@@ -44,6 +44,7 @@ def test_candidate_contract_versions_required_sections_and_sources() -> None:
         "browser_materialization_reports_accepted": False,
         "free_fixture_paths_accepted": False,
         "free_output_paths_accepted": False,
+        "browser_candidate_payloads_accepted": False,
     }
 
 
@@ -79,13 +80,12 @@ def test_candidate_contract_covers_loaded_scenario_snapshot_collections() -> Non
     assert len(process_collections) == 2
 
 
-def test_candidate_contract_marks_builder_complete_and_keeps_execution_open() -> None:
+def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> None:
     payload = strategy_execution_candidate_contract_payload()
 
-    assert payload["open_requirement_count"] == 3
-    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 3
+    assert payload["open_requirement_count"] == 2
+    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 2
     assert {item["planned_pr"] for item in payload["open_requirements"]} == {
-        127,
         129,
         130,
     }
@@ -100,7 +100,10 @@ def test_candidate_contract_marks_builder_complete_and_keeps_execution_open() ->
     assert payload["digest_calculation_enabled"] is True
     assert payload["candidate_creation_enabled"] is True
     assert payload["snapshot_loader_invocation_enabled"] is True
-    assert payload["candidate_persistence_enabled"] is False
+    assert payload["candidate_persistence_enabled"] is True
+    assert payload["explicit_storage_release_required"] is True
+    assert payload["immutable_candidate_storage_enabled"] is True
+    assert payload["candidate_digest_reverification_enabled"] is True
     assert payload["run_control_enabled"] is False
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False

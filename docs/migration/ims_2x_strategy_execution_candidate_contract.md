@@ -60,7 +60,8 @@ vollstaendige historische Simulation.
 - PR125 (umgesetzt): atomare Eingabevalidierung ohne Teilkandidat;
 - PR126 (umgesetzt): bekanntes lokales Szenarioprofil aufloesen,
   serverseitig neu materialisieren und Digest berechnen;
-- PR127: Kandidat nach eigener Freigabe unveraenderlich speichern;
+- PR127 (umgesetzt): Kandidat nach eigener Freigabe unveraenderlich
+  speichern und beim Schreiben erneut pruefen;
 - PR129: Kandidaten-ID und Digest an Run-Control anbinden;
 - PR130: Einperioden-Wirkungsprobe auf einer isolierten Zustandskopie.
 
@@ -72,13 +73,13 @@ zugelassen. PR125 und PR126 besitzen eigene Validierungs- und Bauendpunkte.
 
 PR126 hat Eingabevalidierung, registrierte Szenarioprofil-Aufloesung,
 Neumaterialisierung, Digest und fluechtige Kandidatenerzeugung umgesetzt.
-Speicherung, Run-Control, Runner, Carryover, Ausgabedateien und
-Legacy-Vergleich bleiben deaktiviert. Der Schritt startet keine Simulation
-und behauptet weder historische RNG-Gleichheit noch historische
-Vollgleichheit.
+PR127 hat die explizit freizugebende, unveraenderliche Ablage ergaenzt.
+Run-Control, Runner, Carryover, Ausgabedateien und Legacy-Vergleich bleiben
+deaktiviert. Der Schritt startet keine Simulation und behauptet weder
+historische RNG-Gleichheit noch historische Vollgleichheit.
 
 ## Naechster Schritt
 
-PR127 darf einen vollstaendigen PR126-Kandidaten nach eigener Freigabe
-unveraenderlich speichern und muss seinen Digest erneut pruefen. Auch ein
-gespeicherter Kandidat ist noch keine Ausfuehrungsfreigabe.
+PR128 zeigt Reife, Herkunft, Digest und Speicherstatus eines Kandidaten als
+naechstes rein lesend in der Workbench. Auch ein gespeicherter Kandidat ist
+noch keine Ausfuehrungsfreigabe.

@@ -65,6 +65,7 @@ keinen Runner.
 
 PR126 loest das bekannte lokale Szenarioprofil serverseitig auf,
 materialisiert VU und VN neu und baut ein kanonisches `LoadedScenario` samt
-Digest. PR127 ergaenzt als naechstes eine gesondert freizugebende,
-unveraenderliche Kandidatenablage mit erneuter Digest-Pruefung. Ausfuehrung
-und Runner bleiben gesperrt.
+Digest. PR127 hat danach eine gesondert freizugebende, unveraenderliche
+Kandidatenablage mit erneuter Digest-Pruefung ergaenzt. PR128 zeigt Reife und
+Herkunft als naechstes rein lesend in der Workbench; Ausfuehrung und Runner
+bleiben gesperrt.

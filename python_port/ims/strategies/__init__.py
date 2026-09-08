@@ -149,7 +149,9 @@ from ims.strategies.execution_candidate_build import (
     StrategyExecutionScenarioProfileDefinition,
     build_default_strategy_execution_scenario_profiles,
     build_strategy_execution_candidate,
+    calculate_strategy_execution_candidate_content_digest,
     strategy_execution_candidate_build_contract_payload,
+    strategy_execution_candidate_id_from_digest,
     strategy_execution_scenario_profile_root,
 )
 
@@ -270,6 +272,7 @@ __all__ = [
     "build_vdefmd6_strategy_assignment_profiles",
     "build_default_strategy_execution_scenario_profiles",
     "build_strategy_execution_candidate",
+    "calculate_strategy_execution_candidate_content_digest",
     "get_strategy_definition",
     "list_strategy_definitions",
     "load_strategy_assignment_draft",
@@ -291,6 +294,7 @@ __all__ = [
     "strategy_catalog_payload",
     "strategy_execution_candidate_contract_payload",
     "strategy_execution_candidate_build_contract_payload",
+    "strategy_execution_candidate_id_from_digest",
     "strategy_execution_scenario_profile_root",
     "strategy_execution_candidate_validation_contract_payload",
     "strategy_snapshot_translation_issues",
