@@ -170,14 +170,15 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR129 (umgesetzt):** Run-Control-Resolver und Freigabecheck fuer
   Kandidaten-ID plus erneut geprueften Digest anbinden; Start weiterhin
   gesperrt.
-- **PR130:** kontrollierte Einperioden-Wirkungsprobe auf isolierter Kopie im
-  Backend ausfuehren; keine Dateien, kein Legacy-Vergleich und kein Carryover.
+- **PR130 (umgesetzt):** kontrollierte Einperioden-Wirkungsprobe auf
+  isolierter Kopie im Backend ausfuehren; keine Dateien, kein Legacy-Vergleich
+  und kein Carryover.
 - **PR131:** manuellen Workbench-Start und read-only Ergebnisansicht an die
   vorhandene Freigabe-, Idempotenz- und Verlaufskette anbinden.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer diesen
   eng benannten Einperiodenpfad abschliessen.
 
-Nach PR129 verbleiben drei kleine PRs bis zur kontrolliert bedienbaren
+Nach PR130 verbleiben zwei kleine PRs bis zur kontrolliert bedienbaren
 Einperioden-Wirkungsprobe. Das ist weder die Zusage einer vollstaendigen
 Mehrperiodensimulation noch eine Schaetzung bis zur fachlichen
 Produktionsreife des Regulationslabors.
@@ -207,6 +208,6 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR130 fuehrt als naechstes einen erneut verifizierten Kandidaten auf einer
-isolierten Kopie fuer genau eine Periode aus. Ausgabedateien,
-Legacy-Vergleich und Carryover bleiben gesperrt.
+PR131 bindet als naechstes den manuellen Workbench-Start und die read-only
+Ergebnisansicht an eine dauerhafte Freigabe-, Idempotenz- und Verlaufskette
+an.

@@ -660,6 +660,7 @@ type StrategyExecutionCandidateOverviewEntry = {
     storage_integrity_verified: boolean;
     run_control_ready: boolean;
     run_control_release_check_available: boolean;
+    effect_probe_available: boolean;
     execution_ready: boolean;
     next_gate: string;
   };
@@ -4562,10 +4563,10 @@ function App() {
                         <div className="locked">
                           <LockKeyhole size={17} aria-hidden="true" />
                           <span>
-                            <strong>Run-Control</strong>
+                            <strong>Backend-Probe</strong>
                             <small>
-                              {selectedStrategyCandidate.readiness.run_control_release_check_available
-                                ? "Pruefung bereit"
+                              {selectedStrategyCandidate.readiness.effect_probe_available
+                                ? "API bereit"
                                 : "gesperrt"}
                             </small>
                           </span>
@@ -4629,7 +4630,7 @@ function App() {
                         <LockKeyhole size={18} aria-hidden="true" />
                         <div>
                           <strong>Ausfuehrung bleibt gesperrt</strong>
-                          <span>Die Kandidatenfreigabe kann per API geprueft werden. Start und Ausfuehrung bleiben bis {selectedStrategyCandidate.readiness.next_gate} gesperrt.</span>
+                          <span>Die kontrollierte Einperiodenprobe ist per API verfuegbar. Workbench-Start und Ergebnisablage bleiben bis {selectedStrategyCandidate.readiness.next_gate} gesperrt.</span>
                         </div>
                       </div>
                     </article>

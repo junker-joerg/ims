@@ -91,20 +91,19 @@ schreibt keine Freigabe und erlaubt noch keinen Start.
 
 ## Restplanung
 
-- **PR130:** kontrollierte Einperioden-Wirkungsprobe auf einer isolierten
-  Kandidatenkopie im Backend; keine Dateien, kein Legacy-Vergleich und kein
-  Carryover.
+- **PR130 (umgesetzt):** kontrollierte Einperioden-Wirkungsprobe auf einer
+  isolierten Kandidatenkopie im Backend; keine Dateien, kein Legacy-Vergleich
+  und kein Carryover.
 - **PR131:** manuellen Workbench-Start und read-only Ergebnisansicht an die
   vorhandene Freigabe-, Idempotenz- und Verlaufskette anbinden.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer den eng
   benannten Einperiodenpfad abschliessen.
 
-Nach PR129 verbleiben drei kleine PRs bis zur kontrolliert bedienbaren
+Nach PR130 verbleiben zwei kleine PRs bis zur kontrolliert bedienbaren
 Einperioden-Wirkungsprobe. Mehrperiodenlauf, Carryover und
 Regulierungssimulation bleiben eigene spaetere Ausbaubloecke.
 
 ## Naechster Schritt
 
-PR130 darf erstmals einen erneut verifizierten Kandidaten auf einer isolierten
-Kopie an `run_loaded_explicit_period` uebergeben. Der Schnitt bleibt auf genau
-eine Periode ohne Dateien, Legacy-Vergleich oder Carryover begrenzt.
+PR131 bindet den manuellen Workbench-Start und die read-only Ergebnisansicht
+an eine dauerhafte Freigabe-, Idempotenz- und Verlaufskette an.

@@ -200,14 +200,9 @@ STRATEGY_EXECUTION_CANDIDATE_COLLECTIONS = (
 )
 
 
-STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS = (
-    StrategyExecutionCandidateOpenRequirement(
-        requirement_id="single_period_effect_probe",
-        planned_pr=130,
-        blocks=("runner_execution",),
-        decision="run_only_on_an_isolated_copy_without_files_carryover_or_legacy_compare",
-    ),
-)
+STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS: tuple[
+    StrategyExecutionCandidateOpenRequirement, ...
+] = ()
 
 
 def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
@@ -232,6 +227,12 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "run_control_queue_enabled": False,
         "run_control_preflight_enabled": False,
         "adapter_start_allowed": False,
+        "candidate_effect_probe_enabled": True,
+        "candidate_effect_probe_runner_enabled": True,
+        "candidate_effect_probe_execution_enabled": True,
+        "general_runner_enabled": False,
+        "multi_period_execution_enabled": False,
+        "effect_probe_result_persistence_enabled": False,
         "snapshot_loader_invocation_enabled": True,
         "runner_enabled": False,
         "execution_enabled": False,
@@ -280,10 +281,16 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "candidate_run_control_release_check_endpoint": (
             "/api/run-control/strategy-candidate-release-check"
         ),
+        "candidate_effect_probe_contract_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe-contract"
+        ),
+        "candidate_effect_probe_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe"
+        ),
         "execution_anchor": {
             "module": "ims.engine.explicit_period_runner",
             "symbol": "run_loaded_explicit_period",
-            "status": "planned_only",
+            "status": "controlled_single_period_probe_only",
         },
         "authoritative_source_policy": {
             "original_versioned_documents_required": True,

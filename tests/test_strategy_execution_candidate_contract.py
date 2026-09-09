@@ -83,13 +83,13 @@ def test_candidate_contract_covers_loaded_scenario_snapshot_collections() -> Non
 def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> None:
     payload = strategy_execution_candidate_contract_payload()
 
-    assert payload["open_requirement_count"] == 1
-    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 1
-    assert {item["planned_pr"] for item in payload["open_requirements"]} == {130}
+    assert payload["open_requirement_count"] == 0
+    assert len(STRATEGY_EXECUTION_CANDIDATE_OPEN_REQUIREMENTS) == 0
+    assert payload["open_requirements"] == []
     assert payload["execution_anchor"] == {
         "module": "ims.engine.explicit_period_runner",
         "symbol": "run_loaded_explicit_period",
-        "status": "planned_only",
+        "status": "controlled_single_period_probe_only",
     }
     assert payload["candidate_input_validation_enabled"] is True
     assert payload["scenario_profile_resolution_enabled"] is True
@@ -112,11 +112,20 @@ def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> N
     assert payload["run_control_queue_enabled"] is False
     assert payload["run_control_preflight_enabled"] is False
     assert payload["adapter_start_allowed"] is False
+    assert payload["candidate_effect_probe_enabled"] is True
+    assert payload["candidate_effect_probe_runner_enabled"] is True
+    assert payload["candidate_effect_probe_execution_enabled"] is True
+    assert payload["general_runner_enabled"] is False
+    assert payload["multi_period_execution_enabled"] is False
+    assert payload["effect_probe_result_persistence_enabled"] is False
     assert payload["candidate_run_control_contract_endpoint"] == (
         "/api/run-control/strategy-candidate-contract"
     )
     assert payload["candidate_run_control_release_check_endpoint"] == (
         "/api/run-control/strategy-candidate-release-check"
+    )
+    assert payload["candidate_effect_probe_endpoint"] == (
+        "/api/run-control/strategy-candidate-effect-probe"
     )
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False

@@ -67,5 +67,5 @@ Ausfuehrung erfolgt.
   gespeicherten Kandidaten read-only.
 - PR129 darf Run-Control nur ueber Kandidaten-ID plus erneut geprueften
   Digest anbinden.
-- PR130 bleibt der erste geplante, eng kontrollierte Einperioden-Aufruf auf
-  einer isolierten Kopie.
+- PR130 stellt den eng kontrollierten Einperioden-Aufruf auf einer isolierten
+  Kopie bereit; PR131 bindet Ergebnisablage und Idempotenz an.

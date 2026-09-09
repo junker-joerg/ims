@@ -287,3 +287,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   die kontrollierte read-only Aufloesung eines gespeicherten Kandidaten ueber
   ID und erneut geprueften Volldigest; Queue, Start, Runner und Simulation
   bleiben gesperrt.
+- `ims_2x_strategy_execution_candidate_effect_probe_plan.md`: PR130-Plan fuer
+  genau einen ausdruecklich freigegebenen Einperioden-Runneraufruf auf einer
+  isolierten Kandidatenkopie mit fluechtigem Vorher/Nachher-Ergebnis, ohne
+  Dateien, Carryover oder Legacy-Vergleich.

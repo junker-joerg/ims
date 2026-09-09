@@ -31,7 +31,7 @@ def test_pr129_plan_documents_identity_recheck_and_closed_start_boundary() -> No
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in text
     assert "`incomming/` bleibt unversioniert" in text
     assert "PR130" in text
-    assert "drei kleine PRs" in text
+    assert "zwei kleine PRs" in text
 
 
 def test_pr129_mapping_names_implementation_api_and_limits() -> None:

@@ -60,7 +60,7 @@ def test_pr123_plan_defers_execution_and_lists_follow_up_sequence() -> None:
     for pr_number in range(124, 133):
         assert f"PR{pr_number}" in text
 
-    assert "drei kleine PRs" in text
+    assert "zwei kleine PRs" in text
     assert "keine Codeaenderung am Simulations- oder Regelkern" in text
     assert "keine Snapshot-, Szenario- oder Kandidatenpersistenz" in text
     assert "kein neuer API- oder UI-Startpfad" in text

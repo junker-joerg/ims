@@ -115,3 +115,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   kontrollierte Aufloesung eines gespeicherten Kandidaten ueber ID und
   erneut geprueften SHA-256-Digest; Queue, Start, Runner und Simulation
   bleiben gesperrt.
+- [PR130 Einperioden-Wirkungsprobe](../migration/ims_2x_strategy_execution_candidate_effect_probe.md):
+  genau ein ausdruecklich freigegebener Runneraufruf auf einer isolierten
+  Kandidatenkopie mit fluechtigem Vorher/Nachher-Ergebnis; Dateien,
+  Carryover, Legacy-Vergleich und Ergebnispersistenz bleiben gesperrt.

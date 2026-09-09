@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 import re
@@ -101,6 +101,11 @@ class StrategyExecutionCandidateRunControlResult:
     checks: tuple[StrategyExecutionCandidateRunControlCheck, ...]
     candidate: dict[str, object] | None
     release_ready: bool
+    record: StrategyExecutionCandidateStoreRecord | None = field(
+        default=None,
+        repr=False,
+        compare=False,
+    )
 
     @property
     def issues(self) -> tuple[dict[str, str], ...]:
@@ -139,7 +144,7 @@ class StrategyExecutionCandidateRunControlResult:
             "automatic_historical_rule_selection_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR130",
+            "next_gate": "PR131",
         }
 
 
@@ -227,7 +232,7 @@ def check_strategy_execution_candidate_run_control_release(
         "Kandidaten-ID passt nicht zum erwarteten Digest",
     )
     if not identity_matches:
-        return _result(request, checks, candidate=None)
+        return _result(request, checks, candidate=None, record=None)
 
     try:
         stored = get_strategy_execution_candidate(
@@ -236,7 +241,7 @@ def check_strategy_execution_candidate_run_control_release(
         )
     except StrategyExecutionCandidateStoreError as exc:
         _add_check(checks, exc.code, False, str(exc))
-        return _result(request, checks, candidate=None)
+        return _result(request, checks, candidate=None, record=None)
 
     record = stored.record
     _add_check(
@@ -273,7 +278,12 @@ def check_strategy_execution_candidate_run_control_release(
         boundaries_closed,
         "Gespeicherter Kandidat hat unerwartet offene Ausfuehrungsgrenzen",
     )
-    return _result(request, checks, candidate=_candidate_summary(record))
+    return _result(
+        request,
+        checks,
+        candidate=_candidate_summary(record),
+        record=record,
+    )
 
 
 def strategy_execution_candidate_run_control_contract_payload() -> dict[str, object]:
@@ -320,6 +330,13 @@ def strategy_execution_candidate_run_control_contract_payload() -> dict[str, obj
         "candidate_resolution_enabled": True,
         "candidate_digest_reverification_enabled": True,
         "run_control_release_check_enabled": True,
+        "effect_probe_execution_enabled": True,
+        "effect_probe_contract_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe-contract"
+        ),
+        "effect_probe_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe"
+        ),
         "queue_write_enabled": False,
         "preflight_enabled": False,
         "adapter_start_allowed": False,
@@ -329,7 +346,7 @@ def strategy_execution_candidate_run_control_contract_payload() -> dict[str, obj
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR130",
+        "next_gate": "PR131",
     }
 
 
@@ -364,7 +381,7 @@ def strategy_execution_candidate_run_control_error_payload(
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR130",
+        "next_gate": "PR131",
     }
 
 
@@ -373,12 +390,14 @@ def _result(
     checks: list[StrategyExecutionCandidateRunControlCheck],
     *,
     candidate: dict[str, object] | None,
+    record: StrategyExecutionCandidateStoreRecord | None,
 ) -> StrategyExecutionCandidateRunControlResult:
     return StrategyExecutionCandidateRunControlResult(
         request=request,
         checks=tuple(checks),
         candidate=candidate,
         release_ready=candidate is not None and all(check.passed for check in checks),
+        record=record,
     )
 
 

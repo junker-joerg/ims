@@ -63,7 +63,9 @@ vollstaendige historische Simulation.
 - PR127 (umgesetzt): Kandidat nach eigener Freigabe unveraenderlich
   speichern und beim Schreiben erneut pruefen;
 - PR129: Kandidaten-ID und Digest an Run-Control anbinden;
-- PR130: Einperioden-Wirkungsprobe auf einer isolierten Zustandskopie.
+- PR130 (umgesetzt): Einperioden-Wirkungsprobe auf einer isolierten
+  Zustandskopie.
+- PR131: bedienbarer Start mit dauerhafter Idempotenz und Ergebnisansicht.
 
 ## API und Schutzgrenze
 

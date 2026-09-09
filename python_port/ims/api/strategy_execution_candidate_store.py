@@ -616,8 +616,9 @@ def _candidate_overview_payload(
             "storage_integrity_verified": True,
             "run_control_ready": False,
             "run_control_release_check_available": True,
+            "effect_probe_available": True,
             "execution_ready": False,
-            "next_gate": "PR130",
+            "next_gate": "PR131",
         },
     }
 

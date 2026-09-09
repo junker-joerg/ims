@@ -237,4 +237,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR129-Run-Control-Freigabecheck fuer Kandidaten-ID, erneut geprueften
   Volldigest und geschlossene Kandidatengrenzen, weiterhin ohne Queue,
   Start, Runner oder Simulation
+- `ims_2x_strategy_execution_candidate_effect_probe.md`:
+  PR130-kontrollierte Einperioden-Wirkungsprobe auf einer isolierten
+  Kandidatenkopie mit fluechtigem Vorher/Nachher-Ergebnis, weiterhin ohne
+  Dateien, Carryover, Legacy-Vergleich oder Ergebnispersistenz
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

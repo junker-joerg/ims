@@ -81,19 +81,18 @@ Speicher-, Freigabe- oder Startbutton.
 - **PR129 (umgesetzt):** Run-Control-Resolver und Freigabecheck fuer
   Kandidaten-ID plus erneut geprueften Digest anbinden; Start bleibt
   gesperrt.
-- **PR130:** kontrollierte Einperioden-Wirkungsprobe auf isolierter Kopie im
-  Backend ausfuehren.
+- **PR130 (umgesetzt):** kontrollierte Einperioden-Wirkungsprobe auf
+  isolierter Kopie im Backend ausfuehren.
 - **PR131:** manuellen Workbench-Start und read-only Ergebnisansicht an die
   vorhandene Freigabe-, Idempotenz- und Verlaufskette anbinden.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer den eng
   benannten Einperiodenpfad abschliessen.
 
-Nach PR129 verbleiben drei kleine PRs bis zur kontrolliert bedienbaren
+Nach PR130 verbleiben zwei kleine PRs bis zur kontrolliert bedienbaren
 Einperioden-Wirkungsprobe. Mehrperiodenlauf und Regulierungssimulation bleiben
 eigene spaetere Ausbaubloecke.
 
 ## Naechster Schritt
 
-PR130 fuehrt einen erneut verifizierten Kandidaten erstmals kontrolliert auf
-einer isolierten Kopie fuer genau eine Periode aus. Dateien, Legacy-Vergleich
-und Carryover bleiben gesperrt.
+PR131 bindet den manuellen Workbench-Start und die read-only Ergebnisansicht
+an eine dauerhafte Freigabe-, Idempotenz- und Verlaufskette an.

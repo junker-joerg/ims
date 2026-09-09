@@ -241,9 +241,9 @@ def test_frontend_shell_declares_readonly_execution_candidate_overview():
     assert "Gespeicherte Ausfuehrungskandidaten" in source
     assert "Inhalts-Digest" in source
     assert "unveraenderlich gespeichert" in source
-    assert "run_control_release_check_available" in source
-    assert "Pruefung bereit" in source
-    assert "Kandidatenfreigabe kann per API geprueft werden" in source
+    assert "effect_probe_available" in source
+    assert "Backend-Probe" in source
+    assert "kontrollierte Einperiodenprobe ist per API verfuegbar" in source
     assert "Ausfuehrung bleibt gesperrt" in source
     assert "strategy-candidate-layout" in styles
     assert "strategy-candidate-readiness" in styles

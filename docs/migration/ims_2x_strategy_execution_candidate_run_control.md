@@ -66,8 +66,10 @@ und Simulation explizit als nicht erfolgt aus.
 - Die Workbench zeigt die verfuegbare Pruefgrenze nur read-only an.
 - Autorisierung, dauerhafte Freigabeakte, Start-Idempotenz und Ergebnisverlauf
   werden erst mit dem kontrollierten Ausfuehrungspfad konkretisiert.
-- PR130 ist der erste geplante Runneraufruf auf einer isolierten
-  Kandidatenkopie und bleibt auf eine Periode begrenzt.
+- PR130 fuehrt den ersten kontrollierten Runneraufruf auf einer isolierten
+  Kandidatenkopie aus und bleibt auf eine Periode begrenzt.
+- PR131 ergaenzt die dauerhafte Idempotenz- und Ergebnisgrenze fuer die
+  bedienbare Workbench.
 - Mehrperiodenlauf, Carryover, Ergebnisexport und Regulierungsszenarien sind
   nicht Teil dieses PRs.
 - Es gibt keine historische RNG- oder Vollgleichheitsbehauptung.

@@ -274,8 +274,9 @@ def test_overview_reports_verified_readiness_and_provenance(tmp_path) -> None:
         "storage_integrity_verified": True,
         "run_control_ready": False,
         "run_control_release_check_available": True,
+        "effect_probe_available": True,
         "execution_ready": False,
-        "next_gate": "PR130",
+        "next_gate": "PR131",
     }
     assert payload["run_control_connected"] is False
     assert payload["simulation_performed"] is False
