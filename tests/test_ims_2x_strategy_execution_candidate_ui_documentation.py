@@ -16,7 +16,7 @@ def test_pr128_plan_documents_read_only_candidate_observation() -> None:
     assert "keinen" in text
     assert "Speicher-, Freigabe- oder Startbutton" in text
     assert "PR129" in text
-    assert "zwei kleine PRs" in text
+    assert "ein kleiner PR" in text
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in text
     assert "`incomming/` bleibt unversioniert" in text
 

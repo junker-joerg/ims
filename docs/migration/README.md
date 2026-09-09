@@ -241,4 +241,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR130-kontrollierte Einperioden-Wirkungsprobe auf einer isolierten
   Kandidatenkopie mit fluechtigem Vorher/Nachher-Ergebnis, weiterhin ohne
   Dateien, Carryover, Legacy-Vergleich oder Ergebnispersistenz
+- `ims_2x_strategy_execution_candidate_effect_probe_start.md`:
+  PR131-kontrollierter Workbench-Start mit atomarer Idempotenzreservierung,
+  unveraenderlichem Einperiodenergebnis und read-only Versuchsverlauf
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

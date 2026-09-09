@@ -291,3 +291,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   genau einen ausdruecklich freigegebenen Einperioden-Runneraufruf auf einer
   isolierten Kandidatenkopie mit fluechtigem Vorher/Nachher-Ergebnis, ohne
   Dateien, Carryover oder Legacy-Vergleich.
+- `ims_2x_strategy_execution_candidate_effect_probe_start_plan.md`: PR131-Plan
+  fuer den kontrollierten Workbench-Start mit dauerhafter Idempotenz,
+  unveraenderlicher Ergebnisablage und read-only Versuchsverlauf.

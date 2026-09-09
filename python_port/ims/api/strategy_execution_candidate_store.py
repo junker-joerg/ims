@@ -172,7 +172,7 @@ class StrategyExecutionCandidateOverviewResult:
                 candidate["digest_verified"] for candidate in self.candidates
             ),
             "writes_performed": False,
-            "run_control_connected": False,
+            "run_control_connected": True,
             "run_control_release_check_available": True,
             "runner_invocation_performed": False,
             "execution_performed": False,
@@ -614,11 +614,13 @@ def _candidate_overview_payload(
             "source_documents_present": bool(source_documents),
             "market_ground_state_present": bool(market_ground_state),
             "storage_integrity_verified": True,
-            "run_control_ready": False,
+            "run_control_ready": True,
             "run_control_release_check_available": True,
             "effect_probe_available": True,
+            "effect_probe_start_available": True,
+            "effect_probe_result_persistence_available": True,
             "execution_ready": False,
-            "next_gate": "PR131",
+            "next_gate": "PR132",
         },
     }
 

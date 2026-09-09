@@ -67,4 +67,4 @@ gemeldet.
 - kein Carryover, Mehrperiodenlauf, Scheduler oder Export;
 - kein Legacy-Vergleich und keine historische Gleichheitsbehauptung;
 - PR131 schliesst Bedienung, Idempotenz und Verlauf fuer diesen eng benannten
-  Einperiodenpfad an.
+  Einperiodenpfad an; PR132 prueft und dokumentiert den Browserpfad.

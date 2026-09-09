@@ -115,9 +115,13 @@ def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> N
     assert payload["candidate_effect_probe_enabled"] is True
     assert payload["candidate_effect_probe_runner_enabled"] is True
     assert payload["candidate_effect_probe_execution_enabled"] is True
+    assert payload["candidate_effect_probe_ui_start_enabled"] is True
+    assert payload["candidate_effect_probe_idempotency_persistence_enabled"] is True
+    assert payload["candidate_effect_probe_result_persistence_enabled"] is True
+    assert payload["candidate_effect_probe_history_enabled"] is True
     assert payload["general_runner_enabled"] is False
     assert payload["multi_period_execution_enabled"] is False
-    assert payload["effect_probe_result_persistence_enabled"] is False
+    assert payload["effect_probe_result_persistence_enabled"] is True
     assert payload["candidate_run_control_contract_endpoint"] == (
         "/api/run-control/strategy-candidate-contract"
     )
@@ -126,6 +130,9 @@ def test_candidate_contract_marks_store_complete_and_keeps_execution_open() -> N
     )
     assert payload["candidate_effect_probe_endpoint"] == (
         "/api/run-control/strategy-candidate-effect-probe"
+    )
+    assert payload["candidate_effect_probe_start_endpoint"] == (
+        "/api/run-control/strategy-candidate-effect-probe-start"
     )
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False

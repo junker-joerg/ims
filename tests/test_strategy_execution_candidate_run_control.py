@@ -94,7 +94,10 @@ def test_contract_opens_only_candidate_release_check() -> None:
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
     assert payload["effect_probe_execution_enabled"] is True
-    assert payload["next_gate"] == "PR131"
+    assert payload["effect_probe_idempotency_persistence_enabled"] is True
+    assert payload["effect_probe_result_persistence_enabled"] is True
+    assert payload["effect_probe_ui_start_enabled"] is True
+    assert payload["next_gate"] == "PR132"
 
 
 def test_parser_accepts_exact_identity_and_audit_fields() -> None:

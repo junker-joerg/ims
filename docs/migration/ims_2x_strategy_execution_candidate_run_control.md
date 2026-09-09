@@ -69,7 +69,7 @@ und Simulation explizit als nicht erfolgt aus.
 - PR130 fuehrt den ersten kontrollierten Runneraufruf auf einer isolierten
   Kandidatenkopie aus und bleibt auf eine Periode begrenzt.
 - PR131 ergaenzt die dauerhafte Idempotenz- und Ergebnisgrenze fuer die
-  bedienbare Workbench.
+  bedienbare Workbench; PR132 prueft und dokumentiert den Browserpfad.
 - Mehrperiodenlauf, Carryover, Ergebnisexport und Regulierungsszenarien sind
   nicht Teil dieses PRs.
 - Es gibt keine historische RNG- oder Vollgleichheitsbehauptung.

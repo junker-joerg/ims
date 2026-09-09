@@ -179,7 +179,11 @@ def test_candidate_overview_lists_verified_candidate_read_only(
     assert payload["all_candidate_digests_verified"] is True
     assert payload["candidates"][0]["candidate_id"] == request["expected_candidate_id"]
     assert payload["candidates"][0]["digest_verified"] is True
-    assert payload["candidates"][0]["readiness"]["run_control_ready"] is False
+    readiness = payload["candidates"][0]["readiness"]
+    assert readiness["run_control_ready"] is True
+    assert readiness["effect_probe_start_available"] is True
+    assert readiness["effect_probe_result_persistence_available"] is True
+    assert readiness["next_gate"] == "PR132"
     assert payload["writes_performed"] is False
     assert payload["simulation_performed"] is False
     assert client.post("/api/strategies/execution-candidates", json={}).status_code == 405

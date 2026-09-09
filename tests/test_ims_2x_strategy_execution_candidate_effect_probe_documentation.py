@@ -31,8 +31,9 @@ def test_pr130_plan_documents_isolated_one_period_execution_and_boundaries() -> 
     assert "kein Carryover" in text
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in text
     assert "`incomming/` bleibt unversioniert" in text
-    assert "PR131" in text
-    assert "zwei kleine PRs" in text
+    assert "PR131 (umgesetzt)" in text
+    assert "PR132" in text
+    assert "ein kleiner PR" in text
 
 
 def test_pr130_mapping_names_backend_api_result_and_limits() -> None:

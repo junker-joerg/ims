@@ -144,7 +144,7 @@ class StrategyExecutionCandidateRunControlResult:
             "automatic_historical_rule_selection_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR131",
+            "next_gate": "PR132",
         }
 
 
@@ -337,6 +337,21 @@ def strategy_execution_candidate_run_control_contract_payload() -> dict[str, obj
         "effect_probe_endpoint": (
             "/api/run-control/strategy-candidate-effect-probe"
         ),
+        "effect_probe_start_contract_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe-start-contract"
+        ),
+        "effect_probe_start_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe-start"
+        ),
+        "effect_probe_result_endpoint_template": (
+            "/api/run-control/strategy-candidate-effect-probe-result/{candidate_id}"
+        ),
+        "effect_probe_history_endpoint_template": (
+            "/api/run-control/strategy-candidate-effect-probe-history/{candidate_id}"
+        ),
+        "effect_probe_idempotency_persistence_enabled": True,
+        "effect_probe_result_persistence_enabled": True,
+        "effect_probe_ui_start_enabled": True,
         "queue_write_enabled": False,
         "preflight_enabled": False,
         "adapter_start_allowed": False,
@@ -346,7 +361,7 @@ def strategy_execution_candidate_run_control_contract_payload() -> dict[str, obj
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR131",
+        "next_gate": "PR132",
     }
 
 
@@ -381,7 +396,7 @@ def strategy_execution_candidate_run_control_error_payload(
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR131",
+        "next_gate": "PR132",
     }
 
 

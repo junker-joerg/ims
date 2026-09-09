@@ -109,17 +109,17 @@ keine dauerhafte Wiederholungssperre; diese Einbindung folgt in PR131.
 
 ## Restplanung
 
-- **PR131:** manuellen Workbench-Start und read-only Ergebnisansicht an eine
-  dauerhafte Freigabe-, Idempotenz- und Verlaufskette anbinden.
+- **PR131 (umgesetzt):** manuellen Workbench-Start und read-only
+  Ergebnisansicht an eine dauerhafte Freigabe-, Idempotenz- und Verlaufskette
+  anbinden.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer den eng
   benannten Einperiodenpfad abschliessen.
 
-Nach PR130 verbleiben zwei kleine PRs bis zur kontrolliert bedienbaren
-Einperioden-Wirkungsprobe. Mehrperiodenlauf, Carryover und
+Nach PR131 verbleibt ein kleiner PR bis zur kontrolliert bedienbaren und
+dokumentierten Einperioden-Wirkungsprobe. Mehrperiodenlauf, Carryover und
 Regulierungssimulation bleiben eigene spaetere Ausbaubloecke.
 
 ## Naechster Schritt
 
-PR131 macht den Einperiodenpfad kontrolliert bedienbar. Ein Workbench-Start
-darf erst nach expliziter Freigabe erfolgen, muss den Idempotenzschluessel
-dauerhaft sichern und Ergebnis sowie Versuchshistorie read-only anzeigen.
+PR132 prueft Bedienpfad und Fehlerdarstellung im Browser auf Desktop und
+schmalem Viewport und uebernimmt die belegten Ablaeufe in das Handbuch.

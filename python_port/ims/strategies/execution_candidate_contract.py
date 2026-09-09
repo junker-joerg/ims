@@ -230,9 +230,13 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         "candidate_effect_probe_enabled": True,
         "candidate_effect_probe_runner_enabled": True,
         "candidate_effect_probe_execution_enabled": True,
+        "candidate_effect_probe_ui_start_enabled": True,
+        "candidate_effect_probe_idempotency_persistence_enabled": True,
+        "candidate_effect_probe_result_persistence_enabled": True,
+        "candidate_effect_probe_history_enabled": True,
         "general_runner_enabled": False,
         "multi_period_execution_enabled": False,
-        "effect_probe_result_persistence_enabled": False,
+        "effect_probe_result_persistence_enabled": True,
         "snapshot_loader_invocation_enabled": True,
         "runner_enabled": False,
         "execution_enabled": False,
@@ -286,6 +290,15 @@ def strategy_execution_candidate_contract_payload() -> dict[str, Any]:
         ),
         "candidate_effect_probe_endpoint": (
             "/api/run-control/strategy-candidate-effect-probe"
+        ),
+        "candidate_effect_probe_start_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe-start"
+        ),
+        "candidate_effect_probe_result_endpoint_template": (
+            "/api/run-control/strategy-candidate-effect-probe-result/{candidate_id}"
+        ),
+        "candidate_effect_probe_history_endpoint_template": (
+            "/api/run-control/strategy-candidate-effect-probe-history/{candidate_id}"
         ),
         "execution_anchor": {
             "module": "ims.engine.explicit_period_runner",

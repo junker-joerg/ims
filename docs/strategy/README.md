@@ -119,3 +119,6 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   genau ein ausdruecklich freigegebener Runneraufruf auf einer isolierten
   Kandidatenkopie mit fluechtigem Vorher/Nachher-Ergebnis; Dateien,
   Carryover, Legacy-Vergleich und Ergebnispersistenz bleiben gesperrt.
+- [PR131 Kontrollierter Workbench-Start](../migration/ims_2x_strategy_execution_candidate_effect_probe_start.md):
+  dauerhafte Idempotenz, unveraenderliche Ergebnisablage und read-only
+  Versuchshistorie fuer die isolierte Einperioden-Wirkungsprobe.

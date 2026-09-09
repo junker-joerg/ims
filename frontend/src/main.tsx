@@ -661,6 +661,8 @@ type StrategyExecutionCandidateOverviewEntry = {
     run_control_ready: boolean;
     run_control_release_check_available: boolean;
     effect_probe_available: boolean;
+    effect_probe_start_available: boolean;
+    effect_probe_result_persistence_available: boolean;
     execution_ready: boolean;
     next_gate: string;
   };
@@ -687,6 +689,118 @@ type StrategyExecutionCandidateOverview = {
   execution_performed: boolean;
   simulation_performed: boolean;
   historical_full_equality_claim: boolean;
+};
+
+type StrategyCandidateEffectProbeStartContract = {
+  schema_version: string;
+  request_schema_version: string;
+  release_request_schema_version: string;
+  mode: "strategy_execution_candidate_effect_probe_start_contract";
+  start_endpoint: string;
+  result_endpoint_template: string;
+  history_endpoint_template: string;
+  ui_start_enabled: boolean;
+  idempotency_persistence_enabled: boolean;
+  immutable_result_persistence_enabled: boolean;
+  attempt_history_enabled: boolean;
+  single_period_only: boolean;
+  automatic_retry_enabled: boolean;
+  queue_worker_enabled: boolean;
+  multi_period_execution_enabled: boolean;
+  simulation_performed: boolean;
+  next_gate: string;
+};
+
+type StrategyCandidateEffectProbeEffect = {
+  period: number;
+  global_period: number;
+  applications: {
+    vu_total: number;
+    vn_total: number;
+  };
+  state_changed: boolean;
+  changed_insurer_ids: number[];
+  changed_policyholder_ids: number[];
+  in_memory_export: {
+    table_count: number;
+    row_count: number;
+    written_file_count: number;
+  };
+};
+
+type StrategyCandidateEffectProbeStoredRecord = {
+  candidate_id: string;
+  attempt_id: string;
+  idempotency_key: string;
+  content_digest: string;
+  persisted_at: string;
+  result_digest: string;
+  result_payload: {
+    effect: StrategyCandidateEffectProbeEffect | null;
+    execution_performed: boolean;
+    simulation_performed: boolean;
+  };
+};
+
+type StrategyCandidateEffectProbeStartResponse = {
+  status: "ok" | "error";
+  mode: "strategy_execution_candidate_effect_probe_start";
+  candidate_id?: string;
+  attempt_id?: string;
+  idempotency_key?: string;
+  replayed?: boolean;
+  record?: StrategyCandidateEffectProbeStoredRecord;
+  issues?: Array<{ code: string; message: string }>;
+  result_persisted: boolean;
+  runner_invocation_performed: boolean;
+  simulation_performed: boolean;
+};
+
+type StrategyCandidateEffectProbeResultRead = {
+  status: "ok" | "error";
+  mode: "strategy_execution_candidate_effect_probe_result_read_only";
+  candidate_id: string;
+  content_digest: string;
+  result_available: boolean;
+  record: StrategyCandidateEffectProbeStoredRecord | null;
+  issues?: Array<{ code: string; message: string }>;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+};
+
+type StrategyCandidateEffectProbeAttempt = {
+  attempt_id: string;
+  candidate_id: string;
+  idempotency_key: string;
+  status: "starting" | "failed" | "result_persisted";
+  released_by: string;
+  released_at: string;
+  release_reason: string;
+  started_at: string;
+  completed_at: string | null;
+  failure_code: string | null;
+  failure_message: string | null;
+  runner_invocation_performed: boolean;
+  result_persisted: boolean;
+  simulation_performed: boolean;
+};
+
+type StrategyCandidateEffectProbeHistory = {
+  status: "ok" | "error";
+  mode: "strategy_execution_candidate_effect_probe_history_read_only";
+  candidate_id: string;
+  content_digest: string;
+  attempt_count: number;
+  attempts: StrategyCandidateEffectProbeAttempt[];
+  latest_attempt: StrategyCandidateEffectProbeAttempt | null;
+  result_available: boolean;
+  persisted_at: string | null;
+  result_digest: string | null;
+  issues?: Array<{ code: string; message: string }>;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
 };
 
 type StrategyDraftEditor = {
@@ -1687,6 +1801,11 @@ function createUiIdempotencyKey(queueId: string): string {
   return `workbench-ui-${queueId}-${suffix}`;
 }
 
+function createStrategyCandidateProbeIdempotencyKey(candidateId: string): string {
+  const suffix = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`;
+  return `workbench-strategy-probe-${candidateId.slice(-12)}-${suffix}`;
+}
+
 function queueActionLabel(entry: RunControlQueueEntry): string {
   if (entry.status === "planned") {
     return "Preflight lokal";
@@ -1813,6 +1932,30 @@ function App() {
   const [selectedStrategyCandidateId, setSelectedStrategyCandidateId] =
     useState<string | null>(null);
   const [strategyCandidateOverviewRevision, setStrategyCandidateOverviewRevision] =
+    useState(0);
+  const [strategyCandidateProbeStartContract, setStrategyCandidateProbeStartContract] =
+    useState<StrategyCandidateEffectProbeStartContract | null>(null);
+  const [strategyCandidateProbeActor, setStrategyCandidateProbeActor] =
+    useState("workbench-ui");
+  const [strategyCandidateProbeReason, setStrategyCandidateProbeReason] =
+    useState("Kontrollierte Einperioden-Wirkungsprobe");
+  const [strategyCandidateProbeConfirmed, setStrategyCandidateProbeConfirmed] =
+    useState(false);
+  const [strategyCandidateProbeStart, setStrategyCandidateProbeStart] =
+    useState<StrategyCandidateEffectProbeStartResponse | null>(null);
+  const [strategyCandidateProbeStartState, setStrategyCandidateProbeStartState] =
+    useState<DetailState>("idle");
+  const [strategyCandidateProbeStartError, setStrategyCandidateProbeStartError] =
+    useState<string | null>(null);
+  const [strategyCandidateProbeResult, setStrategyCandidateProbeResult] =
+    useState<StrategyCandidateEffectProbeResultRead | null>(null);
+  const [strategyCandidateProbeHistory, setStrategyCandidateProbeHistory] =
+    useState<StrategyCandidateEffectProbeHistory | null>(null);
+  const [strategyCandidateProbeEvidenceState, setStrategyCandidateProbeEvidenceState] =
+    useState<DetailState>("idle");
+  const [strategyCandidateProbeEvidenceError, setStrategyCandidateProbeEvidenceError] =
+    useState<string | null>(null);
+  const [strategyCandidateProbeEvidenceRevision, setStrategyCandidateProbeEvidenceRevision] =
     useState(0);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
@@ -2136,6 +2279,101 @@ function App() {
       active = false;
     };
   }, [strategyCandidateOverviewRevision]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyCandidateProbeStartContract() {
+      try {
+        const response = await fetch(
+          "/api/run-control/strategy-candidate-effect-probe-start-contract"
+        );
+        if (!response.ok) {
+          throw new Error("Startvertrag der Einperiodenprobe nicht erreichbar");
+        }
+        const payload = (
+          await response.json()
+        ) as StrategyCandidateEffectProbeStartContract;
+        if (active) {
+          setStrategyCandidateProbeStartContract(payload);
+        }
+      } catch {
+        if (active) {
+          setStrategyCandidateProbeStartContract(null);
+        }
+      }
+    }
+
+    loadStrategyCandidateProbeStartContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    setStrategyCandidateProbeConfirmed(false);
+    setStrategyCandidateProbeStart(null);
+    setStrategyCandidateProbeStartState("idle");
+    setStrategyCandidateProbeStartError(null);
+  }, [selectedStrategyCandidateId]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyCandidateProbeEvidence() {
+      if (!selectedStrategyCandidateId) {
+        setStrategyCandidateProbeResult(null);
+        setStrategyCandidateProbeHistory(null);
+        setStrategyCandidateProbeEvidenceState("idle");
+        setStrategyCandidateProbeEvidenceError(null);
+        return;
+      }
+      setStrategyCandidateProbeEvidenceState("loading");
+      setStrategyCandidateProbeEvidenceError(null);
+      try {
+        const encodedId = encodeURIComponent(selectedStrategyCandidateId);
+        const [resultResponse, historyResponse] = await Promise.all([
+          fetch(`/api/run-control/strategy-candidate-effect-probe-result/${encodedId}`),
+          fetch(`/api/run-control/strategy-candidate-effect-probe-history/${encodedId}`)
+        ]);
+        const resultPayload = (
+          await resultResponse.json()
+        ) as StrategyCandidateEffectProbeResultRead;
+        const historyPayload = (
+          await historyResponse.json()
+        ) as StrategyCandidateEffectProbeHistory;
+        if (!resultResponse.ok) {
+          throw new Error(
+            resultPayload.issues?.[0]?.message ?? "Einperiodenergebnis nicht erreichbar"
+          );
+        }
+        if (!historyResponse.ok) {
+          throw new Error(
+            historyPayload.issues?.[0]?.message ?? "Versuchsverlauf nicht erreichbar"
+          );
+        }
+        if (active) {
+          setStrategyCandidateProbeResult(resultPayload);
+          setStrategyCandidateProbeHistory(historyPayload);
+          setStrategyCandidateProbeEvidenceState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyCandidateProbeResult(null);
+          setStrategyCandidateProbeHistory(null);
+          setStrategyCandidateProbeEvidenceError(
+            error instanceof Error ? error.message : "Einperiodennachweis nicht erreichbar"
+          );
+          setStrategyCandidateProbeEvidenceState("error");
+        }
+      }
+    }
+
+    loadStrategyCandidateProbeEvidence();
+    return () => {
+      active = false;
+    };
+  }, [selectedStrategyCandidateId, strategyCandidateProbeEvidenceRevision]);
 
   useEffect(() => {
     let active = true;
@@ -2561,6 +2799,76 @@ function App() {
         : strategyCandidateOverview?.all_candidate_digests_verified
           ? "Digests geprueft"
           : "Pruefung offen";
+  const strategyCandidateProbeEffect =
+    strategyCandidateProbeResult?.record?.result_payload.effect ?? null;
+  const strategyCandidateProbeResultAvailable =
+    strategyCandidateProbeResult?.result_available === true;
+  const canStartStrategyCandidateProbe = Boolean(
+    selectedStrategyCandidate &&
+    selectedStrategyCandidate.readiness.effect_probe_start_available &&
+    strategyCandidateProbeStartContract?.ui_start_enabled &&
+    strategyCandidateProbeStartContract.idempotency_persistence_enabled &&
+    strategyCandidateProbeStartContract.immutable_result_persistence_enabled &&
+    strategyCandidateProbeEvidenceState === "ready" &&
+    !strategyCandidateProbeResultAvailable &&
+    strategyCandidateProbeActor.trim() &&
+    strategyCandidateProbeReason.trim() &&
+    strategyCandidateProbeConfirmed &&
+    strategyCandidateProbeStartState !== "loading"
+  );
+  const startStrategyCandidateProbe = async () => {
+    if (
+      !selectedStrategyCandidate ||
+      !strategyCandidateProbeStartContract ||
+      !canStartStrategyCandidateProbe
+    ) {
+      return;
+    }
+    const request = {
+      schema_version: strategyCandidateProbeStartContract.request_schema_version,
+      release: {
+        schema_version: strategyCandidateProbeStartContract.release_request_schema_version,
+        candidate_id: selectedStrategyCandidate.candidate_id,
+        expected_content_digest: selectedStrategyCandidate.content_digest,
+        idempotency_key: createStrategyCandidateProbeIdempotencyKey(
+          selectedStrategyCandidate.candidate_id
+        ),
+        explicit_run_control_release: true,
+        released_by: strategyCandidateProbeActor.trim(),
+        released_at: new Date().toISOString(),
+        release_reason: strategyCandidateProbeReason.trim()
+      },
+      explicit_effect_probe_execution: true
+    };
+    setStrategyCandidateProbeStart(null);
+    setStrategyCandidateProbeStartError(null);
+    setStrategyCandidateProbeStartState("loading");
+    try {
+      const response = await fetch(strategyCandidateProbeStartContract.start_endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request)
+      });
+      const payload = (
+        await response.json()
+      ) as StrategyCandidateEffectProbeStartResponse;
+      setStrategyCandidateProbeStart(payload);
+      if (!response.ok || payload.status !== "ok") {
+        throw new Error(
+          payload.issues?.[0]?.message ?? "Einperiodenprobe konnte nicht gestartet werden"
+        );
+      }
+      setStrategyCandidateProbeConfirmed(false);
+      setStrategyCandidateProbeStartState("ready");
+    } catch (error) {
+      setStrategyCandidateProbeStartError(
+        error instanceof Error ? error.message : "Einperiodenprobe nicht erreichbar"
+      );
+      setStrategyCandidateProbeStartState("error");
+    } finally {
+      setStrategyCandidateProbeEvidenceRevision((current) => current + 1);
+    }
+  };
   const strategyDefinitionById = new Map(
     (strategyCatalog?.strategies ?? []).map((strategy) => [strategy.strategy_id, strategy])
   );
@@ -4469,20 +4777,28 @@ function App() {
                 </div>
                 <div>
                   <span>Ausfuehrung</span>
-                  <strong>gesperrt</strong>
+                  <strong>
+                    {strategyCandidateProbeResultAvailable
+                      ? "Ergebnis gespeichert"
+                      : "Einperiodenprobe bereit"}
+                  </strong>
                 </div>
               </div>
 
               <div className="strategy-boundary-band">
                 <div>
-                  <strong>Unveraenderlich gespeichert, noch nicht freigegeben</strong>
+                  <strong>
+                    {strategyCandidateProbeResultAvailable
+                      ? "Einperiodenwirkung dauerhaft nachgewiesen"
+                      : "Unveraenderlich gespeichert, manuell freigebbar"}
+                  </strong>
                   <span>
-                    Diese Ansicht belegt Herkunft und Integritaet. Sie speichert nichts und startet keinen Lauf.
+                    Genau eine isolierte Periode; keine Folgelaufautomatik, kein Carryover und keine Ausgabedateien.
                   </span>
                 </div>
                 <span className="readonly-marker">
-                  <LockKeyhole size={16} aria-hidden="true" />
-                  Nur lesen
+                  <ShieldCheck size={16} aria-hidden="true" />
+                  Kontrollierter Start
                 </span>
               </div>
 
@@ -4560,13 +4876,15 @@ function App() {
                           <CheckCircle2 size={17} aria-hidden="true" />
                           <span><strong>Speicher</strong><small>intakt</small></span>
                         </div>
-                        <div className="locked">
-                          <LockKeyhole size={17} aria-hidden="true" />
+                        <div>
+                          <Play size={17} aria-hidden="true" />
                           <span>
-                            <strong>Backend-Probe</strong>
+                            <strong>Wirkungsprobe</strong>
                             <small>
-                              {selectedStrategyCandidate.readiness.effect_probe_available
-                                ? "API bereit"
+                              {strategyCandidateProbeResultAvailable
+                                ? "belegt"
+                                : selectedStrategyCandidate.readiness.effect_probe_start_available
+                                  ? "startbereit"
                                 : "gesperrt"}
                             </small>
                           </span>
@@ -4626,13 +4944,171 @@ function App() {
                         </div>
                       </dl>
 
-                      <div className="strategy-candidate-lock-note">
-                        <LockKeyhole size={18} aria-hidden="true" />
-                        <div>
-                          <strong>Ausfuehrung bleibt gesperrt</strong>
-                          <span>Die kontrollierte Einperiodenprobe ist per API verfuegbar. Workbench-Start und Ergebnisablage bleiben bis {selectedStrategyCandidate.readiness.next_gate} gesperrt.</span>
+                      <section
+                        className="strategy-candidate-probe"
+                        aria-label="Kontrollierte Einperioden-Wirkungsprobe"
+                        data-testid="strategy-candidate-effect-probe"
+                      >
+                        <div className="strategy-candidate-probe-heading">
+                          <div>
+                            <strong>Einperioden-Wirkungsprobe</strong>
+                            <span>Freigabe, Ausfuehrung und Nachweis fuer diesen Kandidaten</span>
+                          </div>
+                          <button
+                            className="secondary-action"
+                            type="button"
+                            title="Ergebnis und Verlauf aktualisieren"
+                            aria-label="Ergebnis und Verlauf aktualisieren"
+                            disabled={strategyCandidateProbeEvidenceState === "loading"}
+                            onClick={() => setStrategyCandidateProbeEvidenceRevision((current) => current + 1)}
+                          >
+                            <RefreshCw size={16} aria-hidden="true" />
+                            Aktualisieren
+                          </button>
                         </div>
-                      </div>
+
+                        {strategyCandidateProbeResultAvailable ? (
+                          <div className="strategy-candidate-probe-complete">
+                            <CheckCircle2 size={18} aria-hidden="true" />
+                            <div>
+                              <strong>Ergebnis unveraenderlich gespeichert</strong>
+                              <span>Ein erneuter Start ist fuer diesen Kandidaten gesperrt.</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="strategy-candidate-probe-controls">
+                            <label>
+                              <span>Freigabe durch</span>
+                              <input
+                                type="text"
+                                value={strategyCandidateProbeActor}
+                                onChange={(event) => setStrategyCandidateProbeActor(event.target.value)}
+                                disabled={strategyCandidateProbeStartState === "loading"}
+                              />
+                            </label>
+                            <label>
+                              <span>Grund</span>
+                              <input
+                                type="text"
+                                value={strategyCandidateProbeReason}
+                                onChange={(event) => setStrategyCandidateProbeReason(event.target.value)}
+                                disabled={strategyCandidateProbeStartState === "loading"}
+                              />
+                            </label>
+                            <label className="strategy-candidate-probe-confirmation">
+                              <input
+                                type="checkbox"
+                                checked={strategyCandidateProbeConfirmed}
+                                onChange={(event) => setStrategyCandidateProbeConfirmed(event.target.checked)}
+                                disabled={strategyCandidateProbeStartState === "loading"}
+                              />
+                              <span>Genau eine isolierte Periode jetzt ausfuehren</span>
+                            </label>
+                            <button
+                              className="primary-action"
+                              type="button"
+                              disabled={!canStartStrategyCandidateProbe}
+                              onClick={startStrategyCandidateProbe}
+                            >
+                              <Play size={17} aria-hidden="true" />
+                              {strategyCandidateProbeStartState === "loading"
+                                ? "Wirkungsprobe laeuft"
+                                : "Wirkungsprobe starten"}
+                            </button>
+                          </div>
+                        )}
+
+                        {strategyCandidateProbeStartError ? (
+                          <div className="strategy-candidate-probe-message error" role="alert">
+                            <CircleAlert size={17} aria-hidden="true" />
+                            <span>{strategyCandidateProbeStartError}</span>
+                          </div>
+                        ) : strategyCandidateProbeStart?.replayed ? (
+                          <div className="strategy-candidate-probe-message">
+                            <ShieldCheck size={17} aria-hidden="true" />
+                            <span>Vorhandenes Ergebnis idempotent gelesen; kein zweiter Runneraufruf.</span>
+                          </div>
+                        ) : null}
+
+                        {strategyCandidateProbeEvidenceState === "loading" ? (
+                          <div className="strategy-candidate-probe-message">
+                            <Activity size={17} aria-hidden="true" />
+                            <span>Ergebnis und Verlauf werden gelesen.</span>
+                          </div>
+                        ) : strategyCandidateProbeEvidenceError ? (
+                          <div className="strategy-candidate-probe-message error" role="alert">
+                            <CircleAlert size={17} aria-hidden="true" />
+                            <span>{strategyCandidateProbeEvidenceError}</span>
+                          </div>
+                        ) : strategyCandidateProbeEffect && strategyCandidateProbeResult?.record ? (
+                          <div className="strategy-candidate-probe-result" aria-label="Gespeichertes Einperiodenergebnis">
+                            <div className="strategy-candidate-probe-result-grid">
+                              <div><span>Periode</span><strong>{strategyCandidateProbeEffect.period}</strong></div>
+                              <div><span>Zustand</span><strong>{strategyCandidateProbeEffect.state_changed ? "veraendert" : "unveraendert"}</strong></div>
+                              <div><span>VU-Anwendungen</span><strong>{strategyCandidateProbeEffect.applications.vu_total}</strong></div>
+                              <div><span>VN-Anwendungen</span><strong>{strategyCandidateProbeEffect.applications.vn_total}</strong></div>
+                              <div><span>Geaenderte VU</span><strong>{strategyCandidateProbeEffect.changed_insurer_ids.join(", ") || "keine"}</strong></div>
+                              <div><span>Geaenderte VN</span><strong>{strategyCandidateProbeEffect.changed_policyholder_ids.join(", ") || "keine"}</strong></div>
+                            </div>
+                            <dl className="strategy-candidate-probe-evidence">
+                              <div>
+                                <dt>Ergebnis gespeichert</dt>
+                                <dd>{formatCandidateStoredAt(strategyCandidateProbeResult.record.persisted_at)}</dd>
+                              </div>
+                              <div>
+                                <dt>Ergebnis-Digest</dt>
+                                <dd title={strategyCandidateProbeResult.record.result_digest}>
+                                  {shortCandidateDigest(strategyCandidateProbeResult.record.result_digest)}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>Speicherausgabe</dt>
+                                <dd>{strategyCandidateProbeEffect.in_memory_export.table_count} Tabellen / {strategyCandidateProbeEffect.in_memory_export.row_count} Zeilen / 0 Dateien</dd>
+                              </div>
+                            </dl>
+                          </div>
+                        ) : (
+                          <div className="strategy-candidate-probe-message">
+                            <Eye size={17} aria-hidden="true" />
+                            <span>Noch kein gespeichertes Einperiodenergebnis.</span>
+                          </div>
+                        )}
+
+                        <div className="strategy-candidate-probe-history" aria-label="Versuchsverlauf">
+                          <div className="strategy-candidate-probe-history-heading">
+                            <strong>Versuchsverlauf</strong>
+                            <span>{strategyCandidateProbeHistory?.attempt_count ?? 0} Eintraege</span>
+                          </div>
+                          {(strategyCandidateProbeHistory?.attempts ?? []).length === 0 ? (
+                            <div className="strategy-candidate-probe-history-empty">Noch kein Startversuch.</div>
+                          ) : (
+                            (strategyCandidateProbeHistory?.attempts ?? []).map((attempt) => (
+                              <div className="strategy-candidate-probe-history-row" key={attempt.attempt_id}>
+                                <div>
+                                  <strong>{attempt.status === "result_persisted" ? "Ergebnis gespeichert" : attempt.status === "failed" ? "Fehlgeschlagen" : "Gestartet"}</strong>
+                                  <span>{attempt.released_by} / {attempt.release_reason}</span>
+                                </div>
+                                <div>
+                                  <strong>{formatCandidateStoredAt(attempt.started_at)}</strong>
+                                  <span>{attempt.completed_at ? `Abschluss ${formatCandidateStoredAt(attempt.completed_at)}` : "noch offen"}</span>
+                                </div>
+                                <div>
+                                  <strong>{attempt.result_persisted ? "Nachweis vorhanden" : "kein Ergebnis"}</strong>
+                                  <span>{attempt.failure_message ?? shortCandidateDigest(attempt.idempotency_key)}</span>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+
+                        <div className="strategy-candidate-lock-note">
+                          <LockKeyhole size={18} aria-hidden="true" />
+                          <div>
+                            <strong>Mehrperiodenlauf bleibt gesperrt</strong>
+                            <span>Carryover, Scheduler, Dateien und historische Vollgleichheitsbehauptung sind nicht Teil dieser Probe. Naechste Abnahmegrenze: {strategyCandidateProbeStartContract?.next_gate ?? selectedStrategyCandidate.readiness.next_gate}.</span>
+                          </div>
+                        </div>
+                      </section>
                     </article>
                   ) : null}
                 </div>

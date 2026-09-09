@@ -68,6 +68,14 @@ from ims.api.strategy_execution_candidate_effect_probe import (
     strategy_execution_candidate_effect_probe_contract_payload,
     strategy_execution_candidate_effect_probe_error_payload,
 )
+from ims.api.strategy_execution_candidate_effect_probe_start import (
+    StrategyExecutionCandidateEffectProbeStartError,
+    get_strategy_execution_candidate_effect_probe_history,
+    get_strategy_execution_candidate_effect_probe_result,
+    start_strategy_execution_candidate_effect_probe,
+    strategy_execution_candidate_effect_probe_start_contract_payload,
+    strategy_execution_candidate_effect_probe_start_error_payload,
+)
 from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
@@ -1267,6 +1275,130 @@ def create_app(
             status_code = 409
         return JSONResponse(result.to_dict(), status_code=status_code)
 
+    async def strategy_execution_candidate_effect_probe_start_response(
+        request: Request,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Workbench-Start erfordert eine explizite SQLite-Metadatenquelle",
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    "invalid_json",
+                    "Workbench-Start ist kein gueltiges JSON",
+                ),
+                status_code=400,
+            )
+        try:
+            parsed = parse_strategy_execution_candidate_effect_probe_request(
+                payload
+            )
+        except StrategyExecutionCandidateEffectProbeError as exc:
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    exc.code,
+                    str(exc),
+                ),
+                status_code=400,
+            )
+        try:
+            result = start_strategy_execution_candidate_effect_probe(
+                parsed,
+                db_path=Path(str(metadata_source["path"])),
+                runner=candidate_effect_probe_runner,
+            )
+        except StrategyExecutionCandidateEffectProbeStartError as exc:
+            status_code = 404 if exc.code == "candidate_not_found" else 409
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    exc.code,
+                    str(exc),
+                    candidate_id=exc.candidate_id,
+                    attempt_id=exc.attempt_id,
+                    release_check=exc.release_check,
+                    runner_invocation_performed=(
+                        exc.runner_invocation_performed
+                    ),
+                    writes_performed=exc.writes_performed,
+                ),
+                status_code=status_code,
+            )
+        return JSONResponse(
+            result.to_dict(),
+            status_code=200 if result.replayed else 201,
+        )
+
+    def strategy_execution_candidate_effect_probe_result_response(
+        candidate_id: str,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Ergebnisanzeige erfordert eine explizite SQLite-Metadatenquelle",
+                    candidate_id=candidate_id,
+                ),
+                status_code=400,
+            )
+        try:
+            result = get_strategy_execution_candidate_effect_probe_result(
+                candidate_id,
+                db_path=Path(str(metadata_source["path"])),
+            )
+        except StrategyExecutionCandidateEffectProbeStartError as exc:
+            status_code = 404 if exc.code == "candidate_not_found" else 409
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    exc.code,
+                    str(exc),
+                    candidate_id=exc.candidate_id,
+                ),
+                status_code=status_code,
+            )
+        return JSONResponse(result.to_dict())
+
+    def strategy_execution_candidate_effect_probe_history_response(
+        candidate_id: str,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Versuchsverlauf erfordert eine explizite SQLite-Metadatenquelle",
+                    candidate_id=candidate_id,
+                ),
+                status_code=400,
+            )
+        try:
+            result = get_strategy_execution_candidate_effect_probe_history(
+                candidate_id,
+                db_path=Path(str(metadata_source["path"])),
+            )
+        except StrategyExecutionCandidateEffectProbeStartError as exc:
+            status_code = 404 if exc.code == "candidate_not_found" else 409
+            return JSONResponse(
+                strategy_execution_candidate_effect_probe_start_error_payload(
+                    exc.code,
+                    str(exc),
+                    candidate_id=exc.candidate_id,
+                ),
+                status_code=status_code,
+            )
+        return JSONResponse(result.to_dict())
+
     async def strategy_assignment_vu_snapshot_materialization_response(
         request: Request,
     ) -> JSONResponse:
@@ -1745,6 +1877,47 @@ def create_app(
         ) -> JSONResponse:
             return await strategy_execution_candidate_effect_probe_response(request)
 
+        @app.get(
+            "/api/run-control/strategy-candidate-effect-probe-start-contract"
+        )
+        def run_control_strategy_candidate_effect_probe_start_contract() -> dict[
+            str, object
+        ]:
+            return strategy_execution_candidate_effect_probe_start_contract_payload()
+
+        @app.post(
+            "/api/run-control/strategy-candidate-effect-probe-start",
+            response_model=None,
+        )
+        async def run_control_strategy_candidate_effect_probe_start(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_candidate_effect_probe_start_response(
+                request
+            )
+
+        @app.get(
+            "/api/run-control/strategy-candidate-effect-probe-result/{candidate_id}",
+            response_model=None,
+        )
+        def run_control_strategy_candidate_effect_probe_result(
+            candidate_id: str,
+        ) -> JSONResponse:
+            return strategy_execution_candidate_effect_probe_result_response(
+                candidate_id
+            )
+
+        @app.get(
+            "/api/run-control/strategy-candidate-effect-probe-history/{candidate_id}",
+            response_model=None,
+        )
+        def run_control_strategy_candidate_effect_probe_history(
+            candidate_id: str,
+        ) -> JSONResponse:
+            return strategy_execution_candidate_effect_probe_history_response(
+                candidate_id
+            )
+
         @app.post(
             "/api/run-control/strategy-candidate-release-check",
             response_model=None,
@@ -1994,6 +2167,29 @@ def create_app(
             "/api/run-control/strategy-candidate-effect-probe",
             strategy_execution_candidate_effect_probe_response,
             methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/strategy-candidate-effect-probe-start-contract",
+            lambda request: JSONResponse(
+                strategy_execution_candidate_effect_probe_start_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/run-control/strategy-candidate-effect-probe-start",
+            strategy_execution_candidate_effect_probe_start_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/strategy-candidate-effect-probe-result/{candidate_id}",
+            lambda request: strategy_execution_candidate_effect_probe_result_response(
+                request.path_params["candidate_id"]
+            ),
+        ),
+        Route(
+            "/api/run-control/strategy-candidate-effect-probe-history/{candidate_id}",
+            lambda request: strategy_execution_candidate_effect_probe_history_response(
+                request.path_params["candidate_id"]
+            ),
         ),
         Route(
             "/api/run-control/strategy-candidate-release-check",

@@ -78,6 +78,9 @@ def test_effect_probe_contract_endpoint_is_read_only(tmp_path) -> None:
     assert payload["single_period_only"] is True
     assert payload["ui_start_enabled"] is False
     assert payload["output_files_enabled"] is False
+    assert payload["persistent_start_endpoint"] == (
+        "/api/run-control/strategy-candidate-effect-probe-start"
+    )
     assert client.post(endpoint, json={}).status_code == 405
     assert client.put(endpoint, json={}).status_code == 405
     assert client.delete(endpoint).status_code == 405

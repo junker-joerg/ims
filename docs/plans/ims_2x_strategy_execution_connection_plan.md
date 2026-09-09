@@ -173,14 +173,15 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR130 (umgesetzt):** kontrollierte Einperioden-Wirkungsprobe auf
   isolierter Kopie im Backend ausfuehren; keine Dateien, kein Legacy-Vergleich
   und kein Carryover.
-- **PR131:** manuellen Workbench-Start und read-only Ergebnisansicht an die
-  vorhandene Freigabe-, Idempotenz- und Verlaufskette anbinden.
+- **PR131 (umgesetzt):** manuellen Workbench-Start und read-only
+  Ergebnisansicht an die vorhandene Freigabe-, Idempotenz- und Verlaufskette
+  anbinden.
 - **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer diesen
   eng benannten Einperiodenpfad abschliessen.
 
-Nach PR130 verbleiben zwei kleine PRs bis zur kontrolliert bedienbaren
-Einperioden-Wirkungsprobe. Das ist weder die Zusage einer vollstaendigen
-Mehrperiodensimulation noch eine Schaetzung bis zur fachlichen
+Nach PR131 verbleibt ein kleiner PR bis zur kontrolliert bedienbaren und
+dokumentierten Einperioden-Wirkungsprobe. Das ist weder die Zusage einer
+vollstaendigen Mehrperiodensimulation noch eine Schaetzung bis zur fachlichen
 Produktionsreife des Regulationslabors.
 
 Mehrperiodenlauf, Carryover, Bilanz, ResultBundle/XLSX und
@@ -208,6 +209,6 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR131 bindet als naechstes den manuellen Workbench-Start und die read-only
-Ergebnisansicht an eine dauerhafte Freigabe-, Idempotenz- und Verlaufskette
-an.
+PR132 prueft als naechstes Bedienpfad und Fehlerdarstellung im Browser auf
+Desktop und schmalem Viewport und uebernimmt die belegten Ablaeufe in das
+Handbuch.

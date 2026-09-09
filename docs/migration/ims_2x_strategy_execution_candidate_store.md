@@ -68,4 +68,5 @@ Ausfuehrung erfolgt.
 - PR129 darf Run-Control nur ueber Kandidaten-ID plus erneut geprueften
   Digest anbinden.
 - PR130 stellt den eng kontrollierten Einperioden-Aufruf auf einer isolierten
-  Kopie bereit; PR131 bindet Ergebnisablage und Idempotenz an.
+  Kopie bereit; PR131 bindet Ergebnisablage und Idempotenz an; PR132 prueft
+  den Browserpfad und dokumentiert ihn im Handbuch.

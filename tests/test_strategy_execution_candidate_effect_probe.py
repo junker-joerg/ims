@@ -108,7 +108,10 @@ def test_effect_probe_contract_opens_only_isolated_single_period_execution() -> 
     assert payload["output_files_enabled"] is False
     assert payload["legacy_comparison_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR131"
+    assert payload["persistent_start_endpoint"] == (
+        "/api/run-control/strategy-candidate-effect-probe-start"
+    )
+    assert payload["next_gate"] == "PR132"
 
 
 def test_effect_probe_parser_reuses_exact_pr129_release() -> None:

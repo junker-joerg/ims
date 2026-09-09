@@ -242,11 +242,21 @@ def test_frontend_shell_declares_readonly_execution_candidate_overview():
     assert "Inhalts-Digest" in source
     assert "unveraenderlich gespeichert" in source
     assert "effect_probe_available" in source
-    assert "Backend-Probe" in source
-    assert "kontrollierte Einperiodenprobe ist per API verfuegbar" in source
-    assert "Ausfuehrung bleibt gesperrt" in source
+    assert "effect_probe_start_available" in source
+    assert "Einperioden-Wirkungsprobe" in source
+    assert "Wirkungsprobe starten" in source
+    assert "Genau eine isolierte Periode jetzt ausfuehren" in source
+    assert "Ergebnis unveraenderlich gespeichert" in source
+    assert "Versuchsverlauf" in source
+    assert "Mehrperiodenlauf bleibt gesperrt" in source
+    assert "strategy-candidate-effect-probe-start" in source
+    assert "strategy-candidate-effect-probe-result" in source
+    assert "strategy-candidate-effect-probe-history" in source
     assert "strategy-candidate-layout" in styles
     assert "strategy-candidate-readiness" in styles
+    assert "strategy-candidate-probe-controls" in styles
+    assert "strategy-candidate-probe-result-grid" in styles
+    assert "strategy-candidate-probe-history-row" in styles
     assert "strategy-candidate-provenance" in styles
 
 

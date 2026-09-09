@@ -62,10 +62,12 @@ vollstaendige historische Simulation.
   serverseitig neu materialisieren und Digest berechnen;
 - PR127 (umgesetzt): Kandidat nach eigener Freigabe unveraenderlich
   speichern und beim Schreiben erneut pruefen;
-- PR129: Kandidaten-ID und Digest an Run-Control anbinden;
+- PR129 (umgesetzt): Kandidaten-ID und Digest an Run-Control anbinden;
 - PR130 (umgesetzt): Einperioden-Wirkungsprobe auf einer isolierten
   Zustandskopie.
-- PR131: bedienbarer Start mit dauerhafter Idempotenz und Ergebnisansicht.
+- PR131 (umgesetzt): bedienbarer Start mit dauerhafter Idempotenz und
+  Ergebnisansicht.
+- PR132: Browser-Smoke und Handbuchnachweis des Einperiodenpfads.
 
 ## API und Schutzgrenze
 

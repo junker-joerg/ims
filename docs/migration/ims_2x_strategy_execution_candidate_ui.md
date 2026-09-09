@@ -55,6 +55,7 @@ Browser-Smoke pruefen die Darstellung auf Desktop und schmalem Viewport.
 - PR129 verbindet Kandidaten-ID und erneut geprueften Digest mit der
   Run-Control-Freigabegrenze, ohne zu starten.
 - PR130 stellt den eng kontrollierten Einperioden-Aufruf auf einer isolierten
-  Kopie bereit; PR131 bindet ihn bedienbar und dauerhaft idempotent an.
+  Kopie bereit; PR131 bindet ihn bedienbar und dauerhaft idempotent an; PR132
+  prueft und dokumentiert den Browserpfad.
 - Mehrperiodenfolge, Carryover und fachliche Regulierungsszenarien gehoeren
   nicht zu PR128.

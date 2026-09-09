@@ -142,7 +142,7 @@ class StrategyExecutionCandidateEffectProbeResult:
             "automatic_historical_rule_selection_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR131",
+            "next_gate": "PR132",
         }
 
 
@@ -319,6 +319,12 @@ def strategy_execution_candidate_effect_probe_contract_payload() -> dict[str, ob
         "execution_endpoint": (
             "/api/run-control/strategy-candidate-effect-probe"
         ),
+        "persistent_start_contract_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe-start-contract"
+        ),
+        "persistent_start_endpoint": (
+            "/api/run-control/strategy-candidate-effect-probe-start"
+        ),
         "request_fields": sorted(_REQUEST_FIELDS),
         "forbidden_request_fields": [
             "candidate",
@@ -339,7 +345,7 @@ def strategy_execution_candidate_effect_probe_contract_payload() -> dict[str, ob
             "changed_policyholder_ids",
             "in_memory_export",
         ],
-        "next_gate": "PR131",
+        "next_gate": "PR132",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }
@@ -393,7 +399,7 @@ def strategy_execution_candidate_effect_probe_error_payload(
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR131",
+        "next_gate": "PR132",
     }
 
 
