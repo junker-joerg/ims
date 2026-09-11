@@ -76,8 +76,9 @@ Der Browserpfad lautet:
   atomar validieren.
 - **PR135 (umgesetzt):** Kandidatenreferenzen und -kontexte serverseitig
   aufloesen und atomar abgleichen.
-- **PR136 (naechster Schritt):** kanonische fluechtige Kette und Gesamtdigest
-  bilden; Speicherung, Carryover und Runner bleiben gesperrt.
+- **PR136 (umgesetzt):** kanonische fluechtige Kette und Gesamtdigest bilden.
+- **PR137 (naechster Schritt):** Kette unveraenderlich und idempotent
+  speichern; Carryover und Runner bleiben gesperrt.
 
 Die Einperioden-Wirkungsprobe ist nach PR132 kontrolliert bedienbar und
 dokumentiert. Ein nutzbarer 100-Periodenlauf, Ergebnisbloecke, XLSX-Export und

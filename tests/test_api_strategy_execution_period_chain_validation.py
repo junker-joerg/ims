@@ -83,7 +83,7 @@ def test_period_chain_validation_endpoint_reports_errors_and_rejects_other_metho
     invalid_json_payload = invalid_json.json()
     assert invalid_json_payload["issues"][0]["code"] == "invalid_json"
     assert invalid_json_payload["period_chain_created"] is False
-    assert invalid_json_payload["next_gate"] == "PR136"
+    assert invalid_json_payload["next_gate"] == "PR137"
     assert set(invalid_json_payload) == set(
         client.post(endpoint, json={}).json()
     )

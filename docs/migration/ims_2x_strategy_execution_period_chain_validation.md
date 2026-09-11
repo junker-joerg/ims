@@ -61,8 +61,8 @@ Schnitt folgt keine historische RNG- oder Vollgleichheitsbehauptung.
 
 ## Naechster Schritt
 
-PR135 loest die Kandidatenreferenzen inzwischen serverseitig auf, prueft ihre
+PR135 loest die Kandidatenreferenzen serverseitig auf, prueft ihre
 gespeicherten Digests erneut und stellt die Kontextgleichheit der gesamten
-Kette atomar fest. PR136 soll daraus als naechstes eine kanonische fluechtige
-Kette und ihren Gesamtdigest bilden. Persistenz, Carryover und Ausfuehrung
-bleiben gesperrt.
+Kette atomar fest. PR136 bildet daraus inzwischen eine kanonische fluechtige
+Kette und ihren Gesamtdigest. PR137 soll sie unveraenderlich und idempotent
+speichern. Carryover und Ausfuehrung bleiben gesperrt.

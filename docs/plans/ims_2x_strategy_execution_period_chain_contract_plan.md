@@ -100,9 +100,9 @@ noch Runner auf.
 - **PR135 (umgesetzt):** Kandidatenreferenzen serverseitig aufloesen, Digests
   erneut pruefen und Kandidatenkontexte sowie Akteursidentitaeten atomar
   abgleichen.
-- **PR136 (naechster Schritt):** kanonische fluechtige Kette und Gesamtdigest
-  bilden.
-- **PR137+:** Ablage, kleine Zwei-Perioden-Wirkungsprobe und spaeter den
+- **PR136 (umgesetzt):** kanonische fluechtige Kette und Gesamtdigest bilden.
+- **PR137 (naechster Schritt):** unveraenderliche idempotente Ablage.
+- **PR138+:** kleine Zwei-Perioden-Wirkungsprobe und spaeter den
   kontrollierten Ausbau bis 100 Perioden jeweils getrennt freigeben.
 
 ## Schutzgrenzen

@@ -31,6 +31,7 @@ def test_pr135_plan_and_mapping_define_atomic_resolution_boundary() -> None:
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in plan
     assert "`incomming/` bleibt unversioniert" in plan
     assert "PR136" in normalized
+    assert "PR137" in normalized
 
 
 def test_pr135_sources_are_indexed() -> None:

@@ -136,3 +136,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   read-only Aufloesung aller gespeicherten Kandidaten mit erneuter
   Digestpruefung sowie kettenweitem Kontext- und Akteursabgleich; weiterhin
   ohne Kettenbau, Speicherung oder Ausfuehrung.
+- [PR136 Periodenkette kanonisch bauen](../migration/ims_2x_strategy_execution_period_chain_build.md):
+  fluechtiges Kettenobjekt aus serverbestaetigten Kandidaten mit
+  reproduzierbarem SHA-256-Gesamtdigest; weiterhin ohne Speicherung,
+  Carryover oder Ausfuehrung.

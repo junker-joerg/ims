@@ -73,10 +73,11 @@ konfigurierte Workbench-SQLite-Datei bleibt der Endpunkt gesperrt.
 
 - **PR135 (umgesetzt):** Kandidaten aufloesen, Digests erneut pruefen und
   Kontexte sowie Akteursidentitaeten atomar abgleichen.
-- **PR136 (naechster Schritt):** aus einem erfolgreichen PR135-Bericht eine
+- **PR136 (umgesetzt):** aus einem erfolgreichen PR135-Bericht eine
   kanonische fluechtige Periodenkette mit reproduzierbarem Gesamtdigest bauen;
   weiterhin ohne Speicherung, Carryover oder Runner.
-- **PR137+:** unveraenderliche Kettenablage, isolierte Zwei-Perioden-Probe,
+- **PR137 (naechster Schritt):** unveraenderliche idempotente Kettenablage.
+- **PR138+:** isolierte Zwei-Perioden-Probe,
   Fehlerstopp und spaeter den kontrollierten Ausbau bis 100 Perioden in
   getrennten PRs freigeben.
 

@@ -97,7 +97,7 @@ def test_contract_opens_only_candidate_release_check() -> None:
     assert payload["effect_probe_idempotency_persistence_enabled"] is True
     assert payload["effect_probe_result_persistence_enabled"] is True
     assert payload["effect_probe_ui_start_enabled"] is True
-    assert payload["next_gate"] == "PR136"
+    assert payload["next_gate"] == "PR137"
 
 
 def test_parser_accepts_exact_identity_and_audit_fields() -> None:

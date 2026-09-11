@@ -309,3 +309,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   fuer die read-only Aufloesung aller Kandidaten, erneute Digestpruefung sowie
   den atomaren Kontext- und Akteursabgleich; Kettenbau und Ausfuehrung bleiben
   gesperrt.
+- `ims_2x_strategy_execution_period_chain_build_plan.md`: PR136-Plan fuer
+  eine kanonische fluechtige Kette aus serverbestaetigten Kandidaten samt
+  reproduzierbarem Gesamtdigest; Speicherung und Ausfuehrung bleiben gesperrt.

@@ -183,7 +183,7 @@ def test_candidate_overview_lists_verified_candidate_read_only(
     assert readiness["run_control_ready"] is True
     assert readiness["effect_probe_start_available"] is True
     assert readiness["effect_probe_result_persistence_available"] is True
-    assert readiness["next_gate"] == "PR136"
+    assert readiness["next_gate"] == "PR137"
     assert payload["writes_performed"] is False
     assert payload["simulation_performed"] is False
     assert client.post("/api/strategies/execution-candidates", json={}).status_code == 405

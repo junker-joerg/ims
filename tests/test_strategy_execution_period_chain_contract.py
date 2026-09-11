@@ -94,6 +94,10 @@ def test_period_chain_contract_requires_real_previous_result_and_stops_atomicall
     assert payload["stop_policy"]["partial_chain_success_allowed"] is False
     assert payload["provenance_policy"]["source_result_digest_required"] is True
     assert payload["provenance_policy"]["effective_period_input_digest_required"] is True
+    assert payload["provenance_policy"]["execution_provenance_stored_in_chain"] is False
+    assert payload["provenance_policy"][
+        "future_execution_record_references_chain_required"
+    ] is True
 
 
 def test_period_chain_contract_keeps_all_execution_boundaries_closed(
@@ -115,7 +119,8 @@ def test_period_chain_contract_keeps_all_execution_boundaries_closed(
     assert payload["contract_read_only"] is True
     assert payload["period_chain_validation_enabled"] is True
     assert payload["period_chain_candidate_resolution_enabled"] is True
-    assert payload["period_chain_materialization_enabled"] is False
+    assert payload["period_chain_materialization_enabled"] is True
+    assert payload["period_chain_digest_enabled"] is True
     assert payload["period_chain_persistence_enabled"] is False
     assert payload["period_chain_runner_enabled"] is False
     assert payload["carryover_execution_enabled"] is False
@@ -129,4 +134,4 @@ def test_period_chain_contract_keeps_all_execution_boundaries_closed(
     assert payload["automatic_historical_rule_selection_performed"] is False
     assert payload["historical_rng_equality_claim"] is False
     assert payload["historical_full_equality_claim"] is False
-    assert payload["next_gate"] == "PR136"
+    assert payload["next_gate"] == "PR137"

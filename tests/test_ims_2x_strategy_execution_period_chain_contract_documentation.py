@@ -34,6 +34,7 @@ def test_pr133_plan_and_mapping_define_period_chain_boundaries() -> None:
     assert "PR134 (umgesetzt)" in normalized
     assert "PR135" in normalized
     assert "PR136" in normalized
+    assert "PR137" in normalized
 
 
 def test_pr133_sources_are_indexed() -> None:

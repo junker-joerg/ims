@@ -242,9 +242,10 @@ Installer, Signierung, App-Store-Verteilung, ein automatischer Updater oder
 groessere Plattformanpassungen.
 
 HB3, HB3a, HB3b und HB3c sind als getrennte reviewbare Schnitte umgesetzt.
-HB4 bleibt der naechste Handbuchschnitt; PR136 baut davon getrennt die
-kanonische fluechtige Periodenkette. Plattformzusagen aus HB4/HB5 duerfen
-keine fachliche Produktionsreife vorwegnehmen.
+HB4 bleibt der naechste Handbuchschnitt; PR136 hat davon getrennt die
+kanonische fluechtige Periodenkette gebaut. PR137 plant ihre unveraenderliche
+Ablage. Plattformzusagen aus HB4/HB5 duerfen keine fachliche Produktionsreife
+vorwegnehmen.
 
 ## Abnahme HB1
 

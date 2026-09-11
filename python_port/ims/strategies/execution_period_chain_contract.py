@@ -64,7 +64,7 @@ STRATEGY_EXECUTION_PERIOD_CHAIN_SECTIONS = (
     StrategyExecutionPeriodChainSectionDefinition(
         section_id="identity",
         fields=("chain_id", "content_digest", "schema_version"),
-        source="future_server_side_period_chain_builder",
+        source="server_side_pr136_period_chain_builder",
     ),
     StrategyExecutionPeriodChainSectionDefinition(
         section_id="horizon",
@@ -95,14 +95,15 @@ STRATEGY_EXECUTION_PERIOD_CHAIN_SECTIONS = (
     StrategyExecutionPeriodChainSectionDefinition(
         section_id="provenance",
         fields=(
-            "source_candidate_id",
-            "source_candidate_digest",
-            "source_result_digest",
-            "target_candidate_id",
-            "target_candidate_digest",
-            "effective_period_input_digest",
+            "chain_build_schema_version",
+            "candidate_resolution_schema_version",
+            "candidate_store_source",
+            "candidate_count",
+            "candidate_digest_reverification_complete",
+            "candidate_context_cross_check_complete",
+            "actor_identity_cross_check_complete",
         ),
-        source="future_server_side_chain_execution",
+        source="pr135_resolution_and_pr136_period_chain_build",
     ),
     StrategyExecutionPeriodChainSectionDefinition(
         section_id="execution_boundaries",
@@ -152,7 +153,8 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "contract_read_only": True,
         "period_chain_validation_enabled": True,
         "period_chain_candidate_resolution_enabled": True,
-        "period_chain_materialization_enabled": False,
+        "period_chain_materialization_enabled": True,
+        "period_chain_digest_enabled": True,
         "period_chain_persistence_enabled": False,
         "period_chain_runner_enabled": False,
         "carryover_execution_enabled": False,
@@ -187,6 +189,10 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "resolution_endpoint": (
             "/api/strategies/execution-period-chain-resolution"
         ),
+        "build_contract_endpoint": (
+            "/api/strategies/execution-period-chain-build-contract"
+        ),
+        "build_endpoint": "/api/strategies/execution-period-chain-build",
         "historical_horizon": {
             "source": "IMSDATA.C:14",
             "constant": "SIMLAENGE",
@@ -258,6 +264,9 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "provenance_policy": {
             "chain_content_digest_required": True,
             "candidate_digest_reverification_required": True,
+            "chain_build_provenance_required": True,
+            "execution_provenance_stored_in_chain": False,
+            "future_execution_record_references_chain_required": True,
             "source_result_digest_required": True,
             "effective_period_input_digest_required": True,
             "release_identity_per_chain_required": True,
@@ -271,7 +280,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "digest_mismatch_allowed": False,
             "missing_actor_allowed": False,
         },
-        "next_gate": "PR136",
+        "next_gate": "PR137",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

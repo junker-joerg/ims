@@ -395,7 +395,7 @@ def test_resolution_contract_opens_only_read_only_candidate_checks() -> None:
     assert payload["runner_enabled"] is False
     assert payload["writes_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR136"
+    assert payload["next_gate"] == "PR137"
 
 
 def test_resolution_does_not_call_carryover_or_runner(monkeypatch, tmp_path) -> None:
@@ -484,4 +484,4 @@ def test_resolution_api_rejects_unconfigured_store_and_invalid_json(
     assert invalid_json.status_code == 400
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
     assert invalid_json.json()["candidate_count"] == 0
-    assert invalid_json.json()["next_gate"] == "PR136"
+    assert invalid_json.json()["next_gate"] == "PR137"
