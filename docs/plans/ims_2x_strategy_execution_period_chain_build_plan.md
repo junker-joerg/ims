@@ -77,9 +77,10 @@ Konfiguration. Freie Datenbank-, Fixture- oder Ausgabepfade bleiben verboten.
 - **PR137 (umgesetzt):** explizit freigegebene, unveraenderliche und
   idempotente Kettenablage mit erneuter Digestpruefung; weiterhin ohne
   Carryover oder Runner.
-- **PR138 (naechster Schritt):** read-only Freigabecheck der gespeicherten
+- **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139+:** isolierte Zwei-Perioden-Wirkungsprobe, atomarer Fehlerstopp und
+- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
+  Wirkungsprobe, atomarer Fehlerstopp und
   danach kontrollierter Ausbau bis zum 100-Perioden-Lauf in getrennten PRs.
 
 ## Schutzgrenzen

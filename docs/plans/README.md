@@ -316,3 +316,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   die ausdruecklich freizugebende, unveraenderliche und idempotente
   SQLite-Ablage einer serverseitig neu gebauten Kette mit Digestpruefung vor
   und nach dem Schreiben; Carryover und Ausfuehrung bleiben gesperrt.
+- `ims_2x_strategy_execution_period_chain_run_control_plan.md`: PR138-Plan
+  fuer die read-only Aufloesung einer gespeicherten Kette ueber ID und
+  erneut geprueften SHA-256-Volldigest; Start, Carryover und Runner bleiben
+  gesperrt.

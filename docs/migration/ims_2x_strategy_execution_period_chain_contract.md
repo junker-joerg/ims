@@ -37,11 +37,13 @@ Herkunftsgrenze.
 - die in PR134 ergaenzten Validierungsendpunkte;
 - aktivierte PR134-Validierung, PR135-Kandidatenaufloesung sowie
   PR136-Kettenbau und -Digest;
-- aktivierte PR137-Kettenablage;
-- `next_gate = PR138`.
+- aktivierte PR137-Kettenablage und PR138-Freigabepruefung;
+- `next_gate = PR139`.
 
-Der read-only Endpunkt lautet
-`GET /api/strategies/execution-period-chain-contract`.
+Der read-only Hauptvertrag liegt unter
+`GET /api/strategies/execution-period-chain-contract`. Fuer PR138 verweist er
+zusaetzlich auf `GET /api/run-control/strategy-period-chain-contract` und
+`POST /api/run-control/strategy-period-chain-release-check`.
 
 ## Bewusste Grenzen
 
@@ -51,10 +53,10 @@ Carryover-Funktionen benoetigen echte `VUForeignInfoPeriodRunResult`- und
 `VNSettlementPeriodRunResult`-Objekte. Diese duerfen nicht nachtraeglich aus
 unvollstaendigen Daten erfunden werden.
 
-Nur der getrennte Schalter fuer die zustandslose PR134-Eingangsvalidierung ist
-nun `true`. Materialisierung, Persistenz, Carryover, Mehrperiodenrunner und
-UI-Start bleiben `false`. Es wurde keine Simulation gestartet und keine
-historische Gleichheit behauptet.
+Validierung, Kandidatenaufloesung, Kettenbau, Persistenz und der read-only
+Freigabecheck sind inzwischen getrennt aktiviert. Carryover,
+Mehrperiodenrunner, UI-Start und Ergebnisdateien bleiben `false`. Es wurde
+keine Simulation gestartet und keine historische Gleichheit behauptet.
 
 ## Validierung
 
@@ -73,5 +75,6 @@ PR135 loest die formal gueltigen Kandidatenreferenzen serverseitig auf,
 prueft ihre gespeicherten Digests erneut und gleicht Kandidatenkontexte sowie
 Akteursidentitaeten atomar ab. PR136 bildet daraus inzwischen eine kanonische
 fluechtige Kette und ihren Gesamtdigest. PR137 speichert sie inzwischen
-unveraenderlich. PR138 prueft als Naechstes die gespeicherte
-Freigabeidentitaet read-only. Carryover und Ausfuehrung bleiben gesperrt.
+unveraenderlich. PR138 prueft inzwischen die gespeicherte Freigabeidentitaet
+read-only. PR139 erprobt als Naechstes genau zwei Perioden fluechtig;
+dauerhafter Start und groessere Horizonte bleiben gesperrt.

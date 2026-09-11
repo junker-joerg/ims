@@ -78,9 +78,10 @@ Fehlerbericht ohne Teilannahme.
 - **PR136 (umgesetzt):** nach erfolgreicher Aufloesung den kanonischen
   fluechtigen Kettenbau und Gesamtdigest einfuehren.
 - **PR137 (umgesetzt):** unveraenderliche idempotente Ablage.
-- **PR138 (naechster Schritt):** read-only Freigabecheck der gespeicherten
+- **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139+:** isolierte Zwei-Perioden-Probe und den
+- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-Probe
+  und den
   kontrollierten Ausbau bis 100 Perioden in getrennten PRs freigeben.
 
 ## Schutzgrenzen

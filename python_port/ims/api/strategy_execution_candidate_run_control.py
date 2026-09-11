@@ -144,7 +144,7 @@ class StrategyExecutionCandidateRunControlResult:
             "automatic_historical_rule_selection_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR138",
+            "next_gate": "PR139",
         }
 
 
@@ -361,7 +361,7 @@ def strategy_execution_candidate_run_control_contract_payload() -> dict[str, obj
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR138",
+        "next_gate": "PR139",
     }
 
 
@@ -396,7 +396,7 @@ def strategy_execution_candidate_run_control_error_payload(
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR138",
+        "next_gate": "PR139",
     }
 
 

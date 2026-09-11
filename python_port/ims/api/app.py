@@ -77,6 +77,13 @@ from ims.api.strategy_execution_period_chain_store import (
     strategy_execution_period_chain_store_contract_payload,
     strategy_execution_period_chain_store_error_payload,
 )
+from ims.api.strategy_execution_period_chain_run_control import (
+    StrategyExecutionPeriodChainRunControlError,
+    check_strategy_execution_period_chain_run_control_release,
+    parse_strategy_execution_period_chain_run_control_request,
+    strategy_execution_period_chain_run_control_contract_payload,
+    strategy_execution_period_chain_run_control_error_payload,
+)
 from ims.api.strategy_execution_candidate_effect_probe import (
     StrategyExecutionCandidateEffectProbeError,
     StrategyExecutionCandidateEffectProbeRunner,
@@ -564,7 +571,7 @@ def _strategy_execution_period_chain_validation_invalid_json_payload() -> dict[
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR138",
+        "next_gate": "PR139",
     }
 
 
@@ -1467,6 +1474,58 @@ def create_app(
             status_code = 409
         return JSONResponse(result.to_dict(), status_code=status_code)
 
+    async def strategy_execution_period_chain_run_control_response(
+        request: Request,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_period_chain_run_control_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Run-Control-Kettenpruefung erfordert eine explizite "
+                    "SQLite-Metadatenquelle",
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                strategy_execution_period_chain_run_control_error_payload(
+                    "invalid_json",
+                    "Run-Control-Ketteneingang ist kein gueltiges JSON",
+                ),
+                status_code=400,
+            )
+        try:
+            parsed = parse_strategy_execution_period_chain_run_control_request(
+                payload
+            )
+        except StrategyExecutionPeriodChainRunControlError as exc:
+            return JSONResponse(
+                strategy_execution_period_chain_run_control_error_payload(
+                    exc.code,
+                    str(exc),
+                ),
+                status_code=400,
+            )
+        result = check_strategy_execution_period_chain_run_control_release(
+            parsed,
+            db_path=Path(str(metadata_source["path"])),
+        )
+        if result.release_ready:
+            status_code = 200
+        elif any(
+            issue["code"]
+            in {"period_chain_not_found", "period_chain_store_missing"}
+            for issue in result.issues
+        ):
+            status_code = 404
+        else:
+            status_code = 409
+        return JSONResponse(result.to_dict(), status_code=status_code)
+
     async def strategy_execution_candidate_effect_probe_response(
         request: Request,
     ) -> JSONResponse:
@@ -2182,6 +2241,10 @@ def create_app(
         def run_control_strategy_candidate_contract() -> dict[str, object]:
             return strategy_execution_candidate_run_control_contract_payload()
 
+        @app.get("/api/run-control/strategy-period-chain-contract")
+        def run_control_strategy_period_chain_contract() -> dict[str, object]:
+            return strategy_execution_period_chain_run_control_contract_payload()
+
         @app.get("/api/run-control/strategy-candidate-effect-probe-contract")
         def run_control_strategy_candidate_effect_probe_contract() -> dict[
             str, object
@@ -2246,6 +2309,17 @@ def create_app(
             request: Request,
         ) -> JSONResponse:
             return await strategy_execution_candidate_run_control_response(request)
+
+        @app.post(
+            "/api/run-control/strategy-period-chain-release-check",
+            response_model=None,
+        )
+        async def run_control_strategy_period_chain_release_check(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_period_chain_run_control_response(
+                request
+            )
 
         @app.post("/api/run-control/adapter-release-check", response_model=None)
         async def run_control_adapter_release_check(request: Request) -> JSONResponse:
@@ -2534,6 +2608,12 @@ def create_app(
             ),
         ),
         Route(
+            "/api/run-control/strategy-period-chain-contract",
+            lambda request: JSONResponse(
+                strategy_execution_period_chain_run_control_contract_payload()
+            ),
+        ),
+        Route(
             "/api/run-control/strategy-candidate-effect-probe-contract",
             lambda request: JSONResponse(
                 strategy_execution_candidate_effect_probe_contract_payload()
@@ -2570,6 +2650,11 @@ def create_app(
         Route(
             "/api/run-control/strategy-candidate-release-check",
             strategy_execution_candidate_run_control_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/strategy-period-chain-release-check",
+            strategy_execution_period_chain_run_control_response,
             methods=["POST"],
         ),
         Route(

@@ -322,7 +322,7 @@ def test_store_contract_opens_only_explicit_immutable_persistence() -> None:
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR138"
+    assert payload["next_gate"] == "PR139"
 
 
 def test_store_api_persists_replays_reads_and_enforces_methods(
@@ -392,7 +392,7 @@ def test_store_api_rejects_unconfigured_store_invalid_json_and_missing_chain(
 
     assert invalid_json.status_code == 400
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
-    assert invalid_json.json()["next_gate"] == "PR138"
+    assert invalid_json.json()["next_gate"] == "PR139"
     assert created.status_code == 201
     assert missing.status_code == 404
     assert missing.json()["issues"][0]["code"] == "period_chain_not_found"

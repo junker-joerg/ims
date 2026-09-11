@@ -264,4 +264,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   freizugebende, unveraenderliche Kettenablage mit serverseitigem Neubau,
   idempotentem Replay und Digestpruefung vor und nach dem Schreiben;
   weiterhin ohne Carryover oder Ausfuehrung
+- `ims_2x_strategy_execution_period_chain_run_control.md`: PR138-read-only
+  Freigabecheck fuer gespeicherte Ketten-ID, erneut geprueften Volldigest,
+  Horizont und geschlossene Ausfuehrungsgrenzen; weiterhin ohne Queue,
+  Carryover oder Runner
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -74,10 +74,11 @@ oder Ausgabepfade werden nicht akzeptiert.
 ## Restplanung
 
 - **PR137 (umgesetzt):** unveraenderliche idempotente Kettenablage.
-- **PR138 (naechster Schritt):** kontrollierter read-only Freigabecheck fuer
+- **PR138 (umgesetzt):** kontrollierter read-only Freigabecheck fuer
   gespeicherte Ketten-ID und erneut geprueften Volldigest; weiterhin ohne
   Carryover oder Runner.
-- **PR139+:** isolierte Zwei-Perioden-Wirkungsprobe, atomarer Fehlerstopp und
+- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
+  Wirkungsprobe, atomarer Fehlerstopp und
   danach kontrollierter Ausbau bis 100 Perioden in getrennten PRs.
 
 ## Schutzgrenzen

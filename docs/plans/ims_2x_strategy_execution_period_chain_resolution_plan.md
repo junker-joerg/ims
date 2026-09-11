@@ -77,9 +77,9 @@ konfigurierte Workbench-SQLite-Datei bleibt der Endpunkt gesperrt.
   kanonische fluechtige Periodenkette mit reproduzierbarem Gesamtdigest bauen;
   weiterhin ohne Speicherung, Carryover oder Runner.
 - **PR137 (umgesetzt):** unveraenderliche idempotente Kettenablage.
-- **PR138 (naechster Schritt):** read-only Freigabecheck der gespeicherten
+- **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139+:** isolierte Zwei-Perioden-Probe,
+- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-Probe,
   Fehlerstopp und spaeter den kontrollierten Ausbau bis 100 Perioden in
   getrennten PRs freigeben.
 

@@ -102,9 +102,10 @@ noch Runner auf.
   abgleichen.
 - **PR136 (umgesetzt):** kanonische fluechtige Kette und Gesamtdigest bilden.
 - **PR137 (umgesetzt):** unveraenderliche idempotente Ablage.
-- **PR138 (naechster Schritt):** read-only Freigabecheck der gespeicherten
+- **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139+:** kleine Zwei-Perioden-Wirkungsprobe und spaeter den
+- **PR139 (naechster Schritt):** kleine fluechtige Zwei-Perioden-
+  Wirkungsprobe und spaeter den
   kontrollierten Ausbau bis 100 Perioden jeweils getrennt freigeben.
 
 ## Schutzgrenzen

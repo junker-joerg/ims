@@ -122,6 +122,13 @@ def test_period_chain_contract_keeps_all_execution_boundaries_closed(
     assert payload["period_chain_materialization_enabled"] is True
     assert payload["period_chain_digest_enabled"] is True
     assert payload["period_chain_persistence_enabled"] is True
+    assert payload["period_chain_run_control_release_check_enabled"] is True
+    assert payload["run_control_contract_endpoint"] == (
+        "/api/run-control/strategy-period-chain-contract"
+    )
+    assert payload["run_control_release_check_endpoint"] == (
+        "/api/run-control/strategy-period-chain-release-check"
+    )
     assert payload["period_chain_runner_enabled"] is False
     assert payload["carryover_execution_enabled"] is False
     assert payload["multi_period_execution_enabled"] is False
@@ -134,4 +141,4 @@ def test_period_chain_contract_keeps_all_execution_boundaries_closed(
     assert payload["automatic_historical_rule_selection_performed"] is False
     assert payload["historical_rng_equality_claim"] is False
     assert payload["historical_full_equality_claim"] is False
-    assert payload["next_gate"] == "PR138"
+    assert payload["next_gate"] == "PR139"

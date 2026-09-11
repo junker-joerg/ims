@@ -86,6 +86,7 @@ unversioniert.
 
 ## Naechster Schritt
 
-PR138 soll eine gespeicherte Ketten-ID und den erwarteten Volldigest an einer
-read-only Freigabegrenze erneut aufloesen und pruefen. Start, Carryover und
-Mehrperiodenrunner bleiben dort weiterhin gesperrt.
+PR138 loest eine gespeicherte Ketten-ID und den erwarteten Volldigest
+inzwischen an einer read-only Freigabegrenze erneut auf. PR139 soll genau
+zwei Perioden auf isolierten Kopien fluechtig erproben. Dauerhafter Start und
+groessere Horizonte bleiben gesperrt.

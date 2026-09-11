@@ -187,8 +187,10 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR136 (umgesetzt):** kanonische fluechtige Kette und Gesamtdigest bilden.
 - **PR137 (umgesetzt):** Kette ausdruecklich freigegeben, unveraenderlich
   und idempotent speichern; noch kein Carryover und kein Runner.
-- **PR138 (naechster Schritt):** gespeicherte Ketten-ID und Volldigest
-  read-only erneut pruefen; Start weiterhin gesperrt.
+- **PR138 (umgesetzt):** gespeicherte Ketten-ID und Volldigest read-only
+  erneut pruefen; Start weiterhin gesperrt.
+- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
+  Wirkungsprobe mit atomarem Fehlerstopp.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Das ist weder die Zusage einer
@@ -224,4 +226,5 @@ PR134 validiert den versionierten Ketteneingang. PR135 loest die
 Kandidatenreferenzen serverseitig auf. PR136 bildet daraus inzwischen die
 kanonische fluechtige Kette samt Gesamtdigest. PR137 legt sie inzwischen
 unveraenderlich ab, ohne bereits einen Mehrperiodenstart freizuschalten.
-PR138 prueft als Naechstes die gespeicherte Freigabeidentitaet read-only.
+PR138 prueft inzwischen die gespeicherte Freigabeidentitaet read-only. PR139
+fuehrt als Naechstes genau zwei Perioden auf isolierten Kopien fluechtig aus.

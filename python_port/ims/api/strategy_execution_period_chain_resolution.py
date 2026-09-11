@@ -153,7 +153,7 @@ class StrategyExecutionPeriodChainResolutionReport:
             "automatic_historical_rule_selection_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR138",
+            "next_gate": "PR139",
         }
 
 
@@ -687,7 +687,7 @@ def strategy_execution_period_chain_resolution_contract_payload() -> dict[
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR138",
+        "next_gate": "PR139",
     }
 
 

@@ -144,3 +144,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   ausdruecklich freizugebende, idempotente SQLite-Ablage mit serverseitigem
   Neubau und Digestpruefung vor und nach dem Schreiben; weiterhin ohne
   Carryover oder Ausfuehrung.
+- [PR138 Periodenkette read-only freigeben](../migration/ims_2x_strategy_execution_period_chain_run_control.md):
+  kontrollierte Aufloesung einer gespeicherten Kette ueber ID, erneut
+  geprueften SHA-256-Volldigest und geschlossene Ausfuehrungsgrenzen;
+  weiterhin ohne Queue, Start, Carryover oder Runner.
