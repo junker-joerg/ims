@@ -103,14 +103,16 @@ serverseitige Idempotenzgrenze bleibt auch bei direktem API-Aufruf wirksam.
 
 - **PR131 (umgesetzt):** kontrollierter Workbench-Start, dauerhafte Idempotenz,
   Ergebnisablage und read-only Verlauf.
-- **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer den
-  bedienbaren Einperiodenpfad abschliessen.
+- **PR132 (umgesetzt):** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots
+  fuer den bedienbaren Einperiodenpfad abschliessen.
+- **PR133 (naechster Schritt):** Periodenketten- und Carryover-Vertrag fuer
+  einen spaeteren kontrollierten 100-Periodenpfad festlegen.
 
-Nach PR131 verbleibt ein kleiner PR bis zur kontrolliert bedienbaren und
-dokumentierten Einperioden-Wirkungsprobe. Mehrperiodenlauf, Carryover und
-Regulierungssimulation bleiben eigene spaetere Ausbaubloecke.
+Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
+dokumentiert. Mehrperiodenlauf, Carryover und Regulierungssimulation bleiben
+eigene spaetere Ausbaubloecke.
 
 ## Naechster Schritt
 
-PR132 prueft den vollstaendigen Bedienpfad im Browser auf breitem und schmalem
-Viewport und uebernimmt die belegten Bildschirmablaeufe in das Handbuch.
+PR133 definiert zuerst die Periodenkette, Vorperiodenherkunft und
+Carryover-Grenzen. Er schaltet noch keinen neuen Mehrperiodenstart frei.

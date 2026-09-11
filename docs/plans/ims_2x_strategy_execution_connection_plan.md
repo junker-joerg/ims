@@ -176,11 +176,13 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
 - **PR131 (umgesetzt):** manuellen Workbench-Start und read-only
   Ergebnisansicht an die vorhandene Freigabe-, Idempotenz- und Verlaufskette
   anbinden.
-- **PR132:** Browser-Smoke, Fehlerpfade und Handbuch-Screenshots fuer diesen
-  eng benannten Einperiodenpfad abschliessen.
+- **PR132 (umgesetzt):** Browser-Smoke, Fehlerpfade und
+  Handbuch-Screenshots fuer diesen eng benannten Einperiodenpfad abschliessen.
+- **PR133 (naechster Schritt):** Periodenketten- und Carryover-Vertrag fuer
+  den spaeteren 100-Periodenpfad festlegen.
 
-Nach PR131 verbleibt ein kleiner PR bis zur kontrolliert bedienbaren und
-dokumentierten Einperioden-Wirkungsprobe. Das ist weder die Zusage einer
+Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
+dokumentiert. Das ist weder die Zusage einer
 vollstaendigen Mehrperiodensimulation noch eine Schaetzung bis zur fachlichen
 Produktionsreife des Regulationslabors.
 
@@ -209,6 +211,5 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR132 prueft als naechstes Bedienpfad und Fehlerdarstellung im Browser auf
-Desktop und schmalem Viewport und uebernimmt die belegten Ablaeufe in das
-Handbuch.
+PR133 definiert als naechstes Periodenkette, Vorperiodenherkunft und
+Carryover-Grenzen, ohne bereits einen Mehrperiodenstart freizuschalten.

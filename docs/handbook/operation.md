@@ -1,7 +1,7 @@
 # Workbench bedienen
 
-Stand: 2026-09-01
-Gilt fuer: lokale IMS-Workbench, Handbuchstand HB3
+Stand: 2026-09-11
+Gilt fuer: lokale IMS-Workbench, Handbuchstand HB3c
 
 ## Vor dem Bedienpfad
 
@@ -129,6 +129,46 @@ Ein persistiertes Adapter-Resultat belegt, dass der kontrollierte technische
 Pfad funktioniert hat. Es belegt fuer sich allein weder einen historischen
 Modelllauf noch historische Vollgleichheit oder Produktionsfreigabe.
 
+## 9. Einperioden-Wirkungsprobe bedienen
+
+Dieser Pfad ist fuer einen bereits serverseitig gebauten, unveraenderlich
+gespeicherten Strategie-Kandidaten vorgesehen. Er ist der erste bedienbare
+fachliche Wirkungsnachweis, aber noch kein vollstaendiger Simulationslauf.
+
+1. Waehle in der Navigation `Strategien` und danach den Tab `Kandidaten`.
+2. Pruefe `Digest geprueft`, Marktprofil, Periode sowie die Anzahl der VU- und
+   VN-Snapshots.
+3. Trage unter `Freigabe durch` eine nachvollziehbare Person ein.
+4. Beschreibe unter `Grund` den konkreten Zweck der Probe.
+5. Aktiviere `Genau eine isolierte Periode jetzt ausfuehren`.
+6. Waehle `Wirkungsprobe starten`.
+7. Lies Periode, Zustandsaenderung, VU-/VN-Anwendungen, geaenderte Akteure,
+   Ergebnisdigest und `Versuchsverlauf`.
+
+![Einperioden-Wirkungsprobe im breiten Browserfenster](images/windows_strategy_effect_probe_pr132_wide_2026-09-11.png)
+
+*Abbildung: Erfolgreicher, unveraenderlich gespeicherter Einperiodennachweis mit Verlauf und weiterhin gesperrtem Mehrperiodenlauf; Windows/Chrome, 1440 x 1000, aufgenommen am 2026-09-11.*
+
+Auf einem schmalen Fenster werden Kennzahlen und Nachweise einspaltig
+dargestellt. Es werden keine Spalten seitlich abgeschnitten.
+
+![Einperioden-Wirkungsprobe im schmalen Browserfenster](images/windows_strategy_effect_probe_pr132_narrow_2026-09-11.png)
+
+*Abbildung: Derselbe gespeicherte Einperiodennachweis im 390 x 844-Viewport, aufgenommen am 2026-09-11.*
+
+### Fehler richtig behandeln
+
+| Sichtbarer Zustand | Bedeutung | Reaktion |
+| --- | --- | --- |
+| Startknopf deaktiviert | Person, Grund, Bestaetigung oder Nachweisstatus fehlt | Angaben kontrollieren; Sperre nicht umgehen |
+| Digest- oder Integritaetsfehler | Kandidatenidentitaet stimmt nicht mehr mit der Ablage ueberein | nicht erneut starten; Kandidatenablage pruefen |
+| `Fehlgeschlagen` im Verlauf | Runner wurde erreicht, aber es wurde kein Ergebnis gespeichert | Fehlertext lesen; nur mit neuer manueller Freigabe erneut pruefen |
+| `Ergebnis unveraenderlich gespeichert` | genau ein erfolgreicher Nachweis liegt vor | Ergebnis lesen; kein zweiter Start erforderlich |
+
+Die Probe schreibt ausschliesslich Freigabe, Versuch und Ergebnis in die
+konfigurierte SQLite-Metadatenquelle. Sie schreibt keine Ergebnisdateien,
+verwendet kein `incomming/` und startet keinen Carryover oder Scheduler.
+
 ## Schreib- und Stopgrenzen
 
 | Aktion | Schreibt | Startet Ausfuehrung |
@@ -139,6 +179,7 @@ Modelllauf noch historische Vollgleichheit oder Produktionsfreigabe.
 | `Freigabe pruefen` | Freigabe-/Auditkontext gemaess Serververtrag | nein |
 | `Adapter starten` | Status, Audit und Adapter-Resultat | kontrollierter Adapter, keine Simulation |
 | `Ergebnis neu laden` | nein | nein |
+| `Wirkungsprobe starten` | Freigabe, Versuch und Einperiodenergebnis | genau eine isolierte Periode, kein Mehrperiodenlauf |
 
 Bei unklarer Quelle, unerwartetem Schreibpfad, geaendertem Queue-Eintrag oder
 einem fachlichen Blocker wird nicht weiter freigegeben. Der Browser darf nicht

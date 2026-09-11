@@ -275,6 +275,18 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert 'data-testid="run-control-core-bridge"' in source
     assert 'data-testid="carryover-probe-contract"' in source
     assert 'data-testid="adapter-result-contract"' in source
+    assert 'data-testid="strategy-candidate-tab"' in source
+    assert 'data-testid="strategy-candidate-overview"' in source
+    assert 'data-testid="strategy-candidate-select"' in source
+    assert 'data-testid="strategy-candidate-effect-probe"' in source
+    assert 'data-testid="strategy-candidate-release-actor"' in source
+    assert 'data-testid="strategy-candidate-release-reason"' in source
+    assert 'data-testid="strategy-candidate-release-confirmation"' in source
+    assert 'data-testid="strategy-candidate-effect-probe-start"' in source
+    assert 'data-testid="strategy-candidate-effect-probe-error"' in source
+    assert 'data-testid="strategy-candidate-effect-probe-result"' in source
+    assert 'data-testid="strategy-candidate-effect-probe-history"' in source
+    assert 'data-testid="strategy-candidate-effect-probe-boundary"' in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source

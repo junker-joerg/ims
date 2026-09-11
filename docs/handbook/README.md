@@ -1,7 +1,7 @@
 # IMS-Benutzerhandbuch
 
-Stand: 2026-09-01
-Handbuchstand: HB3b
+Stand: 2026-09-11
+Handbuchstand: HB3c
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
 wie Bedienstatus und historische Vergleichsergebnisse zu lesen sind. Es ist
@@ -15,6 +15,7 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | Windows-Workbench | `verified_windows_hb3` | Kurzstart, portable Ablage, Entwickler-Checkout, Check, Start, Health, Stop, Datenpflege und Deinstallation sind dokumentiert und auf einem Leerzeichenpfad geprueft |
 | Windows-Anwender-Testpaket | `documented_windows_hb3b` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 10 Seiten fachliche Bedienungsanleitung mit 8 Abbildungen sind vorbereitet und geprueft |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
+| Einperioden-Wirkungsprobe | `verified_browser_pr132` | Strategie-Kandidat, ausdrueckliche Freigabe, genau eine isolierte Periode, gespeichertes Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
 | Historische Kernvalidierung | `blocked_calculated_core_validation` | Nach PR101 sind 15/15 Tabellen und 6.300/6.300 Ergebniszeilen angeschlossen; die gemeinsame fachliche Bewertung folgt in PR102 |
@@ -37,12 +38,13 @@ technischen Referenz ausgewiesenen offenen Statuswerte massgeblich.
 ## Navigation in der Workbench
 
 Die Workbench ist eine lange, lokal ausgelieferte Browseransicht. Die
-Navigation springt zu vier stabilen Bereichen:
+Navigation springt zu fuenf stabilen Bereichen:
 
 | Navigation | Inhalt |
 | --- | --- |
 | `Dashboard` | Systemstatus, Auswahlzusammenfassung und Betriebsdiagnose |
 | `Szenarien` | vorhandene Szenarien, Filter und Detailauswahl |
+| `Strategien` | Strategiekatalog, Entwuerfe, Snapshots und kontrollierte Einperioden-Kandidaten |
 | `Validierung` | Kernvalidierung, Vergleichsstatus und Grenzen |
 | `Runs` | vorhandene Runs, Queue, Run-Control und Ergebnisanzeige |
 
@@ -56,6 +58,8 @@ Navigation springt zu vier stabilen Bereichen:
 | Dry-Run | prueft den Request und seine Grenzen, ohne den Adapter zu starten |
 | Preflight | prueft technische Voraussetzungen vor einer Freigabe |
 | explizite Freigabe | Person und Begruendung werden bestaetigt, bevor ein zulassiger Adapterstart moeglich wird |
+| Strategie-Kandidat | unveraenderlich gespeicherte Kombination aus Marktgrundzustand, Strategiezuordnungen und VU-/VN-Snapshots fuer genau eine Periode |
+| Einperioden-Wirkungsprobe | einmalige kontrollierte Anwendung dieses Kandidaten mit gespeichertem Vorher/Nachher-Nachweis; noch kein Mehrperiodenlauf |
 | Adapter-Resultat | persistiertes Ergebnis des kontrollierten Adapters; nicht automatisch ein Simulationsresultat |
 | historische Referenz | archivierte Ergebnisdatei zum diagnostischen Vergleich, nicht Eingabe fuer die moderne Berechnung |
 | `blocked` | die fachliche Freigabe bleibt geschlossen; das bedeutet nicht automatisch, dass die Workbench technisch defekt ist |
@@ -66,6 +70,9 @@ Navigation springt zu vier stabilen Bereichen:
   Produktionsfreigabe blockiert bleibt.
 - `Adapter starten` bezeichnet den kontrollierten Adapterpfad. Daraus folgt
   keine Ausfuehrung des historischen Simulationskerns.
+- `Wirkungsprobe starten` fuehrt genau den geprueften Einperioden-Kandidaten
+  aus. Carryover, Scheduler, Mehrperiodenlauf und Ergebnisdateien bleiben
+  gesperrt.
 - Historische 300- und 500-Zeilen-Dateien werden als drei beziehungsweise
   fuenf getrennte Laeufe mit hoechstens 100 Perioden gelesen.
 - Unterschiedliche damalige Parameter, Zinssaetze, Compiler und RNG-Folgen

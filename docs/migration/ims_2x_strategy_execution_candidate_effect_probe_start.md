@@ -93,8 +93,9 @@ Der Server erzwingt dieselbe Grenze unabhaengig von der Browserdarstellung.
 - keine historische RNG- oder Vollgleichheitsbehauptung;
 - `incomming/` bleibt unversioniert.
 
-## Naechster Schritt
+## Anschluss
 
-PR132 prueft den bedienbaren Pfad mit Browser-Smokes auf Desktop und schmalem
-Viewport, vervollstaendigt die Fehlerdarstellung und uebernimmt die belegten
-Bildschirmablaeufe in das Benutzerhandbuch.
+PR132 hat den bedienbaren Pfad mit Browser-Smokes auf breitem und schmalem
+Viewport, atomaren Fehlerpfaden und datierten Handbuchbildern abgenommen.
+PR133 definiert als naechstes den Periodenketten- und Carryover-Vertrag, ohne
+bereits einen Mehrperiodenstart freizuschalten.

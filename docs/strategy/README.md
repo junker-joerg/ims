@@ -122,3 +122,6 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 - [PR131 Kontrollierter Workbench-Start](../migration/ims_2x_strategy_execution_candidate_effect_probe_start.md):
   dauerhafte Idempotenz, unveraenderliche Ergebnisablage und read-only
   Versuchshistorie fuer die isolierte Einperioden-Wirkungsprobe.
+- [PR132 Browserabnahme](../migration/ims_2x_strategy_execution_candidate_effect_probe_browser_acceptance.md):
+  vollstaendiger Einperioden-Bedienpfad auf breitem und schmalem Viewport,
+  atomare Fehlerpfade und datierte Handbuch-Screenshots.

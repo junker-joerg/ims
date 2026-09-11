@@ -294,3 +294,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_execution_candidate_effect_probe_start_plan.md`: PR131-Plan
   fuer den kontrollierten Workbench-Start mit dauerhafter Idempotenz,
   unveraenderlicher Ergebnisablage und read-only Versuchsverlauf.
+- `ims_2x_strategy_execution_candidate_effect_probe_browser_acceptance_plan.md`:
+  PR132-Plan und Abnahme fuer den vollstaendigen Einperioden-Bedienpfad auf
+  breitem und schmalem Viewport samt atomaren Fehlerpfaden und
+  Handbuch-Screenshots.

@@ -620,7 +620,7 @@ def _candidate_overview_payload(
             "effect_probe_start_available": True,
             "effect_probe_result_persistence_available": True,
             "execution_ready": False,
-            "next_gate": "PR132",
+            "next_gate": "PR133",
         },
     }
 

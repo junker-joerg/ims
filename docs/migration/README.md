@@ -244,4 +244,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_candidate_effect_probe_start.md`:
   PR131-kontrollierter Workbench-Start mit atomarer Idempotenzreservierung,
   unveraenderlichem Einperiodenergebnis und read-only Versuchsverlauf
+- `ims_2x_strategy_execution_candidate_effect_probe_browser_acceptance.md`:
+  PR132-Browserabnahme des vollstaendigen Einperiodenpfads auf breitem und
+  schmalem Viewport mit Fehlerpfaden und datierten Handbuch-Screenshots
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -30,7 +30,8 @@ def test_pr131_plan_documents_controlled_start_and_persistence_boundaries() -> N
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in text
     assert "`incomming/` bleibt unversioniert" in text
     assert "PR132" in text
-    assert "ein kleiner PR" in text
+    assert "Nach PR132 ist die Einperioden-Wirkungsprobe" in text
+    assert "PR133" in text
 
 
 def test_pr131_mapping_names_api_ui_storage_and_limits() -> None:

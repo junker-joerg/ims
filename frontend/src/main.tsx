@@ -4676,6 +4676,7 @@ function App() {
               type="button"
               role="tab"
               aria-selected={strategyWorkbenchView === "candidates"}
+              data-testid="strategy-candidate-tab"
               onClick={() => setStrategyWorkbenchView("candidates")}
             >
               <Archive size={17} aria-hidden="true" />
@@ -4838,6 +4839,7 @@ function App() {
                         className={candidate.candidate_id === selectedStrategyCandidateId ? "active" : ""}
                         type="button"
                         aria-pressed={candidate.candidate_id === selectedStrategyCandidateId}
+                        data-testid="strategy-candidate-select"
                         key={candidate.candidate_id}
                         onClick={() => setSelectedStrategyCandidateId(candidate.candidate_id)}
                       >
@@ -4981,6 +4983,7 @@ function App() {
                               <span>Freigabe durch</span>
                               <input
                                 type="text"
+                                data-testid="strategy-candidate-release-actor"
                                 value={strategyCandidateProbeActor}
                                 onChange={(event) => setStrategyCandidateProbeActor(event.target.value)}
                                 disabled={strategyCandidateProbeStartState === "loading"}
@@ -4990,6 +4993,7 @@ function App() {
                               <span>Grund</span>
                               <input
                                 type="text"
+                                data-testid="strategy-candidate-release-reason"
                                 value={strategyCandidateProbeReason}
                                 onChange={(event) => setStrategyCandidateProbeReason(event.target.value)}
                                 disabled={strategyCandidateProbeStartState === "loading"}
@@ -4998,6 +5002,7 @@ function App() {
                             <label className="strategy-candidate-probe-confirmation">
                               <input
                                 type="checkbox"
+                                data-testid="strategy-candidate-release-confirmation"
                                 checked={strategyCandidateProbeConfirmed}
                                 onChange={(event) => setStrategyCandidateProbeConfirmed(event.target.checked)}
                                 disabled={strategyCandidateProbeStartState === "loading"}
@@ -5007,6 +5012,7 @@ function App() {
                             <button
                               className="primary-action"
                               type="button"
+                              data-testid="strategy-candidate-effect-probe-start"
                               disabled={!canStartStrategyCandidateProbe}
                               onClick={startStrategyCandidateProbe}
                             >
@@ -5019,7 +5025,7 @@ function App() {
                         )}
 
                         {strategyCandidateProbeStartError ? (
-                          <div className="strategy-candidate-probe-message error" role="alert">
+                          <div className="strategy-candidate-probe-message error" role="alert" data-testid="strategy-candidate-effect-probe-error">
                             <CircleAlert size={17} aria-hidden="true" />
                             <span>{strategyCandidateProbeStartError}</span>
                           </div>
@@ -5041,7 +5047,7 @@ function App() {
                             <span>{strategyCandidateProbeEvidenceError}</span>
                           </div>
                         ) : strategyCandidateProbeEffect && strategyCandidateProbeResult?.record ? (
-                          <div className="strategy-candidate-probe-result" aria-label="Gespeichertes Einperiodenergebnis">
+                          <div className="strategy-candidate-probe-result" aria-label="Gespeichertes Einperiodenergebnis" data-testid="strategy-candidate-effect-probe-result">
                             <div className="strategy-candidate-probe-result-grid">
                               <div><span>Periode</span><strong>{strategyCandidateProbeEffect.period}</strong></div>
                               <div><span>Zustand</span><strong>{strategyCandidateProbeEffect.state_changed ? "veraendert" : "unveraendert"}</strong></div>
@@ -5074,7 +5080,7 @@ function App() {
                           </div>
                         )}
 
-                        <div className="strategy-candidate-probe-history" aria-label="Versuchsverlauf">
+                        <div className="strategy-candidate-probe-history" aria-label="Versuchsverlauf" data-testid="strategy-candidate-effect-probe-history">
                           <div className="strategy-candidate-probe-history-heading">
                             <strong>Versuchsverlauf</strong>
                             <span>{strategyCandidateProbeHistory?.attempt_count ?? 0} Eintraege</span>
@@ -5101,7 +5107,7 @@ function App() {
                           )}
                         </div>
 
-                        <div className="strategy-candidate-lock-note">
+                        <div className="strategy-candidate-lock-note" data-testid="strategy-candidate-effect-probe-boundary">
                           <LockKeyhole size={18} aria-hidden="true" />
                           <div>
                             <strong>Mehrperiodenlauf bleibt gesperrt</strong>

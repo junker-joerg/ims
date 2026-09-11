@@ -12,7 +12,7 @@ def _read(filename: str) -> str:
 def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     index = _read("README.md")
 
-    assert "Handbuchstand: HB3b" in index
+    assert "Handbuchstand: HB3c" in index
     assert "[Testpaket in zwei Seiten installieren]" in index
     assert "[Testpaket in zehn Seiten bedienen]" in index
     assert "[Windows-Kurzstart](quickstart_windows.md)" in index
@@ -25,6 +25,8 @@ def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     assert "`Szenarien`" in index
     assert "`Validierung`" in index
     assert "`Runs`" in index
+    assert "`Strategien`" in index
+    assert "verified_browser_pr132" in index
     assert "verified_windows_hb3" in index
     assert "not_verified" in index
     assert "feasibility_open" in index
@@ -45,6 +47,9 @@ def test_operation_follows_visible_controlled_ui_path() -> None:
         "Adapter starten",
         "Run-Control-Ergebnisanzeige",
         "Ergebnis neu laden",
+        "Wirkungsprobe starten",
+        "Einperioden-Wirkungsprobe",
+        "Versuchsverlauf",
     ):
         assert label in operation
     assert "Preflight -> explizite Freigabe -> Ausfuehren" in normalized
@@ -96,9 +101,9 @@ def test_handbook_plan_records_hb3_and_remaining_slices() -> None:
     )
     normalized = " ".join(plan.split())
 
-    assert "Umsetzungsstand: HB3b" in plan
+    assert "Umsetzungsstand: HB3c" in plan
     assert "HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad (umgesetzt)" in plan
     assert "HB3: Windows-Installationshandbuch (umgesetzt)" in plan
-    assert "Nach HB3b bleiben **3 Handbuch-Schnitte**" in normalized
+    assert "Nach HB3c bleiben **3 Handbuch-Schnitte**" in normalized
     assert "HB4 bis HB6" in plan
     assert "580-1.320 LoC" in plan
