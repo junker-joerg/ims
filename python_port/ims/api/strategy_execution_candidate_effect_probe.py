@@ -142,7 +142,7 @@ class StrategyExecutionCandidateEffectProbeResult:
             "automatic_historical_rule_selection_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR139",
+            "next_gate": "PR140",
         }
 
 
@@ -345,7 +345,7 @@ def strategy_execution_candidate_effect_probe_contract_payload() -> dict[str, ob
             "changed_policyholder_ids",
             "in_memory_export",
         ],
-        "next_gate": "PR139",
+        "next_gate": "PR140",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }
@@ -399,7 +399,7 @@ def strategy_execution_candidate_effect_probe_error_payload(
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR139",
+        "next_gate": "PR140",
     }
 
 
@@ -420,6 +420,14 @@ def _candidate_scenario_mapping(candidate: dict[str, object]) -> dict[str, objec
                 values,
             )
     return mapping
+
+
+def build_strategy_execution_candidate_scenario_mapping(
+    candidate: dict[str, object],
+) -> dict[str, object]:
+    """Stellt den bereits verwendeten Loader-Eingang fuer isolierte Proben bereit."""
+
+    return _candidate_scenario_mapping(candidate)
 
 
 def _collection_for_loader(
@@ -462,6 +470,14 @@ def _state_projection(loaded: LoadedScenario) -> dict[str, object]:
             )
         ],
     }
+
+
+def project_strategy_execution_state(
+    loaded: LoadedScenario,
+) -> dict[str, object]:
+    """Projiziert den fuer Wirkungsproben sichtbaren VU-/VN-Zustand."""
+
+    return _state_projection(loaded)
 
 
 def _insurer_projection(insurer: Insurer) -> dict[str, object]:
@@ -579,6 +595,21 @@ def _effect_payload(
             "written_file_count": 0,
         },
     }
+
+
+def build_strategy_execution_period_effect(
+    result: ExplicitPeriodRunResult,
+    *,
+    state_before: dict[str, object],
+    state_after: dict[str, object],
+) -> dict[str, object]:
+    """Baut dieselbe Periodenwirkung fuer Ein- und Zwei-Perioden-Proben."""
+
+    return _effect_payload(
+        result,
+        state_before=state_before,
+        state_after=state_after,
+    )
 
 
 def _changed_ids(

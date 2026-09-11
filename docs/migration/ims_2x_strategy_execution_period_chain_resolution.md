@@ -69,6 +69,6 @@ historischen RNG-Laufs noch eine historische Vollgleichheit.
 PR136 bildet aus einem vollstaendig erfolgreichen PR135-Ergebnis inzwischen
 eine kanonische fluechtige Periodenkette und ihren Gesamtdigest. PR137
 speichert sie inzwischen unveraenderlich und idempotent. PR138 prueft die
-gespeicherte Freigabeidentitaet inzwischen read-only. PR139 erprobt als
-Naechstes genau zwei Perioden fluechtig; dauerhafter Start und groessere
-Horizonte bleiben weiterhin getrennte spaetere Freigaben.
+gespeicherte Freigabeidentitaet inzwischen read-only. PR139 erprobt nun
+genau zwei Perioden fluechtig. PR140 soll den dauerhaften Start kontrollieren;
+groessere Horizonte bleiben weiterhin getrennte spaetere Freigaben.

@@ -115,8 +115,10 @@ serverseitige Idempotenzgrenze bleibt auch bei direktem API-Aufruf wirksam.
   weiterhin ohne Carryover oder Runner.
 - **PR138 (umgesetzt):** gespeicherte Ketten-ID und Volldigest read-only
   erneut pruefen.
-- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
-  Wirkungsprobe; Ergebnisablage bleibt gesperrt.
+- **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Wirkungsprobe;
+  Ergebnisablage bleibt gesperrt.
+- **PR140 (naechster Schritt):** kontrollierter Workbench-Start fuer diese
+  Zwei-Perioden-Probe.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Mehrperiodenlauf, Carryover und Regulierungssimulation bleiben
@@ -128,4 +130,5 @@ PR134 validiert den versionierten Ketteneingang. PR135 loest die
 Kandidatenreferenzen auf. PR136 bildet inzwischen die kanonische fluechtige
 Kette. PR137 speichert sie inzwischen unveraenderlich und schaltet noch keinen
 Mehrperiodenstart frei. PR138 fuegt inzwischen den read-only Freigabecheck
-hinzu. PR139 erprobt als Naechstes genau zwei Perioden fluechtig.
+hinzu. PR139 erprobt inzwischen genau zwei Perioden fluechtig; PR140 soll
+dafuer den kontrollierten Workbench-Start ergaenzen.

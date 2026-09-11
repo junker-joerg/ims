@@ -148,3 +148,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   kontrollierte Aufloesung einer gespeicherten Kette ueber ID, erneut
   geprueften SHA-256-Volldigest und geschlossene Ausfuehrungsgrenzen;
   weiterhin ohne Queue, Start, Carryover oder Runner.
+- [PR139 Zwei-Perioden-Wirkungsprobe](../migration/ims_2x_strategy_execution_period_chain_effect_probe.md):
+  genau zwei erneut gepruefte Kandidaten auf isolierten Kopien ausfuehren
+  und den einzigen Uebergang nach seinen gespeicherten VU-/VN-Flags
+  anwenden; weiterhin ohne Ergebnisablage oder Simulation.

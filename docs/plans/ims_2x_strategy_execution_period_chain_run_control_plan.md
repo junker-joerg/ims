@@ -85,10 +85,11 @@ Ein unbekannter Datensatz ergibt `404`, ein Digest- oder Integritaetskonflikt
 
 - **PR138 (umgesetzt):** read-only Freigabecheck fuer gespeicherte
   Ketten-ID und Volldigest.
-- **PR139 (naechster Schritt):** isolierte, fluechtige Zwei-Perioden-
-  Wirkungsprobe aus einer erneut freigegebenen Kette; exakte Carryover-Flags,
-  atomarer Fehlerstopp und keine Ergebnisablage.
-- **PR140:** kontrollierter Workbench-Start fuer die Zwei-Perioden-Probe mit
+- **PR139 (umgesetzt):** isolierte, fluechtige Zwei-Perioden-Wirkungsprobe
+  aus einer erneut freigegebenen Kette; exakte Carryover-Flags, atomarer
+  Fehlerstopp und keine Ergebnisablage.
+- **PR140 (naechster Schritt):** kontrollierter Workbench-Start fuer die
+  Zwei-Perioden-Probe mit
   dauerhafter Idempotenz und unveraenderlichem Ergebnisverlauf.
 - **PR141+:** Browserabnahme und danach schrittweise Horizonte bis 100
   Perioden, ohne daraus fachliche Produktionsreife abzuleiten.

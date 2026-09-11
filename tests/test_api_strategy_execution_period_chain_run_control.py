@@ -132,7 +132,7 @@ def test_run_control_period_chain_release_check_rejects_bad_requests(
 
     assert invalid_json.status_code == 400
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
-    assert invalid_json.json()["next_gate"] == "PR139"
+    assert invalid_json.json()["next_gate"] == "PR140"
     assert rejected.status_code == 400
     assert rejected.json()["issues"][0]["code"] == "run_control_release_required"
     assert rejected.json()["writes_performed"] is False
@@ -187,7 +187,7 @@ def test_starlette_fallback_exposes_same_read_only_release_check(
     )
 
     assert contract.status_code == 200
-    assert contract.json()["next_gate"] == "PR139"
+    assert contract.json()["next_gate"] == "PR140"
     assert checked.status_code == 200
     assert checked.json()["release_ready"] is True
     assert checked.json()["writes_performed"] is False

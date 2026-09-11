@@ -37,8 +37,9 @@ Herkunftsgrenze.
 - die in PR134 ergaenzten Validierungsendpunkte;
 - aktivierte PR134-Validierung, PR135-Kandidatenaufloesung sowie
   PR136-Kettenbau und -Digest;
-- aktivierte PR137-Kettenablage und PR138-Freigabepruefung;
-- `next_gate = PR139`.
+- aktivierte PR137-Kettenablage, PR138-Freigabepruefung und fluechtige
+  PR139-Zwei-Perioden-Wirkungsprobe;
+- `next_gate = PR140`.
 
 Der read-only Hauptvertrag liegt unter
 `GET /api/strategies/execution-period-chain-contract`. Fuer PR138 verweist er
@@ -76,5 +77,6 @@ prueft ihre gespeicherten Digests erneut und gleicht Kandidatenkontexte sowie
 Akteursidentitaeten atomar ab. PR136 bildet daraus inzwischen eine kanonische
 fluechtige Kette und ihren Gesamtdigest. PR137 speichert sie inzwischen
 unveraenderlich. PR138 prueft inzwischen die gespeicherte Freigabeidentitaet
-read-only. PR139 erprobt als Naechstes genau zwei Perioden fluechtig;
-dauerhafter Start und groessere Horizonte bleiben gesperrt.
+read-only. PR139 erprobt inzwischen genau zwei Perioden fluechtig. PR140
+soll den dauerhaften Start kontrollieren; groessere Horizonte bleiben
+gesperrt.

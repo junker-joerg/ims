@@ -104,9 +104,9 @@ noch Runner auf.
 - **PR137 (umgesetzt):** unveraenderliche idempotente Ablage.
 - **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139 (naechster Schritt):** kleine fluechtige Zwei-Perioden-
-  Wirkungsprobe und spaeter den
-  kontrollierten Ausbau bis 100 Perioden jeweils getrennt freigeben.
+- **PR139 (umgesetzt):** kleine fluechtige Zwei-Perioden-Wirkungsprobe.
+- **PR140 (naechster Schritt):** kontrollierter dauerhafter Start; den Ausbau
+  bis 100 Perioden spaeter jeweils getrennt freigeben.
 
 ## Schutzgrenzen
 

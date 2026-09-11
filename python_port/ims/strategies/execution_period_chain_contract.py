@@ -157,6 +157,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "period_chain_digest_enabled": True,
         "period_chain_persistence_enabled": True,
         "period_chain_run_control_release_check_enabled": True,
+        "period_chain_two_period_effect_probe_enabled": True,
         "period_chain_runner_enabled": False,
         "carryover_execution_enabled": False,
         "multi_period_execution_enabled": False,
@@ -206,6 +207,12 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         ),
         "run_control_release_check_endpoint": (
             "/api/run-control/strategy-period-chain-release-check"
+        ),
+        "effect_probe_contract_endpoint": (
+            "/api/run-control/strategy-period-chain-effect-probe-contract"
+        ),
+        "effect_probe_endpoint": (
+            "/api/run-control/strategy-period-chain-effect-probe"
         ),
         "historical_horizon": {
             "source": "IMSDATA.C:14",
@@ -294,7 +301,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "digest_mismatch_allowed": False,
             "missing_actor_allowed": False,
         },
-        "next_gate": "PR139",
+        "next_gate": "PR140",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

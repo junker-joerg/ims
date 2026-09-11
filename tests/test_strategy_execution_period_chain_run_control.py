@@ -83,7 +83,7 @@ def test_contract_opens_only_period_chain_release_check() -> None:
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR139"
+    assert payload["next_gate"] == "PR140"
 
 
 def test_parser_accepts_exact_identity_and_audit_fields() -> None:

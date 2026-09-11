@@ -81,8 +81,10 @@ Der Browserpfad lautet:
   Carryover und Runner bleiben gesperrt.
 - **PR138 (umgesetzt):** gespeicherte Ketten-ID und Volldigest an einer
   read-only Freigabegrenze erneut pruefen.
-- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
-  Wirkungsprobe; Ergebnisablage bleibt gesperrt.
+- **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Wirkungsprobe;
+  Ergebnisablage bleibt gesperrt.
+- **PR140 (naechster Schritt):** kontrollierter Workbench-Start fuer diese
+  Zwei-Perioden-Probe.
 
 Die Einperioden-Wirkungsprobe ist nach PR132 kontrolliert bedienbar und
 dokumentiert. Ein nutzbarer 100-Periodenlauf, Ergebnisbloecke, XLSX-Export und

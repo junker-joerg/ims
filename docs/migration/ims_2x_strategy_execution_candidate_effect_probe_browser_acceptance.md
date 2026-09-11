@@ -71,4 +71,5 @@ Kandidatenreferenzen serverseitig auf. PR136 bildet inzwischen die kanonische
 fluechtige Kette samt Gesamtdigest. PR137 speichert sie inzwischen
 unveraenderlich und schaltet weiterhin keinen Mehrperiodenstart frei. PR138
 prueft inzwischen die gespeicherte Freigabeidentitaet read-only. PR139
-erprobt als Naechstes genau zwei Perioden fluechtig.
+erprobt nun genau zwei Perioden fluechtig; PR140 soll dafuer den
+kontrollierten Workbench-Start ergaenzen.

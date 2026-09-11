@@ -84,6 +84,14 @@ from ims.api.strategy_execution_period_chain_run_control import (
     strategy_execution_period_chain_run_control_contract_payload,
     strategy_execution_period_chain_run_control_error_payload,
 )
+from ims.api.strategy_execution_period_chain_effect_probe import (
+    StrategyExecutionPeriodChainEffectProbeError,
+    StrategyExecutionPeriodChainEffectProbeRunner,
+    parse_strategy_execution_period_chain_effect_probe_request,
+    run_strategy_execution_period_chain_effect_probe,
+    strategy_execution_period_chain_effect_probe_contract_payload,
+    strategy_execution_period_chain_effect_probe_error_payload,
+)
 from ims.api.strategy_execution_candidate_effect_probe import (
     StrategyExecutionCandidateEffectProbeError,
     StrategyExecutionCandidateEffectProbeRunner,
@@ -571,7 +579,7 @@ def _strategy_execution_period_chain_validation_invalid_json_payload() -> dict[
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR139",
+        "next_gate": "PR140",
     }
 
 
@@ -888,6 +896,9 @@ def create_app(
     adapter_runner: AdapterRunner | None = None,
     candidate_effect_probe_runner: (
         StrategyExecutionCandidateEffectProbeRunner | None
+    ) = None,
+    period_chain_effect_probe_runner: (
+        StrategyExecutionPeriodChainEffectProbeRunner | None
     ) = None,
 ) -> Any:
     dist_dir = frontend_dist or _frontend_dist_dir()
@@ -1520,6 +1531,72 @@ def create_app(
             issue["code"]
             in {"period_chain_not_found", "period_chain_store_missing"}
             for issue in result.issues
+        ):
+            status_code = 404
+        else:
+            status_code = 409
+        return JSONResponse(result.to_dict(), status_code=status_code)
+
+    async def strategy_execution_period_chain_effect_probe_response(
+        request: Request,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_period_chain_effect_probe_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Zwei-Perioden-Wirkungsprobe erfordert eine explizite "
+                    "SQLite-Metadatenquelle",
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                strategy_execution_period_chain_effect_probe_error_payload(
+                    "invalid_json",
+                    "Zwei-Perioden-Wirkungsprobe ist kein gueltiges JSON",
+                ),
+                status_code=400,
+            )
+        try:
+            parsed = parse_strategy_execution_period_chain_effect_probe_request(
+                payload
+            )
+        except StrategyExecutionPeriodChainEffectProbeError as exc:
+            return JSONResponse(
+                strategy_execution_period_chain_effect_probe_error_payload(
+                    exc.code,
+                    str(exc),
+                ),
+                status_code=400,
+            )
+        try:
+            result = run_strategy_execution_period_chain_effect_probe(
+                parsed,
+                db_path=Path(str(metadata_source["path"])),
+                runner=period_chain_effect_probe_runner,
+            )
+        except StrategyExecutionPeriodChainEffectProbeError as exc:
+            return JSONResponse(
+                strategy_execution_period_chain_effect_probe_error_payload(
+                    exc.code,
+                    str(exc),
+                    runner_invocation_count=exc.runner_invocation_count,
+                    carryover_invocation_count=exc.carryover_invocation_count,
+                    candidate_reverified_count=exc.candidate_reverified_count,
+                    release_check=exc.release_check,
+                ),
+                status_code=409,
+            )
+        if result.execution_performed:
+            status_code = 200
+        elif any(
+            issue["code"]
+            in {"period_chain_not_found", "period_chain_store_missing"}
+            for issue in result.release_check.issues
         ):
             status_code = 404
         else:
@@ -2245,6 +2322,14 @@ def create_app(
         def run_control_strategy_period_chain_contract() -> dict[str, object]:
             return strategy_execution_period_chain_run_control_contract_payload()
 
+        @app.get(
+            "/api/run-control/strategy-period-chain-effect-probe-contract"
+        )
+        def run_control_strategy_period_chain_effect_probe_contract() -> dict[
+            str, object
+        ]:
+            return strategy_execution_period_chain_effect_probe_contract_payload()
+
         @app.get("/api/run-control/strategy-candidate-effect-probe-contract")
         def run_control_strategy_candidate_effect_probe_contract() -> dict[
             str, object
@@ -2318,6 +2403,17 @@ def create_app(
             request: Request,
         ) -> JSONResponse:
             return await strategy_execution_period_chain_run_control_response(
+                request
+            )
+
+        @app.post(
+            "/api/run-control/strategy-period-chain-effect-probe",
+            response_model=None,
+        )
+        async def run_control_strategy_period_chain_effect_probe(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_period_chain_effect_probe_response(
                 request
             )
 
@@ -2614,6 +2710,12 @@ def create_app(
             ),
         ),
         Route(
+            "/api/run-control/strategy-period-chain-effect-probe-contract",
+            lambda request: JSONResponse(
+                strategy_execution_period_chain_effect_probe_contract_payload()
+            ),
+        ),
+        Route(
             "/api/run-control/strategy-candidate-effect-probe-contract",
             lambda request: JSONResponse(
                 strategy_execution_candidate_effect_probe_contract_payload()
@@ -2655,6 +2757,11 @@ def create_app(
         Route(
             "/api/run-control/strategy-period-chain-release-check",
             strategy_execution_period_chain_run_control_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/strategy-period-chain-effect-probe",
+            strategy_execution_period_chain_effect_probe_response,
             methods=["POST"],
         ),
         Route(

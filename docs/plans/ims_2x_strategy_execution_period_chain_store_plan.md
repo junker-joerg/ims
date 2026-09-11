@@ -77,9 +77,10 @@ oder Ausgabepfade werden nicht akzeptiert.
 - **PR138 (umgesetzt):** kontrollierter read-only Freigabecheck fuer
   gespeicherte Ketten-ID und erneut geprueften Volldigest; weiterhin ohne
   Carryover oder Runner.
-- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
-  Wirkungsprobe, atomarer Fehlerstopp und
-  danach kontrollierter Ausbau bis 100 Perioden in getrennten PRs.
+- **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Wirkungsprobe
+  mit atomarem Fehlerstopp.
+- **PR140 (naechster Schritt):** kontrollierter dauerhafter Start; danach
+  Ausbau bis 100 Perioden in getrennten PRs.
 
 ## Schutzgrenzen
 

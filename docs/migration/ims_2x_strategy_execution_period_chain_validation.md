@@ -66,5 +66,6 @@ gespeicherten Digests erneut und stellt die Kontextgleichheit der gesamten
 Kette atomar fest. PR136 bildet daraus inzwischen eine kanonische fluechtige
 Kette und ihren Gesamtdigest. PR137 speichert sie inzwischen unveraenderlich
 und idempotent. PR138 prueft inzwischen die gespeicherte Freigabeidentitaet
-read-only. PR139 erprobt als Naechstes genau zwei Perioden fluechtig;
-dauerhafter Start und groessere Horizonte bleiben gesperrt.
+read-only. PR139 erprobt inzwischen genau zwei Perioden fluechtig. PR140
+soll den dauerhaften Start kontrollieren; groessere Horizonte bleiben
+gesperrt.

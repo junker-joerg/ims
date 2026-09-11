@@ -80,9 +80,10 @@ Fehlerbericht ohne Teilannahme.
 - **PR137 (umgesetzt):** unveraenderliche idempotente Ablage.
 - **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-Probe
-  und den
-  kontrollierten Ausbau bis 100 Perioden in getrennten PRs freigeben.
+- **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Probe mit
+  atomarem Fehlerstopp.
+- **PR140 (naechster Schritt):** kontrollierten dauerhaften Start anbinden;
+  den Ausbau bis 100 Perioden danach in getrennten PRs freigeben.
 
 ## Schutzgrenzen
 

@@ -167,7 +167,7 @@ class StrategyExecutionPeriodChainStoreResult:
             "simulation_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR139",
+            "next_gate": "PR140",
         }
 
 
@@ -476,7 +476,7 @@ def strategy_execution_period_chain_store_contract_payload() -> dict[str, object
         ],
         "partial_storage_allowed": False,
         "boundary_flags": boundary_flags,
-        "next_gate": "PR139",
+        "next_gate": "PR140",
         **boundary_flags,
     }
 
@@ -508,7 +508,7 @@ def strategy_execution_period_chain_store_error_payload(
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR139",
+        "next_gate": "PR140",
     }
 
 

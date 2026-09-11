@@ -320,3 +320,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   fuer die read-only Aufloesung einer gespeicherten Kette ueber ID und
   erneut geprueften SHA-256-Volldigest; Start, Carryover und Runner bleiben
   gesperrt.
+- `ims_2x_strategy_execution_period_chain_effect_probe_plan.md`: PR139-Plan
+  fuer genau zwei fluechtige Perioden auf isolierten Kandidatenkopien mit
+  autoritativen Carryover-Flags und atomarem Fehlerstopp.

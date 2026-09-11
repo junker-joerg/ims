@@ -337,7 +337,7 @@ def test_build_contract_opens_only_ephemeral_chain_and_digest() -> None:
     assert payload["runner_enabled"] is False
     assert payload["writes_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR139"
+    assert payload["next_gate"] == "PR140"
 
 
 def test_build_api_uses_configured_store_and_enforces_methods(
@@ -401,4 +401,4 @@ def test_build_api_rejects_unconfigured_store_and_invalid_json(
     assert invalid_json.status_code == 400
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
     assert invalid_json.json()["period_chain"] is None
-    assert invalid_json.json()["next_gate"] == "PR139"
+    assert invalid_json.json()["next_gate"] == "PR140"

@@ -88,7 +88,8 @@ oder Vollgleichheitsbehauptung. `incomming/` bleibt unversioniert.
 
 ## Naechster Schritt
 
-PR139 soll aus einer erneut freigegebenen Kette genau zwei Perioden auf
-isolierten Kandidatenkopien fluechtig ausfuehren. Kandidatenaufloesung,
-Carryover-Flags und atomarer Fehlerstopp werden dort vor dem ersten
-Runneraufruf separat abgesichert; eine Ergebnisablage bleibt noch gesperrt.
+PR139 fuehrt inzwischen aus einer erneut freigegebenen Kette genau zwei
+Perioden auf isolierten Kandidatenkopien fluechtig aus. Kandidatenaufloesung,
+Carryover-Flags und atomarer Fehlerstopp sind vor dem ersten Runneraufruf
+abgesichert. PR140 soll dafuer einen kontrollierten dauerhaften Start
+ergaenzen.

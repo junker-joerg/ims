@@ -87,6 +87,6 @@ unversioniert.
 ## Naechster Schritt
 
 PR138 loest eine gespeicherte Ketten-ID und den erwarteten Volldigest
-inzwischen an einer read-only Freigabegrenze erneut auf. PR139 soll genau
-zwei Perioden auf isolierten Kopien fluechtig erproben. Dauerhafter Start und
-groessere Horizonte bleiben gesperrt.
+inzwischen an einer read-only Freigabegrenze erneut auf. PR139 erprobt nun
+genau zwei Perioden auf isolierten Kopien fluechtig. PR140 soll den
+dauerhaften Start kontrollieren; groessere Horizonte bleiben gesperrt.

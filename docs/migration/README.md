@@ -268,4 +268,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   Freigabecheck fuer gespeicherte Ketten-ID, erneut geprueften Volldigest,
   Horizont und geschlossene Ausfuehrungsgrenzen; weiterhin ohne Queue,
   Carryover oder Runner
+- `ims_2x_strategy_execution_period_chain_effect_probe.md`: PR139-isolierte,
+  fluechtige Wirkungsprobe fuer genau zwei erneut gepruefte Kandidaten und
+  den expliziten VU-/VN-Carryover; ohne Ergebnisablage oder Simulation
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

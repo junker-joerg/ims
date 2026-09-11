@@ -79,9 +79,10 @@ Konfiguration. Freie Datenbank-, Fixture- oder Ausgabepfade bleiben verboten.
   Carryover oder Runner.
 - **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
-  Wirkungsprobe, atomarer Fehlerstopp und
-  danach kontrollierter Ausbau bis zum 100-Perioden-Lauf in getrennten PRs.
+- **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Wirkungsprobe
+  mit atomarem Fehlerstopp.
+- **PR140 (naechster Schritt):** kontrollierter dauerhafter Start; danach
+  Ausbau bis zum 100-Perioden-Lauf in getrennten PRs.
 
 ## Schutzgrenzen
 

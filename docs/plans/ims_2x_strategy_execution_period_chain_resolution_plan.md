@@ -79,9 +79,10 @@ konfigurierte Workbench-SQLite-Datei bleibt der Endpunkt gesperrt.
 - **PR137 (umgesetzt):** unveraenderliche idempotente Kettenablage.
 - **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
-- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-Probe,
-  Fehlerstopp und spaeter den kontrollierten Ausbau bis 100 Perioden in
-  getrennten PRs freigeben.
+- **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Probe mit
+  atomarem Fehlerstopp.
+- **PR140 (naechster Schritt):** kontrollierter dauerhafter Start; spaeter
+  Ausbau bis 100 Perioden in getrennten PRs.
 
 ## Schutzgrenzen
 

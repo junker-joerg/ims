@@ -95,6 +95,7 @@ historischer Vollgleichheit.
 PR137 legt die kanonische Kette inzwischen nur nach ausdruecklicher Freigabe
 unveraenderlich und idempotent ab und prueft ihren Digest vor und nach der
 Speicherung. PR138 prueft die gespeicherte Identitaet inzwischen an einer
-read-only Freigabegrenze erneut. PR139 soll genau zwei Perioden auf
-isolierten Kopien fluechtig erproben. Dauerhafter Start und Ausbau des
-Horizonts bleiben weiteren getrennten PRs vorbehalten.
+read-only Freigabegrenze erneut. PR139 erprobt inzwischen genau zwei
+Perioden auf isolierten Kopien fluechtig. PR140 soll den dauerhaften Start
+kontrollieren; der Ausbau des Horizonts bleibt weiteren getrennten PRs
+vorbehalten.

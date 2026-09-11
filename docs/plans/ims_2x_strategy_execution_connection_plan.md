@@ -189,8 +189,10 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
   und idempotent speichern; noch kein Carryover und kein Runner.
 - **PR138 (umgesetzt):** gespeicherte Ketten-ID und Volldigest read-only
   erneut pruefen; Start weiterhin gesperrt.
-- **PR139 (naechster Schritt):** isolierte fluechtige Zwei-Perioden-
-  Wirkungsprobe mit atomarem Fehlerstopp.
+- **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Wirkungsprobe
+  mit atomarem Fehlerstopp.
+- **PR140 (naechster Schritt):** kontrollierter Workbench-Start mit
+  dauerhafter Idempotenz und Ergebnisablage.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Das ist weder die Zusage einer
@@ -227,4 +229,5 @@ Kandidatenreferenzen serverseitig auf. PR136 bildet daraus inzwischen die
 kanonische fluechtige Kette samt Gesamtdigest. PR137 legt sie inzwischen
 unveraenderlich ab, ohne bereits einen Mehrperiodenstart freizuschalten.
 PR138 prueft inzwischen die gespeicherte Freigabeidentitaet read-only. PR139
-fuehrt als Naechstes genau zwei Perioden auf isolierten Kopien fluechtig aus.
+fuehrt nun genau zwei Perioden auf isolierten Kopien fluechtig aus. PR140
+soll den kontrollierten dauerhaften Workbench-Start ergaenzen.
