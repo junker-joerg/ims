@@ -242,8 +242,8 @@ Installer, Signierung, App-Store-Verteilung, ein automatischer Updater oder
 groessere Plattformanpassungen.
 
 HB3, HB3a, HB3b und HB3c sind als getrennte reviewbare Schnitte umgesetzt.
-HB4 bleibt der naechste Handbuchschnitt; PR133 plant davon getrennt den
-Periodenketten- und Carryover-Vertrag. Plattformzusagen aus HB4/HB5 duerfen
+HB4 bleibt der naechste Handbuchschnitt; PR134 validiert davon getrennt den
+Periodenketten-Eingang. Plattformzusagen aus HB4/HB5 duerfen
 keine fachliche Produktionsreife vorwegnehmen.
 
 ## Abnahme HB1

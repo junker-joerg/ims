@@ -154,6 +154,15 @@ from ims.strategies.execution_candidate_build import (
     strategy_execution_candidate_id_from_digest,
     strategy_execution_scenario_profile_root,
 )
+from ims.strategies.execution_period_chain_contract import (
+    STRATEGY_EXECUTION_CARRYOVER_DEFINITIONS,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_CONTRACT_VERSION,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_SECTIONS,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION,
+    StrategyExecutionCarryoverDefinition,
+    StrategyExecutionPeriodChainSectionDefinition,
+    strategy_execution_period_chain_contract_payload,
+)
 
 from ims.strategies.catalog import (
     STRATEGY_CATALOG_VERSION,
@@ -195,6 +204,10 @@ __all__ = [
     "STRATEGY_EXECUTION_CANDIDATE_SECTIONS",
     "STRATEGY_EXECUTION_CANDIDATE_VALIDATION_VERSION",
     "STRATEGY_EXECUTION_CANDIDATE_VERSION",
+    "STRATEGY_EXECUTION_CARRYOVER_DEFINITIONS",
+    "STRATEGY_EXECUTION_PERIOD_CHAIN_CONTRACT_VERSION",
+    "STRATEGY_EXECUTION_PERIOD_CHAIN_SECTIONS",
+    "STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION",
     "STRATEGY_EXECUTION_SCENARIO_PROFILE_REFERENCE_VERSION",
     "STRATEGY_EXECUTION_SCENARIO_PROFILE_SCOPE",
     "STRATEGY_EXECUTION_SCENARIO_PROFILE_SOURCE_POLICY_ID",
@@ -240,6 +253,8 @@ __all__ = [
     "StrategyExecutionCandidateSectionDefinition",
     "StrategyExecutionCandidateValidationIssue",
     "StrategyExecutionCandidateValidationReport",
+    "StrategyExecutionCarryoverDefinition",
+    "StrategyExecutionPeriodChainSectionDefinition",
     "StrategyExecutionScenarioProfileDefinition",
     "StrategyFamilyDefinition",
     "StrategyImplementationStatus",
@@ -297,6 +312,7 @@ __all__ = [
     "strategy_execution_candidate_id_from_digest",
     "strategy_execution_scenario_profile_root",
     "strategy_execution_candidate_validation_contract_payload",
+    "strategy_execution_period_chain_contract_payload",
     "strategy_snapshot_translation_issues",
     "strategy_snapshot_context_contract_issues",
     "strategy_snapshot_materialization_contract_issues",

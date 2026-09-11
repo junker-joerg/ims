@@ -65,7 +65,6 @@ Die Browserabnahme belegt einen kontrolliert bedienbaren technischen und
 fachlichen Einperiodenpfad. Sie belegt keinen 100-Periodenlauf, keine
 Regulierungssimulation und keine Reproduktion eines historischen RNG-Laufs.
 
-PR133 legt als naechstes den versionierten Periodenketten- und
-Carryover-Vertrag fest. Dieser Folgeschritt soll zuerst Eingaben,
-Vorperiodenherkunft und Stopgrenzen definieren und noch keinen neuen
-Mehrperiodenstart freischalten.
+PR133 hat den versionierten Periodenketten- und Carryover-Vertrag festgelegt.
+PR134 soll als naechstes den vollstaendigen Ketteneingang zustandslos pruefen;
+auch dieser Schritt schaltet noch keinen Mehrperiodenstart frei.

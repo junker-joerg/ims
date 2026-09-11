@@ -97,5 +97,5 @@ Der Server erzwingt dieselbe Grenze unabhaengig von der Browserdarstellung.
 
 PR132 hat den bedienbaren Pfad mit Browser-Smokes auf breitem und schmalem
 Viewport, atomaren Fehlerpfaden und datierten Handbuchbildern abgenommen.
-PR133 definiert als naechstes den Periodenketten- und Carryover-Vertrag, ohne
-bereits einen Mehrperiodenstart freizuschalten.
+PR133 hat den Periodenketten- und Carryover-Vertrag definiert. PR134 prueft
+als naechstes den Ketteneingang, ohne einen Mehrperiodenstart freizuschalten.

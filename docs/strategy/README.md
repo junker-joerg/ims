@@ -125,3 +125,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 - [PR132 Browserabnahme](../migration/ims_2x_strategy_execution_candidate_effect_probe_browser_acceptance.md):
   vollstaendiger Einperioden-Bedienpfad auf breitem und schmalem Viewport,
   atomare Fehlerpfade und datierte Handbuch-Screenshots.
+- [PR133 Periodenketten- und Carryover-Vertrag](../migration/ims_2x_strategy_execution_period_chain_contract.md):
+  versionierte read-only Grenze fuer eine lueckenlose Folge von zwei bis 100
+  lokalen Perioden, echte Vorperiodenergebnisse und explizite VU-/VN-
+  Carryover-Opt-ins; noch ohne Validierung, Kettenbau oder Ausfuehrung.

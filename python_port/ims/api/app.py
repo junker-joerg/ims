@@ -108,6 +108,7 @@ from ims.strategies import (
     strategy_catalog_payload,
     strategy_execution_candidate_contract_payload,
     strategy_execution_candidate_build_contract_payload,
+    strategy_execution_period_chain_contract_payload,
     strategy_execution_scenario_profile_root,
     strategy_execution_candidate_validation_contract_payload,
     translate_strategy_assignment_draft,
@@ -1626,6 +1627,10 @@ def create_app(
         def strategies_execution_candidate_contract() -> dict[str, object]:
             return strategy_execution_candidate_contract_payload()
 
+        @app.get("/api/strategies/execution-period-chain-contract")
+        def strategies_execution_period_chain_contract() -> dict[str, object]:
+            return strategy_execution_period_chain_contract_payload()
+
         @app.get("/api/strategies/execution-candidate-validation-contract")
         def strategies_execution_candidate_validation_contract() -> dict[str, object]:
             return strategy_execution_candidate_validation_contract_payload()
@@ -2014,6 +2019,12 @@ def create_app(
             "/api/strategies/execution-candidate-contract",
             lambda request: JSONResponse(
                 strategy_execution_candidate_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/strategies/execution-period-chain-contract",
+            lambda request: JSONResponse(
+                strategy_execution_period_chain_contract_payload()
             ),
         ),
         Route(

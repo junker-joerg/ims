@@ -247,4 +247,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_candidate_effect_probe_browser_acceptance.md`:
   PR132-Browserabnahme des vollstaendigen Einperiodenpfads auf breitem und
   schmalem Viewport mit Fehlerpfaden und datierten Handbuch-Screenshots
+- `ims_2x_strategy_execution_period_chain_contract.md`: PR133-read-only
+  Vertrag fuer 100 lokale Perioden, unveraenderliche Kandidatenreferenzen,
+  echte Vorperiodenergebnisse und die vorhandenen VU-/VN-Carryover-Bausteine;
+  noch ohne Kettenvalidierung, Speicherung oder Mehrperiodenrunner
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

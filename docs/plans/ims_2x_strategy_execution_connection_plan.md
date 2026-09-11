@@ -178,8 +178,10 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
   anbinden.
 - **PR132 (umgesetzt):** Browser-Smoke, Fehlerpfade und
   Handbuch-Screenshots fuer diesen eng benannten Einperiodenpfad abschliessen.
-- **PR133 (naechster Schritt):** Periodenketten- und Carryover-Vertrag fuer
-  den spaeteren 100-Periodenpfad festlegen.
+- **PR133 (umgesetzt):** Periodenketten- und Carryover-Vertrag fuer den
+  spaeteren 100-Periodenpfad festlegen.
+- **PR134 (naechster Schritt):** versionierten Ketteneingang zustandslos und
+  atomar validieren; noch kein Kettenbau, Carryover oder Runner.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Das ist weder die Zusage einer
@@ -211,5 +213,5 @@ ausfuehren; PR123 fuegt ihnen keinen neuen Ausfuehrungspfad hinzu.
 
 ## Naechster Schritt
 
-PR133 definiert als naechstes Periodenkette, Vorperiodenherkunft und
-Carryover-Grenzen, ohne bereits einen Mehrperiodenstart freizuschalten.
+PR134 validiert als naechstes den versionierten Ketteneingang, ohne bereits
+einen Mehrperiodenstart freizuschalten.
