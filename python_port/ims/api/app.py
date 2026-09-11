@@ -60,6 +60,11 @@ from ims.api.strategy_execution_candidate_run_control import (
     strategy_execution_candidate_run_control_contract_payload,
     strategy_execution_candidate_run_control_error_payload,
 )
+from ims.api.strategy_execution_period_chain_resolution import (
+    resolve_strategy_execution_period_chain_input,
+    strategy_execution_period_chain_resolution_contract_payload,
+    strategy_execution_period_chain_resolution_error_payload,
+)
 from ims.api.strategy_execution_candidate_effect_probe import (
     StrategyExecutionCandidateEffectProbeError,
     StrategyExecutionCandidateEffectProbeRunner,
@@ -547,7 +552,7 @@ def _strategy_execution_period_chain_validation_invalid_json_payload() -> dict[
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR135",
+        "next_gate": "PR136",
     }
 
 
@@ -1130,6 +1135,42 @@ def create_app(
         return JSONResponse(
             validate_strategy_execution_period_chain_input(payload).to_dict()
         )
+
+    async def strategy_execution_period_chain_resolution_response(
+        request: Request,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                strategy_execution_period_chain_resolution_error_payload(
+                    "explicit_sqlite_store_required",
+                    "Periodenketten-Aufloesung erfordert eine explizite SQLite-Metadatenquelle",
+                ),
+                status_code=400,
+            )
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                strategy_execution_period_chain_resolution_error_payload(
+                    "invalid_json",
+                    "Periodenketten-Eingang ist kein gueltiges JSON",
+                ),
+                status_code=400,
+            )
+        report = resolve_strategy_execution_period_chain_input(
+            payload,
+            db_path=Path(str(metadata_source["path"])),
+        )
+        issue_codes = {issue.code for issue in report.issues}
+        if report.resolution_ready or not report.input_validated:
+            status_code = 200
+        elif issue_codes & {"candidate_not_found", "candidate_store_missing"}:
+            status_code = 404
+        else:
+            status_code = 409
+        return JSONResponse(report.to_dict(), status_code=status_code)
 
     async def strategy_execution_candidate_build_response(
         request: Request,
@@ -1721,6 +1762,21 @@ def create_app(
         ) -> JSONResponse:
             return await strategy_execution_period_chain_validation_response(request)
 
+        @app.get("/api/strategies/execution-period-chain-resolution-contract")
+        def strategies_execution_period_chain_resolution_contract() -> dict[
+            str, object
+        ]:
+            return strategy_execution_period_chain_resolution_contract_payload()
+
+        @app.post(
+            "/api/strategies/execution-period-chain-resolution",
+            response_model=None,
+        )
+        async def strategies_execution_period_chain_resolution(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_period_chain_resolution_response(request)
+
         @app.get("/api/strategies/execution-candidate-validation-contract")
         def strategies_execution_candidate_validation_contract() -> dict[str, object]:
             return strategy_execution_candidate_validation_contract_payload()
@@ -2126,6 +2182,17 @@ def create_app(
         Route(
             "/api/strategies/execution-period-chain-validation",
             strategy_execution_period_chain_validation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/strategies/execution-period-chain-resolution-contract",
+            lambda request: JSONResponse(
+                strategy_execution_period_chain_resolution_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/strategies/execution-period-chain-resolution",
+            strategy_execution_period_chain_resolution_response,
             methods=["POST"],
         ),
         Route(

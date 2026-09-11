@@ -97,11 +97,13 @@ noch Runner auf.
   versionieren und read-only bereitstellen.
 - **PR134 (umgesetzt):** einen versionierten Ketteneingang fuer Perioden 1
   bis maximal 100 zustandslos und atomar validieren.
-- **PR135 (naechster Schritt):** Kandidatenreferenzen serverseitig aufloesen,
-  Digests erneut pruefen und die Kandidatenkontexte atomar abgleichen.
-- **PR136+:** Kettenbau, Digest, Ablage, kleine Zwei-Perioden-Wirkungsprobe
-  und spaeter den kontrollierten Ausbau bis 100 Perioden jeweils getrennt
-  freigeben.
+- **PR135 (umgesetzt):** Kandidatenreferenzen serverseitig aufloesen, Digests
+  erneut pruefen und Kandidatenkontexte sowie Akteursidentitaeten atomar
+  abgleichen.
+- **PR136 (naechster Schritt):** kanonische fluechtige Kette und Gesamtdigest
+  bilden.
+- **PR137+:** Ablage, kleine Zwei-Perioden-Wirkungsprobe und spaeter den
+  kontrollierten Ausbau bis 100 Perioden jeweils getrennt freigeben.
 
 ## Schutzgrenzen
 

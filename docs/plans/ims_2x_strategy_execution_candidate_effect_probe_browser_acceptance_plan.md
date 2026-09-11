@@ -74,9 +74,10 @@ Der Browserpfad lautet:
   weiterhin ohne neuen Runner- oder UI-Startpfad.
 - **PR134 (umgesetzt):** den versionierten Ketteneingang zustandslos und
   atomar validieren.
-- **PR135 (naechster Schritt):** Kandidatenreferenzen und -kontexte
-  serverseitig aufloesen und atomar abgleichen; Kettenbau, Carryover und
-  Runner bleiben gesperrt.
+- **PR135 (umgesetzt):** Kandidatenreferenzen und -kontexte serverseitig
+  aufloesen und atomar abgleichen.
+- **PR136 (naechster Schritt):** kanonische fluechtige Kette und Gesamtdigest
+  bilden; Speicherung, Carryover und Runner bleiben gesperrt.
 
 Die Einperioden-Wirkungsprobe ist nach PR132 kontrolliert bedienbar und
 dokumentiert. Ein nutzbarer 100-Periodenlauf, Ergebnisbloecke, XLSX-Export und

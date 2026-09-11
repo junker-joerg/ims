@@ -108,9 +108,10 @@ serverseitige Idempotenzgrenze bleibt auch bei direktem API-Aufruf wirksam.
 - **PR133 (umgesetzt):** Periodenketten- und Carryover-Vertrag fuer einen
   spaeteren kontrollierten 100-Periodenpfad festlegen.
 - **PR134 (umgesetzt):** den Ketteneingang zustandslos und atomar validieren.
-- **PR135 (naechster Schritt):** Kandidatenreferenzen und -kontexte
-  serverseitig aufloesen und atomar abgleichen, weiterhin ohne Kettenbau,
-  Carryover oder Runner.
+- **PR135 (umgesetzt):** Kandidatenreferenzen und -kontexte serverseitig
+  aufloesen und atomar abgleichen.
+- **PR136 (naechster Schritt):** kanonische fluechtige Kette und Gesamtdigest
+  bilden, weiterhin ohne Speicherung, Carryover oder Runner.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Mehrperiodenlauf, Carryover und Regulierungssimulation bleiben
@@ -118,6 +119,6 @@ eigene spaetere Ausbaubloecke.
 
 ## Naechster Schritt
 
-PR134 validiert den versionierten Ketteneingang. PR135 loest als naechstes
-die Kandidatenreferenzen auf und schaltet noch keinen neuen
-Mehrperiodenstart frei.
+PR134 validiert den versionierten Ketteneingang. PR135 loest die
+Kandidatenreferenzen inzwischen auf. PR136 bildet als naechstes die
+kanonische fluechtige Kette und schaltet noch keinen Mehrperiodenstart frei.

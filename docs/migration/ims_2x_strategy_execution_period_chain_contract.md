@@ -35,7 +35,8 @@ Herkunftsgrenze.
 - die vorhandene VU-vor-VN-Anwendungsreihenfolge;
 - atomare Stopbedingungen und geschlossene Laufzeitgrenzen;
 - die in PR134 ergaenzten Validierungsendpunkte;
-- `period_chain_validation_enabled = true` und `next_gate = PR135`.
+- aktivierte PR134-Validierung und PR135-Kandidatenaufloesung;
+- `next_gate = PR136`.
 
 Der read-only Endpunkt lautet
 `GET /api/strategies/execution-period-chain-contract`.
@@ -66,7 +67,8 @@ Unit- und API-Tests sichern:
 
 ## Naechster Schritt
 
-PR135 soll die formal gueltigen Kandidatenreferenzen serverseitig aufloesen,
-ihre gespeicherten Digests erneut pruefen und die Kandidatenkontexte atomar
-abgleichen. Kettenbau, Speicherung, Carryover und Ausfuehrung bleiben auch
-dort noch gesperrt.
+PR135 loest die formal gueltigen Kandidatenreferenzen inzwischen serverseitig
+auf, prueft ihre gespeicherten Digests erneut und gleicht Kandidatenkontexte
+sowie Akteursidentitaeten atomar ab. PR136 soll daraus eine kanonische
+fluechtige Kette und ihren Gesamtdigest bilden. Speicherung, Carryover und
+Ausfuehrung bleiben gesperrt.

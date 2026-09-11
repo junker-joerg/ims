@@ -66,6 +66,7 @@ fachlichen Einperiodenpfad. Sie belegt keinen 100-Periodenlauf, keine
 Regulierungssimulation und keine Reproduktion eines historischen RNG-Laufs.
 
 PR133 hat den versionierten Periodenketten- und Carryover-Vertrag festgelegt.
-PR134 prueft den vollstaendigen Ketteneingang zustandslos. PR135 soll als
-naechstes die Kandidatenreferenzen serverseitig aufloesen; auch dieser Schritt
+PR134 prueft den vollstaendigen Ketteneingang zustandslos. PR135 loest die
+Kandidatenreferenzen inzwischen serverseitig auf. PR136 soll als naechstes die
+kanonische fluechtige Kette samt Gesamtdigest bilden; auch dieser Schritt
 schaltet noch keinen Mehrperiodenstart frei.

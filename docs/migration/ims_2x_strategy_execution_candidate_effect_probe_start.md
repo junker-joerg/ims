@@ -98,5 +98,6 @@ Der Server erzwingt dieselbe Grenze unabhaengig von der Browserdarstellung.
 PR132 hat den bedienbaren Pfad mit Browser-Smokes auf breitem und schmalem
 Viewport, atomaren Fehlerpfaden und datierten Handbuchbildern abgenommen.
 PR133 hat den Periodenketten- und Carryover-Vertrag definiert. PR134 prueft
-den Ketteneingang. PR135 soll als naechstes die Kandidatenreferenzen
-serverseitig aufloesen, ohne einen Mehrperiodenstart freizuschalten.
+den Ketteneingang, PR135 loest die Kandidatenreferenzen serverseitig auf.
+PR136 soll daraus als naechstes die kanonische fluechtige Kette samt
+Gesamtdigest bilden, ohne einen Mehrperiodenstart freizuschalten.

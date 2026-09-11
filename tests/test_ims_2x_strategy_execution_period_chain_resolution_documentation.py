@@ -6,35 +6,34 @@ PLAN = (
     ROOT
     / "docs"
     / "plans"
-    / "ims_2x_strategy_execution_period_chain_validation_plan.md"
+    / "ims_2x_strategy_execution_period_chain_resolution_plan.md"
 )
 MIGRATION = (
     ROOT
     / "docs"
     / "migration"
-    / "ims_2x_strategy_execution_period_chain_validation.md"
+    / "ims_2x_strategy_execution_period_chain_resolution.md"
 )
 
 
-def test_pr134_plan_and_mapping_define_atomic_validation_boundary() -> None:
+def test_pr135_plan_and_mapping_define_atomic_resolution_boundary() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     migration = MIGRATION.read_text(encoding="utf-8")
     normalized = " ".join((plan + migration).split())
 
-    assert "PR134 umgesetzt" in plan
+    assert "PR135 umgesetzt" in plan
     assert "`SIMLAENGE = 100`" in normalized
-    assert "1..max_periods" in normalized
-    assert "candidate_id" in normalized
-    assert "content_digest" in normalized
-    assert "Teil" in normalized
+    assert "simulation_context.period" in normalized
+    assert "simulation_context.run_index" in normalized
+    assert "simulation_context.max_periods" in normalized
+    assert "BAV-, VU- und VN-Identitaeten" in normalized
     assert "keine neue oder geaenderte Fachlogik" in plan
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in plan
     assert "`incomming/` bleibt unversioniert" in plan
-    assert "PR135" in normalized
     assert "PR136" in normalized
 
 
-def test_pr134_sources_are_indexed() -> None:
+def test_pr135_sources_are_indexed() -> None:
     plans_index = (ROOT / "docs" / "plans" / "README.md").read_text(
         encoding="utf-8"
     )

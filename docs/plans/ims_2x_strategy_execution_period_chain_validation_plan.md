@@ -46,13 +46,16 @@ Die Validierung ist rein und deterministisch. Sie veraendert den Eingang
 nicht und liefert nie eine Teilkette. Eine formell passende Kandidaten-ID
 beweist dabei nur, dass sie aus dem angegebenen Digest abgeleitet ist.
 
-Bewusst noch nicht geprueft werden:
+Im PR134-Schnitt selbst werden bewusst nicht geprueft:
 
 - ob der Kandidat in der freigegebenen SQLite-Ablage existiert;
 - ob sein gespeicherter Inhalt weiterhin denselben Digest besitzt;
 - ob Kandidatenkontext, `run_index`, `max_periods` und Periode
   uebereinstimmen;
 - ob benachbarte Kandidaten dieselben VU-/VN-Akteure enthalten.
+
+Diese vier Speicher- und Kontextpruefungen sind inzwischen das getrennte,
+read-only Tor PR135.
 
 ## API
 
@@ -69,13 +72,13 @@ Fehlerbericht ohne Teilannahme.
 
 - **PR134 (umgesetzt):** Ketteneingang versionieren und zustandslos atomar
   validieren.
-- **PR135 (naechster Schritt):** alle Referenzen serverseitig aus der
+- **PR135 (umgesetzt):** alle Referenzen serverseitig aus der
   Kandidatenablage aufloesen, gespeicherte Digests erneut pruefen und
-  Kandidatenkontexte atomar gegeneinander abgleichen; weiterhin ohne
-  Persistenz, Carryover oder Runner.
-- **PR136+:** erst nach erfolgreicher Aufloesung den kanonischen Kettenbau und
-  Digest, die unveraenderliche Ablage, eine isolierte Zwei-Perioden-Probe und
-  den kontrollierten Ausbau bis 100 Perioden in getrennten PRs freigeben.
+  Kandidatenkontexte sowie Akteursidentitaeten atomar gegeneinander abgleichen.
+- **PR136 (naechster Schritt):** nach erfolgreicher Aufloesung den kanonischen
+  fluechtigen Kettenbau und Gesamtdigest einfuehren.
+- **PR137+:** unveraenderliche Ablage, isolierte Zwei-Perioden-Probe und den
+  kontrollierten Ausbau bis 100 Perioden in getrennten PRs freigeben.
 
 ## Schutzgrenzen
 

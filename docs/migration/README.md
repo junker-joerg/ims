@@ -253,5 +253,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   noch ohne Speicherung oder Mehrperiodenrunner
 - `ims_2x_strategy_execution_period_chain_validation.md`: PR134-versionierter
   Eingang und atomare, zustandslose Pruefung einer vollstaendigen lokalen
-  Periodenkette; noch ohne Kandidatenaufloesung, Kettenbau oder Ausfuehrung
+  Periodenkette; noch ohne Kettenbau oder Ausfuehrung
+- `ims_2x_strategy_execution_period_chain_resolution.md`: PR135-read-only
+  Kandidatenaufloesung mit erneuter Digestpruefung sowie kettenweitem Kontext-
+  und Akteursabgleich; noch ohne Kettenbau, Speicherung oder Ausfuehrung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

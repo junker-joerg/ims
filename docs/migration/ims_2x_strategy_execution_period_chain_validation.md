@@ -35,7 +35,7 @@ veraendert.
 
 Die zwei API-Endpunkte stellen Vertrag und Validierung fuer FastAPI und den
 Starlette-Fallback gleich bereit. Das vorhandene PR133-Vertragsdokument weist
-nun `period_chain_validation_enabled = true` und `next_gate = PR135` aus.
+nun die PR134-Validierung und die PR135-Aufloesungsendpunkte aus.
 
 ## Validierung
 
@@ -61,7 +61,8 @@ Schnitt folgt keine historische RNG- oder Vollgleichheitsbehauptung.
 
 ## Naechster Schritt
 
-PR135 soll die Kandidatenreferenzen serverseitig aufloesen, ihre gespeicherten
-Digests erneut pruefen und die Kontextgleichheit der gesamten Kette atomar
-feststellen. Kettenpersistenz, Carryover und Ausfuehrung bleiben dort noch
-gesperrt.
+PR135 loest die Kandidatenreferenzen inzwischen serverseitig auf, prueft ihre
+gespeicherten Digests erneut und stellt die Kontextgleichheit der gesamten
+Kette atomar fest. PR136 soll daraus als naechstes eine kanonische fluechtige
+Kette und ihren Gesamtdigest bilden. Persistenz, Carryover und Ausfuehrung
+bleiben gesperrt.

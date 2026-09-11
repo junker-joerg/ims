@@ -131,5 +131,8 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   Carryover-Opt-ins; noch ohne Kettenbau oder Ausfuehrung.
 - [PR134 Periodenketten-Eingang validieren](../migration/ims_2x_strategy_execution_period_chain_validation.md):
   versionierter Eingang und atomare, zustandslose Pruefung der vollstaendigen
-  Kandidaten- und Uebergangsfolge; weiterhin ohne Kandidatenaufloesung,
-  Kettenbau oder Ausfuehrung.
+  Kandidaten- und Uebergangsfolge; weiterhin ohne Kettenbau oder Ausfuehrung.
+- [PR135 Periodenkandidaten aufloesen](../migration/ims_2x_strategy_execution_period_chain_resolution.md):
+  read-only Aufloesung aller gespeicherten Kandidaten mit erneuter
+  Digestpruefung sowie kettenweitem Kontext- und Akteursabgleich; weiterhin
+  ohne Kettenbau, Speicherung oder Ausfuehrung.
