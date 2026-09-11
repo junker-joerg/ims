@@ -37,7 +37,8 @@ Herkunftsgrenze.
 - die in PR134 ergaenzten Validierungsendpunkte;
 - aktivierte PR134-Validierung, PR135-Kandidatenaufloesung sowie
   PR136-Kettenbau und -Digest;
-- `next_gate = PR137`.
+- aktivierte PR137-Kettenablage;
+- `next_gate = PR138`.
 
 Der read-only Endpunkt lautet
 `GET /api/strategies/execution-period-chain-contract`.
@@ -71,5 +72,6 @@ Unit- und API-Tests sichern:
 PR135 loest die formal gueltigen Kandidatenreferenzen serverseitig auf,
 prueft ihre gespeicherten Digests erneut und gleicht Kandidatenkontexte sowie
 Akteursidentitaeten atomar ab. PR136 bildet daraus inzwischen eine kanonische
-fluechtige Kette und ihren Gesamtdigest. PR137 soll sie unveraenderlich
-speichern. Carryover und Ausfuehrung bleiben gesperrt.
+fluechtige Kette und ihren Gesamtdigest. PR137 speichert sie inzwischen
+unveraenderlich. PR138 prueft als Naechstes die gespeicherte
+Freigabeidentitaet read-only. Carryover und Ausfuehrung bleiben gesperrt.

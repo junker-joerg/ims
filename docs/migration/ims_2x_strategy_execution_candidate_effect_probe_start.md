@@ -100,4 +100,6 @@ Viewport, atomaren Fehlerpfaden und datierten Handbuchbildern abgenommen.
 PR133 hat den Periodenketten- und Carryover-Vertrag definiert. PR134 prueft
 den Ketteneingang, PR135 loest die Kandidatenreferenzen serverseitig auf und
 PR136 bildet daraus die kanonische fluechtige Kette samt Gesamtdigest. PR137
-soll sie speichern, ohne einen Mehrperiodenstart freizuschalten.
+speichert sie inzwischen unveraenderlich, ohne einen Mehrperiodenstart
+freizuschalten. PR138 prueft als Naechstes die gespeicherte
+Freigabeidentitaet read-only.

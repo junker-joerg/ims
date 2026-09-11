@@ -260,4 +260,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_period_chain_build.md`: PR136-kanonische
   fluechtige Kette aus serverbestaetigten Kandidaten mit stabilem
   SHA-256-Gesamtdigest; weiterhin ohne Speicherung oder Ausfuehrung
+- `ims_2x_strategy_execution_period_chain_store.md`: PR137-ausdruecklich
+  freizugebende, unveraenderliche Kettenablage mit serverseitigem Neubau,
+  idempotentem Replay und Digestpruefung vor und nach dem Schreiben;
+  weiterhin ohne Carryover oder Ausfuehrung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

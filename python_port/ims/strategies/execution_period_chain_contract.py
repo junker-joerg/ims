@@ -155,7 +155,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "period_chain_candidate_resolution_enabled": True,
         "period_chain_materialization_enabled": True,
         "period_chain_digest_enabled": True,
-        "period_chain_persistence_enabled": False,
+        "period_chain_persistence_enabled": True,
         "period_chain_runner_enabled": False,
         "carryover_execution_enabled": False,
         "multi_period_execution_enabled": False,
@@ -193,6 +193,13 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "/api/strategies/execution-period-chain-build-contract"
         ),
         "build_endpoint": "/api/strategies/execution-period-chain-build",
+        "store_contract_endpoint": (
+            "/api/strategies/execution-period-chain-store-contract"
+        ),
+        "store_endpoint": "/api/strategies/execution-period-chain-store",
+        "stored_chain_endpoint_template": (
+            "/api/strategies/execution-period-chains/{chain_id}"
+        ),
         "historical_horizon": {
             "source": "IMSDATA.C:14",
             "constant": "SIMLAENGE",
@@ -280,7 +287,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "digest_mismatch_allowed": False,
             "missing_actor_allowed": False,
         },
-        "next_gate": "PR137",
+        "next_gate": "PR138",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

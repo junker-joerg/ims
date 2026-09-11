@@ -92,7 +92,8 @@ historischer Vollgleichheit.
 
 ## Naechster Schritt
 
-PR137 soll die kanonische Kette nur nach ausdruecklicher Freigabe
-unveraenderlich und idempotent ablegen und ihren Digest vor und nach der
-Speicherung erneut pruefen. Carryover und Mehrperiodenausfuehrung bleiben
+PR137 legt die kanonische Kette inzwischen nur nach ausdruecklicher Freigabe
+unveraenderlich und idempotent ab und prueft ihren Digest vor und nach der
+Speicherung. PR138 soll die gespeicherte Identitaet an einer read-only
+Freigabegrenze erneut pruefen. Carryover und Mehrperiodenausfuehrung bleiben
 weiteren getrennten PRs vorbehalten.

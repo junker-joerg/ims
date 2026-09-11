@@ -68,5 +68,6 @@ Regulierungssimulation und keine Reproduktion eines historischen RNG-Laufs.
 PR133 hat den versionierten Periodenketten- und Carryover-Vertrag festgelegt.
 PR134 prueft den vollstaendigen Ketteneingang zustandslos. PR135 loest die
 Kandidatenreferenzen serverseitig auf. PR136 bildet inzwischen die kanonische
-fluechtige Kette samt Gesamtdigest. PR137 soll sie speichern und schaltet
-weiterhin keinen Mehrperiodenstart frei.
+fluechtige Kette samt Gesamtdigest. PR137 speichert sie inzwischen
+unveraenderlich und schaltet weiterhin keinen Mehrperiodenstart frei. PR138
+prueft als Naechstes die gespeicherte Freigabeidentitaet read-only.

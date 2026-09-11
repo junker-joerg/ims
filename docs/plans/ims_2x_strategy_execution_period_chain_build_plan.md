@@ -73,11 +73,13 @@ Konfiguration. Freie Datenbank-, Fixture- oder Ausgabepfade bleiben verboten.
 
 ## Restplanung
 
-- **PR136 (dieser Schritt):** kanonische fluechtige Kette und Gesamtdigest.
-- **PR137 (naechster Schritt):** explizit freigegebene, unveraenderliche und
+- **PR136 (umgesetzt):** kanonische fluechtige Kette und Gesamtdigest.
+- **PR137 (umgesetzt):** explizit freigegebene, unveraenderliche und
   idempotente Kettenablage mit erneuter Digestpruefung; weiterhin ohne
   Carryover oder Runner.
-- **PR138+:** isolierte Zwei-Perioden-Wirkungsprobe, atomarer Fehlerstopp und
+- **PR138 (naechster Schritt):** read-only Freigabecheck der gespeicherten
+  Kettenidentitaet.
+- **PR139+:** isolierte Zwei-Perioden-Wirkungsprobe, atomarer Fehlerstopp und
   danach kontrollierter Ausbau bis zum 100-Perioden-Lauf in getrennten PRs.
 
 ## Schutzgrenzen

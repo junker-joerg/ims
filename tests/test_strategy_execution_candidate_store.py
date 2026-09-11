@@ -278,7 +278,7 @@ def test_overview_reports_verified_readiness_and_provenance(tmp_path) -> None:
         "effect_probe_start_available": True,
         "effect_probe_result_persistence_available": True,
         "execution_ready": False,
-        "next_gate": "PR137",
+        "next_gate": "PR138",
     }
     assert payload["run_control_connected"] is True
     assert payload["simulation_performed"] is False

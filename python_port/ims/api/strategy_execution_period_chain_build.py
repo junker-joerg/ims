@@ -127,7 +127,7 @@ class StrategyExecutionPeriodChainBuildReport:
             "automatic_historical_rule_selection_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR137",
+            "next_gate": "PR138",
         }
 
 
@@ -173,6 +173,37 @@ def strategy_execution_period_chain_id_from_digest(content_digest: str) -> str:
             "period chain content digest must be a lowercase sha256 digest"
         ) from exc
     return f"{STRATEGY_EXECUTION_PERIOD_CHAIN_ID_PREFIX}{digest_hex[:24]}"
+
+
+def strategy_execution_period_chain_build_provenance_payload(
+    candidate_count: int,
+) -> dict[str, object]:
+    return {
+        "chain_build_schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_BUILD_VERSION,
+        "candidate_resolution_schema_version": (
+            STRATEGY_EXECUTION_PERIOD_CHAIN_RESOLUTION_VERSION
+        ),
+        "candidate_store_source": "configured_workbench_sqlite_read_only",
+        "candidate_count": candidate_count,
+        "candidate_digest_reverification_complete": True,
+        "candidate_context_cross_check_complete": True,
+        "actor_identity_cross_check_complete": True,
+    }
+
+
+def strategy_execution_period_chain_execution_boundaries_payload() -> dict[
+    str, object
+]:
+    return {
+        "validation_enabled": True,
+        "persistence_enabled": False,
+        "runner_enabled": False,
+        "ui_start_enabled": False,
+        "carryover_execution_enabled": False,
+        "multi_period_execution_enabled": False,
+        "output_files_enabled": False,
+        "simulation_performed": False,
+    }
 
 
 def build_strategy_execution_period_chain(
@@ -227,29 +258,12 @@ def build_strategy_execution_period_chain(
         },
         "period_candidates": period_candidates,
         "transitions": canonical_transitions,
-        "provenance": {
-            "chain_build_schema_version": (
-                STRATEGY_EXECUTION_PERIOD_CHAIN_BUILD_VERSION
-            ),
-            "candidate_resolution_schema_version": (
-                STRATEGY_EXECUTION_PERIOD_CHAIN_RESOLUTION_VERSION
-            ),
-            "candidate_store_source": "configured_workbench_sqlite_read_only",
-            "candidate_count": len(period_candidates),
-            "candidate_digest_reverification_complete": True,
-            "candidate_context_cross_check_complete": True,
-            "actor_identity_cross_check_complete": True,
-        },
-        "execution_boundaries": {
-            "validation_enabled": True,
-            "persistence_enabled": False,
-            "runner_enabled": False,
-            "ui_start_enabled": False,
-            "carryover_execution_enabled": False,
-            "multi_period_execution_enabled": False,
-            "output_files_enabled": False,
-            "simulation_performed": False,
-        },
+        "provenance": strategy_execution_period_chain_build_provenance_payload(
+            len(period_candidates)
+        ),
+        "execution_boundaries": (
+            strategy_execution_period_chain_execution_boundaries_payload()
+        ),
     }
     try:
         content_digest = calculate_strategy_execution_period_chain_content_digest(
@@ -376,7 +390,7 @@ def strategy_execution_period_chain_build_contract_payload() -> dict[str, object
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR137",
+        "next_gate": "PR138",
     }
 
 

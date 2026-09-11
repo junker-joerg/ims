@@ -64,5 +64,6 @@ Schnitt folgt keine historische RNG- oder Vollgleichheitsbehauptung.
 PR135 loest die Kandidatenreferenzen serverseitig auf, prueft ihre
 gespeicherten Digests erneut und stellt die Kontextgleichheit der gesamten
 Kette atomar fest. PR136 bildet daraus inzwischen eine kanonische fluechtige
-Kette und ihren Gesamtdigest. PR137 soll sie unveraenderlich und idempotent
-speichern. Carryover und Ausfuehrung bleiben gesperrt.
+Kette und ihren Gesamtdigest. PR137 speichert sie inzwischen unveraenderlich
+und idempotent. PR138 prueft als Naechstes die gespeicherte
+Freigabeidentitaet read-only. Carryover und Ausfuehrung bleiben gesperrt.

@@ -1,15 +1,10 @@
-from copy import deepcopy
 import importlib
 import json
-from pathlib import Path
 import sqlite3
 
 from fastapi.testclient import TestClient
 
 from ims.api.app import create_app
-from ims.api.strategy_execution_candidate_store import (
-    STRATEGY_EXECUTION_CANDIDATE_STORE_SCHEMA,
-)
 from ims.api.strategy_execution_period_chain_resolution import (
     STRATEGY_EXECUTION_PERIOD_CHAIN_RESOLUTION_CONTRACT_VERSION,
     STRATEGY_EXECUTION_PERIOD_CHAIN_RESOLUTION_VERSION,
@@ -17,144 +12,14 @@ from ims.api.strategy_execution_period_chain_resolution import (
     strategy_execution_period_chain_resolution_contract_payload,
 )
 from ims.strategies import (
-    StrategyExecutionScenarioProfileDefinition,
-    build_strategy_execution_candidate,
     calculate_strategy_execution_candidate_content_digest,
     strategy_execution_candidate_id_from_digest,
 )
-
-
-ROOT = Path(__file__).resolve().parent.parent
-CANDIDATE_INPUT_FIXTURE = (
-    ROOT / "tests" / "fixtures" / "strategy_execution_candidate_input_v1.json"
+from tests.period_chain_test_support import (
+    CHAIN_INPUT_FIXTURE,
+    chain_input as _chain_input,
+    persist_chain_candidates as _persist_chain_candidates,
 )
-CHAIN_INPUT_FIXTURE = (
-    ROOT / "tests" / "fixtures" / "strategy_execution_period_chain_input_v1.json"
-)
-PROFILE_FIXTURE = (
-    ROOT
-    / "python_port"
-    / "ims"
-    / "strategies"
-    / "profiles"
-    / "strategy_execution_candidate_profile_v1.json"
-)
-
-
-def _candidate_input(period: int) -> dict[str, object]:
-    value = json.loads(CANDIDATE_INPUT_FIXTURE.read_text(encoding="utf-8"))
-    value["snapshot_context"]["period"] = period
-    if period == 1:
-        value["snapshot_context"]["entries"][1]["values"][
-            "initial_decisions"
-        ] = [
-            {"sector_index": 0, "insured": False, "insurer_id": None},
-            {"sector_index": 1, "insured": False, "insurer_id": None},
-        ]
-    value["vu_state_provenance"]["period"] = period
-    value["scenario_profile_reference"]["period"] = period
-    value["vn_process_input"]["period"] = period
-    return value
-
-
-def _profile(
-    period: int,
-    *,
-    run_index: int,
-    max_periods: int,
-) -> dict[str, object]:
-    value = json.loads(PROFILE_FIXTURE.read_text(encoding="utf-8"))
-    value["period"] = period
-    value["context"]["period"] = period
-    value["context"]["run_index"] = run_index
-    value["context"]["max_periods"] = max_periods
-    value["context"]["rng_seed"] = 1300 + period
-    return value
-
-
-def _persist_chain_candidates(
-    db_path: Path,
-    profile_root: Path,
-    *,
-    run_indices: dict[int, int] | None = None,
-) -> list[dict[str, object]]:
-    references: list[dict[str, object]] = []
-    with sqlite3.connect(db_path) as connection:
-        connection.execute(STRATEGY_EXECUTION_CANDIDATE_STORE_SCHEMA)
-        for period in (1, 2):
-            run_index = (run_indices or {}).get(period, 7)
-            profile_path = profile_root / f"profile-{period}.json"
-            profile_path.write_text(
-                json.dumps(
-                    _profile(period, run_index=run_index, max_periods=2),
-                    ensure_ascii=True,
-                    sort_keys=True,
-                ),
-                encoding="utf-8",
-            )
-            profile_id = "synthetic-joint-single-period-v1"
-            build = build_strategy_execution_candidate(
-                _candidate_input(period),
-                profiles={
-                    profile_id: StrategyExecutionScenarioProfileDefinition(
-                        profile_id=profile_id,
-                        path=profile_path,
-                    )
-                },
-                trusted_profile_root=profile_root,
-            )
-            assert build.candidate is not None, build.issues
-            candidate = build.candidate
-            payload = candidate.to_dict()
-            connection.execute(
-                """
-                INSERT INTO strategy_execution_candidates (
-                    candidate_id,
-                    candidate_schema_version,
-                    draft_id,
-                    period,
-                    profile_id,
-                    profile_content_digest,
-                    content_digest,
-                    stored_at,
-                    candidate_payload_json
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    candidate.candidate_id,
-                    candidate.schema_version,
-                    candidate.draft_id,
-                    candidate.period,
-                    candidate.profile_id,
-                    candidate.profile_content_digest,
-                    candidate.content_digest,
-                    f"2026-09-11T07:0{period}:00Z",
-                    json.dumps(
-                        payload,
-                        ensure_ascii=True,
-                        allow_nan=False,
-                        sort_keys=True,
-                        separators=(",", ":"),
-                    ),
-                ),
-            )
-            references.append(
-                {
-                    "candidate_id": candidate.candidate_id,
-                    "content_digest": candidate.content_digest,
-                    "period": period,
-                }
-            )
-    return references
-
-
-def _chain_input(references: list[dict[str, object]]) -> dict[str, object]:
-    value = json.loads(CHAIN_INPUT_FIXTURE.read_text(encoding="utf-8"))
-    value["run_index"] = 7
-    value["max_periods"] = 2
-    value["period_candidates"] = deepcopy(references)
-    return value
 
 
 def _issue_codes(report) -> set[str]:
@@ -395,7 +260,7 @@ def test_resolution_contract_opens_only_read_only_candidate_checks() -> None:
     assert payload["runner_enabled"] is False
     assert payload["writes_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR137"
+    assert payload["next_gate"] == "PR138"
 
 
 def test_resolution_does_not_call_carryover_or_runner(monkeypatch, tmp_path) -> None:
@@ -484,4 +349,4 @@ def test_resolution_api_rejects_unconfigured_store_and_invalid_json(
     assert invalid_json.status_code == 400
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
     assert invalid_json.json()["candidate_count"] == 0
-    assert invalid_json.json()["next_gate"] == "PR137"
+    assert invalid_json.json()["next_gate"] == "PR138"

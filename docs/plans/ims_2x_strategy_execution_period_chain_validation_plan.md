@@ -77,8 +77,10 @@ Fehlerbericht ohne Teilannahme.
   Kandidatenkontexte sowie Akteursidentitaeten atomar gegeneinander abgleichen.
 - **PR136 (umgesetzt):** nach erfolgreicher Aufloesung den kanonischen
   fluechtigen Kettenbau und Gesamtdigest einfuehren.
-- **PR137 (naechster Schritt):** unveraenderliche idempotente Ablage.
-- **PR138+:** isolierte Zwei-Perioden-Probe und den
+- **PR137 (umgesetzt):** unveraenderliche idempotente Ablage.
+- **PR138 (naechster Schritt):** read-only Freigabecheck der gespeicherten
+  Kettenidentitaet.
+- **PR139+:** isolierte Zwei-Perioden-Probe und den
   kontrollierten Ausbau bis 100 Perioden in getrennten PRs freigeben.
 
 ## Schutzgrenzen

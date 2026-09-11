@@ -67,6 +67,7 @@ historischen RNG-Laufs noch eine historische Vollgleichheit.
 ## Naechster Schritt
 
 PR136 bildet aus einem vollstaendig erfolgreichen PR135-Ergebnis inzwischen
-eine kanonische fluechtige Periodenkette und ihren Gesamtdigest. PR137 soll
-sie unveraenderlich und idempotent speichern. Carryover und Ausfuehrung
-bleiben weiterhin getrennte spaetere Freigaben.
+eine kanonische fluechtige Periodenkette und ihren Gesamtdigest. PR137
+speichert sie inzwischen unveraenderlich und idempotent. PR138 prueft als
+Naechstes die gespeicherte Freigabeidentitaet read-only. Carryover und
+Ausfuehrung bleiben weiterhin getrennte spaetere Freigaben.

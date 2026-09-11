@@ -312,3 +312,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_execution_period_chain_build_plan.md`: PR136-Plan fuer
   eine kanonische fluechtige Kette aus serverbestaetigten Kandidaten samt
   reproduzierbarem Gesamtdigest; Speicherung und Ausfuehrung bleiben gesperrt.
+- `ims_2x_strategy_execution_period_chain_store_plan.md`: PR137-Plan fuer
+  die ausdruecklich freizugebende, unveraenderliche und idempotente
+  SQLite-Ablage einer serverseitig neu gebauten Kette mit Digestpruefung vor
+  und nach dem Schreiben; Carryover und Ausfuehrung bleiben gesperrt.

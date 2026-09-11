@@ -111,8 +111,10 @@ serverseitige Idempotenzgrenze bleibt auch bei direktem API-Aufruf wirksam.
 - **PR135 (umgesetzt):** Kandidatenreferenzen und -kontexte serverseitig
   aufloesen und atomar abgleichen.
 - **PR136 (umgesetzt):** kanonische fluechtige Kette und Gesamtdigest bilden.
-- **PR137 (naechster Schritt):** Kette unveraenderlich und idempotent
-  speichern, weiterhin ohne Carryover oder Runner.
+- **PR137 (umgesetzt):** Kette unveraenderlich und idempotent speichern,
+  weiterhin ohne Carryover oder Runner.
+- **PR138 (naechster Schritt):** gespeicherte Ketten-ID und Volldigest
+  read-only erneut pruefen.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Mehrperiodenlauf, Carryover und Regulierungssimulation bleiben
@@ -122,5 +124,6 @@ eigene spaetere Ausbaubloecke.
 
 PR134 validiert den versionierten Ketteneingang. PR135 loest die
 Kandidatenreferenzen auf. PR136 bildet inzwischen die kanonische fluechtige
-Kette. PR137 soll sie speichern und schaltet noch keinen Mehrperiodenstart
-frei.
+Kette. PR137 speichert sie inzwischen unveraenderlich und schaltet noch keinen
+Mehrperiodenstart frei. PR138 fuegt als Naechstes den read-only
+Freigabecheck hinzu.

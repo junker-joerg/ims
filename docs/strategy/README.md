@@ -140,3 +140,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   fluechtiges Kettenobjekt aus serverbestaetigten Kandidaten mit
   reproduzierbarem SHA-256-Gesamtdigest; weiterhin ohne Speicherung,
   Carryover oder Ausfuehrung.
+- [PR137 Periodenkette unveraenderlich speichern](../migration/ims_2x_strategy_execution_period_chain_store.md):
+  ausdruecklich freizugebende, idempotente SQLite-Ablage mit serverseitigem
+  Neubau und Digestpruefung vor und nach dem Schreiben; weiterhin ohne
+  Carryover oder Ausfuehrung.

@@ -208,4 +208,4 @@ def test_period_chain_validation_contract_exposes_atomic_closed_boundary() -> No
     assert payload["carryover_invocation_enabled"] is False
     assert payload["runner_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR137"
+    assert payload["next_gate"] == "PR138"
