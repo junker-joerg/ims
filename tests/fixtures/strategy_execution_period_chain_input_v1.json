@@ -1,0 +1,29 @@
+{
+  "schema_version": "ims.strategy-execution-period-chain-input.v1",
+  "period_chain_schema_version": "ims.strategy-execution-period-chain.v1",
+  "candidate_schema_version": "ims.strategy-execution-candidate.v1",
+  "base_model": "Vdefmd6",
+  "scope": "contiguous_local_period_chain_input",
+  "run_index": 0,
+  "max_periods": 2,
+  "period_candidates": [
+    {
+      "candidate_id": "strategy-candidate-111111111111111111111111",
+      "content_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "period": 1
+    },
+    {
+      "candidate_id": "strategy-candidate-222222222222222222222222",
+      "content_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "period": 2
+    }
+  ],
+  "transitions": [
+    {
+      "from_period": 1,
+      "to_period": 2,
+      "carry_forward_vu_state": true,
+      "carry_forward_vn_state": true
+    }
+  ]
+}

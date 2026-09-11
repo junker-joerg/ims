@@ -111,7 +111,7 @@ def test_effect_probe_contract_opens_only_isolated_single_period_execution() -> 
     assert payload["persistent_start_endpoint"] == (
         "/api/run-control/strategy-candidate-effect-probe-start"
     )
-    assert payload["next_gate"] == "PR134"
+    assert payload["next_gate"] == "PR135"
 
 
 def test_effect_probe_parser_reuses_exact_pr129_release() -> None:

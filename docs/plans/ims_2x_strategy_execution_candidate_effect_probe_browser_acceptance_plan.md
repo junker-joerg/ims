@@ -72,8 +72,11 @@ Der Browserpfad lautet:
 - **PR133 (umgesetzt):** versionierten Periodenketten- und Carryover-Vertrag
   fuer eine spaetere kontrollierte Folge von bis zu 100 Perioden festlegen;
   weiterhin ohne neuen Runner- oder UI-Startpfad.
-- **PR134 (naechster Schritt):** den versionierten Ketteneingang zustandslos
-  und atomar validieren; Kettenbau, Carryover und Runner bleiben gesperrt.
+- **PR134 (umgesetzt):** den versionierten Ketteneingang zustandslos und
+  atomar validieren.
+- **PR135 (naechster Schritt):** Kandidatenreferenzen und -kontexte
+  serverseitig aufloesen und atomar abgleichen; Kettenbau, Carryover und
+  Runner bleiben gesperrt.
 
 Die Einperioden-Wirkungsprobe ist nach PR132 kontrolliert bedienbar und
 dokumentiert. Ein nutzbarer 100-Periodenlauf, Ergebnisbloecke, XLSX-Export und

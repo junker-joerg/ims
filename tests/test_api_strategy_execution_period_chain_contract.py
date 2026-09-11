@@ -24,13 +24,14 @@ def test_strategy_execution_period_chain_contract_endpoint_is_read_only(
     )
     assert payload["historical_horizon"]["maximum_periods_per_run"] == 100
     assert payload["period_sequence_policy"]["contiguous"] is True
+    assert payload["period_chain_validation_enabled"] is True
     assert payload["carryover_definition_count"] == 3
     assert payload["period_chain_runner_enabled"] is False
     assert payload["carryover_execution_enabled"] is False
     assert payload["multi_period_execution_enabled"] is False
     assert payload["output_files_enabled"] is False
     assert payload["legacy_comparison_enabled"] is False
-    assert payload["next_gate"] == "PR134"
+    assert payload["next_gate"] == "PR135"
     assert client.post(endpoint, json={}).status_code == 405
     assert client.put(endpoint, json={}).status_code == 405
     assert client.delete(endpoint).status_code == 405

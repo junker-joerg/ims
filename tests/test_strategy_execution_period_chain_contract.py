@@ -113,7 +113,7 @@ def test_period_chain_contract_keeps_all_execution_boundaries_closed(
     payload = strategy_execution_period_chain_contract_payload()
 
     assert payload["contract_read_only"] is True
-    assert payload["period_chain_validation_enabled"] is False
+    assert payload["period_chain_validation_enabled"] is True
     assert payload["period_chain_materialization_enabled"] is False
     assert payload["period_chain_persistence_enabled"] is False
     assert payload["period_chain_runner_enabled"] is False
@@ -128,4 +128,4 @@ def test_period_chain_contract_keeps_all_execution_boundaries_closed(
     assert payload["automatic_historical_rule_selection_performed"] is False
     assert payload["historical_rng_equality_claim"] is False
     assert payload["historical_full_equality_claim"] is False
-    assert payload["next_gate"] == "PR134"
+    assert payload["next_gate"] == "PR135"

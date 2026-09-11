@@ -150,7 +150,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
 
     boundary_flags = {
         "contract_read_only": True,
-        "period_chain_validation_enabled": False,
+        "period_chain_validation_enabled": True,
         "period_chain_materialization_enabled": False,
         "period_chain_persistence_enabled": False,
         "period_chain_runner_enabled": False,
@@ -174,6 +174,12 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "base_model": "Vdefmd6",
         "scope": "controlled_contiguous_local_period_chain",
         "contract_endpoint": "/api/strategies/execution-period-chain-contract",
+        "validation_contract_endpoint": (
+            "/api/strategies/execution-period-chain-validation-contract"
+        ),
+        "validation_endpoint": (
+            "/api/strategies/execution-period-chain-validation"
+        ),
         "historical_horizon": {
             "source": "IMSDATA.C:14",
             "constant": "SIMLAENGE",
@@ -258,7 +264,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "digest_mismatch_allowed": False,
             "missing_actor_allowed": False,
         },
-        "next_gate": "PR134",
+        "next_gate": "PR135",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

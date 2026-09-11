@@ -10,8 +10,9 @@ bis 100 lokalen Perioden. Der Vertrag legt Periodenordnung,
 Kandidatenreferenzen, Vorperiodenherkunft, Carryover-Opt-ins, Provenienz und
 Stopbedingungen fest.
 
-Dieser Schnitt validiert, baut, speichert oder startet noch keine
-Periodenkette. Er aendert keine VU-/VN-Regel und fuehrt keine Simulation aus.
+Der Vertrag baut, speichert oder startet keine Periodenkette. PR134 hat
+inzwischen die getrennte zustandslose Eingangsvalidierung ergaenzt. Es wird
+weiterhin keine VU-/VN-Regel geaendert und keine Simulation ausgefuehrt.
 
 ## Historischer Bezug
 
@@ -38,8 +39,8 @@ Eine spaetere Kette muss:
   `candidate_id`, Volldigest und Periode referenzieren;
 - vor dem ersten Start als Ganzes geprueft werden.
 
-Der Vertrag erlaubt noch keine Kettenvalidierung. Diese ist das eigene Tor
-PR134.
+Der Vertrag verweist fuer die inzwischen vorhandene Kettenvalidierung auf das
+eigene Tor PR134.
 
 ## Vorperiodenherkunft
 
@@ -85,19 +86,22 @@ Fortschreiben aller Felder ist nicht zulaessig.
 ## Read-only API
 
 `GET /api/strategies/execution-period-chain-contract` liefert den
-versionierten Vertrag. Andere HTTP-Methoden sind gesperrt. Der Endpunkt nimmt
-keinen Kettenentwurf an und ruft weder Carryover noch Runner auf.
+versionierten Vertrag und verweist auf die getrennten PR134-Endpunkte fuer
+Validierungsvertrag und Eingangspruefung. Andere HTTP-Methoden sind gesperrt.
+Der Vertragsendpunkt nimmt keinen Kettenentwurf an und ruft weder Carryover
+noch Runner auf.
 
 ## Restplanung
 
 - **PR133 (umgesetzt):** Periodenketten-, Vorperioden- und Carryover-Grenze
   versionieren und read-only bereitstellen.
-- **PR134 (naechster Schritt):** einen versionierten Ketteneingang fuer
-  Perioden 1 bis maximal 100 zustandslos und atomar validieren; weiterhin
-  ohne Kettenbau, Speicherung, Carryover oder Runner.
-- **PR135+:** erst nach erfolgreicher Eingangsvalidierung Kettenbau, Digest,
-  Ablage, kleine Zwei-Perioden-Wirkungsprobe und spaeter den kontrollierten
-  Ausbau bis 100 Perioden jeweils getrennt freigeben.
+- **PR134 (umgesetzt):** einen versionierten Ketteneingang fuer Perioden 1
+  bis maximal 100 zustandslos und atomar validieren.
+- **PR135 (naechster Schritt):** Kandidatenreferenzen serverseitig aufloesen,
+  Digests erneut pruefen und die Kandidatenkontexte atomar abgleichen.
+- **PR136+:** Kettenbau, Digest, Ablage, kleine Zwei-Perioden-Wirkungsprobe
+  und spaeter den kontrollierten Ausbau bis 100 Perioden jeweils getrennt
+  freigeben.
 
 ## Schutzgrenzen
 

@@ -6,36 +6,34 @@ PLAN = (
     ROOT
     / "docs"
     / "plans"
-    / "ims_2x_strategy_execution_period_chain_contract_plan.md"
+    / "ims_2x_strategy_execution_period_chain_validation_plan.md"
 )
 MIGRATION = (
     ROOT
     / "docs"
     / "migration"
-    / "ims_2x_strategy_execution_period_chain_contract.md"
+    / "ims_2x_strategy_execution_period_chain_validation.md"
 )
 
 
-def test_pr133_plan_and_mapping_define_period_chain_boundaries() -> None:
+def test_pr134_plan_and_mapping_define_atomic_validation_boundary() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     migration = MIGRATION.read_text(encoding="utf-8")
     normalized = " ".join((plan + migration).split())
 
-    assert "PR133 umgesetzt" in plan
+    assert "PR134 umgesetzt" in plan
     assert "`SIMLAENGE = 100`" in normalized
-    assert "zwei bis hoechstens 100 Perioden" in normalized
-    assert "lueckenlos" in normalized
-    assert "apply_vu_foreign_info_carryover" in normalized
-    assert "apply_vn_state_carryover" in normalized
-    assert "PR131-Wirkungsnachweis" in normalized
-    assert "kein Carryover-Aufruf und kein Runnerstart" in plan
+    assert "1..max_periods" in normalized
+    assert "candidate_id" in normalized
+    assert "content_digest" in normalized
+    assert "Teil" in normalized
+    assert "keine neue oder geaenderte Fachlogik" in plan
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in plan
     assert "`incomming/` bleibt unversioniert" in plan
-    assert "PR134 (umgesetzt)" in normalized
     assert "PR135" in normalized
 
 
-def test_pr133_sources_are_indexed() -> None:
+def test_pr134_sources_are_indexed() -> None:
     plans_index = (ROOT / "docs" / "plans" / "README.md").read_text(
         encoding="utf-8"
     )

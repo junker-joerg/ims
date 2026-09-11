@@ -34,7 +34,8 @@ Herkunftsgrenze.
   VN-Versicherungsnehmer;
 - die vorhandene VU-vor-VN-Anwendungsreihenfolge;
 - atomare Stopbedingungen und geschlossene Laufzeitgrenzen;
-- `next_gate = PR134`.
+- die in PR134 ergaenzten Validierungsendpunkte;
+- `period_chain_validation_enabled = true` und `next_gate = PR135`.
 
 Der read-only Endpunkt lautet
 `GET /api/strategies/execution-period-chain-contract`.
@@ -47,9 +48,10 @@ Carryover-Funktionen benoetigen echte `VUForeignInfoPeriodRunResult`- und
 `VNSettlementPeriodRunResult`-Objekte. Diese duerfen nicht nachtraeglich aus
 unvollstaendigen Daten erfunden werden.
 
-Alle Schalter fuer Validierung, Materialisierung, Persistenz, Carryover,
-Mehrperiodenrunner und UI-Start bleiben `false`. Es wurde keine Simulation
-gestartet und keine historische Gleichheit behauptet.
+Nur der getrennte Schalter fuer die zustandslose PR134-Eingangsvalidierung ist
+nun `true`. Materialisierung, Persistenz, Carryover, Mehrperiodenrunner und
+UI-Start bleiben `false`. Es wurde keine Simulation gestartet und keine
+historische Gleichheit behauptet.
 
 ## Validierung
 
@@ -64,6 +66,7 @@ Unit- und API-Tests sichern:
 
 ## Naechster Schritt
 
-PR134 soll das versionierte Eingabeformat fuer eine vollstaendige
-Periodenkette zustandslos validieren. Kandidatenbau, Speicherung, Carryover
-und Ausfuehrung bleiben auch dort noch gesperrt.
+PR135 soll die formal gueltigen Kandidatenreferenzen serverseitig aufloesen,
+ihre gespeicherten Digests erneut pruefen und die Kandidatenkontexte atomar
+abgleichen. Kettenbau, Speicherung, Carryover und Ausfuehrung bleiben auch
+dort noch gesperrt.

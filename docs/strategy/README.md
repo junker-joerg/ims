@@ -128,4 +128,8 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 - [PR133 Periodenketten- und Carryover-Vertrag](../migration/ims_2x_strategy_execution_period_chain_contract.md):
   versionierte read-only Grenze fuer eine lueckenlose Folge von zwei bis 100
   lokalen Perioden, echte Vorperiodenergebnisse und explizite VU-/VN-
-  Carryover-Opt-ins; noch ohne Validierung, Kettenbau oder Ausfuehrung.
+  Carryover-Opt-ins; noch ohne Kettenbau oder Ausfuehrung.
+- [PR134 Periodenketten-Eingang validieren](../migration/ims_2x_strategy_execution_period_chain_validation.md):
+  versionierter Eingang und atomare, zustandslose Pruefung der vollstaendigen
+  Kandidaten- und Uebergangsfolge; weiterhin ohne Kandidatenaufloesung,
+  Kettenbau oder Ausfuehrung.

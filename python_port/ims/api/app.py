@@ -90,6 +90,9 @@ from ims.strategies import (
     STRATEGY_EXECUTION_CANDIDATE_INPUT_VERSION,
     STRATEGY_EXECUTION_CANDIDATE_VALIDATION_VERSION,
     STRATEGY_EXECUTION_CANDIDATE_VERSION,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_INPUT_VERSION,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_VALIDATION_VERSION,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION,
     build_default_strategy_execution_scenario_profiles,
     build_strategy_execution_candidate,
     materialize_strategy_assignment_snapshots,
@@ -109,6 +112,7 @@ from ims.strategies import (
     strategy_execution_candidate_contract_payload,
     strategy_execution_candidate_build_contract_payload,
     strategy_execution_period_chain_contract_payload,
+    strategy_execution_period_chain_validation_contract_payload,
     strategy_execution_scenario_profile_root,
     strategy_execution_candidate_validation_contract_payload,
     translate_strategy_assignment_draft,
@@ -118,6 +122,7 @@ from ims.strategies import (
     validate_strategy_assignment_vu_snapshot_materialization_input,
     validate_strategy_assignment_vu_snapshot_state,
     validate_strategy_execution_candidate_input,
+    validate_strategy_execution_period_chain_input,
 )
 
 try:
@@ -487,6 +492,62 @@ def _strategy_execution_candidate_validation_invalid_json_payload() -> dict[
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
+    }
+
+
+def _strategy_execution_period_chain_validation_invalid_json_payload() -> dict[
+    str, object
+]:
+    return {
+        "schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_VALIDATION_VERSION,
+        "input_schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_INPUT_VERSION,
+        "period_chain_schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION,
+        "candidate_schema_version": STRATEGY_EXECUTION_CANDIDATE_VERSION,
+        "mode": "strategy_execution_period_chain_validation",
+        "status": "error",
+        "valid": False,
+        "request_shape_valid": False,
+        "horizon_valid": False,
+        "candidate_references_valid": False,
+        "transitions_valid": False,
+        "identifiers_consistent": False,
+        "submitted_schema_version": None,
+        "run_index": None,
+        "max_periods": None,
+        "first_period": None,
+        "last_period": None,
+        "expected_candidate_count": 0,
+        "validated_candidate_count": 0,
+        "expected_transition_count": 0,
+        "validated_transition_count": 0,
+        "vu_carryover_transition_count": 0,
+        "vn_carryover_transition_count": 0,
+        "issue_count": 1,
+        "issues": [
+            {
+                "stage": "input_contract",
+                "path": "$",
+                "code": "invalid_json",
+                "message": "Periodenkettendokument ist kein gueltiges JSON",
+            }
+        ],
+        "partial_chain_returned": False,
+        "candidate_reference_digest_identity_checked": True,
+        "candidate_storage_resolved": False,
+        "candidate_content_digest_reverified": False,
+        "candidate_context_cross_checked": False,
+        "period_chain_created": False,
+        "period_chain_persisted": False,
+        "source_values_consumed": False,
+        "carryover_invocation_performed": False,
+        "runner_invocation_performed": False,
+        "writes_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "automatic_historical_rule_selection_performed": False,
+        "historical_rng_equality_claim": False,
+        "historical_full_equality_claim": False,
+        "next_gate": "PR135",
     }
 
 
@@ -1054,6 +1115,20 @@ def create_app(
             )
         return JSONResponse(
             validate_strategy_execution_candidate_input(payload).to_dict()
+        )
+
+    async def strategy_execution_period_chain_validation_response(
+        request: Request,
+    ) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                _strategy_execution_period_chain_validation_invalid_json_payload(),
+                status_code=400,
+            )
+        return JSONResponse(
+            validate_strategy_execution_period_chain_input(payload).to_dict()
         )
 
     async def strategy_execution_candidate_build_response(
@@ -1631,6 +1706,21 @@ def create_app(
         def strategies_execution_period_chain_contract() -> dict[str, object]:
             return strategy_execution_period_chain_contract_payload()
 
+        @app.get("/api/strategies/execution-period-chain-validation-contract")
+        def strategies_execution_period_chain_validation_contract() -> dict[
+            str, object
+        ]:
+            return strategy_execution_period_chain_validation_contract_payload()
+
+        @app.post(
+            "/api/strategies/execution-period-chain-validation",
+            response_model=None,
+        )
+        async def strategies_execution_period_chain_validation(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_period_chain_validation_response(request)
+
         @app.get("/api/strategies/execution-candidate-validation-contract")
         def strategies_execution_candidate_validation_contract() -> dict[str, object]:
             return strategy_execution_candidate_validation_contract_payload()
@@ -2026,6 +2116,17 @@ def create_app(
             lambda request: JSONResponse(
                 strategy_execution_period_chain_contract_payload()
             ),
+        ),
+        Route(
+            "/api/strategies/execution-period-chain-validation-contract",
+            lambda request: JSONResponse(
+                strategy_execution_period_chain_validation_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/strategies/execution-period-chain-validation",
+            strategy_execution_period_chain_validation_response,
+            methods=["POST"],
         ),
         Route(
             "/api/strategies/execution-candidate-validation-contract",

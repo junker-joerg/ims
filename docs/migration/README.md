@@ -250,5 +250,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_period_chain_contract.md`: PR133-read-only
   Vertrag fuer 100 lokale Perioden, unveraenderliche Kandidatenreferenzen,
   echte Vorperiodenergebnisse und die vorhandenen VU-/VN-Carryover-Bausteine;
-  noch ohne Kettenvalidierung, Speicherung oder Mehrperiodenrunner
+  noch ohne Speicherung oder Mehrperiodenrunner
+- `ims_2x_strategy_execution_period_chain_validation.md`: PR134-versionierter
+  Eingang und atomare, zustandslose Pruefung einer vollstaendigen lokalen
+  Periodenkette; noch ohne Kandidatenaufloesung, Kettenbau oder Ausfuehrung
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

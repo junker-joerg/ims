@@ -163,6 +163,14 @@ from ims.strategies.execution_period_chain_contract import (
     StrategyExecutionPeriodChainSectionDefinition,
     strategy_execution_period_chain_contract_payload,
 )
+from ims.strategies.execution_period_chain_validation import (
+    STRATEGY_EXECUTION_PERIOD_CHAIN_INPUT_VERSION,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_VALIDATION_VERSION,
+    StrategyExecutionPeriodChainValidationIssue,
+    StrategyExecutionPeriodChainValidationReport,
+    strategy_execution_period_chain_validation_contract_payload,
+    validate_strategy_execution_period_chain_input,
+)
 
 from ims.strategies.catalog import (
     STRATEGY_CATALOG_VERSION,
@@ -206,7 +214,9 @@ __all__ = [
     "STRATEGY_EXECUTION_CANDIDATE_VERSION",
     "STRATEGY_EXECUTION_CARRYOVER_DEFINITIONS",
     "STRATEGY_EXECUTION_PERIOD_CHAIN_CONTRACT_VERSION",
+    "STRATEGY_EXECUTION_PERIOD_CHAIN_INPUT_VERSION",
     "STRATEGY_EXECUTION_PERIOD_CHAIN_SECTIONS",
+    "STRATEGY_EXECUTION_PERIOD_CHAIN_VALIDATION_VERSION",
     "STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION",
     "STRATEGY_EXECUTION_SCENARIO_PROFILE_REFERENCE_VERSION",
     "STRATEGY_EXECUTION_SCENARIO_PROFILE_SCOPE",
@@ -255,6 +265,8 @@ __all__ = [
     "StrategyExecutionCandidateValidationReport",
     "StrategyExecutionCarryoverDefinition",
     "StrategyExecutionPeriodChainSectionDefinition",
+    "StrategyExecutionPeriodChainValidationIssue",
+    "StrategyExecutionPeriodChainValidationReport",
     "StrategyExecutionScenarioProfileDefinition",
     "StrategyFamilyDefinition",
     "StrategyImplementationStatus",
@@ -313,6 +325,7 @@ __all__ = [
     "strategy_execution_scenario_profile_root",
     "strategy_execution_candidate_validation_contract_payload",
     "strategy_execution_period_chain_contract_payload",
+    "strategy_execution_period_chain_validation_contract_payload",
     "strategy_snapshot_translation_issues",
     "strategy_snapshot_context_contract_issues",
     "strategy_snapshot_materialization_contract_issues",
@@ -325,4 +338,5 @@ __all__ = [
     "validate_strategy_assignment_vu_snapshot_state",
     "validate_strategy_assignment_draft",
     "validate_strategy_execution_candidate_input",
+    "validate_strategy_execution_period_chain_input",
 ]

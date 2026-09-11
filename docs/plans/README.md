@@ -301,4 +301,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_execution_period_chain_contract_plan.md`: PR133-Plan und
   read-only Vertrag fuer eine lueckenlose Folge von zwei bis 100 lokalen
   Perioden, belegte Vorperiodenherkunft und explizite VU-/VN-Carryover-Grenzen;
-  Validierung, Kettenbau und Ausfuehrung bleiben gesperrt.
+  Kettenbau und Ausfuehrung bleiben gesperrt.
+- `ims_2x_strategy_execution_period_chain_validation_plan.md`: PR134-Plan
+  fuer den versionierten, zustandslosen und atomaren Ketteneingang von zwei
+  bis 100 Perioden; Kandidatenaufloesung, Kettenbau und Ausfuehrung bleiben
+  gesperrt.

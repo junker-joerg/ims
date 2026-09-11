@@ -114,7 +114,7 @@ def test_start_contract_opens_only_persisted_single_period_path() -> None:
     assert payload["output_files_enabled"] is False
     assert payload["multi_period_execution_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR134"
+    assert payload["next_gate"] == "PR135"
 
 
 def test_readers_report_empty_without_creating_evidence_tables(tmp_path) -> None:
