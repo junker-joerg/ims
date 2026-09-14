@@ -109,7 +109,7 @@ def test_contract_opens_only_ephemeral_two_period_probe() -> None:
     assert payload["result_persistence_enabled"] is False
     assert payload["output_files_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR143"
+    assert payload["next_gate"] == "PR144"
 
 
 def test_parser_reuses_exact_pr138_release() -> None:

@@ -169,3 +169,7 @@ managementtauglichen Bedienung.
   read-only Grenze fuer zwei bis fuenf Perioden und eine bytegenau zu
   pruefende fachliche Prefixprojektion 1-2; drei bis fuenf Perioden bleiben
   noch ohne Runner, Speicherung und UI-Start.
+- [PR143 Fuenf-Perioden-Kette bauen](../migration/ims_2x_strategy_execution_period_chain_five_period_build.md):
+  exakt fuenf gespeicherte Kandidaten atomar aufloesen und als fluechtige
+  kanonische Kette mit erneut geprueftem Gesamtdigest bereitstellen;
+  Ausfuehrung, Speicherung und UI-Start bleiben gesperrt.

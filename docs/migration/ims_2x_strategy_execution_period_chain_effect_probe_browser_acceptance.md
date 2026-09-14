@@ -82,6 +82,7 @@ und bleibt unversioniert.
 
 PR142 hat inzwischen den read-only Vertrag fuer einen kleinen, bis fuenf
 Perioden begrenzten gemeinsamen Kettenrunner festgelegt. Der bereits belegte
-Prefix 1-2 bleibt als exakte fachliche Projektion geschuetzt. PR143 baut und
-validiert die Fuenf-Perioden-Kette ohne Runner; der 100-Perioden-Horizont
-bleibt eine spaetere, separat abzunehmende Grenze.
+Prefix 1-2 bleibt als exakte fachliche Projektion geschuetzt. PR143 hat die
+Fuenf-Perioden-Kette ohne Runner gebaut und validiert. PR144 fuehrt sie als
+naechstes fluechtig aus; der 100-Perioden-Horizont bleibt eine spaetere,
+separat abzunehmende Grenze.

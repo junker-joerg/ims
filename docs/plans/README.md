@@ -340,3 +340,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR142-Plan und read-only Vertrag fuer einen spaeteren Kettenrunner mit zwei
   bis hoechstens fuenf Perioden sowie die exakte kanonische Prefixprojektion
   1-2; Ausfuehrung, Speicherung und UI-Start bleiben gesperrt.
+- `ims_2x_strategy_execution_period_chain_five_period_build_plan.md`:
+  PR143-Plan und Umsetzung fuer den atomaren serverseitigen Bau einer exakt
+  fuenfperiodigen, fluechtigen Kette mit erneut geprueften Kandidaten und
+  Gesamtdigest; Runner, Speicherung und UI-Start bleiben gesperrt.

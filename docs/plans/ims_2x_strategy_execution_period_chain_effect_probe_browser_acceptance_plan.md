@@ -78,9 +78,11 @@ Frontend-Builds und Nicht-Loopback-Adressen werden abgewiesen.
   Handbuch-Screenshots fuer den Zwei-Perioden-Bedienpfad.
 - **PR142 (umgesetzt):** read-only Vertrag fuer einen Kettenrunner mit zwei
   bis fuenf Perioden und exakter fachlicher Prefixprojektion 1-2.
-- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
-  atomar validieren, weiterhin ohne Runner.
-- **PR144+:** Horizonte in getrennten, deterministisch geprueften Stufen
+- **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
+  validiert, weiterhin ohne Runner.
+- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe und
+  exakter fachlicher Prefixnachweis 1-2.
+- **PR145+:** Horizonte in getrennten, deterministisch geprueften Stufen
   ausfuehren; Bedienung und Ergebnisvertrag jeweils mitziehen.
 - **100-Perioden-Gate:** erst nach Prefix-, Laufzeit-, Abbruch-, Ergebnisbundle-
   und eigener Browserabnahme oeffnen.

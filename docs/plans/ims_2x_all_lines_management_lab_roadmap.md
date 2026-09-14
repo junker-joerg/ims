@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-14
-Status: aktive Produkt-Restplanung; PR142 umgesetzt, PR143 naechster Schritt
+Status: aktive Produkt-Restplanung; PR143 umgesetzt, PR144 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -235,9 +235,10 @@ Meilensteinen PR151, PR162, PR170 und PR178 aktualisiert.
 
 PR142 hat den engen read-only Vertrag fuer einen auf fuenf Perioden
 begrenzten Kettenrunner und die exakte fachliche Prefixprojektion 1-2
-festgelegt. PR143 baut und validiert als unmittelbar naechster Produkt-PR
-eine kanonische Fuenf-Perioden-Kette, weiterhin ohne Runner oder
-100-Perioden-Start.
+festgelegt. PR143 hat die kanonische Fuenf-Perioden-Kette gebaut und atomar
+validiert. PR144 fuehrt sie als unmittelbar naechster Produkt-PR fluechtig
+auf isolierten Kandidatenkopien aus und prueft den Prefix 1-2. Speicherung,
+UI-Start und 100-Perioden-Lauf bleiben gesperrt.
 
 Dieser Planungsschnitt selbst aendert keine Fachlogik, startet keine
 Simulation und behauptet keine historische Vollgleichheit.

@@ -6,39 +6,35 @@ PLAN = (
     ROOT
     / "docs"
     / "plans"
-    / "ims_2x_strategy_execution_period_chain_effect_probe_plan.md"
+    / "ims_2x_strategy_execution_period_chain_five_period_build_plan.md"
 )
 MIGRATION = (
     ROOT
     / "docs"
     / "migration"
-    / "ims_2x_strategy_execution_period_chain_effect_probe.md"
+    / "ims_2x_strategy_execution_period_chain_five_period_build.md"
 )
 
 
-def test_pr139_plan_and_mapping_define_ephemeral_two_period_boundary() -> None:
+def test_pr143_plan_and_mapping_define_atomic_five_period_build() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     migration = MIGRATION.read_text(encoding="utf-8")
     normalized = " ".join((plan + migration).split())
 
-    assert "PR139 umgesetzt" in plan
-    assert "`ESS.C:71-75`" in normalized
+    assert "PR143 umgesetzt" in plan
+    assert "`ESS.C:73-75`" in normalized
     assert "`SIMLAENGE = 100`" in normalized
-    assert "genau zwei" in normalized
-    assert "isolierten Kandidatenkopien" in normalized
-    assert "Carryover-Flags" in normalized
-    assert "kein Teilergebnis" in normalized
-    assert "keine vollstaendige Simulation" in normalized
+    assert "exakt fuenf" in normalized
+    assert "vier Uebergaenge" in normalized
+    assert "SHA-256-Gesamtdigest" in normalized
+    assert "keine Teilkette" in normalized
+    assert "keine neue Fachlogik" in normalized
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in normalized
     assert "`incomming/` bleibt unversioniert" in plan
-    assert "PR140 (umgesetzt)" in plan
-    assert "PR141 (umgesetzt)" in plan
-    assert "PR142 (umgesetzt)" in plan
-    assert "PR143 (umgesetzt)" in plan
     assert "PR144 (naechster Schritt)" in plan
 
 
-def test_pr139_sources_are_indexed() -> None:
+def test_pr143_sources_are_indexed() -> None:
     plans_index = (ROOT / "docs" / "plans" / "README.md").read_text(
         encoding="utf-8"
     )

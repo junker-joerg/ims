@@ -81,8 +81,8 @@ def strategy_execution_period_chain_bounded_runner_contract_payload() -> dict[
     boundary_flags = {
         "contract_read_only": True,
         "bounded_runner_enabled": False,
-        "five_period_candidate_validation_enabled": False,
-        "five_period_chain_build_enabled": False,
+        "five_period_candidate_validation_enabled": True,
+        "five_period_chain_build_enabled": True,
         "five_period_execution_enabled": False,
         "five_period_result_persistence_enabled": False,
         "five_period_ui_start_enabled": False,
@@ -143,6 +143,9 @@ def strategy_execution_period_chain_bounded_runner_contract_payload() -> dict[
             "five_period_target": 5,
             "existing_two_period_endpoint_unchanged": (
                 "/api/run-control/strategy-period-chain-effect-probe"
+            ),
+            "five_period_build_endpoint": (
+                "/api/strategies/execution-period-chain-five-period-build"
             ),
             "bounded_execution_endpoint": None,
         },
@@ -219,7 +222,7 @@ def strategy_execution_period_chain_bounded_runner_contract_payload() -> dict[
             "partial_result_persisted": False,
             "retry_implicit": False,
         },
-        "next_gate": "PR143",
+        "next_gate": "PR144",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

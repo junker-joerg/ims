@@ -162,6 +162,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "period_chain_two_period_result_persistence_enabled": True,
         "period_chain_overview_enabled": True,
         "period_chain_bounded_runner_contract_enabled": True,
+        "period_chain_five_period_build_enabled": True,
         "period_chain_runner_enabled": False,
         "carryover_execution_enabled": False,
         "multi_period_execution_enabled": False,
@@ -235,6 +236,9 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         ),
         "bounded_runner_contract_endpoint": (
             "/api/run-control/strategy-period-chain-bounded-runner-contract"
+        ),
+        "five_period_build_endpoint": (
+            "/api/strategies/execution-period-chain-five-period-build"
         ),
         "historical_horizon": {
             "source": "IMSDATA.C:14",
@@ -323,7 +327,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "digest_mismatch_allowed": False,
             "missing_actor_allowed": False,
         },
-        "next_gate": "PR143",
+        "next_gate": "PR144",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

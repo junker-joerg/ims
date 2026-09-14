@@ -41,7 +41,7 @@ Herkunftsgrenze.
   PR139-Zwei-Perioden-Wirkungsprobe und kontrollierter PR140-Start;
 - aktivierter read-only PR142-Vertrag fuer einen auf fuenf Perioden
   begrenzten Kettenrunner;
-- `next_gate = PR143`.
+- `next_gate = PR144`.
 
 Der read-only Hauptvertrag liegt unter
 `GET /api/strategies/execution-period-chain-contract`. Fuer PR138 verweist er
@@ -82,4 +82,5 @@ unveraenderlich. PR138 prueft inzwischen die gespeicherte Freigabeidentitaet
 read-only. PR139 erprobt inzwischen genau zwei Perioden fluechtig. PR140
 macht den Start kontrolliert bedienbar; PR141 hat ihn im Browser abgenommen.
 PR142 hat die naechste Grenze fuer zwei bis fuenf Perioden read-only
-festgelegt; PR143 baut und validiert die Fuenf-Perioden-Kette ohne Runner.
+festgelegt. PR143 hat die Fuenf-Perioden-Kette ohne Runner gebaut und atomar
+validiert; PR144 schliesst als naechstes die fluechtige Wirkungsprobe an.

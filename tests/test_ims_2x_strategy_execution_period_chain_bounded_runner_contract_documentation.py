@@ -31,8 +31,8 @@ def test_pr142_plan_and_mapping_define_bounded_runner_contract() -> None:
     assert "keine neue oder geaenderte VU-/VN-Fachlogik" in normalized
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in normalized
     assert "`incomming/` bleibt unversioniert" in plan
-    assert "PR143 (naechster Schritt)" in plan
-    assert "PR144" in plan
+    assert "PR143 (umgesetzt)" in plan
+    assert "PR144 (naechster Schritt)" in plan
 
 
 def test_pr142_sources_are_indexed() -> None:

@@ -282,4 +282,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR142-read-only Ausfuehrungsvertrag fuer zwei bis hoechstens fuenf Perioden
   mit atomarem Fehlerstopp und exakter fachlicher Prefixprojektion 1-2;
   weiterhin ohne neuen Runner, Speicherung oder UI-Start
+- `ims_2x_strategy_execution_period_chain_five_period_build.md`:
+  PR143-atomarer Bau einer exakt fuenfperiodigen, fluechtigen Kette mit
+  erneuter Kandidaten-, Kontext-, Akteurs- und Gesamtdigestpruefung;
+  weiterhin ohne Runner, Speicherung oder UI-Start
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

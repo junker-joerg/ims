@@ -26,10 +26,11 @@ def test_bounded_runner_contract_endpoint_is_read_only(tmp_path) -> None:
         "canonical_json_byte_equality_required"
     ] is True
     assert payload["bounded_runner_enabled"] is False
+    assert payload["five_period_chain_build_enabled"] is True
     assert payload["five_period_ui_start_enabled"] is False
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR143"
+    assert payload["next_gate"] == "PR144"
     assert client.post(endpoint, json={}).status_code == 405
     assert client.put(endpoint, json={}).status_code == 405
     assert client.delete(endpoint).status_code == 405
@@ -51,5 +52,5 @@ def test_starlette_fallback_exposes_same_bounded_runner_contract(
     assert payload["horizon_policy"]["maximum_period_count"] == 5
     assert payload["current_release_state"]["released_period_counts"] == [2]
     assert payload["bounded_runner_enabled"] is False
-    assert payload["next_gate"] == "PR143"
+    assert payload["next_gate"] == "PR144"
     assert client.post(endpoint, json={}).status_code == 405

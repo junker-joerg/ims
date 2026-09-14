@@ -64,8 +64,10 @@ der Ausfuehrung beendet die Probe ohne Teilresultat und ohne Speicherung.
   Handbuch-Screenshots fuer den Zwei-Perioden-Bedienpfad.
 - **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
   exakte fachliche Prefixprojektion 1-2.
-- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
-  atomar validieren, weiterhin ohne Runner.
-- **PR144+:** Horizonte schrittweise erweitern und jeweils gesondert
+- **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
+  validiert, weiterhin ohne Runner.
+- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe und
+  exakter fachlicher Prefixnachweis 1-2.
+- **PR145+:** Horizonte schrittweise erweitern und jeweils gesondert
   ausfuehren und validieren, bis 100 Perioden reviewbar und stabil bedienbar
   sind.

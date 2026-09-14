@@ -263,10 +263,10 @@ kanonische fluechtige Periodenkette gebaut, PR137 sie unveraenderlich
 abgelegt, PR138 den read-only Freigabecheck ergaenzt, PR139 die fluechtige
 Zwei-Perioden-Probe umgesetzt, PR140 deren kontrollierten Workbench-Start
 angebunden und PR141 Browserabnahme sowie Handbuchbilder abgeschlossen.
-PR142 hat den naechsten begrenzten Horizont vertraglich vorbereitet; PR143
-baut und validiert die Fuenf-Perioden-Kette ohne Runner. Plattformzusagen
-aus HB4/HB5 duerfen keine fachliche
-Produktionsreife vorwegnehmen.
+PR142 hat den naechsten begrenzten Horizont vertraglich vorbereitet. PR143
+hat die Fuenf-Perioden-Kette ohne Runner gebaut und validiert; PR144 fuehrt
+sie als naechstes fluechtig aus. Plattformzusagen aus HB4/HB5 duerfen keine
+fachliche Produktionsreife vorwegnehmen.
 
 Die fachliche Produktfolge ab PR142 ist getrennt in
 `docs/plans/ims_2x_all_lines_management_lab_roadmap.md` geplant. HB4 bis HB6

@@ -195,7 +195,7 @@ Ablauf sowie die PR-88-bis-PR-101-Befunde stehen in
 Die dafuer am 2026-09-01 angenommene Produkt- und Validierungsentscheidung
 steht unter `docs/strategy/pr102_ims_2x_direction_recommendation.md`.
 
-## Fortschreibung ab PR141
+## Fortschreibung ab PR143
 
 Die oben stehende Folge dokumentiert den historischen Weg bis PR102 und bleibt
 als Herkunft der damaligen Produktionsreifeentscheidung erhalten. PR102 hat
@@ -209,6 +209,7 @@ ist die aktive Restplanung in
 umfasst PR142 bis PR182: zunaechst den bedienbaren 100-Perioden-Lauf, danach
 Mehrsparten und Versichererbilanz, eine klar begrenzte
 Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die Abnahme fuer ein
-Managementseminar. PR142 hat inzwischen den read-only Vertrag fuer den auf
-fuenf Perioden begrenzten Kettenrunner festgelegt; PR143 baut und validiert
-als naechstes die kanonische Fuenf-Perioden-Kette ohne Runner.
+Managementseminar. PR142 hat den read-only Vertrag fuer den auf fuenf
+Perioden begrenzten Kettenrunner festgelegt. PR143 hat die kanonische
+Fuenf-Perioden-Kette atomar gebaut und validiert. PR144 schliesst als
+naechstes die isolierte fluechtige Wirkungsprobe samt Prefixnachweis 1-2 an.

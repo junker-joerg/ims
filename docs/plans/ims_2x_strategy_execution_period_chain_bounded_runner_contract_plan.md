@@ -106,10 +106,11 @@ Die Tests muessen belegen:
 
 - **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
   exakte kanonische Prefixprojektion 1-2.
-- **PR143 (naechster Schritt):** eine vollstaendige Fuenf-Perioden-Kette
-  serverseitig bauen und atomar validieren; weiterhin ohne Runner.
-- **PR144:** die gepruefte Fuenf-Perioden-Kette fluechtig auf isolierten
-  Kandidatenkopien ausfuehren und den Prefixnachweis tatsaechlich berechnen.
+- **PR143 (umgesetzt):** eine vollstaendige Fuenf-Perioden-Kette
+  serverseitig gebaut und atomar validiert; weiterhin ohne Runner.
+- **PR144 (naechster Schritt):** die gepruefte Fuenf-Perioden-Kette fluechtig
+  auf isolierten Kandidatenkopien ausfuehren und den Prefixnachweis
+  tatsaechlich berechnen.
 - **PR145/PR146:** kontrollierter Start, Idempotenz, Ergebnisablage und
   Browserabnahme getrennt anschliessen.
 

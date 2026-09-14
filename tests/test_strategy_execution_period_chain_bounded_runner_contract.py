@@ -38,13 +38,18 @@ def test_bounded_runner_contract_limits_first_extension_to_five_periods() -> Non
         "existing_two_period_endpoint_unchanged": (
             "/api/run-control/strategy-period-chain-effect-probe"
         ),
+        "five_period_build_endpoint": (
+            "/api/strategies/execution-period-chain-five-period-build"
+        ),
         "bounded_execution_endpoint": None,
     }
+    assert payload["five_period_candidate_validation_enabled"] is True
+    assert payload["five_period_chain_build_enabled"] is True
     assert payload["bounded_runner_enabled"] is False
     assert payload["five_period_execution_enabled"] is False
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR143"
+    assert payload["next_gate"] == "PR144"
 
 
 def test_bounded_runner_contract_orders_full_preparation_before_execution() -> None:

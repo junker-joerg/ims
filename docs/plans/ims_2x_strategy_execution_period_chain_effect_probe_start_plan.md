@@ -77,9 +77,11 @@ aber nicht gestartet werden.
   Viewport, Fehlerpfade und Handbuch-Screenshots fuer den Zwei-Perioden-Pfad.
 - **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
   exakte fachliche Prefixprojektion 1-2.
-- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
-  atomar validieren, weiterhin ohne Runner.
-- **PR144+:** Horizonte in getrennten, getesteten Stufen ausfuehren;
+- **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
+  validiert, weiterhin ohne Runner.
+- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe und
+  exakter fachlicher Prefixnachweis 1-2.
+- **PR145+:** Horizonte in getrennten, getesteten Stufen ausfuehren;
   Bedienung und Ergebnisvertrag jeweils mitziehen.
 - **100-Perioden-Gate:** erst nach deterministischer Prefix-Pruefung,
   Laufzeit-/Abbruchtest, Ergebnisbundle und eigener Browserabnahme oeffnen.

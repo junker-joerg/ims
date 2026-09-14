@@ -84,9 +84,10 @@ oder Ausgabepfade werden nicht akzeptiert.
 - **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
 - **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
   exakte fachliche Prefixprojektion 1-2.
-- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
-  atomar validieren, weiterhin ohne Runner; danach Ausbau bis 100 Perioden in
-  getrennten PRs.
+- **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
+  validiert, weiterhin ohne Runner.
+- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe;
+  danach Ausbau bis 100 Perioden in getrennten PRs.
 
 ## Schutzgrenzen
 
