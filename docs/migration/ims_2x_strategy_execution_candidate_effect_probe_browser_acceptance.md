@@ -72,4 +72,5 @@ fluechtige Kette samt Gesamtdigest. PR137 speichert sie inzwischen
 unveraenderlich und schaltet weiterhin keinen Mehrperiodenstart frei. PR138
 prueft inzwischen die gespeicherte Freigabeidentitaet read-only. PR139
 erprobt nun genau zwei Perioden fluechtig; PR140 macht den Pfad kontrolliert
-bedienbar. PR141 nimmt ihn im Browser ab.
+bedienbar. PR141 hat ihn im Browser abgenommen; PR142 bereitet den naechsten
+begrenzten Horizont vor.

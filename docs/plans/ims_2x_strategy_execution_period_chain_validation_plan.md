@@ -84,8 +84,9 @@ Fehlerbericht ohne Teilannahme.
   atomarem Fehlerstopp.
 - **PR140 (umgesetzt):** kontrollierten dauerhaften Start fuer genau zwei
   Perioden anbinden.
-- **PR141 (naechster Schritt):** Browserabnahme; den Ausbau bis 100 Perioden
-  danach in getrennten PRs freigeben.
+- **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
+- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
+  den Ausbau bis 100 Perioden danach in getrennten PRs freigeben.
 
 ## Schutzgrenzen
 

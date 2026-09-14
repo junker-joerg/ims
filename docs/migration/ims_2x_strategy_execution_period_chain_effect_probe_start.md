@@ -109,6 +109,6 @@ keine fachlichen Ausgabedateien, kein Legacy-Vergleich und keine historische
 RNG- oder Vollgleichheitsbehauptung. Die Probe ist noch keine allgemeine
 Mehrperiodensimulation.
 
-PR141 nimmt den Bedienpfad im Browser auf breitem und schmalem Viewport ab
-und aktualisiert die Handbuchbilder. Erst danach wird der Horizont in
-getrennten, deterministisch geprueften Stufen erweitert.
+PR141 hat den Bedienpfad im Browser auf breitem und schmalem Viewport
+abgenommen und die Handbuchbilder aktualisiert. PR142 bereitet den naechsten
+begrenzten Horizont vor; weitere Stufen folgen getrennt und deterministisch.

@@ -92,4 +92,5 @@ PR139 fuehrt inzwischen aus einer erneut freigegebenen Kette genau zwei
 Perioden auf isolierten Kandidatenkopien fluechtig aus. Kandidatenaufloesung,
 Carryover-Flags und atomarer Fehlerstopp sind vor dem ersten Runneraufruf
 abgesichert. PR140 macht diesen Pfad kontrolliert und dauerhaft bedienbar;
-PR141 nimmt ihn im Browser ab.
+PR141 hat ihn im Browser abgenommen. PR142 bereitet den naechsten begrenzten
+Horizont vor.

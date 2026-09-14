@@ -27,6 +27,7 @@ def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     assert "`Runs`" in index
     assert "`Strategien`" in index
     assert "verified_browser_pr132" in index
+    assert "verified_browser_pr141" in index
     assert "verified_windows_hb3" in index
     assert "not_verified" in index
     assert "feasibility_open" in index
@@ -50,6 +51,10 @@ def test_operation_follows_visible_controlled_ui_path() -> None:
         "Wirkungsprobe starten",
         "Einperioden-Wirkungsprobe",
         "Versuchsverlauf",
+        "Zwei-Perioden-Wirkungsprobe",
+        "Zwei Perioden starten",
+        "Uebergang 1 nach 2",
+        "Periode 1 und 2 mit gespeichertem Carryover",
     ):
         assert label in operation
     assert "Preflight -> explizite Freigabe -> Ausfuehren" in normalized

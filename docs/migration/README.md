@@ -274,4 +274,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_period_chain_effect_probe_start.md`:
   PR140-kontrollierter Workbench-Start mit atomarer Idempotenz,
   unveraenderlicher Zwei-Perioden-Ergebnisablage und read-only Verlauf
+- `ims_2x_strategy_execution_period_chain_effect_probe_browser_acceptance.md`:
+  PR141-Browserabnahme des vollstaendigen Zwei-Perioden-Pfads auf breitem und
+  schmalem Viewport mit Carryover-Nachweis, Fehlerpfaden und datierten
+  Handbuch-Screenshots
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -71,5 +71,5 @@ eine kanonische fluechtige Periodenkette und ihren Gesamtdigest. PR137
 speichert sie inzwischen unveraenderlich und idempotent. PR138 prueft die
 gespeicherte Freigabeidentitaet inzwischen read-only. PR139 erprobt nun
 genau zwei Perioden fluechtig. PR140 macht den dauerhaften Start kontrolliert
-bedienbar; PR141 nimmt ihn im Browser ab. Groessere Horizonte bleiben
-weiterhin getrennte spaetere Freigaben.
+bedienbar; PR141 hat ihn im Browser abgenommen. PR142 bereitet den naechsten
+begrenzten Horizont vor; groessere Horizonte bleiben getrennte Freigaben.

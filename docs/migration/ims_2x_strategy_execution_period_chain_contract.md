@@ -39,7 +39,7 @@ Herkunftsgrenze.
   PR136-Kettenbau und -Digest;
 - aktivierte PR137-Kettenablage, PR138-Freigabepruefung, fluechtige
   PR139-Zwei-Perioden-Wirkungsprobe und kontrollierter PR140-Start;
-- `next_gate = PR141`.
+- `next_gate = PR142`.
 
 Der read-only Hauptvertrag liegt unter
 `GET /api/strategies/execution-period-chain-contract`. Fuer PR138 verweist er
@@ -78,5 +78,5 @@ Akteursidentitaeten atomar ab. PR136 bildet daraus inzwischen eine kanonische
 fluechtige Kette und ihren Gesamtdigest. PR137 speichert sie inzwischen
 unveraenderlich. PR138 prueft inzwischen die gespeicherte Freigabeidentitaet
 read-only. PR139 erprobt inzwischen genau zwei Perioden fluechtig. PR140
-macht den Start kontrolliert bedienbar; PR141 nimmt ihn im Browser ab.
-Groessere Horizonte bleiben gesperrt.
+macht den Start kontrolliert bedienbar; PR141 hat ihn im Browser abgenommen.
+PR142 bereitet den naechsten begrenzten Horizont vor.

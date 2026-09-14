@@ -85,8 +85,10 @@ Der Browserpfad lautet:
   Ergebnisablage bleibt gesperrt.
 - **PR140 (umgesetzt):** kontrollierter Workbench-Start, dauerhafte
   Idempotenz und Ergebnisablage fuer diese Zwei-Perioden-Probe.
-- **PR141 (naechster Schritt):** Browserabnahme und Handbuch-Screenshots fuer
+- **PR141 (umgesetzt):** Browserabnahme und Handbuch-Screenshots fuer
   den Zwei-Perioden-Pfad.
+- **PR142 (naechster Schritt):** gemeinsamen Kettenrunner fuer einen kleinen,
+  fest begrenzten Horizont vorbereiten und den Prefix 1-2 stabil halten.
 
 Die Einperioden-Wirkungsprobe ist nach PR132 kontrolliert bedienbar und
 dokumentiert. Ein nutzbarer 100-Periodenlauf, Ergebnisbloecke, XLSX-Export und

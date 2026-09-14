@@ -83,8 +83,9 @@ konfigurierte Workbench-SQLite-Datei bleibt der Endpunkt gesperrt.
   atomarem Fehlerstopp.
 - **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
   Perioden.
-- **PR141 (naechster Schritt):** Browserabnahme; spaeter Ausbau bis 100
-  Perioden in getrennten PRs.
+- **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
+- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
+  spaeter Ausbau bis 100 Perioden in getrennten PRs.
 
 ## Schutzgrenzen
 

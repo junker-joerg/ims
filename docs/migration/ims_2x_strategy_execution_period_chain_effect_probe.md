@@ -86,5 +86,5 @@ unversioniert.
 
 PR140 kontrolliert die Zwei-Perioden-Probe inzwischen ueber einen
 ausdruecklichen Workbench-Start mit dauerhafter Idempotenz und
-unveraenderlichem Ergebnisverlauf. PR141 nimmt diesen Bedienpfad im Browser
-ab. Der Ausbau auf groessere Horizonte bleibt davon getrennt.
+unveraenderlichem Ergebnisverlauf. PR141 hat diesen Bedienpfad im Browser
+abgenommen. PR142 bereitet den naechsten begrenzten Horizont vor.

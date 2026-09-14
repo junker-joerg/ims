@@ -60,7 +60,9 @@ der Ausfuehrung beendet die Probe ohne Teilresultat und ohne Speicherung.
 - **PR140 (umgesetzt):** kontrollierter Workbench-Start mit dauerhafter
   Idempotenz und unveraenderlicher Ergebnisablage fuer genau diese
   Zwei-Perioden-Probe.
-- **PR141 (naechster Schritt):** Browserabnahme auf breitem und schmalem Viewport sowie
+- **PR141 (umgesetzt):** Browserabnahme auf breitem und schmalem Viewport sowie
   Handbuch-Screenshots fuer den Zwei-Perioden-Bedienpfad.
-- **PR142+:** Horizonte schrittweise erweitern und jeweils gesondert
+- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten
+  und den Prefix 1-2 stabil halten.
+- **PR143+:** Horizonte schrittweise erweitern und jeweils gesondert
   validieren, bis 100 Perioden reviewbar und stabil bedienbar sind.

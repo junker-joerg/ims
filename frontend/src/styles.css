@@ -571,7 +571,7 @@ h2 {
 
 .strategy-workbench-tabs {
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 4px;
   min-width: 0;
   max-width: 100%;
@@ -3406,6 +3406,11 @@ code {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .strategy-candidate-probe-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .strategy-candidate-probe-controls,
   .strategy-candidate-probe-result-grid,
   .strategy-candidate-probe-history-row {
@@ -3415,6 +3420,11 @@ code {
   .strategy-candidate-probe-result-grid > div,
   .strategy-candidate-probe-result-grid > div:nth-child(3n) {
     border-right: 0;
+  }
+
+  .strategy-candidate-probe-evidence > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .strategy-candidate-probe-controls .primary-action {

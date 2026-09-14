@@ -1,6 +1,6 @@
 # IMS-Benutzerhandbuch
 
-Stand: 2026-09-11
+Stand: 2026-09-14
 Handbuchstand: HB3c
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
@@ -16,6 +16,7 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | Windows-Anwender-Testpaket | `documented_windows_hb3b` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 10 Seiten fachliche Bedienungsanleitung mit 8 Abbildungen sind vorbereitet und geprueft |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Einperioden-Wirkungsprobe | `verified_browser_pr132` | Strategie-Kandidat, ausdrueckliche Freigabe, genau eine isolierte Periode, gespeichertes Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
+| Zwei-Perioden-Wirkungsprobe | `verified_browser_pr141` | Gespeicherte Kette, ausdrueckliche Freigabe, zwei isolierte Perioden, VU-/VN-Carryover, unveraenderliches Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
 | Historische Kernvalidierung | `blocked_calculated_core_validation` | Nach PR101 sind 15/15 Tabellen und 6.300/6.300 Ergebniszeilen angeschlossen; die gemeinsame fachliche Bewertung folgt in PR102 |
@@ -44,7 +45,7 @@ Navigation springt zu fuenf stabilen Bereichen:
 | --- | --- |
 | `Dashboard` | Systemstatus, Auswahlzusammenfassung und Betriebsdiagnose |
 | `Szenarien` | vorhandene Szenarien, Filter und Detailauswahl |
-| `Strategien` | Strategiekatalog, Entwuerfe, Snapshots und kontrollierte Einperioden-Kandidaten |
+| `Strategien` | Strategiekatalog, Entwuerfe, Snapshots sowie kontrollierte Einperioden-Kandidaten und Periodenketten |
 | `Validierung` | Kernvalidierung, Vergleichsstatus und Grenzen |
 | `Runs` | vorhandene Runs, Queue, Run-Control und Ergebnisanzeige |
 
@@ -60,6 +61,8 @@ Navigation springt zu fuenf stabilen Bereichen:
 | explizite Freigabe | Person und Begruendung werden bestaetigt, bevor ein zulassiger Adapterstart moeglich wird |
 | Strategie-Kandidat | unveraenderlich gespeicherte Kombination aus Marktgrundzustand, Strategiezuordnungen und VU-/VN-Snapshots fuer genau eine Periode |
 | Einperioden-Wirkungsprobe | einmalige kontrollierte Anwendung dieses Kandidaten mit gespeichertem Vorher/Nachher-Nachweis; noch kein Mehrperiodenlauf |
+| Periodenkette | unveraenderlich gespeicherte Folge periodenspezifischer Kandidaten mit ausdruecklichen VU-/VN-Carryover-Flags |
+| Zwei-Perioden-Wirkungsprobe | kontrollierte Anwendung der Kandidaten fuer Periode 1 und 2 mit genau einem gespeicherten Uebergang; noch kein freier Mehrperioden- oder 100-Periodenlauf |
 | Adapter-Resultat | persistiertes Ergebnis des kontrollierten Adapters; nicht automatisch ein Simulationsresultat |
 | historische Referenz | archivierte Ergebnisdatei zum diagnostischen Vergleich, nicht Eingabe fuer die moderne Berechnung |
 | `blocked` | die fachliche Freigabe bleibt geschlossen; das bedeutet nicht automatisch, dass die Workbench technisch defekt ist |
@@ -71,8 +74,11 @@ Navigation springt zu fuenf stabilen Bereichen:
 - `Adapter starten` bezeichnet den kontrollierten Adapterpfad. Daraus folgt
   keine Ausfuehrung des historischen Simulationskerns.
 - `Wirkungsprobe starten` fuehrt genau den geprueften Einperioden-Kandidaten
-  aus. Carryover, Scheduler, Mehrperiodenlauf und Ergebnisdateien bleiben
+  aus. Carryover, Scheduler und Ergebnisdateien bleiben fuer diesen Pfad
   gesperrt.
+- `Zwei Perioden starten` fuehrt genau eine gespeicherte Kette fuer Periode 1
+  und 2 samt explizitem VU-/VN-Carryover aus. Freie Horizonte,
+  100-Periodenlauf und Ergebnisdateien bleiben gesperrt.
 - Historische 300- und 500-Zeilen-Dateien werden als drei beziehungsweise
   fuenf getrennte Laeufe mit hoechstens 100 Perioden gelesen.
 - Unterschiedliche damalige Parameter, Zinssaetze, Compiler und RNG-Folgen

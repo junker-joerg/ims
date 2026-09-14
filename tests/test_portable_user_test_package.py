@@ -39,7 +39,10 @@ def test_portable_user_guide_is_at_most_ten_pages_and_honest_about_scope() -> No
     assert "Prozessrealitaet" in guide
     assert "Kein Ergebnis der modernisierten Workbench" in guide
     assert guide.count("![") == 9
-    assert "windows_strategy_effect_probe_pr132_wide_2026-09-11.png" in guide
+    assert (
+        "windows_strategy_period_chain_effect_probe_pr141_wide_2026-09-14.png"
+        in guide
+    )
     for image_name in (
         "ims_market_cycle_diss_2026-09-01.png",
         "ims_shock_types_diss_2026-09-01.png",

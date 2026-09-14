@@ -326,3 +326,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_execution_period_chain_effect_probe_start_plan.md`:
   PR140-Plan fuer den kontrollierten Workbench-Start mit dauerhafter
   Idempotenz, unveraenderlichem Zwei-Perioden-Ergebnis und read-only Verlauf.
+- `ims_2x_strategy_execution_period_chain_effect_probe_browser_acceptance_plan.md`:
+  PR141-Plan und Abnahme fuer den vollstaendigen Zwei-Perioden-Bedienpfad auf
+  breitem und schmalem Viewport samt atomaren Fehlerpfaden und
+  Handbuch-Screenshots.

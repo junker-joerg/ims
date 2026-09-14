@@ -119,8 +119,10 @@ serverseitige Idempotenzgrenze bleibt auch bei direktem API-Aufruf wirksam.
   Ergebnisablage bleibt gesperrt.
 - **PR140 (umgesetzt):** kontrollierter Workbench-Start, dauerhafte
   Idempotenz und Ergebnisablage fuer diese Zwei-Perioden-Probe.
-- **PR141 (naechster Schritt):** Browserabnahme und Handbuch-Screenshots fuer
+- **PR141 (umgesetzt):** Browserabnahme und Handbuch-Screenshots fuer
   den Zwei-Perioden-Pfad.
+- **PR142 (naechster Schritt):** gemeinsamen Kettenrunner fuer einen kleinen,
+  fest begrenzten Horizont vorbereiten und den Prefix 1-2 stabil halten.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Mehrperiodenlauf, Carryover und Regulierungssimulation bleiben
@@ -133,4 +135,5 @@ Kandidatenreferenzen auf. PR136 bildet inzwischen die kanonische fluechtige
 Kette. PR137 speichert sie inzwischen unveraenderlich und schaltet noch keinen
 Mehrperiodenstart frei. PR138 fuegt inzwischen den read-only Freigabecheck
 hinzu. PR139 erprobt inzwischen genau zwei Perioden fluechtig; PR140 macht
-diesen Pfad nun kontrolliert bedienbar. PR141 nimmt ihn im Browser ab.
+diesen Pfad nun kontrolliert bedienbar. PR141 hat ihn im Browser abgenommen;
+PR142 bereitet den naechsten begrenzten Horizont vor.

@@ -73,9 +73,9 @@ aber nicht gestartet werden.
 - **PR140 (umgesetzt):** kontrollierter Workbench-Start, dauerhafte
   Idempotenz, unveraenderliche Ergebnisablage und read-only Verlauf fuer
   genau zwei Perioden.
-- **PR141 (naechster Schritt):** Browserabnahme auf breitem und schmalem
+- **PR141 (umgesetzt):** Browserabnahme auf breitem und schmalem
   Viewport, Fehlerpfade und Handbuch-Screenshots fuer den Zwei-Perioden-Pfad.
-- **PR142:** gemeinsamen Kettenrunner fuer einen kleinen, fest begrenzten
+- **PR142 (naechster Schritt):** gemeinsamen Kettenrunner fuer einen kleinen, fest begrenzten
   Horizont vorbereiten und den Prefix 1-2 exakt stabil halten.
 - **PR143+:** Horizonte in getrennten, getesteten Stufen erweitern;
   Bedienung und Ergebnisvertrag jeweils mitziehen.

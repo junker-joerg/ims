@@ -156,3 +156,6 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   manuell freigegebener, atomar idempotenter Start mit unveraenderlichem
   Ergebnisdigest und read-only Versuchshistorie; freie Horizonte und
   allgemeine Simulation bleiben gesperrt.
+- [PR141 Browserabnahme der Zwei-Perioden-Probe](../migration/ims_2x_strategy_execution_period_chain_effect_probe_browser_acceptance.md):
+  vollstaendiger Bedienpfad auf breitem und schmalem Viewport, sichtbarer
+  VU-/VN-Carryover, atomare Fehlerpfade und datierte Handbuch-Screenshots.

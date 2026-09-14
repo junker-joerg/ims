@@ -67,5 +67,5 @@ Kette atomar fest. PR136 bildet daraus inzwischen eine kanonische fluechtige
 Kette und ihren Gesamtdigest. PR137 speichert sie inzwischen unveraenderlich
 und idempotent. PR138 prueft inzwischen die gespeicherte Freigabeidentitaet
 read-only. PR139 erprobt inzwischen genau zwei Perioden fluechtig. PR140
-macht den Start kontrolliert bedienbar; PR141 nimmt ihn im Browser ab.
-Groessere Horizonte bleiben gesperrt.
+macht den Start kontrolliert bedienbar; PR141 hat ihn im Browser abgenommen.
+PR142 bereitet den naechsten begrenzten Horizont vor.

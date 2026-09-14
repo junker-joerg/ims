@@ -193,8 +193,10 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
   mit atomarem Fehlerstopp.
 - **PR140 (umgesetzt):** kontrollierter Workbench-Start mit dauerhafter
   Idempotenz und Ergebnisablage.
-- **PR141 (naechster Schritt):** Browserabnahme und Handbuch-Screenshots fuer
+- **PR141 (umgesetzt):** Browserabnahme und Handbuch-Screenshots fuer
   den Zwei-Perioden-Pfad.
+- **PR142 (naechster Schritt):** gemeinsamen Kettenrunner fuer einen kleinen,
+  fest begrenzten Horizont vorbereiten und den Prefix 1-2 stabil halten.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Das ist weder die Zusage einer
@@ -232,4 +234,5 @@ kanonische fluechtige Kette samt Gesamtdigest. PR137 legt sie inzwischen
 unveraenderlich ab, ohne bereits einen Mehrperiodenstart freizuschalten.
 PR138 prueft inzwischen die gespeicherte Freigabeidentitaet read-only. PR139
 fuehrt nun genau zwei Perioden auf isolierten Kopien fluechtig aus. PR140
-macht diesen Pfad nun kontrolliert bedienbar. PR141 nimmt ihn im Browser ab.
+macht diesen Pfad nun kontrolliert bedienbar. PR141 hat ihn im Browser
+abgenommen; PR142 bereitet den naechsten begrenzten Horizont vor.

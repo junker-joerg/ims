@@ -257,6 +257,10 @@ def test_frontend_shell_declares_readonly_execution_candidate_overview():
     assert "strategy-candidate-probe-controls" in styles
     assert "strategy-candidate-probe-result-grid" in styles
     assert "strategy-candidate-probe-history-row" in styles
+    assert "grid-template-columns: repeat(5, minmax(0, 1fr));" in styles
+    assert ".strategy-candidate-probe-evidence > div" in styles
+    assert ".strategy-candidate-probe-heading" in styles
+    assert "flex-direction: column;" in styles
     assert "strategy-candidate-provenance" in styles
 
 

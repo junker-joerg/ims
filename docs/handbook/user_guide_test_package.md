@@ -147,8 +147,8 @@ Eingabewechsel zuschreiben.
 Die kurze und ehrliche Antwort fuer das aktuelle Windows-Testpaket lautet:
 **Die Workbench zeigt noch keinen fachlichen Modelloutput als Zeitreihe oder
 Diagramm.** Sie zeigt Szenarien, Run-Metadaten, technische Ausfuehrungsgrenzen,
-historische Validierung und fuer einen vorbereiteten Strategie-Kandidaten den
-gespeicherten Vorher/Nachher-Nachweis genau einer Periode.
+historische Validierung und fuer vorbereitete Strategie-Kandidaten den
+gespeicherten Wirkungsnachweis einer oder zweier kontrollierter Perioden.
 
 ![Run-Uebersicht ohne fachlichen Ergebnisbrowser](images/windows_workbench_runs_hb3a_2026-09-01.png)
 
@@ -172,9 +172,9 @@ deshalb auch kein neuer Ergebnisordner erzeugt. Ein sichtbarer
 Ergebnis-Arbeitsbereich mit Diagrammen, Tabellen und Export ist eine noch
 offene Produktfunktion von IMS 2.x.
 
-![Gespeicherter Einperiodennachweis der heutigen Workbench](images/windows_strategy_effect_probe_pr132_wide_2026-09-11.png)
+![Gespeicherter Zwei-Perioden-Nachweis der heutigen Workbench](images/windows_strategy_period_chain_effect_probe_pr141_wide_2026-09-14.png)
 
-*Abbildung: Die Workbench kann einen vorbereiteten VU-/VN-Strategiekandidaten fuer genau eine isolierte Periode anwenden und den Nachweis speichern. Das ist noch keine 100-Perioden-Simulation und keine historische Vollgleichheit.*
+*Abbildung: Die Workbench kann zwei vorbereitete VU-/VN-Strategiekandidaten fuer Periode 1 und 2 anwenden, den gespeicherten Carryover ausfuehren und den vollstaendigen Nachweis unveraenderlich ablegen. Das ist noch keine 100-Perioden-Simulation und keine historische Vollgleichheit.*
 
 <!-- PAGE BREAK -->
 
@@ -331,7 +331,8 @@ Experiments, keine Rekonstruktion realer Versicherungsmarktzahlen.
 - Annahmen, Modellversion und Ergebnisgrenzen nachvollziehbar publizieren.
 
 Im aktuellen Testpaket koennen Sie Bedienweg, Quellen, Referenzkorpus,
-technische Nachweise und eine vorbereitete Einperioden-Wirkungsprobe pruefen.
+technische Nachweise sowie eine vorbereitete Ein- oder Zwei-Perioden-
+Wirkungsprobe pruefen.
 Einen neuen fachlichen Schock konfigurieren, ueber 100 Perioden ausfuehren und
 als Diagramm auswerten koennen Sie dort noch nicht. Genau diese drei Schritte
 bilden den benoetigten Anwenderpfad fuer IMS 2.x:

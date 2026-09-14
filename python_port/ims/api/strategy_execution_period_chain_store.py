@@ -170,7 +170,7 @@ class StrategyExecutionPeriodChainStoreResult:
             "simulation_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR141",
+            "next_gate": "PR142",
         }
 
 
@@ -200,7 +200,7 @@ class StrategyExecutionPeriodChainOverviewResult:
             "execution_performed": False,
             "simulation_performed": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR141",
+            "next_gate": "PR142",
         }
 
 
@@ -554,7 +554,7 @@ def strategy_execution_period_chain_overview_unavailable_payload(
         "execution_performed": False,
         "simulation_performed": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR141",
+        "next_gate": "PR142",
     }
 
 
@@ -612,7 +612,7 @@ def strategy_execution_period_chain_store_contract_payload() -> dict[str, object
         ],
         "partial_storage_allowed": False,
         "boundary_flags": boundary_flags,
-        "next_gate": "PR141",
+        "next_gate": "PR142",
         **boundary_flags,
     }
 
@@ -672,7 +672,7 @@ def _period_chain_overview_payload(
             "effect_probe_start_available": exact_two_period_horizon,
             "effect_probe_result_persistence_available": exact_two_period_horizon,
             "general_multi_period_execution_ready": False,
-            "next_gate": "PR141",
+            "next_gate": "PR142",
         },
     }
 
@@ -704,7 +704,7 @@ def strategy_execution_period_chain_store_error_payload(
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR141",
+        "next_gate": "PR142",
     }
 
 

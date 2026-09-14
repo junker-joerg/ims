@@ -91,8 +91,10 @@ Ein unbekannter Datensatz ergibt `404`, ein Digest- oder Integritaetskonflikt
 - **PR140 (umgesetzt):** kontrollierter Workbench-Start fuer die
   Zwei-Perioden-Probe mit dauerhafter Idempotenz und unveraenderlichem
   Ergebnisverlauf.
-- **PR141 (naechster Schritt):** Browserabnahme und danach schrittweise Horizonte bis 100
-  Perioden, ohne daraus fachliche Produktionsreife abzuleiten.
+- **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
+- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
+  danach schrittweise Horizonte bis 100 Perioden, ohne daraus fachliche
+  Produktionsreife abzuleiten.
 
 ## Schutzgrenzen
 

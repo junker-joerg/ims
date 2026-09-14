@@ -97,5 +97,5 @@ unveraenderlich und idempotent ab und prueft ihren Digest vor und nach der
 Speicherung. PR138 prueft die gespeicherte Identitaet inzwischen an einer
 read-only Freigabegrenze erneut. PR139 erprobt inzwischen genau zwei
 Perioden auf isolierten Kopien fluechtig. PR140 macht den dauerhaften Start
-kontrolliert bedienbar; PR141 nimmt ihn im Browser ab. Der Ausbau des
-Horizonts bleibt weiteren getrennten PRs vorbehalten.
+kontrolliert bedienbar; PR141 hat ihn im Browser abgenommen. PR142 bereitet
+den naechsten begrenzten Horizont vor.

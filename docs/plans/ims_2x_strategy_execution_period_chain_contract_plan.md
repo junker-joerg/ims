@@ -107,8 +107,9 @@ noch Runner auf.
 - **PR139 (umgesetzt):** kleine fluechtige Zwei-Perioden-Wirkungsprobe.
 - **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
   Perioden.
-- **PR141 (naechster Schritt):** Browserabnahme; den Ausbau bis 100 Perioden
-  spaeter jeweils getrennt freigeben.
+- **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
+- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
+  den Ausbau bis 100 Perioden spaeter jeweils getrennt freigeben.
 
 ## Schutzgrenzen
 

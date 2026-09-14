@@ -83,8 +83,9 @@ Konfiguration. Freie Datenbank-, Fixture- oder Ausgabepfade bleiben verboten.
   mit atomarem Fehlerstopp.
 - **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
   Perioden.
-- **PR141 (naechster Schritt):** Browserabnahme; danach Ausbau bis zum
-  100-Perioden-Lauf in getrennten PRs.
+- **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
+- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
+  danach Ausbau bis zum 100-Perioden-Lauf in getrennten PRs.
 
 ## Schutzgrenzen
 

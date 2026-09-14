@@ -89,5 +89,5 @@ unversioniert.
 PR138 loest eine gespeicherte Ketten-ID und den erwarteten Volldigest
 inzwischen an einer read-only Freigabegrenze erneut auf. PR139 erprobt nun
 genau zwei Perioden auf isolierten Kopien fluechtig. PR140 macht den
-dauerhaften Start kontrolliert bedienbar; PR141 nimmt ihn im Browser ab.
-Groessere Horizonte bleiben gesperrt.
+dauerhaften Start kontrolliert bedienbar; PR141 hat ihn im Browser abgenommen.
+PR142 bereitet den naechsten begrenzten Horizont vor.

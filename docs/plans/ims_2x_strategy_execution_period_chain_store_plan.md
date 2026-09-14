@@ -81,8 +81,9 @@ oder Ausgabepfade werden nicht akzeptiert.
   mit atomarem Fehlerstopp.
 - **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
   Perioden.
-- **PR141 (naechster Schritt):** Browserabnahme; danach Ausbau bis 100
-  Perioden in getrennten PRs.
+- **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
+- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
+  danach Ausbau bis 100 Perioden in getrennten PRs.
 
 ## Schutzgrenzen
 

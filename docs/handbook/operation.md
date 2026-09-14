@@ -169,6 +169,51 @@ Die Probe schreibt ausschliesslich Freigabe, Versuch und Ergebnis in die
 konfigurierte SQLite-Metadatenquelle. Sie schreibt keine Ergebnisdateien,
 verwendet kein `incomming/` und startet keinen Carryover oder Scheduler.
 
+## 10. Zwei-Perioden-Wirkungsprobe bedienen
+
+Dieser Pfad zeigt erstmals eine kontrollierte Folgewirkung: Zwei getrennte,
+unveraenderlich gespeicherte Periodenkandidaten werden nacheinander
+angewandt. Dazwischen uebernimmt die Workbench genau die in der gespeicherten
+Kette freigegebenen VU- und VN-Zustaende. Das ist ein Carryover-Nachweis,
+aber noch kein frei konfigurierbarer Mehrperiodenlauf.
+
+1. Waehle in der Navigation `Strategien` und danach den Tab `Periodenkette`.
+2. Pruefe `Periode 1-2`, zwei Kandidaten, `Digest geprueft` sowie die aktiven
+   VU- und VN-Carryover-Flags.
+3. Trage unter `Freigabe durch` eine nachvollziehbare Person ein.
+4. Beschreibe unter `Grund` den konkreten Zweck der Zwei-Perioden-Probe.
+5. Aktiviere `Periode 1 und 2 mit gespeichertem Carryover jetzt ausfuehren`.
+6. Waehle `Zwei Perioden starten`.
+7. Lies fuer beide Perioden Zustandsaenderung und VU-/VN-Anwendungen.
+8. Pruefe `Uebergang 1 nach 2`, beide ausgefuehrten Carryover-Arten,
+   Ergebnisdigest und `Versuchsverlauf`.
+
+![Zwei-Perioden-Wirkungsprobe im breiten Browserfenster](images/windows_strategy_period_chain_effect_probe_pr141_wide_2026-09-14.png)
+
+*Abbildung: Erfolgreicher, unveraenderlich gespeicherter Nachweis fuer Periode 1 und 2 mit VU-/VN-Carryover und weiterhin gesperrter freier Mehrperiodensimulation; Windows/Chromium, 1440 x 1000, aufgenommen am 2026-09-14.*
+
+Auf einem schmalen Fenster stehen Periodenkennzahlen und Nachweiszeilen
+untereinander. Es werden keine Spalten seitlich abgeschnitten und
+Statuswoerter bleiben vollstaendig lesbar.
+
+![Zwei-Perioden-Wirkungsprobe im schmalen Browserfenster](images/windows_strategy_period_chain_effect_probe_pr141_narrow_2026-09-14.png)
+
+*Abbildung: Derselbe gespeicherte Zwei-Perioden-Nachweis im 390 x 844-Viewport, aufgenommen am 2026-09-14.*
+
+### Fehler richtig behandeln
+
+| Sichtbarer Zustand | Bedeutung | Reaktion |
+| --- | --- | --- |
+| Startknopf deaktiviert | Person, Grund oder ausdrueckliche Zwei-Perioden-Bestaetigung fehlt | Angaben kontrollieren; Sperre nicht umgehen |
+| Digest- oder Integritaetsfehler | Kettenidentitaet oder Kandidateninhalt stimmt nicht mehr mit der Ablage ueberein | nicht erneut starten; Ketten- und Kandidatenablage pruefen |
+| `Fehlgeschlagen` nach Periode 2 | kein vollstaendiges Ergebnis wurde gespeichert; Periode 1 wird nicht als Teilresultat ausgegeben | Fehlertext lesen; nur mit neuer manueller Freigabe erneut pruefen |
+| `Ergebnis unveraenderlich gespeichert` | beide Perioden und der Uebergang sind vollstaendig nachgewiesen | Ergebnis lesen; kein zweiter Start erforderlich |
+
+Ein Neuladen des Browsers liest dasselbe Ergebnis und denselben Verlauf.
+Der erfolgreiche Start kann nicht mit einer zweiten Freigabe ueberschrieben
+werden. Die Probe erzeugt keine fachlichen Ausgabedateien und ist weder eine
+historische Vollgleichheitspruefung noch ein 100-Periodenlauf.
+
 ## Schreib- und Stopgrenzen
 
 | Aktion | Schreibt | Startet Ausfuehrung |
@@ -180,6 +225,7 @@ verwendet kein `incomming/` und startet keinen Carryover oder Scheduler.
 | `Adapter starten` | Status, Audit und Adapter-Resultat | kontrollierter Adapter, keine Simulation |
 | `Ergebnis neu laden` | nein | nein |
 | `Wirkungsprobe starten` | Freigabe, Versuch und Einperiodenergebnis | genau eine isolierte Periode, kein Mehrperiodenlauf |
+| `Zwei Perioden starten` | Freigabe, Versuch und unveraenderliches Kettenergebnis | exakt Periode 1 und 2 mit gespeichertem Carryover; kein freier Mehrperiodenlauf |
 
 Bei unklarer Quelle, unerwartetem Schreibpfad, geaendertem Queue-Eintrag oder
 einem fachlichen Blocker wird nicht weiter freigegeben. Der Browser darf nicht
