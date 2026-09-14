@@ -62,7 +62,10 @@ der Ausfuehrung beendet die Probe ohne Teilresultat und ohne Speicherung.
   Zwei-Perioden-Probe.
 - **PR141 (umgesetzt):** Browserabnahme auf breitem und schmalem Viewport sowie
   Handbuch-Screenshots fuer den Zwei-Perioden-Bedienpfad.
-- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten
-  und den Prefix 1-2 stabil halten.
-- **PR143+:** Horizonte schrittweise erweitern und jeweils gesondert
-  validieren, bis 100 Perioden reviewbar und stabil bedienbar sind.
+- **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
+  exakte fachliche Prefixprojektion 1-2.
+- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
+  atomar validieren, weiterhin ohne Runner.
+- **PR144+:** Horizonte schrittweise erweitern und jeweils gesondert
+  ausfuehren und validieren, bis 100 Perioden reviewbar und stabil bedienbar
+  sind.

@@ -336,3 +336,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR141-Plan und Abnahme fuer den vollstaendigen Zwei-Perioden-Bedienpfad auf
   breitem und schmalem Viewport samt atomaren Fehlerpfaden und
   Handbuch-Screenshots.
+- `ims_2x_strategy_execution_period_chain_bounded_runner_contract_plan.md`:
+  PR142-Plan und read-only Vertrag fuer einen spaeteren Kettenrunner mit zwei
+  bis hoechstens fuenf Perioden sowie die exakte kanonische Prefixprojektion
+  1-2; Ausfuehrung, Speicherung und UI-Start bleiben gesperrt.

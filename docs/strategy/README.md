@@ -165,3 +165,7 @@ managementtauglichen Bedienung.
 - [PR141 Browserabnahme der Zwei-Perioden-Probe](../migration/ims_2x_strategy_execution_period_chain_effect_probe_browser_acceptance.md):
   vollstaendiger Bedienpfad auf breitem und schmalem Viewport, sichtbarer
   VU-/VN-Carryover, atomare Fehlerpfade und datierte Handbuch-Screenshots.
+- [PR142 Vertrag fuer den begrenzten Kettenrunner](../migration/ims_2x_strategy_execution_period_chain_bounded_runner_contract.md):
+  read-only Grenze fuer zwei bis fuenf Perioden und eine bytegenau zu
+  pruefende fachliche Prefixprojektion 1-2; drei bis fuenf Perioden bleiben
+  noch ohne Runner, Speicherung und UI-Start.

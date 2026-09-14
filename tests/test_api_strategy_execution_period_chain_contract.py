@@ -37,11 +37,15 @@ def test_strategy_execution_period_chain_contract_endpoint_is_read_only(
     )
     assert payload["carryover_definition_count"] == 3
     assert payload["period_chain_runner_enabled"] is False
+    assert payload["period_chain_bounded_runner_contract_enabled"] is True
+    assert payload["bounded_runner_contract_endpoint"] == (
+        "/api/run-control/strategy-period-chain-bounded-runner-contract"
+    )
     assert payload["carryover_execution_enabled"] is False
     assert payload["multi_period_execution_enabled"] is False
     assert payload["output_files_enabled"] is False
     assert payload["legacy_comparison_enabled"] is False
-    assert payload["next_gate"] == "PR142"
+    assert payload["next_gate"] == "PR143"
     assert client.post(endpoint, json={}).status_code == 405
     assert client.put(endpoint, json={}).status_code == 405
     assert client.delete(endpoint).status_code == 405

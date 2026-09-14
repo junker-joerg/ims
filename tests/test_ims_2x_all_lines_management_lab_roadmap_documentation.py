@@ -41,7 +41,8 @@ def test_active_roadmap_numbers_pr142_through_pr182_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR170 | 29" in document
     assert "durchgaengige DORA-Wirkungskette | PR178 | 37" in document
     assert "kontrollierte Managementseminar-Reife | PR182 | 41" in document
-    assert "PR142 bleibt der unmittelbar naechste Produkt-PR" in document
+    assert "PR142 umgesetzt, PR143 naechster Schritt" in document
+    assert "PR143 baut und validiert als unmittelbar naechster Produkt-PR" in document
 
 
 def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:

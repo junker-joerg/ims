@@ -278,4 +278,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR141-Browserabnahme des vollstaendigen Zwei-Perioden-Pfads auf breitem und
   schmalem Viewport mit Carryover-Nachweis, Fehlerpfaden und datierten
   Handbuch-Screenshots
+- `ims_2x_strategy_execution_period_chain_bounded_runner_contract.md`:
+  PR142-read-only Ausfuehrungsvertrag fuer zwei bis hoechstens fuenf Perioden
+  mit atomarem Fehlerstopp und exakter fachlicher Prefixprojektion 1-2;
+  weiterhin ohne neuen Runner, Speicherung oder UI-Start
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -85,8 +85,11 @@ Fehlerbericht ohne Teilannahme.
 - **PR140 (umgesetzt):** kontrollierten dauerhaften Start fuer genau zwei
   Perioden anbinden.
 - **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
-- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
-  den Ausbau bis 100 Perioden danach in getrennten PRs freigeben.
+- **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
+  exakte fachliche Prefixprojektion 1-2.
+- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
+  atomar validieren, weiterhin ohne Runner; den Ausbau bis 100 Perioden
+  danach in getrennten PRs freigeben.
 
 ## Schutzgrenzen
 

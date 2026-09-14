@@ -127,6 +127,7 @@ def test_period_chain_contract_opens_only_controlled_two_period_start(
     assert payload["period_chain_two_period_effect_probe_start_enabled"] is True
     assert payload["period_chain_two_period_result_persistence_enabled"] is True
     assert payload["period_chain_overview_enabled"] is True
+    assert payload["period_chain_bounded_runner_contract_enabled"] is True
     assert payload["stored_chain_overview_endpoint"] == (
         "/api/strategies/execution-period-chains"
     )
@@ -151,6 +152,9 @@ def test_period_chain_contract_opens_only_controlled_two_period_start(
     assert payload["effect_probe_history_endpoint_template"].endswith(
         "/{chain_id}"
     )
+    assert payload["bounded_runner_contract_endpoint"] == (
+        "/api/run-control/strategy-period-chain-bounded-runner-contract"
+    )
     assert payload["period_chain_runner_enabled"] is False
     assert payload["carryover_execution_enabled"] is False
     assert payload["multi_period_execution_enabled"] is False
@@ -163,4 +167,4 @@ def test_period_chain_contract_opens_only_controlled_two_period_start(
     assert payload["automatic_historical_rule_selection_performed"] is False
     assert payload["historical_rng_equality_claim"] is False
     assert payload["historical_full_equality_claim"] is False
-    assert payload["next_gate"] == "PR142"
+    assert payload["next_gate"] == "PR143"

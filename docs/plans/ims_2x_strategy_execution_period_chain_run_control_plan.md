@@ -92,9 +92,11 @@ Ein unbekannter Datensatz ergibt `404`, ein Digest- oder Integritaetskonflikt
   Zwei-Perioden-Probe mit dauerhafter Idempotenz und unveraenderlichem
   Ergebnisverlauf.
 - **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
-- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
-  danach schrittweise Horizonte bis 100 Perioden, ohne daraus fachliche
-  Produktionsreife abzuleiten.
+- **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
+  exakte fachliche Prefixprojektion 1-2.
+- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
+  atomar validieren, weiterhin ohne Runner; danach schrittweise Horizonte bis
+  100 Perioden, ohne daraus fachliche Produktionsreife abzuleiten.
 
 ## Schutzgrenzen
 

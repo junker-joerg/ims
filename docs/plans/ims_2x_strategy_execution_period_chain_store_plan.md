@@ -82,8 +82,11 @@ oder Ausgabepfade werden nicht akzeptiert.
 - **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
   Perioden.
 - **PR141 (umgesetzt):** Browserabnahme des Zwei-Perioden-Pfads.
-- **PR142 (naechster Schritt):** kleinen begrenzten Kettenhorizont vorbereiten;
-  danach Ausbau bis 100 Perioden in getrennten PRs.
+- **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
+  exakte fachliche Prefixprojektion 1-2.
+- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
+  atomar validieren, weiterhin ohne Runner; danach Ausbau bis 100 Perioden in
+  getrennten PRs.
 
 ## Schutzgrenzen
 

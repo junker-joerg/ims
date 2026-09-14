@@ -155,6 +155,7 @@ from ims.strategies import (
     strategy_execution_candidate_contract_payload,
     strategy_execution_candidate_build_contract_payload,
     strategy_execution_period_chain_contract_payload,
+    strategy_execution_period_chain_bounded_runner_contract_payload,
     strategy_execution_period_chain_validation_contract_payload,
     strategy_execution_scenario_profile_root,
     strategy_execution_candidate_validation_contract_payload,
@@ -590,7 +591,7 @@ def _strategy_execution_period_chain_validation_invalid_json_payload() -> dict[
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR142",
+        "next_gate": "PR143",
     }
 
 
@@ -715,7 +716,7 @@ def _strategy_execution_period_chain_overview_error_payload(
         "execution_performed": False,
         "simulation_performed": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR142",
+        "next_gate": "PR143",
     }
 
 
@@ -2522,6 +2523,14 @@ def create_app(
             return strategy_execution_period_chain_run_control_contract_payload()
 
         @app.get(
+            "/api/run-control/strategy-period-chain-bounded-runner-contract"
+        )
+        def run_control_strategy_period_chain_bounded_runner_contract() -> dict[
+            str, object
+        ]:
+            return strategy_execution_period_chain_bounded_runner_contract_payload()
+
+        @app.get(
             "/api/run-control/strategy-period-chain-effect-probe-contract"
         )
         def run_control_strategy_period_chain_effect_probe_contract() -> dict[
@@ -2955,6 +2964,12 @@ def create_app(
             "/api/run-control/strategy-period-chain-contract",
             lambda request: JSONResponse(
                 strategy_execution_period_chain_run_control_contract_payload()
+            ),
+        ),
+        Route(
+            "/api/run-control/strategy-period-chain-bounded-runner-contract",
+            lambda request: JSONResponse(
+                strategy_execution_period_chain_bounded_runner_contract_payload()
             ),
         ),
         Route(

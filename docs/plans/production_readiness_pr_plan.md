@@ -209,4 +209,6 @@ ist die aktive Restplanung in
 umfasst PR142 bis PR182: zunaechst den bedienbaren 100-Perioden-Lauf, danach
 Mehrsparten und Versichererbilanz, eine klar begrenzte
 Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die Abnahme fuer ein
-Managementseminar. PR142 bleibt der naechste kleine Produkt-PR.
+Managementseminar. PR142 hat inzwischen den read-only Vertrag fuer den auf
+fuenf Perioden begrenzten Kettenrunner festgelegt; PR143 baut und validiert
+als naechstes die kanonische Fuenf-Perioden-Kette ohne Runner.

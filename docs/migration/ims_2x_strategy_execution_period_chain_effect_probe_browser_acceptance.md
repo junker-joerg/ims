@@ -80,7 +80,8 @@ Regulierungssimulation und keine Reproduktion eines historischen RNG-Laufs.
 Es entstehen keine fachlichen Ausgabedateien; `incomming/` wird nicht gelesen
 und bleibt unversioniert.
 
-PR142 bereitet als naechstes einen kleinen, fest begrenzten gemeinsamen
-Kettenrunner vor. Der bereits belegte Prefix 1-2 muss dabei byte- und
-fachlich stabil bleiben; der 100-Perioden-Horizont bleibt eine spaetere,
-separat abzunehmende Grenze.
+PR142 hat inzwischen den read-only Vertrag fuer einen kleinen, bis fuenf
+Perioden begrenzten gemeinsamen Kettenrunner festgelegt. Der bereits belegte
+Prefix 1-2 bleibt als exakte fachliche Projektion geschuetzt. PR143 baut und
+validiert die Fuenf-Perioden-Kette ohne Runner; der 100-Perioden-Horizont
+bleibt eine spaetere, separat abzunehmende Grenze.

@@ -121,8 +121,10 @@ serverseitige Idempotenzgrenze bleibt auch bei direktem API-Aufruf wirksam.
   Idempotenz und Ergebnisablage fuer diese Zwei-Perioden-Probe.
 - **PR141 (umgesetzt):** Browserabnahme und Handbuch-Screenshots fuer
   den Zwei-Perioden-Pfad.
-- **PR142 (naechster Schritt):** gemeinsamen Kettenrunner fuer einen kleinen,
-  fest begrenzten Horizont vorbereiten und den Prefix 1-2 stabil halten.
+- **PR142 (umgesetzt):** read-only Vertrag fuer zwei bis fuenf Perioden und
+  exakte fachliche Prefixprojektion 1-2.
+- **PR143 (naechster Schritt):** kanonische Fuenf-Perioden-Kette bauen und
+  atomar validieren, weiterhin ohne Runner.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und
 dokumentiert. Mehrperiodenlauf, Carryover und Regulierungssimulation bleiben
