@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-14
-Status: aktive Produkt-Restplanung; PR143 umgesetzt, PR144 naechster Schritt
+Status: aktive Produkt-Restplanung; PR144 umgesetzt, PR145 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -78,7 +78,7 @@ einen freien oder unbegrenzten Runner schrittweise zu einem auswertbaren
 | --- | --- | --- |
 | PR142 | Vertrag fuer einen auf fuenf Perioden begrenzten Kettenrunner | Prefix 1-2 bleibt exakt stabil; Grenzen und Fehler sind explizit |
 | PR143 | Kanonischer Bau und Validierung einer Fuenf-Perioden-Kette | lueckenlose Kontexte, Carryover und Gesamtdigest werden atomar geprueft |
-| PR144 | Isolierte Fuenf-Perioden-Wirkungsprobe | deterministische Wiederholung und unveraenderter Eingabekandidat |
+| PR144 | Isolierte Fuenf-Perioden-Wirkungsprobe | umgesetzt: deterministische Wiederholung, unveraenderte Kandidaten und bytegleicher Prefix 1-2 |
 | PR145 | Kontrollierter Start, Idempotenz und Ergebnisablage fuer fuenf Perioden | erneuter Start liefert dasselbe gespeicherte Ergebnis |
 | PR146 | Workbench- und Browserabnahme fuer fuenf Perioden | breiter und schmaler Viewport, Fehlerpfade und Handbuchbild |
 | PR147 | Horizontvertrag fuer 10, 25, 50 und 100 Perioden | Laufzeit-, Abbruch-, Ressourcen- und Fehlergrenzen vor Ausfuehrung festgelegt |
@@ -236,9 +236,11 @@ Meilensteinen PR151, PR162, PR170 und PR178 aktualisiert.
 PR142 hat den engen read-only Vertrag fuer einen auf fuenf Perioden
 begrenzten Kettenrunner und die exakte fachliche Prefixprojektion 1-2
 festgelegt. PR143 hat die kanonische Fuenf-Perioden-Kette gebaut und atomar
-validiert. PR144 fuehrt sie als unmittelbar naechster Produkt-PR fluechtig
-auf isolierten Kandidatenkopien aus und prueft den Prefix 1-2. Speicherung,
-UI-Start und 100-Perioden-Lauf bleiben gesperrt.
+validiert. PR144 fuehrt sie fluechtig auf isolierten Kandidatenkopien aus
+und prueft den Prefix 1-2 semantisch und als kanonisches JSON bytegenau.
+PR145 schliesst als naechster Produkt-PR kontrollierten Start, dauerhafte
+Idempotenz und unveraenderliche Ergebnisablage fuer fuenf Perioden an.
+Workbench-Bedienung und 100-Perioden-Lauf bleiben noch gesperrt.
 
 Dieser Planungsschnitt selbst aendert keine Fachlogik, startet keine
 Simulation und behauptet keine historische Vollgleichheit.

@@ -344,3 +344,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR143-Plan und Umsetzung fuer den atomaren serverseitigen Bau einer exakt
   fuenfperiodigen, fluechtigen Kette mit erneut geprueften Kandidaten und
   Gesamtdigest; Runner, Speicherung und UI-Start bleiben gesperrt.
+- `ims_2x_strategy_execution_period_chain_five_period_effect_probe_plan.md`:
+  PR144-Plan und Umsetzung fuer die isolierte fluechtige Ausfuehrung von
+  genau fuenf Perioden samt bytegenauem Prefixnachweis 1-2 gegen ein
+  gespeichertes Zwei-Perioden-Ergebnis; Speicherung und UI-Start bleiben
+  gesperrt.

@@ -31,7 +31,8 @@ def test_pr143_plan_and_mapping_define_atomic_five_period_build() -> None:
     assert "keine neue Fachlogik" in normalized
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in normalized
     assert "`incomming/` bleibt unversioniert" in plan
-    assert "PR144 (naechster Schritt)" in plan
+    assert "PR144 (umgesetzt)" in plan
+    assert "PR145 (naechster Schritt)" in plan
 
 
 def test_pr143_sources_are_indexed() -> None:

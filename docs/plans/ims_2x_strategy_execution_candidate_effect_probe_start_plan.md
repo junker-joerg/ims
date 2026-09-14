@@ -125,7 +125,7 @@ serverseitige Idempotenzgrenze bleibt auch bei direktem API-Aufruf wirksam.
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** Fuenf-Perioden-Kette fluechtig auf
+- **PR144 (umgesetzt):** Fuenf-Perioden-Kette fluechtig auf
   isolierten Kandidatenkopien ausfuehren und Prefix 1-2 exakt pruefen.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und

@@ -32,8 +32,8 @@ def test_bounded_runner_contract_limits_first_extension_to_five_periods() -> Non
         "larger_horizon_rejected_before_first_runner": True,
     }
     assert payload["current_release_state"] == {
-        "released_period_counts": [2],
-        "contracted_not_released_period_counts": [3, 4, 5],
+        "released_period_counts": [2, 5],
+        "contracted_not_released_period_counts": [3, 4],
         "five_period_target": 5,
         "existing_two_period_endpoint_unchanged": (
             "/api/run-control/strategy-period-chain-effect-probe"
@@ -41,15 +41,18 @@ def test_bounded_runner_contract_limits_first_extension_to_five_periods() -> Non
         "five_period_build_endpoint": (
             "/api/strategies/execution-period-chain-five-period-build"
         ),
-        "bounded_execution_endpoint": None,
+        "bounded_execution_endpoint": (
+            "/api/run-control/strategy-period-chain-five-period-effect-probe"
+        ),
     }
     assert payload["five_period_candidate_validation_enabled"] is True
     assert payload["five_period_chain_build_enabled"] is True
-    assert payload["bounded_runner_enabled"] is False
-    assert payload["five_period_execution_enabled"] is False
+    assert payload["bounded_runner_enabled"] is True
+    assert payload["five_period_execution_enabled"] is True
+    assert payload["prefix_comparison_execution_enabled"] is True
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR144"
+    assert payload["next_gate"] == "PR145"
 
 
 def test_bounded_runner_contract_orders_full_preparation_before_execution() -> None:
@@ -58,12 +61,13 @@ def test_bounded_runner_contract_orders_full_preparation_before_execution() -> N
 
     assert payload["step_count"] == len(STRATEGY_EXECUTION_BOUNDED_RUNNER_STEPS)
     assert [step["step_id"] for step in steps] == [
-        "reverify_stored_chain_release",
-        "require_contiguous_horizon_2_to_5",
+        "build_and_validate_complete_five_period_chain",
+        "load_and_verify_stored_two_period_prefix_baseline",
         "reresolve_all_candidates_and_reverify_digests",
         "load_and_cross_check_all_isolated_candidate_copies",
         "run_each_period_once_in_ascending_order",
-        "apply_exact_stored_transition_flags_before_next_period",
+        "apply_exact_canonical_transition_flags_before_next_period",
+        "compare_exact_two_period_prefix_before_period_3",
         "return_complete_ephemeral_result_or_no_result",
     ]
     assert all(step["before_first_runner"] for step in steps[:4])

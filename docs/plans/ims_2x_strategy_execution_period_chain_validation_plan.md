@@ -89,7 +89,7 @@ Fehlerbericht ohne Teilannahme.
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe;
+- **PR144 (umgesetzt):** isolierte Fuenf-Perioden-Wirkungsprobe;
   den Ausbau bis 100 Perioden danach in getrennten PRs freigeben.
 
 ## Schutzgrenzen

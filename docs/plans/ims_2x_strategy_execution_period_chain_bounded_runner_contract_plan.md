@@ -108,11 +108,12 @@ Die Tests muessen belegen:
   exakte kanonische Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** eine vollstaendige Fuenf-Perioden-Kette
   serverseitig gebaut und atomar validiert; weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** die gepruefte Fuenf-Perioden-Kette fluechtig
+- **PR144 (umgesetzt):** die gepruefte Fuenf-Perioden-Kette fluechtig
   auf isolierten Kandidatenkopien ausfuehren und den Prefixnachweis
   tatsaechlich berechnen.
-- **PR145/PR146:** kontrollierter Start, Idempotenz, Ergebnisablage und
-  Browserabnahme getrennt anschliessen.
+- **PR145 (naechster Schritt):** kontrollierten Start, Idempotenz und
+  Ergebnisablage anschliessen.
+- **PR146:** Browserabnahme getrennt anschliessen.
 
 ## Schutzgrenzen
 

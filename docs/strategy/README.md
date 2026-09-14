@@ -173,3 +173,7 @@ managementtauglichen Bedienung.
   exakt fuenf gespeicherte Kandidaten atomar aufloesen und als fluechtige
   kanonische Kette mit erneut geprueftem Gesamtdigest bereitstellen;
   Ausfuehrung, Speicherung und UI-Start bleiben gesperrt.
+- [PR144 Fuenf-Perioden-Wirkungsprobe](../migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe.md):
+  genau fuenf isolierte Perioden und vier Carryover-Uebergaenge fluechtig
+  ausfuehren; Prefix 1-2 gegen ein gespeichertes PR140-Ergebnis semantisch
+  und als kanonisches JSON bytegenau pruefen.

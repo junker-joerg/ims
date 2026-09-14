@@ -83,10 +83,10 @@ Die Tests belegen:
 
 - **PR143 (umgesetzt):** exakt fuenf Kandidaten serverseitig pruefen und eine
   vollstaendige fluechtige Kette mit verifiziertem Gesamtdigest bauen.
-- **PR144 (naechster Schritt):** diese Kette auf isolierten Kandidatenkopien
-  fluechtig ausfuehren und den exakten fachlichen Prefix 1-2 gegen den
-  bestehenden Zwei-Perioden-Pfad pruefen.
-- **PR145:** kontrollierten Start, dauerhafte Idempotenz und unveraenderliche
+- **PR144 (umgesetzt):** diese Kette auf isolierten Kandidatenkopien
+  fluechtig ausfuehren und den exakten fachlichen Prefix 1-2 gegen ein
+  gespeichertes Ergebnis des bestehenden Zwei-Perioden-Pfads pruefen.
+- **PR145 (naechster Schritt):** kontrollierten Start, dauerhafte Idempotenz und unveraenderliche
   Ergebnisablage fuer fuenf Perioden anschliessen.
 - **PR146:** Workbench- und Browserabnahme auf breitem und schmalem Viewport
   samt Fehlerpfaden und Handbuch-Screenshot.

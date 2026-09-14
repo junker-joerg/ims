@@ -286,4 +286,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR143-atomarer Bau einer exakt fuenfperiodigen, fluechtigen Kette mit
   erneuter Kandidaten-, Kontext-, Akteurs- und Gesamtdigestpruefung;
   weiterhin ohne Runner, Speicherung oder UI-Start
+- `ims_2x_strategy_execution_period_chain_five_period_effect_probe.md`:
+  PR144-isolierte fluechtige Ausfuehrung von genau fuenf Perioden und vier
+  Carryover-Uebergaengen mit bytegenauem Prefixnachweis 1-2 gegen das
+  gespeicherte PR140-Ergebnis; weiterhin ohne Speicherung oder UI-Start
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

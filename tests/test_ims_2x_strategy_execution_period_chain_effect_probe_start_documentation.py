@@ -34,7 +34,7 @@ def test_pr140_plan_and_mapping_define_controlled_persistent_boundary() -> None:
     assert "PR141 (umgesetzt)" in plan
     assert "PR142 (umgesetzt)" in plan
     assert "PR143 (umgesetzt)" in plan
-    assert "PR144 (naechster Schritt)" in plan
+    assert "PR144 (umgesetzt)" in plan
 
 
 def test_pr140_sources_are_indexed() -> None:

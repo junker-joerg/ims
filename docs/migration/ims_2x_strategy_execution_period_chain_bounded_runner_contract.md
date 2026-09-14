@@ -60,15 +60,16 @@ ausfuehren.
 
 ## Laufgrenzen
 
-Nach PR143 meldet der fortgeschriebene Vertrag ausdruecklich:
+Nach PR144 meldet der fortgeschriebene Vertrag ausdruecklich:
 
-- `bounded_runner_enabled = false`;
+- `bounded_runner_enabled = true` fuer genau fuenf Perioden;
 - `five_period_candidate_validation_enabled = true`;
 - `five_period_chain_build_enabled = true`;
-- `five_period_execution_enabled = false`;
+- `five_period_execution_enabled = true`;
 - `five_period_result_persistence_enabled = false`;
 - `five_period_ui_start_enabled = false`;
-- `execution_performed = false` und `simulation_performed = false`.
+- `prefix_comparison_execution_enabled = true`;
+- `simulation_performed = false`.
 
 Der bestehende Zwei-Perioden-Endpunkt und dessen Ergebnisschema werden nicht
 geaendert. Die neue Vertrags-URL ist nur eine maschinenlesbare
@@ -86,6 +87,7 @@ PR142 schreibt keine Metadaten, startet keinen Runner und erzeugt keine
 Ausgabedatei. `incomming/` wird nicht gelesen und bleibt unversioniert. Der
 Vertrag behauptet weder historische RNG- noch Vollgleichheit.
 
-PR143 hat die kanonische Fuenf-Perioden-Kette gebaut und atomar validiert,
-weiterhin ohne Ausfuehrung. PR144 darf als naechster Schritt die fluechtige
-Ausfuehrung und den hier definierten Prefixvergleich anschliessen.
+PR143 hat die kanonische Fuenf-Perioden-Kette gebaut und atomar validiert.
+PR144 hat die fluechtige Ausfuehrung und den hier definierten
+Prefixvergleich angeschlossen. PR145 darf als naechster Schritt den
+kontrollierten Start und die unveraenderliche Ergebnisablage ergaenzen.

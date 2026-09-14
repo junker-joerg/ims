@@ -6,6 +6,23 @@ import sqlite3
 from ims.api.strategy_execution_candidate_store import (
     STRATEGY_EXECUTION_CANDIDATE_STORE_SCHEMA,
 )
+from ims.api.strategy_execution_period_chain_build import (
+    build_strategy_execution_period_chain,
+)
+from ims.api.strategy_execution_period_chain_effect_probe import (
+    STRATEGY_EXECUTION_PERIOD_CHAIN_EFFECT_PROBE_REQUEST_VERSION,
+    parse_strategy_execution_period_chain_effect_probe_request,
+)
+from ims.api.strategy_execution_period_chain_effect_probe_start import (
+    start_strategy_execution_period_chain_effect_probe,
+)
+from ims.api.strategy_execution_period_chain_run_control import (
+    STRATEGY_EXECUTION_PERIOD_CHAIN_RUN_CONTROL_REQUEST_VERSION,
+)
+from ims.api.strategy_execution_period_chain_store import (
+    STRATEGY_EXECUTION_PERIOD_CHAIN_STORE_REQUEST_VERSION,
+    persist_strategy_execution_period_chain,
+)
 from ims.strategies import (
     StrategyExecutionScenarioProfileDefinition,
     build_strategy_execution_candidate,
@@ -162,3 +179,64 @@ def chain_input(
         for period in range(1, max_periods)
     ]
     return value
+
+
+def persist_two_period_effect_probe_baseline(
+    db_path: Path,
+    profile_root: Path,
+    *,
+    run_index: int = 5,
+) -> dict[str, str]:
+    """Erzeugt die unveraenderliche PR140-Referenz fuer Prefix-Tests."""
+
+    profile_root.mkdir(parents=True, exist_ok=True)
+    references = persist_chain_candidates(
+        db_path,
+        profile_root,
+        run_index=run_index,
+        max_periods=2,
+    )
+    value = chain_input(references, run_index=run_index, max_periods=2)
+    build = build_strategy_execution_period_chain(value, db_path=db_path)
+    assert build.chain is not None, build.issues
+    stored = persist_strategy_execution_period_chain(
+        {
+            "schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_STORE_REQUEST_VERSION,
+            "period_chain_input": value,
+            "expected_chain_id": build.chain.chain_id,
+            "expected_content_digest": build.chain.content_digest,
+            "stored_at": "2026-09-14T12:00:00+02:00",
+            "explicit_storage_release": True,
+        },
+        db_path=db_path,
+    )
+    request = parse_strategy_execution_period_chain_effect_probe_request(
+        {
+            "schema_version": (
+                STRATEGY_EXECUTION_PERIOD_CHAIN_EFFECT_PROBE_REQUEST_VERSION
+            ),
+            "release": {
+                "schema_version": (
+                    STRATEGY_EXECUTION_PERIOD_CHAIN_RUN_CONTROL_REQUEST_VERSION
+                ),
+                "chain_id": stored.record.chain_id,
+                "expected_content_digest": stored.record.content_digest,
+                "idempotency_key": "pr144-prefix-baseline-001",
+                "explicit_run_control_release": True,
+                "released_by": "pr144-test-reviewer",
+                "released_at": "2026-09-14T10:05:00Z",
+                "release_reason": "Stabile Zwei-Perioden-Prefixreferenz",
+            },
+            "explicit_two_period_effect_probe_execution": True,
+        }
+    )
+    started = start_strategy_execution_period_chain_effect_probe(
+        request,
+        db_path=db_path,
+        timestamp_factory=lambda: "2026-09-14T10:05:01Z",
+    )
+    return {
+        "chain_id": started.record.chain_id,
+        "expected_content_digest": started.record.content_digest,
+        "expected_result_digest": started.record.result_digest,
+    }

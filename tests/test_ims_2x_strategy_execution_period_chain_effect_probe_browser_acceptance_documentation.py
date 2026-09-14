@@ -42,7 +42,7 @@ def test_pr141_plan_and_mapping_define_browser_acceptance_boundaries() -> None:
     assert "PR141 portiert keine C-Regel" in normalized
     assert "PR142 (umgesetzt)" in plan
     assert "PR143 (umgesetzt)" in plan
-    assert "PR144 (naechster Schritt)" in plan
+    assert "PR144 (umgesetzt)" in plan
     assert "100-Perioden-Gate" in plan
     assert "historische Zielhorizont bleibt geschlossen" in normalized
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in normalized

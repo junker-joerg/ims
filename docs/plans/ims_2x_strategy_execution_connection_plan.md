@@ -199,7 +199,7 @@ Wiederholungen bleiben ausserhalb des ersten Schnitts.
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe und
+- **PR144 (umgesetzt):** isolierte Fuenf-Perioden-Wirkungsprobe und
   exakter fachlicher Prefixnachweis 1-2.
 
 Nach PR132 ist die Einperioden-Wirkungsprobe kontrolliert bedienbar und

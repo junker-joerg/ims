@@ -80,7 +80,7 @@ Frontend-Builds und Nicht-Loopback-Adressen werden abgewiesen.
   bis fuenf Perioden und exakter fachlicher Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe und
+- **PR144 (umgesetzt):** isolierte Fuenf-Perioden-Wirkungsprobe und
   exakter fachlicher Prefixnachweis 1-2.
 - **PR145+:** Horizonte in getrennten, deterministisch geprueften Stufen
   ausfuehren; Bedienung und Ergebnisvertrag jeweils mitziehen.

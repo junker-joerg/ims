@@ -327,7 +327,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "digest_mismatch_allowed": False,
             "missing_actor_allowed": False,
         },
-        "next_gate": "PR144",
+        "next_gate": "PR145",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

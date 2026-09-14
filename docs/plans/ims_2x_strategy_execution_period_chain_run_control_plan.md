@@ -96,7 +96,7 @@ Ein unbekannter Datensatz ergibt `404`, ein Digest- oder Integritaetskonflikt
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe;
+- **PR144 (umgesetzt):** isolierte Fuenf-Perioden-Wirkungsprobe;
   danach Horizonte bis 100 Perioden schrittweise freigeben.
 
 ## Schutzgrenzen

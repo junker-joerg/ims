@@ -72,7 +72,7 @@ def test_five_period_build_api_reports_closed_error_paths(
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
     assert invalid_json.json()["period_chain"] is None
     assert invalid_json.json()["runner_invocation_performed"] is False
-    assert invalid_json.json()["next_gate"] == "PR144"
+    assert invalid_json.json()["next_gate"] == "PR145"
 
 
 def test_starlette_fallback_exposes_same_five_period_build(

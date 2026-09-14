@@ -79,6 +79,7 @@ Es gibt keine neue Fachlogik, keine Ausgabedatei, keinen historischen
 Vergleich und keine Vollgleichheitsbehauptung. `incomming/` wird nicht
 gelesen und bleibt unversioniert.
 
-PR144 darf als naechster Schritt die gepruefte Kette fluechtig auf isolierten
-Kandidatenkopien ausfuehren und den exakten Prefix 1-2 berechnen. Speicherung
-und UI-Start bleiben auch dort gesperrt.
+PR144 fuehrt die gepruefte Kette inzwischen fluechtig auf isolierten
+Kandidatenkopien aus und weist den exakten Prefix 1-2 gegen ein gespeichertes
+PR140-Ergebnis nach. PR145 darf kontrollierten Start, Idempotenz und
+unveraenderliche Ergebnisablage anschliessen.

@@ -112,7 +112,7 @@ noch Runner auf.
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** Fuenf-Perioden-Wirkungsprobe fluechtig
+- **PR144 (umgesetzt):** Fuenf-Perioden-Wirkungsprobe fluechtig
   ausfuehren; den Ausbau bis 100 Perioden spaeter getrennt freigeben.
 
 ## Schutzgrenzen

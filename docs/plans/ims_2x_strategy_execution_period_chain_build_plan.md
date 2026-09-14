@@ -88,7 +88,7 @@ Konfiguration. Freie Datenbank-, Fixture- oder Ausgabepfade bleiben verboten.
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe;
+- **PR144 (umgesetzt):** isolierte Fuenf-Perioden-Wirkungsprobe;
   danach Ausbau bis zum 100-Perioden-Lauf in getrennten PRs.
 
 ## Schutzgrenzen

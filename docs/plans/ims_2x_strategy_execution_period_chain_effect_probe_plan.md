@@ -66,7 +66,7 @@ der Ausfuehrung beendet die Probe ohne Teilresultat und ohne Speicherung.
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe und
+- **PR144 (umgesetzt):** isolierte Fuenf-Perioden-Wirkungsprobe und
   exakter fachlicher Prefixnachweis 1-2.
 - **PR145+:** Horizonte schrittweise erweitern und jeweils gesondert
   ausfuehren und validieren, bis 100 Perioden reviewbar und stabil bedienbar

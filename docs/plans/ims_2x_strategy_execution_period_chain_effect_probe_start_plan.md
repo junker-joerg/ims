@@ -79,7 +79,7 @@ aber nicht gestartet werden.
   exakte fachliche Prefixprojektion 1-2.
 - **PR143 (umgesetzt):** kanonische Fuenf-Perioden-Kette gebaut und atomar
   validiert, weiterhin ohne Runner.
-- **PR144 (naechster Schritt):** isolierte Fuenf-Perioden-Wirkungsprobe und
+- **PR144 (umgesetzt):** isolierte Fuenf-Perioden-Wirkungsprobe und
   exakter fachlicher Prefixnachweis 1-2.
 - **PR145+:** Horizonte in getrennten, getesteten Stufen ausfuehren;
   Bedienung und Ergebnisvertrag jeweils mitziehen.
