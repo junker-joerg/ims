@@ -32,7 +32,8 @@ def test_pr144_plan_and_mapping_define_ephemeral_five_period_probe() -> None:
     assert "keine neue oder geaenderte VU-/VN-Fachlogik" in normalized
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in normalized
     assert "`incomming/` bleibt unversioniert" in plan
-    assert "PR145 (naechster Schritt)" in plan
+    assert "PR145 (umgesetzt)" in plan
+    assert "PR146 (naechster Schritt)" in plan
 
 
 def test_pr144_sources_are_indexed() -> None:

@@ -81,5 +81,6 @@ gelesen und bleibt unversioniert.
 
 PR144 fuehrt die gepruefte Kette inzwischen fluechtig auf isolierten
 Kandidatenkopien aus und weist den exakten Prefix 1-2 gegen ein gespeichertes
-PR140-Ergebnis nach. PR145 darf kontrollierten Start, Idempotenz und
-unveraenderliche Ergebnisablage anschliessen.
+PR140-Ergebnis nach. PR145 hat kontrollierten Serverstart, Idempotenz und
+unveraenderliche Ergebnisablage angeschlossen. PR146 darf Workbench- und
+Browserabnahme ergaenzen.

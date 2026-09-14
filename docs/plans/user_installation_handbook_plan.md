@@ -265,8 +265,9 @@ Zwei-Perioden-Probe umgesetzt, PR140 deren kontrollierten Workbench-Start
 angebunden und PR141 Browserabnahme sowie Handbuchbilder abgeschlossen.
 PR142 hat den naechsten begrenzten Horizont vertraglich vorbereitet. PR143
 hat die Fuenf-Perioden-Kette ohne Runner gebaut und validiert; PR144 hat sie
-fluechtig mit exaktem Prefixnachweis ausgefuehrt. PR145 schliesst als
-naechstes den kontrollierten Start und die Ergebnisablage an. Plattformzusagen
+fluechtig mit exaktem Prefixnachweis ausgefuehrt. PR145 hat den kontrollierten
+Serverstart mit dauerhafter Idempotenz und Ergebnisablage umgesetzt. PR146
+ergaenzt als Naechstes den Bedienpfad und das Handbuchbild. Plattformzusagen
 aus HB4/HB5 duerfen keine fachliche Produktionsreife vorwegnehmen.
 
 Die fachliche Produktfolge ab PR142 ist getrennt in

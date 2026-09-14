@@ -177,3 +177,7 @@ managementtauglichen Bedienung.
   genau fuenf isolierte Perioden und vier Carryover-Uebergaenge fluechtig
   ausfuehren; Prefix 1-2 gegen ein gespeichertes PR140-Ergebnis semantisch
   und als kanonisches JSON bytegenau pruefen.
+- [PR145 Kontrollierter Fuenf-Perioden-Start](../migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe_start.md):
+  denselben geprueften Lauf atomar idempotent starten und Request,
+  kanonische Kette sowie Ergebnis gemeinsam unveraenderlich ablegen;
+  Workbench-Bedienung folgt getrennt in PR146.

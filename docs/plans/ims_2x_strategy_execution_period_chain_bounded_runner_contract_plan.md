@@ -111,9 +111,10 @@ Die Tests muessen belegen:
 - **PR144 (umgesetzt):** die gepruefte Fuenf-Perioden-Kette fluechtig
   auf isolierten Kandidatenkopien ausfuehren und den Prefixnachweis
   tatsaechlich berechnen.
-- **PR145 (naechster Schritt):** kontrollierten Start, Idempotenz und
-  Ergebnisablage anschliessen.
-- **PR146:** Browserabnahme getrennt anschliessen.
+- **PR145 (umgesetzt):** kontrollierten Serverstart, Idempotenz und
+  Ergebnisablage angeschlossen.
+- **PR146 (naechster Schritt):** Workbench- und Browserabnahme samt
+  Fehlerpfaden und Handbuchbild anschliessen.
 
 ## Schutzgrenzen
 

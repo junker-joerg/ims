@@ -56,17 +56,20 @@ Die kanonische JSON-Projektion muss spaeter fachlich und byteweise exakt mit
 dem gespeicherten PR140-Ergebnis uebereinstimmen. Toleranzen und versteckte
 Fallbacks sind ausgeschlossen. PR142 definiert diese Projektion; PR144 wird
 den Vergleich erstmals nach einer echten Fuenf-Perioden-Wirkungsprobe
-ausfuehren.
+ausgefuehrt. PR145 hat Start und Ablage kontrolliert angeschlossen.
 
 ## Laufgrenzen
 
-Nach PR144 meldet der fortgeschriebene Vertrag ausdruecklich:
+Nach PR145 meldet der fortgeschriebene Vertrag ausdruecklich:
 
 - `bounded_runner_enabled = true` fuer genau fuenf Perioden;
 - `five_period_candidate_validation_enabled = true`;
 - `five_period_chain_build_enabled = true`;
 - `five_period_execution_enabled = true`;
-- `five_period_result_persistence_enabled = false`;
+- `five_period_server_start_enabled = true`;
+- `five_period_idempotency_persistence_enabled = true`;
+- `five_period_result_persistence_enabled = true`;
+- `five_period_immutable_chain_snapshot_persistence_enabled = true`;
 - `five_period_ui_start_enabled = false`;
 - `prefix_comparison_execution_enabled = true`;
 - `simulation_performed = false`.
@@ -89,5 +92,6 @@ Vertrag behauptet weder historische RNG- noch Vollgleichheit.
 
 PR143 hat die kanonische Fuenf-Perioden-Kette gebaut und atomar validiert.
 PR144 hat die fluechtige Ausfuehrung und den hier definierten
-Prefixvergleich angeschlossen. PR145 darf als naechster Schritt den
-kontrollierten Start und die unveraenderliche Ergebnisablage ergaenzen.
+Prefixvergleich angeschlossen. PR145 hat den kontrollierten Serverstart und
+die unveraenderliche Ergebnisablage ergaenzt. PR146 darf Workbench- und
+Browserabnahme anschliessen.

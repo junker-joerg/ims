@@ -6,37 +6,37 @@ PLAN = (
     ROOT
     / "docs"
     / "plans"
-    / "ims_2x_strategy_execution_period_chain_five_period_build_plan.md"
+    / "ims_2x_strategy_execution_period_chain_five_period_effect_probe_start_plan.md"
 )
 MIGRATION = (
     ROOT
     / "docs"
     / "migration"
-    / "ims_2x_strategy_execution_period_chain_five_period_build.md"
+    / "ims_2x_strategy_execution_period_chain_five_period_effect_probe_start.md"
 )
 
 
-def test_pr143_plan_and_mapping_define_atomic_five_period_build() -> None:
+def test_pr145_plan_and_mapping_define_persistent_five_period_start() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     migration = MIGRATION.read_text(encoding="utf-8")
     normalized = " ".join((plan + migration).split())
 
-    assert "PR143 umgesetzt" in plan
+    assert "Status: umgesetzt" in plan
     assert "`ESS.C:73-75`" in normalized
-    assert "`SIMLAENGE = 100`" in normalized
-    assert "exakt fuenf" in normalized
-    assert "vier Uebergaenge" in normalized
-    assert "SHA-256-Gesamtdigest" in normalized
-    assert "keine Teilkette" in normalized
+    assert "`IMSDATA.C:14`" in normalized
+    assert "unveraenderten PR144-Request" in normalized
+    assert "vollstaendigen Startrequest" in normalized
+    assert "kanonische Kettenkopie" in normalized
+    assert "vollstaendige Wirkungsergebnis" in normalized
+    assert "hoechstens ein erfolgreiches Ergebnis" in normalized
+    assert "kein Teilresultat" in normalized
     assert "keine neue Fachlogik" in normalized
     assert "keine historische RNG- oder Vollgleichheitsbehauptung" in normalized
     assert "`incomming/` bleibt unversioniert" in plan
-    assert "PR144 (umgesetzt)" in plan
-    assert "PR145 (umgesetzt)" in plan
-    assert "PR146 (naechster Schritt)" in plan
+    assert "PR146" in normalized
 
 
-def test_pr143_sources_are_indexed() -> None:
+def test_pr145_sources_are_indexed() -> None:
     plans_index = (ROOT / "docs" / "plans" / "README.md").read_text(
         encoding="utf-8"
     )

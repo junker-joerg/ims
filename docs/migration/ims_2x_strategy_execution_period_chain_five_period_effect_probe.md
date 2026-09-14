@@ -72,5 +72,6 @@ wird nicht gelesen und bleibt unversioniert.
 
 Der Nachweis betrifft ausschliesslich die moderne fachliche Stabilitaet des
 freigegebenen Zwei-Perioden-Prefixes. Er ist keine historische RNG- oder
-Vollgleichheitsbehauptung. PR145 kann darauf einen kontrollierten,
-idempotenten Start mit unveraenderlicher Ergebnisablage aufbauen.
+Vollgleichheitsbehauptung. PR145 hat darauf einen kontrollierten,
+idempotenten Serverstart mit unveraenderlicher Ergebnisablage aufgebaut.
+PR146 darf ihn in der Workbench bedienbar machen und im Browser abnehmen.

@@ -86,10 +86,10 @@ Die Tests belegen:
 - **PR144 (umgesetzt):** diese Kette auf isolierten Kandidatenkopien
   fluechtig ausfuehren und den exakten fachlichen Prefix 1-2 gegen ein
   gespeichertes Ergebnis des bestehenden Zwei-Perioden-Pfads pruefen.
-- **PR145 (naechster Schritt):** kontrollierten Start, dauerhafte Idempotenz und unveraenderliche
-  Ergebnisablage fuer fuenf Perioden anschliessen.
-- **PR146:** Workbench- und Browserabnahme auf breitem und schmalem Viewport
-  samt Fehlerpfaden und Handbuch-Screenshot.
+- **PR145 (umgesetzt):** kontrollierten Serverstart, dauerhafte Idempotenz
+  und unveraenderliche Ergebnisablage fuer fuenf Perioden angeschlossen.
+- **PR146 (naechster Schritt):** Workbench- und Browserabnahme auf breitem
+  und schmalem Viewport samt Fehlerpfaden und Handbuch-Screenshot.
 
 ## Schutzgrenzen
 

@@ -74,7 +74,7 @@ def test_five_period_effect_probe_api_executes_without_persistence(
 
     assert contract.status_code == 200
     assert contract.json()["five_period_execution_enabled"] is True
-    assert contract.json()["next_gate"] == "PR145"
+    assert contract.json()["next_gate"] == "PR146"
     assert response.status_code == 200
     payload = response.json()
     assert payload["status"] == "ok"

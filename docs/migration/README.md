@@ -290,4 +290,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR144-isolierte fluechtige Ausfuehrung von genau fuenf Perioden und vier
   Carryover-Uebergaengen mit bytegenauem Prefixnachweis 1-2 gegen das
   gespeicherte PR140-Ergebnis; weiterhin ohne Speicherung oder UI-Start
+- `ims_2x_strategy_execution_period_chain_five_period_effect_probe_start.md`:
+  PR145-kontrollierter Serverstart mit atomarem Idempotenzanspruch,
+  unveraenderlicher Kopie der kanonischen Fuenf-Perioden-Kette,
+  Ergebnisgesamtdigest und read-only Verlauf; UI-Start bleibt gesperrt
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

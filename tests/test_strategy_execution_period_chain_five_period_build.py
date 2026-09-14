@@ -77,7 +77,7 @@ def test_builds_deterministic_canonical_five_period_chain(tmp_path) -> None:
     assert payload["resolved_candidate_count"] == 5
     assert payload["period_chain_persisted"] is False
     assert payload["execution_performed"] is False
-    assert payload["next_gate"] == "PR145"
+    assert payload["next_gate"] == "PR146"
 
 
 def test_rejects_other_horizon_before_candidate_resolution(
@@ -216,4 +216,4 @@ def test_five_period_build_contract_opens_only_atomic_ephemeral_build() -> None:
     assert payload["runner_enabled"] is False
     assert payload["writes_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR145"
+    assert payload["next_gate"] == "PR146"

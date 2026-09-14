@@ -56,10 +56,10 @@ Unit- und API-Tests belegen:
 
 - **PR144 (umgesetzt):** isolierte fluechtige Fuenf-Perioden-Wirkungsprobe
   mit exaktem Prefixnachweis fuer Perioden 1 und 2.
-- **PR145 (naechster Schritt):** kontrollierter Start, dauerhafte
-  Idempotenz und unveraenderliche Ergebnisablage fuer fuenf Perioden.
-- **PR146:** Workbench- und Browserabnahme auf breitem und schmalem Viewport
-  samt Fehlerpfaden und Handbuch-Screenshot.
+- **PR145 (umgesetzt):** kontrollierter Serverstart, dauerhafte Idempotenz
+  und unveraenderliche Ablage von Request, Kettenkopie und Ergebnis.
+- **PR146 (naechster Schritt):** Workbench- und Browserabnahme auf breitem
+  und schmalem Viewport samt Fehlerpfaden und Handbuch-Screenshot.
 - **PR147-PR151:** gestufter Horizont bis 100 Perioden, Ergebnisbuendel und
   auswertbarer Ergebnisarbeitsplatz gemaess Produkt-Roadmap.
 

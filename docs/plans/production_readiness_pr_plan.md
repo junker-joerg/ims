@@ -212,6 +212,7 @@ Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die Abnahme fuer ein
 Managementseminar. PR142 hat den read-only Vertrag fuer den auf fuenf
 Perioden begrenzten Kettenrunner festgelegt. PR143 hat die kanonische
 Fuenf-Perioden-Kette atomar gebaut und validiert. PR144 hat die isolierte
-fluechtige Wirkungsprobe samt Prefixnachweis 1-2 angeschlossen. PR145
-schliesst als naechstes kontrollierten Start, Idempotenz und Ergebnisablage
-fuer fuenf Perioden an.
+fluechtige Wirkungsprobe samt Prefixnachweis 1-2 angeschlossen. PR145 hat den
+kontrollierten Serverstart, dauerhafte Idempotenz sowie die unveraenderliche
+Ablage von Request, kanonischer Kette und Ergebnis umgesetzt. PR146 schliesst
+als Naechstes Workbench-Bedienung, Browserabnahme und Handbuchbild an.

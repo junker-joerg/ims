@@ -190,7 +190,10 @@ def strategy_execution_period_chain_bounded_runner_contract_payload() -> dict[
         "five_period_candidate_validation_enabled": True,
         "five_period_chain_build_enabled": True,
         "five_period_execution_enabled": True,
-        "five_period_result_persistence_enabled": False,
+        "five_period_server_start_enabled": True,
+        "five_period_idempotency_persistence_enabled": True,
+        "five_period_result_persistence_enabled": True,
+        "five_period_immutable_chain_snapshot_persistence_enabled": True,
         "five_period_ui_start_enabled": False,
         "existing_two_period_effect_probe_enabled": True,
         "existing_two_period_effect_probe_changed": False,
@@ -256,6 +259,15 @@ def strategy_execution_period_chain_bounded_runner_contract_payload() -> dict[
             "bounded_execution_endpoint": (
                 "/api/run-control/strategy-period-chain-five-period-effect-probe"
             ),
+            "persistent_start_endpoint": (
+                "/api/run-control/strategy-period-chain-five-period-effect-probe-start"
+            ),
+            "read_only_result_endpoint_template": (
+                "/api/run-control/strategy-period-chain-five-period-effect-probe-result/{chain_id}"
+            ),
+            "read_only_history_endpoint_template": (
+                "/api/run-control/strategy-period-chain-five-period-effect-probe-history/{chain_id}"
+            ),
         },
         "step_count": len(STRATEGY_EXECUTION_BOUNDED_RUNNER_STEPS),
         "execution_steps": [
@@ -310,7 +322,7 @@ def strategy_execution_period_chain_bounded_runner_contract_payload() -> dict[
             "partial_result_persisted": False,
             "retry_implicit": False,
         },
-        "next_gate": "PR145",
+        "next_gate": "PR146",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

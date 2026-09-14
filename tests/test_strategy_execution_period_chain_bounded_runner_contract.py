@@ -41,10 +41,19 @@ def test_bounded_runner_contract_limits_first_extension_to_five_periods() -> Non
         "five_period_build_endpoint": (
             "/api/strategies/execution-period-chain-five-period-build"
         ),
-        "bounded_execution_endpoint": (
-            "/api/run-control/strategy-period-chain-five-period-effect-probe"
-        ),
-    }
+            "bounded_execution_endpoint": (
+                "/api/run-control/strategy-period-chain-five-period-effect-probe"
+            ),
+            "persistent_start_endpoint": (
+                "/api/run-control/strategy-period-chain-five-period-effect-probe-start"
+            ),
+            "read_only_result_endpoint_template": (
+                "/api/run-control/strategy-period-chain-five-period-effect-probe-result/{chain_id}"
+            ),
+            "read_only_history_endpoint_template": (
+                "/api/run-control/strategy-period-chain-five-period-effect-probe-history/{chain_id}"
+            ),
+        }
     assert payload["five_period_candidate_validation_enabled"] is True
     assert payload["five_period_chain_build_enabled"] is True
     assert payload["bounded_runner_enabled"] is True
@@ -52,7 +61,7 @@ def test_bounded_runner_contract_limits_first_extension_to_five_periods() -> Non
     assert payload["prefix_comparison_execution_enabled"] is True
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR145"
+    assert payload["next_gate"] == "PR146"
 
 
 def test_bounded_runner_contract_orders_full_preparation_before_execution() -> None:

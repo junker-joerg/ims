@@ -87,7 +87,7 @@ def test_start_contract_and_read_endpoints_enforce_methods(tmp_path) -> None:
     assert payload["exact_two_period_horizon_required"] is True
     assert payload["result_endpoint_template"].endswith("/{chain_id}")
     assert payload["history_endpoint_template"].endswith("/{chain_id}")
-    assert payload["next_gate"] == "PR145"
+    assert payload["next_gate"] == "PR146"
     assert overview.status_code == 200
     assert overview.json()["storage"]["configured"] is False
     assert overview.json()["period_chain_count"] == 0
@@ -329,7 +329,7 @@ def test_starlette_fallback_exposes_same_start_and_read_paths(
     assert overview.status_code == 200
     assert overview.json()["period_chain_count"] == 1
     assert contract.status_code == 200
-    assert contract.json()["next_gate"] == "PR145"
+    assert contract.json()["next_gate"] == "PR146"
     assert started.status_code == 201
     assert started.json()["runner_invocation_count"] == 2
     assert result.status_code == 200
