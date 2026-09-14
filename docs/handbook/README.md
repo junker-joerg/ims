@@ -1,7 +1,7 @@
 # IMS-Benutzerhandbuch
 
 Stand: 2026-09-14
-Handbuchstand: HB3c
+Handbuchstand: HB3d
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
 wie Bedienstatus und historische Vergleichsergebnisse zu lesen sind. Es ist
@@ -14,27 +14,34 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | --- | --- | --- |
 | Windows-Workbench | `verified_windows_hb3` | Kurzstart, portable Ablage, Entwickler-Checkout, Check, Start, Health, Stop, Datenpflege und Deinstallation sind dokumentiert und auf einem Leerzeichenpfad geprueft |
 | Windows-Anwender-Testpaket | `documented_windows_hb3b` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 10 Seiten fachliche Bedienungsanleitung mit 8 Abbildungen sind vorbereitet und geprueft |
+| Managementseminar | `documented_management_hb3d` | Nichttechnischer 90-Minuten-Ablauf, sieben Nutzenargumente, Wirkungsketten-Arbeitsblatt, fuenf Abbildungen und ehrliche Ausbaugrenzen sind dokumentiert |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Einperioden-Wirkungsprobe | `verified_browser_pr132` | Strategie-Kandidat, ausdrueckliche Freigabe, genau eine isolierte Periode, gespeichertes Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Zwei-Perioden-Wirkungsprobe | `verified_browser_pr141` | Gespeicherte Kette, ausdrueckliche Freigabe, zwei isolierte Perioden, VU-/VN-Carryover, unveraenderliches Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
-| Historische Kernvalidierung | `blocked_calculated_core_validation` | Nach PR101 sind 15/15 Tabellen und 6.300/6.300 Ergebniszeilen angeschlossen; die gemeinsame fachliche Bewertung folgt in PR102 |
+| Historischer Vergleich | `accepted_diagnostic_benchmark` | PR102 hat 15/15 Tabellen und 6.300/6.300 Ergebniszeilen als diagnostischen Legacy-Benchmark eingeordnet; historische RNG- und Feldvollgleichheit ist kein Produktziel |
 
 ## Kapitel
 
-1. [Testpaket in zwei Seiten installieren](installation_test_package_windows.md)
-2. [Testpaket in zehn Seiten bedienen](user_guide_test_package.md)
-3. [Windows-Kurzstart](quickstart_windows.md)
-4. [Windows installieren](installation_windows.md)
-5. [Workbench bedienen](operation.md)
-6. [Ergebnisse und historische Validierung verstehen](results_and_validation.md)
-7. [Daten, Backup und Updates](data_and_updates.md)
-8. [Technische Quellen und Nachweise](technical_reference.md)
+1. [IMS im Managementseminar](management_seminar_guide.md)
+2. [Testpaket in zwei Seiten installieren](installation_test_package_windows.md)
+3. [Testpaket in zehn Seiten bedienen](user_guide_test_package.md)
+4. [Windows-Kurzstart](quickstart_windows.md)
+5. [Windows installieren](installation_windows.md)
+6. [Workbench bedienen](operation.md)
+7. [Ergebnisse und historische Validierung verstehen](results_and_validation.md)
+8. [Daten, Backup und Updates](data_and_updates.md)
+9. [Technische Quellen und Nachweise](technical_reference.md)
 
 Die zusammengefasste Fehlerhilfe sowie gepruefte Linux- und iOS/Juno-Aussagen
 folgen in HB4 bis HB6. Bis dahin bleiben fuer diese Plattformen die in der
 technischen Referenz ausgewiesenen offenen Statuswerte massgeblich.
+
+Die aktive fachliche Ausbaufolge fuer 100 Perioden, Kfz, Sach-Haftpflicht,
+Leben, Kranken, Versichererbilanzen, Solvency-II-Kapitalansicht,
+DORA-Wirkungsketten und Managementbedienung steht in der
+[IMS-2.x-Produkt-Roadmap](../plans/ims_2x_all_lines_management_lab_roadmap.md).
 
 ## Navigation in der Workbench
 

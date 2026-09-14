@@ -8,6 +8,12 @@ IMS-2.x-Alpha-Linie mit dem dokumentierten Modul- und Paketaudit.
 Die Kandidatenfolge in der damaligen Entscheidungsvorlage war noch keine aktive PR-Roadmap;
 die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 
+Die am 2026-09-14 bestaetigte Produkt-Richtung ist jetzt als
+[aktive Restplanung PR142 bis PR182](../plans/ims_2x_all_lines_management_lab_roadmap.md)
+verbindlich gegliedert. Sie fuehrt ueber 100 Perioden und Mehrsparten zu
+Versichererbilanzen, Solvency-II-Kapital, DORA-Wirkungsketten und einer
+managementtauglichen Bedienung.
+
 - [PR102 und Zielbild IMS 2.x](pr102_ims_2x_direction_recommendation.md):
   angenommene Entscheidung zum Abschluss des historischen 6.300-Zeilen-Vergleichs und zur
   Ausrichtung von IMS 2.x als ausbaubare Versicherungsmarkt-

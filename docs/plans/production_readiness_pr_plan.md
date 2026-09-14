@@ -194,3 +194,19 @@ Ablauf sowie die PR-88-bis-PR-101-Befunde stehen in
 `docs/plans/historical_reference_provenance_and_full_window_plan.md`.
 Die dafuer am 2026-09-01 angenommene Produkt- und Validierungsentscheidung
 steht unter `docs/strategy/pr102_ims_2x_direction_recommendation.md`.
+
+## Fortschreibung ab PR141
+
+Die oben stehende Folge dokumentiert den historischen Weg bis PR102 und bleibt
+als Herkunft der damaligen Produktionsreifeentscheidung erhalten. PR102 hat
+den vollstaendig angeschlossenen 6.300-Zeilen-Korpus als diagnostischen
+Legacy-Benchmark akzeptiert; eine historische RNG- oder Feldvollgleichheit
+ist kein Produktziel.
+
+Nach den Strategie-, Kandidaten- und Periodenketten-Schnitten PR103 bis PR141
+ist die aktive Restplanung in
+`docs/plans/ims_2x_all_lines_management_lab_roadmap.md` fortgeschrieben. Sie
+umfasst PR142 bis PR182: zunaechst den bedienbaren 100-Perioden-Lauf, danach
+Mehrsparten und Versichererbilanz, eine klar begrenzte
+Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die Abnahme fuer ein
+Managementseminar. PR142 bleibt der naechste kleine Produkt-PR.

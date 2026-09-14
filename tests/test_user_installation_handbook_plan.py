@@ -50,6 +50,18 @@ def test_hb3_keeps_target_structure_and_updates_remaining_slices() -> None:
     assert "580-1.320 LoC" in plan
 
 
+def test_hb3d_adds_management_guide_without_consuming_platform_slices() -> None:
+    plan = PLAN.read_text(encoding="utf-8")
+    normalized = " ".join(plan.split())
+
+    assert "Umsetzungsstand: HB3d" in plan
+    assert "HB3d: Management-Seminar-Leitfaden (umgesetzt)" in plan
+    assert "docs/handbook/management_seminar_guide.md" in plan
+    assert "docs/plans/ims_2x_all_lines_management_lab_roadmap.md" in plan
+    assert "Nach HB3d bleiben **3 Handbuch-Schnitte**" in normalized
+    assert "nicht in die dort ausgewiesenen 41 Produkt-PRs eingerechnet" in normalized
+
+
 def test_hb1_keeps_user_docs_and_migration_docs_separate() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     normalized = " ".join(plan.split())

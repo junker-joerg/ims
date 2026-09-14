@@ -2,7 +2,13 @@
 
 Stand: 2026-09-01
 Status: Empfehlung am 2026-09-01 angenommen
-Planungswirkung: verbindliche Grundlage fuer PR102; IMS-2.x-Ausbau folgt erst in eigenen Planungs-PRs
+Planungswirkung: verbindliche Grundlage fuer PR102; seit 2026-09-14 durch die aktive Produkt-Roadmap fortgeschrieben
+
+Aktive Fortschreibung:
+`docs/plans/ims_2x_all_lines_management_lab_roadmap.md` plant PR142 bis PR182
+fuer 100 Perioden, Mehrsparten, Versichererbilanz, Solvency-II-Kapital,
+DORA-Wirkungsketten und Managementbedienung. Die damalige Kandidatenfolge
+bleibt unten als historischer Umfang dieser Entscheidungsvorlage erhalten.
 
 ## Kurzempfehlung
 

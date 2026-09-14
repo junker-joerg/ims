@@ -1,7 +1,7 @@
 # Ergebnisse und historische Validierung verstehen
 
-Stand: 2026-09-01
-Kernvalidierungsstand: PR101
+Stand: 2026-09-14
+Kernvalidierungsstand: PR102
 
 ## Zwei verschiedene Fragen
 
@@ -18,7 +18,7 @@ Ein gruener technischer Check beantwortet die zweite Frage nicht automatisch.
 Ein blockierter historischer Vergleich bedeutet umgekehrt nicht automatisch,
 dass die Browseranwendung technisch defekt ist.
 
-## Stand nach PR101
+## Stand nach PR102
 
 Der kontrollierte historische Kernkorpus umfasst insgesamt 15 berechnete
 Tabellen und 6.300 eingetragene Ergebniszeilen. Davon sind derzeit:
@@ -34,10 +34,12 @@ bestehenden Toleranz und 17.629 blockierend abweichend. Fuenf der 1.500 Zeilen
 stimmen in allen Feldern ueberein.
 
 Damit sind alle vorgesehenen Tabellen und Ergebniszeilen technisch an den
-kontrollierten Vergleich angeschlossen. Dieser Stand lautet trotzdem weiterhin
-`blocked_calculated_core_validation`: PR102 bewertet den gemeinsamen
-Vollkorpus und seine Abweichungsgruppen. Vollstaendige Anschlussabdeckung ist
-weder historische Vollgleichheit noch automatisch eine Produktionsfreigabe.
+kontrollierten Vergleich angeschlossen. PR102 hat diesen Bestand als
+`accepted_diagnostic_benchmark` eingeordnet: Er belegt Herkunft, Form und
+diagnostische Vergleichbarkeit. Die exakte Wiederholung historischer RNG- und
+Feldfolgen ist kein Produktziel. Vollstaendige Anschlussabdeckung ist weder
+historische Vollgleichheit noch automatisch eine Produktionsfreigabe; dafuer
+gilt das moderne, anwendungsbezogene Validierungsprogramm.
 
 ## Was die Vergleichsbegriffe bedeuten
 
@@ -94,9 +96,9 @@ Fuer eine fachliche Freigabe werden mindestens drei Dinge getrennt betrachtet:
 
 1. Der technische Release-Pfad ist gruen.
 2. Alle vorgesehenen Tabellen und Ergebniszeilen sind angeschlossen.
-3. Die verbleibenden Abweichungen sind fachlich bewertet und von einer Person
-   freigegeben oder als begruendete historische Varianz dokumentiert.
+3. Der konkrete moderne Anwendungsfall besteht seine Invarianten-,
+   Determinismus-, Wirkungs- und Bedienpruefungen.
 
-Bis diese Bewertung erfolgt ist, darf das System fuer kontrollierte Tests und
-Demonstrationen verwendet werden, aber der historische Vergleich darf nicht
-als Vollgleichheitsnachweis bezeichnet werden.
+Der historische Vergleich darf weiterhin nicht als Vollgleichheitsnachweis
+bezeichnet werden. Er ersetzt weder die Validierung eines modernen Szenarios
+noch die fachliche Freigabe seiner Ergebnisse.

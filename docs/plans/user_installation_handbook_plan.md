@@ -1,8 +1,8 @@
 # Plan: Benutzer- und Installationshandbuch
 
-Stand: 2026-09-11
+Stand: 2026-09-14
 Planungsschnitt: HB1
-Umsetzungsstand: HB3c
+Umsetzungsstand: HB3d
 
 ## Ziel
 
@@ -19,7 +19,7 @@ Das Handbuch muss jederzeit unterscheiden zwischen:
 - noch nicht belegter historischer Parameter-, RNG- oder Vollgleichheit;
 - tatsaechlich gepruefter und nur geplanter Plattformunterstuetzung.
 
-HB1 bis HB3c aendern keine Fachlogik, starten keinen Mehrperiodenlauf und behaupten
+HB1 bis HB3d aendern keine Fachlogik, starten keinen Mehrperiodenlauf und behaupten
 keine historische Vollgleichheit.
 
 ## Zielgruppen
@@ -121,7 +121,7 @@ iOS/Juno nicht als unterstuetzte Installation bezeichnet werden.
   automatisch reproduzierbarer Ursprungslauf.
 - `incomming/` bleibt unversioniert und ist kein Benutzer-Datenimportpfad.
 
-## Umsetzungsstand HB3c und Restplanung HB4 bis HB6
+## Umsetzungsstand HB3d und Restplanung HB4 bis HB6
 
 ### HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad (umgesetzt)
 
@@ -199,6 +199,22 @@ Umgesetzt unter `docs/plans/portable_user_test_package_plan.md`.
 - Einperioden-Wirkungsprobe klar von 100-Periodenlauf, Carryover,
   Ergebnisexport und historischer Vollgleichheit abgegrenzt.
 
+### HB3d: Management-Seminar-Leitfaden (umgesetzt)
+
+- einen nichttechnischen Einstieg fuer Fuehrungskraefte, Lehrende und
+  Seminargruppen angelegt;
+- sieben Nutzenargumente, einen 90-Minuten-Ablauf und ein Arbeitsblatt fuer
+  Wirkungsketten beschrieben;
+- fuenf Modell-, Dissertations- und Workbench-Abbildungen in den fachlichen
+  Bedienpfad eingeordnet;
+- den heute belegten Zwei-Perioden-Pfad von geplanten 100 Perioden,
+  Mehrsparten, Bilanz, Solvency-II-Kapital und DORA-Wirkungsketten getrennt;
+- die aktive Produkt-Restplanung PR142 bis PR182 verlinkt;
+- keine Simulation und keine neue Fachlogik ausgefuehrt.
+
+Umgesetzt in `docs/handbook/management_seminar_guide.md`, dem Handbuchindex
+und den zugehoerigen Dokumentationstests.
+
 ### HB4: Linux-Plattformnachweis und Installationskapitel
 
 - unterstuetzte Distribution und Laufzeitversionen explizit festlegen;
@@ -235,13 +251,13 @@ Erwarteter Umfang: 160-320 Dokumentationszeilen und 40-120 Testzeilen.
 
 ## Aufwand und Reihenfolge
 
-Nach HB3c bleiben **3 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
+Nach HB3d bleiben **3 Handbuch-Schnitte**. Die grobe Bruttoabschaetzung fuer
 HB4 bis HB6 liegt bei 580-1.320 LoC in Dokumentation, Dokumentationstests und
 kleinen plattformspezifischen Skripten. Nicht enthalten sind ein nativer
 Installer, Signierung, App-Store-Verteilung, ein automatischer Updater oder
 groessere Plattformanpassungen.
 
-HB3, HB3a, HB3b und HB3c sind als getrennte reviewbare Schnitte umgesetzt.
+HB3, HB3a, HB3b, HB3c und HB3d sind als getrennte reviewbare Schnitte umgesetzt.
 HB4 bleibt der naechste Handbuchschnitt; PR136 hat davon getrennt die
 kanonische fluechtige Periodenkette gebaut, PR137 sie unveraenderlich
 abgelegt, PR138 den read-only Freigabecheck ergaenzt, PR139 die fluechtige
@@ -250,6 +266,11 @@ angebunden und PR141 Browserabnahme sowie Handbuchbilder abgeschlossen.
 PR142 bereitet den naechsten begrenzten Horizont vor. Plattformzusagen
 aus HB4/HB5 duerfen keine fachliche
 Produktionsreife vorwegnehmen.
+
+Die fachliche Produktfolge ab PR142 ist getrennt in
+`docs/plans/ims_2x_all_lines_management_lab_roadmap.md` geplant. HB4 bis HB6
+bleiben Plattform- und Handbuchschnitte und werden nicht in die dort
+ausgewiesenen 41 Produkt-PRs eingerechnet.
 
 ## Abnahme HB1
 

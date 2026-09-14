@@ -12,7 +12,8 @@ def _read(filename: str) -> str:
 def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     index = _read("README.md")
 
-    assert "Handbuchstand: HB3c" in index
+    assert "Handbuchstand: HB3d" in index
+    assert "[IMS im Managementseminar](management_seminar_guide.md)" in index
     assert "[Testpaket in zwei Seiten installieren]" in index
     assert "[Testpaket in zehn Seiten bedienen]" in index
     assert "[Windows-Kurzstart](quickstart_windows.md)" in index
@@ -28,6 +29,8 @@ def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     assert "`Strategien`" in index
     assert "verified_browser_pr132" in index
     assert "verified_browser_pr141" in index
+    assert "documented_management_hb3d" in index
+    assert "accepted_diagnostic_benchmark" in index
     assert "verified_windows_hb3" in index
     assert "not_verified" in index
     assert "feasibility_open" in index
@@ -100,15 +103,16 @@ def test_technical_reference_links_only_existing_sources() -> None:
     assert "iOS/Juno bleibt bis HB5 `feasibility_open`" in normalized
 
 
-def test_handbook_plan_records_hb3_and_remaining_slices() -> None:
+def test_handbook_plan_records_hb3d_and_remaining_slices() -> None:
     plan = (REPO_ROOT / "docs/plans/user_installation_handbook_plan.md").read_text(
         encoding="utf-8"
     )
     normalized = " ".join(plan.split())
 
-    assert "Umsetzungsstand: HB3c" in plan
+    assert "Umsetzungsstand: HB3d" in plan
     assert "HB2: Benutzerhandbuch-Grundgeruest und Bedienpfad (umgesetzt)" in plan
     assert "HB3: Windows-Installationshandbuch (umgesetzt)" in plan
-    assert "Nach HB3c bleiben **3 Handbuch-Schnitte**" in normalized
+    assert "HB3d: Management-Seminar-Leitfaden (umgesetzt)" in plan
+    assert "Nach HB3d bleiben **3 Handbuch-Schnitte**" in normalized
     assert "HB4 bis HB6" in plan
     assert "580-1.320 LoC" in plan
