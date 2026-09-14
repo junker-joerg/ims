@@ -271,4 +271,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_period_chain_effect_probe.md`: PR139-isolierte,
   fluechtige Wirkungsprobe fuer genau zwei erneut gepruefte Kandidaten und
   den expliziten VU-/VN-Carryover; ohne Ergebnisablage oder Simulation
+- `ims_2x_strategy_execution_period_chain_effect_probe_start.md`:
+  PR140-kontrollierter Workbench-Start mit atomarer Idempotenz,
+  unveraenderlicher Zwei-Perioden-Ergebnisablage und read-only Verlauf
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

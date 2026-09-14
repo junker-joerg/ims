@@ -15,7 +15,9 @@ from ims.api.strategy_execution_period_chain_store import (
     STRATEGY_EXECUTION_PERIOD_CHAIN_STORE_VERSION,
     StrategyExecutionPeriodChainStoreError,
     get_strategy_execution_period_chain,
+    list_strategy_execution_period_chains,
     persist_strategy_execution_period_chain,
+    strategy_execution_period_chain_overview_unavailable_payload,
     strategy_execution_period_chain_store_contract_payload,
 )
 from tests.period_chain_test_support import (
@@ -92,6 +94,57 @@ def test_persists_and_reads_verified_immutable_period_chain(tmp_path) -> None:
         request["expected_chain_id"],
         request["expected_content_digest"],
     )
+
+
+def test_overview_lists_verified_two_period_chain_read_only(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    request = _store_request(db_path, tmp_path)
+    persist_strategy_execution_period_chain(request, db_path=db_path)
+    before = db_path.read_bytes()
+
+    payload = list_strategy_execution_period_chains(
+        db_path=db_path,
+    ).to_dict()
+
+    assert db_path.read_bytes() == before
+    assert payload["period_chain_count"] == 1
+    assert payload["all_period_chain_digests_verified"] is True
+    chain = payload["period_chains"][0]
+    assert chain["chain_id"] == request["expected_chain_id"]
+    assert chain["period_count"] == 2
+    assert chain["candidate_count"] == 2
+    assert chain["transition_count"] == 1
+    assert chain["vu_carryover_transition_count"] == 1
+    assert chain["vn_carryover_transition_count"] == 1
+    assert chain["readiness"]["effect_probe_start_available"] is True
+    assert chain["readiness"]["general_multi_period_execution_ready"] is False
+    assert payload["writes_performed"] is False
+    assert payload["simulation_performed"] is False
+
+
+def test_overview_does_not_create_missing_store(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+
+    payload = list_strategy_execution_period_chains(
+        db_path=db_path,
+    ).to_dict()
+
+    assert db_path.exists() is False
+    assert payload["storage"]["store_initialized"] is False
+    assert payload["period_chain_count"] == 0
+    assert payload["period_chains"] == []
+
+
+def test_overview_unavailable_payload_keeps_memory_store_read_only() -> None:
+    payload = strategy_execution_period_chain_overview_unavailable_payload(
+        storage_kind="memory",
+        configured=False,
+    )
+
+    assert payload["storage"]["configured"] is False
+    assert payload["period_chain_count"] == 0
+    assert payload["writes_performed"] is False
+    assert payload["simulation_performed"] is False
 
 
 def test_exact_replay_is_idempotent_and_keeps_original_timestamp(tmp_path) -> None:
@@ -322,7 +375,7 @@ def test_store_contract_opens_only_explicit_immutable_persistence() -> None:
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR140"
+    assert payload["next_gate"] == "PR141"
 
 
 def test_store_api_persists_replays_reads_and_enforces_methods(
@@ -392,7 +445,7 @@ def test_store_api_rejects_unconfigured_store_invalid_json_and_missing_chain(
 
     assert invalid_json.status_code == 400
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
-    assert invalid_json.json()["next_gate"] == "PR140"
+    assert invalid_json.json()["next_gate"] == "PR141"
     assert created.status_code == 201
     assert missing.status_code == 404
     assert missing.json()["issues"][0]["code"] == "period_chain_not_found"

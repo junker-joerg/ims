@@ -23,6 +23,7 @@ import {
   ServerCog,
   ShieldCheck,
   Trash2,
+  Waypoints,
   X
 } from "lucide-react";
 import "./styles.css";
@@ -130,7 +131,8 @@ type StrategyWorkbenchView =
   | "context"
   | "snapshots"
   | "vu-snapshots"
-  | "candidates";
+  | "candidates"
+  | "period-chain";
 
 type StrategySectorContract = {
   mode: "legacy_two_position_vector";
@@ -794,6 +796,170 @@ type StrategyCandidateEffectProbeHistory = {
   attempt_count: number;
   attempts: StrategyCandidateEffectProbeAttempt[];
   latest_attempt: StrategyCandidateEffectProbeAttempt | null;
+  result_available: boolean;
+  persisted_at: string | null;
+  result_digest: string | null;
+  issues?: Array<{ code: string; message: string }>;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+};
+
+type StrategyExecutionPeriodChainOverviewEntry = {
+  chain_id: string;
+  content_digest: string;
+  digest_algorithm: "sha256";
+  digest_verified: boolean;
+  first_period: number;
+  last_period: number;
+  period_count: number;
+  run_index: number;
+  max_periods: number;
+  stored_at: string;
+  storage_status: "persisted_immutable";
+  candidate_count: number;
+  candidate_ids: string[];
+  transition_count: number;
+  vu_carryover_transition_count: number;
+  vn_carryover_transition_count: number;
+  readiness: {
+    period_chain_complete: boolean;
+    exact_two_period_horizon: boolean;
+    storage_integrity_verified: boolean;
+    run_control_ready: boolean;
+    effect_probe_available: boolean;
+    effect_probe_start_available: boolean;
+    effect_probe_result_persistence_available: boolean;
+    general_multi_period_execution_ready: boolean;
+    next_gate: string;
+  };
+};
+
+type StrategyExecutionPeriodChainOverview = {
+  schema_version: string;
+  period_chain_schema_version: string;
+  mode: "strategy_execution_period_chain_overview_read_only";
+  status: "ok" | "error";
+  storage: {
+    kind: "memory" | "sqlite";
+    configured: boolean;
+    path: string | null;
+    store_initialized: boolean;
+    immutable: boolean;
+  };
+  period_chain_count: number;
+  period_chains: StrategyExecutionPeriodChainOverviewEntry[];
+  all_period_chain_digests_verified: boolean;
+  issues?: Array<{ code: string; message: string }>;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+  historical_full_equality_claim: boolean;
+};
+
+type StrategyPeriodChainEffectProbeStartContract = {
+  schema_version: string;
+  request_schema_version: string;
+  release_request_schema_version: string;
+  mode: "strategy_execution_period_chain_effect_probe_start_contract";
+  start_endpoint: string;
+  result_endpoint_template: string;
+  history_endpoint_template: string;
+  ui_start_enabled: boolean;
+  idempotency_persistence_enabled: boolean;
+  immutable_result_persistence_enabled: boolean;
+  attempt_history_enabled: boolean;
+  exact_two_period_horizon_required: boolean;
+  stored_transition_flags_authoritative: boolean;
+  automatic_retry_enabled: boolean;
+  queue_worker_enabled: boolean;
+  general_multi_period_execution_enabled: boolean;
+  simulation_performed: boolean;
+  next_gate: string;
+};
+
+type StrategyPeriodChainTransitionEffect = {
+  from_period: number;
+  to_period: number;
+  vu_carryover_requested: boolean;
+  vn_carryover_requested: boolean;
+  vu_carryover_executed: boolean;
+  vn_carryover_executed: boolean;
+  carried_insurer_ids: number[];
+  carried_policyholder_ids: number[];
+  state_changed: boolean;
+};
+
+type StrategyPeriodChainEffectProbeStoredRecord = {
+  chain_id: string;
+  attempt_id: string;
+  idempotency_key: string;
+  content_digest: string;
+  persisted_at: string;
+  result_digest: string;
+  result_payload: {
+    period_effects: StrategyCandidateEffectProbeEffect[];
+    transition_effect: StrategyPeriodChainTransitionEffect | null;
+    execution_performed: boolean;
+    simulation_performed: boolean;
+  };
+};
+
+type StrategyPeriodChainEffectProbeStartResponse = {
+  status: "ok" | "error";
+  mode: "strategy_execution_period_chain_effect_probe_start";
+  chain_id?: string;
+  attempt_id?: string;
+  idempotency_key?: string;
+  replayed?: boolean;
+  record?: StrategyPeriodChainEffectProbeStoredRecord;
+  issues?: Array<{ code: string; message: string }>;
+  result_persisted: boolean;
+  runner_invocation_count: number;
+  carryover_invocation_count: number;
+  simulation_performed: boolean;
+};
+
+type StrategyPeriodChainEffectProbeResultRead = {
+  status: "ok" | "error";
+  mode: "strategy_execution_period_chain_effect_probe_result_read_only";
+  chain_id: string;
+  content_digest: string;
+  result_available: boolean;
+  record: StrategyPeriodChainEffectProbeStoredRecord | null;
+  issues?: Array<{ code: string; message: string }>;
+  writes_performed: boolean;
+  execution_performed: boolean;
+  simulation_performed: boolean;
+};
+
+type StrategyPeriodChainEffectProbeAttempt = {
+  attempt_id: string;
+  chain_id: string;
+  idempotency_key: string;
+  status: "starting" | "failed" | "result_persisted";
+  released_by: string;
+  released_at: string;
+  release_reason: string;
+  started_at: string;
+  completed_at: string | null;
+  failure_code: string | null;
+  failure_message: string | null;
+  runner_invocation_count: number;
+  carryover_invocation_count: number;
+  candidate_reverified_count: number;
+  result_persisted: boolean;
+  simulation_performed: boolean;
+};
+
+type StrategyPeriodChainEffectProbeHistory = {
+  status: "ok" | "error";
+  mode: "strategy_execution_period_chain_effect_probe_history_read_only";
+  chain_id: string;
+  content_digest: string;
+  attempt_count: number;
+  attempts: StrategyPeriodChainEffectProbeAttempt[];
+  latest_attempt: StrategyPeriodChainEffectProbeAttempt | null;
   result_available: boolean;
   persisted_at: string | null;
   result_digest: string | null;
@@ -1806,6 +1972,11 @@ function createStrategyCandidateProbeIdempotencyKey(candidateId: string): string
   return `workbench-strategy-probe-${candidateId.slice(-12)}-${suffix}`;
 }
 
+function createStrategyPeriodChainProbeIdempotencyKey(chainId: string): string {
+  const suffix = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`;
+  return `workbench-period-chain-probe-${chainId.slice(-12)}-${suffix}`;
+}
+
 function queueActionLabel(entry: RunControlQueueEntry): string {
   if (entry.status === "planned") {
     return "Preflight lokal";
@@ -1956,6 +2127,40 @@ function App() {
   const [strategyCandidateProbeEvidenceError, setStrategyCandidateProbeEvidenceError] =
     useState<string | null>(null);
   const [strategyCandidateProbeEvidenceRevision, setStrategyCandidateProbeEvidenceRevision] =
+    useState(0);
+  const [strategyPeriodChainOverview, setStrategyPeriodChainOverview] =
+    useState<StrategyExecutionPeriodChainOverview | null>(null);
+  const [strategyPeriodChainOverviewState, setStrategyPeriodChainOverviewState] =
+    useState<DetailState>("loading");
+  const [strategyPeriodChainOverviewError, setStrategyPeriodChainOverviewError] =
+    useState<string | null>(null);
+  const [selectedStrategyPeriodChainId, setSelectedStrategyPeriodChainId] =
+    useState<string | null>(null);
+  const [strategyPeriodChainOverviewRevision, setStrategyPeriodChainOverviewRevision] =
+    useState(0);
+  const [strategyPeriodChainProbeStartContract, setStrategyPeriodChainProbeStartContract] =
+    useState<StrategyPeriodChainEffectProbeStartContract | null>(null);
+  const [strategyPeriodChainProbeActor, setStrategyPeriodChainProbeActor] =
+    useState("workbench-ui");
+  const [strategyPeriodChainProbeReason, setStrategyPeriodChainProbeReason] =
+    useState("Kontrollierte Zwei-Perioden-Wirkungsprobe");
+  const [strategyPeriodChainProbeConfirmed, setStrategyPeriodChainProbeConfirmed] =
+    useState(false);
+  const [strategyPeriodChainProbeStart, setStrategyPeriodChainProbeStart] =
+    useState<StrategyPeriodChainEffectProbeStartResponse | null>(null);
+  const [strategyPeriodChainProbeStartState, setStrategyPeriodChainProbeStartState] =
+    useState<DetailState>("idle");
+  const [strategyPeriodChainProbeStartError, setStrategyPeriodChainProbeStartError] =
+    useState<string | null>(null);
+  const [strategyPeriodChainProbeResult, setStrategyPeriodChainProbeResult] =
+    useState<StrategyPeriodChainEffectProbeResultRead | null>(null);
+  const [strategyPeriodChainProbeHistory, setStrategyPeriodChainProbeHistory] =
+    useState<StrategyPeriodChainEffectProbeHistory | null>(null);
+  const [strategyPeriodChainProbeEvidenceState, setStrategyPeriodChainProbeEvidenceState] =
+    useState<DetailState>("idle");
+  const [strategyPeriodChainProbeEvidenceError, setStrategyPeriodChainProbeEvidenceError] =
+    useState<string | null>(null);
+  const [strategyPeriodChainProbeEvidenceRevision, setStrategyPeriodChainProbeEvidenceRevision] =
     useState(0);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
@@ -2374,6 +2579,153 @@ function App() {
       active = false;
     };
   }, [selectedStrategyCandidateId, strategyCandidateProbeEvidenceRevision]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyPeriodChainOverview() {
+      setStrategyPeriodChainOverviewState("loading");
+      setStrategyPeriodChainOverviewError(null);
+      try {
+        const response = await fetch("/api/strategies/execution-period-chains");
+        const payload = (
+          await response.json()
+        ) as StrategyExecutionPeriodChainOverview;
+        if (!response.ok || payload.status !== "ok") {
+          throw new Error(
+            payload.issues?.[0]?.message ?? "Periodenkettenablage nicht lesbar"
+          );
+        }
+        if (active) {
+          setStrategyPeriodChainOverview(payload);
+          setSelectedStrategyPeriodChainId((current) => (
+            payload.period_chains.some((chain) => chain.chain_id === current)
+              ? current
+              : payload.period_chains[0]?.chain_id ?? null
+          ));
+          setStrategyPeriodChainOverviewState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyPeriodChainOverview(null);
+          setSelectedStrategyPeriodChainId(null);
+          setStrategyPeriodChainOverviewError(
+            error instanceof Error
+              ? error.message
+              : "Periodenkettenablage nicht erreichbar"
+          );
+          setStrategyPeriodChainOverviewState("error");
+        }
+      }
+    }
+
+    loadStrategyPeriodChainOverview();
+    return () => {
+      active = false;
+    };
+  }, [strategyPeriodChainOverviewRevision]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyPeriodChainProbeStartContract() {
+      try {
+        const response = await fetch(
+          "/api/run-control/strategy-period-chain-effect-probe-start-contract"
+        );
+        if (!response.ok) {
+          throw new Error("Startvertrag der Zwei-Perioden-Probe nicht erreichbar");
+        }
+        const payload = (
+          await response.json()
+        ) as StrategyPeriodChainEffectProbeStartContract;
+        if (active) {
+          setStrategyPeriodChainProbeStartContract(payload);
+        }
+      } catch {
+        if (active) {
+          setStrategyPeriodChainProbeStartContract(null);
+        }
+      }
+    }
+
+    loadStrategyPeriodChainProbeStartContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    setStrategyPeriodChainProbeConfirmed(false);
+    setStrategyPeriodChainProbeStart(null);
+    setStrategyPeriodChainProbeStartState("idle");
+    setStrategyPeriodChainProbeStartError(null);
+  }, [selectedStrategyPeriodChainId]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyPeriodChainProbeEvidence() {
+      if (!selectedStrategyPeriodChainId) {
+        setStrategyPeriodChainProbeResult(null);
+        setStrategyPeriodChainProbeHistory(null);
+        setStrategyPeriodChainProbeEvidenceState("idle");
+        setStrategyPeriodChainProbeEvidenceError(null);
+        return;
+      }
+      setStrategyPeriodChainProbeEvidenceState("loading");
+      setStrategyPeriodChainProbeEvidenceError(null);
+      try {
+        const encodedId = encodeURIComponent(selectedStrategyPeriodChainId);
+        const [resultResponse, historyResponse] = await Promise.all([
+          fetch(`/api/run-control/strategy-period-chain-effect-probe-result/${encodedId}`),
+          fetch(`/api/run-control/strategy-period-chain-effect-probe-history/${encodedId}`)
+        ]);
+        const resultPayload = (
+          await resultResponse.json()
+        ) as StrategyPeriodChainEffectProbeResultRead;
+        const historyPayload = (
+          await historyResponse.json()
+        ) as StrategyPeriodChainEffectProbeHistory;
+        if (!resultResponse.ok) {
+          throw new Error(
+            resultPayload.issues?.[0]?.message
+              ?? "Zwei-Perioden-Ergebnis nicht erreichbar"
+          );
+        }
+        if (!historyResponse.ok) {
+          throw new Error(
+            historyPayload.issues?.[0]?.message
+              ?? "Zwei-Perioden-Verlauf nicht erreichbar"
+          );
+        }
+        if (active) {
+          setStrategyPeriodChainProbeResult(resultPayload);
+          setStrategyPeriodChainProbeHistory(historyPayload);
+          setStrategyPeriodChainProbeEvidenceState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyPeriodChainProbeResult(null);
+          setStrategyPeriodChainProbeHistory(null);
+          setStrategyPeriodChainProbeEvidenceError(
+            error instanceof Error
+              ? error.message
+              : "Zwei-Perioden-Nachweis nicht erreichbar"
+          );
+          setStrategyPeriodChainProbeEvidenceState("error");
+        }
+      }
+    }
+
+    loadStrategyPeriodChainProbeEvidence();
+    return () => {
+      active = false;
+    };
+  }, [
+    selectedStrategyPeriodChainId,
+    strategyPeriodChainProbeEvidenceRevision
+  ]);
 
   useEffect(() => {
     let active = true;
@@ -2867,6 +3219,105 @@ function App() {
       setStrategyCandidateProbeStartState("error");
     } finally {
       setStrategyCandidateProbeEvidenceRevision((current) => current + 1);
+    }
+  };
+  const selectedStrategyPeriodChain = strategyPeriodChainOverview?.period_chains.find(
+    (chain) => chain.chain_id === selectedStrategyPeriodChainId
+  ) ?? null;
+  const strategyPeriodChainStorageLabel = !strategyPeriodChainOverview
+    ? "wird geladen"
+    : strategyPeriodChainOverview.storage.kind !== "sqlite"
+      ? "nicht konfiguriert"
+      : strategyPeriodChainOverview.storage.store_initialized
+        ? "SQLite bereit"
+        : "noch leer";
+  const strategyPeriodChainIntegrityLabel = strategyPeriodChainOverviewState === "error"
+    ? "Pruefung fehlgeschlagen"
+    : strategyPeriodChainOverviewState !== "ready"
+      ? "wird geladen"
+      : strategyPeriodChainOverview?.period_chain_count === 0
+        ? "keine Ketten"
+        : strategyPeriodChainOverview?.all_period_chain_digests_verified
+          ? "Digests geprueft"
+          : "Pruefung offen";
+  const strategyPeriodChainProbeResultAvailable =
+    strategyPeriodChainProbeResult?.result_available === true;
+  const strategyPeriodChainEffects =
+    strategyPeriodChainProbeResult?.record?.result_payload.period_effects ?? [];
+  const strategyPeriodChainTransition =
+    strategyPeriodChainProbeResult?.record?.result_payload.transition_effect ?? null;
+  const canStartStrategyPeriodChainProbe = Boolean(
+    selectedStrategyPeriodChain &&
+    selectedStrategyPeriodChain.readiness.effect_probe_start_available &&
+    strategyPeriodChainProbeStartContract?.ui_start_enabled &&
+    strategyPeriodChainProbeStartContract.idempotency_persistence_enabled &&
+    strategyPeriodChainProbeStartContract.immutable_result_persistence_enabled &&
+    strategyPeriodChainProbeEvidenceState === "ready" &&
+    !strategyPeriodChainProbeResultAvailable &&
+    strategyPeriodChainProbeActor.trim() &&
+    strategyPeriodChainProbeReason.trim() &&
+    strategyPeriodChainProbeConfirmed &&
+    strategyPeriodChainProbeStartState !== "loading"
+  );
+  const startStrategyPeriodChainProbe = async () => {
+    if (
+      !selectedStrategyPeriodChain ||
+      !strategyPeriodChainProbeStartContract ||
+      !canStartStrategyPeriodChainProbe
+    ) {
+      return;
+    }
+    const request = {
+      schema_version: strategyPeriodChainProbeStartContract.request_schema_version,
+      release: {
+        schema_version: (
+          strategyPeriodChainProbeStartContract.release_request_schema_version
+        ),
+        chain_id: selectedStrategyPeriodChain.chain_id,
+        expected_content_digest: selectedStrategyPeriodChain.content_digest,
+        idempotency_key: createStrategyPeriodChainProbeIdempotencyKey(
+          selectedStrategyPeriodChain.chain_id
+        ),
+        explicit_run_control_release: true,
+        released_by: strategyPeriodChainProbeActor.trim(),
+        released_at: new Date().toISOString(),
+        release_reason: strategyPeriodChainProbeReason.trim()
+      },
+      explicit_two_period_effect_probe_execution: true
+    };
+    setStrategyPeriodChainProbeStart(null);
+    setStrategyPeriodChainProbeStartError(null);
+    setStrategyPeriodChainProbeStartState("loading");
+    try {
+      const response = await fetch(
+        strategyPeriodChainProbeStartContract.start_endpoint,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(request)
+        }
+      );
+      const payload = (
+        await response.json()
+      ) as StrategyPeriodChainEffectProbeStartResponse;
+      setStrategyPeriodChainProbeStart(payload);
+      if (!response.ok || payload.status !== "ok") {
+        throw new Error(
+          payload.issues?.[0]?.message
+            ?? "Zwei-Perioden-Probe konnte nicht gestartet werden"
+        );
+      }
+      setStrategyPeriodChainProbeConfirmed(false);
+      setStrategyPeriodChainProbeStartState("ready");
+    } catch (error) {
+      setStrategyPeriodChainProbeStartError(
+        error instanceof Error
+          ? error.message
+          : "Zwei-Perioden-Probe nicht erreichbar"
+      );
+      setStrategyPeriodChainProbeStartState("error");
+    } finally {
+      setStrategyPeriodChainProbeEvidenceRevision((current) => current + 1);
     }
   };
   const strategyDefinitionById = new Map(
@@ -4682,6 +5133,17 @@ function App() {
               <Archive size={17} aria-hidden="true" />
               Kandidaten
             </button>
+            <button
+              className={strategyWorkbenchView === "period-chain" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "period-chain"}
+              data-testid="strategy-period-chain-tab"
+              onClick={() => setStrategyWorkbenchView("period-chain")}
+            >
+              <Waypoints size={17} aria-hidden="true" />
+              Periodenkette
+            </button>
           </div>
 
           {strategyWorkbenchView === "catalog" ? (
@@ -5112,6 +5574,412 @@ function App() {
                           <div>
                             <strong>Mehrperiodenlauf bleibt gesperrt</strong>
                             <span>Carryover, Scheduler, Dateien und historische Vollgleichheitsbehauptung sind nicht Teil dieser Probe. Naechste Abnahmegrenze: {strategyCandidateProbeStartContract?.next_gate ?? selectedStrategyCandidate.readiness.next_gate}.</span>
+                          </div>
+                        </div>
+                      </section>
+                    </article>
+                  ) : null}
+                </div>
+              )}
+            </div>
+          ) : strategyWorkbenchView === "period-chain" ? (
+            <div
+              className="strategy-contract-view strategy-candidate-view"
+              data-testid="strategy-period-chain-overview"
+            >
+              <div className="strategy-contract-summary" aria-label="Periodenketten-Status">
+                <div>
+                  <span>Speicher</span>
+                  <strong>{strategyPeriodChainStorageLabel}</strong>
+                </div>
+                <div>
+                  <span>Ketten</span>
+                  <strong>{strategyPeriodChainOverview?.period_chain_count ?? 0}</strong>
+                </div>
+                <div>
+                  <span>Integritaet</span>
+                  <strong>{strategyPeriodChainIntegrityLabel}</strong>
+                </div>
+                <div>
+                  <span>Ausfuehrung</span>
+                  <strong>
+                    {strategyPeriodChainProbeResultAvailable
+                      ? "Ergebnis gespeichert"
+                      : selectedStrategyPeriodChain?.readiness.effect_probe_start_available
+                        ? "Zwei Perioden bereit"
+                        : "Horizont gesperrt"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="strategy-boundary-band">
+                <div>
+                  <strong>
+                    {strategyPeriodChainProbeResultAvailable
+                      ? "Zwei-Perioden-Wirkung dauerhaft nachgewiesen"
+                      : "Gespeicherte Kette, manuell freigebbar"}
+                  </strong>
+                  <span>
+                    Exakt Periode 1 und 2 mit den gespeicherten VU-/VN-Uebergangsflags.
+                  </span>
+                </div>
+                <span className="readonly-marker">
+                  <ShieldCheck size={16} aria-hidden="true" />
+                  Kontrollierter Start
+                </span>
+              </div>
+
+              <div className="strategy-candidate-toolbar">
+                <div>
+                  <strong>Gespeicherte Periodenketten</strong>
+                  <span>Neueste Ablage zuerst; Inhalt und Digest sind erneut geprueft.</span>
+                </div>
+                <button
+                  className="secondary-action"
+                  type="button"
+                  disabled={strategyPeriodChainOverviewState === "loading"}
+                  onClick={() => setStrategyPeriodChainOverviewRevision((current) => current + 1)}
+                >
+                  <RefreshCw size={16} aria-hidden="true" />
+                  Aktualisieren
+                </button>
+              </div>
+
+              {strategyPeriodChainOverviewState === "error" ? (
+                <div className="empty-state" role="alert">
+                  {strategyPeriodChainOverviewError}
+                </div>
+              ) : strategyPeriodChainOverviewState === "loading" ? (
+                <div className="empty-state">Periodenkettenablage wird gelesen</div>
+              ) : !strategyPeriodChainOverview?.storage.configured ? (
+                <div className="empty-state">Keine lokale SQLite-Ablage konfiguriert.</div>
+              ) : strategyPeriodChainOverview.period_chain_count === 0 ? (
+                <div className="empty-state">Noch keine gespeicherte Periodenkette.</div>
+              ) : (
+                <div className="strategy-candidate-layout">
+                  <div className="strategy-candidate-list" aria-label="Gespeicherte Periodenketten">
+                    {strategyPeriodChainOverview.period_chains.map((chain) => (
+                      <button
+                        className={chain.chain_id === selectedStrategyPeriodChainId ? "active" : ""}
+                        type="button"
+                        aria-pressed={chain.chain_id === selectedStrategyPeriodChainId}
+                        data-testid="strategy-period-chain-select"
+                        key={chain.chain_id}
+                        onClick={() => setSelectedStrategyPeriodChainId(chain.chain_id)}
+                      >
+                        <span>
+                          <strong>Perioden {chain.first_period}-{chain.last_period}</strong>
+                          <small>Lauf {chain.run_index} / {formatCandidateStoredAt(chain.stored_at)}</small>
+                        </span>
+                        {chain.readiness.effect_probe_start_available ? (
+                          <CheckCircle2 size={17} aria-label="Zwei-Perioden-Probe bereit" />
+                        ) : (
+                          <LockKeyhole size={17} aria-label="Horizont gesperrt" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {selectedStrategyPeriodChain ? (
+                    <article className="strategy-candidate-detail" aria-label="Periodenkettendetails">
+                      <div className="strategy-candidate-heading">
+                        <div>
+                          <span>Periodenkette</span>
+                          <h3>{selectedStrategyPeriodChain.chain_id}</h3>
+                        </div>
+                        <span className="strategy-candidate-verified">
+                          <CheckCircle2 size={16} aria-hidden="true" />
+                          Digest geprueft
+                        </span>
+                      </div>
+
+                      <div className="strategy-candidate-readiness" aria-label="Kettenreife">
+                        <div>
+                          <CheckCircle2 size={17} aria-hidden="true" />
+                          <span><strong>Kette</strong><small>vollstaendig</small></span>
+                        </div>
+                        <div>
+                          <CheckCircle2 size={17} aria-hidden="true" />
+                          <span><strong>Kandidaten</strong><small>{selectedStrategyPeriodChain.candidate_count} geprueft</small></span>
+                        </div>
+                        <div>
+                          <CheckCircle2 size={17} aria-hidden="true" />
+                          <span><strong>Speicher</strong><small>intakt</small></span>
+                        </div>
+                        <div className={selectedStrategyPeriodChain.readiness.effect_probe_start_available ? "" : "locked"}>
+                          {selectedStrategyPeriodChain.readiness.effect_probe_start_available ? (
+                            <Play size={17} aria-hidden="true" />
+                          ) : (
+                            <LockKeyhole size={17} aria-hidden="true" />
+                          )}
+                          <span>
+                            <strong>Wirkungsprobe</strong>
+                            <small>
+                              {strategyPeriodChainProbeResultAvailable
+                                ? "belegt"
+                                : selectedStrategyPeriodChain.readiness.effect_probe_start_available
+                                  ? "startbereit"
+                                  : "nur fuer 2 Perioden"}
+                            </small>
+                          </span>
+                        </div>
+                      </div>
+
+                      <dl className="strategy-candidate-provenance">
+                        <div>
+                          <dt>Horizont</dt>
+                          <dd>
+                            <strong>Periode {selectedStrategyPeriodChain.first_period}-{selectedStrategyPeriodChain.last_period}</strong>
+                            <small>{selectedStrategyPeriodChain.period_count} Perioden</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Kandidaten</dt>
+                          <dd>
+                            <strong>{selectedStrategyPeriodChain.candidate_count} unveraenderliche Kandidaten</strong>
+                            <small>{selectedStrategyPeriodChain.transition_count} Uebergang</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>VU-Carryover</dt>
+                          <dd>
+                            <strong>{selectedStrategyPeriodChain.vu_carryover_transition_count > 0 ? "aktiv" : "nicht angefordert"}</strong>
+                            <small>gespeichertes Uebergangsflag</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>VN-Carryover</dt>
+                          <dd>
+                            <strong>{selectedStrategyPeriodChain.vn_carryover_transition_count > 0 ? "aktiv" : "nicht angefordert"}</strong>
+                            <small>gespeichertes Uebergangsflag</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Speicherstatus</dt>
+                          <dd>
+                            <strong>unveraenderlich gespeichert</strong>
+                            <small>{formatCandidateStoredAt(selectedStrategyPeriodChain.stored_at)}</small>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Inhalts-Digest</dt>
+                          <dd>
+                            <code title={selectedStrategyPeriodChain.content_digest}>
+                              {selectedStrategyPeriodChain.content_digest}
+                            </code>
+                          </dd>
+                        </div>
+                      </dl>
+
+                      <section
+                        className="strategy-candidate-probe"
+                        aria-label="Kontrollierte Zwei-Perioden-Wirkungsprobe"
+                        data-testid="strategy-period-chain-effect-probe"
+                      >
+                        <div className="strategy-candidate-probe-heading">
+                          <div>
+                            <strong>Zwei-Perioden-Wirkungsprobe</strong>
+                            <span>Freigabe, Ausfuehrung und Nachweis fuer diese Kette</span>
+                          </div>
+                          <button
+                            className="secondary-action"
+                            type="button"
+                            title="Ergebnis und Verlauf aktualisieren"
+                            aria-label="Ergebnis und Verlauf aktualisieren"
+                            disabled={strategyPeriodChainProbeEvidenceState === "loading"}
+                            onClick={() => setStrategyPeriodChainProbeEvidenceRevision((current) => current + 1)}
+                          >
+                            <RefreshCw size={16} aria-hidden="true" />
+                            Aktualisieren
+                          </button>
+                        </div>
+
+                        {strategyPeriodChainProbeResultAvailable ? (
+                          <div className="strategy-candidate-probe-complete">
+                            <CheckCircle2 size={18} aria-hidden="true" />
+                            <div>
+                              <strong>Ergebnis unveraenderlich gespeichert</strong>
+                              <span>Ein weiterer Start dieser Kette ist gesperrt.</span>
+                            </div>
+                          </div>
+                        ) : selectedStrategyPeriodChain.readiness.effect_probe_start_available ? (
+                          <div className="strategy-candidate-probe-controls">
+                            <label>
+                              <span>Freigabe durch</span>
+                              <input
+                                type="text"
+                                data-testid="strategy-period-chain-release-actor"
+                                value={strategyPeriodChainProbeActor}
+                                onChange={(event) => setStrategyPeriodChainProbeActor(event.target.value)}
+                                disabled={strategyPeriodChainProbeStartState === "loading"}
+                              />
+                            </label>
+                            <label>
+                              <span>Grund</span>
+                              <input
+                                type="text"
+                                data-testid="strategy-period-chain-release-reason"
+                                value={strategyPeriodChainProbeReason}
+                                onChange={(event) => setStrategyPeriodChainProbeReason(event.target.value)}
+                                disabled={strategyPeriodChainProbeStartState === "loading"}
+                              />
+                            </label>
+                            <label className="strategy-candidate-probe-confirmation">
+                              <input
+                                type="checkbox"
+                                data-testid="strategy-period-chain-release-confirmation"
+                                checked={strategyPeriodChainProbeConfirmed}
+                                onChange={(event) => setStrategyPeriodChainProbeConfirmed(event.target.checked)}
+                                disabled={strategyPeriodChainProbeStartState === "loading"}
+                              />
+                              <span>Periode 1 und 2 mit gespeichertem Carryover jetzt ausfuehren</span>
+                            </label>
+                            <button
+                              className="primary-action"
+                              type="button"
+                              data-testid="strategy-period-chain-effect-probe-start"
+                              disabled={!canStartStrategyPeriodChainProbe}
+                              onClick={startStrategyPeriodChainProbe}
+                            >
+                              <Play size={17} aria-hidden="true" />
+                              {strategyPeriodChainProbeStartState === "loading"
+                                ? "Zwei Perioden laufen"
+                                : "Zwei Perioden starten"}
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="strategy-candidate-probe-message">
+                            <LockKeyhole size={17} aria-hidden="true" />
+                            <span>Diese Startgrenze akzeptiert ausschliesslich den Horizont 1-2.</span>
+                          </div>
+                        )}
+
+                        {strategyPeriodChainProbeStartError ? (
+                          <div
+                            className="strategy-candidate-probe-message error"
+                            role="alert"
+                            data-testid="strategy-period-chain-effect-probe-error"
+                          >
+                            <CircleAlert size={17} aria-hidden="true" />
+                            <span>{strategyPeriodChainProbeStartError}</span>
+                          </div>
+                        ) : strategyPeriodChainProbeStart?.replayed ? (
+                          <div className="strategy-candidate-probe-message">
+                            <ShieldCheck size={17} aria-hidden="true" />
+                            <span>Vorhandenes Ergebnis gelesen; kein weiterer Runneraufruf.</span>
+                          </div>
+                        ) : null}
+
+                        {strategyPeriodChainProbeEvidenceState === "loading" ? (
+                          <div className="strategy-candidate-probe-message">
+                            <Activity size={17} aria-hidden="true" />
+                            <span>Ergebnis und Verlauf werden gelesen.</span>
+                          </div>
+                        ) : strategyPeriodChainProbeEvidenceError ? (
+                          <div className="strategy-candidate-probe-message error" role="alert">
+                            <CircleAlert size={17} aria-hidden="true" />
+                            <span>{strategyPeriodChainProbeEvidenceError}</span>
+                          </div>
+                        ) : strategyPeriodChainEffects.length === 2 && strategyPeriodChainProbeResult?.record ? (
+                          <div
+                            className="strategy-candidate-probe-result"
+                            aria-label="Gespeichertes Zwei-Perioden-Ergebnis"
+                            data-testid="strategy-period-chain-effect-probe-result"
+                          >
+                            <div className="strategy-candidate-probe-result-grid">
+                              {strategyPeriodChainEffects.map((effect) => (
+                                <React.Fragment key={effect.period}>
+                                  <div>
+                                    <span>Periode {effect.period}</span>
+                                    <strong>{effect.state_changed ? "veraendert" : "unveraendert"}</strong>
+                                  </div>
+                                  <div>
+                                    <span>VU-Anwendungen</span>
+                                    <strong>{effect.applications.vu_total}</strong>
+                                  </div>
+                                  <div>
+                                    <span>VN-Anwendungen</span>
+                                    <strong>{effect.applications.vn_total}</strong>
+                                  </div>
+                                </React.Fragment>
+                              ))}
+                            </div>
+                            {strategyPeriodChainTransition ? (
+                              <dl className="strategy-candidate-probe-evidence">
+                                <div>
+                                  <dt>Uebergang</dt>
+                                  <dd>{strategyPeriodChainTransition.from_period} nach {strategyPeriodChainTransition.to_period}</dd>
+                                </div>
+                                <div>
+                                  <dt>VU-Carryover</dt>
+                                  <dd>{strategyPeriodChainTransition.vu_carryover_executed ? "ausgefuehrt" : "nicht angefordert"}</dd>
+                                </div>
+                                <div>
+                                  <dt>VN-Carryover</dt>
+                                  <dd>{strategyPeriodChainTransition.vn_carryover_executed ? "ausgefuehrt" : "nicht angefordert"}</dd>
+                                </div>
+                              </dl>
+                            ) : null}
+                            <dl className="strategy-candidate-probe-evidence">
+                              <div>
+                                <dt>Ergebnis gespeichert</dt>
+                                <dd>{formatCandidateStoredAt(strategyPeriodChainProbeResult.record.persisted_at)}</dd>
+                              </div>
+                              <div>
+                                <dt>Ergebnis-Digest</dt>
+                                <dd title={strategyPeriodChainProbeResult.record.result_digest}>
+                                  {shortCandidateDigest(strategyPeriodChainProbeResult.record.result_digest)}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>Ausgabedateien</dt>
+                                <dd>keine</dd>
+                              </div>
+                            </dl>
+                          </div>
+                        ) : (
+                          <div className="strategy-candidate-probe-message">
+                            <Eye size={17} aria-hidden="true" />
+                            <span>Noch kein gespeichertes Zwei-Perioden-Ergebnis.</span>
+                          </div>
+                        )}
+
+                        <div
+                          className="strategy-candidate-probe-history"
+                          aria-label="Zwei-Perioden-Versuchsverlauf"
+                          data-testid="strategy-period-chain-effect-probe-history"
+                        >
+                          <div className="strategy-candidate-probe-history-heading">
+                            <strong>Versuchsverlauf</strong>
+                            <span>{strategyPeriodChainProbeHistory?.attempt_count ?? 0} Eintraege</span>
+                          </div>
+                          {(strategyPeriodChainProbeHistory?.attempts ?? []).length === 0 ? (
+                            <div className="strategy-candidate-probe-history-empty">Noch kein Startversuch.</div>
+                          ) : (
+                            (strategyPeriodChainProbeHistory?.attempts ?? []).map((attempt) => (
+                              <div className="strategy-candidate-probe-history-row" key={attempt.attempt_id}>
+                                <div>
+                                  <strong>{attempt.status === "result_persisted" ? "Ergebnis gespeichert" : attempt.status === "failed" ? "Fehlgeschlagen" : "Gestartet"}</strong>
+                                  <span>{attempt.released_by} / {attempt.release_reason}</span>
+                                </div>
+                                <div>
+                                  <strong>{formatCandidateStoredAt(attempt.started_at)}</strong>
+                                  <span>{attempt.completed_at ? `Abschluss ${formatCandidateStoredAt(attempt.completed_at)}` : "noch offen"}</span>
+                                </div>
+                                <div>
+                                  <strong>{attempt.runner_invocation_count} Periodenaufrufe</strong>
+                                  <span>{attempt.failure_message ?? `${attempt.carryover_invocation_count} Carryover-Aufrufe`}</span>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+
+                        <div className="strategy-candidate-lock-note" data-testid="strategy-period-chain-effect-probe-boundary">
+                          <LockKeyhole size={18} aria-hidden="true" />
+                          <div>
+                            <strong>Freie Mehrperiodensimulation bleibt gesperrt</strong>
+                            <span>Keine Ausgabedateien und keine historische Vollgleichheitsbehauptung. Naechste Abnahmegrenze: {strategyPeriodChainProbeStartContract?.next_gate ?? selectedStrategyPeriodChain.readiness.next_gate}.</span>
                           </div>
                         </div>
                       </section>

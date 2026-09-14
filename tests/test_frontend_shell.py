@@ -260,6 +260,33 @@ def test_frontend_shell_declares_readonly_execution_candidate_overview():
     assert "strategy-candidate-provenance" in styles
 
 
+def test_frontend_shell_declares_controlled_two_period_chain_start():
+    source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
+    styles = (FRONTEND_DIR / "src" / "styles.css").read_text(encoding="utf-8")
+
+    assert 'fetch("/api/strategies/execution-period-chains")' in source
+    assert 'fetch("/api/strategies/execution-period-chains", {' not in source
+    assert 'strategyWorkbenchView === "period-chain"' in source
+    assert 'data-testid="strategy-period-chain-tab"' in source
+    assert 'data-testid="strategy-period-chain-overview"' in source
+    assert 'data-testid="strategy-period-chain-select"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe"' in source
+    assert 'data-testid="strategy-period-chain-release-actor"' in source
+    assert 'data-testid="strategy-period-chain-release-reason"' in source
+    assert 'data-testid="strategy-period-chain-release-confirmation"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-start"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-error"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-result"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-history"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-boundary"' in source
+    assert "Zwei-Perioden-Wirkungsprobe" in source
+    assert "Freie Mehrperiodensimulation bleibt gesperrt" in source
+    assert "explicit_two_period_effect_probe_execution: true" in source
+    assert "strategy-candidate-probe-controls" in styles
+    assert "strategy-candidate-probe-result-grid" in styles
+    assert "strategy-candidate-probe-history-row" in styles
+
+
 def test_frontend_shell_declares_readonly_operations_diagnosis():
     source = (FRONTEND_DIR / "src" / "main.tsx").read_text(encoding="utf-8")
 

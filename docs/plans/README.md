@@ -323,3 +323,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_execution_period_chain_effect_probe_plan.md`: PR139-Plan
   fuer genau zwei fluechtige Perioden auf isolierten Kandidatenkopien mit
   autoritativen Carryover-Flags und atomarem Fehlerstopp.
+- `ims_2x_strategy_execution_period_chain_effect_probe_start_plan.md`:
+  PR140-Plan fuer den kontrollierten Workbench-Start mit dauerhafter
+  Idempotenz, unveraenderlichem Zwei-Perioden-Ergebnis und read-only Verlauf.

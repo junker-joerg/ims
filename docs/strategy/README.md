@@ -152,3 +152,7 @@ die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
   genau zwei erneut gepruefte Kandidaten auf isolierten Kopien ausfuehren
   und den einzigen Uebergang nach seinen gespeicherten VU-/VN-Flags
   anwenden; weiterhin ohne Ergebnisablage oder Simulation.
+- [PR140 Zwei-Perioden-Workbench-Start](../migration/ims_2x_strategy_execution_period_chain_effect_probe_start.md):
+  manuell freigegebener, atomar idempotenter Start mit unveraenderlichem
+  Ergebnisdigest und read-only Versuchshistorie; freie Horizonte und
+  allgemeine Simulation bleiben gesperrt.

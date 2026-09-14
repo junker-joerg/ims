@@ -82,8 +82,9 @@ keine vollstaendige Simulation. Es gibt keinen Legacy-Vergleich und keine
 historische RNG- oder Vollgleichheitsbehauptung. `incomming/` bleibt
 unversioniert.
 
-## Naechster Schritt
+## Anschluss
 
-PR140 soll die Zwei-Perioden-Probe ueber einen ausdruecklichen Workbench-
-Start mit dauerhafter Idempotenz und unveraenderlichem Ergebnisverlauf
-kontrollieren. Der Ausbau auf groessere Horizonte bleibt davon getrennt.
+PR140 kontrolliert die Zwei-Perioden-Probe inzwischen ueber einen
+ausdruecklichen Workbench-Start mit dauerhafter Idempotenz und
+unveraenderlichem Ergebnisverlauf. PR141 nimmt diesen Bedienpfad im Browser
+ab. Der Ausbau auf groessere Horizonte bleibt davon getrennt.

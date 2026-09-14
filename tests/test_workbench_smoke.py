@@ -287,6 +287,18 @@ def test_workbench_frontend_source_exposes_import_preview_without_upload():
     assert 'data-testid="strategy-candidate-effect-probe-result"' in source
     assert 'data-testid="strategy-candidate-effect-probe-history"' in source
     assert 'data-testid="strategy-candidate-effect-probe-boundary"' in source
+    assert 'data-testid="strategy-period-chain-tab"' in source
+    assert 'data-testid="strategy-period-chain-overview"' in source
+    assert 'data-testid="strategy-period-chain-select"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe"' in source
+    assert 'data-testid="strategy-period-chain-release-actor"' in source
+    assert 'data-testid="strategy-period-chain-release-reason"' in source
+    assert 'data-testid="strategy-period-chain-release-confirmation"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-start"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-error"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-result"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-history"' in source
+    assert 'data-testid="strategy-period-chain-effect-probe-boundary"' in source
     assert "Szenariofilter" in source
     assert "Runfilter" in source
     assert "/api/metadata/consistency" in source

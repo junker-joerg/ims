@@ -79,8 +79,10 @@ oder Ausgabepfade werden nicht akzeptiert.
   Carryover oder Runner.
 - **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Wirkungsprobe
   mit atomarem Fehlerstopp.
-- **PR140 (naechster Schritt):** kontrollierter dauerhafter Start; danach
-  Ausbau bis 100 Perioden in getrennten PRs.
+- **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
+  Perioden.
+- **PR141 (naechster Schritt):** Browserabnahme; danach Ausbau bis 100
+  Perioden in getrennten PRs.
 
 ## Schutzgrenzen
 

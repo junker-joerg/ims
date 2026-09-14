@@ -57,10 +57,10 @@ der Ausfuehrung beendet die Probe ohne Teilresultat und ohne Speicherung.
 
 - **PR139 (umgesetzt):** isolierte, fluechtige Zwei-Perioden-
   Wirkungsprobe mit atomarem Fehlerstopp.
-- **PR140 (naechster Schritt):** kontrollierter Workbench-Start mit
-  dauerhafter Idempotenz und
-  unveraenderlicher Ergebnisablage fuer genau diese Zwei-Perioden-Probe.
-- **PR141:** Browserabnahme auf breitem und schmalem Viewport sowie
+- **PR140 (umgesetzt):** kontrollierter Workbench-Start mit dauerhafter
+  Idempotenz und unveraenderlicher Ergebnisablage fuer genau diese
+  Zwei-Perioden-Probe.
+- **PR141 (naechster Schritt):** Browserabnahme auf breitem und schmalem Viewport sowie
   Handbuch-Screenshots fuer den Zwei-Perioden-Bedienpfad.
 - **PR142+:** Horizonte schrittweise erweitern und jeweils gesondert
   validieren, bis 100 Perioden reviewbar und stabil bedienbar sind.

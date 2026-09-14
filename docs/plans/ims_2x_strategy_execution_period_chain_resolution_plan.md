@@ -81,8 +81,10 @@ konfigurierte Workbench-SQLite-Datei bleibt der Endpunkt gesperrt.
   Kettenidentitaet.
 - **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Probe mit
   atomarem Fehlerstopp.
-- **PR140 (naechster Schritt):** kontrollierter dauerhafter Start; spaeter
-  Ausbau bis 100 Perioden in getrennten PRs.
+- **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
+  Perioden.
+- **PR141 (naechster Schritt):** Browserabnahme; spaeter Ausbau bis 100
+  Perioden in getrennten PRs.
 
 ## Schutzgrenzen
 

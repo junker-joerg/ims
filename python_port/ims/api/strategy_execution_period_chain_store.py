@@ -37,6 +37,9 @@ STRATEGY_EXECUTION_PERIOD_CHAIN_STORE_VERSION = (
 STRATEGY_EXECUTION_PERIOD_CHAIN_STORE_REQUEST_VERSION = (
     "ims.strategy-execution-period-chain-store-request.v1"
 )
+STRATEGY_EXECUTION_PERIOD_CHAIN_OVERVIEW_VERSION = (
+    "ims.strategy-execution-period-chain-overview.v1"
+)
 
 STRATEGY_EXECUTION_PERIOD_CHAIN_STORE_SCHEMA = """
 CREATE TABLE IF NOT EXISTS strategy_execution_period_chains (
@@ -167,7 +170,37 @@ class StrategyExecutionPeriodChainStoreResult:
             "simulation_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR140",
+            "next_gate": "PR141",
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class StrategyExecutionPeriodChainOverviewResult:
+    db_path: str
+    store_initialized: bool
+    period_chains: tuple[dict[str, object], ...]
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "ok",
+            "schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_OVERVIEW_VERSION,
+            "period_chain_schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION,
+            "mode": "strategy_execution_period_chain_overview_read_only",
+            "storage": {
+                "kind": "sqlite",
+                "configured": True,
+                "path": self.db_path,
+                "store_initialized": self.store_initialized,
+                "immutable": True,
+            },
+            "period_chain_count": len(self.period_chains),
+            "period_chains": [deepcopy(item) for item in self.period_chains],
+            "all_period_chain_digests_verified": True,
+            "writes_performed": False,
+            "execution_performed": False,
+            "simulation_performed": False,
+            "historical_full_equality_claim": False,
+            "next_gate": "PR141",
         }
 
 
@@ -423,6 +456,108 @@ def get_strategy_execution_period_chain(
     )
 
 
+def list_strategy_execution_period_chains(
+    *,
+    db_path: Path | str,
+) -> StrategyExecutionPeriodChainOverviewResult:
+    """Liest verifizierte Kettenkurzsaetze, ohne die Ablage anzulegen."""
+
+    resolved_path = Path(db_path).expanduser().resolve()
+    if not resolved_path.is_file():
+        return StrategyExecutionPeriodChainOverviewResult(
+            db_path=str(resolved_path),
+            store_initialized=False,
+            period_chains=(),
+        )
+    connection = sqlite3.connect(
+        readonly_sqlite_uri(
+            resolved_path,
+            description="strategy execution period chain overview",
+        ),
+        uri=True,
+        check_same_thread=False,
+    )
+    connection.row_factory = sqlite3.Row
+    try:
+        try:
+            table_exists = connection.execute(
+                """
+                SELECT 1
+                FROM sqlite_master
+                WHERE type = 'table' AND name = 'strategy_execution_period_chains'
+                """
+            ).fetchone()
+            if table_exists is None:
+                return StrategyExecutionPeriodChainOverviewResult(
+                    db_path=str(resolved_path),
+                    store_initialized=False,
+                    period_chains=(),
+                )
+            rows = connection.execute(
+                """
+                SELECT
+                    chain_id,
+                    chain_schema_version,
+                    first_period,
+                    last_period,
+                    period_count,
+                    run_index,
+                    max_periods,
+                    content_digest,
+                    stored_at,
+                    chain_payload_json
+                FROM strategy_execution_period_chains
+                ORDER BY stored_at DESC, chain_id
+                """
+            ).fetchall()
+        except sqlite3.DatabaseError as exc:
+            raise StrategyExecutionPeriodChainStoreError(
+                "period_chain_store_unreadable",
+                f"Kettenspeicher ist nicht lesbar oder initialisiert: {exc}",
+            ) from exc
+        period_chains = tuple(
+            _period_chain_overview_payload(
+                _row_to_verified_period_chain_record(row)
+            )
+            for row in rows
+        )
+    finally:
+        connection.close()
+    return StrategyExecutionPeriodChainOverviewResult(
+        db_path=str(resolved_path),
+        store_initialized=True,
+        period_chains=period_chains,
+    )
+
+
+def strategy_execution_period_chain_overview_unavailable_payload(
+    *,
+    storage_kind: str,
+    configured: bool,
+) -> dict[str, object]:
+    return {
+        "status": "ok",
+        "schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_OVERVIEW_VERSION,
+        "period_chain_schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION,
+        "mode": "strategy_execution_period_chain_overview_read_only",
+        "storage": {
+            "kind": storage_kind,
+            "configured": configured,
+            "path": None,
+            "store_initialized": False,
+            "immutable": True,
+        },
+        "period_chain_count": 0,
+        "period_chains": [],
+        "all_period_chain_digests_verified": True,
+        "writes_performed": False,
+        "execution_performed": False,
+        "simulation_performed": False,
+        "historical_full_equality_claim": False,
+        "next_gate": "PR141",
+    }
+
+
 def strategy_execution_period_chain_store_contract_payload() -> dict[str, object]:
     boundary_flags = {
         "explicit_storage_release_required": True,
@@ -466,6 +601,7 @@ def strategy_execution_period_chain_store_contract_payload() -> dict[str, object
         "read_endpoint_template": (
             "/api/strategies/execution-period-chains/{chain_id}"
         ),
+        "overview_endpoint": "/api/strategies/execution-period-chains",
         "request_fields": sorted(_STORE_REQUEST_FIELDS),
         "storage_kind": "configured_workbench_sqlite",
         "immutable_identity": ["chain_id", "content_digest"],
@@ -476,8 +612,68 @@ def strategy_execution_period_chain_store_contract_payload() -> dict[str, object
         ],
         "partial_storage_allowed": False,
         "boundary_flags": boundary_flags,
-        "next_gate": "PR140",
+        "next_gate": "PR141",
         **boundary_flags,
+    }
+
+
+def _period_chain_overview_payload(
+    record: StrategyExecutionPeriodChainStoreRecord,
+) -> dict[str, object]:
+    candidates = record.period_chain.get("period_candidates")
+    transitions = record.period_chain.get("transitions")
+    candidate_items = candidates if isinstance(candidates, list) else []
+    transition_items = transitions if isinstance(transitions, list) else []
+    exact_two_period_horizon = (
+        record.first_period == 1
+        and record.last_period == 2
+        and record.period_count == 2
+        and record.max_periods == 2
+        and len(candidate_items) == 2
+        and len(transition_items) == 1
+    )
+    return {
+        "chain_id": record.chain_id,
+        "content_digest": record.content_digest,
+        "digest_algorithm": "sha256",
+        "digest_verified": True,
+        "first_period": record.first_period,
+        "last_period": record.last_period,
+        "period_count": record.period_count,
+        "run_index": record.run_index,
+        "max_periods": record.max_periods,
+        "stored_at": record.stored_at,
+        "storage_status": "persisted_immutable",
+        "candidate_count": len(candidate_items),
+        "candidate_ids": [
+            str(item.get("candidate_id"))
+            for item in candidate_items
+            if isinstance(item, dict) and item.get("candidate_id") is not None
+        ],
+        "transition_count": len(transition_items),
+        "vu_carryover_transition_count": sum(
+            1
+            for item in transition_items
+            if isinstance(item, dict)
+            and item.get("carry_forward_vu_state") is True
+        ),
+        "vn_carryover_transition_count": sum(
+            1
+            for item in transition_items
+            if isinstance(item, dict)
+            and item.get("carry_forward_vn_state") is True
+        ),
+        "readiness": {
+            "period_chain_complete": True,
+            "exact_two_period_horizon": exact_two_period_horizon,
+            "storage_integrity_verified": True,
+            "run_control_ready": True,
+            "effect_probe_available": exact_two_period_horizon,
+            "effect_probe_start_available": exact_two_period_horizon,
+            "effect_probe_result_persistence_available": exact_two_period_horizon,
+            "general_multi_period_execution_ready": False,
+            "next_gate": "PR141",
+        },
     }
 
 
@@ -508,7 +704,7 @@ def strategy_execution_period_chain_store_error_payload(
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR140",
+        "next_gate": "PR141",
     }
 
 

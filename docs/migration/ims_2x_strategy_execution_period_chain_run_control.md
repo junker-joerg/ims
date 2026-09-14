@@ -91,5 +91,5 @@ oder Vollgleichheitsbehauptung. `incomming/` bleibt unversioniert.
 PR139 fuehrt inzwischen aus einer erneut freigegebenen Kette genau zwei
 Perioden auf isolierten Kandidatenkopien fluechtig aus. Kandidatenaufloesung,
 Carryover-Flags und atomarer Fehlerstopp sind vor dem ersten Runneraufruf
-abgesichert. PR140 soll dafuer einen kontrollierten dauerhaften Start
-ergaenzen.
+abgesichert. PR140 macht diesen Pfad kontrolliert und dauerhaft bedienbar;
+PR141 nimmt ihn im Browser ab.

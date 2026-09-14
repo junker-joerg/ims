@@ -105,8 +105,10 @@ noch Runner auf.
 - **PR138 (umgesetzt):** read-only Freigabecheck der gespeicherten
   Kettenidentitaet.
 - **PR139 (umgesetzt):** kleine fluechtige Zwei-Perioden-Wirkungsprobe.
-- **PR140 (naechster Schritt):** kontrollierter dauerhafter Start; den Ausbau
-  bis 100 Perioden spaeter jeweils getrennt freigeben.
+- **PR140 (umgesetzt):** kontrollierter dauerhafter Start fuer genau zwei
+  Perioden.
+- **PR141 (naechster Schritt):** Browserabnahme; den Ausbau bis 100 Perioden
+  spaeter jeweils getrennt freigeben.
 
 ## Schutzgrenzen
 

@@ -244,9 +244,10 @@ groessere Plattformanpassungen.
 HB3, HB3a, HB3b und HB3c sind als getrennte reviewbare Schnitte umgesetzt.
 HB4 bleibt der naechste Handbuchschnitt; PR136 hat davon getrennt die
 kanonische fluechtige Periodenkette gebaut, PR137 sie unveraenderlich
-abgelegt, PR138 den read-only Freigabecheck ergaenzt und PR139 die
-fluechtige Zwei-Perioden-Probe umgesetzt. PR140 plant deren kontrollierten
-Workbench-Start. Plattformzusagen aus HB4/HB5 duerfen keine fachliche
+abgelegt, PR138 den read-only Freigabecheck ergaenzt, PR139 die fluechtige
+Zwei-Perioden-Probe umgesetzt und PR140 deren kontrollierten Workbench-Start
+angebunden. PR141 plant Browserabnahme und Handbuchbilder. Plattformzusagen
+aus HB4/HB5 duerfen keine fachliche
 Produktionsreife vorwegnehmen.
 
 ## Abnahme HB1

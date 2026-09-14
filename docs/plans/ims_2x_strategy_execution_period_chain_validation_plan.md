@@ -82,8 +82,10 @@ Fehlerbericht ohne Teilannahme.
   Kettenidentitaet.
 - **PR139 (umgesetzt):** isolierte fluechtige Zwei-Perioden-Probe mit
   atomarem Fehlerstopp.
-- **PR140 (naechster Schritt):** kontrollierten dauerhaften Start anbinden;
-  den Ausbau bis 100 Perioden danach in getrennten PRs freigeben.
+- **PR140 (umgesetzt):** kontrollierten dauerhaften Start fuer genau zwei
+  Perioden anbinden.
+- **PR141 (naechster Schritt):** Browserabnahme; den Ausbau bis 100 Perioden
+  danach in getrennten PRs freigeben.
 
 ## Schutzgrenzen
 

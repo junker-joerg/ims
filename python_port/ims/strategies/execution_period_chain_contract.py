@@ -158,6 +158,9 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "period_chain_persistence_enabled": True,
         "period_chain_run_control_release_check_enabled": True,
         "period_chain_two_period_effect_probe_enabled": True,
+        "period_chain_two_period_effect_probe_start_enabled": True,
+        "period_chain_two_period_result_persistence_enabled": True,
+        "period_chain_overview_enabled": True,
         "period_chain_runner_enabled": False,
         "carryover_execution_enabled": False,
         "multi_period_execution_enabled": False,
@@ -202,6 +205,9 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         "stored_chain_endpoint_template": (
             "/api/strategies/execution-period-chains/{chain_id}"
         ),
+        "stored_chain_overview_endpoint": (
+            "/api/strategies/execution-period-chains"
+        ),
         "run_control_contract_endpoint": (
             "/api/run-control/strategy-period-chain-contract"
         ),
@@ -213,6 +219,18 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
         ),
         "effect_probe_endpoint": (
             "/api/run-control/strategy-period-chain-effect-probe"
+        ),
+        "effect_probe_start_contract_endpoint": (
+            "/api/run-control/strategy-period-chain-effect-probe-start-contract"
+        ),
+        "effect_probe_start_endpoint": (
+            "/api/run-control/strategy-period-chain-effect-probe-start"
+        ),
+        "effect_probe_result_endpoint_template": (
+            "/api/run-control/strategy-period-chain-effect-probe-result/{chain_id}"
+        ),
+        "effect_probe_history_endpoint_template": (
+            "/api/run-control/strategy-period-chain-effect-probe-history/{chain_id}"
         ),
         "historical_horizon": {
             "source": "IMSDATA.C:14",
@@ -301,7 +319,7 @@ def strategy_execution_period_chain_contract_payload() -> dict[str, object]:
             "digest_mismatch_allowed": False,
             "missing_actor_allowed": False,
         },
-        "next_gate": "PR140",
+        "next_gate": "PR141",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }
