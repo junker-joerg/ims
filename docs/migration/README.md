@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_model_balance_contract.md`: PR155-Vertrag fuer eine einfache
+  Versicherer-Modellbilanz mit Bewegungsrechnung und offener Legacy-Quellbindung;
+  noch keine Berechnung, Ausfuehrung oder gesetzliche Bilanz
 - `ims_2x_strategy_assignment_snapshot_materialization_ui.md`: PR117-
   Workbench-Vorschau fuer vollstaendig materialisierte VN-Snapshots mit
   lesbaren Wertgruppen, ohne Speicherung oder Ausfuehrung

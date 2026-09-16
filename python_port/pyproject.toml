@@ -29,7 +29,7 @@ pythonpath = ["."]
 addopts = "-q ../tests"
 
 [tool.setuptools]
-packages = ["ims", "ims.analysis", "ims.api", "ims.model", "ims.engine", "ims.io", "ims.strategies"]
+packages = ["ims", "ims.accounting", "ims.analysis", "ims.api", "ims.model", "ims.engine", "ims.io", "ims.strategies"]
 
 [tool.setuptools.package-data]
 "ims.strategies" = ["profiles/*.json"]

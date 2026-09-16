@@ -373,3 +373,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr151_results_workbench_plan.md`:
   PR151-Plan fuer den kontrollierten 100er-Bedienpfad, Zeitreihen,
   Prefix-gebundene Vergleiche und den Digest-gebundenen ZIP-Download.
+- `ims_2x_pr155_model_balance_contract_plan.md`:
+  PR155-Plan fuer die read-only Bewegungsrechnung und einfache
+  Versicherer-Modellbilanz ohne historische Umbuchung oder Berechnung.
