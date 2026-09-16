@@ -150,6 +150,7 @@ from ims.api.strategy_execution_candidate_effect_probe_start import (
     strategy_execution_candidate_effect_probe_start_error_payload,
 )
 from ims.engine.core_validation_overview import build_core_validation_overview
+from ims.model.sector_taxonomy import sector_taxonomy_payload
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VALIDATION_VERSION,
@@ -2525,6 +2526,10 @@ def create_app(
         def strategies_catalog() -> dict[str, object]:
             return strategy_catalog_payload()
 
+        @app.get("/api/model/sector-taxonomy")
+        def model_sector_taxonomy() -> dict[str, object]:
+            return sector_taxonomy_payload()
+
         @app.get("/api/strategies/assignment-contract")
         def strategies_assignment_contract() -> dict[str, object]:
             return strategy_assignment_contract_payload()
@@ -3171,6 +3176,10 @@ def create_app(
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/strategies/catalog", lambda request: JSONResponse(strategy_catalog_payload())),
+        Route(
+            "/api/model/sector-taxonomy",
+            lambda request: JSONResponse(sector_taxonomy_payload()),
+        ),
         Route(
             "/api/strategies/assignment-contract",
             lambda request: JSONResponse(strategy_assignment_contract_payload()),

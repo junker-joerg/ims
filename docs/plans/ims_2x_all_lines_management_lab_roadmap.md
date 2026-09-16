@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-16
-Status: aktive Produkt-Restplanung; PR151 umgesetzt, PR152 naechster Schritt
+Status: aktive Produkt-Restplanung; PR152 umgesetzt, PR153 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -102,7 +102,7 @@ Schadenlogik ausgegeben.
 
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
-| PR152 | Versionierte Spartentaxonomie und Erweiterungsvertrag | Kfz, Sach-Haftpflicht, Leben und Kranken sind fachlich getrennt benannt |
+| PR152 | Versionierte Spartentaxonomie und Erweiterungsvertrag | umgesetzt: vier stabile Ziel-IDs; zwei historische Positionen bleiben ohne implizite Zuordnung |
 | PR153 | Kompatibilitaetsadapter fuer die zwei vorhandenen Schadenvektoren | Altpfad bleibt reproduzierbar; Mapping und Unsicherheit sind sichtbar |
 | PR154 | Strategie- und Parameterzuordnung je Sparte | unterschiedliche Strategien je Versicherer und Sparte sind validierbar |
 | PR155 | Vertrag fuer Bewegungsrechnung und einfache Modellbilanz | Bestands-, Erfolgs-, Zahlungs- und Kapitalbewegungen sind explizit |
@@ -178,14 +178,14 @@ einen konkreten Anwendungsfall und dessen eigene Validierung.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR151 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR152 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 11 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 19 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 27 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 31 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 10 |
+| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 18 |
+| durchgaengige DORA-Wirkungskette | PR178 | 37 | 26 |
+| kontrollierte Managementseminar-Reife | PR182 | 41 | 30 |
 
 Die 41 PRs sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
@@ -258,8 +258,10 @@ PR151 macht vorbereitete 100er-Ketten, deren vorhandene Zustandsfelder
 und gleich praefixierte Vergleiche im Browser nutzbar. Der erneute Lauf
 fuer den Download ist an den sichtbaren Digest gebunden. Der gefuehrte
 Aufbau einer 100er-Kette bleibt eine zusaetzliche, noch nicht nummerierte
-Produktluecke; sie ist in den Restzahlen nicht enthalten. PR152 folgt wie
-bereits geplant mit der versionierten Spartentaxonomie.
+Produktluecke; sie ist in den Restzahlen nicht enthalten. PR152 hat die
+vier Zielsparten als versionierte, rein lesende Taxonomie bereitgestellt.
+Die zwei historischen Zweiervektor-Positionen bleiben ohne Zuordnung zu
+diesen Namen. PR153 folgt mit dem expliziten Kompatibilitaetsadapter.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
 Vollgleichheit.
