@@ -302,4 +302,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR147-Mapping von `SIMLAENGE` und Periodenschleife auf vier read-only
   Zielhorizonte; Ressourcenmessung, isolierter Abbruch und laengere Starts
   bleiben eigene Freigabeschritte
+- `ims_2x_strategy_execution_period_chain_extended_probe.md`:
+  PR148-isolierte fluechtige Wirkungsprobe fuer 10/25/50 mit exaktem
+  Fuenf-Perioden-Prefix und kontrollierten Zeit-/Speicherbudgets
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

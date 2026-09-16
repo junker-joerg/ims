@@ -360,4 +360,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_execution_period_chain_horizon_contract_plan.md`:
   PR147-Plan und read-only Sicherheitsvertrag fuer 10, 25, 50 und 100
   Perioden mit konkreten Zeit-, Speicher-, Abbruch- und Fehlergrenzen;
-  laengere Ausfuehrung bleibt gesperrt.
+  die urspruenglichen Freigaben sind in PR148 fortgeschrieben.
+- `ims_2x_strategy_execution_period_chain_extended_probe_plan.md`:
+  PR148-Plan fuer die isolierte, fluechtige Ausfuehrung von 10, 25 und 50
+  Perioden mit stabilem Prefix 1-5 und durchgesetzten Ressourcenbudgets.

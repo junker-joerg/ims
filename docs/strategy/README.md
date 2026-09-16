@@ -188,3 +188,6 @@ managementtauglichen Bedienung.
 - [PR147 Horizontvertrag bis 100 Perioden](../migration/ims_2x_strategy_execution_period_chain_horizon_contract.md):
   10/25/50/100 als gesperrte Zielhorizonte mit messbaren Sicherheitsbudgets,
   stabilem Prefix 1-5 und atomarer Abbruch- und Fehlerpolitik festlegen.
+- [PR148 Kontrollierte 10/25/50-Perioden-Probe](../migration/ims_2x_strategy_execution_period_chain_extended_probe.md):
+  drei laengere Horizonte prozessisoliert und fluechtig mit stabilem Prefix
+  1-5 ausfuehren; 100, Speicherung und UI bleiben geschlossen.

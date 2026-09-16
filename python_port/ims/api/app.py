@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import os
 from pathlib import Path
 from typing import Any, Protocol
@@ -90,6 +91,11 @@ from ims.api.strategy_execution_period_chain_five_period_effect_probe_start impo
     start_strategy_execution_five_period_effect_probe,
     strategy_execution_five_period_effect_probe_start_contract_payload,
     strategy_execution_five_period_effect_probe_start_error_payload,
+)
+from ims.api.strategy_execution_period_chain_extended_probe import (
+    ExtendedProbeError,
+    parse_extended_probe_request,
+    run_extended_probe,
 )
 from ims.api.strategy_execution_period_chain_store import (
     STRATEGY_EXECUTION_PERIOD_CHAIN_OVERVIEW_VERSION,
@@ -1719,6 +1725,43 @@ def create_app(
             status_code = 409
         return JSONResponse(result.to_dict(), status_code=status_code)
 
+    async def strategy_execution_extended_probe_response(
+        request: Request,
+    ) -> JSONResponse:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
+            "path"
+        ):
+            return JSONResponse(
+                {"status": "blocked", "code": "explicit_sqlite_store_required"},
+                status_code=400,
+            )
+        try:
+            parsed = parse_extended_probe_request(await request.json())
+        except ValueError as exc:
+            return JSONResponse(
+                {
+                    "status": "blocked",
+                    "code": getattr(exc, "code", "invalid_json"),
+                    "message": str(exc),
+                },
+                status_code=400,
+            )
+        try:
+            result = await asyncio.to_thread(
+                run_extended_probe, parsed, db_path=Path(str(metadata_source["path"]))
+            )
+        except ExtendedProbeError as exc:
+            return JSONResponse(
+                {
+                    "status": "blocked",
+                    "code": exc.code,
+                    "message": str(exc),
+                    "partial_result_returned": False,
+                },
+                status_code=409,
+            )
+        return JSONResponse(result)
+
     async def strategy_execution_five_period_effect_probe_response(
         request: Request,
     ) -> JSONResponse:
@@ -2940,6 +2983,15 @@ def create_app(
             )
 
         @app.post(
+            "/api/run-control/strategy-period-chain-extended-effect-probe",
+            response_model=None,
+        )
+        async def run_control_strategy_extended_effect_probe(
+            request: Request,
+        ) -> JSONResponse:
+            return await strategy_execution_extended_probe_response(request)
+
+        @app.post(
             "/api/run-control/strategy-period-chain-five-period-effect-probe-start",
             response_model=None,
         )
@@ -3402,6 +3454,11 @@ def create_app(
         Route(
             "/api/run-control/strategy-period-chain-five-period-effect-probe",
             strategy_execution_five_period_effect_probe_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/strategy-period-chain-extended-effect-probe",
+            strategy_execution_extended_probe_response,
             methods=["POST"],
         ),
         Route(

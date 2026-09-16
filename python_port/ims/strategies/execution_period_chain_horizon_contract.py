@@ -12,7 +12,7 @@ from ims.strategies.execution_period_chain_contract import (
 
 
 STRATEGY_EXECUTION_PERIOD_CHAIN_HORIZON_CONTRACT_VERSION = (
-    "ims.strategy-execution-period-chain-horizon-contract.v1"
+    "ims.strategy-execution-period-chain-horizon-contract.v2"
 )
 _MAX_PERIOD_SECONDS = 30
 _MAX_PEAK_WORKER_RSS_MIB = 1024
@@ -41,8 +41,8 @@ class StrategyExecutionHorizonDefinition:
             "max_canonical_chain_payload_mib": _MAX_CHAIN_PAYLOAD_MIB,
             "max_serialized_result_payload_mib": _MAX_RESULT_PAYLOAD_MIB,
             "min_free_storage_before_start_mib": _MIN_FREE_STORAGE_MIB,
-            "build_enabled": False,
-            "execution_enabled": False,
+            "build_enabled": self.period_count < 100,
+            "execution_enabled": self.period_count < 100,
             "persistence_enabled": False,
             "ui_start_enabled": False,
         }
@@ -61,9 +61,9 @@ def strategy_execution_period_chain_horizon_contract_payload() -> dict[str, obje
 
     boundary_flags = {
         "contract_read_only": True,
-        "extended_horizon_preflight_enabled": False,
-        "extended_horizon_build_enabled": False,
-        "extended_horizon_execution_enabled": False,
+        "extended_horizon_preflight_enabled": True,
+        "extended_horizon_build_enabled": True,
+        "extended_horizon_execution_enabled": True,
         "extended_horizon_persistence_enabled": False,
         "extended_horizon_ui_start_enabled": False,
         "writes_performed": False,
@@ -89,8 +89,8 @@ def strategy_execution_period_chain_horizon_contract_payload() -> dict[str, obje
             {"source": "IMSDATA.C:14", "meaning": "SIMLAENGE_100_per_run"},
         ],
         "historical_maximum_periods_per_run": 100,
-        "released_period_counts": [2, 5],
-        "contract_only_period_counts": [10, 25, 50, 100],
+        "released_period_counts": [2, 5, 10, 25, 50],
+        "contract_only_period_counts": [100],
         "horizons": [
             definition.to_dict()
             for definition in STRATEGY_EXECUTION_HORIZON_DEFINITIONS
@@ -157,8 +157,9 @@ def strategy_execution_period_chain_horizon_contract_payload() -> dict[str, obje
             "failed_attempt_audit_allowed": True,
             "automatic_retry_enabled": False,
             "new_explicit_release_required_for_retry": True,
-            "identical_successful_idempotent_replay_is_read_only": True,
-            "same_key_different_request_rejected": True,
+            "identical_successful_idempotent_replay_is_read_only": False,
+            "persistent_idempotency_requires_later_release": True,
+            "same_key_different_request_rejected": False,
         },
         "release_gates": {
             "pr148": [10, 25, 50],
@@ -166,7 +167,7 @@ def strategy_execution_period_chain_horizon_contract_payload() -> dict[str, obje
             "load_and_failure_tests_required_per_horizon": True,
             "no_implicit_release_by_contract": True,
         },
-        "next_gate": "PR148",
+        "next_gate": "PR149",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }
