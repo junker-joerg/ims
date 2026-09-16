@@ -85,7 +85,7 @@ def test_portable_web_requirements_match_the_package_contract() -> None:
     requirements = _read(REPO_ROOT / "python_port" / "requirements-web.txt").splitlines()
     project = _read(REPO_ROOT / "python_port" / "pyproject.toml")
 
-    assert requirements == ["fastapi>=0.115", "uvicorn>=0.30"]
+    assert requirements == ["fastapi>=0.115", "openpyxl>=3.1,<4", "uvicorn>=0.30"]
     assert 'web = [' in project
     for requirement in requirements:
         assert f'"{requirement}"' in project

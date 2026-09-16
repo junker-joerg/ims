@@ -308,4 +308,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_period_chain_hundred_period_probe.md`:
   PR149-gesonderte technische Freigabe fuer einen fluechtigen 100er-Lauf
   mit Messung, v1-/v2-Grenze und spaetem atomarem Fehlerpfad
+- `ims_2x_strategy_execution_result_bundle.md`:
+  PR150-versioniertes fluechtiges Ergebnisbuendel mit gleicher
+  Kennzahlentabelle in JSON, CSV und XLSX; kompletter Nachweis im JSON
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

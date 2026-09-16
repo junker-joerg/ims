@@ -7,7 +7,7 @@ from typing import Any, Protocol
 
 from starlette.applications import Starlette
 from starlette.requests import Request
-from starlette.responses import FileResponse, JSONResponse
+from starlette.responses import FileResponse, JSONResponse, Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
@@ -93,10 +93,12 @@ from ims.api.strategy_execution_period_chain_five_period_effect_probe_start impo
     strategy_execution_five_period_effect_probe_start_error_payload,
 )
 from ims.api.strategy_execution_period_chain_extended_probe import (
+    EXTENDED_PROBE_REQUEST_VERSION,
     ExtendedProbeError,
     parse_extended_probe_request,
     run_extended_probe,
 )
+from ims.api.strategy_execution_result_bundle import ResultBundleError, build_result_bundle
 from ims.api.strategy_execution_period_chain_store import (
     STRATEGY_EXECUTION_PERIOD_CHAIN_OVERVIEW_VERSION,
     StrategyExecutionPeriodChainStoreError,
@@ -1727,7 +1729,9 @@ def create_app(
 
     async def strategy_execution_extended_probe_response(
         request: Request,
-    ) -> JSONResponse:
+        *,
+        bundle: bool = False,
+    ) -> JSONResponse | Response:
         if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get(
             "path"
         ):
@@ -1746,6 +1750,14 @@ def create_app(
                 },
                 status_code=400,
             )
+        if bundle and (
+            parsed.schema_version != EXTENDED_PROBE_REQUEST_VERSION
+            or parsed.period_chain_input["max_periods"] != 100
+        ):
+            return JSONResponse(
+                {"status": "blocked", "code": "bundle_horizon_not_released"},
+                status_code=400,
+            )
         try:
             result = await asyncio.to_thread(
                 run_extended_probe, parsed, db_path=Path(str(metadata_source["path"]))
@@ -1760,7 +1772,27 @@ def create_app(
                 },
                 status_code=409,
             )
+        if bundle:
+            try:
+                content = build_result_bundle(result)
+            except ResultBundleError as exc:
+                return JSONResponse(
+                    {"status": "blocked", "code": exc.code,
+                     "message": str(exc), "partial_result_returned": False},
+                    status_code=409,
+                )
+            return Response(
+                content,
+                media_type="application/zip",
+                headers={"Content-Disposition": 'attachment; filename="ims-100-perioden.zip"',
+                         "Cache-Control": "no-store"},
+            )
         return JSONResponse(result)
+
+    async def strategy_execution_result_bundle_response(
+        request: Request,
+    ) -> JSONResponse | Response:
+        return await strategy_execution_extended_probe_response(request, bundle=True)
 
     async def strategy_execution_five_period_effect_probe_response(
         request: Request,
@@ -2992,6 +3024,15 @@ def create_app(
             return await strategy_execution_extended_probe_response(request)
 
         @app.post(
+            "/api/run-control/strategy-period-chain-extended-result-bundle",
+            response_model=None,
+        )
+        async def run_control_strategy_extended_result_bundle(
+            request: Request,
+        ) -> JSONResponse | Response:
+            return await strategy_execution_result_bundle_response(request)
+
+        @app.post(
             "/api/run-control/strategy-period-chain-five-period-effect-probe-start",
             response_model=None,
         )
@@ -3459,6 +3500,11 @@ def create_app(
         Route(
             "/api/run-control/strategy-period-chain-extended-effect-probe",
             strategy_execution_extended_probe_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/strategy-period-chain-extended-result-bundle",
+            strategy_execution_result_bundle_response,
             methods=["POST"],
         ),
         Route(

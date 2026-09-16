@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-16
-Status: aktive Produkt-Restplanung; PR149 umgesetzt, PR150 naechster Schritt
+Status: aktive Produkt-Restplanung; PR150 umgesetzt, PR151 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -84,11 +84,12 @@ einen freien oder unbegrenzten Runner schrittweise zu einem auswertbaren
 | PR147 | Horizontvertrag fuer 10, 25, 50 und 100 Perioden | umgesetzt: konkrete Sicherheitsbudgets und fail-closed Abbruch-/Fehlergrenzen; laengere Starts bleiben gesperrt |
 | PR148 | Kontrollierte Ausfuehrung fuer 10, 25 und 50 Perioden | umgesetzt: fluechtige isolierte Probe mit stabilen Prefixen, Carryover-Invarianten, deterministischer Wiederholung und durchgesetzten Budgets; Speicherung/UI bleiben gesperrt |
 | PR149 | Kontrollierte Ausfuehrung fuer 100 Perioden | umgesetzt: fluechtiger, reproduzierbarer Lauf mit exaktem Prefix, Abbruch und atomarem Fehlerpfad; Speicherung/UI bleiben geschlossen |
-| PR150 | Versioniertes Ergebnisbuendel mit CSV, JSON und XLSX | gleiche Kennzahlen und Herkunft in allen Exportformaten |
+| PR150 | Versioniertes Ergebnisbuendel mit CSV, JSON und XLSX | umgesetzt: fluechtiger Download mit gleichen Zeilen und Herkunft; vollstaendiger Nachweis im JSON |
 | PR151 | Ergebnisarbeitsplatz mit Zeitreihen und Vergleichen | Baseline/Variante, Unternehmen, Sparten und Perioden im Browser lesbar |
 
-Nach PR149 ist der technische 100-Perioden-Lauf vorhanden. Nach PR151 ist er
-fuer einen Anwender mit sichtbaren Ergebnissen und Exporten sinnvoll nutzbar.
+Nach PR150 sind technischer 100-Perioden-Lauf und fluechtiger Export vorhanden.
+Nach PR151 soll der Anwender Ergebnisse und Vergleiche im Browser lesen
+koennen; eine persistierte 100er-Ausfuehrung ist nicht stillschweigend freigegeben.
 
 ## Phase B: Mehrsparten und Versichererbilanz
 
@@ -175,14 +176,14 @@ einen konkreten Anwendungsfall und dessen eigene Validierung.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR149 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR150 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
-| bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 2 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 13 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 21 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 29 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 33 |
+| bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 1 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 12 |
+| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 20 |
+| durchgaengige DORA-Wirkungskette | PR178 | 37 | 28 |
+| kontrollierte Managementseminar-Reife | PR182 | 41 | 32 |
 
 Die 41 PRs sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
@@ -248,8 +249,11 @@ laengeren Runner freizugeben. PR148 hat danach 10, 25 und 50 Perioden als
 isolierte, fluechtige Wirkungsprobe mit Budgetkontrolle und exaktem Prefix
 1-5 freigegeben. PR149 hat diese Schutzgrenzen getrennt fuer genau 100
 Perioden geprueft und den technischen Lauf fluechtig freigegeben. PR150
-plant das versionierte Ergebnisbuendel und klaert die dauerhafte Ablage;
-PR151 macht Ergebnisse und Vergleiche im Browser nutzbar.
+hat das versionierte, rein fluechtige Ergebnisbuendel als ausdruecklichen
+100er-Download mit gleicher Kennzahlentabelle in JSON, CSV und XLSX
+angeschlossen. Eine dauerhafte Ablage ist damit noch nicht freigegeben.
+PR151 macht Ergebnisse und Vergleiche im Browser nutzbar und klaert den
+Bedienweg ohne stillschweigende Persistenz.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
 Vollgleichheit.
