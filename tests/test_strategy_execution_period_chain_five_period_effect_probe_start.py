@@ -107,7 +107,7 @@ def test_start_contract_opens_only_persisted_five_period_path() -> None:
     assert payload["queue_worker_enabled"] is False
     assert payload["output_files_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR147"
+    assert payload["next_gate"] == "PR148"
 
 
 def test_parser_rejects_unreleased_or_ambiguous_start(tmp_path) -> None:

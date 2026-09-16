@@ -298,4 +298,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR146-Browserabnahme des vollstaendigen Fuenf-Perioden-Pfads mit exaktem
   Prefix 1-2, vier Carryover-Uebergaengen, Fehlerpfaden und datierten
   Handbuch-Screenshots
+- `ims_2x_strategy_execution_period_chain_horizon_contract.md`:
+  PR147-Mapping von `SIMLAENGE` und Periodenschleife auf vier read-only
+  Zielhorizonte; Ressourcenmessung, isolierter Abbruch und laengere Starts
+  bleiben eigene Freigabeschritte
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

@@ -173,6 +173,12 @@ from ims.strategies.execution_period_chain_bounded_runner_contract import (
     StrategyExecutionBoundedRunnerStepDefinition,
     strategy_execution_period_chain_bounded_runner_contract_payload,
 )
+from ims.strategies.execution_period_chain_horizon_contract import (
+    STRATEGY_EXECUTION_HORIZON_DEFINITIONS,
+    STRATEGY_EXECUTION_PERIOD_CHAIN_HORIZON_CONTRACT_VERSION,
+    StrategyExecutionHorizonDefinition,
+    strategy_execution_period_chain_horizon_contract_payload,
+)
 from ims.strategies.execution_period_chain_validation import (
     STRATEGY_EXECUTION_PERIOD_CHAIN_INPUT_VERSION,
     STRATEGY_EXECUTION_PERIOD_CHAIN_VALIDATION_VERSION,

@@ -171,4 +171,4 @@ def test_period_chain_contract_opens_only_controlled_two_period_start(
     assert payload["automatic_historical_rule_selection_performed"] is False
     assert payload["historical_rng_equality_claim"] is False
     assert payload["historical_full_equality_claim"] is False
-    assert payload["next_gate"] == "PR147"
+    assert payload["next_gate"] == "PR148"

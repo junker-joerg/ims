@@ -216,4 +216,6 @@ fluechtige Wirkungsprobe samt Prefixnachweis 1-2 angeschlossen. PR145 hat den
 kontrollierten Serverstart, dauerhafte Idempotenz sowie die unveraenderliche
 Ablage von Request, kanonischer Kette und Ergebnis umgesetzt. PR146 hat
 Workbench-Bedienung, Browserabnahme und Handbuchbilder angeschlossen. PR147
-definiert als Naechstes die kontrollierten Horizonte 10, 25, 50 und 100.
+hat die kontrollierten Horizonte 10, 25, 50 und 100 als read-only Vertrag
+mit Sicherheitsbudgets festgelegt. PR148 muss als Naechstes die gemessene,
+isoliert abbrechbare Ausfuehrung fuer 10, 25 und 50 nachweisen.

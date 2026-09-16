@@ -185,3 +185,6 @@ managementtauglichen Bedienung.
   den gespeicherten Lauf in der Workbench freigeben, alle fuenf Perioden,
   vier Uebergaenge und den exakten Prefix 1-2 auf breitem und schmalem
   Viewport nachweisen.
+- [PR147 Horizontvertrag bis 100 Perioden](../migration/ims_2x_strategy_execution_period_chain_horizon_contract.md):
+  10/25/50/100 als gesperrte Zielhorizonte mit messbaren Sicherheitsbudgets,
+  stabilem Prefix 1-5 und atomarer Abbruch- und Fehlerpolitik festlegen.

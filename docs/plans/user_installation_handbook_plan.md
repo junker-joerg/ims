@@ -268,7 +268,9 @@ hat die Fuenf-Perioden-Kette ohne Runner gebaut und validiert; PR144 hat sie
 fluechtig mit exaktem Prefixnachweis ausgefuehrt. PR145 hat den kontrollierten
 Serverstart mit dauerhafter Idempotenz und Ergebnisablage umgesetzt. PR146
 hat Bedienpfad, breite und schmale Browserabnahme sowie zwei Handbuchbilder
-ergaenzt. PR147 ist der naechste Produktschnitt. Plattformzusagen
+ergaenzt. PR147 hat nur die read-only Sicherheitsgrenzen fuer 10, 25, 50
+und 100 Perioden festgelegt; PR148 ist der naechste Produktschnitt.
+Plattformzusagen
 aus HB4/HB5 duerfen keine fachliche Produktionsreife vorwegnehmen.
 
 Die fachliche Produktfolge ab PR142 ist getrennt in

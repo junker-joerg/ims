@@ -70,7 +70,7 @@ Nach PR145 meldet der fortgeschriebene Vertrag ausdruecklich:
 - `five_period_idempotency_persistence_enabled = true`;
 - `five_period_result_persistence_enabled = true`;
 - `five_period_immutable_chain_snapshot_persistence_enabled = true`;
-- `five_period_ui_start_enabled = false`;
+- `five_period_ui_start_enabled = true` (seit PR146; nur exakt fuenf Perioden);
 - `prefix_comparison_execution_enabled = true`;
 - `simulation_performed = false`.
 

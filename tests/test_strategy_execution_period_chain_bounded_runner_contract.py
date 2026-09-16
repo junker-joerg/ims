@@ -58,10 +58,11 @@ def test_bounded_runner_contract_limits_first_extension_to_five_periods() -> Non
     assert payload["five_period_chain_build_enabled"] is True
     assert payload["bounded_runner_enabled"] is True
     assert payload["five_period_execution_enabled"] is True
+    assert payload["five_period_ui_start_enabled"] is True
     assert payload["prefix_comparison_execution_enabled"] is True
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR147"
+    assert payload["next_gate"] == "PR148"
 
 
 def test_bounded_runner_contract_orders_full_preparation_before_execution() -> None:
