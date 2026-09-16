@@ -48,10 +48,11 @@ Runner, Exporte und gespeicherte Laeufe bleiben unveraendert.
 
 ## Offene Punkte
 
-- PR153 muss das Kompatibilitaetsmapping fuer die beiden Schadenpositionen
-  fachlich pruefen, ausdruecklich versionieren und den Altpfad stabil halten.
-- PR154 kann erst danach Strategie- und Parameterzuordnungen je benannter
-  Sparte validieren.
+- PR153 belegt und versioniert die Positionsabbildung C 1/2 zu Python 0/1
+  unter neutralen Legacy-IDs. Die Zuordnung zu Kfz/Sach-Haftpflicht bleibt
+  offen; siehe `ims_2x_legacy_damage_adapter.md`.
+- PR154 kann danach Strategie- und Parameterzuordnungen je benannter
+  Sparte validieren, ohne die offene historische Bindung zu verdecken.
 - Leben und Kranken brauchen spaeter getrennte Zustands-, Fluss- und
   Strategievertraege. Die Schadenlogik wird nicht einfach wiederverwendet.
 - Es wird weder eine historische Vollgleichheit noch regulatorische
