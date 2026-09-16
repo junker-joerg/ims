@@ -1,0 +1,33 @@
+{
+  "schema_version": "ims.life-model-balance-input.v1",
+  "life_sector_contract_schema_version": "ims.life-sector-contract.v2",
+  "sector_taxonomy_schema_version": "ims.sector-taxonomy.v1",
+  "source_kind": "explicit_scenario",
+  "historical_mapping_status": "unresolved",
+  "insurer_id": 1,
+  "sector_id": "life",
+  "opening": {
+    "opening_active_policies": 10,
+    "opening_remaining_periods": 2,
+    "opening_backing_assets": "120",
+    "opening_guarantee_liability": "100",
+    "opening_equity": "20"
+  },
+  "guaranteed_rate_per_period": "0.05",
+  "periods": [
+    {
+      "period": 1,
+      "premiums_collected": "10",
+      "premium_liability_allocation": "9",
+      "investment_result": "7",
+      "operating_expense_paid": "1"
+    },
+    {
+      "period": 2,
+      "premiums_collected": "10",
+      "premium_liability_allocation": "9",
+      "investment_result": "6",
+      "operating_expense_paid": "1"
+    }
+  ]
+}

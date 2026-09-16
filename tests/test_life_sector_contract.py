@@ -7,6 +7,7 @@ import pytest
 from ims.model.life_sector_contract import (
     LIFE_EQUATIONS,
     LIFE_FIELDS,
+    LIFE_SECTOR_CONTRACT_V1_VERSION,
     LIFE_SECTOR_CONTRACT_VERSION,
     LIFE_STRATEGY_HOOKS,
     life_sector_contract_payload,
@@ -27,9 +28,9 @@ def test_life_contract_is_separate_and_read_only() -> None:
     assert payload["source_binding"]["legacy_sp_1_2_reused"] is False
     assert payload["source_binding"]["legacy_rk_1_2_reused"] is False
     assert payload["source_binding"]["non_life_rule_catalog_reused"] is False
+    assert payload["calculation_available"] is True
     for key in (
-        "calculation_available", "strategy_assignment_available",
-        "snapshot_materialization_enabled", "writes_enabled", "execution_enabled",
+        "strategy_assignment_available", "snapshot_materialization_enabled", "writes_enabled", "execution_enabled",
         "simulation_performed", "statutory_or_solvency_ii_claim",
         "historical_full_equality_claim",
     ):
@@ -80,9 +81,22 @@ def test_strategy_hooks_do_not_mutate_issue_guarantee_or_old_catalog() -> None:
         LIFE_FIELDS[0].field_id = "legacy"  # type: ignore[misc]
 
 
-def test_contract_keeps_valuation_decisions_open() -> None:
+def test_v2_contract_fixes_credit_timing_and_keeps_other_exits_open() -> None:
     payload = life_sector_contract_payload()
     assert payload["amounts"]["implicit_rounding_allowed"] is False
-    assert payload["amounts"]["guarantee_credit_rounding"] == "pending_pr159"
-    assert "guarantee_credit_base_and_rounding" in payload["pending_decisions"]
-    assert "liability_release_by_exit_reason" in payload["pending_decisions"]
+    assert payload["amounts"]["guarantee_credit_rounding"] == "round_half_even_4_fraction"
+    assert payload["calculation"]["guarantee_credit_base"] == "opening_guarantee_liability"
+    assert payload["calculation"]["maturity_payment"] == "full_liability_after_credit_and_premium_allocation"
+    assert payload["calculation"]["interface"] == "python_library_only"
+    assert payload["calculation"]["two_non_life_sector_consolidation_enabled"] is False
+    assert "liability_release_for_death_and_surrender" in payload["pending_decisions"]
+    assert "guarantee_credit_base_and_rounding" not in payload["pending_decisions"]
+
+    v1 = life_sector_contract_payload(LIFE_SECTOR_CONTRACT_V1_VERSION)
+    assert v1["schema_version"] == LIFE_SECTOR_CONTRACT_V1_VERSION
+    assert v1["calculation_available"] is False
+    assert v1["amounts"]["guarantee_credit_rounding"] == "pending_pr159"
+    assert "guarantee_credit_base_and_rounding" in v1["pending_decisions"]
+    assert "calculation" not in v1
+    with pytest.raises(ValueError):
+        life_sector_contract_payload("ims.life-sector-contract.v0")

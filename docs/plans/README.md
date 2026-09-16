@@ -385,6 +385,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr158_life_sector_contract_plan.md`:
   PR158-Plan fuer eigenstaendige Lebenszustaende, Fluesse und
   Strategie-Anschlussstellen ohne Altregelbindung oder Berechnung.
+- `ims_2x_pr159_deterministic_life_case_plan.md`:
+  PR159-Plan fuer einen geschlossenen deterministischen Lebensfall mit
+  expliziter Gutschriftbasis, Endperioden-Timing und Bilanzabstimmung.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR183/184-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR159 bleibt naechst.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR160 geht vor.

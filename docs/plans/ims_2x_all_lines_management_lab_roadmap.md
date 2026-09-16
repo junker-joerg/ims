@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-16
-Status: aktive Produkt-Restplanung; PR158 umgesetzt, PR159 naechster Schritt
+Status: aktive Produkt-Restplanung; PR159 umgesetzt, PR160 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -109,7 +109,7 @@ Schadenlogik ausgegeben.
 | PR156 | Modellbilanz fuer Kfz und Sach-Haftpflicht | umgesetzt: exakte Szenario-Dezimalwerte, atomare Bilanzidentitaeten und Perioden-Carryover bis 100; kein Alt-Runner-Anschluss |
 | PR157 | Konsolidierte Versichererbilanz in Workbench und XLSX | umgesetzt: exakte Zwei-Sparten-Summe, atomarer Fehlerpfad, Browseransicht und Digest-gebundener XLSX-Export ohne Runner |
 | PR158 | Zustands-, Fluss- und Strategievertrag fuer Leben | umgesetzt: geschlossener Vertragsbestand, Garantieverpflichtung, getrennte Fluesse und nicht ausfuehrbare Strategie-Anschlussstellen; Bewertungstiming bleibt offen |
-| PR159 | Minimale deterministische Lebensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
+| PR159 | Minimale deterministische Lebensparte | umgesetzt: geschlossener Zwei-Perioden-Fall mit Gutschrift auf Anfangsverpflichtung, spaeter Praemienzuweisung, Ablauf zum Verpflichtungswert und atomarer Bilanz; kein Runner oder Gesamtbilanzanschluss |
 | PR160 | Zustands-, Fluss- und Strategievertrag fuer Kranken | Beitrags-, Leistungs- und Bestandslogik sind begrenzt und getrennt |
 | PR161 | Minimale deterministische Krankensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
 | PR162 | Spartenuebergreifende Konsolidierung | vier Modellsegmente stimmen je Versicherer zur Gesamtbilanz ab |
@@ -196,15 +196,15 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR158 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR159 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 4 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 12 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 20 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 24 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 26 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 3 |
+| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 11 |
+| durchgaengige DORA-Wirkungskette | PR178 | 37 | 19 |
+| kontrollierte Managementseminar-Reife | PR182 | 41 | 23 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 25 |
 
 Die 41 fachlichen PRs bis PR182 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -292,11 +292,14 @@ offener Quellbindung festgelegt. PR156 rechnet nun Kfz oder Sach-Haftpflicht
 aus expliziten Szenariowerten deterministisch ueber bis zu 100 Perioden,
 ohne die alten Positionen zuzuordnen oder einen Runner zu starten. PR157
 stellt beide Sparten und ihre exakte Summe in der Workbench dar und liefert
-einen Digest-gebundenen XLSX-Export. PR158 hat nun einen eigenstaendigen
+einen Digest-gebundenen XLSX-Export. PR158 hat einen eigenstaendigen
 read-only Vertrag fuer einen geschlossenen Lebensbestand, seine
 Garantieverpflichtung und Strategie-Anschlussstellen festgelegt. PR159
-entscheidet als Naechstes Gutschrift-Timing und Bewertungsbasis und rechnet
-einen schmalen deterministischen Lebensfall ohne Vollmodellbehauptung.
+hat daraus einen schmalen deterministischen Lebensfall mit expliziter
+Gutschriftbasis, Ablaufzahlung und Bilanzpruefung gerechnet. PR160
+klaert als Naechstes den getrennten Zustands-, Fluss- und Strategievertrag
+fuer Kranken. Die Lebensrechnung bleibt ohne Runner und ohne Addition zur
+heutigen Zwei-Sparten-Gesamtbilanz.
 Die Windows-Ready-to-run-Spur PR183/184 bleibt ausdruecklich spaeter.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische

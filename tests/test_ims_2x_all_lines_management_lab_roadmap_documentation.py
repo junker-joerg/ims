@@ -42,15 +42,15 @@ def test_active_roadmap_numbers_pr142_through_pr184_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR170 | 29" in document
     assert "durchgaengige DORA-Wirkungskette | PR178 | 37" in document
     assert "kontrollierte Managementseminar-Reife | PR182 | 41" in document
-    assert "PR158 umgesetzt, PR159 naechster Schritt" in document
+    assert "PR159 umgesetzt, PR160 naechster Schritt" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
     assert "PR145 hat kontrollierten Serverstart" in document
     assert "PR146 hat den Pfad in der Workbench bedienbar gemacht" in document
     assert "PR147 hat fuer 10, 25, 50 und 100 Perioden" in document
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 24" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 26" in document
+    assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 23" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 25" in document
     assert "Diese optionale Distributionsspur beginnt **erst nach PR182**" in document
 
 
@@ -69,12 +69,12 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
         assert gate in document
 
 
-def test_later_windows_ready_to_run_plan_keeps_pr159_next() -> None:
+def test_later_windows_ready_to_run_plan_keeps_pr160_next() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR158 umgesetzt, PR159 naechster Schritt" in roadmap
-    assert "PR159 bleibt der" in plan
+    assert "PR159 umgesetzt, PR160 naechster Schritt" in roadmap
+    assert "PR160 bleibt der" in plan
     for phrase in (
         "PR183", "PR184", "IMS-Workbench.exe", "One-folder",
         "ohne Zielrechner-Python", "127.0.0.1", "%LOCALAPPDATA%",

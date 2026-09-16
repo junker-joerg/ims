@@ -6,7 +6,8 @@ from ims.model.sector_taxonomy import SECTOR_TAXONOMY_VERSION
 from ims.model.vdefmd6_population import VDEFMD6_INSURER_COUNT
 
 
-LIFE_SECTOR_CONTRACT_VERSION = "ims.life-sector-contract.v1"
+LIFE_SECTOR_CONTRACT_V1_VERSION = "ims.life-sector-contract.v1"
+LIFE_SECTOR_CONTRACT_VERSION = "ims.life-sector-contract.v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -123,11 +124,17 @@ LIFE_STRATEGY_HOOKS = (
 )
 
 
-def life_sector_contract_payload() -> dict[str, object]:
-    """Describe life-specific state and strategy boundaries without computing a value."""
+def life_sector_contract_payload(
+    schema_version: str = LIFE_SECTOR_CONTRACT_VERSION,
+) -> dict[str, object]:
+    """Describe life-specific state and the separately callable narrow calculation."""
 
-    return {
-        "schema_version": LIFE_SECTOR_CONTRACT_VERSION,
+    if schema_version not in (LIFE_SECTOR_CONTRACT_V1_VERSION, LIFE_SECTOR_CONTRACT_VERSION):
+        raise ValueError("Unbekannte Lebenssparten-Vertragsversion")
+    is_v1 = schema_version == LIFE_SECTOR_CONTRACT_V1_VERSION
+
+    payload: dict[str, object] = {
+        "schema_version": schema_version,
         "sector_taxonomy_schema_version": SECTOR_TAXONOMY_VERSION,
         "mode": "life_sector_contract_read_only",
         "scope": {
@@ -142,9 +149,14 @@ def life_sector_contract_payload() -> dict[str, object]:
         },
         "amounts": {
             "unit": "model_currency_unit",
-            "numeric_representation": "decimal_string_12_integer_4_fraction_planned",
+            "numeric_representation": (
+                "decimal_string_12_integer_4_fraction_planned" if is_v1
+                else "decimal_string_12_integer_4_fraction"
+            ),
             "implicit_rounding_allowed": False,
-            "guarantee_credit_rounding": "pending_pr159",
+            "guarantee_credit_rounding": (
+                "pending_pr159" if is_v1 else "round_half_even_4_fraction"
+            ),
         },
         "fields": [asdict(field) for field in LIFE_FIELDS],
         "equations": [asdict(equation) for equation in LIFE_EQUATIONS],
@@ -170,13 +182,18 @@ def life_sector_contract_payload() -> dict[str, object]:
             "legacy_rk_1_2_reused": False,
             "non_life_rule_catalog_reused": False,
         },
-        "pending_decisions": [
-            "premium_and_guarantee_credit_timing",
-            "guarantee_credit_base_and_rounding",
-            "liability_release_by_exit_reason",
-            "strategy_parameter_semantics_and_assignment",
-        ],
-        "calculation_available": False,
+        "pending_decisions": (
+            [
+                "premium_and_guarantee_credit_timing",
+                "guarantee_credit_base_and_rounding",
+                "liability_release_by_exit_reason",
+                "strategy_parameter_semantics_and_assignment",
+            ] if is_v1 else [
+                "liability_release_for_death_and_surrender",
+                "strategy_parameter_semantics_and_assignment",
+            ]
+        ),
+        "calculation_available": not is_v1,
         "strategy_assignment_available": False,
         "snapshot_materialization_enabled": False,
         "writes_enabled": False,
@@ -185,3 +202,20 @@ def life_sector_contract_payload() -> dict[str, object]:
         "statutory_or_solvency_ii_claim": False,
         "historical_full_equality_claim": False,
     }
+    if not is_v1:
+        payload["calculation"] = {
+            "interface": "python_library_only",
+            "function": "ims.accounting.life_model_balance.build_life_model_balance",
+            "input_schema_version": "ims.life-model-balance-input.v1",
+            "result_schema_version": "ims.life-model-balance-result.v1",
+            "scope": "closed_cohort_without_deaths_surrenders_bonus_or_new_business",
+            "premium_timing": "collected_and_allocated_at_period_end_after_guarantee_credit",
+            "guarantee_credit_base": "opening_guarantee_liability",
+            "guaranteed_rate_range_per_period": ["0", "1"],
+            "guarantee_credit_timing": "period_end_before_maturity",
+            "guarantee_credit_rounding": "round_half_even_to_0.0001",
+            "maturity_payment": "full_liability_after_credit_and_premium_allocation",
+            "investment_result_source": "explicit_scenario_flow",
+            "two_non_life_sector_consolidation_enabled": False,
+        }
+    return payload

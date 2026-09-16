@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_deterministic_life_case.md`: PR159-Rechnung fuer einen
+  geschlossenen Lebensbestand mit expliziter Garantie-Basis, Timing,
+  Ablaufzahlung und atomarer Modellbilanz; ohne Alt-Runner-Anschluss
 - `ims_2x_life_sector_contract.md`: PR158-read-only Zustands-, Fluss-
   und Strategie-Anschlussvertrag fuer einen geschlossenen Lebensbestand;
   ohne Berechnung oder historische Spartenbindung
