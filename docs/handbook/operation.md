@@ -1,7 +1,7 @@
 # Workbench bedienen
 
-Stand: 2026-09-11
-Gilt fuer: lokale IMS-Workbench, Handbuchstand HB3c
+Stand: 2026-09-16
+Gilt fuer: lokale IMS-Workbench, Handbuchstand HB3d
 
 ## Vor dem Bedienpfad
 
@@ -214,6 +214,51 @@ Der erfolgreiche Start kann nicht mit einer zweiten Freigabe ueberschrieben
 werden. Die Probe erzeugt keine fachlichen Ausgabedateien und ist weder eine
 historische Vollgleichheitspruefung noch ein 100-Periodenlauf.
 
+## 11. Fuenf-Perioden-Wirkungsprobe bedienen
+
+Dieser Pfad verlaengert denselben kontrollierten Wirkungsnachweis auf fuenf
+Perioden. Die Workbench verlangt dazu einen bereits gespeicherten
+Zwei-Perioden-Nachweis. Sie prueft nach Periode 2, dass der neue Lauf bis
+dorthin semantisch und bytegenau mit diesem Nachweis uebereinstimmt. Erst
+dann werden Periode 3 bis 5 als gemeinsames Ergebnis akzeptiert.
+
+1. Waehle in der Navigation `Strategien` und danach `Periodenkette`.
+2. Waehle die gespeicherte Kette `Perioden 1-5`.
+3. Pruefe fuenf Kandidaten, vier Uebergaenge und aktive VU-/VN-Carryover-Flags.
+4. Waehle unter `Gepruefter Vergleich fuer Periode 1-2` den vorhandenen
+   erfolgreichen Prefixnachweis.
+5. Trage Person und konkreten Grund der Freigabe ein.
+6. Bestaetige `Periode 1 bis 5 mit gespeichertem Carryover jetzt ausfuehren`.
+7. Waehle `Fuenf Perioden starten`.
+8. Lies die fuenf Periodenwirkungen, vier Uebergaenge, `Prefix 1-2 exakt
+   bestaetigt`, Ergebnisdigest und Versuchsverlauf.
+
+![Fuenf-Perioden-Wirkungsprobe im breiten Browserfenster](images/windows_strategy_five_period_effect_probe_pr146_wide_2026-09-16.png)
+
+*Abbildung: Erfolgreicher, unveraenderlich gespeicherter Nachweis fuer Periode 1 bis 5 mit vier VU-/VN-Uebergaengen und exaktem Prefix 1-2; Windows/Chromium, 1440 x 1000, aufgenommen am 2026-09-16.*
+
+Auf einem schmalen Fenster stehen Perioden und Uebergaenge einspaltig. Die
+Ansicht besitzt keine horizontale Ueberbreite; Status und Werte bleiben
+vollstaendig lesbar.
+
+![Fuenf-Perioden-Wirkungsprobe im schmalen Browserfenster](images/windows_strategy_five_period_effect_probe_pr146_narrow_2026-09-16.png)
+
+*Abbildung: Derselbe gespeicherte Fuenf-Perioden-Nachweis im 390 x 844-Viewport, aufgenommen am 2026-09-16.*
+
+### Fehler richtig behandeln
+
+| Sichtbarer Zustand | Bedeutung | Reaktion |
+| --- | --- | --- |
+| Startknopf deaktiviert | Person, Grund, Prefixreferenz oder ausdrueckliche Bestaetigung fehlt | Angaben kontrollieren; Sperre nicht umgehen |
+| kein Zwei-Perioden-Nachweis | die unabhaengige Referenz fuer Periode 1-2 fehlt | zuerst den kontrollierten Zwei-Perioden-Pfad erfolgreich abschliessen |
+| Digest- oder Prefixfehler | Kette oder Referenz stimmt nicht mehr mit der geprueften Ablage ueberein | nicht erneut starten; Herkunft und gespeicherte Nachweise pruefen |
+| `Fehlgeschlagen` im Verlauf | kein vollstaendiges Fuenf-Perioden-Ergebnis wurde gespeichert | Fehlertext lesen; nur mit neuer manueller Freigabe erneut pruefen |
+| `Fuenf Perioden unveraenderlich gespeichert` | alle Perioden, Uebergaenge und der Prefix sind vollstaendig nachgewiesen | Ergebnis lesen; kein zweiter Start erforderlich |
+
+Die Probe erzeugt keine fachlichen Ausgabedateien. Horizonte ab zehn
+Perioden, ein freier 100-Periodenlauf und historische Vollgleichheit bleiben
+getrennte spaetere Abnahmegrenzen.
+
 ## Schreib- und Stopgrenzen
 
 | Aktion | Schreibt | Startet Ausfuehrung |
@@ -226,6 +271,7 @@ historische Vollgleichheitspruefung noch ein 100-Periodenlauf.
 | `Ergebnis neu laden` | nein | nein |
 | `Wirkungsprobe starten` | Freigabe, Versuch und Einperiodenergebnis | genau eine isolierte Periode, kein Mehrperiodenlauf |
 | `Zwei Perioden starten` | Freigabe, Versuch und unveraenderliches Kettenergebnis | exakt Periode 1 und 2 mit gespeichertem Carryover; kein freier Mehrperiodenlauf |
+| `Fuenf Perioden starten` | Freigabe, Versuch, kanonische Kettenkopie und unveraenderliches Ergebnis | exakt Periode 1 bis 5 mit vier Uebergaengen und Prefixnachweis 1-2; kein freier Langlauf |
 
 Bei unklarer Quelle, unerwartetem Schreibpfad, geaendertem Queue-Eintrag oder
 einem fachlichen Blocker wird nicht weiter freigegeben. Der Browser darf nicht

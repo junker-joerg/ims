@@ -181,3 +181,7 @@ managementtauglichen Bedienung.
   denselben geprueften Lauf atomar idempotent starten und Request,
   kanonische Kette sowie Ergebnis gemeinsam unveraenderlich ablegen;
   Workbench-Bedienung folgt getrennt in PR146.
+- [PR146 Browserabnahme der Fuenf-Perioden-Probe](../migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe_browser_acceptance.md):
+  den gespeicherten Lauf in der Workbench freigeben, alle fuenf Perioden,
+  vier Uebergaenge und den exakten Prefix 1-2 auf breitem und schmalem
+  Viewport nachweisen.

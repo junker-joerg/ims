@@ -214,5 +214,6 @@ Perioden begrenzten Kettenrunner festgelegt. PR143 hat die kanonische
 Fuenf-Perioden-Kette atomar gebaut und validiert. PR144 hat die isolierte
 fluechtige Wirkungsprobe samt Prefixnachweis 1-2 angeschlossen. PR145 hat den
 kontrollierten Serverstart, dauerhafte Idempotenz sowie die unveraenderliche
-Ablage von Request, kanonischer Kette und Ergebnis umgesetzt. PR146 schliesst
-als Naechstes Workbench-Bedienung, Browserabnahme und Handbuchbild an.
+Ablage von Request, kanonischer Kette und Ergebnis umgesetzt. PR146 hat
+Workbench-Bedienung, Browserabnahme und Handbuchbilder angeschlossen. PR147
+definiert als Naechstes die kontrollierten Horizonte 10, 25, 50 und 100.

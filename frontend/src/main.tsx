@@ -825,11 +825,15 @@ type StrategyExecutionPeriodChainOverviewEntry = {
   readiness: {
     period_chain_complete: boolean;
     exact_two_period_horizon: boolean;
+    exact_five_period_horizon: boolean;
     storage_integrity_verified: boolean;
     run_control_ready: boolean;
     effect_probe_available: boolean;
     effect_probe_start_available: boolean;
     effect_probe_result_persistence_available: boolean;
+    five_period_effect_probe_available: boolean;
+    five_period_effect_probe_start_available: boolean;
+    five_period_effect_probe_result_persistence_available: boolean;
     general_multi_period_execution_ready: boolean;
     next_gate: string;
   };
@@ -967,6 +971,111 @@ type StrategyPeriodChainEffectProbeHistory = {
   writes_performed: boolean;
   execution_performed: boolean;
   simulation_performed: boolean;
+};
+
+type StrategyPeriodChainStoredRead = {
+  status: "ok" | "error";
+  mode: "strategy_execution_period_chain_store_read";
+  record?: {
+    chain_id: string;
+    content_digest: string;
+    period_chain_input: Record<string, unknown>;
+  };
+  issues?: Array<{ code: string; message: string }>;
+};
+
+type StrategyFivePeriodEffectProbeStartContract = {
+  status: "ok";
+  schema_version: string;
+  request_schema_version: string;
+  release_request_schema_version: string;
+  effect_probe_request_schema_version: string;
+  mode: "strategy_execution_five_period_effect_probe_start_contract";
+  start_endpoint: string;
+  result_endpoint_template: string;
+  history_endpoint_template: string;
+  ui_start_enabled: boolean;
+  idempotency_persistence_enabled: boolean;
+  immutable_period_chain_snapshot_persistence_enabled: boolean;
+  immutable_result_persistence_enabled: boolean;
+  stored_two_period_prefix_baseline_required: boolean;
+  exact_five_period_horizon_required: boolean;
+  next_gate: string;
+};
+
+type StrategyFivePeriodPrefixBaseline = {
+  chain_id: string;
+  expected_content_digest: string;
+  expected_result_digest: string;
+};
+
+type StrategyFivePeriodTransitionEffect = StrategyPeriodChainTransitionEffect;
+
+type StrategyFivePeriodEffectProbeStoredRecord = {
+  chain_id: string;
+  attempt_id: string;
+  idempotency_key: string;
+  content_digest: string;
+  persisted_at: string;
+  result_digest: string;
+  result_payload: {
+    period_effects: StrategyCandidateEffectProbeEffect[];
+    transition_effects: StrategyFivePeriodTransitionEffect[];
+    prefix_proof: {
+      semantic_equal: boolean;
+      canonical_json_byte_equal: boolean;
+      tolerance_applied: boolean;
+    };
+    two_period_prefix_verified: boolean;
+    execution_performed: boolean;
+    simulation_performed: boolean;
+  };
+};
+
+type StrategyFivePeriodEffectProbeStartResponse = {
+  status: "ok" | "error";
+  mode: "strategy_execution_five_period_effect_probe_start";
+  chain_id?: string;
+  replayed?: boolean;
+  record?: StrategyFivePeriodEffectProbeStoredRecord;
+  issues?: Array<{ code: string; message: string }>;
+  result_persisted: boolean;
+  runner_invocation_count: number;
+  carryover_invocation_count: number;
+  prefix_baseline_verified: boolean;
+  simulation_performed: boolean;
+};
+
+type StrategyFivePeriodEffectProbeResultRead = {
+  status: "ok" | "error";
+  mode: "strategy_execution_five_period_effect_probe_result_read_only";
+  chain_id: string;
+  result_available: boolean;
+  record: StrategyFivePeriodEffectProbeStoredRecord | null;
+  issues?: Array<{ code: string; message: string }>;
+};
+
+type StrategyFivePeriodEffectProbeAttempt = {
+  attempt_id: string;
+  status: "starting" | "failed" | "result_persisted";
+  released_by: string;
+  release_reason: string;
+  started_at: string;
+  completed_at: string | null;
+  failure_message: string | null;
+  runner_invocation_count: number;
+  carryover_invocation_count: number;
+  prefix_baseline_verified: boolean;
+};
+
+type StrategyFivePeriodEffectProbeHistory = {
+  status: "ok" | "error";
+  mode: "strategy_execution_five_period_effect_probe_history_read_only";
+  chain_id: string;
+  attempt_count: number;
+  attempts: StrategyFivePeriodEffectProbeAttempt[];
+  result_available: boolean;
+  issues?: Array<{ code: string; message: string }>;
 };
 
 type StrategyDraftEditor = {
@@ -1977,6 +2086,11 @@ function createStrategyPeriodChainProbeIdempotencyKey(chainId: string): string {
   return `workbench-period-chain-probe-${chainId.slice(-12)}-${suffix}`;
 }
 
+function createStrategyFivePeriodProbeIdempotencyKey(chainId: string): string {
+  const suffix = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`;
+  return `workbench-five-period-probe-${chainId.slice(-12)}-${suffix}`;
+}
+
 function queueActionLabel(entry: RunControlQueueEntry): string {
   if (entry.status === "planned") {
     return "Preflight lokal";
@@ -2161,6 +2275,38 @@ function App() {
   const [strategyPeriodChainProbeEvidenceError, setStrategyPeriodChainProbeEvidenceError] =
     useState<string | null>(null);
   const [strategyPeriodChainProbeEvidenceRevision, setStrategyPeriodChainProbeEvidenceRevision] =
+    useState(0);
+  const [strategyPeriodChainDetail, setStrategyPeriodChainDetail] =
+    useState<StrategyPeriodChainStoredRead | null>(null);
+  const [strategyPeriodChainDetailState, setStrategyPeriodChainDetailState] =
+    useState<DetailState>("idle");
+  const [strategyFivePeriodProbeStartContract, setStrategyFivePeriodProbeStartContract] =
+    useState<StrategyFivePeriodEffectProbeStartContract | null>(null);
+  const [strategyFivePeriodPrefixBaselines, setStrategyFivePeriodPrefixBaselines] =
+    useState<StrategyFivePeriodPrefixBaseline[]>([]);
+  const [selectedStrategyFivePeriodPrefixChainId, setSelectedStrategyFivePeriodPrefixChainId] =
+    useState<string | null>(null);
+  const [strategyFivePeriodProbeActor, setStrategyFivePeriodProbeActor] =
+    useState("workbench-ui");
+  const [strategyFivePeriodProbeReason, setStrategyFivePeriodProbeReason] =
+    useState("Kontrollierte Fuenf-Perioden-Wirkungsprobe");
+  const [strategyFivePeriodProbeConfirmed, setStrategyFivePeriodProbeConfirmed] =
+    useState(false);
+  const [strategyFivePeriodProbeStart, setStrategyFivePeriodProbeStart] =
+    useState<StrategyFivePeriodEffectProbeStartResponse | null>(null);
+  const [strategyFivePeriodProbeStartState, setStrategyFivePeriodProbeStartState] =
+    useState<DetailState>("idle");
+  const [strategyFivePeriodProbeStartError, setStrategyFivePeriodProbeStartError] =
+    useState<string | null>(null);
+  const [strategyFivePeriodProbeResult, setStrategyFivePeriodProbeResult] =
+    useState<StrategyFivePeriodEffectProbeResultRead | null>(null);
+  const [strategyFivePeriodProbeHistory, setStrategyFivePeriodProbeHistory] =
+    useState<StrategyFivePeriodEffectProbeHistory | null>(null);
+  const [strategyFivePeriodProbeEvidenceState, setStrategyFivePeriodProbeEvidenceState] =
+    useState<DetailState>("idle");
+  const [strategyFivePeriodProbeEvidenceError, setStrategyFivePeriodProbeEvidenceError] =
+    useState<string | null>(null);
+  const [strategyFivePeriodProbeEvidenceRevision, setStrategyFivePeriodProbeEvidenceRevision] =
     useState(0);
   const [strategyWorkbenchView, setStrategyWorkbenchView] = useState<StrategyWorkbenchView>("catalog");
   const [runControlQueue, setRunControlQueue] = useState<RunControlQueueOverview | null>(null);
@@ -2725,6 +2871,192 @@ function App() {
   }, [
     selectedStrategyPeriodChainId,
     strategyPeriodChainProbeEvidenceRevision
+  ]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyFivePeriodProbeStartContract() {
+      try {
+        const response = await fetch(
+          "/api/run-control/strategy-period-chain-five-period-effect-probe-start-contract"
+        );
+        if (!response.ok) {
+          throw new Error("Startvertrag der Fuenf-Perioden-Probe nicht erreichbar");
+        }
+        const payload = (
+          await response.json()
+        ) as StrategyFivePeriodEffectProbeStartContract;
+        if (active) {
+          setStrategyFivePeriodProbeStartContract(payload);
+        }
+      } catch {
+        if (active) {
+          setStrategyFivePeriodProbeStartContract(null);
+        }
+      }
+    }
+
+    loadStrategyFivePeriodProbeStartContract();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyPeriodChainDetail() {
+      if (!selectedStrategyPeriodChainId) {
+        setStrategyPeriodChainDetail(null);
+        setStrategyPeriodChainDetailState("idle");
+        return;
+      }
+      setStrategyPeriodChainDetailState("loading");
+      try {
+        const response = await fetch(
+          `/api/strategies/execution-period-chains/${encodeURIComponent(selectedStrategyPeriodChainId)}`
+        );
+        const payload = (await response.json()) as StrategyPeriodChainStoredRead;
+        if (!response.ok || payload.status !== "ok" || !payload.record) {
+          throw new Error(payload.issues?.[0]?.message ?? "Kettendetails nicht erreichbar");
+        }
+        if (active) {
+          setStrategyPeriodChainDetail(payload);
+          setStrategyPeriodChainDetailState("ready");
+        }
+      } catch {
+        if (active) {
+          setStrategyPeriodChainDetail(null);
+          setStrategyPeriodChainDetailState("error");
+        }
+      }
+    }
+
+    loadStrategyPeriodChainDetail();
+    return () => {
+      active = false;
+    };
+  }, [selectedStrategyPeriodChainId]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyFivePeriodPrefixBaselines() {
+      const chains = (strategyPeriodChainOverview?.period_chains ?? []).filter(
+        (chain) => chain.readiness.exact_two_period_horizon
+      );
+      const results = await Promise.all(
+        chains.map(async (chain) => {
+          try {
+            const response = await fetch(
+              `/api/run-control/strategy-period-chain-effect-probe-result/${encodeURIComponent(chain.chain_id)}`
+            );
+            const payload = (
+              await response.json()
+            ) as StrategyPeriodChainEffectProbeResultRead;
+            if (!response.ok || !payload.result_available || !payload.record) {
+              return null;
+            }
+            return {
+              chain_id: chain.chain_id,
+              expected_content_digest: chain.content_digest,
+              expected_result_digest: payload.record.result_digest
+            } satisfies StrategyFivePeriodPrefixBaseline;
+          } catch {
+            return null;
+          }
+        })
+      );
+      if (active) {
+        const available = results.filter(
+          (item): item is StrategyFivePeriodPrefixBaseline => item !== null
+        );
+        setStrategyFivePeriodPrefixBaselines(available);
+        setSelectedStrategyFivePeriodPrefixChainId((current) => (
+          available.some((item) => item.chain_id === current)
+            ? current
+            : available[0]?.chain_id ?? null
+        ));
+      }
+    }
+
+    loadStrategyFivePeriodPrefixBaselines();
+    return () => {
+      active = false;
+    };
+  }, [strategyPeriodChainOverview, strategyPeriodChainProbeEvidenceRevision]);
+
+  useEffect(() => {
+    setStrategyFivePeriodProbeConfirmed(false);
+    setStrategyFivePeriodProbeStart(null);
+    setStrategyFivePeriodProbeStartState("idle");
+    setStrategyFivePeriodProbeStartError(null);
+  }, [selectedStrategyPeriodChainId]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStrategyFivePeriodProbeEvidence() {
+      const selected = strategyPeriodChainOverview?.period_chains.find(
+        (chain) => chain.chain_id === selectedStrategyPeriodChainId
+      );
+      if (!selected?.readiness.exact_five_period_horizon) {
+        setStrategyFivePeriodProbeResult(null);
+        setStrategyFivePeriodProbeHistory(null);
+        setStrategyFivePeriodProbeEvidenceState("idle");
+        setStrategyFivePeriodProbeEvidenceError(null);
+        return;
+      }
+      setStrategyFivePeriodProbeEvidenceState("loading");
+      setStrategyFivePeriodProbeEvidenceError(null);
+      try {
+        const encodedId = encodeURIComponent(selected.chain_id);
+        const [resultResponse, historyResponse] = await Promise.all([
+          fetch(`/api/run-control/strategy-period-chain-five-period-effect-probe-result/${encodedId}`),
+          fetch(`/api/run-control/strategy-period-chain-five-period-effect-probe-history/${encodedId}`)
+        ]);
+        const resultPayload = (
+          await resultResponse.json()
+        ) as StrategyFivePeriodEffectProbeResultRead;
+        const historyPayload = (
+          await historyResponse.json()
+        ) as StrategyFivePeriodEffectProbeHistory;
+        if (!resultResponse.ok) {
+          throw new Error(
+            resultPayload.issues?.[0]?.message ?? "Fuenf-Perioden-Ergebnis nicht erreichbar"
+          );
+        }
+        if (!historyResponse.ok) {
+          throw new Error(
+            historyPayload.issues?.[0]?.message ?? "Fuenf-Perioden-Verlauf nicht erreichbar"
+          );
+        }
+        if (active) {
+          setStrategyFivePeriodProbeResult(resultPayload);
+          setStrategyFivePeriodProbeHistory(historyPayload);
+          setStrategyFivePeriodProbeEvidenceState("ready");
+        }
+      } catch (error) {
+        if (active) {
+          setStrategyFivePeriodProbeResult(null);
+          setStrategyFivePeriodProbeHistory(null);
+          setStrategyFivePeriodProbeEvidenceError(
+            error instanceof Error ? error.message : "Fuenf-Perioden-Nachweis nicht erreichbar"
+          );
+          setStrategyFivePeriodProbeEvidenceState("error");
+        }
+      }
+    }
+
+    loadStrategyFivePeriodProbeEvidence();
+    return () => {
+      active = false;
+    };
+  }, [
+    selectedStrategyPeriodChainId,
+    strategyPeriodChainOverview,
+    strategyFivePeriodProbeEvidenceRevision
   ]);
 
   useEffect(() => {
@@ -3318,6 +3650,102 @@ function App() {
       setStrategyPeriodChainProbeStartState("error");
     } finally {
       setStrategyPeriodChainProbeEvidenceRevision((current) => current + 1);
+    }
+  };
+  const selectedStrategyFivePeriodPrefixBaseline =
+    strategyFivePeriodPrefixBaselines.find(
+      (baseline) => baseline.chain_id === selectedStrategyFivePeriodPrefixChainId
+    ) ?? null;
+  const strategyFivePeriodProbeResultAvailable =
+    strategyFivePeriodProbeResult?.result_available === true;
+  const strategyFivePeriodEffects =
+    strategyFivePeriodProbeResult?.record?.result_payload.period_effects ?? [];
+  const strategyFivePeriodTransitions =
+    strategyFivePeriodProbeResult?.record?.result_payload.transition_effects ?? [];
+  const strategyFivePeriodPrefixVerified =
+    strategyFivePeriodProbeResult?.record?.result_payload.two_period_prefix_verified === true;
+  const canStartStrategyFivePeriodProbe = Boolean(
+    selectedStrategyPeriodChain?.readiness.five_period_effect_probe_start_available &&
+    strategyFivePeriodProbeStartContract?.ui_start_enabled &&
+    strategyFivePeriodProbeStartContract.idempotency_persistence_enabled &&
+    strategyFivePeriodProbeStartContract.immutable_result_persistence_enabled &&
+    strategyPeriodChainDetailState === "ready" &&
+    strategyPeriodChainDetail?.record?.period_chain_input &&
+    selectedStrategyFivePeriodPrefixBaseline &&
+    strategyFivePeriodProbeEvidenceState === "ready" &&
+    !strategyFivePeriodProbeResultAvailable &&
+    strategyFivePeriodProbeActor.trim() &&
+    strategyFivePeriodProbeReason.trim() &&
+    strategyFivePeriodProbeConfirmed &&
+    strategyFivePeriodProbeStartState !== "loading"
+  );
+  const startStrategyFivePeriodProbe = async () => {
+    if (
+      !selectedStrategyPeriodChain ||
+      !strategyPeriodChainDetail?.record ||
+      !selectedStrategyFivePeriodPrefixBaseline ||
+      !strategyFivePeriodProbeStartContract ||
+      !canStartStrategyFivePeriodProbe
+    ) {
+      return;
+    }
+    const request = {
+      schema_version: strategyFivePeriodProbeStartContract.request_schema_version,
+      effect_probe_request: {
+        schema_version: (
+          strategyFivePeriodProbeStartContract.effect_probe_request_schema_version
+        ),
+        period_chain_input: strategyPeriodChainDetail.record.period_chain_input,
+        prefix_baseline: selectedStrategyFivePeriodPrefixBaseline,
+        explicit_five_period_effect_probe_execution: true
+      },
+      release: {
+        schema_version: strategyFivePeriodProbeStartContract.release_request_schema_version,
+        chain_id: selectedStrategyPeriodChain.chain_id,
+        expected_content_digest: selectedStrategyPeriodChain.content_digest,
+        idempotency_key: createStrategyFivePeriodProbeIdempotencyKey(
+          selectedStrategyPeriodChain.chain_id
+        ),
+        explicit_run_control_release: true,
+        released_by: strategyFivePeriodProbeActor.trim(),
+        released_at: new Date().toISOString(),
+        release_reason: strategyFivePeriodProbeReason.trim()
+      },
+      explicit_five_period_effect_probe_start: true
+    };
+    setStrategyFivePeriodProbeStart(null);
+    setStrategyFivePeriodProbeStartError(null);
+    setStrategyFivePeriodProbeStartState("loading");
+    try {
+      const response = await fetch(
+        strategyFivePeriodProbeStartContract.start_endpoint,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(request)
+        }
+      );
+      const payload = (
+        await response.json()
+      ) as StrategyFivePeriodEffectProbeStartResponse;
+      setStrategyFivePeriodProbeStart(payload);
+      if (!response.ok || payload.status !== "ok") {
+        throw new Error(
+          payload.issues?.[0]?.message
+            ?? "Fuenf-Perioden-Probe konnte nicht gestartet werden"
+        );
+      }
+      setStrategyFivePeriodProbeConfirmed(false);
+      setStrategyFivePeriodProbeStartState("ready");
+    } catch (error) {
+      setStrategyFivePeriodProbeStartError(
+        error instanceof Error
+          ? error.message
+          : "Fuenf-Perioden-Probe nicht erreichbar"
+      );
+      setStrategyFivePeriodProbeStartState("error");
+    } finally {
+      setStrategyFivePeriodProbeEvidenceRevision((current) => current + 1);
     }
   };
   const strategyDefinitionById = new Map(
@@ -5603,8 +6031,12 @@ function App() {
                 <div>
                   <span>Ausfuehrung</span>
                   <strong>
-                    {strategyPeriodChainProbeResultAvailable
+                    {strategyFivePeriodProbeResultAvailable
+                      ? "Fuenf Perioden gespeichert"
+                      : strategyPeriodChainProbeResultAvailable
                       ? "Ergebnis gespeichert"
+                      : selectedStrategyPeriodChain?.readiness.five_period_effect_probe_start_available
+                        ? "Fuenf Perioden bereit"
                       : selectedStrategyPeriodChain?.readiness.effect_probe_start_available
                         ? "Zwei Perioden bereit"
                         : "Horizont gesperrt"}
@@ -5615,12 +6047,16 @@ function App() {
               <div className="strategy-boundary-band">
                 <div>
                   <strong>
-                    {strategyPeriodChainProbeResultAvailable
+                    {strategyFivePeriodProbeResultAvailable
+                      ? "Fuenf-Perioden-Wirkung dauerhaft nachgewiesen"
+                      : strategyPeriodChainProbeResultAvailable
                       ? "Zwei-Perioden-Wirkung dauerhaft nachgewiesen"
                       : "Gespeicherte Kette, manuell freigebbar"}
                   </strong>
                   <span>
-                    Exakt Periode 1 und 2 mit den gespeicherten VU-/VN-Uebergangsflags.
+                    {selectedStrategyPeriodChain?.readiness.exact_five_period_horizon
+                      ? "Exakt Periode 1 bis 5 mit stabilem Prefix 1-2 und gespeicherten VU-/VN-Uebergangsflags."
+                      : "Exakt Periode 1 und 2 mit den gespeicherten VU-/VN-Uebergangsflags."}
                   </span>
                 </div>
                 <span className="readonly-marker">
@@ -5671,7 +6107,9 @@ function App() {
                           <strong>Perioden {chain.first_period}-{chain.last_period}</strong>
                           <small>Lauf {chain.run_index} / {formatCandidateStoredAt(chain.stored_at)}</small>
                         </span>
-                        {chain.readiness.effect_probe_start_available ? (
+                        {chain.readiness.five_period_effect_probe_start_available ? (
+                          <CheckCircle2 size={17} aria-label="Fuenf-Perioden-Probe bereit" />
+                        ) : chain.readiness.effect_probe_start_available ? (
                           <CheckCircle2 size={17} aria-label="Zwei-Perioden-Probe bereit" />
                         ) : (
                           <LockKeyhole size={17} aria-label="Horizont gesperrt" />
@@ -5706,8 +6144,8 @@ function App() {
                           <CheckCircle2 size={17} aria-hidden="true" />
                           <span><strong>Speicher</strong><small>intakt</small></span>
                         </div>
-                        <div className={selectedStrategyPeriodChain.readiness.effect_probe_start_available ? "" : "locked"}>
-                          {selectedStrategyPeriodChain.readiness.effect_probe_start_available ? (
+                        <div className={selectedStrategyPeriodChain.readiness.effect_probe_start_available || selectedStrategyPeriodChain.readiness.five_period_effect_probe_start_available ? "" : "locked"}>
+                          {selectedStrategyPeriodChain.readiness.effect_probe_start_available || selectedStrategyPeriodChain.readiness.five_period_effect_probe_start_available ? (
                             <Play size={17} aria-hidden="true" />
                           ) : (
                             <LockKeyhole size={17} aria-hidden="true" />
@@ -5715,11 +6153,13 @@ function App() {
                           <span>
                             <strong>Wirkungsprobe</strong>
                             <small>
-                              {strategyPeriodChainProbeResultAvailable
+                              {strategyFivePeriodProbeResultAvailable || strategyPeriodChainProbeResultAvailable
                                 ? "belegt"
+                                : selectedStrategyPeriodChain.readiness.five_period_effect_probe_start_available
+                                  ? "5 Perioden startbereit"
                                 : selectedStrategyPeriodChain.readiness.effect_probe_start_available
                                   ? "startbereit"
-                                  : "nur fuer 2 Perioden"}
+                                  : "Horizont gesperrt"}
                             </small>
                           </span>
                         </div>
@@ -5771,6 +6211,7 @@ function App() {
                         </div>
                       </dl>
 
+                      {selectedStrategyPeriodChain.readiness.exact_two_period_horizon ? (
                       <section
                         className="strategy-candidate-probe"
                         aria-label="Kontrollierte Zwei-Perioden-Wirkungsprobe"
@@ -5983,6 +6424,237 @@ function App() {
                           </div>
                         </div>
                       </section>
+                      ) : selectedStrategyPeriodChain.readiness.exact_five_period_horizon ? (
+                      <section
+                        className="strategy-candidate-probe"
+                        aria-label="Kontrollierte Fuenf-Perioden-Wirkungsprobe"
+                        data-testid="strategy-five-period-effect-probe"
+                      >
+                        <div className="strategy-candidate-probe-heading">
+                          <div>
+                            <strong>Fuenf-Perioden-Wirkungsprobe</strong>
+                            <span>Fuenf Perioden mit vier Uebergaengen und stabilem Nachweis fuer Periode 1-2</span>
+                          </div>
+                          <button
+                            className="secondary-action"
+                            type="button"
+                            title="Ergebnis und Verlauf aktualisieren"
+                            aria-label="Fuenf-Perioden-Ergebnis und Verlauf aktualisieren"
+                            disabled={strategyFivePeriodProbeEvidenceState === "loading"}
+                            onClick={() => setStrategyFivePeriodProbeEvidenceRevision((current) => current + 1)}
+                          >
+                            <RefreshCw size={16} aria-hidden="true" />
+                            Aktualisieren
+                          </button>
+                        </div>
+
+                        {strategyFivePeriodProbeResultAvailable ? (
+                          <div className="strategy-candidate-probe-complete">
+                            <CheckCircle2 size={18} aria-hidden="true" />
+                            <div>
+                              <strong>Fuenf Perioden unveraenderlich gespeichert</strong>
+                              <span>Der Prefix 1-2 ist exakt bestaetigt; ein weiterer Start ist gesperrt.</span>
+                            </div>
+                          </div>
+                        ) : strategyFivePeriodPrefixBaselines.length === 0 ? (
+                          <div className="strategy-candidate-probe-message error" role="alert">
+                            <CircleAlert size={17} aria-hidden="true" />
+                            <span>Zuerst muss ein erfolgreicher Zwei-Perioden-Nachweis gespeichert sein.</span>
+                          </div>
+                        ) : selectedStrategyPeriodChain.readiness.five_period_effect_probe_start_available ? (
+                          <div className="strategy-candidate-probe-controls">
+                            <label>
+                              <span>Freigabe durch</span>
+                              <input
+                                type="text"
+                                data-testid="strategy-five-period-release-actor"
+                                value={strategyFivePeriodProbeActor}
+                                onChange={(event) => setStrategyFivePeriodProbeActor(event.target.value)}
+                                disabled={strategyFivePeriodProbeStartState === "loading"}
+                              />
+                            </label>
+                            <label>
+                              <span>Grund</span>
+                              <input
+                                type="text"
+                                data-testid="strategy-five-period-release-reason"
+                                value={strategyFivePeriodProbeReason}
+                                onChange={(event) => setStrategyFivePeriodProbeReason(event.target.value)}
+                                disabled={strategyFivePeriodProbeStartState === "loading"}
+                              />
+                            </label>
+                            <label className="strategy-five-period-baseline">
+                              <span>Gepruefter Vergleich fuer Periode 1-2</span>
+                              <select
+                                data-testid="strategy-five-period-prefix-baseline"
+                                value={selectedStrategyFivePeriodPrefixChainId ?? ""}
+                                onChange={(event) => setSelectedStrategyFivePeriodPrefixChainId(event.target.value)}
+                                disabled={strategyFivePeriodProbeStartState === "loading"}
+                              >
+                                {strategyFivePeriodPrefixBaselines.map((baseline) => (
+                                  <option value={baseline.chain_id} key={baseline.chain_id}>
+                                    {shortCandidateDigest(baseline.expected_result_digest)} / Periode 1-2
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            <label className="strategy-candidate-probe-confirmation">
+                              <input
+                                type="checkbox"
+                                data-testid="strategy-five-period-release-confirmation"
+                                checked={strategyFivePeriodProbeConfirmed}
+                                onChange={(event) => setStrategyFivePeriodProbeConfirmed(event.target.checked)}
+                                disabled={strategyFivePeriodProbeStartState === "loading"}
+                              />
+                              <span>Periode 1 bis 5 mit gespeichertem Carryover jetzt ausfuehren</span>
+                            </label>
+                            <button
+                              className="primary-action"
+                              type="button"
+                              data-testid="strategy-five-period-effect-probe-start"
+                              disabled={!canStartStrategyFivePeriodProbe}
+                              onClick={startStrategyFivePeriodProbe}
+                            >
+                              <Play size={17} aria-hidden="true" />
+                              {strategyFivePeriodProbeStartState === "loading"
+                                ? "Fuenf Perioden laufen"
+                                : "Fuenf Perioden starten"}
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="strategy-candidate-probe-message">
+                            <LockKeyhole size={17} aria-hidden="true" />
+                            <span>Diese Startgrenze akzeptiert ausschliesslich den Horizont 1-5.</span>
+                          </div>
+                        )}
+
+                        {strategyFivePeriodProbeStartError ? (
+                          <div
+                            className="strategy-candidate-probe-message error"
+                            role="alert"
+                            data-testid="strategy-five-period-effect-probe-error"
+                          >
+                            <CircleAlert size={17} aria-hidden="true" />
+                            <span>{strategyFivePeriodProbeStartError}</span>
+                          </div>
+                        ) : strategyFivePeriodProbeStart?.replayed ? (
+                          <div className="strategy-candidate-probe-message">
+                            <ShieldCheck size={17} aria-hidden="true" />
+                            <span>Vorhandenes Ergebnis gelesen; kein weiterer Periodenaufruf.</span>
+                          </div>
+                        ) : null}
+
+                        {strategyFivePeriodProbeEvidenceState === "loading" ? (
+                          <div className="strategy-candidate-probe-message">
+                            <Activity size={17} aria-hidden="true" />
+                            <span>Ergebnis und Verlauf werden gelesen.</span>
+                          </div>
+                        ) : strategyFivePeriodProbeEvidenceError ? (
+                          <div className="strategy-candidate-probe-message error" role="alert">
+                            <CircleAlert size={17} aria-hidden="true" />
+                            <span>{strategyFivePeriodProbeEvidenceError}</span>
+                          </div>
+                        ) : strategyFivePeriodEffects.length === 5 && strategyFivePeriodProbeResult?.record ? (
+                          <div
+                            className="strategy-candidate-probe-result strategy-five-period-result"
+                            aria-label="Gespeichertes Fuenf-Perioden-Ergebnis"
+                            data-testid="strategy-five-period-effect-probe-result"
+                          >
+                            <div className="strategy-five-period-prefix" data-testid="strategy-five-period-prefix-proof">
+                              <ShieldCheck size={18} aria-hidden="true" />
+                              <div>
+                                <strong>{strategyFivePeriodPrefixVerified ? "Prefix 1-2 exakt bestaetigt" : "Prefixnachweis offen"}</strong>
+                                <span>Semantisch und kanonisch bytegleich, ohne Toleranz.</span>
+                              </div>
+                            </div>
+                            <div className="strategy-five-period-timeline" aria-label="Wirkung in fuenf Perioden">
+                              {strategyFivePeriodEffects.map((effect) => (
+                                <div key={effect.period}>
+                                  <span>Periode {effect.period}</span>
+                                  <strong>{effect.state_changed ? "veraendert" : "unveraendert"}</strong>
+                                  <small>{effect.applications.vu_total} VU / {effect.applications.vn_total} VN</small>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="strategy-five-period-transitions" aria-label="Vier Periodenuebergaenge">
+                              {strategyFivePeriodTransitions.map((transition) => (
+                                <div key={`${transition.from_period}-${transition.to_period}`}>
+                                  <strong>{transition.from_period} nach {transition.to_period}</strong>
+                                  <span>
+                                    VU {transition.vu_carryover_executed ? "uebernommen" : "nicht angefordert"} / VN {transition.vn_carryover_executed ? "uebernommen" : "nicht angefordert"}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                            <dl className="strategy-candidate-probe-evidence">
+                              <div>
+                                <dt>Ergebnis gespeichert</dt>
+                                <dd>{formatCandidateStoredAt(strategyFivePeriodProbeResult.record.persisted_at)}</dd>
+                              </div>
+                              <div>
+                                <dt>Ergebnis-Digest</dt>
+                                <dd title={strategyFivePeriodProbeResult.record.result_digest}>
+                                  {shortCandidateDigest(strategyFivePeriodProbeResult.record.result_digest)}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>Ausgabedateien</dt>
+                                <dd>keine</dd>
+                              </div>
+                            </dl>
+                          </div>
+                        ) : (
+                          <div className="strategy-candidate-probe-message">
+                            <Eye size={17} aria-hidden="true" />
+                            <span>Noch kein gespeichertes Fuenf-Perioden-Ergebnis.</span>
+                          </div>
+                        )}
+
+                        <div
+                          className="strategy-candidate-probe-history"
+                          aria-label="Fuenf-Perioden-Versuchsverlauf"
+                          data-testid="strategy-five-period-effect-probe-history"
+                        >
+                          <div className="strategy-candidate-probe-history-heading">
+                            <strong>Versuchsverlauf</strong>
+                            <span>{strategyFivePeriodProbeHistory?.attempt_count ?? 0} Eintraege</span>
+                          </div>
+                          {(strategyFivePeriodProbeHistory?.attempts ?? []).length === 0 ? (
+                            <div className="strategy-candidate-probe-history-empty">Noch kein Startversuch.</div>
+                          ) : (
+                            (strategyFivePeriodProbeHistory?.attempts ?? []).map((attempt) => (
+                              <div className="strategy-candidate-probe-history-row" key={attempt.attempt_id}>
+                                <div>
+                                  <strong>{attempt.status === "result_persisted" ? "Ergebnis gespeichert" : attempt.status === "failed" ? "Fehlgeschlagen" : "Gestartet"}</strong>
+                                  <span>{attempt.released_by} / {attempt.release_reason}</span>
+                                </div>
+                                <div>
+                                  <strong>{formatCandidateStoredAt(attempt.started_at)}</strong>
+                                  <span>{attempt.completed_at ? `Abschluss ${formatCandidateStoredAt(attempt.completed_at)}` : "noch offen"}</span>
+                                </div>
+                                <div>
+                                  <strong>{attempt.runner_invocation_count} Periodenaufrufe</strong>
+                                  <span>{attempt.failure_message ?? `${attempt.carryover_invocation_count} Carryover-Aufrufe`}</span>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+
+                        <div className="strategy-candidate-lock-note" data-testid="strategy-five-period-effect-probe-boundary">
+                          <LockKeyhole size={18} aria-hidden="true" />
+                          <div>
+                            <strong>Laengere Horizonte bleiben gesperrt</strong>
+                            <span>Keine Ausgabedateien und keine historische Vollgleichheitsbehauptung. Naechste Abnahmegrenze: {strategyFivePeriodProbeStartContract?.next_gate ?? selectedStrategyPeriodChain.readiness.next_gate}.</span>
+                          </div>
+                        </div>
+                      </section>
+                      ) : (
+                        <div className="strategy-candidate-probe-message">
+                          <LockKeyhole size={17} aria-hidden="true" />
+                          <span>Fuer diesen Horizont ist noch kein kontrollierter Workbench-Start freigegeben.</span>
+                        </div>
+                      )}
                     </article>
                   ) : null}
                 </div>

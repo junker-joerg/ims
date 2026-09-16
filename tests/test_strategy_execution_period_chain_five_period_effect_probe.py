@@ -70,7 +70,7 @@ def test_contract_opens_only_ephemeral_five_period_probe() -> None:
     assert payload["result_persistence_enabled"] is False
     assert payload["ui_start_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
 
 
 @pytest.mark.parametrize(

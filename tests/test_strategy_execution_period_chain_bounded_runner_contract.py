@@ -61,7 +61,7 @@ def test_bounded_runner_contract_limits_first_extension_to_five_periods() -> Non
     assert payload["prefix_comparison_execution_enabled"] is True
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
 
 
 def test_bounded_runner_contract_orders_full_preparation_before_execution() -> None:

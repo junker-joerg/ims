@@ -1,6 +1,6 @@
 # IMS-Benutzerhandbuch
 
-Stand: 2026-09-14
+Stand: 2026-09-16
 Handbuchstand: HB3d
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
@@ -18,6 +18,7 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Einperioden-Wirkungsprobe | `verified_browser_pr132` | Strategie-Kandidat, ausdrueckliche Freigabe, genau eine isolierte Periode, gespeichertes Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Zwei-Perioden-Wirkungsprobe | `verified_browser_pr141` | Gespeicherte Kette, ausdrueckliche Freigabe, zwei isolierte Perioden, VU-/VN-Carryover, unveraenderliches Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
+| Fuenf-Perioden-Wirkungsprobe | `verified_browser_pr146` | Vorhandener Zwei-Perioden-Prefix, fuenf isolierte Perioden, vier VU-/VN-Uebergaenge, unveraenderliches Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
 | Historischer Vergleich | `accepted_diagnostic_benchmark` | PR102 hat 15/15 Tabellen und 6.300/6.300 Ergebniszeilen als diagnostischen Legacy-Benchmark eingeordnet; historische RNG- und Feldvollgleichheit ist kein Produktziel |
@@ -70,6 +71,7 @@ Navigation springt zu fuenf stabilen Bereichen:
 | Einperioden-Wirkungsprobe | einmalige kontrollierte Anwendung dieses Kandidaten mit gespeichertem Vorher/Nachher-Nachweis; noch kein Mehrperiodenlauf |
 | Periodenkette | unveraenderlich gespeicherte Folge periodenspezifischer Kandidaten mit ausdruecklichen VU-/VN-Carryover-Flags |
 | Zwei-Perioden-Wirkungsprobe | kontrollierte Anwendung der Kandidaten fuer Periode 1 und 2 mit genau einem gespeicherten Uebergang; noch kein freier Mehrperioden- oder 100-Periodenlauf |
+| Fuenf-Perioden-Wirkungsprobe | kontrollierte Anwendung von Periode 1 bis 5 mit vier gespeicherten Uebergaengen und exaktem Nachweis, dass Periode 1-2 stabil geblieben ist |
 | Adapter-Resultat | persistiertes Ergebnis des kontrollierten Adapters; nicht automatisch ein Simulationsresultat |
 | historische Referenz | archivierte Ergebnisdatei zum diagnostischen Vergleich, nicht Eingabe fuer die moderne Berechnung |
 | `blocked` | die fachliche Freigabe bleibt geschlossen; das bedeutet nicht automatisch, dass die Workbench technisch defekt ist |
@@ -86,6 +88,10 @@ Navigation springt zu fuenf stabilen Bereichen:
 - `Zwei Perioden starten` fuehrt genau eine gespeicherte Kette fuer Periode 1
   und 2 samt explizitem VU-/VN-Carryover aus. Freie Horizonte,
   100-Periodenlauf und Ergebnisdateien bleiben gesperrt.
+- `Fuenf Perioden starten` fuehrt genau eine gespeicherte Kette fuer Periode
+  1 bis 5 aus und prueft den Prefix 1-2 gegen ein unabhaengig gespeichertes
+  Zwei-Perioden-Ergebnis. Laengere Horizonte und Ergebnisdateien bleiben
+  gesperrt.
 - Historische 300- und 500-Zeilen-Dateien werden als drei beziehungsweise
   fuenf getrennte Laeufe mit hoechstens 100 Perioden gelesen.
 - Unterschiedliche damalige Parameter, Zinssaetze, Compiler und RNG-Folgen

@@ -92,11 +92,11 @@ def test_contract_and_read_routes_enforce_methods(tmp_path) -> None:
     assert contract.status_code == 200
     payload = contract.json()
     assert payload["server_start_enabled"] is True
-    assert payload["ui_start_enabled"] is False
+    assert payload["ui_start_enabled"] is True
     assert payload["immutable_period_chain_snapshot_persistence_enabled"] is True
     assert payload["immutable_result_persistence_enabled"] is True
     assert payload["exact_five_period_horizon_required"] is True
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
     assert client.post(CONTRACT_ENDPOINT, json={}).status_code == 405
     assert client.get(START_ENDPOINT).status_code == 405
     for endpoint in (RESULT_PREFIX + "unknown", HISTORY_PREFIX + "unknown"):
@@ -226,7 +226,7 @@ def test_starlette_fallback_exposes_same_persistent_paths(
     history = client.get(HISTORY_PREFIX + chain_id)
 
     assert contract.status_code == 200
-    assert contract.json()["next_gate"] == "PR146"
+    assert contract.json()["next_gate"] == "PR147"
     assert started.status_code == 201
     assert started.json()["runner_invocation_count"] == 5
     assert result.status_code == 200

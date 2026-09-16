@@ -86,6 +86,7 @@ def test_persists_and_reads_verified_immutable_period_chain(tmp_path) -> None:
     assert read.to_dict()["chain_rebuilt"] is False
     assert read.to_dict()["writes_performed"] is False
     assert read.to_dict()["post_storage_digest_verified"] is True
+    assert read.to_dict()["record"]["period_chain_input"] == request["period_chain_input"]
     with sqlite3.connect(db_path) as connection:
         row = connection.execute(
             "SELECT chain_id, content_digest FROM strategy_execution_period_chains"
@@ -311,6 +312,27 @@ def test_read_detects_period_chain_payload_corruption(tmp_path) -> None:
     assert exc_info.value.code == "period_chain_digest_verification_failed"
 
 
+def test_read_rejects_malformed_stored_horizon_as_contract_error(tmp_path) -> None:
+    db_path = tmp_path / "metadata.sqlite"
+    request = _store_request(db_path, tmp_path)
+    persisted = persist_strategy_execution_period_chain(request, db_path=db_path)
+    damaged = persisted.record.period_chain
+    damaged["horizon"]["run_index"] = "invalid"
+    with sqlite3.connect(db_path) as connection:
+        connection.execute(
+            "UPDATE strategy_execution_period_chains SET chain_payload_json = ?",
+            (json.dumps(damaged, sort_keys=True),),
+        )
+
+    with pytest.raises(StrategyExecutionPeriodChainStoreError) as exc_info:
+        get_strategy_execution_period_chain(
+            str(request["expected_chain_id"]),
+            db_path=db_path,
+        )
+
+    assert exc_info.value.code == "period_chain_contract_validation_failed"
+
+
 def test_read_rejects_payload_outside_execution_boundaries_before_digest(
     tmp_path,
 ) -> None:
@@ -375,7 +397,7 @@ def test_store_contract_opens_only_explicit_immutable_persistence() -> None:
     assert payload["runner_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
 
 
 def test_store_api_persists_replays_reads_and_enforces_methods(
@@ -445,7 +467,7 @@ def test_store_api_rejects_unconfigured_store_invalid_json_and_missing_chain(
 
     assert invalid_json.status_code == 400
     assert invalid_json.json()["issues"][0]["code"] == "invalid_json"
-    assert invalid_json.json()["next_gate"] == "PR146"
+    assert invalid_json.json()["next_gate"] == "PR147"
     assert created.status_code == 201
     assert missing.status_code == 404
     assert missing.json()["issues"][0]["code"] == "period_chain_not_found"

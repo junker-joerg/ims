@@ -96,7 +96,7 @@ def test_start_contract_opens_only_persisted_five_period_path() -> None:
         "pr144_effect_probe_request_wrapped_unchanged"
     )
     assert payload["server_start_enabled"] is True
-    assert payload["ui_start_enabled"] is False
+    assert payload["ui_start_enabled"] is True
     assert payload["atomic_idempotency_claim_enabled"] is True
     assert payload["idempotency_persistence_enabled"] is True
     assert payload["immutable_period_chain_snapshot_persistence_enabled"] is True
@@ -107,7 +107,7 @@ def test_start_contract_opens_only_persisted_five_period_path() -> None:
     assert payload["queue_worker_enabled"] is False
     assert payload["output_files_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
 
 
 def test_parser_rejects_unreleased_or_ambiguous_start(tmp_path) -> None:

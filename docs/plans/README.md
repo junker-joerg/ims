@@ -353,3 +353,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR145-Plan und Umsetzung fuer den kontrollierten Serverstart mit dauerhaftem
   Idempotenzanspruch, unveraenderlicher Kettenkopie, Ergebnisdigest und
   read-only Versuchshistorie; der Workbench-Start bleibt bis PR146 gesperrt.
+- `ims_2x_strategy_execution_period_chain_five_period_effect_probe_browser_acceptance_plan.md`:
+  PR146-Plan und Abnahme fuer den vollstaendigen Fuenf-Perioden-Bedienpfad
+  samt Prefixnachweis 1-2, atomaren Fehlerpfaden, breitem und schmalem
+  Viewport sowie datierten Handbuch-Screenshots.

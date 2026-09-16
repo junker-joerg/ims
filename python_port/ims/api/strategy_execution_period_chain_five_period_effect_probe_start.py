@@ -286,10 +286,10 @@ class StrategyExecutionFivePeriodEffectProbeStartResult:
             "simulation_performed": False,
             "automatic_retry_enabled": False,
             "queue_worker_enabled": False,
-            "ui_start_enabled": False,
+            "ui_start_enabled": True,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR146",
+            "next_gate": "PR147",
         }
 
 
@@ -660,7 +660,7 @@ def strategy_execution_five_period_effect_probe_start_contract_payload(
 ) -> dict[str, object]:
     boundary_flags = {
         "server_start_enabled": True,
-        "ui_start_enabled": False,
+        "ui_start_enabled": True,
         "explicit_run_control_release_required": True,
         "explicit_five_period_effect_probe_start_required": True,
         "exact_five_period_horizon_required": True,
@@ -734,7 +734,7 @@ def strategy_execution_five_period_effect_probe_start_contract_payload(
             "canonical_five_period_chain_snapshot",
             "complete_five_period_effect_result",
         ],
-        "next_gate": "PR146",
+        "next_gate": "PR147",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }
@@ -781,9 +781,9 @@ def strategy_execution_five_period_effect_probe_start_error_payload(
         "simulation_performed": False,
         "automatic_retry_enabled": False,
         "queue_worker_enabled": False,
-        "ui_start_enabled": False,
+        "ui_start_enabled": True,
         "historical_full_equality_claim": False,
-        "next_gate": "PR146",
+        "next_gate": "PR147",
     }
 
 

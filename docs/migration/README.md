@@ -294,4 +294,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
   PR145-kontrollierter Serverstart mit atomarem Idempotenzanspruch,
   unveraenderlicher Kopie der kanonischen Fuenf-Perioden-Kette,
   Ergebnisgesamtdigest und read-only Verlauf; UI-Start bleibt gesperrt
+- `ims_2x_strategy_execution_period_chain_five_period_effect_probe_browser_acceptance.md`:
+  PR146-Browserabnahme des vollstaendigen Fuenf-Perioden-Pfads mit exaktem
+  Prefix 1-2, vier Carryover-Uebergaengen, Fehlerpfaden und datierten
+  Handbuch-Screenshots
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

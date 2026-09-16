@@ -85,7 +85,7 @@ def test_period_chain_effect_probe_contract_enforces_methods(tmp_path) -> None:
     assert payload["candidate_re_resolution_required"] is True
     assert payload["result_persistence_enabled"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
     assert client.post(endpoint, json={}).status_code == 405
     assert client.put(endpoint, json={}).status_code == 405
     assert client.delete(endpoint).status_code == 405
@@ -224,7 +224,7 @@ def test_starlette_fallback_exposes_same_two_period_probe(
     )
 
     assert contract.status_code == 200
-    assert contract.json()["next_gate"] == "PR146"
+    assert contract.json()["next_gate"] == "PR147"
     assert executed.status_code == 200
     assert executed.json()["period_count"] == 2
     assert executed.json()["writes_performed"] is False

@@ -129,6 +129,11 @@ class StrategyExecutionPeriodChainStoreRecord:
             "max_periods": self.max_periods,
             "stored_at": self.stored_at,
             "period_chain": deepcopy(self.period_chain),
+            "period_chain_input": (
+                strategy_execution_period_chain_input_from_payload(
+                    self.period_chain
+                )
+            ),
         }
 
 
@@ -170,7 +175,7 @@ class StrategyExecutionPeriodChainStoreResult:
             "simulation_performed": False,
             "historical_rng_equality_claim": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR146",
+            "next_gate": "PR147",
         }
 
 
@@ -200,7 +205,7 @@ class StrategyExecutionPeriodChainOverviewResult:
             "execution_performed": False,
             "simulation_performed": False,
             "historical_full_equality_claim": False,
-            "next_gate": "PR146",
+            "next_gate": "PR147",
         }
 
 
@@ -554,7 +559,7 @@ def strategy_execution_period_chain_overview_unavailable_payload(
         "execution_performed": False,
         "simulation_performed": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR146",
+        "next_gate": "PR147",
     }
 
 
@@ -612,7 +617,7 @@ def strategy_execution_period_chain_store_contract_payload() -> dict[str, object
         ],
         "partial_storage_allowed": False,
         "boundary_flags": boundary_flags,
-        "next_gate": "PR146",
+        "next_gate": "PR147",
         **boundary_flags,
     }
 
@@ -631,6 +636,14 @@ def _period_chain_overview_payload(
         and record.max_periods == 2
         and len(candidate_items) == 2
         and len(transition_items) == 1
+    )
+    exact_five_period_horizon = (
+        record.first_period == 1
+        and record.last_period == 5
+        and record.period_count == 5
+        and record.max_periods == 5
+        and len(candidate_items) == 5
+        and len(transition_items) == 4
     )
     return {
         "chain_id": record.chain_id,
@@ -666,14 +679,53 @@ def _period_chain_overview_payload(
         "readiness": {
             "period_chain_complete": True,
             "exact_two_period_horizon": exact_two_period_horizon,
+            "exact_five_period_horizon": exact_five_period_horizon,
             "storage_integrity_verified": True,
             "run_control_ready": True,
             "effect_probe_available": exact_two_period_horizon,
             "effect_probe_start_available": exact_two_period_horizon,
             "effect_probe_result_persistence_available": exact_two_period_horizon,
+            "five_period_effect_probe_available": exact_five_period_horizon,
+            "five_period_effect_probe_start_available": (
+                exact_five_period_horizon
+            ),
+            "five_period_effect_probe_result_persistence_available": (
+                exact_five_period_horizon
+            ),
             "general_multi_period_execution_ready": False,
-            "next_gate": "PR146",
+            "next_gate": "PR147",
         },
+    }
+
+
+def strategy_execution_period_chain_input_from_payload(
+    period_chain: Mapping[str, object],
+) -> dict[str, object]:
+    """Projiziert eine verifizierte kanonische Kette verlustfrei auf ihren Eingang."""
+
+    horizon = period_chain.get("horizon")
+    candidates = period_chain.get("period_candidates")
+    transitions = period_chain.get("transitions")
+    if not isinstance(horizon, dict):
+        raise StrategyExecutionPeriodChainStoreError(
+            "period_chain_horizon_object_required",
+            "Kettenhorizont muss ein Objekt sein",
+        )
+    if not isinstance(candidates, list) or not isinstance(transitions, list):
+        raise StrategyExecutionPeriodChainStoreError(
+            "period_chain_sequence_required",
+            "Kandidaten und Uebergaenge der Kette muessen Listen sein",
+        )
+    return {
+        "schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_INPUT_VERSION,
+        "period_chain_schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION,
+        "candidate_schema_version": STRATEGY_EXECUTION_CANDIDATE_VERSION,
+        "base_model": deepcopy(period_chain.get("base_model")),
+        "scope": "contiguous_local_period_chain_input",
+        "run_index": deepcopy(horizon.get("run_index")),
+        "max_periods": deepcopy(horizon.get("max_periods")),
+        "period_candidates": deepcopy(candidates),
+        "transitions": deepcopy(transitions),
     }
 
 
@@ -704,7 +756,7 @@ def strategy_execution_period_chain_store_error_payload(
         "simulation_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR146",
+        "next_gate": "PR147",
     }
 
 
@@ -765,17 +817,7 @@ def _verified_period_chain_record_fields(payload: object) -> dict[str, object]:
             "period_chain_horizon_fields_mismatch",
             "Kettenhorizont ist unvollstaendig oder enthaelt unbekannte Felder",
         )
-    reconstructed_input = {
-        "schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_INPUT_VERSION,
-        "period_chain_schema_version": STRATEGY_EXECUTION_PERIOD_CHAIN_VERSION,
-        "candidate_schema_version": STRATEGY_EXECUTION_CANDIDATE_VERSION,
-        "base_model": "Vdefmd6",
-        "scope": "contiguous_local_period_chain_input",
-        "run_index": horizon.get("run_index"),
-        "max_periods": horizon.get("max_periods"),
-        "period_candidates": payload.get("period_candidates"),
-        "transitions": payload.get("transitions"),
-    }
+    reconstructed_input = strategy_execution_period_chain_input_from_payload(payload)
     validation = validate_strategy_execution_period_chain_input(reconstructed_input)
     if not validation.valid:
         issue_codes = ", ".join(issue.code for issue in validation.issues)

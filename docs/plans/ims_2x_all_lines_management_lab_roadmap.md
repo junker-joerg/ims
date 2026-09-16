@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
-Stand: 2026-09-14
-Status: aktive Produkt-Restplanung; PR145 umgesetzt, PR146 naechster Schritt
+Stand: 2026-09-16
+Status: aktive Produkt-Restplanung; PR146 umgesetzt, PR147 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -80,7 +80,7 @@ einen freien oder unbegrenzten Runner schrittweise zu einem auswertbaren
 | PR143 | Kanonischer Bau und Validierung einer Fuenf-Perioden-Kette | lueckenlose Kontexte, Carryover und Gesamtdigest werden atomar geprueft |
 | PR144 | Isolierte Fuenf-Perioden-Wirkungsprobe | umgesetzt: deterministische Wiederholung, unveraenderte Kandidaten und bytegleicher Prefix 1-2 |
 | PR145 | Kontrollierter Start, Idempotenz und Ergebnisablage fuer fuenf Perioden | umgesetzt: erneuter Start liefert ohne Runner dasselbe gespeicherte Ergebnis |
-| PR146 | Workbench- und Browserabnahme fuer fuenf Perioden | breiter und schmaler Viewport, Fehlerpfade und Handbuchbild |
+| PR146 | Workbench- und Browserabnahme fuer fuenf Perioden | umgesetzt: breiter und schmaler Viewport, Fehlerpfade und Handbuchbilder sind belegt |
 | PR147 | Horizontvertrag fuer 10, 25, 50 und 100 Perioden | Laufzeit-, Abbruch-, Ressourcen- und Fehlergrenzen vor Ausfuehrung festgelegt |
 | PR148 | Kontrollierte Ausfuehrung fuer 10, 25 und 50 Perioden | stabile Prefixe, Carryover-Invarianten und deterministischer Replay |
 | PR149 | Kontrollierte Ausfuehrung fuer 100 Perioden | vollstaendiger reproduzierbarer Lauf, Abbruch und atomarer Fehlerpfad |
@@ -175,14 +175,14 @@ einen konkreten Anwendungsfall und dessen eigene Validierung.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR145 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR146 |
 | --- | ---: | ---: | ---: |
-| technischer 100-Perioden-Lauf | PR149 | 8 | 4 |
-| bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 6 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 17 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 25 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 33 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 37 |
+| technischer 100-Perioden-Lauf | PR149 | 8 | 3 |
+| bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 5 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 16 |
+| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 24 |
+| durchgaengige DORA-Wirkungskette | PR178 | 37 | 32 |
+| kontrollierte Managementseminar-Reife | PR182 | 41 | 36 |
 
 Die 41 PRs sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
@@ -236,13 +236,15 @@ Meilensteinen PR151, PR162, PR170 und PR178 aktualisiert.
 PR142 hat den engen read-only Vertrag fuer einen auf fuenf Perioden
 begrenzten Kettenrunner und die exakte fachliche Prefixprojektion 1-2
 festgelegt. PR143 hat die kanonische Fuenf-Perioden-Kette gebaut und atomar
-validiert. PR144 fuehrt sie fluechtig auf isolierten Kandidatenkopien aus
+validiert. PR144 hat sie fluechtig auf isolierten Kandidatenkopien ausgefuehrt
 und prueft den Prefix 1-2 semantisch und als kanonisches JSON bytegenau.
 PR145 hat kontrollierten Serverstart, dauerhafte Idempotenz und eine durch
 Gesamtdigest geschuetzte Ablage von Request, kanonischer Kette und Ergebnis
-angeschlossen. PR146 bindet diesen Pfad als naechsten Produkt-PR in die
-Workbench ein und nimmt breite sowie schmale Browseransicht, Fehlerpfade und
-Handbuchbild ab. Der Ausbau ueber fuenf Perioden bleibt bis PR147 gesperrt.
+angeschlossen. PR146 hat den Pfad in der Workbench bedienbar gemacht und die
+breite sowie schmale Browseransicht, Fehlerpfade und Handbuchbilder
+abgenommen. PR147 legt als naechstes die Laufzeit-, Ressourcen-, Abbruch- und
+Fehlergrenzen fuer 10, 25, 50 und 100 Perioden fest, noch ohne einen
+laengeren Runner freizugeben.
 
 Dieser Planungsschnitt selbst aendert keine Fachlogik, startet keine
 Simulation und behauptet keine historische Vollgleichheit.

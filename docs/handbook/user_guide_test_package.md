@@ -1,6 +1,6 @@
 # IMS 1995-2026 - Modell verstehen, Experimente planen, Ergebnisse lesen
 
-Stand: 2026-09-01
+Stand: 2026-09-16
 Umfang: 10 Seiten
 Zielgruppe: Forscher, Versicherungsmanager und fachlich interessierte Anwender ohne Kenntnis der Dissertation oder des Quellcodes
 Fachliche Quelle: `DISS.pdf`, insbesondere S. 2-3, 31-43, 81-95 und 103-109
@@ -148,7 +148,8 @@ Die kurze und ehrliche Antwort fuer das aktuelle Windows-Testpaket lautet:
 **Die Workbench zeigt noch keinen fachlichen Modelloutput als Zeitreihe oder
 Diagramm.** Sie zeigt Szenarien, Run-Metadaten, technische Ausfuehrungsgrenzen,
 historische Validierung und fuer vorbereitete Strategie-Kandidaten den
-gespeicherten Wirkungsnachweis einer oder zweier kontrollierter Perioden.
+gespeicherten Wirkungsnachweis einer, zweier oder fuenf kontrollierter
+Perioden.
 
 ![Run-Uebersicht ohne fachlichen Ergebnisbrowser](images/windows_workbench_runs_hb3a_2026-09-01.png)
 
@@ -172,9 +173,9 @@ deshalb auch kein neuer Ergebnisordner erzeugt. Ein sichtbarer
 Ergebnis-Arbeitsbereich mit Diagrammen, Tabellen und Export ist eine noch
 offene Produktfunktion von IMS 2.x.
 
-![Gespeicherter Zwei-Perioden-Nachweis der heutigen Workbench](images/windows_strategy_period_chain_effect_probe_pr141_wide_2026-09-14.png)
+![Gespeicherter Fuenf-Perioden-Nachweis der heutigen Workbench](images/windows_strategy_five_period_effect_probe_pr146_wide_2026-09-16.png)
 
-*Abbildung: Die Workbench kann zwei vorbereitete VU-/VN-Strategiekandidaten fuer Periode 1 und 2 anwenden, den gespeicherten Carryover ausfuehren und den vollstaendigen Nachweis unveraenderlich ablegen. Das ist noch keine 100-Perioden-Simulation und keine historische Vollgleichheit.*
+*Abbildung: Die Workbench kann fuenf vorbereitete VU-/VN-Strategiekandidaten nacheinander anwenden, vier gespeicherte Carryover-Uebergaenge ausfuehren und den Prefix 1-2 gegen einen unabhaengigen Nachweis pruefen. Das ist noch keine 100-Perioden-Simulation und keine historische Vollgleichheit.*
 
 <!-- PAGE BREAK -->
 

@@ -49,7 +49,7 @@ def test_strategy_execution_period_chain_contract_endpoint_is_read_only(
     assert payload["multi_period_execution_enabled"] is False
     assert payload["output_files_enabled"] is False
     assert payload["legacy_comparison_enabled"] is False
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
     assert client.post(endpoint, json={}).status_code == 405
     assert client.put(endpoint, json={}).status_code == 405
     assert client.delete(endpoint).status_code == 405

@@ -322,7 +322,7 @@ def strategy_execution_period_chain_bounded_runner_contract_payload() -> dict[
             "partial_result_persisted": False,
             "retry_implicit": False,
         },
-        "next_gate": "PR146",
+        "next_gate": "PR147",
         "boundary_flags": boundary_flags,
         **boundary_flags,
     }

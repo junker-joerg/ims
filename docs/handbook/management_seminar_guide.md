@@ -1,6 +1,6 @@
 # IMS im Managementseminar
 
-Stand: 2026-09-14
+Stand: 2026-09-16
 Handbuchschnitt: HB3d
 Zielgruppe: Fuehrungskraefte, Lehrende und Seminargruppen ohne Kenntnis der
 Dissertation oder des Quellcodes
@@ -124,29 +124,31 @@ Die sichtbare Navigation soll die Diskussion fuehren. Technische
 Vertragsnamen, interne Datenfelder und Entwicklungsbefehle gehoeren nicht in
 den Seminarablauf.
 
-![Strategien und kontrollierte Periodenkette](images/windows_strategy_period_chain_effect_probe_pr141_wide_2026-09-14.png)
+![Strategien und kontrollierte Periodenkette](images/windows_strategy_five_period_effect_probe_pr146_wide_2026-09-16.png)
 
-*Abbildung 3: Die Workbench zeigt den vorbereiteten Zwei-Perioden-Fall,
-Freigabe, Ergebnis und Verlauf in einer gemeinsamen Arbeitsansicht.*
+*Abbildung 3: Die Workbench zeigt den vorbereiteten Fuenf-Perioden-Fall,
+den stabilen Prefix 1-2, vier Uebergaenge, Ergebnis und Verlauf in einer
+gemeinsamen Arbeitsansicht.*
 
-## Die heutige Zwei-Perioden-Probe bedienen
+## Die heutige Fuenf-Perioden-Probe bedienen
 
 1. In **Strategien** den Abschnitt **Periodenkette** oeffnen.
-2. Pruefen, dass Periode 1 und 2 sowie der Uebergang dazwischen vollstaendig
-   angezeigt werden.
+2. Pruefen, dass Periode 1 bis 5 sowie vier Uebergaenge vollstaendig
+   angezeigt werden und ein Vergleich fuer Periode 1-2 vorhanden ist.
 3. Namen und Begruendung der Freigabe eintragen.
-4. Die ausdrueckliche Bestaetigung setzen und **Zwei Perioden starten**
+4. Die ausdrueckliche Bestaetigung setzen und **Fuenf Perioden starten**
    waehlen.
-5. Vorher/Nachher-Werte beider Perioden und den Uebergang 1 nach 2 lesen.
+5. Die Wirkung aller Perioden, vier Uebergaenge und den exakten Prefix 1-2
+   lesen.
 6. Das Ergebnis neu laden und pruefen, dass derselbe Versuch erhalten bleibt.
 
 Die angezeigte Pruefsumme ist der Fingerabdruck des vorbereiteten Falls. Sie
 hilft festzustellen, ob beim erneuten Laden wirklich derselbe Fall betrachtet
 wird. Sie ist kein fachliches Guetesiegel.
 
-![Zwei-Perioden-Pfad auf schmalem Bildschirm](images/windows_strategy_period_chain_effect_probe_pr141_narrow_2026-09-14.png)
+![Fuenf-Perioden-Pfad auf schmalem Bildschirm](images/windows_strategy_five_period_effect_probe_pr146_narrow_2026-09-16.png)
 
-*Abbildung 4: Derselbe kontrollierte Pfad bleibt auf einem schmalen
+*Abbildung 4: Derselbe kontrollierte Fuenf-Perioden-Pfad bleibt auf einem schmalen
 Bildschirm lesbar. Fuer ein Seminar ist ein breiter Bildschirm dennoch
 uebersichtlicher.*
 

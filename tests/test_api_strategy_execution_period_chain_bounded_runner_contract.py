@@ -35,7 +35,7 @@ def test_bounded_runner_contract_endpoint_is_read_only(tmp_path) -> None:
     assert payload["five_period_ui_start_enabled"] is False
     assert payload["execution_performed"] is False
     assert payload["simulation_performed"] is False
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
     assert client.post(endpoint, json={}).status_code == 405
     assert client.put(endpoint, json={}).status_code == 405
     assert client.delete(endpoint).status_code == 405
@@ -57,5 +57,5 @@ def test_starlette_fallback_exposes_same_bounded_runner_contract(
     assert payload["horizon_policy"]["maximum_period_count"] == 5
     assert payload["current_release_state"]["released_period_counts"] == [2, 5]
     assert payload["bounded_runner_enabled"] is True
-    assert payload["next_gate"] == "PR146"
+    assert payload["next_gate"] == "PR147"
     assert client.post(endpoint, json={}).status_code == 405

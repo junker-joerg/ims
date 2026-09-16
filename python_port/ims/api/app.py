@@ -612,7 +612,7 @@ def _strategy_execution_period_chain_validation_invalid_json_payload() -> dict[
         "automatic_historical_rule_selection_performed": False,
         "historical_rng_equality_claim": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR146",
+        "next_gate": "PR147",
     }
 
 
@@ -737,7 +737,7 @@ def _strategy_execution_period_chain_overview_error_payload(
         "execution_performed": False,
         "simulation_performed": False,
         "historical_full_equality_claim": False,
-        "next_gate": "PR146",
+        "next_gate": "PR147",
     }
 
 
