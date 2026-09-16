@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-16
-Status: aktive Produkt-Restplanung; PR155 umgesetzt, PR156 naechster Schritt
+Status: aktive Produkt-Restplanung; PR156 umgesetzt, PR157 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -106,7 +106,7 @@ Schadenlogik ausgegeben.
 | PR153 | Kompatibilitaetsadapter fuer die zwei vorhandenen Schadenvektoren | umgesetzt: C 1/2 zu Python 0/1 unter neutralen Legacy-IDs; moderne Zuordnung bleibt offen; Altpfad unveraendert |
 | PR154 | Strategie- und Parameterzuordnung je Sparte | umgesetzt: getrennte Kfz-/Sach-Haftpflicht-Strategien, skalare Parameter und Periodenfenster je VU/VN validierbar; nur Plan, keine Ausfuehrung |
 | PR155 | Vertrag fuer Bewegungsrechnung und einfache Modellbilanz | umgesetzt: versionierte Felder, Gleichungen, Bilanzidentitaeten und Carryover read-only; keine Rechnung |
-| PR156 | Modellbilanz fuer Kfz und Sach-Haftpflicht | Bilanzidentitaeten und Periodenuebergaenge sind getestet |
+| PR156 | Modellbilanz fuer Kfz und Sach-Haftpflicht | umgesetzt: exakte Szenario-Dezimalwerte, atomare Bilanzidentitaeten und Perioden-Carryover bis 100; kein Alt-Runner-Anschluss |
 | PR157 | Konsolidierte Versichererbilanz in Workbench und XLSX | Einzelsparten und Gesamtunternehmen sind abstimmbar |
 | PR158 | Zustands-, Fluss- und Strategievertrag fuer Leben | garantienahe Verpflichtungen, Laufzeit und Ergebnisquellen sind begrenzt |
 | PR159 | Minimale deterministische Lebensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
@@ -178,14 +178,14 @@ einen konkreten Anwendungsfall und dessen eigene Validierung.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR155 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR156 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 7 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 15 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 23 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 27 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 6 |
+| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 14 |
+| durchgaengige DORA-Wirkungskette | PR178 | 37 | 22 |
+| kontrollierte Managementseminar-Reife | PR182 | 41 | 26 |
 
 Die 41 PRs sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
@@ -268,8 +268,10 @@ unterschiedliche Katalogstrategien, skalare Parameter und Zeitfenster je
 VU/VN rein validierend beschrieben. Die alten Runner nutzen diese Plaene
 noch nicht. PR155 hat die Bewegungsrechnung und einfache Modellbilanz als
 read-only Vertrag mit Bilanzidentitaeten, Perioden-Carryover und ausdruecklich
-offener Quellbindung festgelegt. PR156 folgt mit einer deterministischen
-Nichtleben-Modellbilanz; erst dann werden Werte gerechnet.
+offener Quellbindung festgelegt. PR156 rechnet nun Kfz oder Sach-Haftpflicht
+aus expliziten Szenariowerten deterministisch ueber bis zu 100 Perioden,
+ohne die alten Positionen zuzuordnen oder einen Runner zu starten. PR157
+folgt mit einer abstimmbaren Versichereransicht in Workbench und XLSX.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
 Vollgleichheit.

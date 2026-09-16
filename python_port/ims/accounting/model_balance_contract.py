@@ -5,7 +5,8 @@ from dataclasses import asdict, dataclass
 from ims.model.sector_taxonomy import SECTOR_DEFINITIONS, SECTOR_TAXONOMY_VERSION
 
 
-MODEL_BALANCE_CONTRACT_VERSION = "ims.insurer-model-balance-contract.v1"
+MODEL_BALANCE_CONTRACT_V1_VERSION = "ims.insurer-model-balance-contract.v1"
+MODEL_BALANCE_CONTRACT_VERSION = "ims.insurer-model-balance-contract.v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -75,11 +76,17 @@ BALANCE_CARRYOVER = (
 )
 
 
-def model_balance_contract_payload() -> dict[str, object]:
-    """Describe planned inputs and invariants; never materialize a balance."""
+def model_balance_contract_payload(
+    schema_version: str = MODEL_BALANCE_CONTRACT_VERSION,
+) -> dict[str, object]:
+    """Describe the accounting boundary without materializing a balance."""
 
-    return {
-        "schema_version": MODEL_BALANCE_CONTRACT_VERSION,
+    if schema_version not in (MODEL_BALANCE_CONTRACT_V1_VERSION, MODEL_BALANCE_CONTRACT_VERSION):
+        raise ValueError("Unbekannte Modellbilanz-Vertragsversion")
+    is_v1 = schema_version == MODEL_BALANCE_CONTRACT_V1_VERSION
+
+    payload: dict[str, object] = {
+        "schema_version": schema_version,
         "sector_taxonomy_schema_version": SECTOR_TAXONOMY_VERSION,
         "mode": "insurer_model_balance_contract_read_only",
         "scope": {
@@ -95,7 +102,9 @@ def model_balance_contract_payload() -> dict[str, object]:
         "amounts": {
             "unit": "model_currency_unit",
             "rounding": "none_implicit",
-            "numeric_representation": "to_be_decided_before_pr156",
+            "numeric_representation": (
+                "to_be_decided_before_pr156" if is_v1 else "decimal_string_12_integer_4_fraction"
+            ),
         },
         "fields": [asdict(field) for field in BALANCE_FIELDS],
         "equations": [asdict(equation) for equation in BALANCE_EQUATIONS],
@@ -113,16 +122,26 @@ def model_balance_contract_payload() -> dict[str, object]:
         "source_binding": {
             "legacy_reserve_is_balance_item": False,
             "legacy_advertising_is_automatically_expensed": False,
-            "premium_and_claim_sources": "reconcile_before_binding_in_pr156",
+            "premium_and_claim_sources": (
+                "reconcile_before_binding_in_pr156" if is_v1 else "explicit_scenario_only"
+            ),
             "opening_stocks_and_missing_flows": "explicit_scenario_inputs_required",
         },
         "exclusions": [
             "receivables", "unearned_premiums", "investment_assets", "reinsurance",
             "tax", "life", "health", "solvency_ii", "statutory_balance_sheet",
         ],
-        "balance_calculation_available": False,
+        "balance_calculation_available": not is_v1,
         "writes_enabled": False,
         "execution_enabled": False,
         "simulation_performed": False,
         "historical_full_equality_claim": False,
     }
+    if not is_v1:
+        payload["calculation"] = {
+            "interface": "python_library_only",
+            "function": "ims.accounting.non_life_model_balance.build_non_life_model_balance",
+            "input_schema_version": "ims.insurer-model-balance-input.v1",
+            "result_schema_version": "ims.insurer-model-balance-result.v1",
+        }
+    return payload

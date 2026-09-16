@@ -376,3 +376,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr155_model_balance_contract_plan.md`:
   PR155-Plan fuer die read-only Bewegungsrechnung und einfache
   Versicherer-Modellbilanz ohne historische Umbuchung oder Berechnung.
+- `ims_2x_pr156_non_life_model_balance_plan.md`:
+  PR156-Plan fuer die deterministische Nichtleben-Modellbilanz aus
+  expliziten Szenariowerten mit atomarer Periodenkette.

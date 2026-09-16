@@ -3,7 +3,10 @@ import importlib
 import pytest
 from starlette.testclient import TestClient
 
-from ims.accounting.model_balance_contract import model_balance_contract_payload
+from ims.accounting.model_balance_contract import (
+    MODEL_BALANCE_CONTRACT_V1_VERSION,
+    model_balance_contract_payload,
+)
 from ims.api.app import create_app
 
 
@@ -29,7 +32,11 @@ def test_model_balance_contract_endpoint_is_read_only_without_execution(
 
     assert response.status_code == 200
     assert response.json() == model_balance_contract_payload()
+    assert client.get(endpoint + "/v1").json() == model_balance_contract_payload(
+        MODEL_BALANCE_CONTRACT_V1_VERSION
+    )
     assert db_path.exists() is False
-    for method in ("POST", "PUT", "DELETE"):
-        assert client.request(method, endpoint, json={}).status_code == 405
+    for path in (endpoint, endpoint + "/v1"):
+        for method in ("POST", "PUT", "DELETE"):
+            assert client.request(method, path, json={}).status_code == 405
     assert db_path.exists() is False

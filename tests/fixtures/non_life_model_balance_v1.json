@@ -1,0 +1,36 @@
+{
+  "schema_version": "ims.insurer-model-balance-input.v1",
+  "model_balance_contract_schema_version": "ims.insurer-model-balance-contract.v2",
+  "sector_taxonomy_schema_version": "ims.sector-taxonomy.v1",
+  "source_kind": "explicit_scenario",
+  "historical_mapping_status": "unresolved",
+  "insurer_id": 1,
+  "sector_id": "motor",
+  "opening": {
+    "opening_cash": "100.00",
+    "opening_claim_liability": "30.00",
+    "opening_equity": "70.00"
+  },
+  "periods": [
+    {
+      "period": 1,
+      "premium_income": "20.00",
+      "investment_income": "2.00",
+      "claims_incurred": "8.00",
+      "claims_paid": "5.00",
+      "operating_expense": "3.00",
+      "capital_contribution": "4.00",
+      "capital_distribution": "1.00"
+    },
+    {
+      "period": 2,
+      "premium_income": "12.00",
+      "investment_income": "-1.00",
+      "claims_incurred": "6.00",
+      "claims_paid": "10.00",
+      "operating_expense": "2.00",
+      "capital_contribution": "0.00",
+      "capital_distribution": "0.00"
+    }
+  ]
+}

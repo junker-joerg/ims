@@ -11,7 +11,10 @@ from starlette.responses import FileResponse, JSONResponse, Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from ims.accounting.model_balance_contract import model_balance_contract_payload
+from ims.accounting.model_balance_contract import (
+    MODEL_BALANCE_CONTRACT_V1_VERSION,
+    model_balance_contract_payload,
+)
 from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
@@ -2560,6 +2563,10 @@ def create_app(
         def accounting_model_balance_contract() -> dict[str, object]:
             return model_balance_contract_payload()
 
+        @app.get("/api/accounting/model-balance-contract/v1")
+        def accounting_model_balance_contract_v1() -> dict[str, object]:
+            return model_balance_contract_payload(MODEL_BALANCE_CONTRACT_V1_VERSION)
+
         @app.get("/api/strategies/assignment-contract")
         def strategies_assignment_contract() -> dict[str, object]:
             return strategy_assignment_contract_payload()
@@ -3226,6 +3233,12 @@ def create_app(
         Route(
             "/api/accounting/model-balance-contract",
             lambda request: JSONResponse(model_balance_contract_payload()),
+        ),
+        Route(
+            "/api/accounting/model-balance-contract/v1",
+            lambda request: JSONResponse(
+                model_balance_contract_payload(MODEL_BALANCE_CONTRACT_V1_VERSION)
+            ),
         ),
         Route(
             "/api/strategies/assignment-contract",

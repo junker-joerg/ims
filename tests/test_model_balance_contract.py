@@ -6,6 +6,7 @@ import pytest
 from ims.accounting.model_balance_contract import (
     BALANCE_EQUATIONS,
     BALANCE_FIELDS,
+    MODEL_BALANCE_CONTRACT_V1_VERSION,
     MODEL_BALANCE_CONTRACT_VERSION,
     model_balance_contract_payload,
 )
@@ -18,8 +19,9 @@ def test_model_balance_contract_is_complete_but_does_not_calculate() -> None:
     assert payload["scope"]["grain"] == ["insurer_id", "sector_id", "period"]
     assert payload["scope"]["sector_ids"] == ["motor", "property_liability"]
     assert payload["scope"]["historical_sector_mapping"] == "unresolved"
-    assert payload["amounts"]["numeric_representation"] == "to_be_decided_before_pr156"
-    assert payload["balance_calculation_available"] is False
+    assert payload["amounts"]["numeric_representation"] == "decimal_string_12_integer_4_fraction"
+    assert payload["balance_calculation_available"] is True
+    assert payload["calculation"]["interface"] == "python_library_only"
     assert payload["writes_enabled"] is False
     assert payload["execution_enabled"] is False
     assert payload["simulation_performed"] is False
@@ -51,10 +53,21 @@ def test_contract_preserves_historical_and_accounting_boundaries() -> None:
     payload = model_balance_contract_payload()
     assert payload["source_binding"]["legacy_reserve_is_balance_item"] is False
     assert payload["source_binding"]["legacy_advertising_is_automatically_expensed"] is False
-    assert payload["source_binding"]["premium_and_claim_sources"] == "reconcile_before_binding_in_pr156"
+    assert payload["source_binding"]["premium_and_claim_sources"] == "explicit_scenario_only"
     assert payload["source_binding"]["opening_stocks_and_missing_flows"] == "explicit_scenario_inputs_required"
     assert {"life", "health", "solvency_ii", "statutory_balance_sheet"} <= set(payload["exclusions"])
     assert all(field.sign in {"signed", "nonnegative"} for field in BALANCE_FIELDS)
     assert len(BALANCE_EQUATIONS) == 4
     with pytest.raises(FrozenInstanceError):
         BALANCE_FIELDS[0].field_id = "legacy_reserve"  # type: ignore[misc]
+
+
+def test_v1_contract_remains_available_without_calculation_claim() -> None:
+    payload = model_balance_contract_payload(MODEL_BALANCE_CONTRACT_V1_VERSION)
+    assert payload["schema_version"] == MODEL_BALANCE_CONTRACT_V1_VERSION
+    assert payload["amounts"]["numeric_representation"] == "to_be_decided_before_pr156"
+    assert payload["source_binding"]["premium_and_claim_sources"] == "reconcile_before_binding_in_pr156"
+    assert payload["balance_calculation_available"] is False
+    assert "calculation" not in payload
+    with pytest.raises(ValueError):
+        model_balance_contract_payload("ims.insurer-model-balance-contract.v3")

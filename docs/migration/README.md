@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_non_life_model_balance.md`: PR156-Rechenkern fuer eine
+  deterministische Nichtleben-Modellbilanz aus expliziten Szenariowerten,
+  ohne Alt-Runner- oder UI-Anschluss
 - `ims_2x_model_balance_contract.md`: PR155-Vertrag fuer eine einfache
   Versicherer-Modellbilanz mit Bewegungsrechnung und offener Legacy-Quellbindung;
   noch keine Berechnung, Ausfuehrung oder gesetzliche Bilanz

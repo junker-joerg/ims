@@ -1,11 +1,12 @@
 # PR155: Bewegungsrechnung und einfache Versicherer-Modellbilanz
 
-Dies ist ein **read-only Vertrag** fuer eine spaetere Modellrechnung je
-Versicherer, benannter Sparte und Periode. Es gibt noch keine Bilanzwerte,
-keine Bilanz-Validierung, keinen Runner, keine Speicherung und keinen
-Regulierungsnachweis. Der Vertrag ist unter
-`GET /api/accounting/model-balance-contract` als
-`ims.insurer-model-balance-contract.v1` abrufbar.
+PR155 legte einen **read-only Vertrag** fuer eine spaetere Modellrechnung
+je Versicherer, benannter Sparte und Periode fest. Er selbst berechnet
+keine Bilanzwerte und liefert keinen Regulierungsnachweis. Seine
+urspruengliche Version `ims.insurer-model-balance-contract.v1` bleibt unter
+`GET /api/accounting/model-balance-contract/v1` abrufbar. Der aktuelle
+read-only Vertrag v2 am unversionierten Endpunkt beschreibt den in PR156
+hinzugekommenen Python-Rechenkern.
 
 ## Herkunft und Grenze
 
@@ -29,8 +30,10 @@ Pro `insurer_id`, `sector_id` und `period` sind drei Anfangsbestaende
 vorgesehen: Cash, Schadenverbindlichkeit und Eigenkapital. Die periodischen
 Fluesse sind Praemie, Zinsertrag, angefallene Schaeden, bezahlte Schaeden,
 laufender Aufwand, Kapitalzufuehrung und Kapitalausschuettung. Alle
-Betragsfelder nutzen eine Modellwaehrungseinheit; die numerische Darstellung
-und Rundung sind vor PR156 festzulegen. Keine implizite Rundung.
+Betragsfelder nutzen eine Modellwaehrungseinheit. In der archivierten
+v1-Fassung waren numerische Darstellung und Rundung noch offen; PR156 hat
+Dezimalstrings mit vier Nachkommastellen und ohne implizite Rundung
+festgelegt.
 
 ```text
 Periodenergebnis = Praemie + Zinsertrag - angefallene Schaeden - Aufwand
@@ -60,7 +63,7 @@ Steuern, Leben, Kranken und Solvency-II-Kapital fehlen. Das ist eine
 
 ## Weiterarbeit
 
-PR156 entscheidet Betragsdarstellung, Eingabeformat und Quellabstimmung,
-rechnet die Nichtleben-Modellbilanz deterministisch und testet beide
-Bilanzidentitaeten sowie Perioden-Carryover. Bis dahin beeinflusst dieser
-Vertrag weder Strategien noch Simulationsergebnisse.
+PR156 hat Betragsdarstellung und Eingabeformat festgelegt und die
+Nichtleben-Modellbilanz rein aus expliziten Szenariowerten implementiert.
+Siehe `ims_2x_non_life_model_balance.md`. Eine Anbindung an historische
+Quellwerte, Strategien oder Simulationsergebnisse ist damit nicht erfolgt.
