@@ -48,3 +48,19 @@ def test_extended_probe_endpoint_runs_only_explicit_ten_period_request(
     assert response.json()["period_count"] == 10
     assert response.json()["prefix_proof"]["semantic_equal"] is True
     assert db_path.read_bytes() == before
+
+
+def test_hundred_period_probe_is_released_via_api(monkeypatch, tmp_path):
+    db_path, payload = _input(tmp_path, 100)
+    before = db_path.read_bytes()
+    monkeypatch.setenv("IMS_METADATA_DB", str(db_path))
+    client = TestClient(create_app(frontend_dist=tmp_path))
+
+    response = client.post(ENDPOINT, json=payload)
+
+    assert response.status_code == 200, response.text
+    result = response.json()
+    assert result["period_count"] == 100
+    assert result["prefix_proof"]["canonical_json_byte_equal"] is True
+    assert result["result_persisted"] is False
+    assert db_path.read_bytes() == before

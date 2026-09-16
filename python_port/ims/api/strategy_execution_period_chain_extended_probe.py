@@ -45,11 +45,14 @@ from ims.strategies.execution_period_chain_horizon_contract import (
 )
 
 
-EXTENDED_PROBE_REQUEST_VERSION = "ims.strategy-execution-extended-probe-request.v1"
-EXTENDED_PROBE_RESULT_VERSION = "ims.strategy-execution-extended-probe-result.v1"
+EXTENDED_PROBE_REQUEST_VERSION_V1 = "ims.strategy-execution-extended-probe-request.v1"
+EXTENDED_PROBE_REQUEST_VERSION = "ims.strategy-execution-extended-probe-request.v2"
+EXTENDED_PROBE_RESULT_VERSION_V1 = "ims.strategy-execution-extended-probe-result.v1"
+EXTENDED_PROBE_RESULT_VERSION = "ims.strategy-execution-extended-probe-result.v2"
 _ENABLED_HORIZONS = {
-    entry.period_count: entry for entry in STRATEGY_EXECUTION_HORIZON_DEFINITIONS[:3]
+    entry.period_count: entry for entry in STRATEGY_EXECUTION_HORIZON_DEFINITIONS
 }
+_V1_HORIZONS = frozenset((10, 25, 50))
 _MIB = 1024 * 1024
 _MAX_WORKER_RSS = 1024 * _MIB
 _MAX_PAYLOAD = 64 * _MIB
@@ -68,6 +71,7 @@ class ExtendedProbeRequest:
     period_chain_input: dict[str, object]
     five_period_baseline: dict[str, str]
     release: dict[str, object]
+    schema_version: str = EXTENDED_PROBE_REQUEST_VERSION
 
 
 def parse_extended_probe_request(value: object) -> ExtendedProbeRequest:
@@ -82,22 +86,32 @@ def parse_extended_probe_request(value: object) -> ExtendedProbeRequest:
         raise ExtendedProbeError(
             "invalid_request_fields", "Eindeutiger PR148-Eingang erforderlich"
         )
-    if (
-        value["schema_version"] != EXTENDED_PROBE_REQUEST_VERSION
-        or value["explicit_extended_effect_probe_execution"] is not True
+    schema_version = value["schema_version"]
+    if schema_version not in (
+        EXTENDED_PROBE_REQUEST_VERSION_V1,
+        EXTENDED_PROBE_REQUEST_VERSION,
     ):
         raise ExtendedProbeError(
+            "unsupported_schema_version", "Unbekannte PR148/149-Eingangsversion"
+        )
+    if value["explicit_extended_effect_probe_execution"] is not True:
+        raise ExtendedProbeError(
             "explicit_release_required",
-            "Version und ausdrueckliche Freigabe erforderlich",
+            "Ausdrueckliche Freigabe erforderlich",
         )
     chain_input = value["period_chain_input"]
     if (
         not isinstance(chain_input, dict)
         or type(chain_input.get("max_periods")) is not int
         or chain_input["max_periods"] not in _ENABLED_HORIZONS
+        or (
+            schema_version == EXTENDED_PROBE_REQUEST_VERSION_V1
+            and chain_input["max_periods"] not in _V1_HORIZONS
+        )
     ):
         raise ExtendedProbeError(
-            "horizon_not_released", "Nur 10, 25 und 50 Perioden sind freigegeben"
+            "horizon_not_released",
+            "v1 erlaubt nur 10, 25 und 50; v2 auch 100 Perioden",
         )
     baseline = value["five_period_baseline"]
     if (
@@ -116,7 +130,7 @@ def parse_extended_probe_request(value: object) -> ExtendedProbeRequest:
     except ValueError as exc:
         raise ExtendedProbeError("release_invalid", str(exc)) from exc
     return ExtendedProbeRequest(
-        deepcopy(chain_input), dict(baseline), release.to_dict()
+        deepcopy(chain_input), dict(baseline), release.to_dict(), schema_version
     )
 
 
@@ -131,7 +145,16 @@ def run_extended_probe(
 
     started = monotonic()
     period_count = request.period_chain_input.get("max_periods")
-    if type(period_count) is not int or period_count not in _ENABLED_HORIZONS:
+    if (
+        type(period_count) is not int
+        or period_count not in _ENABLED_HORIZONS
+        or request.schema_version
+        not in (EXTENDED_PROBE_REQUEST_VERSION_V1, EXTENDED_PROBE_REQUEST_VERSION)
+        or (
+            request.schema_version == EXTENDED_PROBE_REQUEST_VERSION_V1
+            and period_count not in _V1_HORIZONS
+        )
+    ):
         raise ExtendedProbeError(
             "horizon_not_released", "Horizont ist nicht freigegeben"
         )
@@ -211,7 +234,14 @@ def run_extended_probe(
     receiving, sending = context.Pipe(duplex=False)
     worker = context.Process(
         target=_run_worker,
-        args=(sending, chain, str(db_path), baseline_prefix, worker_runner),
+        args=(
+            sending,
+            chain,
+            str(db_path),
+            baseline_prefix,
+            worker_runner,
+            request.schema_version,
+        ),
         daemon=True,
     )
     try:
@@ -336,10 +366,16 @@ def _run_worker(
     db_path: str,
     baseline_prefix: bytes,
     runner: Callable | None,
+    request_schema_version: str,
 ) -> None:
     try:
         result = _execute_chain(
-            pipe, chain, db_path, baseline_prefix, runner or run_loaded_explicit_period
+            pipe,
+            chain,
+            db_path,
+            baseline_prefix,
+            runner or run_loaded_explicit_period,
+            request_schema_version,
         )
         payload = _canonical(result)
         if len(payload) > _MAX_PAYLOAD:
@@ -369,6 +405,7 @@ def _execute_chain(
     db_path: str,
     baseline_prefix: bytes,
     runner: Callable,
+    request_schema_version: str,
 ) -> dict[str, object]:
     horizon = chain["horizon"]
     count = horizon["period_count"]
@@ -511,7 +548,11 @@ def _execute_chain(
                 "candidate_changed", "Quellkandidat nach Lauf veraendert"
             )
     return {
-        "schema_version": EXTENDED_PROBE_RESULT_VERSION,
+        "schema_version": (
+            EXTENDED_PROBE_RESULT_VERSION_V1
+            if request_schema_version == EXTENDED_PROBE_REQUEST_VERSION_V1
+            else EXTENDED_PROBE_RESULT_VERSION
+        ),
         "status": "ok",
         "period_count": count,
         "period_chain_identity": chain["identity"],

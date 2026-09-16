@@ -191,3 +191,6 @@ managementtauglichen Bedienung.
 - [PR148 Kontrollierte 10/25/50-Perioden-Probe](../migration/ims_2x_strategy_execution_period_chain_extended_probe.md):
   drei laengere Horizonte prozessisoliert und fluechtig mit stabilem Prefix
   1-5 ausfuehren; 100, Speicherung und UI bleiben geschlossen.
+- [PR149 Technischer 100-Perioden-Lauf](../migration/ims_2x_strategy_execution_period_chain_hundred_period_probe.md):
+  die 100er-Grenze einzeln messen und im v2-Eingang fluechtig freigeben;
+  gespeicherter Start, Export und Bedienung bleiben Folgearbeiten.

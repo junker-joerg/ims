@@ -1,4 +1,5 @@
 from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import sqlite3
@@ -116,6 +117,10 @@ def persist_chain_candidates(
             )
             assert build.candidate is not None, build.issues
             candidate = build.candidate
+            stored_at = (
+                datetime(2026, 9, 11, 8, tzinfo=timezone.utc)
+                + timedelta(minutes=period)
+            ).isoformat().replace("+00:00", "Z")
             connection.execute(
                 """
                 INSERT INTO strategy_execution_candidates (
@@ -139,7 +144,7 @@ def persist_chain_candidates(
                     candidate.profile_id,
                     candidate.profile_content_digest,
                     candidate.content_digest,
-                    f"2026-09-11T08:{period:02d}:00Z",
+                    stored_at,
                     json.dumps(
                         candidate.to_dict(),
                         ensure_ascii=True,

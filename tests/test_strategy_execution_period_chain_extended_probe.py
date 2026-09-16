@@ -10,6 +10,7 @@ from ims.api.strategy_execution_period_chain_build import (
 )
 from ims.api.strategy_execution_period_chain_extended_probe import (
     EXTENDED_PROBE_REQUEST_VERSION,
+    EXTENDED_PROBE_REQUEST_VERSION_V1,
     ExtendedProbeError,
     parse_extended_probe_request,
     run_extended_probe,
@@ -136,8 +137,9 @@ def test_extended_horizons_are_deterministic_and_leave_db_unchanged(tmp_path, co
 
 def test_unreleased_100_and_wrong_prefix_are_blocked(tmp_path):
     db_path, payload = _input(tmp_path, 10)
+    payload["schema_version"] = EXTENDED_PROBE_REQUEST_VERSION_V1
     payload["period_chain_input"]["max_periods"] = 100
-    with pytest.raises(ExtendedProbeError, match="10, 25 und 50"):
+    with pytest.raises(ExtendedProbeError, match="v1 erlaubt nur 10, 25 und 50"):
         parse_extended_probe_request(payload)
     payload["period_chain_input"]["max_periods"] = 10
     payload["five_period_baseline"]["expected_result_digest"] = "sha256:" + "0" * 64
@@ -235,7 +237,7 @@ def test_runtime_limits_match_versioned_contract():
     )
 
     horizons = strategy_execution_period_chain_horizon_contract_payload()["horizons"]
-    for horizon in horizons[:3]:
+    for horizon in horizons:
         assert horizon["execution_enabled"] is True
         assert (
             horizon["max_peak_worker_rss_mib"] * module._MIB == module._MAX_WORKER_RSS
@@ -253,7 +255,8 @@ def test_runtime_limits_match_versioned_contract():
             == module._MIN_DISK
         )
         assert horizon["max_period_seconds"] == module._PERIOD_SECONDS
-    assert horizons[3]["execution_enabled"] is False
+    assert horizons[3]["period_count"] == 100
+    assert horizons[3]["execution_enabled"] is True
 
 
 def test_complete_response_payload_is_measured_before_return(tmp_path, monkeypatch):

@@ -15,7 +15,7 @@ from ims.strategies.execution_period_chain_bounded_runner_contract import (
     ("periods", "seconds"),
     [(10, 180), (25, 450), (50, 900), (100, 1800)],
 )
-def test_horizon_limits_are_explicit_and_only_100_remains_closed(
+def test_horizon_limits_are_explicit_and_all_four_are_ephemerally_released(
     periods: int,
     seconds: int,
 ) -> None:
@@ -36,8 +36,8 @@ def test_horizon_limits_are_explicit_and_only_100_remains_closed(
     assert horizon["max_canonical_chain_payload_mib"] == 64
     assert horizon["max_serialized_result_payload_mib"] == 64
     assert horizon["min_free_storage_before_start_mib"] == 256
-    assert horizon["build_enabled"] is (periods < 100)
-    assert horizon["execution_enabled"] is (periods < 100)
+    assert horizon["build_enabled"] is True
+    assert horizon["execution_enabled"] is True
     assert horizon["persistence_enabled"] is False
     assert horizon["ui_start_enabled"] is False
 
@@ -51,8 +51,8 @@ def test_horizon_contract_fails_closed_and_preserves_five_period_path() -> None:
     assert [
         definition.period_count for definition in STRATEGY_EXECUTION_HORIZON_DEFINITIONS
     ] == [10, 25, 50, 100]
-    assert payload["released_period_counts"] == [2, 5, 10, 25, 50]
-    assert payload["contract_only_period_counts"] == [100]
+    assert payload["released_period_counts"] == [2, 5, 10, 25, 50, 100]
+    assert payload["contract_only_period_counts"] == []
     assert len(payload["horizons"]) == 4
     assert payload["historical_maximum_periods_per_run"] == 100
     assert payload["budget_policy"]["missing_measurement_blocks_release"] is True
@@ -126,7 +126,7 @@ def test_horizon_contract_fails_closed_and_preserves_five_period_path() -> None:
             "historical_full_equality_claim",
         )
     )
-    assert payload["next_gate"] == "PR149"
+    assert payload["next_gate"] == "PR150"
 
 
 def test_contract_payload_is_fresh_and_cannot_mutate_future_calls() -> None:
@@ -135,6 +135,6 @@ def test_contract_payload_is_fresh_and_cannot_mutate_future_calls() -> None:
     first["prefix_policy"]["compared_periods"].append(6)
 
     second = strategy_execution_period_chain_horizon_contract_payload()
-    assert second["contract_only_period_counts"] == [100]
+    assert second["contract_only_period_counts"] == []
     assert second["horizons"][0]["period_count"] == 10
     assert second["prefix_policy"]["compared_periods"] == [1, 2, 3, 4, 5]

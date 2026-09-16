@@ -364,3 +364,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_strategy_execution_period_chain_extended_probe_plan.md`:
   PR148-Plan fuer die isolierte, fluechtige Ausfuehrung von 10, 25 und 50
   Perioden mit stabilem Prefix 1-5 und durchgesetzten Ressourcenbudgets.
+- `ims_2x_strategy_execution_period_chain_hundred_period_probe_plan.md`:
+  PR149-Plan fuer die gesondert gemessene 100-Perioden-Freigabe mit
+  versioniertem Eingang, stabilem Prefix und atomarem Fehlerpfad.
