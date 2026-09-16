@@ -206,7 +206,7 @@ ist kein Produktziel.
 Nach den Strategie-, Kandidaten- und Periodenketten-Schnitten PR103 bis PR141
 ist die aktive Restplanung in
 `docs/plans/ims_2x_all_lines_management_lab_roadmap.md` fortgeschrieben. Sie
-umfasst PR142 bis PR182: zunaechst den bedienbaren 100-Perioden-Lauf, danach
+umfasst PR142 bis PR190: zunaechst den bedienbaren 100-Perioden-Lauf, danach
 Mehrsparten und Versichererbilanz, eine klar begrenzte
 Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die Abnahme fuer ein
 Managementseminar. PR142 hat den read-only Vertrag fuer den auf fuenf

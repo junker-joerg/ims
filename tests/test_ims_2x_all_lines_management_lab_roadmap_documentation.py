@@ -6,6 +6,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 ROADMAP = REPO_ROOT / "docs" / "plans" / "ims_2x_all_lines_management_lab_roadmap.md"
 GUIDE = REPO_ROOT / "docs" / "handbook" / "management_seminar_guide.md"
 WINDOWS_PLAN = REPO_ROOT / "docs" / "plans" / "ims_2x_windows_ready_to_run_packaging_plan.md"
+LIFE_PLAN = REPO_ROOT / "docs" / "plans" / "ims_2x_life_workshop_expansion_plan.md"
 
 
 def test_active_roadmap_covers_all_committed_product_directions() -> None:
@@ -29,35 +30,35 @@ def test_active_roadmap_covers_all_committed_product_directions() -> None:
     assert "kein Zwang zur Reproduktion unbelegter alter Zufallsfolgen" in normalized
 
 
-def test_active_roadmap_numbers_pr142_through_pr184_without_gaps() -> None:
+def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     document = ROADMAP.read_text(encoding="utf-8")
     table_prs = [
         int(match)
         for match in re.findall(r"^\| PR(\d+) \|", document, flags=re.MULTILINE)
     ]
 
-    assert table_prs == list(range(142, 185))
+    assert table_prs == list(range(142, 193))
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10" in document
-    assert "vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21" in document
-    assert "erklaerbare Solvency-II-Kapitalansicht | PR170 | 29" in document
-    assert "durchgaengige DORA-Wirkungskette | PR178 | 37" in document
-    assert "kontrollierte Managementseminar-Reife | PR182 | 41" in document
-    assert "PR159 umgesetzt, PR160 naechster Schritt" in document
+    assert "vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29" in document
+    assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 37" in document
+    assert "durchgaengige DORA-Wirkungskette | PR186 | 45" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 49" in document
+    assert "PR159 umgesetzt, PR160 Lebensfluss-Vertrag naechster Schritt" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
     assert "PR145 hat kontrollierten Serverstart" in document
     assert "PR146 hat den Pfad in der Workbench bedienbar gemacht" in document
     assert "PR147 hat fuer 10, 25, 50 und 100 Perioden" in document
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 23" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 25" in document
-    assert "Diese optionale Distributionsspur beginnt **erst nach PR182**" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 49 | 31" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 33" in document
+    assert "Diese optionale Distributionsspur beginnt **erst nach PR190**" in document
 
 
 def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
     document = ROADMAP.read_text(encoding="utf-8")
 
-    assert "13.700-25.000 LoC" in document
+    assert "16.700-31.000 LoC" in document
     assert "Unsicherheit von etwa acht zusaetzlichen PRs" in document
     for gate in (
         "deterministische Wiederholung",
@@ -73,15 +74,30 @@ def test_later_windows_ready_to_run_plan_keeps_pr160_next() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR159 umgesetzt, PR160 naechster Schritt" in roadmap
+    assert "PR159 umgesetzt, PR160 Lebensfluss-Vertrag naechster Schritt" in roadmap
     assert "PR160 bleibt der" in plan
     for phrase in (
-        "PR183", "PR184", "IMS-Workbench.exe", "One-folder",
+        "PR191", "PR192", "IMS-Workbench.exe", "One-folder",
         "ohne Zielrechner-Python", "127.0.0.1", "%LOCALAPPDATA%",
         "SmartScreen", "Linux oder iOS/Juno", "incomming/",
     ):
         assert phrase in plan
     assert "Dieser Plan baut noch kein Paket" in plan
+
+
+def test_life_expansion_is_scheduled_before_health_and_four_sector_total() -> None:
+    roadmap = ROADMAP.read_text(encoding="utf-8")
+    plan = LIFE_PLAN.read_text(encoding="utf-8")
+
+    for phrase in (
+        "Tod", "Neugeschaeft", "Kapitalbewegungen", "Policenwerte",
+        "Ablaufleistung", "Mortalitaet", "Anlage", "PR165", "PR166",
+        "PR167", "Baseline/Variante", "Rueckkauf/Bonus",
+    ):
+        assert phrase in plan
+    assert roadmap.index("| PR160 | Lebensfluss-") < roadmap.index("| PR168 | Zustands-")
+    assert roadmap.index("| PR167 | Gefuehrte Lebens-Workbench") < roadmap.index("| PR170 | Spartenuebergreifende Konsolidierung")
+    assert "ims_2x_life_workshop_expansion_plan.md" in roadmap
 
 
 def test_management_guide_is_nontechnical_honest_and_visual() -> None:

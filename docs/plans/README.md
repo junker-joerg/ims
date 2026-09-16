@@ -4,7 +4,7 @@ Dieses Verzeichnis ist für kleine, nachvollziehbare Arbeitspläne der IMS-Migra
 Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumentiert werden.
 
 - `ims_2x_all_lines_management_lab_roadmap.md`: aktive Produkt-Restplanung
-  PR142 bis PR182 fuer einen bedienbaren 100-Perioden-Lauf, Kfz,
+  PR142 bis PR190 fuer einen bedienbaren 100-Perioden-Lauf, Kfz,
   Sach-Haftpflicht, Leben und Kranken, Versichererbilanzen,
   Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die kontrollierte
   Managementseminar-Reife.
@@ -388,6 +388,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr159_deterministic_life_case_plan.md`:
   PR159-Plan fuer einen geschlossenen deterministischen Lebensfall mit
   expliziter Gutschriftbasis, Endperioden-Timing und Bilanzabstimmung.
+- `ims_2x_life_workshop_expansion_plan.md`:
+  PR160-167-Nachplanung fuer Tod, Neugeschaeft, Policenwerte, Kapital,
+  deterministische Annahmen und eine bedienbare Lebens-Workbench.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
-  Spaetere PR183/184-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
+  Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
   Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR160 geht vor.

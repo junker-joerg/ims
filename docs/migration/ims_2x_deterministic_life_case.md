@@ -51,13 +51,23 @@ in `tests/fixtures/life_model_balance_v1.json`. Garantie: 5,0000 und
 5,7000; bei Ablauf werden 128,7000 freigesetzt und ausgezahlt. Die
 Schlussaktiva und das Eigenkapital betragen jeweils 22,3000.
 
-## Ausdrueckliche Luecken
+## Ausdrueckliche Luecken im Stand PR159
 
 Tod, Rueckkauf, Bonus, Neugeschaeft, Kapitalbewegungen, individuelle
 Vertragswerte und abweichende Ablaufleistungen sind nicht implementiert.
 Es gibt keine automatische Anlage-, Sterblichkeits- oder Stornostrategie,
 keinen Runner, keine UI-Eingabe, Speicherung oder Excel-Ausgabe fuer
 Leben. `life` wird noch nicht zur heutigen Zwei-Sparten-Gesamtbilanz
-addiert; der vierteilige Anschluss ist fuer PR162 geplant. Die Rechnung
+addiert; der vierteilige Anschluss ist nach der Lebens-Nachplanung fuer
+PR170 geplant. Die Rechnung
 ist weder gesetzliche Bilanz noch Solvency-II-Bewertung oder
 historischer Gleichheitsnachweis.
+
+Das ist keine dauerhafte Ausschlussliste: PR160-167 planen in kleinen
+Schritten Tod, Neugeschaeft, Kapitalbewegungen, begrenzte Einzelpolicen,
+abweichende Ablaufleistungen, deterministische Anlage- und
+Mortalitaetsannahmen sowie Runner, Ergebnisablage, XLSX und gefuehrte
+Workbench-Eingaben. Nur Rueckkauf und Bonus sowie eine automatische
+Stornostrategie bleiben fuer diese Workshop-Stufe bewusst ausserhalb des
+Umfangs. Die genaue PR-Folge und ihre Abnahmekriterien stehen in
+`docs/plans/ims_2x_life_workshop_expansion_plan.md`.

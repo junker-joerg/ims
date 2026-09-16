@@ -1,7 +1,7 @@
 # Windows Ready-to-run ohne Zielrechner-Installation
 
 Stand: 2026-09-16
-Einordnung: spaetere Distributionsspur nach PR182; PR160 bleibt der
+Einordnung: spaetere Distributionsspur nach PR190; PR160 bleibt der
 unmittelbar naechste Schritt. Dieser Plan baut noch kein Paket.
 
 ## Ziel
@@ -21,8 +21,8 @@ Optionen. Die Build-Umgebung darf weiterhin Python und Node.js nutzen.
 
 | PR | Gegenstand | Abnahme |
 | --- | --- | --- |
-| PR183 | Windows-x64-PyInstaller-Bundle mit eigenem Einstiegspunkt und expliziten Ressourcenpfaden | EXE startet Backend samt gebautem Frontend offline und ohne Zielrechner-Python; Profil- und sonstige Laufzeitdaten sind enthalten; keine Schreibzugriffe in Bundle oder temporaere Entpackpfade. |
-| PR184 | Doppelklick-Lebenszyklus, ZIP, Handbuch und Zielrechner-Abnahme | Browser oeffnet erst nach Health-Check; Portkonflikt, Zweitstart, Beenden, Datenablage und Fehleranzeige sind klar; frischer Windows-10/11-x64-Test ohne Python/Node und ohne Netzwerk fuer Installation besteht. |
+| PR191 | Windows-x64-PyInstaller-Bundle mit eigenem Einstiegspunkt und expliziten Ressourcenpfaden | EXE startet Backend samt gebautem Frontend offline und ohne Zielrechner-Python; Profil- und sonstige Laufzeitdaten sind enthalten; keine Schreibzugriffe in Bundle oder temporaere Entpackpfade. |
+| PR192 | Doppelklick-Lebenszyklus, ZIP, Handbuch und Zielrechner-Abnahme | Browser oeffnet erst nach Health-Check; Portkonflikt, Zweitstart, Beenden, Datenablage und Fehleranzeige sind klar; frischer Windows-10/11-x64-Test ohne Python/Node und ohne Netzwerk fuer Installation besteht. |
 
 ## Technische Grenzen und Pruefpunkte
 
@@ -54,10 +54,10 @@ Optionen. Die Build-Umgebung darf weiterhin Python und Node.js nutzen.
 Das heutige `IMS-Workbench-2026-Windows-Test.zip` verlangt laut
 `docs/handbook/installation_test_package_windows.md` Python 3.12+,
 einmalige Online-Installation und `install-workbench.cmd` sowie
-`start-workbench.cmd`. PR183/184 ersetzen **nur den Zielrechnerpfad**;
+`start-workbench.cmd`. PR191/192 ersetzen **nur den Zielrechnerpfad**;
 der bestehende Entwickler- und Reproduktionsweg bleibt erhalten.
 
-Offene Fragen vor PR183: genaues Windows-Buildprofil, Inventar aller zur
+Offene Fragen vor PR191: genaues Windows-Buildprofil, Inventar aller zur
 Laufzeit gelesenen Dateien und Entscheidung fuer portable Daten neben
 dem Paket versus per-user AppData. Keine Fachlogik oder historische
 Vollgleichheitsbehauptung ist Teil dieser Distributionsspur.

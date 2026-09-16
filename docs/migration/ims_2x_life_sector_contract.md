@@ -9,7 +9,7 @@ Vertrag: `ims.life-sector-contract.v1`
 | --- | --- | --- |
 | `IMSDATA.C`, `MAXSPARTEN 2`, `classVU.Sp[1/2]`, `classVN.Rk[1/2]` | `ims.model.life_sector_contract` beschreibt die neue ID `life` aus der Taxonomie. | Keine der zwei alten Positionen wird als Lebensversicherung identifiziert. Auch das C-Kuerzel `LV` ist kein Beleg dafuer. |
 | `IMSDATA.C`, ein `Vr` je VU/VN; `IMS.E`, Schaden-, Praemien- und Reserveoperationen | Separate Anschlussstellen fuer VU-Bonus und VN-Rueckkauf. | Kein historischer Regelsatz, keine Snapshot-Materialisierung und keine Uebernahme der Schadenformel. |
-| PR155-157, Cash-/Schadenmodellbilanz fuer zwei Nichtleben-Segmente | Vermoegen, Garantieverpflichtung und Eigenkapital als **anderes** Bilanzmodell. | Keine automatische Addition zur Zwei-Sparten-Bilanz vor PR162. |
+| PR155-157, Cash-/Schadenmodellbilanz fuer zwei Nichtleben-Segmente | Vermoegen, Garantieverpflichtung und Eigenkapital als **anderes** Bilanzmodell. | Keine automatische Addition zur Zwei-Sparten-Bilanz vor der separat geplanten Vier-Sparten-Konsolidierung (aktuell PR170). |
 
 PR158 ist ein neuer IMS-2.x-Zielvertrag, keine Portierung eines alten
 Lebensmodells. `GET /api/model/life-sector-contract` liefert ihn rein

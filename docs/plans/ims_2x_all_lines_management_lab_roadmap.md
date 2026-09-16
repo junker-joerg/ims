@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-16
-Status: aktive Produkt-Restplanung; PR159 umgesetzt, PR160 naechster Schritt
+Status: aktive Produkt-Restplanung; PR159 umgesetzt, PR160 Lebensfluss-Vertrag naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -110,13 +110,25 @@ Schadenlogik ausgegeben.
 | PR157 | Konsolidierte Versichererbilanz in Workbench und XLSX | umgesetzt: exakte Zwei-Sparten-Summe, atomarer Fehlerpfad, Browseransicht und Digest-gebundener XLSX-Export ohne Runner |
 | PR158 | Zustands-, Fluss- und Strategievertrag fuer Leben | umgesetzt: geschlossener Vertragsbestand, Garantieverpflichtung, getrennte Fluesse und nicht ausfuehrbare Strategie-Anschlussstellen; Bewertungstiming bleibt offen |
 | PR159 | Minimale deterministische Lebensparte | umgesetzt: geschlossener Zwei-Perioden-Fall mit Gutschrift auf Anfangsverpflichtung, spaeter Praemienzuweisung, Ablauf zum Verpflichtungswert und atomarer Bilanz; kein Runner oder Gesamtbilanzanschluss |
-| PR160 | Zustands-, Fluss- und Strategievertrag fuer Kranken | Beitrags-, Leistungs- und Bestandslogik sind begrenzt und getrennt |
-| PR161 | Minimale deterministische Krankensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
-| PR162 | Spartenuebergreifende Konsolidierung | vier Modellsegmente stimmen je Versicherer zur Gesamtbilanz ab |
+| PR160 | Lebensfluss- und Bewertungsvertrag v3 | Tod, Neugeschaeft, Kapital, Policenwerte und abweichende Ablaufleistungen erhalten ausdrueckliche Quellen, Zeitpunkte und Bewertungsgrenzen |
+| PR161 | Tod und Kapitalbewegungen im geschlossenen Lebensbestand | Leistungen und Verpflichtungsfreisetzung sind getrennt; Bilanz und Bestand stimmen atomar |
+| PR162 | Neugeschaeft mit getrennten Kohorten | Ausgabeparameter, Praemien, Restlaufzeit und Garantiebeginn je Kohorte sind deterministisch |
+| PR163 | Begrenzte Einzelpolicen und variable Ablaufleistung | Policenwerte, Kohorten und Gesamtbilanz stimmen; Garantieuntergrenze und Ergebniswirkung sind sichtbar |
+| PR164 | Deterministische Anlage- und Mortalitaetsannahmen | versionierte Szenariokurven, einfache VU-Anlageregel und eindeutige Periodenfenster; keine RNG-Vollmodellbehauptung |
+| PR165 | Kontrollierter Lebensanschluss an die Periodenkette | bis 100 Perioden, Prefix und Carryover stabil; alter Nichtleben-Pfad bleibt unveraendert |
+| PR166 | Lebens-Ergebnis-API, Ablage und XLSX | Digest, Idempotenz und gleiche Zahlen in gespeicherten Ergebnissen und Export |
+| PR167 | Gefuehrte Lebens-Workbench fuer Seminare | beschriftete Eingaben, Baseline/Variante, Zeitreihen, Presets und Browserabnahme ohne Roh-JSON als Pflicht |
+| PR168 | Zustands-, Fluss- und Strategievertrag fuer Kranken | Beitrags-, Leistungs- und Bestandslogik sind begrenzt und getrennt |
+| PR169 | Minimale deterministische Krankensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
+| PR170 | Spartenuebergreifende Konsolidierung | vier Modellsegmente stimmen je Versicherer zur Gesamtbilanz ab |
 
 Die erste Mehrspartenstufe deckt damit vier fuer das Zielbild wichtige
 Segmente ab. Sie behauptet weder die vollstaendige deutsche
 Versicherungszweigsystematik noch eine aufsichtsrechtliche Rechnungslegung.
+Die acht PRs 160-167 schliessen die nach PR159 erkannte Lebensluecke vor
+Kranken und der Gesamtbilanz. Rueckkauf und Bonus bleiben ausgeschlossen;
+Umfang, Annahmen und UI-Bedienweg stehen in
+`docs/plans/ims_2x_life_workshop_expansion_plan.md`.
 
 ## Phase C: Solvency-II-Kapitalansicht
 
@@ -126,16 +138,16 @@ eine Meldesoftware ersetzen.
 
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
-| PR163 | Scope-, Terminologie-, Quellen- und Versionsvertrag | Modellrechnung und regulatorisch validierte Aussage bleiben klar getrennt |
-| PR164 | Solvenzmodellbilanz und vereinfachte Eigenmittelabbildung | Herkunft jeder Kapitalgroesse ist zur Versichererbilanz rueckverfolgbar |
-| PR165 | Risikotreiber und Szenarioschock-Mapping | jeder Schock veraendert nur explizit zugeordnete Exposures |
-| PR166 | Ausgewaehlte Markt- und versicherungstechnische Risikomodule | Schaden, Leben und Kranken besitzen getestete, begrenzte Module |
-| PR167 | Gegenpartei-, operationelles Risiko und Aggregation | Korrelationen und verlustabsorbierende Effekte sind versioniert |
-| PR168 | SCR, MCR, Bedeckungsquote und Managementschwellen | Kennzahlen sind reproduzierbar und fachlich beschriftet |
-| PR169 | Feste Faelle, Sensitivitaeten und Invarianten | Richtung, Monotonie, Grenzwerte und Bilanzanschluss sind geprueft |
-| PR170 | Kapitalansicht und Export | Unternehmen, Sparte, Treiber und Unsicherheit sind sichtbar; kein Filing-Anspruch |
+| PR171 | Scope-, Terminologie-, Quellen- und Versionsvertrag | Modellrechnung und regulatorisch validierte Aussage bleiben klar getrennt |
+| PR172 | Solvenzmodellbilanz und vereinfachte Eigenmittelabbildung | Herkunft jeder Kapitalgroesse ist zur Versichererbilanz rueckverfolgbar |
+| PR173 | Risikotreiber und Szenarioschock-Mapping | jeder Schock veraendert nur explizit zugeordnete Exposures |
+| PR174 | Ausgewaehlte Markt- und versicherungstechnische Risikomodule | Schaden, Leben und Kranken besitzen getestete, begrenzte Module |
+| PR175 | Gegenpartei-, operationelles Risiko und Aggregation | Korrelationen und verlustabsorbierende Effekte sind versioniert |
+| PR176 | SCR, MCR, Bedeckungsquote und Managementschwellen | Kennzahlen sind reproduzierbar und fachlich beschriftet |
+| PR177 | Feste Faelle, Sensitivitaeten und Invarianten | Richtung, Monotonie, Grenzwerte und Bilanzanschluss sind geprueft |
+| PR178 | Kapitalansicht und Export | Unternehmen, Sparte, Treiber und Unsicherheit sind sichtbar; kein Filing-Anspruch |
 
-Falls PR166 oder PR167 bei der Quellenklaerung zu gross werden, werden sie in
+Falls PR174 oder PR175 bei der Quellenklaerung zu gross werden, werden sie in
 weitere kleine Fach-PRs geteilt. Die Meilensteinzahl erhoeht sich dann, statt
 unterschiedliche Risikomodule in einem Sammel-PR zu verstecken.
 
@@ -147,14 +159,14 @@ verfolgbar.
 
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
-| PR171 | Vertrag fuer wichtige Geschaeftsservices, ICT-Assets, Anbieter und Abhaengigkeiten | gerichtete Herkunft und Verantwortungsgrenzen sind explizit |
-| PR172 | Ereignis- und Interventionsvertrag | Ausfall, Kapazitaetsverlust, Datenintegritaet und Anbieterausfall sind getrennt |
-| PR173 | Adapter von Stunden und Tagen auf IMS-Perioden | keine stille Vermischung operativer und marktlicher Zeitskalen |
-| PR174 | Wirkung auf Vertrieb, Underwriting, Schaden und Service | Kapazitaet, Rueckstand und Erholung sind als Kette nachvollziehbar |
-| PR175 | Drittparteienkonzentration und korrelierter Ausfall | gemeinsame Anbieter koennen mehrere Versicherer kontrolliert treffen |
-| PR176 | Praeventions-, Wiederanlauf- und Fallback-Strategien | Kosten, Wirksamkeit und Restlaufzeit sind parametrierbar |
-| PR177 | Anschluss an Bilanz und Kapital | operative Folgen schlagen nachvollziehbar auf Ergebnis und Bedeckung durch |
-| PR178 | DORA-Wirkungsansicht und Dossier | Zeitlinie, Abhaengigkeiten, Engpaesse und Unsicherheit sind exportierbar |
+| PR179 | Vertrag fuer wichtige Geschaeftsservices, ICT-Assets, Anbieter und Abhaengigkeiten | gerichtete Herkunft und Verantwortungsgrenzen sind explizit |
+| PR180 | Ereignis- und Interventionsvertrag | Ausfall, Kapazitaetsverlust, Datenintegritaet und Anbieterausfall sind getrennt |
+| PR181 | Adapter von Stunden und Tagen auf IMS-Perioden | keine stille Vermischung operativer und marktlicher Zeitskalen |
+| PR182 | Wirkung auf Vertrieb, Underwriting, Schaden und Service | Kapazitaet, Rueckstand und Erholung sind als Kette nachvollziehbar |
+| PR183 | Drittparteienkonzentration und korrelierter Ausfall | gemeinsame Anbieter koennen mehrere Versicherer kontrolliert treffen |
+| PR184 | Praeventions-, Wiederanlauf- und Fallback-Strategien | Kosten, Wirksamkeit und Restlaufzeit sind parametrierbar |
+| PR185 | Anschluss an Bilanz und Kapital | operative Folgen schlagen nachvollziehbar auf Ergebnis und Bedeckung durch |
+| PR186 | DORA-Wirkungsansicht und Dossier | Zeitlinie, Abhaengigkeiten, Engpaesse und Unsicherheit sind exportierbar |
 
 Nicht vorgesehen sind ein automatisches DORA-Compliance-Urteil, eine
 Rechtsauslegung oder der Ersatz einer operativen Resilienzpruefung.
@@ -166,28 +178,28 @@ dass Anwender interne Datenvertraege oder Quellcode kennen muessen.
 
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
-| PR179 | Gefuehrter Szenarioassistent mit optionalem Expertenmodus | Frage, Baseline, Schock, Strategien und Ergebnisziel bilden einen Ablauf |
-| PR180 | Kuratierte Seminarfaelle | Schadeninflation, Preiswettbewerb, Kapitaldruck und ICT-Ausfall sind reproduzierbar |
-| PR181 | Moderationspaket und portable Szenariobuendel | Arbeitsblaetter, Import/Export und read-only Demonstration sind geprueft |
-| PR182 | End-to-End-Abnahme des Managementseminars | Installation, 100 Perioden, Mehrsparten, Bilanz, Kapital, DORA-Fall und Export funktionieren gemeinsam |
+| PR187 | Gefuehrter Szenarioassistent mit optionalem Expertenmodus | Frage, Baseline, Schock, Strategien und Ergebnisziel bilden einen Ablauf |
+| PR188 | Kuratierte Seminarfaelle | Schadeninflation, Preiswettbewerb, Lebensbestand, Kapitaldruck und ICT-Ausfall sind reproduzierbar |
+| PR189 | Moderationspaket und portable Szenariobuendel | Arbeitsblaetter, Import/Export und read-only Demonstration sind geprueft |
+| PR190 | End-to-End-Abnahme des Managementseminars | Installation, 100 Perioden, Mehrsparten, Bilanz, Kapital, DORA-Fall und Export funktionieren gemeinsam |
 
-PR182 bezeichnet eine kontrollierte Seminar- und Demonstrationsreife. Eine
+PR190 bezeichnet eine kontrollierte Seminar- und Demonstrationsreife. Eine
 fachliche Produktionsfreigabe fuer Beratung, Aufsicht oder einzelne
 Unternehmensentscheidungen benoetigt weiterhin einen benannten Datenstand,
 einen konkreten Anwendungsfall und dessen eigene Validierung.
 
 ## Phase F: Windows Ready-to-run (spaeter)
 
-Diese optionale Distributionsspur beginnt **erst nach PR182** und verschiebt
-PR159 nicht. Sie ersetzt auf dem Zielrechner Python-Installation und
+Diese optionale Distributionsspur beginnt **erst nach PR190** und verschiebt
+PR160 nicht. Sie ersetzt auf dem Zielrechner Python-Installation und
 Startskripte durch ein entpackbares Windows-ZIP mit Doppelklick-EXE.
 Details und Grenzen stehen in
 `docs/plans/ims_2x_windows_ready_to_run_packaging_plan.md`.
 
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
-| PR183 | PyInstaller-One-folder-Bundle fuer Windows x64 | Backend, gebautes Frontend und erforderliche Laufzeitdaten laufen offline ohne Zielrechner-Python; Nutzerdaten bleiben ausserhalb des Bundles |
-| PR184 | Doppelklick-Start, ZIP, Zielrechner-Smoke und Kurzhandbuch | Start, Portkonflikt, Zweitstart und Beenden sind verstaendlich; frischer Windows-10/11-Rechner ohne Python/Node und Installationsnetz besteht |
+| PR191 | PyInstaller-One-folder-Bundle fuer Windows x64 | Backend, gebautes Frontend und erforderliche Laufzeitdaten laufen offline ohne Zielrechner-Python; Nutzerdaten bleiben ausserhalb des Bundles |
+| PR192 | Doppelklick-Start, ZIP, Zielrechner-Smoke und Kurzhandbuch | Start, Portkonflikt, Zweitstart und Beenden sind verstaendlich; frischer Windows-10/11-Rechner ohne Python/Node und Installationsnetz besteht |
 
 Ein One-file-EXE, grafischer Installer oder Code-Signierung sind damit
 nicht versprochen. SmartScreen- und Unternehmensrichtlinien koennen einen
@@ -200,13 +212,13 @@ Teil dieses Windows-Pakets.
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 3 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 11 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 19 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 23 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 25 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 11 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 19 |
+| durchgaengige DORA-Wirkungskette | PR186 | 45 | 27 |
+| kontrollierte Managementseminar-Reife | PR190 | 49 | 31 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 33 |
 
-Die 41 fachlichen PRs bis PR182 und zwei spaeteren Windows-Packaging-PRs
+Die 49 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
 Kranken, Risikomodulen und regulatorischer Quellenvalidierung. Erkenntnisse
@@ -218,11 +230,11 @@ gedrueckt.
 | Phase | Geschaetzter Umfang einschliesslich Tests und Doku |
 | --- | ---: |
 | 100 Perioden und Ergebnisarbeitsplatz | 3.000-5.500 LoC |
-| Mehrsparten und Bilanz | 3.500-6.500 LoC |
+| Mehrsparten und Bilanz | 6.500-12.500 LoC |
 | Solvency-II-Kapitalansicht | 3.000-5.500 LoC |
 | DORA-Wirkungsketten | 3.000-5.000 LoC |
 | Managementbedienung und Seminarfreigabe | 1.200-2.500 LoC |
-| **Gesamt** | **13.700-25.000 LoC** |
+| **Gesamt** | **16.700-31.000 LoC** |
 
 Die Schaetzung umfasst produktiven Code, Tests und Dokumentation. Sie ist
 bewusst breit und wird an jedem Phasenende anhand des tatsaechlichen Bestands
@@ -252,7 +264,7 @@ Der nichttechnische Einstieg ist in
 Installations- und technischen Bedienkapitel bleiben Referenz. HB4 bis HB6
 liefern weiterhin Linux-Nachweis, iOS/Juno-Entscheidung und konsolidierte
 Handbuchabnahme. Die fachlichen Bilder und Bedienwege werden nach den
-Meilensteinen PR151, PR162, PR170 und PR178 aktualisiert.
+Meilensteinen PR151, PR167, PR170, PR178 und PR186 aktualisiert.
 
 ## Naechster Schritt
 
@@ -296,11 +308,15 @@ einen Digest-gebundenen XLSX-Export. PR158 hat einen eigenstaendigen
 read-only Vertrag fuer einen geschlossenen Lebensbestand, seine
 Garantieverpflichtung und Strategie-Anschlussstellen festgelegt. PR159
 hat daraus einen schmalen deterministischen Lebensfall mit expliziter
-Gutschriftbasis, Ablaufzahlung und Bilanzpruefung gerechnet. PR160
-klaert als Naechstes den getrennten Zustands-, Fluss- und Strategievertrag
-fuer Kranken. Die Lebensrechnung bleibt ohne Runner und ohne Addition zur
-heutigen Zwei-Sparten-Gesamtbilanz.
-Die Windows-Ready-to-run-Spur PR183/184 bleibt ausdruecklich spaeter.
+Gutschriftbasis, Ablaufzahlung und Bilanzpruefung gerechnet. Der zu
+schmale Lebensumfang wurde danach ausdruecklich nachgeplant: PR160
+klaert als Naechstes die Bewertungsbasis fuer Tod, Neugeschaeft,
+Kapitalbewegungen und abweichende Ablaufleistungen. PR161-167 setzen
+diese Entscheidungen schrittweise um und liefern eine bedienbare
+Lebens-Workbench mit Export. Kranken folgt ab PR168, die
+Vier-Sparten-Gesamtbilanz in PR170. Bis dahin bleibt die heutige
+Zwei-Sparten-Gesamtbilanz unveraendert. Die Windows-Ready-to-run-Spur
+PR191/192 bleibt ausdruecklich spaeter.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
 Vollgleichheit.

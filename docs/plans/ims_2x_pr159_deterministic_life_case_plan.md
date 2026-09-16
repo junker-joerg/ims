@@ -8,7 +8,8 @@ Der PR158-Vertrag erhaelt eine reine, versionierte Python-Rechnung fuer einen
 geschlossenen, homogenen Lebensbestand. Ein Fall darf bis zu 100 explizite
 Modellperioden enthalten, jedoch nicht laenger als die anfangs verbleibende
 Vertragslaufzeit. Es gibt keinen Runner, keine Speicherung und noch keine
-Addition zur Zwei-Sparten-Versichererbilanz; diese folgt erst mit PR162.
+Addition zur Zwei-Sparten-Versichererbilanz; nach der Lebens-Nachplanung
+folgt die Vier-Sparten-Konsolidierung erst mit PR170.
 
 ## Beschlossene Periodenfolge und Bewertungsbasis
 

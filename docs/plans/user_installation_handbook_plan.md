@@ -209,7 +209,7 @@ Umgesetzt unter `docs/plans/portable_user_test_package_plan.md`.
   Bedienpfad eingeordnet;
 - den heute belegten Zwei-Perioden-Pfad von geplanten 100 Perioden,
   Mehrsparten, Bilanz, Solvency-II-Kapital und DORA-Wirkungsketten getrennt;
-- die aktive Produkt-Restplanung PR142 bis PR182 verlinkt;
+- die aktive Produkt-Restplanung PR142 bis PR190 verlinkt;
 - keine Simulation und keine neue Fachlogik ausgefuehrt.
 
 Umgesetzt in `docs/handbook/management_seminar_guide.md`, dem Handbuchindex

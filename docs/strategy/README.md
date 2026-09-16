@@ -9,7 +9,7 @@ Die Kandidatenfolge in der damaligen Entscheidungsvorlage war noch keine aktive 
 die anschliessende Planung hat sie inzwischen ab PR103 konkretisiert.
 
 Die am 2026-09-14 bestaetigte Produkt-Richtung ist jetzt als
-[aktive Restplanung PR142 bis PR182](../plans/ims_2x_all_lines_management_lab_roadmap.md)
+[aktive Restplanung PR142 bis PR190](../plans/ims_2x_all_lines_management_lab_roadmap.md)
 verbindlich gegliedert. Sie fuehrt ueber 100 Perioden und Mehrsparten zu
 Versichererbilanzen, Solvency-II-Kapital, DORA-Wirkungsketten und einer
 managementtauglichen Bedienung.
