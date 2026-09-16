@@ -160,6 +160,7 @@ from ims.api.strategy_execution_candidate_effect_probe_start import (
 )
 from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.model.legacy_damage_adapter import legacy_damage_adapter_contract_payload
+from ims.model.life_sector_contract import life_sector_contract_payload
 from ims.model.sector_taxonomy import sector_taxonomy_payload
 from ims.strategies.sector_strategy_plan import (
     sector_strategy_plan_contract_payload,
@@ -2601,6 +2602,10 @@ def create_app(
         def model_sector_taxonomy() -> dict[str, object]:
             return sector_taxonomy_payload()
 
+        @app.get("/api/model/life-sector-contract")
+        def model_life_sector_contract() -> dict[str, object]:
+            return life_sector_contract_payload()
+
         @app.get("/api/model/legacy-damage-adapter-contract")
         def model_legacy_damage_adapter_contract() -> dict[str, object]:
             return legacy_damage_adapter_contract_payload()
@@ -3283,6 +3288,10 @@ def create_app(
         Route(
             "/api/model/sector-taxonomy",
             lambda request: JSONResponse(sector_taxonomy_payload()),
+        ),
+        Route(
+            "/api/model/life-sector-contract",
+            lambda request: JSONResponse(life_sector_contract_payload()),
         ),
         Route(
             "/api/model/legacy-damage-adapter-contract",

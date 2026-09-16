@@ -382,3 +382,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr157_insurer_balance_workbench_plan.md`:
   PR157-Plan fuer die exakt abgestimmte Zwei-Sparten-Versichererbilanz,
   Workbench-Ansicht und Digest-gebundenen XLSX-Export ohne Runner.
+- `ims_2x_pr158_life_sector_contract_plan.md`:
+  PR158-Plan fuer eigenstaendige Lebenszustaende, Fluesse und
+  Strategie-Anschlussstellen ohne Altregelbindung oder Berechnung.

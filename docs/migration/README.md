@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_life_sector_contract.md`: PR158-read-only Zustands-, Fluss-
+  und Strategie-Anschlussvertrag fuer einen geschlossenen Lebensbestand;
+  ohne Berechnung oder historische Spartenbindung
 - `ims_2x_insurer_balance_workbench.md`: PR157-Konsolidierung von Kfz und
   Sach-Haftpflicht, Versichereransicht und Digest-gebundener XLSX-Export
   aus expliziten Szenariowerten; ohne historische Spartenbindung

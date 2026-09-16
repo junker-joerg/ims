@@ -53,7 +53,9 @@ Runner, Exporte und gespeicherte Laeufe bleiben unveraendert.
   offen; siehe `ims_2x_legacy_damage_adapter.md`.
 - PR154 kann danach Strategie- und Parameterzuordnungen je benannter
   Sparte validieren, ohne die offene historische Bindung zu verdecken.
-- Leben und Kranken brauchen spaeter getrennte Zustands-, Fluss- und
-  Strategievertraege. Die Schadenlogik wird nicht einfach wiederverwendet.
+- PR158 hat einen getrennten, read-only Zustands-, Fluss- und
+  Strategie-Anschlussvertrag fuer Leben ergaenzt. Berechnung und
+  Ausfuehrung fehlen weiterhin; Kranken braucht noch einen eigenen
+  Vertrag. Die Schadenlogik wird nicht einfach wiederverwendet.
 - Es wird weder eine historische Vollgleichheit noch regulatorische
   Vollstaendigkeit behauptet. PR152 startet keine Simulation.

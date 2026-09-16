@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-16
-Status: aktive Produkt-Restplanung; PR157 umgesetzt, PR158 naechster Schritt
+Status: aktive Produkt-Restplanung; PR158 umgesetzt, PR159 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -108,7 +108,7 @@ Schadenlogik ausgegeben.
 | PR155 | Vertrag fuer Bewegungsrechnung und einfache Modellbilanz | umgesetzt: versionierte Felder, Gleichungen, Bilanzidentitaeten und Carryover read-only; keine Rechnung |
 | PR156 | Modellbilanz fuer Kfz und Sach-Haftpflicht | umgesetzt: exakte Szenario-Dezimalwerte, atomare Bilanzidentitaeten und Perioden-Carryover bis 100; kein Alt-Runner-Anschluss |
 | PR157 | Konsolidierte Versichererbilanz in Workbench und XLSX | umgesetzt: exakte Zwei-Sparten-Summe, atomarer Fehlerpfad, Browseransicht und Digest-gebundener XLSX-Export ohne Runner |
-| PR158 | Zustands-, Fluss- und Strategievertrag fuer Leben | garantienahe Verpflichtungen, Laufzeit und Ergebnisquellen sind begrenzt |
+| PR158 | Zustands-, Fluss- und Strategievertrag fuer Leben | umgesetzt: geschlossener Vertragsbestand, Garantieverpflichtung, getrennte Fluesse und nicht ausfuehrbare Strategie-Anschlussstellen; Bewertungstiming bleibt offen |
 | PR159 | Minimale deterministische Lebensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
 | PR160 | Zustands-, Fluss- und Strategievertrag fuer Kranken | Beitrags-, Leistungs- und Bestandslogik sind begrenzt und getrennt |
 | PR161 | Minimale deterministische Krankensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
@@ -178,14 +178,14 @@ einen konkreten Anwendungsfall und dessen eigene Validierung.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR157 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR158 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 5 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 13 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 21 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 25 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 4 |
+| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 12 |
+| durchgaengige DORA-Wirkungskette | PR178 | 37 | 20 |
+| kontrollierte Managementseminar-Reife | PR182 | 41 | 24 |
 
 Die 41 PRs sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
@@ -272,8 +272,11 @@ offener Quellbindung festgelegt. PR156 rechnet nun Kfz oder Sach-Haftpflicht
 aus expliziten Szenariowerten deterministisch ueber bis zu 100 Perioden,
 ohne die alten Positionen zuzuordnen oder einen Runner zu starten. PR157
 stellt beide Sparten und ihre exakte Summe in der Workbench dar und liefert
-einen Digest-gebundenen XLSX-Export. PR158 klaert als Naechstes Zustand,
-Fluesse und Strategien der Lebensparte, weiterhin ohne Vollmodellbehauptung.
+einen Digest-gebundenen XLSX-Export. PR158 hat nun einen eigenstaendigen
+read-only Vertrag fuer einen geschlossenen Lebensbestand, seine
+Garantieverpflichtung und Strategie-Anschlussstellen festgelegt. PR159
+entscheidet als Naechstes Gutschrift-Timing und Bewertungsbasis und rechnet
+einen schmalen deterministischen Lebensfall ohne Vollmodellbehauptung.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
 Vollgleichheit.

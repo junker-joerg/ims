@@ -39,7 +39,8 @@ Jeder Eintrag nennt `actor_type`, `target_id`, `sector_id`, `strategy_id`,
 - `motor` und `property_liability` sind **Planungsziele**, keine historisch
   nachgewiesenen Namen fuer `Sp[1/2]` oder `Rk[1/2]`.
 - `life` und `health` sind bereits Taxonomie-IDs, haben aber noch keine
-  zulaessige Strategie aus dem heutigen Schadenregel-Katalog.
+  zulaessige Strategie aus dem heutigen Schadenregel-Katalog. PR158
+  beschreibt nur separate, nicht ausfuehrbare Lebens-Anschlussstellen.
 - VU-IDs sind auf 1-25 und VN-IDs auf 1-200 der Vdefmd6-Population begrenzt.
 - Zeitfenster sind inklusiv und liegen innerhalb der Perioden 1-100.
   Fenster desselben Akteurs und derselben Sparte duerfen nicht ueberlappen;
