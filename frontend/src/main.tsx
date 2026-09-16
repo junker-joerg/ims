@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import HundredPeriodResults from "./HundredPeriodResults";
 import {
   Activity,
   Archive,
@@ -132,6 +133,7 @@ type StrategyWorkbenchView =
   | "snapshots"
   | "vu-snapshots"
   | "candidates"
+  | "results"
   | "period-chain";
 
 type StrategySectorContract = {
@@ -5572,6 +5574,17 @@ function App() {
               <Waypoints size={17} aria-hidden="true" />
               Periodenkette
             </button>
+            <button
+              className={strategyWorkbenchView === "results" ? "active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={strategyWorkbenchView === "results"}
+              data-testid="strategy-results-tab"
+              onClick={() => setStrategyWorkbenchView("results")}
+            >
+              <Activity size={17} aria-hidden="true" />
+              Ergebnisse
+            </button>
           </div>
 
           {strategyWorkbenchView === "catalog" ? (
@@ -6010,6 +6023,8 @@ function App() {
                 </div>
               )}
             </div>
+          ) : strategyWorkbenchView === "results" ? (
+            <HundredPeriodResults />
           ) : strategyWorkbenchView === "period-chain" ? (
             <div
               className="strategy-contract-view strategy-candidate-view"
@@ -6035,6 +6050,8 @@ function App() {
                       ? "Fuenf Perioden gespeichert"
                       : strategyPeriodChainProbeResultAvailable
                       ? "Ergebnis gespeichert"
+                      : selectedStrategyPeriodChain?.period_count === 100
+                        ? "100 Perioden fluechtig bereit"
                       : selectedStrategyPeriodChain?.readiness.five_period_effect_probe_start_available
                         ? "Fuenf Perioden bereit"
                       : selectedStrategyPeriodChain?.readiness.effect_probe_start_available
@@ -6056,6 +6073,8 @@ function App() {
                   <span>
                     {selectedStrategyPeriodChain?.readiness.exact_five_period_horizon
                       ? "Exakt Periode 1 bis 5 mit stabilem Prefix 1-2 und gespeicherten VU-/VN-Uebergangsflags."
+                      : selectedStrategyPeriodChain?.period_count === 100
+                        ? "100 Perioden sind in der Ergebnisansicht mit Fuenf-Perioden-Prefix freigebbar."
                       : "Exakt Periode 1 und 2 mit den gespeicherten VU-/VN-Uebergangsflags."}
                   </span>
                 </div>
@@ -6651,8 +6670,17 @@ function App() {
                       </section>
                       ) : (
                         <div className="strategy-candidate-probe-message">
-                          <LockKeyhole size={17} aria-hidden="true" />
-                          <span>Fuer diesen Horizont ist noch kein kontrollierter Workbench-Start freigegeben.</span>
+                          {selectedStrategyPeriodChain.period_count === 100 ? (
+                            <>
+                              <Activity size={17} aria-hidden="true" />
+                              <span>Der fluechtige 100-Perioden-Start ist in der Ergebnisansicht verfuegbar.</span>
+                              <button className="secondary-action" type="button"
+                                onClick={() => setStrategyWorkbenchView("results")}>Ergebnisse oeffnen</button>
+                            </>
+                          ) : (
+                            <><LockKeyhole size={17} aria-hidden="true" />
+                              <span>Fuer diesen Horizont ist noch kein kontrollierter Workbench-Start freigegeben.</span></>
+                          )}
                         </div>
                       )}
                     </article>

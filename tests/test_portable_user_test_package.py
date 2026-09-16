@@ -32,17 +32,18 @@ def test_portable_user_guide_is_at_most_ten_pages_and_honest_about_scope() -> No
     assert "Was kann das Modell?" in guide
     assert "Was ist ein Schock?" in guide
     assert "Wo ist der Output?" in guide
-    assert "keinen fachlichen Modelloutput" in guide
+    assert "Strategien -> Ergebnisse" in guide
     assert "Aktivierungsschock" in guide
     assert "Aenderungsschock" in guide
     assert "Indirekter Schock" in guide
     assert "Prozessrealitaet" in guide
     assert "Kein Ergebnis der modernisierten Workbench" in guide
-    assert guide.count("![") == 9
+    assert guide.count("![") == 10
     assert (
         "windows_strategy_five_period_effect_probe_pr146_wide_2026-09-16.png"
         in guide
     )
+    assert "windows_hundred_period_results_pr151_wide_2026-09-16.png" in guide
     for image_name in (
         "ims_market_cycle_diss_2026-09-01.png",
         "ims_shock_types_diss_2026-09-01.png",

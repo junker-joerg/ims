@@ -311,4 +311,7 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_strategy_execution_result_bundle.md`:
   PR150-versioniertes fluechtiges Ergebnisbuendel mit gleicher
   Kennzahlentabelle in JSON, CSV und XLSX; kompletter Nachweis im JSON
+- `ims_2x_hundred_period_results_workbench.md`:
+  PR151-Browserpfad fuer 100 Perioden mit Zeitreihen, passenden
+  Vergleichslaeufen und Digest-gebundenem Download
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

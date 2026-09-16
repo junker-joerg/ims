@@ -144,16 +144,24 @@ Eingabewechsel zuschreiben.
 
 ## Seite 5 - Wo ist der Output?
 
-Die kurze und ehrliche Antwort fuer das aktuelle Windows-Testpaket lautet:
-**Die Workbench zeigt noch keinen fachlichen Modelloutput als Zeitreihe oder
-Diagramm.** Sie zeigt Szenarien, Run-Metadaten, technische Ausfuehrungsgrenzen,
-historische Validierung und fuer vorbereitete Strategie-Kandidaten den
-gespeicherten Wirkungsnachweis einer, zweier oder fuenf kontrollierter
-Perioden.
+Im aktuellen Windows-Testpaket steht der Modelloutput fuer **vorbereitete
+100-Perioden-Ketten** unter `Strategien -> Ergebnisse`. Dort waehlen Sie
+eine gespeicherte Kette und den passenden Fuenf-Perioden-Nachweis,
+tragen Freigabeperson und Grund ein und bestaetigen den fluechtigen Start.
+Danach sehen Sie einen Versicherer oder Versicherungsnehmer, ein vorhandenes
+Zustandsfeld und alle 100 Perioden als Linie und Tabelle. Eine zweite
+gleich praefixierte Kette kann daneben angezeigt werden.
 
 ![Run-Uebersicht ohne fachlichen Ergebnisbrowser](images/windows_workbench_runs_hb3a_2026-09-01.png)
 
-*Abbildung 4: Die Run-Uebersicht weist einen Lauf nach; sie zeigt noch keine Praemien-, Marktanteils- oder Reservenreihe.*
+*Abbildung 4: Die allgemeine Run-Uebersicht ist weiterhin ein Betriebsnachweis;
+die fachliche 100er-Zeitreihe liegt in `Strategien -> Ergebnisse`.*
+
+![100-Perioden-Ergebnis mit Vergleich](images/windows_hundred_period_results_pr151_wide_2026-09-16.png)
+
+*Abbildung 4a: Vorbereiteter 100-Perioden-Teststand. Der Tabellenwert ist
+ein vorhandenes Zustandsfeld; zwei Linien bedeuten noch keinen
+Kausalnachweis. Auf schmalen Bildschirmen stehen die Filter untereinander.*
 
 Die Dissertation beschreibt den historischen Output als
 **Aggregationsdateien mit Simulationsrohdaten**. Grafiken konnten
@@ -166,16 +174,20 @@ Heute sind drei Orte zu unterscheiden:
 | --- | --- | --- |
 | `tests/references/legacy_agrsich/` | historische `.DAT`-Referenzen | Diagnosematerial, kein neuer Lauf |
 | explizit gewaehltes `output_dir` eines Diagnose-Runners | neu berechnete `.dat`-Tabellen | nur bei gezieltem Entwickler-/Validierungslauf |
-| Workbench `Runs` / Ergebnisanzeige | Status, Herkunft, Freigabe und Adapterprotokoll | noch keine fachliche Datenanalyse |
+| Workbench `Runs` | Status, Herkunft, Freigabe und Adapterprotokoll | technischer Betriebsnachweis |
+| Workbench `Strategien -> Ergebnisse` | vorbereiteter 100er-Lauf, Zustandsfelder, zwei Vergleichslaeufe | Zeitreihe, Tabelle und ZIP-Download |
 
-Beim normalen Start des ZIP-Testpakets wird keine Simulation gestartet und
-deshalb auch kein neuer Ergebnisordner erzeugt. Ein sichtbarer
-Ergebnis-Arbeitsbereich mit Diagrammen, Tabellen und Export ist eine noch
-offene Produktfunktion von IMS 2.x.
+Beim normalen Start des ZIP-Testpakets wird kein Lauf gestartet. Der
+100er-Lauf braucht bereits gespeicherte Einzelkandidaten, eine Kette und
+einen Fuenf-Perioden-Nachweis. Sein Ergebnis lebt nur bis zum Neuladen
+der Browserseite. `ZIP herunterladen` rechnet erneut und gibt nur bei
+gleichem Wirkungsdigest JSON, CSV und XLSX frei. Der gefuehrte Aufbau
+eines eigenen Szenarios und dauerhafte 100er-Ergebnisablage fehlen noch.
 
 ![Gespeicherter Fuenf-Perioden-Nachweis der heutigen Workbench](images/windows_strategy_five_period_effect_probe_pr146_wide_2026-09-16.png)
 
-*Abbildung: Die Workbench kann fuenf vorbereitete VU-/VN-Strategiekandidaten nacheinander anwenden, vier gespeicherte Carryover-Uebergaenge ausfuehren und den Prefix 1-2 gegen einen unabhaengigen Nachweis pruefen. Das ist noch keine 100-Perioden-Simulation und keine historische Vollgleichheit.*
+*Abbildung: Der gespeicherte Fuenf-Perioden-Nachweis dient als Prefix fuer
+den fluechtigen 100er-Pfad. Es wird keine historische Vollgleichheit behauptet.*
 
 <!-- PAGE BREAK -->
 
@@ -321,7 +333,9 @@ Experiments, keine Rekonstruktion realer Versicherungsmarktzahlen.
 
 ![Dashboard des heutigen Testpakets](images/windows_workbench_dashboard_hb3a_2026-09-01.png)
 
-*Abbildung 8: Die heutige Workbench macht Betriebs- und Nachweisstatus sichtbar; fachliche Schockkonfiguration und Ergebnisanalyse fehlen noch.*
+*Abbildung 8: Das Dashboard zeigt Betriebs- und Nachweisstatus. Eine
+begrenzte Ergebnisanalyse fuer vorbereitete 100er-Ketten gibt es jetzt
+unter `Strategien -> Ergebnisse`; ein Schockeditor fehlt weiterhin.*
 
 ### Was ein Forscher oder Manager damit kuenftig tun soll
 
@@ -331,12 +345,12 @@ Experiments, keine Rekonstruktion realer Versicherungsmarktzahlen.
 - robuste Wirkungsrichtungen ueber mehrere Laeufe und Seeds pruefen;
 - Annahmen, Modellversion und Ergebnisgrenzen nachvollziehbar publizieren.
 
-Im aktuellen Testpaket koennen Sie Bedienweg, Quellen, Referenzkorpus,
-technische Nachweise sowie eine vorbereitete Ein- oder Zwei-Perioden-
-Wirkungsprobe pruefen.
-Einen neuen fachlichen Schock konfigurieren, ueber 100 Perioden ausfuehren und
-als Diagramm auswerten koennen Sie dort noch nicht. Genau diese drei Schritte
-bilden den benoetigten Anwenderpfad fuer IMS 2.x:
+Im aktuellen Testpaket koennen Sie vorbereitete 100-Perioden-Ketten
+ausfuehren, einen Akteurswert als Zeitreihe lesen, zwei passende Laeufe
+vergleichen und die Tabelle als JSON/CSV/XLSX exportieren. Einen neuen
+fachlichen Schock frei konfigurieren und die benoetigte 100er-Kette
+gefuehrt erzeugen koennen Sie dort noch nicht. Der vollstaendige
+Anwenderpfad fuer IMS 2.x bleibt daher:
 **Szenario bauen -> Schock ausfuehren -> Wirkung erklaeren.**
 
 Installation und Fehlerhilfe stehen in `INSTALLATION.pdf`.

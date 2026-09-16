@@ -255,9 +255,26 @@ vollstaendig lesbar.
 | `Fehlgeschlagen` im Verlauf | kein vollstaendiges Fuenf-Perioden-Ergebnis wurde gespeichert | Fehlertext lesen; nur mit neuer manueller Freigabe erneut pruefen |
 | `Fuenf Perioden unveraenderlich gespeichert` | alle Perioden, Uebergaenge und der Prefix sind vollstaendig nachgewiesen | Ergebnis lesen; kein zweiter Start erforderlich |
 
-Die Probe erzeugt keine fachlichen Ausgabedateien. Horizonte ab zehn
-Perioden, ein freier 100-Periodenlauf und historische Vollgleichheit bleiben
-getrennte spaetere Abnahmegrenzen.
+Die gespeicherte Fuenf-Perioden-Probe erzeugt keine fachlichen
+Ausgabedateien. Fuer bereits vorbereitete 100-Perioden-Ketten gibt es
+inzwischen einen separaten fluechtigen Ergebnis- und Downloadpfad;
+ein frei konfigurierbarer Fall und historische Vollgleichheit bleiben offen.
+
+## Vorbereitete 100-Perioden-Ergebnisse
+
+Unter **Strategien -> Ergebnisse** eine gespeicherte 100er-Kette mit
+passendem Fuenf-Perioden-Nachweis waehlen. Namen und Grund eintragen,
+Checkbox setzen und den Lauf starten. Erst nach erfolgreicher letzter
+Periode erscheint die Zeitreihe. Akteur, bestehendes Zustandsfeld und
+gegebenenfalls Vektorposition filtern; ein zweiter Lauf ist nur bei
+gleichem Prefix vergleichbar. `ZIP herunterladen` rechnet erneut und
+fordert denselben Wirkungsdigest an. Nach Browser-Neuladen geht die
+Anzeige verloren; sichern Sie das ZIP vorher.
+
+Fehlt die Kette oder der Prefix, bleibt der Start gesperrt. Ein
+Kettendetailfehler wird sichtbar gemeldet. Bei Lauf- oder Digestfehler
+entsteht weder ein Teilresultat noch ein Teil-ZIP. Die Workbench
+erstellt die 100 Einzelkandidaten nicht selbst.
 
 ## Schreib- und Stopgrenzen
 
@@ -272,6 +289,8 @@ getrennte spaetere Abnahmegrenzen.
 | `Wirkungsprobe starten` | Freigabe, Versuch und Einperiodenergebnis | genau eine isolierte Periode, kein Mehrperiodenlauf |
 | `Zwei Perioden starten` | Freigabe, Versuch und unveraenderliches Kettenergebnis | exakt Periode 1 und 2 mit gespeichertem Carryover; kein freier Mehrperiodenlauf |
 | `Fuenf Perioden starten` | Freigabe, Versuch, kanonische Kettenkopie und unveraenderliches Ergebnis | exakt Periode 1 bis 5 mit vier Uebergaengen und Prefixnachweis 1-2; kein freier Langlauf |
+| `100 Perioden starten` | keine neue Ergebnisablage | isolierter fluechtiger Lauf einer vorbereiteten Kette mit Prefixnachweis 1-5 |
+| `ZIP herunterladen` | Download im Browser, keine Serverablage | erneuter 100er-Lauf; nur bei gleichem Wirkungsdigest wird das Buendel geliefert |
 
 Bei unklarer Quelle, unerwartetem Schreibpfad, geaendertem Queue-Eintrag oder
 einem fachlichen Blocker wird nicht weiter freigegeben. Der Browser darf nicht

@@ -1,7 +1,7 @@
 # IMS im Managementseminar
 
 Stand: 2026-09-16
-Handbuchschnitt: HB3d
+Handbuchschnitt: HB3e
 Zielgruppe: Fuehrungskraefte, Lehrende und Seminargruppen ohne Kenntnis der
 Dissertation oder des Quellcodes
 
@@ -44,11 +44,15 @@ Die heutige Workbench kann:
 - eine Ein- oder Zwei-Perioden-Wirkungsprobe ausdruecklich freigeben,
   ausfuehren und unveraenderlich ablegen;
 - den Uebergang von Periode 1 nach Periode 2 nachvollziehbar zeigen.
+- vorbereitete 100-Perioden-Ketten fluechtig starten und vorhandene
+  VU-/VN-Zustandsfelder als Zeitreihe und Tabelle lesen;
+- zwei gleich praefixierte Laeufe vergleichen und ein JSON-/CSV-/XLSX-ZIP
+  mit geprueftem Wirkungsdigest herunterladen.
 
 Noch nicht verfuegbar sind:
 
-- ein frei bedienbarer Lauf ueber 100 Perioden;
-- ein Ergebnisarbeitsplatz mit Zeitreihen, Vergleichen und XLSX-Export;
+- ein gefuehrter Aufbau der 100 Einzelkandidaten und der Kette;
+- eine dauerhafte Ablage von 100-Perioden-Ergebnissen;
 - benannte Sparten Kfz, Sach-Haftpflicht, Leben und Kranken;
 - Versichererbilanzen und Solvency-II-Kapitalansichten;
 - ein DORA-Szenarioeditor mit durchgaengiger Wirkungskette.
@@ -58,6 +62,12 @@ Diese Funktionen sind in der aktiven
 in kleinen Schritten geplant. Die Trennung ist wichtig: Der Leitfaden zeigt
 den vorgesehenen Nutzen, ohne den heutigen Stand groesser darzustellen, als
 er ist.
+
+![100-Perioden-Ergebnisse in der Workbench](images/windows_hundred_period_results_pr151_wide_2026-09-16.png)
+
+*Die gezeigten Reihen stammen aus einem kleinen kontrollierten Teststand.
+Die gleiche Wirkung kann als ZIP heruntergeladen werden; ein frei
+konfigurierbarer Markt- oder Regulierungsschock ist damit noch nicht belegt.*
 
 ## Sieben Vorteile im Fuehrungskraefteseminar
 
@@ -105,10 +115,11 @@ entscheidend.*
 | 70-85 Minuten | Auf das eigene Unternehmen uebertragen | Handlungsoptionen, Fruehindikatoren und offene Daten |
 | 85-90 Minuten | Abschluss | Entscheidung, Annahmen und naechster Testfall |
 
-Fuer den heutigen Stand sollte die Moderation eine vorbereitete
-Zwei-Perioden-Wirkungsprobe verwenden. Nach PR151 kann derselbe Ablauf mit
-einem 100-Perioden-Lauf, sichtbaren Zeitreihen und Exporten durchgefuehrt
-werden.
+Fuer den heutigen Stand sollte die Moderation einen vorbereiteten
+100-Perioden-Fall verwenden. Wo die dafuer noetigen 100 Kandidaten und der
+Prefix fehlen, bleibt die gespeicherte Zwei- oder Fuenf-Perioden-Probe
+der kleinere Demonstrationsfall. Einen neuen Fall frei zusammenzustellen
+ist noch keine Seminarfunktion.
 
 ## Die fuenf Arbeitsansichten
 
@@ -145,6 +156,27 @@ gemeinsamen Arbeitsansicht.*
 Die angezeigte Pruefsumme ist der Fingerabdruck des vorbereiteten Falls. Sie
 hilft festzustellen, ob beim erneuten Laden wirklich derselbe Fall betrachtet
 wird. Sie ist kein fachliches Guetesiegel.
+
+## Den vorbereiteten 100-Perioden-Fall lesen
+
+1. Unter **Strategien -> Ergebnisse** eine vorbereitete 100er-Kette und
+   ihren gespeicherten Fuenf-Perioden-Nachweis waehlen.
+2. Freigabe begruenden, bestaetigen und den fluechtigen Lauf starten.
+3. Versicherer oder Versicherungsnehmer, Akteur, Kennzahl und bei
+   Vektorwerten die Position auswaehlen. Diagramm und Tabelle zeigen
+   dieselben vorhandenen Werte ueber 100 Perioden.
+4. Einen zweiten Lauf nur bei gleichem Prefix danebenstellen. Unterschiede
+   beschreiben, aber nicht automatisch als Schockwirkung ausgeben.
+5. Das ZIP herunterladen. Der Server rechnet erneut und sperrt den
+   Download, wenn der Wirkungsdigest nicht zum sichtbaren Lauf passt.
+
+Das Ergebnis wird nach einem Browser-Neuladen nicht wiederhergestellt.
+Der Moderator sollte das ZIP vor dem Seminar sichern.
+
+![100-Perioden-Ergebnis auf schmalem Bildschirm](images/windows_hundred_period_results_pr151_narrow_2026-09-16.png)
+
+*Die schmale Ansicht zeigt dieselben Filter und Zahlen ohne seitliches
+Scrollen. Das Beispiel stammt aus einem kontrollierten Teststand.*
 
 ![Fuenf-Perioden-Pfad auf schmalem Bildschirm](images/windows_strategy_five_period_effect_probe_pr146_narrow_2026-09-16.png)
 
@@ -237,8 +269,8 @@ Ein Ergebnis darf nicht als Entscheidungsgrundlage ausgegeben werden, wenn:
 
 Die aktive Roadmap liefert in dieser Reihenfolge:
 
-1. einen bedienbaren 100-Perioden-Lauf mit Diagrammen und CSV-/JSON-/XLSX-
-   Export;
+1. einen gefuehrten Aufbau eigener 100-Perioden-Faelle und eine dauerhafte
+   Ergebnisablage; der vorbereitete fluechtige Bedienpfad ist vorhanden;
 2. Kfz, Sach-Haftpflicht, Leben und Kranken mit unterschiedlichen
    Strategien;
 3. eine einfache Bilanz je Versicherer und die Konsolidierung ueber Sparten;

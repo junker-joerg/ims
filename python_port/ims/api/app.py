@@ -110,6 +110,7 @@ from ims.api.strategy_execution_period_chain_store import (
     strategy_execution_period_chain_store_error_payload,
 )
 from ims.api.strategy_execution_period_chain_run_control import (
+    STRATEGY_EXECUTION_PERIOD_CHAIN_RUN_CONTROL_REQUEST_VERSION,
     StrategyExecutionPeriodChainRunControlError,
     check_strategy_execution_period_chain_run_control_release,
     parse_strategy_execution_period_chain_run_control_request,
@@ -1773,6 +1774,13 @@ def create_app(
                 status_code=409,
             )
         if bundle:
+            expected = request.headers.get("if-match")
+            if expected is not None and expected != f'"{result["effect_digest"]}"':
+                return JSONResponse(
+                    {"status": "blocked", "code": "effect_digest_mismatch",
+                     "partial_result_returned": False},
+                    status_code=409,
+                )
             try:
                 content = build_result_bundle(result)
             except ResultBundleError as exc:
@@ -1785,7 +1793,8 @@ def create_app(
                 content,
                 media_type="application/zip",
                 headers={"Content-Disposition": 'attachment; filename="ims-100-perioden.zip"',
-                         "Cache-Control": "no-store"},
+                         "Cache-Control": "no-store",
+                         "ETag": f'"{result["effect_digest"]}"'},
             )
         return JSONResponse(result)
 
@@ -1793,6 +1802,28 @@ def create_app(
         request: Request,
     ) -> JSONResponse | Response:
         return await strategy_execution_extended_probe_response(request, bundle=True)
+
+    def strategy_execution_hundred_period_workbench_contract() -> dict[str, object]:
+        return {
+            "schema_version": "ims.strategy-execution-hundred-period-workbench.v1",
+            "request_schema_version": EXTENDED_PROBE_REQUEST_VERSION,
+            "release_request_schema_version": (
+                STRATEGY_EXECUTION_PERIOD_CHAIN_RUN_CONTROL_REQUEST_VERSION
+            ),
+            "effect_probe_endpoint": (
+                "/api/run-control/strategy-period-chain-extended-effect-probe"
+            ),
+            "bundle_endpoint": (
+                "/api/run-control/strategy-period-chain-extended-result-bundle"
+            ),
+            "period_count": 100,
+            "stored_five_period_baseline_required": True,
+            "explicit_release_required": True,
+            "bundle_if_match_supported": True,
+            "result_persisted": False,
+            "automatic_retry_enabled": False,
+            "historical_full_equality_claim": False,
+        }
 
     async def strategy_execution_five_period_effect_probe_response(
         request: Request,
@@ -3032,6 +3063,10 @@ def create_app(
         ) -> JSONResponse | Response:
             return await strategy_execution_result_bundle_response(request)
 
+        @app.get("/api/run-control/strategy-period-chain-hundred-workbench-contract")
+        def run_control_strategy_hundred_workbench_contract() -> dict[str, object]:
+            return strategy_execution_hundred_period_workbench_contract()
+
         @app.post(
             "/api/run-control/strategy-period-chain-five-period-effect-probe-start",
             response_model=None,
@@ -3506,6 +3541,10 @@ def create_app(
             "/api/run-control/strategy-period-chain-extended-result-bundle",
             strategy_execution_result_bundle_response,
             methods=["POST"],
+        ),
+        Route(
+            "/api/run-control/strategy-period-chain-hundred-workbench-contract",
+            lambda request: JSONResponse(strategy_execution_hundred_period_workbench_contract()),
         ),
         Route(
             "/api/run-control/strategy-period-chain-five-period-effect-probe-start",

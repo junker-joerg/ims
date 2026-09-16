@@ -41,14 +41,14 @@ def test_active_roadmap_numbers_pr142_through_pr182_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR170 | 29" in document
     assert "durchgaengige DORA-Wirkungskette | PR178 | 37" in document
     assert "kontrollierte Managementseminar-Reife | PR182 | 41" in document
-    assert "PR150 umgesetzt, PR151 naechster Schritt" in document
+    assert "PR151 umgesetzt, PR152 naechster Schritt" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
     assert "PR145 hat kontrollierten Serverstart" in document
     assert "PR146 hat den Pfad in der Workbench bedienbar gemacht" in document
     assert "PR147 hat fuer 10, 25, 50 und 100 Perioden" in document
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
-    assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 1" in document
-    assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 32" in document
+    assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
+    assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 31" in document
 
 
 def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
@@ -70,13 +70,13 @@ def test_management_guide_is_nontechnical_honest_and_visual() -> None:
     document = GUIDE.read_text(encoding="utf-8")
     normalized = " ".join(document.split())
 
-    assert "Handbuchschnitt: HB3d" in document
+    assert "Handbuchschnitt: HB3e" in document
     assert "## Sieben Vorteile im Fuehrungskraefteseminar" in document
     assert "## Ein Seminar in 90 Minuten" in document
     assert "## Arbeitsblatt fuer eine Wirkungskette" in document
     assert "## Geeignete Seminarfaelle" in document
     assert "Noch nicht verfuegbar sind" in document
-    assert "frei bedienbarer Lauf ueber 100 Perioden" in normalized
+    assert "gefuehrter Aufbau der 100 Einzelkandidaten" in normalized
     assert "rechtliche DORA-Konformitaet" in normalized
     assert "/api/" not in document
     assert "DTO" not in document

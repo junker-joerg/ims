@@ -3773,3 +3773,259 @@ code {
     width: 100%;
   }
 }
+.hundred-results {
+  min-width: 0;
+}
+
+.hundred-run-controls,
+.hundred-result {
+  border-top: 1px solid #d8e1db;
+  padding: 20px 0;
+}
+
+.hundred-run-fields,
+.hundred-result-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.hundred-run-fields label,
+.hundred-result-filters label {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  color: #506158;
+  font-size: 0.81rem;
+}
+
+.hundred-run-fields select,
+.hundred-run-fields input,
+.hundred-result-filters select {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 6px 9px;
+  border: 1px solid #c6d2ca;
+  border-radius: 5px;
+  background: #fff;
+  color: #17201b;
+  font: inherit;
+  font-size: 0.91rem;
+}
+
+.hundred-run-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 17px;
+}
+
+.hundred-run-actions label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #34443a;
+  font-size: 0.9rem;
+}
+
+.hundred-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hundred-result-head > div {
+  display: grid;
+  gap: 4px;
+}
+
+.hundred-result-head strong {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #194a36;
+  font-size: 0.99rem;
+}
+
+.hundred-result-head span,
+.hundred-provenance,
+.hundred-status {
+  color: #56665d;
+  font-size: 0.84rem;
+}
+
+.hundred-provenance,
+.hundred-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  margin-top: 12px;
+}
+
+.hundred-provenance span {
+  overflow-wrap: anywhere;
+}
+
+.hundred-status.error {
+  color: #a53d32;
+}
+
+.hundred-result-filters {
+  margin-top: 20px;
+}
+
+.hundred-segment {
+  display: flex;
+  min-width: 0;
+  align-items: stretch;
+  gap: 0;
+}
+
+.hundred-segment button {
+  min-width: 0;
+  flex: 1;
+  min-height: 38px;
+  padding: 6px 9px;
+  border: 1px solid #c6d2ca;
+  background: #f6f8f6;
+  color: #42544a;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.hundred-segment button + button {
+  border-left: 0;
+}
+
+.hundred-segment button.active {
+  background: #245840;
+  color: #fff;
+}
+
+.hundred-chart {
+  margin-top: 16px;
+  min-width: 0;
+  border-top: 1px solid #e1e8e3;
+  border-bottom: 1px solid #e1e8e3;
+  padding: 12px 0;
+}
+
+.hundred-chart svg {
+  display: block;
+  width: 100%;
+  height: clamp(160px, 24vw, 260px);
+}
+
+.hundred-chart-axis {
+  stroke: #a6b5aa;
+  stroke-width: 1;
+}
+
+.hundred-chart-primary,
+.hundred-chart-compare {
+  fill: none;
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.hundred-chart-primary {
+  stroke: #167b57;
+}
+
+.hundred-chart-compare {
+  stroke: #bd6748;
+}
+
+.hundred-chart-scale,
+.hundred-chart-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #64726a;
+  font-size: 0.78rem;
+}
+
+.hundred-chart-legend {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.hundred-chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hundred-chart-legend i {
+  display: inline-block;
+  width: 16px;
+  height: 3px;
+}
+
+.hundred-chart-primary-key { background: #167b57; }
+.hundred-chart-compare-key { background: #bd6748; }
+
+.hundred-table-scroll {
+  max-height: 330px;
+  overflow: auto;
+  margin-top: 16px;
+  border: 1px solid #d8e1db;
+}
+
+.hundred-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hundred-table th,
+.hundred-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #e8eee9;
+  text-align: right;
+}
+
+.hundred-table th:first-child {
+  text-align: left;
+}
+
+.hundred-table thead th {
+  position: sticky;
+  top: 0;
+  background: #eef3ef;
+  color: #34483c;
+  z-index: 1;
+}
+
+.hundred-table tbody tr:nth-child(even) {
+  background: #f8faf8;
+}
+
+@media (max-width: 640px) {
+  .hundred-run-fields,
+  .hundred-result-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hundred-run-actions {
+    align-items: stretch;
+  }
+
+  .hundred-run-actions .primary-action,
+  .hundred-result-head .secondary-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hundred-chart svg {
+    height: 180px;
+  }
+}

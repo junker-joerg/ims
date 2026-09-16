@@ -370,3 +370,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr150_result_bundle_plan.md`:
   PR150-Plan fuer ein fluechtiges JSON-/CSV-/XLSX-Ergebnisbuendel des
   technischen 100-Perioden-Laufs mit gleicher Kennzahlentabelle.
+- `ims_2x_pr151_results_workbench_plan.md`:
+  PR151-Plan fuer den kontrollierten 100er-Bedienpfad, Zeitreihen,
+  Prefix-gebundene Vergleiche und den Digest-gebundenen ZIP-Download.
