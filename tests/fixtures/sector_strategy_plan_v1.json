@@ -1,0 +1,46 @@
+{
+  "schema_version": "ims.sector-strategy-plan.v1",
+  "sector_taxonomy_schema_version": "ims.sector-taxonomy.v1",
+  "catalog_schema_version": "ims.strategy-catalog.v1",
+  "actor_population": "Vdefmd6",
+  "scope": "planned_non_life_sector_assignments",
+  "historical_mapping_status": "unresolved",
+  "plan_id": "synthetic-non-life-example",
+  "label": "Synthetischer Nichtleben-Strategieplan",
+  "assignments": [
+    {
+      "actor_type": "insurer",
+      "target_id": 1,
+      "sector_id": "motor",
+      "strategy_id": "vu.vrvu01",
+      "period_from": 1,
+      "period_through": 100,
+      "parameter_schema": "VURandomUniformRuleParameters",
+      "parameter_values": {
+        "premium_factor_normal": 1.05,
+        "advertising_factor_normal": 0.9,
+        "premium_factor_shock": 1.2,
+        "advertising_factor_shock": 1.1
+      }
+    },
+    {
+      "actor_type": "insurer",
+      "target_id": 1,
+      "sector_id": "property_liability",
+      "strategy_id": "vu.vrvu02",
+      "period_from": 1,
+      "period_through": 100,
+      "parameter_schema": "VURandomNormalRuleParameters",
+      "parameter_values": {
+        "premium_intercept_normal": 0.0,
+        "premium_factor_normal": 1.0,
+        "advertising_intercept_normal": 0.0,
+        "advertising_factor_normal": 1.0,
+        "premium_intercept_shock": 0.0,
+        "premium_factor_shock": 1.1,
+        "advertising_intercept_shock": 0.0,
+        "advertising_factor_shock": 1.1
+      }
+    }
+  ]
+}

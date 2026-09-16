@@ -152,6 +152,11 @@ from ims.api.strategy_execution_candidate_effect_probe_start import (
 from ims.engine.core_validation_overview import build_core_validation_overview
 from ims.model.legacy_damage_adapter import legacy_damage_adapter_contract_payload
 from ims.model.sector_taxonomy import sector_taxonomy_payload
+from ims.strategies.sector_strategy_plan import (
+    sector_strategy_plan_contract_payload,
+    sector_strategy_plan_invalid_json_payload,
+    validate_sector_strategy_plan,
+)
 from ims.strategies import (
     STRATEGY_ASSIGNMENT_DRAFT_VALIDATION_VERSION,
     STRATEGY_ASSIGNMENT_SNAPSHOT_CONTEXT_VALIDATION_VERSION,
@@ -1131,6 +1136,13 @@ def create_app(
                 status_code=400,
             )
         return JSONResponse(validate_strategy_assignment_draft(payload).to_dict())
+
+    async def sector_strategy_plan_validation_response(request: Request) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(sector_strategy_plan_invalid_json_payload(), status_code=400)
+        return JSONResponse(validate_sector_strategy_plan(payload).to_dict())
 
     async def strategy_assignment_snapshot_translation_response(
         request: Request,
@@ -2527,6 +2539,14 @@ def create_app(
         def strategies_catalog() -> dict[str, object]:
             return strategy_catalog_payload()
 
+        @app.get("/api/strategies/sector-plan-contract")
+        def strategies_sector_plan_contract() -> dict[str, object]:
+            return sector_strategy_plan_contract_payload()
+
+        @app.post("/api/strategies/sector-plan-validation", response_model=None)
+        async def strategies_sector_plan_validation(request: Request) -> JSONResponse:
+            return await sector_strategy_plan_validation_response(request)
+
         @app.get("/api/model/sector-taxonomy")
         def model_sector_taxonomy() -> dict[str, object]:
             return sector_taxonomy_payload()
@@ -3181,6 +3201,15 @@ def create_app(
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/strategies/catalog", lambda request: JSONResponse(strategy_catalog_payload())),
+        Route(
+            "/api/strategies/sector-plan-contract",
+            lambda request: JSONResponse(sector_strategy_plan_contract_payload()),
+        ),
+        Route(
+            "/api/strategies/sector-plan-validation",
+            sector_strategy_plan_validation_response,
+            methods=["POST"],
+        ),
         Route(
             "/api/model/sector-taxonomy",
             lambda request: JSONResponse(sector_taxonomy_payload()),

@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-16
-Status: aktive Produkt-Restplanung; PR153 umgesetzt, PR154 naechster Schritt
+Status: aktive Produkt-Restplanung; PR154 umgesetzt, PR155 naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -104,7 +104,7 @@ Schadenlogik ausgegeben.
 | --- | --- | --- |
 | PR152 | Versionierte Spartentaxonomie und Erweiterungsvertrag | umgesetzt: vier stabile Ziel-IDs; zwei historische Positionen bleiben ohne implizite Zuordnung |
 | PR153 | Kompatibilitaetsadapter fuer die zwei vorhandenen Schadenvektoren | umgesetzt: C 1/2 zu Python 0/1 unter neutralen Legacy-IDs; moderne Zuordnung bleibt offen; Altpfad unveraendert |
-| PR154 | Strategie- und Parameterzuordnung je Sparte | unterschiedliche Strategien je Versicherer und Sparte sind validierbar |
+| PR154 | Strategie- und Parameterzuordnung je Sparte | umgesetzt: getrennte Kfz-/Sach-Haftpflicht-Strategien, skalare Parameter und Periodenfenster je VU/VN validierbar; nur Plan, keine Ausfuehrung |
 | PR155 | Vertrag fuer Bewegungsrechnung und einfache Modellbilanz | Bestands-, Erfolgs-, Zahlungs- und Kapitalbewegungen sind explizit |
 | PR156 | Modellbilanz fuer Kfz und Sach-Haftpflicht | Bilanzidentitaeten und Periodenuebergaenge sind getestet |
 | PR157 | Konsolidierte Versichererbilanz in Workbench und XLSX | Einzelsparten und Gesamtunternehmen sind abstimmbar |
@@ -178,14 +178,14 @@ einen konkreten Anwendungsfall und dessen eigene Validierung.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR153 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR154 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 9 |
-| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 17 |
-| durchgaengige DORA-Wirkungskette | PR178 | 37 | 25 |
-| kontrollierte Managementseminar-Reife | PR182 | 41 | 29 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21 | 8 |
+| erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 16 |
+| durchgaengige DORA-Wirkungskette | PR178 | 37 | 24 |
+| kontrollierte Managementseminar-Reife | PR182 | 41 | 28 |
 
 Die 41 PRs sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
@@ -263,8 +263,11 @@ vier Zielsparten als versionierte, rein lesende Taxonomie bereitgestellt.
 Die zwei historischen Zweiervektor-Positionen bleiben ohne Zuordnung zu
 diesen Namen. PR153 hat C-Position 1/2 zu Python-/Exportindex 0/1
 verlustfrei und unter neutralen Legacy-IDs abgebildet. Eine moderne
-Spartenbindung bleibt offen. PR154 folgt mit validierbaren Strategie- und
-Parameterzuordnungen je Sparte.
+Spartenbindung bleibt offen. PR154 hat fuer die geplanten Nichtleben-Sparten
+unterschiedliche Katalogstrategien, skalare Parameter und Zeitfenster je
+VU/VN rein validierend beschrieben. Die alten Runner nutzen diese Plaene
+noch nicht. PR155 folgt mit dem Vertrag fuer Bewegungsrechnung und
+einfache Modellbilanz.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
 Vollgleichheit.

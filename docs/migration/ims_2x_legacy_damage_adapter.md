@@ -58,6 +58,6 @@ Vollgleichheitsnachweis.
 
 Fokus-Tests pruefen Index, Werte, Typen, negative Formen, unveraenderte
 VU-/VN-Zustaende und den schreibgeschuetzten API-Vertrag. Die vorhandenen
-Altpfadtests pruefen weiterhin den Rechenkern. PR154 kann getrennte
-Strategie- und Parameterzuordnungen validieren, muss aber die offene
-historische Bindung sichtbar halten.
+Altpfadtests pruefen weiterhin den Rechenkern. PR154 validiert nun
+getrennte, rein geplante Strategie- und Parameterzuordnungen fuer benannte
+Nichtleben-Sparten; die historische Bindung und Ausfuehrung bleiben offen.
