@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import HundredPeriodResults from "./HundredPeriodResults";
+import ModelBalanceWorkbench from "./ModelBalanceWorkbench";
 import {
   Activity,
   Archive,
@@ -14,6 +15,7 @@ import {
   Eye,
   FileText,
   GitBranch,
+  Landmark,
   ListTree,
   LockKeyhole,
   Pencil,
@@ -5237,6 +5239,9 @@ function App() {
           <a href="#strategies">
             <ListTree size={18} aria-hidden="true" /> Strategien
           </a>
+          <a href="#balance">
+            <Landmark size={18} aria-hidden="true" /> Bilanz
+          </a>
           <a href="#validation">
             <ShieldCheck size={18} aria-hidden="true" /> Validierung
           </a>
@@ -9142,6 +9147,8 @@ function App() {
             ))}
           </div>
         </section>
+
+        <ModelBalanceWorkbench />
 
         <section className="panel validation-panel" id="validation">
           <div className="panel-heading">

@@ -4,8 +4,9 @@ Der reine Python-Rechenkern
 `ims.accounting.non_life_model_balance.build_non_life_model_balance`
 berechnet fuer **einen** Versicherer und **eine** benannte Nichtleben-Sparte
 1 bis 100 aufeinanderfolgende Perioden. Er veraendert keinen Altzustand,
-speichert nichts, startet keinen Runner und ist noch nicht in der Workbench
-bedienbar. PR157 ist fuer Anzeige, Konsolidierung und XLSX vorgesehen.
+speichert nichts und startet keinen Runner. PR157 hat die getrennte
+Einzelspartenrechnung in eine zustandslose Versichereransicht mit XLSX
+angebunden; Details stehen in `ims_2x_insurer_balance_workbench.md`.
 
 ## Historische Einordnung
 

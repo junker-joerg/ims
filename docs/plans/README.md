@@ -379,3 +379,6 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr156_non_life_model_balance_plan.md`:
   PR156-Plan fuer die deterministische Nichtleben-Modellbilanz aus
   expliziten Szenariowerten mit atomarer Periodenkette.
+- `ims_2x_pr157_insurer_balance_workbench_plan.md`:
+  PR157-Plan fuer die exakt abgestimmte Zwei-Sparten-Versichererbilanz,
+  Workbench-Ansicht und Digest-gebundenen XLSX-Export ohne Runner.

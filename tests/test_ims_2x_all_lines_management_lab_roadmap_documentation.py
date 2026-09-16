@@ -41,14 +41,14 @@ def test_active_roadmap_numbers_pr142_through_pr182_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR170 | 29" in document
     assert "durchgaengige DORA-Wirkungskette | PR178 | 37" in document
     assert "kontrollierte Managementseminar-Reife | PR182 | 41" in document
-    assert "PR156 umgesetzt, PR157 naechster Schritt" in document
+    assert "PR157 umgesetzt, PR158 naechster Schritt" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
     assert "PR145 hat kontrollierten Serverstart" in document
     assert "PR146 hat den Pfad in der Workbench bedienbar gemacht" in document
     assert "PR147 hat fuer 10, 25, 50 und 100 Perioden" in document
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 26" in document
+    assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 25" in document
 
 
 def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:

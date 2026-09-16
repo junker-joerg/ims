@@ -11,6 +11,11 @@ from starlette.responses import FileResponse, JSONResponse, Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
+from ims.accounting.insurer_balance import (
+    build_insurer_balance,
+    insurer_balance_workbench_contract_payload,
+)
+from ims.accounting.insurer_balance_workbook import build_insurer_balance_workbook
 from ims.accounting.model_balance_contract import (
     MODEL_BALANCE_CONTRACT_V1_VERSION,
     model_balance_contract_payload,
@@ -1147,6 +1152,47 @@ def create_app(
         except ValueError:
             return JSONResponse(sector_strategy_plan_invalid_json_payload(), status_code=400)
         return JSONResponse(validate_sector_strategy_plan(payload).to_dict())
+
+    async def insurer_balance_response(request: Request, *, workbook: bool = False) -> JSONResponse | Response:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                {"status": "error", "code": "invalid_json", "partial_result_returned": False},
+                status_code=400,
+            )
+        report = build_insurer_balance(payload)
+        result = report.to_dict()
+        if not result["valid"]:
+            return JSONResponse(result, status_code=422, headers={"Cache-Control": "no-store"})
+        digest = result["content_digest"]
+        assert type(digest) is str
+        etag = f'"{digest}"'
+        if workbook:
+            expected = request.headers.get("if-match")
+            if expected is None:
+                return JSONResponse(
+                    {"status": "error", "code": "if_match_required", "partial_result_returned": False},
+                    status_code=428,
+                )
+            if expected != etag:
+                return JSONResponse(
+                    {"status": "error", "code": "balance_digest_mismatch", "partial_result_returned": False},
+                    status_code=409,
+                )
+            return Response(
+                build_insurer_balance_workbook(report),
+                media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                headers={
+                    "Content-Disposition": f'attachment; filename="ims-modellbilanz-vu-{report.insurer_id}.xlsx"',
+                    "Cache-Control": "no-store",
+                    "ETag": etag,
+                },
+            )
+        return JSONResponse(result, headers={"Cache-Control": "no-store", "ETag": etag})
+
+    async def insurer_balance_workbook_response(request: Request) -> JSONResponse | Response:
+        return await insurer_balance_response(request, workbook=True)
 
     async def strategy_assignment_snapshot_translation_response(
         request: Request,
@@ -2567,6 +2613,18 @@ def create_app(
         def accounting_model_balance_contract_v1() -> dict[str, object]:
             return model_balance_contract_payload(MODEL_BALANCE_CONTRACT_V1_VERSION)
 
+        @app.get("/api/accounting/insurer-balance-contract")
+        def accounting_insurer_balance_contract() -> dict[str, object]:
+            return insurer_balance_workbench_contract_payload()
+
+        @app.post("/api/accounting/insurer-balance", response_model=None)
+        async def accounting_insurer_balance(request: Request) -> JSONResponse | Response:
+            return await insurer_balance_response(request)
+
+        @app.post("/api/accounting/insurer-balance.xlsx", response_model=None)
+        async def accounting_insurer_balance_workbook(request: Request) -> JSONResponse | Response:
+            return await insurer_balance_workbook_response(request)
+
         @app.get("/api/strategies/assignment-contract")
         def strategies_assignment_contract() -> dict[str, object]:
             return strategy_assignment_contract_payload()
@@ -3239,6 +3297,16 @@ def create_app(
             lambda request: JSONResponse(
                 model_balance_contract_payload(MODEL_BALANCE_CONTRACT_V1_VERSION)
             ),
+        ),
+        Route(
+            "/api/accounting/insurer-balance-contract",
+            lambda request: JSONResponse(insurer_balance_workbench_contract_payload()),
+        ),
+        Route("/api/accounting/insurer-balance", insurer_balance_response, methods=["POST"]),
+        Route(
+            "/api/accounting/insurer-balance.xlsx",
+            insurer_balance_workbook_response,
+            methods=["POST"],
         ),
         Route(
             "/api/strategies/assignment-contract",

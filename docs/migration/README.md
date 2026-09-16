@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_insurer_balance_workbench.md`: PR157-Konsolidierung von Kfz und
+  Sach-Haftpflicht, Versichereransicht und Digest-gebundener XLSX-Export
+  aus expliziten Szenariowerten; ohne historische Spartenbindung
 - `ims_2x_non_life_model_balance.md`: PR156-Rechenkern fuer eine
   deterministische Nichtleben-Modellbilanz aus expliziten Szenariowerten,
   ohne Alt-Runner- oder UI-Anschluss

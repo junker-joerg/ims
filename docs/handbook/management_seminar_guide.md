@@ -48,13 +48,17 @@ Die heutige Workbench kann:
   VU-/VN-Zustandsfelder als Zeitreihe und Tabelle lesen;
 - zwei gleich praefixierte Laeufe vergleichen und ein JSON-/CSV-/XLSX-ZIP
   mit geprueftem Wirkungsdigest herunterladen.
+- fuer einen Versicherer Kfz und Sach-Haftpflicht als einfache
+  Modellbilanz aus eigenen Werten berechnen, getrennt und zusammen ansehen
+  und als XLSX herunterladen.
 
 Noch nicht verfuegbar sind:
 
 - ein gefuehrter Aufbau der 100 Einzelkandidaten und der Kette;
 - eine dauerhafte Ablage von 100-Perioden-Ergebnissen;
-- benannte Sparten Kfz, Sach-Haftpflicht, Leben und Kranken;
-- Versichererbilanzen und Solvency-II-Kapitalansichten;
+- der automatische Anschluss der benannten Sparten an historische Laeufe
+  sowie eigene Modellsegmente fuer Leben und Kranken;
+- eine Vier-Sparten-Bilanz und eine Solvency-II-Kapitalansicht;
 - ein DORA-Szenarioeditor mit durchgaengiger Wirkungskette.
 
 Diese Funktionen sind in der aktiven
@@ -68,6 +72,25 @@ er ist.
 *Die gezeigten Reihen stammen aus einem kleinen kontrollierten Teststand.
 Die gleiche Wirkung kann als ZIP heruntergeladen werden; ein frei
 konfigurierbarer Markt- oder Regulierungsschock ist damit noch nicht belegt.*
+
+## Eine Versichererbilanz ausprobieren
+
+In **Bilanz** stehen zwei editierbare Sparten mit Beispielwerten bereit:
+Kfz und Sach-Haftpflicht. Fuer einen eigenen Fall waehlt man die
+Versicherer-ID und traegt je Sparte die drei Anfangsbestaende sowie
+Praemien, Zins, Schaeden, Zahlungen, Aufwand und Kapitalbewegungen pro
+Periode ein. **Bilanz berechnen** zeigt die Einzelsparten und die
+abgestimmte Summe. Der XLSX-Download enthaelt alle drei Sichten und die
+Herkunft; er ist erst nach einer gueltigen Berechnung moeglich.
+
+Die Ansicht beantwortet die einfache Frage, wie vorgegebene Zahlungs-
+und Schadenverlaeufe Cash, offene Schaeden und Eigenkapital veraendern.
+Sie speist sich **noch nicht** aus den simulierten Marktergebnissen.
+Die Beispielwerte sind weder historische IMS-Daten noch eine reale
+Versichererbilanz; auch eine Solvency-II-Bedeckungsquote entsteht hier
+nicht. Excel zeigt die Betraege als Text, damit ihre Dezimalstellen exakt
+bleiben; fuer eigene Formeln muessen sie bewusst in Zahlen umgewandelt
+werden.
 
 ## Sieben Vorteile im Fuehrungskraefteseminar
 
