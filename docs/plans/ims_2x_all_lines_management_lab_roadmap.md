@@ -176,6 +176,24 @@ fachliche Produktionsfreigabe fuer Beratung, Aufsicht oder einzelne
 Unternehmensentscheidungen benoetigt weiterhin einen benannten Datenstand,
 einen konkreten Anwendungsfall und dessen eigene Validierung.
 
+## Phase F: Windows Ready-to-run (spaeter)
+
+Diese optionale Distributionsspur beginnt **erst nach PR182** und verschiebt
+PR159 nicht. Sie ersetzt auf dem Zielrechner Python-Installation und
+Startskripte durch ein entpackbares Windows-ZIP mit Doppelklick-EXE.
+Details und Grenzen stehen in
+`docs/plans/ims_2x_windows_ready_to_run_packaging_plan.md`.
+
+| PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
+| --- | --- | --- |
+| PR183 | PyInstaller-One-folder-Bundle fuer Windows x64 | Backend, gebautes Frontend und erforderliche Laufzeitdaten laufen offline ohne Zielrechner-Python; Nutzerdaten bleiben ausserhalb des Bundles |
+| PR184 | Doppelklick-Start, ZIP, Zielrechner-Smoke und Kurzhandbuch | Start, Portkonflikt, Zweitstart und Beenden sind verstaendlich; frischer Windows-10/11-Rechner ohne Python/Node und Installationsnetz besteht |
+
+Ein One-file-EXE, grafischer Installer oder Code-Signierung sind damit
+nicht versprochen. SmartScreen- und Unternehmensrichtlinien koennen einen
+unsignierten Download weiter blockieren. Linux und iOS/Juno sind nicht
+Teil dieses Windows-Pakets.
+
 ## Meilensteine und Restzahl
 
 | Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR158 |
@@ -186,8 +204,10 @@ einen konkreten Anwendungsfall und dessen eigene Validierung.
 | erklaerbare Solvency-II-Kapitalansicht | PR170 | 29 | 12 |
 | durchgaengige DORA-Wirkungskette | PR178 | 37 | 20 |
 | kontrollierte Managementseminar-Reife | PR182 | 41 | 24 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 26 |
 
-Die 41 PRs sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
+Die 41 fachlichen PRs bis PR182 und zwei spaeteren Windows-Packaging-PRs
+sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
 Kranken, Risikomodulen und regulatorischer Quellenvalidierung. Erkenntnisse
 werden durch Teilung sichtbar gemacht; sie werden nicht in groessere PRs
@@ -277,6 +297,7 @@ read-only Vertrag fuer einen geschlossenen Lebensbestand, seine
 Garantieverpflichtung und Strategie-Anschlussstellen festgelegt. PR159
 entscheidet als Naechstes Gutschrift-Timing und Bewertungsbasis und rechnet
 einen schmalen deterministischen Lebensfall ohne Vollmodellbehauptung.
+Die Windows-Ready-to-run-Spur PR183/184 bleibt ausdruecklich spaeter.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
 Vollgleichheit.

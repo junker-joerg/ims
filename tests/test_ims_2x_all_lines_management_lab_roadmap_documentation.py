@@ -5,6 +5,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ROADMAP = REPO_ROOT / "docs" / "plans" / "ims_2x_all_lines_management_lab_roadmap.md"
 GUIDE = REPO_ROOT / "docs" / "handbook" / "management_seminar_guide.md"
+WINDOWS_PLAN = REPO_ROOT / "docs" / "plans" / "ims_2x_windows_ready_to_run_packaging_plan.md"
 
 
 def test_active_roadmap_covers_all_committed_product_directions() -> None:
@@ -28,14 +29,14 @@ def test_active_roadmap_covers_all_committed_product_directions() -> None:
     assert "kein Zwang zur Reproduktion unbelegter alter Zufallsfolgen" in normalized
 
 
-def test_active_roadmap_numbers_pr142_through_pr182_without_gaps() -> None:
+def test_active_roadmap_numbers_pr142_through_pr184_without_gaps() -> None:
     document = ROADMAP.read_text(encoding="utf-8")
     table_prs = [
         int(match)
         for match in re.findall(r"^\| PR(\d+) \|", document, flags=re.MULTILINE)
     ]
 
-    assert table_prs == list(range(142, 183))
+    assert table_prs == list(range(142, 185))
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10" in document
     assert "vier Modellsegmente und konsolidierte Versichererbilanz | PR162 | 21" in document
     assert "erklaerbare Solvency-II-Kapitalansicht | PR170 | 29" in document
@@ -49,6 +50,8 @@ def test_active_roadmap_numbers_pr142_through_pr182_without_gaps() -> None:
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
     assert "kontrollierte Managementseminar-Reife | PR182 | 41 | 24" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR184 | 43 | 26" in document
+    assert "Diese optionale Distributionsspur beginnt **erst nach PR182**" in document
 
 
 def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
@@ -64,6 +67,21 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
         "CSV-, JSON- und XLSX-Exporte",
     ):
         assert gate in document
+
+
+def test_later_windows_ready_to_run_plan_keeps_pr159_next() -> None:
+    roadmap = ROADMAP.read_text(encoding="utf-8")
+    plan = WINDOWS_PLAN.read_text(encoding="utf-8")
+
+    assert "PR158 umgesetzt, PR159 naechster Schritt" in roadmap
+    assert "PR159 bleibt der" in plan
+    for phrase in (
+        "PR183", "PR184", "IMS-Workbench.exe", "One-folder",
+        "ohne Zielrechner-Python", "127.0.0.1", "%LOCALAPPDATA%",
+        "SmartScreen", "Linux oder iOS/Juno", "incomming/",
+    ):
+        assert phrase in plan
+    assert "Dieser Plan baut noch kein Paket" in plan
 
 
 def test_management_guide_is_nontechnical_honest_and_visual() -> None:
