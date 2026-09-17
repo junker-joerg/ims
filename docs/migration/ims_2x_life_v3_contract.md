@@ -110,5 +110,7 @@ der read-only v3-Vertrag selbst bleibt unveraendert.
 - PR165: fluechtige kontrollierte Lebens-Periodenkette bis 100 mit
   PR164-Quellen und PR163-Bilanz umgesetzt; siehe
   `ims_2x_life_period_chain.md`.
-- PR166-167: Ergebnisablage/Export und gefuehrte Workbench. Erst
-  danach ist dies ein bedienbares Workshop-Segment.
+- PR166: Ergebnisablage und XLSX mit Digest und Idempotenz umgesetzt;
+  siehe `ims_2x_life_result_delivery.md`.
+- PR167: gefuehrte Workbench. Erst danach ist dies ein bedienbares
+  Workshop-Segment.

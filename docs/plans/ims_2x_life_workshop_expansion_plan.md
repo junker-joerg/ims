@@ -1,7 +1,7 @@
 # Leben nach PR159: vom Rechenfall zum Workshop-Segment
 
 Stand: 2026-09-17
-Status: PR160-165 umgesetzt; PR166 Ergebnisablage und Export folgen
+Status: PR160-166 umgesetzt; PR167 gefuehrte Lebens-Workbench folgt
 
 ## Warum der bisherige Plan nicht ausreichte
 
@@ -59,7 +59,7 @@ zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 | PR163 | Begrenzte Policenwerte und variable Ablaufleistung | umgesetzt: hoechstens 100 vollstaendig enumerierte Policen, individuelle Gutschrift, explizite Ablaufleistung und atomare Abstimmung; kein Runner/UI |
 | PR164 | Deterministische Anlage- und Mortalitaetsannahmen | umgesetzt: lueckenlose Fenster, exklusive Quellenmodi, VU-Anlagewert und Todesfall-IDs je Kohorte; reine Aufloesung ohne Runner |
 | PR165 | Kontrollierter Lebensanschluss an die Periodenkette | umgesetzt: bis 100 Perioden, PR164-Quellen aus geprueftem Carryover, PR163-Prefixrechnung und atomarer Abbruch; Nichtleben-Pfad unveraendert |
-| PR166 | Lebens-Ergebnis-API, Ablage und XLSX | kontrollierte Idempotenz, Herkunft/Digest, lesbarer Verlauf und gleiche Zahlen in Ergebnis und Export |
+| PR166 | Lebens-Ergebnis-API, Ablage und XLSX | umgesetzt: kontrollierte Idempotenz, Herkunft/Digest, lesbarer Verlauf und gleiche Dezimalwerte in JSON und XLSX; 20-Sekunden-API-Budget |
 | PR167 | Gefuehrte Lebens-Workbench fuer Seminar/Strategieworkshop | beschriftete Eingaben und Presets, Baseline/Variante, Bestands-/Leistungs-/Bilanz-Zeitreihen, breite und schmale Browserabnahme |
 
 ## UI-Bedienweg fuer PR167

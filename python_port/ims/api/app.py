@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import os
 from pathlib import Path
+from threading import BoundedSemaphore, Event
 from typing import Any, Protocol
 
 from starlette.applications import Starlette
@@ -16,6 +17,7 @@ from ims.accounting.insurer_balance import (
     insurer_balance_workbench_contract_payload,
 )
 from ims.accounting.insurer_balance_workbook import build_insurer_balance_workbook
+from ims.accounting.life_period_chain import run_life_policy_period_chain
 from ims.accounting.model_balance_contract import (
     MODEL_BALANCE_CONTRACT_V1_VERSION,
     model_balance_contract_payload,
@@ -24,6 +26,18 @@ from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
 from ims.api.metadata_repository import LazyWorkbenchMetadataRepository
+from ims.api.life_result_delivery import (
+    LIFE_API_TIMEOUT_SECONDS,
+    LifeResultError,
+    contract_payload as life_result_contract_payload,
+    digest as life_result_digest,
+    get_life_result,
+    list_life_results,
+    parse_start as parse_life_result_start,
+    persist_life_result,
+    replay_life_result,
+)
+from ims.api.life_result_workbook import build_life_result_workbook
 from ims.api.core_validation_carryover_probe_contract import (
     core_validation_carryover_probe_api_contract_payload,
 )
@@ -990,6 +1004,7 @@ def create_app(
     metadata_db_path = _metadata_db_path()
     repository = metadata_repository or LazyWorkbenchMetadataRepository(metadata_db_path)
     effective_adapter_runner = adapter_runner or run_controlled_execution_adapter
+    life_calculation_gate = BoundedSemaphore(1)
     metadata_source = repository.metadata_source()
     if metadata_repository is not None:
         metadata_source = {**metadata_source, "injected": True}
@@ -1198,6 +1213,124 @@ def create_app(
 
     async def insurer_balance_workbook_response(request: Request) -> JSONResponse | Response:
         return await insurer_balance_response(request, workbook=True)
+
+    def life_error(exc: LifeResultError) -> JSONResponse:
+        return JSONResponse(
+            {"status": "error", "code": exc.code, "partial_result_returned": False},
+            status_code=exc.status_code,
+            headers={"Cache-Control": "no-store"},
+        )
+
+    def life_storage_path() -> Path:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            raise LifeResultError("explicit_sqlite_storage_required", 503)
+        return Path(str(metadata_source["path"]))
+
+    async def life_payload(request: Request) -> object:
+        size = request.headers.get("content-length")
+        if size is not None and size.isdigit() and int(size) > 8_000_000:
+            raise LifeResultError("life_request_too_large", 413)
+        raw = await request.body()
+        if len(raw) > 8_000_000:
+            raise LifeResultError("life_request_too_large", 413)
+        try:
+            return await request.json()
+        except (ValueError, UnicodeDecodeError) as exc:
+            raise LifeResultError("invalid_json", 400) from exc
+
+    async def calculate_life(value: object) -> dict:
+        if not life_calculation_gate.acquire(blocking=False):
+            raise LifeResultError("life_calculation_busy", 429)
+        cancellation = Event()
+
+        def worker() -> dict:
+            try:
+                return run_life_policy_period_chain(
+                    value, should_cancel=cancellation.is_set,
+                ).to_dict()
+            finally:
+                life_calculation_gate.release()
+
+        task = asyncio.create_task(asyncio.to_thread(worker))
+        task.add_done_callback(lambda finished: finished.exception() if not finished.cancelled() else None)
+        try:
+            return await asyncio.wait_for(
+                asyncio.shield(task), timeout=LIFE_API_TIMEOUT_SECONDS,
+            )
+        except TimeoutError as exc:
+            cancellation.set()
+            raise LifeResultError("life_calculation_timeout", 504) from exc
+        except asyncio.CancelledError:
+            cancellation.set()
+            raise
+
+    async def life_preview_response(request: Request) -> JSONResponse:
+        try:
+            value = await life_payload(request)
+            report = await calculate_life(value)
+            if not report["valid"]:
+                return JSONResponse(report, status_code=422, headers={"Cache-Control": "no-store"})
+            input_digest = life_result_digest(value)
+            result_digest = life_result_digest(report)
+            return JSONResponse({
+                "status": "ok", "valid": True, "input_digest": input_digest,
+                "result_digest": result_digest, "report": report,
+                "writes_performed": False,
+            }, headers={"Cache-Control": "no-store", "ETag": f'"{result_digest}"'})
+        except LifeResultError as exc:
+            return life_error(exc)
+
+    async def life_start_response(request: Request) -> JSONResponse:
+        try:
+            value = await life_payload(request)
+            parsed = parse_life_result_start(value)
+            path = life_storage_path()
+            replay = await asyncio.to_thread(replay_life_result, path, parsed)
+            if replay is not None:
+                return JSONResponse(replay, headers={"Cache-Control": "no-store", "ETag": f'"{replay["result_digest"]}"'})
+            report = await calculate_life(parsed["life_chain_input"])
+            if not report["valid"]:
+                return JSONResponse(report, status_code=422, headers={"Cache-Control": "no-store"})
+            record = await asyncio.to_thread(persist_life_result, path, parsed, report)
+            return JSONResponse(record, headers={"Cache-Control": "no-store", "ETag": f'"{record["result_digest"]}"'})
+        except LifeResultError as exc:
+            return life_error(exc)
+
+    async def life_result_response(request: Request, result_id: str, *, workbook: bool = False) -> JSONResponse | Response:
+        try:
+            record = await asyncio.to_thread(get_life_result, life_storage_path(), result_id)
+            etag = f'"{record["result_digest"]}"'
+            if workbook:
+                expected = request.headers.get("if-match")
+                if expected is None:
+                    raise LifeResultError("if_match_required", 428)
+                if expected != etag:
+                    raise LifeResultError("life_result_digest_mismatch", 409)
+                content = await asyncio.to_thread(build_life_result_workbook, record)
+                return Response(
+                    content,
+                    media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    headers={
+                        "Content-Disposition": f'attachment; filename="ims-leben-{result_id}.xlsx"',
+                        "Cache-Control": "no-store", "ETag": etag,
+                    },
+                )
+            return JSONResponse(record, headers={"Cache-Control": "no-store", "ETag": etag})
+        except LifeResultError as exc:
+            return life_error(exc)
+
+    async def life_result_json_response(request: Request) -> JSONResponse | Response:
+        return await life_result_response(request, request.path_params["result_id"])
+
+    async def life_result_xlsx_response(request: Request) -> JSONResponse | Response:
+        return await life_result_response(request, request.path_params["result_id"], workbook=True)
+
+    async def life_results_response(request: Request) -> JSONResponse:
+        try:
+            result = await asyncio.to_thread(list_life_results, life_storage_path())
+            return JSONResponse(result, headers={"Cache-Control": "no-store"})
+        except LifeResultError as exc:
+            return life_error(exc)
 
     async def strategy_assignment_snapshot_translation_response(
         request: Request,
@@ -2642,6 +2775,30 @@ def create_app(
         async def accounting_insurer_balance_workbook(request: Request) -> JSONResponse | Response:
             return await insurer_balance_workbook_response(request)
 
+        @app.get("/api/accounting/life-period-chain/contract")
+        def accounting_life_period_chain_contract() -> dict[str, object]:
+            return life_result_contract_payload()
+
+        @app.post("/api/accounting/life-period-chain/preview", response_model=None)
+        async def accounting_life_period_chain_preview(request: Request) -> JSONResponse:
+            return await life_preview_response(request)
+
+        @app.post("/api/accounting/life-period-chain/start", response_model=None)
+        async def accounting_life_period_chain_start(request: Request) -> JSONResponse:
+            return await life_start_response(request)
+
+        @app.get("/api/accounting/life-period-chain/results", response_model=None)
+        async def accounting_life_period_chain_results(request: Request) -> JSONResponse:
+            return await life_results_response(request)
+
+        @app.get("/api/accounting/life-period-chain/result/{result_id}.xlsx", response_model=None)
+        async def accounting_life_period_chain_xlsx(result_id: str, request: Request) -> JSONResponse | Response:
+            return await life_result_response(request, result_id, workbook=True)
+
+        @app.get("/api/accounting/life-period-chain/result/{result_id}", response_model=None)
+        async def accounting_life_period_chain_result(result_id: str, request: Request) -> JSONResponse | Response:
+            return await life_result_response(request, result_id)
+
         @app.get("/api/strategies/assignment-contract")
         def strategies_assignment_contract() -> dict[str, object]:
             return strategy_assignment_contract_payload()
@@ -3338,6 +3495,32 @@ def create_app(
             "/api/accounting/insurer-balance.xlsx",
             insurer_balance_workbook_response,
             methods=["POST"],
+        ),
+        Route(
+            "/api/accounting/life-period-chain/contract",
+            lambda request: JSONResponse(life_result_contract_payload()),
+        ),
+        Route(
+            "/api/accounting/life-period-chain/preview",
+            life_preview_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/accounting/life-period-chain/start",
+            life_start_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/accounting/life-period-chain/results",
+            life_results_response,
+        ),
+        Route(
+            "/api/accounting/life-period-chain/result/{result_id}.xlsx",
+            life_result_xlsx_response,
+        ),
+        Route(
+            "/api/accounting/life-period-chain/result/{result_id}",
+            life_result_json_response,
         ),
         Route(
             "/api/strategies/assignment-contract",

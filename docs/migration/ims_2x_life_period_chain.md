@@ -75,8 +75,9 @@ neuen Periode geprueft.
 
 ## Offen
 
-PR166 bringt erst gespeicherte, digestgebundene Ergebnisse,
-Idempotenz, API und XLSX. PR167 fuehrt einen nichttechnischen
+PR166 hat gespeicherte, digestgebundene Ergebnisse,
+Idempotenz, API und XLSX ergaenzt; siehe
+`ims_2x_life_result_delivery.md`. PR167 fuehrt einen nichttechnischen
 Workbench-Bedienweg ein. Rueckkauf, Bonus, unveraenderliche
 individuelle Ausgabeterm-Ablaufleistung und historische RNG-Folgen
 sind weiter ausgeschlossen. Der bestehende Nichtleben-Pfad bleibt

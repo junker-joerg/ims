@@ -78,5 +78,5 @@ Bilanz bleiben explizit beziehungsweise Aufgabe des separaten
 Lebens-Rechners. Der Resolver darf aus einer gezogenen Todesfall-ID
 keine Todesfallleistung erfinden. PR165 hat Wertuebergabe, Leistung,
 Carryover und Budget in einer separaten fluechtigen Kette geprueft;
-siehe `ims_2x_life_period_chain.md`. PR166-167 folgen mit
-Ablage/Export und Workbench.
+siehe `ims_2x_life_period_chain.md`. PR166 hat Ablage/Export
+ergaenzt; PR167 liefert die Workbench.
