@@ -99,8 +99,10 @@ noch eine explizite Zaehl- und Auswahlregel (PR164), keine RNG-Ziehung.
   `ims_2x_life_closed_cohort_death_capital.md`.
 - PR162: Neugeschaeft/Kohorten mit konkreter Verteilung der Praemien
   umgesetzt; siehe `ims_2x_life_cohort_new_business.md`.
-- PR163: begrenzter Policenmodus und abweichende Ablaufleistungen mit
-  Ausgabetermen bleiben offen.
+- PR163: vollstaendig enumerierter Policenmodus mit expliziter
+  abweichender Ablaufleistung umgesetzt; der alternative,
+  unveraenderliche Ausgabeterm bleibt offen. Siehe
+  `ims_2x_life_policy_maturity.md`.
 - PR164: deterministische Anlage- und Mortalitaetsregeln, Zaehlrundung
   und Periodenfenster je VU; keine Vermischung von explizitem und
   berechnetem Anlagefluss.

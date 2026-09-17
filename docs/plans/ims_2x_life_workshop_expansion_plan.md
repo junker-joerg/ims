@@ -1,7 +1,7 @@
 # Leben nach PR159: vom Rechenfall zum Workshop-Segment
 
 Stand: 2026-09-17
-Status: PR160-162 umgesetzt; PR163 Einzelpolicen und Ablaufleistungen folgen
+Status: PR160-163 umgesetzt; PR164 Anlage- und Mortalitaetsannahmen folgen
 
 ## Warum der bisherige Plan nicht ausreichte
 
@@ -13,7 +13,8 @@ unterschiedliche Vertraege, strategische Stellhebel und ein Bedienweg.
 Diese Luecke wird durch acht kleine PRs geschlossen. PR160 hat den
 read-only Zielvertrag festgelegt; PR161 rechnet Tod und Kapital im
 geschlossenen Bestand. PR162 ergaenzt getrennte Kohorten und
-Neugeschaeft; PR163 ist der naechste Schritt. Die
+Neugeschaeft; PR163 ergaenzt explizite Policen und Ablaufleistungen.
+PR164 ist der naechste Schritt. Die
 zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 
 ## Fachlicher Mindestumfang
@@ -53,7 +54,7 @@ zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 | PR160 | Lebensfluss- und Bewertungsvertrag v3 | umgesetzt: Zeitpunkte und Quellen fuer Tod, Neugeschaeft, Ablauf, Kapital, individuelle Werte und Garantieuntergrenze explizit; PR159-v2 bleibt gueltig |
 | PR161 | Tod und Kapitalbewegungen im geschlossenen Bestand | umgesetzt: feste Positiv-/Negativfaelle, getrennte Leistung/Freisetzung, stabile Prefixe, keine Bilanzluecke oder Teilresultate |
 | PR162 | Neugeschaeft mit Kohorten und Ausgabeparametern | umgesetzt: neue Kohorten tragen erst in der Folgeperiode Garantie; Bestand und Verpflichtung je Kohorte stimmen zum Gesamtwert, PR161-Spezialfall stabil |
-| PR163 | Begrenzte Policenwerte und variable Ablaufleistung | einzelne Policen und Aggregate stimmen; Garantieuntergrenze und Ergebniseffekt sind geprueft |
+| PR163 | Begrenzte Policenwerte und variable Ablaufleistung | umgesetzt: hoechstens 100 vollstaendig enumerierte Policen, individuelle Gutschrift, explizite Ablaufleistung und atomare Abstimmung; kein Runner/UI |
 | PR164 | Deterministische Anlage- und Mortalitaetsannahmen | versionierte Kurven/Parameter, eindeutige Modi, identische Wiederholung und stabile Prefixe; keine stochastische Vollmodellbehauptung |
 | PR165 | Kontrollierter Lebensanschluss an die Periodenkette | bis 100 Perioden mit Carryover, Abbruchgrenzen und unveraendertem Nichtleben-Prefix; kein stiller Eingriff in alte Runner |
 | PR166 | Lebens-Ergebnis-API, Ablage und XLSX | kontrollierte Idempotenz, Herkunft/Digest, lesbarer Verlauf und gleiche Zahlen in Ergebnis und Export |

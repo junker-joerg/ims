@@ -400,6 +400,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr162_life_cohort_new_business_plan.md`:
   PR162-Plan fuer getrennte Anfangs- und Neu-Kohorten mit festen
   Ausgabeparametern und atomarer Summenabstimmung.
+- `ims_2x_pr163_life_policy_maturity_plan.md`:
+  PR163-Plan fuer hoechstens 100 vollstaendig enumerierte Policen und
+  explizite Ablaufleistungen mit Garantieuntergrenze.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR163 geht vor.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR164 geht vor.

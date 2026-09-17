@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass
 from decimal import Decimal, ROUND_HALF_EVEN, localcontext
 from typing import TypeVar, cast
@@ -341,7 +341,12 @@ def _periods(value: object, issues: list[LifeBalanceIssue]) -> tuple[_Period, ..
     return tuple(result)
 
 
-def _calculate(insurer_id: int, opening: _Opening, periods: tuple[_Period, ...]) -> LifeCohortReport:
+def _calculate(
+    insurer_id: int, opening: _Opening, periods: tuple[_Period, ...], *,
+    maturity_benefits: Mapping[tuple[int, str], Decimal] | None = None,
+    max_issued_ids: int = 100,
+    max_active_policies: int = 1_000_000_000,
+) -> LifeCohortReport:
     rows: list[LifeCohortRow] = []
     cohorts = {cohort.cohort_id: cohort for cohort in opening.cohorts}
     seen_ids = set(cohorts)
@@ -357,8 +362,12 @@ def _calculate(insurer_id: int, opening: _Opening, periods: tuple[_Period, ...])
             new_ids = {issue.cohort_id for issue in period.new_business}
             if seen_ids & new_ids:
                 _issue(issues, f"{path}.new_business", "cohort_id_reused", "Kohorten-ID wurde bereits vergeben")
-            if len(seen_ids | new_ids) > 100:
-                _issue(issues, f"{path}.new_business", "cohort_limit_exceeded", "Hoechstens 100 Kohorten-IDs je Fall")
+            if len(seen_ids | new_ids) > max_issued_ids:
+                limit_message = (
+                    "Hoechstens 100 Kohorten-IDs je Fall" if max_issued_ids == 100
+                    else f"Hoechstens {max_issued_ids} IDs je Fall"
+                )
+                _issue(issues, f"{path}.new_business", "cohort_limit_exceeded", limit_message)
             if issues:
                 return LifeCohortReport(insurer_id, len(periods), (), tuple(issues))
 
@@ -380,6 +389,19 @@ def _calculate(insurer_id: int, opening: _Opening, periods: tuple[_Period, ...])
                 survivors = cohort.active_policies - flow.deaths
                 maturities = survivors if cohort.remaining_periods == 1 else 0
                 maturity_release = before_exit - death_release if maturities else Decimal(0)
+                if maturity_benefits is None:
+                    maturity_paid = maturity_release
+                else:
+                    maturity_paid = maturity_benefits.get((period.period, cohort.cohort_id))
+                    if maturity_paid is None or maturity_paid < 0:
+                        _issue(issues, f"{path}.cohort_flows", "maturity_benefit_missing", "Explizite nichtnegative Ablaufleistung je Police erforderlich")
+                        break
+                    if not maturities and maturity_paid != 0:
+                        _issue(issues, f"{path}.cohort_flows", "maturity_benefit_not_due", "Ablaufleistung ohne faellige Police unzulaessig")
+                        break
+                    if maturity_paid < maturity_release:
+                        _issue(issues, f"{path}.cohort_flows", "maturity_benefit_below_guarantee", "Ablaufleistung unterschreitet freigesetzten Garantiebuchwert")
+                        break
                 remaining_liability = before_exit - death_release - maturity_release
                 if survivors and not maturities:
                     closing[cohort.cohort_id] = LifeCohort(
@@ -391,7 +413,7 @@ def _calculate(insurer_id: int, opening: _Opening, periods: tuple[_Period, ...])
                     cohort.cohort_id, flow.renewal_premiums_collected,
                     flow.renewal_liability_allocation, guarantee, flow.deaths,
                     flow.death_benefits_paid, death_release, maturities,
-                    maturity_release, maturity_release,
+                    maturity_paid, maturity_release,
                 ))
             if issues:
                 return LifeCohortReport(insurer_id, len(periods), (), tuple(issues))
@@ -412,6 +434,7 @@ def _calculate(insurer_id: int, opening: _Opening, periods: tuple[_Period, ...])
             death_benefits = sum((item.death_benefits_paid for item in movements), Decimal(0))
             death_release = sum((item.death_liability_release for item in movements), Decimal(0))
             maturities = sum(item.maturities for item in movements)
+            maturity_benefits_paid = sum((item.maturity_benefits_paid for item in movements), Decimal(0))
             maturity_release = sum((item.maturity_liability_release for item in movements), Decimal(0))
             new_policies = sum(item.new_business_policies for item in period.new_business)
             opening_policies = sum(item.active_policies for item in opening_cohorts)
@@ -422,16 +445,21 @@ def _calculate(insurer_id: int, opening: _Opening, periods: tuple[_Period, ...])
             release = death_release + maturity_release
             closing_assets = (
                 assets + premiums + period.investment_result + period.capital_contribution
-                - death_benefits - maturity_release - period.operating_expense_paid
+                - death_benefits - maturity_benefits_paid - period.operating_expense_paid
                 - period.capital_distribution
             )
             profit = (
-                premiums + period.investment_result - death_benefits - maturity_release
+                premiums + period.investment_result - death_benefits - maturity_benefits_paid
                 - period.operating_expense_paid - (closing_liability - liability)
             )
             closing_equity = equity + profit + period.capital_contribution - period.capital_distribution
-            if closing_policies > 1_000_000_000:
-                _issue(issues, path, "policy_limit_exceeded", "Hoechstens eine Milliarde aktive Policen je Segment")
+            if closing_policies > max_active_policies:
+                limit_message = (
+                    "Hoechstens eine Milliarde aktive Policen je Segment"
+                    if max_active_policies == 1_000_000_000
+                    else f"Hoechstens {max_active_policies} aktive Policen je Segment"
+                )
+                _issue(issues, path, "policy_limit_exceeded", limit_message)
             if closing_policies != opening_policies - deaths - maturities + new_policies:
                 _issue(issues, path, "closing_count_invalid", "Schlussbestand stimmt nicht zur Bewegungsrechnung")
             if closing_liability != liability + guarantee + allocation - release:
@@ -464,7 +492,7 @@ def _calculate(insurer_id: int, opening: _Opening, periods: tuple[_Period, ...])
                 death_benefits_paid=death_benefits,
                 death_liability_release=death_release,
                 maturities=maturities,
-                maturity_benefits_paid=maturity_release,
+                maturity_benefits_paid=maturity_benefits_paid,
                 maturity_liability_release=maturity_release,
                 liability_release=release,
                 new_business_policies=new_policies,

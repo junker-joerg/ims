@@ -43,15 +43,15 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 37" in document
     assert "durchgaengige DORA-Wirkungskette | PR186 | 45" in document
     assert "kontrollierte Managementseminar-Reife | PR190 | 49" in document
-    assert "PR162 Neugeschaeft umgesetzt, PR163 Einzelpolicen naechster Schritt" in document
+    assert "PR163 Einzelpolicen umgesetzt, PR164 Annahmen naechster Schritt" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
     assert "PR145 hat kontrollierten Serverstart" in document
     assert "PR146 hat den Pfad in der Workbench bedienbar gemacht" in document
     assert "PR147 hat fuer 10, 25, 50 und 100 Perioden" in document
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 49 | 28" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 30" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 49 | 27" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 29" in document
     assert "Diese optionale Distributionsspur beginnt **erst nach PR190**" in document
 
 
@@ -70,12 +70,12 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
         assert gate in document
 
 
-def test_later_windows_ready_to_run_plan_keeps_pr163_next() -> None:
+def test_later_windows_ready_to_run_plan_keeps_pr164_next() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR162 Neugeschaeft umgesetzt, PR163 Einzelpolicen naechster Schritt" in roadmap
-    assert "PR163 bleibt der" in plan
+    assert "PR163 Einzelpolicen umgesetzt, PR164 Annahmen naechster Schritt" in roadmap
+    assert "PR164 bleibt der" in plan
     for phrase in (
         "PR191", "PR192", "IMS-Workbench.exe", "One-folder",
         "ohne Zielrechner-Python", "127.0.0.1", "%LOCALAPPDATA%",

@@ -1,0 +1,49 @@
+{
+  "schema_version": "ims.life-policy-balance-input.v1",
+  "life_sector_contract_schema_version": "ims.life-sector-contract.v3",
+  "sector_taxonomy_schema_version": "ims.sector-taxonomy.v1",
+  "source_kind": "explicit_scenario",
+  "historical_mapping_status": "unresolved",
+  "insurer_id": 1,
+  "sector_id": "life",
+  "mode": "fully_enumerated_policies",
+  "opening": {
+    "opening_active_policies": 3,
+    "opening_backing_assets": "150",
+    "opening_guarantee_liability": "120",
+    "opening_equity": "30",
+    "cohorts": [
+      {"cohort_id": "A", "issue_period": 0, "issue_term_periods": 2, "remaining_periods": 2, "active_policies": 2, "guaranteed_rate_per_period": "0.05", "guarantee_liability": "100"},
+      {"cohort_id": "B", "issue_period": 0, "issue_term_periods": 1, "remaining_periods": 1, "active_policies": 1, "guaranteed_rate_per_period": "0.10", "guarantee_liability": "20"}
+    ],
+    "policies": [
+      {"policy_id": "A1", "cohort_id": "A", "issue_term_periods": 2, "remaining_periods": 2, "guaranteed_rate_per_period": "0.05", "guarantee_liability": "40"},
+      {"policy_id": "A2", "cohort_id": "A", "issue_term_periods": 2, "remaining_periods": 2, "guaranteed_rate_per_period": "0.05", "guarantee_liability": "60"},
+      {"policy_id": "B1", "cohort_id": "B", "issue_term_periods": 1, "remaining_periods": 1, "guaranteed_rate_per_period": "0.10", "guarantee_liability": "20"}
+    ]
+  },
+  "periods": [
+    {
+      "period": 1,
+      "policy_flows": [
+        {"policy_id": "A1", "renewal_premiums_collected": "5", "renewal_liability_allocation": "4", "death": false, "death_benefits_paid": "0", "maturity_benefits_paid": "0"},
+        {"policy_id": "A2", "renewal_premiums_collected": "5", "renewal_liability_allocation": "4", "death": true, "death_benefits_paid": "65", "maturity_benefits_paid": "0"},
+        {"policy_id": "B1", "renewal_premiums_collected": "0", "renewal_liability_allocation": "0", "death": false, "death_benefits_paid": "0", "maturity_benefits_paid": "25"}
+      ],
+      "new_business": [{
+        "cohort_id": "C", "issue_term_periods": 1, "guaranteed_rate_per_period": "0.20",
+        "new_business_policies": 1, "new_business_premiums_collected": "10", "new_business_liability_allocation": "8",
+        "policies": [{"policy_id": "C1", "new_business_premiums_collected": "10", "new_business_liability_allocation": "8"}]
+      }],
+      "investment_result": "5", "operating_expense_paid": "1", "capital_contribution": "20", "capital_distribution": "0"
+    },
+    {
+      "period": 2,
+      "policy_flows": [
+        {"policy_id": "A1", "renewal_premiums_collected": "5", "renewal_liability_allocation": "4", "death": false, "death_benefits_paid": "0", "maturity_benefits_paid": "60"},
+        {"policy_id": "C1", "renewal_premiums_collected": "0", "renewal_liability_allocation": "0", "death": false, "death_benefits_paid": "0", "maturity_benefits_paid": "12"}
+      ],
+      "new_business": [], "investment_result": "2", "operating_expense_paid": "1", "capital_contribution": "0", "capital_distribution": "5"
+    }
+  ]
+}

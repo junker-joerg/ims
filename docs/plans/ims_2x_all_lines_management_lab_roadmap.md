@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-17
-Status: aktive Produkt-Restplanung; PR162 Neugeschaeft umgesetzt, PR163 Einzelpolicen naechster Schritt
+Status: aktive Produkt-Restplanung; PR163 Einzelpolicen umgesetzt, PR164 Annahmen naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -113,7 +113,7 @@ Schadenlogik ausgegeben.
 | PR160 | Lebensfluss- und Bewertungsvertrag v3 | umgesetzt: read-only Zielvertrag fuer Quellen, Zeitpunkte, Reservefreisetzung, Kapital und Garantien; v1/v2 bleiben unveraendert, v3 rechnet noch nicht |
 | PR161 | Tod und Kapitalbewegungen im geschlossenen Lebensbestand | umgesetzt: getrennte Leistung/Freisetzung, Kapitalfluesse, Bilanz/Bestand atomar; PR159-Spezialfall stabil, kein Runner |
 | PR162 | Neugeschaeft mit getrennten Kohorten | umgesetzt: Ausgabeparameter, Praemien, Restlaufzeit und Garantiebeginn je Kohorte deterministisch; PR161-Spezialfall stabil, kein Runner |
-| PR163 | Begrenzte Einzelpolicen und variable Ablaufleistung | Policenwerte, Kohorten und Gesamtbilanz stimmen; Garantieuntergrenze und Ergebniswirkung sind sichtbar |
+| PR163 | Begrenzte Einzelpolicen und variable Ablaufleistung | umgesetzt: vollstaendige Liste bis 100 aktive Policen, Garantieuntergrenze, getrennte Auszahlung/Freisetzung und atomare Bilanz; kein Runner/UI |
 | PR164 | Deterministische Anlage- und Mortalitaetsannahmen | versionierte Szenariokurven, einfache VU-Anlageregel und eindeutige Periodenfenster; keine RNG-Vollmodellbehauptung |
 | PR165 | Kontrollierter Lebensanschluss an die Periodenkette | bis 100 Perioden, Prefix und Carryover stabil; alter Nichtleben-Pfad bleibt unveraendert |
 | PR166 | Lebens-Ergebnis-API, Ablage und XLSX | Digest, Idempotenz und gleiche Zahlen in gespeicherten Ergebnissen und Export |
@@ -129,7 +129,9 @@ Die acht PRs 160-167 schliessen die nach PR159 erkannte Lebensluecke vor
 Kranken und der Gesamtbilanz. Rueckkauf und Bonus bleiben ausgeschlossen;
 PR160 hat den read-only Vertrag festgelegt; PR161 hat die separate
 Rechnung fuer Tod und Kapital begonnen. PR162 hat Neugeschaeft und
-getrennte Kohorten ergaenzt; PR163 folgt mit begrenzten Einzelpolicen.
+getrennte Kohorten ergaenzt; PR163 hat begrenzte Einzelpolicen mit
+expliziter Ablaufleistung ergaenzt. PR164 folgt mit deterministischen
+Anlage- und Mortalitaetsannahmen.
 Umfang, Annahmen und UI-Bedienweg stehen in
 `docs/plans/ims_2x_life_workshop_expansion_plan.md`.
 
@@ -211,15 +213,15 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR162 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR163 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 8 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 16 |
-| durchgaengige DORA-Wirkungskette | PR186 | 45 | 24 |
-| kontrollierte Managementseminar-Reife | PR190 | 49 | 28 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 30 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 7 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 15 |
+| durchgaengige DORA-Wirkungskette | PR186 | 45 | 23 |
+| kontrollierte Managementseminar-Reife | PR190 | 49 | 27 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 29 |
 
 Die 49 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -317,8 +319,10 @@ hat einen separaten read-only v3-Vertrag fuer Tod, Neugeschaeft,
 Kapitalbewegungen, Policenwerte und abweichende Ablaufleistungen
 festgelegt, ohne die v2-Rechnung zu veraendern. PR161 hat einen separaten
 Rechenschnitt fuer Tod und Kapital umgesetzt. PR162 hat getrennte
-Kohorten mit Neugeschaeft ergaenzt; PR163-167 setzen die uebrigen
-Entscheidungen schrittweise um und liefern eine bedienbare
+Kohorten mit Neugeschaeft ergaenzt. PR163 fuehrt einen separat
+versionierten, vollstaendig enumerierten Policenmodus mit expliziter
+Ablaufleistung, individueller Gutschrift und 100er-Bestandsgrenze ein.
+PR164-167 setzen die uebrigen Entscheidungen schrittweise um und liefern eine bedienbare
 Lebens-Workbench mit Export. Kranken folgt ab PR168, die
 Vier-Sparten-Gesamtbilanz in PR170. Bis dahin bleibt die heutige
 Zwei-Sparten-Gesamtbilanz unveraendert. Die Windows-Ready-to-run-Spur

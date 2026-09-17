@@ -105,8 +105,9 @@ die Ausgabe ist nach Kohorten-ID sortiert.
 
 ## Offen
 
-PR163 ergaenzt begrenzte Einzelpolicen und von der Freisetzung
-abweichende Ablaufleistungen. PR164 fuehrt deterministische Anlage-
+PR163 hat begrenzte Einzelpolicen und von der Freisetzung
+abweichende Ablaufleistungen separat ergaenzt; siehe
+`ims_2x_life_policy_maturity.md`. PR164 fuehrt deterministische Anlage-
 und Mortalitaetsannahmen ein. Erst PR165-167 bringen kontrollierten
 Runner, Ergebnisablage/Export und gefuehrte Workbench. Kein
 Rueckkauf, Bonus, automatisches Storno oder historische RNG-Nachbildung.
