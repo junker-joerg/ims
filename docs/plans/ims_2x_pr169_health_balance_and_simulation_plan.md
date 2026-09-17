@@ -51,10 +51,31 @@ PR169 hat weder Web-Eingabe, Persistenz, Runner noch eine historische
 Vollgleichheitsbehauptung. Seine feste Zwei-Perioden-Basis dient den
 nachfolgenden Prefix- und Bedienabnahmen.
 
+## PR169a: Quellen- und Bestandsvertrag
+
+Der eigenstaendige Eingang `ims.health-period-sources-input.v1` bindet je
+Versicherer und Szenariovariante einen Anfangsbestand, einen lueckenlosen
+Horizont von 1 bis 100 IMS-Modellperioden und vier getrennte Quellen:
+explizite Neugeschaefts- und Abgangszahlen, Beitragsfenster als
+Versichererentscheidung sowie exogene Leistungsfenster. Zahlenaenderungen
+in den Fenstern sind bewusst **kein** automatischer Strategiealgorithmus.
+Abgaenge duerfen nur den Anfangsbestand der Periode betreffen; Neugeschaeft
+und Abgang wirken zum Periodenende. Die zu Periodenbeginn aktiven Vertraege
+tragen die periodischen Beitraege und Leistungsannahmen. Deshalb wird
+Neugeschaeft erst in der Folgeperiode beitrags- und leistungsexponiert.
+
+Die Validierung prueft Versions- und Quellenbindung, Akteur, vollstaendige
+Periodenabdeckung, exklusive Fenster, Betragsformat, Bestandsgrenzen und
+die Obergrenze der aus Stueckbetrag mal Anfangsbestand moeglichen Fluesse.
+Sie gibt bei jedem Fehler **keinen** teilgeprueften Plan zurueck. Eine
+Bilanz, ein Runner, Speicherung und ein Browserstart gehoeren erst in die
+folgenden PRs. PR169s geschlossener v2-Vertrag bleibt unveraendert.
+
 ## Risiken und offene Entscheidungen
 
-- PR169a muss Neugeschaeft und Austritte **vor** der 100er-Kette
-  entscheiden; ohne Bestandsbewegung waere die Seminarwirkung zu schmal.
+- PR169a hat Neugeschaeft und Austritte **vor** der 100er-Kette
+  festgelegt; die tatsaechliche Bestandsbewegung wird erst in PR169b
+  berechnet.
 - Preisentscheidungen, Leistungsannahmen und VN-Wechsel sind verschiedene
   Quellen. Eine strategische Wirkung auf Leistungen braucht spaeter eine
   begruendete, getrennte Kausalregel statt einer stillen Kuerzung.

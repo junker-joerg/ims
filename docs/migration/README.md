@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_health_period_sources.md`: PR169a-Versionierung und atomare
+  Pruefung von Kranken-Bestandsbewegungen, Beitragspreis und exogener
+  Leistung je IMS-Periode; keine Ausfuehrung
 - `ims_2x_deterministic_health_case.md`: PR169-Ein-/Zweiperioden-
   Kranken-Modellbilanz aus expliziten Werten mit atomarer Pruefung;
   mehrperiodiger Bedienpfad ist als PR169a-d nachgeplant

@@ -51,8 +51,9 @@ keinen gespeicherten Teilstand. Die festen Beispiele stehen in
 
 ## Verbleibende Produktarbeit
 
-`PR169a` entscheidet und prueft Neugeschaeft, Abgang, Beitrags-/
-Leistungsannahmen und Strategiequellen. `PR169b` fuehrt diese Werte
+`PR169a` hat Neugeschaeft, Abgang, Beitrags-/Leistungsquellen
+getrennt und atomar validiert; siehe `ims_2x_health_period_sources.md`.
+`PR169b` fuehrt diese Werte
 kontrolliert bis 100 IMS-Perioden, `PR169c` liefert geschuetzte Ablage
 und CSV/JSON/XLSX, `PR169d` erst den bedienbaren Workbench-Pfad mit
 Baseline/Variante. **PR169 selbst startet weder Runner noch Simulation**.

@@ -419,8 +419,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR168-Plan fuer geschlossenen Krankenbestand, getrennte Beitrags- und
   Leistungsfluesse sowie rein kuenftige Strategie-Anschlussstellen.
 - `ims_2x_pr169_health_balance_and_simulation_plan.md`:
-  PR169-Bilanzfall und verbindliche PR169a-d-Folge fuer eine bedienbare
-  Kranken-Simulation ueber bis zu 100 IMS-Modellperioden vor PR170.
+  PR169-Bilanzfall, umgesetzter PR169a-Quellenvertrag und verbindliche
+  PR169b-d-Folge fuer eine bedienbare Kranken-Simulation ueber bis zu
+  100 IMS-Modellperioden vor PR170.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR169a-d gehen vor.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR169b-d gehen vor.
