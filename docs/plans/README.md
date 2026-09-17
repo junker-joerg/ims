@@ -397,6 +397,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr161_life_death_capital_plan.md`:
   PR161-Plan fuer Tod, getrennte Leistung und Freisetzung sowie
   Kapitalbewegungen in einer geschlossenen Lebens-Kohorte.
+- `ims_2x_pr162_life_cohort_new_business_plan.md`:
+  PR162-Plan fuer getrennte Anfangs- und Neu-Kohorten mit festen
+  Ausgabeparametern und atomarer Summenabstimmung.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR162 geht vor.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR163 geht vor.

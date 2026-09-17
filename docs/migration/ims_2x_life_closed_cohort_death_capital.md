@@ -68,7 +68,7 @@ Ablauffreisetzung, Stueckzahlen, Bilanz und unveraenderten Carryover.
 
 ## Offen
 
-PR162 fuegt neue Kohorten und Neugeschaeft hinzu; PR163 begrenzte
+PR162 hat neue Kohorten und Neugeschaeft ergaenzt; PR163 bringt begrenzte
 Einzelpolicen und abweichende Ablaufleistungen; PR164 deterministische
 Mortalitaets-/Anlageannahmen. PR165-167 bringen kontrollierten Runner,
 Ablage/Export und eine gefuehrte Workbench. Keine gesetzliche Bilanz,

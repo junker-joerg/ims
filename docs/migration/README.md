@@ -23,6 +23,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_life_cohort_new_business.md`: PR162-Neugeschaeft mit getrennten
+  Kohorten, festen Ausgabeparametern und geprueften Segment-Summen
 - `ims_2x_life_closed_cohort_death_capital.md`: PR161-Rechnung fuer
   explizite Todesfaelle und Kapitalbewegungen im geschlossenen Bestand;
   getrennte Leistung/Freisetzung und atomare Modellbilanz

@@ -15,7 +15,7 @@ def test_pr159_documents_model_choice_historical_limit_and_deferred_scope() -> N
         "Das ist keine dauerhafte Ausschlussliste", "PR160-167",
     ):
         assert phrase.lower() in (plan + migration).lower()
-    assert "PR161 Tod und Kapital umgesetzt, PR162 Neugeschaeft naechster Schritt" in (
+    assert "PR162 Neugeschaeft umgesetzt, PR163 Einzelpolicen naechster Schritt" in (
         ROOT / "docs" / "plans" / "ims_2x_all_lines_management_lab_roadmap.md"
     ).read_text(encoding="utf-8")
     assert "ims_2x_deterministic_life_case.md" in (
