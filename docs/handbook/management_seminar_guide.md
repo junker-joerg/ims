@@ -1,7 +1,7 @@
 # IMS im Managementseminar
 
 Stand: 2026-09-17
-Handbuchschnitt: HB3f
+Handbuchschnitt: HB3g
 Zielgruppe: Fuehrungskraefte, Lehrende und Seminargruppen ohne Kenntnis der
 Dissertation oder des Quellcodes
 
@@ -53,13 +53,15 @@ Die heutige Workbench kann:
   und als XLSX herunterladen.
 - einen kleinen Lebensfall ueber zwei Perioden als Baseline und Variante
   vergleichen, ausdruecklich speichern und als XLSX ausgeben.
+- einen eigenen Kranken-Modellfall als Baseline und Variante ueber bis zu
+  100 Perioden vergleichen, ausdruecklich speichern und als CSV, JSON
+  oder XLSX herunterladen.
 
 Noch nicht verfuegbar sind:
 
 - ein gefuehrter Aufbau der 100 Einzelkandidaten und der Kette;
-- eine dauerhafte Ablage von 100-Perioden-Ergebnissen;
-- der automatische Anschluss der benannten Sparten an historische Laeufe
-  sowie ein eigenes Modellsegment fuer Kranken;
+- eine dauerhafte Ablage der allgemeinen VU-/VN-100-Periodenlaeufe;
+- der automatische Anschluss der benannten Sparten an historische Laeufe;
 - eine Vier-Sparten-Bilanz und eine Solvency-II-Kapitalansicht;
 - ein DORA-Szenarioeditor mit durchgaengiger Wirkungskette.
 
@@ -133,6 +135,59 @@ Rueckkauf und Bonus fehlen noch. Die separate Lebensrechnung wird noch
 nicht zur Vier-Sparten-Gesamtbilanz addiert. Der XLSX-Export schreibt
 Dezimalwerte als Text, damit keine stillen Rundungen in Excel entstehen.
 
+## Einen Krankenfall ueber 100 Perioden vergleichen
+
+Unter **Kranken** beginnt ein eigener IMS-2.x-Modellfall mit 100 aktiven
+Vertraegen, einer einfachen Anfangsbilanz und ausdruecklichen Annahmen
+fuer Beitrag, Leistungsanfall und Auszahlung. Die **Baseline** laesst
+diese Werte konstant. Die **Variante** veraendert im vorbereiteten Fall
+ab Periode 6 den Leistungsanfall und die Auszahlung; Neugeschaeft und
+Abgang bleiben in beiden Faellen gleich. Das ist ein Seminarvergleich,
+keine historische IMS-Krankenreferenz und keine Prognose des realen
+Krankenversicherungsmarkts.
+
+![Kranken: Eingaben in der breiten Workbench](images/windows_health_workbench_pr169d_wide_inputs_2026-09-17.png)
+
+1. Versicherer, Szenario und 1, 2, 5, 10, 25, 50 oder 100 Perioden
+   waehlen. Im Anfangsbestand muss die Kasse gleich offenen Leistungen
+   plus Eigenkapital sein. Neugeschaeft und Abgang wirken erst auf den
+   Bestand der naechsten Periode.
+2. In **Baseline** Beitrag je aktivem Vertrag, Leistungsanfall je
+   Vertrag und Auszahlung je Periode lesen oder aendern. Leistungsanfall
+   mindert das Ergebnis und erhoeht die offene Verpflichtung;
+   Auszahlungen senken Verpflichtung und Kasse. Dazu kommen Anlage,
+   Aufwand und Kapitalbewegungen als explizite Werte.
+3. In **Variante** die Aenderungsperiode und die drei geaenderten
+   Werte setzen. Eine Leistungsannahme ist hier ein aeusserer
+   Szenariowert, keine automatisch berechnete Versichererstrategie.
+   Liegt der Variantenbeginn hinter dem Horizont, bleiben beide
+   Zeitreihen bis dahin gleich.
+4. **Beide Faelle berechnen** zeigt Kurven und eine Tabelle mit den
+   genauen Werten. Die Kennzahl kann gewechselt werden. Im Beispiel
+   ist die Kasse in Periode 6 in der Baseline `1552,0000`, in der
+   Variante `1492,0000`. Die Tabelle kann durch alle 100 Perioden
+   gescrollt werden.
+
+![Kranken: 100-Perioden-Vergleich und genaue Tabelle](images/windows_health_workbench_pr169d_wide_results_2026-09-17.png)
+
+5. Nur fuer einen dauerhaft benoetigten Fall **Baseline** oder
+   **Variante** waehlen, die Speicherung ausdruecklich bestaetigen und
+   **Geprueften Fall speichern** druecken. Das braucht eine lokale
+   Ergebnisablage. Unter **Gespeicherte Krankenfaelle** laesst sich der
+   Fall erneut oeffnen und als CSV, JSON oder Excel herunterladen.
+   Ohne Ergebnisablage sind Vorschau und Vergleich weiterhin moeglich.
+
+Auch auf einem schmalen Bildschirm bleiben Eingabe und Zeitreihe lesbar:
+
+![Kranken: Eingaben auf schmalem Bildschirm](images/windows_health_workbench_pr169d_narrow_inputs_2026-09-17.png)
+
+![Kranken: 100-Perioden-Ergebnis auf schmalem Bildschirm](images/windows_health_workbench_pr169d_narrow_results_2026-09-17.png)
+
+Die Excel-Betraege sind bewusst Text, damit die Dezimalstellen nicht
+stillschweigend gerundet werden. Diese Modellrechnung ist weder eine
+gesetzliche Krankenbilanz noch eine Solvency-II- oder DORA-Bewertung;
+sie wird erst in PR170 mit den anderen Sparten zusammengefuehrt.
+
 ## Sieben Vorteile im Fuehrungskraefteseminar
 
 1. **Markt statt Einzelrechnung:** Entscheidungen werden zusammen mit
@@ -185,13 +240,16 @@ Prefix fehlen, bleibt die gespeicherte Zwei- oder Fuenf-Perioden-Probe
 der kleinere Demonstrationsfall. Einen neuen Fall frei zusammenzustellen
 ist noch keine Seminarfunktion.
 
-## Die fuenf Arbeitsansichten
+## Die Arbeitsansichten
 
 | Ansicht | Was die Gruppe dort klaert |
 | --- | --- |
 | Dashboard | Ist die Arbeitsumgebung bereit, und welcher Stand wird gezeigt? |
 | Szenarien | Welche Ausgangslage und welche Vergleichsfrage verwenden wir? |
 | Strategien | Wer folgt wann welcher Regel, und welche Parameter unterscheiden Gruppen? |
+| Bilanz | Wie veraendern explizite Kfz- und Sach-Haftpflicht-Fluesse die Modellbilanz? |
+| Leben | Was bewirken Tod, Neugeschaeft, Anlage und Kapital im kleinen Policenfall? |
+| Kranken | Wie wirken Beitrag und Leistungsannahmen ueber bis zu 100 Perioden? |
 | Validierung | Was ist belegt, was nur diagnostisch und was noch offen? |
 | Runs | Welcher Versuch wurde wirklich gestartet, und welches Ergebnis gehoert dazu? |
 

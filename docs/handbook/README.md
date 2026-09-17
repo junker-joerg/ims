@@ -1,7 +1,7 @@
 # IMS-Benutzerhandbuch
 
-Stand: 2026-09-16
-Handbuchstand: HB3d
+Stand: 2026-09-17
+Handbuchstand: HB3g
 
 Dieses Handbuch fuehrt Anwender durch die lokale IMS-Workbench und erklaert,
 wie Bedienstatus und historische Vergleichsergebnisse zu lesen sind. Es ist
@@ -14,11 +14,12 @@ identischen Parametern und Zufallszahlen reproduziert wurde.
 | --- | --- | --- |
 | Windows-Workbench | `verified_windows_hb3` | Kurzstart, portable Ablage, Entwickler-Checkout, Check, Start, Health, Stop, Datenpflege und Deinstallation sind dokumentiert und auf einem Leerzeichenpfad geprueft |
 | Windows-Anwender-Testpaket | `documented_windows_hb3b` | Ein finales ZIP, lokale `.venv`-Installation, 2 Seiten Installationsdoku und 10 Seiten fachliche Bedienungsanleitung mit 8 Abbildungen sind vorbereitet und geprueft |
-| Managementseminar | `documented_management_hb3d` | Nichttechnischer 90-Minuten-Ablauf, sieben Nutzenargumente, Wirkungsketten-Arbeitsblatt, fuenf Abbildungen und ehrliche Ausbaugrenzen sind dokumentiert |
+| Managementseminar | `documented_management_hb3g` | Nichttechnischer 90-Minuten-Ablauf, sieben Nutzenargumente, Wirkungsketten-Arbeitsblatt, elf Abbildungen und ehrliche Ausbaugrenzen sind dokumentiert |
 | Bedienpfad | `documented_hb2` | Dashboard, Szenarien, Runs, Validierung, Run-Control und Ergebnisanzeige sind beschrieben |
 | Einperioden-Wirkungsprobe | `verified_browser_pr132` | Strategie-Kandidat, ausdrueckliche Freigabe, genau eine isolierte Periode, gespeichertes Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Zwei-Perioden-Wirkungsprobe | `verified_browser_pr141` | Gespeicherte Kette, ausdrueckliche Freigabe, zwei isolierte Perioden, VU-/VN-Carryover, unveraenderliches Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
 | Fuenf-Perioden-Wirkungsprobe | `verified_browser_pr146` | Vorhandener Zwei-Perioden-Prefix, fuenf isolierte Perioden, vier VU-/VN-Uebergaenge, unveraenderliches Ergebnis und Verlauf sind auf breitem und schmalem Viewport belegt |
+| Kranken-Seminarfall | `verified_browser_pr169d` | Baseline/Variante bis 100 Perioden, getrennte Ergebnisablage, Verlauf und CSV/JSON/XLSX-Downloads sind auf breitem und schmalem Viewport belegt |
 | Linux | `not_verified` | Noch kein freigegebener Installationsweg; Plattformnachweis folgt in HB4 |
 | iOS/Juno | `feasibility_open` | Weder lokale Installation noch Support zugesagt; Entscheidung folgt in HB5 |
 | Historischer Vergleich | `accepted_diagnostic_benchmark` | PR102 hat 15/15 Tabellen und 6.300/6.300 Ergebniszeilen als diagnostischen Legacy-Benchmark eingeordnet; historische RNG- und Feldvollgleichheit ist kein Produktziel |
@@ -47,13 +48,16 @@ DORA-Wirkungsketten und Managementbedienung steht in der
 ## Navigation in der Workbench
 
 Die Workbench ist eine lange, lokal ausgelieferte Browseransicht. Die
-Navigation springt zu fuenf stabilen Bereichen:
+Navigation springt zu den fachlichen Bereichen:
 
 | Navigation | Inhalt |
 | --- | --- |
 | `Dashboard` | Systemstatus, Auswahlzusammenfassung und Betriebsdiagnose |
 | `Szenarien` | vorhandene Szenarien, Filter und Detailauswahl |
 | `Strategien` | Strategiekatalog, Entwuerfe, Snapshots sowie kontrollierte Einperioden-Kandidaten und Periodenketten |
+| `Bilanz` | einfache Kfz- und Sach-Haftpflicht-Modellbilanz |
+| `Leben` | kleiner Lebensfall mit Baseline und Variante |
+| `Kranken` | eigener Modellfall mit Baseline und Variante bis 100 Perioden |
 | `Validierung` | Kernvalidierung, Vergleichsstatus und Grenzen |
 | `Runs` | vorhandene Runs, Queue, Run-Control und Ergebnisanzeige |
 

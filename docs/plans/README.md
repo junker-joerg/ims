@@ -420,9 +420,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Leistungsfluesse sowie rein kuenftige Strategie-Anschlussstellen.
 - `ims_2x_pr169_health_balance_and_simulation_plan.md`:
   PR169-Bilanzfall, umgesetzter PR169a-Quellenvertrag und fluechtige
-  PR169b-Periodenkette, PR169c-API und Exporte; PR169d fuer eine bedienbare
-  Kranken-Simulation ueber bis zu
-  100 IMS-Modellperioden vor PR170.
+  PR169b-Periodenkette, PR169c-API und Exporte sowie PR169d fuer eine
+  bedienbare Kranken-Simulation ueber bis zu 100 IMS-Modellperioden;
+  PR170 ist der naechste Schritt.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR169d geht vor.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR170 geht vor.

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import HundredPeriodResults from "./HundredPeriodResults";
 import ModelBalanceWorkbench from "./ModelBalanceWorkbench";
 import LifeWorkbench from "./LifeWorkbench";
+import HealthWorkbench from "./HealthWorkbench";
 import {
   Activity,
   Archive,
@@ -5247,6 +5248,9 @@ function App() {
           <a href="#life">
             <HeartPulse size={18} aria-hidden="true" /> Leben
           </a>
+          <a href="#health">
+            <Activity size={18} aria-hidden="true" /> Kranken
+          </a>
           <a href="#validation">
             <ShieldCheck size={18} aria-hidden="true" /> Validierung
           </a>
@@ -9155,6 +9159,7 @@ function App() {
 
         <ModelBalanceWorkbench />
         <LifeWorkbench />
+        <HealthWorkbench />
 
         <section className="panel validation-panel" id="validation">
           <div className="panel-heading">

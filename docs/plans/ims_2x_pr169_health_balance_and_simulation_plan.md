@@ -1,6 +1,8 @@
 # PR169 und Folgepfad: Krankensparte bis zur bedienbaren Simulation
 
 Stand: 2026-09-17
+Status: PR169d als getrennte Browser- und Handbuchabnahme umgesetzt;
+PR170 Vier-Sparten-Konsolidierung folgt.
 
 ## Entscheidung
 
@@ -110,6 +112,34 @@ fuer beide App-Router, Race/Replay, Manipulation, alle Exporte und einen
 kleinen 100-Perioden-Fall. Er liefert **keine** Workbench-Eingabe und
 keine neue Kranken-Fachregel; das ist die Grenze zu PR169d.
 
+## PR169d: gefuehrter Kranken-Bedienpfad
+
+Die Workbench bietet einen kleinen expliziten Seminarfall: ein gemeinsamer
+Anfangsbestand, ein freigegebener Horizont von 1/2/5/10/25/50/100
+Perioden, konstante Baseline-Quellen und eine Variante mit geaenderten
+Beitrags-, Leistungsanfall- und Auszahlungswerten ab einer gewaehlten
+Periode. Neugeschaeft und Abgang sind in beiden Faellen dieselben
+expliziten periodischen Zahlen. Die Browser-Uebersetzung fuellt nur den
+bestehenden PR169b-Eingang; sie rechnet weder eine Bilanz noch eine
+implizite Strategie. Der Variantenbeginn bleibt beim Horizontwechsel
+fest; liegt er hinter dem Horizont, sind beide Prefixe gleich.
+Ungueltige Annahmen weist der Server atomar ab.
+
+Baseline und Variante werden fluechtig vorgeschaut und als Zeitreihe
+und genaue Tabelle vergleichbar. Nur ein bewusst ausgewaehlter,
+gepruefter Fall darf nach separater Bestaetigung mit Eingabe- und
+Ergebnis-Digest gestartet und gespeichert werden. Verlauf und
+CSV/JSON/XLSX-Downloads lesen ausschliesslich verifizierte Datensaetze;
+Downloads senden `If-Match`. Ohne SQLite bleiben Vorschau und Vergleich
+bedienbar, nicht aber Speicherung oder Verlauf.
+
+Abnahme: sieben Horizonte einschliesslich 100, stabiler Prefix vor der
+Variante, Wiederholung und Fehlerpfade, breite und schmale Browseransicht,
+ein tatsaechlicher Start mit Verlauf und allen drei Downloads sowie
+Handbuch-Screenshots. Beispielwerte sind IMS-2.x-Seminarannahmen, keine
+historischen oder regulatorischen Krankenwerte. Vier-Sparten-Summe,
+Solvency II und DORA bleiben bei ihren eigenen Folge-PRs.
+
 ## Risiken und offene Entscheidungen
 
 - PR169a hat Neugeschaeft und Austritte **vor** der 100er-Kette
@@ -122,4 +152,5 @@ keine neue Kranken-Fachregel; das ist die Grenze zu PR169d.
   Modellsegmente werden vor PR170 nur als getrennte Rechnungen gefuehrt.
 - PR169b begrenzt die fluechtige Kette und deren Zeilenausgabe.
   PR169c hat die separate Speicher- und Exportgrenze geprueft.
-  Die UI-Freigabe ist daraus **nicht** abzuleiten und bleibt PR169d.
+  Die UI-Freigabe war daraus **nicht** abzuleiten und wurde in PR169d
+  separat abgenommen.

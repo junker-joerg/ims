@@ -60,4 +60,6 @@ Alle drei Downloads tragen ETag und verlangen dasselbe `If-Match`.
 FastAPI und Fallback-Router haben dieselben Pfade und Fehlergrenzen.
 Tests pruefen Vorschau, Freigabe, Replay, Parallelstart, Manipulation,
 Abbruch/Timeout, 100 Perioden und die Uebereinstimmung der Exporte.
-Die Workbench kann diese API erst in **PR169d** bedienbar machen.
+Die Workbench hat diese API in **PR169d** fuer den Seminarfall bedienbar
+gemacht; die Speicher- und Digestgrenzen dieses PR169c bleiben dabei
+unveraendert.
