@@ -18,6 +18,6 @@ def test_pr162_documents_historical_boundary_timing_and_next_steps() -> None:
         assert phrase.lower() in normalized
     assert PLAN.name in (ROOT / "docs" / "plans" / "README.md").read_text(encoding="utf-8")
     assert MIGRATION.name in (ROOT / "docs" / "migration" / "README.md").read_text(encoding="utf-8")
-    assert "PR167 Lebens-Workbench umgesetzt, PR168 Kranken-Vertrag naechster Schritt" in (
+    assert "| PR168 | Zustands-, Fluss- und Strategievertrag fuer Kranken | umgesetzt:" in (
         ROOT / "docs" / "plans" / "ims_2x_all_lines_management_lab_roadmap.md"
     ).read_text(encoding="utf-8")

@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-17
-Status: aktive Produkt-Restplanung; PR167 Lebens-Workbench umgesetzt, PR168 Kranken-Vertrag naechster Schritt
+Status: aktive Produkt-Restplanung; PR168 Kranken-Vertrag umgesetzt, PR169 deterministische Krankensparte naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -118,7 +118,7 @@ Schadenlogik ausgegeben.
 | PR165 | Kontrollierter Lebensanschluss an die Periodenkette | umgesetzt: fluechtiger 100er-Pfad mit PR164-Quellen, PR163-Prefix, Carryover und Abbruch ohne Teilresultat; Nichtleben unveraendert |
 | PR166 | Lebens-Ergebnis-API, Ablage und XLSX | umgesetzt: 20-Sekunden-API-Budget, erneute Digestpruefung, dauerhafte Idempotenz, read-only Verlauf und exakte Dezimaltexte im XLSX; Recovery-Abnahme offen |
 | PR167 | Gefuehrte Lebens-Workbench fuer Seminare | umgesetzt: drei kuratierte Zwei-Perioden-Faelle, beschriftete Stellhebel, Baseline/Variante, Zeitreihe, explizite Ergebnisablage; neue Handbuchbilder und Browser-Dateidownload offen |
-| PR168 | Zustands-, Fluss- und Strategievertrag fuer Kranken | Beitrags-, Leistungs- und Bestandslogik sind begrenzt und getrennt |
+| PR168 | Zustands-, Fluss- und Strategievertrag fuer Kranken | umgesetzt: geschlossener Bestand, getrennte Beitrags-/Leistungsfluesse, offene Leistungsverpflichtung und kuenftige Strategie-Anschlussstellen; read-only ohne Rechnung |
 | PR169 | Minimale deterministische Krankensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
 | PR170 | Spartenuebergreifende Konsolidierung | vier Modellsegmente stimmen je Versicherer zur Gesamtbilanz ab |
 
@@ -139,8 +139,13 @@ der 100x100-Extremfall bleibt ausserhalb des interaktiven Zeitbudgets.
 PR167 hat drei kleine Seminarfaelle in die Workbench gebracht; freie
 Anfangsbestands- und Laufzeitgestaltung sowie neue Handbuchbilder
 bleiben offen.
-Umfang, Annahmen und UI-Bedienweg stehen in
-`docs/plans/ims_2x_life_workshop_expansion_plan.md`.
+PR168 hat einen separaten Kranken-Vertrag fuer einen geschlossenen Bestand
+festgelegt. Angefallene und ausgezahlte Leistungen sowie die offene
+Leistungsverpflichtung sind getrennt; Tarife, Alterungsrueckstellung und
+Strategieausfuehrung bleiben offen. PR169 rechnet erst einen kleinen Fall.
+Der Lebensausbau und sein UI-Bedienweg stehen in
+`docs/plans/ims_2x_life_workshop_expansion_plan.md`; fuer Kranken beschreibt
+`docs/plans/ims_2x_pr168_health_sector_contract_plan.md` die engere Grenze.
 
 ## Phase C: Solvency-II-Kapitalansicht
 
@@ -220,15 +225,15 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR167 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR168 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 3 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 11 |
-| durchgaengige DORA-Wirkungskette | PR186 | 45 | 19 |
-| kontrollierte Managementseminar-Reife | PR190 | 49 | 23 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 25 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 2 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 10 |
+| durchgaengige DORA-Wirkungskette | PR186 | 45 | 18 |
+| kontrollierte Managementseminar-Reife | PR190 | 49 | 22 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 24 |
 
 Die 49 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -337,7 +342,10 @@ fluechtig durch bis zu 100 Lebensperioden gefuehrt. PR166 hat eine
 Verlauf und XLSX ergaenzt; groessere reine Lebensfaelle bleiben
 ausserhalb des interaktiven Starts. PR167 hat eine bedienbare
 Lebens-Workbench fuer kuratierte Zwei-Perioden-Faelle geliefert.
-PR168 legt als naechstes den Kranken-Vertrag fest; PR170 soll die
+PR168 hat den read-only Kranken-Vertrag mit getrennten Beitrags-,
+Leistungs- und Bestandswerten geliefert. PR169 ist der naechste Schritt:
+ein deterministischer Krankenfall mit atomarer Bilanzpruefung aus
+expliziten Szenariowerten. PR170 soll anschliessend die
 Vier-Sparten-Gesamtbilanz liefern. Bis dahin bleibt die heutige
 Zwei-Sparten-Gesamtbilanz unveraendert. Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.

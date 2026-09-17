@@ -1,7 +1,7 @@
 # Leben nach PR159: vom Rechenfall zum Workshop-Segment
 
 Stand: 2026-09-17
-Status: PR160-167 umgesetzt; PR168 Kranken-Vertrag folgt
+Status: PR160-167 umgesetzt; PR168 Kranken-Vertrag separat umgesetzt
 
 ## Warum der bisherige Plan nicht ausreichte
 
@@ -16,7 +16,8 @@ geschlossenen Bestand. PR162 ergaenzt getrennte Kohorten und
 Neugeschaeft; PR163 ergaenzt explizite Policen und Ablaufleistungen.
 PR164 hat Anlage- und Mortalitaetsquellen getrennt aufgeloest;
 PR165 verbindet sie mit einer fluechtigen, atomaren Lebens-Periodenkette.
-PR166 und PR167 sind umgesetzt. PR168 beginnt mit dem Kranken-Vertrag. Die
+PR166 und PR167 sind umgesetzt. PR168 hat separat den Kranken-Vertrag
+festgelegt; PR169 rechnet erst einen kleinen Fall. Die
 zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 
 ## Fachlicher Mindestumfang

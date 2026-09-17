@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_health_sector_contract.md`: PR168-read-only Kranken-Vertrag
+  fuer geschlossenen Bestand, getrennte angefallene und ausgezahlte
+  Leistungen sowie offene Verpflichtung; ohne Rechnung oder Altbindung
 - `ims_2x_life_workbench.md`: PR167-gefuhrte Zwei-Perioden-Lebensfaelle
   mit Baseline/Variante, Quellen, Zeitreihe und PR166-Speichergrenze
 - `ims_2x_life_result_delivery.md`: PR166-digestgebundene Lebens-

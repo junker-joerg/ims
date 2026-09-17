@@ -15,7 +15,7 @@ def test_pr159_documents_model_choice_historical_limit_and_deferred_scope() -> N
         "Das ist keine dauerhafte Ausschlussliste", "PR160-167",
     ):
         assert phrase.lower() in (plan + migration).lower()
-    assert "PR167 Lebens-Workbench umgesetzt, PR168 Kranken-Vertrag naechster Schritt" in (
+    assert "| PR168 | Zustands-, Fluss- und Strategievertrag fuer Kranken | umgesetzt:" in (
         ROOT / "docs" / "plans" / "ims_2x_all_lines_management_lab_roadmap.md"
     ).read_text(encoding="utf-8")
     assert "ims_2x_deterministic_life_case.md" in (
