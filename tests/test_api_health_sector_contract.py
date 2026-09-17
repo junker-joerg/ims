@@ -4,7 +4,10 @@ import pytest
 from starlette.testclient import TestClient
 
 from ims.api.app import create_app
-from ims.model.health_sector_contract import health_sector_contract_payload
+from ims.model.health_sector_contract import (
+    HEALTH_SECTOR_CONTRACT_V1_VERSION,
+    health_sector_contract_payload,
+)
 
 
 @pytest.mark.parametrize("starlette_fallback", [False, True])
@@ -28,7 +31,11 @@ def test_health_contract_is_get_only_without_storage_or_runner(
     response = client.get(endpoint)
     assert response.status_code == 200
     assert response.json() == health_sector_contract_payload()
+    assert client.get(endpoint + "/v1").json() == health_sector_contract_payload(
+        HEALTH_SECTOR_CONTRACT_V1_VERSION
+    )
     assert db_path.exists() is False
-    for method in ("POST", "PUT", "DELETE"):
-        assert client.request(method, endpoint, json={}).status_code == 405
+    for path in (endpoint, endpoint + "/v1"):
+        for method in ("POST", "PUT", "DELETE"):
+            assert client.request(method, path, json={}).status_code == 405
     assert db_path.exists() is False

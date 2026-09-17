@@ -174,7 +174,10 @@ from ims.api.strategy_execution_candidate_effect_probe_start import (
     strategy_execution_candidate_effect_probe_start_error_payload,
 )
 from ims.engine.core_validation_overview import build_core_validation_overview
-from ims.model.health_sector_contract import health_sector_contract_payload
+from ims.model.health_sector_contract import (
+    HEALTH_SECTOR_CONTRACT_V1_VERSION,
+    health_sector_contract_payload,
+)
 from ims.model.legacy_damage_adapter import legacy_damage_adapter_contract_payload
 from ims.model.life_sector_contract import (
     LIFE_SECTOR_CONTRACT_V1_VERSION,
@@ -2745,6 +2748,10 @@ def create_app(
         def model_health_sector_contract() -> dict[str, object]:
             return health_sector_contract_payload()
 
+        @app.get("/api/model/health-sector-contract/v1")
+        def model_health_sector_contract_v1() -> dict[str, object]:
+            return health_sector_contract_payload(HEALTH_SECTOR_CONTRACT_V1_VERSION)
+
         @app.get("/api/model/life-sector-contract")
         def model_life_sector_contract() -> dict[str, object]:
             return life_sector_contract_payload()
@@ -3471,6 +3478,12 @@ def create_app(
         Route(
             "/api/model/health-sector-contract",
             lambda request: JSONResponse(health_sector_contract_payload()),
+        ),
+        Route(
+            "/api/model/health-sector-contract/v1",
+            lambda request: JSONResponse(
+                health_sector_contract_payload(HEALTH_SECTOR_CONTRACT_V1_VERSION)
+            ),
         ),
         Route(
             "/api/model/life-sector-contract",

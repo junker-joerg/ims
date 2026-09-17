@@ -17,7 +17,8 @@ Neugeschaeft; PR163 ergaenzt explizite Policen und Ablaufleistungen.
 PR164 hat Anlage- und Mortalitaetsquellen getrennt aufgeloest;
 PR165 verbindet sie mit einer fluechtigen, atomaren Lebens-Periodenkette.
 PR166 und PR167 sind umgesetzt. PR168 hat separat den Kranken-Vertrag
-festgelegt; PR169 rechnet erst einen kleinen Fall. Die
+festgelegt; PR169 hat einen kleinen Fall gerechnet. PR169a-d schliessen
+die mehrperiodige Bedienluecke vor PR170. Die
 zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 
 ## Fachlicher Mindestumfang

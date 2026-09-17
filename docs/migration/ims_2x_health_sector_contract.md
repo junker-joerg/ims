@@ -66,6 +66,13 @@ Vollgleichheit bezeichnet werden.
 
 PR169 entscheidet das Eingabeformat und prueft eine kleine deterministische
 Ein-/Zweiperiodenrechnung mit Bilanz- und Bestandsinvarianten atomar.
-PR170 klaert anschliessend die Kapitalallokation und Konsolidierung der
+Nach PR169a-d klaert PR170 die Kapitalallokation und Konsolidierung der
 vier Modellsegmente. Die offenen Produkt-, Reserve- und Strategiethemen
 benoetigen eigene fachliche Zuschnitte vor einem groesseren Gesundheitsmodell.
+
+Stand nach PR169: Dieser v1-Vertrag bleibt unveraendert unter
+`GET /api/model/health-sector-contract/v1`; der Standardpfad zeigt jetzt
+den v2-Vertrag mit dem separat aufrufbaren, auf zwei Perioden begrenzten
+Python-Rechenkern. Der bedienbare 100-Perioden-Pfad ist in
+`docs/plans/ims_2x_pr169_health_balance_and_simulation_plan.md` als
+PR169a-d vor PR170 nachgeplant.

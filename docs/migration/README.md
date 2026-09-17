@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_deterministic_health_case.md`: PR169-Ein-/Zweiperioden-
+  Kranken-Modellbilanz aus expliziten Werten mit atomarer Pruefung;
+  mehrperiodiger Bedienpfad ist als PR169a-d nachgeplant
 - `ims_2x_health_sector_contract.md`: PR168-read-only Kranken-Vertrag
   fuer geschlossenen Bestand, getrennte angefallene und ausgezahlte
   Leistungen sowie offene Verpflichtung; ohne Rechnung oder Altbindung

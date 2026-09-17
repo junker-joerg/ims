@@ -6,7 +6,8 @@ from ims.model.sector_taxonomy import SECTOR_TAXONOMY_VERSION
 from ims.model.vdefmd6_population import VDEFMD6_INSURER_COUNT
 
 
-HEALTH_SECTOR_CONTRACT_VERSION = "ims.health-sector-contract.v1"
+HEALTH_SECTOR_CONTRACT_V1_VERSION = "ims.health-sector-contract.v1"
+HEALTH_SECTOR_CONTRACT_VERSION = "ims.health-sector-contract.v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -103,11 +104,17 @@ HEALTH_STRATEGY_HOOKS = (
 )
 
 
-def health_sector_contract_payload() -> dict[str, object]:
-    """Describe health-specific flows without validating, storing or running them."""
+def health_sector_contract_payload(
+    schema_version: str = HEALTH_SECTOR_CONTRACT_VERSION,
+) -> dict[str, object]:
+    """Describe health-specific flows and the separately callable small calculation."""
 
-    return {
-        "schema_version": HEALTH_SECTOR_CONTRACT_VERSION,
+    if schema_version not in (HEALTH_SECTOR_CONTRACT_V1_VERSION, HEALTH_SECTOR_CONTRACT_VERSION):
+        raise ValueError("Unbekannte Kranken-Vertragsversion")
+    is_v1 = schema_version == HEALTH_SECTOR_CONTRACT_V1_VERSION
+
+    payload: dict[str, object] = {
+        "schema_version": schema_version,
         "sector_taxonomy_schema_version": SECTOR_TAXONOMY_VERSION,
         "mode": "health_sector_contract_read_only",
         "scope": {
@@ -167,8 +174,8 @@ def health_sector_contract_payload() -> dict[str, object]:
             "ageing_reserve_and_product_valuation_separate_contract",
             "pr170_cross_sector_capital_allocation_and_consolidation",
         ],
-        "input_validation_available": False,
-        "calculation_available": False,
+        "input_validation_available": not is_v1,
+        "calculation_available": not is_v1,
         "strategy_assignment_available": False,
         "snapshot_materialization_enabled": False,
         "runner_enabled": False,
@@ -177,3 +184,18 @@ def health_sector_contract_payload() -> dict[str, object]:
         "statutory_or_solvency_ii_claim": False,
         "historical_full_equality_claim": False,
     }
+    if not is_v1:
+        payload["pending_decisions"] = [
+            decision for decision in payload["pending_decisions"]
+            if decision != "pr169_input_schema_and_atomic_balance_validation"
+        ]
+        payload["calculation"] = {
+            "interface": "python_library_only",
+            "function": "ims.accounting.health_model_balance.build_health_model_balance",
+            "input_schema_version": "ims.health-model-balance-input.v1",
+            "result_schema_version": "ims.health-model-balance-result.v1",
+            "scope": "closed_portfolio_with_explicit_flows_for_one_or_two_periods",
+            "max_period_count": 2,
+            "four_sector_consolidation_enabled": False,
+        }
+    return payload

@@ -1,3 +1,4 @@
+import hashlib
 import json
 import re
 from dataclasses import FrozenInstanceError
@@ -8,6 +9,7 @@ from ims.model.health_sector_contract import (
     HEALTH_CARRYOVER,
     HEALTH_EQUATIONS,
     HEALTH_FIELDS,
+    HEALTH_SECTOR_CONTRACT_V1_VERSION,
     HEALTH_SECTOR_CONTRACT_VERSION,
     HEALTH_STRATEGY_HOOKS,
     health_sector_contract_payload,
@@ -26,13 +28,30 @@ def test_health_contract_is_separate_deterministic_and_read_only() -> None:
     assert payload["scope"]["new_business_enabled"] is False
     assert payload["scope"]["exits_enabled"] is False
     assert payload["scope"]["historical_mapping_status"] == "unresolved"
+    assert payload["input_validation_available"] is True
+    assert payload["calculation_available"] is True
+    assert payload["calculation"]["max_period_count"] == 2
+    assert payload["calculation"]["interface"] == "python_library_only"
     for key in (
-        "input_validation_available", "calculation_available", "strategy_assignment_available",
-        "snapshot_materialization_enabled", "runner_enabled", "writes_enabled",
+        "strategy_assignment_available", "snapshot_materialization_enabled", "runner_enabled", "writes_enabled",
         "simulation_performed", "statutory_or_solvency_ii_claim",
         "historical_full_equality_claim",
     ):
         assert payload[key] is False
+
+
+def test_v1_read_only_contract_remains_byte_stable() -> None:
+    v1 = health_sector_contract_payload(HEALTH_SECTOR_CONTRACT_V1_VERSION)
+    encoded = json.dumps(v1, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    assert hashlib.sha256(encoded.encode("utf-8")).hexdigest() == (
+        "4e1fc6fe5f7dacc4bb0a6702dd89baa9b1502673cc2d7b01507139c33ca960ab"
+    )
+    assert v1["input_validation_available"] is False
+    assert v1["calculation_available"] is False
+    assert "calculation" not in v1
+    assert "pr169_input_schema_and_atomic_balance_validation" in v1["pending_decisions"]
+    with pytest.raises(ValueError):
+        health_sector_contract_payload("ims.health-sector-contract.v0")
 
 
 def test_fields_equations_and_carryover_close_without_double_counting() -> None:
