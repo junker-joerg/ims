@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_health_period_chain.md`: PR169b-fluechtige Kranken-Kette
+  ueber sieben Horizonte bis 100 Perioden, mit atomarem Abbruch und
+  exakten Bestands-/Bilanzuebergaengen; ohne Ablage oder Browserstart
 - `ims_2x_health_period_sources.md`: PR169a-Versionierung und atomare
   Pruefung von Kranken-Bestandsbewegungen, Beitragspreis und exogener
   Leistung je IMS-Periode; keine Ausfuehrung

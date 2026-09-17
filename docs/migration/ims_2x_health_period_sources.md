@@ -54,9 +54,10 @@ teilweise geprueften Perioden. Auch ein gueltiger Bericht enthaelt keine
 berechneten Ergebnisse. Ein-/100-Perioden-Plaene sind lediglich
 validierbar, nicht startbar.
 
-PR169b muss diesen Plan mit einem getrennt geprueften Bilanzanfang sowie
-Auszahlungs-, Anlage-, Aufwands- und Kapitalwerten verbinden und erst
-dann die Periodenkette rechnen. Besonders `benefits_paid` ist die
+PR169b hat diesen Plan mit einem getrennt geprueften Bilanzanfang sowie
+Auszahlungs-, Anlage-, Aufwands- und Kapitalwerten verbunden und eine
+fluechtige Periodenkette gerechnet; siehe `ims_2x_health_period_chain.md`.
+Besonders `benefits_paid` ist die
 Begleichung einer vorhandenen Leistungsverpflichtung, **keine** zweite
 Leistungsannahme. Bestand, Bilanz und exakte Prefixe muessen gemeinsam
 geprueft werden. PR169c fuegt kontrollierte Ablage/Exporte hinzu, PR169d

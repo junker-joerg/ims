@@ -1,0 +1,78 @@
+{
+  "schema_version": "ims.health-period-chain-input.v1",
+  "health_sector_contract_schema_version": "ims.health-sector-contract.v2",
+  "sector_taxonomy_schema_version": "ims.sector-taxonomy.v1",
+  "source_kind": "versioned_health_period_chain",
+  "historical_mapping_status": "unresolved",
+  "insurer_id": 1,
+  "sector_id": "health",
+  "opening": {
+    "opening_active_policies": 10,
+    "opening_cash": "100.00",
+    "opening_benefit_liability": "20.00",
+    "opening_equity": "80.00"
+  },
+  "sources": {
+    "schema_version": "ims.health-period-sources-input.v1",
+    "health_sector_contract_schema_version": "ims.health-sector-contract.v2",
+    "sector_taxonomy_schema_version": "ims.sector-taxonomy.v1",
+    "source_kind": "versioned_health_period_sources",
+    "historical_mapping_status": "unresolved",
+    "insurer_id": 1,
+    "sector_id": "health",
+    "scenario_id": "seminar_health_01",
+    "variant_id": "baseline",
+    "period_count": 2,
+    "opening_active_policies": 10,
+    "new_business": {
+      "actor_type": "market",
+      "mode": "explicit_scenario_counts",
+      "periods": [
+        {"period": 1, "count": 2},
+        {"period": 2, "count": 0}
+      ]
+    },
+    "exits": {
+      "actor_type": "policyholder",
+      "mode": "explicit_scenario_counts",
+      "periods": [
+        {"period": 1, "count": 1},
+        {"period": 2, "count": 2}
+      ]
+    },
+    "pricing": {
+      "actor_type": "insurer",
+      "mode": "explicit_insurer_price_windows",
+      "windows": [
+        {"start_period": 1, "end_period": 1, "amount_per_opening_policy": "3.00"},
+        {"start_period": 2, "end_period": 2, "amount_per_opening_policy": "2.50"}
+      ]
+    },
+    "benefits": {
+      "actor_type": "exogenous",
+      "mode": "explicit_benefit_cost_windows",
+      "windows": [
+        {"start_period": 1, "end_period": 1, "amount_per_opening_policy": "1.80"},
+        {"start_period": 2, "end_period": 2, "amount_per_opening_policy": "1.00"}
+      ]
+    }
+  },
+  "periods": [
+    {
+      "period": 1,
+      "benefits_paid": "15.00",
+      "investment_result": "2.00",
+      "operating_expense_paid": "4.00",
+      "capital_contribution": "5.00",
+      "capital_distribution": "3.00"
+    },
+    {
+      "period": 2,
+      "benefits_paid": "20.00",
+      "investment_result": "-1.00",
+      "operating_expense_paid": "3.00",
+      "capital_contribution": "0.00",
+      "capital_distribution": "2.00"
+    }
+  ]
+}

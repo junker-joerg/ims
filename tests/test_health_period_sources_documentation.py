@@ -18,4 +18,4 @@ def test_health_source_contract_is_mapped_and_not_pretending_to_run() -> None:
         assert phrase in normalized
     assert "## PR169a: Quellen- und Bestandsvertrag" in plan
     assert "| PR169a | Kranken-Bestands- und Quellenvertrag | umgesetzt:" in roadmap
-    assert "| PR169b | Kontrollierte Kranken-Periodenkette bis 100 |" in roadmap
+    assert "| PR169b | Kontrollierte Kranken-Periodenkette bis 100 | umgesetzt:" in roadmap

@@ -53,8 +53,8 @@ keinen gespeicherten Teilstand. Die festen Beispiele stehen in
 
 `PR169a` hat Neugeschaeft, Abgang, Beitrags-/Leistungsquellen
 getrennt und atomar validiert; siehe `ims_2x_health_period_sources.md`.
-`PR169b` fuehrt diese Werte
-kontrolliert bis 100 IMS-Perioden, `PR169c` liefert geschuetzte Ablage
+`PR169b` fuehrt diese Werte nun als fluechtige Kette kontrolliert bis
+100 IMS-Perioden; siehe `ims_2x_health_period_chain.md`. `PR169c` liefert geschuetzte Ablage
 und CSV/JSON/XLSX, `PR169d` erst den bedienbaren Workbench-Pfad mit
 Baseline/Variante. **PR169 selbst startet weder Runner noch Simulation**.
 Danach konsolidiert PR170 die vier getrennten Segmente.

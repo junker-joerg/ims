@@ -71,6 +71,24 @@ Sie gibt bei jedem Fehler **keinen** teilgeprueften Plan zurueck. Eine
 Bilanz, ein Runner, Speicherung und ein Browserstart gehoeren erst in die
 folgenden PRs. PR169s geschlossener v2-Vertrag bleibt unveraendert.
 
+## PR169b: fluechtige Periodenkette
+
+Der neue, eigenstaendige Eingang `ims.health-period-chain-input.v1`
+bindet genau einen PR169a-Quellenplan an den geprueften Bilanzanfang und
+explizite Auszahlungs-, Anlage-, Aufwands- und Kapitalwerte je Periode.
+VU, Szenariovariante, Anfangsbestand und Horizont muessen zusammenpassen.
+Freigegeben sind genau 1, 2, 5, 10, 25, 50 oder 100 Perioden. Eine
+Einperiodenrechnung nutzt die unveraenderte PR169-Bilanzlogik; danach
+wirken Abgang und Neugeschaeft auf den naechsten Anfangsbestand. Jede
+Periode nutzt ausschliesslich den geprueften Vorperiodenschluss.
+
+Eine ungueltige Quelle, ein Fehler selbst in Periode 100 oder ein
+Abbruch liefert **null** Ergebniszeilen. Die reine Python-Funktion hat
+hoechstens 100 Iterationen und ein begrenztes Ergebnisbudget. Tests
+vergleichen alle sieben Horizonte mit dem identischen 100er-Prefix,
+pruefen Bestands- und Bilanzgleichungen sowie Wiederholung und Laufzeit.
+Es gibt keine Ablage, API-Freigabe oder Workbench-Bedienung vor PR169c/d.
+
 ## Risiken und offene Entscheidungen
 
 - PR169a hat Neugeschaeft und Austritte **vor** der 100er-Kette
@@ -81,6 +99,6 @@ folgenden PRs. PR169s geschlossener v2-Vertrag bleibt unveraendert.
   begruendete, getrennte Kausalregel statt einer stillen Kuerzung.
 - Keine historische `Sp[2]`-/`Rk[2]`-Zuordnung zu `health`. Die vier
   Modellsegmente werden vor PR170 nur als getrennte Rechnungen gefuehrt.
-- Ressourcenbudgets, Speicherung und UI-Freigabe sind **nicht** aus der
-  Existenz eines Python-Rechenkerns abzuleiten; jede Grenze bekommt ihre
-  eigene Abnahme.
+- PR169b begrenzt die fluechtige Kette und deren Zeilenausgabe.
+  Speicherung und UI-Freigabe sind **nicht** daraus abzuleiten; beide
+  Grenzen bekommen ihre eigene Abnahme.
