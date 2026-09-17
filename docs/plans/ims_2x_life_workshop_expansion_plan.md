@@ -1,7 +1,7 @@
 # Leben nach PR159: vom Rechenfall zum Workshop-Segment
 
 Stand: 2026-09-16
-Status: verbindliche Nachplanung vor Kranken und Vier-Sparten-Konsolidierung
+Status: PR160-Vertrag umgesetzt; PR161 als naechster Rechenschnitt geplant
 
 ## Warum der bisherige Plan nicht ausreichte
 
@@ -10,8 +10,9 @@ Garantieverpflichtung und einem festen Ablaufbeispiel. Die bisherige
 Roadmap sprang danach direkt zu Kranken und zur Gesamtbilanz. Damit
 fehlten fuer ein Management-Seminar ausgerechnet Bestandsbewegungen,
 unterschiedliche Vertraege, strategische Stellhebel und ein Bedienweg.
-Diese Luecke wird durch acht kleine PRs geschlossen. PR160 ist nun der
-naechste Schritt; die bisher geplanten Nummern ab PR160 ruecken um acht.
+Diese Luecke wird durch acht kleine PRs geschlossen. PR160 hat den
+read-only Zielvertrag festgelegt; PR161 ist der naechste Schritt. Die
+zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 
 ## Fachlicher Mindestumfang
 
@@ -47,7 +48,7 @@ naechste Schritt; die bisher geplanten Nummern ab PR160 ruecken um acht.
 
 | PR | Liefergegenstand | Abnahme |
 | --- | --- | --- |
-| PR160 | Lebensfluss- und Bewertungsvertrag v3 | Zeitpunkte und Quellen fuer Tod, Neugeschaeft, Ablauf, Kapital, individuelle Werte und Garantieuntergrenze explizit; PR159-v2 bleibt gueltig |
+| PR160 | Lebensfluss- und Bewertungsvertrag v3 | umgesetzt: Zeitpunkte und Quellen fuer Tod, Neugeschaeft, Ablauf, Kapital, individuelle Werte und Garantieuntergrenze explizit; PR159-v2 bleibt gueltig |
 | PR161 | Tod und Kapitalbewegungen im geschlossenen Bestand | feste Positiv-/Negativfaelle, getrennte Leistung/Freisetzung, keine Bilanzluecke oder Teilresultate |
 | PR162 | Neugeschaeft mit Kohorten und Ausgabeparametern | neue Kohorten tragen erst ab festgelegtem Zeitpunkt Garantie; Bestand und Garantie je Kohorte stimmen zum Gesamtwert |
 | PR163 | Begrenzte Policenwerte und variable Ablaufleistung | einzelne Policen und Aggregate stimmen; Garantieuntergrenze und Ergebniseffekt sind geprueft |

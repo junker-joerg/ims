@@ -8,6 +8,7 @@ from ims.model.life_sector_contract import (
     LIFE_SECTOR_CONTRACT_V1_VERSION,
     life_sector_contract_payload,
 )
+from ims.model.life_sector_v3_contract import life_sector_v3_contract_payload
 
 
 @pytest.mark.parametrize("starlette_fallback", [False, True])
@@ -34,8 +35,9 @@ def test_life_contract_api_is_read_only_without_runner_or_metadata(
     assert client.get(endpoint + "/v1").json() == life_sector_contract_payload(
         LIFE_SECTOR_CONTRACT_V1_VERSION
     )
+    assert client.get(endpoint + "/v3").json() == life_sector_v3_contract_payload()
     assert db_path.exists() is False
-    for path in (endpoint, endpoint + "/v1"):
+    for path in (endpoint, endpoint + "/v1", endpoint + "/v3"):
         for method in ("POST", "PUT", "DELETE"):
             assert client.request(method, path, json={}).status_code == 405
     assert db_path.exists() is False

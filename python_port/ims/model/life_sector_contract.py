@@ -7,7 +7,8 @@ from ims.model.vdefmd6_population import VDEFMD6_INSURER_COUNT
 
 
 LIFE_SECTOR_CONTRACT_V1_VERSION = "ims.life-sector-contract.v1"
-LIFE_SECTOR_CONTRACT_VERSION = "ims.life-sector-contract.v2"
+LIFE_SECTOR_CONTRACT_V2_VERSION = "ims.life-sector-contract.v2"
+LIFE_SECTOR_CONTRACT_VERSION = LIFE_SECTOR_CONTRACT_V2_VERSION
 
 
 @dataclass(frozen=True, slots=True)

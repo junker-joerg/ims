@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_life_v3_contract.md`: PR160-read-only Lebensfluss- und
+  Bewertungsvertrag fuer Tod, Neugeschaeft, Kapital, Kohorten und
+  Policenwerte; v1/v2 und PR159-Rechnung bleiben unveraendert
 - `ims_2x_deterministic_life_case.md`: PR159-Rechnung fuer einen
   geschlossenen Lebensbestand mit expliziter Garantie-Basis, Timing,
   Ablaufzahlung und atomarer Modellbilanz; ohne Alt-Runner-Anschluss

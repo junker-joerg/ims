@@ -391,6 +391,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_life_workshop_expansion_plan.md`:
   PR160-167-Nachplanung fuer Tod, Neugeschaeft, Policenwerte, Kapital,
   deterministische Annahmen und eine bedienbare Lebens-Workbench.
+- `ims_2x_pr160_life_flow_valuation_contract_plan.md`:
+  PR160-Plan fuer die read-only v3-Entscheidungen zu Lebensfluss,
+  Bewertungsbasis und Periodenfolge ohne neue Berechnung.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR160 geht vor.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR161 geht vor.
