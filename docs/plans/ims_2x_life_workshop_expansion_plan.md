@@ -1,7 +1,7 @@
 # Leben nach PR159: vom Rechenfall zum Workshop-Segment
 
 Stand: 2026-09-17
-Status: PR160-164 umgesetzt; PR165 Lebensanschluss folgt
+Status: PR160-165 umgesetzt; PR166 Ergebnisablage und Export folgen
 
 ## Warum der bisherige Plan nicht ausreichte
 
@@ -15,7 +15,8 @@ read-only Zielvertrag festgelegt; PR161 rechnet Tod und Kapital im
 geschlossenen Bestand. PR162 ergaenzt getrennte Kohorten und
 Neugeschaeft; PR163 ergaenzt explizite Policen und Ablaufleistungen.
 PR164 hat Anlage- und Mortalitaetsquellen getrennt aufgeloest;
-PR165 ist der naechste Schritt. Die
+PR165 verbindet sie mit einer fluechtigen, atomaren Lebens-Periodenkette.
+PR166 ist der naechste Schritt. Die
 zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 
 ## Fachlicher Mindestumfang
@@ -57,7 +58,7 @@ zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 | PR162 | Neugeschaeft mit Kohorten und Ausgabeparametern | umgesetzt: neue Kohorten tragen erst in der Folgeperiode Garantie; Bestand und Verpflichtung je Kohorte stimmen zum Gesamtwert, PR161-Spezialfall stabil |
 | PR163 | Begrenzte Policenwerte und variable Ablaufleistung | umgesetzt: hoechstens 100 vollstaendig enumerierte Policen, individuelle Gutschrift, explizite Ablaufleistung und atomare Abstimmung; kein Runner/UI |
 | PR164 | Deterministische Anlage- und Mortalitaetsannahmen | umgesetzt: lueckenlose Fenster, exklusive Quellenmodi, VU-Anlagewert und Todesfall-IDs je Kohorte; reine Aufloesung ohne Runner |
-| PR165 | Kontrollierter Lebensanschluss an die Periodenkette | bis 100 Perioden mit Carryover, Abbruchgrenzen und unveraendertem Nichtleben-Prefix; kein stiller Eingriff in alte Runner |
+| PR165 | Kontrollierter Lebensanschluss an die Periodenkette | umgesetzt: bis 100 Perioden, PR164-Quellen aus geprueftem Carryover, PR163-Prefixrechnung und atomarer Abbruch; Nichtleben-Pfad unveraendert |
 | PR166 | Lebens-Ergebnis-API, Ablage und XLSX | kontrollierte Idempotenz, Herkunft/Digest, lesbarer Verlauf und gleiche Zahlen in Ergebnis und Export |
 | PR167 | Gefuehrte Lebens-Workbench fuer Seminar/Strategieworkshop | beschriftete Eingaben und Presets, Baseline/Variante, Bestands-/Leistungs-/Bilanz-Zeitreihen, breite und schmale Browserabnahme |
 

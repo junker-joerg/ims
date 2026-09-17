@@ -51,9 +51,9 @@ Der zweite Funktionsparameter ist der Anfangsbestand **einer**
 Periode: `insurer_id`, `period`, `opening_backing_assets` und eine
 vollstaendige `opening_policies`-Liste aus `policy_id` und
 `cohort_id`. Hoechstens 100 aktive Policen sind erlaubt. VU-ID muss
-zum Plan passen, und die Periode muss im Plan liegen. PR165 muss
-diese Anfangsbasis aus dem geprueften Anfangs-/Vorperiodenbestand
-bereitstellen; PR164 leitet keine Folgeperioden selbst ab.
+zum Plan passen, und die Periode muss im Plan liegen. PR165 stellt
+diese Anfangsbasis inzwischen aus dem geprueften Anfangs-/
+Vorperiodenbestand bereit; PR164 selbst leitet keine Folgeperioden ab.
 
 Die einfache VU-Anlageregel berechnet
 `investment_result = ROUND_HALF_EVEN(opening_backing_assets *
@@ -76,7 +76,7 @@ aufgeloesten Teilwerte.
 Todesfallleistungen, Garantieverpflichtung, Praemien, Ablauf und
 Bilanz bleiben explizit beziehungsweise Aufgabe des separaten
 Lebens-Rechners. Der Resolver darf aus einer gezogenen Todesfall-ID
-keine Todesfallleistung erfinden. PR165 muss die Wertuebergabe,
-Leistung, Carryover, Budget und den unveraenderten Nichtleben-Pfad
-kontrolliert pruefen. PR166-167 folgen mit Ablage/Export und
-Workbench.
+keine Todesfallleistung erfinden. PR165 hat Wertuebergabe, Leistung,
+Carryover und Budget in einer separaten fluechtigen Kette geprueft;
+siehe `ims_2x_life_period_chain.md`. PR166-167 folgen mit
+Ablage/Export und Workbench.

@@ -107,5 +107,8 @@ der read-only v3-Vertrag selbst bleibt unveraendert.
 - PR164: separate deterministische Anlage- und Mortalitaetsquellen,
   Zaehlrundung und Periodenfenster je VU umgesetzt; siehe
   `ims_2x_life_assumptions.md`. Kein Lebens-Runner-Anschluss.
-- PR165-167: kontrollierter Runner, Ergebnisablage/Export und gefuehrte
-  Workbench. Erst danach ist dies ein bedienbares Workshop-Segment.
+- PR165: fluechtige kontrollierte Lebens-Periodenkette bis 100 mit
+  PR164-Quellen und PR163-Bilanz umgesetzt; siehe
+  `ims_2x_life_period_chain.md`.
+- PR166-167: Ergebnisablage/Export und gefuehrte Workbench. Erst
+  danach ist dies ein bedienbares Workshop-Segment.

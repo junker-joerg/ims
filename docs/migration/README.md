@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_life_period_chain.md`: PR165-fluechtige Lebens-Periodenkette
+  mit PR164-Quellen, PR163-Bilanz, Carryover und atomarem Abbruch;
+  noch ohne API/Ablage/Workbench
 - `ims_2x_life_assumptions.md`: PR164-versionierte Anlage- und
   Mortalitaetsquellen mit deterministischer Periodenauflosung;
   noch ohne Lebens-Runner-Anschluss

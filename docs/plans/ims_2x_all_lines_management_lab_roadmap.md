@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-17
-Status: aktive Produkt-Restplanung; PR164 Annahmen umgesetzt, PR165 Lebensanschluss naechster Schritt
+Status: aktive Produkt-Restplanung; PR165 Lebensanschluss umgesetzt, PR166 Ergebnisablage naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -115,7 +115,7 @@ Schadenlogik ausgegeben.
 | PR162 | Neugeschaeft mit getrennten Kohorten | umgesetzt: Ausgabeparameter, Praemien, Restlaufzeit und Garantiebeginn je Kohorte deterministisch; PR161-Spezialfall stabil, kein Runner |
 | PR163 | Begrenzte Einzelpolicen und variable Ablaufleistung | umgesetzt: vollstaendige Liste bis 100 aktive Policen, Garantieuntergrenze, getrennte Auszahlung/Freisetzung und atomare Bilanz; kein Runner/UI |
 | PR164 | Deterministische Anlage- und Mortalitaetsannahmen | umgesetzt: exklusive Quellen, lueckenlose Fenster, VU-Anlagebetrag und Kohorten-Todesfallauswahl; kein Runner |
-| PR165 | Kontrollierter Lebensanschluss an die Periodenkette | bis 100 Perioden, Prefix und Carryover stabil; alter Nichtleben-Pfad bleibt unveraendert |
+| PR165 | Kontrollierter Lebensanschluss an die Periodenkette | umgesetzt: fluechtiger 100er-Pfad mit PR164-Quellen, PR163-Prefix, Carryover und Abbruch ohne Teilresultat; Nichtleben unveraendert |
 | PR166 | Lebens-Ergebnis-API, Ablage und XLSX | Digest, Idempotenz und gleiche Zahlen in gespeicherten Ergebnissen und Export |
 | PR167 | Gefuehrte Lebens-Workbench fuer Seminare | beschriftete Eingaben, Baseline/Variante, Zeitreihen, Presets und Browserabnahme ohne Roh-JSON als Pflicht |
 | PR168 | Zustands-, Fluss- und Strategievertrag fuer Kranken | Beitrags-, Leistungs- und Bestandslogik sind begrenzt und getrennt |
@@ -132,7 +132,9 @@ Rechnung fuer Tod und Kapital begonnen. PR162 hat Neugeschaeft und
 getrennte Kohorten ergaenzt; PR163 hat begrenzte Einzelpolicen mit
 expliziter Ablaufleistung ergaenzt. PR164 hat deterministische
 Anlage- und Mortalitaetsquellen als getrennte Periodenaufloesung
-ergaenzt. PR165 folgt mit dem kontrollierten Lebensanschluss.
+ergaenzt. PR165 hat diese Quellen mit einer fluechtigen,
+kontrollierten Lebens-Periodenkette verbunden; PR166 folgt mit
+Ergebnisablage und Export.
 Umfang, Annahmen und UI-Bedienweg stehen in
 `docs/plans/ims_2x_life_workshop_expansion_plan.md`.
 
@@ -214,15 +216,15 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR164 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR165 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 6 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 14 |
-| durchgaengige DORA-Wirkungskette | PR186 | 45 | 22 |
-| kontrollierte Managementseminar-Reife | PR190 | 49 | 26 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 28 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 5 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 13 |
+| durchgaengige DORA-Wirkungskette | PR186 | 45 | 21 |
+| kontrollierte Managementseminar-Reife | PR190 | 49 | 25 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 27 |
 
 Die 49 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -325,8 +327,11 @@ versionierten, vollstaendig enumerierten Policenmodus mit expliziter
 Ablaufleistung, individueller Gutschrift und 100er-Bestandsgrenze ein.
 PR164 hat dafuer exklusive Anlage- und Mortalitaetsquellen mit
 Periodenfenstern aufgeloest, aber keine Folgeperioden erzeugt.
-PR165-167 setzen die uebrigen Entscheidungen schrittweise um und liefern eine bedienbare
-Lebens-Workbench mit Export. Kranken folgt ab PR168, die
+PR165 hat diese Quellen auf geprueften Anfangs- und Vorperiodenwerten
+fluechtig durch bis zu 100 Lebensperioden gefuehrt; PR166 muss vor
+einem API-Start die gemessene Extremfall-Laufzeit und Ablagegrenze
+absichern. PR166-167 liefern Ergebnisablage, Export und eine bedienbare
+Lebens-Workbench. Kranken folgt ab PR168, die
 Vier-Sparten-Gesamtbilanz in PR170. Bis dahin bleibt die heutige
 Zwei-Sparten-Gesamtbilanz unveraendert. Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.
