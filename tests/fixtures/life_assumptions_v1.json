@@ -1,0 +1,24 @@
+{
+  "schema_version": "ims.life-assumptions-input.v1",
+  "life_sector_contract_schema_version": "ims.life-sector-contract.v3",
+  "sector_taxonomy_schema_version": "ims.sector-taxonomy.v1",
+  "source_kind": "versioned_assumption_plan",
+  "historical_mapping_status": "unresolved",
+  "insurer_id": 1,
+  "sector_id": "life",
+  "period_count": 3,
+  "investment": {
+    "mode": "insurer_rule_on_opening_backing_assets",
+    "windows": [
+      {"start_period": 1, "end_period": 2, "rate_per_period": "0.05"},
+      {"start_period": 3, "end_period": 3, "rate_per_period": "-0.10"}
+    ]
+  },
+  "mortality": {
+    "mode": "exogenous_deterministic_rate_curve",
+    "windows": [
+      {"start_period": 1, "end_period": 1, "rate_per_period": "0.5"},
+      {"start_period": 2, "end_period": 3, "rate_per_period": "0.25"}
+    ]
+  }
+}

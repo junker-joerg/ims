@@ -89,8 +89,9 @@ Es gibt keine gesetzliche Rueckstellung, marktwertige Bewertung,
 Solvency-II-Aussage oder historische Vollgleichheit. Rueckkauf, Bonus
 und automatische Stornostrategie sind fuer diesen Workshop-Schnitt
 ausgeschlossen. Mortalitaet ist ein exogener Risikotreiber, keine
-VN-Strategie. Spaetere deterministische Mortalitaetskurven brauchen
-noch eine explizite Zaehl- und Auswahlregel (PR164), keine RNG-Ziehung.
+VN-Strategie. PR164 hat eine separate deterministische Zaehl- und
+Auswahlregel fuer enumerierte Policen festgelegt, ohne RNG-Ziehung;
+der read-only v3-Vertrag selbst bleibt unveraendert.
 
 ## Offene Implementierungsgates
 
@@ -103,8 +104,8 @@ noch eine explizite Zaehl- und Auswahlregel (PR164), keine RNG-Ziehung.
   abweichender Ablaufleistung umgesetzt; der alternative,
   unveraenderliche Ausgabeterm bleibt offen. Siehe
   `ims_2x_life_policy_maturity.md`.
-- PR164: deterministische Anlage- und Mortalitaetsregeln, Zaehlrundung
-  und Periodenfenster je VU; keine Vermischung von explizitem und
-  berechnetem Anlagefluss.
+- PR164: separate deterministische Anlage- und Mortalitaetsquellen,
+  Zaehlrundung und Periodenfenster je VU umgesetzt; siehe
+  `ims_2x_life_assumptions.md`. Kein Lebens-Runner-Anschluss.
 - PR165-167: kontrollierter Runner, Ergebnisablage/Export und gefuehrte
   Workbench. Erst danach ist dies ein bedienbares Workshop-Segment.

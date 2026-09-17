@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_life_assumptions.md`: PR164-versionierte Anlage- und
+  Mortalitaetsquellen mit deterministischer Periodenauflosung;
+  noch ohne Lebens-Runner-Anschluss
 - `ims_2x_life_policy_maturity.md`: PR163-vollstaendig enumerierte
   Einzelpolicen, individuelle Rundung und explizite Ablaufleistungen;
   ohne Runner oder UI-Anschluss

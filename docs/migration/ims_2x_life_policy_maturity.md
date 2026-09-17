@@ -85,8 +85,8 @@ nichtnegativ sein; intraperiodische Liquiditaet wird nicht geprueft.
 
 ## Offen
 
-PR164 bringt deterministische Anlage- und Mortalitaetsannahmen samt
-eindeutiger Perioden- und Auswahlregel. PR165-167 behandeln kontrollierte
+PR164 hat deterministische Anlage- und Mortalitaetsannahmen samt
+eindeutiger Perioden- und Auswahlregel separat ergaenzt. PR165-167 behandeln kontrollierte
 Periodenkette, Ergebnisablage/Export und eine nichttechnische
 Workbench. Rueckkauf, Bonus, automatische Storno- und Anlageentscheide,
 individuelle Ausgabevertragsleistungen sowie die Vier-Sparten-

@@ -403,6 +403,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr163_life_policy_maturity_plan.md`:
   PR163-Plan fuer hoechstens 100 vollstaendig enumerierte Policen und
   explizite Ablaufleistungen mit Garantieuntergrenze.
+- `ims_2x_pr164_life_assumptions_plan.md`:
+  PR164-Plan fuer exklusive, versionierte Anlage- und
+  Mortalitaetsquellen mit eindeutigen Periodenfenstern.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR164 geht vor.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR165 geht vor.
