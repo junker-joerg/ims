@@ -59,7 +59,8 @@ Die Tests pruefen die exakt gleichen Prefixe aller sieben Horizonte,
 deterministische Wiederholung, Bestands-/Bilanzgleichungen, einen
 geschlossenen Zwei-Perioden-Fall gegen PR169, Grenz- und Fehlerfaelle,
 Abbruch sowie ein grobes Laufzeit-/Speicherbudget. Die reine
-Python-Funktion ist noch keine API-Freigabe oder bedienbare Simulation.
-PR169c plant erst Idempotenz, unveraenderliche Ergebnisablage und
-CSV/JSON/XLSX; PR169d den Workbench-Start. Weder Solvency-II-Bewertung
+Python-Funktion selbst ist keine API-Freigabe oder bedienbare Simulation.
+PR169c hat getrennt Idempotenz, unveraenderliche Ergebnisablage und
+CSV/JSON/XLSX geliefert; siehe `ims_2x_health_result_delivery.md`.
+PR169d bringt den Workbench-Start. Weder Solvency-II-Bewertung
 noch historische Vollgleichheit werden behauptet.

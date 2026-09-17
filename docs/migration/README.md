@@ -23,6 +23,8 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_health_result_delivery.md`: PR169c-Kranken-API mit expliziter
+  Speicherfreigabe, Idempotenz, digestgepruefter Ablage und CSV/JSON/XLSX
 - `ims_2x_health_period_chain.md`: PR169b-fluechtige Kranken-Kette
   ueber sieben Horizonte bis 100 Perioden, mit atomarem Abbruch und
   exakten Bestands-/Bilanzuebergaengen; ohne Ablage oder Browserstart

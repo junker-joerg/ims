@@ -17,6 +17,7 @@ from ims.accounting.insurer_balance import (
     insurer_balance_workbench_contract_payload,
 )
 from ims.accounting.insurer_balance_workbook import build_insurer_balance_workbook
+from ims.accounting.health_period_chain import run_health_period_chain
 from ims.accounting.life_period_chain import run_life_policy_period_chain
 from ims.accounting.model_balance_contract import (
     MODEL_BALANCE_CONTRACT_V1_VERSION,
@@ -38,6 +39,22 @@ from ims.api.life_result_delivery import (
     replay_life_result,
 )
 from ims.api.life_result_workbook import build_life_result_workbook
+from ims.api.health_result_delivery import (
+    HEALTH_API_TIMEOUT_SECONDS,
+    HealthResultError,
+    contract_payload as health_result_contract_payload,
+    digest as health_result_digest,
+    get_health_result,
+    list_health_results,
+    parse_start as parse_health_result_start,
+    persist_health_result,
+    replay_health_result,
+)
+from ims.api.health_result_exports import (
+    build_health_result_csv,
+    build_health_result_json,
+    build_health_result_workbook,
+)
 from ims.api.life_workshop_presets import life_workshop_presets_payload
 from ims.api.core_validation_carryover_probe_contract import (
     core_validation_carryover_probe_api_contract_payload,
@@ -1010,6 +1027,7 @@ def create_app(
     repository = metadata_repository or LazyWorkbenchMetadataRepository(metadata_db_path)
     effective_adapter_runner = adapter_runner or run_controlled_execution_adapter
     life_calculation_gate = BoundedSemaphore(1)
+    health_calculation_gate = BoundedSemaphore(1)
     metadata_source = repository.metadata_source()
     if metadata_repository is not None:
         metadata_source = {**metadata_source, "injected": True}
@@ -1336,6 +1354,143 @@ def create_app(
             return JSONResponse(result, headers={"Cache-Control": "no-store"})
         except LifeResultError as exc:
             return life_error(exc)
+
+    def health_result_error(exc: HealthResultError) -> JSONResponse:
+        return JSONResponse(
+            {"status": "error", "code": exc.code, "partial_result_returned": False},
+            status_code=exc.status_code,
+            headers={"Cache-Control": "no-store"},
+        )
+
+    def health_result_storage_path() -> Path:
+        if metadata_source.get("storage_kind") != "sqlite" or not metadata_source.get("path"):
+            raise HealthResultError("explicit_sqlite_storage_required", 503)
+        return Path(str(metadata_source["path"]))
+
+    async def health_result_payload(request: Request) -> object:
+        size = request.headers.get("content-length")
+        if size is not None and size.isdigit() and int(size) > 2_000_000:
+            raise HealthResultError("health_request_too_large", 413)
+        raw = await request.body()
+        if len(raw) > 2_000_000:
+            raise HealthResultError("health_request_too_large", 413)
+        try:
+            return await request.json()
+        except (ValueError, UnicodeDecodeError) as exc:
+            raise HealthResultError("invalid_json", 400) from exc
+
+    async def calculate_health(value: object) -> dict:
+        if not health_calculation_gate.acquire(blocking=False):
+            raise HealthResultError("health_calculation_busy", 429)
+        cancellation = Event()
+
+        def worker() -> dict:
+            try:
+                return run_health_period_chain(
+                    value, should_cancel=cancellation.is_set,
+                ).to_dict()
+            finally:
+                health_calculation_gate.release()
+
+        task = asyncio.create_task(asyncio.to_thread(worker))
+        task.add_done_callback(lambda finished: finished.exception() if not finished.cancelled() else None)
+        try:
+            return await asyncio.wait_for(
+                asyncio.shield(task), timeout=HEALTH_API_TIMEOUT_SECONDS,
+            )
+        except TimeoutError as exc:
+            cancellation.set()
+            raise HealthResultError("health_calculation_timeout", 504) from exc
+        except asyncio.CancelledError:
+            cancellation.set()
+            raise
+
+    async def health_preview_response(request: Request) -> JSONResponse:
+        try:
+            value = await health_result_payload(request)
+            report = await calculate_health(value)
+            if not report["valid"]:
+                return JSONResponse(report, status_code=422, headers={"Cache-Control": "no-store"})
+            input_digest = health_result_digest(value)
+            result_digest = health_result_digest(report)
+            return JSONResponse({
+                "status": "ok", "valid": True,
+                "input_digest": input_digest, "result_digest": result_digest,
+                "report": report, "writes_performed": False,
+            }, headers={"Cache-Control": "no-store", "ETag": f'"{result_digest}"'})
+        except HealthResultError as exc:
+            return health_result_error(exc)
+
+    async def health_start_response(request: Request) -> JSONResponse:
+        try:
+            value = await health_result_payload(request)
+            parsed = parse_health_result_start(value)
+            path = health_result_storage_path()
+            replay = await asyncio.to_thread(replay_health_result, path, parsed)
+            if replay is not None:
+                return JSONResponse(replay, headers={"Cache-Control": "no-store", "ETag": f'"{replay["result_digest"]}"'})
+            report = await calculate_health(parsed["health_chain_input"])
+            if not report["valid"]:
+                return JSONResponse(report, status_code=422, headers={"Cache-Control": "no-store"})
+            record = await asyncio.to_thread(persist_health_result, path, parsed, report)
+            return JSONResponse(record, headers={"Cache-Control": "no-store", "ETag": f'"{record["result_digest"]}"'})
+        except HealthResultError as exc:
+            return health_result_error(exc)
+
+    async def health_result_response(
+        request: Request, result_id: str, *, export: str | None = None,
+    ) -> JSONResponse | Response:
+        try:
+            record = await asyncio.to_thread(
+                get_health_result, health_result_storage_path(), result_id,
+            )
+            etag = f'"{record["result_digest"]}"'
+            if export is None:
+                return JSONResponse(record, headers={"Cache-Control": "no-store", "ETag": etag})
+            expected = request.headers.get("if-match")
+            if expected is None:
+                raise HealthResultError("if_match_required", 428)
+            if expected != etag:
+                raise HealthResultError("health_result_digest_mismatch", 409)
+            builder, media_type = {
+                "csv": (build_health_result_csv, "text/csv; charset=utf-8"),
+                "json": (build_health_result_json, "application/json"),
+                "xlsx": (
+                    build_health_result_workbook,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                ),
+            }[export]
+            content = await asyncio.to_thread(builder, record)
+            return Response(
+                content, media_type=media_type,
+                headers={
+                    "Content-Disposition": f'attachment; filename="ims-kranken-{result_id}.{export}"',
+                    "Cache-Control": "no-store", "ETag": etag,
+                },
+            )
+        except HealthResultError as exc:
+            return health_result_error(exc)
+
+    async def health_result_json_response(request: Request) -> JSONResponse | Response:
+        return await health_result_response(request, request.path_params["result_id"])
+
+    async def health_result_csv_response(request: Request) -> JSONResponse | Response:
+        return await health_result_response(request, request.path_params["result_id"], export="csv")
+
+    async def health_result_export_json_response(request: Request) -> JSONResponse | Response:
+        return await health_result_response(request, request.path_params["result_id"], export="json")
+
+    async def health_result_xlsx_response(request: Request) -> JSONResponse | Response:
+        return await health_result_response(request, request.path_params["result_id"], export="xlsx")
+
+    async def health_results_response(request: Request) -> JSONResponse:
+        try:
+            result = await asyncio.to_thread(
+                list_health_results, health_result_storage_path(),
+            )
+            return JSONResponse(result, headers={"Cache-Control": "no-store"})
+        except HealthResultError as exc:
+            return health_result_error(exc)
 
     async def strategy_assignment_snapshot_translation_response(
         request: Request,
@@ -2816,6 +2971,38 @@ def create_app(
         async def accounting_life_period_chain_result(result_id: str, request: Request) -> JSONResponse | Response:
             return await life_result_response(request, result_id)
 
+        @app.get("/api/accounting/health-period-chain/contract")
+        def accounting_health_period_chain_contract() -> dict[str, object]:
+            return health_result_contract_payload()
+
+        @app.post("/api/accounting/health-period-chain/preview", response_model=None)
+        async def accounting_health_period_chain_preview(request: Request) -> JSONResponse:
+            return await health_preview_response(request)
+
+        @app.post("/api/accounting/health-period-chain/start", response_model=None)
+        async def accounting_health_period_chain_start(request: Request) -> JSONResponse:
+            return await health_start_response(request)
+
+        @app.get("/api/accounting/health-period-chain/results", response_model=None)
+        async def accounting_health_period_chain_results(request: Request) -> JSONResponse:
+            return await health_results_response(request)
+
+        @app.get("/api/accounting/health-period-chain/result/{result_id}.csv", response_model=None)
+        async def accounting_health_period_chain_csv(result_id: str, request: Request) -> JSONResponse | Response:
+            return await health_result_response(request, result_id, export="csv")
+
+        @app.get("/api/accounting/health-period-chain/result/{result_id}.json", response_model=None)
+        async def accounting_health_period_chain_json(result_id: str, request: Request) -> JSONResponse | Response:
+            return await health_result_response(request, result_id, export="json")
+
+        @app.get("/api/accounting/health-period-chain/result/{result_id}.xlsx", response_model=None)
+        async def accounting_health_period_chain_xlsx(result_id: str, request: Request) -> JSONResponse | Response:
+            return await health_result_response(request, result_id, export="xlsx")
+
+        @app.get("/api/accounting/health-period-chain/result/{result_id}", response_model=None)
+        async def accounting_health_period_chain_result(result_id: str, request: Request) -> JSONResponse | Response:
+            return await health_result_response(request, result_id)
+
         @app.get("/api/strategies/assignment-contract")
         def strategies_assignment_contract() -> dict[str, object]:
             return strategy_assignment_contract_payload()
@@ -3552,6 +3739,40 @@ def create_app(
         Route(
             "/api/accounting/life-period-chain/result/{result_id}",
             life_result_json_response,
+        ),
+        Route(
+            "/api/accounting/health-period-chain/contract",
+            lambda request: JSONResponse(health_result_contract_payload()),
+        ),
+        Route(
+            "/api/accounting/health-period-chain/preview",
+            health_preview_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/accounting/health-period-chain/start",
+            health_start_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/accounting/health-period-chain/results",
+            health_results_response,
+        ),
+        Route(
+            "/api/accounting/health-period-chain/result/{result_id}.csv",
+            health_result_csv_response,
+        ),
+        Route(
+            "/api/accounting/health-period-chain/result/{result_id}.json",
+            health_result_export_json_response,
+        ),
+        Route(
+            "/api/accounting/health-period-chain/result/{result_id}.xlsx",
+            health_result_xlsx_response,
+        ),
+        Route(
+            "/api/accounting/health-period-chain/result/{result_id}",
+            health_result_json_response,
         ),
         Route(
             "/api/strategies/assignment-contract",

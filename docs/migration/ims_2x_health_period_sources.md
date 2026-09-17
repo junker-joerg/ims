@@ -60,7 +60,8 @@ fluechtige Periodenkette gerechnet; siehe `ims_2x_health_period_chain.md`.
 Besonders `benefits_paid` ist die
 Begleichung einer vorhandenen Leistungsverpflichtung, **keine** zweite
 Leistungsannahme. Bestand, Bilanz und exakte Prefixe muessen gemeinsam
-geprueft werden. PR169c fuegt kontrollierte Ablage/Exporte hinzu, PR169d
-erst den Workbench-Start. Kein Runner, keine Speicherung, keine
+geprueft werden. PR169c hat kontrollierte Ablage/Exporte getrennt
+ergaenzt; PR169d bringt erst den Workbench-Start. Der PR169a-Pruefer
+selbst hat keinen Runner, keine Speicherung, keine
 gesetzliche Alterungsrueckstellung, keine Solvency-II-Aussage und keine
 historische Vollgleichheitsbehauptung in PR169a.

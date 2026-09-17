@@ -89,6 +89,27 @@ vergleichen alle sieben Horizonte mit dem identischen 100er-Prefix,
 pruefen Bestands- und Bilanzgleichungen sowie Wiederholung und Laufzeit.
 Es gibt keine Ablage, API-Freigabe oder Workbench-Bedienung vor PR169c/d.
 
+## PR169c: Ergebnisfreigabe und Export
+
+Eine reine API-Vorschau berechnet PR169b serverseitig mit Zeit- und
+Parallelitaetsgrenze, schreibt aber nichts. Der Start verlangt eine
+ausdrueckliche Speicherfreigabe, einen wiederholsicheren Schluessel und
+die zuvor gesehenen Eingabe- und Ergebnis-Digests. Der Server rechnet
+erneut, prueft beide Digests und speichert nur vollstaendige gueltige
+Ergebnisse atomar in einer eigenen SQLite-Tabelle. Ein identischer
+Start liefert denselben Datensatz ohne Neuberechnung; ein anderer
+Inhalt unter demselben Schluessel wird abgewiesen. Fehler, Zeitlimit
+oder Abbruch hinterlassen kein Teilergebnis.
+
+Abruf und Verlauf pruefen die gespeicherten Digests erneut. CSV, JSON
+und XLSX werden nur aus einem so geprueften Datensatz und mit passendem
+`If-Match` ausgeliefert. Alle drei Formate tragen Ergebnis-ID,
+Eingabe-/Ergebnis-/Datensatz-Digest, VU, Szenario und Variante; die
+Dezimalwerte bleiben exakte Texte. Der PR liefert API-Vertraege, Tests
+fuer beide App-Router, Race/Replay, Manipulation, alle Exporte und einen
+kleinen 100-Perioden-Fall. Er liefert **keine** Workbench-Eingabe und
+keine neue Kranken-Fachregel; das ist die Grenze zu PR169d.
+
 ## Risiken und offene Entscheidungen
 
 - PR169a hat Neugeschaeft und Austritte **vor** der 100er-Kette
@@ -100,5 +121,5 @@ Es gibt keine Ablage, API-Freigabe oder Workbench-Bedienung vor PR169c/d.
 - Keine historische `Sp[2]`-/`Rk[2]`-Zuordnung zu `health`. Die vier
   Modellsegmente werden vor PR170 nur als getrennte Rechnungen gefuehrt.
 - PR169b begrenzt die fluechtige Kette und deren Zeilenausgabe.
-  Speicherung und UI-Freigabe sind **nicht** daraus abzuleiten; beide
-  Grenzen bekommen ihre eigene Abnahme.
+  PR169c hat die separate Speicher- und Exportgrenze geprueft.
+  Die UI-Freigabe ist daraus **nicht** abzuleiten und bleibt PR169d.
