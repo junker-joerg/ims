@@ -23,6 +23,9 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_life_closed_cohort_death_capital.md`: PR161-Rechnung fuer
+  explizite Todesfaelle und Kapitalbewegungen im geschlossenen Bestand;
+  getrennte Leistung/Freisetzung und atomare Modellbilanz
 - `ims_2x_life_v3_contract.md`: PR160-read-only Lebensfluss- und
   Bewertungsvertrag fuer Tod, Neugeschaeft, Kapital, Kohorten und
   Policenwerte; v1/v2 und PR159-Rechnung bleiben unveraendert

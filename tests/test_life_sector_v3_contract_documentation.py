@@ -13,7 +13,7 @@ def test_pr160_documents_historical_boundary_timing_and_deferred_execution() -> 
     for phrase in (
         "IMSDATA.C", "IMS.E", "kein", "v1/v2", "Todesfallleistung",
         "Neuvertraege", "Kapitalbewegungen", "ROUND_HALF_EVEN",
-        "Mortalitaet", "keine v3-Eingabe", "PR161", "PR164", "PR165-167",
+        "Mortalitaet", "nicht als vollstaendige v3-Eingabe", "PR161", "PR164", "PR165-167",
         "Solvency-II", "historische Vollgleichheit",
     ):
         assert phrase.lower() in normalized

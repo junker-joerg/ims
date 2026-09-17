@@ -12,8 +12,10 @@ Abruf: `GET /api/model/life-sector-contract/v3`
 | PR158/v1 und PR159/v2 | Neuer read-only Vertrag v3 fuer den spaeteren Ausbau | V1/v2-Payloads, PR159-Eingabe `ims.life-model-balance-input.v1` und dessen Rechnung bleiben unveraendert. |
 
 Der bisherige Endpunkt `/api/model/life-sector-contract` liefert weiter
-v2, `/v1` weiter v1. V3 wird nur ueber `/v3` gezeigt. Es gibt keine
-v3-Eingabe, keine Validierung, Berechnung, Speicherung oder Ausfuehrung.
+v2, `/v1` weiter v1. V3 wird nur ueber `/v3` gezeigt. Dieser API-Vertrag
+ist weiterhin read-only und nicht als vollstaendige v3-Eingabe oder
+Ausfuehrung freigegeben. PR161 liefert separat eine reine Python-Rechnung
+fuer die geschlossene Ein-Kohorten-Teilmenge.
 
 ## Zustands- und Flussgrenze
 
@@ -93,7 +95,8 @@ noch eine explizite Zaehl- und Auswahlregel (PR164), keine RNG-Ziehung.
 ## Offene Implementierungsgates
 
 - PR161: v3-Teil-Eingang und atomare Validierung fuer Tod und Kapital im
-  geschlossenen Bestand, dann dessen erste Rechnung.
+  geschlossenen Bestand mit erster Rechnung umgesetzt; siehe
+  `ims_2x_life_closed_cohort_death_capital.md`.
 - PR162/163: Neugeschaeft/Kohorten und der begrenzte Policenmodus samt
   konkreter Verteilung der Praemien und Ausgabeterme.
 - PR164: deterministische Anlage- und Mortalitaetsregeln, Zaehlrundung
