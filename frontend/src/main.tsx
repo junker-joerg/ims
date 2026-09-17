@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import HundredPeriodResults from "./HundredPeriodResults";
 import ModelBalanceWorkbench from "./ModelBalanceWorkbench";
+import LifeWorkbench from "./LifeWorkbench";
 import {
   Activity,
   Archive,
@@ -15,6 +16,7 @@ import {
   Eye,
   FileText,
   GitBranch,
+  HeartPulse,
   Landmark,
   ListTree,
   LockKeyhole,
@@ -5242,6 +5244,9 @@ function App() {
           <a href="#balance">
             <Landmark size={18} aria-hidden="true" /> Bilanz
           </a>
+          <a href="#life">
+            <HeartPulse size={18} aria-hidden="true" /> Leben
+          </a>
           <a href="#validation">
             <ShieldCheck size={18} aria-hidden="true" /> Validierung
           </a>
@@ -9149,6 +9154,7 @@ function App() {
         </section>
 
         <ModelBalanceWorkbench />
+        <LifeWorkbench />
 
         <section className="panel validation-panel" id="validation">
           <div className="panel-heading">

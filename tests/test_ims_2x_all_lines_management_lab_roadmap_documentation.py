@@ -43,15 +43,15 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 37" in document
     assert "durchgaengige DORA-Wirkungskette | PR186 | 45" in document
     assert "kontrollierte Managementseminar-Reife | PR190 | 49" in document
-    assert "PR166 Lebens-Ergebnisdienst umgesetzt, PR167 Workbench naechster Schritt" in document
+    assert "PR167 Lebens-Workbench umgesetzt, PR168 Kranken-Vertrag naechster Schritt" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
     assert "PR145 hat kontrollierten Serverstart" in document
     assert "PR146 hat den Pfad in der Workbench bedienbar gemacht" in document
     assert "PR147 hat fuer 10, 25, 50 und 100 Perioden" in document
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 49 | 24" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 26" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 49 | 23" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 25" in document
     assert "Diese optionale Distributionsspur beginnt **erst nach PR190**" in document
 
 
@@ -70,12 +70,12 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
         assert gate in document
 
 
-def test_later_windows_ready_to_run_plan_keeps_pr167_next() -> None:
+def test_later_windows_ready_to_run_plan_keeps_pr168_next() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR166 Lebens-Ergebnisdienst umgesetzt, PR167 Workbench naechster Schritt" in roadmap
-    assert "PR167 bleibt der" in plan
+    assert "PR167 Lebens-Workbench umgesetzt, PR168 Kranken-Vertrag naechster Schritt" in roadmap
+    assert "PR168 bleibt der" in plan
     for phrase in (
         "PR191", "PR192", "IMS-Workbench.exe", "One-folder",
         "ohne Zielrechner-Python", "127.0.0.1", "%LOCALAPPDATA%",
@@ -104,7 +104,7 @@ def test_management_guide_is_nontechnical_honest_and_visual() -> None:
     document = GUIDE.read_text(encoding="utf-8")
     normalized = " ".join(document.split())
 
-    assert "Handbuchschnitt: HB3e" in document
+    assert "Handbuchschnitt: HB3f" in document
     assert "## Sieben Vorteile im Fuehrungskraefteseminar" in document
     assert "## Ein Seminar in 90 Minuten" in document
     assert "## Arbeitsblatt fuer eine Wirkungskette" in document

@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-17
-Status: aktive Produkt-Restplanung; PR166 Lebens-Ergebnisdienst umgesetzt, PR167 Workbench naechster Schritt
+Status: aktive Produkt-Restplanung; PR167 Lebens-Workbench umgesetzt, PR168 Kranken-Vertrag naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -117,7 +117,7 @@ Schadenlogik ausgegeben.
 | PR164 | Deterministische Anlage- und Mortalitaetsannahmen | umgesetzt: exklusive Quellen, lueckenlose Fenster, VU-Anlagebetrag und Kohorten-Todesfallauswahl; kein Runner |
 | PR165 | Kontrollierter Lebensanschluss an die Periodenkette | umgesetzt: fluechtiger 100er-Pfad mit PR164-Quellen, PR163-Prefix, Carryover und Abbruch ohne Teilresultat; Nichtleben unveraendert |
 | PR166 | Lebens-Ergebnis-API, Ablage und XLSX | umgesetzt: 20-Sekunden-API-Budget, erneute Digestpruefung, dauerhafte Idempotenz, read-only Verlauf und exakte Dezimaltexte im XLSX; Recovery-Abnahme offen |
-| PR167 | Gefuehrte Lebens-Workbench fuer Seminare | beschriftete Eingaben, Baseline/Variante, Zeitreihen, Presets und Browserabnahme ohne Roh-JSON als Pflicht |
+| PR167 | Gefuehrte Lebens-Workbench fuer Seminare | umgesetzt: drei kuratierte Zwei-Perioden-Faelle, beschriftete Stellhebel, Baseline/Variante, Zeitreihe, explizite Ergebnisablage; neue Handbuchbilder und Browser-Dateidownload offen |
 | PR168 | Zustands-, Fluss- und Strategievertrag fuer Kranken | Beitrags-, Leistungs- und Bestandslogik sind begrenzt und getrennt |
 | PR169 | Minimale deterministische Krankensparte | feste Falltests und Bilanzanschluss ohne Vollmodellbehauptung |
 | PR170 | Spartenuebergreifende Konsolidierung | vier Modellsegmente stimmen je Versicherer zur Gesamtbilanz ab |
@@ -136,6 +136,9 @@ ergaenzt. PR165 hat diese Quellen mit einer fluechtigen,
 kontrollierten Lebens-Periodenkette verbunden. PR166 hat
 Ergebnisablage, API und Export mit ausdruecklicher Freigabe ergaenzt;
 der 100x100-Extremfall bleibt ausserhalb des interaktiven Zeitbudgets.
+PR167 hat drei kleine Seminarfaelle in die Workbench gebracht; freie
+Anfangsbestands- und Laufzeitgestaltung sowie neue Handbuchbilder
+bleiben offen.
 Umfang, Annahmen und UI-Bedienweg stehen in
 `docs/plans/ims_2x_life_workshop_expansion_plan.md`.
 
@@ -217,15 +220,15 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR166 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR167 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 4 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 12 |
-| durchgaengige DORA-Wirkungskette | PR186 | 45 | 20 |
-| kontrollierte Managementseminar-Reife | PR190 | 49 | 24 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 26 |
+| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 29 | 3 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 37 | 11 |
+| durchgaengige DORA-Wirkungskette | PR186 | 45 | 19 |
+| kontrollierte Managementseminar-Reife | PR190 | 49 | 23 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 51 | 25 |
 
 Die 49 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -332,9 +335,10 @@ PR165 hat diese Quellen auf geprueften Anfangs- und Vorperiodenwerten
 fluechtig durch bis zu 100 Lebensperioden gefuehrt. PR166 hat eine
 20-Sekunden-API-Grenze, digestgepruefte Ergebnisablage, read-only
 Verlauf und XLSX ergaenzt; groessere reine Lebensfaelle bleiben
-ausserhalb des interaktiven Starts. PR167 liefert die bedienbare
-Lebens-Workbench. Kranken folgt ab PR168, die
-Vier-Sparten-Gesamtbilanz in PR170. Bis dahin bleibt die heutige
+ausserhalb des interaktiven Starts. PR167 hat eine bedienbare
+Lebens-Workbench fuer kuratierte Zwei-Perioden-Faelle geliefert.
+PR168 legt als naechstes den Kranken-Vertrag fest; PR170 soll die
+Vier-Sparten-Gesamtbilanz liefern. Bis dahin bleibt die heutige
 Zwei-Sparten-Gesamtbilanz unveraendert. Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.
 

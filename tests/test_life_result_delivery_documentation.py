@@ -19,4 +19,4 @@ def test_pr166_documents_scope_limits_and_next_step() -> None:
     assert PLAN.name in (ROOT / "docs" / "plans" / "README.md").read_text(encoding="utf-8")
     assert MIGRATION.name in (ROOT / "docs" / "migration" / "README.md").read_text(encoding="utf-8")
     roadmap = (ROOT / "docs" / "plans" / "ims_2x_all_lines_management_lab_roadmap.md").read_text(encoding="utf-8")
-    assert "PR166 Lebens-Ergebnisdienst umgesetzt, PR167 Workbench naechster Schritt" in roadmap
+    assert "PR167 Lebens-Workbench umgesetzt, PR168 Kranken-Vertrag naechster Schritt" in roadmap

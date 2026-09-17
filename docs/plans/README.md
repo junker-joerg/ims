@@ -412,6 +412,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr166_life_result_delivery_plan.md`:
   PR166-Plan fuer kontrollierte Lebens-Vorschau, digestgebundene
   Ergebnisablage, read-only Verlauf und XLSX-Export.
+- `ims_2x_pr167_life_workbench_plan.md`:
+  PR167-Plan fuer kuratierte Lebens-Seminarfaelle, Baseline/Variante,
+  Zeitreihe und kontrollierte Ergebnisablage; Browser-Bildluecke benannt.
 - `ims_2x_windows_ready_to_run_packaging_plan.md`:
   Spaetere PR191/192-Spur fuer ein Windows-ZIP mit Doppelklick-EXE ohne
-  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR167 geht vor.
+  Python-, Node- oder Skriptpflicht auf dem Zielrechner; PR168 geht vor.

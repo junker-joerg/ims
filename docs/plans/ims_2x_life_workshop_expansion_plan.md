@@ -1,7 +1,7 @@
 # Leben nach PR159: vom Rechenfall zum Workshop-Segment
 
 Stand: 2026-09-17
-Status: PR160-166 umgesetzt; PR167 gefuehrte Lebens-Workbench folgt
+Status: PR160-167 umgesetzt; PR168 Kranken-Vertrag folgt
 
 ## Warum der bisherige Plan nicht ausreichte
 
@@ -16,7 +16,7 @@ geschlossenen Bestand. PR162 ergaenzt getrennte Kohorten und
 Neugeschaeft; PR163 ergaenzt explizite Policen und Ablaufleistungen.
 PR164 hat Anlage- und Mortalitaetsquellen getrennt aufgeloest;
 PR165 verbindet sie mit einer fluechtigen, atomaren Lebens-Periodenkette.
-PR166 ist der naechste Schritt. Die
+PR166 und PR167 sind umgesetzt. PR168 beginnt mit dem Kranken-Vertrag. Die
 zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 
 ## Fachlicher Mindestumfang
@@ -60,13 +60,14 @@ zuvor geplanten Nummern ab PR160 wurden um acht verschoben.
 | PR164 | Deterministische Anlage- und Mortalitaetsannahmen | umgesetzt: lueckenlose Fenster, exklusive Quellenmodi, VU-Anlagewert und Todesfall-IDs je Kohorte; reine Aufloesung ohne Runner |
 | PR165 | Kontrollierter Lebensanschluss an die Periodenkette | umgesetzt: bis 100 Perioden, PR164-Quellen aus geprueftem Carryover, PR163-Prefixrechnung und atomarer Abbruch; Nichtleben-Pfad unveraendert |
 | PR166 | Lebens-Ergebnis-API, Ablage und XLSX | umgesetzt: kontrollierte Idempotenz, Herkunft/Digest, lesbarer Verlauf und gleiche Dezimalwerte in JSON und XLSX; 20-Sekunden-API-Budget |
-| PR167 | Gefuehrte Lebens-Workbench fuer Seminar/Strategieworkshop | beschriftete Eingaben und Presets, Baseline/Variante, Bestands-/Leistungs-/Bilanz-Zeitreihen, breite und schmale Browserabnahme |
+| PR167 | Gefuehrte Lebens-Workbench fuer Seminar/Strategieworkshop | umgesetzt: drei kuratierte Zwei-Perioden-Presets, beschriftete Fluesse, Baseline/Variante, Bestands-/Leistungs-/Bilanz-Zeitreihen und breite/schmale Browserabnahme; neue statische Bilder offen |
 
 ## UI-Bedienweg fuer PR167
 
 Der Anwender waehlt einen Versicherer und einen einfachen Ausgangsfall.
-Er aendert sichtbare Stellhebel: anfaengliche Policen und Bilanz,
-Garantiesatz/Laufzeit, Neugeschaeft, Todesfallannahme,
+Im PR167-Pfad sieht er anfaengliche Policen, Bilanz,
+Garantiesatz und Laufzeit, kann diese Ausgangswerte aber noch nicht frei
+umstellen. Er aendert sichtbare Stellhebel: Neugeschaeft, Todesfallannahme,
 Anlagerendite/-strategie und Kapitalzufuhr oder -ausschuettung. Eine
 Variante wird gegen die unveraenderte Baseline gestellt. Die Ansicht
 zeigt je Periode aktive Policen, neue und beendete Vertraege,

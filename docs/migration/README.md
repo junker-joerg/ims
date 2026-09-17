@@ -23,9 +23,11 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 
 ## Dokumente in diesem Verzeichnis
 
+- `ims_2x_life_workbench.md`: PR167-gefuhrte Zwei-Perioden-Lebensfaelle
+  mit Baseline/Variante, Quellen, Zeitreihe und PR166-Speichergrenze
 - `ims_2x_life_result_delivery.md`: PR166-digestgebundene Lebens-
   Ergebnisablage, read-only API-Verlauf und XLSX mit exakten
-  Dezimaltexten; gefuehrte Workbench folgt in PR167
+  Dezimaltexten; Bedienweg ergaenzt durch PR167
 - `ims_2x_life_period_chain.md`: PR165-fluechtige Lebens-Periodenkette
   mit PR164-Quellen, PR163-Bilanz, Carryover und atomarem Abbruch;
   noch ohne API/Ablage/Workbench

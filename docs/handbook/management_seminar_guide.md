@@ -1,7 +1,7 @@
 # IMS im Managementseminar
 
-Stand: 2026-09-16
-Handbuchschnitt: HB3e
+Stand: 2026-09-17
+Handbuchschnitt: HB3f
 Zielgruppe: Fuehrungskraefte, Lehrende und Seminargruppen ohne Kenntnis der
 Dissertation oder des Quellcodes
 
@@ -51,13 +51,15 @@ Die heutige Workbench kann:
 - fuer einen Versicherer Kfz und Sach-Haftpflicht als einfache
   Modellbilanz aus eigenen Werten berechnen, getrennt und zusammen ansehen
   und als XLSX herunterladen.
+- einen kleinen Lebensfall ueber zwei Perioden als Baseline und Variante
+  vergleichen, ausdruecklich speichern und als XLSX ausgeben.
 
 Noch nicht verfuegbar sind:
 
 - ein gefuehrter Aufbau der 100 Einzelkandidaten und der Kette;
 - eine dauerhafte Ablage von 100-Perioden-Ergebnissen;
 - der automatische Anschluss der benannten Sparten an historische Laeufe
-  sowie eigene Modellsegmente fuer Leben und Kranken;
+  sowie ein eigenes Modellsegment fuer Kranken;
 - eine Vier-Sparten-Bilanz und eine Solvency-II-Kapitalansicht;
 - ein DORA-Szenarioeditor mit durchgaengiger Wirkungskette.
 
@@ -91,6 +93,45 @@ Versichererbilanz; auch eine Solvency-II-Bedeckungsquote entsteht hier
 nicht. Excel zeigt die Betraege als Text, damit ihre Dezimalstellen exakt
 bleiben; fuer eigene Formeln muessen sie bewusst in Zahlen umgewandelt
 werden.
+
+## Einen Lebensfall im Seminar vergleichen
+
+In **Leben** stehen drei einfache Faelle zur Wahl: **Todesfall**,
+**Neugeschaeft** und **Anlage und Kapital**. Alle beginnen mit denselben
+drei Policen und derselben Modellbilanz. Die **Baseline** laesst diesen
+Ausgangspunkt unveraendert; die **Variante** zeigt eine gezielte
+Aenderung. Der Fall laeuft ueber zwei Perioden. So kann die Gruppe erst
+den Mechanismus verstehen, bevor sie ueber groessere Maerkte spricht.
+
+1. Einen Seminarfall waehlen und den Anfangsbestand lesen. Die drei
+   Policen, ihre Garantie, Laufzeit und die anfaenglichen Aktiva sind
+   sichtbar, in dieser Stufe aber noch nicht frei editierbar.
+2. Unter **Variante** beispielsweise den Todesfall A2 einschalten oder
+   einen neuen Vertrag C1 aufnehmen. Anlageergebnis, laufenden Aufwand,
+   Kapitalzufuhr und -ausschuettung kann man je Periode aendern. Unter
+   **Policenfluesse** stehen Beitraege und Leistungen je Vertrag.
+3. **Beide Faelle berechnen** waehlen. **Wirkung ueber die Zeit** zeigt
+   Baseline und Variante als Linien; die Tabelle darunter enthaelt die
+   exakten Werte fuer Policenzahl, Beitraege, Todes- und Ablaufleistungen,
+   Aktiva, Garantieverpflichtung, Eigenkapital und Ergebnis. Die Kennzahl
+   ueber dem Diagramm kann gewechselt werden.
+4. Zuerst die Ausgangsfrage beantworten: Was hat sich in Periode 1
+   geaendert, und welche Folge zeigt Periode 2? Im vorbereiteten
+   Todesfall zahlt die Variante in Periode 1 eine Todesfallleistung von
+   65; zugleich wird die Verpflichtung fuer A2 freigesetzt. Das
+   Eigenkapital ist deshalb nicht einfach um 65 niedriger.
+5. Fuer ein dauerhaftes Ergebnis die gewaehlte Seite ausdruecklich
+   freigeben und **Geprueften Fall speichern** waehlen. Das setzt eine
+   lokale SQLite-Ergebnisablage voraus. Im Verlauf laesst sich der
+   gepruefte Fall erneut aufrufen und als Excel-Datei ausgeben.
+
+Ein ungueltiger Wert wird vor dem Speichern angezeigt; es entsteht kein
+Teilergebnis. Die Zahlen sind ein IMS-2.x-Modellfall mit expliziten
+Annahmen, keine historische Lebensreferenz, gesetzliche Bilanz oder
+Solvency-II-Berechnung. Freie Anfangsbestands- und Laufzeitgestaltung,
+Rueckkauf und Bonus fehlen noch. Die separate Lebensrechnung wird noch
+nicht zur Vier-Sparten-Gesamtbilanz addiert. Der XLSX-Export schreibt
+Dezimalwerte als Text, damit keine stillen Rundungen in Excel entstehen.
 
 ## Sieben Vorteile im Fuehrungskraefteseminar
 
@@ -294,9 +335,10 @@ Die aktive Roadmap liefert in dieser Reihenfolge:
 
 1. einen gefuehrten Aufbau eigener 100-Perioden-Faelle und eine dauerhafte
    Ergebnisablage; der vorbereitete fluechtige Bedienpfad ist vorhanden;
-2. Kfz, Sach-Haftpflicht, Leben und Kranken mit unterschiedlichen
-   Strategien;
-3. eine einfache Bilanz je Versicherer und die Konsolidierung ueber Sparten;
+2. Kranken als viertes Modellsegment und spaeter unterschiedliche
+   Strategien ueber alle vier Sparten;
+3. die Konsolidierung der vorhandenen Kfz-/Sach-Haftpflicht- und
+   Lebens-Modellbilanzen mit Kranken zu einer Vier-Sparten-Sicht;
 4. eine erklaerbare Solvency-II-Kapitalansicht;
 5. DORA-Wirkungsketten von ICT-Abhaengigkeiten bis zu Bilanz und Kapital;
 6. einen gefuehrten Szenarioassistenten und kuratierte Seminarfaelle.

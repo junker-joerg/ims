@@ -38,6 +38,7 @@ from ims.api.life_result_delivery import (
     replay_life_result,
 )
 from ims.api.life_result_workbook import build_life_result_workbook
+from ims.api.life_workshop_presets import life_workshop_presets_payload
 from ims.api.core_validation_carryover_probe_contract import (
     core_validation_carryover_probe_api_contract_payload,
 )
@@ -2779,6 +2780,10 @@ def create_app(
         def accounting_life_period_chain_contract() -> dict[str, object]:
             return life_result_contract_payload()
 
+        @app.get("/api/accounting/life-period-chain/presets")
+        def accounting_life_period_chain_presets() -> dict[str, object]:
+            return life_workshop_presets_payload()
+
         @app.post("/api/accounting/life-period-chain/preview", response_model=None)
         async def accounting_life_period_chain_preview(request: Request) -> JSONResponse:
             return await life_preview_response(request)
@@ -3499,6 +3504,10 @@ def create_app(
         Route(
             "/api/accounting/life-period-chain/contract",
             lambda request: JSONResponse(life_result_contract_payload()),
+        ),
+        Route(
+            "/api/accounting/life-period-chain/presets",
+            lambda request: JSONResponse(life_workshop_presets_payload()),
         ),
         Route(
             "/api/accounting/life-period-chain/preview",
