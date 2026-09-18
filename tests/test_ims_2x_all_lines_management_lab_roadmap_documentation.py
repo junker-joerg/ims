@@ -39,12 +39,13 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
 
     assert table_prs == list(range(142, 193))
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10" in document
-    assert "vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 33" in document
-    assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 41" in document
-    assert "durchgaengige DORA-Wirkungskette | PR186 | 49" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 53" in document
-    assert "PR169d Kranken-Workbench bis 100 Perioden umgesetzt, PR170 Vier-Sparten-Konsolidierung naechster Schritt" in document
-    for label in ("PR169a", "PR169b", "PR169c", "PR169d"):
+    assert "vier Modellsegmente und konsolidierte Versichererbilanz (API) | PR170 | 33" in document
+    assert "Vier-Sparten-Bilanz im Browser | PR170a | 34" in document
+    assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42" in document
+    assert "durchgaengige DORA-Wirkungskette | PR186 | 50" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 54" in document
+    assert "PR170 Vier-Sparten-Modellbilanz als zustandslose API umgesetzt, PR170a Workbench-Anschluss naechster Schritt" in document
+    for label in ("PR169a", "PR169b", "PR169c", "PR169d", "PR170a"):
         assert f"| {label} |" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
     assert "PR145 hat kontrollierten Serverstart" in document
@@ -53,8 +54,8 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
     assert "bedienbare Kranken-Simulation bis 100 Perioden | PR169d | 32 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 53 | 21" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 55 | 23" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 54 | 21" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 23" in document
     assert "Diese optionale Distributionsspur beginnt **erst nach PR190**" in document
 
 
@@ -73,12 +74,12 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
         assert gate in document
 
 
-def test_later_windows_ready_to_run_plan_keeps_pr170_next() -> None:
+def test_later_windows_ready_to_run_plan_keeps_pr170a_next() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR169d Kranken-Workbench bis 100 Perioden umgesetzt, PR170 Vier-Sparten-Konsolidierung naechster Schritt" in roadmap
-    assert "PR170 bleibt der" in plan
+    assert "PR170a Workbench-Anschluss naechster Schritt" in roadmap
+    assert "PR170a bleibt der" in plan
     for phrase in (
         "PR191", "PR192", "IMS-Workbench.exe", "One-folder",
         "ohne Zielrechner-Python", "127.0.0.1", "%LOCALAPPDATA%",

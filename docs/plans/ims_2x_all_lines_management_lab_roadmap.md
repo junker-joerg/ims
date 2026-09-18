@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
-Stand: 2026-09-17
-Status: aktive Produkt-Restplanung; PR169d Kranken-Workbench bis 100 Perioden umgesetzt, PR170 Vier-Sparten-Konsolidierung naechster Schritt
+Stand: 2026-09-18
+Status: aktive Produkt-Restplanung; PR170 Vier-Sparten-Modellbilanz als zustandslose API umgesetzt, PR170a Workbench-Anschluss naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -124,7 +124,8 @@ Schadenlogik ausgegeben.
 | PR169b | Kontrollierte Kranken-Periodenkette bis 100 | umgesetzt: 1/2/5/10/25/50/100 fluechtige Perioden, exakte Prefixe, Bilanz-/Bestandsinvarianten und atomarer Abbruch; kein Browserstart |
 | PR169c | Kranken-Ergebnisablage, API und CSV/JSON/XLSX | umgesetzt: ausdrueckliche Freigabe, Idempotenz, Digest, verifizierter Verlauf und Herkunft in allen Exporten; keine Workbench-Eingabe |
 | PR169d | Bedienbare Kranken-Workbench | umgesetzt: expliziter Seminarfall, Baseline/Variante, Zeitreihen, Verlauf und CSV/JSON/XLSX bis 100 Perioden auf breitem/schmalem Viewport abgenommen |
-| PR170 | Spartenuebergreifende Konsolidierung | vier Modellsegmente stimmen je Versicherer zur Gesamtbilanz ab |
+| PR170 | Spartenuebergreifende Konsolidierung | umgesetzt: vier neu berechnete Modellsegmente stimmen je VU und Periode atomar zur einfachen Gesamtbilanz ab; noch kein gemeinsamer Browser-Bedienweg |
+| PR170a | Vier-Sparten-Bilanz in der Workbench | vier Eingaben gezielt uebernehmen, Allokation und Gesamtbilanz lesbar anzeigen; breite/schmale Browserabnahme, keine Speicherung |
 
 Die erste Mehrspartenstufe deckt damit vier fuer das Zielbild wichtige
 Segmente ab. Sie behauptet weder die vollstaendige deutsche
@@ -235,24 +236,25 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR169d |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR170 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
 | bedienbare Kranken-Simulation bis 100 Perioden | PR169d | 32 | 0 |
-| vier Modellsegmente und konsolidierte Versichererbilanz | PR170 | 33 | 1 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 41 | 9 |
-| durchgaengige DORA-Wirkungskette | PR186 | 49 | 17 |
-| kontrollierte Managementseminar-Reife | PR190 | 53 | 21 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 55 | 23 |
+| vier Modellsegmente und konsolidierte Versichererbilanz (API) | PR170 | 33 | 0 |
+| Vier-Sparten-Bilanz im Browser | PR170a | 34 | 1 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 9 |
+| durchgaengige DORA-Wirkungskette | PR186 | 50 | 17 |
+| kontrollierte Managementseminar-Reife | PR190 | 54 | 21 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 23 |
 
-Die 53 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
+Die 54 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
 Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
 Kranken, Risikomodulen und regulatorischer Quellenvalidierung. Erkenntnisse
 werden durch Teilung sichtbar gemacht; sie werden nicht in groessere PRs
 gedrueckt.
-Die vier Buchstabenschritte PR169a-d zaehlen jeweils als eigener PR,
+Die vier Buchstabenschritte PR169a-d und PR170a zaehlen jeweils als eigener PR,
 ohne die schon nummerierten PR170-192 umzubenennen.
 
 ## Grober Umfang
@@ -366,9 +368,12 @@ fuer sieben Horizonte bis 100 Perioden verbunden. PR169c hat
 kontrollierte Ergebnisablage, API und CSV/JSON/XLSX geliefert.
 PR169d hat den gefuehrten Kranken-Bedienpfad mit Baseline/Variante,
 Verlauf, Downloads und Browserabnahme fuer 100 Perioden ergaenzt.
-**PR170 ist der naechste Schritt:** die
-Vier-Sparten-Gesamtbilanz. Bis dahin bleibt die heutige
-Zwei-Sparten-Gesamtbilanz unveraendert. Die Windows-Ready-to-run-Spur
+PR170 hat die vier explizit eingegebenen Sparten je VU und Periode neu
+berechnet und Vermoegen, Verpflichtungen, Eigenkapital und Kapitalbewegung
+zur einfachen Gesamtbilanz abgestimmt. Die bisherige Zwei-Sparten-API ist
+unveraendert; in der Workbench ist sie nun als Schadenbilanz beschriftet.
+**PR170a ist der naechste Schritt:** die Vier-Sparten-Gesamtbilanz im
+Browser lesbar und abnehmbar machen. Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische

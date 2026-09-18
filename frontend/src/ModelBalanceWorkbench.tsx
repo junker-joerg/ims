@@ -270,7 +270,7 @@ export default function ModelBalanceWorkbench() {
   return (
     <section className="panel balance-panel" id="balance" data-testid="model-balance-workbench">
       <div className="balance-heading">
-        <div className="panel-heading"><Landmark size={20} aria-hidden="true" /><h2>Versicherer-Modellbilanz</h2></div>
+        <div className="panel-heading"><Landmark size={20} aria-hidden="true" /><h2>Schaden-Sparten-Modellbilanz</h2></div>
         <div className="balance-provenance" aria-label="Herkunft"><span>Quelle: {edited ? "eigene Szenariowerte" : "Beispielwerte"}</span><span>Historische Zuordnung: offen</span></div>
       </div>
 
@@ -319,7 +319,7 @@ export default function ModelBalanceWorkbench() {
       {result && <div className="balance-results" data-testid="model-balance-results">
         <div className="balance-result-head">
           <div className="balance-view-tabs" role="group" aria-label="Bilanzansicht">
-            {([{ id: "total", label: "Gesamt" }, ...SECTORS] as { id: ViewId; label: string }[]).map((item) =>
+            {([{ id: "total", label: "Schaden gesamt" }, ...SECTORS] as { id: ViewId; label: string }[]).map((item) =>
               <button key={item.id} type="button" className={view === item.id ? "active" : ""}
                 aria-pressed={view === item.id} onClick={() => setView(item.id)}>{item.label}</button>)}
           </div>

@@ -1,8 +1,8 @@
 # PR169 und Folgepfad: Krankensparte bis zur bedienbaren Simulation
 
-Stand: 2026-09-17
-Status: PR169d als getrennte Browser- und Handbuchabnahme umgesetzt;
-PR170 Vier-Sparten-Konsolidierung folgt.
+Stand: 2026-09-18
+Status: PR169d Browser- und Handbuchabnahme, PR170 zustandslose
+Vier-Sparten-Konsolidierung umgesetzt; PR170a Workbench-Anschluss folgt.
 
 ## Entscheidung
 
@@ -21,6 +21,7 @@ anderen geplanten PRs; sie zaehlen bei Meilensteinen jeweils als ein PR.
 | PR169c | Ergebnis-API, explizite Freigabe, Idempotenz, unveraenderliche Ablage und CSV/JSON/XLSX | Ergebnis/Digest/Herkunft stimmen nach erneutem Abruf und in allen Exporten; fehlgeschlagene Laeufe bleiben ohne Teilablage |
 | PR169d | Gefuehrte Kranken-Workbench mit einfacher Szenarioeingabe, Baseline/Variante und Zeitreihen bis 100 Perioden | echter Browserstart, Verlauf und Download; breite/schmale Ansicht, Fehlerpfade und Handbuchbilder sind abgenommen |
 | PR170 | Vier-Sparten-Konsolidierung | Kranken, Leben, Kfz und Sach-Haftpflicht sind explizit allokiert und je Versicherer zur Gesamtbilanz abgestimmt |
+| PR170a | Vier-Sparten-Browseransicht | Gesamtbilanz und vier Allokationen sind lesbar; Eingaben stammen gezielt aus demselben deklarierten Szenario |
 
 Damit ist eine **bedienbare 100-Perioden-Kranken-Simulation nach PR169d**
 geplant, nicht bereits nach PR169 oder erst irgendwann nach PR190. Der
@@ -148,8 +149,9 @@ Solvency II und DORA bleiben bei ihren eigenen Folge-PRs.
 - Preisentscheidungen, Leistungsannahmen und VN-Wechsel sind verschiedene
   Quellen. Eine strategische Wirkung auf Leistungen braucht spaeter eine
   begruendete, getrennte Kausalregel statt einer stillen Kuerzung.
-- Keine historische `Sp[2]`-/`Rk[2]`-Zuordnung zu `health`. Die vier
-  Modellsegmente werden vor PR170 nur als getrennte Rechnungen gefuehrt.
+- Keine historische `Sp[2]`-/`Rk[2]`-Zuordnung zu `health`. PR170
+  konsolidiert explizite IMS-2.x-Szenarien, ohne diese Altzuordnung zu
+  behaupten; ein gemeinsamer Browser-Bedienweg folgt in PR170a.
 - PR169b begrenzt die fluechtige Kette und deren Zeilenausgabe.
   PR169c hat die separate Speicher- und Exportgrenze geprueft.
   Die UI-Freigabe war daraus **nicht** abzuleiten und wurde in PR169d

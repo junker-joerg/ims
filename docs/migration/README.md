@@ -367,4 +367,6 @@ Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die 
 - `ims_2x_hundred_period_results_workbench.md`:
   PR151-Browserpfad fuer 100 Perioden mit Zeitreihen, passenden
   Vergleichslaeufen und Digest-gebundenem Download
+- `four_sector_model_balance.md`: PR170-Quellen- und Bilanzabbildung fuer
+  die vier expliziten IMS-2.x-Modellsparten mit Herkunftsgrenze
 - weitere Mapping- und Verifikationsnotizen folgen in spaeteren PRs

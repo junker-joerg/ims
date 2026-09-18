@@ -19,7 +19,8 @@ def test_pr169b_documents_source_mapping_and_staged_delivery() -> None:
         assert phrase in normalized
     assert "## PR169b: fluechtige Periodenkette" in plan
     assert "| PR169b | Kontrollierte Kranken-Periodenkette bis 100 | umgesetzt:" in roadmap
-    assert "PR170 ist der naechste Schritt" in roadmap
+    assert "PR170 hat die vier explizit eingegebenen Sparten" in roadmap
+    assert "PR170a ist der naechste Schritt" in roadmap
     assert "ims_2x_health_period_chain.md" in (
         ROOT / "docs/migration/README.md"
     ).read_text(encoding="utf-8")

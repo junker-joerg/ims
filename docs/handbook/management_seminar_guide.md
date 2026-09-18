@@ -56,13 +56,18 @@ Die heutige Workbench kann:
 - einen eigenen Kranken-Modellfall als Baseline und Variante ueber bis zu
   100 Perioden vergleichen, ausdruecklich speichern und als CSV, JSON
   oder XLSX herunterladen.
+- vier explizite IMS-2.x-Sparteneingaben je Versicherer und Periode
+  rechnerisch zu einer einfachen Gesamtbilanz abstimmen; diese neue
+  Rechnung ist derzeit ueber die Fach-API, noch nicht ueber die
+  gefuehrte Workbench erreichbar.
 
 Noch nicht verfuegbar sind:
 
 - ein gefuehrter Aufbau der 100 Einzelkandidaten und der Kette;
 - eine dauerhafte Ablage der allgemeinen VU-/VN-100-Periodenlaeufe;
 - der automatische Anschluss der benannten Sparten an historische Laeufe;
-- eine Vier-Sparten-Bilanz und eine Solvency-II-Kapitalansicht;
+- die Bedienung der Vier-Sparten-Bilanz im Browser und eine
+  Solvency-II-Kapitalansicht;
 - ein DORA-Szenarioeditor mit durchgaengiger Wirkungskette.
 
 Diese Funktionen sind in der aktiven
@@ -131,8 +136,9 @@ Ein ungueltiger Wert wird vor dem Speichern angezeigt; es entsteht kein
 Teilergebnis. Die Zahlen sind ein IMS-2.x-Modellfall mit expliziten
 Annahmen, keine historische Lebensreferenz, gesetzliche Bilanz oder
 Solvency-II-Berechnung. Freie Anfangsbestands- und Laufzeitgestaltung,
-Rueckkauf und Bonus fehlen noch. Die separate Lebensrechnung wird noch
-nicht zur Vier-Sparten-Gesamtbilanz addiert. Der XLSX-Export schreibt
+Rueckkauf und Bonus fehlen noch. PR170 kann dieselbe Lebensrechnung mit
+drei weiteren Modellsparten rechnerisch konsolidieren; der gefuehrte
+Vier-Sparten-Bedienweg fehlt noch. Der Lebens-XLSX-Export schreibt
 Dezimalwerte als Text, damit keine stillen Rundungen in Excel entstehen.
 
 ## Einen Krankenfall ueber 100 Perioden vergleichen
@@ -393,10 +399,9 @@ Die aktive Roadmap liefert in dieser Reihenfolge:
 
 1. einen gefuehrten Aufbau eigener 100-Perioden-Faelle und eine dauerhafte
    Ergebnisablage; der vorbereitete fluechtige Bedienpfad ist vorhanden;
-2. Kranken als viertes Modellsegment und spaeter unterschiedliche
-   Strategien ueber alle vier Sparten;
-3. die Konsolidierung der vorhandenen Kfz-/Sach-Haftpflicht- und
-   Lebens-Modellbilanzen mit Kranken zu einer Vier-Sparten-Sicht;
+2. die Bedienung der bereits berechneten Vier-Sparten-Gesamtbilanz
+   im Browser und spaeter unterschiedliche Strategien je Sparte;
+3. einen gemeinsamen Szenarioeditor und kontrollierten Mehrspartenlauf;
 4. eine erklaerbare Solvency-II-Kapitalansicht;
 5. DORA-Wirkungsketten von ICT-Abhaengigkeiten bis zu Bilanz und Kapital;
 6. einen gefuehrten Szenarioassistenten und kuratierte Seminarfaelle.

@@ -17,6 +17,10 @@ from ims.accounting.insurer_balance import (
     insurer_balance_workbench_contract_payload,
 )
 from ims.accounting.insurer_balance_workbook import build_insurer_balance_workbook
+from ims.accounting.four_sector_balance import (
+    build_four_sector_balance,
+    four_sector_balance_contract_payload,
+)
 from ims.accounting.health_period_chain import run_health_period_chain
 from ims.accounting.life_period_chain import run_life_policy_period_chain
 from ims.accounting.model_balance_contract import (
@@ -1236,6 +1240,23 @@ def create_app(
 
     async def insurer_balance_workbook_response(request: Request) -> JSONResponse | Response:
         return await insurer_balance_response(request, workbook=True)
+
+    async def four_sector_balance_response(request: Request) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                {"status": "error", "code": "invalid_json", "partial_result_returned": False},
+                status_code=400,
+                headers={"Cache-Control": "no-store"},
+            )
+        result = build_four_sector_balance(payload).to_dict()
+        if not result["valid"]:
+            return JSONResponse(result, status_code=422, headers={"Cache-Control": "no-store"})
+        return JSONResponse(
+            result,
+            headers={"Cache-Control": "no-store", "ETag": f'"{result["content_digest"]}"'},
+        )
 
     def life_error(exc: LifeResultError) -> JSONResponse:
         return JSONResponse(
@@ -2943,6 +2964,14 @@ def create_app(
         async def accounting_insurer_balance_workbook(request: Request) -> JSONResponse | Response:
             return await insurer_balance_workbook_response(request)
 
+        @app.post("/api/accounting/four-sector-balance", response_model=None)
+        async def accounting_four_sector_balance(request: Request) -> JSONResponse:
+            return await four_sector_balance_response(request)
+
+        @app.get("/api/accounting/four-sector-balance-contract")
+        def accounting_four_sector_balance_contract() -> dict[str, object]:
+            return four_sector_balance_contract_payload()
+
         @app.get("/api/accounting/life-period-chain/contract")
         def accounting_life_period_chain_contract() -> dict[str, object]:
             return life_result_contract_payload()
@@ -3705,6 +3734,11 @@ def create_app(
             lambda request: JSONResponse(insurer_balance_workbench_contract_payload()),
         ),
         Route("/api/accounting/insurer-balance", insurer_balance_response, methods=["POST"]),
+        Route("/api/accounting/four-sector-balance", four_sector_balance_response, methods=["POST"]),
+        Route(
+            "/api/accounting/four-sector-balance-contract",
+            lambda request: JSONResponse(four_sector_balance_contract_payload()),
+        ),
         Route(
             "/api/accounting/insurer-balance.xlsx",
             insurer_balance_workbook_response,
