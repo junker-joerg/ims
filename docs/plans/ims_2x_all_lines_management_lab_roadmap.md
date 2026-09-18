@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-18
-Status: aktive Produkt-Restplanung; PR173 Schock-Mapping umgesetzt, PR174 Risikomodule naechster Schritt
+Status: aktive Produkt-Restplanung; PR174 Modell-Risikomodule umgesetzt, PR175 Aggregation naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -173,7 +173,7 @@ eine Meldesoftware ersetzen.
 | PR171 | Scope-, Terminologie-, Quellen- und Versionsvertrag | umgesetzt: read-only Vertrag mit Rechtsstand, Modellherkunft und fehlenden Bruecken; keine Kapitalrechnung oder regulatorische Aussage |
 | PR172 | Solvenzmodellbilanz und vereinfachte Eigenmittelabbildung | umgesetzt: vier explizite Modell-Bewertungsdifferenzen, ein Stichtag, exakter Eigenmittel-Proxy und PR170-Digest; keine regulatorischen Eigenmittel |
 | PR173 | Risikotreiber und Szenarioschock-Mapping | umgesetzt: serverseitig neu berechnete PR172-Quelle, benannte Teilbestaende und explizite Deltas; nur Ziel-Exposures veraendert, kein SCR/MCR |
-| PR174 | Ausgewaehlte Markt- und versicherungstechnische Risikomodule | Schaden, Leben und Kranken besitzen getestete, begrenzte Module |
+| PR174 | Ausgewaehlte Markt- und versicherungstechnische Risikomodule | umgesetzt: vier begrenzte, szenariodeklarierte Modellmodule auf PR173-Exposures; Kfz, Sach-Haftpflicht, Leben und Kranken getestet, kein regulatorisches SCR |
 | PR175 | Gegenpartei-, operationelles Risiko und Aggregation | Korrelationen und verlustabsorbierende Effekte sind versioniert |
 | PR176 | SCR, MCR, Bedeckungsquote und Managementschwellen | Kennzahlen sind reproduzierbar und fachlich beschriftet |
 | PR177 | Feste Faelle, Sensitivitaeten und Invarianten | Richtung, Monotonie, Grenzwerte und Bilanzanschluss sind geprueft |
@@ -240,7 +240,7 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR173 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR174 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
@@ -250,10 +250,11 @@ Teil dieses Windows-Pakets.
 | Solvency-II-Geltungsvertrag | PR171 | 35 | 0 |
 | Modell-Solvenzbilanz und Eigenmittel-Proxy | PR172 | 36 | 0 |
 | explizites Risikotreiber- und Schock-Mapping | PR173 | 37 | 0 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 5 |
-| durchgaengige DORA-Wirkungskette | PR186 | 50 | 13 |
-| kontrollierte Managementseminar-Reife | PR190 | 54 | 17 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 19 |
+| begrenzte Markt- und Verpflichtungs-Modellmodule | PR174 | 38 | 0 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 4 |
+| durchgaengige DORA-Wirkungskette | PR186 | 50 | 12 |
+| kontrollierte Managementseminar-Reife | PR190 | 54 | 16 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 18 |
 
 Die 54 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -390,10 +391,14 @@ einen als Modellwert markierten Eigenmittel-Proxy gebildet.
 PR173 hat benannte, nicht ueberlappende Modell-Teilbestaende und
 ausdrueckliche absolute Szenariodeltas an den neu berechneten PR172-
 Checkpoint gebunden. Nicht zugeordnete Teilbestaende bleiben unveraendert.
-**PR174 ist der naechste Schritt:** ausgewaehlte Markt- und
-versicherungstechnische Risikomodule mit eigenen Quellen, Parametern
-und Tests spezifizieren; die PR173-Deltas sind keine Kalibrierung und
-keine regulatorischen Kapitalanforderungen.
+PR174 hat szenariodeklarierte relative Modell-Stresssaetze fuer
+Marktaktiva sowie Schaden-, Lebens- und Krankenverpflichtungen an
+PR173-Teilbestaende gebunden. Die Einzelwirkungen sind deterministisch
+und nicht regulatorisch kalibriert; zwischen Modulen wird nicht aggregiert.
+**PR175 ist der naechste Schritt:** Gegenpartei- und operationelles
+Risiko sowie Aggregations- und Verlustabsorptionsgrenzen getrennt
+festlegen, ohne die PR174-Saetze als aufsichtsrechtliche Parameter
+auszugeben.
 Der bedienbare 100-Perioden-Mehrspartenlauf bleibt ein eigener, noch
 zu planender Schnitt. Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.

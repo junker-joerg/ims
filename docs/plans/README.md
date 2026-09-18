@@ -17,6 +17,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr173_risk_drivers_and_shocks.md`: PR173-Vertrag fuer
   explizite Modell-Teilbestaende und zugeordnete Szenarioschocks mit
   atomarem Wirkungsnachweis, ohne SCR oder MCR.
+- `ims_2x_pr174_model_risk_modules.md`: PR174-Modellmodule fuer
+  szenariodeklarierte relative Markt- und Verpflichtungsstresse auf
+  PR173-Teilbestaenden, weiterhin ohne Kapitalanforderung.
 
 - `ims_2x_strategy_assignment_draft_ui_plan.md`: PR109-Plan fuer die lokale
   Erfassung und serverseitige Pruefung von Strategieentwuerfen in der

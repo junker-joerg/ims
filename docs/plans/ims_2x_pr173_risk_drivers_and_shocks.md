@@ -1,7 +1,7 @@
 # PR173: Explizite Risikotreiber und Szenarioschocks
 
 Stand: 2026-09-18
-Status: umgesetzt; PR174 Risikomodule bleibt ein eigener Schritt
+Status: umgesetzt; PR174 Modellmodule separat umgesetzt, PR175 folgt
 
 ## Ziel und fachliche Grenze
 
