@@ -1,7 +1,7 @@
 # PR172: Modell-Solvenzbilanz und Eigenmittel-Proxy
 
 Stand: 2026-09-18
-Status: umgesetzt; PR173 Risikotreiber und Szenarioschocks als naechster Schritt
+Status: umgesetzt; PR173 Schock-Mapping separat umgesetzt, PR174 Risikomodule als naechster Schritt
 
 ## Ziel und konservative Grenze
 

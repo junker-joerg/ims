@@ -44,7 +44,7 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42" in document
     assert "durchgaengige DORA-Wirkungskette | PR186 | 50" in document
     assert "kontrollierte Managementseminar-Reife | PR190 | 54" in document
-    assert "PR172 Modell-Solvenzbilanz umgesetzt, PR173 Risikotreiber naechster Schritt" in document
+    assert "PR173 Schock-Mapping umgesetzt, PR174 Risikomodule naechster Schritt" in document
     for label in ("PR169a", "PR169b", "PR169c", "PR169d", "PR170a"):
         assert f"| {label} |" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
@@ -56,8 +56,9 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "bedienbare Kranken-Simulation bis 100 Perioden | PR169d | 32 | 0" in document
     assert "Solvency-II-Geltungsvertrag | PR171 | 35 | 0" in document
     assert "Modell-Solvenzbilanz und Eigenmittel-Proxy | PR172 | 36 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 54 | 18" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 20" in document
+    assert "explizites Risikotreiber- und Schock-Mapping | PR173 | 37 | 0" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 54 | 17" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 19" in document
     assert "Diese optionale Distributionsspur beginnt **erst nach PR190**" in document
 
 
@@ -80,7 +81,7 @@ def test_later_windows_ready_to_run_plan_stays_after_fachphasen() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR173 Risikotreiber naechster Schritt" in roadmap
+    assert "PR174 Risikomodule naechster Schritt" in roadmap
     assert "Fachphasen C bis E gehen vor" in plan
     for phrase in (
         "PR191", "PR192", "IMS-Workbench.exe", "One-folder",
