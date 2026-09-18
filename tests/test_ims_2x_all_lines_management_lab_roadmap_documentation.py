@@ -4,6 +4,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ROADMAP = REPO_ROOT / "docs" / "plans" / "ims_2x_all_lines_management_lab_roadmap.md"
+REST_PLAN = REPO_ROOT / "docs" / "plans" / "ims_2x_restplan_ab_pr179.md"
 GUIDE = REPO_ROOT / "docs" / "handbook" / "management_seminar_guide.md"
 WINDOWS_PLAN = REPO_ROOT / "docs" / "plans" / "ims_2x_windows_ready_to_run_packaging_plan.md"
 LIFE_PLAN = REPO_ROOT / "docs" / "plans" / "ims_2x_life_workshop_expansion_plan.md"
@@ -39,19 +40,20 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     all_prs = re.findall(r"^\| PR(\d+[a-z]?) \|", document, flags=re.MULTILINE)
 
     assert table_prs == list(range(142, 193))
-    assert len(all_prs) == len(set(all_prs)) == 63
-    assert all_prs.index("190") + 1 == 61
+    assert len(all_prs) == len(set(all_prs)) == 68
+    assert all_prs.index("190") + 1 == 66
     assert all_prs[-1] == "192"
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10" in document
     assert "vier Modellsegmente und konsolidierte Versichererbilanz (API) | PR170 | 33" in document
     assert "Vier-Sparten-Bilanz im Browser | PR170a | 34" in document
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42" in document
     assert "durchgaengige DORA-Wirkungskette | PR186 | 51" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 61" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 66" in document
     assert "PR178a Handbuch umgesetzt, PR179 DORA-Vertrag naechster Schritt" in document
     for label in (
         "PR169a", "PR169b", "PR169c", "PR169d", "PR170a", "PR178a",
         "PR187a", "PR187b", "PR187c", "PR187d", "PR187e", "PR187f",
+        "PR187g", "PR187h", "PR187i", "PR187j", "PR187k",
     ):
         assert f"| {label} |" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
@@ -71,12 +73,13 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 0" in document
     assert "lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 0" in document
     assert "gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 12" in document
-    assert "bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 15" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 61 | 18" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 20" in document
+    assert "bedienbare additive 100er-Vier-Sparten-Rechnung | PR187f | 58 | 15" in document
+    assert "erste kontrollierte Strategie-/Sparten-Wirkung | PR187k | 63 | 20" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 66 | 23" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 68 | 25" in document
     assert document.index("| PR178 |") < document.index("| PR178a |") < document.index("| PR179 |")
     assert document.index("| PR187 |") < document.index("| PR187a |") < document.index("| PR188 |")
-    assert "PR187c und PR187f abgenommen" in document
+    assert "PR187c, PR187f und PR187k voraus" in document
     assert "Diese optionale Distributionsspur beginnt **erst nach PR190**" in document
 
 
@@ -84,7 +87,7 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
     document = ROADMAP.read_text(encoding="utf-8")
 
     assert "18.700-35.000 LoC" in document
-    assert "Kapitalrechnung und PR187e" in document
+    assert "Kapitalrechnung, PR187e und PR187g-k" in document
     for gate in (
         "deterministische Wiederholung",
         "stabile Prefixe",
@@ -94,7 +97,8 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
     ):
         assert gate in document
 
-    assert "expliziten PR187a-f und das Handbuch PR178a" in document
+    assert "PR187a-k" in document
+    assert "8.000-16.000 LoC" in document
 
 
 def test_new_handbook_and_hundred_period_plans_make_gaps_reviewable() -> None:
@@ -110,6 +114,26 @@ def test_new_handbook_and_hundred_period_plans_make_gaps_reviewable() -> None:
         assert f"| {label} |" in hundred
     assert "kein neuer Simulationskern" in hundred
     assert "vor PR190" in hundred
+    assert "PR187g-k" in hundred
+    assert "endogen gekoppelte" in hundred
+
+
+def test_rest_plan_distinguishes_addition_strategy_effect_and_regulatory_limits() -> None:
+    roadmap = ROADMAP.read_text(encoding="utf-8")
+    rest = REST_PLAN.read_text(encoding="utf-8")
+    plans_index = (REPO_ROOT / "docs/plans/README.md").read_text(encoding="utf-8")
+
+    assert REST_PLAN.name in roadmap
+    assert REST_PLAN.name in plans_index
+    assert "PR154 validiert Strategieplaene" in rest
+    assert "Das ist noch keine endogen gekoppelte" in rest
+    assert "PR187g ist ein fachliches Entscheidungstor" in rest
+    assert "PR187k" in rest
+    assert "23" in rest and "25" in rest
+    assert "historischer Vollgleichheit" in rest
+    assert "incomming/" in rest
+    assert "keine regulatorische Bedeckungsquote" in roadmap
+    assert "Ein groesserer Markt-/Regulierungs-Simulator braucht" in rest
 
 
 def test_later_windows_ready_to_run_plan_stays_after_fachphasen() -> None:

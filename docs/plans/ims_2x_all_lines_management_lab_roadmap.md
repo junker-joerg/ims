@@ -209,7 +209,7 @@ verfolgbar.
 | PR182 | Wirkung auf Vertrieb, Underwriting, Schaden und Service | Kapazitaet, Rueckstand und Erholung sind als Kette nachvollziehbar |
 | PR183 | Drittparteienkonzentration und korrelierter Ausfall | gemeinsame Anbieter koennen mehrere Versicherer kontrolliert treffen |
 | PR184 | Praeventions-, Wiederanlauf- und Fallback-Strategien | Kosten, Wirksamkeit und Restlaufzeit sind parametrierbar |
-| PR185 | Anschluss an Bilanz und Kapital | operative Folgen schlagen nachvollziehbar auf Ergebnis und Bedeckung durch |
+| PR185 | Anschluss an Bilanz und Modellkapital | operative Folgen schlagen nachvollziehbar auf Ergebnis, Eigenmittel-Proxy und Workshopgrenzen durch; keine regulatorische Bedeckungsquote |
 | PR186 | DORA-Wirkungsansicht und Dossier | Zeitlinie, Abhaengigkeiten, Engpaesse und Unsicherheit sind exportierbar |
 
 Nicht vorgesehen sind ein automatisches DORA-Compliance-Urteil, eine
@@ -229,22 +229,31 @@ dass Anwender interne Datenvertraege oder Quellcode kennen muessen.
 | PR187d | Quellen- und Periodenvertrag fuer vier Sparten ueber 100 Perioden | dieselbe VU und Perioden 1-100, gemeinsame Szenario-Variante ausdruecklich erklaert und geprueft; fehlende Nichtleben-ID und Altpositionsmapping bleiben sichtbar |
 | PR187e | Kontrollierte 100er-Vier-Sparten-Rechnung | vorhandene vier Teilmodelle neu berechnen, periodische Bilanz- und Carryover-Invarianten, stabiler Zwei-Perioden-Prefix, Ressourcenbudget und atomarer Abbruch |
 | PR187f | 100er-Mehrspartenansicht und Exporte | Baseline/Variante, vier Sparten und Gesamtbilanz im Browser, CSV/JSON/XLSX mit gleicher Herkunft sowie breite/schmale Browserabnahme und Handbuchbilder |
+| PR187g | Quellen- und Zeitvertrag fuer sektorbezogene Strategien | VU/VN, Gruppe, Sparte, Parameter, Aktivierungsfenster und exogene Werte sind eindeutig; keine geratene Legacy-Zuordnung oder Ausfuehrung |
+| PR187h | Begrenzter Strategieanschluss fuer Kfz und Sach-Haftpflicht | nur fachlich gedeckte PR154-Entwuerfe wirken deterministisch im kontrollierten 100er-Pfad; alter Lauf und Prefixe bleiben stabil |
+| PR187i | Begrenzte Strategieanschluesse fuer Leben und Kranken | explizite Anlage-/Neugeschaefts- und Beitragsentscheidungen werden von exogenen Mortalitaets-/Leistungsannahmen getrennt; bestehende Fluesse bleiben nachvollziehbar |
+| PR187j | Gefuehrte Strategie- und Parametereingabe je Sparte | Workbench zeigt Gruppe, VU/VN, Zeitfenster und Wirksamkeit; ungueltige Zuordnungen sind gesperrt, beide Browserbreiten abgenommen |
+| PR187k | Kontrollierte Strategie-/Sparten-Wirkungsprobe | mindestens ein belegter Strategieeffekt reicht ueber Spartenfluss bis Modellbilanz in 100 Perioden; nicht gekoppelte Kanaele bleiben sichtbar |
 | PR188 | Kuratierte Seminarfaelle | Schadeninflation, Preiswettbewerb, Lebensbestand, Kapitaldruck und ICT-Ausfall sind reproduzierbar |
 | PR189 | Moderationspaket und portable Szenariobuendel | Arbeitsblaetter, Import/Export und read-only Demonstration sind geprueft |
 | PR190 | End-to-End-Abnahme des Managementseminars | Installation, 100 Perioden, Mehrsparten, Bilanz, Kapital, DORA-Fall und Export funktionieren gemeinsam |
 
-Die PR187a-f sind die bislang **nicht mitgezaehlten** Luecken zwischen
+Die PR187a-k schliessen zwei verschiedene Luecken zwischen
 vorbereiteter PR151-Kette, PR170a-Zwei-Perioden-Bilanz und der
-PR190-Abnahme. Der [Abnahmeplan](ims_2x_pr187_hundred_period_readiness_plan.md)
-legt die fachlichen Grenzen je Schnitt fest. PR188 und PR190 duerfen
-keinen 100-Perioden-Mehrspartenfall als bestanden ausgeben, bevor
-PR187c und PR187f abgenommen sind.
+PR190-Abnahme. PR187a-f bauen und zeigen zunaechst einen gemeinsamen,
+aber additiven Vier-Sparten-Fall. PR154 ist bisher nur ein validierender
+Strategieentwurf; wirksame spartenbezogene Entscheidungen und eine erste
+belegte Reaktionskette kommen erst in PR187g-k. Der
+[100er-Abnahmeplan](ims_2x_pr187_hundred_period_readiness_plan.md) und
+der [Restplan](ims_2x_restplan_ab_pr179.md) benennen die Grenzen.
+PR188 und PR190 duerfen keinen vollstaendig gekoppelten Markt behaupten;
+die Seminarabnahme setzt PR187c, PR187f und PR187k voraus.
 
 PR190 bezeichnet eine kontrollierte Seminar- und Demonstrationsreife. Eine
 fachliche Produktionsfreigabe fuer Beratung, Aufsicht oder einzelne
 Unternehmensentscheidungen benoetigt weiterhin einen benannten Datenstand,
 einen konkreten Anwendungsfall und dessen eigene Validierung. Die
-Handbuch-Erstausgabe aus PR178a wird bei PR186, PR187f und PR190 an den
+Handbuch-Erstausgabe aus PR178a wird bei PR186, PR187f, PR187j und PR190 an den
 jeweils belegten Bedienstand angepasst.
 
 ## Phase F: Windows Ready-to-run (spaeter)
@@ -267,7 +276,7 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR174 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR178a |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
@@ -285,18 +294,19 @@ Teil dieses Windows-Pakets.
 | lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 0 |
 | durchgaengige DORA-Wirkungskette | PR186 | 51 | 8 |
 | gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 12 |
-| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 15 |
-| kontrollierte Managementseminar-Reife | PR190 | 61 | 18 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 20 |
+| bedienbare additive 100er-Vier-Sparten-Rechnung | PR187f | 58 | 15 |
+| erste kontrollierte Strategie-/Sparten-Wirkung | PR187k | 63 | 20 |
+| kontrollierte Managementseminar-Reife | PR190 | 66 | 23 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 68 | 25 |
 
-Die 61 geplanten Schritte ab PR142 bis PR190, darunter PR178a und
-PR187a-f, sowie zwei spaetere Windows-Packaging-PRs sind eine
-Planungsbasis, keine Terminzusage. Nach PR178a verbleiben damit **18
-Schritte bis zur Seminarabnahme** und **20 bis zum Windows-ZIP**.
+Die 66 geplanten Schritte ab PR142 bis PR190, darunter PR178a und
+PR187a-k, sowie zwei spaetere Windows-Packaging-PRs sind eine
+Planungsbasis, keine Terminzusage. Nach PR178a verbleiben damit **23
+Schritte bis zur Seminarabnahme** und **25 bis zum Windows-ZIP**.
 Quellen- oder Performancebefunde koennen besonders die separate
-Kapitalrechnung und PR187e
+Kapitalrechnung, PR187e und PR187g-k
 weiter teilen; ihre Zusatzschritte werden dann offen mitgezaehlt.
-PR169a-d, PR170a, PR178a und PR187a-f zaehlen jeweils als eigener PR,
+PR169a-d, PR170a, PR178a und PR187a-k zaehlen jeweils als eigener PR,
 ohne die schon nummerierten PR170-192 umzubenennen.
 
 ## Grober Umfang
@@ -310,12 +320,12 @@ ohne die schon nummerierten PR170-192 umzubenennen.
 | Managementbedienung und Seminarfreigabe | 1.200-2.500 LoC |
 | **Gesamt** | **18.700-35.000 LoC** |
 
-Die Schaetzung umfasst produktiven Code, Tests und Dokumentation. Sie ist
-bewusst breit und wird an jedem Phasenende anhand des tatsaechlichen Bestands
-neu bestimmt. Sie stammt aus dem urspruenglichen Meilensteinplan; die jetzt
-expliziten PR187a-f und das Handbuch PR178a sind darin nicht separat
-kalkuliert. Die LoC-Prognose wird vor PR187a neu beziffert, statt die
-Luecken als kostenneutral auszugeben.
+Die Tabelle ist die alte Gesamtprognose, **kein Restaufwand**. Sie stammt
+aus dem urspruenglichen Meilensteinplan und hat PR178a sowie PR187a-k
+nicht separat kalkuliert. Fuer den verbleibenden Code, Tests und Doku
+ab PR179 bis PR192 gilt grob **8.000-16.000 LoC** als Planannahme, nicht
+als Bestandsmessung. Sie wird nach PR186 und PR187g neu geschaetzt;
+Details und Abhaengigkeiten stehen im [Restplan](ims_2x_restplan_ab_pr179.md).
 
 ## Durchgaengende Tests
 
@@ -344,7 +354,7 @@ PR178a hat die beiden Haupttexte und neue Kapital-Screenshots
 zusammengefuehrt. HB4/HB5 bleiben separate Linux-/iOS-Juno-Pruefungen
 ohne Supportversprechen; die bisherige HB6-Konsolidierung geht in PR178a
 und die PR190-Endabnahme ein. Bilder und Bedienwege werden bei PR186
-und PR187f nachgezogen, nicht vorweggenommen.
+PR187f und PR187j nachgezogen, nicht vorweggenommen.
 
 ## Naechster Schritt
 
@@ -452,8 +462,9 @@ umgesetzt:** ein gut lesbares Benutzer- und Installationshandbuch
 mit echten Screenshots des belegten Standes. **PR179 folgt:** der
 gerichtete Vertrag fuer Geschaeftsservices, ICT-Assets, Anbieter und
 Abhaengigkeiten als Einstieg in die DORA-Wirkungskette.
-Der bedienbare 100-Perioden-Mehrspartenlauf ist als PR187d-f mit
-Quellenbindung, Rechnung und Browserabnahme vor PR190 eingetragen.
+Die additive 100-Perioden-Vier-Sparten-Rechnung ist als PR187d-f
+eingetragen; PR187g-k pruefen danach wirksame sektorbezogene Strategien
+und eine begrenzte Reaktionskette vor PR190.
 Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.
 

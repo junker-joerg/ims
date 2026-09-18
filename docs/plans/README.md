@@ -8,6 +8,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   Sach-Haftpflicht, Leben und Kranken, Versichererbilanzen,
   Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die kontrollierte
   Managementseminar-Reife.
+- `ims_2x_restplan_ab_pr179.md`: aktuelle Restzahl, Abhaengigkeiten und
+  Entscheidungstore von DORA ueber gefuehrte 100er-Ketten und wirksame
+  Spartenstrategien bis zur Seminarabnahme und zum Windows-ZIP.
 - `ims_2x_pr171_solvency_scope_contract.md`: PR171-Geltungs- und
   Quellenvertrag fuer die geplante Solvency-II-Kapitalansicht, mit
   Modellbilanzgrenze und gesperrten regulatorischen Aussagen.
@@ -24,8 +27,8 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   PR178, mit kurzer Installation, hoechstens zehn Bedienseiten,
   echten Screenshots und einer Bruecke vom historischen IMS.
 - `ims_2x_pr187_hundred_period_readiness_plan.md`: sechs reviewbare
-  Schnitte fuer gefuehrten 100er-Kettenaufbau und 100er-Vier-Sparten-
-  Bedienweg vor PR190.
+  Schnitte fuer gefuehrten 100er-Kettenaufbau und additive
+  100er-Vier-Sparten-Rechnung; der Strategieanschluss folgt PR187g-k.
 
 - `ims_2x_strategy_assignment_draft_ui_plan.md`: PR109-Plan fuer die lokale
   Erfassung und serverseitige Pruefung von Strategieentwuerfen in der

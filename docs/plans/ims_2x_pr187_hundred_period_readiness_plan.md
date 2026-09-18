@@ -1,7 +1,7 @@
-# PR187a-f: Zwei explizite Luecken vor der Seminarabnahme schliessen
+# PR187a-f: Kettenaufbau und additive Vier-Sparten-Rechnung
 
 Stand: 2026-09-18
-Status: geplant nach PR187, vor PR188 und zwingend vor PR190
+Status: geplant nach PR187, vor PR187g-k und PR188, zwingend vor PR190
 
 ## Befund und Grenze
 
@@ -33,14 +33,28 @@ historische Vollgleichheit.
 | PR187f | Gefuehrte 100er-Mehrspartenansicht mit Ergebnisabgabe | vier Sparten und Gesamtbilanz fuer Baseline/Variante, Periodenfilter, CSV/JSON/XLSX aus demselben Digest, Browserabnahme auf beiden Breiten und Handbuchbilder |
 
 PR187a-c schliessen den gefuehrten **Kettenaufbau**. PR187d-f
-schliessen den **Mehrspartenlauf**. Vor PR187e wird geprueft, ob die
+schliessen die **additive Mehrspartenrechnung und -ansicht**. Sie
+setzen die in PR154 validierten sektorbezogenen Strategieplaene noch
+nicht in Entscheidungen um und belegen keine endogen gekoppelte
+All-Sparten-Marktreaktion. Vor PR187e wird geprueft, ob die
 vorhandenen Quellen ueberhaupt einen wirtschaftlich konsistenten
 gemeinsamen 100er-Fall tragen. Wenn nicht, wird die Luecke offen
 ausgewiesen und in weitere kleine PRs aufgeteilt; ein kuenstlich
 gleichgemachter Stand ist kein Erfolg.
 
-PR188 darf kuratierte 100er-Vier-Sparten-Seminarfaelle erst auf PR187f
-aufbauen. PR190 prueft Installation, Beispiel, Lauf, Bilanz, Kapital,
-DORA-Wirkung und Export **gemeinsam**, statt fehlende Vorarbeiten in
-der Abnahme zu verstecken. Diese sechs PRs sind jetzt in der
-Meilensteinzahl der aktiven Roadmap enthalten.
+## Anschluss PR187g-k
+
+Der [Restplan](ims_2x_restplan_ab_pr179.md) setzt vor PR188 fuenf
+weitere kleine Schnitte: eindeutige Strategiequellen und Zeitfenster,
+begrenzte Nichtleben- und Leben/Kranken-Anschluesse, gefuehrte
+Workbench-Eingabe und eine belegte 100er-Reaktionskette bis zur Bilanz.
+PR187g ist ein Entscheidungstor: Ohne fachlich gedecktes
+Sektormapping wird keine historische Zuordnung erfunden. Der Umfang
+einer Kopplung wird nach den Quellenbefunden gegebenenfalls weiter
+aufgeteilt.
+
+PR188 darf kuratierte 100er-Vier-Sparten-Seminarfaelle erst auf
+PR187f und PR187k aufbauen. PR190 prueft Installation, Beispiel,
+Lauf, Bilanz, Modellkapital, DORA-Wirkung und Export **gemeinsam**,
+statt fehlende Vorarbeiten in der Abnahme zu verstecken. PR187a-k
+sind in der Meilensteinzahl der aktiven Roadmap enthalten.
