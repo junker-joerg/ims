@@ -48,7 +48,7 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42" in document
     assert "durchgaengige DORA-Wirkungskette | PR186 | 51" in document
     assert "kontrollierte Managementseminar-Reife | PR190 | 61" in document
-    assert "PR176 Managementschwellen und Kapitalgate umgesetzt, PR177 feste Faelle naechster Schritt" in document
+    assert "PR177 feste Faelle und Invarianten umgesetzt, PR178 Kapitalansicht naechster Schritt" in document
     for label in (
         "PR169a", "PR169b", "PR169c", "PR169d", "PR170a", "PR178a",
         "PR187a", "PR187b", "PR187c", "PR187d", "PR187e", "PR187f",
@@ -67,11 +67,13 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "begrenzte Markt- und Verpflichtungs-Modellmodule | PR174 | 38 | 0" in document
     assert "deklarierte Gegenpartei-, Betriebs- und Korrelationsverluste | PR175 | 39 | 0" in document
     assert "Managementschwellen und gesperrte Kapitalwerte | PR176 | 40 | 0" in document
-    assert "lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 3" in document
-    assert "gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 15" in document
-    assert "bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 18" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 61 | 21" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 23" in document
+    assert "Feste Kapital-Modellfaelle und Invarianten | PR177 | 41 | 0" in document
+    assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 1" in document
+    assert "lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 2" in document
+    assert "gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 14" in document
+    assert "bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 17" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 61 | 20" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 22" in document
     assert document.index("| PR178 |") < document.index("| PR178a |") < document.index("| PR179 |")
     assert document.index("| PR187 |") < document.index("| PR187a |") < document.index("| PR188 |")
     assert "PR187c und PR187f abgenommen" in document
@@ -114,7 +116,7 @@ def test_later_windows_ready_to_run_plan_stays_after_fachphasen() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR177 feste Faelle naechster Schritt" in roadmap
+    assert "PR178 Kapitalansicht naechster Schritt" in roadmap
     assert "Fachphasen C bis E gehen vor" in plan
     for phrase in (
         "PR191", "PR192", "IMS-Workbench.exe", "One-folder",

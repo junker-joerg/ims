@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-18
-Status: aktive Produkt-Restplanung; PR176 Managementschwellen und Kapitalgate umgesetzt, PR177 feste Faelle naechster Schritt
+Status: aktive Produkt-Restplanung; PR177 feste Faelle und Invarianten umgesetzt, PR178 Kapitalansicht naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -177,7 +177,7 @@ eine Meldesoftware ersetzen.
 | PR174 | Ausgewaehlte Markt- und versicherungstechnische Risikomodule | umgesetzt: vier begrenzte, szenariodeklarierte Modellmodule auf PR173-Exposures; Kfz, Sach-Haftpflicht, Leben und Kranken getestet, kein regulatorisches SCR |
 | PR175 | Gegenpartei-, operationelles Risiko und Aggregation | umgesetzt: deklarierte Modellverluste, positive Ein-Faktor-Korrelation und unabhaengiger Modellpuffer versioniert; kein SCR |
 | PR176 | SCR, MCR, Bedeckungsquote und Managementschwellen | umgesetzt: Managementgrenzen auf Modellwerten pruefbar; regulatorische Werte mangels Bewertung, Kalibrierung und Rechtsstichtag maschinenlesbar gesperrt |
-| PR177 | Feste Faelle, Sensitivitaeten und Invarianten | Richtung, Monotonie, Grenzwerte und Bilanzanschluss sind geprueft |
+| PR177 | Feste Faelle, Sensitivitaeten und Invarianten | umgesetzt: zwoelf feste Modellfaelle, Quellen-Digests, Bilanz- und Stressinvarianten, Grenzwerte und atomare Fehler geprueft; keine regulatorische Freigabe |
 | PR178 | Kapitalansicht und Export | Modellwirkung und gesperrte regulatorische Kennzahlen getrennt sichtbar; kein SCR-Filing- oder Compliance-Anspruch |
 
 Eine echte aufsichtsrechtliche SCR-/MCR-Rechnung ist nicht Teil von
@@ -280,18 +280,19 @@ Teil dieses Windows-Pakets.
 | begrenzte Markt- und Verpflichtungs-Modellmodule | PR174 | 38 | 0 |
 | deklarierte Gegenpartei-, Betriebs- und Korrelationsverluste | PR175 | 39 | 0 |
 | Managementschwellen und gesperrte Kapitalwerte | PR176 | 40 | 0 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 2 |
-| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 3 |
-| durchgaengige DORA-Wirkungskette | PR186 | 51 | 11 |
-| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 15 |
-| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 18 |
-| kontrollierte Managementseminar-Reife | PR190 | 61 | 21 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 23 |
+| Feste Kapital-Modellfaelle und Invarianten | PR177 | 41 | 0 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 1 |
+| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 2 |
+| durchgaengige DORA-Wirkungskette | PR186 | 51 | 10 |
+| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 14 |
+| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 17 |
+| kontrollierte Managementseminar-Reife | PR190 | 61 | 20 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 22 |
 
 Die 61 geplanten Schritte ab PR142 bis PR190, darunter PR178a und
 PR187a-f, sowie zwei spaetere Windows-Packaging-PRs sind eine
-Planungsbasis, keine Terminzusage. Ab PR176 verbleiben damit **21
-Schritte bis zur Seminarabnahme** und **23 bis zum Windows-ZIP**.
+Planungsbasis, keine Terminzusage. Ab PR177 verbleiben damit **20
+Schritte bis zur Seminarabnahme** und **22 bis zum Windows-ZIP**.
 Quellen- oder Performancebefunde koennen besonders die separate
 Kapitalrechnung und PR187e
 weiter teilen; ihre Zusatzschritte werden dann offen mitgezaehlt.
@@ -441,8 +442,11 @@ PR176 hat die Quellen- und Rechtsstandsgrenze entschieden: SCR, MCR,
 anrechenbare Eigenmittel und Quoten bleiben ohne belastbare Grundlage
 gesperrt. Zwei explizite Workshop-Grenzen koennen den PR172-Eigenmittel-
 Proxy gegen den PR175-Netto-Modellstress pruefen, ohne Compliance-Aussage.
-**PR177 ist der naechste Schritt:** feste Faelle, Sensitivitaeten und
-Invarianten fuer diese getrennten Modell- und Kapitalgrenzen pruefen.
+PR177 hat zwoelf feste Modellfaelle und die zugehoerigen Bilanz-,
+Stress-, Quellen- und Managementinvarianten geprueft. Die
+regulatorischen Werte bleiben auch bei bestandenen Workshop-Grenzen
+gesperrt. **PR178 ist der naechste Schritt:** die Modellwirkung und
+gesperrten Kapitalwerte im Browser und Export getrennt erklaeren.
 Der bedienbare 100-Perioden-Mehrspartenlauf ist als PR187d-f mit
 Quellenbindung, Rechnung und Browserabnahme vor PR190 eingetragen.
 Die Windows-Ready-to-run-Spur
