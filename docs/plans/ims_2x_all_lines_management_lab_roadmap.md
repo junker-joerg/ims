@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-18
-Status: aktive Produkt-Restplanung; PR170 Vier-Sparten-Modellbilanz als zustandslose API umgesetzt, PR170a Workbench-Anschluss naechster Schritt
+Status: aktive Produkt-Restplanung; PR170a Vier-Sparten-Gesamtbilanz im Browser umgesetzt, PR171 Solvency-II-Geltungsvertrag naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -125,7 +125,7 @@ Schadenlogik ausgegeben.
 | PR169c | Kranken-Ergebnisablage, API und CSV/JSON/XLSX | umgesetzt: ausdrueckliche Freigabe, Idempotenz, Digest, verifizierter Verlauf und Herkunft in allen Exporten; keine Workbench-Eingabe |
 | PR169d | Bedienbare Kranken-Workbench | umgesetzt: expliziter Seminarfall, Baseline/Variante, Zeitreihen, Verlauf und CSV/JSON/XLSX bis 100 Perioden auf breitem/schmalem Viewport abgenommen |
 | PR170 | Spartenuebergreifende Konsolidierung | umgesetzt: vier neu berechnete Modellsegmente stimmen je VU und Periode atomar zur einfachen Gesamtbilanz ab; noch kein gemeinsamer Browser-Bedienweg |
-| PR170a | Vier-Sparten-Bilanz in der Workbench | vier Eingaben gezielt uebernehmen, Allokation und Gesamtbilanz lesbar anzeigen; breite/schmale Browserabnahme, keine Speicherung |
+| PR170a | Vier-Sparten-Bilanz in der Workbench | umgesetzt: gepruefte Eingaben gezielt uebernommen, VU-/Horizontkonflikte gesperrt, vier Allokationen und Gesamtbilanz auf breitem/schmalem Viewport abgenommen; keine Speicherung |
 
 Die erste Mehrspartenstufe deckt damit vier fuer das Zielbild wichtige
 Segmente ab. Sie behauptet weder die vollstaendige deutsche
@@ -236,17 +236,17 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR170 |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR170a |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
 | bedienbare Kranken-Simulation bis 100 Perioden | PR169d | 32 | 0 |
 | vier Modellsegmente und konsolidierte Versichererbilanz (API) | PR170 | 33 | 0 |
-| Vier-Sparten-Bilanz im Browser | PR170a | 34 | 1 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 9 |
-| durchgaengige DORA-Wirkungskette | PR186 | 50 | 17 |
-| kontrollierte Managementseminar-Reife | PR190 | 54 | 21 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 23 |
+| Vier-Sparten-Bilanz im Browser | PR170a | 34 | 0 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 8 |
+| durchgaengige DORA-Wirkungskette | PR186 | 50 | 16 |
+| kontrollierte Managementseminar-Reife | PR190 | 54 | 20 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 22 |
 
 Die 54 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -296,7 +296,7 @@ Der nichttechnische Einstieg ist in
 Installations- und technischen Bedienkapitel bleiben Referenz. HB4 bis HB6
 liefern weiterhin Linux-Nachweis, iOS/Juno-Entscheidung und konsolidierte
 Handbuchabnahme. Die fachlichen Bilder und Bedienwege werden nach den
-Meilensteinen PR151, PR167, PR170, PR178 und PR186 aktualisiert.
+Meilensteinen PR151, PR167, PR170a, PR178 und PR186 aktualisiert.
 
 ## Naechster Schritt
 
@@ -372,8 +372,13 @@ PR170 hat die vier explizit eingegebenen Sparten je VU und Periode neu
 berechnet und Vermoegen, Verpflichtungen, Eigenkapital und Kapitalbewegung
 zur einfachen Gesamtbilanz abgestimmt. Die bisherige Zwei-Sparten-API ist
 unveraendert; in der Workbench ist sie nun als Schadenbilanz beschriftet.
-**PR170a ist der naechste Schritt:** die Vier-Sparten-Gesamtbilanz im
-Browser lesbar und abnehmbar machen. Die Windows-Ready-to-run-Spur
+PR170a hat die vier geprueften Eingaben in der Workbench verbunden,
+Baseline/Variante getrennt, VU- und Horizontkonflikte gesperrt sowie
+Gesamt- und Spartenbilanz fuer zwei Perioden auf beiden Browserbreiten
+abgenommen. **PR171 ist der naechste Schritt:** Geltung, Begriffe,
+Quellen und Versionen der geplanten Solvency-II-Kapitalansicht festlegen.
+Der bedienbare 100-Perioden-Mehrspartenlauf bleibt ein eigener, noch
+zu planender Schnitt. Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische

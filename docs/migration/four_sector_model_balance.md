@@ -23,6 +23,11 @@ allgemeinen VU-/VN-Runner angeschlossen. Das alte
 `/api/accounting/insurer-balance` bleibt der getrennte Zwei-Schaden-Sparten-
 Vertrag.
 
+PR170a verbindet die geprueften Eingaben der drei vorhandenen Workbench-
+Bereiche fluechtig mit diesem Endpunkt. Die gefuehrte Lebensansicht
+liefert derzeit zwei Perioden; mehrperiodige API-Unterstuetzung ist
+daher noch kein bedienbarer 100-Perioden-Vier-Sparten-Lauf.
+
 ## Bilanzabbildung
 
 Pro Sparte und Periode werden nur gemeinsame Modellgroessen normalisiert:

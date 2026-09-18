@@ -1,7 +1,7 @@
 # IMS im Managementseminar
 
-Stand: 2026-09-17
-Handbuchschnitt: HB3g
+Stand: 2026-09-18
+Handbuchschnitt: HB3h
 Zielgruppe: Fuehrungskraefte, Lehrende und Seminargruppen ohne Kenntnis der
 Dissertation oder des Quellcodes
 
@@ -57,17 +57,17 @@ Die heutige Workbench kann:
   100 Perioden vergleichen, ausdruecklich speichern und als CSV, JSON
   oder XLSX herunterladen.
 - vier explizite IMS-2.x-Sparteneingaben je Versicherer und Periode
-  rechnerisch zu einer einfachen Gesamtbilanz abstimmen; diese neue
-  Rechnung ist derzeit ueber die Fach-API, noch nicht ueber die
-  gefuehrte Workbench erreichbar.
+  ueber zwei Perioden als einfache Gesamtbilanz im Browser abstimmen,
+  die vier Allokationen vergleichen und fehlerhafte Zuordnungen erkennen.
 
 Noch nicht verfuegbar sind:
 
 - ein gefuehrter Aufbau der 100 Einzelkandidaten und der Kette;
 - eine dauerhafte Ablage der allgemeinen VU-/VN-100-Periodenlaeufe;
 - der automatische Anschluss der benannten Sparten an historische Laeufe;
-- die Bedienung der Vier-Sparten-Bilanz im Browser und eine
-  Solvency-II-Kapitalansicht;
+- ein gemeinsamer Vier-Sparten-Editor und ein bedienbarer
+  100-Perioden-Mehrspartenlauf;
+- eine Solvency-II-Kapitalansicht;
 - ein DORA-Szenarioeditor mit durchgaengiger Wirkungskette.
 
 Diese Funktionen sind in der aktiven
@@ -136,9 +136,9 @@ Ein ungueltiger Wert wird vor dem Speichern angezeigt; es entsteht kein
 Teilergebnis. Die Zahlen sind ein IMS-2.x-Modellfall mit expliziten
 Annahmen, keine historische Lebensreferenz, gesetzliche Bilanz oder
 Solvency-II-Berechnung. Freie Anfangsbestands- und Laufzeitgestaltung,
-Rueckkauf und Bonus fehlen noch. PR170 kann dieselbe Lebensrechnung mit
-drei weiteren Modellsparten rechnerisch konsolidieren; der gefuehrte
-Vier-Sparten-Bedienweg fehlt noch. Der Lebens-XLSX-Export schreibt
+Rueckkauf und Bonus fehlen noch. Derselbe gepruefte Zwei-Perioden-Fall
+kann jetzt in die Vier-Sparten-Gesamtbilanz uebernommen werden. Der
+Lebens-XLSX-Export schreibt
 Dezimalwerte als Text, damit keine stillen Rundungen in Excel entstehen.
 
 ## Einen Krankenfall ueber 100 Perioden vergleichen
@@ -191,8 +191,47 @@ Auch auf einem schmalen Bildschirm bleiben Eingabe und Zeitreihe lesbar:
 
 Die Excel-Betraege sind bewusst Text, damit die Dezimalstellen nicht
 stillschweigend gerundet werden. Diese Modellrechnung ist weder eine
-gesetzliche Krankenbilanz noch eine Solvency-II- oder DORA-Bewertung;
-sie wird erst in PR170 mit den anderen Sparten zusammengefuehrt.
+gesetzliche Krankenbilanz noch eine Solvency-II- oder DORA-Bewertung.
+Fuer die heutige Vier-Sparten-Workbench waehlt man hier zwei Perioden;
+die eigenstaendige Krankenrechnung kann weiterhin bis 100 Perioden laufen.
+
+## Vier Sparten zu einer Versichererbilanz verbinden
+
+In **Gesamtbilanz** sieht man, welche Teilrechnungen fuer den gemeinsamen
+Fall bereitstehen. Die neue Sicht beantwortet: Wie verteilen sich
+Vermoegen, Verpflichtungen, Eigenkapital und Periodenergebnis auf Kfz,
+Sach-Haftpflicht, Leben und Kranken? Sie addiert keine Policenzahlen oder
+unterschiedlich definierten Leistungsfluesse.
+
+1. Unter **Bilanz** Kfz und Sach-Haftpflicht fuer denselben Versicherer
+   ueber zwei Perioden berechnen. Diese Schadenwerte gelten in der
+   Gesamtbilanz fuer Baseline und Variante gleich.
+2. Unter **Leben** den Seminarfall waehlen und **Beide Faelle berechnen**.
+   Unter **Kranken** dieselbe Versicherer-ID und **2 Perioden** einstellen
+   und ebenfalls beide Faelle berechnen. Die farbigen Quellmarken in
+   **Gesamtbilanz** zeigen, welche Eingaben geprueft sind.
+3. **Baseline** oder **Variante** waehlen. Stimmen Versicherer-ID oder
+   Periodenzahl nicht ueberein, steht dort der Sperrgrund. Die drei
+   Teilbereiche muessen mit ihren Annahmen fachlich zusammengehoeren;
+   das kann die Software fuer die Schaden- und Lebenswerte noch nicht
+   selbst beweisen. Diese Zusammengehoerigkeit deshalb ausdruecklich
+   bestaetigen und **Gesamtbilanz berechnen** waehlen.
+4. Unter **Gesamt** Vermoegen, Verpflichtungen, Eigenkapital und Ergebnis
+   je Periode lesen. Mit **Kfz**, **Sach-Haftpflicht**, **Leben** und
+   **Kranken** sieht man die vier Anteile. Vermoegen ist jeweils die
+   Summe aus Verpflichtungen und Eigenkapital. Ein Fehler gibt keine
+   Teilbilanz frei; aendert man einen der Eingangsfaelle, verschwindet
+   die bisherige Gesamtbilanz bis zur erneuten Pruefung.
+
+![Vier-Sparten-Gesamtbilanz in der breiten Workbench](images/windows_four_sector_balance_pr170a_wide_2026-09-18.png)
+
+![Vier-Sparten-Gesamtbilanz auf schmalem Bildschirm](images/windows_four_sector_balance_pr170a_narrow_2026-09-18.png)
+
+Die Betragswerte sind exakte Dezimaltexte aus expliziten IMS-2.x-
+Seminarannahmen. Die Gesamtbilanz wird hier weder gespeichert noch als
+Datei exportiert. Sie ist keine gesetzliche Bilanz, keine
+Solvency-II-Rechnung und kein Nachweis der Uebereinstimmung mit alten
+Zufallslaeufen. Ein gemeinsamer Lauf ueber 100 Perioden bleibt offen.
 
 ## Sieben Vorteile im Fuehrungskraefteseminar
 
@@ -399,12 +438,12 @@ Die aktive Roadmap liefert in dieser Reihenfolge:
 
 1. einen gefuehrten Aufbau eigener 100-Perioden-Faelle und eine dauerhafte
    Ergebnisablage; der vorbereitete fluechtige Bedienpfad ist vorhanden;
-2. die Bedienung der bereits berechneten Vier-Sparten-Gesamtbilanz
-   im Browser und spaeter unterschiedliche Strategien je Sparte;
-3. einen gemeinsamen Szenarioeditor und kontrollierten Mehrspartenlauf;
-4. eine erklaerbare Solvency-II-Kapitalansicht;
-5. DORA-Wirkungsketten von ICT-Abhaengigkeiten bis zu Bilanz und Kapital;
-6. einen gefuehrten Szenarioassistenten und kuratierte Seminarfaelle.
+2. einen gemeinsamen Szenarioeditor und kontrollierten
+   100-Perioden-Mehrspartenlauf sowie spaeter Strategien je Sparte;
+3. zunaechst den Quellen- und Geltungsvertrag, dann eine erklaerbare
+   Solvency-II-Kapitalansicht;
+4. DORA-Wirkungsketten von ICT-Abhaengigkeiten bis zu Bilanz und Kapital;
+5. einen gefuehrten Szenarioassistenten und kuratierte Seminarfaelle.
 
 Die technische Installation und die detaillierten Bediennachweise bleiben in
 den uebrigen Kapiteln dieses Handbuchs erhalten. Dieser Leitfaden ist der

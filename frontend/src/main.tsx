@@ -4,6 +4,8 @@ import HundredPeriodResults from "./HundredPeriodResults";
 import ModelBalanceWorkbench from "./ModelBalanceWorkbench";
 import LifeWorkbench from "./LifeWorkbench";
 import HealthWorkbench from "./HealthWorkbench";
+import FourSectorBalanceWorkbench from "./FourSectorBalanceWorkbench";
+import type { CheckedNonLife, CheckedSides } from "./fourSectorSources";
 import {
   Activity,
   Archive,
@@ -2131,6 +2133,9 @@ function yesNoLoading(value: boolean | undefined): string {
 }
 
 function App() {
+  const [nonLifeReady, setNonLifeReady] = useState<CheckedNonLife | null>(null);
+  const [lifeReady, setLifeReady] = useState<CheckedSides | null>(null);
+  const [healthReady, setHealthReady] = useState<CheckedSides | null>(null);
   const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
   const [runs, setRuns] = useState<RunMetadata[]>([]);
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
@@ -5250,6 +5255,9 @@ function App() {
           </a>
           <a href="#health">
             <Activity size={18} aria-hidden="true" /> Kranken
+          </a>
+          <a href="#four-sector-balance">
+            <Boxes size={18} aria-hidden="true" /> Gesamtbilanz
           </a>
           <a href="#validation">
             <ShieldCheck size={18} aria-hidden="true" /> Validierung
@@ -9157,9 +9165,10 @@ function App() {
           </div>
         </section>
 
-        <ModelBalanceWorkbench />
-        <LifeWorkbench />
-        <HealthWorkbench />
+        <ModelBalanceWorkbench onReady={setNonLifeReady} />
+        <LifeWorkbench onReady={setLifeReady} />
+        <HealthWorkbench onReady={setHealthReady} />
+        <FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady} />
 
         <section className="panel validation-panel" id="validation">
           <div className="panel-heading">

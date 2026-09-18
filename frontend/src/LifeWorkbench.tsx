@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Calculator, Download, HeartPulse, RefreshCw, Save } from "lucide-react";
+import type { CheckedSides } from "./fourSectorSources";
 
 type Side = "baseline" | "variant";
 type Issue = { path: string; code: string; message: string };
@@ -99,7 +100,7 @@ function linePath(rows: Row[], key: string, min: number, max: number): string {
   }).join(" ");
 }
 
-export default function LifeWorkbench() {
+export default function LifeWorkbench({ onReady }: { onReady?: (value: CheckedSides | null) => void }) {
   const [presets, setPresets] = useState<Presets | null>(null);
   const [selectedCase, setSelectedCase] = useState("death");
   const [selectedSide, setSelectedSide] = useState<Side>("variant");
@@ -140,6 +141,7 @@ export default function LifeWorkbench() {
   function chooseCase(id: string) {
     const next = presets?.cases.find((item) => item.id === id);
     if (!next) return;
+    onReady?.(null);
     setSelectedCase(id);
     setDrafts({ baseline: copy(next.baseline), variant: copy(next.variant) });
     setPreviews({ baseline: null, variant: null });
@@ -152,6 +154,7 @@ export default function LifeWorkbench() {
 
   function edit(side: Side, change: (draft: LifeInput) => void) {
     if (!drafts) return;
+    onReady?.(null);
     const next = copy(drafts[side]);
     change(next);
     setDrafts({ ...drafts, [side]: next });
@@ -165,6 +168,7 @@ export default function LifeWorkbench() {
 
   function insurer(value: number) {
     if (!drafts) return;
+    onReady?.(null);
     const next = copy(drafts);
     for (const side of ["baseline", "variant"] as Side[]) {
       next[side].insurer_id = value;
@@ -202,6 +206,7 @@ export default function LifeWorkbench() {
 
   async function calculate() {
     if (!drafts || busy) return;
+    onReady?.(null);
     setBusy("preview");
     setError(null);
     setIssues([]);
@@ -223,6 +228,16 @@ export default function LifeWorkbench() {
         next[side] = payload;
       }
       setPreviews(next);
+      onReady?.({
+        baseline: {
+          input: copy(drafts.baseline), insurerId: drafts.baseline.insurer_id,
+          periodCount: drafts.baseline.periods.length, evidenceDigest: next.baseline!.result_digest
+        },
+        variant: {
+          input: copy(drafts.variant), insurerId: drafts.variant.insurer_id,
+          periodCount: drafts.variant.periods.length, evidenceDigest: next.variant!.result_digest
+        }
+      });
     } catch {
       setError("Der Lebensdienst ist nicht erreichbar.");
     } finally {

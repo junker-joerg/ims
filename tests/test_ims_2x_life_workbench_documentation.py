@@ -36,4 +36,4 @@ def test_pr167_handbook_and_workbench_offer_guided_life_path() -> None:
     ):
         assert marker in component
     assert 'id="life"' in component
-    assert "<LifeWorkbench />" in app
+    assert "<LifeWorkbench onReady={setLifeReady} />" in app

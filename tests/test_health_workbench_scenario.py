@@ -67,4 +67,4 @@ def test_workbench_entry_and_export_controls_are_bound_to_health_api() -> None:
     ):
         assert marker in component
     assert 'href="#health"' in app
-    assert "<HealthWorkbench />" in app
+    assert "<HealthWorkbench onReady={setHealthReady} />" in app

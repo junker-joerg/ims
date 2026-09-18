@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Calculator, Download, Landmark, Plus, Trash2 } from "lucide-react";
+import type { CheckedNonLife } from "./fourSectorSources";
 
 type SectorId = "motor" | "property_liability";
 type ViewId = SectorId | "total";
@@ -124,7 +125,7 @@ function displayAmount(value: string | number): string {
   return String(value).replace(".", ",");
 }
 
-export default function ModelBalanceWorkbench() {
+export default function ModelBalanceWorkbench({ onReady }: { onReady?: (value: CheckedNonLife | null) => void }) {
   const [contract, setContract] = useState<Contract | null>(null);
   const [contractError, setContractError] = useState<string | null>(null);
   const [insurerId, setInsurerId] = useState(1);
@@ -150,6 +151,7 @@ export default function ModelBalanceWorkbench() {
   }, []);
 
   function invalidate() {
+    onReady?.(null);
     setEdited(true);
     setResult(null);
     setIssues([]);
@@ -204,14 +206,16 @@ export default function ModelBalanceWorkbench() {
 
   async function calculate() {
     if (!contract || busy) return;
+    onReady?.(null);
     setBusy("calculate");
     setResult(null);
     setIssues([]);
     setActionError(null);
     try {
+      const input = requestBody(contract, insurerId, drafts);
       const response = await fetch(contract.calculation_endpoint, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody(contract, insurerId, drafts))
+        body: JSON.stringify(input)
       });
       const payload = await response.json() as Result;
       if (!response.ok || !payload.valid || !payload.content_digest) {
@@ -224,6 +228,10 @@ export default function ModelBalanceWorkbench() {
       }
       setResult(payload);
       setView("total");
+      onReady?.({
+        motor: { input: structuredClone(input.sectors[0]), insurerId, periodCount: payload.period_count, evidenceDigest: payload.content_digest },
+        property_liability: { input: structuredClone(input.sectors[1]), insurerId, periodCount: payload.period_count, evidenceDigest: payload.content_digest }
+      });
     } catch (error) {
       setActionError(error instanceof Error ? error.message : "Bilanzdienst nicht erreichbar");
     } finally {

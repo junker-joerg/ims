@@ -42,11 +42,10 @@ keine konzerninternen Forderungen oder Transfers in diesem einfachen Modell.
 
 ## Offene Punkte
 
-- PR170a ist der unmittelbar naechste kleine Schnitt: eine lesbare
-  Vier-Sparten-Bilanzansicht in der Workbench mit gezielter Uebernahme der
-  vier Szenarioeingaben, Fehleranzeige und Browserabnahme. Der vorhandene
-  Zwei-Sparten-Editor bleibt bis dahin ausdruecklich als Schadenansicht
-  beschriftet.
+- PR170a hat die lesbare Vier-Sparten-Bilanzansicht mit gezielter
+  Uebernahme der geprueften Eingaben, Fehleranzeige und Browserabnahme
+  ergaenzt. Der vorhandene Zwei-Sparten-Editor bleibt ausdruecklich
+  als Schadenansicht beschriftet.
 - Ein durchgaengender Vier-Sparten-Runner, ein gemeinsamer Szenarioeditor,
   Speicherung und Export dieser neuen Gesamtbilanz bleiben weitere
   eigene Folgeschritte.

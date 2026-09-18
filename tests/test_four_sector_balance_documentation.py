@@ -15,5 +15,5 @@ def test_pr170_documents_four_sector_mapping_and_browser_boundary() -> None:
     ):
         assert phrase in migration
     assert "four_sector_model_balance.md" in (ROOT / "docs/migration/README.md").read_text(encoding="utf-8")
-    assert "PR170a ist der naechste Schritt" in roadmap
-    assert "noch nicht ueber die" in handbook
+    assert "PR170a hat die vier geprueften Eingaben" in roadmap
+    assert "Vier Sparten zu einer Versichererbilanz verbinden" in handbook

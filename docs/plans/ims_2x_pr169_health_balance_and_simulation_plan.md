@@ -2,7 +2,7 @@
 
 Stand: 2026-09-18
 Status: PR169d Browser- und Handbuchabnahme, PR170 zustandslose
-Vier-Sparten-Konsolidierung umgesetzt; PR170a Workbench-Anschluss folgt.
+Vier-Sparten-Konsolidierung und PR170a Workbench-Anschluss umgesetzt.
 
 ## Entscheidung
 
@@ -151,7 +151,7 @@ Solvency II und DORA bleiben bei ihren eigenen Folge-PRs.
   begruendete, getrennte Kausalregel statt einer stillen Kuerzung.
 - Keine historische `Sp[2]`-/`Rk[2]`-Zuordnung zu `health`. PR170
   konsolidiert explizite IMS-2.x-Szenarien, ohne diese Altzuordnung zu
-  behaupten; ein gemeinsamer Browser-Bedienweg folgt in PR170a.
+  behaupten; PR170a zeigt die Zwei-Perioden-Gesamtbilanz im Browser.
 - PR169b begrenzt die fluechtige Kette und deren Zeilenausgabe.
   PR169c hat die separate Speicher- und Exportgrenze geprueft.
   Die UI-Freigabe war daraus **nicht** abzuleiten und wurde in PR169d

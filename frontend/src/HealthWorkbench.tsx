@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Activity, Calculator, Download, RefreshCw, Save } from "lucide-react";
+import type { CheckedSides } from "./fourSectorSources";
 import {
   buildHealthInput, defaultHealthDraft, HEALTH_HORIZONS,
   type HealthDraft, type HealthSide
@@ -75,7 +76,7 @@ function linePath(rows: Row[], key: string, minimum: number, maximum: number): s
   }).join(" ");
 }
 
-export default function HealthWorkbench() {
+export default function HealthWorkbench({ onReady }: { onReady?: (value: CheckedSides | null) => void }) {
   const [draft, setDraft] = useState<HealthDraft>(defaultHealthDraft);
   const [previews, setPreviews] = useState<Record<HealthSide, Preview | null>>({ baseline: null, variant: null });
   const [keys, setKeys] = useState<Record<HealthSide, string>>({ baseline: crypto.randomUUID(), variant: crypto.randomUUID() });
@@ -105,6 +106,7 @@ export default function HealthWorkbench() {
   }, []);
 
   function edit<K extends keyof HealthDraft>(key: K, value: HealthDraft[K]) {
+    onReady?.(null);
     setDraft((current) => ({ ...current, [key]: value }));
     setPreviews({ baseline: null, variant: null });
     setKeys({ baseline: crypto.randomUUID(), variant: crypto.randomUUID() });
@@ -116,6 +118,7 @@ export default function HealthWorkbench() {
   }
 
   function horizon(value: number) {
+    onReady?.(null);
     setDraft((current) => ({ ...current, periodCount: value }));
     setPreviews({ baseline: null, variant: null });
     setKeys({ baseline: crypto.randomUUID(), variant: crypto.randomUUID() });
@@ -128,6 +131,7 @@ export default function HealthWorkbench() {
 
   async function calculate() {
     if (busy) return;
+    onReady?.(null);
     if (!Number.isInteger(draft.variantStartPeriod) || draft.variantStartPeriod < 1 || draft.variantStartPeriod > 100) {
       setError("Der Variantenbeginn muss zwischen Periode 1 und 100 liegen.");
       setPreviews({ baseline: null, variant: null });
@@ -140,10 +144,14 @@ export default function HealthWorkbench() {
     setView("compare");
     try {
       const next: Record<HealthSide, Preview | null> = { baseline: null, variant: null };
+      const inputs = {
+        baseline: buildHealthInput(draft, "baseline"),
+        variant: buildHealthInput(draft, "variant")
+      };
       for (const side of ["baseline", "variant"] as HealthSide[]) {
         const response = await fetch(`${BASE}/preview`, {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(buildHealthInput(draft, side))
+          body: JSON.stringify(inputs[side])
         });
         const payload = await response.json() as Preview & Report & { code?: string };
         if (!response.ok || !payload.valid) {
@@ -154,6 +162,16 @@ export default function HealthWorkbench() {
         next[side] = payload;
       }
       setPreviews(next);
+      onReady?.({
+        baseline: {
+          input: inputs.baseline, insurerId: draft.insurerId, periodCount: draft.periodCount,
+          scenarioId: draft.scenarioId, variantId: "baseline", evidenceDigest: next.baseline!.result_digest
+        },
+        variant: {
+          input: inputs.variant, insurerId: draft.insurerId, periodCount: draft.periodCount,
+          scenarioId: draft.scenarioId, variantId: "variant", evidenceDigest: next.variant!.result_digest
+        }
+      });
     } catch {
       setError("Der Krankendienst ist nicht erreichbar.");
     } finally {
