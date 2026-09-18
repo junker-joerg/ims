@@ -1,7 +1,7 @@
 # PR173: Explizite Risikotreiber und Szenarioschocks
 
 Stand: 2026-09-18
-Status: umgesetzt; PR174 Modellmodule und PR175 Modellaggregation separat umgesetzt; PR176 folgt
+Status: umgesetzt; PR174/175 Modellrisiko und PR176 Kapitalgate separat umgesetzt; PR177 folgt
 
 ## Ziel und fachliche Grenze
 

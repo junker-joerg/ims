@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-18
-Status: aktive Produkt-Restplanung; PR175 Modell-Risikoaggregation umgesetzt, PR176 Kapitalquellen naechster Schritt
+Status: aktive Produkt-Restplanung; PR176 Managementschwellen und Kapitalgate umgesetzt, PR177 feste Faelle naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -176,13 +176,13 @@ eine Meldesoftware ersetzen.
 | PR173 | Risikotreiber und Szenarioschock-Mapping | umgesetzt: serverseitig neu berechnete PR172-Quelle, benannte Teilbestaende und explizite Deltas; nur Ziel-Exposures veraendert, kein SCR/MCR |
 | PR174 | Ausgewaehlte Markt- und versicherungstechnische Risikomodule | umgesetzt: vier begrenzte, szenariodeklarierte Modellmodule auf PR173-Exposures; Kfz, Sach-Haftpflicht, Leben und Kranken getestet, kein regulatorisches SCR |
 | PR175 | Gegenpartei-, operationelles Risiko und Aggregation | umgesetzt: deklarierte Modellverluste, positive Ein-Faktor-Korrelation und unabhaengiger Modellpuffer versioniert; kein SCR |
-| PR176 | SCR, MCR, Bedeckungsquote und Managementschwellen | erst Quellen-, Rechtsstands- und Kalibrierungsentscheidung; Kennzahlen nur bei tragfaehiger Basis, sonst explizit gesperrt |
+| PR176 | SCR, MCR, Bedeckungsquote und Managementschwellen | umgesetzt: Managementgrenzen auf Modellwerten pruefbar; regulatorische Werte mangels Bewertung, Kalibrierung und Rechtsstichtag maschinenlesbar gesperrt |
 | PR177 | Feste Faelle, Sensitivitaeten und Invarianten | Richtung, Monotonie, Grenzwerte und Bilanzanschluss sind geprueft |
-| PR178 | Kapitalansicht und Export | Unternehmen, Sparte, Treiber und Unsicherheit sind sichtbar; kein Filing-Anspruch |
+| PR178 | Kapitalansicht und Export | Modellwirkung und gesperrte regulatorische Kennzahlen getrennt sichtbar; kein SCR-Filing- oder Compliance-Anspruch |
 
-Falls PR176 bei der Quellenklaerung zu gross wird, wird er in
-weitere kleine Fach-PRs geteilt. Die Meilensteinzahl erhoeht sich dann, statt
-unterschiedliche Risikomodule in einem Sammel-PR zu verstecken.
+Eine echte aufsichtsrechtliche SCR-/MCR-Rechnung ist nicht Teil von
+PR176-178. Sie braucht nach Quellen- und Datenfreigabe einen separaten
+Fachplan und eigene PRs; diese wuerden offen zur Meilensteinzahl addiert.
 
 ## Zwischenstufe: Handbuch nach PR178
 
@@ -279,19 +279,21 @@ Teil dieses Windows-Pakets.
 | explizites Risikotreiber- und Schock-Mapping | PR173 | 37 | 0 |
 | begrenzte Markt- und Verpflichtungs-Modellmodule | PR174 | 38 | 0 |
 | deklarierte Gegenpartei-, Betriebs- und Korrelationsverluste | PR175 | 39 | 0 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 3 |
-| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 4 |
-| durchgaengige DORA-Wirkungskette | PR186 | 51 | 12 |
-| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 16 |
-| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 19 |
-| kontrollierte Managementseminar-Reife | PR190 | 61 | 22 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 24 |
+| Managementschwellen und gesperrte Kapitalwerte | PR176 | 40 | 0 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 2 |
+| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 3 |
+| durchgaengige DORA-Wirkungskette | PR186 | 51 | 11 |
+| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 15 |
+| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 18 |
+| kontrollierte Managementseminar-Reife | PR190 | 61 | 21 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 23 |
 
 Die 61 geplanten Schritte ab PR142 bis PR190, darunter PR178a und
 PR187a-f, sowie zwei spaetere Windows-Packaging-PRs sind eine
-Planungsbasis, keine Terminzusage. Ab PR175 verbleiben damit **22
-Schritte bis zur Seminarabnahme** und **24 bis zum Windows-ZIP**.
-Quellen- oder Performancebefunde koennen besonders PR176 und PR187e
+Planungsbasis, keine Terminzusage. Ab PR176 verbleiben damit **21
+Schritte bis zur Seminarabnahme** und **23 bis zum Windows-ZIP**.
+Quellen- oder Performancebefunde koennen besonders die separate
+Kapitalrechnung und PR187e
 weiter teilen; ihre Zusatzschritte werden dann offen mitgezaehlt.
 PR169a-d, PR170a, PR178a und PR187a-f zaehlen jeweils als eigener PR,
 ohne die schon nummerierten PR170-192 umzubenennen.
@@ -435,10 +437,12 @@ PR175 hat Gegenpartei- und operationelle Szenarioverluste an die
 PR174-Quelle gebunden. Die Aggregation verwendet explizite positive
 Ein-Faktor-Korrelationen und einen separat deklarierten Modellpuffer;
 das ist keine aufsichtsrechtliche Kapitalberechnung.
-**PR176 ist der naechste Schritt:** Rechtsstand, Kalibrierungsquellen
-und die Grenze fuer SCR, MCR und Quote entscheiden. Ohne belastbare
-Quellen bleiben diese Kennzahlen gesperrt; PR175-Werte werden nicht
-stillschweigend zu regulatorischen Parametern.
+PR176 hat die Quellen- und Rechtsstandsgrenze entschieden: SCR, MCR,
+anrechenbare Eigenmittel und Quoten bleiben ohne belastbare Grundlage
+gesperrt. Zwei explizite Workshop-Grenzen koennen den PR172-Eigenmittel-
+Proxy gegen den PR175-Netto-Modellstress pruefen, ohne Compliance-Aussage.
+**PR177 ist der naechste Schritt:** feste Faelle, Sensitivitaeten und
+Invarianten fuer diese getrennten Modell- und Kapitalgrenzen pruefen.
 Der bedienbare 100-Perioden-Mehrspartenlauf ist als PR187d-f mit
 Quellenbindung, Rechnung und Browserabnahme vor PR190 eingetragen.
 Die Windows-Ready-to-run-Spur

@@ -1,7 +1,7 @@
 # PR175: Deklarierte Gegenpartei- und Betriebsverluste aggregieren
 
 Stand: 2026-09-18
-Status: umgesetzt; PR176 bleibt gesonderte Kapital- und Quellenentscheidung
+Status: umgesetzt; PR176 Kapital- und Quellenentscheidung separat umgesetzt; PR177 folgt
 
 ## Ziel und Rechengrenze
 

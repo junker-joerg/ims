@@ -1,7 +1,7 @@
 # PR172: Modell-Solvenzbilanz und Eigenmittel-Proxy
 
 Stand: 2026-09-18
-Status: umgesetzt; PR173 Schock-Mapping, PR174 Modellmodule und PR175 Modellaggregation separat umgesetzt; PR176 folgt
+Status: umgesetzt; PR173-175 Modellrisiko und PR176 Kapitalgate separat umgesetzt; PR177 folgt
 
 ## Ziel und konservative Grenze
 

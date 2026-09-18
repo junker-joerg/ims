@@ -43,6 +43,10 @@ from ims.accounting.solvency_risk_aggregation import (
     build_solvency_risk_aggregation,
     solvency_risk_aggregation_contract_payload,
 )
+from ims.accounting.solvency_capital_readiness import (
+    build_solvency_capital_readiness,
+    solvency_capital_readiness_contract_payload,
+)
 from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
@@ -1336,6 +1340,23 @@ def create_app(
                 headers={"Cache-Control": "no-store"},
             )
         result = build_solvency_risk_aggregation(payload).to_dict()
+        if not result["valid"]:
+            return JSONResponse(result, status_code=422, headers={"Cache-Control": "no-store"})
+        return JSONResponse(
+            result,
+            headers={"Cache-Control": "no-store", "ETag": f'"{result["content_digest"]}"'},
+        )
+
+    async def solvency_capital_readiness_response(request: Request) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                {"status": "error", "code": "invalid_json", "partial_result_returned": False},
+                status_code=400,
+                headers={"Cache-Control": "no-store"},
+            )
+        result = build_solvency_capital_readiness(payload).to_dict()
         if not result["valid"]:
             return JSONResponse(result, status_code=422, headers={"Cache-Control": "no-store"})
         return JSONResponse(
@@ -3089,6 +3110,14 @@ def create_app(
         async def accounting_solvency_risk_aggregation(request: Request) -> JSONResponse:
             return await solvency_risk_aggregation_response(request)
 
+        @app.get("/api/accounting/solvency-capital-readiness-contract")
+        def accounting_solvency_capital_readiness_contract() -> dict[str, object]:
+            return solvency_capital_readiness_contract_payload()
+
+        @app.post("/api/accounting/solvency-capital-readiness", response_model=None)
+        async def accounting_solvency_capital_readiness(request: Request) -> JSONResponse:
+            return await solvency_capital_readiness_response(request)
+
         @app.get("/api/model/solvency-scope-contract")
         def model_solvency_scope_contract() -> dict[str, object]:
             return solvency_scope_contract_payload()
@@ -3894,6 +3923,15 @@ def create_app(
         Route(
             "/api/accounting/solvency-risk-aggregation",
             solvency_risk_aggregation_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/accounting/solvency-capital-readiness-contract",
+            lambda request: JSONResponse(solvency_capital_readiness_contract_payload()),
+        ),
+        Route(
+            "/api/accounting/solvency-capital-readiness",
+            solvency_capital_readiness_response,
             methods=["POST"],
         ),
         Route(
