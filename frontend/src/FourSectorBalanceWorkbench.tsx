@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Calculator, CheckCircle2, CircleAlert, Landmark } from "lucide-react";
-import type { CheckedNonLife, CheckedSectorInput, CheckedSides, ScenarioSide } from "./fourSectorSources";
+import type { CheckedFourSector, CheckedNonLife, CheckedSectorInput, CheckedSides, ScenarioSide } from "./fourSectorSources";
 
 type SectorId = "motor" | "property_liability" | "life" | "health";
 type ViewId = SectorId | "total";
@@ -38,6 +38,7 @@ type Props = {
   nonLife: CheckedNonLife | null;
   life: CheckedSides | null;
   health: CheckedSides | null;
+  onReady?: (value: CheckedFourSector | null) => void;
 };
 
 const SECTORS: { id: SectorId; label: string; anchor: string }[] = [
@@ -66,7 +67,7 @@ function sourceIssue(issue: Issue): string {
   return `${sector?.label ?? "Gesamt"}${period === undefined ? "" : ` · Periode ${Number(period) + 1}`}: ${issue.message}`;
 }
 
-export default function FourSectorBalanceWorkbench({ nonLife, life, health }: Props) {
+export default function FourSectorBalanceWorkbench({ nonLife, life, health, onReady }: Props) {
   const [contract, setContract] = useState<Contract | null>(null);
   const [contractError, setContractError] = useState<string | null>(null);
   const [side, setSide] = useState<ScenarioSide>("baseline");
@@ -92,6 +93,7 @@ export default function FourSectorBalanceWorkbench({ nonLife, life, health }: Pr
 
   useEffect(() => {
     revision.current += 1;
+    onReady?.(null);
     setResult(null);
     setIssues([]);
     setError(null);
@@ -122,6 +124,7 @@ export default function FourSectorBalanceWorkbench({ nonLife, life, health }: Pr
     if (!contract || !ready || !confirmed || busy) return;
     const currentRevision = revision.current;
     setBusy(true);
+    onReady?.(null);
     setResult(null);
     setIssues([]);
     setError(null);
@@ -161,6 +164,11 @@ export default function FourSectorBalanceWorkbench({ nonLife, life, health }: Pr
         throw new Error("Die Antwort gehört nicht zu den ausgewählten Sparten und Perioden.");
       }
       setResult(report);
+      onReady?.({
+        input: payload, evidenceDigest: report.content_digest,
+        insurerId: report.insurer_id, scenarioId: report.scenario_id,
+        variantId: report.variant_id, periodCount: report.period_count
+      });
       setView("total");
     } catch (cause) {
       if (currentRevision === revision.current) {
@@ -188,6 +196,7 @@ export default function FourSectorBalanceWorkbench({ nonLife, life, health }: Pr
           className={side === item ? "active" : ""} aria-pressed={side === item}
           onClick={() => {
             revision.current += 1;
+            onReady?.(null);
             setResult(null);
             setConfirmed(false);
             setIssues([]);
@@ -217,7 +226,10 @@ export default function FourSectorBalanceWorkbench({ nonLife, life, health }: Pr
         <label className="four-sector-confirm"><input type="checkbox" checked={confirmed} disabled={!ready || busy}
           onChange={(event) => {
             setConfirmed(event.target.checked);
-            if (!event.target.checked) setResult(null);
+            if (!event.target.checked) {
+              onReady?.(null);
+              setResult(null);
+            }
           }} />
           <span>Die vier Eingaben gehören fachlich zu {selected.health?.scenarioId ?? "diesem Szenario"}</span></label>
         <button className="primary-action" type="button" onClick={calculate}

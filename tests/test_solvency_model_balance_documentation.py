@@ -14,7 +14,7 @@ def test_pr172_documents_explicit_bridge_and_no_regulatory_claim() -> None:
     ):
         assert phrase in plan
     assert "PR172 | Solvenzmodellbilanz" in roadmap
-    assert "PR178 ist der naechste Schritt" in roadmap
+    assert "PR178a ist der" in roadmap
 
 
 def test_pr173_documents_explicit_exposures_without_capital_claim() -> None:
@@ -27,7 +27,7 @@ def test_pr173_documents_explicit_exposures_without_capital_claim() -> None:
     ):
         assert phrase in plan
     assert "PR173 | Risikotreiber" in roadmap
-    assert "PR178 ist der naechste Schritt" in roadmap
+    assert "PR178a ist der" in roadmap
 
 
 def test_pr174_documents_explicit_model_stress_without_scr_claim() -> None:
@@ -40,7 +40,7 @@ def test_pr174_documents_explicit_model_stress_without_scr_claim() -> None:
     ):
         assert phrase in plan
     assert "PR174 | Ausgewaehlte Markt-" in roadmap
-    assert "PR178 ist der naechste Schritt" in roadmap
+    assert "PR178a ist der" in roadmap
 
 
 def test_pr175_documents_model_aggregation_without_capital_claim() -> None:
@@ -54,7 +54,7 @@ def test_pr175_documents_model_aggregation_without_capital_claim() -> None:
     ):
         assert phrase in plan
     assert "PR175 | Gegenpartei-, operationelles Risiko" in roadmap
-    assert "PR178 ist der naechste Schritt" in roadmap
+    assert "PR178a ist der" in roadmap
 
 
 def test_pr176_documents_model_limits_and_blocked_regulatory_values() -> None:
@@ -69,7 +69,7 @@ def test_pr176_documents_model_limits_and_blocked_regulatory_values() -> None:
     ):
         assert phrase in plan
     assert "PR176 | SCR, MCR, Bedeckungsquote" in roadmap
-    assert "PR178 ist der naechste Schritt" in roadmap
+    assert "PR178a ist der" in roadmap
 
 
 def test_pr177_documents_fixed_model_cases_without_regulatory_release() -> None:
@@ -82,4 +82,18 @@ def test_pr177_documents_fixed_model_cases_without_regulatory_release() -> None:
     ):
         assert phrase in plan
     assert "PR177 | Feste Faelle, Sensitivitaeten und Invarianten | umgesetzt" in roadmap
-    assert "PR178 ist der naechste Schritt" in roadmap
+    assert "PR178a ist der" in roadmap
+
+
+def test_pr178_documents_browser_export_and_capital_gate() -> None:
+    plan = (ROOT / "docs/plans/ims_2x_pr178_capital_workbench_and_export.md").read_text(encoding="utf-8")
+    roadmap = (ROOT / "docs/plans/ims_2x_all_lines_management_lab_roadmap.md").read_text(encoding="utf-8")
+    for phrase in (
+        "IMSDATA.C", "Vier-Sparten-Gesamtbilanz", "Quellen-Digests", "XLSX",
+        "JSON", "SCR", "MCR", "keine historische", "PR178a",
+    ):
+        assert phrase in plan
+    assert "PR178 | Kapitalansicht und Export | umgesetzt" in roadmap
+    for width in ("wide", "narrow"):
+        screenshot = ROOT / f"docs/handbook/images/windows_capital_pr178_{width}_2026-09-18.png"
+        assert screenshot.is_file() and screenshot.stat().st_size > 10_000

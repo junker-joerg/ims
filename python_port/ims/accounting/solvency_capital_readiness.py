@@ -155,6 +155,7 @@ def solvency_capital_readiness_contract_payload() -> dict[str, object]:
         "source_input_schema_version": SOLVENCY_RISK_AGGREGATION_INPUT_VERSION,
         "source_result_schema_version": SOLVENCY_RISK_AGGREGATION_RESULT_VERSION,
         "calculation_endpoint": "/api/accounting/solvency-capital-readiness",
+        "xlsx_endpoint": "/api/accounting/solvency-capital-readiness.xlsx",
         "management_source_kind": _SOURCE_KIND,
         "management_formula": (
             "remaining_model_equity_proxy = "

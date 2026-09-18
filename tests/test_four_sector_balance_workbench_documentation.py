@@ -23,5 +23,6 @@ def test_pr170a_documents_bounded_browser_path_and_screenshots() -> None:
         assert (ROOT / "docs/handbook/images" / name).is_file()
     assert "| PR170a | Vier-Sparten-Bilanz in der Workbench | umgesetzt:" in roadmap
     assert 'href="#four-sector-balance"' in app
-    assert "<FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady} />" in app
+    assert "<FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady}" in app
+    assert "onReady={setFourSectorReady}" in app
     assert 'data-testid="four-sector-results"' in component

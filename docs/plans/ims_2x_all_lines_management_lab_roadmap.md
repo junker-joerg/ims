@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-18
-Status: aktive Produkt-Restplanung; PR177 feste Faelle und Invarianten umgesetzt, PR178 Kapitalansicht naechster Schritt
+Status: aktive Produkt-Restplanung; PR178 Kapitalansicht und Export umgesetzt, PR178a Handbuch naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -178,7 +178,7 @@ eine Meldesoftware ersetzen.
 | PR175 | Gegenpartei-, operationelles Risiko und Aggregation | umgesetzt: deklarierte Modellverluste, positive Ein-Faktor-Korrelation und unabhaengiger Modellpuffer versioniert; kein SCR |
 | PR176 | SCR, MCR, Bedeckungsquote und Managementschwellen | umgesetzt: Managementgrenzen auf Modellwerten pruefbar; regulatorische Werte mangels Bewertung, Kalibrierung und Rechtsstichtag maschinenlesbar gesperrt |
 | PR177 | Feste Faelle, Sensitivitaeten und Invarianten | umgesetzt: zwoelf feste Modellfaelle, Quellen-Digests, Bilanz- und Stressinvarianten, Grenzwerte und atomare Fehler geprueft; keine regulatorische Freigabe |
-| PR178 | Kapitalansicht und Export | Modellwirkung und gesperrte regulatorische Kennzahlen getrennt sichtbar; kein SCR-Filing- oder Compliance-Anspruch |
+| PR178 | Kapitalansicht und Export | umgesetzt: gepruefte Vier-Sparten-Bilanz, deklarierte Seminarannahmen, digestgebundene Modellwirkung und getrennt gesperrte Regulatorik; JSON/XLSX ohne Speicherung |
 
 Eine echte aufsichtsrechtliche SCR-/MCR-Rechnung ist nicht Teil von
 PR176-178. Sie braucht nach Quellen- und Datenfreigabe einen separaten
@@ -281,18 +281,18 @@ Teil dieses Windows-Pakets.
 | deklarierte Gegenpartei-, Betriebs- und Korrelationsverluste | PR175 | 39 | 0 |
 | Managementschwellen und gesperrte Kapitalwerte | PR176 | 40 | 0 |
 | Feste Kapital-Modellfaelle und Invarianten | PR177 | 41 | 0 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 1 |
-| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 2 |
-| durchgaengige DORA-Wirkungskette | PR186 | 51 | 10 |
-| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 14 |
-| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 17 |
-| kontrollierte Managementseminar-Reife | PR190 | 61 | 20 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 22 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 0 |
+| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 1 |
+| durchgaengige DORA-Wirkungskette | PR186 | 51 | 9 |
+| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 13 |
+| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 16 |
+| kontrollierte Managementseminar-Reife | PR190 | 61 | 19 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 21 |
 
 Die 61 geplanten Schritte ab PR142 bis PR190, darunter PR178a und
 PR187a-f, sowie zwei spaetere Windows-Packaging-PRs sind eine
-Planungsbasis, keine Terminzusage. Ab PR177 verbleiben damit **20
-Schritte bis zur Seminarabnahme** und **22 bis zum Windows-ZIP**.
+Planungsbasis, keine Terminzusage. Ab PR178 verbleiben damit **19
+Schritte bis zur Seminarabnahme** und **21 bis zum Windows-ZIP**.
 Quellen- oder Performancebefunde koennen besonders die separate
 Kapitalrechnung und PR187e
 weiter teilen; ihre Zusatzschritte werden dann offen mitgezaehlt.
@@ -445,8 +445,11 @@ Proxy gegen den PR175-Netto-Modellstress pruefen, ohne Compliance-Aussage.
 PR177 hat zwoelf feste Modellfaelle und die zugehoerigen Bilanz-,
 Stress-, Quellen- und Managementinvarianten geprueft. Die
 regulatorischen Werte bleiben auch bei bestandenen Workshop-Grenzen
-gesperrt. **PR178 ist der naechste Schritt:** die Modellwirkung und
-gesperrten Kapitalwerte im Browser und Export getrennt erklaeren.
+gesperrt. PR178 zeigt die digestgebundene Modellwirkung aus der
+Vier-Sparten-Bilanz mit deklarierten Workshop-Annahmen im Browser;
+JSON und XLSX behalten die Regulatorik-Sperre bei. **PR178a ist der
+naechste Schritt:** ein kurzes, gut lesbares Benutzer- und
+Installationshandbuch mit echten Screenshots des belegten Standes.
 Der bedienbare 100-Perioden-Mehrspartenlauf ist als PR187d-f mit
 Quellenbindung, Rechnung und Browserabnahme vor PR190 eingetragen.
 Die Windows-Ready-to-run-Spur

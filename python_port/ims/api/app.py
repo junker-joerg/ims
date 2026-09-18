@@ -47,6 +47,7 @@ from ims.accounting.solvency_capital_readiness import (
     build_solvency_capital_readiness,
     solvency_capital_readiness_contract_payload,
 )
+from ims.accounting.solvency_capital_workbook import build_solvency_capital_workbook
 from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
@@ -1347,7 +1348,9 @@ def create_app(
             headers={"Cache-Control": "no-store", "ETag": f'"{result["content_digest"]}"'},
         )
 
-    async def solvency_capital_readiness_response(request: Request) -> JSONResponse:
+    async def solvency_capital_readiness_response(
+        request: Request, *, workbook: bool = False,
+    ) -> JSONResponse | Response:
         try:
             payload = await request.json()
         except ValueError:
@@ -1359,10 +1362,34 @@ def create_app(
         result = build_solvency_capital_readiness(payload).to_dict()
         if not result["valid"]:
             return JSONResponse(result, status_code=422, headers={"Cache-Control": "no-store"})
+        if workbook:
+            aggregation_input = payload["solvency_risk_aggregation_input"]
+            balance_input = (
+                aggregation_input["solvency_risk_modules_input"]
+                ["solvency_scenario_shocks_input"]["solvency_model_balance_input"]
+            )
+            balance = build_solvency_model_balance(balance_input).to_dict()
+            aggregation = build_solvency_risk_aggregation(aggregation_input).to_dict()
+            contents = build_solvency_capital_workbook(payload, result, balance, aggregation)
+            return Response(
+                contents,
+                media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                headers={
+                    "Cache-Control": "no-store",
+                    "ETag": f'"{result["content_digest"]}"',
+                    "Content-Disposition": (
+                        'attachment; filename="ims-kapital-modell-vu-'
+                        f'{result["insurer_id"]}-p-{result["checkpoint"]["model_period"]}.xlsx"'
+                    ),
+                },
+            )
         return JSONResponse(
             result,
             headers={"Cache-Control": "no-store", "ETag": f'"{result["content_digest"]}"'},
         )
+
+    async def solvency_capital_workbook_response(request: Request) -> JSONResponse | Response:
+        return await solvency_capital_readiness_response(request, workbook=True)
 
     def life_error(exc: LifeResultError) -> JSONResponse:
         return JSONResponse(
@@ -3118,6 +3145,10 @@ def create_app(
         async def accounting_solvency_capital_readiness(request: Request) -> JSONResponse:
             return await solvency_capital_readiness_response(request)
 
+        @app.post("/api/accounting/solvency-capital-readiness.xlsx", response_model=None)
+        async def accounting_solvency_capital_readiness_xlsx(request: Request) -> JSONResponse | Response:
+            return await solvency_capital_readiness_response(request, workbook=True)
+
         @app.get("/api/model/solvency-scope-contract")
         def model_solvency_scope_contract() -> dict[str, object]:
             return solvency_scope_contract_payload()
@@ -3932,6 +3963,11 @@ def create_app(
         Route(
             "/api/accounting/solvency-capital-readiness",
             solvency_capital_readiness_response,
+            methods=["POST"],
+        ),
+        Route(
+            "/api/accounting/solvency-capital-readiness.xlsx",
+            solvency_capital_workbook_response,
             methods=["POST"],
         ),
         Route(
