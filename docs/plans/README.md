@@ -20,6 +20,12 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr174_model_risk_modules.md`: PR174-Modellmodule fuer
   szenariodeklarierte relative Markt- und Verpflichtungsstresse auf
   PR173-Teilbestaenden, weiterhin ohne Kapitalanforderung.
+- `ims_2x_pr178a_handbook_plan.md`: Handbuch-Erstausgabe direkt nach
+  PR178, mit kurzer Installation, hoechstens zehn Bedienseiten,
+  echten Screenshots und einer Bruecke vom historischen IMS.
+- `ims_2x_pr187_hundred_period_readiness_plan.md`: sechs reviewbare
+  Schnitte fuer gefuehrten 100er-Kettenaufbau und 100er-Vier-Sparten-
+  Bedienweg vor PR190.
 
 - `ims_2x_strategy_assignment_draft_ui_plan.md`: PR109-Plan fuer die lokale
   Erfassung und serverseitige Pruefung von Strategieentwuerfen in der
@@ -173,8 +179,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   weitergebbare Windows-Anwender-Testpaket; `portable_user_test_package_plan.md`
   dokumentiert ZIP, lokale `.venv` und die zwei kurzen PDF-Handbuecher. HB3b
   richtet die Bedienungsanleitung an `DISS.pdf`, Schockmodell und
-  Ergebnisdaten aus. HB4 bis HB6 behandeln Linux-Nachweis,
-  iOS/Juno-Entscheidung und Abnahme.
+  Ergebnisdaten aus. HB4/HB5 bleiben fuer Linux-Nachweis und
+  iOS/Juno-Entscheidung offen; die zusammenhaengende Handbuch-Erstausgabe
+  und ihre Abnahme sind nun als PR178a und PR190 eingeplant.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

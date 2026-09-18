@@ -95,7 +95,8 @@ Nach PR150 sind technischer 100-Perioden-Lauf und fluechtiger Export vorhanden.
 Nach PR151 kann der Anwender vorbereitete 100er-Ketten im Browser
 ausfuehren, ihre vorhandenen Zustandsfelder lesen und zwei gleich
 praefixierte Laeufe vergleichen. Der Aufbau dieser Ketten bleibt eine
-Voraussetzung; eine persistierte 100er-Ausfuehrung ist nicht freigegeben.
+Voraussetzung und wird in PR187a-c gefuehrt geschlossen; eine persistierte
+100er-Ausfuehrung ist nicht freigegeben.
 
 ## Phase B: Mehrsparten und Versichererbilanz
 
@@ -179,9 +180,20 @@ eine Meldesoftware ersetzen.
 | PR177 | Feste Faelle, Sensitivitaeten und Invarianten | Richtung, Monotonie, Grenzwerte und Bilanzanschluss sind geprueft |
 | PR178 | Kapitalansicht und Export | Unternehmen, Sparte, Treiber und Unsicherheit sind sichtbar; kein Filing-Anspruch |
 
-Falls PR174 oder PR175 bei der Quellenklaerung zu gross werden, werden sie in
+Falls PR175 bei der Quellenklaerung zu gross wird, wird er in
 weitere kleine Fach-PRs geteilt. Die Meilensteinzahl erhoeht sich dann, statt
 unterschiedliche Risikomodule in einem Sammel-PR zu verstecken.
+
+## Zwischenstufe: Handbuch nach PR178
+
+| PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
+| --- | --- | --- |
+| PR178a | Konsolidiertes Benutzer- und Installationshandbuch v1 | aus dem vorhandenen Handbuchbestand: 1-2 Seiten Installation, hoechstens 10 Seiten Bedienung, echte Screenshots, Schock- und Ergebniserklaerung, Grenzen und 1995-zu-2026-Begriffe; nur den nach PR178 belegten Stand beschreiben |
+
+PR178a liegt **nach PR178 und vor PR179**. Das
+[Handbuchzielbild](ims_2x_pr178a_handbook_plan.md) trennt die
+historische Marktidee von neuen Modell-Stressen und vermeidet
+unerfuellte Windows-Doppelklick-, Linux- oder iOS-Versprechen.
 
 ## Phase D: DORA-Wirkungsketten
 
@@ -211,19 +223,34 @@ dass Anwender interne Datenvertraege oder Quellcode kennen muessen.
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
 | PR187 | Gefuehrter Szenarioassistent mit optionalem Expertenmodus | Frage, Baseline, Schock, Strategien und Ergebnisziel bilden einen Ablauf |
+| PR187a | Vertrag fuer gefuehrte 100er-Kettenvorbereitung | 100 vollstaendige Periodenkontexte, Seeds, Strategiezeitfenster und Carryover werden vor dem Bau atomar geprueft; keine erfundenen Defaults |
+| PR187b | Kontrollierter Bau der 100er-Kette | alle Kandidaten serverseitig neu materialisiert, Prefixe und Digest geprueft, ausdruecklich und idempotent gespeichert; noch kein Lauf |
+| PR187c | Gefuehrter 100er-Start in der Workbench | PR151-Lauf und Download aus einer selbst aufgebauten Kette, mit Fehlersperren und breiter/schmaler Browserabnahme |
+| PR187d | Quellen- und Periodenvertrag fuer vier Sparten ueber 100 Perioden | dieselbe VU und Perioden 1-100, gemeinsame Szenario-Variante ausdruecklich erklaert und geprueft; fehlende Nichtleben-ID und Altpositionsmapping bleiben sichtbar |
+| PR187e | Kontrollierte 100er-Vier-Sparten-Rechnung | vorhandene vier Teilmodelle neu berechnen, periodische Bilanz- und Carryover-Invarianten, stabiler Zwei-Perioden-Prefix, Ressourcenbudget und atomarer Abbruch |
+| PR187f | 100er-Mehrspartenansicht und Exporte | Baseline/Variante, vier Sparten und Gesamtbilanz im Browser, CSV/JSON/XLSX mit gleicher Herkunft sowie breite/schmale Browserabnahme und Handbuchbilder |
 | PR188 | Kuratierte Seminarfaelle | Schadeninflation, Preiswettbewerb, Lebensbestand, Kapitaldruck und ICT-Ausfall sind reproduzierbar |
 | PR189 | Moderationspaket und portable Szenariobuendel | Arbeitsblaetter, Import/Export und read-only Demonstration sind geprueft |
 | PR190 | End-to-End-Abnahme des Managementseminars | Installation, 100 Perioden, Mehrsparten, Bilanz, Kapital, DORA-Fall und Export funktionieren gemeinsam |
 
+Die PR187a-f sind die bislang **nicht mitgezaehlten** Luecken zwischen
+vorbereiteter PR151-Kette, PR170a-Zwei-Perioden-Bilanz und der
+PR190-Abnahme. Der [Abnahmeplan](ims_2x_pr187_hundred_period_readiness_plan.md)
+legt die fachlichen Grenzen je Schnitt fest. PR188 und PR190 duerfen
+keinen 100-Perioden-Mehrspartenfall als bestanden ausgeben, bevor
+PR187c und PR187f abgenommen sind.
+
 PR190 bezeichnet eine kontrollierte Seminar- und Demonstrationsreife. Eine
 fachliche Produktionsfreigabe fuer Beratung, Aufsicht oder einzelne
 Unternehmensentscheidungen benoetigt weiterhin einen benannten Datenstand,
-einen konkreten Anwendungsfall und dessen eigene Validierung.
+einen konkreten Anwendungsfall und dessen eigene Validierung. Die
+Handbuch-Erstausgabe aus PR178a wird bei PR186, PR187f und PR190 an den
+jeweils belegten Bedienstand angepasst.
 
 ## Phase F: Windows Ready-to-run (spaeter)
 
-Diese optionale Distributionsspur beginnt **erst nach PR190** und verschiebt
-PR160 nicht. Sie ersetzt auf dem Zielrechner Python-Installation und
+Diese optionale Distributionsspur beginnt **erst nach PR190** und aendert
+die vorangehenden Fachphasen nicht. Sie ersetzt auf dem Zielrechner Python-Installation und
 Startskripte durch ein entpackbares Windows-ZIP mit Doppelklick-EXE.
 Details und Grenzen stehen in
 `docs/plans/ims_2x_windows_ready_to_run_packaging_plan.md`.
@@ -252,17 +279,20 @@ Teil dieses Windows-Pakets.
 | explizites Risikotreiber- und Schock-Mapping | PR173 | 37 | 0 |
 | begrenzte Markt- und Verpflichtungs-Modellmodule | PR174 | 38 | 0 |
 | erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 4 |
-| durchgaengige DORA-Wirkungskette | PR186 | 50 | 12 |
-| kontrollierte Managementseminar-Reife | PR190 | 54 | 16 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 18 |
+| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 5 |
+| durchgaengige DORA-Wirkungskette | PR186 | 51 | 13 |
+| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 17 |
+| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 20 |
+| kontrollierte Managementseminar-Reife | PR190 | 61 | 23 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 25 |
 
-Die 54 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
-sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
-Unsicherheit von etwa acht zusaetzlichen PRs, insbesondere bei Leben,
-Kranken, Risikomodulen und regulatorischer Quellenvalidierung. Erkenntnisse
-werden durch Teilung sichtbar gemacht; sie werden nicht in groessere PRs
-gedrueckt.
-Die vier Buchstabenschritte PR169a-d und PR170a zaehlen jeweils als eigener PR,
+Die 61 geplanten Schritte ab PR142 bis PR190, darunter PR178a und
+PR187a-f, sowie zwei spaetere Windows-Packaging-PRs sind eine
+Planungsbasis, keine Terminzusage. Ab PR174 verbleiben damit **23
+Schritte bis zur Seminarabnahme** und **25 bis zum Windows-ZIP**.
+Quellen- oder Performancebefunde koennen besonders PR175 und PR187e
+weiter teilen; ihre Zusatzschritte werden dann offen mitgezaehlt.
+PR169a-d, PR170a, PR178a und PR187a-f zaehlen jeweils als eigener PR,
 ohne die schon nummerierten PR170-192 umzubenennen.
 
 ## Grober Umfang
@@ -278,7 +308,10 @@ ohne die schon nummerierten PR170-192 umzubenennen.
 
 Die Schaetzung umfasst produktiven Code, Tests und Dokumentation. Sie ist
 bewusst breit und wird an jedem Phasenende anhand des tatsaechlichen Bestands
-neu bestimmt.
+neu bestimmt. Sie stammt aus dem urspruenglichen Meilensteinplan; die jetzt
+expliziten PR187a-f und das Handbuch PR178a sind darin nicht separat
+kalkuliert. Die LoC-Prognose wird vor PR187a neu beziffert, statt die
+Luecken als kostenneutral auszugeben.
 
 ## Durchgaengende Tests
 
@@ -301,10 +334,13 @@ Er ist kein Zwang zur Reproduktion unbelegter alter Zufallsfolgen.
 
 Der nichttechnische Einstieg ist in
 `docs/handbook/management_seminar_guide.md` angelegt. Die bestehenden
-Installations- und technischen Bedienkapitel bleiben Referenz. HB4 bis HB6
-liefern weiterhin Linux-Nachweis, iOS/Juno-Entscheidung und konsolidierte
-Handbuchabnahme. Die fachlichen Bilder und Bedienwege werden nach den
-Meilensteinen PR151, PR167, PR170a, PR178 und PR186 aktualisiert.
+Installations- und technischen Bedienkapitel bleiben Referenz. PR178a
+liefert aus dem Bestand eine zusammenhaengende Windows-Erstausgabe fuer
+Anwender und ehemalige IMS-Programmierer, unmittelbar nach der
+Kapitalansicht PR178. HB4/HB5 bleiben separate Linux-/iOS-Juno-Pruefungen
+ohne Supportversprechen; die bisherige HB6-Konsolidierung geht in PR178a
+und die PR190-Endabnahme ein. Bilder und Bedienwege werden bei PR186
+und PR187f nachgezogen, nicht vorweggenommen.
 
 ## Naechster Schritt
 
@@ -329,8 +365,7 @@ angeschlossen. Eine dauerhafte Ablage ist damit noch nicht freigegeben.
 PR151 macht vorbereitete 100er-Ketten, deren vorhandene Zustandsfelder
 und gleich praefixierte Vergleiche im Browser nutzbar. Der erneute Lauf
 fuer den Download ist an den sichtbaren Digest gebunden. Der gefuehrte
-Aufbau einer 100er-Kette bleibt eine zusaetzliche, noch nicht nummerierte
-Produktluecke; sie ist in den Restzahlen nicht enthalten. PR152 hat die
+Aufbau einer 100er-Kette ist jetzt in PR187a-c mitgezaehlt. PR152 hat die
 vier Zielsparten als versionierte, rein lesende Taxonomie bereitgestellt.
 Die zwei historischen Zweiervektor-Positionen bleiben ohne Zuordnung zu
 diesen Namen. PR153 hat C-Position 1/2 zu Python-/Exportindex 0/1
@@ -399,8 +434,9 @@ und nicht regulatorisch kalibriert; zwischen Modulen wird nicht aggregiert.
 Risiko sowie Aggregations- und Verlustabsorptionsgrenzen getrennt
 festlegen, ohne die PR174-Saetze als aufsichtsrechtliche Parameter
 auszugeben.
-Der bedienbare 100-Perioden-Mehrspartenlauf bleibt ein eigener, noch
-zu planender Schnitt. Die Windows-Ready-to-run-Spur
+Der bedienbare 100-Perioden-Mehrspartenlauf ist als PR187d-f mit
+Quellenbindung, Rechnung und Browserabnahme vor PR190 eingetragen.
+Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.
 
 Die Planung aendert keine Fachlogik und behauptet keine historische
