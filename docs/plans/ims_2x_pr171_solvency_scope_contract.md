@@ -1,7 +1,8 @@
 # PR171: Geltungs- und Quellenvertrag fuer die Solvency-II-Kapitalansicht
 
 Stand: 2026-09-18
-Status: umgesetzt; PR172 ist der naechste Rechenschritt
+Status: umgesetzt; PR172 liefert separat einen Modell-Eigenmittel-Proxy,
+keine regulatorische Eigenmittelbewertung. PR173 ist der naechste Schritt.
 
 ## Ziel und Grenze
 

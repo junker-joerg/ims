@@ -27,6 +27,10 @@ from ims.accounting.model_balance_contract import (
     MODEL_BALANCE_CONTRACT_V1_VERSION,
     model_balance_contract_payload,
 )
+from ims.accounting.solvency_model_balance import (
+    build_solvency_model_balance,
+    solvency_model_balance_contract_payload,
+)
 from ims.api.metadata_import import MetadataImportError
 from ims.api.metadata import METADATA_SCHEMA_VERSION, metadata_capabilities
 from ims.api.metadata_consistency import metadata_consistency_payload
@@ -1252,6 +1256,23 @@ def create_app(
                 headers={"Cache-Control": "no-store"},
             )
         result = build_four_sector_balance(payload).to_dict()
+        if not result["valid"]:
+            return JSONResponse(result, status_code=422, headers={"Cache-Control": "no-store"})
+        return JSONResponse(
+            result,
+            headers={"Cache-Control": "no-store", "ETag": f'"{result["content_digest"]}"'},
+        )
+
+    async def solvency_model_balance_response(request: Request) -> JSONResponse:
+        try:
+            payload = await request.json()
+        except ValueError:
+            return JSONResponse(
+                {"status": "error", "code": "invalid_json", "partial_result_returned": False},
+                status_code=400,
+                headers={"Cache-Control": "no-store"},
+            )
+        result = build_solvency_model_balance(payload).to_dict()
         if not result["valid"]:
             return JSONResponse(result, status_code=422, headers={"Cache-Control": "no-store"})
         return JSONResponse(
@@ -2973,6 +2994,14 @@ def create_app(
         def accounting_four_sector_balance_contract() -> dict[str, object]:
             return four_sector_balance_contract_payload()
 
+        @app.get("/api/accounting/solvency-model-balance-contract")
+        def accounting_solvency_model_balance_contract() -> dict[str, object]:
+            return solvency_model_balance_contract_payload()
+
+        @app.post("/api/accounting/solvency-model-balance", response_model=None)
+        async def accounting_solvency_model_balance(request: Request) -> JSONResponse:
+            return await solvency_model_balance_response(request)
+
         @app.get("/api/model/solvency-scope-contract")
         def model_solvency_scope_contract() -> dict[str, object]:
             return solvency_scope_contract_payload()
@@ -3743,6 +3772,15 @@ def create_app(
         Route(
             "/api/accounting/four-sector-balance-contract",
             lambda request: JSONResponse(four_sector_balance_contract_payload()),
+        ),
+        Route(
+            "/api/accounting/solvency-model-balance-contract",
+            lambda request: JSONResponse(solvency_model_balance_contract_payload()),
+        ),
+        Route(
+            "/api/accounting/solvency-model-balance",
+            solvency_model_balance_response,
+            methods=["POST"],
         ),
         Route(
             "/api/model/solvency-scope-contract",

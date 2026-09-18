@@ -14,4 +14,4 @@ def test_pr171_documents_model_limit_sources_and_next_step() -> None:
     ):
         assert phrase in plan
     assert "PR171 | Scope-" in roadmap
-    assert "PR172 ist der naechste Schritt" in roadmap
+    assert "| PR171 | Scope-, Terminologie-, Quellen- und Versionsvertrag | umgesetzt:" in roadmap

@@ -11,6 +11,9 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
 - `ims_2x_pr171_solvency_scope_contract.md`: PR171-Geltungs- und
   Quellenvertrag fuer die geplante Solvency-II-Kapitalansicht, mit
   Modellbilanzgrenze und gesperrten regulatorischen Aussagen.
+- `ims_2x_pr172_solvency_model_balance.md`: PR172-Modellbruecke von der
+  Vier-Sparten-Bilanz zu explizit angepassten Modellwerten und einem
+  nichtregulatorischen Eigenmittel-Proxy fuer einen Stichtag.
 
 - `ims_2x_strategy_assignment_draft_ui_plan.md`: PR109-Plan fuer die lokale
   Erfassung und serverseitige Pruefung von Strategieentwuerfen in der
