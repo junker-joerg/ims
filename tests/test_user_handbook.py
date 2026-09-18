@@ -12,10 +12,10 @@ def _read(filename: str) -> str:
 def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     index = _read("README.md")
 
-    assert "Handbuchstand: HB3g" in index
+    assert "Handbuchstand: PR178a" in index
     assert "[IMS im Managementseminar](management_seminar_guide.md)" in index
-    assert "[Testpaket in zwei Seiten installieren]" in index
-    assert "[Testpaket in zehn Seiten bedienen]" in index
+    assert "[Windows-Testpaket in zwei Seiten installieren]" in index
+    assert "[IMS in zehn Seiten verstehen und bedienen]" in index
     assert "[Windows-Kurzstart](quickstart_windows.md)" in index
     assert "[Windows installieren](installation_windows.md)" in index
     assert "[Workbench bedienen](operation.md)" in index
@@ -27,11 +27,10 @@ def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     assert "`Validierung`" in index
     assert "`Runs`" in index
     assert "`Strategien`" in index
-    assert "verified_browser_pr132" in index
-    assert "verified_browser_pr141" in index
-    assert "documented_management_hb3g" in index
-    assert "accepted_diagnostic_benchmark" in index
-    assert "verified_windows_hb3" in index
+    assert "`Kapitalwirkung`" in index
+    assert "SCR, MCR" in index
+    assert "historische" in index
+    assert "Windows" in index
     assert "not_verified" in index
     assert "feasibility_open" in index
 

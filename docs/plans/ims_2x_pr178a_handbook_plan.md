@@ -1,7 +1,7 @@
 # PR178a: Gut lesbares Benutzer- und Installationshandbuch
 
 Stand: 2026-09-18
-Status: geplant, direkt nach PR178 und vor PR179
+Status: umgesetzt, direkt nach PR178 und vor PR179; PR179 folgt
 
 ## Ziel und Leserschaft
 
@@ -66,3 +66,21 @@ Einstiegsfolge. Keine zweite widerspruechliche Parallel-Anleitung.
 Die historische Grundlage ist `DISS.pdf` und die dokumentierte
 `IMSDATA.C`-Semantik; die heutige Funktion muss separat durch Tests
 und Browserbeobachtung gedeckt sein.
+
+## Umsetzung und offene Punkte
+
+- `docs/handbook/user_guide_test_package.md` ist die zehnseitige
+  Anwenderfassung; `installation_test_package_windows.md` die zweiseitige
+  Windows-Fassung. Die PDFs unter `output/pdf/` werden aus diesen Quellen
+  mit `scripts/workbench/build_pr178a_handbook_pdf.mjs` erzeugt.
+  Nur fuer die PDF-Erstellung werden Node.js, `marked`, `playwright` und
+  lokales Chrome/Edge benoetigt; das weitergegebene Testpaket braucht
+  davon nichts.
+- Historischer Ursprung: `DISS.pdf`, S. 10-16, 31-43 und 81-99, sowie
+  `IMSDATA.C` fuer die alten Sparten- und Aggregatbegriffe. Die neuen
+  Leben-/Kranken-/Bilanz-/Kapitalansichten werden klar als IMS-2.x-
+  Modellfaelle und nicht als historische Portierung beschrieben.
+- Abnahme: Seitenzahlen, Screenshot-Pfade, PDF-Rendering und das
+  Windows-Testpaket ohne Simulationsstart pruefen. Ein unvorbereiteter
+  100er-Marktfall, Linux-/iOS-Installation und die Python-freie
+  Windows-Distribution bleiben offen; ebenso regulatorische Zahlen.

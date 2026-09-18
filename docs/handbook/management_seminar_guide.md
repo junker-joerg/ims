@@ -1,9 +1,13 @@
 # IMS im Managementseminar
 
 Stand: 2026-09-18
-Handbuchschnitt: HB3h
+Handbuchschnitt: PR178a (Seminar-Vertiefung)
 Zielgruppe: Fuehrungskraefte, Lehrende und Seminargruppen ohne Kenntnis der
 Dissertation oder des Quellcodes
+
+Der verbindliche Einstieg und die aktuellen Bediengrenzen stehen in
+[IMS in zehn Seiten verstehen und bedienen](user_guide_test_package.md).
+Dieses Kapitel ist das zusaetzliche Arbeitsblatt fuer eine moderierte Gruppe.
 
 ## Wozu IMS dient
 
@@ -59,6 +63,9 @@ Die heutige Workbench kann:
 - vier explizite IMS-2.x-Sparteneingaben je Versicherer und Periode
   ueber zwei Perioden als einfache Gesamtbilanz im Browser abstimmen,
   die vier Allokationen vergleichen und fehlerhafte Zuordnungen erkennen.
+- aus dieser geprueften Bilanz deklarierte Kapital-Modellstresse und
+  Workshop-Grenzen berechnen und als JSON/XLSX herunterladen; SCR, MCR
+  und Bedeckungsquoten bleiben dabei gesperrt.
 
 Noch nicht verfuegbar sind:
 
@@ -67,7 +74,7 @@ Noch nicht verfuegbar sind:
 - der automatische Anschluss der benannten Sparten an historische Laeufe;
 - ein gemeinsamer Vier-Sparten-Editor und ein bedienbarer
   100-Perioden-Mehrspartenlauf;
-- eine Solvency-II-Kapitalansicht;
+- eine regulatorisch freigegebene SCR-/MCR-Rechnung;
 - ein DORA-Szenarioeditor mit durchgaengiger Wirkungskette.
 
 Diese Funktionen sind in der aktiven
@@ -243,8 +250,9 @@ Zufallslaeufen. Ein gemeinsamer Lauf ueber 100 Perioden bleibt offen.
    Vermittlern koennen unterschiedlich reagieren.
 4. **Schocks statt statischer Planung:** Eine Gruppe kann direkte,
    veraenderte und mittelbare Wirkungen getrennt diskutieren.
-5. **Unternehmen und Markt gemeinsam:** Kuenftige Sparten-, Bilanz- und
-   Kapitalansichten verbinden Mikro- und Makroperspektive.
+5. **Unternehmen und Markt gemeinsam:** Die vorhandenen Sparten-, Bilanz-
+   und Kapital-Modellansichten ergaenzen die historische Mikroperspektive;
+   ein durchgaengender Vier-Sparten-Marktprozess ist noch offen.
 6. **Nachvollziehbarkeit statt Black Box:** Szenario, Annahmen, Version und
    Ergebnis bleiben zusammen; eine Pruefsumme schuetzt den verwendeten Stand.
 7. **Gemeinsames Lernen:** Teams koennen vor dem Lauf Hypothesen formulieren,
@@ -257,8 +265,8 @@ Umwelt des Modells. Fuer die Diskussion helfen drei Blickwinkel:
 
 | Blickwinkel | Einfache Frage | Beispiel |
 | --- | --- | --- |
-| Aktivierung | Was wird neu ausgeloest? | Ein Schadenereignis oder ein ICT-Ausfall tritt ein. |
-| Veraenderung | Welcher bestehende Wert wird anders? | Schadenhoehe, Zinssatz oder Bearbeitungskapazitaet aendert sich. |
+| Aktivierung | Wer tritt neu in den Markt ein? | Ein VU oder VN wird erst ab einer spaeteren Periode aktiv. |
+| Veraenderung | Welcher bestehende Wert wird anders? | Ein Akteur wechselt seinen vorbereiteten Regel-Parametersatz. |
 | Indirekte Wirkung | Was folgt erst durch Reaktionen anderer? | Preise, Nachfrage, Vermittlerverhalten oder Marktanteile verschieben sich. |
 
 ![Drei Schockarten im IMS](images/ims_shock_types_diss_2026-09-01.png)
@@ -295,6 +303,8 @@ ist noch keine Seminarfunktion.
 | Bilanz | Wie veraendern explizite Kfz- und Sach-Haftpflicht-Fluesse die Modellbilanz? |
 | Leben | Was bewirken Tod, Neugeschaeft, Anlage und Kapital im kleinen Policenfall? |
 | Kranken | Wie wirken Beitrag und Leistungsannahmen ueber bis zu 100 Perioden? |
+| Gesamtbilanz | Wie verteilen sich Vermoegen und Verpflichtungen auf vier Sparten? |
+| Kapitalwirkung | Was bewirken deklarierte Modellstresse und Workshop-Grenzen, ohne eine SCR-Zahl zu erzeugen? |
 | Validierung | Was ist belegt, was nur diagnostisch und was noch offen? |
 | Runs | Welcher Versuch wurde wirklich gestartet, und welches Ergebnis gehoert dazu? |
 
@@ -440,8 +450,8 @@ Die aktive Roadmap liefert in dieser Reihenfolge:
    Ergebnisablage; der vorbereitete fluechtige Bedienpfad ist vorhanden;
 2. einen gemeinsamen Szenarioeditor und kontrollierten
    100-Perioden-Mehrspartenlauf sowie spaeter Strategien je Sparte;
-3. zunaechst den Quellen- und Geltungsvertrag, dann eine erklaerbare
-   Solvency-II-Kapitalansicht;
+3. nach der vorhandenen Kapital-Modellansicht nur mit gesondertem
+   Fachplan und freigegebenen Daten eine echte SCR-/MCR-Rechnung;
 4. DORA-Wirkungsketten von ICT-Abhaengigkeiten bis zu Bilanz und Kapital;
 5. einen gefuehrten Szenarioassistenten und kuratierte Seminarfaelle.
 

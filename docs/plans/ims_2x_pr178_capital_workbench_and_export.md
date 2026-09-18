@@ -1,7 +1,7 @@
 # PR178: Kapital-Modellansicht und Export
 
 Stand: 2026-09-18
-Status: umgesetzt; PR178a Handbuch-Erstausgabe folgt
+Status: umgesetzt; PR178a Handbuch-Erstausgabe ebenfalls umgesetzt
 
 ## Ziel und Grenzen
 
@@ -46,9 +46,9 @@ keinen Lauf.
 - Frontend-Build und Browser-Smoke fuer Eingabe, Bilanzbindung,
   Modell-/Regulatorik-Trennung, Downloads, Fehler und schmale Ansicht.
 - Echte breite und schmale Screenshots unter `docs/handbook/images/`
-  stehen fuer PR178a bereit.
+  sind in die PR178a-Bedienungsanleitung eingeflossen.
 - Gesamt-Pytest-Suite und Windows-Release-Gate.
 
 Offen bleiben eine rechtlich freigegebene Kapitalformel und amtliche
-Bewertungsdaten; es gibt keine historische Vollgleichheit. PR178a kann nur den
-hier belegten Bedienpfad erklaeren.
+Bewertungsdaten; es gibt keine historische Vollgleichheit. PR178a erklaert
+nur den hier belegten Bedienpfad.

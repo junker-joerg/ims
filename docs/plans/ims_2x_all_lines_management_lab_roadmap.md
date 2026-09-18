@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-18
-Status: aktive Produkt-Restplanung; PR178 Kapitalansicht und Export umgesetzt, PR178a Handbuch naechster Schritt
+Status: aktive Produkt-Restplanung; PR178a Handbuch umgesetzt, PR179 DORA-Vertrag naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -188,7 +188,7 @@ Fachplan und eigene PRs; diese wuerden offen zur Meilensteinzahl addiert.
 
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
-| PR178a | Konsolidiertes Benutzer- und Installationshandbuch v1 | aus dem vorhandenen Handbuchbestand: 1-2 Seiten Installation, hoechstens 10 Seiten Bedienung, echte Screenshots, Schock- und Ergebniserklaerung, Grenzen und 1995-zu-2026-Begriffe; nur den nach PR178 belegten Stand beschreiben |
+| PR178a | Konsolidiertes Benutzer- und Installationshandbuch v1 | umgesetzt: 2 Seiten Windows-Installation und 10 Seiten Bedienung als Markdown/PDF mit echten Screenshots, Dissertation, Theorie, Schocks, Ergebnissen und Grenzen |
 
 PR178a liegt **nach PR178 und vor PR179**. Das
 [Handbuchzielbild](ims_2x_pr178a_handbook_plan.md) trennt die
@@ -282,17 +282,17 @@ Teil dieses Windows-Pakets.
 | Managementschwellen und gesperrte Kapitalwerte | PR176 | 40 | 0 |
 | Feste Kapital-Modellfaelle und Invarianten | PR177 | 41 | 0 |
 | erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 0 |
-| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 1 |
-| durchgaengige DORA-Wirkungskette | PR186 | 51 | 9 |
-| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 13 |
-| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 16 |
-| kontrollierte Managementseminar-Reife | PR190 | 61 | 19 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 21 |
+| lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 0 |
+| durchgaengige DORA-Wirkungskette | PR186 | 51 | 8 |
+| gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 12 |
+| bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 15 |
+| kontrollierte Managementseminar-Reife | PR190 | 61 | 18 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 20 |
 
 Die 61 geplanten Schritte ab PR142 bis PR190, darunter PR178a und
 PR187a-f, sowie zwei spaetere Windows-Packaging-PRs sind eine
-Planungsbasis, keine Terminzusage. Ab PR178 verbleiben damit **19
-Schritte bis zur Seminarabnahme** und **21 bis zum Windows-ZIP**.
+Planungsbasis, keine Terminzusage. Nach PR178a verbleiben damit **18
+Schritte bis zur Seminarabnahme** und **20 bis zum Windows-ZIP**.
 Quellen- oder Performancebefunde koennen besonders die separate
 Kapitalrechnung und PR187e
 weiter teilen; ihre Zusatzschritte werden dann offen mitgezaehlt.
@@ -336,12 +336,12 @@ Er ist kein Zwang zur Reproduktion unbelegter alter Zufallsfolgen.
 
 ## Handbuchspur
 
-Der nichttechnische Einstieg ist in
-`docs/handbook/management_seminar_guide.md` angelegt. Die bestehenden
-Installations- und technischen Bedienkapitel bleiben Referenz. PR178a
-liefert aus dem Bestand eine zusammenhaengende Windows-Erstausgabe fuer
-Anwender und ehemalige IMS-Programmierer, unmittelbar nach der
-Kapitalansicht PR178. HB4/HB5 bleiben separate Linux-/iOS-Juno-Pruefungen
+Der nichttechnische Einstieg liegt nun in
+`docs/handbook/user_guide_test_package.md` samt Druck-PDF; die Windows-
+Installation steht in `installation_test_package_windows.md`. Der
+Seminarleitfaden und die technischen Einzelkapitel bleiben Vertiefung.
+PR178a hat die beiden Haupttexte und neue Kapital-Screenshots
+zusammengefuehrt. HB4/HB5 bleiben separate Linux-/iOS-Juno-Pruefungen
 ohne Supportversprechen; die bisherige HB6-Konsolidierung geht in PR178a
 und die PR190-Endabnahme ein. Bilder und Bedienwege werden bei PR186
 und PR187f nachgezogen, nicht vorweggenommen.
@@ -447,9 +447,11 @@ Stress-, Quellen- und Managementinvarianten geprueft. Die
 regulatorischen Werte bleiben auch bei bestandenen Workshop-Grenzen
 gesperrt. PR178 zeigt die digestgebundene Modellwirkung aus der
 Vier-Sparten-Bilanz mit deklarierten Workshop-Annahmen im Browser;
-JSON und XLSX behalten die Regulatorik-Sperre bei. **PR178a ist der
-naechste Schritt:** ein kurzes, gut lesbares Benutzer- und
-Installationshandbuch mit echten Screenshots des belegten Standes.
+JSON und XLSX behalten die Regulatorik-Sperre bei. **PR178a ist
+umgesetzt:** ein gut lesbares Benutzer- und Installationshandbuch
+mit echten Screenshots des belegten Standes. **PR179 folgt:** der
+gerichtete Vertrag fuer Geschaeftsservices, ICT-Assets, Anbieter und
+Abhaengigkeiten als Einstieg in die DORA-Wirkungskette.
 Der bedienbare 100-Perioden-Mehrspartenlauf ist als PR187d-f mit
 Quellenbindung, Rechnung und Browserabnahme vor PR190 eingetragen.
 Die Windows-Ready-to-run-Spur

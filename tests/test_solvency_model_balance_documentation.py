@@ -14,7 +14,7 @@ def test_pr172_documents_explicit_bridge_and_no_regulatory_claim() -> None:
     ):
         assert phrase in plan
     assert "PR172 | Solvenzmodellbilanz" in roadmap
-    assert "PR178a ist der" in roadmap
+    assert "PR178a ist" in roadmap
 
 
 def test_pr173_documents_explicit_exposures_without_capital_claim() -> None:
@@ -27,7 +27,7 @@ def test_pr173_documents_explicit_exposures_without_capital_claim() -> None:
     ):
         assert phrase in plan
     assert "PR173 | Risikotreiber" in roadmap
-    assert "PR178a ist der" in roadmap
+    assert "PR178a ist" in roadmap
 
 
 def test_pr174_documents_explicit_model_stress_without_scr_claim() -> None:
@@ -40,7 +40,7 @@ def test_pr174_documents_explicit_model_stress_without_scr_claim() -> None:
     ):
         assert phrase in plan
     assert "PR174 | Ausgewaehlte Markt-" in roadmap
-    assert "PR178a ist der" in roadmap
+    assert "PR178a ist" in roadmap
 
 
 def test_pr175_documents_model_aggregation_without_capital_claim() -> None:
@@ -54,7 +54,7 @@ def test_pr175_documents_model_aggregation_without_capital_claim() -> None:
     ):
         assert phrase in plan
     assert "PR175 | Gegenpartei-, operationelles Risiko" in roadmap
-    assert "PR178a ist der" in roadmap
+    assert "PR178a ist" in roadmap
 
 
 def test_pr176_documents_model_limits_and_blocked_regulatory_values() -> None:
@@ -69,7 +69,7 @@ def test_pr176_documents_model_limits_and_blocked_regulatory_values() -> None:
     ):
         assert phrase in plan
     assert "PR176 | SCR, MCR, Bedeckungsquote" in roadmap
-    assert "PR178a ist der" in roadmap
+    assert "PR178a ist" in roadmap
 
 
 def test_pr177_documents_fixed_model_cases_without_regulatory_release() -> None:
@@ -82,7 +82,7 @@ def test_pr177_documents_fixed_model_cases_without_regulatory_release() -> None:
     ):
         assert phrase in plan
     assert "PR177 | Feste Faelle, Sensitivitaeten und Invarianten | umgesetzt" in roadmap
-    assert "PR178a ist der" in roadmap
+    assert "PR178a ist" in roadmap
 
 
 def test_pr178_documents_browser_export_and_capital_gate() -> None:

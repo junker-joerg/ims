@@ -181,7 +181,7 @@ Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumen
   richtet die Bedienungsanleitung an `DISS.pdf`, Schockmodell und
   Ergebnisdaten aus. HB4/HB5 bleiben fuer Linux-Nachweis und
   iOS/Juno-Entscheidung offen; die zusammenhaengende Handbuch-Erstausgabe
-  und ihre Abnahme sind nun als PR178a und PR190 eingeplant.
+  wurde mit PR178a geliefert. Die Seminarabnahme PR190 bleibt geplant.
 - `vu14_pre_shock_projection_plan.md`: PR-76-Plan fuer die unabhaengige
   VU14-Regelprojektion 1-49 und die konservative Downstream-Klassifikation.
 - `workbench_metadata_recovery_plan.md`: enger PR-68-Plan fuer SQLite-Backup,

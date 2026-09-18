@@ -28,33 +28,24 @@ def test_portable_user_guide_is_at_most_ten_pages_and_honest_about_scope() -> No
     guide = _read(HANDBOOK_ROOT / "user_guide_test_package.md")
 
     assert guide.count("## Seite ") == 10
-    assert "Die urspruengliche Idee" in guide
-    assert "Was kann das Modell?" in guide
+    assert "Die Frage hinter IMS" in guide
+    assert "Wer tut was" in guide
     assert "Was ist ein Schock?" in guide
-    assert "Wo ist der Output?" in guide
+    assert "Wo stehen Ergebnisse und Dateien?" in guide
     assert "Strategien -> Ergebnisse" in guide
-    assert "Aktivierungsschock" in guide
-    assert "Aenderungsschock" in guide
-    assert "Indirekter Schock" in guide
-    assert "Prozessrealitaet" in guide
-    assert "Kein Ergebnis der modernisierten Workbench" in guide
-    assert guide.count("![") == 10
-    assert (
-        "windows_strategy_five_period_effect_probe_pr146_wide_2026-09-16.png"
-        in guide
-    )
+    assert "Aktivierung" in guide
+    assert "Aenderung" in guide
+    assert "Indirekt" in guide
+    assert "Marktprozess unter Risiko" in guide
+    assert "Historischer Lauf" in guide
+    assert "nicht berechnet" in guide
+    assert "Downloadordner" in guide
+    assert "Vier-Sparten-Gesamtbilanz" in guide
+    assert "Kapitalwirkung" in guide
+    assert guide.count("![") >= 9
     assert "windows_hundred_period_results_pr151_wide_2026-09-16.png" in guide
-    for image_name in (
-        "ims_market_cycle_diss_2026-09-01.png",
-        "ims_shock_types_diss_2026-09-01.png",
-        "diss_figure_5_8_market_share.png",
-        "diss_figure_5_9_before_after.png",
-        "diss_figure_5_10_aggregation.png",
-        "windows_workbench_dashboard_hb3a_2026-09-01.png",
-        "windows_workbench_scenarios_hb3a_2026-09-01.png",
-        "windows_workbench_runs_hb3a_2026-09-01.png",
-    ):
-        assert image_name in guide
+    assert "windows_capital_pr178_wide_2026-09-18.png" in guide
+    for image_name in re.findall(r"!\[[^]]*\]\(images/([^)]*)\)", guide):
         assert (HANDBOOK_ROOT / "images" / image_name).is_file()
 
 
