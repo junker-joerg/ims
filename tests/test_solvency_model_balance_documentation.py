@@ -14,7 +14,7 @@ def test_pr172_documents_explicit_bridge_and_no_regulatory_claim() -> None:
     ):
         assert phrase in plan
     assert "PR172 | Solvenzmodellbilanz" in roadmap
-    assert "PR175 ist der naechste Schritt" in roadmap
+    assert "PR176 ist der naechste Schritt" in roadmap
 
 
 def test_pr173_documents_explicit_exposures_without_capital_claim() -> None:
@@ -27,7 +27,7 @@ def test_pr173_documents_explicit_exposures_without_capital_claim() -> None:
     ):
         assert phrase in plan
     assert "PR173 | Risikotreiber" in roadmap
-    assert "PR175 ist der naechste Schritt" in roadmap
+    assert "PR176 ist der naechste Schritt" in roadmap
 
 
 def test_pr174_documents_explicit_model_stress_without_scr_claim() -> None:
@@ -40,4 +40,18 @@ def test_pr174_documents_explicit_model_stress_without_scr_claim() -> None:
     ):
         assert phrase in plan
     assert "PR174 | Ausgewaehlte Markt-" in roadmap
-    assert "PR175 ist der naechste Schritt" in roadmap
+    assert "PR176 ist der naechste Schritt" in roadmap
+
+
+def test_pr175_documents_model_aggregation_without_capital_claim() -> None:
+    plan = (ROOT / "docs/plans/ims_2x_pr175_model_risk_aggregation.md").read_text(encoding="utf-8")
+    roadmap = (ROOT / "docs/plans/ims_2x_all_lines_management_lab_roadmap.md").read_text(encoding="utf-8")
+    for phrase in (
+        "IMSDATA.C", "ims.accounting.solvency_risk_modules",
+        "counterparty_model_loss", "operational_model_loss", "positiv semidefinit",
+        "ROUND_HALF_UP", "keine Solvency-II-Kapitalanforderung",
+        "PR176", "Keine historische Vollgleichheit", "solvency-risk-aggregation",
+    ):
+        assert phrase in plan
+    assert "PR175 | Gegenpartei-, operationelles Risiko" in roadmap
+    assert "PR176 ist der naechste Schritt" in roadmap

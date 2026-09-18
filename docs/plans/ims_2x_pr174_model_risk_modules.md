@@ -1,7 +1,7 @@
 # PR174: Begrenzte Modell-Risikomodule
 
 Stand: 2026-09-18
-Status: umgesetzt; PR175 Gegenpartei, operationelles Risiko und Aggregation folgt separat
+Status: umgesetzt; PR175 Gegenpartei, operationelles Risiko und Modellaggregation separat umgesetzt; PR176 folgt
 
 ## Ziel und Vertrag
 

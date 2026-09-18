@@ -48,7 +48,7 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42" in document
     assert "durchgaengige DORA-Wirkungskette | PR186 | 51" in document
     assert "kontrollierte Managementseminar-Reife | PR190 | 61" in document
-    assert "PR174 Modell-Risikomodule umgesetzt, PR175 Aggregation naechster Schritt" in document
+    assert "PR175 Modell-Risikoaggregation umgesetzt, PR176 Kapitalquellen naechster Schritt" in document
     for label in (
         "PR169a", "PR169b", "PR169c", "PR169d", "PR170a", "PR178a",
         "PR187a", "PR187b", "PR187c", "PR187d", "PR187e", "PR187f",
@@ -65,11 +65,12 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "Modell-Solvenzbilanz und Eigenmittel-Proxy | PR172 | 36 | 0" in document
     assert "explizites Risikotreiber- und Schock-Mapping | PR173 | 37 | 0" in document
     assert "begrenzte Markt- und Verpflichtungs-Modellmodule | PR174 | 38 | 0" in document
-    assert "lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 5" in document
-    assert "gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 17" in document
-    assert "bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 20" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 61 | 23" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 25" in document
+    assert "deklarierte Gegenpartei-, Betriebs- und Korrelationsverluste | PR175 | 39 | 0" in document
+    assert "lesbares Benutzer- und Installationshandbuch v1 | PR178a | 43 | 4" in document
+    assert "gefuehrter 100er-Kettenaufbau und Start | PR187c | 55 | 16" in document
+    assert "bedienbarer 100er-Mehrspartenlauf | PR187f | 58 | 19" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 61 | 22" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 63 | 24" in document
     assert document.index("| PR178 |") < document.index("| PR178a |") < document.index("| PR179 |")
     assert document.index("| PR187 |") < document.index("| PR187a |") < document.index("| PR188 |")
     assert "PR187c und PR187f abgenommen" in document
@@ -80,7 +81,7 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
     document = ROADMAP.read_text(encoding="utf-8")
 
     assert "18.700-35.000 LoC" in document
-    assert "Quellen- oder Performancebefunde koennen besonders PR175 und PR187e" in document
+    assert "Quellen- oder Performancebefunde koennen besonders PR176 und PR187e" in document
     for gate in (
         "deterministische Wiederholung",
         "stabile Prefixe",
@@ -112,7 +113,7 @@ def test_later_windows_ready_to_run_plan_stays_after_fachphasen() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR175 Aggregation naechster Schritt" in roadmap
+    assert "PR176 Kapitalquellen naechster Schritt" in roadmap
     assert "Fachphasen C bis E gehen vor" in plan
     for phrase in (
         "PR191", "PR192", "IMS-Workbench.exe", "One-folder",

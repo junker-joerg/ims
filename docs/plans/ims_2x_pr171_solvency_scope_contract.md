@@ -4,7 +4,8 @@ Stand: 2026-09-18
 Status: umgesetzt; PR172 liefert separat einen Modell-Eigenmittel-Proxy,
 keine regulatorische Eigenmittelbewertung. PR173 liefert separat ein
 explizites Modell-Schock-Mapping, PR174 begrenzte Modellmodule;
-PR175 ist der naechste Schritt.
+PR175 liefert separat eine deklarierte Modell-Risikoaggregation;
+PR176 ist der naechste Schritt fuer Quellen und Kapitalgrenze.
 
 ## Ziel und Grenze
 
