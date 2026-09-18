@@ -44,7 +44,7 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "erklaerbare Solvency-II-Kapitalansicht | PR178 | 42" in document
     assert "durchgaengige DORA-Wirkungskette | PR186 | 50" in document
     assert "kontrollierte Managementseminar-Reife | PR190 | 54" in document
-    assert "PR170a Vier-Sparten-Gesamtbilanz im Browser umgesetzt, PR171 Solvency-II-Geltungsvertrag naechster Schritt" in document
+    assert "PR171 Solvency-II-Geltungsvertrag umgesetzt, PR172 Solvenzmodellbilanz naechster Schritt" in document
     for label in ("PR169a", "PR169b", "PR169c", "PR169d", "PR170a"):
         assert f"| {label} |" in document
     assert "PR143 hat die kanonische Fuenf-Perioden-Kette gebaut" in document
@@ -54,8 +54,9 @@ def test_active_roadmap_numbers_pr142_through_pr192_without_gaps() -> None:
     assert "technischer 100-Perioden-Lauf | PR149 | 8 | 0" in document
     assert "bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0" in document
     assert "bedienbare Kranken-Simulation bis 100 Perioden | PR169d | 32 | 0" in document
-    assert "kontrollierte Managementseminar-Reife | PR190 | 54 | 20" in document
-    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 22" in document
+    assert "Solvency-II-Geltungsvertrag | PR171 | 35 | 0" in document
+    assert "kontrollierte Managementseminar-Reife | PR190 | 54 | 19" in document
+    assert "Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 21" in document
     assert "Diese optionale Distributionsspur beginnt **erst nach PR190**" in document
 
 
@@ -74,12 +75,12 @@ def test_roadmap_defines_scope_estimate_and_validation_gates() -> None:
         assert gate in document
 
 
-def test_later_windows_ready_to_run_plan_keeps_pr171_next() -> None:
+def test_later_windows_ready_to_run_plan_stays_after_fachphasen() -> None:
     roadmap = ROADMAP.read_text(encoding="utf-8")
     plan = WINDOWS_PLAN.read_text(encoding="utf-8")
 
-    assert "PR171 Solvency-II-Geltungsvertrag naechster Schritt" in roadmap
-    assert "PR171 bleibt der" in plan
+    assert "PR172 Solvenzmodellbilanz naechster Schritt" in roadmap
+    assert "Fachphasen C bis E gehen vor" in plan
     for phrase in (
         "PR191", "PR192", "IMS-Workbench.exe", "One-folder",
         "ohne Zielrechner-Python", "127.0.0.1", "%LOCALAPPDATA%",

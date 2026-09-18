@@ -1,7 +1,7 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
 Stand: 2026-09-18
-Status: aktive Produkt-Restplanung; PR170a Vier-Sparten-Gesamtbilanz im Browser umgesetzt, PR171 Solvency-II-Geltungsvertrag naechster Schritt
+Status: aktive Produkt-Restplanung; PR171 Solvency-II-Geltungsvertrag umgesetzt, PR172 Solvenzmodellbilanz naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
 Managemententscheidung vom 2026-09-14
 
@@ -39,10 +39,14 @@ managementtaugliche Modellrechnung. Sie darf erst dann als regulatorisch
 belastbare Berechnung bezeichnet werden, wenn Umfang, Daten, Formeln,
 Korrelationen und Versionen separat validiert wurden. Orientierung geben die
 offiziellen EIOPA-Regelwerksseiten zur
-[SCR-Standardformel](https://www.eiopa.europa.eu/rulebook/solvency-ii-single-rulebook/article-2411_en)
+[SCR-Begriff und Kalibrierung](https://www.eiopa.europa.eu/rulebook/solvency-ii-single-rulebook/article-2188_en)
 und zum
-[MCR](https://www.eiopa.europa.eu/rulebook/solvency-ii-single-rulebook/article-5908_en),
-abgerufen am 2026-09-14.
+[MCR](https://www.eiopa.europa.eu/rulebook/solvency-ii-single-rulebook/article-2216_en),
+erneut geprueft am 2026-09-18. Die
+[Revision (EU) 2025/2](https://www.eiopa.europa.eu/browse/regulation-and-policy/solvency-ii_en)
+gilt erst ab 30.01.2027. PR171 haelt den Quellen- und Versionsstand in
+`docs/plans/ims_2x_pr171_solvency_scope_contract.md` fest und gibt noch
+keine Rechtsregime- oder Formelwahl fuer eine Rechnung frei.
 
 Die DORA-Schicht simuliert operative Wirkungsketten. Sie ist kein
 Compliance-Score, kein Audit und keine Rechtsberatung. Der Zuschnitt folgt
@@ -166,7 +170,7 @@ eine Meldesoftware ersetzen.
 
 | PR | Kleiner, reviewbarer Liefergegenstand | Zentrale Abnahme |
 | --- | --- | --- |
-| PR171 | Scope-, Terminologie-, Quellen- und Versionsvertrag | Modellrechnung und regulatorisch validierte Aussage bleiben klar getrennt |
+| PR171 | Scope-, Terminologie-, Quellen- und Versionsvertrag | umgesetzt: read-only Vertrag mit Rechtsstand, Modellherkunft und fehlenden Bruecken; keine Kapitalrechnung oder regulatorische Aussage |
 | PR172 | Solvenzmodellbilanz und vereinfachte Eigenmittelabbildung | Herkunft jeder Kapitalgroesse ist zur Versichererbilanz rueckverfolgbar |
 | PR173 | Risikotreiber und Szenarioschock-Mapping | jeder Schock veraendert nur explizit zugeordnete Exposures |
 | PR174 | Ausgewaehlte Markt- und versicherungstechnische Risikomodule | Schaden, Leben und Kranken besitzen getestete, begrenzte Module |
@@ -236,17 +240,18 @@ Teil dieses Windows-Pakets.
 
 ## Meilensteine und Restzahl
 
-| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR170a |
+| Meilenstein | Erreicht nach | PRs ab PR142 | verbleibend nach PR171 |
 | --- | ---: | ---: | ---: |
 | technischer 100-Perioden-Lauf | PR149 | 8 | 0 |
 | bedienbarer 100-Perioden-Lauf mit Ergebnis und Export | PR151 | 10 | 0 |
 | bedienbare Kranken-Simulation bis 100 Perioden | PR169d | 32 | 0 |
 | vier Modellsegmente und konsolidierte Versichererbilanz (API) | PR170 | 33 | 0 |
 | Vier-Sparten-Bilanz im Browser | PR170a | 34 | 0 |
-| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 8 |
-| durchgaengige DORA-Wirkungskette | PR186 | 50 | 16 |
-| kontrollierte Managementseminar-Reife | PR190 | 54 | 20 |
-| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 22 |
+| Solvency-II-Geltungsvertrag | PR171 | 35 | 0 |
+| erklaerbare Solvency-II-Kapitalansicht | PR178 | 42 | 7 |
+| durchgaengige DORA-Wirkungskette | PR186 | 50 | 15 |
+| kontrollierte Managementseminar-Reife | PR190 | 54 | 19 |
+| Windows Ready-to-run ohne Zielrechner-Python | PR192 | 56 | 21 |
 
 Die 54 fachlichen PRs bis PR190 und zwei spaeteren Windows-Packaging-PRs
 sind eine Planungsbasis, keine Terminzusage. Realistisch ist eine
@@ -375,8 +380,11 @@ unveraendert; in der Workbench ist sie nun als Schadenbilanz beschriftet.
 PR170a hat die vier geprueften Eingaben in der Workbench verbunden,
 Baseline/Variante getrennt, VU- und Horizontkonflikte gesperrt sowie
 Gesamt- und Spartenbilanz fuer zwei Perioden auf beiden Browserbreiten
-abgenommen. **PR171 ist der naechste Schritt:** Geltung, Begriffe,
-Quellen und Versionen der geplanten Solvency-II-Kapitalansicht festlegen.
+abgenommen. PR171 hat Geltung, Begriffe, Quellen, Versionen und die
+fehlenden Bewertungs- und Risikobruecken rein lesend festgehalten;
+**PR172 ist der naechste Schritt:** eine nachvollziehbare Solvenzmodellbilanz
+und vereinfachte Modell-Eigenmittelabbildung, weiterhin ohne regulatorische
+Eigenmittel- oder Bedeckungsaussage.
 Der bedienbare 100-Perioden-Mehrspartenlauf bleibt ein eigener, noch
 zu planender Schnitt. Die Windows-Ready-to-run-Spur
 PR191/192 bleibt ausdruecklich spaeter.

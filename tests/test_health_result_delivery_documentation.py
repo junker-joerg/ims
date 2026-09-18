@@ -20,7 +20,7 @@ def test_pr169c_documents_storage_integrity_export_and_remaining_ui_boundary() -
     assert "## PR169c: Ergebnisfreigabe und Export" in plan
     assert "| PR169c | Kranken-Ergebnisablage, API und CSV/JSON/XLSX | umgesetzt:" in roadmap
     assert "PR170 hat die vier explizit eingegebenen Sparten" in roadmap
-    assert "PR171 ist der naechste Schritt" in roadmap
+    assert "| PR169c | Kranken-Ergebnisablage, API und CSV/JSON/XLSX | umgesetzt:" in roadmap
     assert "ims_2x_health_result_delivery.md" in (
         ROOT / "docs/migration/README.md"
     ).read_text(encoding="utf-8")

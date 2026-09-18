@@ -206,6 +206,7 @@ from ims.model.life_sector_contract import (
 )
 from ims.model.life_sector_v3_contract import life_sector_v3_contract_payload
 from ims.model.sector_taxonomy import sector_taxonomy_payload
+from ims.model.solvency_scope_contract import solvency_scope_contract_payload
 from ims.strategies.sector_strategy_plan import (
     sector_strategy_plan_contract_payload,
     sector_strategy_plan_invalid_json_payload,
@@ -2972,6 +2973,10 @@ def create_app(
         def accounting_four_sector_balance_contract() -> dict[str, object]:
             return four_sector_balance_contract_payload()
 
+        @app.get("/api/model/solvency-scope-contract")
+        def model_solvency_scope_contract() -> dict[str, object]:
+            return solvency_scope_contract_payload()
+
         @app.get("/api/accounting/life-period-chain/contract")
         def accounting_life_period_chain_contract() -> dict[str, object]:
             return life_result_contract_payload()
@@ -3738,6 +3743,10 @@ def create_app(
         Route(
             "/api/accounting/four-sector-balance-contract",
             lambda request: JSONResponse(four_sector_balance_contract_payload()),
+        ),
+        Route(
+            "/api/model/solvency-scope-contract",
+            lambda request: JSONResponse(solvency_scope_contract_payload()),
         ),
         Route(
             "/api/accounting/insurer-balance.xlsx",

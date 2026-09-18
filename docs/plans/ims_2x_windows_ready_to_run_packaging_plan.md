@@ -1,8 +1,8 @@
 # Windows Ready-to-run ohne Zielrechner-Installation
 
 Stand: 2026-09-18
-Einordnung: spaetere Distributionsspur nach PR190; PR171 bleibt der
-unmittelbar naechste Schritt. Dieser Plan baut noch kein Paket.
+Einordnung: spaetere Distributionsspur nach PR190; die
+Fachphasen C bis E gehen vor. Dieser Plan baut noch kein Paket.
 
 ## Ziel
 
