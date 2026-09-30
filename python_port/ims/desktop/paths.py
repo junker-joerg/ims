@@ -20,7 +20,9 @@ def user_root(override: Path | None = None) -> Path:
         if not local:
             raise RuntimeError("Windows-Benutzerablage LOCALAPPDATA fehlt.")
         result = Path(local) / "IMS" / "Workbench"
-    if result.is_relative_to(resource_root().resolve()):
+    application = (Path(sys.executable).parent if getattr(sys, 'frozen', False)
+                   else resource_root()).resolve()
+    if result.is_relative_to(application):
         raise ValueError("Nutzerdaten müssen außerhalb der Anwendungsdateien liegen.")
     result.mkdir(parents=True, exist_ok=True)
     return result

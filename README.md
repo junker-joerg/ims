@@ -4,6 +4,9 @@ Dieses Repository enthält das Arbeitsgerüst für eine schrittweise, PR-basiert
 Das neue Anwenderhandbuch beginnt unter `docs/handbook/README.md`; technische
 Migrationshinweise stehen unter `docs/migration/README.md`.
 
+AP1 ergänzt einen [Windows-Installer ohne Zielrechner-Python](docs/handbook/installer_windows.md).
+Der Installer ist ein Prüfarbeitsstand; die separate Clean-Windows-Abnahme ist noch offen.
+
 ## Versionslinien
 
 - `ims-legacy-baseline-2026-09-01` friert den technisch release-bereiten

@@ -4,9 +4,12 @@ $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $python = Join-Path $repo '.venv\Scripts\python.exe'
 if (-not (Test-Path -LiteralPath $python)) { throw 'Create this checkout''s .venv first.' }
+& $python -c 'import struct,sys; assert sys.version_info[:3] == (3,12,10) and struct.calcsize("P") == 8, "Build requires CPython 3.12.10 x64"'
+if ($LASTEXITCODE -ne 0) { throw 'Unexpected Python build runtime' }
 if (-not $IsccPath) { $IsccPath = Join-Path $repo 'build\inno\compiler\ISCC.exe' }
 if (-not (Test-Path -LiteralPath $IsccPath)) { throw 'Run install-build-tools.ps1 first or supply -IsccPath.' }
 $timer = [Diagnostics.Stopwatch]::StartNew()
+$previousHashSeed = $env:PYTHONHASHSEED
 Push-Location $repo
 try {
     npm.cmd ci --prefix frontend
@@ -28,9 +31,10 @@ try {
     [ordered]@{ artifact = (Split-Path -Leaf $artifact); sha256 = $hash;
         bytes = (Get-Item -LiteralPath $artifact).Length; build_seconds = $timer.Elapsed.TotalSeconds;
         commit = (git rev-parse HEAD); version = $Version; inno = '6.7.3';
+        dirty = [bool](git status --porcelain); node = (node --version);
         python = (& $python -c 'import platform;print(platform.python_version())');
         signed = $false; clean_windows_acceptance = 'pending' } |
         ConvertTo-Json | Set-Content dist/installer/build-evidence.json -Encoding utf8NoBOM
     Copy-Item build/installer-resources/resource-inventory.json dist/installer/
     Write-Output $artifact
-} finally { Pop-Location }
+} finally { $env:PYTHONHASHSEED = $previousHashSeed; Pop-Location }

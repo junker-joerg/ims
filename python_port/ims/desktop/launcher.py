@@ -148,6 +148,11 @@ def main(argv: list[str] | None = None) -> int:
         if not 1 <= args.port <= 65535:
             raise ValueError("Port muss zwischen 1 und 65535 liegen.")
         root = user_root(args.data_dir)
+        if args.diagnostics:
+            from ims.api.app import APP_VERSION
+
+            export_diagnostics(root, args.diagnostics, APP_VERSION)
+            return 0
         if args.stop:
             lock = InstanceLock(root)
             if lock.acquire():
@@ -171,9 +176,6 @@ def main(argv: list[str] | None = None) -> int:
         configure_logging(root)
         from ims.api.app import APP_VERSION
 
-        if args.diagnostics:
-            export_diagnostics(root, args.diagnostics, APP_VERSION)
-            return 0
         if args.choose_import:
             import tkinter as tk
             from tkinter import filedialog, messagebox

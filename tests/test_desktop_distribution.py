@@ -21,6 +21,7 @@ def test_frozen_resources_and_user_data_are_separate(monkeypatch, tmp_path):
     bundle = tmp_path / "Programm mit Räumen" / "_internal"
     monkeypatch.setattr(sys, "frozen", True, raising=False)
     monkeypatch.setattr(sys, "_MEIPASS", str(bundle), raising=False)
+    monkeypatch.setattr(sys, "executable", str(bundle.parent / "IMS-Workbench.exe"))
     assert resource_root() == bundle / "resources"
     monkeypatch.setenv("LOCALAPPDATA", str(tmp_path / "Nutzerdaten Ä"))
     assert user_root() == tmp_path / "Nutzerdaten Ä" / "IMS" / "Workbench"

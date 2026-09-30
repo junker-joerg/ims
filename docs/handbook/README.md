@@ -4,6 +4,10 @@ Stand: 2026-09-18 | Handbuchstand: PR178a
 
 **Hier beginnen:**
 
+Der neue [AP1-Windows-Installer](installer_windows.md) bündelt die Laufzeit.
+Seine Clean-Windows-Abnahme ist noch offen. Der folgende ältere Testpaketweg
+bleibt für bestehende Entwickler-/Testinstallationen dokumentiert.
+
 1. [Windows-Testpaket in zwei Seiten installieren](installation_test_package_windows.md)
    ([Druck-PDF](../../output/pdf/IMS-Installation-Windows.pdf)).
 2. [IMS in zehn Seiten verstehen und bedienen](user_guide_test_package.md)

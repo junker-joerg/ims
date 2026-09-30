@@ -37,7 +37,7 @@ def main() -> None:
     fake_local = work / 'Benutzerablage Ü'
     data = fake_local / 'IMS/Workbench'
     exe = app / 'IMS-Workbench.exe'
-    group_name = 'IMS AP1 Abnahme ' + work.name[-8:]
+    group_name = 'IMS Workbench'
     group = Path(os.environ['APPDATA']) / 'Microsoft/Windows/Start Menu/Programs' / group_name
     environment = {key: value for key, value in os.environ.items()
                    if not key.startswith(('PYTHON', 'IMS_'))}
@@ -47,6 +47,8 @@ def main() -> None:
     env = environment
     process = None
     evidence = []
+    success = False
+    failure = None
     total = time.perf_counter()
     # Refuse to overwrite any existing installation in this user's registry.
     key = r'Software\Microsoft\Windows\CurrentVersion\Uninstall\{097487D9-FA11-47A1-B2C6-6906858C2E78}_is1'
@@ -55,6 +57,8 @@ def main() -> None:
             raise RuntimeError('IMS already installed in this user account; use a separate test account.')
     except FileNotFoundError:
         pass
+    if group.exists() and list(group.glob('*.lnk')):
+        raise RuntimeError('Existing IMS shortcuts found; use a separate test account.')
 
     def run(command: list[str], timeout: int = 90, expect: int = 0):
         started = time.perf_counter()
@@ -121,6 +125,8 @@ def main() -> None:
         elapsed = run([str(exe), '--headless', '--no-browser'])
         assert json.loads((data / 'instance.json').read_text())['pid'] == state['pid']
         evidence.append({'test': 'second_start_same_process', 'result': 'passed', 'seconds': elapsed})
+        run([str(exe), '--headless', '--diagnostics', str(work / 'live-diagnostics.zip')])
+        assert (work / 'live-diagnostics.zip').is_file()
         # Embedded existing model case, explicitly released for storage, unchanged digests.
         case = json.loads((app / '_internal/resources/tests/fixtures/health_period_chain_v1.json').read_text())
         route = '/api/accounting/health-period-chain'
@@ -128,7 +134,7 @@ def main() -> None:
         preview = get_json(route + '/preview', case)
         assert preview['report']['calculated_period_count'] == 2
         stored = get_json(route + '/start', {
-            'schema_version': 'ims.health-period-chain.start.v1', 'health_chain_input': case,
+            'schema_version': 'ims.health-result-start.v1', 'health_chain_input': case,
             'expected_input_digest': preview['input_digest'],
             'expected_result_digest': preview['result_digest'],
             'idempotency_key': 'ap1-installer-case', 'explicit_storage_release': True,
@@ -146,7 +152,7 @@ def main() -> None:
                 assert len(list(csv.DictReader(StringIO(content.decode('utf-8'))))) == 2
             else:
                 book = load_workbook(BytesIO(content), read_only=True)
-                assert book['Perioden'].max_row == 3
+                assert len(list(book['Perioden'].values)) == 3
                 book.close()
         evidence.append({'test': 'existing_health_case_and_json_csv_xlsx_exports', 'result': 'passed',
                          'seconds': time.perf_counter() - began, 'input_digest': preview['input_digest'],
@@ -185,13 +191,18 @@ def main() -> None:
         assert get_json(result_path)['result_digest'] == stored['result_digest']
         stop()
         evidence.append({'test': 'stored_result_preserved_update_uninstall_reinstall', 'result': 'passed'})
+        success = True
+    except Exception as exc:
+        failure = f'{type(exc).__name__}: {exc}'
+        raise
     finally:
         if process is not None and process.poll() is None:
             run([str(exe), '--headless', '--stop'])
             process.wait(timeout=40)
         if (app / 'unins000.exe').exists():
             run([str(app / 'unins000.exe'), '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART'])
-        report = {'environment': 'Windows with developer tools; executable PATH restricted to System32',
+        report = {'success': success, 'failure': failure,
+                  'environment': 'Windows with developer tools; executable PATH restricted to System32',
                   'clean_windows_acceptance': 'pending', 'work': str(work),
                   'installer_sha256': hashlib.sha256(installer.read_bytes()).hexdigest(),
                   'seconds': time.perf_counter() - total, 'tests': evidence}

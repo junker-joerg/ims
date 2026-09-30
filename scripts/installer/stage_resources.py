@@ -39,6 +39,18 @@ def main() -> None:
     licenses = STAGE / "licenses"
     licenses.mkdir()
     dependencies = []
+    npm_lock = json.loads((ROOT / 'frontend/package-lock.json').read_text())
+    for relative, package in npm_lock['packages'].items():
+        if not relative.startswith('node_modules/') or package.get('dev', False):
+            continue
+        name = relative.removeprefix('node_modules/')
+        dependencies.append({'name': 'npm:' + name, 'version': package['version'],
+                             'license': package.get('license')})
+        for source in (ROOT / 'frontend' / relative).glob('*'):
+            if source.is_file() and any(word in source.name.lower() for word in ('license', 'notice', 'copying')):
+                target = licenses / 'npm' / name / source.name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
     requirements = (ROOT / "scripts/installer/requirements-build.txt").read_text().splitlines()
     for line in requirements:
         if "==" not in line:
@@ -64,7 +76,10 @@ def main() -> None:
         shutil.copyfile(source, target)
     (STAGE / "resource-inventory.json").write_text(json.dumps({
         "schema_version": 1, "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-        "curated_reference_files": inventory, "dependencies": dependencies,
+        "tracked_resources": inventory, "dependencies": dependencies,
+        "resource_files": [{"path": path.relative_to(STAGE).as_posix(),
+                            "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+                           for path in sorted(STAGE.rglob('*')) if path.is_file()],
         "raw_archives_included": False,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 
