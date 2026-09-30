@@ -1,14 +1,21 @@
 # Plans
 
-Dieses Verzeichnis ist für kleine, nachvollziehbare Arbeitspläne der IMS-Migration reserviert.
+Dieses Verzeichnis enthält nachvollziehbare Arbeitspläne der IMS-Migration.
 Hier sollen spätere PR-Schritte, offene Entscheidungen und Reihenfolgen dokumentiert werden.
 
-- `ims_2x_all_lines_management_lab_roadmap.md`: aktive Produkt-Restplanung
+- `ims_ai_sprint_2026_09.md`: aktueller Vorschlag zur Bündelung in drei
+  Umsetzungs-PRs: ein Windows-Installer, elegante Workbench und fachliche
+  Integration. Mit Merge des Planungs-PRs wird die neue Lieferreihenfolge angenommen.
+- `ims_ai_sprint_plan.json`: maschinenlesbare Zuordnung aller 25 alten
+  Restschritte mit Abhängigkeiten, Abnahmen und Status. Der Workflow
+  `IMS AI sprint plan` prüft den Plan und erzeugt einen lokalen Codex-Auftrag;
+  er startet keine automatische Feature-Implementierung.
+- `ims_2x_all_lines_management_lab_roadmap.md`: historische Anforderungsplanung
   PR142 bis PR190 fuer einen bedienbaren 100-Perioden-Lauf, Kfz,
   Sach-Haftpflicht, Leben und Kranken, Versichererbilanzen,
   Solvency-II-Kapitalansicht, DORA-Wirkungsketten und die kontrollierte
   Managementseminar-Reife.
-- `ims_2x_restplan_ab_pr179.md`: aktuelle Restzahl, Abhaengigkeiten und
+- `ims_2x_restplan_ab_pr179.md`: bisherige Restzahl, Abhaengigkeiten und
   Entscheidungstore von DORA ueber gefuehrte 100er-Ketten und wirksame
   Spartenstrategien bis zur Seminarabnahme und zum Windows-ZIP.
 - `ims_2x_pr171_solvency_scope_contract.md`: PR171-Geltungs- und

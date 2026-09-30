@@ -1,0 +1,64 @@
+name: IMS AI sprint plan
+
+on:
+  pull_request:
+    paths:
+      - "AGENTS.md"
+      - "docs/plans/**"
+      - "scripts/planning/**"
+      - "tests/test_ai_sprint_plan.py"
+      - ".github/workflows/ims-ai-sprint.yml"
+  push:
+    branches: [main]
+    paths:
+      - "AGENTS.md"
+      - "docs/plans/**"
+      - "scripts/planning/**"
+      - "tests/test_ai_sprint_plan.py"
+      - ".github/workflows/ims-ai-sprint.yml"
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Arbeitsauftrag vorbereiten; startet keine Codex-Ausführung"
+        type: choice
+        default: auto
+        options: [auto, AP1, AP2, AP3]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ims-ai-sprint-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    name: Plan prüfen und Codex-Auftrag vorbereiten
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PACKAGE_ID: ${{ inputs.package || 'auto' }}
+      CHECKED_COMMIT: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Prüflogik testen
+        run: python -m unittest discover -s tests -p test_ai_sprint_plan.py -v
+      - name: Plan prüfen und Arbeitsauftrag erzeugen
+        run: |
+          python scripts/planning/ims_sprint_plan.py \
+            --package "$PACKAGE_ID" \
+            --commit "$CHECKED_COMMIT" \
+            --out "$RUNNER_TEMP/ims-sprint"
+          cat "$RUNNER_TEMP/ims-sprint/plan-report.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Planbericht und Arbeitsauftrag bereitstellen
+        uses: actions/upload-artifact@v4
+        with:
+          name: ims-sprint-plan-${{ github.run_id }}
+          path: ${{ runner.temp }}/ims-sprint/*.md
+          if-no-files-found: error
+          retention-days: 14

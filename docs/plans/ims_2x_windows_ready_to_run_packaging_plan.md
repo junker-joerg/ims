@@ -1,5 +1,10 @@
 # Windows Ready-to-run ohne Zielrechner-Installation
 
+> Historischer Planungsstand. Die [Umplanung vom 30.09.2026](ims_ai_sprint_2026_09.md)
+> zieht diese Distribution als AP1 vor und ergänzt einen einzelnen EXE-Installer.
+> Nach Annahme ersetzt sie die folgende Reihenfolge und ZIP-Lieferform;
+> Ressourcen-, Laufzeit-, Daten- und Lifecycle-Anforderungen bleiben Referenz.
+
 Stand: 2026-09-18
 Einordnung: spaetere Distributionsspur nach PR190; die
 Fachphasen C bis E gehen vor. Dieser Plan baut noch kein Paket.
