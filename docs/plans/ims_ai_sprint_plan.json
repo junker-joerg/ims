@@ -10,7 +10,7 @@
     {
       "id": "AP1",
       "title": "Ein Windows-Installer für Anwender",
-      "status": "planned",
+      "status": "in_progress",
       "depends_on": [],
       "old_plan_ids": [
         "PR191",
