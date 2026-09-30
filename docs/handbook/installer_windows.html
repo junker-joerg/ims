@@ -1,0 +1,32 @@
+<!doctype html><html lang="de"><meta charset="utf-8"><title>IMS – Installation und Betrieb</title>
+<style>body{font:18px/1.6 system-ui;margin:3rem auto;max-width:850px;padding:0 2rem}h1,h2{line-height:1.2}code{font-size:16px}</style>
+<h1>IMS Workbench für Windows</h1>
+<p>Windows 11 x64, gewöhnliches Benutzerkonto. Nach dem Download funktioniert IMS offline:
+Python, Node.js und Git müssen nicht installiert werden.</p>
+<h2>Installieren und starten</h2><p>IMS-Setup-2.0.0-alpha.1-win-x64.exe öffnen und dem Assistenten folgen.
+Im Startmenü „IMS Workbench“ starten. Die Oberfläche öffnet sich im Standardbrowser,
+sobald IMS bereit ist. Ein kleines IMS-Fenster bleibt für Hilfe und Beenden geöffnet.
+Das Schließen eines Browser-Tabs beendet IMS nicht.</p>
+<p>Ein erneuter Start öffnet dieselbe laufende Anwendung. Falls der lokale Port belegt ist,
+kann im Dialog ein anderer Port gewählt werden. IMS bleibt ausschließlich auf diesem Rechner erreichbar.</p>
+<h2>Beenden und Diagnose</h2><p>„IMS beenden“ im IMS-Fenster oder Startmenü verwenden.
+Laufende Berechnungen dürfen abschließen. „Diagnose exportieren“ speichert eine ZIP-Datei
+mit Startprotokoll und Version, ohne Modelldaten, Datenbank oder Steuerungsschlüssel.</p>
+<h2>Bestehende Daten übernehmen</h2><p>Alte und neue IMS-Anwendung zuerst beenden.
+Im Startmenü „Bestehende IMS-Daten übernehmen“ wählen, die bisherige <code>.ims_workbench/metadata.sqlite</code>
+auswählen und die Übernahme bestätigen. IMS sichert die neue und gegebenenfalls die vorige
+Datenbank unter <code>%LOCALAPPDATA%\IMS\Workbench\backups</code>. Die Quelldatei bleibt unverändert.
+Andere alte Dateien und externe Quellpfade werden nicht automatisch umgeschrieben; separat sichern.</p>
+<h2>Update und Deinstallation</h2><p>Den neuen Installer im selben Benutzerkonto ausführen.
+Er beendet IMS kontrolliert und ersetzt Anwendungsdateien. Nutzerdaten unter
+<code>%LOCALAPPDATA%\IMS\Workbench</code> bleiben erhalten. Auch eine Deinstallation löscht diese
+Daten und Backups nicht. Eine Neuinstallation verwendet sie erneut. Vor Updates externe Sicherung anlegen.</p>
+<h2>Modellgrenzen und Anleitung</h2><p>Diese Alpha-Version enthält das bestehende Modell und dessen
+begrenzte Freigaben. Keine historische Vollgleichheit, regulatorische SCR/MCR-Berechnung oder
+DORA-Konformität wird zugesagt. Die <a href="Bedienungsanleitung.pdf">Bedienungsanleitung</a>
+beschreibt die bestehenden Modellfälle und Exporte.</p>
+<h2>Vertrauen und Lizenzen</h2><p>Der Installer ist derzeit unsigniert. Windows oder Unternehmensrichtlinien
+können Warnungen anzeigen oder die Ausführung sperren. In diesem Fall den zuständigen Support kontaktieren.
+Lizenztexte gebündelter Komponenten befinden sich im Anwendungsverzeichnis unter
+<code>_internal\resources\licenses</code>. Gebaut mit PyInstaller und Inno Setup von Jordan Russell/Martijn Laan.</p>
+</html>
