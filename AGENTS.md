@@ -7,7 +7,7 @@ Dieses Repository dient der kontrollierten, wissenschaftlich nachvollziehbaren M
 Primäres Ziel:
 - fachliche Semantik des Altmodells erhalten
 - technische Altlasten nicht 1:1 übernehmen
-- Migration in kleinen, reviewbaren Pull Requests durchführen
+- Migration in zusammenhängenden, reviewbaren Arbeitspaketen durchführen
 - jederzeit nachvollziehbar machen, welche C-Logik in welche Python-Komponente überführt wurde
 
 Nicht-Ziel:
@@ -17,15 +17,36 @@ Nicht-Ziel:
 
 ---
 
+## Aktuelle Lieferplanung
+
+Für die moderne Workbench gilt der Vorschlag vom 30.09.2026 in
+`docs/plans/ims_ai_sprint_2026_09.md` und `docs/plans/ims_ai_sprint_plan.json`.
+Mit Übernahme des Planungs-PRs in main ist diese Lieferreihenfolge angenommen.
+Die alten PR179–192 einschließlich PR187a–k bleiben Anforderungs-IDs;
+sie bedeuten nicht mehr jeweils einen eigenen GitHub-PR.
+
+Ein Arbeitspaket umfasst Implementierung, API/UI-Anschluss, Tests und Anleitung
+in einem Branch und Draft-PR. Mehrere Stunden oder Sitzungen sind zulässig.
+Vor Sitzungspausen Fortschritt, Tests, Blocker und nächsten Schritt festhalten;
+beim Fortsetzen denselben PR verwenden. Die fachlichen Entscheidungstore und
+Modellgrenzen bleiben verbindlich. Erledigte Abnahmen im Manifest mit Belegen
+dokumentieren; für abhängige Pakete zählt der nach main übernommene Status.
+
+Unter Windows Python explizit über `.venv\Scripts\python.exe` und npm über
+`npm.cmd` im jeweiligen Checkout aufrufen. Jeder neue Worktree braucht eine
+eigene Umgebung einschließlich editable install; keine Umgebung eines anderen
+Checkouts übernehmen.
+
 ## Arbeitsprinzipien
 
 1. **Semantik vor Syntax**
    Portiere Verhalten, Zustandsübergänge, Aggregatbildung, Scheduling und stochastische Logik.
    Portiere nicht blind C-Idiome, Pointer-Muster, Freilisten, ANSI-Terminalcode oder K&R-Stil.
 
-2. **Kleine, reviewbare Änderungen**
-   Arbeite in kleinen Pull Requests mit klar abgegrenztem Zweck.
-   Keine riesigen Sammel-PRs.
+2. **Zusammenhängende, reviewbare Lieferungen**
+   Ein klar abgegrenztes Paket darf einen größeren PR über mehrere Sitzungen bilden.
+   Halte Commits und interne Meilensteine nachvollziehbar; prüfe die vereinbarten
+   Abnahmen. Keine sachfremden Änderungen in das Paket aufnehmen.
 
 3. **Erst verstehen, dann ändern**
    Vor jeder größeren Änderung:

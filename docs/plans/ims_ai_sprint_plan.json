@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "3659b47fe01c2cb89be565cfce003e105c721b49",
+  "baseline_date": "2026-09-30",
+  "execution_mode": "local_codex",
+  "pr_strategy": "three_implementation_prs",
+  "plan_document": "docs/plans/ims_ai_sprint_2026_09.md",
+  "legacy_source": "docs/plans/ims_2x_all_lines_management_lab_roadmap.md",
+  "packages": [
+    {
+      "id": "AP1",
+      "title": "Ein Windows-Installer für Anwender",
+      "status": "planned",
+      "depends_on": [],
+      "old_plan_ids": [
+        "PR191",
+        "PR192"
+      ],
+      "branch": "codex/ims-single-installer",
+      "source_files": [
+        "docs/plans/ims_2x_windows_ready_to_run_packaging_plan.md",
+        "scripts/workbench/build-user-test-package.ps1",
+        "python_port/ims/api/app.py"
+      ],
+      "deliverables": [
+        "Paketierungsversuch und begründete Entscheidung: bevorzugt PyInstaller One-folder plus Inno Setup; py2exe als Alternative bewerten.",
+        "Ein versionierter EXE-Installer mit Laufzeit, Frontend, Ressourcen, Hilfe, Startmenü und Deinstallation.",
+        "Reproduzierbarer Windows-Build, Artefakt mit SHA-256, aktualisierte Anleitung und Installationsnachweise."
+      ],
+      "acceptance": [
+        "Auf frischem Windows 11 x64 ohne Python, Node.js oder Git im Standardbenutzerkonto offline installieren und starten.",
+        "Vorhandener Modellfall und Export funktionieren; Loopback-Bindung, Health-Check, Zweitstart, belegter Port und Pfade mit Leerzeichen/Umlauten sind geprüft.",
+        "Update, Deinstallation und Neuinstallation erhalten Nutzerdaten; Migration bestehender Daten erfolgt mit explizitem Backup-/Übernahmeschritt.",
+        "Bestehender Windows-Release-Gate und Tests des tatsächlichen Installers bestehen; Clean-VM-Nachweis liegt zusätzlich zum GitHub-Runner-Test vor."
+      ],
+      "gates": [
+        "Keine Behauptung einer Ein-Datei-Verteilung durch py2exe ohne belegten Versuch auf Python 3.12+.",
+        "Anwendungsdateien und Nutzerdaten trennen; keine stillschweigende Datenlöschung.",
+        "Werkzeuglizenzen und Signierungsstatus dokumentieren; keine Käufe oder öffentliche Release-Veröffentlichung ohne gesonderten Auftrag."
+      ],
+      "completion_evidence": []
+    },
+    {
+      "id": "AP2",
+      "title": "Elegante, iOS-inspirierte Workbench",
+      "status": "planned",
+      "depends_on": [
+        "AP1"
+      ],
+      "old_plan_ids": [],
+      "branch": "codex/ims-elegant-workbench",
+      "source_files": [
+        "frontend/src/main.tsx",
+        "frontend/src/styles.css",
+        "frontend/package.json",
+        "tests/browser/solvency_capital_pr178.mjs"
+      ],
+      "deliverables": [
+        "Gemeinsame Gestaltungsvariablen und Komponenten: Systemschrift, klare Hierarchie, großzügige Abstände, helle/dunkle Farbwelt.",
+        "Fünf verständliche Bereiche: Übersicht, Szenario, Simulation, Ergebnisse und Hilfe; technische Details gezielt aufklappen.",
+        "Reproduzierbare Browser-Tests in CI, Vorher-/Nachher-Bilder und aktualisierte Bedienhilfe."
+      ],
+      "acceptance": [
+        "Vorhandene Funktionen und Modellgrenzen bleiben erhalten; keine Schaltflächen für noch nicht verfügbare Funktionen.",
+        "Kernpfad einschließlich Fehlerkorrektur, Formularzustand, Freigaben und Export besteht Browser-Tests.",
+        "1440×900, 1024×768 und 390×844 sind geprüft; kein Seitenüberlauf, Detailtabellen gezielt scrollbar.",
+        "Textkontrast mindestens 4,5:1, sichtbarer Tastaturfokus, wesentliche Touch-Ziele mindestens 44×44 CSS-Pixel; Lade-/Leer-/Fehlerzustände und reduzierte Bewegung geprüft.",
+        "Installer mit aktuellem Frontend und bestehender Windows-Release-Gate bestehen."
+      ],
+      "gates": [
+        "AP2 gestaltet vorhandene Funktionen; neue Fachsemantik bleibt AP3 zugeordnet.",
+        "React weiterverwenden; keine fachliche Neuschreibung als Nebenwirkung.",
+        "Visuelle und funktionale Browsernachweise sind Pflicht; ein erfolgreicher Build allein genügt nicht."
+      ],
+      "completion_evidence": []
+    },
+    {
+      "id": "AP3",
+      "title": "100-Perioden-Managementlabor in einem Integrations-PR",
+      "status": "planned",
+      "depends_on": [
+        "AP1",
+        "AP2"
+      ],
+      "old_plan_ids": [
+        "PR179",
+        "PR180",
+        "PR181",
+        "PR182",
+        "PR183",
+        "PR184",
+        "PR185",
+        "PR186",
+        "PR187",
+        "PR187a",
+        "PR187b",
+        "PR187c",
+        "PR187d",
+        "PR187e",
+        "PR187f",
+        "PR187g",
+        "PR187h",
+        "PR187i",
+        "PR187j",
+        "PR187k",
+        "PR188",
+        "PR189",
+        "PR190"
+      ],
+      "branch": "codex/ims-management-integration",
+      "source_files": [
+        "docs/plans/ims_2x_restplan_ab_pr179.md",
+        "docs/plans/ims_2x_pr187_hundred_period_readiness_plan.md",
+        "docs/plans/ims_2x_all_lines_management_lab_roadmap.md"
+      ],
+      "deliverables": [
+        "M1: ICT-/DORA-Wirkungskette mit Quellenvertrag, Zeitadapter, operativer Wirkung, Gegenmaßnahmen, Bilanz und Dossier.",
+        "M2: Szenarioassistent, 100 vollständige Kontexte, atomarer Kandidatenaufbau und kontrollierter Start.",
+        "M3: Vier-Sparten-Rechnung über 100 Perioden mit Carryover und konsistenten CSV-/JSON-/XLSX-Exporten.",
+        "M4: Belegtes Quellen-/Zeitmapping sowie begrenzte wirksame VU-/VN-Strategieadapter und bedienbare Eingabe.",
+        "M5: Kuratierte Seminarfälle, Moderation, Szenariobündel, Handbuch und installierter End-to-End-Seminarpfad."
+      ],
+      "acceptance": [
+        "Alle 23 alten Fachschritte sind nachvollziehbar abgenommen; ein blockierter Teilschritt darf nicht als erledigt gelten.",
+        "Seeds, Digests, Prefixe, atomare Fehlerfälle und Bilanzinvarianten sind durch fachlich aussagekräftige Tests belegt.",
+        "Unvollständige oder ungültige Kontexte erzeugen weder einen Lauf noch Teilresultate.",
+        "Mindestens eine belegte Strategiewirkung reicht von Entscheidung über Spartenfluss bis zur 100er-Modellbilanz; nicht gekoppelte Kanäle bleiben ausdrücklich benannt.",
+        "UI und CSV-/JSON-/XLSX-Ausgaben sind konsistent; der Seminarpfad besteht im neu gebauten Installer samt Release-Gate."
+      ],
+      "gates": [
+        "Vor Strategieadaptern gilt das Quellen-/Zeitmapping aus PR187g; anonyme historische Schadenpositionen nicht unbelegt Kfz/Sach zuordnen.",
+        "Keine historischen Vollgleichheitsbehauptungen, regulatorischen SCR/MCR-/Bedeckungsquoten oder DORA-Konformitätsurteile.",
+        "Ein Branch und Draft-PR mit fünf dokumentierten Meilensteinen; Blocker und Umfangsänderungen explizit machen, keine Anforderung still streichen."
+      ],
+      "completion_evidence": []
+    }
+  ]
+}

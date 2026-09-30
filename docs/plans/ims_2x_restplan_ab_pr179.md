@@ -1,5 +1,10 @@
 # IMS 2.x: Restplan ab PR179
 
+> Historischer Planungsstand. Die [Umplanung vom 30.09.2026](ims_ai_sprint_2026_09.md)
+> bündelt diese 25 Schritte und zieht die Installation vor. Nach Annahme gilt
+> ihre Lieferreihenfolge; die Anforderungen und fachlichen Grenzen bleiben erhalten.
+> Die folgenden Statusangaben beziehen sich auf den 18.09.2026.
+
 Stand: 2026-09-18. Planungsstand nach PR178a; naechster Umsetzungsschritt PR179.
 Die [aktive Roadmap](ims_2x_all_lines_management_lab_roadmap.md) bleibt die
 nummerierte Quelle. Dieses Dokument erklaert Anforderungen, Abhaengigkeiten

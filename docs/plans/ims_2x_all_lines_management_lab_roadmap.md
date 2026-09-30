@@ -1,5 +1,10 @@
 # Roadmap: IMS 2.x Mehrsparten- und Regulationslabor
 
+> Historischer Planungsstand. Die Bündelung und Lieferreihenfolge werden mit
+> Annahme der [Umplanung vom 30.09.2026](ims_ai_sprint_2026_09.md) ersetzt.
+> Die folgenden Plan-IDs und fachlichen Grenzen bleiben Anforderungsreferenz;
+> Status- und Reihenfolgeangaben darunter beschreiben den Stand vom 18.09.2026.
+
 Stand: 2026-09-18
 Status: aktive Produkt-Restplanung; PR178a Handbuch umgesetzt, PR179 DORA-Vertrag naechster Schritt
 Beschlussgrundlage: angenommene IMS-2.x-Richtung aus PR102 und
