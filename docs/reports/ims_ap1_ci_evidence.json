@@ -1,0 +1,114 @@
+{
+  "product_commit": "559f80edecd1dff8d3f6c3308b98d04bd83daa24",
+  "tested_pr_merge": "6767405f01901811945f237d72b3cd491279c9bd",
+  "installer_run": "https://github.com/junker-joerg/ims/actions/runs/36750792794",
+  "artifact_url": "https://github.com/junker-joerg/ims/actions/runs/36750792794/artifacts/11114806812",
+  "artifact_expires_at": "2026-10-30T17:23:47Z",
+  "installer": {
+    "success": true,
+    "failure": null,
+    "environment": "Windows with developer tools; executable PATH restricted to System32",
+    "clean_windows_acceptance": "pending",
+    "work": "D:\\a\\ims\\ims\\.tmp-pr-installer\\Installer Prüfung Ä 115c0b27",
+    "installer_sha256": "4809eee6a733d4153bda4457b272a271529e7eb7c11f745e285f21197630c833",
+    "seconds": 23.285681600000004,
+    "tests": [
+      {
+        "test": "install_synthetic_previous_version",
+        "result": "passed",
+        "seconds": 2.392292900000001
+      },
+      {
+        "test": "frozen_start_path_with_spaces_umlauts",
+        "result": "passed",
+        "seconds": 1.7811671999999987
+      },
+      {
+        "test": "second_start_same_process",
+        "result": "passed",
+        "seconds": 0.32935829999999555
+      },
+      {
+        "test": "existing_health_case_and_json_csv_xlsx_exports",
+        "result": "passed",
+        "seconds": 0.9122769999999889,
+        "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+        "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+      },
+      {
+        "test": "update_while_running",
+        "result": "passed",
+        "seconds": 3.093997600000023
+      },
+      {
+        "test": "start_after_update",
+        "result": "passed",
+        "seconds": 1.7567042999999956
+      },
+      {
+        "test": "occupied_port_fails_without_foreign_browser",
+        "result": "passed",
+        "seconds": 1.1021963999999969
+      },
+      {
+        "test": "explicit_adoption_with_source_and_target_backups",
+        "result": "passed"
+      },
+      {
+        "test": "start_before_uninstall",
+        "result": "passed",
+        "seconds": 1.6822922000000062
+      },
+      {
+        "test": "uninstall_while_running_preserves_data",
+        "result": "passed",
+        "seconds": 1.435656300000005
+      },
+      {
+        "test": "reinstall",
+        "result": "passed",
+        "seconds": 2.3365460999999925
+      },
+      {
+        "test": "restart_after_reinstall",
+        "result": "passed",
+        "seconds": 1.76706759999999
+      },
+      {
+        "test": "stored_result_preserved_update_uninstall_reinstall",
+        "result": "passed"
+      }
+    ]
+  },
+  "plan_check": {
+    "run_id": 36750792442,
+    "conclusion": "success"
+  },
+  "clean_windows_acceptance": "pending",
+  "release_gate": {
+    "run_url": "https://github.com/junker-joerg/ims/actions/runs/36750792551",
+    "job_id": 110009008120,
+    "conclusion": "success",
+    "pytest": {
+      "passed": 2597,
+      "warning": 1,
+      "subtests": 8,
+      "seconds": 983.49
+    },
+    "summary": {
+      "status": "ok",
+      "mode": "windows_release_gate",
+      "report_contract_version": "pr69-v1",
+      "corpus_report_status": "blocked",
+      "production_release_approved": false,
+      "missing_calculated_export_count": 15,
+      "release_ready": true,
+      "user_test_package_ready": true,
+      "writes_performed": false,
+      "execution_performed": false,
+      "simulation_performed": false,
+      "historical_full_equality_claimed": false
+    }
+  },
+  "observed_at_utc": "2026-09-30T17:43:53Z"
+}

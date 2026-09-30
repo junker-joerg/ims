@@ -1,0 +1,141 @@
+{
+  "product_commit": "559f80edecd1dff8d3f6c3308b98d04bd83daa24",
+  "environment": {
+    "windows": "11 Pro 10.0.26100",
+    "admin_token": false,
+    "clean_windows_acceptance": "pending"
+  },
+  "build": {
+    "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
+    "sha256": "71a7f6e8b3915c068ee975bdfdf840af91dcd501fd49609e9b270d547bb2cc15",
+    "bytes": 18250948,
+    "build_seconds": 71.2715414,
+    "commit": "559f80edecd1dff8d3f6c3308b98d04bd83daa24",
+    "version": "2.0.0-alpha.1",
+    "inno": "6.7.3",
+    "dirty": false,
+    "node": "v22.23.2",
+    "python": "3.12.10",
+    "signed": false,
+    "clean_windows_acceptance": "pending"
+  },
+  "installer": {
+    "success": true,
+    "failure": null,
+    "environment": "Windows with developer tools; executable PATH restricted to System32",
+    "clean_windows_acceptance": "pending",
+    "work": "C:\\Users\\P52\\source\\ims\\.tmp-pr-ap1\\acceptance-final\\Installer Pr\u00fcfung \u00c4 cd738113",
+    "installer_sha256": "71a7f6e8b3915c068ee975bdfdf840af91dcd501fd49609e9b270d547bb2cc15",
+    "seconds": 73.34132229996612,
+    "tests": [
+      {
+        "test": "install_synthetic_previous_version",
+        "result": "passed",
+        "seconds": 28.654095500009134
+      },
+      {
+        "test": "frozen_start_path_with_spaces_umlauts",
+        "result": "passed",
+        "seconds": 2.605699800013099
+      },
+      {
+        "test": "second_start_same_process",
+        "result": "passed",
+        "seconds": 0.2743192000198178
+      },
+      {
+        "test": "existing_health_case_and_json_csv_xlsx_exports",
+        "result": "passed",
+        "seconds": 0.3885619000066072,
+        "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+        "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+      },
+      {
+        "test": "update_while_running",
+        "result": "passed",
+        "seconds": 16.964024899993092
+      },
+      {
+        "test": "start_after_update",
+        "result": "passed",
+        "seconds": 2.2796681000036187
+      },
+      {
+        "test": "occupied_port_fails_without_foreign_browser",
+        "result": "passed",
+        "seconds": 1.6146917000296526
+      },
+      {
+        "test": "explicit_adoption_with_source_and_target_backups",
+        "result": "passed"
+      },
+      {
+        "test": "start_before_uninstall",
+        "result": "passed",
+        "seconds": 1.7127892000135034
+      },
+      {
+        "test": "uninstall_while_running_preserves_data",
+        "result": "passed",
+        "seconds": 2.070825100003276
+      },
+      {
+        "test": "reinstall",
+        "result": "passed",
+        "seconds": 6.833733500039671
+      },
+      {
+        "test": "restart_after_reinstall",
+        "result": "passed",
+        "seconds": 2.3267674000235274
+      },
+      {
+        "test": "stored_result_preserved_update_uninstall_reinstall",
+        "result": "passed"
+      }
+    ]
+  },
+  "release_gate": {
+    "exit_code": 0,
+    "seconds": 927.2424563,
+    "interpreter": "C:\\Users\\P52\\source\\ims\\.venv\\Scripts\\python.exe"
+  },
+  "release_gate_pytest": {
+    "passed": 2597,
+    "subtests": 8,
+    "seconds": 878.57,
+    "scope": "P52 worktree before final distribution-only adjustments"
+  },
+  "resource_probes": [
+    {
+      "route": "/api/strategies/assignment-contract",
+      "status_code": 200,
+      "seconds": 0.1770766,
+      "payload_sha256": "ed24547ee226030e05836220c21967a054af38a134e0d1170db7be41f32f0df1"
+    },
+    {
+      "route": "/api/strategies/assignment-snapshot-materialization-contract",
+      "status_code": 200,
+      "seconds": 0.0130924,
+      "payload_sha256": "10634156d28d8e8d302c0972bebf3eb10d598e7cff1be935b90b2ef3ecfbfdde"
+    },
+    {
+      "route": "/api/strategies/assignment-vu-snapshot-materialization-contract",
+      "status_code": 200,
+      "seconds": 0.0107044,
+      "payload_sha256": "86508cf0597120f07dab8943d08031ebb0f49617660e5ded200116197a674ae6"
+    },
+    {
+      "route": "/api/strategies/execution-candidate-build-contract",
+      "status_code": 200,
+      "seconds": 0.010816,
+      "payload_sha256": "67ca7d418a88572e71768563d24d01bfa188f7e3fe0ca7fab47e96789d44b17d"
+    },
+    {
+      "route": "/api/core-validation/overview",
+      "status_code": 200,
+      "seconds": 0.4530572,
+      "payload_sha256": "453a1f5804dc5b01233181e77b650175990ce07427e7937730825b7794e5b193"
+    }
+  ]
+}

@@ -1,7 +1,8 @@
 # IMS-Lieferübergabe
 
-Stand 30.09.2026; AP1 auf `codex/ims-single-installer`, noch in Umsetzung.
-Planungs-PR #287 ist in main übernommen (e00f8e7).
+Stand 30.09.2026; AP1 auf `codex/ims-single-installer`, implementiert,
+Clean-Windows-Abnahme offen. Planungs-PR #287 ist in main übernommen (e00f8e7).
+Draft-PR: https://github.com/junker-joerg/ims/pull/288.
 
 ## Verbindliche Fortsetzung
 
@@ -40,5 +41,34 @@ nächstes Paket samt Freigabestatus.
 
 ## Aktueller nächster Schritt
 
-Ressourceninventar und Desktop-Lifecycle implementieren; Installer bauen und
-prüfen. Clean-Windows-VM ist auf diesem Checkout bisher nicht nachgewiesen.
+Geprüfter Produktcommit: `559f80edecd1dff8d3f6c3308b98d04bd83daa24`.
+PyInstaller-/Inno-Installer, Lifecycle, Ressourcen, Datentrennung, Backups,
+Anleitung, Lizenzinventar und CI sind umgesetzt. Der saubere P52-Build und
+der tatsächliche CI-Installer haben die Lifecycle-Prüfungen bestanden.
+Lokal und in CI bestand der bestehende Release-Gate mit 2.597 Tests und
+8 Subtests; Installer-, Plan- und Release-Gate-Checks für 559f80e sind grün.
+Neue Checks des abschließenden Dokumentationscommits vor Ready erneut prüfen.
+
+Vollständiger Zwischenbericht: `docs/reports/ims_ap1_abschlussbericht.md`;
+gemessene lokale Evidenz: `docs/reports/ims_ap1_p52_evidence.json`.
+CI-Evidenz: `docs/reports/ims_ap1_ci_evidence.json`.
+CI-Download: https://github.com/junker-joerg/ims/actions/runs/36750792794/artifacts/11114806812.
+Evernote-Zwischenbericht gespeichert und durch erneutes Lesen im vorgegebenen
+Notizbuch bestätigt: https://www.evernote.com/client/web#?n=c8ca33d8-e050-45f2-931c-3e7a4e6dcefa.
+Notiz-ID `c8ca33d8-e050-45f2-931c-3e7a4e6dcefa`; diese bei Fortsetzung
+aktualisieren und keine Dublette anlegen.
+
+Konkreter Abnahmeblocker: keine zugängliche frische Windows-11-x64-Umgebung
+ohne Entwicklerwerkzeuge. Auf P52 weder Windows Sandbox noch eine verfügbare
+VM nachgewiesen. Native Launcher-Sicht-/Klickprüfung zusätzlich offen, weil
+Windows-Fensteraktivierung im Tool mit Zugriff verweigert scheiterte.
+Keine Windows-Funktion oder VM dafür ungefragt installiert/aktiviert.
+
+Nächster Schritt: offline im Standardbenutzerkonto anhand
+`docs/reports/ims_ap1_clean_windows_acceptance.md` prüfen und echte Belege
+ergänzen. Lokales Abnahmekit: `.tmp-pr-ap1/clean-windows-kit`.
+Danach letzte PR-Checks prüfen, erst bei vollständiger Abnahme done und
+completion_evidence setzen und Ready for review stellen. Bis dahin AP1
+in_progress und PR Draft lassen; AP2 bleibt gesperrt. Bei Fortsetzung
+Produktcommit und Dokumentationscommit unterscheiden; kein erneuter
+Produktbuild nötig, solange sich nur Bericht/Übergabe geändert haben.
