@@ -310,7 +310,9 @@ class MetadataRepositoryReader(Protocol):
 
 
 def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    from ims.desktop.paths import resource_root
+
+    return resource_root()
 
 
 def _frontend_dist_dir() -> Path:

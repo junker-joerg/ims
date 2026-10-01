@@ -10,7 +10,7 @@
     {
       "id": "AP1",
       "title": "Ein Windows-Installer für Anwender",
-      "status": "planned",
+      "status": "done",
       "depends_on": [],
       "old_plan_ids": [
         "PR191",
@@ -38,7 +38,13 @@
         "Anwendungsdateien und Nutzerdaten trennen; keine stillschweigende Datenlöschung.",
         "Werkzeuglizenzen und Signierungsstatus dokumentieren; keine Käufe oder öffentliche Release-Veröffentlichung ohne gesonderten Auftrag."
       ],
-      "completion_evidence": []
+      "completion_evidence": [
+        "docs/reports/ims_ap1_user_acceptance.md: unabhängige Windows-11-Produktabnahme und ausdrückliche Merge-Freigabe des Auftraggebers am 01.10.2026",
+        "docs/reports/ims_ap1_p52_evidence.json: sauberes Bundle, 13 Installer-Lifecycle-Prüfungen, Modellfall/Exporte/Backups/Datenerhalt und Windows-Release-Gate",
+        "docs/reports/ims_ap1_ci_evidence.json: tatsächlicher CI-Installer und Windows-Release-Gate für Produktcode 559f80e bestanden",
+        "https://github.com/junker-joerg/ims/pull/288: Commit c581e26 mit 3/3 grünen Checks am 01.10.2026 überprüft",
+        "docs/migration/ims_ap1_windows_installer.md: Paketierungsversuche, Ressourcenmapping, Build, Werkzeuglizenzen und Grenzen"
+      ]
     },
     {
       "id": "AP2",
