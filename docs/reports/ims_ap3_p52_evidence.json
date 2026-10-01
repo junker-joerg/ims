@@ -1,109 +1,72 @@
 {
-  "schema_version": 1,
-  "observed_at_utc": "2026-10-01T10:29:48.336171+00:00",
+  "schema_version": 2,
+  "observed_at_utc": "2026-10-01T13:09:54.370256+00:00",
   "environment": "P52 Windows, checkout .venv CPython 3.12.10 x64",
-  "product_head": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
-  "documentation_head_at_collection": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
-  "core_and_browser_test_source": "a0e1c279048f3e6b14335d4a446f028510c486fd",
-  "browser": {
-    "startTime": "2026-10-01T09:43:56.805Z",
-    "duration": 426536.256,
-    "expected": 26,
-    "skipped": 0,
-    "unexpected": 0,
-    "flaky": 0
+  "product_head": "589689d63887058f5eb703e796d25d531dbfc9f7",
+  "installer_build": {
+    "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
+    "sha256": "89bb73e8724c98b7ad4d8622a1b251a654f9858dcdcaf15c0ced9ab0dbe143ba",
+    "bytes": 19127163,
+    "build_seconds": 63.5876491,
+    "commit": "9d53a04cd2da149ef515b2158b541ac35585754a",
+    "version": "2.0.0-alpha.1",
+    "inno": "6.7.3",
+    "dirty": false,
+    "node": "v22.23.2",
+    "python": "3.12.10",
+    "signed": false,
+    "clean_windows_acceptance": "pending"
   },
-  "windows_release_gate": {
-    "finished_at": "2026-10-01T11:57:46.1450437+02:00",
-    "error": null,
-    "seconds": 931.1961605,
-    "success": true,
-    "python": "C:\\Users\\P52\\source\\ims\\.venv\\Scripts\\python.exe"
-  },
-  "focused_tests": {
-    "ict": {
-      "passed": 23,
-      "seconds": 3.12
-    },
-    "guided_chain": {
-      "passed": 16,
-      "seconds": 36.39
-    },
-    "management_and_existing_balances": {
-      "passed": 49,
-      "seconds": 70.98
-    },
-    "metadata_import_desktop": {
-      "passed": 73,
-      "seconds": 2.58
-    },
-    "run_control_preflight_dry_run": {
-      "passed": 14,
-      "seconds": 1.09
-    }
-  },
-  "concurrent_metadata_probe": {
-    "groups": 7200,
-    "max_queries_per_group": 4,
-    "failed_groups_before_fix": 1220,
-    "reads_after_fix": 28800,
-    "failed_groups_after_fix": 0
-  },
-  "ap3_installed_full_seminar": "pending_strategy_contract_and_M5",
-  "clean_windows_ap3_acceptance": "not_performed",
-  "historical_full_equality_claim": false,
-  "regulatory_capital_claim": false,
-  "active_work_seconds": null,
-  "installer": {
+  "installer_tests": {
     "success": true,
     "failure": null,
     "environment": "Windows with developer tools; executable PATH restricted to System32",
     "clean_windows_acceptance": "pending",
-    "work": "C:\\Users\\P52\\source\\ims\\.tmp-pr-ap3\\installer-final\\Installer Prüfung Ä d04ab3ed",
-    "installer_sha256": "5854d0cdb2444b0f4d95ee463d93c54c52c3cfa9e444005d1261e740978e9dfd",
-    "seconds": 464.50858139999764,
+    "work": "C:\\Users\\P52\\source\\ims\\.tmp-pr-ap3\\installer-complete\\Installer Prüfung Ä 0fdce167",
+    "installer_sha256": "89bb73e8724c98b7ad4d8622a1b251a654f9858dcdcaf15c0ced9ab0dbe143ba",
+    "seconds": 603.0884890999987,
     "tests": [
       {
         "test": "install_synthetic_previous_version",
         "result": "passed",
-        "seconds": 26.413736599999538
+        "seconds": 25.401324599999498
       },
       {
         "test": "frozen_start_path_with_spaces_umlauts",
         "result": "passed",
-        "seconds": 2.647793299998739
+        "seconds": 2.3465682999994897
       },
       {
         "test": "second_start_same_process",
         "result": "passed",
-        "seconds": 0.2794995000003837
+        "seconds": 0.254885700000159
       },
       {
         "test": "existing_health_case_and_json_csv_xlsx_exports",
         "result": "passed",
-        "seconds": 0.3646016000020609,
+        "seconds": 0.4348039999968023,
         "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
         "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
       },
       {
         "test": "update_while_running",
         "result": "passed",
-        "seconds": 16.44811149999805
+        "seconds": 15.871015000000625
       },
       {
         "test": "start_after_update",
         "result": "passed",
-        "seconds": 2.310641799998848
+        "seconds": 1.9795676000030653
       },
       {
         "test": "AP2_real_browser_against_installed_current_frontend",
         "result": "passed",
-        "seconds": 394.41625139999815
+        "seconds": 535.2324664999978
       },
       {
         "test": "occupied_port_fails_without_foreign_browser",
         "result": "passed",
-        "seconds": 1.4365976999979466
+        "seconds": 1.4285697000013897
       },
       {
         "test": "explicit_adoption_with_source_and_target_backups",
@@ -112,22 +75,22 @@
       {
         "test": "start_before_uninstall",
         "result": "passed",
-        "seconds": 1.7420794000026945
+        "seconds": 1.7366356999991694
       },
       {
         "test": "uninstall_while_running_preserves_data",
         "result": "passed",
-        "seconds": 1.9486151999990398
+        "seconds": 2.1436143000028096
       },
       {
         "test": "reinstall",
         "result": "passed",
-        "seconds": 6.679677799998899
+        "seconds": 5.653835799999797
       },
       {
         "test": "restart_after_reinstall",
         "result": "passed",
-        "seconds": 2.280830799998512
+        "seconds": 2.2765947000007145
       },
       {
         "test": "stored_result_preserved_update_uninstall_reinstall",
@@ -135,28 +98,92 @@
       }
     ]
   },
-  "build": {
-    "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
-    "sha256": "5854d0cdb2444b0f4d95ee463d93c54c52c3cfa9e444005d1261e740978e9dfd",
-    "bytes": 18325751,
-    "build_seconds": 63.5479713,
-    "commit": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
-    "version": "2.0.0-alpha.1",
-    "inno": "6.7.3",
-    "dirty": true,
-    "node": "v22.23.2",
-    "python": "3.12.10",
-    "signed": false,
-    "clean_windows_acceptance": "pending"
-  },
   "installed_browser": {
-    "startTime": "2026-10-01T10:16:50.727Z",
-    "duration": 393384.855,
-    "expected": 26,
+    "startTime": "2026-10-01T12:43:13.869Z",
+    "duration": 534268.5719999999,
+    "expected": 30,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
   },
-  "local_build_dirty_reason": "Only pending report/handbook documentation; product code committed at product_head",
-  "installer_log_review": "No SQLite InterfaceError or unexpected API 500; expected occupied-port negative-test error retained"
+  "local_release_gate": {
+    "scope": "composed development verification; final committed whole gate proven separately in CI",
+    "initial_run": {
+      "seconds": 1093.8193814,
+      "success": false,
+      "python": "C:\\Users\\P52\\source\\ims\\.venv\\Scripts\\python.exe",
+      "finished_at": "2026-10-01T14:37:34.3563168+02:00",
+      "error": "PR70 Windows release gate failed during portable staging smoke: exit code 1"
+    },
+    "pytest_passed": 2671,
+    "subtests_passed": 8,
+    "pytest_seconds": 1073.87,
+    "original_failure": "portable staging missed seminar help directory; fixed by 589689d",
+    "packaging_delta": {
+      "passed": 50,
+      "seconds": 16.06
+    },
+    "remaining_original_gate_steps": {
+      "success": true,
+      "finished_at": "2026-10-01T14:49:09.8777661+02:00",
+      "scope": "release-gate continuation after passed pytest and frontend build",
+      "seconds": 28.8629779
+    }
+  },
+  "focused_checks": {
+    "modern_strategy": {
+      "passed": 16
+    },
+    "seminar_api_both_backends": {
+      "passed": 4,
+      "seconds": 146.3
+    },
+    "seminar_matrix": {
+      "startTime": "2026-10-01T12:30:02.122Z",
+      "duration": 128695.889,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "final_seminar_pressure_and_offline_help": {
+      "startTime": "2026-10-01T12:34:22.096Z",
+      "duration": 88993.753,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "previous_milestone": {
+    "product_head": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
+    "ci_pytest_passed": 2651,
+    "subtests_passed": 8,
+    "browser_cases": 26,
+    "scope": "M1-M3 historical milestone, not full AP3 seminar acceptance"
+  },
+  "clean_windows_ap3_acceptance": "not_performed",
+  "historical_full_equality_claim": false,
+  "regulatory_capital_claim": false,
+  "active_work_seconds": null,
+  "evernote_report": {
+    "title": "IMS | AP3 Abschlussbericht – Fachliche Integration",
+    "url": "https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8",
+    "bodyChars": 19405,
+    "sameBody": true,
+    "correctNotebook": true,
+    "saved": true,
+    "readbackAfterReload": true,
+    "observedAt": "2026-10-01T13:14:17.122Z",
+    "full_text_equal_ignoring_layout_whitespace_and_editor_header_controls": true,
+    "notebook_id": "ade45e59-57bd-4ada-abaf-dab970f2e126",
+    "notebook": "MK | 80 IMS1995-2026",
+    "note_id": "0083bd38-835b-8887-500c-7331d3014af8",
+    "screenshot_scope": "local browser proof; not committed to public repository"
+  },
+  "installed_desktop_log": {
+    "unexpected_api_500": 0,
+    "sqlite_interface_errors": 0,
+    "expected_occupied_port_failure": true
+  }
 }

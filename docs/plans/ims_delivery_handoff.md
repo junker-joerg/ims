@@ -95,53 +95,47 @@ Nach Neuladen: Titel, vollständiger Inhalt und vorgesehene Notizbuch-ID geprüf
 erkannter Browser-URL abgebrochen, keine weitere native UI-Eingabe.
 AP1-Notiz bei späterer Bearbeitung nur aktualisieren, keine Dublette.
 
-## AP3: moderne Kopplung bestätigt, Gesamtabnahme läuft
+## AP3 technisch abgenommen; Merge offen
 
-Branch `codex/ims-management-integration`, ein Draft-PR #290:
-https://github.com/junker-joerg/ims/pull/290. Basis tatsächliches main
-`2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`; origin erneut aktualisiert.
-Alle 23 alten Anforderungs-IDs bleiben im Umfang. Der Auftraggeber bestätigt
-am 01.10.2026 ausdrücklich: „Ich bestätige den Vorschlag der modernen
-Kopplung. Fahre fort.“ M4 ist damit fachlich freigegeben; keine Mergefreigabe.
+Branch `codex/ims-management-integration`, ein Integrations-PR #290:
+https://github.com/junker-joerg/ims/pull/290. Basis und erneut verifiziertes
+origin/main: `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`.
+Der Auftraggeber bestätigte am 01.10.2026 ausdrücklich die moderne Kopplung.
+M1–M5 sind im begrenzten modernen Workshopvertrag umgesetzt; alle 23 IDs
+bleiben erhalten und sind im Manifest done mit einzelnen Belegen geführt.
+Keine AP3-Mergefreigabe oder öffentliche Veröffentlichung.
 
-M1–M3 sind umgesetzt. Der letzte frühere geprüfte Produktstand d2021fc
-bestand vier CI-Checks, 2.651 Tests + 8 Subtests, 26 Browserfälle und 14
-Installer-Lifecycleprüfungen mit 26 installierten Browserfällen. Dieser
-Nachweis belegt den damaligen Zwischenstand und ersetzt M4/M5 nicht.
+Vollständiger geprüfter Produkthead `589689d63887058f5eb703e796d25d531dbfc9f7`:
+alle vier CI-Checks grün, 2.672 Tests + 8 Subtests, 30 Browserfälle und 14
+Installer-Lifecycleprüfungen mit 30 tatsächlichen installierten Browserfällen.
+Lokaler sauberer 9d53a04-Build ebenfalls 14/14 und 30/30. Der anschließende
+Fix 589689d betrifft den separaten älteren portablen Prüfpaketweg.
+Details/Zeiten und vollständige 23er-Abnahme im Abschlussbericht und den
+beiden Evidenzdateien unter `docs/reports/ims_ap3_*`.
 
-M4 ist implementiert: moderner benannter Quellen-/Zeitvertrag,
-quellenkartierte Vrvu01/Vrvn06-Kerne, Preis × gedeckte Exposition, separater
-Werbeaufwand, begrenzte Lebens-/Kranken-Quellenentscheidungen, atomare
-100er-Rechnung und bedienbare Gruppen/Parameter/Zeitfenster. Mapping:
-`docs/migration/ims_ap3_modern_strategy_bridge.md`; bestätigtes Tor:
-`docs/plans/ims_ap3_strategy_gate.md`. Historische Spartenidentität bleibt offen.
+CI-Testinstaller: https://github.com/junker-joerg/ims/actions/runs/36864280848/artifacts/11163416177.
+EXE SHA-256: `7b07b79b33386fc898943cfa41eba4cfe4f717dca0cc4ff8891a07edd96d9305`.
+Der GitHub-Prüfmerge 2dc26ef hat denselben Tree wie 589689d und ist kein
+Merge nach main. Ressourcen/Text-Zeilenenden und ZIP/EXE-Integrität geprüft.
+Installer unsigniert; neue externe Clean-Windows-AP3-Abnahme nicht durchgeführt.
 
-M5 ist implementiert: drei vollständige 100er-Fälle, portable Quellenbündel
-mit allen modernen/ICT/historischen Eingaben, festen Kapitalannahmen und
-frisch geprüfter schreibfreier Demo. Browser/Python-Ganzzahldarstellung wurde
-nach tatsächlichem Transportfehler vereinheitlicht, ohne ursprüngliche
-Validierung oder historische Digests global umzuschreiben. Preisfall:
-P100 Eigenkapital 116.015,7633 / 87.325,7633, handprüfbare Differenz
-302 × 95 = 28.690. Preisfall-Kapitalstress 150; Lebens-Anlagefall zusätzlich
-Kapitaldruck 550 gegenüber deklarierter Verlustgrenze 200.
+Bedienung: `docs/handbook/seminar_ap3.md`/`.html`, drei vollständige Dateien
+unter `seminar_cases/`; Mappings unter `docs/migration/ims_ap3_*`.
+Preisfall 302 × 95 = 28.690 Eigenkapitaldifferenz, Kapitalstress 150;
+Anlagefall zusätzlich deklarierter Kapitaldruck 550 > Verlustgrenze 200.
+Historische Vollgleichheit, regulatorische Größen, DORA-Konformität und
+endogene Gesamtmarktkopplung bleiben offen/gesperrt, keine stillen Änderungen.
 
-16 neue Kernfälle und API-/Export-/Importprüfung mit beiden Backends sowie
-aktuelle Ressourcen bestanden. Vier Seminarbrowserfälle bei 1440/390 Pixeln
-in Hell/Dunkel bestanden nach Breiten- und Bündelkorrektur. Gesamte
-30er-Browsermatrix davor 29 bestanden; kuratierte Demo danach gezielt und
-im vollständigen Seminarpfad bestanden. Aktueller zusätzlicher Kapitaldruck-
-und Handbuchpfad läuft. Die fertigen Bündel liegen in `seminar_cases/`;
-Anleitung `docs/handbook/seminar_ap3.md` und `.html`, tatsächliche Bilder.
+Nächster Schritt: aktuelle Dokumentations-Checks abwarten und PR auf Ready
+setzen; anschließend Review und gesonderte Mergefreigabe. Kein neues Paket.
 
-Nächster Schritt im selben PR: aktuellen Produktstand einschließlich aller
-Bilder committen; vollständige CI, Windows-Release-Gate und neu gebauten
-Installer mit allen 30 Browserfällen abnehmen. Erst danach Abschlussbericht,
-23 konkrete completion_evidence-Einträge und Ready bei grünen aktuellen
-Checks. Kein AP3-Merge und keine öffentliche Veröffentlichung freigegeben.
-Unabhängige frische Windows-AP3-Abnahme ist nicht durchgeführt.
-
-Der ausführliche AP2-Bericht ist vor AP3 in Evernote gespeichert und nach
-Reload geprüft. Aktueller Evernote-Browserzugang ist vorhanden; gezielte
-AP3-Titelsuche im IMS-Notizbuch ergab nur den Startauftrag, keinen AP3-Bericht.
-Nach technischer Abnahme vollständigen AP3-Bericht dort anlegen und erneut
-lesen; keine Dublette. Die ältere AP1-Notiz benötigt gesonderte Aktualisierung.
+Vollständiger AP3-Bericht in Evernote: https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8.
+Titel „IMS | AP3 Abschlussbericht – Fachliche Integration“, Notizbuch
+„MK | 80 IMS1995-2026“ und ID geprüft; nach vollständigem Neuladen
+„Alle Änderungen gespeichert“. Alle 19.405 Textzeichen entsprechen dem
+Bericht inklusive Tabellen; Vergleich ohne Layoutleerraum/Editor-
+Überschriftenbedienelemente bestanden. Sichtbarer lokaler Bildnachweis
+gespeichert; Kontenansicht nicht ins öffentliche Repository aufgenommen.
+Rücklesezeit UTC: 2026-10-01T13:14:17.122Z. Keine Dublette; gezielte Suche
+vorher ergab nur den AP1/AP2/AP3-Startauftrag. AP2-Bericht war bereits
+vor AP3 vollständig abgelegt. Alte AP1-Notiz bleibt gesonderter Rückstand.

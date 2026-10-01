@@ -9,49 +9,32 @@ Der Planprüfer erzeugte den AP3-Auftrag aus diesem tatsächlichen main-Stand.
 
 | Meilenstein | Anforderungs-IDs | Status / Abnahme |
 | --- | --- | --- |
-| M1: ICT-/DORA-Wirkungskette | PR179–186 | implementierter Zwischenstand: gerichteter Quellenvertrag, Ereignisse, Stunden-/Periodenskala, Kapazität/Rückstand/Erholung, gemeinsame Anbieter, Gegenmaßnahmen, deklarierte Modellbilanz und Dossier; technische Nachweise unten, Gesamtabnahme AP3 offen |
-| M2: Geführter Lauf | PR187, PR187a–c | implementierter Zwischenstand: 100 vollständige Kontexte, frischer Bau, atomare unveränderliche Speicherung und tatsächlicher PR151-Lauf/Export mit echten Prefixnachweisen; Laufindex ausdrücklich auf 0 begrenzt, technische Belege in Mapping/Handbuch |
-| M3: Vier Sparten | PR187d–f | implementierter Zwischenstand: ausdrücklich gemeinsamer Quellenvertrag, frische Rechnung beider Seiten/Carryover/Prefixe und digestgleiche Anzeige/CSV/JSON/XLSX; technische Belege im Mapping |
-| M4: Belegte Strategiewirkung | PR187g–k | moderne Kopplung ausdrücklich bestätigt; Quellen-/Zeitvertrag und begrenzter Adapter mit Preis × gedeckter Exposition angelegt, technische/API/UI-Abnahme läuft. Historische Spartenidentität bleibt offen. |
-| M5: Seminar | PR188–190 | implementiert: drei vollständige 100er-Strategiefälle, portable Quellenbündel, frische schreibfreie Demo, deklarierte Kapitalannahmen, aktuelles Offline-Handbuch/Bilder; Gesamtbrowser-, Release-Gate- und frische Installerabnahme laufen. |
+| M1: ICT-/DORA-Wirkungskette | PR179–186 | technisch abgenommen: gerichteter Quellenvertrag, Zeitadapter, Ereignisse, Rückstand/Nacharbeit, gemeinsame Anbieter, Gegenmaßnahmen, Modellbilanz und vollständige Exporte |
+| M2: Geführter Lauf | PR187, PR187a–c | technisch abgenommen: 100 vollständige Kontexte, 107 frische Kandidaten, atomare idempotente Speicherung, tatsächliche Prefix-/100er-Läufe und ZIP; Laufindex 0 |
+| M3: Vier Sparten | PR187d–f | technisch abgenommen: erklärter Quellenvertrag, frische 100er-Rechnung beider Seiten, Carryover/Bilanzinvarianten und digestgleiche UI/Exports |
+| M4: Belegte Strategiewirkung | PR187g–k | bestätigter moderner Vertrag umgesetzt und abgenommen: kartierte Regelkerne, benannte Gruppen/Einheiten/Fenster, Preis × Exposition, begrenzte Leben/Kranken-Kanäle, handprüfbare Wirkung 302 × 95 |
+| M5: Seminar | PR188–190 | technisch abgenommen: drei volle 100er-Fälle, Kapitaldruck, portable Bündel/frische Demo, Offline-Anleitung/Bilder und vollständiger installierter Seminarpfad |
 
-Keine Anforderung ist durch diesen Plan bereits abgenommen. AP3 bleibt
-in_progress; completion_evidence wird erst für tatsächliche Abnahmen ergänzt.
-Ein noch nicht abgenommener Teil wird ausdrücklich benannt und nicht als done geführt.
+Alle 23 Anforderungen sind im bestätigten begrenzten Umfang abgenommen und
+mit konkreten completion_evidence-Einträgen im Manifest done dokumentiert.
+Geprüfter Produkthead 589689d: vier grüne CI-Checks, 2.672 Tests + 8 Subtests,
+30 Browserfälle, 14 Installer-Lifecycleprüfungen einschließlich 30 Browserfällen
+gegen die installierte EXE. Lokal sauberer 9d53a04-Installer ebenfalls 14/14
+und 30/30. Der zunächst fehlende Ressourcenweg im portablen Prüfpaket ist durch
+589689d und einen echten Staging-/Backend-Regressionsfall behoben.
 
-M1-Nachweise: 23 neue Kern-/API-Prüfungen einschließlich großer Excel-Quelle, 70 bestehende Bilanz-/API-
-Regressionen, sechs reale Browserfälle (drei Größen, zwei Farbmodi) und
-TypeScript-/Vite-Build bestanden. Fachliche Zuordnung und Grenzen:
-`docs/migration/ims_ap3_ict_workshop.md`; Bedienung:
-`docs/handbook/ict_ap3.md`. Es handelt sich um einen deklarierten Bilanzoverlay,
-noch nicht um automatische Markt-/Vier-Sparten-Kopplung.
+Vollständige Anforderungszuordnung, Messzeiten, Artefakte, SHAs und Grenzen:
+`docs/reports/ims_ap3_abschlussbericht.md`, `ims_ap3_ci_evidence.json` und
+`ims_ap3_p52_evidence.json`. Moderne Quellenkartierung:
+`docs/migration/ims_ap3_modern_strategy_bridge.md`; aktuelle Seminarhilfe:
+`docs/handbook/seminar_ap3.md` und `.html`. M1–M3-Mappings und Teilanleitungen
+bleiben erhalten. Frühere Zwischenstandsbelege beschreiben ihre jeweiligen
+Produkt-SHAs, nicht nachträglich den ganzen Seminarpfad.
 
-M2-Nachweise: 16 neue Kern-/API-Prüfungen und 30 bestehende Bau-/Auflösungs-
-Regressionen, vier reale Browserfälle und Build bestanden. Mapping/Bedienung:
-`docs/migration/ims_ap3_guided_period_chain.md`, `docs/handbook/hundred_ap3.md`.
-Der bestehende Globalperiodenexport wird erhalten; gemeinsame Prefixe sind hier
-für Laufindex 0 freigegeben. Ein zusätzlicher Negativfall sperrt ungültige
-Profil-IDs vor dem frischen Bau. Gesamtpaket bleibt in_progress.
-
-M3-Nachweise: 49 neue und bestehende Kern-/API-Bilanzprüfungen bestanden
-(70,98 s), darunter 13 neue Tests. Vier reale Browserfälle bestanden bei
-1440/390 Pixeln in Hell/Dunkel: 100er-Resultat, drei tatsächliche Downloads,
-Kapitalübergabe und erneute Quellenbindung. Vollständige Browser-/Gate-Evidenz
-wird im Zwischenbericht festgehalten. Mapping/Bedienung:
-`docs/migration/ims_ap3_management_case.md`, `docs/handbook/management_ap3.md`.
-Die M3-Eingabevarianten sind exogen und ersetzen M4 nicht. Der Auftraggeber
-hat die moderne Kopplung inzwischen ausdrücklich bestätigt. M4/M5 verwenden
-einen eigenen erklärten Quellen-/Abrechnungsvertrag; das alte M3-Verhalten
-bleibt ein separater Eingabevergleich.
-
-Technischer Gesamtzwischenstand d2021fc: alle vier CI-Checks bestanden;
-2.651 Tests und 8 Subtests im Windows-Gate, 26/26 Browserfälle, 14/14 echte
-Installer-Lifecycleprüfungen einschließlich 26/26 Browserfällen gegen die
-installierte EXE. Auch lokal Installations-/Update-/Datenerhaltweg und alle
-26 Browserfälle bestanden. Der eingefrorene Worker-Einstieg und parallele
-SQLite-Metadatenabfragen sind mit dokumentierten Ursachen behoben. Genaue
-SHAs, Artefakte, Zeiten und Grenzen: `docs/reports/ims_ap3_abschlussbericht.md`
-und die beiden AP3-Evidenzdateien. Das ist keine M4-/M5-Seminarabnahme.
+Ready erst nach grünen Checks des aktuellen Dokumentations-Heads. AP3-Merge
+und öffentliche Veröffentlichung bleiben offen. Eine neue unabhängige
+frische Windows-AP3-Abnahme wurde nicht durchgeführt. Für abhängige Pakete
+zählt erst der nach main übernommene Status; kein neues Paket begonnen.
 
 ## Quellen und konservative Annahmen
 
@@ -81,7 +64,7 @@ Rechnung und Speicherung; Inputs werden nicht verändert.
 
 Jeder Meilenstein erhält passende Kern-/API-Prüfungen, Anschluss in der AP2-UI
 und Benutzeranleitung. Reale Browser prüfen breite/schmale Ansichten, Fehler,
-Zustand/Freigaben und echte Exporte. Zum Paketabschluss folgen vollständiger
+Zustand/Freigaben und echte Exporte. Zum Paketabschluss bestanden vollständiger
 Windows-Release-Gate, aktualisiertes Installationsartefakt und Seminarpfad.
 Messzeiten werden getrennt von unbekannter aktiver Arbeitszeit dokumentiert.
 

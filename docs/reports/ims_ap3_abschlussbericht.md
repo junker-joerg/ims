@@ -1,232 +1,131 @@
-# AP3: Integration vollständig umgesetzt – Gesamtabnahme läuft
+# AP3 Abschlussbericht – Fachliche Integration
 
-Aktueller Fortsetzungsstand 01.10.2026: Der Auftraggeber hat die moderne
-Kopplung ausdrücklich bestätigt. M4 mit Gruppen/Einheiten/Abrechnung und
-begrenzten Strategieregeln sowie M5 mit drei 100er-Fällen, portablen Bündeln,
-Kapitalannahmen, frischer schreibfreier Demo und Offline-Anleitung sind
-implementiert. Technische Gesamtprüfungen und frische Installerabnahme laufen.
-Aktuelle Quellen und Bedienung: `../migration/ims_ap3_modern_strategy_bridge.md`,
-`../handbook/seminar_ap3.md`; genauer Fortsetzungsstand:
-`../plans/ims_delivery_handoff.md`. Kein AP3-Merge freigegeben.
+Stand: 01.10.2026. **M1–M5 sind im bestätigten modernen Workshopumfang umgesetzt und technisch abgenommen.** AP3 bildet einen Integrations-PR #290. Merge und öffentliche Veröffentlichung sind noch nicht freigegeben. Dieser Bericht ersetzt den früheren Zwischenbericht mit dem inzwischen beantworteten M4-Entscheidungstor.
 
-Der folgende dokumentierte Stand war der frühere Zwischenbericht vor der
-Bestätigung. Seine M4-/M5-Blocker und Artefakte beschreiben ausschließlich
-diesen historischen Stand; der endgültige Bericht ersetzt ihn nach den
-vollständigen Abnahmen. Kein vergangenes Artefakt wird als aktueller Installer
-für die neuen M4/M5-Funktionen ausgegeben.
+## Auftrag und überprüfte Grundlage
 
----
+Der Auftraggeber bestätigte den erfolgreichen AP2-Test auf einem anderen Rechner und verlangte vor AP3 den ausführlichen Bericht in Evernote. Diese Reihenfolge wurde eingehalten. AP2-PR #289 wurde am 01.10.2026 um 09:48:11 Uhr Berlin nach grünen Checks übernommen; tatsächliches main ist `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`. Der [AP2-Bericht in Evernote](https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c) wurde vor AP3 gespeichert und nach Neuladen vollständig geprüft.
 
-# AP3: Zwischenbericht – Fachliche Integration
+Die wissenschaftlich erforderliche neue Abrechnungsgrundlage wurde zunächst als konkreter Vorschlag dokumentiert. Der Auftraggeber bestätigte danach ausdrücklich: „Ich bestätige den Vorschlag der modernen Kopplung. Fahre fort.“ Das schließt das M4-Entscheidungstor für diesen begrenzten modernen Vertrag. Es belegt keine historische Identität der anonymen Schadenpositionen mit Kfz/Sach.
 
-Stand: 01.10.2026, 12:32 Uhr Europe/Berlin. **AP3 läuft, keine Abschluss- oder
-Seminarfreigabe.** Der Bericht hält einen implementierten, technisch geprüften
-Zwischenstand und ein konkretes fachliches Entscheidungstor fest.
+Branch: `codex/ims-management-integration`; [PR #290](https://github.com/junker-joerg/ims/pull/290). Geprüfter vollständiger Produkthead: `589689d63887058f5eb703e796d25d531dbfc9f7`. M4/M5 wurden in `9d53a04cd2da149ef515b2158b541ac35585754a` aufgenommen; 589689d ergänzt den vollständigen Ressourcenweg des älteren portablen Prüfpakets. Die nachfolgenden Bericht-/Manifeständerungen ändern die fachliche Rechnung nicht. Ready wird erst nach grünen Checks des aktuellen Dokumentations-Heads gesetzt.
 
-## Auftrag, Grundlage und Ablage
+## Nutzbarer Seminarpfad
 
-Der Auftraggeber hat AP2 auf einem anderen Rechner erfolgreich getestet und
-AP3 beauftragt; weitere Verbesserungen der Oberfläche folgen später.
-AP2-PR #289 wurde um 09:48:11 Uhr Berlin nach vier grünen Checks gemergt,
-Merge `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`. GitHub und origin/main
-wurden erneut geprüft. Angaben zu OS, Checkliste und Prüfdauer des externen
-AP2-Tests fehlen; sie werden nicht als bekannte Einzelabnahmen ausgegeben.
+Im Managementseminar können Anwender drei vollständige 100-Perioden-Fälle öffnen, einen VU-/VN-Kanal und eine Gruppe auswählen, Parameter sowie inklusive Aktivierungsfenster ändern und beide Seiten frisch berechnen. Die Perioden 1–5 bleiben gemeinsamer Anfang; Änderungen beginnen ab Periode 6. Eingabevergleich, Entscheidungskette, vier Sparten und Gesamtbilanz zeigen denselben geprüften Inhalt. CSV, JSON und Excel werden tatsächlich heruntergeladen und enthalten die vollständigen Quellen.
 
-Der ausführliche AP2-Bericht wurde **vor AP3** im Evernote-Notizbuch
-`MK | 80 IMS1995-2026` gespeichert und nach vollständigem Neuladen erneut
-gelesen: Titel, vollständiger Bericht, Merge, Prüfsummen, Testmatrix und
-Notizbuch-ID `ade45e59-57bd-4ada-abaf-dab970f2e126` geprüft;
-„Alle Änderungen gespeichert“. Die
-[AP2-Notiz](https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c)
-ist der Ablagenachweis. Eine zusätzliche native Bildschirmaufnahme wurde
-wegen nicht sicher erkannter Browser-URL abgebrochen. Keine weitere native
-UI-Eingabe und keine behauptete Bilddatei. Die ältere AP1-Notiz ist gesondert
-mit dem Merge-/Abnahmestand zu aktualisieren.
+Die gewählte Bilanzseite lässt sich mit ihrem Quellen-Digest in die Modellkapitalansicht übergeben. Explizit bereitgestellte Begleitquellen öffnen die ICT-Wirkungskette und den geführten historischen 100er-Pfad. Ein unveränderliches Quellenbündel enthält alle drei Wege und deklarierte Kapitalannahmen. Sein Import wird frisch geprüft und zunächst als schreibfreie Demo geöffnet; Änderung und Speicherung erfordern die sichtbaren jeweiligen Aktionen.
 
-AP3 bleibt ein Branch `codex/ims-management-integration` und ein
-[Draft-PR #290](https://github.com/junker-joerg/ims/pull/290).
-Implementierung: M1 `bcfe3de`, vollständiges großes ICT-Excel-Dossier
-`1d7eada`, geführte Ketten und Vier-Sparten-Rechnung
-`a0e1c279048f3e6b14335d4a446f028510c486fd`; anschließend Spawn-Bootstrap
-für den eingefrorenen 100er-Worker `762782a`. Die Berechnungs-/API-Module
-bleiben beim Bootstrap-Fix unverändert.
-Danach parallele Metadatenabfragen unter CPython 3.12 abgesichert:
-`d2021fcd0adaaed42be0e65dd696df01f1f6efe2`. Die neu beobachtete Verbindungs-/Statementcache-Konkurrenz ist
-reproduziert und durch vollständige Serialisierung der Repositoryzugriffe
-einschließlich erster Lazy-Erzeugung behoben; keine Änderung fachlicher
-Modellregeln oder Metadaten-IDs.
-Alle 23 bisherigen Anforderungs-IDs bleiben erhalten; Manifeststatus
-`in_progress`, Gesamtabnahmebelege noch leer. Kein AP3-Merge freigegeben.
+Die Anleitung `docs/handbook/seminar_ap3.md` und das installierte Offline-HTML enthalten Bedienung, fachliche Deutung, einen 90-Minuten-Moderationsvorschlag und fünf tatsächliche aktuelle Seminarbilder. Die 90 Minuten sind eine Moderationsplanung, keine gemessene Nutzungsdauer. Ältere PR178a-Unterlagen bleiben als historische Modellhilfe gekennzeichnet.
 
-## Anwendernutzen und tatsächlicher Produktstand
+## Umsetzung, Quellen und Migrationsannahmen
 
-| Meilenstein | Tatsächliches Verhalten | Grenze / Restpunkt |
+| Meilenstein | Ergebnis und Herkunft | Ausdrücklicher Umfang |
 | --- | --- | --- |
-| M1, PR179–186 | Services hängen gerichtet von Assets/Anbietern ab; ausdrückliche Ereignisse wirken auf Stunden, Kapazität, ursprünglichen Rückstand und Nacharbeit. Gemeinsamer Ausfall, Erholung, Prävention/Fallback/Wiederanlauf und Kosten sind prüfbar. UI und Quellen-Dossier zeigen Modellbilanz und Anbieterabhängigkeiten. | Eigene deklarierte ICT-Workshop-Schicht mit Bilanzoverlay; noch keine automatische historische Markt-/Vier-Sparten-Kopplung. |
-| M2, PR187/187a–c | Seed erzeugt 100 vollständige, änderbare Kontexte. 107 Kandidaten für 2/5/100 Perioden werden frisch gebaut; eine falsche späte Quelle blockiert atomar. Explizite SQLite-Speicherung ist unveränderlich/idempotent; echte Prefixläufe und PR151-100er mit ZIP anschließbar. | Ein VU/ein VN und zwei anonyme Vdefmd6-Positionen im synthetischen Fall. Gemeinsamer Prefixweg ausdrücklich nur Laufindex 0. |
-| M3, PR187d–f | Vollständige gemeinsame Quellen binden jede Sparte per Digest und wirtschaftlicher Erklärung. Beide Seiten werden frisch gerechnet; periodische Bilanz, Carryover und kurze Prefixe stimmen. UI, CSV, JSON und Excel stammen aus derselben Rechnung. Gewählte geprüfte Seite geht an die Modellkapitalansicht. | Additive Vier-Sparten-Modelle, keine endogene All-Sparten-Marktreaktion. Vorlagen ändern exogene Eingaben ab Periode 6 und führen noch keine Katalogstrategie aus. |
-| M4, PR187g–k | Quellenbefund und prüfbarer konkreter Workshop-Vertragsvorschlag vorhanden. | Fachliche Modellgrundlage vor Adapter offen; angefragt, keine Antwort. Kein Strategieadapter oder 100er-Strategiewirkungsnachweis behauptet. |
-| M5, PR188–190 | Drei Eingabevorlagen, ICT-Fall, reale Teilpfad-Anleitungen/Bilder und Moderationsentwurf für Review vorhanden. | Strategieabhängige Seminarfälle, portable Bündel/Import-/Demopfad und vollständiger installierter Seminarpfad fehlen. |
+| M1 | `ims/ict` erklärt gerichtete Services, Assets, Anbieter, Ereignisse, Zeitmaß, Kapazität, ursprünglichen Rückstand, Nacharbeit und Erholung. Prävention, Fallback, Wiederanlauf und Kosten wirken nachvollziehbar auf einen deklarierten Bilanzoverlay. ESS.C Zeitablauf und IMSDATA.C Perioden-/Schockstrukturen wurden kartiert. | Moderne ICT-Workshop-Erweiterung; keine portierte historische DORA-Funktion und keine automatische DORA-Konformitätsprüfung. |
+| M2 | `api/guided_period_chain.py` baut aus Seed 1300 und 100 vollständigen Kontexten frisch 107 Kandidaten. Bestehende Profile/Kettenprüfer und der PR151-Runner werden genutzt. SQLite-Speicherung ist atomar, idempotent und unveränderlich; echte 2er-/5er-Prefixläufe und ein 100er-Lauf mit ZIP sind bedienbar. | Der synthetische historische Weg hat einen VU, einen VN und zwei anonyme Schadenpositionen. Der gemeinsame Prefixvertrag gilt ausdrücklich für Laufindex 0. |
+| M3 | `accounting/management_case.py` verbindet ausdrücklich benannte vollständige Quellen der vorhandenen Nichtleben-, Lebens-, Kranken- und Vier-Sparten-Modelle. Beide Seiten werden frisch gerechnet; Carryover, A = L + E, Prefixe und digestgleiche Exporte sind geprüft. | Additive Modellbilanzen mit erklärten exogenen Quellen. Keine erfundene gemeinsame historische Szenario-ID oder endogene Marktgleichgewichtsrechnung. |
+| M4 | `strategies/modern_bridge.py` deklariert Gruppen, gedeckte Expositionen, Einheiten, Ziehungen, Parameter und Zeitfenster. Kartierte Vrvu01-/Vrvn06-Kerne erzeugen Angebote und VN-Auswahl. Preis × gedeckte Exposition wird gebucht; Werbung einmal je betrachteter VU/Sparte als separater Aufwand. Begrenzte Lebens-/Krankenentscheidungen verändern tatsächliche vorhandene Quellenflüsse. | Zwei ausdrücklich moderne Nichtlebenkanäle; nur VU 1 wird bilanziert, Rivalen liefern Angebote. Die Lebens-/Krankenkanäle sind moderne Quellenentscheidungen. |
+| M5 | `seminar_bundle.py`, `seminar_capital.py`, `modern_presets.py`, Seminar-API und `SeminarWorkbench.tsx` liefern drei komplette Fälle, portable Import-/Demoprüfung, Modellkapitalannahmen, Begleitquellen, aktuelle Anleitung und den installierten vollständigen Seminarpfad. | Die drei Rechenwege bleiben getrennt erkennbar. Das Bündel behauptet keine automatische gegenseitige Kopplung von ICT, altem Marktkern und moderner Bilanz. |
 
-Die deklarierte Vier-Sparten-Baseline endet nach 100 Perioden bei Aktiva
-89.700,0000, Verpflichtungen 2.200,0000 und Eigenkapital 87.500,0000
-Modellwährung. Der Kostenfall endet in der Variante bei Eigenkapital
-72.300,0000. Diese Werte sind geprüfte Workshop-Annahmen, keine historischen
-Unternehmensdaten oder Kalibrierung.
+Die relevanten historischen Stellen sind IMS.E Vrvu01, Kapitel 3.3.1.1 (Zeilen 1083–1169), Vrvn06, Kapitel 3.3.2.3 (3517–3786), sowie IMSDATA.C Pr/Wa/Rs/Vn/Sa/Sh (199–226). Historische Preis-/Werbeziele sind keine gesamten Prämieneinnahmen. In Periode 1 bleiben Anfangsangebote und Anfangsverträge erhalten. Später wirkt die vollständig enthaltene Folge von vier Ziehungen je VU; der VN wählt das billigste Angebot und versichert bei Schadenindikator <= Schwelle. Gleiche Angebote werden nach aufsteigender VU-ID aufgelöst.
 
-## Quellen und Migrationsannahmen
+Der neue Vertrag heißt `ims.modern-strategy-input.v1`, das Resultat `ims.modern-strategy-result.v1`. Entscheidungen erfolgen vor der Periodenabrechnung, Strategiefenster sind inklusive. Ursprüngliche Pläne gelten außerhalb eines Fensters; kein verdecktes Fortschreiben letzter Parameter. Regelkerne erhalten ihre bisherige float-Semantik; beim Übergang zur Modellwährung wird explizit auf vier Nachkommastellen mit ROUND_HALF_EVEN gerundet. Einzelne Gruppenbuchungen werden gerundet und dann mit Decimal addiert. Informationskosten sind ausdrücklich null; alte Reservenverzinsung wird nicht doppelt gebucht.
 
-ESS.C `main/sy_simltp`, IMSDATA.C Perioden-/Schockstrukturen und IMS.E
-VU-/VN-Regeln wurden gelesen. Diskrete alte Perioden belegen keine reale
-Stundenlänge. Die neue ICT-Schicht deklariert diese Übersetzung ausdrücklich.
-M2 verwendet die bestehenden Kandidaten-/Profilmaterialisierer und
-Kettenprüfer, ohne Testmodule aus dem Produkt zu importieren. In-memory-Profile
-erhalten dieselben Prüfungen wie der bisherige Dateiprofilweg. SQLite-/
-Referenzläufe laufen über die bestehenden kontrollierten Wege.
+Leben verzinst tatsächliche Anfangsaktiva. Policen, Garantien, Ablaufleistungen und exogene Todesfälle bleiben erhalten. Kranken rechnet Beiträge auf Anfangspolicen; Neugeschäft/Abgänge verändern den nächsten Bestand. Schäden und Leistungen bleiben vollständig erklärte exogene Quellen, auch wenn ein VN den Anbieter wechselt. Kein versteckter RNG und kein I/O im reinen Adapter.
 
-M3 nutzt die vorhandenen Nichtleben-, Lebens-, Kranken- und Vier-Sparten-
-Modelle. Nichtleben und Leben bekommen keine erfundene gemeinsame technische
-Szenario-ID; der gemeinsame Vertrag bindet den genauen Inhalt ausdrücklich.
-Mortalität, Schäden und Leistungsannahmen bleiben als exogen erkennbar.
+Ausführliche Mappings: `docs/migration/ims_ap3_ict_workshop.md`, `ims_ap3_guided_period_chain.md`, `ims_ap3_management_case.md`, `ims_ap3_modern_strategy_bridge.md`. Das bestätigte Tor steht in `docs/plans/ims_ap3_strategy_gate.md`.
 
-Fachliche Details: `docs/migration/ims_ap3_ict_workshop.md`,
-`ims_ap3_guided_period_chain.md`, `ims_ap3_management_case.md`.
-Bedienung: `docs/handbook/ict_ap3.md`, `hundred_ap3.md`, `management_ap3.md`.
-Moderation: `docs/handbook/seminar_ap3_draft.md`, ausdrücklich Arbeitsentwurf.
+## Handprüfbare Reaktionen und vollständige Fälle
 
-## Prüfstand und gemessene Zeiten
+| Fall | Baseline-Eigenkapital P100 | Variante-Eigenkapital P100 | Belegte Deutung |
+| --- | ---: | ---: | --- |
+| Preis / Werbung | 116.015,7633 | 87.325,7633 | Ab P6 eigenes Kfz-Angebot 3,6 statt 3,0; Rivalenangebot 3,2. Alle 100 gedeckten Kfz-Expositionen wechseln zum Rivalen: eigene Prämie fällt von 300 auf 0, eigener Werbeaufwand steigt um 2. Differenz 302 je Periode × 95 Perioden = 28.690. |
+| Inflation | 107.465,7633 | 118.865,7633 | Schäden/Leistungen steigen exogen auf beiden Seiten. Die Variante erzielt in den beiden Nichtlebenkanälen und Kranken zusammen 120 zusätzliche Einnahmen je Periode ab P6; 120 × 95 = 11.400. |
+| Lebensanlage / Kapitaldruck | 116.015,7633 | 117.045,6230 | Der Lebenssatz steigt ab P6 von 0,0005 auf 0,001 auf tatsächliche Anfangsaktiva. Carryover und Zinswirkung werden periodisch verfolgt. Separat deklarierter Kapitalstress 550 verletzt die Verlustgrenze 200. |
 
-| Prüfung | Ergebnis / Messung |
+Preisfall-Kapitalannahmen: Assetverlust 100 plus operationeller Modellverlust 50 = Netto-Stress 150; deklarierte Verlustgrenze 200 und Mindest-Eigenmittel-Proxy 1.000 werden eingehalten. Variante: verbleibender Eigenmittel-Proxy 87.175,7633. Im Anlagefall ergibt der getrennte Stress 550 einen verbleibenden Proxy 116.495,6230; die Verlustgrenze ist verletzt, die Mindesthöhe weiterhin erfüllt. Diese Annahmen sind unkalibriert, fest datiert und vollständig im Bündel enthalten. Sie verändern nicht nachträglich die gebuchte Bilanz. Eigene geänderte Kapitalparameter werden getrennt exportiert; das Seminarbündel enthält seine kanonischen Vorlagenannahmen.
+
+Alle drei Dateien unter `seminar_cases/` enthalten 100 vollständige moderne, ICT- und historische Kontexte sowie alle Profil-/Zufallswerte. Erzeugung: `.venv\Scripts\python.exe scripts\planning\build_seminar_cases.py`. Bündel- und Quellen-Digests werden beim Import neu geprüft. Das Quellenbündel ist kein Link auf versteckte lokale Datenbanken.
+
+## Abnahme aller 23 Anforderungs-IDs
+
+| ID | Konkreter Abnahmebeleg |
 | --- | --- |
-| M1 neue Kern-/API-Prüfungen inkl. großem Excel-Quellenvertrag | 23 bestanden, 3,12 s |
-| M2 neue Kern-/API-Prüfungen inkl. tatsächlichem 100er/Prefix und ungültiger Profil-ID | 16 bestanden, 36,39 s |
-| M3 neue Kern-/API-Prüfungen | 13 bestanden; mit 36 bestehenden Bilanzprüfungen 49 bestanden, 70,98 s |
-| Weitere vorhandene Regressionen | 70 Bilanz-/API- und 30 Kandidaten-/Kettenprüfungen bereits bestanden; keine Summierung als Gesamtzahl unterschiedlicher Tests |
-| TypeScript-/Vite-Build | bestanden; Größenwarnung zum Haupt-Chunk knapp über 500 kB |
-| Erste vollständige Browsermatrix | 25/26 bestanden; Fehler der leeren Ergebnisübersicht gefunden und behoben |
-| Gezielte Wiederprüfung danach | Navigation/Invalidierung und neuer Vier-Sparten-Übersichtsweg beide bestanden, 57,6 s |
-| Parallele Metadaten-/Import-/Desktop- und Run-Control-Prüfungen | 73 + 14 passende Tests bestanden (2,58 s / 1,09 s); 7.200 parallele Lesegruppen mit bis zu vier Abfragen: vor Fix 1.220 fehlerhafte Gruppen, danach alle 28.800 Abfragen ohne Fehler |
-| Vollständige Browsermatrix a0e1c27 | alle 26 bestanden: lokal 426,536 s, CI 280,091 s; keine übersprungenen/flaky Fälle |
-| Vollständiger lokaler Windows-Release-Gate a0e1c27 | 2.649 Tests und 8 Subtests bestanden, pytest 895,99 s; Gate inkl. Build, Korpus-/Bundle-/Staging-/Paketprüfungen bestanden, gesamte Gate-Dauer 931,196 s |
-| Letzter CI-Produktstand d2021fc | alle vier Checks bestanden: Plan, Browser, Installer und Windows-Release-Gate; pytest 2.651 Tests und 8 Subtests, 781,93 s, eine bekannte Starlette-Deprecation; vollständige Entwicklungsbrowsermatrix 26/26 in 348,998 s |
-| AP3-Installer nach Spawn-Fix 762782a | lokal 14 Lifecycleprüfungen inklusive aller 26 tatsächlichen Browserfälle bestanden (471,809 s); CI ebenfalls bestanden. Dieser Stand wurde anschließend durch d2021fc ersetzt. |
-| Aktueller Installer d2021fc auf P52 | 14/14 Lifecycleprüfungen, eingebettete Browsermatrix 26/26; insgesamt 464,509 s, Browsermatrix 393,385 s. Keine übersprungenen/flaky Fälle; kein SQLite-InterfaceError oder unerwarteter API-500. Der erwartete Fehler beim absichtlich belegten Port bleibt im Log. |
-| Aktueller CI-Installer d2021fc | 14/14 Lifecycleprüfungen, Browser gegen die installierte EXE 26/26; insgesamt 312,170 s, Browsermatrix 253,456 s. Vollständiger M4-/M5-Seminarpfad und unabhängige AP3-Abnahme weiter offen. |
+| PR179 | Gerichtete Service-/Asset-/Anbieterbeziehungen, Eigentümer und vollständiger Quellenvertrag; ICT-Kern/API/UI. |
+| PR180 | Ereignistypen und ihre Wirkungen getrennt erklärt und negativ geprüft. |
+| PR181 | Explizite Stunden-/Periodenübersetzung; keine erfundene historische Stundenlänge. |
+| PR182 | Nachfrage, Kapazität, ursprünglicher Rückstand, Nacharbeit und Erholung über Perioden; deterministische Tests. |
+| PR183 | Gemeinsame Anbieter-/Ausfallwirkung ohne doppelte Verlustzählung. |
+| PR184 | Inklusive Präventions-/Fallback-/Wiederanlauffenster und gebuchte Kosten. |
+| PR185 | Deklarierter Bilanzoverlay, Eigenmittel-Proxy und Workshop-Grenzen; regulatorische Größen gesperrt. |
+| PR186 | ICT-Zeitlinie, vollständiges Quellen-Dossier und echte CSV-/JSON-/Excel-Ausgabe. |
+| PR187 | Geführte 100er-Eingabe mit geprüftem Expertenweg, Fehler- und Freigabezuständen. |
+| PR187a | Alle 100 Kontexte/99 Übergänge und deterministischer Seedkanal; fehlerhafter später Kontext sperrt vollständig. |
+| PR187b | 107 frisch gebaute Kandidaten, atomare idempotente unveränderliche Speicherung. |
+| PR187c | Tatsächliche 2er-/5er-Prefixläufe und PR151-100er-Worker mit ZIP im installierten Browserpfad. |
+| PR187d | Erklärter gemeinsamer vollständiger Vier-Sparten-Quellenvertrag mit Inhaltsbindungen. |
+| PR187e | Frische Rechnung beider Seiten bis P100, Carryover, Bilanzinvarianten und echte kürzere Prefixe. |
+| PR187f | Vier Sparten plus Gesamtbilanz in UI und gleichen CSV-/JSON-/Excel-Ergebnissen. |
+| PR187g | Bestätigter moderner Gruppen-/Einheiten-/Zeitvertrag und kartierte Regelquellen; historische Spartenidentität offen benannt. |
+| PR187h | Zwei begrenzte moderne Nichtlebenkanäle mit Vrvu01/Vrvn06 und expliziter Preis-/Mengenabrechnung. |
+| PR187i | Lebens-Anfangsaktiva und Kranken-Anfangspolicen/Neugeschäft/Abgänge; vorhandene Garantien und exogene Flüsse erhalten. |
+| PR187j | Regel-/Gruppen-/Parameter-/Fenstereingabe bei 1440/390 Pixeln, Hell/Dunkel; alte Resultate/Freigaben werden invalidiert. |
+| PR187k | Handprüfbare Entscheidung → VN-Wechsel → Prämie/Werbung → P100-Bilanz: 302 × 95. |
+| PR188 | Drei kuratierte vollständige Fälle mit Preis-/Inflations-/Anlagewirkung, tatsächlichem Kapitaldruck 550 und ICT-Begleitquelle. |
+| PR189 | Vollständige portable Quellenbündel, frische schreibfreie Demo, fünf aktuelle Bilder und Offline-Moderationsanleitung. |
+| PR190 | Neu gebauter tatsächlicher Installer: kompletter Seminarpfad samt Bilanz, Kapital, ICT, 100er-Lauf, Export; vollständiger Release-Gate bestanden. |
 
-Browser prüfen tatsächliche Rechnungen/Downloads, breite/schmale Ansichten,
-Hell/Dunkel, Zustand, Fehler, Quellenfreigaben und axe. Der Übersichtsfehler
-betraf die Sichtbarkeit des leeren Zustands, nicht fachliche Rechnungen oder
-Exports. API-Prüfungen laufen mit beiden Backendvarianten. Ungültige Quellen
-erzeugen keinen Digest und keine Teilresultate oder stille Datenbankanlage.
+Alle IDs stehen unverändert im Manifest. Die Abnahme gilt für die konkret bestätigten begrenzten Reaktionskanäle. Abhängige neue Pakete dürfen erst den nach main übernommenen Status verwenden.
 
-CI-Browserbericht:
-[Run 36844444210](https://github.com/junker-joerg/ims/actions/runs/36844444210),
-[Artefakt 11153072036](https://github.com/junker-joerg/ims/actions/runs/36844444210/artifacts/11153072036).
-Der heruntergeladene ZIP-Digest stimmt mit GitHub überein:
-`15c5e745a7d33e4f5066db1510d66faa1d784c7e1451f6642632942ca6cbebce`.
-Der CI-SHA `7673bc083038b7b20477d5693de0f26f1c1e34f9` ist GitHubs synthetischer
-PR-Prüfmerge, keine Übernahme nach main. Seine Eltern sind main 2e70b8f und
-Produkthead a0e1c27; vollständiger Tree `cb23a042e2862e67b5d7cbd3914478cbdeb8bbe1`
-identisch mit dem Produkthead, über die GitHub-Commitdaten geprüft.
+## Technische Prüfungen und Messzeiten
 
-Die erste CI-Installerprüfung
-[Run 36844444142](https://github.com/junker-joerg/ims/actions/runs/36844444142)
-belegte die fehlende Behandlung der Multiprocessing-Workerargumente. Der
-EXE-Einstieg ruft nun vor dem Desktop-Import `freeze_support()` auf, entsprechend
-der [PyInstaller-Vorgabe](https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing)
-und dem lokalen Runtime-Hook 6.22.3. Keine Umgehung der Workerisolation oder
-Zeit-/RSS-/Prefixgrenzen. Der fehlerhafte erste Installer ist kein empfohlenes
-AP3-Testartefakt; der aktuelle Build besteht den tatsächlichen 100er-Pfad.
+| Prüfung | Ergebnis |
+| --- | --- |
+| CI-Produkthead 589689d | Vier Checks bestanden: Plan, Browser, Installer, Windows-Release-Gate. |
+| Vollständiger CI-Windows-Gate | 2672 Tests und 8 Subtests bestanden; pytest 812,450 s; eine bekannte Starlette-Deprecation. Build, Korpus, Bundle, portables Staging, Release-Smoke und Benutzerpaket ebenfalls bestanden. |
+| Vollständige CI-Browsermatrix | 30/30 bestanden in 442,775 s; keine übersprungenen, unerwarteten oder flaky Fälle. |
+| CI-Installer | 14/14 Lifecycleprüfungen in 488,621 s; darin alle 30 tatsächlichen Browserfälle gegen die installierte EXE in 461,931 s. |
+| Lokaler P52-Installer 9d53a04 | 14/14 Lifecycleprüfungen in 603,088 s; 30/30 installierte Browserfälle in 534,269 s. Build sauber, 63,588 s. |
+| Lokaler Entwicklungs-Gate | 2.671 Tests + 8 Subtests, pytest 1.073,87 s; zunächst fehlende Seminarressourcen im portablen Paket. Nach 589689d bestehen 50 passende Verpackungstests in 16,06 s und alle restlichen ursprünglichen Gate-Schritte in 28,863 s. Zusammengesetzter Nachweis, kein behaupteter einzelner kompletter finaler lokaler Lauf. |
+| Gezielte moderne Prüfungen | 16 neue Kernfälle; vier Seminar-API-Fälle mit beiden Backendvarianten inkl. vollständiger Quellen/Exporte/Import und Grenzen. Vier Seminarbrowserfälle bei zwei Breiten/zwei Modi bestanden. |
 
-Aktuelle technische Nachweise für d2021fc:
-[vier Checks](https://github.com/junker-joerg/ims/commit/d2021fcd0adaaed42be0e65dd696df01f1f6efe2/checks),
-[Release-Gate](https://github.com/junker-joerg/ims/actions/runs/36847659358),
-[Browserartefakt](https://github.com/junker-joerg/ims/actions/runs/36847659386/artifacts/11154612079).
-Browser-ZIP SHA-256:
-`c6085ca341207b70b038750614ac66ca5be3c62485fc7b21330cf5a485f08f9c`.
-Der aktuelle synthetische PR-Prüfmerge
-`3d9637a97548b21c8472f92ba24dfbdebab8d3e3` hat Eltern main 2e70b8f und
-d2021fc; Tree `c45c0cde666fc5c922d2d1ef538fa62b9e796344` stimmt vollständig
-mit d2021fc überein. Er ist kein Merge nach main.
+Die neue volle CI zählt den zusätzlichen portablen Ressourcenregressionstest mit. Gezielte und vollständige Prüfmengen überlappen und werden nicht zur Testanzahl addiert. Der bekannte Vite-Haupt-Chunk knapp über 500 kB ist eine Größenwarnung; keine fehlgeschlagene Rechnung. Aktive Bearbeitungszeit ist unbekannt. Parallel laufende Messzeiten sind keine summierbare Arbeitszeit.
 
-## Installer für den technischen Zwischenstand
+Browser prüfen echte Entscheidungen, Rechnungen, Downloads, Quellenfreigaben, Fehler/Invalidierung, responsive Ansichten, axe und das Offline-Handbuch samt Bildern. API-Prüfungen umfassen FastAPI und Starlette-Fallback, 16-MiB-Grenze, ungültiges JSON, stale If-Match, Quellenmanipulation und späte Fehler. Fehlerhafte Eingaben erzeugen keine Teilresultate, keinen Digest und keine stille Datenbankanlage.
 
-Der tatsächliche CI-Installer steht mit Originalnachweisen im
-[Artefakt 11154965440](https://github.com/junker-joerg/ims/actions/runs/36847659449/artifacts/11154965440).
-Im heruntergeladenen ZIP wurden Dateigröße, SHA-256 der EXE, Build-Commit,
-14 bestandene Lifecycleprüfungen, 26 bestandene installierte Browserfälle
-und Ressourceninventar erneut geprüft; keine fremde EXE lokal ausgeführt.
+### Gefundene und behobene technische Ursachen
 
-| Merkmal | CI-Artefakt | Lokaler P52-Build |
+- Der eingefrorene 100er-Worker benötigte `freeze_support()` vor Desktop-Imports. Die Isolation sowie Zeit-/RSS-/Prefixgrenzen bleiben erhalten.
+- Parallele SQLite-Metadatenzugriffe einschließlich erster Lazy-Erzeugung benötigten vollständige Serialisierung. Vorher waren 1.220 von 7.200 parallelen Lesegruppen fehlerhaft; danach bestanden alle 28.800 Einzelabfragen. Keine geänderten Modellregeln oder IDs.
+- Ein kuratiertes Bündel scheiterte tatsächlich nach Browsertransport: integrale float-Werte wurden in JSON von 1,0 auf 1 umgeschrieben. Ursprüngliche Quellen werden jetzt zuerst vollständig validiert, ihre portable Ganzzahldarstellung anschließend frisch geprüft. Monetäre Decimalzeichenfolgen und historische globale Digestverträge bleiben erhalten. Das ganze installierte 30er-Programm besteht anschließend.
+- Die neue Gruppenwahl überschritt zunächst die schmale Ansicht; kontrollierte Select-Breite behebt den Seitenüberlauf. Kapital-/Anlagebilder erhalten unterschiedliche Dateinamen, damit tatsächliche Ansichten nicht gegenseitig überschrieben werden.
+- Der ältere portable Prüfpaketweg enthielt zunächst kein neues Handbuchverzeichnis. Die vollständigen zehn Seminarressourcen werden nun auch dort inventarisiert und unter dem richtigen Anwendungswurzelpfad bereitgestellt; der Regressionstest lädt im frisch gestagten Paket das echte Backend und alle drei Fälle.
+
+## Tatsächlicher Installer und Artefaktintegrität
+
+[Aktuelles CI-Installationsartefakt](https://github.com/junker-joerg/ims/actions/runs/36864280848/artifacts/11163416177) mit EXE, Build-, Ressourcen- und Abnahmenachweisen. [Browserartefakt](https://github.com/junker-joerg/ims/actions/runs/36864280830/artifacts/11163640140); [vollständiger Release-Gate](https://github.com/junker-joerg/ims/actions/runs/36864280822).
+
+| Merkmal | CI | Lokaler P52-Build |
 | --- | --- | --- |
 | Datei / Version | IMS-Setup-2.0.0-alpha.1-win-x64.exe / 2.0.0-alpha.1 | gleicher Dateiname / gleiche Version |
-| Größe | 18.294.558 Byte | 18.325.751 Byte |
-| EXE SHA-256 | `0c5c57d8a6a35082e60d8adb05792b2f4f91e29aaf096941dd51cef7c16f8867` | `5854d0cdb2444b0f4d95ee463d93c54c52c3cfa9e444005d1261e740978e9dfd` |
-| ZIP SHA-256 | `34452702fd9637f8434035a404933ed0335ea1f25631e37cb1534fcd9eb72bbe` | kein entsprechendes Archiv erzeugt |
-| Build-SHA | synthetischer Prüfmerge 3d9637a, Tree identisch d2021fc | d2021fc; dirty=true wegen ausstehender Dokumentationsänderungen |
-| Builddauer | 67,579 s | 63,548 s |
-| Buildwerkzeuge | CPython 3.12.10, Node 22.23.3, Inno 6.7.3 | CPython 3.12.10, Node 22.23.2, Inno 6.7.3 |
+| EXE-Größe | 19.099.361 Byte | 19.127.163 Byte |
+| EXE SHA-256 | `7b07b79b33386fc898943cfa41eba4cfe4f717dca0cc4ff8891a07edd96d9305` | `89bb73e8724c98b7ad4d8622a1b251a654f9858dcdcaf15c0ced9ab0dbe143ba` |
+| CI-ZIP SHA-256 | `5e54b7290ba069c5256ed6fd84f17a78e66cc08a063036add7f6950e90213dde` | kein entsprechendes Archiv erzeugt |
+| Build-SHA | synthetischer PR-Prüfmerge `2dc26ef943fc7d558958e350893426fe23372f6c` | `9d53a04cd2da149ef515b2158b541ac35585754a` |
+| Builddauer | 55,345 s | 63,588 s |
+| Werkzeuge | CPython 3.12.10, Node 22.23.3, Inno Setup 6.7.3 | CPython 3.12.10, Node 22.23.2, Inno Setup 6.7.3 |
 
-Lokale Datei: `dist/installer/IMS-Setup-2.0.0-alpha.1-win-x64.exe` im P52-Checkout.
-Beide Builds sind unsigniert. Die Installerbezeichnung bleibt bei dieser
-Entwicklungsfassung; sie ist keine neue öffentliche AP3-Version. Das CI-Artefakt
-enthält die Ressourcen bis zum geprüften d2021fc-Stand; spätere Bericht-/Bild-
-Änderungen sind dadurch nicht nachträglich als eingebettet bestätigt.
-Artefaktaufbewahrung laut GitHub bis 31.10.2026.
+GitHub-ZIP-Digest, EXE-Größe und EXE-SHA wurden nach Download gegen Originalmetadaten und Testevidenz geprüft. Der synthetische CI-Merge hat Eltern main 2e70b8f und Produkthead 589689d; sein vollständiger Tree ist identisch zum Produkthead. Er ist keine Übernahme nach main. Neun Seminarressourcen stimmen bytegenau per SHA mit dem Checkout überein; die Markdown-Anleitung entspricht demselben Text mit CRLF-Zeilenenden im CI-Checkout. Dieser Unterschied ist im Inventarabgleich festgehalten. Rohe Altarchive sind nicht eingebettet. Lokaler 9d-Build enthält die vollständige Seminaranwendung; der folgende Fix 589 betrifft den separaten älteren portablen Prüfpaketweg. Beide Builds sind sauber und unsigniert. Die Entwicklungsbezeichnung alpha.1 ist keine öffentliche neue AP3-Version. GitHub bewahrt diese Artefakte 30 Tage auf.
 
-Installation in Pfaden mit Leerzeichen/Umlauten, Einzelinstanz, tatsächliche
-Modellberechnung und Exporte, Update der laufenden Anwendung, Neustart,
-belegter Port, explizite Datenübernahme mit Backups, Deinstallation bei laufender
-Anwendung, Reinstallation und Erhalt gespeicherter Ergebnisse sind geprüft.
-Der Updatevorgänger ist ausdrücklich eine synthetische Version alpha.0; der
-Test behauptet keine eigene komplette Migration eines externen AP2-Datenbestands.
-Die Harness-Umgebung besitzt Entwicklerwerkzeuge, beschränkt den EXE-PATH
-auf System32 und verwendet isolierte Testdaten. Eine unabhängige frische
-Windows-Abnahme von AP3 ist **nicht** durchgeführt. Der gesamte installierte
-Seminarpfad mit M4/M5 ist ebenfalls offen.
+Die Lifecycleprüfung installiert in isolierte Pfade mit Leerzeichen/Umlauten, prüft Zweitstart, tatsächliche Modellberechnung und JSON/CSV/Excel, Update bei laufender Anwendung, Neustart, absichtlich belegten Port, explizite Datenübernahme mit Backups, Deinstallation bei laufender Anwendung, Reinstallation und Erhalt gespeicherter Ergebnisse. Der vorherige Installer ist ausdrücklich die synthetische Version alpha.0. Das lokale Log enthält nur den erwarteten absichtlichen Portkonflikt; keinen SQLite-InterfaceError oder unerwarteten API-500.
 
-Dauerhafte strukturierte Nachweise:
-`docs/reports/ims_ap3_ci_evidence.json` und `ims_ap3_p52_evidence.json`.
-Nachfolgende reine Dokumentationscommits ersetzen den hier ausdrücklich
-geprüften Produkt-SHA nicht; AP3 bleibt Draft.
+Lokale EXE: `dist/installer/IMS-Setup-2.0.0-alpha.1-win-x64.exe`. Die Umgebung besitzt Entwicklerwerkzeuge; der EXE-PATH wird für die Prüfung auf System32 beschränkt. Eine neue unabhängige frische Windows-11-Abnahme von AP3 wurde nicht durchgeführt. AP1 und AP2 haben die zuvor dokumentierten externen Bestätigungen; daraus wird kein neuer externer AP3-Test abgeleitet.
 
-Gesamte aktive Bearbeitungszeit und fachliche Nacharbeitszeit: unbekannt.
-Parallel laufende Prüfdauern werden nicht zur Arbeitszeit addiert.
+Dauerhafte strukturierte Belege: `docs/reports/ims_ap3_ci_evidence.json` und `ims_ap3_p52_evidence.json`. Die alten 26er-/2.651er-Belege zu d2021fc gehören zum historischen M1–M3-Meilenstein und werden nicht als aktuelle M4/M5-Abnahme ausgegeben.
 
-## Konkretes fachliches Entscheidungstor und Fortsetzung
+## Verbindliche Grenzen und nächster Entscheidungspunkt
 
-Die angenommenen Lieferpläne verlangen vor PR187h–k ein belegtes Quellen-/
-Zeitmapping. `IMS.E:Vrvu01` erzeugt Prämienziele und Werbung, keine gesamte
-gebuchte Prämieneinnahme. PR154 erklärt Ausführung und historische
-Spartenbindung ausdrücklich als deaktiviert. Die moderne Nichtlebenbilanz
-erwartet Gesamtflüsse, besitzt aber keine eigene VN-Preis-/Expositions-/
-Abrechnungsgrundlage. Die historischen anonymen Positionen haben weiterhin
-keine belegte Kfz-/Sach-Zuordnung.
+Historische Vollgleichheit, regulatorisches SCR/MCR, echte Bedeckungsquote, gesetzliche Bilanz und DORA-Konformität bleiben gesperrt. Nicht gekoppelt sind Lebens-VN-Verhalten, endogene Mortalität/Schadenwahrscheinlichkeit, gegenseitige Spartenfinanzierung, vollständiger Versicherungsmarkt und eine automatische Kopplung der drei Seminarrechenwege. Die bestehenden historischen Strategieverträge werden nicht still ausführbar gestellt. Der Korpus-Gate meldet weiterhin 15 fehlende berechnete Vergleichsexporte und keine fachliche Produktionsfreigabe; technische Paket-/Seminarreife bleibt davon getrennt.
 
-Der konkrete Vorschlag in `docs/plans/ims_ap3_strategy_gate.md` deklariert
-moderne VU-/VN-Gruppen, Expositionsgewichte, Preis je Exposition und Periode,
-Gesamtprämie als Preis × gedeckte Exposition sowie Werbung als separaten
-Aufwand; nur quellenkartierte Regelkerne, inklusive Fenster und sichtbar
-exogene Schäden/Leistungen. Begrenzte Leben/Kranken-Kanäle würden an vorhandene
-Quellen anschließen. Der Auftraggeber wurde nach genau dieser neuen
-Modellgrundlage gefragt; alternativ wären historische Belege erforderlich.
-Keine Antwort und kein Ersatz durch still erfundene Abrechnung.
-
-Nach der fachlichen Antwort im selben PR vollständigen Quellen-/Zeitvertrag,
-belegten begrenzten Adapter, Bedienung und 100er-Wirkungskette umsetzen.
-Anschließend portable Seminarbündel, kuratierte Fälle mit Strategiepfad und
-aktuelles Handbuch vervollständigen; AP1-Installer mit diesem Produkt neu bauen
-und gesamten installierten Seminarpfad samt Gate abnehmen. Keine Anforderung
-streichen und AP3 nicht vorzeitig auf done setzen.
-
-Keine historische Vollgleichheit, gesetzliche Bilanz, regulatorischen
-SCR/MCR-/Bedeckungsquoten, DORA-Konformität oder endogene All-Sparten-
-Marktkopplung behauptet. Der angebotene Installer ist ein technisch geprüfter
-Zwischenstand; er ersetzt die noch offene AP3-Gesamtabnahme nicht.
-
-Dieser vollständige Zwischenbericht wird im Repository und PR gesichert.
-Eine neue AP3-Evernote-Ablage ist in dieser Sitzung nicht verifiziert; nach dem
-URL-Sicherheitsabbruch wird kein weiterer nativer Zugriff versucht. Bei der
-späteren Ablage zuerst den Bericht im vorgesehenen IMS-Notizbuch suchen und
-aktualisieren, keine Dublette. Der angeforderte AP2-Bericht ist bereits
-vollständig und vor AP3 in Evernote verifiziert gespeichert.
+AP3 ist technisch reviewbar. Der nächste Entscheidungspunkt ist die gesonderte Merge-Freigabe nach Review; keine automatische Übernahme nach main und kein neues Paket. Der vollständige Bericht wird im vorgesehenen Evernote-Notizbuch gespeichert und nach Neuladen anhand Titel, Notizbuch, vollständigem Text und Speicherstatus geprüft. Der Ablagenachweis wird anschließend in der Übergabe festgehalten. Eine gesonderte Aktualisierung der älteren AP1-Notiz bleibt außerhalb dieses AP3-Abschlusses.
