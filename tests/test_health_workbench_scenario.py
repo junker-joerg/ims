@@ -58,6 +58,7 @@ process.stdout.write(JSON.stringify(HEALTH_HORIZONS.map(periodCount => {
 def test_workbench_entry_and_export_controls_are_bound_to_health_api() -> None:
     component = (ROOT / "frontend/src/HealthWorkbench.tsx").read_text(encoding="utf-8")
     app = (ROOT / "frontend/src/main.tsx").read_text(encoding="utf-8")
+    shell = (ROOT / "frontend/src/WorkbenchShell.tsx").read_text(encoding="utf-8")
     for marker in (
         'data-testid="health-workbench"', 'data-testid="health-results"',
         '"/api/accounting/health-period-chain"',
@@ -66,5 +67,6 @@ def test_workbench_entry_and_export_controls_are_bound_to_health_api() -> None:
         'stored_result_verified',
     ):
         assert marker in component
-    assert 'href="#health"' in app
+    assert 'id: "health", label: "Kranken"' in shell
+    assert '<ModelWorkspace model="health">' in app
     assert "<HealthWorkbench onReady={setHealthReady} />" in app

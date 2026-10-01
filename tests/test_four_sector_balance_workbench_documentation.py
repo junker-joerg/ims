@@ -9,6 +9,7 @@ def test_pr170a_documents_bounded_browser_path_and_screenshots() -> None:
     guide = (ROOT / "docs/handbook/management_seminar_guide.md").read_text(encoding="utf-8")
     roadmap = (ROOT / "docs/plans/ims_2x_all_lines_management_lab_roadmap.md").read_text(encoding="utf-8")
     app = (ROOT / "frontend/src/main.tsx").read_text(encoding="utf-8")
+    shell = (ROOT / "frontend/src/WorkbenchShell.tsx").read_text(encoding="utf-8")
     component = (ROOT / "frontend/src/FourSectorBalanceWorkbench.tsx").read_text(encoding="utf-8")
     for phrase in (
         "IMSDATA.C", "Baseline", "Variante", "Zwei-Perioden",
@@ -22,7 +23,8 @@ def test_pr170a_documents_bounded_browser_path_and_screenshots() -> None:
         assert name in guide
         assert (ROOT / "docs/handbook/images" / name).is_file()
     assert "| PR170a | Vier-Sparten-Bilanz in der Workbench | umgesetzt:" in roadmap
-    assert 'href="#four-sector-balance"' in app
+    assert 'id: "four-sector-balance", label: "Gesamtbilanz"' in shell
+    assert '<ModelWorkspace model="four-sector-balance">' in app
     assert "<FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady}" in app
     assert "onReady={setFourSectorReady}" in app
     assert 'data-testid="four-sector-results"' in component

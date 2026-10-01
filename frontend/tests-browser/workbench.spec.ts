@@ -48,7 +48,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 1024, height: 768
         await noOverflow(page);
         const accessibility = await accessible(page);
         evidence.push({ area, viewport, theme, ...accessibility });
-        const targets = await page.locator(".area-navigation a, .theme-toggle, .primary-action:visible, .model-navigation a:visible").evaluateAll((elements) => elements.map((element) => {
+        const targets = await page.locator(".area-navigation a, .content button:visible, .primary-action:visible, .model-navigation a:visible, label:has(input[type=checkbox]):visible").evaluateAll((elements) => elements.map((element) => {
           const rect = element.getBoundingClientRect(); return { label: element.textContent, width: rect.width, height: rect.height };
         }));
         for (const target of targets) { expect(target.width, target.label || "control").toBeGreaterThanOrEqual(44); expect(target.height, target.label || "control").toBeGreaterThanOrEqual(44); }

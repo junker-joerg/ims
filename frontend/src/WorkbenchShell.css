@@ -38,6 +38,7 @@ body { color: var(--text); background: var(--background); line-height: 1.5; }
 .workbench-footer { margin-top: 32px; padding: 20px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .75rem; }
 button, input:not([type="checkbox"]):not([type="radio"]), select, textarea, summary { min-height: 44px; }
 button { min-width: 44px; cursor: pointer; }
+.shell .content button { min-width: 44px; }
 .shell .content button, .shell .content input:not([type="checkbox"]):not([type="radio"]), .shell .content select { min-height: 44px; }
 button:disabled { cursor: not-allowed; }
 .primary-action, .secondary-action { min-height: 44px; border-radius: 10px; text-decoration: none; }
