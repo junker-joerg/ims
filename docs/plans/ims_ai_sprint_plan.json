@@ -49,7 +49,7 @@
     {
       "id": "AP2",
       "title": "Elegante, iOS-inspirierte Workbench",
-      "status": "planned",
+      "status": "in_progress",
       "depends_on": [
         "AP1"
       ],
