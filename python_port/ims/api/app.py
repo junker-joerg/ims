@@ -12,6 +12,13 @@ from starlette.responses import FileResponse, JSONResponse, Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
+from ims.release import VERSION as APP_VERSION
+
+from ims.api.ict_workshop import create_ict_app
+from ims.api.guided_period_chain_routes import create_guided_chain_app
+from ims.api.seminar import create_seminar_app
+from ims.api.management_case import create_management_app
+
 from ims.accounting.insurer_balance import (
     build_insurer_balance,
     insurer_balance_workbench_contract_payload,
@@ -289,7 +296,6 @@ except ModuleNotFoundError:  # pragma: no cover - exercised implicitly when Fast
     FastAPI = None  # type: ignore[assignment]
 
 APP_NAME = "IMS Workbench"
-APP_VERSION = "2.0.0-alpha.1"
 
 
 class MetadataRepositoryReader(Protocol):
@@ -3030,6 +3036,10 @@ def create_app(
             version=APP_VERSION,
             description="Lokale Backend-Shell fuer die IMS Workbench.",
         )
+        app.mount("/api/ict", create_ict_app())
+        app.mount("/api/management-case", create_management_app())
+        app.mount("/api/seminar", create_seminar_app())
+        app.mount("/api/strategies/guided-period-chain", create_guided_chain_app(metadata_source.get("path") if metadata_source.get("configured") else None))
 
         @app.get("/api/health")
         def health() -> dict[str, Any]:
@@ -3858,6 +3868,10 @@ def create_app(
         return app
 
     routes: list[Any] = [
+        Mount("/api/ict", create_ict_app()),
+        Mount("/api/management-case", create_management_app()),
+        Mount("/api/seminar", create_seminar_app()),
+        Mount("/api/strategies/guided-period-chain", create_guided_chain_app(metadata_source.get("path") if metadata_source.get("configured") else None)),
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/strategies/catalog", lambda request: JSONResponse(strategy_catalog_payload())),

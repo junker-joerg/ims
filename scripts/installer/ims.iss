@@ -1,8 +1,8 @@
 #ifndef AppVersion
-  #define AppVersion "2.0.0-alpha.1"
+  #error "AppVersion is required; use build-installer.ps1"
 #endif
 #ifndef FileVersion
-  #define FileVersion "2.0.0.1"
+  #error "FileVersion is required; use build-installer.ps1"
 #endif
 #ifndef RepoRoot
   #define RepoRoot AddBackslash(SourcePath) + "..\.."

@@ -1,7 +1,10 @@
 import { test, expect, type Page, type TestInfo } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdir, readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+
+const { version: releaseVersion } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
 
 const areas = ["overview", "scenario", "balance", "life", "health", "four-sector-balance", "capital", "strategies", "execution", "results", "help"];
 async function navigate(page: Page, hash: string) {
@@ -45,6 +48,12 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 1024, height: 768
       const evidence = [];
       for (const area of areas) {
         await navigate(page, area);
+        const badge = page.getByTestId("release-version");
+        await expect(badge).toBeVisible();
+        await expect(badge).toContainText(`Release ${releaseVersion}`);
+        const badgeBox = (await badge.boundingBox())!;
+        expect(badgeBox.x).toBeLessThan(60);
+        expect(badgeBox.y + badgeBox.height).toBeGreaterThan(viewport.height - 55);
         await noOverflow(page);
         const accessibility = await accessible(page);
         evidence.push({ area, viewport, theme, ...accessibility });
@@ -108,6 +117,39 @@ test("Navigation erhält Eingaben, Ergebnis und Freigabe; Fehlerkorrektur und dr
   await expect(health.locator(".health-check input")).not.toBeChecked();
   await expect(health.getByTestId("health-results")).toHaveCount(0);
   await navigate(page, "results"); await expect(page.locator(".results-empty")).toBeVisible();
+});
+
+test("Release unten links bleibt bei API-Fehler sichtbar und erkennt eine alte Anwendung", async ({ page }, testInfo) => {
+  let mode = "failure";
+  await page.route("**/api/version", (route) => mode === "failure" ? route.abort() : route.fulfill({
+    json: { name: "IMS Workbench", version: mode === "old" ? "2.0.0-alpha.1" : releaseVersion, api: "ims.api" },
+  }));
+  await page.goto("/#overview");
+  const badge = page.getByTestId("release-version");
+  await expect(badge).toContainText(`Release ${releaseVersion}`);
+  await expect(badge).toContainText("Anwendungsversion nicht erreichbar.");
+  mode = "old";
+  await page.reload();
+  await expect(badge).toContainText("Anwendung: 2.0.0-alpha.1");
+  await expect(badge).toContainText("Unterschiedliche Versionen");
+  for (const width of [1440, 1024, 390]) {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await noOverflow(page);
+    await accessible(page);
+    await expect(badge).toBeVisible();
+  }
+  await page.screenshot({ path: testInfo.outputPath("release-mismatch-390-light.png") });
+  mode = "current";
+  await page.reload();
+  await expect(badge).not.toHaveClass(/release-warning/);
+  for (const [width, theme] of [[1440, "light"], [390, "dark"]] as const) {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    if (await page.locator("html").getAttribute("data-theme") !== theme) await page.getByRole("button", { name: "Dunkelmodus", exact: true }).click();
+    await accessible(page);
+    await noOverflow(page);
+    await expect(badge).toContainText(`Release ${releaseVersion}`);
+    await page.screenshot({ path: testInfo.outputPath(`release-start-${width}-${theme}.png`) });
+  }
 });
 
 test("Tastatur, Zurück/Vorwärts, gespeicherter Farbmodus, reduzierte Bewegung und Details", async ({ page }) => {

@@ -83,13 +83,15 @@
         "docs/reports/ims_ap2_p52_evidence.json: 12 echte Browserfälle, 66 Ansichten, Kontrast, Formular-/Freigabeerhalt, Exporte und 14 tatsächliche Installer-Prüfungen",
         "docs/reports/ims_ap2_ci_evidence.json: tatsächlicher CI-Installer, Browsermatrix und Windows-Release-Gate für Produkthead 7dc368e bestanden; vier Checks grün",
         "docs/handbook/workbench_ap2.md: Bedienhilfe und 24 Vorher-/Nachher-Bilder für drei Viewports und beide Farbmodi",
-        "https://github.com/junker-joerg/ims/pull/289: AP2-Implementierung und vollständiger Bericht; Ready erst nach grünen Checks des aktuellen Dokumentations-Heads"
+        "https://github.com/junker-joerg/ims/pull/289: AP2-Implementierung und vollständiger Bericht; Ready erst nach grünen Checks des aktuellen Dokumentations-Heads",
+        "docs/reports/ims_ap2_user_acceptance.md: externer erfolgreicher Test und Fortsetzungsauftrag AP3; AP2-Merge 2e70b8f in main verifiziert",
+        "https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c: ausführlicher AP2-Bericht gespeichert und nach Neuladen im richtigen Notizbuch geprüft"
       ]
     },
     {
       "id": "AP3",
       "title": "100-Perioden-Managementlabor in einem Integrations-PR",
-      "status": "planned",
+      "status": "done",
       "depends_on": [
         "AP1",
         "AP2"
@@ -144,7 +146,36 @@
         "Keine historischen Vollgleichheitsbehauptungen, regulatorischen SCR/MCR-/Bedeckungsquoten oder DORA-Konformitätsurteile.",
         "Ein Branch und Draft-PR mit fünf dokumentierten Meilensteinen; Blocker und Umfangsänderungen explizit machen, keine Anforderung still streichen."
       ],
-      "completion_evidence": []
+      "completion_evidence": [
+        "PR179: Gerichtete Service-/Asset-/Anbieterbeziehungen, Eigentümer und vollständiger Quellenvertrag; ICT-Kern/API/UI. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR180: Ereignistypen und ihre Wirkungen getrennt erklärt und negativ geprüft. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR181: Explizite Stunden-/Periodenübersetzung; keine erfundene historische Stundenlänge. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR182: Nachfrage, Kapazität, ursprünglicher Rückstand, Nacharbeit und Erholung über Perioden; deterministische Tests. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR183: Gemeinsame Anbieter-/Ausfallwirkung ohne doppelte Verlustzählung. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR184: Inklusive Präventions-/Fallback-/Wiederanlauffenster und gebuchte Kosten. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR185: Deklarierter Bilanzoverlay, Eigenmittel-Proxy und Workshop-Grenzen; regulatorische Größen gesperrt. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR186: ICT-Zeitlinie, vollständiges Quellen-Dossier und echte CSV-/JSON-/Excel-Ausgabe. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187: Geführte 100er-Eingabe mit geprüftem Expertenweg, Fehler- und Freigabezuständen. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187a: Alle 100 Kontexte/99 Übergänge und deterministischer Seedkanal; fehlerhafter später Kontext sperrt vollständig. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187b: 107 frisch gebaute Kandidaten, atomare idempotente unveränderliche Speicherung. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187c: Tatsächliche 2er-/5er-Prefixläufe und PR151-100er-Worker mit ZIP im installierten Browserpfad. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187d: Erklärter gemeinsamer vollständiger Vier-Sparten-Quellenvertrag mit Inhaltsbindungen. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187e: Frische Rechnung beider Seiten bis P100, Carryover, Bilanzinvarianten und echte kürzere Prefixe. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187f: Vier Sparten plus Gesamtbilanz in UI und gleichen CSV-/JSON-/Excel-Ergebnissen. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187g: Bestätigter moderner Gruppen-/Einheiten-/Zeitvertrag und kartierte Regelquellen; historische Spartenidentität offen benannt. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187h: Zwei begrenzte moderne Nichtlebenkanäle mit Vrvu01/Vrvn06 und expliziter Preis-/Mengenabrechnung. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187i: Lebens-Anfangsaktiva und Kranken-Anfangspolicen/Neugeschäft/Abgänge; vorhandene Garantien und exogene Flüsse erhalten. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187j: Regel-/Gruppen-/Parameter-/Fenstereingabe bei 1440/390 Pixeln, Hell/Dunkel; alte Resultate/Freigaben werden invalidiert. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR187k: Handprüfbare Entscheidung → VN-Wechsel → Prämie/Werbung → P100-Bilanz: 302 × 95. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR188: Drei kuratierte vollständige Fälle mit Preis-/Inflations-/Anlagewirkung, tatsächlichem Kapitaldruck 550 und ICT-Begleitquelle. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR189: Vollständige portable Quellenbündel, frische schreibfreie Demo, fünf aktuelle Bilder und Offline-Moderationsanleitung. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "PR190: Neu gebauter tatsächlicher Installer: kompletter Seminarpfad samt Bilanz, Kapital, ICT, 100er-Lauf, Export; vollständiger Release-Gate bestanden. Beleg: docs/reports/ims_ap3_abschlussbericht.md und ims_ap3_ci_evidence.json; geprüfter Produkthead 589689d.",
+        "docs/plans/ims_ap3_strategy_gate.md: ausdrückliche Bestätigung des begrenzten modernen Quellen-/Zeitvertrags am 01.10.2026; keine historische Spartenidentität behauptet.",
+        "docs/reports/ims_ap3_ci_evidence.json: vier grüne Produktchecks, 2672 Tests + 8 Subtests, 30 Browserfälle, 14 Installer-Lifecycleprüfungen einschließlich 30 installierter Browserfälle; SHA/Tree/Artefakt geprüft.",
+        "docs/reports/ims_ap3_p52_evidence.json: tatsächlicher lokaler sauberer Seminarinstaller und 30 installierte Browserfälle; zusammengesetzter lokaler Gate-Nachweis transparent getrennt.",
+        "https://github.com/junker-joerg/ims/pull/290: ein Integrations-PR; technisch abgenommen, Ready erst bei grünen aktuellen Checks; Merge und öffentliche Veröffentlichung nicht freigegeben.",
+        "https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8: vollständiger AP3-Abschlussbericht im vorgesehenen IMS-Notizbuch gespeichert und nach Neuladen vollständig rückgelesen; Nachweis in ims_ap3_p52_evidence.json."
+      ]
     }
   ]
 }

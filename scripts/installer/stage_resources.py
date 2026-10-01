@@ -25,7 +25,11 @@ def main() -> None:
         approved = (relative.startswith("tests/fixtures/") and relative.endswith(".json")) or (
             relative.startswith("tests/references/legacy_agrsich/")
             and relative.lower().endswith((".dat", ".json"))
-        ) or (relative.startswith(("docs/handbook/", "docs/migration/")) and relative.endswith(".md"))
+        ) or (relative.startswith(("docs/handbook/", "docs/migration/")) and relative.endswith(".md")) or (
+            relative.startswith("docs/handbook/images/ap3_") and relative.endswith(".png")
+        ) or relative == "docs/handbook/seminar_ap3.html" or (
+            relative.startswith("seminar_cases/") and relative.endswith(".json")
+        )
         if approved:
             target = STAGE / relative
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -33,8 +37,9 @@ def main() -> None:
             inventory.append({"path": relative, "sha256": hashlib.sha256(target.read_bytes()).hexdigest()})
     shutil.copytree(ROOT / "frontend/dist", STAGE / "frontend/dist")
     shutil.copyfile(ROOT / "docs/handbook/installer_windows.html", STAGE / "help.html")
-    # The existing user guide covers the current functions; old installation PDF
-    # is intentionally excluded because it requires a separately installed Python.
+    # PR178a PDF is a historical model guide. Current AP3 instructions and real
+    # figures are in the staged seminar HTML/Markdown; obsolete installation PDF
+    # is excluded because it requires a separately installed Python.
     shutil.copyfile(ROOT / "output/pdf/IMS-Bedienungsanleitung.pdf", STAGE / "Bedienungsanleitung.pdf")
     licenses = STAGE / "licenses"
     licenses.mkdir()

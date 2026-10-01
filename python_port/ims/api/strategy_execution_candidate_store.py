@@ -735,6 +735,17 @@ def _verified_candidate_record_fields(
     }
 
 
+def verify_strategy_execution_candidate_payload(
+    payload: dict[str, object], *, stored_at: str,
+) -> StrategyExecutionCandidateStoreRecord:
+    """Reverify a freshly built payload using the immutable store's checks."""
+    verified = _verified_candidate_record_fields(payload)
+    return _row_to_verified_record({
+        **verified, "candidate_schema_version": payload["schema_version"],
+        "stored_at": stored_at, "candidate_payload_json": _stable_json(payload),
+    })
+
+
 def _row_to_verified_record(
     row: sqlite3.Row,
 ) -> StrategyExecutionCandidateStoreRecord:
