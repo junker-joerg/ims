@@ -1,12 +1,16 @@
 import csv
 import importlib
+from copy import deepcopy
 from io import BytesIO, StringIO
+import json
 
 import pytest
 from openpyxl import load_workbook
 from starlette.testclient import TestClient
 
 from ims.api.app import create_app
+from ims.ict.exports import workbook_export
+from ims.ict.simulation import calculate
 from tests.test_ict_workshop import small_case
 
 
@@ -49,3 +53,17 @@ def test_ict_api_exact_exports_and_no_metadata_or_market_execution(monkeypatch, 
     invalid = client.post("/api/ict/calculate", content="{", headers={"Content-Type": "application/json"})
     assert invalid.status_code == 400 and invalid.json()["partial_result_returned"] is False
     assert client.post("/api/ict/calculate", content=" " * 256001).status_code == 400
+
+
+def test_workbook_preserves_complete_large_declared_source():
+    source = small_case()
+    for kind, id_field in (("assets", "asset_id"), ("services", "service_id")):
+        template = deepcopy(source[kind][0])
+        template["assumption_note"] = "Ö" * 400
+        source[kind] = [dict(deepcopy(template), **{id_field: template[id_field] if index == 0 else f"extra{index}"}) for index in range(40)]
+    result = calculate(source)
+    assert result["valid"]
+    assert len(json.dumps(source, ensure_ascii=False)) > 32767
+    book = load_workbook(BytesIO(workbook_export(result)))
+    restored = json.loads("".join(row[1] for row in list(book["Quelle"].values)[1:]))
+    assert restored == source
