@@ -57,3 +57,16 @@ bestanden. Die 100er-Tabelle erhielt einen beschrifteten Tastaturfokus.
 
 M3–M5 und die AP3-Gesamtabnahme bleiben offen. Dieser Nachweis ist keine
 fachliche Freigabe von Kfz-/Sach-Katalogstrategien oder regulatorischen Kennzahlen.
+
+## Gefrorene Windows-Anwendung
+
+Die neue tatsächliche 100er-Installerprüfung fand einen fehlenden Spawn-
+Einstieg in `scripts/installer/entry.py`: Der isolierte PR151-Worker verwendet
+unter Windows dieselbe eingefrorene EXE. Der normale Desktop-Parser darf seine
+Workerargumente nicht verarbeiten. Der Einstieg ruft deshalb vor Desktop-
+Import/Argumentverarbeitung `multiprocessing.freeze_support()` auf, gemäß
+der [PyInstaller-Dokumentation](https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing)
+und dem lokalen Runtime-Hook der gepinnten Version 6.22.3. Der Worker bleibt
+isoliert und erhält dieselben Zeit-/RSS-/Prefixprüfungen; die Rechnung wird
+nicht ersatzweise in den Hauptprozess verlegt. Die tatsächliche neue Installer-
+Wiederprüfung wird im Zwischenbericht festgehalten.
