@@ -47,5 +47,10 @@ bleiben sichtbar. Eine reine Layoutprüfung oder ein TypeScript-Build genügt
 nicht als Produktabnahme. Keine neue Fachfunktion aus AP3 und kein neues
 Desktop-/UI-Framework. Keine automatische Zusammenführung von AP2.
 
-Status: Umsetzung begonnen, Abnahmen noch nicht abgeschlossen. Messwerte,
-Artefakte und offene Punkte werden im AP2-Bericht und selben PR nachgeführt.
+Status: Alle Produktabnahmen abgeschlossen. Bericht/Evidenz stehen in
+`docs/reports/ims_ap2_abschlussbericht.md`, `ims_ap2_p52_evidence.json` und
+`ims_ap2_ci_evidence.json`. Produkthead 7dc368e hat vier grüne Checks.
+Ready erst nach erneut grünen Checks des abschließenden Dokumentations-Heads.
+AP2-Merge und AP3-Start bleiben gesondert freizugeben; Evernote-Ablage mangels
+Zugriff offen, vollständiger Bericht entsprechend der erlaubten Alternative
+im Repository und PR gesichert.

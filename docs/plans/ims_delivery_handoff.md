@@ -55,28 +55,36 @@ https://www.evernote.com/client/web#?n=c8ca33d8-e050-45f2-931c-3e7a4e6dcefa.
 Die Aktualisierung mit Abnahme/Merge vom 01.10. ist mangels Evernote-Zugriff
 ausstehend; diese Notiz aktualisieren, keine Dublette anlegen.
 
-## AP2 in Umsetzung
+## AP2 technisch abgenommen
 
-Branch `codex/ims-elegant-workbench`, Draft-PR
-https://github.com/junker-joerg/ims/pull/289. Basis main 965156c, Plan-/Startcommit
-f988d2b. Plan: `docs/plans/ims_ap2_implementation.md`.
+Branch `codex/ims-elegant-workbench`, PR
+https://github.com/junker-joerg/ims/pull/289. Produkthead
+`7dc368ec5defb5754ba037a80b2bfa2ae2251d60` hat vier grüne Checks:
+Plan, Browser, Installer und Windows-Release-Gate. AP2 im Manifest done mit
+echten Nachweisen. Ready erst nach erneut grünen aktuellen Checks des letzten
+Dokumentations-Heads; der danach gültige Ready-Status ist im PR vermerkt.
 
-Umgesetzt: fünf Bereiche, gemeinsame Shell/Details, Hell-/Dunkelmodus,
-Zustandserhalt durch gemountete Modellinstanzen, lokale Ergebnisansicht,
-Gestaltungsvariablen, Tastaturfokus, responsive Navigation und Tabelle.
-Gepinnte Playwright-/axe-Werkzeuge und Windows-Browser-CI; bestehende drei
-Modell-Browsernachweise an Navigation angepasst. Installer-Lifecycle kann die
-ganze Browserabnahme gegen die installierte aktuelle EXE ausführen.
-Bedienhilfe: `docs/handbook/workbench_ap2.md`; Vorher-/Nachher-Bilder dort.
+Fünf Bereiche, Hell-/Dunkelmodus, gemeinsame Gestaltung, Zustandserhalt,
+aufklappbare Details, Ergebnisansicht, responsive Navigation/Tabellen und
+assistive Inhaltsgruppen sind umgesetzt. 12 Browserfälle bestanden,
+66 Ansichten in drei Größen/zwei Modi ohne Seitenüberlauf; Mindestkontrast
+6,13:1, sichtbare Aktionen/Checkbox-Labels mindestens 44×44. 14 echte
+Installer-Lifecycle-Prüfungen inkl. Browser gegen die installierte aktuelle
+EXE bestanden, lokal und CI. Windows-Gate: 2.597 Tests + 8 Subtests bestanden.
+Die bekannte fachliche Produktionssperre bleibt bestehen.
 
-Gezielte Quelle-/Handbuch-/Planprüfungen: 46 Tests + 8 Subtests bestanden.
-Browser-Abnahme läuft; die entdeckten Überläufe, kleine Aktionen und nicht
-fokussierbaren Tabellen wurden korrigiert. Noch keine AP2-done-Behauptung.
+Vollständiger Bericht: `docs/reports/ims_ap2_abschlussbericht.md`;
+Nachweise: `ims_ap2_p52_evidence.json` und `ims_ap2_ci_evidence.json`.
+Aktuelle Bedienhilfe: `docs/handbook/workbench_ap2.md`, 24 Bilder.
+CI-Download: https://github.com/junker-joerg/ims/actions/runs/36824042759/artifacts/11144572266.
+CI-EXE SHA-256: 1680b5521c61e51347de52bcd08669c83f50a6997c47942563a0ffb238756d24.
 
-Nächster Schritt: Browsermatrix vollständig abschließen und Bilder prüfen;
-Produktcommit sichern/pushen; sauberen Installer bauen und echten Lifecycle
-mit Browserprüfung ausführen; vorhandenen Windows-Release-Gate und CI prüfen.
-Dann vollständigen AP2-Bericht/Nachweise und Manifest fertigstellen und
-denselben PR Ready stellen, sobald alle Checks grün sind. AP2-Merge und
-AP3-Start sind nicht freigegeben. Evernote-Plugin fehlt in dieser Sitzung;
-Berichtsablage bleibt entsprechend der oben erlaubten Alternative offen.
+Nächster Schritt: letzte Dokumentationschecks prüfen und PR Ready stellen.
+Danach ist AP2 zur fachlichen Review/Merge-Freigabe vorbereitet. Nicht selbst
+mergen: AP2-Merge und AP3-Start sind noch nicht freigegeben. Für AP3 zählt
+erst AP2 in tatsächlichem main. Keine öffentliche Veröffentlichung.
+
+Evernote-Plugin fehlt in dieser Sitzung; der vollständige AP2-Bericht liegt
+entsprechend der erlaubten Alternative in Repository und PR. Vor einer
+späteren Ablage Solltitel und PR #289 suchen, keine Dublette erzeugen und
+Notizbuch anschließend erneut prüfen. AP1-Notiz ebenfalls nur aktualisieren.

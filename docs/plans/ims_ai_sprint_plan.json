@@ -49,7 +49,7 @@
     {
       "id": "AP2",
       "title": "Elegante, iOS-inspirierte Workbench",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "AP1"
       ],
@@ -78,7 +78,13 @@
         "React weiterverwenden; keine fachliche Neuschreibung als Nebenwirkung.",
         "Visuelle und funktionale Browsernachweise sind Pflicht; ein erfolgreicher Build allein genügt nicht."
       ],
-      "completion_evidence": []
+      "completion_evidence": [
+        "docs/reports/ims_ap2_abschlussbericht.md: vollständige AP2-Abnahmen, Artefakt, Prüfsummen, Grenzen und gemessene Zeiten",
+        "docs/reports/ims_ap2_p52_evidence.json: 12 echte Browserfälle, 66 Ansichten, Kontrast, Formular-/Freigabeerhalt, Exporte und 14 tatsächliche Installer-Prüfungen",
+        "docs/reports/ims_ap2_ci_evidence.json: tatsächlicher CI-Installer, Browsermatrix und Windows-Release-Gate für Produkthead 7dc368e bestanden; vier Checks grün",
+        "docs/handbook/workbench_ap2.md: Bedienhilfe und 24 Vorher-/Nachher-Bilder für drei Viewports und beide Farbmodi",
+        "https://github.com/junker-joerg/ims/pull/289: AP2-Implementierung und vollständiger Bericht; Ready erst nach grünen Checks des aktuellen Dokumentations-Heads"
+      ]
     },
     {
       "id": "AP3",
