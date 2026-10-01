@@ -70,3 +70,14 @@ und dem lokalen Runtime-Hook der gepinnten Version 6.22.3. Der Worker bleibt
 isoliert und erhält dieselben Zeit-/RSS-/Prefixprüfungen; die Rechnung wird
 nicht ersatzweise in den Hauptprozess verlegt. Die tatsächliche neue Installer-
 Wiederprüfung wird im Zwischenbericht festgehalten.
+
+Beim Lesen der realen Installerprotokolle trat außerdem ein Fehler der bereits
+vorhandenen gemeinsamen SQLite-Metadatenverbindung bei parallelen Lesezugriffen
+auf. Ein isolierter CPython-3.12.10-Stresstest reproduzierte bei 28.800 Zugriffen
+1.220 falsche/fehlende Zeilen oder SQLite-Fehler. `metadata_repository` schützt
+jetzt die Verbindung einschließlich vollständigem Fetch/Transaktionsabschluss
+und die erstmalige Lazy-Erzeugung. Derselbe Probeweg hat anschließend null
+Fehler; zwei neue parallele Tests und 73 bestehende/ergänzte Repository-/
+Import-/Desktopprüfungen bestanden (2,58 s). IDs, Datenschema, Importregeln und
+Ausführungssperren bleiben erhalten. Neue 100er-Browserfälle prüfen auch
+unerwartete API-Serverfehler; neue EXE und CI werden erneut abgenommen.

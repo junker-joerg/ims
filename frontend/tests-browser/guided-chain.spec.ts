@@ -5,6 +5,8 @@ import { readFile } from "node:fs/promises";
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   for (const theme of ["light", "dark"]) {
     test(`Geführter 100er ${viewport.width} ${theme}: frische Kette, Prefix, Lauf, ZIP`, async ({ page }, info) => {
+      const serverErrors: string[] = [];
+      page.on("response", response => { if (response.status() >= 500 && response.url().includes("/api/")) serverErrors.push(`${response.status()} ${response.url()}`); });
       await page.setViewportSize(viewport);
       await page.addInitScript(value => localStorage.setItem("ims.theme", value), theme);
       await page.goto("/#hundred");
@@ -52,6 +54,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await wizard.getByRole("button", { name: "Alle Periodenkontexte prüfen", exact: true }).click();
       await expect(wizard.getByRole("alert")).toBeVisible();
       await expect(wizard.getByTestId("guided-chain-checked")).toHaveCount(0);
+      expect(serverErrors).toEqual([]);
     });
   }
 }

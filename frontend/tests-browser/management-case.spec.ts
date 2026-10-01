@@ -5,6 +5,8 @@ import { readFile } from "node:fs/promises";
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   for (const theme of ["light", "dark"]) {
     test(`Gemeinsame Bilanz ${viewport.width} ${theme}: 100er, Quellen, Exporte, Kapital`, async ({ page }, info) => {
+      const serverErrors: string[] = [];
+      page.on("response", response => { if (response.status() >= 500 && response.url().includes("/api/")) serverErrors.push(`${response.status()} ${response.url()}`); });
       await page.setViewportSize(viewport);
       await page.addInitScript(value => localStorage.setItem("ims.theme", value), theme);
       await page.goto("/#management");
@@ -66,6 +68,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await workbench.getByRole("button", { name: "Geänderte Quellen prüfen und neu binden", exact: true }).click();
       await expect(workbench.getByRole("alert")).toBeVisible();
       await expect(workbench.getByTestId("management-case-results")).toHaveCount(0);
+      expect(serverErrors).toEqual([]);
     });
   }
 }

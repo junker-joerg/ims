@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
+from threading import RLock
 from typing import Iterable
 
 from ims.api.metadata import (
@@ -153,12 +154,24 @@ def seed_metadata(
 class WorkbenchMetadataRepository:
     def __init__(self, connection: sqlite3.Connection) -> None:
         self._connection = connection
+        self._lock = RLock()
+
+    def _fetchall(self, statement: str, parameters: tuple[object, ...] = ()) -> list[sqlite3.Row]:
+        # A shared CPython sqlite connection needs serialization through fetch,
+        # including its statement cache; concurrent reads can otherwise mix rows.
+        with self._lock:
+            return self._connection.execute(statement, parameters).fetchall()
+
+    def _fetchone(self, statement: str, parameters: tuple[object, ...] = ()) -> sqlite3.Row | None:
+        with self._lock:
+            return self._connection.execute(statement, parameters).fetchone()
 
     def metadata_source(self) -> dict[str, object]:
-        return metadata_source_payload(_metadata_connection_path(self._connection))
+        with self._lock:
+            return metadata_source_payload(_metadata_connection_path(self._connection))
 
     def list_scenarios(self) -> dict[str, object]:
-        rows = self._connection.execute(
+        rows = self._fetchall(
             """
             SELECT
                 id,
@@ -176,7 +189,7 @@ class WorkbenchMetadataRepository:
             FROM scenarios
             ORDER BY id
             """
-        ).fetchall()
+        )
         return {
             "schema_version": METADATA_SCHEMA_VERSION,
             "generated_at": METADATA_GENERATED_AT,
@@ -184,7 +197,7 @@ class WorkbenchMetadataRepository:
         }
 
     def get_scenario(self, scenario_id: str) -> dict[str, object] | None:
-        row = self._connection.execute(
+        row = self._fetchone(
             """
             SELECT
                 id,
@@ -203,13 +216,13 @@ class WorkbenchMetadataRepository:
             WHERE id = ?
             """,
             (scenario_id,),
-        ).fetchone()
+        )
         if row is None:
             return None
         return _scenario_row_to_dict(row)
 
     def list_runs(self) -> dict[str, object]:
-        rows = self._connection.execute(
+        rows = self._fetchall(
             """
             SELECT
                 id,
@@ -228,7 +241,7 @@ class WorkbenchMetadataRepository:
             FROM runs
             ORDER BY id
             """
-        ).fetchall()
+        )
         return {
             "schema_version": METADATA_SCHEMA_VERSION,
             "generated_at": METADATA_GENERATED_AT,
@@ -236,7 +249,7 @@ class WorkbenchMetadataRepository:
         }
 
     def get_run(self, run_id: str) -> dict[str, object] | None:
-        row = self._connection.execute(
+        row = self._fetchone(
             """
             SELECT
                 id,
@@ -256,7 +269,7 @@ class WorkbenchMetadataRepository:
             WHERE id = ?
             """,
             (run_id,),
-        ).fetchone()
+        )
         if row is None:
             return None
         return _run_row_to_dict(row)
@@ -269,7 +282,7 @@ class WorkbenchMetadataRepository:
 
     def upsert_scenario(self, scenario: ScenarioMetadata) -> None:
         self.validate_scenario(scenario)
-        with self._connection:
+        with self._lock, self._connection:
             self._connection.execute(
                 """
                 INSERT INTO scenarios (
@@ -305,7 +318,7 @@ class WorkbenchMetadataRepository:
 
     def upsert_run(self, run: RunMetadata) -> None:
         self.validate_run(run)
-        with self._connection:
+        with self._lock, self._connection:
             self._connection.execute(
                 """
                 INSERT INTO runs (
@@ -353,11 +366,13 @@ class LazyWorkbenchMetadataRepository:
     def __init__(self, path: Path | str) -> None:
         self._path = path
         self._repository: WorkbenchMetadataRepository | None = None
+        self._lock = RLock()
 
     def _get_repository(self) -> WorkbenchMetadataRepository:
-        if self._repository is None:
-            self._repository = build_seeded_metadata_repository(self._path)
-        return self._repository
+        with self._lock:
+            if self._repository is None:
+                self._repository = build_seeded_metadata_repository(self._path)
+            return self._repository
 
     def metadata_source(self) -> dict[str, object]:
         return metadata_source_payload(self._path)
