@@ -7,6 +7,7 @@ import LifeWorkbench from "./LifeWorkbench";
 import HealthWorkbench from "./HealthWorkbench";
 import FourSectorBalanceWorkbench from "./FourSectorBalanceWorkbench";
 import CapitalWorkbench from "./CapitalWorkbench";
+import IctWorkbench from "./IctWorkbench";
 import type { CheckedFourSector, CheckedNonLife, CheckedSides } from "./fourSectorSources";
 import {
   Activity,
@@ -9126,6 +9127,7 @@ function App() {
         <ModelWorkspace model="four-sector-balance"><FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady}
           onReady={setFourSectorReady} /></ModelWorkspace>
         <ModelWorkspace model="capital"><CapitalWorkbench source={fourSectorReady} /></ModelWorkspace>
+        <ModelWorkspace model="ict"><IctWorkbench /></ModelWorkspace>
 
         <Area name="help"><Disclosure title="Validierungsstatus"><section className="panel validation-panel" id="validation">
           <div className="panel-heading">

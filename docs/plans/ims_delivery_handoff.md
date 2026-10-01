@@ -101,7 +101,13 @@ Branch `codex/ims-management-integration`, Basis tatsächliches main 2e70b8f.
 AP3 ist durch den Folgeauftrag freigegeben; ein gemeinsamer Draft-PR über fünf
 Meilensteine. Planprüfer: 25 Anforderungen, Auftrag AP3. Vollständiger Umfang
 und offene Abnahmen: `docs/plans/ims_ap3_implementation.md`.
-Aktueller Schritt M1: ICT-Quellen-/Zeitvertrag und deterministische Wirkungskette.
+Draft-PR #290: https://github.com/junker-joerg/ims/pull/290.
+M1-Zwischenstand: ICT-Quellen-/Zeitvertrag, deterministische Wirkungskette,
+deklarierter Bilanzoverlay, UI und Dossier implementiert. 22 neue Kern-/API-
+Prüfungen, 70 bestehende Regressionen, sechs Browserfälle und Build bestanden.
+Mapping/Bedienhilfe: `docs/migration/ims_ap3_ict_workshop.md` und
+`docs/handbook/ict_ap3.md`. Nächster Schritt M2: geführter, atomarer Aufbau
+frisch geprüfter 100-Perioden-Kontexte mit stabilem Prefix und kontrolliertem Start.
 M2–M5 und das fachliche Strategiemapping bleiben offen. Historische Quellen
 wurden für Perioden-/Schockgrenzen gelesen; ICT ist eine neue deklarierte
 Workshop-Schicht. Noch keine AP3-Produktabnahme, kein AP3-Merge freigegeben.

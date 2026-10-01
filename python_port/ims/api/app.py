@@ -12,6 +12,8 @@ from starlette.responses import FileResponse, JSONResponse, Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
+from ims.api.ict_workshop import create_ict_app
+
 from ims.accounting.insurer_balance import (
     build_insurer_balance,
     insurer_balance_workbench_contract_payload,
@@ -3030,6 +3032,7 @@ def create_app(
             version=APP_VERSION,
             description="Lokale Backend-Shell fuer die IMS Workbench.",
         )
+        app.mount("/api/ict", create_ict_app())
 
         @app.get("/api/health")
         def health() -> dict[str, Any]:
@@ -3858,6 +3861,7 @@ def create_app(
         return app
 
     routes: list[Any] = [
+        Mount("/api/ict", create_ict_app()),
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/strategies/catalog", lambda request: JSONResponse(strategy_catalog_payload())),

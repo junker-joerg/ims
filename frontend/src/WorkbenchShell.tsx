@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { Activity, ArrowRight, FileText, HelpCircle, Home, Moon, Play, Sun } from "lucide-react";
 
 type AreaName = "overview" | "scenario" | "simulation" | "results" | "help";
-type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "capital" | "strategies" | "execution";
+type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "capital" | "ict" | "strategies" | "execution";
 type Route = { area: AreaName; model: ModelName };
 const areas = [
   { id: "overview", label: "Übersicht", icon: Home },
@@ -15,6 +15,7 @@ const models: { id: ModelName; label: string }[] = [
   { id: "balance", label: "Kfz / Sach" }, { id: "life", label: "Leben" },
   { id: "health", label: "Kranken" }, { id: "four-sector-balance", label: "Gesamtbilanz" },
   { id: "capital", label: "Kapitalwirkung" }, { id: "strategies", label: "Strategien" },
+  { id: "ict", label: "ICT-Wirkung" },
   { id: "execution", label: "Ausführung" },
 ];
 const RouteContext = createContext<Route>({ area: "overview", model: "balance" });

@@ -9,7 +9,7 @@ Der Planprüfer erzeugte den AP3-Auftrag aus diesem tatsächlichen main-Stand.
 
 | Meilenstein | Anforderungs-IDs | Status / Abnahme |
 | --- | --- | --- |
-| M1: ICT-/DORA-Wirkungskette | PR179–186 | in Arbeit: gerichteter Quellenvertrag, Ereignisse, ausdrückliche Stunden-/Periodenskala, Kapazität/Rückstand/Erholung, gemeinsame Anbieter, Gegenmaßnahmen, Modellbilanz und Dossier |
+| M1: ICT-/DORA-Wirkungskette | PR179–186 | implementierter Zwischenstand: gerichteter Quellenvertrag, Ereignisse, Stunden-/Periodenskala, Kapazität/Rückstand/Erholung, gemeinsame Anbieter, Gegenmaßnahmen, deklarierte Modellbilanz und Dossier; technische Nachweise unten, Gesamtabnahme AP3 offen |
 | M2: Geführter Lauf | PR187, PR187a–c | offen: Assistent, 100 vollständige Kontexte, atomarer neuer Kandidatenbau, stabile Seeds/Digests/Prefixe, unveränderliche idempotente Speicherung und kontrollierter Start |
 | M3: Vier Sparten | PR187d–f | offen: geprüfter gemeinsamer Quellenvertrag, periodische Rechnung/Carryover, Baseline/Variante, übereinstimmende Anzeige und CSV/JSON/XLSX |
 | M4: Belegte Strategiewirkung | PR187g–k | offen: Quellen-/Zeitmapping vor Ausführungsadaptern; begrenzte gedeckte VU/VN-Kanäle, verständliche Eingabe und mindestens eine belegte 100er-Reaktionskette |
@@ -18,6 +18,13 @@ Der Planprüfer erzeugte den AP3-Auftrag aus diesem tatsächlichen main-Stand.
 Keine Anforderung ist durch diesen Plan bereits abgenommen. AP3 bleibt
 in_progress; completion_evidence wird erst für tatsächliche Abnahmen ergänzt.
 Ein fachlich blockierter Teil wird ausdrücklich benannt und nicht als done geführt.
+
+M1-Nachweise: 22 neue Kern-/API-Prüfungen, 70 bestehende Bilanz-/API-
+Regressionen, sechs reale Browserfälle (drei Größen, zwei Farbmodi) und
+TypeScript-/Vite-Build bestanden. Fachliche Zuordnung und Grenzen:
+`docs/migration/ims_ap3_ict_workshop.md`; Bedienung:
+`docs/handbook/ict_ap3.md`. Es handelt sich um einen deklarierten Bilanzoverlay,
+noch nicht um automatische Markt-/Vier-Sparten-Kopplung. Nächster Schritt M2.
 
 ## Quellen und konservative Annahmen
 
