@@ -2,10 +2,12 @@ import json
 import os
 import subprocess
 import sys
+import shutil
 import zipfile
 from pathlib import Path
 
 from ims.api.workbench_bundle_build import build_workbench_bundle_zip
+from ims.api.workbench_artifact_manifest import SEMINAR_RESOURCE_PATHS
 from ims.api.workbench_portable_readiness import build_workbench_portable_readiness
 from ims.api.workbench_portable_staging import (
     WorkbenchPortableStagingFile,
@@ -241,6 +243,41 @@ def test_portable_staging_public_types_importable():
     assert WorkbenchPortableStagingIssue is not None
     assert WorkbenchPortableStagingFile is not None
     assert WorkbenchPortableStagingResult is not None
+
+
+def test_actual_ap3_backend_imports_and_serves_complete_offline_seminar_after_staging(tmp_path):
+    """Reproduce the release-gate failure using the real backend in a child."""
+    actual = Path(__file__).resolve().parents[1]
+    repo = tmp_path / "repo"
+    _build_repo_fixture(repo)
+    shutil.copytree(actual / "python_port", repo / "python_port", dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns("__pycache__", "*.egg-info"))
+    for relative in SEMINAR_RESOURCE_PATHS:
+        destination = repo / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(actual / relative, destination)
+    zip_path, staged = tmp_path / "bundle.zip", tmp_path / "staged"
+    built = build_workbench_bundle_zip(root=repo, out_path=zip_path)
+    assert built.archive_created and set(SEMINAR_RESOURCE_PATHS) <= set(built.entries)
+    assert stage_workbench_portable_bundle(zip_path=zip_path, out_path=staged).status == "ok"
+    for relative in SEMINAR_RESOURCE_PATHS:
+        assert (staged / "app" / relative).read_bytes() == (actual / relative).read_bytes()
+    script = """
+from starlette.testclient import TestClient
+from ims.api.app import app
+client = TestClient(app)
+assert client.get('/api/seminar/handbook/seminar_ap3.html').status_code == 200
+for case in ('price', 'inflation', 'capital'):
+    response = client.get('/api/seminar/bundles/' + case + '.json')
+    assert response.status_code == 200
+    assert len(response.json()['sources']['modern']['market_periods']) == 100
+print('AP3 staged backend and complete offline resources passed')
+"""
+    completed = subprocess.run([sys.executable, "-c", script], cwd=staged, capture_output=True,
+        text=True, env={**os.environ, "PYTHONPATH": str(staged / "app/python_port"),
+                       "PYTHONDONTWRITEBYTECODE": "1", "IMS_METADATA_DB": str(staged / "unused.sqlite")}, timeout=30)
+    assert completed.returncode == 0, completed.stderr
+    assert not (staged / "unused.sqlite").exists()
 
 
 def _build_repo_fixture(root: Path) -> None:

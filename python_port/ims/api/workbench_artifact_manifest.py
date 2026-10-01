@@ -8,6 +8,15 @@ from pathlib import Path
 from typing import Sequence
 
 
+SEMINAR_RESOURCE_PATHS = (
+    "docs/handbook/seminar_ap3.html", "docs/handbook/seminar_ap3.md",
+    *(f"docs/handbook/images/ap3_seminar_{name}.png" for name in (
+        "decision_wide_light", "decision_narrow_dark", "demo_wide_light",
+        "capital_wide_light", "pressure_wide_light")),
+    *(f"seminar_cases/{case}.json" for case in ("price", "inflation", "capital")),
+)
+
+
 @dataclass(frozen=True)
 class WorkbenchArtifactManifestIssue:
     code: str
@@ -138,7 +147,7 @@ def _included_paths(
     frontend_dist: Path,
     excluded_paths: Sequence[str],
 ) -> tuple[WorkbenchArtifactManifestPath, ...]:
-    return (
+    base = (
         _manifest_path("python_port", root / "python_port", kind="directory", required=True, excluded_paths=excluded_paths),
         _manifest_path("frontend_dist", frontend_dist, kind="directory", required=True, excluded_paths=excluded_paths),
         _manifest_path(
@@ -220,6 +229,14 @@ def _included_paths(
             excluded_paths=excluded_paths,
         ),
     )
+    # Older fixtures/packages have no seminar module. A package containing the
+    # actual AP3 backend must carry its complete offline runtime resources.
+    if not (root / "python_port/ims/api/seminar.py").is_file():
+        return base
+    return base + tuple(_manifest_path(
+        "seminar_resource_" + str(index), root / relative, kind="file",
+        required=True, excluded_paths=excluded_paths,
+    ) for index, relative in enumerate(SEMINAR_RESOURCE_PATHS))
 
 
 def _manifest_path(

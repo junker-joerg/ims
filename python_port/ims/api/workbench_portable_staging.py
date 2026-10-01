@@ -9,6 +9,7 @@ from pathlib import Path, PurePosixPath
 from typing import Sequence
 
 from ims.api.workbench_bundle_smoke import smoke_workbench_bundle_zip
+from ims.api.workbench_artifact_manifest import SEMINAR_RESOURCE_PATHS
 from ims.api.workbench_portable_readiness import build_workbench_portable_readiness
 
 
@@ -257,6 +258,9 @@ def _target_path_for_entry(out_path: Path, entry_name: str) -> Path | None:
         return _safe_target(out_path, Path("app", *parts), allowed_root=Path("app", "python_port"))
     if parts[:2] == ("frontend", "dist"):
         return _safe_target(out_path, Path("app", *parts), allowed_root=Path("app", "frontend", "dist"))
+    if entry_name in SEMINAR_RESOURCE_PATHS:
+        allowed = Path("app", "docs", "handbook") if parts[0] == "docs" else Path("app", "seminar_cases")
+        return _safe_target(out_path, Path("app", *parts), allowed_root=allowed)
     if parts == ("README.md",):
         return _safe_target(out_path, Path("README.md"))
     return None
