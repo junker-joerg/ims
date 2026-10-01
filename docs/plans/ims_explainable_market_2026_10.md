@@ -1,7 +1,9 @@
 # Arbeitspakete für das erklärbare IMS Managementlabor
 
-Stand 01.10.2026. Vorschlag auf Grundlage des Nutzerauftrags und des beigefügten
-Mockups. Empfohlen sind sechs zusammenhängende Lieferungen AP4 bis AP9.
+Stand 01.10.2026. Vom Auftraggeber geprüft und zum Merge freigegeben auf
+Grundlage des Nutzerauftrags und des beigefügten Mockups. Mit Übernahme von
+[PR 291](https://github.com/junker-joerg/ims/pull/291) nach main sind die sechs
+zusammenhängenden Lieferungen AP4 bis AP9 angenommen.
 **AP4 macht den bestehenden Seminarpfad erklärbar und einsteigertauglich.**
 AP5 bis AP8 erweitern ihn zum Markt mit 40 Versicherungsgruppen, vier
 Schockfällen und Auswertungen von Strategiefamilien. AP9 nimmt den gemeinsamen
@@ -11,14 +13,18 @@ passende Tests, Anleitung und einen versionierten Windows-Installer.
 Dies ist eine Folgeplanung. Der angenommene AP1–AP3-Plan und seine historischen
 Anforderungs-IDs bleiben erhalten. Das neue Paketmanifest
 [ims_explainable_market_plan.json](ims_explainable_market_plan.json) ist ein
-Vorschlag und wird noch nicht vom bestehenden AP1–AP3-Auftragsgenerator verwendet.
+angenommenes Planmanifest und wird noch nicht vom bestehenden AP1–AP3-Auftragsgenerator
+verwendet. Ein Folgeauftrag startet jeweils das nächste Paket mit erfüllten
+Abhängigkeiten; der Planungsmerge selbst startet keine Implementierung.
 
 ## Ausgangspunkt und bestätigte Abgrenzung
 
 AP3-Produktbasis: **2.0.0-alpha.3**, Commit
 `ee4b659007d50e92058551fcc1f31a48b8ce8ba1`, [PR 290](https://github.com/junker-joerg/ims/pull/290).
-AP3 ist technisch geprüft, aber zum Planungszeitpunkt nicht nach main übernommen.
-Verifiziertes main: `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`.
+AP3 ist nach ausdrücklicher Freigabe am 01.10.2026 um 18:48:44 Uhr
+(Europe/Berlin) nach main übernommen. Verifiziertes main und AP3-Merge:
+`abc8a7e347e29bbd5059abd8b59df2a98eb9d78e`. Sein Tree entspricht exakt dem
+geprüften Produktcommit; alle vier erforderlichen CI-Prüfungen waren erfolgreich.
 Die Implementierung von AP4 setzt die angenommene Folgeplanung und AP3 in main
 voraus. Diese Planungsänderung lässt den vorhandenen Produktstand bestehen.
 
@@ -344,11 +350,17 @@ hypothetischen Schock DORA 2.0 getrennt. Die vier Demos sind kontrollierte
 Seminarannahmen. Reale Firmennamen und technische Testnachweise begründen
 keine Prognose ihrer tatsächlichen Strategie, Cloud-Abhängigkeit oder Ergebnisse.
 
-## Prüfung dieses Planungsvorschlags
+## Prüfung und Annahme der Folgeplanung
 
-Der Plan wird vor der Übergabe auf Anforderungsabdeckung, eindeutige IDs,
+Der Auftraggeber hat den Plan geprüft und den Merge am 01.10.2026 freigegeben.
+AGENTS.md verweist auf diese Folgeplanung, AP4 als nächstes Paket und die
+weiterhin verbindlichen fachlichen Entscheidungstore. Vor der Übernahme
+wird der Plan auf Anforderungsabdeckung, eindeutige IDs,
 Abhängigkeiten ohne Zyklen, vollständige Paketabnahmen, Quellenbezug und passende
-Rollen-/Demozuordnung geprüft. Der bestehende angenommene Sprintplan bleibt
-unverändert und wird separat mit seinem vorhandenen Prüfer validiert.
+Rollen-/Demozuordnung geprüft. Die bestehenden Pakete, Anforderungszuordnungen
+und Abnahmen des angenommenen Sprintplans bleiben erhalten; nur der
+AP3-Mergebeleg wird aktualisiert. Er wird separat mit seinem vorhandenen
+Prüfer validiert.
 Diese Prüfungen belegen die Konsistenz der Planung; Produktabnahmen der
-vorgeschlagenen AP4–AP9 sind erst nach deren Umsetzung möglich.
+geplanten AP4–AP9 sind erst nach deren Umsetzung möglich. Ihre Statuswerte
+bleiben `planned`, und ihre Abnahmebelege sind noch leer.

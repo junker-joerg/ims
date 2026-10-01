@@ -1,18 +1,28 @@
 {
   "schema_version": "ims.explainable-market-plan.v1",
   "date": "2026-10-01",
-  "status": "proposal",
+  "status": "accepted",
+  "approval": {
+    "date": "2026-10-01",
+    "pull_request": 291,
+    "user_request": "Plan geprüft und kann in Main gemerged werden - ggf notwendige Agents.md durchführen",
+    "effective_when": "PR #291 nach main übernommen",
+    "scope": "Lieferplanung AP4–AP9; kein automatischer Start eines Umsetzungspakets"
+  },
   "plan_document": "docs/plans/ims_explainable_market_2026_10.md",
   "mockup": "docs/plans/images/ims_management_mockup_2026_10_01.png",
-  "accepted_plan_unchanged": "docs/plans/ims_ai_sprint_plan.json",
+  "legacy_acceptance_manifest": "docs/plans/ims_ai_sprint_plan.json",
   "existing_work_order_generator_supports_this_plan": false,
   "implementation_authorized": false,
   "baseline": {
-    "main_commit": "2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c",
+    "main_commit": "abc8a7e347e29bbd5059abd8b59df2a98eb9d78e",
     "ap3_commit": "ee4b659007d50e92058551fcc1f31a48b8ce8ba1",
     "ap3_pr": 290,
     "ap3_release": "2.0.0-alpha.3",
-    "ap3_merged": false,
+    "ap3_merged": true,
+    "ap3_merge_commit": "abc8a7e347e29bbd5059abd8b59df2a98eb9d78e",
+    "ap3_merged_at_utc": "2026-10-01T16:48:44Z",
+    "ap3_merge_tree_matches_tested_product": true,
     "implementation_requires": ["Folgeplanung angenommen", "AP3 in main"]
   },
   "market_scope": {
@@ -71,7 +81,7 @@
     {
       "id": "AP4",
       "title": "Erklärbare Oberfläche und geführter Einstieg",
-      "status": "proposed",
+      "status": "planned",
       "depends_on": ["AP3"],
       "branch_proposal": "codex/ims-explainable-roles",
       "deliverables": ["Vier Rollensichten mit erhaltenem Fallzustand", "Übersicht mit echten Kennzahlen, Verlauf und nächsten Schritten", "Erklärweg von Eingabe und Regel zu Entscheidung und Buchung", "Geführte vorhandene AP3-Demos und Einsteiger-/Wiedereinsteigeranleitung"],
@@ -82,7 +92,7 @@
     {
       "id": "AP5",
       "title": "Marktmodell und auswertbare Strategiefamilien",
-      "status": "proposed",
+      "status": "planned",
       "depends_on": ["AP4"],
       "branch_proposal": "codex/ims-market-strategy-groups",
       "deliverables": ["Neuer expliziter moderner Mehr-VU-Marktvertrag mit 40/41 Anbietern", "Gemeinsame Risiko-, Mengen-, Buchungs- und Bestandszuordnung", "Getrennte Versicherungs-, Vergleichs-, Kunden- und Strategiegruppen", "Gruppen-/Familien-API und erste nutzbare Marktsicht", "Quellengebundener Einzel-VU-Excel-Export"],
@@ -93,7 +103,7 @@
     {
       "id": "AP6",
       "title": "Deutscher Versicherungsmarkt mit 40 Gruppen",
-      "status": "proposed",
+      "status": "planned",
       "depends_on": ["AP5"],
       "branch_proposal": "codex/ims-german-market-top40",
       "deliverables": ["Belegte 40er-Gruppenauswahl mit deutschen Anzeigenamen und Tochterzuordnung", "Dokumentierte Rankingkennzahl, gemeinsames Jahr, Deutschlandumfang und Grenzprüfung", "Offline ladbarer Modellmarkt mit getrennten Fakten und Workshop-Annahmen", "Quellen-Dossier und ausdrückliche Darstellung des nicht simulierten Restmarkts"],
@@ -104,7 +114,7 @@
     {
       "id": "AP7",
       "title": "Vier Schock Demos mit erklärten Gegenmaßnahmen",
-      "status": "proposed",
+      "status": "planned",
       "depends_on": ["AP6"],
       "branch_proposal": "codex/ims-market-shock-demos",
       "deliverables": ["Vier vollständige portable 100-Perioden-Schockfälle", "Fiktiver Anbieter 41, deklarierter LV-Nachfrageschock, DORA-2.0-Workshop und US-Anbieterausfall", "Deklarierte Markt-/ICT-Zeit- und Buchungsbrücke", "Schreibfreie Demo, bearbeitbare Übernahme, aktive Gegenmaßnahmen und Rollen-Erklärpfade"],
@@ -115,7 +125,7 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "proposed",
+      "status": "planned",
       "depends_on": ["AP7"],
       "branch_proposal": "codex/ims-market-visualizations",
       "deliverables": ["Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten", "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang", "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung", "Marktinterpretation in IMS und Einzel-VU-Details in Excel", "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"],
@@ -126,7 +136,7 @@
     {
       "id": "AP9",
       "title": "Einsteigerhandbuch und gemeinsame Seminarabnahme",
-      "status": "proposed",
+      "status": "planned",
       "depends_on": ["AP8"],
       "branch_proposal": "codex/ims-role-seminar-acceptance",
       "deliverables": ["Vollständiges installiertes Einsteiger-/Wiedereinsteigerhandbuch", "Begriffskarte, vier Rollenwege, vier Schockgeschichten und Gruppen-/Diagrammhilfe", "Gemeinsamer Seminarpfad mit Moderationsvorschlag und tatsächlichen Bildern", "Dokumentierte Benutzer-, Browser-, Installer- und Produktabnahme"],

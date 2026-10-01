@@ -1,6 +1,23 @@
 # AP3 Abschlussbericht – Fachliche Integration
 
-Stand: 01.10.2026. **M1–M5 sind im bestätigten modernen Workshopumfang umgesetzt und technisch abgenommen.** AP3 bildet einen Integrations-PR #290. Merge und öffentliche Veröffentlichung sind noch nicht freigegeben. Dieser Bericht ersetzt den früheren Zwischenbericht mit dem inzwischen beantworteten M4-Entscheidungstor.
+Stand: 01.10.2026. **M1–M5 sind im bestätigten modernen Workshopumfang umgesetzt, technisch abgenommen und nach ausdrücklicher Freigabe über PR #290 in main übernommen.** Eine öffentliche Veröffentlichung wurde nicht beauftragt. Dieser Bericht ersetzt den früheren Zwischenbericht mit dem inzwischen beantworteten M4-Entscheidungstor.
+
+## Übernahme des aktuellen Releases nach main
+
+Der Auftraggeber hat mit „Übernehme AP drei in Main.“ den Merge freigegeben.
+[PR #290](https://github.com/junker-joerg/ims/pull/290) wurde am 01.10.2026 um
+18:48:44 Uhr (Europe/Berlin) mit Commit
+`abc8a7e347e29bbd5059abd8b59df2a98eb9d78e` übernommen. Der Merge-Tree
+`f14153ea48a7459ebdd87b94e91971c3b005ee20` entspricht exakt dem geprüften
+Produkthead `ee4b659007d50e92058551fcc1f31a48b8ce8ba1`.
+Alle vier erforderlichen CI-Prüfungen dieses Heads waren erfolgreich:
+2.675 Tests + 8 Subtests, 31 Browserfälle und 14 Installer-Lifecycleprüfungen
+einschließlich 31 Browserfällen gegen die tatsächlich installierte Anwendung.
+Der [alpha.3-Installer mit Originalnachweisen](https://github.com/junker-joerg/ims/actions/runs/36883302943/artifacts/11173746981)
+trägt Windows-Dateiversion 2.0.0.3; EXE SHA-256:
+`78a32ac25267ba72ae5cf11570c5c279a2cf62055710fe09cdea9d253415a792`.
+Die externe Clean-Windows-AP3-Benutzerabnahme wurde damit nicht nachträglich
+behauptet. Die folgenden älteren Prüfnachweise behalten ihren historischen Bezug.
 
 Nachtrag zum Versionsauftrag vom 01.10.: Der aktuelle AP3-Stand erhält die eindeutige
 Releasenummer **2.0.0-alpha.3**, Windows-Dateiversion **2.0.0.3** und den Installer
