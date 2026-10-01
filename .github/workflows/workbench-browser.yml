@@ -31,7 +31,7 @@ jobs:
         shell: pwsh
         run: |
           python -m venv .venv
-          .\.venv\Scripts\python.exe -m pip install -e python_port
+          .\.venv\Scripts\python.exe -m pip install -e 'python_port[web]'
           npm.cmd ci --prefix frontend
           .\frontend\node_modules\.bin\playwright.cmd install chromium
           if ($LASTEXITCODE -ne 0) { throw 'Chromium installation failed' }

@@ -63,7 +63,7 @@ zugeordnet und wird hier nicht als verfügbare Aktion angeboten.
 | Kranken, 390×844 | [Vorher](images/ap2_before_health_390x844.png) | [Hell](images/ap2_after_health_light_390x844.png), [Dunkel](images/ap2_after_health_dark_390x844.png) |
 | Gespeichertes Ergebnis, 390×844 | — | [Hell](images/ap2_after_results_light_390x844.png), [Dunkel](images/ap2_after_results_dark_390x844.png) |
 
-Für Entwickler: im Checkout `.venv` mit editable install einrichten,
+Für Entwickler: im Checkout `.venv` mit editable install von `python_port[web]` einrichten,
 `npm.cmd ci --prefix frontend`, `frontend\node_modules\.bin\playwright.cmd install chromium`,
 `npm.cmd run build --prefix frontend`, dann `npm.cmd run test:browser --prefix frontend`.
 Der Test startet den vorhandenen Launcher mit einer eigenen temporären Ablage.
