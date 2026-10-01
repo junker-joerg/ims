@@ -12,6 +12,8 @@ from starlette.responses import FileResponse, JSONResponse, Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
+from ims.release import VERSION as APP_VERSION
+
 from ims.api.ict_workshop import create_ict_app
 from ims.api.guided_period_chain_routes import create_guided_chain_app
 from ims.api.seminar import create_seminar_app
@@ -294,7 +296,6 @@ except ModuleNotFoundError:  # pragma: no cover - exercised implicitly when Fast
     FastAPI = None  # type: ignore[assignment]
 
 APP_NAME = "IMS Workbench"
-APP_VERSION = "2.0.0-alpha.1"
 
 
 class MetadataRepositoryReader(Protocol):

@@ -1,6 +1,11 @@
 body { color: var(--text); background: var(--background); line-height: 1.5; }
 .shell { grid-template-columns: 232px minmax(0, 1fr); background: var(--background); }
-.sidebar { position: sticky; top: 0; height: 100vh; padding: 32px 20px; background: var(--surface); }
+.sidebar { position: sticky; top: 0; height: 100vh; padding: 32px 20px; background: var(--surface); display: flex; flex-direction: column; }
+.sidebar-navigation { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.release-badge { margin: auto 12px 0; padding-top: 16px; font-size: .75rem; color: var(--muted); overflow-wrap: anywhere; }
+.release-badge strong { display: block; color: var(--text); font-weight: 600; }
+.release-badge span { display: block; margin-top: 4px; }
+.release-warning span { color: var(--warning-text); }
 .brand-mark { border: 0; border-radius: 12px; background: var(--accent-fill); color: var(--on-accent); }
 .sidebar-note { margin: 32px 12px 0; color: var(--muted); font-size: .8rem; }
 .content { width: 100%; max-width: 1320px; padding: 36px clamp(20px, 3vw, 48px); }
@@ -76,8 +81,11 @@ label:has(input[type="checkbox"]), label:has(input[type="radio"]) { min-height: 
   .brand-mark { width: 36px; height: 36px; }
   .brand span, .sidebar-note { display: none; }
   .area-navigation { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; padding: 8px 4px max(8px, env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: var(--surface); }
+  .sidebar-navigation { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10; background: var(--surface); }
+  .sidebar-navigation .area-navigation { position: static; padding-bottom: 4px; }
+  .release-badge { margin: 0; padding: 4px 12px max(8px, env(safe-area-inset-bottom)); font-size: .7rem; }
   .area-navigation a { display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 54px; padding: 6px 0; font-size: .68rem; }
-  .content { padding: 24px 20px 100px; }
+  .content { padding: 24px 20px 170px; }
   .topbar { margin-bottom: 24px; }
   .topbar h1 { font-size: 1.8rem; }
   .theme-toggle { min-width: 44px; padding: 0 12px; }

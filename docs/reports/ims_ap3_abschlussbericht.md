@@ -2,6 +2,18 @@
 
 Stand: 01.10.2026. **M1–M5 sind im bestätigten modernen Workshopumfang umgesetzt und technisch abgenommen.** AP3 bildet einen Integrations-PR #290. Merge und öffentliche Veröffentlichung sind noch nicht freigegeben. Dieser Bericht ersetzt den früheren Zwischenbericht mit dem inzwischen beantworteten M4-Entscheidungstor.
 
+Nachtrag zum Versionsauftrag vom 01.10.: Der aktuelle AP3-Stand erhält die eindeutige
+Releasenummer **2.0.0-alpha.3**, Windows-Dateiversion **2.0.0.3** und den Installer
+`IMS-Setup-2.0.0-alpha.3-win-x64.exe`. Auf dem Startbildschirm steht die Nummer
+unten links; abweichende Oberflächen-/Anwendungsversionen werden dort erklärt.
+Die [verbindliche Versionsregel](../plans/ims_release_numbering.md) gilt auch für
+künftige Lieferungen. 45 gezielte Backend-/Versionsprüfungen und sieben echte
+Browserprüfungen bestanden lokal, einschließlich drei Bildschirmgrößen, beiden
+Farbmodi sowie API-Ausfall und Versionskonflikt. Der tatsächliche Installer und
+die vollständigen Prüfläufe des aktuellen Heads sind im [selben PR #290](https://github.com/junker-joerg/ims/pull/290)
+zugeordnet. Die unten dokumentierten alpha.1-Dateien, Hashes und Abnahmen bleiben
+Belege ihres damaligen Produktstands; sie identifizieren nicht alpha.3.
+
 ## Auftrag und überprüfte Grundlage
 
 Der Auftraggeber bestätigte den erfolgreichen AP2-Test auf einem anderen Rechner und verlangte vor AP3 den ausführlichen Bericht in Evernote. Diese Reihenfolge wurde eingehalten. AP2-PR #289 wurde am 01.10.2026 um 09:48:11 Uhr Berlin nach grünen Checks übernommen; tatsächliches main ist `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`. Der [AP2-Bericht in Evernote](https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c) wurde vor AP3 gespeichert und nach Neuladen vollständig geprüft.

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { Activity, ArrowRight, FileText, HelpCircle, Home, Moon, Play, Sun } from "lucide-react";
+import ReleaseBadge from "./ReleaseBadge";
 
 type AreaName = "overview" | "scenario" | "simulation" | "results" | "help";
 type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "seminar" | "capital" | "ict" | "hundred" | "strategies" | "execution";
@@ -95,11 +96,14 @@ export default function WorkbenchShell({ children }: { children: ReactNode }) {
     <div className="shell" data-view={route.area}>
       <aside className="sidebar">
         <div className="brand"><div className="brand-mark">IMS</div><div><strong>Workbench</strong><span>Lokal auf Ihrem Rechner</span></div></div>
-        <nav className="area-navigation" aria-label="Hauptnavigation">{areas.map(({ id, label, icon: Icon }) =>
-          <a key={id} href={`#${id}`} className={route.area === id ? "active" : ""} aria-current={route.area === id ? "page" : undefined}>
-            <Icon size={20} aria-hidden="true" /><span>{label}</span>
-          </a>)}</nav>
-        <p className="sidebar-note">Modellannahmen und Nachweise bleiben an jedem Ergebnis sichtbar.</p>
+        <div className="sidebar-navigation">
+          <nav className="area-navigation" aria-label="Hauptnavigation">{areas.map(({ id, label, icon: Icon }) =>
+            <a key={id} href={`#${id}`} className={route.area === id ? "active" : ""} aria-current={route.area === id ? "page" : undefined}>
+              <Icon size={20} aria-hidden="true" /><span>{label}</span>
+            </a>)}</nav>
+          <p className="sidebar-note">Modellannahmen und Nachweise bleiben an jedem Ergebnis sichtbar.</p>
+          <ReleaseBadge />
+        </div>
       </aside>
       <main className="content" id="workbench-content">
         <header className="topbar"><div><p className="eyebrow">IMS · Versicherungsmodelle</p>

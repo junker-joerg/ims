@@ -20,6 +20,8 @@ import zipfile
 
 from openpyxl import load_workbook
 
+from ims.release import VERSION
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -111,6 +113,8 @@ def main() -> None:
             raise RuntimeError('Frozen health-check timeout')
         with request('/') as response:
             assert b'<html' in response.read().lower()
+        assert health['version'] == VERSION
+        assert get_json('/api/version')['version'] == VERSION
         assert get_json('/api/model/health-sector-contract')['schema_version']
         evidence.append({'test': label, 'result': 'passed', 'seconds': time.perf_counter() - began})
 

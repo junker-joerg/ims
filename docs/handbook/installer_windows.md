@@ -1,6 +1,11 @@
 # IMS installieren: Windows-Installer (AP1)
 
-AP1 liefert `IMS-Setup-2.0.0-alpha.1-win-x64.exe` für Windows 11 x64.
+Aktueller AP3-Stand: **2.0.0-alpha.3**, Installer
+`IMS-Setup-2.0.0-alpha.3-win-x64.exe` für Windows 11 x64.
+Frühere AP1-/AP2- und erste AP3-Pakete trugen noch dieselbe Nummer alpha.1.
+Auf dem Startbildschirm und allen Bereichen steht der Release-Stand unten links.
+Bei unterschiedlichen Browser-/Anwendungsversionen erscheint dort ein Hinweis:
+IMS neu starten und die Browserseite mit Strg+F5 neu laden.
 Der Download enthält Python-Laufzeit, Backend, gebaute React-Oberfläche,
 Beispiele, Diagnose-Referenzen, Profile, Hilfe und Lizenztexte. Auf dem
 Zielrechner ist keine Installation von Python, Node.js, npm oder Git nötig.

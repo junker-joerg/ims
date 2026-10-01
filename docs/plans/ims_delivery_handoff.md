@@ -97,6 +97,16 @@ AP1-Notiz bei späterer Bearbeitung nur aktualisieren, keine Dublette.
 
 ## AP3 technisch abgenommen; Merge offen
 
+Versionsauftrag vom 01.10.2026: neuer AP3-Stand **2.0.0-alpha.3**, Windows-Version
+**2.0.0.3**, Anzeige unten links auf dem Startbildschirm. Gemeinsame Quelle
+`python_port/ims/release.py`; künftige höhere Nummer mit
+`.venv\Scripts\python.exe scripts/installer/release_metadata.py --set-version VERSION`
+vergeben. Paketmetadaten, Installer und CI werden zusammen geprüft. Keine
+Wiederverwendung für geänderte ausgelieferte Produkte. Details:
+`docs/plans/ims_release_numbering.md`. Lokal bestanden 45 gezielte Tests und
+sieben Browserprüfungen der Anzeige; Installer und aktuelle vollständige CI
+stehen im selben PR #290. Die folgenden alpha.1-Belege sind historisch.
+
 Branch `codex/ims-management-integration`, ein Integrations-PR #290:
 https://github.com/junker-joerg/ims/pull/290. Basis und erneut verifiziertes
 origin/main: `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`.
@@ -126,8 +136,8 @@ Anlagefall zusätzlich deklarierter Kapitaldruck 550 > Verlustgrenze 200.
 Historische Vollgleichheit, regulatorische Größen, DORA-Konformität und
 endogene Gesamtmarktkopplung bleiben offen/gesperrt, keine stillen Änderungen.
 
-Nächster Schritt: aktuelle Dokumentations-Checks abwarten und PR auf Ready
-setzen; anschließend Review und gesonderte Mergefreigabe. Kein neues Paket.
+Nächster Schritt: grüne Checks des jeweils aktuellen PR-Heads prüfen;
+anschließend Review und gesonderte Mergefreigabe. Kein neues Paket.
 
 Vollständiger AP3-Bericht in Evernote: https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8.
 Titel „IMS | AP3 Abschlussbericht – Fachliche Integration“, Notizbuch
