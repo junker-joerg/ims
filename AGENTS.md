@@ -19,11 +19,30 @@ Nicht-Ziel:
 
 ## Aktuelle Lieferplanung
 
-Für die moderne Workbench gilt der Vorschlag vom 30.09.2026 in
-`docs/plans/ims_ai_sprint_2026_09.md` und `docs/plans/ims_ai_sprint_plan.json`.
-Mit Übernahme des Planungs-PRs in main ist diese Lieferreihenfolge angenommen.
+AP1–AP3 der modernen Workbench sind nach main übernommen. Der Plan vom
+30.09.2026 in `docs/plans/ims_ai_sprint_2026_09.md` und
+`docs/plans/ims_ai_sprint_plan.json` bleibt ihr Abnahme- und Herkunftsnachweis.
 Die alten PR179–192 einschließlich PR187a–k bleiben Anforderungs-IDs;
-sie bedeuten nicht mehr jeweils einen eigenen GitHub-PR.
+sie bedeuten nicht jeweils einen eigenen GitHub-PR.
+
+Für die Folgearbeit gilt die am 01.10.2026 vom Auftraggeber geprüfte und zum
+Merge freigegebene Planung in `docs/plans/ims_explainable_market_2026_10.md`
+und `docs/plans/ims_explainable_market_plan.json`. Mit Übernahme von PR #291
+nach main ist die Lieferreihenfolge AP4 → AP5 → AP6 → AP7 → AP8 → AP9 angenommen.
+AP4 ist das nächste Paket: erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
+und geführter Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
+jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,
+Einzel-VU-Details in Excel. Der Deutschland-Fall umfasst 40 Versicherungsgruppen
+nach deutschem Erstversicherungsgeschäft über alle Sparten, ohne doppelt
+gezählte Töchter; fehlende Daten und nicht modellierte Sparten bleiben sichtbar.
+
+Vor Folgearbeit den neuen Plan und sein Manifest lesen. Der bestehende
+`scripts/planning/ims_sprint_plan.py` unterstützt ausschließlich AP1–AP3;
+sein Ergebnis „kein Auftrag“ ist keine Aussage über AP4–AP9. Einen Folgeauftrag
+anhand des neuen Manifests und der in main erledigten Abhängigkeiten ausführen.
+Der Planungsmerge startet kein Umsetzungspaket. Die Entscheidungstore für
+Mehr-VU-/Risiko-/Gruppenvertrag, Top-40-Datenbasis, Lebens-Nachfrage und
+Markt-/ICT-Kopplung bleiben verbindlich; die AP3-Zustimmung ersetzt sie nicht.
 
 Ein Arbeitspaket umfasst Implementierung, API/UI-Anschluss, Tests und Anleitung
 in einem Branch und Draft-PR. Mehrere Stunden oder Sitzungen sind zulässig.

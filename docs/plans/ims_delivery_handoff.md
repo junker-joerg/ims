@@ -95,7 +95,7 @@ Nach Neuladen: Titel, vollständiger Inhalt und vorgesehene Notizbuch-ID geprüf
 erkannter Browser-URL abgebrochen, keine weitere native UI-Eingabe.
 AP1-Notiz bei späterer Bearbeitung nur aktualisieren, keine Dublette.
 
-## AP3 technisch abgenommen; Merge offen
+## AP3 technisch abgenommen und nach main übernommen
 
 Versionsauftrag vom 01.10.2026: neuer AP3-Stand **2.0.0-alpha.3**, Windows-Version
 **2.0.0.3**, Anzeige unten links auf dem Startbildschirm. Gemeinsame Quelle
@@ -113,7 +113,15 @@ origin/main: `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`.
 Der Auftraggeber bestätigte am 01.10.2026 ausdrücklich die moderne Kopplung.
 M1–M5 sind im begrenzten modernen Workshopvertrag umgesetzt; alle 23 IDs
 bleiben erhalten und sind im Manifest done mit einzelnen Belegen geführt.
-Keine AP3-Mergefreigabe oder öffentliche Veröffentlichung.
+Der Auftraggeber hat anschließend ausdrücklich „Übernehme AP drei in Main.“
+beauftragt. PR #290 wurde am 01.10.2026 um 18:48:44 Uhr (Europe/Berlin) nach
+main übernommen: `abc8a7e347e29bbd5059abd8b59df2a98eb9d78e`.
+Der Merge-Tree entspricht exakt dem geprüften alpha.3-Produkthead
+`ee4b659007d50e92058551fcc1f31a48b8ce8ba1`. Alle vier aktuellen CI-Prüfungen
+waren erfolgreich: 2.675 Tests + 8 Subtests, 31 Browserfälle, 14 tatsächliche
+Installer-Lifecycleprüfungen einschließlich 31 installierter Browserfälle.
+Keine öffentliche Veröffentlichung beauftragt. Die nachfolgenden alpha.1-Belege
+bleiben historische Nachweise.
 
 Vollständiger geprüfter Produkthead `589689d63887058f5eb703e796d25d531dbfc9f7`:
 alle vier CI-Checks grün, 2.672 Tests + 8 Subtests, 30 Browserfälle und 14
@@ -136,8 +144,13 @@ Anlagefall zusätzlich deklarierter Kapitaldruck 550 > Verlustgrenze 200.
 Historische Vollgleichheit, regulatorische Größen, DORA-Konformität und
 endogene Gesamtmarktkopplung bleiben offen/gesperrt, keine stillen Änderungen.
 
-Nächster Schritt: grüne Checks des jeweils aktuellen PR-Heads prüfen;
-anschließend Review und gesonderte Mergefreigabe. Kein neues Paket.
+Folgeplanung: Der Auftraggeber hat AP4–AP9 am 01.10.2026 geprüft und den Merge
+von PR #291 einschließlich nötiger AGENTS.md-Anpassungen freigegeben.
+Mit dessen Übernahme gilt `docs/plans/ims_explainable_market_2026_10.md`
+und `docs/plans/ims_explainable_market_plan.json`. AP4 ist das nächste
+Umsetzungspaket; der Planungsmerge startet es nicht. Der alte Auftragsgenerator
+prüft nur die abgeschlossenen AP1–AP3. Die fachlichen Entscheidungstore und
+ein vollständiger Branch/Draft-PR je Paket bleiben verbindlich.
 
 Vollständiger AP3-Bericht in Evernote: https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8.
 Titel „IMS | AP3 Abschlussbericht – Fachliche Integration“, Notizbuch

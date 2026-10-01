@@ -173,7 +173,7 @@
         "docs/plans/ims_ap3_strategy_gate.md: ausdrückliche Bestätigung des begrenzten modernen Quellen-/Zeitvertrags am 01.10.2026; keine historische Spartenidentität behauptet.",
         "docs/reports/ims_ap3_ci_evidence.json: vier grüne Produktchecks, 2672 Tests + 8 Subtests, 30 Browserfälle, 14 Installer-Lifecycleprüfungen einschließlich 30 installierter Browserfälle; SHA/Tree/Artefakt geprüft.",
         "docs/reports/ims_ap3_p52_evidence.json: tatsächlicher lokaler sauberer Seminarinstaller und 30 installierte Browserfälle; zusammengesetzter lokaler Gate-Nachweis transparent getrennt.",
-        "https://github.com/junker-joerg/ims/pull/290: ein Integrations-PR; technisch abgenommen, Ready erst bei grünen aktuellen Checks; Merge und öffentliche Veröffentlichung nicht freigegeben.",
+        "https://github.com/junker-joerg/ims/pull/290: ein Integrations-PR; nach ausdrücklicher Nutzerfreigabe am 01.10.2026 um 18:48:44 Europe/Berlin in main übernommen, Merge abc8a7e347e29bbd5059abd8b59df2a98eb9d78e; alle vier erforderlichen Checks des Produktheads ee4b659007d50e92058551fcc1f31a48b8ce8ba1 erfolgreich und identischer Merge-Tree; keine öffentliche Veröffentlichung beauftragt.",
         "https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8: vollständiger AP3-Abschlussbericht im vorgesehenen IMS-Notizbuch gespeichert und nach Neuladen vollständig rückgelesen; Nachweis in ims_ap3_p52_evidence.json."
       ]
     }
