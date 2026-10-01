@@ -7,6 +7,11 @@ import LifeWorkbench from "./LifeWorkbench";
 import HealthWorkbench from "./HealthWorkbench";
 import FourSectorBalanceWorkbench from "./FourSectorBalanceWorkbench";
 import CapitalWorkbench from "./CapitalWorkbench";
+import IctWorkbench from "./IctWorkbench";
+import GuidedChainWorkbench from "./GuidedChainWorkbench";
+import ManagementCaseWorkbench from "./ManagementCaseWorkbench";
+import SeminarWorkbench, { type SeminarCompanions } from "./SeminarWorkbench";
+import type { SeminarCapitalDefaults } from "./CapitalWorkbench";
 import type { CheckedFourSector, CheckedNonLife, CheckedSides } from "./fourSectorSources";
 import {
   Activity,
@@ -2140,6 +2145,9 @@ function App() {
   const [lifeReady, setLifeReady] = useState<CheckedSides | null>(null);
   const [healthReady, setHealthReady] = useState<CheckedSides | null>(null);
   const [fourSectorReady, setFourSectorReady] = useState<CheckedFourSector | null>(null);
+  const [seminarCompanions, setSeminarCompanions] = useState<SeminarCompanions | null>(null);
+  const [seminarCapital, setSeminarCapital] = useState<SeminarCapitalDefaults | null>(null);
+  const [guidedChainRevision, setGuidedChainRevision] = useState(0);
   const [scenarios, setScenarios] = useState<ScenarioMetadata[]>([]);
   const [runs, setRuns] = useState<RunMetadata[]>([]);
   const [capabilities, setCapabilities] = useState<MetadataCapabilities | null>(null);
@@ -9125,7 +9133,13 @@ function App() {
         <ModelWorkspace model="health"><HealthWorkbench onReady={setHealthReady} /></ModelWorkspace>
         <ModelWorkspace model="four-sector-balance"><FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady}
           onReady={setFourSectorReady} /></ModelWorkspace>
-        <ModelWorkspace model="capital"><CapitalWorkbench source={fourSectorReady} /></ModelWorkspace>
+        <ModelWorkspace model="capital"><CapitalWorkbench source={fourSectorReady} seminarDefaults={seminarCapital} /></ModelWorkspace>
+        <ModelWorkspace model="ict"><IctWorkbench seminarSource={seminarCompanions?.ict} /></ModelWorkspace>
+        <ModelWorkspace model="seminar"><SeminarWorkbench onReady={(source, capital) => { setFourSectorReady(source); setSeminarCapital(capital); }} onSources={setSeminarCompanions} /></ModelWorkspace>
+        <ModelWorkspace model="management"><ManagementCaseWorkbench onReady={setFourSectorReady} /></ModelWorkspace>
+        <ModelWorkspace model="hundred"><GuidedChainWorkbench seminarSource={seminarCompanions?.guided} onStored={() => setGuidedChainRevision(value => value + 1)} />
+          <section className="panel" aria-label="Kontrollierter 100-Perioden-Lauf"><HundredPeriodResults refreshToken={guidedChainRevision} /></section>
+        </ModelWorkspace>
 
         <Area name="help"><Disclosure title="Validierungsstatus"><section className="panel validation-panel" id="validation">
           <div className="panel-heading">

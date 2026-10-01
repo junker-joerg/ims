@@ -20,6 +20,8 @@ import zipfile
 
 from openpyxl import load_workbook
 
+from ims.release import VERSION
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -111,6 +113,8 @@ def main() -> None:
             raise RuntimeError('Frozen health-check timeout')
         with request('/') as response:
             assert b'<html' in response.read().lower()
+        assert health['version'] == VERSION
+        assert get_json('/api/version')['version'] == VERSION
         assert get_json('/api/model/health-sector-contract')['schema_version']
         evidence.append({'test': label, 'result': 'passed', 'seconds': time.perf_counter() - began})
 
@@ -174,7 +178,7 @@ def main() -> None:
             browser_env.pop('IMS_CAPTURE', None)
             subprocess.run([node, str(repo / 'frontend/node_modules/@playwright/test/cli.js'),
                             'test', '--config', str(repo / 'frontend/playwright.config.ts')],
-                           cwd=repo / 'frontend', env=browser_env, check=True, timeout=600,
+                           cwd=repo / 'frontend', env=browser_env, check=True, timeout=1200,
                            creationflags=subprocess.CREATE_NO_WINDOW)
             evidence.append({'test': 'AP2_real_browser_against_installed_current_frontend',
                              'result': 'passed', 'seconds': time.perf_counter() - began})

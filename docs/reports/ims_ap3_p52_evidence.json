@@ -1,0 +1,189 @@
+{
+  "schema_version": 2,
+  "observed_at_utc": "2026-10-01T13:09:54.370256+00:00",
+  "environment": "P52 Windows, checkout .venv CPython 3.12.10 x64",
+  "product_head": "589689d63887058f5eb703e796d25d531dbfc9f7",
+  "installer_build": {
+    "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
+    "sha256": "89bb73e8724c98b7ad4d8622a1b251a654f9858dcdcaf15c0ced9ab0dbe143ba",
+    "bytes": 19127163,
+    "build_seconds": 63.5876491,
+    "commit": "9d53a04cd2da149ef515b2158b541ac35585754a",
+    "version": "2.0.0-alpha.1",
+    "inno": "6.7.3",
+    "dirty": false,
+    "node": "v22.23.2",
+    "python": "3.12.10",
+    "signed": false,
+    "clean_windows_acceptance": "pending"
+  },
+  "installer_tests": {
+    "success": true,
+    "failure": null,
+    "environment": "Windows with developer tools; executable PATH restricted to System32",
+    "clean_windows_acceptance": "pending",
+    "work": "C:\\Users\\P52\\source\\ims\\.tmp-pr-ap3\\installer-complete\\Installer Prüfung Ä 0fdce167",
+    "installer_sha256": "89bb73e8724c98b7ad4d8622a1b251a654f9858dcdcaf15c0ced9ab0dbe143ba",
+    "seconds": 603.0884890999987,
+    "tests": [
+      {
+        "test": "install_synthetic_previous_version",
+        "result": "passed",
+        "seconds": 25.401324599999498
+      },
+      {
+        "test": "frozen_start_path_with_spaces_umlauts",
+        "result": "passed",
+        "seconds": 2.3465682999994897
+      },
+      {
+        "test": "second_start_same_process",
+        "result": "passed",
+        "seconds": 0.254885700000159
+      },
+      {
+        "test": "existing_health_case_and_json_csv_xlsx_exports",
+        "result": "passed",
+        "seconds": 0.4348039999968023,
+        "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+        "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+      },
+      {
+        "test": "update_while_running",
+        "result": "passed",
+        "seconds": 15.871015000000625
+      },
+      {
+        "test": "start_after_update",
+        "result": "passed",
+        "seconds": 1.9795676000030653
+      },
+      {
+        "test": "AP2_real_browser_against_installed_current_frontend",
+        "result": "passed",
+        "seconds": 535.2324664999978
+      },
+      {
+        "test": "occupied_port_fails_without_foreign_browser",
+        "result": "passed",
+        "seconds": 1.4285697000013897
+      },
+      {
+        "test": "explicit_adoption_with_source_and_target_backups",
+        "result": "passed"
+      },
+      {
+        "test": "start_before_uninstall",
+        "result": "passed",
+        "seconds": 1.7366356999991694
+      },
+      {
+        "test": "uninstall_while_running_preserves_data",
+        "result": "passed",
+        "seconds": 2.1436143000028096
+      },
+      {
+        "test": "reinstall",
+        "result": "passed",
+        "seconds": 5.653835799999797
+      },
+      {
+        "test": "restart_after_reinstall",
+        "result": "passed",
+        "seconds": 2.2765947000007145
+      },
+      {
+        "test": "stored_result_preserved_update_uninstall_reinstall",
+        "result": "passed"
+      }
+    ]
+  },
+  "installed_browser": {
+    "startTime": "2026-10-01T12:43:13.869Z",
+    "duration": 534268.5719999999,
+    "expected": 30,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "local_release_gate": {
+    "scope": "composed development verification; final committed whole gate proven separately in CI",
+    "initial_run": {
+      "seconds": 1093.8193814,
+      "success": false,
+      "python": "C:\\Users\\P52\\source\\ims\\.venv\\Scripts\\python.exe",
+      "finished_at": "2026-10-01T14:37:34.3563168+02:00",
+      "error": "PR70 Windows release gate failed during portable staging smoke: exit code 1"
+    },
+    "pytest_passed": 2671,
+    "subtests_passed": 8,
+    "pytest_seconds": 1073.87,
+    "original_failure": "portable staging missed seminar help directory; fixed by 589689d",
+    "packaging_delta": {
+      "passed": 50,
+      "seconds": 16.06
+    },
+    "remaining_original_gate_steps": {
+      "success": true,
+      "finished_at": "2026-10-01T14:49:09.8777661+02:00",
+      "scope": "release-gate continuation after passed pytest and frontend build",
+      "seconds": 28.8629779
+    }
+  },
+  "focused_checks": {
+    "modern_strategy": {
+      "passed": 16
+    },
+    "seminar_api_both_backends": {
+      "passed": 4,
+      "seconds": 146.3
+    },
+    "seminar_matrix": {
+      "startTime": "2026-10-01T12:30:02.122Z",
+      "duration": 128695.889,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "final_seminar_pressure_and_offline_help": {
+      "startTime": "2026-10-01T12:34:22.096Z",
+      "duration": 88993.753,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "previous_milestone": {
+    "product_head": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
+    "ci_pytest_passed": 2651,
+    "subtests_passed": 8,
+    "browser_cases": 26,
+    "scope": "M1-M3 historical milestone, not full AP3 seminar acceptance"
+  },
+  "clean_windows_ap3_acceptance": "not_performed",
+  "historical_full_equality_claim": false,
+  "regulatory_capital_claim": false,
+  "active_work_seconds": null,
+  "evernote_report": {
+    "title": "IMS | AP3 Abschlussbericht – Fachliche Integration",
+    "url": "https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8",
+    "bodyChars": 19405,
+    "sameBody": true,
+    "correctNotebook": true,
+    "saved": true,
+    "readbackAfterReload": true,
+    "observedAt": "2026-10-01T13:14:17.122Z",
+    "full_text_equal_ignoring_layout_whitespace_and_editor_header_controls": true,
+    "notebook_id": "ade45e59-57bd-4ada-abaf-dab970f2e126",
+    "notebook": "MK | 80 IMS1995-2026",
+    "note_id": "0083bd38-835b-8887-500c-7331d3014af8",
+    "screenshot_scope": "local browser proof; not committed to public repository"
+  },
+  "installed_desktop_log": {
+    "unexpected_api_500": 0,
+    "sqlite_interface_errors": 0,
+    "expected_occupied_port_failure": true
+  }
+}

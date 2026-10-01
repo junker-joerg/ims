@@ -252,6 +252,17 @@ Eine Migrationsaufgabe ist erst dann als fertig anzusehen, wenn:
 
 ## Stil für Commit- und PR-Texte
 
+### Eindeutige Anwender-Releases
+
+Für jede neue an Anwender ausgelieferte Produktfassung eine höhere, bisher
+nicht vergebene Release-Nummer verwenden. Die gemeinsame Quelle ist
+`python_port/ims/release.py`; Spiegel in Python-/npm-Metadaten werden über
+`.venv\Scripts\python.exe scripts\installer\release_metadata.py --set-version VERSION`
+aktualisiert. Build und CI prüfen die Übereinstimmung. Installerdateiname,
+Windows-Dateiversion, Backend und Anzeige unten links müssen zusammenpassen.
+Reine Wiederholungen desselben Produkt-Releases bleiben über Commit und
+SHA-256 nachvollziehbar. Schema-/Modellversionen nicht dafür verändern.
+
 Bevorzugte Commit-/PR-Sprache: Deutsch.
 Technische Begriffe können englisch bleiben, wenn sie in Python/Softwareentwicklung üblich sind.
 

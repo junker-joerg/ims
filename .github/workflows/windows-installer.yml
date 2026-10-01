@@ -36,6 +36,15 @@ jobs:
       - name: Install verified Inno Setup compiler
         shell: pwsh
         run: .\scripts\installer\install-build-tools.ps1
+      - name: Check shared release number
+        id: release
+        shell: pwsh
+        run: |
+          $release = .\.venv\Scripts\python.exe scripts/installer/release_metadata.py
+          if ($LASTEXITCODE -ne 0) { throw 'Release versions are inconsistent' }
+          $release = $release | ConvertFrom-Json
+          "version=$($release.version)" >> $env:GITHUB_OUTPUT
+          "artifact=$($release.artifact)" >> $env:GITHUB_OUTPUT
       - name: Build actual installer with SHA-256 and inventory
         shell: pwsh
         run: .\scripts\installer\build-installer.ps1
@@ -49,16 +58,16 @@ jobs:
         run: |
           .\frontend\node_modules\.bin\playwright.cmd install chromium
           if ($LASTEXITCODE -ne 0) { throw 'Chromium installation failed' }
-          .\.venv\Scripts\python.exe scripts/installer/test_installer.py --installer dist/installer/IMS-Setup-2.0.0-alpha.1-win-x64.exe --previous-installer dist/installer/IMS-Setup-2.0.0-alpha.0-win-x64.exe --out .tmp-pr-installer --browser-checks
+          .\.venv\Scripts\python.exe scripts/installer/test_installer.py --installer "dist/installer/${{ steps.release.outputs.artifact }}" --previous-installer dist/installer/IMS-Setup-2.0.0-alpha.0-win-x64.exe --out .tmp-pr-installer --browser-checks
           if ($LASTEXITCODE -ne 0) { throw 'Installer acceptance failed' }
       - name: Upload installer and evidence, no public release
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: IMS-Windows-x64-${{ github.sha }}
+          name: IMS-Windows-x64-${{ steps.release.outputs.version }}-${{ github.sha }}
           path: |
-            dist/installer/IMS-Setup-2.0.0-alpha.1-win-x64.exe
-            dist/installer/IMS-Setup-2.0.0-alpha.1-win-x64.exe.sha256
+            dist/installer/${{ steps.release.outputs.artifact }}
+            dist/installer/${{ steps.release.outputs.artifact }}.sha256
             dist/installer/build-evidence.json
             dist/installer/resource-inventory.json
             .tmp-pr-installer/installer-test-evidence.json

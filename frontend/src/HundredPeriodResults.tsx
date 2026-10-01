@@ -139,7 +139,7 @@ function Trend({ primary, comparison }: {
   );
 }
 
-export default function HundredPeriodResults() {
+export default function HundredPeriodResults({ refreshToken = 0 }: { refreshToken?: number }) {
   const [contract, setContract] = useState<Contract | null>(null);
   const [chains, setChains] = useState<Chain[]>([]);
   const [baselines, setBaselines] = useState<Baseline[]>([]);
@@ -214,7 +214,7 @@ export default function HundredPeriodResults() {
     }
     void load();
     return () => { active = false; };
-  }, [revision]);
+  }, [revision, refreshToken]);
 
   useEffect(() => {
     let active = true;
@@ -437,7 +437,7 @@ export default function HundredPeriodResults() {
                 </select></label>
               </div>
               <Trend primary={values} comparison={compareValues} />
-              <div className="hundred-table-scroll"><table className="hundred-table">
+              <div className="hundred-table-scroll" role="region" aria-label="100-Perioden-Zeitreihe" tabIndex={0}><table className="hundred-table">
                 <thead><tr><th>Periode</th><th>Ausgewaehlter Lauf</th>{compared && <th>Vergleichslauf</th>}</tr></thead>
                 <tbody>{values.map((value, index) => <tr key={index}>
                   <th scope="row">{index + 1}</th><td>{value === null ? "-" : String(value)}</td>

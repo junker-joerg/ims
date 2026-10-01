@@ -55,7 +55,7 @@ https://www.evernote.com/client/web#?n=c8ca33d8-e050-45f2-931c-3e7a4e6dcefa.
 Die Aktualisierung mit Abnahme/Merge vom 01.10. ist mangels Evernote-Zugriff
 ausstehend; diese Notiz aktualisieren, keine Dublette anlegen.
 
-## AP2 technisch abgenommen
+## AP2 übernommen und in Evernote dokumentiert
 
 Branch `codex/ims-elegant-workbench`, PR
 https://github.com/junker-joerg/ims/pull/289. Produkthead
@@ -79,12 +79,73 @@ Aktuelle Bedienhilfe: `docs/handbook/workbench_ap2.md`, 24 Bilder.
 CI-Download: https://github.com/junker-joerg/ims/actions/runs/36824042759/artifacts/11144572266.
 CI-EXE SHA-256: 1680b5521c61e51347de52bcd08669c83f50a6997c47942563a0ffb238756d24.
 
-Nächster Schritt: letzte Dokumentationschecks prüfen und PR Ready stellen.
-Danach ist AP2 zur fachlichen Review/Merge-Freigabe vorbereitet. Nicht selbst
-mergen: AP2-Merge und AP3-Start sind noch nicht freigegeben. Für AP3 zählt
-erst AP2 in tatsächlichem main. Keine öffentliche Veröffentlichung.
+Der Auftraggeber bestätigt am 01.10.2026 den erfolgreichen AP2-Test auf einem
+anderen Rechner und beauftragt AP3 nach ausführlicher Evernote-Ablage.
+Einzelheiten des externen Tests wurden nicht angegeben; siehe
+`docs/reports/ims_ap2_user_acceptance.md`. Weitere UI-Verbesserungen folgen später.
+Abschließender Head 0148efc hatte vier grüne Checks. PR #289 wurde am 01.10.2026
+um 09:48:11 Uhr Berlin gemergt: `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`.
+Merge und origin/main erneut verifiziert. Keine öffentliche Veröffentlichung.
 
-Evernote-Plugin fehlt in dieser Sitzung; der vollständige AP2-Bericht liegt
-entsprechend der erlaubten Alternative in Repository und PR. Vor einer
-späteren Ablage Solltitel und PR #289 suchen, keine Dublette erzeugen und
-Notizbuch anschließend erneut prüfen. AP1-Notiz ebenfalls nur aktualisieren.
+Evernote-Webzugang funktioniert. Vor dem Anlegen gezielt AP2 im IMS-Notizbuch
+gesucht; kein vorhandener Bericht. Vollständige neue Notiz:
+https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c.
+Nach Neuladen: Titel, vollständiger Inhalt und vorgesehene Notizbuch-ID geprüft;
+„Alle Änderungen gespeichert“. Native Zusatzaufnahme wurde wegen nicht sicher
+erkannter Browser-URL abgebrochen, keine weitere native UI-Eingabe.
+AP1-Notiz bei späterer Bearbeitung nur aktualisieren, keine Dublette.
+
+## AP3 technisch abgenommen; Merge offen
+
+Versionsauftrag vom 01.10.2026: neuer AP3-Stand **2.0.0-alpha.3**, Windows-Version
+**2.0.0.3**, Anzeige unten links auf dem Startbildschirm. Gemeinsame Quelle
+`python_port/ims/release.py`; künftige höhere Nummer mit
+`.venv\Scripts\python.exe scripts/installer/release_metadata.py --set-version VERSION`
+vergeben. Paketmetadaten, Installer und CI werden zusammen geprüft. Keine
+Wiederverwendung für geänderte ausgelieferte Produkte. Details:
+`docs/plans/ims_release_numbering.md`. Lokal bestanden 45 gezielte Tests und
+sieben Browserprüfungen der Anzeige; Installer und aktuelle vollständige CI
+stehen im selben PR #290. Die folgenden alpha.1-Belege sind historisch.
+
+Branch `codex/ims-management-integration`, ein Integrations-PR #290:
+https://github.com/junker-joerg/ims/pull/290. Basis und erneut verifiziertes
+origin/main: `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`.
+Der Auftraggeber bestätigte am 01.10.2026 ausdrücklich die moderne Kopplung.
+M1–M5 sind im begrenzten modernen Workshopvertrag umgesetzt; alle 23 IDs
+bleiben erhalten und sind im Manifest done mit einzelnen Belegen geführt.
+Keine AP3-Mergefreigabe oder öffentliche Veröffentlichung.
+
+Vollständiger geprüfter Produkthead `589689d63887058f5eb703e796d25d531dbfc9f7`:
+alle vier CI-Checks grün, 2.672 Tests + 8 Subtests, 30 Browserfälle und 14
+Installer-Lifecycleprüfungen mit 30 tatsächlichen installierten Browserfällen.
+Lokaler sauberer 9d53a04-Build ebenfalls 14/14 und 30/30. Der anschließende
+Fix 589689d betrifft den separaten älteren portablen Prüfpaketweg.
+Details/Zeiten und vollständige 23er-Abnahme im Abschlussbericht und den
+beiden Evidenzdateien unter `docs/reports/ims_ap3_*`.
+
+CI-Testinstaller: https://github.com/junker-joerg/ims/actions/runs/36864280848/artifacts/11163416177.
+EXE SHA-256: `7b07b79b33386fc898943cfa41eba4cfe4f717dca0cc4ff8891a07edd96d9305`.
+Der GitHub-Prüfmerge 2dc26ef hat denselben Tree wie 589689d und ist kein
+Merge nach main. Ressourcen/Text-Zeilenenden und ZIP/EXE-Integrität geprüft.
+Installer unsigniert; neue externe Clean-Windows-AP3-Abnahme nicht durchgeführt.
+
+Bedienung: `docs/handbook/seminar_ap3.md`/`.html`, drei vollständige Dateien
+unter `seminar_cases/`; Mappings unter `docs/migration/ims_ap3_*`.
+Preisfall 302 × 95 = 28.690 Eigenkapitaldifferenz, Kapitalstress 150;
+Anlagefall zusätzlich deklarierter Kapitaldruck 550 > Verlustgrenze 200.
+Historische Vollgleichheit, regulatorische Größen, DORA-Konformität und
+endogene Gesamtmarktkopplung bleiben offen/gesperrt, keine stillen Änderungen.
+
+Nächster Schritt: grüne Checks des jeweils aktuellen PR-Heads prüfen;
+anschließend Review und gesonderte Mergefreigabe. Kein neues Paket.
+
+Vollständiger AP3-Bericht in Evernote: https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/0083bd38-835b-8887-500c-7331d3014af8.
+Titel „IMS | AP3 Abschlussbericht – Fachliche Integration“, Notizbuch
+„MK | 80 IMS1995-2026“ und ID geprüft; nach vollständigem Neuladen
+„Alle Änderungen gespeichert“. Alle 19.405 Textzeichen entsprechen dem
+Bericht inklusive Tabellen; Vergleich ohne Layoutleerraum/Editor-
+Überschriftenbedienelemente bestanden. Sichtbarer lokaler Bildnachweis
+gespeichert; Kontenansicht nicht ins öffentliche Repository aufgenommen.
+Rücklesezeit UTC: 2026-10-01T13:14:17.122Z. Keine Dublette; gezielte Suche
+vorher ergab nur den AP1/AP2/AP3-Startauftrag. AP2-Bericht war bereits
+vor AP3 vollständig abgelegt. Alte AP1-Notiz bleibt gesonderter Rückstand.

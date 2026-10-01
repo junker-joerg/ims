@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { Activity, ArrowRight, FileText, HelpCircle, Home, Moon, Play, Sun } from "lucide-react";
+import ReleaseBadge from "./ReleaseBadge";
 
 type AreaName = "overview" | "scenario" | "simulation" | "results" | "help";
-type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "capital" | "strategies" | "execution";
+type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "seminar" | "capital" | "ict" | "hundred" | "strategies" | "execution";
 type Route = { area: AreaName; model: ModelName };
 const areas = [
   { id: "overview", label: "Übersicht", icon: Home },
@@ -15,6 +16,10 @@ const models: { id: ModelName; label: string }[] = [
   { id: "balance", label: "Kfz / Sach" }, { id: "life", label: "Leben" },
   { id: "health", label: "Kranken" }, { id: "four-sector-balance", label: "Gesamtbilanz" },
   { id: "capital", label: "Kapitalwirkung" }, { id: "strategies", label: "Strategien" },
+  { id: "ict", label: "ICT-Wirkung" },
+  { id: "hundred", label: "100-Perioden-Lauf" },
+  { id: "management", label: "100er-Gesamtbilanz" },
+  { id: "seminar", label: "Managementseminar" },
   { id: "execution", label: "Ausführung" },
 ];
 const RouteContext = createContext<Route>({ area: "overview", model: "balance" });
@@ -38,7 +43,7 @@ export function Area({ name, children }: { name: AreaName; children: ReactNode }
 // explicit confirmations must retain their existing invalidation semantics.
 export function ModelWorkspace({ model, children }: { model: ModelName; children: ReactNode }) {
   const route = useContext(RouteContext);
-  const financial = model !== "strategies" && model !== "execution";
+  const financial = model !== "strategies" && model !== "execution" && model !== "hundred";
   const visible = (route.area === "simulation" && route.model === model) || (financial && route.area === "results");
   return <div className="model-workspace" data-model={model} hidden={!visible}>{children}</div>;
 }
@@ -91,11 +96,14 @@ export default function WorkbenchShell({ children }: { children: ReactNode }) {
     <div className="shell" data-view={route.area}>
       <aside className="sidebar">
         <div className="brand"><div className="brand-mark">IMS</div><div><strong>Workbench</strong><span>Lokal auf Ihrem Rechner</span></div></div>
-        <nav className="area-navigation" aria-label="Hauptnavigation">{areas.map(({ id, label, icon: Icon }) =>
-          <a key={id} href={`#${id}`} className={route.area === id ? "active" : ""} aria-current={route.area === id ? "page" : undefined}>
-            <Icon size={20} aria-hidden="true" /><span>{label}</span>
-          </a>)}</nav>
-        <p className="sidebar-note">Modellannahmen und Nachweise bleiben an jedem Ergebnis sichtbar.</p>
+        <div className="sidebar-navigation">
+          <nav className="area-navigation" aria-label="Hauptnavigation">{areas.map(({ id, label, icon: Icon }) =>
+            <a key={id} href={`#${id}`} className={route.area === id ? "active" : ""} aria-current={route.area === id ? "page" : undefined}>
+              <Icon size={20} aria-hidden="true" /><span>{label}</span>
+            </a>)}</nav>
+          <p className="sidebar-note">Modellannahmen und Nachweise bleiben an jedem Ergebnis sichtbar.</p>
+          <ReleaseBadge />
+        </div>
       </aside>
       <main className="content" id="workbench-content">
         <header className="topbar"><div><p className="eyebrow">IMS · Versicherungsmodelle</p>
@@ -127,7 +135,8 @@ export default function WorkbenchShell({ children }: { children: ReactNode }) {
             <li>Berechnen, Unterschiede in Tabelle und Diagramm prüfen. Ungültige Eingaben lassen sich im selben Formular korrigieren.</li>
             <li><a href="#results">Ergebnisse</a> exportieren. Speichern erfolgt erst nach ausdrücklicher Freigabe; geänderte Eingaben entwerten abhängige Nachweise.</li></ol>
           <p>Alle Berechnungen und Daten bleiben lokal. Hell-/Dunkelmodus ist oben umschaltbar. Tabulator bewegt den Fokus; breite Tabellen sind innerhalb ihrer Fläche scrollbar.</p>
-          <p>Die vorhandenen Seminar- und Bilanzmodelle sind keine gesetzliche Bilanz und kein regulatorischer SCR-/MCR-Nachweis. Der geführte Ablauf für das 100-Perioden-Managementlabor ist Gegenstand von AP3.</p>
+          <p><a href="#seminar">Managementseminar öffnen</a>: moderne Strategiekopplung, benannte Gruppen, 100er-Bilanz und portable Fallbündel. Die <a href="/api/seminar/handbook/seminar_ap3.html" target="_blank" rel="noreferrer">aktuelle Seminaranleitung</a> mit Arbeitsblatt und realen Ergebnissen ist auch offline verfügbar.</p>
+          <p>Die Seminar- und Bilanzmodelle sind keine gesetzliche Bilanz und kein regulatorischer SCR-/MCR-Nachweis. Die moderne Kopplung ist ausdrücklich erklärt; historische Spartenidentität und vollständiger Versicherungsmarkt bleiben offen.</p>
         </section></Area>
         {children}
         <footer className="workbench-footer">IMS 2.x · Lokale Workbench · Annahmen, Herkunft und Freigaben bestimmen die Aussagekraft.</footer>

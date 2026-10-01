@@ -1,0 +1,269 @@
+{
+  "schema_version": 2,
+  "observed_at_utc": "2026-10-01T13:09:54.368017+00:00",
+  "product_head": "589689d63887058f5eb703e796d25d531dbfc9f7",
+  "base_main": "2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c",
+  "full_ap3_acceptance": "passed_M1_M5_with_approved_bounded_modern_contract",
+  "modern_coupling_authorization": {
+    "date": "2026-10-01",
+    "user_statement": "Ich bestätige den Vorschlag der modernen Kopplung. Fahre fort."
+  },
+  "merge_authorized": false,
+  "public_release_authorized": false,
+  "checks": [
+    {
+      "name": "release-gate",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36864280822/job/110376045735",
+      "started_at": "2026-10-01T12:49:26Z",
+      "completed_at": "2026-10-01T13:04:23Z"
+    },
+    {
+      "name": "browser",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36864280830/job/110375812946",
+      "started_at": "2026-10-01T12:48:50Z",
+      "completed_at": "2026-10-01T12:57:46Z"
+    },
+    {
+      "name": "installer",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36864280848/job/110375804274",
+      "started_at": "2026-10-01T12:48:49Z",
+      "completed_at": "2026-10-01T12:59:35Z"
+    },
+    {
+      "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36864280857/job/110375801592",
+      "started_at": "2026-10-01T12:48:49Z",
+      "completed_at": "2026-10-01T12:49:01Z"
+    }
+  ],
+  "synthetic_pr_test_merge": {
+    "sha": "2dc26ef943fc7d558958e350893426fe23372f6c",
+    "parents": [
+      "2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c",
+      "589689d63887058f5eb703e796d25d531dbfc9f7"
+    ],
+    "tree": "1f2b66f619951ea2da159b9598e3a40ca867c763",
+    "tree_equal_to_product_head": true,
+    "main_merge": false
+  },
+  "browser": {
+    "artifact": {
+      "id": 11163640140,
+      "name": "IMS-Browser-2dc26ef943fc7d558958e350893426fe23372f6c",
+      "url": "https://github.com/junker-joerg/ims/actions/runs/36864280830/artifacts/11163640140",
+      "archive_sha256": "de1d701b305b14e6d37090381fccb59b3b445c9fc3658e5b600ccc804eb9c320",
+      "archive_bytes": 4576082,
+      "expires_at": "2026-10-31T12:57:39Z"
+    },
+    "stats": {
+      "startTime": "2026-10-01T12:50:16.285Z",
+      "duration": 442774.823,
+      "expected": 30,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "installer": {
+    "artifact": {
+      "id": 11163416177,
+      "name": "IMS-Windows-x64-2dc26ef943fc7d558958e350893426fe23372f6c",
+      "url": "https://github.com/junker-joerg/ims/actions/runs/36864280848/artifacts/11163416177",
+      "archive_sha256": "5e54b7290ba069c5256ed6fd84f17a78e66cc08a063036add7f6950e90213dde",
+      "archive_bytes": 23164054,
+      "expires_at": "2026-10-31T12:59:30Z"
+    },
+    "build": {
+      "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
+      "sha256": "7b07b79b33386fc898943cfa41eba4cfe4f717dca0cc4ff8891a07edd96d9305",
+      "bytes": 19099361,
+      "build_seconds": 55.3451784,
+      "commit": "2dc26ef943fc7d558958e350893426fe23372f6c",
+      "version": "2.0.0-alpha.1",
+      "inno": "6.7.3",
+      "dirty": false,
+      "node": "v22.23.3",
+      "python": "3.12.10",
+      "signed": false,
+      "clean_windows_acceptance": "pending"
+    },
+    "test_evidence": {
+      "success": true,
+      "failure": null,
+      "environment": "Windows with developer tools; executable PATH restricted to System32",
+      "clean_windows_acceptance": "pending",
+      "work": "D:\\a\\ims\\ims\\.tmp-pr-installer\\Installer Prüfung Ä c3a13b9c",
+      "installer_sha256": "7b07b79b33386fc898943cfa41eba4cfe4f717dca0cc4ff8891a07edd96d9305",
+      "seconds": 488.6209597999999,
+      "tests": [
+        {
+          "test": "install_synthetic_previous_version",
+          "result": "passed",
+          "seconds": 2.57998520000001
+        },
+        {
+          "test": "frozen_start_path_with_spaces_umlauts",
+          "result": "passed",
+          "seconds": 1.7792977999999948
+        },
+        {
+          "test": "second_start_same_process",
+          "result": "passed",
+          "seconds": 0.31915320000001657
+        },
+        {
+          "test": "existing_health_case_and_json_csv_xlsx_exports",
+          "result": "passed",
+          "seconds": 0.9136343999999781,
+          "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+          "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+        },
+        {
+          "test": "update_while_running",
+          "result": "passed",
+          "seconds": 3.3139057999999864
+        },
+        {
+          "test": "start_after_update",
+          "result": "passed",
+          "seconds": 1.788640600000008
+        },
+        {
+          "test": "AP2_real_browser_against_installed_current_frontend",
+          "result": "passed",
+          "seconds": 462.7799835999999
+        },
+        {
+          "test": "occupied_port_fails_without_foreign_browser",
+          "result": "passed",
+          "seconds": 1.1490289999999277
+        },
+        {
+          "test": "explicit_adoption_with_source_and_target_backups",
+          "result": "passed"
+        },
+        {
+          "test": "start_before_uninstall",
+          "result": "passed",
+          "seconds": 1.785977100000082
+        },
+        {
+          "test": "uninstall_while_running_preserves_data",
+          "result": "passed",
+          "seconds": 3.0558467999999266
+        },
+        {
+          "test": "reinstall",
+          "result": "passed",
+          "seconds": 2.4803327999999283
+        },
+        {
+          "test": "restart_after_reinstall",
+          "result": "passed",
+          "seconds": 1.7745586000000912
+        },
+        {
+          "test": "stored_result_preserved_update_uninstall_reinstall",
+          "result": "passed"
+        }
+      ]
+    },
+    "installed_browser": {
+      "startTime": "2026-10-01T12:51:33.916Z",
+      "duration": 461930.57,
+      "expected": 30,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "resource_inventory": {
+      "sha256": "c848f81c8118a26b87913c5f03a5ac9f3458ab1764cb6bd394d24a27970893b4",
+      "tracked_resource_count": 326,
+      "seminar_resources": [
+        {
+          "path": "docs/handbook/images/ap3_seminar_capital_wide_light.png",
+          "sha256": "19d8bd9caa03a74f671f267844c21bdd92f67a90343ecb14f47c4a9cd28e2327",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "docs/handbook/images/ap3_seminar_decision_narrow_dark.png",
+          "sha256": "f9147dd051c0d8933d922e3621fbfcdc2b19003a2d43835c5f616f294850d93e",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "docs/handbook/images/ap3_seminar_decision_wide_light.png",
+          "sha256": "2859142c87277b9ee8e356d33ed06598e128a668047eade959bbbbe355568d7d",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "docs/handbook/images/ap3_seminar_demo_wide_light.png",
+          "sha256": "f02da82d4cc62408b2e402cb2566cd5c2365de403f79b04fa2a18024ebd3bcfc",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "docs/handbook/images/ap3_seminar_pressure_wide_light.png",
+          "sha256": "b031f3cccbc6eb2241b54e327bc0c519ff6459546de9494a819f85f9284a624c",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "docs/handbook/seminar_ap3.html",
+          "sha256": "05b32d3da22b44291154eec0254c4c25f7c130e630c135ebf478cabae465abb9",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "docs/handbook/seminar_ap3.md",
+          "sha256": "698adb98a9470a5179d01945878cc93cb28c8a4ba4b79e0c2b0d0421323862db",
+          "checkout_match": "CRLF_checkout_of_same_text"
+        },
+        {
+          "path": "seminar_cases/capital.json",
+          "sha256": "d6e08be148cebf14ad300e027bdf0ef83af13f2ebf28be5d07a6835cae0de516",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "seminar_cases/inflation.json",
+          "sha256": "329c5b4ec75ac6acf0779603a17c48b6f75dc9794c8e303dd867eb9022eb193e",
+          "checkout_match": "exact_bytes"
+        },
+        {
+          "path": "seminar_cases/price.json",
+          "sha256": "e291ef15827b52a1a86d078bda024e716a5b1a66ae492f6b77cdc07b2cc25adc",
+          "checkout_match": "exact_bytes"
+        }
+      ],
+      "raw_archives_included": false
+    }
+  },
+  "windows_release_gate": {
+    "run_url": "https://github.com/junker-joerg/ims/actions/runs/36864280822",
+    "passed": 2672,
+    "warnings": 1,
+    "subtests_passed": 8,
+    "pytest_seconds": 812.45,
+    "summary": {
+      "status": "ok",
+      "mode": "windows_release_gate",
+      "report_contract_version": "pr69-v1",
+      "corpus_report_status": "blocked",
+      "production_release_approved": false,
+      "missing_calculated_export_count": 15,
+      "release_ready": true,
+      "user_test_package_ready": true,
+      "writes_performed": false,
+      "execution_performed": false,
+      "simulation_performed": false,
+      "historical_full_equality_claimed": false
+    }
+  },
+  "clean_windows_ap3_acceptance": "not_performed",
+  "historical_full_equality_claim": false,
+  "regulatory_capital_claim": false
+}

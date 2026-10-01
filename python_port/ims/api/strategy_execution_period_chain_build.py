@@ -210,13 +210,13 @@ def build_strategy_execution_period_chain(
     value: object,
     *,
     db_path: Path | str,
+    candidate_payloads: Mapping[str, dict[str, object]] | None = None,
 ) -> StrategyExecutionPeriodChainBuildReport:
     """Baut nach PR135 eine kanonische Kette, ohne sie zu speichern."""
 
-    resolution = resolve_strategy_execution_period_chain_input(
-        value,
-        db_path=db_path,
-    )
+    resolution = (resolve_strategy_execution_period_chain_input(value, db_path=db_path)
+                  if candidate_payloads is None else
+                  resolve_strategy_execution_period_chain_input(value, db_path=db_path, candidate_payloads=candidate_payloads))
     if not resolution.resolution_ready:
         return _blocked_report(resolution)
 

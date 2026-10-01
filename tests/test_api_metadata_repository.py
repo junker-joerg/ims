@@ -1,16 +1,38 @@
 from dataclasses import replace
+from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier
 
 import pytest
 
 from ims.api.metadata import RUNS, SCENARIOS, list_run_metadata, list_scenario_metadata
 from ims.api.metadata_repository import (
     MetadataValidationError,
+    LazyWorkbenchMetadataRepository,
     WorkbenchMetadataRepository,
     build_seeded_metadata_repository,
     connect_metadata_db,
     initialize_metadata_schema,
     seed_metadata,
 )
+
+
+@pytest.mark.parametrize("lazy", [False, True])
+def test_parallel_reads_keep_complete_rows_and_identifiers(tmp_path, lazy):
+    repository = (LazyWorkbenchMetadataRepository(tmp_path / "parallel.sqlite")
+                  if lazy else build_seeded_metadata_repository())
+    expected_runs, expected_scenarios = list_run_metadata(), list_scenario_metadata()
+    start = Barrier(16)
+
+    def read(_):
+        start.wait(timeout=10)
+        for _ in range(40):
+            assert repository.list_runs() == expected_runs
+            assert repository.list_scenarios() == expected_scenarios
+            assert repository.get_run(RUNS[0].id)["id"] == RUNS[0].id
+            assert repository.get_scenario(SCENARIOS[0].id)["id"] == SCENARIOS[0].id
+
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        list(pool.map(read, range(16)))
 
 
 def test_seeded_sqlite_repository_matches_metadata_dto_boundary(tmp_path):

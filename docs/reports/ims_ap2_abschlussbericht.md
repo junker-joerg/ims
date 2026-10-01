@@ -1,10 +1,18 @@
 # IMS | AP2 Abschlussbericht – Oberfläche
 
-**Technisch abgenommen.** Stand: 01.10.2026, 08:41:18 Uhr Europe/Berlin (UTC+02:00).
+**In main übernommen.** Stand: 01.10.2026, 09:48:11 Uhr Europe/Berlin (UTC+02:00).
 [PR #289](https://github.com/junker-joerg/ims/pull/289), Branch
-`codex/ims-elegant-workbench`. AP2 ist im Manifest done mit echten Nachweisen;
-noch kein Merge nach main. Ready erfolgt erst nach erneut grünen Checks des
-abschließenden Dokumentations-Heads; der dann aktuelle Status steht im PR.
+`codex/ims-elegant-workbench`. AP2 ist im Manifest done mit echten Nachweisen.
+Der Auftraggeber bestätigt am 01.10.2026 einen erfolgreichen Test auf einem
+anderen Rechner und beauftragt AP3. Weitere Oberflächenverbesserungen folgen
+später. AP2 wurde am 01.10.2026 um 09:48:11 Uhr Berlin in main übernommen,
+Merge-Commit **2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c**.
+Zuletzt geprüfter PR-Head: **0148efc2359a2de3880cdd69889486f9c562626a**.
+Alle vier Checks dieses abschließenden Heads waren vor dem Merge grün:
+[Release-Gate](https://github.com/junker-joerg/ims/actions/runs/36826117298/job/110252081170),
+[Installer](https://github.com/junker-joerg/ims/actions/runs/36826117453/job/110252074511),
+[Browser](https://github.com/junker-joerg/ims/actions/runs/36826117379/job/110252074013),
+[Plan](https://github.com/junker-joerg/ims/actions/runs/36826117311/job/110252073813).
 
 AP1 ist nach unabhängiger Windows-11-Abnahme durch den Auftraggeber und
 ausdrücklicher Freigabe mit [PR #288](https://github.com/junker-joerg/ims/pull/288)
@@ -58,7 +66,7 @@ es ist keine neue Behauptung historischer Vollgleichheit. Der geführte
 | Tatsächlicher Installer-Lifecycle | P52 / CI | **14/14** bestanden: Installation, Start, Zweitstart, Update/Deinstallation bei laufendem IMS, Neuinstallation, Exporte, Backups/Datenerhalt, Portkonflikt, Browsermatrix |
 | Bestehender Windows-Release-Gate | P52 / CI | **2.597 Tests + 8 Subtests** und gesamter Gate bestanden; fachliche Produktionsfreigabe bleibt false |
 | Gezielt nach Quellen-/ARIA-Korrekturen | Checkout-.venv | 33 Quellen-/Anschlussprüfungen bestanden, 0,84 s |
-| Unabhängiger Windows-11-Rechner | Erklärung des Auftraggebers zu AP1 | AP1 abgenommen; keine neue externe AP2-Prüfung behauptet |
+| Anderer Rechner, externe AP2-Abnahme | Erklärung des Auftraggebers am 01.10.2026 | „Habe AP2 auf einem anderen Rechner getestet. Es funktioniert.“; Betriebssystem, Einzelprüfungen und Dauer nicht angegeben |
 
 Vollständige Evidenz: [P52](ims_ap2_p52_evidence.json),
 [CI](ims_ap2_ci_evidence.json), [CI-Release-Gate](https://github.com/junker-joerg/ims/actions/runs/36824042714).
@@ -120,17 +128,27 @@ Gesamtarbeitszeit oder Schätzung als Messung.
 
 ## Freigabe, Grenzen und Ablage
 
-AP2-Merge ist noch nicht freigegeben. AP3 bleibt geplant und wartet auf AP2
-in main sowie einen Folgeauftrag. Keine öffentliche Veröffentlichung.
+AP2 ist extern abgenommen und in main übernommen; Merge und main wurden
+erneut aus GitHub/origin verifiziert. Der Folgeauftrag autorisiert genau AP3.
+Vor dessen Umsetzung wird dieser ausführliche Bericht in Evernote abgelegt.
+Weitere Verbesserungen der Oberfläche bleiben einer späteren Lieferung
+vorbehalten. Keine öffentliche Veröffentlichung.
 Historische Vollgleichheit, gesetzliche Bilanz und regulatorische SCR/MCR-
 Berechnung bleiben unverändert nicht behauptet; der Release-Gate meldet die
 bekannte fachliche Produktionssperre und 15 fehlende berechnete Kernexporte.
 
-Evernote-Werkzeuge sind in dieser Sitzung nicht verfügbar. Der vollständige
-Bericht ist entsprechend der erlaubten Ausweichablage im Repository und PR
-gesichert. Notizbuch `MK | 80 IMS1995-2026`, ID
-`ade45e59-57bd-4ada-abaf-dab970f2e126`; Solltitel
-`IMS | AP2 Abschlussbericht – Oberfläche`. Vor späterem Speichern dieselbe
-PR-Notiz suchen, aktualisieren und erneut lesen; keine Dublette zur
-GitHub-Abschlussautomatik. Ablage und Notizbuch-Verifikation sind **ausstehend**.
-Auch die bestehende AP1-Notiz muss noch mit Abnahme/Merge aktualisiert werden.
+Der vollständige Bericht bleibt zusätzlich im Repository und PR gesichert.
+Evernote-Ziel: Notizbuch `MK | 80 IMS1995-2026`, ID
+`ade45e59-57bd-4ada-abaf-dab970f2e126`; Titel
+`IMS | AP2 Abschlussbericht – Oberfläche`. Die gezielte Suche nach AP2 im
+Zielnotizbuch ergab vor dem Anlegen keine vorhandene Notiz. Das Notizbuch wurde
+über seine sichtbare Ansicht und URL mit der vorgesehenen ID verifiziert.
+Die [Evernote-Notiz](https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c)
+wurde vor AP3 gespeichert. Nach vollständigem Neuladen wurden Titel, Notizbuch,
+Merge, Prüfsummen, vollständige Test-/Zeittabellen und Grenzen erneut gelesen;
+der Editor bestätigte „Alle Änderungen gespeichert“. Der verifizierte Inhalt
+umfasst 10.228 Textzeichen einschließlich der Editor-Überschriftverweise.
+Keine Dublette zur Abschlussautomatik. Die zusätzliche native Bildschirmaufnahme
+wurde mangels sicher erkannter Browser-URL abgebrochen; die erfolgreiche
+Browser-Leseprüfung bleibt der Ablagenachweis.
+Die ältere AP1-Notiz muss gesondert mit Abnahme/Merge aktualisiert werden.
