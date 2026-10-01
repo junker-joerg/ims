@@ -5266,7 +5266,7 @@ function App() {
                 "Diese Ansicht bereitet Bedienflaechen fuer lokale Szenario- und Run-Metadaten vor."}
               {" "}Der Simulationskern bleibt in diesem Schritt unveraendert.
             </p>
-            <div className="metadata-list" aria-label="Szenario-Metadaten">
+            <div className="metadata-list" aria-label="Szenario-Metadaten" role="group">
               {scenarios.map((scenario) => (
                 <button
                   className={`metadata-row selectable ${scenario.id === selectedScenarioId ? "selected" : ""}`}
@@ -5295,7 +5295,7 @@ function App() {
                 ? `${primaryRun.display_name}: ${primaryRun.validation.scope}. Schreibpfade bleiben kontrolliert gesperrt.`
                 : "Run- und Szenario-Metadaten werden spaeter lokal persistiert."}
             </p>
-            <div className="source-status" aria-label="Metadatenquelle">
+            <div className="source-status" aria-label="Metadatenquelle" role="group">
               <div>
                 <span>Ablage</span>
                 <strong>{metadataState === "error" ? "nicht erreichbar" : storageLabel}</strong>
@@ -5309,7 +5309,7 @@ function App() {
                 <strong>{metadataSource?.writes_enabled ? "aktiv" : "gesperrt"}</strong>
               </div>
             </div>
-            <div className="metadata-list compact" aria-label="Run-Metadaten">
+            <div className="metadata-list compact" aria-label="Run-Metadaten" role="group">
               {runs.map((run) => (
                 <button
                   className={`metadata-row selectable ${run.id === selectedRunId ? "selected" : ""}`}
@@ -5417,7 +5417,7 @@ function App() {
                   : "Nur lesen"}
             </span>
           </div>
-          <div className="strategy-catalog-summary" aria-label="Strategiekatalog-Status">
+          <div className="strategy-catalog-summary" aria-label="Strategiekatalog-Status" role="group">
             <div>
               <span>Status</span>
               <strong>{strategyCatalogStatusLabel}</strong>
@@ -5643,7 +5643,7 @@ function App() {
             )
           ) : strategyWorkbenchView === "candidates" ? (
             <div className="strategy-contract-view strategy-candidate-view" data-testid="strategy-candidate-overview">
-              <div className="strategy-contract-summary" aria-label="Kandidatenablage-Status">
+              <div className="strategy-contract-summary" aria-label="Kandidatenablage-Status" role="group">
                 <div>
                   <span>Speicher</span>
                   <strong>{strategyCandidateStorageLabel}</strong>
@@ -5713,7 +5713,7 @@ function App() {
                 </div>
               ) : (
                 <div className="strategy-candidate-layout">
-                  <div className="strategy-candidate-list" aria-label="Gespeicherte Kandidaten">
+                  <div className="strategy-candidate-list" aria-label="Gespeicherte Kandidaten" role="group">
                     {strategyCandidateOverview.candidates.map((candidate) => (
                       <button
                         className={candidate.candidate_id === selectedStrategyCandidateId ? "active" : ""}
@@ -5745,7 +5745,7 @@ function App() {
                         </span>
                       </div>
 
-                      <div className="strategy-candidate-readiness" aria-label="Kandidatenreife">
+                      <div className="strategy-candidate-readiness" aria-label="Kandidatenreife" role="group">
                         <div>
                           <CheckCircle2 size={17} aria-hidden="true" />
                           <span><strong>Eingang</strong><small>vollstaendig</small></span>
@@ -5927,7 +5927,7 @@ function App() {
                             <span>{strategyCandidateProbeEvidenceError}</span>
                           </div>
                         ) : strategyCandidateProbeEffect && strategyCandidateProbeResult?.record ? (
-                          <div className="strategy-candidate-probe-result" aria-label="Gespeichertes Einperiodenergebnis" data-testid="strategy-candidate-effect-probe-result">
+                          <div className="strategy-candidate-probe-result" aria-label="Gespeichertes Einperiodenergebnis" data-testid="strategy-candidate-effect-probe-result" role="group">
                             <div className="strategy-candidate-probe-result-grid">
                               <div><span>Periode</span><strong>{strategyCandidateProbeEffect.period}</strong></div>
                               <div><span>Zustand</span><strong>{strategyCandidateProbeEffect.state_changed ? "veraendert" : "unveraendert"}</strong></div>
@@ -5960,7 +5960,7 @@ function App() {
                           </div>
                         )}
 
-                        <div className="strategy-candidate-probe-history" aria-label="Versuchsverlauf" data-testid="strategy-candidate-effect-probe-history">
+                        <div className="strategy-candidate-probe-history" aria-label="Versuchsverlauf" data-testid="strategy-candidate-effect-probe-history" role="group">
                           <div className="strategy-candidate-probe-history-heading">
                             <strong>Versuchsverlauf</strong>
                             <span>{strategyCandidateProbeHistory?.attempt_count ?? 0} Eintraege</span>
@@ -6007,7 +6007,7 @@ function App() {
               className="strategy-contract-view strategy-candidate-view"
               data-testid="strategy-period-chain-overview"
             >
-              <div className="strategy-contract-summary" aria-label="Periodenketten-Status">
+              <div className="strategy-contract-summary" aria-label="Periodenketten-Status" role="group">
                 <div>
                   <span>Speicher</span>
                   <strong>{strategyPeriodChainStorageLabel}</strong>
@@ -6089,7 +6089,7 @@ function App() {
                 <div className="empty-state">Noch keine gespeicherte Periodenkette.</div>
               ) : (
                 <div className="strategy-candidate-layout">
-                  <div className="strategy-candidate-list" aria-label="Gespeicherte Periodenketten">
+                  <div className="strategy-candidate-list" aria-label="Gespeicherte Periodenketten" role="group">
                     {strategyPeriodChainOverview.period_chains.map((chain) => (
                       <button
                         className={chain.chain_id === selectedStrategyPeriodChainId ? "active" : ""}
@@ -6127,7 +6127,7 @@ function App() {
                         </span>
                       </div>
 
-                      <div className="strategy-candidate-readiness" aria-label="Kettenreife">
+                      <div className="strategy-candidate-readiness" aria-label="Kettenreife" role="group">
                         <div>
                           <CheckCircle2 size={17} aria-hidden="true" />
                           <span><strong>Kette</strong><small>vollstaendig</small></span>
@@ -6322,7 +6322,7 @@ function App() {
                             className="strategy-candidate-probe-result"
                             aria-label="Gespeichertes Zwei-Perioden-Ergebnis"
                             data-testid="strategy-period-chain-effect-probe-result"
-                          >
+                           role="group">
                             <div className="strategy-candidate-probe-result-grid">
                               {strategyPeriodChainEffects.map((effect) => (
                                 <React.Fragment key={effect.period}>
@@ -6385,7 +6385,7 @@ function App() {
                           className="strategy-candidate-probe-history"
                           aria-label="Zwei-Perioden-Versuchsverlauf"
                           data-testid="strategy-period-chain-effect-probe-history"
-                        >
+                         role="group">
                           <div className="strategy-candidate-probe-history-heading">
                             <strong>Versuchsverlauf</strong>
                             <span>{strategyPeriodChainProbeHistory?.attempt_count ?? 0} Eintraege</span>
@@ -6555,7 +6555,7 @@ function App() {
                             className="strategy-candidate-probe-result strategy-five-period-result"
                             aria-label="Gespeichertes Fuenf-Perioden-Ergebnis"
                             data-testid="strategy-five-period-effect-probe-result"
-                          >
+                           role="group">
                             <div className="strategy-five-period-prefix" data-testid="strategy-five-period-prefix-proof">
                               <ShieldCheck size={18} aria-hidden="true" />
                               <div>
@@ -6563,7 +6563,7 @@ function App() {
                                 <span>Semantisch und kanonisch bytegleich, ohne Toleranz.</span>
                               </div>
                             </div>
-                            <div className="strategy-five-period-timeline" aria-label="Wirkung in fuenf Perioden">
+                            <div className="strategy-five-period-timeline" aria-label="Wirkung in fuenf Perioden" role="group">
                               {strategyFivePeriodEffects.map((effect) => (
                                 <div key={effect.period}>
                                   <span>Periode {effect.period}</span>
@@ -6572,7 +6572,7 @@ function App() {
                                 </div>
                               ))}
                             </div>
-                            <div className="strategy-five-period-transitions" aria-label="Vier Periodenuebergaenge">
+                            <div className="strategy-five-period-transitions" aria-label="Vier Periodenuebergaenge" role="group">
                               {strategyFivePeriodTransitions.map((transition) => (
                                 <div key={`${transition.from_period}-${transition.to_period}`}>
                                   <strong>{transition.from_period} nach {transition.to_period}</strong>
@@ -6610,7 +6610,7 @@ function App() {
                           className="strategy-candidate-probe-history"
                           aria-label="Fuenf-Perioden-Versuchsverlauf"
                           data-testid="strategy-five-period-effect-probe-history"
-                        >
+                         role="group">
                           <div className="strategy-candidate-probe-history-heading">
                             <strong>Versuchsverlauf</strong>
                             <span>{strategyFivePeriodProbeHistory?.attempt_count ?? 0} Eintraege</span>
@@ -6671,7 +6671,7 @@ function App() {
             <div className="empty-state">Strategiezuordnungen werden geladen</div>
           ) : strategyWorkbenchView === "assignments" ? (
             <div className="strategy-contract-view" data-testid="strategy-assignment-profiles">
-              <div className="strategy-contract-summary" aria-label="Zuordnungsvertrag-Status">
+              <div className="strategy-contract-summary" aria-label="Zuordnungsvertrag-Status" role="group">
                 <div>
                   <span>Status</span>
                   <strong>{strategyAssignmentStatusLabel}</strong>
@@ -6707,7 +6707,7 @@ function App() {
                 </span>
               </div>
 
-              <div className="strategy-target-list" aria-label="Zulaessige Strategiezuordnungen">
+              <div className="strategy-target-list" aria-label="Zulaessige Strategiezuordnungen" role="group">
                 {(strategyAssignmentContract?.assignment_targets ?? []).map((target) => (
                   <div className="strategy-target-row" key={target.actor_type}>
                     <div>
@@ -6780,7 +6780,7 @@ function App() {
             </div>
           ) : strategyWorkbenchView === "parameters" ? (
             <div className="strategy-contract-view" data-testid="strategy-parameter-schemas">
-              <div className="strategy-contract-summary" aria-label="Parameterschema-Status">
+              <div className="strategy-contract-summary" aria-label="Parameterschema-Status" role="group">
                 <div>
                   <span>Vertrag</span>
                   <strong>{strategyAssignmentContract?.schema_version ?? "-"}</strong>
@@ -6891,7 +6891,7 @@ function App() {
                 className="strategy-contract-view strategy-materialized-view"
                 data-testid="strategy-snapshot-materialization-preview"
               >
-                <div className="strategy-contract-summary" aria-label="VN-Snapshot-Vorschau-Status">
+                <div className="strategy-contract-summary" aria-label="VN-Snapshot-Vorschau-Status" role="group">
                   <div>
                     <span>Materialisierung</span>
                     <strong>{strategySnapshotMaterializationContract?.operation.schema_version ?? "-"}</strong>
@@ -6954,7 +6954,7 @@ function App() {
                       </div>
                       <span>Entwurf {strategySnapshotMaterialization.draft_id}</span>
                     </div>
-                    <div className="strategy-materialized-list" aria-label="Materialisierte VN-Snapshots">
+                    <div className="strategy-materialized-list" aria-label="Materialisierte VN-Snapshots" role="group">
                       {strategySnapshotMaterialization.snapshots.map((entry, index) => {
                         const strategy = strategyDefinitionById.get(entry.strategy_id);
                         const visibleFields = strategyMaterializedSnapshotFields(
@@ -7034,7 +7034,7 @@ function App() {
                 className="strategy-contract-view strategy-materialized-view"
                 data-testid="strategy-vu-snapshot-materialization-preview"
               >
-                <div className="strategy-contract-summary" aria-label="VU-Snapshot-Vorschau-Status">
+                <div className="strategy-contract-summary" aria-label="VU-Snapshot-Vorschau-Status" role="group">
                   <div>
                     <span>Materialisierung</span>
                     <strong>{strategyVUMaterializationContract?.operation.schema_version ?? "-"}</strong>
@@ -7196,7 +7196,7 @@ function App() {
                           </div>
                         </section>
 
-                        <div className="strategy-context-list" aria-label="VU-Zustandseintraege">
+                        <div className="strategy-context-list" aria-label="VU-Zustandseintraege" role="group">
                           {strategyVUStateEditor.entries.map((entry, entryIndex) => {
                             const strategy = strategyDefinitionById.get(entry.strategy_id);
                             const fields = Object.keys(entry.values);
@@ -7353,7 +7353,7 @@ function App() {
                               </div>
                               <span>Entwurf {strategyVUMaterialization.draft_id}</span>
                             </div>
-                            <div className="strategy-materialized-list" aria-label="Materialisierte VU-Snapshots">
+                            <div className="strategy-materialized-list" aria-label="Materialisierte VU-Snapshots" role="group">
                               {strategyVUMaterialization.snapshots.map((entry, index) => {
                                 const strategy = strategyDefinitionById.get(entry.strategy_id);
                                 return (
@@ -7448,7 +7448,7 @@ function App() {
                 className="strategy-contract-view strategy-context-view"
                 data-testid="strategy-snapshot-context-editor"
               >
-                <div className="strategy-contract-summary" aria-label="Snapshot-Kontext-Status">
+                <div className="strategy-contract-summary" aria-label="Snapshot-Kontext-Status" role="group">
                   <div>
                     <span>Kontextvertrag</span>
                     <strong>{strategySnapshotContextContract?.schema_version ?? "-"}</strong>
@@ -7562,7 +7562,7 @@ function App() {
                       </span>
                     </section>
 
-                    <div className="strategy-context-list" aria-label="Kontexteintraege">
+                    <div className="strategy-context-list" aria-label="Kontexteintraege" role="group">
                       {strategySnapshotContextEntries.map((entry, entryIndex) => {
                         const actorLabel = entry.actor_type === "insurer" ? "VU" : "VN";
                         const strategy = strategyDefinitionById.get(entry.strategy_id);
@@ -7835,7 +7835,7 @@ function App() {
                 className="strategy-contract-view strategy-snapshot-view"
                 data-testid="strategy-snapshot-translation-preview"
               >
-                <div className="strategy-contract-summary" aria-label="Snapshot-Bauplan-Status">
+                <div className="strategy-contract-summary" aria-label="Snapshot-Bauplan-Status" role="group">
                   <div>
                     <span>Uebersetzungsvertrag</span>
                     <strong>{strategySnapshotTranslationContract?.schema_version ?? "-"}</strong>
@@ -7901,7 +7901,7 @@ function App() {
                   <div className="empty-state">Snapshot-Bauplaene werden erstellt</div>
                 ) : strategySnapshotTranslation ? (
                   strategySnapshotTranslation.translation_complete ? (
-                    <div className="strategy-snapshot-list" aria-label="Snapshot-Bauplanvorschau">
+                    <div className="strategy-snapshot-list" aria-label="Snapshot-Bauplanvorschau" role="group">
                       <div className="strategy-snapshot-list-heading">
                         <div>
                           <h3>{strategySnapshotTranslation.label}</h3>
@@ -8020,7 +8020,7 @@ function App() {
             <div className="empty-state">Strategieentwurfsformat wird geladen</div>
           ) : (
             <div className="strategy-contract-view strategy-draft-view" data-testid="strategy-assignment-draft-editor">
-              <div className="strategy-contract-summary" aria-label="Strategieentwurf-Status">
+              <div className="strategy-contract-summary" aria-label="Strategieentwurf-Status" role="group">
                 <div>
                   <span>Entwurfsformat</span>
                   <strong>{strategyDraftContract?.schema_version ?? "-"}</strong>
@@ -8052,7 +8052,7 @@ function App() {
                 </span>
               </div>
 
-              <div className="strategy-draft-metadata" aria-label="Entwurfskopf">
+              <div className="strategy-draft-metadata" aria-label="Entwurfskopf" role="group">
                 <label>
                   <span>Entwurfs-ID</span>
                   <input
@@ -8190,7 +8190,7 @@ function App() {
 
                 {selectedStrategyDraftDefinition ? (
                   selectedStrategyDraftSchema ? (
-                    <div className="strategy-draft-parameters" aria-label="Strategieparameter">
+                    <div className="strategy-draft-parameters" aria-label="Strategieparameter" role="group">
                       <div className="strategy-draft-parameter-head">
                         <div>
                           <strong>Strategieparameter</strong>
@@ -8379,7 +8379,7 @@ function App() {
             <FileText size={20} aria-hidden="true" />
             <h2>Szenario-Uebersicht</h2>
           </div>
-          <div className="scenario-filterbar" aria-label="Szenariofilter">
+          <div className="scenario-filterbar" aria-label="Szenariofilter" role="group">
             <label className="scenario-search">
               <Search size={17} aria-hidden="true" />
               <span>Suche</span>
@@ -8478,7 +8478,7 @@ function App() {
             <Archive size={20} aria-hidden="true" />
             <h2>Run-Uebersicht</h2>
           </div>
-          <div className="run-filterbar" aria-label="Runfilter">
+          <div className="run-filterbar" aria-label="Runfilter" role="group">
             <label className="run-search">
               <Search size={17} aria-hidden="true" />
               <span>Suche</span>
@@ -8583,7 +8583,7 @@ function App() {
               </div>
             ))}
           </div>
-          <div className="core-validation-contract" aria-label="Execution-Summary-Vertrag">
+          <div className="core-validation-contract" aria-label="Execution-Summary-Vertrag" role="group">
             {coreValidationContractRows.map(([label, value]) => (
               <div className="core-validation-contract-row" key={label}>
                 <span>{label}</span>
@@ -8610,7 +8610,7 @@ function App() {
               </div>
             ))}
           </div>
-          <div className="core-validation-contract" aria-label="Carryover-Probe-Grenzen">
+          <div className="core-validation-contract" aria-label="Carryover-Probe-Grenzen" role="group">
             {carryoverProbeBoundaryRows.map(([label, value]) => (
               <div className="core-validation-contract-row" key={label}>
                 <span>{label}</span>
@@ -8629,7 +8629,7 @@ function App() {
             <Braces size={20} aria-hidden="true" />
             <h2>Adapter-Resultat-Vertrag</h2>
           </div>
-          <div className="adapter-result-contract-grid" aria-label="Adapter-Resultat-Grenzen">
+          <div className="adapter-result-contract-grid" aria-label="Adapter-Resultat-Grenzen" role="group">
             {adapterResultContractRows.map(([label, value]) => (
               <div className="adapter-result-contract-row" key={label}>
                 <span>{label}</span>
@@ -8668,7 +8668,7 @@ function App() {
             ))}
           </div>
           <p className="run-control-note">{runControlQueueIssue}</p>
-          <div className="run-control-filterbar" aria-label="Run-Control-Queuefilter">
+          <div className="run-control-filterbar" aria-label="Run-Control-Queuefilter" role="group">
             <label className="run-control-search">
               <Search size={17} aria-hidden="true" />
               <span>Suche</span>
@@ -8748,7 +8748,7 @@ function App() {
           {queueEntries.length > 0 && filteredQueueEntries.length === 0 ? (
             <div className="empty-state">Keine Queue-Eintraege fuer diesen Filter.</div>
           ) : null}
-          <div className="run-control-detail" aria-label="Run-Control-Queue-Detail">
+          <div className="run-control-detail" aria-label="Run-Control-Queue-Detail" role="group">
             <div className="detail-status">
               <span>Queue-Detail</span>
               <strong>{queueDetailStatus}</strong>
@@ -8762,7 +8762,7 @@ function App() {
               ))}
             </div>
           </div>
-          <div className="run-control-issues" aria-label="Run-Control-Queue-Hinweise">
+          <div className="run-control-issues" aria-label="Run-Control-Queue-Hinweise" role="group">
             {runControlIssueRows.map(([severity, code, message]) => (
               <div className="run-control-issue-row" key={code}>
                 <span>{severity}</span>
@@ -8861,7 +8861,7 @@ function App() {
             className="run-control-dry-run-result-grid"
             aria-label="Run-Control-Dry-Run-Ergebnis"
             data-testid="run-control-demo-dry-run-result"
-          >
+           role="group">
             {runControlDryRunResultRows.map(([label, value]) => (
               <div className="run-control-dry-run-result-row" key={label}>
                 <span>{label}</span>
@@ -8873,7 +8873,7 @@ function App() {
             className="run-control-queue-enqueue-grid"
             aria-label="Run-Control-Queue-Vormerkung"
             data-testid="run-control-demo-queue-result"
-          >
+           role="group">
             {runControlQueueEnqueueRows.map(([label, value]) => (
               <div className="run-control-queue-enqueue-row" key={label}>
                 <span>{label}</span>
@@ -8911,7 +8911,7 @@ function App() {
             <Play size={20} aria-hidden="true" />
             <h2>Run-Control-Ausfuehrungsflow</h2>
           </div>
-          <div className="run-control-execution-flow-steps" aria-label="Preflight -> explizite Freigabe -> Ausfuehren">
+          <div className="run-control-execution-flow-steps" aria-label="Preflight -> explizite Freigabe -> Ausfuehren" role="group">
             {runControlExecutionFlowSteps.map(([label, value]) => (
               <div className="run-control-execution-flow-step" key={label}>
                 <span>{label}</span>
@@ -8978,7 +8978,7 @@ function App() {
               </button>
             </div>
           </div>
-          <div className="run-control-execution-flow-grid" aria-label="Run-Control-Startvertrag-Grenzen">
+          <div className="run-control-execution-flow-grid" aria-label="Run-Control-Startvertrag-Grenzen" role="group">
             {runControlExecutionFlowRows.map(([label, value]) => (
               <div className="run-control-execution-flow-row" key={label}>
                 <span>{label}</span>
@@ -9011,7 +9011,7 @@ function App() {
               Ergebnis neu laden
             </button>
           </div>
-          <div className="run-control-execution-result-grid" aria-label="Persistiertes Run-Control-Ergebnis">
+          <div className="run-control-execution-result-grid" aria-label="Persistiertes Run-Control-Ergebnis" role="group">
             {runControlExecutionResultRows.map(([label, value]) => (
               <div className="run-control-execution-result-row" key={label}>
                 <span>{label}</span>
@@ -9023,7 +9023,7 @@ function App() {
             className="run-control-execution-result-grid run-control-execution-history-grid"
             aria-label="Run-Control-Ausfuehrungsverlauf"
             data-testid="run-control-execution-history"
-          >
+           role="group">
             {runControlExecutionHistoryRows.map(([label, value]) => (
               <div className="run-control-execution-result-row" key={label}>
                 <span>{label}</span>
