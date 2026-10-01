@@ -1,9 +1,12 @@
-# AP1: ausstehende Clean-Windows-Abnahme
+# AP1: vorbereitete Clean-Windows-Abnahmematrix
 
-Status: **offen**. P52 und GitHub Windows Runner enthalten Entwicklerwerkzeuge.
-Ein eingeschränkter PATH oder ein grüner CI-Lauf ersetzt diesen Nachweis nicht.
-Auf P52 ist `WindowsSandbox.exe` derzeit nicht vorhanden. Es wurde keine
-Windows-Funktion aktiviert, VM installiert oder Prüfung als bestanden markiert.
+Status: **Produktabnahme durch Auftraggeber bestätigt am 01.10.2026**.
+AP1 wurde auf einem unabhängigen Windows-11-Rechner getestet und freigegeben.
+Die tatsächliche Erklärung und ihre Nachweisgrenzen stehen in
+[ims_ap1_user_acceptance.md](ims_ap1_user_acceptance.md).
+Diese vorbereitete Matrix ist kein nachträglich erzeugtes Einzeltestprotokoll.
+P52 und GitHub Windows Runner enthalten Entwicklerwerkzeuge. Ein
+eingeschränkter PATH oder grüner CI-Lauf ersetzt den externen Test nicht.
 
 ## Testumgebung vorbereiten
 
@@ -18,7 +21,8 @@ Sandbox-Konfiguration ohne Netzwerk; es startet/aktiviert die Sandbox nicht.
 
 ## Vollständige Abnahmematrix
 
-Alle Ergebnisse bleiben bis zur tatsächlichen Prüfung offen.
+Die folgenden Abläufe sind die vorbereiteten Prüfkriterien. Einzelbelege zur
+externen Abnahme wurden nicht übermittelt und werden hier nicht erfunden.
 
 | Prüfung | Ablauf / erwartetes Verhalten | Nachweis |
 | --- | --- | --- |

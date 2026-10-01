@@ -1,8 +1,9 @@
 # IMS-Lieferübergabe
 
-Stand 30.09.2026; AP1 auf `codex/ims-single-installer`, implementiert,
-Clean-Windows-Abnahme offen. Planungs-PR #287 ist in main übernommen (e00f8e7).
-Draft-PR: https://github.com/junker-joerg/ims/pull/288.
+Stand 01.10.2026; AP1 auf `codex/ims-single-installer`, technisch abgenommen
+und durch Auftraggeber zum Merge freigegeben. Planungs-PR #287 ist in main
+übernommen (e00f8e7). PR: https://github.com/junker-joerg/ims/pull/288.
+AP1-Merge noch zu verifizieren; AP2 ist anschließend ausdrücklich beauftragt.
 
 ## Verbindliche Fortsetzung
 
@@ -47,9 +48,10 @@ Anleitung, Lizenzinventar und CI sind umgesetzt. Der saubere P52-Build und
 der tatsächliche CI-Installer haben die Lifecycle-Prüfungen bestanden.
 Lokal und in CI bestand der bestehende Release-Gate mit 2.597 Tests und
 8 Subtests; Installer-, Plan- und Release-Gate-Checks für 559f80e sind grün.
-Neue Checks des abschließenden Dokumentationscommits vor Ready erneut prüfen.
+Der bisherige letzte Dokumentationscommit c581e26 hat 3/3 grüne Checks;
+neue Checks des Abnahme-Dokumentationscommits vor Ready/Merge erneut prüfen.
 
-Vollständiger Zwischenbericht: `docs/reports/ims_ap1_abschlussbericht.md`;
+Vollständiger Bericht: `docs/reports/ims_ap1_abschlussbericht.md`;
 gemessene lokale Evidenz: `docs/reports/ims_ap1_p52_evidence.json`.
 CI-Evidenz: `docs/reports/ims_ap1_ci_evidence.json`.
 CI-Download: https://github.com/junker-joerg/ims/actions/runs/36750792794/artifacts/11114806812.
@@ -58,17 +60,22 @@ Notizbuch bestätigt: https://www.evernote.com/client/web#?n=c8ca33d8-e050-45f2-
 Notiz-ID `c8ca33d8-e050-45f2-931c-3e7a4e6dcefa`; diese bei Fortsetzung
 aktualisieren und keine Dublette anlegen.
 
-Konkreter Abnahmeblocker: keine zugängliche frische Windows-11-x64-Umgebung
-ohne Entwicklerwerkzeuge. Auf P52 weder Windows Sandbox noch eine verfügbare
-VM nachgewiesen. Native Launcher-Sicht-/Klickprüfung zusätzlich offen, weil
-Windows-Fensteraktivierung im Tool mit Zugriff verweigert scheiterte.
-Keine Windows-Funktion oder VM dafür ungefragt installiert/aktiviert.
+Externe Abnahme: Auftraggeber bestätigte am 01.10.2026 den erfolgreichen
+Test auf einem unabhängigen Windows-11-Rechner und erteilte ausdrücklich die
+Merge-Freigabe sowie den Folgeauftrag AP2. Originalerklärung und Grenzen der
+mitgeteilten Details: `docs/reports/ims_ap1_user_acceptance.md`.
+AP1 ist im Arbeitsmanifest done mit echten completion_evidence.
+Die frühere lokale Launcher-Tool-Testlücke bleibt im Bericht als solche
+erkennbar; sie ist keine eigene Beobachtung des externen Tests.
 
-Nächster Schritt: offline im Standardbenutzerkonto anhand
-`docs/reports/ims_ap1_clean_windows_acceptance.md` prüfen und echte Belege
-ergänzen. Lokales Abnahmekit: `.tmp-pr-ap1/clean-windows-kit`.
-Danach letzte PR-Checks prüfen, erst bei vollständiger Abnahme done und
-completion_evidence setzen und Ready for review stellen. Bis dahin AP1
-in_progress und PR Draft lassen; AP2 bleibt gesperrt. Bei Fortsetzung
-Produktcommit und Dokumentationscommit unterscheiden; kein erneuter
-Produktbuild nötig, solange sich nur Bericht/Übergabe geändert haben.
+Aktueller technischer Blocker: GitHub-/Evernote-Plugin-Werkzeuge in dieser
+Sitzung nicht verfügbar; In-app Browser auf GitHub abgemeldet. Auftraggeber
+hat die Wiederaktivierung des GitHub-Plugins gewählt. Keine Freigabe fehlt.
+Evernote-Aktualisierung der bestehenden Notiz mit Abnahme/Merge ausstehend.
+
+Nächster Schritt: Abnahme-Dokumentationscommit in denselben PR pushen,
+aktuelle CI prüfen, Ready stellen und den bereits freigegebenen Merge
+durchführen. Merge-Commit verifizieren, origin/main aktualisieren und dort
+AP1=done samt Nachweisen prüfen. Erst dann den AP2-Arbeitsauftrag erzeugen
+und `codex/ims-elegant-workbench`/eigenen Draft-PR verwenden. AP2 umfasst
+die vollständigen vereinbarten UI-/Browser-/Installer-Abnahmen; kein AP3-Start.

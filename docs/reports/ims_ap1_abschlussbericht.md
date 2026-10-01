@@ -1,9 +1,13 @@
 # IMS | AP1 Abschlussbericht – Windows-Installer
 
-**Zwischenstand – Clean-Windows-Abnahme offen.** Stand: 30.09.2026,
-19:45 Uhr Europe/Berlin (UTC+02:00). AP1 ist implementiert und technisch auf
-P52 sowie am tatsächlichen CI-Installer geprüft, aber **nicht vollständig
-abgenommen**. Der PR bleibt Draft; weder Merge noch Release wurde vorgenommen.
+**Technisch abgenommen – Merge offen.** Stand: 01.10.2026,
+07:03 Uhr Europe/Berlin (UTC+02:00). Der Auftraggeber hat AP1 auf einem
+unabhängigen Windows-11-Rechner getestet, das gewünschte Verhalten bestätigt
+und den Merge sowie die anschließende Umsetzung von AP2 ausdrücklich
+freigegeben. Die Bestätigung steht in
+[ims_ap1_user_acceptance.md](ims_ap1_user_acceptance.md).
+AP1 ist im Arbeitsmanifest done; die nach main übernommene Abhängigkeit
+ist erst nach dem tatsächlichen Merge erfüllt. Keine öffentliche Veröffentlichung.
 
 ## Änderungen und Nutzen
 
@@ -58,11 +62,11 @@ unverändert. Keine historische Vollgleichheit oder regulatorische Freigabe.
 | Live-Diagnoseexport | Eingefrorene Anwendung | Bestanden; ohne Datenbank/Instanzschlüssel | Abnahmeskript und ZIP-Inhaltsprüfung |
 | Dynamische Strategie-Imports, Profil und Diagnose-Referenzen | P52-Bundle, fünf echte GET-Endpunkte | HTTP 200; Kernüberblick behält fachlichen Warnstatus und keine Issues | `ims_ap1_p52_evidence.json` |
 | Browser-Modellfall | Installierte P52-EXE, Codex In-app Browser | Zwei Perioden berechnet und Variante nach expliziter Freigabe gespeichert; vorhandene Exportaktionen sichtbar | Browser-Protokoll dieses Chats, lokale Testablage `.tmp-pr-ap1/gui/Daten` |
-| Native Launcher-Sicht-/Klickprüfung | P52 | **Nicht verifiziert**: Windows-Aktivierung meldet `GetCursorPos failed: Zugriff verweigert (0x80070005)`; keine Eingabe erzwungen | Chat-Toolprotokoll; in Clean-Windows-Matrix nachholen |
+| Native Launcher-Sicht-/Klickprüfung | P52 | Lokale Tool-Testlücke vom 30.09.: Windows-Aktivierung meldete `GetCursorPos failed: Zugriff verweigert (0x80070005)`; externe Produktfreigabe inzwischen erteilt | Chat-Toolprotokoll und `ims_ap1_user_acceptance.md` |
 | Installer-Build und kompletter Lifecycle | GitHub windows-latest mit Entwicklerwerkzeugen | Bestanden, 13 dokumentierte Prüfungen | Grüner Installer-Run 36750792794, Artefakt-Evidenz |
 | Plancheck | GitHub | Bestanden | [Plan-Run 36750792442](https://github.com/junker-joerg/ims/actions/runs/36750792442) |
 | Windows-Release-Gate für Produktcommit in CI | GitHub | Bestanden; 2.597 Tests + 8 Subtests, Produktionsfreigabe weiterhin false | [Release-Gate-Run 36750792551](https://github.com/junker-joerg/ims/actions/runs/36750792551), `ims_ap1_ci_evidence.json` |
-| **Clean Windows 11 x64, ohne Entwicklerwerkzeuge, offline** | Noch keine zugängliche Testumgebung | **Offen; kein Nachweis** | [Vollständige Abnahmecheckliste](ims_ap1_clean_windows_acceptance.md) |
+| **Unabhängige Windows-11-Produktabnahme** | Unabhängiger Rechner des Auftraggebers; weitere Umgebungsdetails nicht mitgeteilt | **Gewünschtes Gesamtverhalten bestätigt und freigegeben am 01.10.2026**; keine erfundenen Einzelprotokolle | [Bestätigung und Nachweisgrenzen](ims_ap1_user_acceptance.md), [vorbereitete Abnahmematrix](ims_ap1_clean_windows_acceptance.md) |
 
 ## Installation, Update und Deinstallation
 
@@ -97,31 +101,27 @@ Messwerte, keine Schätzungen:
 | py2exe Minimalversuch: bundle_files=1 / =3 | 0,402 s / 7,250 s |
 
 Gesamte aktive Bearbeitungszeit, Nacharbeitszeit und Clean-Windows-Testzeit:
-**unbekannt bzw. noch nicht angefallen**. Keine Aufwandsschätzung als Messung
+**unbekannt**. Keine Aufwandsschätzung als Messung
 ausgegeben. Prüfläufe sind Teilmengen/Überlappungen und nicht einfach addierbar.
 
 ## Offene Punkte und nächster Schritt
 
-1. Frisches Windows 11 x64 ohne Entwicklerwerkzeuge bereitstellen; Offline-
-   Installation, Startmenü/Doppelklick, sichtbares Beenden, Browser-Modellfall,
-   Exporte, Portdialog, Update und Datenerhalt vollständig nach Checkliste prüfen.
-   Lokal vorbereitetes Abnahmekit: `.tmp-pr-ap1/clean-windows-kit`; Sandbox
-   weder vorhanden noch aktiviert. Auch keine verfügbare Hyper-V-/VirtualBox-
-   Testumgebung nachgewiesen. Das Kit ist **kein** Abnahmebeleg.
-2. Für Produktcommit 559f80e sind Installer-, Plan- und Release-Gate-Checks
-   grün. Der abschließende Dokumentationscommit löst neue CI-Läufe aus;
-   deren Status vor späterem Ready for review erneut prüfen.
-3. Erst nach sämtlichen Abnahmen echte completion_evidence und done eintragen,
-   dann bei grünen erforderlichen Checks Ready for review. Merge und öffentliches
-   Release benötigen eine gesonderte Freigabe. Windows 10/ARM64 ungetestet;
-   Signierung und IMS-/Referenzdaten-Distributionsrechte vor Veröffentlichung klären.
-4. AP2 ist **nicht freigegeben**: AP1 ist weder vollständig abgenommen noch in
-   main übernommen. Bei „weiter so“ in diesem Paket und PR fortsetzen.
+1. Abnahme und Merge sind durch den Auftraggeber freigegeben. Aktuelle
+   Checks des Abnahme-Dokumentationscommits prüfen, PR Ready stellen und mergen.
+   Letzter bisheriger PR-Stand c581e26 hat 3/3 grüne Checks.
+2. GitHub-Schreibzugriff fehlt beim Erfassen dieses Standes: Plugin-Werkzeuge
+   sind in dieser Sitzung nicht verfügbar, der In-app Browser ist abgemeldet.
+   Die Freigabe liegt vor; ausstehend ist der technische Zugriff.
+3. Nach verifiziertem Merge main aktualisieren und AP2 auf
+   `codex/ims-elegant-workbench` in einem eigenen Draft-PR umsetzen.
+4. Windows 10/ARM64 ungetestet; Signierung und IMS-/Referenzdaten-
+   Distributionsrechte vor öffentlicher Veröffentlichung klären.
 
-Dieser Zwischenbericht wurde über das Evernote-Plugin im Notizbuch
+Der Zwischenbericht vom 30.09. wurde über das Evernote-Plugin im Notizbuch
 `MK | 80 IMS1995-2026` gespeichert und durch erneutes Lesen bestätigt
 (Notizbuch-ID `ade45e59-57bd-4ada-abaf-dab970f2e126`).
 [Evernote-Bericht](https://www.evernote.com/client/web#?n=c8ca33d8-e050-45f2-931c-3e7a4e6dcefa),
 Notiz-ID `c8ca33d8-e050-45f2-931c-3e7a4e6dcefa`.
-Bei Fortsetzung diese Notiz aktualisieren, keine separate Erfolgsnotiz oder
-Dublette zur GitHub-Abschlussautomatik anlegen.
+Die Aktualisierung mit Abnahme/Merge vom 01.10. ist mangels aktuellem
+Evernote-Zugriff noch ausstehend. Diese Notiz aktualisieren, keine Dublette
+zur GitHub-Abschlussautomatik anlegen.

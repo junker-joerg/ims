@@ -5,7 +5,8 @@ Das neue Anwenderhandbuch beginnt unter `docs/handbook/README.md`; technische
 Migrationshinweise stehen unter `docs/migration/README.md`.
 
 AP1 ergänzt einen [Windows-Installer ohne Zielrechner-Python](docs/handbook/installer_windows.md).
-Der Installer ist ein Prüfarbeitsstand; die separate Clean-Windows-Abnahme ist noch offen.
+Der Auftraggeber hat den Installer am 01.10.2026 auf einem unabhängigen Windows-11-Rechner
+abgenommen und zum Merge freigegeben; [Abnahme und Nachweisgrenzen](docs/reports/ims_ap1_user_acceptance.md).
 
 ## Versionslinien
 

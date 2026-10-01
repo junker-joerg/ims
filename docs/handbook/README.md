@@ -5,7 +5,9 @@ Stand: 2026-09-18 | Handbuchstand: PR178a
 **Hier beginnen:**
 
 Der neue [AP1-Windows-Installer](installer_windows.md) bündelt die Laufzeit.
-Seine Clean-Windows-Abnahme ist noch offen. Der folgende ältere Testpaketweg
+Er wurde am 01.10.2026 auf einem unabhängigen Windows-11-Rechner durch den
+Auftraggeber abgenommen; [Abnahmebeleg](../reports/ims_ap1_user_acceptance.md).
+Der folgende ältere Testpaketweg
 bleibt für bestehende Entwickler-/Testinstallationen dokumentiert.
 
 1. [Windows-Testpaket in zwei Seiten installieren](installation_test_package_windows.md)
