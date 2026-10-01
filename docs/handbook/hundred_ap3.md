@@ -27,6 +27,13 @@ geliefert; der ZIP-Export ist an das darunter angezeigte Ergebnis gebunden.
 
 ![100er-Ergebnis und bedienbarer ZIP-Export auf schmaler dunkler Ansicht](images/ap3_guided_narrow_dark.png)
 
+![Tatsächliche 100er-Zeitreihe mit Akteur, Kennzahl, Digest und zugehörigen Periodenwerten](images/ap3_guided_result_wide_light.png)
+
+Die historische Kennzahl „Prämien“ zeigt hier VU-Regelziele. Ihr Verlauf ist
+noch keine gebuchte Gesamtprämieneinnahme der modernen Spartenbilanz. Deshalb
+bleiben Preis-/Expositions-/Abrechnungsannahmen eine eigene fachliche Grundlage
+für die folgende Strategiekopplung.
+
 Für eine Variante bearbeiten Sie Kontexte ab Periode 6, prüfen/speichern das
 neue Bündel und führen es mit demselben unveränderten Prefix aus. Zwei bereits
 berechnete Läufe mit demselben Prefixnachweis können verglichen werden. Der

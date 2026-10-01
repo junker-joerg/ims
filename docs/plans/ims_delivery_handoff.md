@@ -104,13 +104,14 @@ und offene Abnahmen: `docs/plans/ims_ap3_implementation.md`.
 Draft-PR #290: https://github.com/junker-joerg/ims/pull/290.
 M1-Zwischenstand: ICT-Quellen-/Zeitvertrag, deterministische Wirkungskette,
 deklarierter Bilanzoverlay, UI und Dossier implementiert. 22 neue Kern-/API-
-Prüfungen, 70 bestehende Regressionen, sechs Browserfälle und Build bestanden.
+Prüfungen plus großer Excel-Quellenfall (insgesamt 23), 70 bestehende Regressionen,
+sechs Browserfälle und Build bestanden.
 Mapping/Bedienhilfe: `docs/migration/ims_ap3_ict_workshop.md` und
 `docs/handbook/ict_ap3.md`. M2 ist nun implementiert: 100 vollständige Kontexte,
 107 frische Kandidaten, atomare/idempotente SQLite-Speicherung, tatsächliche
-2er-/5er-Referenzen und kontrollierter PR151-100er mit ZIP. 15 neue Prüfungen,
-30 vorhandene Regressionen und vier Browserfälle bestanden; zusätzlich ein
-Negativfall für eine ungültige Profil-ID. Laufindex 0 ist ausdrücklich begrenzt.
+2er-/5er-Referenzen und kontrollierter PR151-100er mit ZIP. 16 neue Prüfungen
+einschließlich ungültiger Profil-ID, 30 vorhandene Regressionen und vier
+Browserfälle bestanden. Laufindex 0 ist ausdrücklich begrenzt.
 Mapping/Anleitung: `ims_ap3_guided_period_chain.md`, `hundred_ap3.md`.
 
 M3 ist implementierter Zwischenstand: kompletter gemeinsamer Quellenvertrag,
@@ -132,3 +133,27 @@ nach fachlicher Antwort: belegten begrenzten Adapter, UI und 100er-Wirkungskette
 umsetzen; anschließend Seminarbündel und frisch gebauten Installer vollständig
 abnehmen. Im selben Branch und Draft-PR #290 fortsetzen, nicht neu anfangen.
 Noch keine AP3-Gesamtabnahme oder AP3-Merge-Freigabe.
+
+Abschließend geprüfter Produkthead:
+`d2021fcd0adaaed42be0e65dd696df01f1f6efe2`. Alle vier CI-Checks bestanden:
+2.651 Tests + 8 Subtests im vollständigen Windows-Gate, 26 Browserfälle,
+14 Installer-Lifecycleprüfungen mit 26 tatsächlichen installierten Browserfällen.
+Lokal Gesamtgate a0e1c27 mit 2.649 + 8 bestanden; passende Delta-Prüfungen
+nach den Worker-/Metadatenfixes grün, letzter P52-Installer d2021fc 14/14 und
+26/26 bestanden. Kein SQLite-InterfaceError oder unerwarteter API-500;
+der beabsichtigte Fehler beim belegten Port gehört zum Negativtest.
+
+Technischer CI-Zwischenstand:
+https://github.com/junker-joerg/ims/actions/runs/36847659449/artifacts/11154965440.
+Version 2.0.0-alpha.1, EXE SHA-256
+`0c5c57d8a6a35082e60d8adb05792b2f4f91e29aaf096941dd51cef7c16f8867`.
+Noch keine unabhängige Clean-Windows-Abnahme oder vollständige AP3-Seminarabnahme.
+Vollständiger Zwischenbericht, genauer Produkt-/Prüfmerge, Installer,
+Testzeiten und nächste Schritte: `docs/reports/ims_ap3_abschlussbericht.md`,
+`ims_ap3_ci_evidence.json`, `ims_ap3_p52_evidence.json`. Der angeforderte
+AP2-Evernote-Bericht ist vor AP3 gespeichert und nach Neuladen geprüft;
+eine zusätzliche AP3-Evernote-Ablage ist nach dem nativen URL-Sicherheitsabbruch
+nicht verifiziert und bei späterem Zugriff im vorgesehenen Notizbuch zu aktualisieren.
+Vor weiterer Umsetzung die Antwort zum M4-Vertrag in
+`ims_ap3_strategy_gate.md` festhalten. Für diesen fachlichen Blocker nicht
+den PR wechseln oder das Paket verkleinern.

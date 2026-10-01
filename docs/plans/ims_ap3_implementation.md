@@ -19,14 +19,14 @@ Keine Anforderung ist durch diesen Plan bereits abgenommen. AP3 bleibt
 in_progress; completion_evidence wird erst für tatsächliche Abnahmen ergänzt.
 Ein fachlich blockierter Teil wird ausdrücklich benannt und nicht als done geführt.
 
-M1-Nachweise: 22 neue Kern-/API-Prüfungen, 70 bestehende Bilanz-/API-
+M1-Nachweise: 23 neue Kern-/API-Prüfungen einschließlich großer Excel-Quelle, 70 bestehende Bilanz-/API-
 Regressionen, sechs reale Browserfälle (drei Größen, zwei Farbmodi) und
 TypeScript-/Vite-Build bestanden. Fachliche Zuordnung und Grenzen:
 `docs/migration/ims_ap3_ict_workshop.md`; Bedienung:
 `docs/handbook/ict_ap3.md`. Es handelt sich um einen deklarierten Bilanzoverlay,
 noch nicht um automatische Markt-/Vier-Sparten-Kopplung.
 
-M2-Nachweise: 15 neue Kern-/API-Prüfungen und 30 bestehende Bau-/Auflösungs-
+M2-Nachweise: 16 neue Kern-/API-Prüfungen und 30 bestehende Bau-/Auflösungs-
 Regressionen, vier reale Browserfälle und Build bestanden. Mapping/Bedienung:
 `docs/migration/ims_ap3_guided_period_chain.md`, `docs/handbook/hundred_ap3.md`.
 Der bestehende Globalperiodenexport wird erhalten; gemeinsame Prefixe sind hier
@@ -42,6 +42,15 @@ wird im Zwischenbericht festgehalten. Mapping/Bedienung:
 Die Eingabevarianten sind exogen und ersetzen M4 nicht. Nächster fachlicher
 Schritt: Entscheidung über den konkreten Quellen-/Abrechnungsvertrag; danach
 begrenzter Adapter und vollständiger M5-/Installerpfad im selben PR.
+
+Technischer Gesamtzwischenstand d2021fc: alle vier CI-Checks bestanden;
+2.651 Tests und 8 Subtests im Windows-Gate, 26/26 Browserfälle, 14/14 echte
+Installer-Lifecycleprüfungen einschließlich 26/26 Browserfällen gegen die
+installierte EXE. Auch lokal Installations-/Update-/Datenerhaltweg und alle
+26 Browserfälle bestanden. Der eingefrorene Worker-Einstieg und parallele
+SQLite-Metadatenabfragen sind mit dokumentierten Ursachen behoben. Genaue
+SHAs, Artefakte, Zeiten und Grenzen: `docs/reports/ims_ap3_abschlussbericht.md`
+und die beiden AP3-Evidenzdateien. Das ist keine M4-/M5-Seminarabnahme.
 
 ## Quellen und konservative Annahmen
 

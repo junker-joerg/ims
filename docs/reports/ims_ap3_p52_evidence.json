@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-01T10:29:48.336171+00:00",
+  "environment": "P52 Windows, checkout .venv CPython 3.12.10 x64",
+  "product_head": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
+  "documentation_head_at_collection": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
+  "core_and_browser_test_source": "a0e1c279048f3e6b14335d4a446f028510c486fd",
+  "browser": {
+    "startTime": "2026-10-01T09:43:56.805Z",
+    "duration": 426536.256,
+    "expected": 26,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "windows_release_gate": {
+    "finished_at": "2026-10-01T11:57:46.1450437+02:00",
+    "error": null,
+    "seconds": 931.1961605,
+    "success": true,
+    "python": "C:\\Users\\P52\\source\\ims\\.venv\\Scripts\\python.exe"
+  },
+  "focused_tests": {
+    "ict": {
+      "passed": 23,
+      "seconds": 3.12
+    },
+    "guided_chain": {
+      "passed": 16,
+      "seconds": 36.39
+    },
+    "management_and_existing_balances": {
+      "passed": 49,
+      "seconds": 70.98
+    },
+    "metadata_import_desktop": {
+      "passed": 73,
+      "seconds": 2.58
+    },
+    "run_control_preflight_dry_run": {
+      "passed": 14,
+      "seconds": 1.09
+    }
+  },
+  "concurrent_metadata_probe": {
+    "groups": 7200,
+    "max_queries_per_group": 4,
+    "failed_groups_before_fix": 1220,
+    "reads_after_fix": 28800,
+    "failed_groups_after_fix": 0
+  },
+  "ap3_installed_full_seminar": "pending_strategy_contract_and_M5",
+  "clean_windows_ap3_acceptance": "not_performed",
+  "historical_full_equality_claim": false,
+  "regulatory_capital_claim": false,
+  "active_work_seconds": null,
+  "installer": {
+    "success": true,
+    "failure": null,
+    "environment": "Windows with developer tools; executable PATH restricted to System32",
+    "clean_windows_acceptance": "pending",
+    "work": "C:\\Users\\P52\\source\\ims\\.tmp-pr-ap3\\installer-final\\Installer Prüfung Ä d04ab3ed",
+    "installer_sha256": "5854d0cdb2444b0f4d95ee463d93c54c52c3cfa9e444005d1261e740978e9dfd",
+    "seconds": 464.50858139999764,
+    "tests": [
+      {
+        "test": "install_synthetic_previous_version",
+        "result": "passed",
+        "seconds": 26.413736599999538
+      },
+      {
+        "test": "frozen_start_path_with_spaces_umlauts",
+        "result": "passed",
+        "seconds": 2.647793299998739
+      },
+      {
+        "test": "second_start_same_process",
+        "result": "passed",
+        "seconds": 0.2794995000003837
+      },
+      {
+        "test": "existing_health_case_and_json_csv_xlsx_exports",
+        "result": "passed",
+        "seconds": 0.3646016000020609,
+        "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+        "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+      },
+      {
+        "test": "update_while_running",
+        "result": "passed",
+        "seconds": 16.44811149999805
+      },
+      {
+        "test": "start_after_update",
+        "result": "passed",
+        "seconds": 2.310641799998848
+      },
+      {
+        "test": "AP2_real_browser_against_installed_current_frontend",
+        "result": "passed",
+        "seconds": 394.41625139999815
+      },
+      {
+        "test": "occupied_port_fails_without_foreign_browser",
+        "result": "passed",
+        "seconds": 1.4365976999979466
+      },
+      {
+        "test": "explicit_adoption_with_source_and_target_backups",
+        "result": "passed"
+      },
+      {
+        "test": "start_before_uninstall",
+        "result": "passed",
+        "seconds": 1.7420794000026945
+      },
+      {
+        "test": "uninstall_while_running_preserves_data",
+        "result": "passed",
+        "seconds": 1.9486151999990398
+      },
+      {
+        "test": "reinstall",
+        "result": "passed",
+        "seconds": 6.679677799998899
+      },
+      {
+        "test": "restart_after_reinstall",
+        "result": "passed",
+        "seconds": 2.280830799998512
+      },
+      {
+        "test": "stored_result_preserved_update_uninstall_reinstall",
+        "result": "passed"
+      }
+    ]
+  },
+  "build": {
+    "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
+    "sha256": "5854d0cdb2444b0f4d95ee463d93c54c52c3cfa9e444005d1261e740978e9dfd",
+    "bytes": 18325751,
+    "build_seconds": 63.5479713,
+    "commit": "d2021fcd0adaaed42be0e65dd696df01f1f6efe2",
+    "version": "2.0.0-alpha.1",
+    "inno": "6.7.3",
+    "dirty": true,
+    "node": "v22.23.2",
+    "python": "3.12.10",
+    "signed": false,
+    "clean_windows_acceptance": "pending"
+  },
+  "installed_browser": {
+    "startTime": "2026-10-01T10:16:50.727Z",
+    "duration": 393384.855,
+    "expected": 26,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "local_build_dirty_reason": "Only pending report/handbook documentation; product code committed at product_head",
+  "installer_log_review": "No SQLite InterfaceError or unexpected API 500; expected occupied-port negative-test error retained"
+}
