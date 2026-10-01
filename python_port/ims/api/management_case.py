@@ -59,7 +59,16 @@ def exports(result: dict, extension: str) -> tuple[bytes, str]:
     append(source, ["coupling_scope", result["coupling_scope"]])
     append(source, ["regulatory_metrics", json.dumps(result["regulatory_metrics"])])
     for side in ("baseline", "variant"):
-        append(source, [side, json.dumps(result["source_contracts"][side], ensure_ascii=False)])
+        if "source_contracts" in result:
+            append(source, [side, json.dumps(result["source_contracts"][side], ensure_ascii=False)])
+    if "decision_traces" in result:
+        trace = book.create_sheet("Entscheidungskette")
+        append(trace, ["variant_id", "period", "sector_id", "trace_json_chunk"])
+        for side, decisions in result["decision_traces"].items():
+            for decision in decisions:
+                encoded = json.dumps(decision, ensure_ascii=False, allow_nan=False)
+                for index in range(0, len(encoded), 30000):
+                    append(trace, [side, decision["period"], decision["sector_id"], encoded[index:index + 30000]])
     # Complete input, chunked below Excel's 32767-character cell boundary.
     full_input = json.dumps(result["source_input"], ensure_ascii=False, allow_nan=False)
     for index in range(0, len(full_input), 30000): append(source, ["source_input_json_chunk", full_input[index:index + 30000]])

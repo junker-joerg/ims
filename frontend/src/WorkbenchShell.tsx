@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { Activity, ArrowRight, FileText, HelpCircle, Home, Moon, Play, Sun } from "lucide-react";
 
 type AreaName = "overview" | "scenario" | "simulation" | "results" | "help";
-type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "capital" | "ict" | "hundred" | "strategies" | "execution";
+type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "seminar" | "capital" | "ict" | "hundred" | "strategies" | "execution";
 type Route = { area: AreaName; model: ModelName };
 const areas = [
   { id: "overview", label: "Übersicht", icon: Home },
@@ -18,6 +18,7 @@ const models: { id: ModelName; label: string }[] = [
   { id: "ict", label: "ICT-Wirkung" },
   { id: "hundred", label: "100-Perioden-Lauf" },
   { id: "management", label: "100er-Gesamtbilanz" },
+  { id: "seminar", label: "Managementseminar" },
   { id: "execution", label: "Ausführung" },
 ];
 const RouteContext = createContext<Route>({ area: "overview", model: "balance" });
@@ -130,7 +131,8 @@ export default function WorkbenchShell({ children }: { children: ReactNode }) {
             <li>Berechnen, Unterschiede in Tabelle und Diagramm prüfen. Ungültige Eingaben lassen sich im selben Formular korrigieren.</li>
             <li><a href="#results">Ergebnisse</a> exportieren. Speichern erfolgt erst nach ausdrücklicher Freigabe; geänderte Eingaben entwerten abhängige Nachweise.</li></ol>
           <p>Alle Berechnungen und Daten bleiben lokal. Hell-/Dunkelmodus ist oben umschaltbar. Tabulator bewegt den Fokus; breite Tabellen sind innerhalb ihrer Fläche scrollbar.</p>
-          <p>Die vorhandenen Seminar- und Bilanzmodelle sind keine gesetzliche Bilanz und kein regulatorischer SCR-/MCR-Nachweis. Der geführte Ablauf für das 100-Perioden-Managementlabor ist Gegenstand von AP3.</p>
+          <p><a href="#seminar">Managementseminar öffnen</a>: moderne Strategiekopplung, benannte Gruppen, 100er-Bilanz und portable Fallbündel. Die <a href="/api/seminar/handbook/seminar_ap3.html" target="_blank" rel="noreferrer">aktuelle Seminaranleitung</a> mit Arbeitsblatt und realen Ergebnissen ist auch offline verfügbar.</p>
+          <p>Die Seminar- und Bilanzmodelle sind keine gesetzliche Bilanz und kein regulatorischer SCR-/MCR-Nachweis. Die moderne Kopplung ist ausdrücklich erklärt; historische Spartenidentität und vollständiger Versicherungsmarkt bleiben offen.</p>
         </section></Area>
         {children}
         <footer className="workbench-footer">IMS 2.x · Lokale Workbench · Annahmen, Herkunft und Freigaben bestimmen die Aussagekraft.</footer>

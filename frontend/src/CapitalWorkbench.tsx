@@ -125,7 +125,9 @@ function saveBlob(name: string, contents: Blob): void {
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-export default function CapitalWorkbench({ source }: { source: CheckedFourSector | null }) {
+export type SeminarCapitalDefaults = { source_content_digest?: string; model_period: number; reference_date: string; assumption_note: string; adjustments: Record<string, Adjustment>; exposures: Record<string, ExposureDraft>; factor_loadings: Record<string, string>; operational_loss: string; buffer_capacity: string; buffer_applied: string; max_loss: string; min_equity: string };
+
+export default function CapitalWorkbench({ source, seminarDefaults }: { source: CheckedFourSector | null; seminarDefaults?: SeminarCapitalDefaults | null }) {
   const [contracts, setContracts] = useState<Contracts | null>(null);
   const [contractError, setContractError] = useState<string | null>(null);
   const [period, setPeriod] = useState(1);
@@ -186,7 +188,15 @@ export default function CapitalWorkbench({ source }: { source: CheckedFourSector
     setBufferApplied("0");
     setMaxLoss("0");
     setMinEquity("0");
-  }, [source]);
+    if (source && seminarDefaults?.source_content_digest === source.evidenceDigest) {
+      setPeriod(seminarDefaults.model_period); setReferenceDate(seminarDefaults.reference_date); setNote(seminarDefaults.assumption_note);
+      setAdjustments(SECTORS.map(({ id }) => seminarDefaults.adjustments[id]));
+      setExposures(EXPOSURES.map(({ id }) => seminarDefaults.exposures[id]));
+      setFactors(seminarDefaults.factor_loadings); setOperationalLoss(seminarDefaults.operational_loss);
+      setBufferCapacity(seminarDefaults.buffer_capacity); setBufferApplied(seminarDefaults.buffer_applied);
+      setMaxLoss(seminarDefaults.max_loss); setMinEquity(seminarDefaults.min_equity);
+    }
+  }, [source, seminarDefaults]);
 
   function invalidate(): void {
     revision.current += 1;

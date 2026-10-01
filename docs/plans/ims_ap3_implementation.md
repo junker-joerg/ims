@@ -12,12 +12,12 @@ Der Planprüfer erzeugte den AP3-Auftrag aus diesem tatsächlichen main-Stand.
 | M1: ICT-/DORA-Wirkungskette | PR179–186 | implementierter Zwischenstand: gerichteter Quellenvertrag, Ereignisse, Stunden-/Periodenskala, Kapazität/Rückstand/Erholung, gemeinsame Anbieter, Gegenmaßnahmen, deklarierte Modellbilanz und Dossier; technische Nachweise unten, Gesamtabnahme AP3 offen |
 | M2: Geführter Lauf | PR187, PR187a–c | implementierter Zwischenstand: 100 vollständige Kontexte, frischer Bau, atomare unveränderliche Speicherung und tatsächlicher PR151-Lauf/Export mit echten Prefixnachweisen; Laufindex ausdrücklich auf 0 begrenzt, technische Belege in Mapping/Handbuch |
 | M3: Vier Sparten | PR187d–f | implementierter Zwischenstand: ausdrücklich gemeinsamer Quellenvertrag, frische Rechnung beider Seiten/Carryover/Prefixe und digestgleiche Anzeige/CSV/JSON/XLSX; technische Belege im Mapping |
-| M4: Belegte Strategiewirkung | PR187g–k | fachlich blockiert vor Adapter: historische Preisentscheidung ist kein Gesamtprämienfluss; Population/Einheiten/Abrechnung fehlen. Konkreter moderner Vorschlag in ims_ap3_strategy_gate.md, Entscheidung angefragt. Vollständiger Umfang bleibt erhalten. |
-| M5: Seminar | PR188–190 | Vorbereitung: drei deklarierte Eingabevarianten, ICT-Fall, Anleitungen und Moderationsentwurf vorhanden; vollständige Fälle mit Strategiepfad, portable Bündel und installierte Gesamtabnahme abhängig von M4 offen |
+| M4: Belegte Strategiewirkung | PR187g–k | moderne Kopplung ausdrücklich bestätigt; Quellen-/Zeitvertrag und begrenzter Adapter mit Preis × gedeckter Exposition angelegt, technische/API/UI-Abnahme läuft. Historische Spartenidentität bleibt offen. |
+| M5: Seminar | PR188–190 | implementiert: drei vollständige 100er-Strategiefälle, portable Quellenbündel, frische schreibfreie Demo, deklarierte Kapitalannahmen, aktuelles Offline-Handbuch/Bilder; Gesamtbrowser-, Release-Gate- und frische Installerabnahme laufen. |
 
 Keine Anforderung ist durch diesen Plan bereits abgenommen. AP3 bleibt
 in_progress; completion_evidence wird erst für tatsächliche Abnahmen ergänzt.
-Ein fachlich blockierter Teil wird ausdrücklich benannt und nicht als done geführt.
+Ein noch nicht abgenommener Teil wird ausdrücklich benannt und nicht als done geführt.
 
 M1-Nachweise: 23 neue Kern-/API-Prüfungen einschließlich großer Excel-Quelle, 70 bestehende Bilanz-/API-
 Regressionen, sechs reale Browserfälle (drei Größen, zwei Farbmodi) und
@@ -39,9 +39,10 @@ M3-Nachweise: 49 neue und bestehende Kern-/API-Bilanzprüfungen bestanden
 Kapitalübergabe und erneute Quellenbindung. Vollständige Browser-/Gate-Evidenz
 wird im Zwischenbericht festgehalten. Mapping/Bedienung:
 `docs/migration/ims_ap3_management_case.md`, `docs/handbook/management_ap3.md`.
-Die Eingabevarianten sind exogen und ersetzen M4 nicht. Nächster fachlicher
-Schritt: Entscheidung über den konkreten Quellen-/Abrechnungsvertrag; danach
-begrenzter Adapter und vollständiger M5-/Installerpfad im selben PR.
+Die M3-Eingabevarianten sind exogen und ersetzen M4 nicht. Der Auftraggeber
+hat die moderne Kopplung inzwischen ausdrücklich bestätigt. M4/M5 verwenden
+einen eigenen erklärten Quellen-/Abrechnungsvertrag; das alte M3-Verhalten
+bleibt ein separater Eingabevergleich.
 
 Technischer Gesamtzwischenstand d2021fc: alle vier CI-Checks bestanden;
 2.651 Tests und 8 Subtests im Windows-Gate, 26/26 Browserfälle, 14/14 echte
@@ -66,8 +67,9 @@ und die beiden AP3-Evidenzdateien. Das ist keine M4-/M5-Seminarabnahme.
 - Stunden, Tage und Perioden werden nur mit einem expliziten Zeitvertrag
   übersetzt. Services/Assets/Anbieter, VU-Verantwortung, gerichtete Abhängigkeiten,
   Kapazität, Nachfrage, Kosten und Wirkungsannahmen müssen benannt sein.
-- Der M4-Entscheidungspunkt bleibt offen bis zum Quellenmapping. Anonyme
-  historische Schadenpositionen werden nicht als Kfz/Sach ausgeführt.
+- Der M4-Entscheidungspunkt ist durch ausdrückliche Bestätigung geschlossen.
+  Mapping: `docs/migration/ims_ap3_modern_strategy_bridge.md`. Anonyme
+  historische Schadenpositionen werden nicht als historisches Kfz/Sach ausgeführt.
 
 ## Risiken und Prüfstrategie
 

@@ -18,7 +18,7 @@ const fields = [
 function number(value: string): string { return value.replace(",", "."); }
 function shown(value: string): string { return value.replace(".", ","); }
 
-export default function IctWorkbench() {
+export default function IctWorkbench({ seminarSource }: { seminarSource?: unknown }) {
   const [input, setInput] = useState<Input | null>(null);
   const [result, setResult] = useState<Result | null>(null);
   const [expert, setExpert] = useState("");
@@ -30,9 +30,11 @@ export default function IctWorkbench() {
   const resultHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     const controller = new AbortController();
+    const version = revision.current;
     fetch("/api/ict/workshop-case", { signal: controller.signal }).then(async (response) => {
       if (!response.ok) throw new Error("ICT-Workshopfall ist nicht erreichbar.");
       const doc = await response.json() as Input;
+      if (version !== revision.current) return;
       setInput(doc); setExpert(JSON.stringify(doc, null, 2));
     }).catch((failure) => { if (!controller.signal.aborted) setError(failure.message); });
     return () => controller.abort();
@@ -40,6 +42,9 @@ export default function IctWorkbench() {
   function change(doc: Input) {
     revision.current++; setInput(doc); setExpert(JSON.stringify(doc, null, 2)); setExpertDirty(false); setResult(null); setError(null); setBusy(false);
   }
+  useEffect(() => {
+    if (seminarSource) change(seminarSource as Input);
+  }, [seminarSource]);
   function eventChange(patch: Partial<Event>) {
     if (input) change({ ...input, events: [{ ...input.events[0], ...patch }, ...input.events.slice(1)] });
   }

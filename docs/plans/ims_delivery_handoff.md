@@ -95,65 +95,53 @@ Nach Neuladen: Titel, vollständiger Inhalt und vorgesehene Notizbuch-ID geprüf
 erkannter Browser-URL abgebrochen, keine weitere native UI-Eingabe.
 AP1-Notiz bei späterer Bearbeitung nur aktualisieren, keine Dublette.
 
-## AP3 begonnen
+## AP3: moderne Kopplung bestätigt, Gesamtabnahme läuft
 
-Branch `codex/ims-management-integration`, Basis tatsächliches main 2e70b8f.
-AP3 ist durch den Folgeauftrag freigegeben; ein gemeinsamer Draft-PR über fünf
-Meilensteine. Planprüfer: 25 Anforderungen, Auftrag AP3. Vollständiger Umfang
-und offene Abnahmen: `docs/plans/ims_ap3_implementation.md`.
-Draft-PR #290: https://github.com/junker-joerg/ims/pull/290.
-M1-Zwischenstand: ICT-Quellen-/Zeitvertrag, deterministische Wirkungskette,
-deklarierter Bilanzoverlay, UI und Dossier implementiert. 22 neue Kern-/API-
-Prüfungen plus großer Excel-Quellenfall (insgesamt 23), 70 bestehende Regressionen,
-sechs Browserfälle und Build bestanden.
-Mapping/Bedienhilfe: `docs/migration/ims_ap3_ict_workshop.md` und
-`docs/handbook/ict_ap3.md`. M2 ist nun implementiert: 100 vollständige Kontexte,
-107 frische Kandidaten, atomare/idempotente SQLite-Speicherung, tatsächliche
-2er-/5er-Referenzen und kontrollierter PR151-100er mit ZIP. 16 neue Prüfungen
-einschließlich ungültiger Profil-ID, 30 vorhandene Regressionen und vier
-Browserfälle bestanden. Laufindex 0 ist ausdrücklich begrenzt.
-Mapping/Anleitung: `ims_ap3_guided_period_chain.md`, `hundred_ap3.md`.
+Branch `codex/ims-management-integration`, ein Draft-PR #290:
+https://github.com/junker-joerg/ims/pull/290. Basis tatsächliches main
+`2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`; origin erneut aktualisiert.
+Alle 23 alten Anforderungs-IDs bleiben im Umfang. Der Auftraggeber bestätigt
+am 01.10.2026 ausdrücklich: „Ich bestätige den Vorschlag der modernen
+Kopplung. Fahre fort.“ M4 ist damit fachlich freigegeben; keine Mergefreigabe.
 
-M3 ist implementierter Zwischenstand: kompletter gemeinsamer Quellenvertrag,
-beide Seiten frisch über die vier bestehenden Teilmodelle gerechnet, Carryover,
-2er-/5er-Prefixe, 100er-Bilanz und tatsächliche CSV/JSON/XLSX-Exporte mit gleichem
-Digest, Übergabe der geprüften Seite an die Modellkapitalansicht. 49 neue und
-bestehende Bilanz-/API-Prüfungen (70,98 s), vier Browserfälle und Build bestanden.
-Mapping/Anleitung: `ims_ap3_management_case.md`, `management_ap3.md`.
-Weitere Gesamtprüfungen und genaue Produktcommits stehen im AP3-Zwischenbericht.
+M1–M3 sind umgesetzt. Der letzte frühere geprüfte Produktstand d2021fc
+bestand vier CI-Checks, 2.651 Tests + 8 Subtests, 26 Browserfälle und 14
+Installer-Lifecycleprüfungen mit 26 installierten Browserfällen. Dieser
+Nachweis belegt den damaligen Zwischenstand und ersetzt M4/M5 nicht.
 
-M4 ist vor dem Adapter fachlich blockiert: historische VU-Prämienziele sind
-keine Gesamtprämieneinnahmen; die sektorbezogene Population, Einheit und
-Abrechnung fehlen. Konkretes Quellenmapping und moderner Workshop-Vorschlag:
-`docs/plans/ims_ap3_strategy_gate.md`. Der Auftraggeber wurde nach genau dieser
-Modellgrundlage gefragt, noch keine Antwort. Abhängige Strategiewirkung und
-vollständige M5-Abnahme bleiben offen; nichts aus den 23 IDs wird gestrichen.
-Moderationsvorbereitung: `docs/handbook/seminar_ap3_draft.md`. Nächster Schritt
-nach fachlicher Antwort: belegten begrenzten Adapter, UI und 100er-Wirkungskette
-umsetzen; anschließend Seminarbündel und frisch gebauten Installer vollständig
-abnehmen. Im selben Branch und Draft-PR #290 fortsetzen, nicht neu anfangen.
-Noch keine AP3-Gesamtabnahme oder AP3-Merge-Freigabe.
+M4 ist implementiert: moderner benannter Quellen-/Zeitvertrag,
+quellenkartierte Vrvu01/Vrvn06-Kerne, Preis × gedeckte Exposition, separater
+Werbeaufwand, begrenzte Lebens-/Kranken-Quellenentscheidungen, atomare
+100er-Rechnung und bedienbare Gruppen/Parameter/Zeitfenster. Mapping:
+`docs/migration/ims_ap3_modern_strategy_bridge.md`; bestätigtes Tor:
+`docs/plans/ims_ap3_strategy_gate.md`. Historische Spartenidentität bleibt offen.
 
-Abschließend geprüfter Produkthead:
-`d2021fcd0adaaed42be0e65dd696df01f1f6efe2`. Alle vier CI-Checks bestanden:
-2.651 Tests + 8 Subtests im vollständigen Windows-Gate, 26 Browserfälle,
-14 Installer-Lifecycleprüfungen mit 26 tatsächlichen installierten Browserfällen.
-Lokal Gesamtgate a0e1c27 mit 2.649 + 8 bestanden; passende Delta-Prüfungen
-nach den Worker-/Metadatenfixes grün, letzter P52-Installer d2021fc 14/14 und
-26/26 bestanden. Kein SQLite-InterfaceError oder unerwarteter API-500;
-der beabsichtigte Fehler beim belegten Port gehört zum Negativtest.
+M5 ist implementiert: drei vollständige 100er-Fälle, portable Quellenbündel
+mit allen modernen/ICT/historischen Eingaben, festen Kapitalannahmen und
+frisch geprüfter schreibfreier Demo. Browser/Python-Ganzzahldarstellung wurde
+nach tatsächlichem Transportfehler vereinheitlicht, ohne ursprüngliche
+Validierung oder historische Digests global umzuschreiben. Preisfall:
+P100 Eigenkapital 116.015,7633 / 87.325,7633, handprüfbare Differenz
+302 × 95 = 28.690. Preisfall-Kapitalstress 150; Lebens-Anlagefall zusätzlich
+Kapitaldruck 550 gegenüber deklarierter Verlustgrenze 200.
 
-Technischer CI-Zwischenstand:
-https://github.com/junker-joerg/ims/actions/runs/36847659449/artifacts/11154965440.
-Version 2.0.0-alpha.1, EXE SHA-256
-`0c5c57d8a6a35082e60d8adb05792b2f4f91e29aaf096941dd51cef7c16f8867`.
-Noch keine unabhängige Clean-Windows-Abnahme oder vollständige AP3-Seminarabnahme.
-Vollständiger Zwischenbericht, genauer Produkt-/Prüfmerge, Installer,
-Testzeiten und nächste Schritte: `docs/reports/ims_ap3_abschlussbericht.md`,
-`ims_ap3_ci_evidence.json`, `ims_ap3_p52_evidence.json`. Der angeforderte
-AP2-Evernote-Bericht ist vor AP3 gespeichert und nach Neuladen geprüft;
-eine zusätzliche AP3-Evernote-Ablage ist nach dem nativen URL-Sicherheitsabbruch
-nicht verifiziert und bei späterem Zugriff im vorgesehenen Notizbuch zu aktualisieren.
-Vor weiterer Umsetzung die Antwort zum M4-Vertrag in
-`ims_ap3_strategy_gate.md` festhalten. Für diesen fachlichen Blocker nicht
-den PR wechseln oder das Paket verkleinern.
+16 neue Kernfälle und API-/Export-/Importprüfung mit beiden Backends sowie
+aktuelle Ressourcen bestanden. Vier Seminarbrowserfälle bei 1440/390 Pixeln
+in Hell/Dunkel bestanden nach Breiten- und Bündelkorrektur. Gesamte
+30er-Browsermatrix davor 29 bestanden; kuratierte Demo danach gezielt und
+im vollständigen Seminarpfad bestanden. Aktueller zusätzlicher Kapitaldruck-
+und Handbuchpfad läuft. Die fertigen Bündel liegen in `seminar_cases/`;
+Anleitung `docs/handbook/seminar_ap3.md` und `.html`, tatsächliche Bilder.
+
+Nächster Schritt im selben PR: aktuellen Produktstand einschließlich aller
+Bilder committen; vollständige CI, Windows-Release-Gate und neu gebauten
+Installer mit allen 30 Browserfällen abnehmen. Erst danach Abschlussbericht,
+23 konkrete completion_evidence-Einträge und Ready bei grünen aktuellen
+Checks. Kein AP3-Merge und keine öffentliche Veröffentlichung freigegeben.
+Unabhängige frische Windows-AP3-Abnahme ist nicht durchgeführt.
+
+Der ausführliche AP2-Bericht ist vor AP3 in Evernote gespeichert und nach
+Reload geprüft. Aktueller Evernote-Browserzugang ist vorhanden; gezielte
+AP3-Titelsuche im IMS-Notizbuch ergab nur den Startauftrag, keinen AP3-Bericht.
+Nach technischer Abnahme vollständigen AP3-Bericht dort anlegen und erneut
+lesen; keine Dublette. Die ältere AP1-Notiz benötigt gesonderte Aktualisierung.

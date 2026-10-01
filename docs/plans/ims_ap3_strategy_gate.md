@@ -1,6 +1,9 @@
 # AP3 M4 / PR187g: Entscheidung vor dem Strategieadapter
 
-Stand 01.10.2026. Noch kein Adapter implementiert und keine Strategieabnahme.
+Stand 01.10.2026. Der Auftraggeber hat den Vorschlag der modernen Kopplung
+ausdrücklich bestätigt: „Ich bestätige den Vorschlag der modernen Kopplung.
+Fahre fort.“ Das Entscheidungstor ist damit geschlossen. Die Bestätigung
+betrifft die deklarierte Modellgrundlage; Implementierung und Abnahme folgen.
 M1–M3 können unabhängig davon technisch geprüft werden. PR187h–k und die
 darauf aufbauende vollständige Seminarabnahme bleiben im AP3-Umfang.
 
@@ -43,22 +46,22 @@ Für den begrenzten Seminarpfad wird ein eigener versionierter Vertrag ergänzt:
 | Rechnung | Frische Baseline/Variante, nachvollziehbare Entscheidung → Exposition/Fluss → periodische Modellbilanz; atomare Grenzen und unveränderte alte Runner. |
 | Nicht gekoppelt | Vollständiger All-Sparten-Markt, historische Spartenidentität, regulatorische Kapitalrechnung und alle nicht belegten Strategien bleiben ausdrücklich offen. |
 
-Dies wäre eine neue, klar bezeichnete Workshop-Kopplung unter Wiederverwendung
-belegter Regelkerne. Ihre Expositions-, Einheiten- und Abrechnungsannahmen wären
-sichtbare und änderbare Eingaben. Sie würde keine historische Kfz-/Sach-
-Identität behaupten und die ursprüngliche PR154-Ausführung nicht als historisch
-gleichwertig ausgeben. Der Auftraggeber muss die fachliche Grundlage bestätigen,
-bevor diese neuen Abrechnungsannahmen als ausführbare Strategiebrücke umgesetzt
-werden; das ist die Entscheidung zu den fehlenden Modellgrößen, keine Merge-
+Der bestätigte Vorschlag wird als neue, klar bezeichnete Workshop-Kopplung
+unter Wiederverwendung belegter Regelkerne umgesetzt. Expositions-, Einheiten-
+und Abrechnungsannahmen sind sichtbare und änderbare Eingaben. Eine historische
+Kfz-/Sach-Identität oder Gleichwertigkeit der ursprünglichen PR154-Ausführung
+wird nicht behauptet. Die Bestätigung der Modellgrundlage ist keine Merge-
 oder Veröffentlichungserlaubnis.
-
-Alternative: Nur eine historische Kopplung ausführen. Dafür werden belastbare
-Belege zu Spartenidentität, VN-/VU-Bestand, Prämieneinheiten und Abrechnung
-benötigt. Bis dahin bleiben PR187h–k und die vollständige Seminarabnahme offen.
 
 ## Fortsetzung
 
-Die fachliche Antwort wird hier und im PR dokumentiert. Danach vollständigen
-Quellen-/Zeitvertrag ausarbeiten, erst anschließend Adapter, UI, belegte
-100er-Reaktionskette und M5/Installerabnahme umsetzen. Keine Anforderung wird
-aus dem Manifest gestrichen und AP3 wird nicht vorzeitig auf done gesetzt.
+Quellen-/Zeitvertrag und konservatives C-/Python-Mapping sind in
+`../migration/ims_ap3_modern_strategy_bridge.md` festgehalten. Der Adapter
+`ims.strategies.modern_bridge` verbindet quellenkartierte Preis-/VN-Regeln
+mit ausdrücklich modernen Mengen/Flüssen; begrenzte Lebens-/Kranken-
+Entscheidungen verwenden vorhandene Quellenmodi. Handprüfbarer Preisfall:
+3,60 statt 3,00 führt bei konkurrierendem Angebot 3,20 zu eigener gedeckter
+Exposition null, 300 weniger Prämie und 2 Werbung je Periode; über P6–100
+28.690 weniger Modell-Eigenkapital. M5 verwendet vollständige portable
+Quellen und frische Demo-Prüfungen. Gesamtabnahme und konkrete Installer-
+Nachweise werden im AP3-Bericht ergänzt; alle 23 IDs bleiben erhalten.

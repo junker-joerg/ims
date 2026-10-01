@@ -26,8 +26,9 @@ Halte-, Nacharbeits- und Maßnahmenkosten bleiben sichtbar.
 
 Die angezeigten Workshop-Grenzen sind selbst gesetzte Grenzen. Die Rechnung
 liefert keine regulatorischen SCR/MCR-Werte, DORA-Konformität oder historische
-Marktgleichheit. Die automatische Vier-Sparten-Kopplung gehört zu späteren
-AP3-Meilensteinen und ist hier noch nicht abgenommen.
+Marktgleichheit. Die ICT-Bilanz ist ein eigener erklärter Overlay. Das aktuelle
+[AP3-Seminar](seminar_ap3.md) verbindet Bedienwege und vollständige Quellen;
+es bucht diesen Overlay nicht unbemerkt in die moderne Vier-Sparten-Bilanz ein.
 
 Tatsächliche Browseransichten der geprüften Rechnung:
 

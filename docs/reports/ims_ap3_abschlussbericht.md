@@ -1,3 +1,22 @@
+# AP3: Integration vollständig umgesetzt – Gesamtabnahme läuft
+
+Aktueller Fortsetzungsstand 01.10.2026: Der Auftraggeber hat die moderne
+Kopplung ausdrücklich bestätigt. M4 mit Gruppen/Einheiten/Abrechnung und
+begrenzten Strategieregeln sowie M5 mit drei 100er-Fällen, portablen Bündeln,
+Kapitalannahmen, frischer schreibfreier Demo und Offline-Anleitung sind
+implementiert. Technische Gesamtprüfungen und frische Installerabnahme laufen.
+Aktuelle Quellen und Bedienung: `../migration/ims_ap3_modern_strategy_bridge.md`,
+`../handbook/seminar_ap3.md`; genauer Fortsetzungsstand:
+`../plans/ims_delivery_handoff.md`. Kein AP3-Merge freigegeben.
+
+Der folgende dokumentierte Stand war der frühere Zwischenbericht vor der
+Bestätigung. Seine M4-/M5-Blocker und Artefakte beschreiben ausschließlich
+diesen historischen Stand; der endgültige Bericht ersetzt ihn nach den
+vollständigen Abnahmen. Kein vergangenes Artefakt wird als aktueller Installer
+für die neuen M4/M5-Funktionen ausgegeben.
+
+---
+
 # AP3: Zwischenbericht – Fachliche Integration
 
 Stand: 01.10.2026, 12:32 Uhr Europe/Berlin. **AP3 läuft, keine Abschluss- oder

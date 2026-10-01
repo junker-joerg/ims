@@ -1,5 +1,10 @@
 # IMS im Managementseminar
 
+Dieser Text bewahrt den früheren Handbuchschnitt PR178a. Für die aktuelle
+Oberfläche, drei ausführbare 100er-Fälle und portable Demo-Bündel siehe
+[Managementseminar mit AP3](seminar_ap3.md). Die damaligen Funktionsgrenzen
+unten beschreiben den historischen Stand.
+
 Stand: 2026-09-18
 Handbuchschnitt: PR178a (Seminar-Vertiefung)
 Zielgruppe: Fuehrungskraefte, Lehrende und Seminargruppen ohne Kenntnis der

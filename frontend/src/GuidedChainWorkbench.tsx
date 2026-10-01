@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Chain = { period_count: number; chain_id: string; content_digest: string; period_chain_input: Record<string, unknown> };
 type Build = { valid: boolean; content_digest: string; bundle_id: string; candidate_count: number; chains: Chain[] };
@@ -14,7 +14,7 @@ async function post(url: string, value: unknown) {
   return body;
 }
 
-export default function GuidedChainWorkbench({ onStored }: { onStored: () => void }) {
+export default function GuidedChainWorkbench({ onStored, seminarSource }: { onStored: () => void; seminarSource?: unknown }) {
   const [seed, setSeed] = useState("1300"), [runIndex, setRunIndex] = useState("0");
   const [source, setSource] = useState<Source | null>(null), [expert, setExpert] = useState("");
   const [dirty, setDirty] = useState(false), [checked, setChecked] = useState<Build | null>(null);
@@ -26,6 +26,9 @@ export default function GuidedChainWorkbench({ onStored }: { onStored: () => voi
   function invalidate() {
     revision.current++; setChecked(null); setStored(null); setStorageRelease(false); setRunRelease(false); setPrefixReady(false); setError(null);
   }
+  useEffect(() => {
+    if (seminarSource) { invalidate(); setSource(seminarSource as Source); setExpert(JSON.stringify(seminarSource, null, 2)); setDirty(false); setBusy(false); }
+  }, [seminarSource]);
   async function act(work: (version: number) => Promise<void>) {
     const version = revision.current;
     setBusy(true); setError(null);

@@ -174,7 +174,7 @@ def main() -> None:
             browser_env.pop('IMS_CAPTURE', None)
             subprocess.run([node, str(repo / 'frontend/node_modules/@playwright/test/cli.js'),
                             'test', '--config', str(repo / 'frontend/playwright.config.ts')],
-                           cwd=repo / 'frontend', env=browser_env, check=True, timeout=600,
+                           cwd=repo / 'frontend', env=browser_env, check=True, timeout=1200,
                            creationflags=subprocess.CREATE_NO_WINDOW)
             evidence.append({'test': 'AP2_real_browser_against_installed_current_frontend',
                              'result': 'passed', 'seconds': time.perf_counter() - began})

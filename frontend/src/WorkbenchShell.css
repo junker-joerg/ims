@@ -96,7 +96,7 @@ label:has(input[type="checkbox"]), label:has(input[type="radio"]) { min-height: 
 }
 .ict-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; margin: 12px 0; }
 .ict-fields label, .ict-workbench label { display: grid; gap: 8px; min-width: 0; }
-.ict-fields input, .ict-fields select, .ict-workbench textarea { width: 100%; min-width: 0; box-sizing: border-box; }
+.ict-fields input, .ict-workbench select, .ict-workbench textarea { width: 100%; min-width: 0; box-sizing: border-box; }
 .ict-workbench fieldset { min-width: 0; margin: 16px 0; border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
 .ict-workbench details { margin: 16px 0; }
 .ict-workbench summary { cursor: pointer; padding: 12px 0; }
