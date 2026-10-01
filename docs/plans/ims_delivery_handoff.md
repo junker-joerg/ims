@@ -55,7 +55,7 @@ https://www.evernote.com/client/web#?n=c8ca33d8-e050-45f2-931c-3e7a4e6dcefa.
 Die Aktualisierung mit Abnahme/Merge vom 01.10. ist mangels Evernote-Zugriff
 ausstehend; diese Notiz aktualisieren, keine Dublette anlegen.
 
-## AP2 technisch abgenommen
+## AP2 übernommen und in Evernote dokumentiert
 
 Branch `codex/ims-elegant-workbench`, PR
 https://github.com/junker-joerg/ims/pull/289. Produkthead
@@ -79,12 +79,29 @@ Aktuelle Bedienhilfe: `docs/handbook/workbench_ap2.md`, 24 Bilder.
 CI-Download: https://github.com/junker-joerg/ims/actions/runs/36824042759/artifacts/11144572266.
 CI-EXE SHA-256: 1680b5521c61e51347de52bcd08669c83f50a6997c47942563a0ffb238756d24.
 
-Nächster Schritt: letzte Dokumentationschecks prüfen und PR Ready stellen.
-Danach ist AP2 zur fachlichen Review/Merge-Freigabe vorbereitet. Nicht selbst
-mergen: AP2-Merge und AP3-Start sind noch nicht freigegeben. Für AP3 zählt
-erst AP2 in tatsächlichem main. Keine öffentliche Veröffentlichung.
+Der Auftraggeber bestätigt am 01.10.2026 den erfolgreichen AP2-Test auf einem
+anderen Rechner und beauftragt AP3 nach ausführlicher Evernote-Ablage.
+Einzelheiten des externen Tests wurden nicht angegeben; siehe
+`docs/reports/ims_ap2_user_acceptance.md`. Weitere UI-Verbesserungen folgen später.
+Abschließender Head 0148efc hatte vier grüne Checks. PR #289 wurde am 01.10.2026
+um 09:48:11 Uhr Berlin gemergt: `2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c`.
+Merge und origin/main erneut verifiziert. Keine öffentliche Veröffentlichung.
 
-Evernote-Plugin fehlt in dieser Sitzung; der vollständige AP2-Bericht liegt
-entsprechend der erlaubten Alternative in Repository und PR. Vor einer
-späteren Ablage Solltitel und PR #289 suchen, keine Dublette erzeugen und
-Notizbuch anschließend erneut prüfen. AP1-Notiz ebenfalls nur aktualisieren.
+Evernote-Webzugang funktioniert. Vor dem Anlegen gezielt AP2 im IMS-Notizbuch
+gesucht; kein vorhandener Bericht. Vollständige neue Notiz:
+https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c.
+Nach Neuladen: Titel, vollständiger Inhalt und vorgesehene Notizbuch-ID geprüft;
+„Alle Änderungen gespeichert“. Native Zusatzaufnahme wurde wegen nicht sicher
+erkannter Browser-URL abgebrochen, keine weitere native UI-Eingabe.
+AP1-Notiz bei späterer Bearbeitung nur aktualisieren, keine Dublette.
+
+## AP3 begonnen
+
+Branch `codex/ims-management-integration`, Basis tatsächliches main 2e70b8f.
+AP3 ist durch den Folgeauftrag freigegeben; ein gemeinsamer Draft-PR über fünf
+Meilensteine. Planprüfer: 25 Anforderungen, Auftrag AP3. Vollständiger Umfang
+und offene Abnahmen: `docs/plans/ims_ap3_implementation.md`.
+Aktueller Schritt M1: ICT-Quellen-/Zeitvertrag und deterministische Wirkungskette.
+M2–M5 und das fachliche Strategiemapping bleiben offen. Historische Quellen
+wurden für Perioden-/Schockgrenzen gelesen; ICT ist eine neue deklarierte
+Workshop-Schicht. Noch keine AP3-Produktabnahme, kein AP3-Merge freigegeben.

@@ -83,13 +83,15 @@
         "docs/reports/ims_ap2_p52_evidence.json: 12 echte Browserfälle, 66 Ansichten, Kontrast, Formular-/Freigabeerhalt, Exporte und 14 tatsächliche Installer-Prüfungen",
         "docs/reports/ims_ap2_ci_evidence.json: tatsächlicher CI-Installer, Browsermatrix und Windows-Release-Gate für Produkthead 7dc368e bestanden; vier Checks grün",
         "docs/handbook/workbench_ap2.md: Bedienhilfe und 24 Vorher-/Nachher-Bilder für drei Viewports und beide Farbmodi",
-        "https://github.com/junker-joerg/ims/pull/289: AP2-Implementierung und vollständiger Bericht; Ready erst nach grünen Checks des aktuellen Dokumentations-Heads"
+        "https://github.com/junker-joerg/ims/pull/289: AP2-Implementierung und vollständiger Bericht; Ready erst nach grünen Checks des aktuellen Dokumentations-Heads",
+        "docs/reports/ims_ap2_user_acceptance.md: externer erfolgreicher Test und Fortsetzungsauftrag AP3; AP2-Merge 2e70b8f in main verifiziert",
+        "https://www.evernote.com/client/web#/notebook/ade45e59-57bd-4ada-abaf-dab970f2e126/note/18c2dc8d-2534-6cd5-20ae-1c862506946c: ausführlicher AP2-Bericht gespeichert und nach Neuladen im richtigen Notizbuch geprüft"
       ]
     },
     {
       "id": "AP3",
       "title": "100-Perioden-Managementlabor in einem Integrations-PR",
-      "status": "planned",
+      "status": "in_progress",
       "depends_on": [
         "AP1",
         "AP2"
