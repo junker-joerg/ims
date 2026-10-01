@@ -411,7 +411,7 @@ export default function CapitalWorkbench({ source }: { source: CheckedFourSector
       {result && management && totals && <div className="capital-results" data-testid="capital-results">
         <div className="capital-results-head"><h3>Modellwirkung · Periode {period}</h3>
           <span title={result.readiness.content_digest ?? ""}>Nachweis {result.readiness.content_digest?.slice(0, 12)}</span></div>
-        <div className="capital-summary" aria-label="Kapital-Modellwerte">
+        <div className="capital-summary" aria-label="Kapital-Modellwerte" role="group">
           <div><span>Eigenmittel-Proxy</span><strong>{display(management.model_own_funds_proxy)}</strong></div>
           <div><span>Brutto-Stress</span><strong>{display(totals.gross_model_stress_loss)}</strong></div>
           <div><span>Modellpuffer</span><strong>{display(totals.model_buffer_applied)}</strong></div>

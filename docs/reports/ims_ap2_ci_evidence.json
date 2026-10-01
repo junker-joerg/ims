@@ -1,0 +1,826 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-01T06:28:47.468865+00:00",
+  "tested_pr_head": "7dc368ec5defb5754ba037a80b2bfa2ae2251d60",
+  "installer_run": 36824042759,
+  "installer_job": 110245627783,
+  "installer_run_url": "https://github.com/junker-joerg/ims/actions/runs/36824042759",
+  "artifact_id": 11144572266,
+  "artifact_url": "https://github.com/junker-joerg/ims/actions/runs/36824042759/artifacts/11144572266",
+  "archive_sha256": "ff9333f8a707411cc25f0b73c0e3b92f10d7b970e25f88d0129631f6710ee1e2",
+  "exe_sha256": "1680b5521c61e51347de52bcd08669c83f50a6997c47942563a0ffb238756d24",
+  "build": {
+    "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
+    "sha256": "1680b5521c61e51347de52bcd08669c83f50a6997c47942563a0ffb238756d24",
+    "bytes": 18219208,
+    "build_seconds": 52.746733,
+    "commit": "6cc76ba8d539d959c681cac489fb858b789f6515",
+    "version": "2.0.0-alpha.1",
+    "inno": "6.7.3",
+    "dirty": false,
+    "node": "v22.23.3",
+    "python": "3.12.10",
+    "signed": false,
+    "clean_windows_acceptance": "pending"
+  },
+  "installer": {
+    "success": true,
+    "failure": null,
+    "environment": "Windows with developer tools; executable PATH restricted to System32",
+    "clean_windows_acceptance": "pending",
+    "work": "D:\\a\\ims\\ims\\.tmp-pr-installer\\Installer Prüfung Ä 8f3f9ab1",
+    "installer_sha256": "1680b5521c61e51347de52bcd08669c83f50a6997c47942563a0ffb238756d24",
+    "seconds": 152.04186569999996,
+    "tests": [
+      {
+        "test": "install_synthetic_previous_version",
+        "result": "passed",
+        "seconds": 2.499945299999979
+      },
+      {
+        "test": "frozen_start_path_with_spaces_umlauts",
+        "result": "passed",
+        "seconds": 1.834944699999994
+      },
+      {
+        "test": "second_start_same_process",
+        "result": "passed",
+        "seconds": 0.368688700000007
+      },
+      {
+        "test": "existing_health_case_and_json_csv_xlsx_exports",
+        "result": "passed",
+        "seconds": 0.949034700000027,
+        "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+        "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+      },
+      {
+        "test": "update_while_running",
+        "result": "passed",
+        "seconds": 3.301500599999997
+      },
+      {
+        "test": "start_after_update",
+        "result": "passed",
+        "seconds": 1.9351990000000114
+      },
+      {
+        "test": "AP2_real_browser_against_installed_current_frontend",
+        "result": "passed",
+        "seconds": 127.54908440000003
+      },
+      {
+        "test": "occupied_port_fails_without_foreign_browser",
+        "result": "passed",
+        "seconds": 1.1490084999999794
+      },
+      {
+        "test": "explicit_adoption_with_source_and_target_backups",
+        "result": "passed"
+      },
+      {
+        "test": "start_before_uninstall",
+        "result": "passed",
+        "seconds": 1.706643100000008
+      },
+      {
+        "test": "uninstall_while_running_preserves_data",
+        "result": "passed",
+        "seconds": 1.4742108000000371
+      },
+      {
+        "test": "reinstall",
+        "result": "passed",
+        "seconds": 2.4965219999999704
+      },
+      {
+        "test": "restart_after_reinstall",
+        "result": "passed",
+        "seconds": 1.7705603999999653
+      },
+      {
+        "test": "stored_result_preserved_update_uninstall_reinstall",
+        "result": "passed"
+      }
+    ]
+  },
+  "browser": {
+    "stats": {
+      "startTime": "2026-10-01T06:21:26.518Z",
+      "duration": 126592.06199999999,
+      "expected": 12,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "minimum_contrast": 6.13,
+    "checked_text_observations": 5504,
+    "views": [
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 96
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 235
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 242
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 96
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 235
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 242
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 95
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 226
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 240
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 95
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 226
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 240
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 93
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 63
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 74
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 35
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 21
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 200
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 239
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 29
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 93
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 63
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 74
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 35
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 21
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 200
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 239
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 29
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 24
+      }
+    ]
+  },
+  "browser_job_url": "https://github.com/junker-joerg/ims/actions/runs/36824042719/job/110245627655",
+  "release_gate_run_url": "https://github.com/junker-joerg/ims/actions/runs/36824042714",
+  "release_gate_status": "passed for tested_pr_head; final documentation head must pass again before Ready",
+  "clean_windows_acceptance": "No new external AP2 test asserted; AP1 user acceptance is separate",
+  "checks": [
+    {
+      "name": "release-gate",
+      "head_sha": "7dc368ec5defb5754ba037a80b2bfa2ae2251d60",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36824042714/job/110245687589",
+      "started_at": "2026-10-01T06:18:19Z",
+      "completed_at": "2026-10-01T06:33:11Z"
+    },
+    {
+      "name": "installer",
+      "head_sha": "7dc368ec5defb5754ba037a80b2bfa2ae2251d60",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36824042759/job/110245627783",
+      "started_at": "2026-10-01T06:18:05Z",
+      "completed_at": "2026-10-01T06:23:50Z"
+    },
+    {
+      "name": "browser",
+      "head_sha": "7dc368ec5defb5754ba037a80b2bfa2ae2251d60",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36824042719/job/110245627655",
+      "started_at": "2026-10-01T06:18:06Z",
+      "completed_at": "2026-10-01T06:21:39Z"
+    },
+    {
+      "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+      "head_sha": "7dc368ec5defb5754ba037a80b2bfa2ae2251d60",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/junker-joerg/ims/actions/runs/36824042697/job/110245627614",
+      "started_at": "2026-10-01T06:18:05Z",
+      "completed_at": "2026-10-01T06:18:11Z"
+    }
+  ],
+  "release_gate_python_tests": 2597,
+  "release_gate_subtests": 8,
+  "release_gate_log_local": ".tmp-pr-ap2/ci-release-accepted.log"
+}

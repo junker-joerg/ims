@@ -6,7 +6,10 @@ Migrationshinweise stehen unter `docs/migration/README.md`.
 
 AP1 ergänzt einen [Windows-Installer ohne Zielrechner-Python](docs/handbook/installer_windows.md).
 Der Auftraggeber hat den Installer am 01.10.2026 auf einem unabhängigen Windows-11-Rechner
-abgenommen und zum Merge freigegeben; [Abnahme und Nachweisgrenzen](docs/reports/ims_ap1_user_acceptance.md).
+abgenommen; PR #288 ist nach main übernommen. [Abnahme und Nachweisgrenzen](docs/reports/ims_ap1_user_acceptance.md).
+AP2 gestaltet die vorhandene Oberfläche in fünf Bereichen mit Hell-/Dunkelmodus;
+die [aktuelle Bedienhilfe](docs/handbook/workbench_ap2.md) erläutert Navigation,
+Modellfälle, Ergebnisse und Freigaben.
 
 ## Versionslinien
 

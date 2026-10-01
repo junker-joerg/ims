@@ -1,0 +1,813 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-01T06:28:47.668745+00:00",
+  "environment": "Windows-11-10.0.26100-SP0",
+  "build": {
+    "artifact": "IMS-Setup-2.0.0-alpha.1-win-x64.exe",
+    "sha256": "60f02ee9c5ad93301f7216014c1781421e6ea4aa1aafab180a9c5baa14dd5ca9",
+    "bytes": 18254745,
+    "build_seconds": 82.638297,
+    "commit": "7dc368ec5defb5754ba037a80b2bfa2ae2251d60",
+    "version": "2.0.0-alpha.1",
+    "inno": "6.7.3",
+    "dirty": false,
+    "node": "v22.23.2",
+    "python": "3.12.10",
+    "signed": false,
+    "clean_windows_acceptance": "pending"
+  },
+  "installer": {
+    "success": true,
+    "failure": null,
+    "environment": "Windows with developer tools; executable PATH restricted to System32",
+    "clean_windows_acceptance": "pending",
+    "work": "C:\\Users\\P52\\source\\ims\\.tmp-pr-ap2\\installer-accepted\\Installer Prüfung Ä 08c92d14",
+    "installer_sha256": "60f02ee9c5ad93301f7216014c1781421e6ea4aa1aafab180a9c5baa14dd5ca9",
+    "seconds": 199.54143459999977,
+    "tests": [
+      {
+        "test": "install_synthetic_previous_version",
+        "result": "passed",
+        "seconds": 25.72976860000017
+      },
+      {
+        "test": "frozen_start_path_with_spaces_umlauts",
+        "result": "passed",
+        "seconds": 2.640917800000352
+      },
+      {
+        "test": "second_start_same_process",
+        "result": "passed",
+        "seconds": 0.2513740999993388
+      },
+      {
+        "test": "existing_health_case_and_json_csv_xlsx_exports",
+        "result": "passed",
+        "seconds": 0.2984326999994664,
+        "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+        "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+      },
+      {
+        "test": "update_while_running",
+        "result": "passed",
+        "seconds": 14.879378100000395
+      },
+      {
+        "test": "start_after_update",
+        "result": "passed",
+        "seconds": 1.950320300000385
+      },
+      {
+        "test": "AP2_real_browser_against_installed_current_frontend",
+        "result": "passed",
+        "seconds": 133.87300969999978
+      },
+      {
+        "test": "occupied_port_fails_without_foreign_browser",
+        "result": "passed",
+        "seconds": 1.4011043000000427
+      },
+      {
+        "test": "explicit_adoption_with_source_and_target_backups",
+        "result": "passed"
+      },
+      {
+        "test": "start_before_uninstall",
+        "result": "passed",
+        "seconds": 1.7163523000008354
+      },
+      {
+        "test": "uninstall_while_running_preserves_data",
+        "result": "passed",
+        "seconds": 1.8570946999998341
+      },
+      {
+        "test": "reinstall",
+        "result": "passed",
+        "seconds": 5.556394299999738
+      },
+      {
+        "test": "restart_after_reinstall",
+        "result": "passed",
+        "seconds": 2.234229900000173
+      },
+      {
+        "test": "stored_result_preserved_update_uninstall_reinstall",
+        "result": "passed"
+      }
+    ]
+  },
+  "browser": {
+    "stats": {
+      "startTime": "2026-10-01T06:23:56.149Z",
+      "duration": 132927.799,
+      "expected": 12,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "against": "installed executable from build.commit",
+    "playwright": "1.63.0",
+    "axe_playwright": "4.13.0",
+    "chromium": "153.0.8010.12",
+    "views": [
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 96
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 235
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 242
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 96
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 235
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 242
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 95
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 226
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 239
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 30
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 95
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 60
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 80
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 38
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 226
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 240
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 32
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 93
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 63
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 74
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 35
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 21
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 200
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 239
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 29
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.26,
+        "checkedTextNodes": 24
+      },
+      {
+        "area": "overview",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 27
+      },
+      {
+        "area": "scenario",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 93
+      },
+      {
+        "area": "balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 63
+      },
+      {
+        "area": "life",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 77
+      },
+      {
+        "area": "health",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 74
+      },
+      {
+        "area": "four-sector-balance",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 35
+      },
+      {
+        "area": "capital",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 21
+      },
+      {
+        "area": "strategies",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 200
+      },
+      {
+        "area": "execution",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 239
+      },
+      {
+        "area": "results",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 29
+      },
+      {
+        "area": "help",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 24
+      }
+    ],
+    "minimum_contrast": 6.13,
+    "checked_text_observations": 5503,
+    "error_correction_storage_three_downloads": true,
+    "source_chain_and_digest_exports": true,
+    "keyboard_reduced_motion": true
+  },
+  "release_gate": {
+    "seconds": 894.9325699,
+    "exit_code": 0,
+    "source_commit": "25c2166f415d0e08466549e3c772bd5df3322a31",
+    "head_at_finish": "7dc368ec5defb5754ba037a80b2bfa2ae2251d60",
+    "python_tests": 2597,
+    "subtests": 8,
+    "scope_note": "Started at 25c2166; only presentation/ARIA group attributes changed to 7dc368e during the run. The final gate builds that frontend; 33 targeted source checks and the full real-browser matrix independently passed after the ARIA change."
+  },
+  "source_mapping": {
+    "baseline": "965156caf02734cc47e93615c1f8ca91692d51fe",
+    "unchanged_app_statements": 357,
+    "unchanged_model_statements": {
+      "ModelBalanceWorkbench": 22,
+      "LifeWorkbench": 34,
+      "HealthWorkbench": 30,
+      "FourSectorBalanceWorkbench": 29,
+      "CapitalWorkbench": 29
+    },
+    "unchanged_python_and_legacy": true
+  },
+  "screenshots": {
+    "before_source": "965156caf02734cc47e93615c1f8ca91692d51fe",
+    "before_count": 6,
+    "after_count": 18,
+    "path": "docs/handbook/images/ap2_*"
+  },
+  "independent_windows_acceptance": {
+    "AP1": "User accepted on 2026-10-01; see ims_ap1_user_acceptance.md",
+    "AP2": "No new independent Windows test asserted"
+  },
+  "evernote": "pending; no tools in this session; repository/PR fallback used"
+}

@@ -279,13 +279,13 @@ export default function ModelBalanceWorkbench({ onReady }: { onReady?: (value: C
     <section className="panel balance-panel" id="balance" data-testid="model-balance-workbench">
       <div className="balance-heading">
         <div className="panel-heading"><Landmark size={20} aria-hidden="true" /><h2>Schaden-Sparten-Modellbilanz</h2></div>
-        <div className="balance-provenance" aria-label="Herkunft"><span>Quelle: {edited ? "eigene Szenariowerte" : "Beispielwerte"}</span><span>Historische Zuordnung: offen</span></div>
+        <div className="balance-provenance" aria-label="Herkunft" role="group"><span>Quelle: {edited ? "eigene Szenariowerte" : "Beispielwerte"}</span><span>Historische Zuordnung: offen</span></div>
       </div>
 
       <div className="balance-controls">
         <label className="balance-insurer"><span>Versicherer-ID</span><input type="number" min="1" max="25" value={insurerId} disabled={busy !== null}
           onChange={(event) => { setInsurerId(Number(event.target.value)); invalidate(); }} /></label>
-        <div className="balance-period-actions" aria-label="Periodenanzahl">
+        <div className="balance-period-actions" aria-label="Periodenanzahl" role="group">
           <span>{periodCount} {periodCount === 1 ? "Periode" : "Perioden"}</span>
           <button className="secondary-action" type="button" onClick={removePeriod} disabled={periodCount <= 1 || busy !== null} title="Letzte Periode entfernen" aria-label="Letzte Periode entfernen"><Trash2 size={16} aria-hidden="true" /></button>
           <button className="secondary-action" type="button" onClick={addPeriod} disabled={periodCount >= 100 || busy !== null} title="Periode ergänzen" aria-label="Periode ergänzen"><Plus size={16} aria-hidden="true" /></button>
@@ -296,7 +296,7 @@ export default function ModelBalanceWorkbench({ onReady }: { onReady?: (value: C
         </div>
       </div>
 
-      <div className="balance-opening" aria-label={`Anfangsbestände ${SECTORS.find((item) => item.id === activeSector)?.label}`}>
+      <div className="balance-opening" aria-label={`Anfangsbestände ${SECTORS.find((item) => item.id === activeSector)?.label}`} role="group">
         {OPENING_FIELDS.map(({ key, label }) => <label key={key}><span>{label} Anfang</span><input type="text" inputMode="decimal"
           value={drafts[activeSector].opening[key]} onChange={(event) => setOpening(key, event.target.value)} disabled={busy !== null} /></label>)}
       </div>
@@ -333,7 +333,7 @@ export default function ModelBalanceWorkbench({ onReady }: { onReady?: (value: C
           </div>
           <span>VU {result.insurer_id} · {result.period_count} {result.period_count === 1 ? "Periode" : "Perioden"}</span>
         </div>
-        {last && <div className="balance-summary" aria-label="Schlussbilanz">
+        {last && <div className="balance-summary" aria-label="Schlussbilanz" role="group">
           {([
             ["Cash", last.closing_cash], ["Offene Schäden", last.closing_claim_liability],
             ["Eigenkapital", last.closing_equity], ["Periodenergebnis", last.period_profit]

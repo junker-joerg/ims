@@ -205,7 +205,7 @@ export default function FourSectorBalanceWorkbench({ nonLife, life, health, onRe
           }}>{item === "baseline" ? "Baseline" : "Variante"}</button>)}
       </div>
 
-      <div className="four-sector-sources" aria-label="Geprüfte Spartenquellen">
+      <div className="four-sector-sources" aria-label="Geprüfte Spartenquellen" role="group">
         {SECTORS.map(({ id, label, anchor }) => {
           const source = selected[id];
           return <div className="four-sector-source" key={id}>
@@ -253,7 +253,7 @@ export default function FourSectorBalanceWorkbench({ nonLife, life, health, onRe
             <button key={item.id} type="button" className={view === item.id ? "active" : ""}
               aria-pressed={view === item.id} onClick={() => setView(item.id)}>{item.label}</button>)}
         </div>
-        {last && <div className="four-sector-summary" aria-label="Schlussbilanz">
+        {last && <div className="four-sector-summary" aria-label="Schlussbilanz" role="group">
           <div><span>Vermögen</span><strong>{amount(last.closing_assets)}</strong></div>
           <div><span>Verpflichtungen</span><strong>{amount(last.closing_liabilities)}</strong></div>
           <div><span>Eigenkapital</span><strong>{amount(last.closing_equity)}</strong></div>

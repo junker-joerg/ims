@@ -1,8 +1,13 @@
 # IMS-Benutzerhandbuch
 
-Stand: 2026-09-18 | Handbuchstand: PR178a
+Stand: 2026-10-01 | Aktuelle Oberfläche: AP2, PR #289.
+Die älteren Modell- und Seminaranleitungen haben Handbuchstand: PR178a.
 
 **Hier beginnen:**
+
+Die [aktuelle Workbench-Bedienhilfe](workbench_ap2.md) beschreibt die fünf
+Bereiche Übersicht, Szenario, Simulation, Ergebnisse und Hilfe sowie
+Hell-/Dunkelmodus, Navigation, Fehlerkorrektur und unveränderte Freigaben.
 
 Der neue [AP1-Windows-Installer](installer_windows.md) bündelt die Laufzeit.
 Er wurde am 01.10.2026 auf einem unabhängigen Windows-11-Rechner durch den
@@ -31,7 +36,12 @@ fachliche Grenzen. Die zwei PDFs sind Bestandteil des Windows-Testpakets.
 | Lokale Ablage und Wechsel | [Daten, Backup und Updates](data_and_updates.md) |
 | Quellen und Schnittstellen | [Technische Quellen und Nachweise](technical_reference.md) |
 
-## Heutiger Funktionsstand
+## Vorhandene Funktionen und frühere Bereichsnamen
+
+Die folgenden Bezeichnungen gehören zu den älteren Bildern/Anleitungen.
+Modellfälle, Strategien und Ausführung stehen heute unter **Simulation**,
+Diagnosen unter **Hilfe**, Metadaten unter **Szenario** und Resultate unter
+**Ergebnisse**. Historische Direktlinks werden weiterhin aufgelöst.
 
 - `Dashboard` und `Szenarien` zeigen Betriebszustand und vorhandene Faelle.
 - `Strategien` bietet vorbereitete VU-/VN-Regel-Kandidaten und kontrollierte

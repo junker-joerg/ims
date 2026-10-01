@@ -5,7 +5,9 @@ Der Download enthält Python-Laufzeit, Backend, gebaute React-Oberfläche,
 Beispiele, Diagnose-Referenzen, Profile, Hilfe und Lizenztexte. Auf dem
 Zielrechner ist keine Installation von Python, Node.js, npm oder Git nötig.
 Die Alpha-Funktionen und fachlichen Freigaben bleiben unverändert.
-Die gesonderte Abnahme ohne Entwicklerwerkzeuge ist noch ausstehend.
+Der Auftraggeber hat AP1 am 01.10.2026 auf einem unabhängigen Windows-11-Rechner
+abgenommen und zum Merge freigegeben. Die [Bestätigung mit ihren Nachweisgrenzen](../reports/ims_ap1_user_acceptance.md)
+liegt vor; weitere Einzelheiten der externen Testumgebung wurden nicht mitgeteilt.
 
 1. Installer und SHA-256 vom zugehörigen GitHub-Actions-Artefakt herunterladen.
    Prüfsumme mit dem veröffentlichten Nachweis vergleichen. Kein öffentliches

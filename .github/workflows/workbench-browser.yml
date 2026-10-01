@@ -1,0 +1,50 @@
+name: Workbench browser
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workbench-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12.10'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install checkout runtime and pinned browser tools
+        shell: pwsh
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\python.exe -m pip install -e 'python_port[web]'
+          npm.cmd ci --prefix frontend
+          .\frontend\node_modules\.bin\playwright.cmd install chromium
+          if ($LASTEXITCODE -ne 0) { throw 'Chromium installation failed' }
+      - name: Build current frontend
+        run: npm.cmd run build --prefix frontend
+      - name: Exercise workbench and existing model evidence in real Chromium
+        run: npm.cmd run test:browser --prefix frontend
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: IMS-Browser-${{ github.sha }}
+          path: |
+            .tmp-pr-ap2/browser-report.json
+            .tmp-pr-ap2/browser-results
+          if-no-files-found: error
+          retention-days: 30

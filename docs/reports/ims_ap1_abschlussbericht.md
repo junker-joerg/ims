@@ -1,13 +1,13 @@
 # IMS | AP1 Abschlussbericht – Windows-Installer
 
-**Technisch abgenommen – Merge offen.** Stand: 01.10.2026,
-07:03 Uhr Europe/Berlin (UTC+02:00). Der Auftraggeber hat AP1 auf einem
+**Abgenommen und nach main übernommen.** Merge: 01.10.2026,
+07:20:42 Uhr Europe/Berlin (UTC+02:00). Der Auftraggeber hat AP1 auf einem
 unabhängigen Windows-11-Rechner getestet, das gewünschte Verhalten bestätigt
 und den Merge sowie die anschließende Umsetzung von AP2 ausdrücklich
 freigegeben. Die Bestätigung steht in
 [ims_ap1_user_acceptance.md](ims_ap1_user_acceptance.md).
-AP1 ist im Arbeitsmanifest done; die nach main übernommene Abhängigkeit
-ist erst nach dem tatsächlichen Merge erfüllt. Keine öffentliche Veröffentlichung.
+AP1 ist im Arbeitsmanifest done; der verifizierte main-Merge erfüllt die
+Abhängigkeit für AP2. Keine öffentliche Veröffentlichung.
 
 ## Änderungen und Nutzen
 
@@ -30,8 +30,10 @@ unverändert. Keine historische Vollgleichheit oder regulatorische Freigabe.
 - Geprüfter Produktcode: **559f80edecd1dff8d3f6c3308b98d04bd83daa24**.
   Zwischencommits: 0d49edf (Plan/Übergabe), 1278f66 (Bundle/Lifecycle),
   559f80e (CI, Abnahmeskript, Lizenzen/Anleitung).
-- Kein Merge-Commit für AP1 vorhanden. CI prüft den temporären PR-Testmerge
-  **6767405f01901811945f237d72b3cd491279c9bd**, nicht einen Merge nach main.
+- Merge-Commit **965156caf02734cc47e93615c1f8ca91692d51fe**; nach dem
+  freigegebenen Merge aus origin/main abgerufen und lokal verifiziert.
+  Letzter PR-Head **13dc31accf5474b447323c3bcd8adf4073f73770** hatte vor
+  Ready/Merge drei grüne Checks (Installer, Plan, Windows-Release-Gate).
 - Installer: **IMS-Setup-2.0.0-alpha.1-win-x64.exe**; PyInstaller 6.22.3,
   Inno Setup 6.7.3, CPython 3.12.10 x64. Unsigniert.
 - Tatsächlicher [CI-Download mit Installer und Nachweisen](https://github.com/junker-joerg/ims/actions/runs/36750792794/artifacts/11114806812)
@@ -106,15 +108,12 @@ ausgegeben. Prüfläufe sind Teilmengen/Überlappungen und nicht einfach addierb
 
 ## Offene Punkte und nächster Schritt
 
-1. Abnahme und Merge sind durch den Auftraggeber freigegeben. Aktuelle
-   Checks des Abnahme-Dokumentationscommits prüfen, PR Ready stellen und mergen.
-   Letzter bisheriger PR-Stand c581e26 hat 3/3 grüne Checks.
-2. GitHub-Schreibzugriff fehlt beim Erfassen dieses Standes: Plugin-Werkzeuge
-   sind in dieser Sitzung nicht verfügbar, der In-app Browser ist abgemeldet.
-   Die Freigabe liegt vor; ausstehend ist der technische Zugriff.
-3. Nach verifiziertem Merge main aktualisieren und AP2 auf
-   `codex/ims-elegant-workbench` in einem eigenen Draft-PR umsetzen.
-4. Windows 10/ARM64 ungetestet; Signierung und IMS-/Referenzdaten-
+1. AP1 wurde nach drei grünen Checks am 01.10.2026 erfolgreich gemergt.
+   GitHub-Zugriff über die vorhandene Git-Anmeldung funktioniert wieder.
+2. AP2 ist auf `codex/ims-elegant-workbench` im eigenen
+   [Draft-PR #289](https://github.com/junker-joerg/ims/pull/289) begonnen.
+   AP2-Merge und AP3-Start sind noch nicht freigegeben.
+3. Windows 10/ARM64 ungetestet; Signierung und IMS-/Referenzdaten-
    Distributionsrechte vor öffentlicher Veröffentlichung klären.
 
 Der Zwischenbericht vom 30.09. wurde über das Evernote-Plugin im Notizbuch

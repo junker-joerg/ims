@@ -365,7 +365,7 @@ export default function LifeWorkbench({ onReady }: { onReady?: (value: CheckedSi
       </div>
 
       {current && <>
-        <div className="life-opening" aria-label="Ausgangsbestand">
+        <div className="life-opening" aria-label="Ausgangsbestand" role="group">
           <div><span>Policen Anfang</span><strong>{current.opening.opening_active_policies}</strong></div>
           <div><span>Deckungsaktiva</span><strong>{amount(current.opening.opening_backing_assets)}</strong></div>
           <div><span>Garantieverpflichtung</span><strong>{amount(current.opening.opening_guarantee_liability)}</strong></div>
