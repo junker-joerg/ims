@@ -27,6 +27,8 @@ def main() -> None:
     parser.add_argument('--previous-installer', type=Path, required=True,
                         help='Synthetic previous version of same bundle, lifecycle test only')
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--browser-checks', action='store_true',
+                        help='Run AP2 real-browser acceptance against the installed executable')
     args = parser.parse_args()
     installer, previous = args.installer.resolve(), args.previous_installer.resolve()
     out = args.out.resolve()
@@ -162,6 +164,20 @@ def main() -> None:
         assert process.wait(timeout=40) == 0
         start('start_after_update')
         assert get_json(result_path)['result_digest'] == stored['result_digest']
+        if args.browser_checks:
+            began = time.perf_counter()
+            repo = Path(__file__).resolve().parents[2]
+            node = shutil.which('node')
+            if not node:
+                raise RuntimeError('Browser harness requires Node in the build/test environment')
+            browser_env = {**os.environ, 'IMS_BASE_URL': base + '/'}
+            browser_env.pop('IMS_CAPTURE', None)
+            subprocess.run([node, str(repo / 'frontend/node_modules/@playwright/test/cli.js'),
+                            'test', '--config', str(repo / 'frontend/playwright.config.ts')],
+                           cwd=repo / 'frontend', env=browser_env, check=True, timeout=600,
+                           creationflags=subprocess.CREATE_NO_WINDOW)
+            evidence.append({'test': 'AP2_real_browser_against_installed_current_frontend',
+                             'result': 'passed', 'seconds': time.perf_counter() - began})
         stop()
         before = hashlib.sha256((data / 'metadata.sqlite').read_bytes()).hexdigest()
         with socket.socket() as occupied:

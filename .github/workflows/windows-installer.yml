@@ -47,7 +47,9 @@ jobs:
       - name: Exercise installation, frozen model exports, update and uninstall
         shell: pwsh
         run: |
-          .\.venv\Scripts\python.exe scripts/installer/test_installer.py --installer dist/installer/IMS-Setup-2.0.0-alpha.1-win-x64.exe --previous-installer dist/installer/IMS-Setup-2.0.0-alpha.0-win-x64.exe --out .tmp-pr-installer
+          .\frontend\node_modules\.bin\playwright.cmd install chromium
+          if ($LASTEXITCODE -ne 0) { throw 'Chromium installation failed' }
+          .\.venv\Scripts\python.exe scripts/installer/test_installer.py --installer dist/installer/IMS-Setup-2.0.0-alpha.1-win-x64.exe --previous-installer dist/installer/IMS-Setup-2.0.0-alpha.0-win-x64.exe --out .tmp-pr-installer --browser-checks
           if ($LASTEXITCODE -ne 0) { throw 'Installer acceptance failed' }
       - name: Upload installer and evidence, no public release
         if: always()
@@ -60,5 +62,7 @@ jobs:
             dist/installer/build-evidence.json
             dist/installer/resource-inventory.json
             .tmp-pr-installer/installer-test-evidence.json
+            .tmp-pr-ap2/browser-report.json
+            .tmp-pr-ap2/browser-results
           if-no-files-found: error
           retention-days: 30

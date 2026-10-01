@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import WorkbenchShell, { Area, Disclosure, ModelWorkspace } from "./WorkbenchShell";
 import HundredPeriodResults from "./HundredPeriodResults";
 import ModelBalanceWorkbench from "./ModelBalanceWorkbench";
 import LifeWorkbench from "./LifeWorkbench";
@@ -36,6 +37,7 @@ import {
   X
 } from "lucide-react";
 import "./styles.css";
+import "./WorkbenchShell.css";
 
 type StatusItem = {
   label: string;
@@ -5230,62 +5232,10 @@ function App() {
   ];
 
   return (
-    <main className="shell">
-      <aside className="sidebar" aria-label="Workbench Navigation">
-        <div className="brand">
-          <div className="brand-mark">IMS</div>
-          <div>
-            <strong>Workbench</strong>
-            <span>lokale Vorschau</span>
-          </div>
-        </div>
-        <nav>
-          <a className="active" href="#overview">
-            <Activity size={18} aria-hidden="true" /> Dashboard
-          </a>
-          <a href="#scenarios">
-            <FileText size={18} aria-hidden="true" /> Szenarien
-          </a>
-          <a href="#strategies">
-            <ListTree size={18} aria-hidden="true" /> Strategien
-          </a>
-          <a href="#balance">
-            <Landmark size={18} aria-hidden="true" /> Bilanz
-          </a>
-          <a href="#life">
-            <HeartPulse size={18} aria-hidden="true" /> Leben
-          </a>
-          <a href="#health">
-            <Activity size={18} aria-hidden="true" /> Kranken
-          </a>
-          <a href="#four-sector-balance">
-            <Boxes size={18} aria-hidden="true" /> Gesamtbilanz
-          </a>
-          <a href="#capital">
-            <ShieldCheck size={18} aria-hidden="true" /> Kapitalwirkung
-          </a>
-          <a href="#validation">
-            <ShieldCheck size={18} aria-hidden="true" /> Validierung
-          </a>
-          <a href="#runs">
-            <Archive size={18} aria-hidden="true" /> Runs
-          </a>
-        </nav>
-      </aside>
+    <WorkbenchShell>
 
-      <section className="content" id="overview">
-        <header className="topbar">
-          <div>
-            <p className="eyebrow">IMS Modernisierung</p>
-            <h1>Lokale Simulations-Workbench</h1>
-          </div>
-          <button className="primary-action" type="button">
-            <Play size={18} aria-hidden="true" />
-            Neuer Lauf
-          </button>
-        </header>
 
-        <section className="status-grid" aria-label="Systemstatus">
+        <Area name="overview"><section className="status-grid" aria-label="Systemstatus">
           {statusItems.map((item) => (
             <article className="status-card" key={item.label}>
               <span className={`status-dot ${item.tone}`} />
@@ -5293,9 +5243,9 @@ function App() {
               <strong>{item.value}</strong>
             </article>
           ))}
-        </section>
+        </section></Area>
 
-        <section className="work-grid">
+        <Area name="scenario"><section className="work-grid">
           <article className="panel scenario-panel" id="scenarios">
             <div className="panel-heading">
               <FileText size={20} aria-hidden="true" />
@@ -5373,9 +5323,9 @@ function App() {
               ))}
             </div>
           </article>
-        </section>
+        </section></Area>
 
-        <section className="panel detail-panel" aria-label="Metadaten-Details">
+        <Area name="scenario"><Disclosure title="Metadaten-Detail"><section className="panel detail-panel" aria-label="Metadaten-Details">
           <div className="panel-heading">
             <FileText size={20} aria-hidden="true" />
             <h2>Metadaten-Detail</h2>
@@ -5426,9 +5376,9 @@ function App() {
               </article>
             </div>
           )}
-        </section>
+        </section></Disclosure></Area>
 
-        <section className="panel selection-summary-panel" aria-label="Auswahlzusammenfassung">
+        <Area name="overview"><Disclosure title="Auswahlzusammenfassung"><section className="panel selection-summary-panel" aria-label="Auswahlzusammenfassung">
           <div className="panel-heading">
             <CircleDot size={20} aria-hidden="true" />
             <h2>Auswahlzusammenfassung</h2>
@@ -5441,9 +5391,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></Area>
 
-        <section
+        <ModelWorkspace model="strategies"><section
           className="panel strategy-catalog-panel"
           id="strategies"
           aria-label="Strategiekatalog"
@@ -5647,7 +5597,7 @@ function App() {
                               </div>
                               <strong>{familyStrategies.length}</strong>
                             </div>
-                            <div className="strategy-table" role="table" aria-label={family.display_name}>
+                            <div className="strategy-table" tabIndex={0} role="table" aria-label={family.display_name}>
                               <div className="strategy-table-head" role="row">
                                 <span role="columnheader">Regel</span>
                                 <span role="columnheader">Herkunft</span>
@@ -8422,9 +8372,9 @@ function App() {
               </section>
             </div>
           )}
-        </section>
+        </section></ModelWorkspace>
 
-        <section className="panel scenario-overview-panel" aria-label="Szenario-Uebersicht">
+        <Area name="scenario"><section className="panel scenario-overview-panel" aria-label="Szenario-Uebersicht">
           <div className="panel-heading">
             <FileText size={20} aria-hidden="true" />
             <h2>Szenario-Uebersicht</h2>
@@ -8490,7 +8440,7 @@ function App() {
           <p className="scenario-filter-count">
             {filteredScenarios.length} von {scenarios.length} Szenarien sichtbar
           </p>
-          <div className="scenario-overview-table">
+          <div className="scenario-overview-table" role="region" aria-label="Szenarioübersicht" tabIndex={0}>
             <div className="scenario-overview-head" aria-hidden="true">
               <span>Szenario</span>
               <span>Umfang</span>
@@ -8521,9 +8471,9 @@ function App() {
           {filteredScenarios.length === 0 ? (
             <div className="empty-state">Keine Szenarien fuer diesen Filter.</div>
           ) : null}
-        </section>
+        </section></Area>
 
-        <section className="panel run-overview-panel" aria-label="Run-Uebersicht">
+        <Area name="scenario"><section className="panel run-overview-panel" aria-label="Run-Uebersicht">
           <div className="panel-heading">
             <Archive size={20} aria-hidden="true" />
             <h2>Run-Uebersicht</h2>
@@ -8618,9 +8568,9 @@ function App() {
           {filteredRuns.length === 0 ? (
             <div className="empty-state">Keine Runs fuer diesen Filter.</div>
           ) : null}
-        </section>
+        </section></Area>
 
-        <section className="panel core-validation-panel" aria-label="Kernvalidierungsueberblick">
+        <Area name="help"><Disclosure title="Kernvalidierungsueberblick"><section className="panel core-validation-panel" aria-label="Kernvalidierungsueberblick">
           <div className="panel-heading">
             <GitBranch size={20} aria-hidden="true" />
             <h2>Kernvalidierungsueberblick</h2>
@@ -8641,9 +8591,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></Area>
 
-        <section
+        <Area name="help"><Disclosure title="Carryover-Probe-Vertrag"><section
           className="panel carryover-probe-panel"
           aria-label="Carryover-Probe-Vertrag"
           data-testid="carryover-probe-contract"
@@ -8668,9 +8618,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></Area>
 
-        <section
+        <Area name="help"><Disclosure title="Adapter-Resultat-Vertrag"><section
           className="panel adapter-result-contract-panel"
           aria-label="Adapter-Resultat-Vertrag"
           data-testid="adapter-result-contract"
@@ -8687,9 +8637,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></Area>
 
-        <section className="panel run-control-boundary-panel" aria-label="Run-Control-Statusband">
+        <ModelWorkspace model="execution"><section className="panel run-control-boundary-panel" aria-label="Run-Control-Statusband">
           <div className="panel-heading">
             <ShieldCheck size={20} aria-hidden="true" />
             <h2>Run-Control-Statusband</h2>
@@ -8702,9 +8652,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></ModelWorkspace>
 
-        <section className="panel run-control-panel" aria-label="Run-Control-Uebersicht">
+        <ModelWorkspace model="execution"><section className="panel run-control-panel" aria-label="Run-Control-Uebersicht">
           <div className="panel-heading">
             <ServerCog size={20} aria-hidden="true" />
             <h2>Run-Control-Uebersicht</h2>
@@ -8764,7 +8714,7 @@ function App() {
           <p className="run-control-filter-count">
             {filteredQueueEntries.length} von {queueEntries.length} Queue-Eintraegen sichtbar
           </p>
-          <div className="run-control-table">
+          <div className="run-control-table" role="region" aria-label="Ausführungswarteschlange" tabIndex={0}>
             <div className="run-control-head" aria-hidden="true">
               <span>Queue</span>
               <span>Run</span>
@@ -8821,9 +8771,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></ModelWorkspace>
 
-        <section className="panel import-panel" aria-label="Importvorschau">
+        <Area name="scenario"><Disclosure title="Importvorschau"><section className="panel import-panel" aria-label="Importvorschau">
           <div className="panel-heading">
             <Braces size={20} aria-hidden="true" />
             <h2>Importvorschau</h2>
@@ -8866,9 +8816,9 @@ function App() {
               </ul>
             </article>
           </div>
-        </section>
+        </section></Disclosure></Area>
 
-        <section
+        <ModelWorkspace model="execution"><section
           className="panel run-control-dry-run-panel"
           aria-label="Run-Control-Dry-Run-Vertrag"
           data-testid="run-control-demo-dry-run-panel"
@@ -8931,9 +8881,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></ModelWorkspace>
 
-        <section
+        <ModelWorkspace model="execution"><Disclosure title="Run-Control-Aktionsplan"><section
           className="panel run-control-action-plan-panel"
           aria-label="Run-Control-Aktionsplan"
           data-testid="run-control-demo-action-plan"
@@ -8950,9 +8900,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></ModelWorkspace>
 
-        <section
+        <ModelWorkspace model="execution"><section
           className="panel run-control-execution-flow-panel"
           aria-label="Run-Control-Ausfuehrungsflow"
           data-testid="run-control-execution-flow"
@@ -9036,9 +8986,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></ModelWorkspace>
 
-        <section
+        <ModelWorkspace model="execution"><section
           className="panel run-control-execution-result-panel"
           aria-label="Run-Control-Ergebnisanzeige"
           data-testid="run-control-execution-result"
@@ -9081,9 +9031,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></ModelWorkspace>
 
-        <section
+        <ModelWorkspace model="execution"><Disclosure title="Run-Control-Kernblick-Bruecke"><section
           className="panel run-control-core-bridge-panel"
           aria-label="Run-Control-Kernblick-Bruecke"
           data-testid="run-control-core-bridge"
@@ -9100,9 +9050,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></ModelWorkspace>
 
-        <section className="panel run-control-preflight-panel" aria-label="Run-Control-Preflight">
+        <ModelWorkspace model="execution"><section className="panel run-control-preflight-panel" aria-label="Run-Control-Preflight">
           <div className="panel-heading">
             <ShieldCheck size={20} aria-hidden="true" />
             <h2>Run-Control-Preflight</h2>
@@ -9119,9 +9069,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></ModelWorkspace>
 
-        <section className="panel run-control-request-panel" aria-label="Run-Control-Request-Vertrag">
+        <ModelWorkspace model="execution"><Disclosure title="Run-Control-Request-Vertrag"><section className="panel run-control-request-panel" aria-label="Run-Control-Request-Vertrag">
           <div className="panel-heading">
             <FileText size={20} aria-hidden="true" />
             <h2>Run-Control-Request-Vertrag</h2>
@@ -9134,9 +9084,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></ModelWorkspace>
 
-        <section className="panel diagnosis-panel" aria-label="Betriebsdiagnose">
+        <Area name="help"><Disclosure title="Betriebsdiagnose"><section className="panel diagnosis-panel" aria-label="Betriebsdiagnose">
           <div className="panel-heading">
             <ServerCog size={20} aria-hidden="true" />
             <h2>Betriebsdiagnose</h2>
@@ -9149,9 +9099,9 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></Area>
 
-        <section className="panel consistency-panel" aria-label="Metadaten-Konsistenz">
+        <Area name="help"><Disclosure title="Metadaten-Konsistenz"><section className="panel consistency-panel" aria-label="Metadaten-Konsistenz">
           <div className="panel-heading">
             <ShieldCheck size={20} aria-hidden="true" />
             <h2>Metadaten-Konsistenz</h2>
@@ -9168,16 +9118,16 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </section></Disclosure></Area>
 
-        <ModelBalanceWorkbench onReady={setNonLifeReady} />
-        <LifeWorkbench onReady={setLifeReady} />
-        <HealthWorkbench onReady={setHealthReady} />
-        <FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady}
-          onReady={setFourSectorReady} />
-        <CapitalWorkbench source={fourSectorReady} />
+        <ModelWorkspace model="balance"><ModelBalanceWorkbench onReady={setNonLifeReady} /></ModelWorkspace>
+        <ModelWorkspace model="life"><LifeWorkbench onReady={setLifeReady} /></ModelWorkspace>
+        <ModelWorkspace model="health"><HealthWorkbench onReady={setHealthReady} /></ModelWorkspace>
+        <ModelWorkspace model="four-sector-balance"><FourSectorBalanceWorkbench nonLife={nonLifeReady} life={lifeReady} health={healthReady}
+          onReady={setFourSectorReady} /></ModelWorkspace>
+        <ModelWorkspace model="capital"><CapitalWorkbench source={fourSectorReady} /></ModelWorkspace>
 
-        <section className="panel validation-panel" id="validation">
+        <Area name="help"><Disclosure title="Validierungsstatus"><section className="panel validation-panel" id="validation">
           <div className="panel-heading">
             <GitBranch size={20} aria-hidden="true" />
             <h2>Validierungsstatus</h2>
@@ -9198,9 +9148,8 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
-      </section>
-    </main>
+        </section></Disclosure></Area>
+      </WorkbenchShell>
   );
 }
 
