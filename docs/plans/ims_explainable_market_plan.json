@@ -1,0 +1,138 @@
+{
+  "schema_version": "ims.explainable-market-plan.v1",
+  "date": "2026-10-01",
+  "status": "proposal",
+  "plan_document": "docs/plans/ims_explainable_market_2026_10.md",
+  "mockup": "docs/plans/images/ims_management_mockup_2026_10_01.png",
+  "accepted_plan_unchanged": "docs/plans/ims_ai_sprint_plan.json",
+  "existing_work_order_generator_supports_this_plan": false,
+  "implementation_authorized": false,
+  "baseline": {
+    "main_commit": "2e70b8f814870807a7c8c34d8fc384f8f6a5bb3c",
+    "ap3_commit": "ee4b659007d50e92058551fcc1f31a48b8ce8ba1",
+    "ap3_pr": 290,
+    "ap3_release": "2.0.0-alpha.3",
+    "ap3_merged": false,
+    "implementation_requires": ["Folgeplanung angenommen", "AP3 in main"]
+  },
+  "market_scope": {
+    "human_confirmed": true,
+    "actor_count": 40,
+    "unit": "insurance_group",
+    "geography": "german_primary_insurance_business",
+    "ranking_all_primary_insurance_lines": true,
+    "model_sectors": ["motor", "property_liability", "life", "health"],
+    "unmodelled_lines_reported": true,
+    "foreign_groups_with_german_business_included": true,
+    "subsidiaries_counted_twice": false,
+    "ranking_measure_proposal": "direct_german_gross_written_premiums",
+    "ranking_year": null,
+    "selection_verified": false,
+    "rank_40_41_boundary_required": true,
+    "unmodelled_rest_visible": true,
+    "entrant_demo_actor_count": 41
+  },
+  "roles": [
+    {"id": "ceo", "label": "CEO", "focus": "Markt, Ergebnis, Sparten und Strategiefamilien"},
+    {"id": "cio", "label": "CIO", "focus": "ICT, Abhängigkeiten, DORA und digitale Souveränität"},
+    {"id": "coo", "label": "COO", "focus": "Prozesse, Kapazität, Rückstand und Wiederanlauf"},
+    {"id": "cso_sales", "label": "CSO Vertrieb", "focus": "Nachfrage, Kundengruppen, Wechsel, Preis und Neugeschäft"}
+  ],
+  "demos": [
+    {"id": "google_motor_entry", "title": "Google kommt in die Kfz-Versicherung", "package": "AP7", "assumption": "Fiktiver zusätzlicher Marktanbieter"},
+    {"id": "life_demand_shock", "title": "LV wird unattraktiv", "package": "AP7", "assumption": "Deklarierter moderner Nachfrageschock; Altverträge erhalten"},
+    {"id": "dora_2_workshop", "title": "Regulierungsschock ICT DORA 2.0", "package": "AP7", "assumption": "Hypothetisch verschärfte Resilienzanforderungen"},
+    {"id": "us_hyperscaler_outage", "title": "Alle US Hyperscaler fallen aus", "package": "AP7", "assumption": "Gemeinsamer Ausfall der deklarierten US-kontrollierten Anbieter"}
+  ],
+  "requirements": [
+    {"id": "R01", "description": "Erklärbare Oberfläche gemäß Mockup", "packages": ["AP4", "AP8", "AP9"]},
+    {"id": "R02", "description": "Vier Rollen CEO, CIO, COO und CSO Vertrieb", "packages": ["AP4", "AP8", "AP9"]},
+    {"id": "R03", "description": "Einsteigeranleitung und Wiedereinstieg für Altprogrammierer", "packages": ["AP4", "AP9"]},
+    {"id": "R04", "description": "Offline ladbare und frisch geprüfte DEMO-Szenarien", "packages": ["AP4", "AP6", "AP7"]},
+    {"id": "R05", "description": "Anbieterschock Google in Kfz", "packages": ["AP5", "AP7"]},
+    {"id": "R06", "description": "Nachfrageschock Lebensversicherung", "packages": ["AP5", "AP7"]},
+    {"id": "R07", "description": "Regulierungsschock ICT DORA 2.0", "packages": ["AP7"]},
+    {"id": "R08", "description": "Digitale Souveränität und gemeinsamer US-Hyperscaler-Ausfall", "packages": ["AP7"]},
+    {"id": "R09", "description": "Strategien nach Gruppen und Familien auswerten", "packages": ["AP5", "AP8"]},
+    {"id": "R10", "description": "Marktaggregate und Marktprozesse unmittelbar in IMS visualisieren", "packages": ["AP4", "AP5", "AP8"]},
+    {"id": "R11", "description": "Einzel-VU-Details in Excel mit Modell- und Quellenbezug", "packages": ["AP5", "AP8", "AP9"]},
+    {"id": "R12", "description": "Deutscher Versicherungsmarkt mit 40 belegten Gruppen", "packages": ["AP5", "AP6", "AP7"]},
+    {"id": "R13", "description": "Höhere eindeutige Releasenummern für neue Produktlieferungen", "packages": ["AP4", "AP5", "AP6", "AP7", "AP8", "AP9"]}
+  ],
+  "common_acceptance": [
+    "Ein zusammenhängender Branch und Draft-PR pro Paket einschließlich API, bedienbarer Oberfläche, Tests und Anleitung",
+    "Neue Annahmen, C-/Python-Mapping und offene Unterschiede dokumentiert; keine stille Änderung des AP3-Vertrags",
+    "Deterministische kleine Referenzfälle und passende vollständige Produktprüfung mit echten Nachweisen",
+    "Anleitung und Glossar werden in jedem Paket aktualisiert; offline aus der installierten Anwendung erreichbar",
+    "Backend, Oberfläche, Windows-Version und tatsächlicher Installer tragen eine gemeinsame höhere Releasenummer",
+    "Für abhängige Pakete zählt der übernommene Status in main"
+  ],
+  "packages": [
+    {
+      "id": "AP4",
+      "title": "Erklärbare Oberfläche und geführter Einstieg",
+      "status": "proposed",
+      "depends_on": ["AP3"],
+      "branch_proposal": "codex/ims-explainable-roles",
+      "deliverables": ["Vier Rollensichten mit erhaltenem Fallzustand", "Übersicht mit echten Kennzahlen, Verlauf und nächsten Schritten", "Erklärweg von Eingabe und Regel zu Entscheidung und Buchung", "Geführte vorhandene AP3-Demos und Einsteiger-/Wiedereinsteigeranleitung"],
+      "acceptance": ["Preisfall 302 × 95 = 28.690 in IMS nachvollziehbar", "Diagramme und Kennzahlen stimmen mit API und Export überein", "Rollenwechsel erhält Eingaben, Ergebnis und Freigaben", "API-Fehler, veraltetes Ergebnis, Nullvergleich und echte Laufperioden verständlich", "Drei Bildschirmgrößen, zwei Farbmodi, Tastatur und mindestens 4,5:1 Textkontrast"],
+      "gates": ["Annahme der Folgeplanung und AP3 in main", "Persona-Sichten verändern keine fachliche Rechnung"],
+      "completion_evidence": []
+    },
+    {
+      "id": "AP5",
+      "title": "Marktmodell und auswertbare Strategiefamilien",
+      "status": "proposed",
+      "depends_on": ["AP4"],
+      "branch_proposal": "codex/ims-market-strategy-groups",
+      "deliverables": ["Neuer expliziter moderner Mehr-VU-Marktvertrag mit 40/41 Anbietern", "Gemeinsame Risiko-, Mengen-, Buchungs- und Bestandszuordnung", "Getrennte Versicherungs-, Vergleichs-, Kunden- und Strategiegruppen", "Gruppen-/Familien-API und erste nutzbare Marktsicht", "Quellengebundener Einzel-VU-Excel-Export"],
+      "acceptance": ["Zwei/drei-VU-Handfälle und deterministischer 40/41-VU-Lauf mit 100 Perioden", "Marktsumme und disjunkte Familiensummen stimmen mit Einzel-VUs überein", "Prämien, Risiko- und Mengenwechsel ohne Doppelbuchung; unversicherte Mengen bleiben sichtbar", "A = L + E, Carryover und gemeinsamer Anfang/Prefixe", "Akteurgebundene Zufallswerte und reproduzierbare Tie-Breaks", "Familienzuordnung mit Zeitfenstern und unverändertes Ergebnis bei bloßem Filterwechsel"],
+      "gates": ["Mehr-VU-, Risiko-, Aggregat- und Strategiegruppenvertrag anhand kleiner Handfälle erklärt und angenommen", "Neue Lebens-Nachfrage und zusätzliche Regelkerne explizit kartiert", "Ressourcenlimits anhand tatsächlicher 40/41-VU-Messungen festgelegt"],
+      "completion_evidence": []
+    },
+    {
+      "id": "AP6",
+      "title": "Deutscher Versicherungsmarkt mit 40 Gruppen",
+      "status": "proposed",
+      "depends_on": ["AP5"],
+      "branch_proposal": "codex/ims-german-market-top40",
+      "deliverables": ["Belegte 40er-Gruppenauswahl mit deutschen Anzeigenamen und Tochterzuordnung", "Dokumentierte Rankingkennzahl, gemeinsames Jahr, Deutschlandumfang und Grenzprüfung", "Offline ladbarer Modellmarkt mit getrennten Fakten und Workshop-Annahmen", "Quellen-Dossier und ausdrückliche Darstellung des nicht simulierten Restmarkts"],
+      "acceptance": ["Genau 40 eindeutige Gruppen und geprüfte Grenze Rang 40/41", "Keine Doppelzählung oder Vermischung globaler, deutscher, gebuchter und verdienter Beiträge", "Belegte Sparten und Gewichtssummen, fehlende Werte gekennzeichnet", "Unbekannte Strategien und ICT-Abhängigkeiten nicht als reale Unternehmensdaten ausgegeben", "Laden, Import, frische Berechnung und reproduzierbare Nachweise"],
+      "gates": ["Gemeinsames Datenjahr, Rankingmaß und Gruppen-/Deutschlandkonsolidierung nachgewiesen", "Vollständige Rangbasis; keine unbelegte Top-40-Abnahme"],
+      "completion_evidence": []
+    },
+    {
+      "id": "AP7",
+      "title": "Vier Schock Demos mit erklärten Gegenmaßnahmen",
+      "status": "proposed",
+      "depends_on": ["AP6"],
+      "branch_proposal": "codex/ims-market-shock-demos",
+      "deliverables": ["Vier vollständige portable 100-Perioden-Schockfälle", "Fiktiver Anbieter 41, deklarierter LV-Nachfrageschock, DORA-2.0-Workshop und US-Anbieterausfall", "Deklarierte Markt-/ICT-Zeit- und Buchungsbrücke", "Schreibfreie Demo, bearbeitbare Übernahme, aktive Gegenmaßnahmen und Rollen-Erklärpfade"],
+      "acceptance": ["Alle vier Demos offline frisch ladbar und reproduzierbar", "Gemeinsame Anfangsperioden 1–5 und Akteur-/Perioden-Zufallsvertrag", "Anbieter aktiviert zum richtigen Zeitpunkt und Lebens-Altbestand erhalten", "Markt-/ICT-Verluste und gemeinsame Maßnahmenkosten genau einmal gebucht", "Transitive Ausfälle; unabhängiger Fallback wirkt, gemeinsam abhängiger Fallback fällt mit aus", "Handprüfbare Reaktionen und konsistente Markt-/Gruppensummen"],
+      "gates": ["Lebens-Nachfragevertrag mit erhaltenen Garantien erklärt und angenommen", "ICT-Zeitabbildung, Kostenzuordnung und Vermeidung doppelter Verluste erklärt und angenommen", "DORA 2.0 ausdrücklich hypothetisch; Firmen-/Providerdaten und Annahmen getrennt"],
+      "completion_evidence": []
+    },
+    {
+      "id": "AP8",
+      "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
+      "status": "proposed",
+      "depends_on": ["AP7"],
+      "branch_proposal": "codex/ims-market-visualizations",
+      "deliverables": ["Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten", "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang", "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung", "Marktinterpretation in IMS und Einzel-VU-Details in Excel", "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"],
+      "acceptance": ["Jeder Grafikpunkt stimmt mit API, Buchungen und Export überein", "Filter bleiben konsistent und ändern keinen Lauf", "Zeitabhängige Familien und Gruppen, korrekte Gewichte und Marktanteilsnenner", "Kunden-Wechselmengen ohne Doppelzählung und korrekte Ereigniszeiten", "Echte Gruppenauswertung ohne Excel interpretierbar", "Tastatur, zugängliche Tabellen, responsive Hell-/Dunkelansichten"],
+      "gates": ["Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"],
+      "completion_evidence": []
+    },
+    {
+      "id": "AP9",
+      "title": "Einsteigerhandbuch und gemeinsame Seminarabnahme",
+      "status": "proposed",
+      "depends_on": ["AP8"],
+      "branch_proposal": "codex/ims-role-seminar-acceptance",
+      "deliverables": ["Vollständiges installiertes Einsteiger-/Wiedereinsteigerhandbuch", "Begriffskarte, vier Rollenwege, vier Schockgeschichten und Gruppen-/Diagrammhilfe", "Gemeinsamer Seminarpfad mit Moderationsvorschlag und tatsächlichen Bildern", "Dokumentierte Benutzer-, Browser-, Installer- und Produktabnahme"],
+      "acceptance": ["Vier Rollen durchlaufen die vier Demos mit demselben Fallvertrag", "Einsteiger und Altprogrammierer können eine Veränderung bis Eingabe/Buchung erklären", "Bedien-/Lauf-/Speichermessungen getrennt von Schätzungen", "Offline-Anleitung aus dem tatsächlichen Installer erreichbar", "Installation, Update, Datenerhalt und installierte Browseroberfläche geprüft", "Release unten links stimmt mit Backend und Installer überein"],
+      "gates": ["Tatsächliche Benutzerabnahme und wissenschaftliche Grenzen dokumentiert; keine unbelegte fachliche Gleichwertigkeit"],
+      "completion_evidence": []
+    }
+  ]
+}
