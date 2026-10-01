@@ -86,6 +86,14 @@ class StrategyExecutionScenarioProfileDefinition:
 
 
 @dataclass(frozen=True, slots=True)
+class StrategyExecutionDeclaredProfileDefinition:
+    """Explicit workshop profile, validated identically without file I/O."""
+
+    profile_id: str
+    payload: Mapping[str, object]
+
+
+@dataclass(frozen=True, slots=True)
 class StrategyExecutionCandidateBuildIssue:
     stage: str
     path: str
@@ -456,7 +464,7 @@ def _canonical_source_documents(
 def _resolve_profile(
     reference: dict[str, object],
     *,
-    profiles: Mapping[str, StrategyExecutionScenarioProfileDefinition],
+    profiles: Mapping[str, StrategyExecutionScenarioProfileDefinition | StrategyExecutionDeclaredProfileDefinition],
     trusted_profile_root: Path,
     issues: list[StrategyExecutionCandidateBuildIssue],
 ) -> _ResolvedProfile | None:
@@ -480,6 +488,9 @@ def _resolve_profile(
             message="Registrierte Profil-ID stimmt nicht mit der Referenz ueberein",
         )
         return None
+
+    if isinstance(definition, StrategyExecutionDeclaredProfileDefinition):
+        return _validate_profile_mapping(deepcopy(dict(definition.payload)), reference, issues)
 
     root = trusted_profile_root.resolve()
     try:
@@ -514,6 +525,15 @@ def _resolve_profile(
             message=str(exc),
         )
         return None
+    return _validate_profile_mapping(raw_profile, reference, issues)
+
+
+def _validate_profile_mapping(
+    raw_profile: object,
+    reference: dict[str, object],
+    issues: list[StrategyExecutionCandidateBuildIssue],
+) -> _ResolvedProfile | None:
+    profile_id = str(reference["profile_id"])
     if not isinstance(raw_profile, dict):
         _issue(
             issues,
@@ -745,7 +765,7 @@ def _empty_report(
 def build_strategy_execution_candidate(
     value: object,
     *,
-    profiles: Mapping[str, StrategyExecutionScenarioProfileDefinition],
+    profiles: Mapping[str, StrategyExecutionScenarioProfileDefinition | StrategyExecutionDeclaredProfileDefinition],
     trusted_profile_root: str | Path,
 ) -> StrategyExecutionCandidateBuildReport:
     """Baut einen validierten Kandidaten ohne Speicherung oder Ausfuehrung."""

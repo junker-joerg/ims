@@ -106,8 +106,29 @@ M1-Zwischenstand: ICT-Quellen-/Zeitvertrag, deterministische Wirkungskette,
 deklarierter Bilanzoverlay, UI und Dossier implementiert. 22 neue Kern-/API-
 Prüfungen, 70 bestehende Regressionen, sechs Browserfälle und Build bestanden.
 Mapping/Bedienhilfe: `docs/migration/ims_ap3_ict_workshop.md` und
-`docs/handbook/ict_ap3.md`. Nächster Schritt M2: geführter, atomarer Aufbau
-frisch geprüfter 100-Perioden-Kontexte mit stabilem Prefix und kontrolliertem Start.
-M2–M5 und das fachliche Strategiemapping bleiben offen. Historische Quellen
-wurden für Perioden-/Schockgrenzen gelesen; ICT ist eine neue deklarierte
-Workshop-Schicht. Noch keine AP3-Produktabnahme, kein AP3-Merge freigegeben.
+`docs/handbook/ict_ap3.md`. M2 ist nun implementiert: 100 vollständige Kontexte,
+107 frische Kandidaten, atomare/idempotente SQLite-Speicherung, tatsächliche
+2er-/5er-Referenzen und kontrollierter PR151-100er mit ZIP. 15 neue Prüfungen,
+30 vorhandene Regressionen und vier Browserfälle bestanden; zusätzlich ein
+Negativfall für eine ungültige Profil-ID. Laufindex 0 ist ausdrücklich begrenzt.
+Mapping/Anleitung: `ims_ap3_guided_period_chain.md`, `hundred_ap3.md`.
+
+M3 ist implementierter Zwischenstand: kompletter gemeinsamer Quellenvertrag,
+beide Seiten frisch über die vier bestehenden Teilmodelle gerechnet, Carryover,
+2er-/5er-Prefixe, 100er-Bilanz und tatsächliche CSV/JSON/XLSX-Exporte mit gleichem
+Digest, Übergabe der geprüften Seite an die Modellkapitalansicht. 49 neue und
+bestehende Bilanz-/API-Prüfungen (70,98 s), vier Browserfälle und Build bestanden.
+Mapping/Anleitung: `ims_ap3_management_case.md`, `management_ap3.md`.
+Weitere Gesamtprüfungen und genaue Produktcommits stehen im AP3-Zwischenbericht.
+
+M4 ist vor dem Adapter fachlich blockiert: historische VU-Prämienziele sind
+keine Gesamtprämieneinnahmen; die sektorbezogene Population, Einheit und
+Abrechnung fehlen. Konkretes Quellenmapping und moderner Workshop-Vorschlag:
+`docs/plans/ims_ap3_strategy_gate.md`. Der Auftraggeber wurde nach genau dieser
+Modellgrundlage gefragt, noch keine Antwort. Abhängige Strategiewirkung und
+vollständige M5-Abnahme bleiben offen; nichts aus den 23 IDs wird gestrichen.
+Moderationsvorbereitung: `docs/handbook/seminar_ap3_draft.md`. Nächster Schritt
+nach fachlicher Antwort: belegten begrenzten Adapter, UI und 100er-Wirkungskette
+umsetzen; anschließend Seminarbündel und frisch gebauten Installer vollständig
+abnehmen. Im selben Branch und Draft-PR #290 fortsetzen, nicht neu anfangen.
+Noch keine AP3-Gesamtabnahme oder AP3-Merge-Freigabe.

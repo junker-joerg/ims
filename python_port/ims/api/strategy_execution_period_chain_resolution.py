@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import Mapping
 
 from ims.api.strategy_execution_candidate_store import (
     StrategyExecutionCandidateStoreError,
     StrategyExecutionCandidateStoreRecord,
     get_strategy_execution_candidate,
+    verify_strategy_execution_candidate_payload,
 )
 from ims.strategies.execution_candidate_contract import (
     STRATEGY_EXECUTION_CANDIDATE_VERSION,
@@ -161,6 +163,7 @@ def resolve_strategy_execution_period_chain_input(
     value: object,
     *,
     db_path: Path | str,
+    candidate_payloads: Mapping[str, dict[str, object]] | None = None,
 ) -> StrategyExecutionPeriodChainResolutionReport:
     """Loest einen gueltigen PR134-Eingang read-only und atomar auf."""
 
@@ -214,10 +217,15 @@ def resolve_strategy_execution_period_chain_input(
         expected_digest = str(reference_value["content_digest"])
         expected_period = int(reference_value["period"])
         try:
-            stored = get_strategy_execution_candidate(
-                candidate_id,
-                db_path=db_path,
-            )
+            if candidate_payloads is None:
+                stored = get_strategy_execution_candidate(candidate_id, db_path=db_path)
+                record = stored.record
+                payload_verified = stored.post_storage_digest_verified
+            else:
+                if candidate_id not in candidate_payloads:
+                    raise StrategyExecutionCandidateStoreError("candidate_missing", "Frisch gebauter Kandidat fehlt")
+                record = verify_strategy_execution_candidate_payload(candidate_payloads[candidate_id], stored_at="")
+                payload_verified = True
         except StrategyExecutionCandidateStoreError as exc:
             _issue(
                 issues,
@@ -229,7 +237,6 @@ def resolve_strategy_execution_period_chain_input(
             continue
 
         resolved_count += 1
-        record = stored.record
         reference_valid = _validate_resolved_reference(
             record,
             candidate_id=candidate_id,
@@ -238,7 +245,7 @@ def resolve_strategy_execution_period_chain_input(
             path=path,
             issues=issues,
         )
-        if reference_valid and stored.post_storage_digest_verified:
+        if reference_valid and payload_verified:
             digest_verified_count += 1
 
         context = _resolved_candidate_context(

@@ -13,6 +13,8 @@ from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
 from ims.api.ict_workshop import create_ict_app
+from ims.api.guided_period_chain_routes import create_guided_chain_app
+from ims.api.management_case import create_management_app
 
 from ims.accounting.insurer_balance import (
     build_insurer_balance,
@@ -3033,6 +3035,8 @@ def create_app(
             description="Lokale Backend-Shell fuer die IMS Workbench.",
         )
         app.mount("/api/ict", create_ict_app())
+        app.mount("/api/management-case", create_management_app())
+        app.mount("/api/strategies/guided-period-chain", create_guided_chain_app(metadata_source.get("path") if metadata_source.get("configured") else None))
 
         @app.get("/api/health")
         def health() -> dict[str, Any]:
@@ -3862,6 +3866,8 @@ def create_app(
 
     routes: list[Any] = [
         Mount("/api/ict", create_ict_app()),
+        Mount("/api/management-case", create_management_app()),
+        Mount("/api/strategies/guided-period-chain", create_guided_chain_app(metadata_source.get("path") if metadata_source.get("configured") else None)),
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),
         Route("/api/strategies/catalog", lambda request: JSONResponse(strategy_catalog_payload())),

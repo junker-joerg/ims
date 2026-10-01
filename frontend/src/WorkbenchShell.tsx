@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { Activity, ArrowRight, FileText, HelpCircle, Home, Moon, Play, Sun } from "lucide-react";
 
 type AreaName = "overview" | "scenario" | "simulation" | "results" | "help";
-type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "capital" | "ict" | "strategies" | "execution";
+type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "capital" | "ict" | "hundred" | "strategies" | "execution";
 type Route = { area: AreaName; model: ModelName };
 const areas = [
   { id: "overview", label: "Übersicht", icon: Home },
@@ -16,6 +16,8 @@ const models: { id: ModelName; label: string }[] = [
   { id: "health", label: "Kranken" }, { id: "four-sector-balance", label: "Gesamtbilanz" },
   { id: "capital", label: "Kapitalwirkung" }, { id: "strategies", label: "Strategien" },
   { id: "ict", label: "ICT-Wirkung" },
+  { id: "hundred", label: "100-Perioden-Lauf" },
+  { id: "management", label: "100er-Gesamtbilanz" },
   { id: "execution", label: "Ausführung" },
 ];
 const RouteContext = createContext<Route>({ area: "overview", model: "balance" });
@@ -39,7 +41,7 @@ export function Area({ name, children }: { name: AreaName; children: ReactNode }
 // explicit confirmations must retain their existing invalidation semantics.
 export function ModelWorkspace({ model, children }: { model: ModelName; children: ReactNode }) {
   const route = useContext(RouteContext);
-  const financial = model !== "strategies" && model !== "execution";
+  const financial = model !== "strategies" && model !== "execution" && model !== "hundred";
   const visible = (route.area === "simulation" && route.model === model) || (financial && route.area === "results");
   return <div className="model-workspace" data-model={model} hidden={!visible}>{children}</div>;
 }
