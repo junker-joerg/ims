@@ -1,7 +1,9 @@
 # IMS-Vorstandsstrategie: begründeter Ausbauvorschlag
 
-Version 1, 02.10.2026. **Vorschlag im Draft-PR; keine Umsetzung, kein Release,
-keine Planannahme vor Freigabe und Merge.** Maschinenvertrag:
+Version 1, 02.10.2026. **Vom Auftraggeber zum Merge freigegeben; angenommen mit
+Übernahme von PR #292 nach main.** Umsetzung anschließend ausschließlich AP4
+beauftragt; keine Umsetzung von AP5–AP14 und keine Release-Veröffentlichung.
+Maschinenvertrag:
 [ims_board_strategy_plan.json](ims_board_strategy_plan.json).
 
 ## Entscheidung und Ausgangsbasis
@@ -79,10 +81,11 @@ als Code oder Kalibrierung übernommen. Keine Anbieteransprache in diesem Auftra
 | AP8 | Verknüpfte Markt-/Familienansichten | E08-01: Fokus absolut und relativ zu Rivalen/Modellmarkt explizit nebeneinander |
 | AP9 | Gemeinsame AP4–AP8-Seminarabnahme | E09-01: eigenständiger Abschluss; neue Vorstandsgesamt-Abnahme erst AP14 |
 
-Ergänzungen stehen separat als `candidate_amendments.status=proposed`. Sie werden
-bei einem freigegebenen Auftrag aus dem angenommenen AP4–AP9-Manifest nicht
-automatisch in den Umfang aufgenommen. Nach ausdrücklicher Annahme sind sie
-mit eigener Herkunft und eigenen Belegen einzuarbeiten. Ist AP5/AP7/AP8 schon in
+Ergänzungen stehen separat als `candidate_amendments.status=accepted` und wurden
+am 02.10.2026 mit diesem Plan angenommen. Vor einer späteren AP5-/AP7-/AP8-
+Umsetzung sind sie mit eigener Herkunft und eigenen Belegen in den konkreten
+Paketumfang einzuarbeiten. Ein allein aus dem alten AP4–AP9-Manifest erzeugter
+Auftrag übernimmt sie noch nicht. Ist AP5/AP7/AP8 schon in
 Arbeit/fertig oder bleibt eine Ergänzung unangenommen, nimmt AP10 nur den für
 seinen Referenzfall fehlenden Umfang auf. Alte Abschlussbelege bleiben unverändert.
 
@@ -171,12 +174,12 @@ Abhängigkeit für Folgepakete; dafür muss der Paketstatus mit Belegen in main 
 Ausführbare Befehle und Freigabeformat stehen in
 [Generator-Anleitung](ims_work_order_generator.md). Die Standardaufrufe für AP1–AP3
 bleiben kompatibel. Folgepläne werden mit `--plan` gewählt und standardmäßig
-als Vorschau behandelt. Aktuell kann eine AP10-Vorschau erzeugt werden; ein
-freigegebener AP10-Auftrag muss an vorgeschlagener Planung/offenem AP7 scheitern.
+als Vorschau behandelt. Eine AP10-Vorschau ist möglich; ein freigegebener AP10-
+Auftrag scheitert weiterhin an offenem AP7 und fehlendem Umsetzungsauftrag.
 
-Nächster Schritt nach Review: Änderungen und fachliche Tore prüfen, Planannahme
-im Manifest mit echter Freigabe dokumentieren und diesen PR nach ausdrücklicher
-Merge-Freigabe übernehmen. Danach ist **AP4** das nächste angenommene Produktpaket;
-es braucht einen eigenen Umsetzungsauftrag. Die vorgeschlagenen Ergänzungen und
-AP10-Priorität erst danach ausdrücklich übernehmen. Kein Paketstart durch diesen
-Planungsmerge.
+Der Auftraggeber hat am 02.10.2026 den Planungsmerge und anschließend AP4
+beauftragt. AP4 benötigt die Benchmark-PDF nicht: Oberfläche, Rollenwege und
+Anleitung verwenden vorhandene AP3-Fälle. Nach Übernahme von #292 AP4 im eigenen
+Paket-PR mit API/UI/Tests/Anleitung/Installer umsetzen. Fachliche Tore späterer
+Pakete bleiben offen. Der Planungsmerge allein autorisiert keine Folgeumsetzung;
+die gesonderte AP4-Freigabe ist im Handoff und lokalen Auftragsbeleg dokumentiert.

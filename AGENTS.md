@@ -52,17 +52,21 @@ Der Planungsmerge startet kein Umsetzungspaket. Die Entscheidungstore für
 Mehr-VU-/Risiko-/Gruppenvertrag, Top-40-Datenbasis, Lebens-Nachfrage und
 Markt-/ICT-Kopplung bleiben verbindlich; die AP3-Zustimmung ersetzt sie nicht.
 
-Die Wettbewerbs-/Vorstandsplanung vom 02.10.2026 in
+Die am 02.10.2026 zum Merge freigegebene Wettbewerbs-/Vorstandsplanung in
 `docs/plans/ims_board_strategy_2026_10.md` und
-`docs/plans/ims_board_strategy_plan.json` ist im vorliegenden Planungs-PR
-**ein Vorschlag**. Sie startet kein Produktpaket und ist vor ausdrücklicher
-Freigabe und Übernahme nach main nicht angenommen. AP4–AP9 bleiben die angenommene
-Lieferbasis; vorgeschlagene Ergänzungen stehen separat und erweitern keinen
-Umsetzungsauftrag automatisch. AP10–AP14, ihre veränderten Abhängigkeiten und
-der minimale Drei-VU-DORA-Fall benötigen eigene Plan-/Vertragstore. Historische
-Abnahmen niemals rückwirkend erweitern. Bei Fortsetzung dieser Planung Quellen-
-matrix, Referenzfall und den vorhandenen Draft-PR verwenden; recherchierte
-Fähigkeiten, tatsächliche IMS-Läufe und spezifizierte Modellkanäle unterscheiden.
+`docs/plans/ims_board_strategy_plan.json` gilt mit Übernahme von PR #292 nach
+main als angenommen. AP4–AP9 bleiben die Lieferbasis; angenommene Ergänzungen
+stehen mit Herkunft/Abnahmeauswirkung separat. AP10–AP14 und der minimale
+Drei-VU-DORA-Fall benötigen weiterhin eigene Umsetzungs- und Vertragstore.
+Historische Abnahmen niemals rückwirkend erweitern. Quellenmatrix, Referenzfall
+und aktuelle Manifeste lesen; recherchierte Fähigkeiten, tatsächliche IMS-Läufe
+und spezifizierte Modellkanäle unterscheiden.
+
+Der Auftrag vom 02.10.2026 autorisiert nach dem Planungsmerge ausschließlich
+AP4. Die nicht zugängliche DORA-Benchmark-PDF ist eine AP13-Quellenlücke und
+blockiert AP4 nicht: AP4 erklärt vorhandene AP3-Fälle, ohne neue DORA-Zahlen oder
+Modellkanäle einzuführen. AP4 als zusammenhängendes Paket im eigenen Draft-PR
+umsetzen; diese Freigabe nicht auf AP5–AP14, Merge oder Veröffentlichung erweitern.
 
 Ein Arbeitspaket umfasst Implementierung, API/UI-Anschluss, Tests und Anleitung
 in einem Branch und Draft-PR. Mehrere Stunden oder Sitzungen sind zulässig.

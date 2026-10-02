@@ -160,7 +160,9 @@ class FollowupPlanTests(unittest.TestCase):
     def test_local_accepted_board_without_main_acceptance_is_rejected(self):
         self.plan["status"]="accepted"; self.plan["approval"]={"user_request":"Test plan acceptance"}
         self.plan["packages"][0].update(plan_status="accepted",status="planned")
-        with patch.object(followup,"read_at_ref",return_value=followup.read_json(BOARD)):
+        proposed_main=copy.deepcopy(self.plan)
+        proposed_main.update(status="proposed",approval=None)
+        with patch.object(followup,"read_at_ref",return_value=proposed_main):
             with self.assertRaisesRegex(followup.FollowupError,"Planannahme fehlt"):
                 followup.authorize(self.portfolio(),self.portfolio()["by_id"]["AP10"],ROOT,self.sha,None)
 

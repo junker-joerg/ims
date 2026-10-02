@@ -1,6 +1,13 @@
 # IMS-Lieferübergabe
 
-## Planungsauftrag vom 02.10.2026: Vorstandssimulation (Vorschlag)
+## Planungsauftrag vom 02.10.2026: zum Merge freigegeben
+
+Neuer Auftrag: „Merge den Plan auf Main / Falls ohne die Dora pdf möglich :
+starte dann ap4“. PR #292 wird nach grünen aktuellen Checks übernommen. Planung
+einschließlich Ergänzungen angenommen mit ihrem Merge; Umsetzung ausschließlich
+AP4 anschließend beauftragt. Die DORA-PDF ist G-BENCH für AP13, keine AP4-
+Voraussetzung. Produkt-Merge und Veröffentlichung bleiben separat. AP10–AP14
+planned/accepted bedeutet Planannahme; ihre Abschlussbelege bleiben leer.
 
 Produkt-main `81146aa8657e2d507cc51c921207e80895f78340` (#291) frisch geprüft;
 primärer Checkout sauber, keine offenen PRs beim Start. Vorhandener verwalteter
@@ -35,10 +42,11 @@ AP10 authorized erwartungsgemäß abgewiesen. CI-Plancheck für `ff784ff` bestan
 https://github.com/junker-joerg/ims/actions/runs/36968923867.
 Browser-/Installer-/Release-Gate-Checks zu diesem Zeitpunkt noch laufend;
 keine grüne Gesamtabnahme behauptet. Abschlussdokumentation und gezielte
-Prüfverbesserung folgen im selben PR; aktuellen Head und seine CI beim Review
+Prüfverbesserung sind im selben PR ergänzt; aktuellen Head und seine CI beim Review
 erneut prüfen. Keine zusätzliche externe Windows-/Benutzerabnahme in diesem Auftrag.
-Bei Fortsetzung denselben Draft-PR verwenden. Nach Review echte Planfreigabe dokumentieren; Merge erst nach
-gesondertem Auftrag, danach eigener AP4-Umsetzungsauftrag.
+Mergeauftrag liegt nun vor. Danach AP4-Branch `codex/ims-explainable-roles` und
+einen eigenen Draft-PR anlegen beziehungsweise fortsetzen, echten paketbezogenen
+Auftragsbeleg aus der vorstehenden Nachricht erzeugen und Plan-/main-Gates prüfen.
 
 Stand 01.10.2026. AP1 ist abgenommen und in main übernommen:
 PR #288, Merge 965156caf02734cc47e93615c1f8ca91692d51fe um 07:20:42 Berlin.
