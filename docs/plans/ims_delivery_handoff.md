@@ -1,5 +1,23 @@
 # IMS-Lieferübergabe
 
+## AP5 abgenommen; Merge freigegeben, anschließend AP6 beauftragt
+
+02.10.2026: Auf die konkrete Frage nach AP5-Anwenderabnahme und Mergefreigabe
+bestätigt der Auftraggeber „Ja“. Beleg `../reports/ims_ap5_user_acceptance.md`.
+Alle vier Checks am endgültigen Produkthead 417a0ca erneut erfolgreich;
+CI-Tree identisch, aktueller CI-Installer heruntergeladen und Hash/Größe
+bestätigt. 14 Lifecycle- und 50 installierte Browserfälle bestanden;
+beide Handfälle frisch bestätigt. Die frühere allgemeine Abnahme war offen;
+die folgenden Zwischenstände bleiben historische Belege.
+
+Abnahmekommitt im selben PR #294 nach aktueller grüner CI übernehmen, main
+aktualisieren und tatsächlichen Merge/Tree nachweisen. Erst danach den echten
+AP6-Fortsetzungsauftrag gegen origin/main erzeugen und AP6 im eigenen
+Branch/Draft-PR bearbeiten: Datenjahr, deutsche direkte Bruttobeiträge,
+Gruppen-/Tochterkonsolidierung, vollständige Rangbasis und Grenze 40/41 zuerst
+prüfen. Keine unbelegte Top-40-Auswahl; keine Freigabe für AP6-Merge/Public-Release
+oder AP7–AP14. Genaue Anwender-Testdauer/Updatefolge weiterhin unbekannt.
+
 ## AP5 technisch zur Anwenderabnahme bereit
 
 02.10.2026: Vertragsannahme dokumentiert, M2–M4 umgesetzt. Abschlussbericht

@@ -2,9 +2,11 @@
 
 Stand 02.10.2026. Umsetzung im [Draft-PR #294](https://github.com/junker-joerg/ims/pull/294),
 Branch `codex/ims-market-strategy-groups`, Anwenderkennung **2.0.0-alpha.5**,
-Windows-Dateiversion **2.0.0.5**. Technisch zur Anwenderabnahme bereit. Alle vier erforderlichen CI-Checks
-für Produkthead `04617fb` bestehen; [Prüfprotokoll](ims_ap5_verification.json).
-AP5 ist nicht nach main übernommen. Die Vertragsannahme ist keine Produktabnahme.
+Windows-Dateiversion **2.0.0.5**. Technisch geprüft und vom Auftraggeber
+abgenommen; Merge ausdrücklich freigegeben. Alle vier erforderlichen CI-Checks
+für endgültigen Produkthead `417a0ca` bestehen; [Prüfprotokoll](ims_ap5_verification.json).
+AP5 ist noch nicht nach main übernommen. Die nachfolgende Produktabnahme ist im
+[Abnahmebeleg](ims_ap5_user_acceptance.md) getrennt von der Vertragsannahme dokumentiert.
 
 ## Auftrag und fachliche Annahme
 
@@ -188,7 +190,9 @@ nicht überschrieben, um eine Abnahme zu erzwingen.
 HTML-Fassung und echte neue Bildschirmbilder führen durch den Fünf-Minuten-
 Handfall, Gruppenvergleich, 40er-Markt, Maßnahmen, Dateien und Grenzen.
 [Arbeitsstand](ims_ap5_fortschritt.md) bewahrt frühe Vorversuche getrennt.
-Der technische Abschluss ersetzt weder eine unabhängige Anwenderabnahme
-noch die spätere ausdrückliche Mergeentscheidung. AP6–AP14 sind nicht begonnen.
+Der Auftraggeber bestätigt anschließend am 02.10.2026 die allgemeine
+AP5-Anwenderabnahme und erteilt die ausdrückliche Mergefreigabe. Konkrete
+Rechner-/Testdauer-/Updateangaben fehlen weiterhin. AP6 wird nach dem
+tatsächlichen AP5-Merge gemäß Fortsetzungsauftrag begonnen; AP7–AP14 bleiben offen.
 Evernote bleibt bis zu verfügbarem Plugin/angemeldeter Websitzung ausstehend;
 der In-app Browser zeigte beim letzten Zugriff die Loginseite.

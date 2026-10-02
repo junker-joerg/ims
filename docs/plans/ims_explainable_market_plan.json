@@ -203,13 +203,24 @@
         "docs/reports/ims_ap5_abschlussbericht.md: Umsetzung, Handfälle, API/UI/Excel, Anleitung, Herkunft und Grenzen",
         "docs/reports/ims_ap5_verification.json: aktuelle Produkt-/Ressourcen-/Browser-/Installernachweise, alle vier CI-Checks für 04617fb erfolgreich",
         "docs/handbook/market_ap5.md und .html: Einsteigeranleitung und echte Bildschirmbilder",
-        "Technisch zur Anwenderabnahme bereit; Produktabnahme/Merge noch ausstehend, keine AP6-Freigabe"
+        "docs/reports/ims_ap5_user_acceptance.md: ausdrückliche allgemeine Produktabnahme und Mergefreigabe am 02.10.2026; AP6 nach tatsächlichem Merge beauftragt"
       ],
       "implementation_authorized": true,
       "technically_complete": true,
       "merged_to_main": false,
-      "user_product_acceptance": "pending",
-      "merge_authorized": false,
+      "user_product_acceptance": "accepted",
+      "merge_authorized": true,
+      "user_acceptance": {
+        "date": "2026-10-02",
+        "user_request": "Gibst du AP5 zur Anwenderabnahme und zum Merge frei? Ja",
+        "evidence": "docs/reports/ims_ap5_user_acceptance.md",
+        "product_head": "417a0ca4f665c28a94f551aa55a3b05c08d4f125"
+      },
+      "merge_authorization": {
+        "date": "2026-10-02",
+        "user_request": "Gibst du AP5 zur Anwenderabnahme und zum Merge frei? Ja",
+        "scope": "AP5"
+      },
       "execution_authorization": {
         "schema_version": "ims.execution-authorization.v1",
         "package": "AP5",
