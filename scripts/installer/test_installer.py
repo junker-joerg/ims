@@ -20,18 +20,25 @@ import zipfile
 
 from openpyxl import load_workbook
 
-from ims.release import VERSION
+from ims.release import VERSION, windows_file_version
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--installer', type=Path, required=True)
     parser.add_argument('--previous-installer', type=Path, required=True,
-                        help='Synthetic previous version of same bundle, lifecycle test only')
+                        help='Preceding installer; synthetic same-bundle predecessor by default')
+    parser.add_argument('--previous-version',
+                        help='Actual preceding application version; omit for synthetic same-bundle tests')
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--browser-checks', action='store_true',
                         help='Run AP2 real-browser acceptance against the installed executable')
     args = parser.parse_args()
+    if args.previous_version:
+        preceding = tuple(map(int, windows_file_version(args.previous_version).split('.')))
+        current = tuple(map(int, windows_file_version(VERSION).split('.')))
+        if preceding >= current:
+            parser.error('Actual preceding application version must be lower than the current release')
     installer, previous = args.installer.resolve(), args.previous_installer.resolve()
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
@@ -94,7 +101,7 @@ def main() -> None:
         with request(path, payload) as response:
             return json.load(response)
 
-    def start(label: str):
+    def start(label: str, expected_version: str = VERSION):
         nonlocal process
         began = time.perf_counter()
         process = subprocess.Popen([str(exe), '--headless', '--no-browser', '--port', str(port)],
@@ -113,8 +120,8 @@ def main() -> None:
             raise RuntimeError('Frozen health-check timeout')
         with request('/') as response:
             assert b'<html' in response.read().lower()
-        assert health['version'] == VERSION
-        assert get_json('/api/version')['version'] == VERSION
+        assert health['version'] == expected_version
+        assert get_json('/api/version')['version'] == expected_version
         assert get_json('/api/model/health-sector-contract')['schema_version']
         evidence.append({'test': label, 'result': 'passed', 'seconds': time.perf_counter() - began})
 
@@ -125,8 +132,8 @@ def main() -> None:
         assert not (data / 'instance.json').exists()
 
     try:
-        install(previous, 'install_synthetic_previous_version')
-        start('frozen_start_path_with_spaces_umlauts')
+        install(previous, 'install_actual_previous_release' if args.previous_version else 'install_synthetic_previous_version')
+        start('frozen_start_path_with_spaces_umlauts', args.previous_version or VERSION)
         state = json.loads((data / 'instance.json').read_text())
         elapsed = run([str(exe), '--headless', '--no-browser'])
         assert json.loads((data / 'instance.json').read_text())['pid'] == state['pid']
@@ -225,6 +232,9 @@ def main() -> None:
                   'environment': 'Windows with developer tools; executable PATH restricted to System32',
                   'clean_windows_acceptance': 'pending', 'work': str(work),
                   'installer_sha256': hashlib.sha256(installer.read_bytes()).hexdigest(),
+                  'previous_installer_sha256': hashlib.sha256(previous.read_bytes()).hexdigest(),
+                  'previous_application_version': args.previous_version or VERSION,
+                  'previous_kind': 'actual_release' if args.previous_version else 'synthetic_same_bundle',
                   'seconds': time.perf_counter() - total, 'tests': evidence}
         (out / 'installer-test-evidence.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
     print(json.dumps(report))

@@ -27,7 +27,7 @@ class FollowupPlanTests(unittest.TestCase):
         # explicit test fixtures, never real human authorization records.
         self.market=followup.read_json(MARKET)
         for p in self.market["packages"]:
-            p.update(status="planned",completion_evidence=[])
+            p.update(status="planned",completion_evidence=[],implementation_authorized=False)
             for field in ("technically_complete","merged_to_main"):
                 if field in p: p[field]=False
         self.plan.update(status="proposed",approval=None)
@@ -174,7 +174,7 @@ class FollowupPlanTests(unittest.TestCase):
     def test_done_without_completion_or_fake_merge_is_rejected(self):
         p=self.portfolio()
         market=followup.read_json(MARKET)
-        market["packages"][0]["status"]="done"
+        market["packages"][0].update(status="done",technically_complete=True)
         with self.assertRaisesRegex(followup.FollowupError,"Abschlussbelege"):
             followup.load_portfolio(market,MARKET,ROOT,sprint.validate)
         self.plan["packages"][0].update(merged_to_main=True,merge_evidence=["fake"])

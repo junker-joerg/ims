@@ -26,8 +26,8 @@ def main() -> None:
             relative.startswith("tests/references/legacy_agrsich/")
             and relative.lower().endswith((".dat", ".json"))
         ) or (relative.startswith(("docs/handbook/", "docs/migration/")) and relative.endswith(".md")) or (
-            relative.startswith("docs/handbook/images/ap3_") and relative.endswith(".png")
-        ) or relative == "docs/handbook/seminar_ap3.html" or (
+            relative.startswith(("docs/handbook/images/ap3_", "docs/handbook/images/ap4_")) and relative.endswith(".png")
+        ) or relative in ("docs/handbook/seminar_ap3.html", "docs/handbook/management_ap4.html") or (
             relative.startswith("seminar_cases/") and relative.endswith(".json")
         )
         if approved:

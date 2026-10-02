@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { Activity, ArrowRight, FileText, HelpCircle, Home, Moon, Play, Sun } from "lucide-react";
 import ReleaseBadge from "./ReleaseBadge";
+import ManagementOverview from "./ManagementOverview";
+import { ManagementSessionProvider, RoleOrientation, RolePicker } from "./ManagementSession";
 
 type AreaName = "overview" | "scenario" | "simulation" | "results" | "help";
 type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "seminar" | "capital" | "ict" | "hundred" | "strategies" | "execution";
@@ -61,6 +63,10 @@ function initialTheme(): "light" | "dark" {
 }
 
 export default function WorkbenchShell({ children }: { children: ReactNode }) {
+  return <ManagementSessionProvider><WorkbenchLayout>{children}</WorkbenchLayout></ManagementSessionProvider>;
+}
+
+function WorkbenchLayout({ children }: { children: ReactNode }) {
   const [route, setRoute] = useState<Route>(() => readRoute());
   const [theme, setTheme] = useState(initialTheme);
   const title = useRef<HTMLHeadingElement>(null);
@@ -95,7 +101,7 @@ export default function WorkbenchShell({ children }: { children: ReactNode }) {
     }}>Zum Inhalt</a>
     <div className="shell" data-view={route.area}>
       <aside className="sidebar">
-        <div className="brand"><div className="brand-mark">IMS</div><div><strong>Workbench</strong><span>Lokal auf Ihrem Rechner</span></div></div>
+        <div className="brand"><div className="brand-mark">IMS</div><div><strong>Managementlabor</strong><span>Lokal auf Ihrem Rechner</span></div></div>
         <div className="sidebar-navigation">
           <nav className="area-navigation" aria-label="Hauptnavigation">{areas.map(({ id, label, icon: Icon }) =>
             <a key={id} href={`#${id}`} className={route.area === id ? "active" : ""} aria-current={route.area === id ? "page" : undefined}>
@@ -108,19 +114,11 @@ export default function WorkbenchShell({ children }: { children: ReactNode }) {
       <main className="content" id="workbench-content">
         <header className="topbar"><div><p className="eyebrow">IMS · Versicherungsmodelle</p>
           <h1 ref={title} tabIndex={-1}>{areas.find((area) => area.id === route.area)?.label}</h1></div>
-          <button className="theme-toggle secondary-action" type="button" aria-label="Dunkelmodus" aria-pressed={theme === "dark"}
+          <div className="topbar-actions"><RolePicker /><button className="theme-toggle secondary-action" type="button" aria-label="Dunkelmodus" aria-pressed={theme === "dark"}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}<span>{theme === "dark" ? "Hell" : "Dunkel"}</span>
-          </button></header>
-        <Area name="overview"><section className="welcome-panel">
-          <p className="eyebrow">Vom Fall zur Entscheidung</p><h2>Versicherungsmodelle verstehen.<br />Wirkungen nachvollziehen.</h2>
-          <p>Vergleichen Sie Annahmen, berechnen Sie vorhandene Modellfälle und prüfen Sie die Ergebnisse mit ihren Herkunftsnachweisen.</p>
-          <a className="primary-action" href="#balance">Modellfall öffnen <ArrowRight size={18} aria-hidden="true" /></a>
-        </section><div className="start-grid">
-          <a href="#scenario"><FileText size={22} aria-hidden="true" /><strong>Szenario vorbereiten</strong><span>Lokale Szenario- und Laufmetadaten bearbeiten.</span></a>
-          <a href="#results"><Activity size={22} aria-hidden="true" /><strong>Ergebnisse ansehen</strong><span>Berechnete und gespeicherte Fälle prüfen und exportieren.</span></a>
-          <a href="#help"><HelpCircle size={22} aria-hidden="true" /><strong>Orientierung finden</strong><span>Bedienung, Freigaben und Modellgrenzen verstehen.</span></a>
-        </div></Area>
+          </button></div></header><RoleOrientation />
+        <Area name="overview"><ManagementOverview /></Area>
         <Area name="simulation"><p className="area-intro">Wählen Sie einen vorhandenen Modellfall. Für Gesamtbilanz und Kapitalwirkung werden zuvor geprüfte Spartenquellen benötigt.</p>
           <nav className="model-navigation" aria-label="Modellfälle">{models.map(({ id, label }) =>
             <a key={id} href={`#${id}`} className={route.model === id ? "active" : ""} aria-current={route.model === id ? "page" : undefined}>{label}</a>)}</nav>
@@ -135,6 +133,8 @@ export default function WorkbenchShell({ children }: { children: ReactNode }) {
             <li>Berechnen, Unterschiede in Tabelle und Diagramm prüfen. Ungültige Eingaben lassen sich im selben Formular korrigieren.</li>
             <li><a href="#results">Ergebnisse</a> exportieren. Speichern erfolgt erst nach ausdrücklicher Freigabe; geänderte Eingaben entwerten abhängige Nachweise.</li></ol>
           <p>Alle Berechnungen und Daten bleiben lokal. Hell-/Dunkelmodus ist oben umschaltbar. Tabulator bewegt den Fokus; breite Tabellen sind innerhalb ihrer Fläche scrollbar.</p>
+          <p><a href="/api/seminar/handbook/management_ap4.html" target="_blank" rel="noreferrer">Einsteigeranleitung AP4 mit 15-Minuten-Übung</a>: Demofall direkt von der Übersicht laden, Kennzahlen vergleichen und eine Buchung erklären. Die Übungszeit ist ein Ziel; ihre tatsächliche Dauer wird bei der Benutzerabnahme erfasst.</p>
+          <dl className="beginner-glossary"><div><dt>VU</dt><dd>Anbieter / Versicherungsunternehmen; im Seminar wird eine VU bilanziert.</dd></div><div><dt>VN</dt><dd>Kunden / Versicherungsnehmer; benannte Gruppen tragen Expositionsgewichte.</dd></div><div><dt>BAV</dt><dd>Historischer Markt- und Koordinationskontext; keine heutige Aufsichtsberechnung.</dd></div><div><dt>Verhaltensregel</dt><dd>Ausgeführte Strategieregel mit Parametern und Zeitfenster.</dd></div><div><dt>Periode</dt><dd>Modellperiode; ihre zeitliche Einheit gehört zum jeweiligen Vertrag.</dd></div></dl>
           <p><a href="#seminar">Managementseminar öffnen</a>: moderne Strategiekopplung, benannte Gruppen, 100er-Bilanz und portable Fallbündel. Die <a href="/api/seminar/handbook/seminar_ap3.html" target="_blank" rel="noreferrer">aktuelle Seminaranleitung</a> mit Arbeitsblatt und realen Ergebnissen ist auch offline verfügbar.</p>
           <p>Die Seminar- und Bilanzmodelle sind keine gesetzliche Bilanz und kein regulatorischer SCR-/MCR-Nachweis. Die moderne Kopplung ist ausdrücklich erklärt; historische Spartenidentität und vollständiger Versicherungsmarkt bleiben offen.</p>
         </section></Area>

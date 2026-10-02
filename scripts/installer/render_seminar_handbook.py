@@ -1,4 +1,5 @@
-"""Render the AP3 guide as offline HTML, using only its Markdown constructs."""
+"""Render the AP3/AP4 guides as offline HTML, using their Markdown constructs."""
+import argparse
 from html import escape
 from pathlib import Path
 import re
@@ -57,14 +58,20 @@ def render(source: str) -> str:
 
 
 def main() -> None:
-    source = (ROOT / "docs/handbook/seminar_ap3.md").read_text(encoding="utf-8")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--guide", choices=("ap3", "ap4"), default="ap3")
+    args = parser.parse_args()
+    filename = "management_ap4" if args.guide == "ap4" else "seminar_ap3"
+    source = (ROOT / f"docs/handbook/{filename}.md").read_text(encoding="utf-8")
     source = source.replace("../reports/ims_ap3_abschlussbericht.md", "https://github.com/junker-joerg/ims/blob/codex/ims-management-integration/docs/reports/ims_ap3_abschlussbericht.md")
     html = """<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>IMS – Managementseminar AP3</title>
 <style>body{font:18px/1.65 system-ui,sans-serif;color:#172c3c;background:#fff;max-width:1000px;margin:2rem auto;padding:0 1.25rem}h1,h2{line-height:1.25}h2{margin-top:2.5rem}a{color:#07558b}code{overflow-wrap:anywhere;font-size:.9em}img{max-width:100%;height:auto;border:1px solid #b4c1ca}li{margin:.7rem 0}.table-scroll{overflow-x:auto}table{border-collapse:collapse;font-size:.9em;min-width:650px}th,td{border:1px solid #b4c1ca;padding:.7rem;text-align:left;vertical-align:top}th{background:#eaf1f5}:focus-visible{outline:3px solid #07558b;outline-offset:3px}@media print{body{font-size:11pt;margin:0;padding:0}table{min-width:0}h2{break-after:avoid}img{max-height:230mm;object-fit:contain}}</style></head><body><main>
 """ + render(source) + "\n</main></body></html>\n"
-    (ROOT / "docs/handbook/seminar_ap3.html").write_text(html, encoding="utf-8")
+    if args.guide == "ap4":
+        html = html.replace("IMS – Managementseminar AP3", "IMS – Managementlabor AP4")
+    (ROOT / f"docs/handbook/{filename}.html").write_text(html, encoding="utf-8")
 
 
 if __name__ == "__main__":

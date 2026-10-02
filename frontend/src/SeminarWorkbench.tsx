@@ -1,12 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useManagementSession } from "./ManagementSession";
+import type { Assignment, SeminarInput as Input, SeminarResult as Result } from "./seminarPresentation";
 import type { CheckedFourSector } from "./fourSectorSources";
 import type { SeminarCapitalDefaults } from "./CapitalWorkbench";
 
-type Assignment = { actor_type: string; target_id: string; sector_id: string; strategy_id: string; period_from: number; period_through: number; parameters: Record<string, string | number> };
-type Input = { period_count: number; case_id: string; policyholder_groups: { group_id: string; sector_id: string; exposure: string; initial_insurer_id: number }[]; strategies: Record<"baseline" | "variant", Assignment[]> };
-type Row = { period: number; closing_assets: string; closing_liabilities: string; closing_equity: string; period_profit: string };
-type Trace = { period: number; sector_id: string; quoted_price?: string; covered_exposure?: string; premium_income?: string; advertising_expense?: string; group_decisions?: { group_id: string; chosen_insurer_id: number | null; booked_premium: string }[]; generated_period_source?: Record<string, string | number> };
-type Result = { valid: boolean; content_digest: string; insurer_id: number; scenario_id: string; period_count: number; generated_sources: Record<"baseline" | "variant", CheckedFourSector["input"]>; sides: Record<"baseline" | "variant", { content_digest: string; total_rows: Row[]; sectors: { sector_id: string; rows: Row[] }[] }>; decision_traces: Record<"baseline" | "variant", Trace[]> };
 export type SeminarCompanions = { ict: unknown; guided: unknown };
 const BASE = "/api/seminar";
 const sectors: Record<string, string> = { motor: "Kfz", property_liability: "Sach-Haftpflicht", life: "Leben", health: "Kranken", total: "Gesamt" };
@@ -32,6 +29,22 @@ export default function SeminarWorkbench({ onReady, onSources }: { onReady: (sou
   const [target, setTarget] = useState(""), [start, setStart] = useState(6), [end, setEnd] = useState(100), [edits, setEdits] = useState<Record<string, string | number>>({}), [pending, setPending] = useState(false);
   const [demo, setDemo] = useState(false), [busy, setBusy] = useState(false), [error, setError] = useState<string | null>(null), [bundleDigest, setBundleDigest] = useState<string | null>(null);
   const revision = useRef(0);
+  const hadResult = useRef(false), handledDemo = useRef(0);
+  const { setSnapshot, demoRequest } = useManagementSession();
+  useEffect(() => {
+    if (result) hadResult.current = true;
+    setSnapshot({ input, result, title, demo, busy, error, hadResult: hadResult.current });
+  }, [input, result, title, demo, busy, error, setSnapshot]);
+  useEffect(() => {
+    if (!demoRequest || handledDemo.current === demoRequest.serial) return;
+    handledDemo.current = demoRequest.serial;
+    void importBundle(async () => {
+      const response = await fetch(`${BASE}/bundles/${demoRequest.caseId}.json`);
+      if (!response.ok) throw new Error("Kuratierter Seminarfall nicht verfügbar.");
+      return response.json();
+    });
+    // One request starts one checked import. Role/navigation changes do not reload it.
+  }, [demoRequest]);
   function invalidate() { revision.current++; setResult(null); setConfirmed(false); setError(null); setBundleDigest(null); onReady(null, null); }
   function changed(source: Input) { invalidate(); setInput(source); setExpert(JSON.stringify(source, null, 2)); setExpertDirty(false); }
   function choose(source: Input, id: string) {
