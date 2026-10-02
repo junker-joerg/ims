@@ -1260,8 +1260,16 @@
     "dependent_packages_require_main_evidence": true,
     "foreign_product_tested": false
   },
-  "missing_sources": [
-    "G-BENCH"
+  "historical_missing_sources_at_acceptance": ["G-BENCH"],
+  "missing_sources": [],
+  "source_availability_updates": [
+    {
+      "id": "G-BENCH",
+      "date": "2026-10-02",
+      "status": "source_verified",
+      "evidence_file": "docs/research/dora_benchmark_2026_06.json",
+      "note": "Provided PDF read and relevant charts checked. Historical package scope and acceptance remain unchanged; no runtime calibration or AP13 execution."
+    }
   ],
   "completion_evidence": []
 }

@@ -29,6 +29,11 @@ Für die Folgearbeit gilt die am 01.10.2026 vom Auftraggeber geprüfte und zum
 Merge freigegebene Planung in `docs/plans/ims_explainable_market_2026_10.md`
 und `docs/plans/ims_explainable_market_plan.json`. Mit Übernahme von PR #291
 nach main ist die Lieferreihenfolge AP4 → AP5 → AP6 → AP7 → AP8 → AP9 angenommen.
+AP4 ist nach Anwenderabnahme am 02.10.2026 über PR #293 nach main übernommen
+(`9b0d45a22be4314eda8e9ab1db61c506a44160f7`). AP5 ist im Branch
+`codex/ims-market-strategy-groups` beauftragt und begonnen. Paketplan und
+Fachvertragsvorschlag: `docs/plans/ims_ap5_implementation.md` und
+`docs/plans/ims_ap5_market_contract.md`; Annahme des Fachvertrags noch offen.
 AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
 und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
 jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,
@@ -72,7 +77,8 @@ Ergänzungen E05-01/E05-02 aus dem Boardplan sind mit eigener Herkunft einzubezi
 Keine Freigabe für AP5-Merge, Veröffentlichung oder Umsetzung von AP6–AP14.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
-Seiten und Bezugsgruppen sind vor einer Verwendung zu prüfen. Der ehemalige
+Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
+geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige
 Zugangsblocker G-BENCH entfällt mit dem Eingang; daraus folgt keine Kalibrierung
 und keine Freigabe weiterer Modellkanäle. AP4 erklärt weiterhin vorhandene AP3-Fälle.
 

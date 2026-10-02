@@ -1,5 +1,49 @@
 # IMS-Lieferübergabe
 
+## AP4 übernommen; AP5 im eigenen Paket begonnen
+
+02.10.2026, 10:49:21 Uhr Europe/Berlin: PR #293 gemäß Anwenderabnahme/Mergeauftrag
+übernommen. Geprüfter Head `c11a01dcd13c43119b7e480b3bdeed1a21f14448`, alle vier
+erforderlichen Checks erfolgreich. Merge/main
+`9b0d45a22be4314eda8e9ab1db61c506a44160f7`, Tree
+`ce44dc41f73e33d8d05240a85d6c7ef1663bf8d3` identisch mit geprüftem Head.
+Primärer Checkout sauber per Fast-forward aktualisiert. AP4 done/merged,
+Release `2.0.0-alpha.4`; kein öffentliches Release erstellt.
+
+Der konkrete anschließende AP5-Auftrag wurde vor Paketmanifeständerungen mit
+authorized-Generator gegen dieses main bestätigt. Archiv:
+`ims_ap5_work_order.md`; angenommene Ergänzungen E05-01/E05-02 mit eigener
+Herkunft in `ims_ap5_implementation.md`. Geeigneten verwalteten Worktree mit
+eigener editable Umgebung weiterverwendet, Branch `codex/ims-market-strategy-groups`.
+
+Fachvertragsvorschlag `ims_ap5_market_contract.md`: neue gemeinsame Periodenphasen,
+prospektiv mitwechselnde Kohortenrisiken, Altreserve beim alten Träger,
+ganze Kohorten bei expliziter Kapazität, disjunkte Familien/überlappende Peers,
+Maßnahmenkosten/Vorlauf/Dauer und beobachtbarer Informationsstand.
+**Fachliche Annahme noch offen**, keine AP5-Produktfertigstellung oder Mergefreigabe.
+Fortschritt und tatsächliche Hand-/Kernelproben:
+`../reports/ims_ap5_fortschritt.md`, `ims_ap5_contract_probes.json`.
+Skript `scripts/planning/probe_ap5_contract.py` bestand: H1/H2, Carryover,
+40/41-Angebotskerne ×100 und Replay. Der alte Bilanzvalidator weist ID41
+weiterhin erwartungsgemäß zurück; neue gemeinsame Rechnung/API/UI noch offen.
+35 Plan-/Freigabeprüfungen bestanden (5,365 s), bestehende alpha.4-Metadaten
+konsistent; Diffprüfung bestanden. AP5-Produkt-/Browser-/Installerprüfungen
+stehen erst nach Umsetzung an.
+
+DORA-PDF vollständig gelesen/gerendert; relevante Diagramme visuell geprüft.
+Register `../research/dora_benchmark_2026_06.md`/`.json` mit Hash, Frage,
+Seite, Bezugsgruppe, Mehrfachantworten und Rundungsgrenzen. Zugangslücke G-BENCH
+geschlossen; historische Zugangsnotizen bleiben erhalten. Keine Runtime-
+Kalibrierung, Ausfallwahrscheinlichkeiten oder AP13-Abnahme daraus abgeleitet.
+
+Nächster Schritt: konkreten Fachvertrag annehmen lassen, echte Zustimmung
+dokumentieren und M2–M4 im selben AP5-Draft-PR ausführen. Bei Änderungen
+zuerst Handfälle nachziehen. Paket bleibt in_progress mit leeren Abschlussbelegen;
+AP6–AP14 werden nicht gestartet. Evernote-Werkzeuge aktuell nicht aufrufbar,
+AP4-/AP5-Berichte sind im Repository und PR gesichert; Ablage ausstehend.
+
+Die folgenden Abschnitte sind datierte Zwischenstände und historische Belege.
+
 ## AP4 abgenommen, Merge und anschließendes AP5 beauftragt
 
 02.10.2026: „Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt“ und

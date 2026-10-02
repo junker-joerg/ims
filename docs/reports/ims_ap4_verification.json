@@ -2,7 +2,7 @@
   "schema_version": "ims.ap4-verification.v1",
   "recorded_at_utc": "2026-10-02T07:23:06.543800+00:00",
   "package": "AP4",
-  "status": "accepted_awaiting_authorized_merge",
+  "status": "accepted_merged",
   "product_head": "e6b546c725b557b612481189622be94bcff34bd8",
   "product_tree": "33a308823d592c79ad38e97754def1bc666f955d",
   "plan_merge_commit": "de3d1de330df81ec948491dbcfbc97ca00a70c60",
@@ -388,6 +388,40 @@
         "status": "completed",
         "conclusion": "success",
         "html_url": "https://github.com/junker-joerg/ims/actions/runs/36978365933/job/110747075334"
+      }
+    ]
+  },
+  "actual_merge": {
+    "pull_request": "https://github.com/junker-joerg/ims/pull/293",
+    "commit": "9b0d45a22be4314eda8e9ab1db61c506a44160f7",
+    "merged_at": "2026-10-02T08:49:21Z",
+    "checked_head": "c11a01dcd13c43119b7e480b3bdeed1a21f14448",
+    "tree": "ce44dc41f73e33d8d05240a85d6c7ef1663bf8d3",
+    "tree_matches_checked_head": true,
+    "checks": [
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928666/job/110764509830"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928651/job/110764509662"
+      },
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928661/job/110764509538"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928635/job/110764509358"
       }
     ]
   }

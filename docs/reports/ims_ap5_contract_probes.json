@@ -1,0 +1,164 @@
+{
+  "schema_version": "ims.ap5-contract-probe.v1",
+  "executed_at": "2026-10-02T08:54:02.706828+00:00",
+  "scope": "gate_preparation_existing_kernels_and_hand_calculations",
+  "product_market_runner": false,
+  "contract_accepted": false,
+  "cases": {
+    "H1": {
+      "new_owner": 2,
+      "rows": [
+        {
+          "period": 2,
+          "opening_cash": "100.0000",
+          "opening_claim_liability": "20.0000",
+          "opening_equity": "80.0000",
+          "premium_income": "0.0000",
+          "investment_income": "0.0000",
+          "claims_incurred": "0.0000",
+          "claims_paid": "5.0000",
+          "operating_expense": "2.0000",
+          "capital_contribution": "0.0000",
+          "capital_distribution": "0.0000",
+          "period_profit": "-2.0000",
+          "closing_cash": "93.0000",
+          "closing_claim_liability": "15.0000",
+          "closing_equity": "78.0000"
+        },
+        {
+          "period": 2,
+          "opening_cash": "100.0000",
+          "opening_claim_liability": "0.0000",
+          "opening_equity": "100.0000",
+          "premium_income": "20.0000",
+          "investment_income": "0.0000",
+          "claims_incurred": "40.0000",
+          "claims_paid": "40.0000",
+          "operating_expense": "1.0000",
+          "capital_contribution": "0.0000",
+          "capital_distribution": "0.0000",
+          "period_profit": "-21.0000",
+          "closing_cash": "79.0000",
+          "closing_claim_liability": "0.0000",
+          "closing_equity": "79.0000"
+        }
+      ]
+    },
+    "H2": {
+      "choices": {
+        "G1": 1,
+        "G2": 2,
+        "G3": null
+      },
+      "rows": [
+        {
+          "period": 2,
+          "opening_cash": "100.0000",
+          "opening_claim_liability": "0.0000",
+          "opening_equity": "100.0000",
+          "premium_income": "12.0000",
+          "investment_income": "0.0000",
+          "claims_incurred": "9.0000",
+          "claims_paid": "9.0000",
+          "operating_expense": "0.0000",
+          "capital_contribution": "0.0000",
+          "capital_distribution": "0.0000",
+          "period_profit": "3.0000",
+          "closing_cash": "103.0000",
+          "closing_claim_liability": "0.0000",
+          "closing_equity": "103.0000"
+        },
+        {
+          "period": 2,
+          "opening_cash": "100.0000",
+          "opening_claim_liability": "0.0000",
+          "opening_equity": "100.0000",
+          "premium_income": "16.0000",
+          "investment_income": "0.0000",
+          "claims_incurred": "4.0000",
+          "claims_paid": "4.0000",
+          "operating_expense": "0.0000",
+          "capital_contribution": "0.0000",
+          "capital_distribution": "0.0000",
+          "period_profit": "12.0000",
+          "closing_cash": "112.0000",
+          "closing_claim_liability": "0.0000",
+          "closing_equity": "112.0000"
+        },
+        {
+          "period": 2,
+          "opening_cash": "100.0000",
+          "opening_claim_liability": "0.0000",
+          "opening_equity": "100.0000",
+          "premium_income": "0.0000",
+          "investment_income": "0.0000",
+          "claims_incurred": "0.0000",
+          "claims_paid": "0.0000",
+          "operating_expense": "0.0000",
+          "capital_contribution": "0.0000",
+          "capital_distribution": "0.0000",
+          "period_profit": "0.0000",
+          "closing_cash": "100.0000",
+          "closing_claim_liability": "0.0000",
+          "closing_equity": "100.0000"
+        }
+      ],
+      "uninsured_quantity": 5,
+      "uninsured_loss": 7,
+      "weighted_price": "2.0000"
+    }
+  },
+  "measure_example": {
+    "periods": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "capacities": [
+      6,
+      6,
+      6,
+      8,
+      8,
+      6
+    ],
+    "costs": [
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "kernel_probes": [
+    {
+      "vu_count": 40,
+      "period_count": 100,
+      "duration_seconds": 0.18487070000264794,
+      "offer_snapshot_bytes": 682827,
+      "snapshot_sha256": "d43a0f2d26fb2c025351f2a68d99675c304aa6b9952f1ae66aa75b0e4f96a125",
+      "first_40_offers_sha256": "d7c95d7203459d7dc1a380855fe42667f835fb167884dc133a2b2cd622226a46"
+    },
+    {
+      "vu_count": 41,
+      "period_count": 100,
+      "duration_seconds": 0.17825789999915287,
+      "offer_snapshot_bytes": 699790,
+      "snapshot_sha256": "949d6061c6f724df0f3c5caeda957c509c18fce9eea37d881a3f7b5dbec72aef",
+      "first_40_offers_sha256": "d7c95d7203459d7dc1a380855fe42667f835fb167884dc133a2b2cd622226a46"
+    }
+  ],
+  "replay_equal": true,
+  "entrant_preserves_existing_offers_and_draws": true,
+  "legacy_41_balance_rejected": true,
+  "limits": [
+    "No common 40/41-VU balance calculated",
+    "No API/UI/Excel or installer checked",
+    "Kernel snapshot size is not product API size",
+    "Measure example is a hand schedule, not a product measure engine"
+  ]
+}

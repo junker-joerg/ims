@@ -1,0 +1,155 @@
+{
+  "schema_version": "ims.dora-benchmark-source.v1",
+  "source_id": "DORA-BENCH-2026-06",
+  "title": "DORA Implementation Survey – 2026 Benchmarking Exercise",
+  "publisher": "KPMG AG Wirtschaftsprüfungsgesellschaft",
+  "edition": "2026-06",
+  "provided_by": "Auftraggeber dieser Codex-Sitzung",
+  "verified_on": "2026-10-02",
+  "filename": "260630_DORA_Implementation_Benchmark_Report_BF_SEC (1).pdf",
+  "sha256": "b0f56062dfb70c3c247bd82bb29f3f9e981727f1edbd4589f54d1731023602a8",
+  "bytes": 6478853,
+  "pages": 32,
+  "source_pdf_committed": false,
+  "methodology": {
+    "pages": [4, 5],
+    "fieldwork": "February–March 2026",
+    "reported_institutions": "more than 70",
+    "exact_common_question_denominator": null,
+    "countries": 17,
+    "size_peer_groups": 4,
+    "questions": 42,
+    "insurance_reinsurance_share_percent": 29,
+    "bank_share_percent": 48,
+    "german_insurance_representativeness_established": false,
+    "country_scope_note": "Includes United Kingdom and Switzerland; no exclusively EU or German insurer sample.",
+    "percentages_rounded_to_integers": true,
+    "question_denominators_must_not_be_inferred": true
+  },
+  "observations": [
+    {
+      "id": "B17-KPI", "page": 17,
+      "question_locator": "left: KPI implementation",
+      "multiple_answers_allowed": true,
+      "denominator": "Respondents selecting each option; exact question n not stated",
+      "question_n": null,
+      "reported_percent": {"implemented": 32, "defined_pending": 29, "status_reporting_without_kpi": 36, "other": 4}
+    },
+    {
+      "id": "B17-BOARD", "page": 17,
+      "question_locator": "right: Management Body reporting frequency",
+      "multiple_answers_allowed": false,
+      "denominator": "Respondents to this frequency question; exact n not stated",
+      "question_n": null,
+      "reported_percent": {"quarterly": 51, "monthly": 19, "annual": 14, "biannual": 5, "ad_hoc": 5, "none": 5},
+      "not_effectiveness_measure": true
+    },
+    {
+      "id": "B20-INCIDENT", "page": 20,
+      "question_locator": "right: incident reporting challenges; Insights: enhanced SIEM subgroup",
+      "multiple_answers_allowed": true,
+      "denominator": "Question respondents, exact n not stated; separate enhanced-SIEM subgroup n=41",
+      "question_n": null,
+      "reported_percent": {"timely_data": 48, "classification_threshold_alignment": 47, "customer_estimates": 36, "escalation": 34},
+      "subgroup": {"label": "Institutions with enhanced existing SIEM", "n": 41, "classification_percent": 51, "escalation_percent": 37}
+    },
+    {
+      "id": "B21-CUSTOMERS", "page": 21,
+      "question_locator": "left: affected customer calculation basis",
+      "multiple_answers_allowed": false,
+      "denominator": "Respondents to this basis question; exact n not stated",
+      "question_n": null,
+      "reported_percent": {"comparable_business_as_usual_period": 35, "unknown": 21, "no_defined_method": 17, "regulatory_cycles": 9, "other": 8, "peak_period": 6, "historic_period": 5}
+    },
+    {
+      "id": "B21-TRANSACTIONS", "page": 21,
+      "question_locator": "right: transaction calculation basis",
+      "multiple_answers_allowed": false,
+      "denominator": "Respondents to this separate basis question; exact n not stated",
+      "question_n": null,
+      "reported_percent": {"service_basis": 30, "unknown": 22, "calendar_year": 21, "other": 11, "rolling_365_days": 8, "fiscal_year": 8},
+      "reported_headline_percent": 52,
+      "headline_categories": ["service_basis", "unknown"]
+    },
+    {
+      "id": "B24-CONTRACTS", "page": 24,
+      "question_locator": "contract renegotiation status, CIF and non-CIF",
+      "multiple_answers_allowed": false,
+      "denominator": "Separate status distributions; exact question n not stated",
+      "question_n": null,
+      "reported_percent": {"cif_over_75": 26, "cif_complete": 25, "non_cif_over_75": 23, "non_cif_complete": 8},
+      "reported_aggregate_percent": {"cif_over_75_or_complete": 51, "non_cif_over_75_or_complete": 32},
+      "rounding_note": "Non-CIF rounded cells sum to 31, whereas the reported Insights aggregate is 32; retained separately."
+    },
+    {
+      "id": "B26-AUDIT", "page": 26,
+      "question_locator": "right: audit strategy; Insights: centralised all-service monitoring subgroup",
+      "multiple_answers_allowed": true,
+      "denominator": "Audit question respondents, exact n not stated; separate subgroup n=27",
+      "question_n": null,
+      "reported_percent": {"certifications_or_audit_reports": 66, "provider_internal_audit": 25, "no_audit_strategy": 18},
+      "subgroup": {"label": "Centralised monitoring across CIF and non-CIF", "n": 27, "certifications_percent": 85, "no_audit_strategy_percent": 4},
+      "second_subgroup": {"label": "No formalised monitoring", "n": 8, "no_audit_strategy_percent": 63}
+    },
+    {
+      "id": "B27-FREQUENCY", "page": 27,
+      "question_locator": "right: audit frequency on CIF-supporting providers; Insights denominator",
+      "multiple_answers_allowed": false,
+      "denominator": "Institutions that specified audit frequency; exact subgroup n not stated",
+      "question_n": null,
+      "reported_percent": {"annual": 31, "every_two_years": 19, "every_three_years": 15, "major_changes": 12, "no_regular_audit": 15, "other": 8}
+    },
+    {
+      "id": "B28-EXIT-PLAN", "page": 28,
+      "question_locator": "left: exit strategy implementation status",
+      "multiple_answers_allowed": false,
+      "denominator": "Respondents to this implementation question; exact n not stated",
+      "question_n": null,
+      "reported_percent": {"documented_all_cif": 29, "developing_all_cif": 34, "critical_arrangements_only": 26, "none": 7, "other": 4},
+      "reported_documented_or_developing_percent": 63
+    },
+    {
+      "id": "B28-EXIT-TEST", "page": 28,
+      "question_locator": "right: exit plan testing method",
+      "multiple_answers_allowed": false,
+      "denominator": "Respondents to this separate testing question; exact n not stated",
+      "question_n": null,
+      "reported_percent": {"formalised_testing": 8, "periodic_simulations": 26, "unstructured_methodology": 36, "none": 30},
+      "reported_unstructured_or_none_percent": 66,
+      "joint_overlap_with_exit_plan_known": false
+    },
+    {
+      "id": "B31-IA", "page": 31,
+      "question_locator": "left: internal audit cycle",
+      "multiple_answers_allowed": false,
+      "denominator": "Respondents to this cycle question; exact n not stated",
+      "question_n": null,
+      "reported_percent": {"annual": 44, "multi_year": 19, "ad_hoc": 18, "one_off": 11, "none": 8},
+      "reported_recurring_percent": 63
+    },
+    {
+      "id": "B31-TLPT", "page": 31,
+      "question_locator": "middle/right and Insights: officially designated TLPT subgroup and testing calendar",
+      "multiple_answers_allowed": true,
+      "denominator": "Officially TLPT-designated institutions only; exact subgroup n not stated",
+      "question_n": null,
+      "reported_annual_or_more_frequent_cif_testing_percent": 85,
+      "note": "Multiple answers apply to the testing-calendar question; TLPT status is a separate question."
+    }
+  ],
+  "verification": {
+    "all_pages_text_read_and_rendered": true,
+    "visually_checked_pages": [4, 5, 9, 12, 17, 20, 21, 24, 26, 27, 28, 31],
+    "source_hash_and_size_checked": true,
+    "full_pdf_text_committed": false
+  },
+  "usage": {
+    "source_access_gap": "G-BENCH resolved",
+    "implementation_maturity_evidence_only": true,
+    "ap5_runtime_parameters_imported": false,
+    "provider_failure_probability_derived": false,
+    "real_insurer_profile_derived": false,
+    "ap13_delivery_completed": false,
+    "ap13_execution_authorized": false
+  }
+}
