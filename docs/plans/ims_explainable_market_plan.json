@@ -81,13 +81,41 @@
     {
       "id": "AP4",
       "title": "Erklärbare Oberfläche und geführter Einstieg",
-      "status": "planned",
-      "depends_on": ["AP3"],
+      "status": "in_progress",
+      "depends_on": [
+        "AP3"
+      ],
       "branch_proposal": "codex/ims-explainable-roles",
-      "deliverables": ["Vier Rollensichten mit erhaltenem Fallzustand", "Übersicht mit echten Kennzahlen, Verlauf und nächsten Schritten", "Erklärweg von Eingabe und Regel zu Entscheidung und Buchung", "Geführte vorhandene AP3-Demos und Einsteiger-/Wiedereinsteigeranleitung"],
-      "acceptance": ["Preisfall 302 × 95 = 28.690 in IMS nachvollziehbar", "Diagramme und Kennzahlen stimmen mit API und Export überein", "Rollenwechsel erhält Eingaben, Ergebnis und Freigaben", "API-Fehler, veraltetes Ergebnis, Nullvergleich und echte Laufperioden verständlich", "Drei Bildschirmgrößen, zwei Farbmodi, Tastatur und mindestens 4,5:1 Textkontrast"],
-      "gates": ["Annahme der Folgeplanung und AP3 in main", "Persona-Sichten verändern keine fachliche Rechnung"],
-      "completion_evidence": []
+      "deliverables": [
+        "Vier Rollensichten mit erhaltenem Fallzustand",
+        "Übersicht mit echten Kennzahlen, Verlauf und nächsten Schritten",
+        "Erklärweg von Eingabe und Regel zu Entscheidung und Buchung",
+        "Geführte vorhandene AP3-Demos und Einsteiger-/Wiedereinsteigeranleitung"
+      ],
+      "acceptance": [
+        "Preisfall 302 × 95 = 28.690 in IMS nachvollziehbar",
+        "Diagramme und Kennzahlen stimmen mit API und Export überein",
+        "Rollenwechsel erhält Eingaben, Ergebnis und Freigaben",
+        "API-Fehler, veraltetes Ergebnis, Nullvergleich und echte Laufperioden verständlich",
+        "Drei Bildschirmgrößen, zwei Farbmodi, Tastatur und mindestens 4,5:1 Textkontrast"
+      ],
+      "gates": [
+        "Annahme der Folgeplanung und AP3 in main",
+        "Persona-Sichten verändern keine fachliche Rechnung"
+      ],
+      "completion_evidence": [],
+      "implementation_authorized": true,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "execution_authorization": {
+        "date": "2026-10-02",
+        "scope": "implementation",
+        "user_request": "Merge den Plan auf Main\nFalls ohne die Dora pdf möglich : starte dann ap4",
+        "plan_commit": "de3d1de330df81ec948491dbcfbc97ca00a70c60",
+        "dora_pdf_is_not_ap4_dependency": true
+      },
+      "progress_document": "docs/reports/ims_ap4_abschlussbericht.md",
+      "implementation_plan": "docs/plans/ims_ap4_implementation.md"
     },
     {
       "id": "AP5",

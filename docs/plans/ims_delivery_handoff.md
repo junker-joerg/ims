@@ -1,5 +1,18 @@
 # IMS-Lieferübergabe
 
+## AP4 begonnen nach verifiziertem Planmerge #292
+
+02.10.2026: #292 nach vier grünen Checks übernommen, main
+`de3d1de330df81ec948491dbcfbc97ca00a70c60`. Übernommener Tree entspricht
+`88790e3`. Primärer main sauber aktualisiert; verwalteter Worktree mit eigener
+Umgebung im Branch `codex/ims-explainable-roles` weiterverwendet. Tatsächlicher
+AP4-Auftrag im authorized-Generator gegen diese main-Basis bestätigt.
+AP4 in_progress; keine Abnahme/Produkt-Merge-/Releasefreigabe.
+Plan `ims_ap4_implementation.md`, laufender Bericht
+`../reports/ims_ap4_abschlussbericht.md`. Nächster Schritt: Rollen-/Übersichts-
+anschluss, Offlineanleitung, Browsernachweise und tatsächlicher alpha.4-Installer
+im selben Draft-PR. Fehlende DORA-PDF blockiert AP4 nicht; AP13 bleibt offen.
+
 ## Planungsauftrag vom 02.10.2026: zum Merge freigegeben
 
 Aktuelle Mergeprüfung: Head `20bdcd6` hatte grüne Plan-, Browser- und echte
