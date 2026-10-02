@@ -15,8 +15,11 @@ eigene Sitzung und frischer quellengebundener Einzel-VU-Export. Der
 10 Audit-, 10 Referenz-, 16 AP5- und 35 Plantests bestanden; neun verschiedene
 Browserfälle einschließlich tatsächlichem 40×100-Lauf und korrigierter
 Hell-/Dunkelmatrix bestanden. Frontend und Release-Metadaten alpha.6 geprüft.
-M4 bleibt bis aktueller CI-/Installer-/installierter Prüfung offen. Danach
-Anwenderabnahme anbieten; keine AP6-Merge-/Releasefreigabe. Die nachstehenden
+M4 abgeschlossen: alle vier Produkt-CI-Checks für 1874835 bestanden, 2.735
+Python-Tests und 14 Subtests, 59 Browserfälle sowie echter alpha.6-Installer mit
+14 Lifecycle- und 59 installierten Browserprüfungen. [Nachweise](ims_ap6_verification.json).
+Technisch fertig im angenommenen BaFin-Referenzumfang; Anwenderabnahme anbieten.
+Keine AP6-Merge-/Releasefreigabe. Die nachstehenden
 ursprünglichen Deutschland-/Zugangsstände sind historische Meilensteine.
 
 

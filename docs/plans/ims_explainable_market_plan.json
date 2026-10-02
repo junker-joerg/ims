@@ -274,15 +274,21 @@
     {
       "id": "AP6",
       "title": "Deutscher Versicherungsmarkt mit 40 Gruppen",
-      "status": "in_progress",
+      "effective_title": "BaFin-Gruppenauswertung 2024 – Workshop",
+      "status": "done",
       "depends_on": ["AP5"],
       "branch_proposal": "codex/ims-german-market-top40",
       "deliverables": ["Belegte 40er-Gruppenauswahl mit deutschen Anzeigenamen und Tochterzuordnung", "Dokumentierte Rankingkennzahl, gemeinsames Jahr, Deutschlandumfang und Grenzprüfung", "Offline ladbarer Modellmarkt mit getrennten Fakten und Workshop-Annahmen", "Quellen-Dossier und ausdrückliche Darstellung des nicht simulierten Restmarkts"],
       "acceptance": ["Genau 40 eindeutige Gruppen und geprüfte Grenze Rang 40/41", "Keine Doppelzählung oder Vermischung globaler, deutscher, gebuchter und verdienter Beiträge", "Belegte Sparten und Gewichtssummen, fehlende Werte gekennzeichnet", "Unbekannte Strategien und ICT-Abhängigkeiten nicht als reale Unternehmensdaten ausgegeben", "Laden, Import, frische Berechnung und reproduzierbare Nachweise"],
       "gates": ["Gemeinsames Datenjahr, Rankingmaß und Gruppen-/Deutschlandkonsolidierung nachgewiesen", "Vollständige Rangbasis; keine unbelegte Top-40-Abnahme"],
-      "completion_evidence": [],
+      "completion_evidence": [
+        "docs/reports/ims_ap6_scope_acceptance.md: ausdrückliche Annahme des gekennzeichneten BaFin-Referenzumfangs; keine rückwirkende Deutschland-Abnahme",
+        "docs/reports/ims_ap6_produktpruefung.md: Quellen-/Modellvertrag, API/UI/Export, Handfälle, Anleitung und Liefergrenzen",
+        "docs/reports/ims_ap6_verification.json: vier erfolgreiche Produkt-CI-Checks für 1874835; 2735 Python-/14 Subtests, 59 Browserfälle und echter Installer mit 14 Lifecycle-/59 installierten Browserprüfungen",
+        "docs/handbook/market_ap6.html und docs/migration/ap6_bafin_reference.md: Offline-Anleitung, Bilder und Altcode-Herkunft"
+      ],
       "implementation_authorized": true,
-      "technically_complete": false,
+      "technically_complete": true,
       "merged_to_main": false,
       "user_product_acceptance": "pending",
       "merge_authorized": false,
@@ -316,7 +322,10 @@
           "model_mapping_document": "docs/plans/ims_ap6_reference_mapping.md",
           "model_mapping_locally_checked": true,
           "product_verification": "docs/reports/ims_ap6_verification.json",
-          "installer_checked": false
+          "installer_checked": true,
+          "product_checked": true,
+          "technical_status": "verified",
+          "user_product_acceptance": "pending"
         },
         "ranking_year_candidate": 2025,
         "ranking_year_verified": false,

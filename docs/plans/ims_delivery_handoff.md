@@ -1,6 +1,6 @@
 # IMS-Lieferübergabe
 
-## AP6: BaFin-Referenz angenommen und implementiert; Installerprüfung läuft
+## AP6: BaFin-Referenz technisch fertig; Anwenderabnahme und Merge offen
 
 02.10.2026, weiterhin derselbe Draft-PR #295 und Branch
 `codex/ims-german-market-top40`. Wörtlicher menschlicher Umfangsauftrag:
@@ -19,10 +19,13 @@ Lokale Prüfung: 10 Audit-, 10 Referenz-, 16 AP5-Regressions- und 35 Plantests;
 neun verschiedene Browserfälle einschließlich 40×100 sowie korrigierter
 Hell-/Dunkelmatrix (Farbmodus explizit, Textkontrast >= 4,5:1), Frontendbau.
 [Produktbericht](../reports/ims_ap6_produktpruefung.md),
-[Verifikation](../reports/ims_ap6_verification.json). Aktuelle CI/Installer-
-und installierte Produktprüfung noch offen, M4 noch nicht fertig. Denselben
-PR fortsetzen, Fehler beheben, aktuelle Installerdatei prüfen und dann
-technische Fertigstellung/Anwenderabnahme getrennt dokumentieren. Kein Merge
+[Verifikation](../reports/ims_ap6_verification.json). Alle vier Produkt-CI-Checks
+für 1874835 bestanden: 2.735 Python-Tests / 14 Subtests, 59 Browserfälle,
+echter alpha.6-Installer mit 14 Lifecycle- und 59 installierten Browserprüfungen.
+M4 abgeschlossen; AP6 done/technically_complete im angenommenen BaFin-Umfang.
+Die ursprünglichen Deutschland-Auswahltore bleiben offen. Geprüfte Installerdatei
+und Anleitung zur Anwenderabnahme anbieten; aktuelle Checks der abschließenden
+Nachweisdokumentation im selben PR separat kontrollieren. Kein Merge
 ohne eigene Freigabe; AP7–AP14 nicht beginnen. Die nachstehenden Stände sind
 historische Zwischenstände.
 

@@ -53,10 +53,50 @@ Der ursprüngliche vollständige 100er-Quellenlauf dauerte lokal 69,517 Sekunden
 dies ist eine einzelne Messung, keine allgemeine Laufzeitgarantie. Keine neue
 Behauptung historischer oder regulatorischer Gleichwertigkeit.
 
-## Verbleibende Lieferprüfung
+## Geprüfte Produktlieferung
 
-Aktuelle CI-, Installer-/Lifecycle- und installierte Browserprüfungen stehen
-für den Produktkommitt noch aus. Die frühere AP5-Installerprüfung zählt nicht
-als Prüfung von alpha.6. Technische Fertigstellung, Anwenderabnahme und Merge
-werden nach diesen tatsächlichen Ergebnissen getrennt dokumentiert.
-Keine AP6-Mergefreigabe; AP7–AP14 bleiben unbeauftragt.
+AP6 ist im ausdrücklich angenommenen BaFin-Referenzumfang technisch fertig.
+Produktkommitt `18748357a2c71b2b159b4b2f11b01b1d60072982`, Tree
+`55e804b3b2865583a7a480a681fe278f96bbbec2`. Alle vier erforderlichen Checks
+(Plan, Browser, Installer, Windows-Release-Gate) bestanden. GitHub prüfte den
+PR-Mergekommitt `81febe295116a7c4e716a9425f9d64e77bdcff65`; dessen Eltern
+sind das tatsächliche AP5-main und der Produktkommitt, sein Tree ist identisch.
+
+- [Windows-Release-Gate](https://github.com/junker-joerg/ims/actions/runs/37024113216):
+  2.735 Python-Tests, 14 Subtests, eine bestehende Warnung; 976,88 Sekunden.
+  Frontend, Paket-/Portable-Smokes und der bisherige historische Corpusvertrag
+  bestanden. Historische Vollgleichheit oder Produktionskalibrierung bleibt
+  damit weiterhin nicht behauptet.
+- [Browser-CI](https://github.com/junker-joerg/ims/actions/runs/37024113090):
+  alle 59 Fälle bestanden, davon neun AP6-Fälle; keine übersprungenen,
+  fehlgeschlagenen oder instabilen Fälle. Dauer 596,212 Sekunden.
+- [Installer-CI](https://github.com/junker-joerg/ims/actions/runs/37024113101):
+  echter alpha.6-Installer, 14 Lifecycle-Prüfungen bestanden, darunter Update
+  im laufenden Betrieb, Datenübernahme, Deinstallation, Wiederinstallation und
+  Datenerhalt. Alle 59 Browserfälle am installierten aktuellen Produkt bestanden
+  (812,390 Sekunden); gesamter Lifecycle 839,464 Sekunden.
+
+Der [heruntergeladene CI-Nachweis](https://github.com/junker-joerg/ims/actions/runs/37024113101/artifacts/11234474195)
+enthält den geprüften Installer: **20.348.521 Bytes**, SHA-256
+`8bcf7fc144c68026809988331c404cdc78d9deb86040f97a23313f4f804e4556`.
+Archivgröße/-Hash, Binärgröße/-Hash, Produktversion alpha.6 und Windows-Dateiversion
+2.0.0.6 wurden unabhängig abgeglichen. 357 Ressourcen sind nachvollziehbar;
+354 Rohdateihashes stimmen mit diesem Checkout überein, drei Textdateien haben
+im Windows-CI lediglich CRLF statt LF. Alle Inhalte entsprechen dem Produktkommitt.
+Lokale Kopie: `dist/installer/verified-1874835/IMS-Setup-2.0.0-alpha.6-win-x64.exe`.
+
+Der zusätzliche lokale Build vom sauberen Produktkommitt und isolierte Start
+mit ausschließlich System32 im Kindprozess-PATH bestanden ebenfalls. Quellen-
+JSON und Einzel-VU-Excel enthielten dasselbe vollständige Referenzbündel;
+Offline-Anleitung und Bilder waren erreichbar. Die vorhandenen fünf
+Startmenü-Verknüpfungen wurden unangetastet gelassen; der vollständige
+Installer-Lifecycle wurde im separaten CI-Testkonto ausgeführt.
+
+Der CI-Vorgängerinstaller alpha.0 enthält dasselbe alpha.6-Bundle. Damit ist
+der Update-Lifecycle geprüft, kein echtes alpha.5→alpha.6-Anwendungsupgrade.
+Eine unabhängige Anwenderprüfung auf einem Windows-Gerät ohne Entwicklerwerkzeuge
+steht aus. Die Installer sind unsigniert; kein öffentliches Release wurde erstellt.
+
+Die Abschlussdokumentation folgt diesem festgehaltenen Produktkommitt; aktuelle
+Checks des abschließenden Dokumentationsstands sind im selben PR separat sichtbar.
+Anwenderabnahme und Mergefreigabe sind ausstehend; AP7–AP14 bleiben unbeauftragt.

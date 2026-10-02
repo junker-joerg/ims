@@ -47,8 +47,12 @@ bestanden, Merge-Tree identisch. Danach ist AP6 gemäß Fortsetzungsauftrag in
 dieser Sitzung im Branch `codex/ims-german-market-top40` begonnen. Auftrag,
 Methodenvorschlag, Quellen und Arbeitsstand: `docs/plans/ims_ap6_*` und
 `docs/reports/ims_ap6_fortschritt.md`. Die vollständige deutsche Rangbasis,
-das gemeinsame Datenjahr und Grenze 40/41 sind noch offen; AP6 bleibt
-`in_progress`, ohne Top-40-Abnahme. Daten-/Methodentore bleiben verbindlich.
+das gemeinsame Datenjahr und Grenze 40/41 für den deutschen Direktmarkt sind
+weiter offen. AP6 ist im später ausdrücklich angenommenen BaFin-Referenzumfang
+technisch fertig (`done`); `docs/reports/ims_ap6_produktpruefung.md` und
+`ims_ap6_verification.json` enthalten vier erfolgreiche Produkt-CI-Checks,
+den echten alpha.6-Installer und installierte Browserprüfungen. Keine deutsche
+Top-40-Abnahme; die ursprünglichen Daten-/Methodentore bleiben sichtbar offen.
 Ein done-Status im Branch ersetzt keinen main-Abhängigkeitsbeleg.
 AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
 und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
@@ -104,7 +108,7 @@ Ausland und übernommener Rückversicherung, redaktionelle Gruppensummen ohne
 konzerninterne Eliminierung. Kein belegter deutscher Direktmarkt; Fakten,
 ungeprüfte Gruppierungen und angenommener Spartenmix bleiben sichtbar getrennt.
 Historische Planabnahmen nicht ändern. API/UI/Export/Tests/Anleitung/Installer
-weiter im selben Draft-PR #295 liefern; AP6-Abnahme und Merge bleiben offen.
+im selben Draft-PR #295 geliefert; AP6-Abnahme und Merge bleiben offen.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`

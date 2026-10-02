@@ -22,7 +22,7 @@ Die dortige Zeit benennt den tatsächlichen AP5-Merge als Eintritt der
 Voraussetzung; der genaue Zeitpunkt der ursprünglichen Nachricht ist unbekannt.
 Der Auftrag umfasst Umsetzung, keine AP6-Anwenderabnahme oder Mergefreigabe.
 
-## Lieferumfang und Herkunft
+## Ursprünglicher Lieferumfang und Herkunft
 
 Lieferbasis: angenommener [AP4–AP9-Plan](ims_explainable_market_2026_10.md),
 Manifest und [Boardplanung](ims_board_strategy_2026_10.md). Der Boardplan ergänzt
@@ -51,9 +51,12 @@ Offline-Katalog, stabile Identitäten, begründete Overrides, Neusortierung alle
 145 Kandidaten, genaue Quellengewichte und disjunkte Reste implementiert.
 M3: API-Referenzbündel, schreibfreies Original, eigene Sitzung, Mix-/Override-
 Bedienung, frische Läufe und quellengebundener Einzel-VU-Export implementiert.
-M4: Handfälle, 40×100-/Prefix-/Bilanzprüfungen und aktuelle Browserfälle begonnen;
+M4: Handfälle, 40×100-/Prefix-/Bilanzprüfungen und aktuelle Browserfälle bestanden;
 HTML-Anleitung und reale Bilder vorhanden. Neue Produktkennung alpha.6 /
-Windows 2.0.0.6 gesetzt. Installerprüfung und endgültige Paketabnahme offen.
+Windows 2.0.0.6 gesetzt. Alle vier Produkt-CI-Checks bestanden: 2.735 Python-Tests
+und 14 Subtests, 59 Browserfälle, echter Installer mit 14 Lifecycle-Prüfungen
+und 59 Fällen am installierten Produkt. [Abschlussnachweis](../reports/ims_ap6_produktpruefung.md).
+Technisch fertig im angenommenen Referenzumfang; Anwenderabnahme und Merge offen.
 Die vorausgehende Tabelle beschreibt die ursprüngliche Deutschlandplanung.
 
 ## Architektur und Semantik vor Produktänderungen
@@ -76,6 +79,12 @@ Lebens-Nachfrage und Markt-/ICT-Kopplung gehören weiter in AP7. Historische
 25er-Validatoren und AP3-Verträge werden durch neue Namen oder IDs nicht erweitert.
 
 ## Nächster konkreter Schritt
+
+Den geprüften alpha.6-Installer und die Anleitung zur Anwenderabnahme anbieten.
+AP6-Merge erst nach eigenem menschlichem Auftrag; kein Beginn von AP7–AP14.
+Quellumfang und alle Modellgrenzen bleiben im Produkt sichtbar.
+
+## Historischer Recherchemeilenstein vor der Umfangsentscheidung
 
 [Methodenvorschlag](ims_ap6_data_method.md),
 [Quellenprüfung](../research/ims_ap6_sources_2026_10.md) und
