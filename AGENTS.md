@@ -36,13 +36,37 @@ Einzel-VU-Details in Excel. Der Deutschland-Fall umfasst 40 Versicherungsgruppen
 nach deutschem Erstversicherungsgeschäft über alle Sparten, ohne doppelt
 gezählte Töchter; fehlende Daten und nicht modellierte Sparten bleiben sichtbar.
 
-Vor Folgearbeit den neuen Plan und sein Manifest lesen. Der bestehende
-`scripts/planning/ims_sprint_plan.py` unterstützt ausschließlich AP1–AP3;
-sein Ergebnis „kein Auftrag“ ist keine Aussage über AP4–AP9. Einen Folgeauftrag
-anhand des neuen Manifests und der in main erledigten Abhängigkeiten ausführen.
+Vor Folgearbeit den angenommenen Plan und sein Manifest lesen.
+`scripts/planning/ims_sprint_plan.py` unterstützt die bisherigen AP1–AP3-Aufrufe
+und mit `--plan` die Folgepläne AP4–AP9 sowie AP10–AP14. Sein Standardaufruf mit
+dem alten Manifest kann „kein Auftrag“ liefern, obwohl AP4–AP9 noch offen sind.
+Folgepläne standardmäßig nur als deutlich beschriftete Vorschau erzeugen;
+`--mode authorized` benötigt den angenommenen Umfang und erledigte Abhängigkeiten
+in aktuell gefetchtem `origin/main` sowie einen echten, paketbezogenen menschlichen
+Umsetzungsauftrag mit `--authorization-file`. Freigabebelege niemals erfinden.
+Format und Befehle: `docs/plans/ims_work_order_generator.md`. Planannahme,
+Umsetzungsfreigabe, technische Fertigstellung und Merge bleiben getrennt.
+Einen Folgeauftrag anhand des angenommenen Manifests und der in main erledigten
+Abhängigkeiten ausführen; proposed/deferred bedeutet keine Ausführungsfreigabe.
 Der Planungsmerge startet kein Umsetzungspaket. Die Entscheidungstore für
 Mehr-VU-/Risiko-/Gruppenvertrag, Top-40-Datenbasis, Lebens-Nachfrage und
 Markt-/ICT-Kopplung bleiben verbindlich; die AP3-Zustimmung ersetzt sie nicht.
+
+Die am 02.10.2026 zum Merge freigegebene Wettbewerbs-/Vorstandsplanung in
+`docs/plans/ims_board_strategy_2026_10.md` und
+`docs/plans/ims_board_strategy_plan.json` gilt mit Übernahme von PR #292 nach
+main als angenommen. AP4–AP9 bleiben die Lieferbasis; angenommene Ergänzungen
+stehen mit Herkunft/Abnahmeauswirkung separat. AP10–AP14 und der minimale
+Drei-VU-DORA-Fall benötigen weiterhin eigene Umsetzungs- und Vertragstore.
+Historische Abnahmen niemals rückwirkend erweitern. Quellenmatrix, Referenzfall
+und aktuelle Manifeste lesen; recherchierte Fähigkeiten, tatsächliche IMS-Läufe
+und spezifizierte Modellkanäle unterscheiden.
+
+Der Auftrag vom 02.10.2026 autorisiert nach dem Planungsmerge ausschließlich
+AP4. Die nicht zugängliche DORA-Benchmark-PDF ist eine AP13-Quellenlücke und
+blockiert AP4 nicht: AP4 erklärt vorhandene AP3-Fälle, ohne neue DORA-Zahlen oder
+Modellkanäle einzuführen. AP4 als zusammenhängendes Paket im eigenen Draft-PR
+umsetzen; diese Freigabe nicht auf AP5–AP14, Merge oder Veröffentlichung erweitern.
 
 Ein Arbeitspaket umfasst Implementierung, API/UI-Anschluss, Tests und Anleitung
 in einem Branch und Draft-PR. Mehrere Stunden oder Sitzungen sind zulässig.

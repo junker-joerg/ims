@@ -1,5 +1,61 @@
 # IMS-Lieferübergabe
 
+## Planungsauftrag vom 02.10.2026: zum Merge freigegeben
+
+Aktuelle Mergeprüfung: Head `20bdcd6` hatte grüne Plan-, Browser- und echte
+Installerprüfungen. Das Windows-Release-Gate scheiterte mit 24 Plan-Testfehlern
+bei fehlendem `origin/main` im flachen PR-Checkout; 2.675 andere Tests bestanden
+(1.072,35 Sekunden, eine bekannte Starlette-Warnung). Der Release-Gate-Workflow
+holt nun die Historie einschließlich main und prüft die Referenz vor dem langen
+Gate. Keine Freigabeprüfung abgeschwächt; 35 Planprüfungen nach der Korrektur
+lokal erneut bestanden. Aktuellen Korrekturhead vollständig in CI abwarten.
+
+Neuer Auftrag: „Merge den Plan auf Main / Falls ohne die Dora pdf möglich :
+starte dann ap4“. PR #292 wird nach grünen aktuellen Checks übernommen. Planung
+einschließlich Ergänzungen angenommen mit ihrem Merge; Umsetzung ausschließlich
+AP4 anschließend beauftragt. Die DORA-PDF ist G-BENCH für AP13, keine AP4-
+Voraussetzung. Produkt-Merge und Veröffentlichung bleiben separat. AP10–AP14
+planned/accepted bedeutet Planannahme; ihre Abschlussbelege bleiben leer.
+
+Produkt-main `81146aa8657e2d507cc51c921207e80895f78340` (#291) frisch geprüft;
+primärer Checkout sauber, keine offenen PRs beim Start. Vorhandener verwalteter
+Worktree mit eigener editable Python-3.12-Umgebung wiederverwendet. Arbeitsbranch
+`codex/ims-board-strategy-plan`, Draft-PR
+https://github.com/junker-joerg/ims/pull/292. Erster Liefercommit `ff784ff`.
+Keine neue Simulation, kein Merge/Release.
+
+Lieferung: 22 Primärquellen und versionierte neun-dimensionale Evidenzmatrix,
+synthetischer Drei-VU-DORA-Vertrag, sechs tatsächliche Bestands-ICT-Läufe plus
+AP3-Preis-Replay, Nutzen-/Lückenbewertung, 65 nachvollziehbare Anforderungen und
+AP10–AP14 als proposed mit leeren Abschlussbelegen. Empfehlung: kleiner AP10-Fall
+nach AP7; AP13 nach AP10/AP11 ohne AP12; AP14 nach AP9/AP12/AP13. AP4–AP9 bleiben
+angenommen/unverändert, vorgeschlagene Ergänzungen separat; AP4 bleibt das nächste
+Produktpaket und wurde hier nicht gestartet.
+
+Quellen: `docs/research/ims_competition_review_2026_10.md` samt JSON;
+`docs/plans/ims_dora_reference_case.md`, `ims_board_strategy_2026_10.md` und
+`ims_board_strategy_plan.json`; echte Bestandsläufe in
+`docs/reports/ims_board_baseline_2026_10.md`/`.json`.
+Generator kompatibel für AP1–AP3 und Folgepläne, Vorschau vs freigegebener Auftrag
+mit echten Plan-/main-/Umsetzungsbelegen. Befehle in `ims_work_order_generator.md`.
+
+Offen: Benchmark-PDF G-BENCH nicht zugänglich; keine Zahlen übernommen.
+Proprietäre Werkzeuge nicht getestet, aktuelle API-/Kalibrierungs-/Kundennachweise
+teilweise unbekannt; kein Alleinstellungsnachweis. Neue Risiko-/Zeit-/Cash-/
+Capability- und Lebens-/RV-Verträge bleiben fachliche Tore.
+35 Plan-/Status-/Kompatibilitätsprüfungen und 27 bestehende ICT-/Seminar-API-Tests
+bestanden (155,80 Sekunden; vorhandene Starlette-Deprecation-Warnung).
+Echte CLI-Läufe: legacy auto kein Paket, Board auto AP4, AP4/AP10-Vorschauen;
+AP10 authorized erwartungsgemäß abgewiesen. CI-Plancheck für `ff784ff` bestanden:
+https://github.com/junker-joerg/ims/actions/runs/36968923867.
+Browser-/Installer-/Release-Gate-Checks zu diesem Zeitpunkt noch laufend;
+keine grüne Gesamtabnahme behauptet. Abschlussdokumentation und gezielte
+Prüfverbesserung sind im selben PR ergänzt; aktuellen Head und seine CI beim Review
+erneut prüfen. Keine zusätzliche externe Windows-/Benutzerabnahme in diesem Auftrag.
+Mergeauftrag liegt nun vor. Danach AP4-Branch `codex/ims-explainable-roles` und
+einen eigenen Draft-PR anlegen beziehungsweise fortsetzen, echten paketbezogenen
+Auftragsbeleg aus der vorstehenden Nachricht erzeugen und Plan-/main-Gates prüfen.
+
 Stand 01.10.2026. AP1 ist abgenommen und in main übernommen:
 PR #288, Merge 965156caf02734cc47e93615c1f8ca91692d51fe um 07:20:42 Berlin.
 Der Auftraggeber hat die unabhängige Windows-11-Abnahme, den Merge und das
