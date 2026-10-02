@@ -22,6 +22,16 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          # Follow-up authorization tests read the actual main plan and ancestry.
+          fetch-depth: 0
+
+      - name: Verify main planning reference
+        shell: pwsh
+        run: |
+          git rev-parse --verify origin/main
+          if ($LASTEXITCODE -ne 0) { throw 'Planning checks require origin/main' }
 
       - name: Set up Python
         uses: actions/setup-python@v6

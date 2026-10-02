@@ -2,6 +2,14 @@
 
 ## Planungsauftrag vom 02.10.2026: zum Merge freigegeben
 
+Aktuelle Mergeprüfung: Head `20bdcd6` hatte grüne Plan-, Browser- und echte
+Installerprüfungen. Das Windows-Release-Gate scheiterte mit 24 Plan-Testfehlern
+bei fehlendem `origin/main` im flachen PR-Checkout; 2.675 andere Tests bestanden
+(1.072,35 Sekunden, eine bekannte Starlette-Warnung). Der Release-Gate-Workflow
+holt nun die Historie einschließlich main und prüft die Referenz vor dem langen
+Gate. Keine Freigabeprüfung abgeschwächt; 35 Planprüfungen nach der Korrektur
+lokal erneut bestanden. Aktuellen Korrekturhead vollständig in CI abwarten.
+
 Neuer Auftrag: „Merge den Plan auf Main / Falls ohne die Dora pdf möglich :
 starte dann ap4“. PR #292 wird nach grünen aktuellen Checks übernommen. Planung
 einschließlich Ergänzungen angenommen mit ihrem Merge; Umsetzung ausschließlich
