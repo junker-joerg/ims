@@ -63,8 +63,9 @@ def workshop_case(case_id: str = "market", n: int = 100, count: int = 40) -> dic
                 source["periods"][5]["operating_expense"] = "2" if aid == 1 else "1"
                 source["periods"][5]["old_claims_paid"] = "5" if aid == 1 else "0"
             doc["insurers"].append({"insurer_id": aid, "insurance_group_id": f"Gruppe_{aid}", "name": f"Handfall VU{aid}", "sectors": {"motor": source}})
-            fid = "Preis_VU" + str(aid)
-            doc["families"].append(family(fid, "motor", "offer.fixed", {"price": str(price), "advertising": "0"}))
+            fid = "Festpreis_" + str(price)
+            if not any(item["family_id"] == fid for item in doc["families"]):
+                doc["families"].append(family(fid, "motor", "offer.fixed", {"price": str(price), "advertising": "0"}))
             doc["assignments"]["baseline"] += [assignment(aid, "motor", "Anfang_null", end=5), assignment(aid, "motor", fid, 6)]
         quantities, losses = ([10], [40]) if case_id == "switch" else ([6, 8, 5], [9, 4, 7])
         for i, (quantity, loss) in enumerate(zip(quantities, losses), 1):

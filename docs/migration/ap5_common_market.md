@@ -6,9 +6,9 @@ ist eine eigene deklarierte Modellrechnung. AP3-Verträge und historische
 
 | Herkunft | Moderne Komponente | Entsprechung / erklärte Abweichung |
 | --- | --- | --- |
-| `legacy_c/IMS.E`, Vrvu01; vorhandener `ims.model.vu_rules` | `ims.market.runner.actor_draws`, `side_result` | Vorhandener Angebots-/Werbekern. Neue, versionierte Zufallsbindung an Seed/VU/Periode/Kanal; keine myrndf-Gleichheitsbehauptung. |
-| `legacy_c/IMS.E`, Vrvn06; vorhandener `ims.model.vn_insurance_rules` | `side_result` | Schwelle und günstigstes zulässiges Angebot. Angenommene moderne ganze Kohortenaufnahme, ID-Reihenfolge, Restnachfrage unversichert. |
-| `legacy_c/ESS.C`, `IMSDATA.C`, Zustände/Perioden/Aggregate | `ims.market.contract`, `Balance`, `aggregate` | Explizite moderne Kohorten-/Risiko-/Cash-/Reservebuchung; alle aktiven VUs, A=L+E und Carryover. Neue Prospektiv-/Altreservezuordnung ist ein angenommener Vertrag, keine behauptete Altcode-Portierung. |
+| `IMS.E`, Vrvu01; vorhandener `ims.model.vu_rules` | `ims.market.runner.actor_draws`, `side_result` | Vorhandener Angebots-/Werbekern. Neue, versionierte Zufallsbindung an Seed/VU/Periode/Kanal; keine myrndf-Gleichheitsbehauptung. |
+| `IMS.E`, Vrvn06; vorhandener `ims.model.vn_insurance_rules` | `side_result` | Schwelle und günstigstes zulässiges Angebot. Angenommene moderne ganze Kohortenaufnahme, ID-Reihenfolge, Restnachfrage unversichert. |
+| `ESS.C`, `IMSDATA.C`, Zustände/Perioden/Aggregate | `ims.market.contract`, `Balance`, `aggregate` | Explizite moderne Kohorten-/Risiko-/Cash-/Reservebuchung; alle aktiven VUs, A=L+E und Carryover. Neue Prospektiv-/Altreservezuordnung ist ein angenommener Vertrag, keine behauptete Altcode-Portierung. |
 | Bestehende Python-Lebens-/Krankenketten | `actuarial` | Pro moderner VU isolierter vorhandener Vertrag mit lokaler ID1. Originalquelle und stabile moderne ID bleiben im Nachweis; geschlossene Lebensbestände, erklärte Krankenprofile. |
 | E05-01/E05-02 aus Boardplan #292 | `profile`, Informationssnapshots | Kosten einmal in Entscheidungsperiode, Vorlauf und begrenztes Wirkfenster; keine überlappenden Parameter. VU-Information höchstens P−1; Kunden kennen aktuelle öffentliche Angebote vor Risikobuchung. |
 

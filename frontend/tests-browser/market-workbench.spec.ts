@@ -60,10 +60,14 @@ test("AP5: überlappende Peers, leere Sparte und reine Filter ohne Neuberechnung
   await panel.getByLabel("Markt Vergleichsgruppe", { exact: true }).selectOption("peer:Vergleich_B");
   await expect(panel.getByTestId("market-equity")).toHaveText("212,0000");
   await expect(panel.getByTestId("market-grand-total")).toContainText("Eigenkapital 315,0000");
-  await panel.getByLabel("Markt Vergleichsgruppe", { exact: true }).selectOption("family:Preis_VU1");
+  const family = result.source_input.families.find((f: any) => f.sector_id === "motor" && f.parameters.price === "2").family_id;
+  await panel.getByLabel("Markt Vergleichsgruppe", { exact: true }).selectOption(`family:${family}`);
   await panel.getByLabel("Markt Sparte", { exact: true }).selectOption("life");
   await expect(panel.getByTestId("market-equity")).toHaveText("0,0000");
   await panel.getByLabel("Markt Sparte", { exact: true }).selectOption("motor");
+  const familyRow = rows(result.sides.variant.family_rows).find(r => r.family_id === family && r.sector_id === "motor" && r.period === 6)!;
+  await expect(panel.getByTestId("market-equity")).toHaveText(formatted(familyRow.closing_equity as string));
+  await panel.getByLabel("Markt Vergleichsgruppe", { exact: true }).selectOption("insurance:Gruppe_1");
   await expect(panel.getByTestId("market-equity")).toHaveText("103,0000");
   for (const role of ["ceo", "cio", "coo", "cso_sales"]) await page.getByLabel("Meine Rolle", { exact: true }).selectOption(role);
   await page.evaluate(() => { location.hash = "overview"; }); await page.getByRole("link", { name: "Kunden im Markt verfolgen", exact: true }).click();

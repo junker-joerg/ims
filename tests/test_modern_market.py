@@ -62,6 +62,8 @@ class MarketTests(unittest.TestCase):
                     self.assertEqual(r["opening_assets"], previous["closing_assets"])
         peers = [r["closing_assets"] for r in side["peer_rows"] if r["period"] == 6 and r["sector_id"] == "total"]
         self.assertEqual(peers, ["215.0000", "212.0000"])
+        active_families = {r["family_id"]: r["closing_assets"] for r in side["family_rows"] if r["period"] == 6 and r["sector_id"] == "total" and r["active_vu_count"]}
+        self.assertEqual(active_families, {"Festpreis_2": "215.0000", "Festpreis_3": "100.0000"})
 
     def test_replay_and_financial_prefixes_all_four_sectors(self):
         long = self.checked(workshop_case("market", 10, 3))
