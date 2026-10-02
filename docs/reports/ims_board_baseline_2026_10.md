@@ -65,6 +65,8 @@ Im jeweiligen Checkout mit eigener Umgebung:
 .\.venv\Scripts\python.exe -m pytest tests\test_ict_workshop.py tests\test_api_ict_workshop.py tests\test_api_seminar.py -q
 ```
 
-Der Runner schreibt ausschließlich die angegebene Berichtdatei. Ergebnisse des
-Planungs-PR werden im Handoff ergänzt; ein erfolgreicher Bestandslauf ersetzt
+Der Runner schreibt ausschließlich die angegebene Berichtdatei. 27 bestehende
+ICT-/API-/Seminarprüfungen bestanden in 155,80 Sekunden; eine vorhandene
+Starlette-Testclient-Deprecation-Warnung. 35 Planprüfungen bestanden ebenfalls.
+CI-Stand und PR #292 stehen im Handoff; ein erfolgreicher Bestandslauf ersetzt
 keine Benutzerabnahme oder eine fachliche Freigabe der neuen Modellkanäle.

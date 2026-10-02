@@ -5,7 +5,9 @@
 Produkt-main `81146aa8657e2d507cc51c921207e80895f78340` (#291) frisch geprüft;
 primärer Checkout sauber, keine offenen PRs beim Start. Vorhandener verwalteter
 Worktree mit eigener editable Python-3.12-Umgebung wiederverwendet. Arbeitsbranch
-`codex/ims-board-strategy-plan`. Keine neue Simulation, kein Merge/Release.
+`codex/ims-board-strategy-plan`, Draft-PR
+https://github.com/junker-joerg/ims/pull/292. Erster Liefercommit `ff784ff`.
+Keine neue Simulation, kein Merge/Release.
 
 Lieferung: 22 Primärquellen und versionierte neun-dimensionale Evidenzmatrix,
 synthetischer Drei-VU-DORA-Vertrag, sechs tatsächliche Bestands-ICT-Läufe plus
@@ -26,8 +28,16 @@ Offen: Benchmark-PDF G-BENCH nicht zugänglich; keine Zahlen übernommen.
 Proprietäre Werkzeuge nicht getestet, aktuelle API-/Kalibrierungs-/Kundennachweise
 teilweise unbekannt; kein Alleinstellungsnachweis. Neue Risiko-/Zeit-/Cash-/
 Capability- und Lebens-/RV-Verträge bleiben fachliche Tore.
-Vor Abschluss Test-/CI-Ergebnis und PR-Link ergänzen. Bei Fortsetzung denselben
-Draft-PR verwenden. Nach Review echte Planfreigabe dokumentieren; Merge erst nach
+35 Plan-/Status-/Kompatibilitätsprüfungen und 27 bestehende ICT-/Seminar-API-Tests
+bestanden (155,80 Sekunden; vorhandene Starlette-Deprecation-Warnung).
+Echte CLI-Läufe: legacy auto kein Paket, Board auto AP4, AP4/AP10-Vorschauen;
+AP10 authorized erwartungsgemäß abgewiesen. CI-Plancheck für `ff784ff` bestanden:
+https://github.com/junker-joerg/ims/actions/runs/36968923867.
+Browser-/Installer-/Release-Gate-Checks zu diesem Zeitpunkt noch laufend;
+keine grüne Gesamtabnahme behauptet. Abschlussdokumentation und gezielte
+Prüfverbesserung folgen im selben PR; aktuellen Head und seine CI beim Review
+erneut prüfen. Keine zusätzliche externe Windows-/Benutzerabnahme in diesem Auftrag.
+Bei Fortsetzung denselben Draft-PR verwenden. Nach Review echte Planfreigabe dokumentieren; Merge erst nach
 gesondertem Auftrag, danach eigener AP4-Umsetzungsauftrag.
 
 Stand 01.10.2026. AP1 ist abgenommen und in main übernommen:

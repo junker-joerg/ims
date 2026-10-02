@@ -36,6 +36,17 @@ entstehen unabhängig vom Antragsrückstand. Eine später folgende Erweiterung
 kann die vorhandenen vier ICT-Prozesse aufnehmen; sie darf dieselbe Personal-
 kapazität dann nicht vierfach vergeben.
 
+Die zwei Vorgänge sind zunächst eine fest deklarierte Arbeitslast aus den
+18 bestehenden Risiken, etwa Vertragsänderungen/Wechselprüfungen, keine zwei
+automatisch neu erzeugten Versicherungsverträge. Ein Risiko kann mehrere
+verschiedene Verwaltungsvorgänge, aber höchstens einen offenen Wechselantrag
+haben. Der gekoppelte Versuch ersetzt die konstante Last durch protokollierte
+Vorgänge und Kundenbewegungen; die reine Handtabelle hält sie ausdrücklich fest.
+Grund-Personalkosten drei je Haus/Periode werden auch im Ausfall bezahlt;
+Rückstand kostet 0,2 je Vorgang am Periodenende, Nacharbeit zunächst null.
+Andere Prozess-/Vorsorgekosten benötigen eigene Eingaben, keine implizite
+zusätzliche Marge pro bearbeitetem Antrag.
+
 Standardpfad: `Portal F/G/H → P-Antragsdienst → P-Identität und P-Daten`.
 Alle drei nutzen den gemeinsamen synthetischen Provider P. Ausfall E1 ist
 `[2,4)`, Intensität 100 Prozent. Eine nominelle Ersatzlösung mit P-Identität
@@ -155,7 +166,10 @@ zum jeweiligen Informationszeitpunkt gelangt in Entscheidungen.
 
 Unverdiente Prämien und längerfristige Verpflichtungen werden im minimalen Fall
 durch einstündige Periodenverträge vermieden, ausdrücklich keine reale Policen-
-kalibrierung. Schlussbericht zeigt ausstehende Zahlungen/Rückstände; ein optionaler
+kalibrierung. Sie verlängern sich automatisch beim bisherigen Haus, solange
+kein angenommener Wechsel oder ausdrücklich unversicherter Abgang wirksam wird;
+der Antragsausfall beendet deshalb nicht automatisch den Versicherungsschutz.
+Schlussbericht zeigt ausstehende Zahlungen/Rückstände; ein optionaler
 Run-off-Vergleich mit unverändertem Vertrag prüft Horizonteffekte. Keine doppelte
 Verlustbuchung zwischen Marktbilanz und ICT-Overlay.
 

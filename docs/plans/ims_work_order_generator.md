@@ -21,6 +21,9 @@ Paket. Eine AP10-Vorschau benennt offene AP4–AP7-Abhängigkeiten. `deferred` u
 `done` erzeugen auch bei expliziter Auswahl keinen Auftrag. Vorschlagsstatus
 erzeugt keinen freigegebenen Auftrag. Fehler löschen ältere Ausgabedateien im
 angegebenen Zielordner, damit kein veralteter Auftrag übrig bleibt.
+Das frühere Feld `existing_work_order_generator_supports_this_plan=false` im
+unveränderten AP4–AP9-Manifest dokumentiert den Werkzeugstand seiner Annahme.
+Die Erweiterung dieses PR prüft dieses Manifest jetzt ohne rückwirkende Änderung.
 
 ## Freigegebener Auftrag nach tatsächlicher menschlicher Freigabe
 

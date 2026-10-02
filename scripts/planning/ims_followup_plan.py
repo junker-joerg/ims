@@ -12,6 +12,14 @@ BOARD_SCHEMA = "ims.board-strategy-plan.v1"
 PLAN_STATES = {"proposed", "accepted", "deferred"}
 WORK_STATES = {"proposed", "deferred", "planned", "in_progress", "blocked", "done"}
 DISPOSITIONS = {"retained", "moved", "amendment", "unchanged", "deferred"}
+MARKET_BENEFITS = {
+    "AP4": "Einsteiger und Wiedereinsteiger können Fall, nächsten Schritt und eine Ergebnisänderung bis Eingabe/Regel/Buchung erklären.",
+    "AP5": "Kunden-/Risikowechsel und Strategiefamilien mit konsistenten Einzel-VU- und Marktsummen vergleichen.",
+    "AP6": "Einen begrenzten deutschen Modellmarkt mit nachvollziehbaren Gruppen und sichtbaren Datenlücken laden.",
+    "AP7": "Vier deklarierte Schockverläufe und Gegenmaßnahmen mit erklärter Markt-/ICT-Wirkung untersuchen.",
+    "AP8": "Marktprozesse, Gruppen und Strategiefamilien unmittelbar in IMS bis zur Buchung interpretieren.",
+    "AP9": "Den vorhandenen Seminarumfang mit tatsächlichen Anwender-, Dokumentations- und Installer-Nachweisen abnehmen.",
+}
 EXPECTED_REQUIREMENTS = (
     {f"AP{ap}-R{i:02}" for ap, count in [(10,7),(11,7),(12,8),(13,8),(14,8)] for i in range(1,count+1)}
     | {"E05-01","E05-02","E07-01","E08-01","E09-01","E04-01","E06-01"}
@@ -54,7 +62,7 @@ def normalize(raw: dict, plan: dict, path: str, legacy: bool = False) -> dict:
     pid = raw["id"]
     return {**raw, "branch": raw.get("branch", raw.get("branch_proposal")),
         "plan_status": "accepted" if legacy else raw.get("plan_status", plan["status"]),
-        "decision_benefit": raw.get("decision_benefit", "Angenommene Lieferung: " + raw["title"]),
+        "decision_benefit": raw.get("decision_benefit", MARKET_BENEFITS.get(pid, "Angenommene Lieferung: " + raw["title"])),
         "source_files": raw.get("source_files", [path, plan["plan_document"]]),
         "source_ids": raw.get("source_ids", []),
         "requirement_ids": raw.get("requirement_ids", [r["id"] for r in plan.get("requirements", []) if pid in r.get("packages", [])]),
@@ -148,6 +156,8 @@ def validate_board(plan: dict, root: Path) -> None:
                 "Fünf verschiedene Evidenzebenen erforderlich.")
         for claim in row["dimensions"] + row["layers"]:
             require(bool(claim["source_ids"]) and all(s in source_ids for s in claim["source_ids"]), "Aussage ohne gültige Quelle.")
+    require(all(gap in {g["id"] for g in research.get("gaps", [])} for gap in plan.get("missing_sources", [])),
+            "Unbekannte Quellenlücke.")
     reqs = plan.get("requirements", [])
     ids = [r.get("id") for r in reqs]
     require(len(ids) == len(set(ids)), "Doppelte Anforderungs-IDs.")
@@ -262,6 +272,10 @@ def render_order(portfolio: dict, p: dict, mode: str, commit: str, main_sha: str
     unmet = [d for d in sorted(dependency_ids(portfolio,p["id"])) if not main_done(portfolio["by_id"][d],root,main_sha)]
     amendments = [a for a in portfolio["plan"].get("candidate_amendments",[]) if a["package"] == p["id"]]
     proposal_note = "\n".join(f"- {a['status']}: {', '.join(a['requirement_ids'])}; nicht automatisch angenommener Lieferumfang." for a in amendments) or "Keine Erweiterung des angenommenen Umfangs durch diesen Auftrag."
+    authority = "Keine Umsetzungsfreigabe in dieser Vorschau."
+    if mode == "authorized":
+        record = read_json(receipt)
+        authority = f"Beleg: {record['authorized_by']}, {record['authorized_at']}; Umfang {record['scope']}.\n\nDokumentierter Auftrag: {record['user_request']}"
     return f"""# {label}: {p['id']} – {p['title']}
 
 Geprüfter Checkout: {commit}; geprüfte main-Referenz: {main_sha}.
@@ -269,6 +283,8 @@ Planstatus: {p['plan_status']}; technischer Status: {p['status']}.
 Umsetzungsfreigabe: {str(receipt) if mode == 'authorized' else 'keine (Vorschau)'}.
 Branchvorschlag: {p['branch']}; Paketmanifest: {p['_manifest']}.
 Abhängigkeiten: {', '.join(p['depends_on'])}; offene main-Belege: {', '.join(unmet) or 'keine'}.
+
+{authority}
 
 ## Entscheidungsnutzen
 
