@@ -1,5 +1,24 @@
 # AP5 – Arbeitsstand und Handfallprüfung
 
+## AP5 technisch zur Anwenderabnahme bereit
+
+02.10.2026: Vertragsannahme dokumentiert, M2–M4 umgesetzt. Abschlussbericht
+`docs/reports/ims_ap5_abschlussbericht.md` und Prüfprotokoll
+`docs/reports/ims_ap5_verification.json`: 16 aktuelle AP5-Modell/APItests,
+50 lokale Browserfälle, nochmals zehn aktuelle AP5-Browserfälle inklusive
+Offlinebildern; vollständige Pythonregression 2715+14. Alle vier erforderlichen
+Checks für Produkthead 04617fb erfolgreich; CI-Release-Gate 2715+14,
+Installer-Lifecycle 14 und installierte Browserfälle 50 erfolgreich.
+40/41×100 mit stabilen Quellen-/Ergebnisdigests und gemessenen Grenzen.
+Guide, Bildstände und ausdrückliche Excel-/Prefixerklärung aktualisiert.
+Anwenderfassung alpha.5 / Windows 2.0.0.5. Finalen Dokumentationshead im selben
+Draft-PR #294 prüfen; keine Modelländerung nach geprüftem Produkthead.
+
+Manifest: AP5 done (technisch)/technically_complete, Produktabnahme und Merge
+ausstehend. Keine Freigabe für AP6–AP14 oder Public-Release. Hauptcheckout
+bleibt AP4-main 9b0d45a. Nächster menschlicher Schritt: alpha.5-Produkt prüfen.
+Die untenstehenden Zwischenstände bleiben datierte Herkunft.
+
 Stand nach Vertragsannahme am 02.10.2026. **AP5 in Arbeit, produktiver Runner/API/UI implementiert.**
 Der Auftraggeber nahm den Vorschlag mit „Vertrag annehmen und umsetzen“ an;
 [Annahmebeleg](ims_ap5_contract_acceptance.md). Fortsetzung im selben

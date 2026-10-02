@@ -4,6 +4,8 @@ Anwenderfassung **2.0.0-alpha.5**. AP5 erweitert das Managementlabor um
 einen gemeinsam berechneten Modellmarkt. Die bisherigen AP3-Seminarfälle
 und die AP4-Einstiegsübersicht bleiben über ihre eigenen Menüpunkte erreichbar.
 Eine Modellperiode ist kein automatisch festgelegter Monat oder Kalenderjahr.
+Mit zwei oder fünf Perioden prüfen Sie den gemeinsamen Anfang. Für eine
+Variante ab Periode 6 wählen Sie mindestens zehn Perioden.
 
 ## Der erste kleine Markt: fünf Minuten zum Handfall
 
@@ -20,7 +22,8 @@ Eine Modellperiode ist kein automatisch festgelegter Monat oder Kalenderjahr.
 5. Unter **Kundenwahl und Risiko** steht VU2 mit Prämie 20 und neuem Schaden 40.
    Unter **Marktbuchung** stehen Aktiva 172, Passiva 15, Eigenkapital 157.
    Die Identität ist 172 = 15 + 157.
-6. **Markt Anbieter → Handfall VU1** und **Einzel-VU 1 in Excel** wählen.
+6. **Anbieter für Variante und Einzel-VU-Excel → Handfall VU1** und
+   **Einzel-VU 1 in Excel** wählen.
    Ihre alte Schadenzahlung ist 5, ihre verbliebene Verbindlichkeit 15.
    Die neue Prämie und der neue Schaden werden bei VU2 gebucht. Alte Reserven
    wandern durch einen Kundenwechsel nicht mit.
@@ -141,6 +144,10 @@ Baseline/Variante, ihre Kundenbuchungen, Gruppenzuordnung und Herkunft.
 Markt-, Familien- und Vergleichsgruppen werden direkt in IMS ausgewertet.
 Die vollständige Marktquelle liegt für Reproduzierbarkeit im Herkunftsblatt;
 die Detailbilanz bleibt die ausgewählte VU. Vier Nachkommastellen sind erhalten.
+Die Zellen enthalten Dezimaltext, damit Excel große Beträge und die vier
+Nachkommastellen nicht still rundet. Für eigene Excel-Formeln eine Arbeitskopie
+anlegen und dort die benötigten Dezimaltexte passend zur Spracheinstellung
+in Zahlen konvertieren; der ursprüngliche Export hält die geprüften Werte fest.
 
 **Marktquelle als JSON sichern** speichert den vollständig geprüften Eingangsfall.
 **Marktdatei öffnen** liest ihn offline wieder ein und rechnet frisch.

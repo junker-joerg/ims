@@ -32,8 +32,8 @@ nicht in AP3-Schadeneingaben oder historische 25er-Validatoren hineingeschrieben
 | --- | --- | --- |
 | M1 Fachvertrag | Zwei/drei VUs, Risikoträger/Altreserve, Mengen/Gruppe/Familie, Maßnahmen und Information erklären; fachlich annehmen. | Handfallproben bestanden; vom Auftraggeber am 02.10.2026 angenommen. |
 | M2 Gemeinsame Rechnung | Eigener Validator, Periodenphasen, Kohorten-/Risikoledger, alle VU-Bilanzen, gruppierte Summen, stabiler RNG, Prefixe. | Implementiert; Handfälle, Replay, Prefixe und 40/41×100-Produktläufe bestanden. |
-| M3 Anschluss | API und erste Marktsicht mit Zeit-/Sparten-/Familien-/Vergleichsfilter, Erklärweg und Einzel-VU-Excel. | Angeschlossen; Browserprüfung läuft. |
-| M4 Lieferung | Einsteigeranleitung, vollständige Regressionen, gemessene 40/41×100-Grenzen, neue Releasekennung, Installer und CI. | Anleitung und alpha.5-Metadaten vorhanden; Installer/Gesamtprüfungen folgen. AP5-Merge/Public-Release nicht beauftragt. |
+| M3 Anschluss | API und erste Marktsicht mit Zeit-/Sparten-/Familien-/Vergleichsfilter, Erklärweg und Einzel-VU-Excel. | Vollständig angeschlossen und geprüft; zehn aktuelle AP5-/50 Gesamtbrowserfälle bestanden. |
+| M4 Lieferung | Einsteigeranleitung, vollständige Regressionen, gemessene 40/41×100-Grenzen, neue Releasekennung, Installer und CI. | Technisch fertig: Anleitung/Bilder, alpha.5-Installer, Python- und Browserregressionen; vier Produkt-CI-Checks erfolgreich. AP5-Produktabnahme/Merge/Public-Release ausstehend. |
 
 Ein eigener moderner ID-Validator muss mindestens 41 Anbieter zulassen, ohne
 das alte Vdefmd6-Limit aufzuheben. Das Ergebnisvolumen und Laufzeitbudget werden
@@ -60,6 +60,7 @@ gesichert; keine Erhebungsquote fließt in den AP5-Risikopfad ein.
 ## Fortsetzen
 
 Die echte Zustimmung zu `ims_ap5_market_contract.md` ist dokumentiert.
-Im selben PR M2–M4 vollständig prüfen. Bei Änderungen zuerst
+M2–M4 sind im selben PR umgesetzt und geprüft; Abschlussbericht und Prüfprotokoll
+unter `docs/reports/ims_ap5_*`. Bei Änderungen zuerst
 betroffene Handfälle nachführen. Technische Fertigstellung, Benutzerabnahme
-und Merge bleiben getrennt; `completion_evidence` ist bisher leer.
+und Merge bleiben getrennt; `completion_evidence` enthält technische Nachweise.

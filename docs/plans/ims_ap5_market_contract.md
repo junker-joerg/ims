@@ -6,7 +6,7 @@ freigegeben:** „Vertrag annehmen und umsetzen“. Beleg:
 Der AP5-Umsetzungsauftrag liegt vor. Dieser Vertrag konkretisiert die
 angenommene Marktplanung und die separat angenommenen Ergänzungen E05-01/02
 aus dem Vorstandsplan. Er ändert bisherige AP3-Ergebnisse nicht.
-Geplanter neuer Vertrag: `ims.modern-market.v1`; AP3 bleibt
+Neuer umgesetzter Vertrag: `ims.modern-market.v1`; AP3 bleibt
 `ims.modern-strategy-input.v1` mit seiner Fokus-VU-Rechnung.
 
 ## Entscheidung in Alltagssprache

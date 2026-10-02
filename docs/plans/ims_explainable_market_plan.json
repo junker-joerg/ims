@@ -173,7 +173,7 @@
     {
       "id": "AP5",
       "title": "Marktmodell und auswertbare Strategiefamilien",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "AP4"
       ],
@@ -198,10 +198,18 @@
         "Neue Lebens-Nachfrage und zusätzliche Regelkerne explizit kartiert",
         "Ressourcenlimits anhand tatsächlicher 40/41-VU-Messungen festgelegt"
       ],
-      "completion_evidence": [],
+      "completion_evidence": [
+        "docs/reports/ims_ap5_contract_acceptance.md: echte fachliche Annahme des Vorschlags 0a21cf8",
+        "docs/reports/ims_ap5_abschlussbericht.md: Umsetzung, Handfälle, API/UI/Excel, Anleitung, Herkunft und Grenzen",
+        "docs/reports/ims_ap5_verification.json: aktuelle Produkt-/Ressourcen-/Browser-/Installernachweise, alle vier CI-Checks für 04617fb erfolgreich",
+        "docs/handbook/market_ap5.md und .html: Einsteigeranleitung und echte Bildschirmbilder",
+        "Technisch zur Anwenderabnahme bereit; Produktabnahme/Merge noch ausstehend, keine AP6-Freigabe"
+      ],
       "implementation_authorized": true,
-      "technically_complete": false,
+      "technically_complete": true,
       "merged_to_main": false,
+      "user_product_acceptance": "pending",
+      "merge_authorized": false,
       "execution_authorization": {
         "schema_version": "ims.execution-authorization.v1",
         "package": "AP5",
@@ -230,14 +238,14 @@
           "origin": "docs/plans/ims_board_strategy_plan.json",
           "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
           "implementation_plan": "docs/plans/ims_ap5_implementation.md",
-          "completion_evidence": []
+          "completion_evidence": ["docs/reports/ims_ap5_verification.json: E05-01 mit aktueller Modell-/Browser-/CI-Prüfung", "docs/reports/ims_ap5_abschlussbericht.md"]
         },
         {
           "id": "E05-02",
           "origin": "docs/plans/ims_board_strategy_plan.json",
           "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
           "implementation_plan": "docs/plans/ims_ap5_implementation.md",
-          "completion_evidence": []
+          "completion_evidence": ["docs/reports/ims_ap5_verification.json: E05-02 mit aktueller Modell-/Browser-/CI-Prüfung", "docs/reports/ims_ap5_abschlussbericht.md"]
         }
       ]
     },

@@ -36,6 +36,10 @@ Fachvertragsvorschlag: `docs/plans/ims_ap5_implementation.md` und
 `docs/plans/ims_ap5_market_contract.md`. Der Auftraggeber nahm den konkreten
 Vertrag in Draft-PR #294 am 02.10.2026 mit „Vertrag annehmen und umsetzen“ an;
 Beleg `docs/reports/ims_ap5_contract_acceptance.md`. Umsetzung im selben PR.
+AP5 ist technisch fertig (`done`) und zur Anwenderabnahme vorbereitet;
+`docs/reports/ims_ap5_abschlussbericht.md` und `ims_ap5_verification.json`
+enthalten die Nachweise. `merged_to_main=false`, Produktabnahme/Mergeauftrag
+ausstehend. Ein done-Status im Branch ersetzt keinen main-Abhängigkeitsbeleg.
 AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
 und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
 jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,

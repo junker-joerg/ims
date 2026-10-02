@@ -45,7 +45,12 @@ test("AP5: Handbuch-Handfall, reale Risikobuchung und ausgewählte VU-Dateien", 
   await expect(panel.getByTestId("market-results")).toContainText(result.content_digest);
   const help = await page.context().newPage(); await help.goto("/api/seminar/handbook/market_ap5.html");
   await expect(help.getByRole("heading", { level: 1 })).toContainText("Strategiefamilien");
-  await expect(help.locator("body")).toContainText("172 = 15 + 157"); await help.close();
+  await expect(help.locator("body")).toContainText("172 = 15 + 157");
+  for (const image of await help.locator("img").all()) {
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(() => image.evaluate(element => (element as HTMLImageElement).complete && (element as HTMLImageElement).naturalWidth > 0)).toBe(true);
+  }
+  await help.close();
 });
 
 test("AP5: überlappende Peers, leere Sparte und reine Filter ohne Neuberechnung", async ({ page }) => {
