@@ -1,6 +1,7 @@
 # AP6: Arbeitsstand nach tatsächlichem AP5-Merge
 
-02.10.2026. Branch `codex/ims-german-market-top40`, Basis
+02.10.2026. [Paket-Draft-PR #295](https://github.com/junker-joerg/ims/pull/295),
+Branch `codex/ims-german-market-top40`, Basis
 `03f87662e85e6081998bab79e32ee12baac52da1` nach
 [AP5-Merge #294](ims_ap5_merge.md). Eigene vorhandene editable Umgebung im
 primären Checkout geprüft. [Authorized-Auftrag](../plans/ims_ap6_work_order.md)

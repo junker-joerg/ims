@@ -4,7 +4,8 @@ Begonnen am 02.10.2026 nach dem tatsächlichen AP5-Merge über
 [PR #294](https://github.com/junker-joerg/ims/pull/294). Basis ist
 `03f87662e85e6081998bab79e32ee12baac52da1`; der Tree entspricht dem geprüften
 AP5-Abnahmekommitt. Branch `codex/ims-german-market-top40`; alle Meilensteine
-gehören in einen Paket-Draft-PR. [AP5-Mergebeleg](../reports/ims_ap5_merge.md).
+gehören in denselben [Paket-Draft-PR #295](https://github.com/junker-joerg/ims/pull/295).
+[AP5-Mergebeleg](../reports/ims_ap5_merge.md).
 
 Der Auftraggeber beauftragte „Fahre mit dem nächsten IMS AP fort“ und erteilte
 anschließend die AP5-Abnahme/Mergefreigabe. Das nächste angenommene Paket ist

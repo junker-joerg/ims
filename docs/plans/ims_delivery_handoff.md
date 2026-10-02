@@ -15,7 +15,8 @@ vor AP6-Manifeständerung erzeugt; [Auftrag](ims_ap6_work_order.md). Branch
 primären Checkout. [Umsetzungsplan](ims_ap6_implementation.md),
 [Methodenvorschlag](ims_ap6_data_method.md),
 [Quellen](../research/ims_ap6_sources_2026_10.md) und
-[Arbeitsstand](../reports/ims_ap6_fortschritt.md) im selben Paket-Draft-PR.
+[Arbeitsstand](../reports/ims_ap6_fortschritt.md) im selben
+[Paket-Draft-PR #295](https://github.com/junker-joerg/ims/pull/295).
 
 BaFin-Dateien 2024 und Hinweise tatsächlich erreichbar; GDV 2026 und KIVI-
 Studienmitteilung 2025 geprüft. Dennoch keine vollständige konsolidierte
