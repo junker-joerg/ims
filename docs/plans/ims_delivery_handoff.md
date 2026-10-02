@@ -8,10 +8,29 @@
 Umgebung im Branch `codex/ims-explainable-roles` weiterverwendet. Tatsächlicher
 AP4-Auftrag im authorized-Generator gegen diese main-Basis bestätigt.
 AP4 in_progress; keine Abnahme/Produkt-Merge-/Releasefreigabe.
-Plan `ims_ap4_implementation.md`, laufender Bericht
-`../reports/ims_ap4_abschlussbericht.md`. Nächster Schritt: Rollen-/Übersichts-
-anschluss, Offlineanleitung, Browsernachweise und tatsächlicher alpha.4-Installer
-im selben Draft-PR. Fehlende DORA-PDF blockiert AP4 nicht; AP13 bleibt offen.
+Plan `ims_ap4_implementation.md`, archivierter Auftrag `ims_ap4_work_order.md`,
+laufender Bericht `../reports/ims_ap4_abschlussbericht.md` und Prüfprotokoll
+`../reports/ims_ap4_verification.json`. [Draft-PR #293](https://github.com/junker-joerg/ims/pull/293)
+enthält Rollen-/Übersichtsanschluss, Erklärweg, drei Bestandsdemos,
+Offlineanleitung und acht Browserbilder. Produktversion `2.0.0-alpha.4`.
+
+Produkthead `e6b546c`: lokal 35 Plan-, 48 Backend-/Desktop- und alle 40
+Browserprüfungen bestanden; tatsächlicher Installer gebaut. Windows-CI am
+identischen PR-Mergetree: 14 Lifecycle- und alle 40 installierten Browserfälle
+bestanden. Separater Browser-CI-Erstversuch 39/40: CSS-Laden scheiterte in Chromium
+mit `ERR_NO_BUFFER_SPACE`, belegt per Screenshot/Networktrace; Wiederholung 40/40
+bestanden. Alle vier erforderlichen Checks am Produkthead grün. Python-Release-
+Gate mit 2.699 Tests und 14 Untertests bestanden. Nachfolgender Berichtskommitt
+ändert nur Nachweise/Übergabe; seinen aktuellen CI-Stand separat prüfen.
+Installer und SHA-256 im Bericht; keine
+unabhängige Windows-Anwenderabnahme. Lokaler echter AP3→AP4-Updateversuch vom
+Sicherheitscheck vor Installation wegen vorhandener Startmenüverknüpfungen
+abgebrochen; Verknüpfungen erhalten. CI-Vorgänger ausdrücklich synthetisch.
+
+Nächster Schritt im selben Draft-PR: aktuelle CI prüfen und geführte
+Benutzerübung samt tatsächlicher Dauer sowie echtes AP3→AP4-Update belegen.
+Evernote-Ablage noch ausstehend. Fehlende DORA-PDF blockiert AP4 nicht;
+AP13 bleibt offen. Kein AP4-Merge/Release, kein AP5-Start autorisiert.
 
 ## Planungsauftrag vom 02.10.2026: zum Merge freigegeben
 
