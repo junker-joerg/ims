@@ -5,6 +5,17 @@ Maschinenlesbare Quellen, Hashes und offene Nachweise:
 [Quellenregister](ims_ap6_sources_2026_10.json).
 [Methodenvorschlag](../plans/ims_ap6_data_method.md).
 
+Nach der bisherigen Datenfrage wurde `Versicherungsgruppen_Top40_2024.xlsx`
+bereitgestellt. Alle 326 Einzelwerte, Quellbezüge und 663 Formeln wurden gegen
+die unveränderten BaFin-Originale geprüft. Der
+[Prüfbericht](../reports/ims_ap6_top40_workbook_review.md) und
+[versionierte Prüfkatalog](ims_ap6_top40_2024_audit.json) halten 145 redaktionelle
+Gruppen und die vollständige Nichtauswahl fest. Rang 40/41 ist innerhalb dieser
+eingetragenen BaFin-Zuordnung getrennt. Deutsche Direktbeiträge, tatsächlicher
+Spartenmix und vollständige historische Gruppenbelege fehlen weiterhin.
+Die Workbook-Methodik zu `-` wurde gegen die BaFin-Hinweise aufgelöst: exakter
+Nullwert, kein fehlender Betrag; Originalmappe nicht geändert.
+
 | Quelle | Tatsächlich geprüft | Verwendung / Grenze |
 | --- | --- | --- |
 | [BaFin Erstversicherungsstatistik](https://www.bafin.de/DE/die-bafin/publikationen-daten/statistiken/erstversicherung/erstversicherung_node.html) | Aktuelles Portal direkt per HTTPS erreichbar; Gesamttabellen, Leben, Kranken, Schaden/Unfall 2024 und Hinweise heruntergeladen. | Quelle für Einzelgesellschaften und Prüfumfang; kein vollständiger deutscher Gruppenrang. Ältere Links und der Web-Abruf lieferten 403/404; dieser Zugangsstand ist jetzt teilweise überwunden. |

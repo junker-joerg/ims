@@ -1,0 +1,27 @@
+{
+  "package": "AP6",
+  "recorded_on": "2026-10-02",
+  "release_version": "2.0.0-alpha.6",
+  "windows_file_version": "2.0.0.6",
+  "scope": "accepted_bafin_2024_reference_workshop",
+  "scope_acceptance": "docs/reports/ims_ap6_scope_acceptance.md",
+  "german_direct_market_claim": false,
+  "input_workbook_sha256": "36253bf320b152ad031642b68402cbe4d7aa1e25dea5104fa6478ba4304b67a3",
+  "catalog_digest": "03ee33f97a772d8a88b69210784d5b4502ed533745bdd6f097eee699ec7c7b1a",
+  "local_checks": {
+    "audit_tests": {"passed": 10, "duration_seconds": 0.009},
+    "reference_tests": {"passed": 10, "duration_seconds": 76.697},
+    "ap5_regression_tests": {"passed": 16, "duration_seconds": 51.649},
+    "planning_tests": {"passed": 35, "duration_seconds": 5.433},
+    "frontend_build": {"passed": true},
+    "browser_journeys": {"passed": 2, "source_bundle_roundtrip": true, "fresh_excel": true, "overrides_and_stable_ids": true},
+    "browser_40x100": {"passed": 1, "duration_displayed": "1.2 minutes", "no_page_errors": true},
+    "browser_corrected_theme_matrix": {"passed": 6, "duration_seconds": 33.331545, "viewport_sizes": ["1440x900", "1024x768", "390x844"], "themes": ["light", "dark"], "theme_asserted": true, "minimum_text_contrast_required": 4.5, "no_axe_violations": true, "no_horizontal_page_overflow": true},
+    "earlier_theme_test_issue": "Initial matrix used wrong storage key, both rendered light. Corrected to ims.theme and rerun with explicit data-theme assertion; earlier dark evidence is not used."
+  },
+  "ci": {"status": "pending_current_product_commit"},
+  "installer": {"status": "pending_current_product_commit", "artifact_downloaded": false, "installed_product_checked": false},
+  "user_acceptance": "pending",
+  "merge_authorized": false,
+  "merged_to_main": false
+}

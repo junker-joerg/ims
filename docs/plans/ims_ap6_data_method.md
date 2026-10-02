@@ -1,9 +1,22 @@
 # AP6: Vorschlag für Daten- und Auswahlmethode
 
+**Aktuelle Umfangsentscheidung:** Der Auftraggeber hat den gekennzeichneten
+BaFin-Referenzfall für AP6 ausdrücklich angenommen; [Beleg](../reports/ims_ap6_scope_acceptance.md).
+Die nachstehende ursprüngliche Deutschlandprüfung bleibt als Herkunft erhalten.
+Die Umsetzung wird mit diesem beschränkten Quellenumfang und sichtbar
+bearbeitbaren Workshop-Annahmen im selben PR fortgesetzt.
+
+
 Stand 02.10.2026. **Methodenvorschlag, keine nachgewiesene Auswahl oder
 fachliche Abnahme.** [Umsetzungsplan](ims_ap6_implementation.md) und
 [Quellen-Dossier](../research/ims_ap6_sources_2026_10.md).
 Das angenommene AP6-Tor verlangt eine vollständige Rangbasis. Es ist noch offen.
+
+Die bereitgestellte BaFin-Top-40-Mappe 2024 hat die vollständige Rechenprüfung
+ihres eigenen Quellenumfangs bestanden. [Befund und Abnahmeauswirkung](../reports/ims_ap6_top40_workbook_review.md).
+Sie verwendet ein anderes Maß und eine andere Geografie als der nachstehende
+Deutschlandvorschlag. Der [vorläufige Referenzfall](ims_ap6_bafin_reference_proposal.md)
+ist vorgeschlagen, noch nicht angenommen.
 
 ## Auswahlmaß, Jahr und Gruppen
 

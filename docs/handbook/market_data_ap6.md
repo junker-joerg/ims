@@ -32,3 +32,11 @@ erklärt die aktuell geprüften Statistiken. Gemeinsames Jahr, vollständige
 Gruppenrangfolge, Spartenmix und Grenze 40/41 sind noch offen. Erst eine
 überprüfbare Auswahl wird zum ladbaren Deutschland-Fall. Diese Arbeitsfassung
 ist noch nicht als neue installierte Offline-Anleitung geprüft.
+
+Die inzwischen gelieferte Tabelle lässt sich vollständig nachrechnen. Sie
+beschreibt aber Beiträge der erfassten BaFin-Gesellschaften einschließlich
+Ausland und übernommener Rückversicherung. Verdient heißt: dem Geschäftsjahr
+zugerechnet; gebucht bezeichnet eine andere Beitragsgröße. Das kann zu anderen
+Rängen führen. Eine gute Rechenprüfung ersetzt die Prüfung dieser Abgrenzung
+nicht. Der [Prüfbericht](../reports/ims_ap6_top40_workbook_review.md) erklärt,
+welche Aussagen die Tabelle trägt und welche weitere Belege benötigen.

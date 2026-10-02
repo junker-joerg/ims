@@ -41,6 +41,30 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
     encoded = json.dumps(result["source_input"], ensure_ascii=False, allow_nan=False)
     for index in range(0, len(encoded), 30000):
         append(source, ["source_input_json_chunk", encoded[index:index + 30000]])
+    if "source_bundle" in result:
+        reference = result["reference"]
+        group = next(g for g in reference["groups"] if g["insurer_id"] == insurer_id)
+        facts = book.create_sheet("BaFin-Quellenwerte")
+        append(facts, ["Verdiente Bruttobeiträge, Mio. EUR; einschließlich Ausland und übernommener Rückversicherung. Keine konzerninterne Eliminierung; kein vollständiger deutscher Direktmarkt."])
+        append(facts, ["Redaktionelle Gruppenzuordnung, noch keine vollständige unabhängige Kontrollprüfung."])
+        fields = ["workbook_row", "entity_source_name", "source_sector", "raw_value", "source_unit", "premium_million_eur", "value_status", "source_id", "source_sheet", "source_cell"]
+        append(facts, fields)
+        for row in result["source_bundle"]["source_catalog"]["entities"]:
+            if row["workbook_row"] in group["entity_rows"]:
+                append(facts, [row[f] for f in fields])
+        for entry in result["source_bundle"]["source_catalog"]["source_files"]:
+            append(facts, [entry["id"], entry["url"], entry["sha256"]])
+        assumptions = book.create_sheet("Workshop-Annahmen")
+        for key, value in {"source_scope": reference["source_scope"], "selected_group": group,
+                           "reference_universe_million_eur": reference["universe_total_million_eur"],
+                           "selected_total_million_eur": reference["selected_total_million_eur"],
+                           "rest": reference["rest"], "workshop": result["source_bundle"]["workshop"],
+                           "overrides": result["source_bundle"]["overrides"],
+                           "model_binding": reference["model_binding"], "model_binding_note": reference["model_binding_note"]}.items():
+            append(assumptions, [key, json.dumps(value, ensure_ascii=False) if isinstance(value, (dict, list)) else value])
+        bundle = json.dumps(result["source_bundle"], ensure_ascii=False, allow_nan=False)
+        for index in range(0, len(bundle), 30000):
+            append(source, ["source_bundle_json_chunk", bundle[index:index + 30000]])
     output = BytesIO()
     book.save(output)
     return output.getvalue()

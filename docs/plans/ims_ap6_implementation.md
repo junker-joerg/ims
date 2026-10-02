@@ -1,4 +1,11 @@
-# AP6: belegter deutscher Modellmarkt mit 40 Gruppen
+# AP6: gekennzeichnete BaFin-Gruppenauswertung mit 40 Modell-VUs
+
+**Aktuelle Umfangsentscheidung:** Der Auftraggeber hat den gekennzeichneten
+BaFin-Referenzfall für AP6 ausdrücklich angenommen; [Beleg](../reports/ims_ap6_scope_acceptance.md).
+Die nachstehende ursprüngliche Deutschlandprüfung bleibt als Herkunft erhalten.
+Die Umsetzung wird mit diesem beschränkten Quellenumfang und sichtbar
+bearbeitbaren Workshop-Annahmen im selben PR fortgesetzt.
+
 
 Begonnen am 02.10.2026 nach dem tatsächlichen AP5-Merge über
 [PR #294](https://github.com/junker-joerg/ims/pull/294). Basis ist
@@ -30,10 +37,24 @@ Strategien, Anfangsbilanzen, Kundenrisiken oder ICT-Abhängigkeiten.
 
 | Meilenstein | Lieferung / Prüfweg | Stand |
 | --- | --- | --- |
-| M1 Daten- und Methodenprüfung | Quellen-Dossier, gemeinsames Jahr, direkte deutsche gebuchte Bruttobeiträge, Gruppen-/Tochterzuordnung, vollständige Rangbasis und Grenze 40/41. | Recherche und Methodenvorschlag vorhanden; Rangbasis, Jahr und Auswahl noch nicht nachgewiesen. |
+| M1 Daten- und Methodenprüfung | Quellen-Dossier, gemeinsames Jahr, direkte deutsche gebuchte Bruttobeiträge, Gruppen-/Tochterzuordnung, vollständige Rangbasis und Grenze 40/41. | Gelieferte BaFin-Mappe: 326 Quellwerte und 663 Formeln geprüft, 145 redaktionelle Gruppen und begrenzte 40/41-Grenze nachgerechnet; Deutschlandumfang, Gruppen-Vollprüfung und AP6-Auswahl offen. |
 | M2 Daten und Modellabbildung | Editierbare Primärdaten, stabile IDs, genau 40 Gruppen, belegte Sparten und Gewichte, fehlende Werte sowie nicht modellierte Sparten; getrennter Workshop-Vertrag. | Offen; M1-Tor bleibt verbindlich. |
 | M3 API, IMS und Export | Offline-Demooriginal, bearbeitbare Übernahme/Import, frische Rechnung, sichtbare Quellen/Annahmen und Einzel-VU-Excel. | Offen; keine Top-40-Demo angekündigt oder freigeschaltet. |
 | M4 Prüfung und Lieferung | Deterministische Referenzfälle, aktuelle Browser-/Ressourcenprüfung, Einsteigeranleitung/Glossar, höhere unbenutzte Releasekennung und echter Installer. | Offen; aktuelle Anwenderfassung bleibt alpha.5. |
+
+## Aktuelle Umsetzung des angenommenen Referenzumfangs
+
+Der [Quellen-/Modellvertrag](ims_ap6_reference_mapping.md) konkretisiert die
+angenommene Umfangsänderung. M1: alle Originalwerte und Formeln nachgerechnet;
+redaktionelle Gruppen-/Umfangsgrenzen bleiben am Fall sichtbar. M2: gepinnter
+Offline-Katalog, stabile Identitäten, begründete Overrides, Neusortierung aller
+145 Kandidaten, genaue Quellengewichte und disjunkte Reste implementiert.
+M3: API-Referenzbündel, schreibfreies Original, eigene Sitzung, Mix-/Override-
+Bedienung, frische Läufe und quellengebundener Einzel-VU-Export implementiert.
+M4: Handfälle, 40×100-/Prefix-/Bilanzprüfungen und aktuelle Browserfälle begonnen;
+HTML-Anleitung und reale Bilder vorhanden. Neue Produktkennung alpha.6 /
+Windows 2.0.0.6 gesetzt. Installerprüfung und endgültige Paketabnahme offen.
+Die vorausgehende Tabelle beschreibt die ursprüngliche Deutschlandplanung.
 
 ## Architektur und Semantik vor Produktänderungen
 
@@ -64,3 +85,9 @@ Direktgeschäft, Einheit, Rundung und Gruppenaggregation geprüft werden. Die
 KIVI-Pressemitteilung belegt die Existenz einer Ausgabe 2025, keine Top-40-Auswahl.
 Liegt die vollständige Tabelle nicht vor, die Datenfrage offen halten. Keine
 Schätzung ersetzt Rang 40/41 und keine Vollständigkeit aus bekannten Namen ableiten.
+
+Die danach gelieferte BaFin-Top-40-Mappe wurde inzwischen vollständig
+nachgerechnet; [Prüfbericht](../reports/ims_ap6_top40_workbook_review.md).
+Ihr beschränkter Quellenumfang ist keine angenommene Änderung des AP6-Plans.
+Der [vorläufige Referenzfall](ims_ap6_bafin_reference_proposal.md) liegt konkret
+zur Entscheidung vor; nach Entscheidung im selben PR fortsetzen.

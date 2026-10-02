@@ -1,5 +1,67 @@
 # IMS-Lieferübergabe
 
+## AP6: BaFin-Referenz angenommen und implementiert; Installerprüfung läuft
+
+02.10.2026, weiterhin derselbe Draft-PR #295 und Branch
+`codex/ims-german-market-top40`. Wörtlicher menschlicher Umfangsauftrag:
+[AP6-Umfangsannahme](../reports/ims_ap6_scope_acceptance.md). Nicht erneut nach
+Deutschland-/BaFin-Umfang fragen; der gekennzeichnete Referenzfall ist angenommen.
+Quellen-/Modellvertrag: [Abbildung](ims_ap6_reference_mapping.md).
+
+Implementiert: versionierter Offline-Katalog (326 Zeilen / 145 redaktionelle
+Gruppen), stabile IDs, 40er-Auswahl, begründete Overrides, vollständige Neusortierung,
+expliziter Mix, genaue Gewichte und disjunkte Reste. Referenzbündel und frische
+API-Rechnung; schreibfreies Original, eigene Sitzung, Quellen-/Mix-Bedienung,
+Einzel-VU-Excel mit Original und Annahmen, JSON-Wiederaufnahme; HTML-Anleitung
+und reale Bilder. Produktkennung alpha.6 / Windows 2.0.0.6.
+
+Lokale Prüfung: 10 Audit-, 10 Referenz-, 16 AP5-Regressions- und 35 Plantests;
+neun verschiedene Browserfälle einschließlich 40×100 sowie korrigierter
+Hell-/Dunkelmatrix (Farbmodus explizit, Textkontrast >= 4,5:1), Frontendbau.
+[Produktbericht](../reports/ims_ap6_produktpruefung.md),
+[Verifikation](../reports/ims_ap6_verification.json). Aktuelle CI/Installer-
+und installierte Produktprüfung noch offen, M4 noch nicht fertig. Denselben
+PR fortsetzen, Fehler beheben, aktuelle Installerdatei prüfen und dann
+technische Fertigstellung/Anwenderabnahme getrennt dokumentieren. Kein Merge
+ohne eigene Freigabe; AP7–AP14 nicht beginnen. Die nachstehenden Stände sind
+historische Zwischenstände.
+
+**Aktuelle Umfangsentscheidung:** Der Auftraggeber hat den gekennzeichneten
+BaFin-Referenzfall für AP6 ausdrücklich angenommen; [Beleg](../reports/ims_ap6_scope_acceptance.md).
+Die nachstehende ursprüngliche Deutschlandprüfung bleibt als Herkunft erhalten.
+Die Umsetzung wird mit diesem beschränkten Quellenumfang und sichtbar
+bearbeitbaren Workshop-Annahmen im selben PR fortgesetzt.
+
+
+## AP6: gelieferte BaFin-Arbeitsmappe geprüft; Umfangsentscheidung offen
+
+Fortsetzung am 02.10.2026 im selben [Draft-PR #295](https://github.com/junker-joerg/ims/pull/295).
+Der Auftraggeber stellte `Versicherungsgruppen_Top40_2024.xlsx` bereit und
+beauftragte „weiter gehts“. Eingangsdatei unverändert: 44.412 Bytes,
+SHA-256 `36253bf320b152ad031642b68402cbe4d7aa1e25dea5104fa6478ba4304b67a3`.
+326 Quellzeilen und 663 Formeln gegen drei gepinnte BaFin-Originale bestanden;
+145 redaktionelle Gruppen, vollständige Nichtauswahl, 206 Gesellschaften in
+den 40er-Summen. [Prüfbericht](../reports/ims_ap6_top40_workbook_review.md),
+[versionierter Prüfkatalog](../research/ims_ap6_top40_2024_audit.json),
+Prüfer und zehn Audit-Tests im Paket ergänzt.
+
+Die begrenzte BaFin-Grenze 40/41 ist präzisionsfest, kein belegter deutscher
+Direktmarktrang. Ausland/übernommene Rückversicherung, fehlende konzerninterne
+Eliminierung, EWR-Abdeckung und fehlender Kfz-/Sach-/Rest-Mix halten das
+angenommene AP6-Tor offen. BaFin-Striche bedeuten belegte Nullwerte; der
+Methodikwiderspruch ist im Prüfkatalog aufgelöst, die Originalmappe nicht geändert.
+Gezielte Gruppenbelege geprüft, keine vollständige Gruppenprüfung behauptet.
+
+Der [konkrete vorläufige BaFin-Referenzfall](ims_ap6_bafin_reference_proposal.md)
+liegt als Vorschlag zur Umfangsentscheidung vor. Die Frage wurde dem
+Auftraggeber gestellt; ohne ausdrückliche Annahme nicht als Freigabe behandeln.
+M1 arithmetisch vorangekommen, Deutschland-/Auswahl-/Gruppentor offen;
+M2–M4 noch nicht geliefert. Weiter alpha.5, keine AP6-Produktprüfung,
+Anwenderabnahme, Mergefreigabe oder AP7–AP14-Umsetzung. Nach Entscheidung
+im selben Branch/PR historische Gruppenbelege und Modellabbildung fortsetzen.
+Die nachstehenden früheren Zugangs-/Teststände sind historische Meilensteine.
+
+
 ## AP5 tatsächlich übernommen; AP6 im eigenen Paket begonnen
 
 02.10.2026, 14:39:03 Uhr Europe/Berlin: PR #294 nach ausdrücklich erteilter

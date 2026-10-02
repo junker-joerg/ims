@@ -126,7 +126,7 @@ test("AP5: vollständiger 41er-Markt, 100 Perioden und Anzeige aus derselben API
   await panel.getByText("Exakte Markt-Verlaufstabelle öffnen", { exact: true }).click();
   const table = panel.getByRole("region", { name: "Exakte Markt-Verlaufstabelle", exact: true });
   await expect(table.locator("tbody tr")).toHaveCount(100); await expect(table.locator("tbody tr").last()).toContainText(formatted(total.closing_equity as string));
-  await expect(page.locator(".sidebar")).toContainText("2.0.0-alpha.5");
+  await expect(page.locator(".sidebar")).toContainText("2.0.0-alpha.6");
   expect(errors).toEqual([]);
   await info.attach("AP5 41×100", { body: JSON.stringify({ content_digest: result.content_digest, total, rows: 16400 }), contentType: "application/json" });
 });

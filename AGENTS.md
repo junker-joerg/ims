@@ -94,6 +94,18 @@ Der spätere Auftrag derselben Sitzung erteilt die AP5-Abnahme/Mergefreigabe
 und setzt danach das nächste Paket AP6 fort; Beleg oben. Keine Freigabe für
 AP6-Merge, Veröffentlichung oder Umsetzung von AP7–AP14.
 
+Bei der AP6-Fortsetzung wurde die bereitgestellte BaFin-Top-40-Mappe 2024
+vollständig nachgerechnet. Der Auftraggeber hat anschließend ausdrücklich
+„Ja, AP6 als gekennzeichneten BaFin-Referenzfall weiterbauen“ bestätigt.
+Umfang und Abnahmeauswirkung: `docs/reports/ims_ap6_scope_acceptance.md` und
+`docs/plans/ims_ap6_bafin_reference_proposal.md`. Diese AP6-Lieferung heißt
+„BaFin-Gruppenauswertung 2024 – Workshop“: verdiente Beiträge einschließlich
+Ausland und übernommener Rückversicherung, redaktionelle Gruppensummen ohne
+konzerninterne Eliminierung. Kein belegter deutscher Direktmarkt; Fakten,
+ungeprüfte Gruppierungen und angenommener Spartenmix bleiben sichtbar getrennt.
+Historische Planabnahmen nicht ändern. API/UI/Export/Tests/Anleitung/Installer
+weiter im selben Draft-PR #295 liefern; AP6-Abnahme und Merge bleiben offen.
+
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
 geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige
