@@ -39,10 +39,17 @@ Beleg `docs/reports/ims_ap5_contract_acceptance.md`. Umsetzung im selben PR.
 AP5 ist technisch fertig (`done`) und am 02.10.2026 vom Auftraggeber abgenommen;
 `docs/reports/ims_ap5_abschlussbericht.md` und `ims_ap5_verification.json`
 enthalten die Nachweise. `docs/reports/ims_ap5_user_acceptance.md` dokumentiert
-die ausdrücklich erteilte Anwenderabnahme und Mergefreigabe. Der tatsächliche
-Merge steht noch aus (`merged_to_main=false`). Danach ist AP6 gemäß dem
-Fortsetzungsauftrag in dieser Sitzung beauftragt; seine Daten-/Methodentore
-bleiben verbindlich. Ein done-Status im Branch ersetzt keinen main-Abhängigkeitsbeleg.
+die ausdrücklich erteilte Anwenderabnahme und Mergefreigabe. PR #294 wurde am
+02.10.2026 tatsächlich nach main übernommen
+(`03f87662e85e6081998bab79e32ee12baac52da1`); Beleg
+`docs/reports/ims_ap5_merge.md`. Alle vier Checks am Abnahmekommitt 525916c
+bestanden, Merge-Tree identisch. Danach ist AP6 gemäß Fortsetzungsauftrag in
+dieser Sitzung im Branch `codex/ims-german-market-top40` begonnen. Auftrag,
+Methodenvorschlag, Quellen und Arbeitsstand: `docs/plans/ims_ap6_*` und
+`docs/reports/ims_ap6_fortschritt.md`. Die vollständige deutsche Rangbasis,
+das gemeinsame Datenjahr und Grenze 40/41 sind noch offen; AP6 bleibt
+`in_progress`, ohne Top-40-Abnahme. Daten-/Methodentore bleiben verbindlich.
+Ein done-Status im Branch ersetzt keinen main-Abhängigkeitsbeleg.
 AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
 und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
 jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,

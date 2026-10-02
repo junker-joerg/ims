@@ -32,5 +32,7 @@ aus der allgemeinen Zustimmung abgeleitet. Der technische Befund zu seltenen
 HTTP-Verbindungsresets bleibt mit offener Ursache im PR dokumentiert.
 
 Dieser Abnahmebeleg ändert kein Modell und keine Oberfläche. Der tatsächliche
-Merge wird erst nach erfolgreichen Checks des Abnahmekommitts ausgeführt und
-anschließend mit Commit und Tree im AP6-Fortsetzungsstand nachgewiesen.
+Merge erfolgte nach vier erfolgreichen Checks des Abnahmekommitts 525916c:
+PR #294, `03f87662e85e6081998bab79e32ee12baac52da1`,
+02.10.2026 12:39:03 UTC. Der Tree entspricht exakt dem geprüften Head;
+[Mergebeleg](ims_ap5_merge.md). Danach wurde AP6 begonnen.
