@@ -1,5 +1,35 @@
 # IMS-Lieferübergabe
 
+## Planungsauftrag vom 02.10.2026: Vorstandssimulation (Vorschlag)
+
+Produkt-main `81146aa8657e2d507cc51c921207e80895f78340` (#291) frisch geprüft;
+primärer Checkout sauber, keine offenen PRs beim Start. Vorhandener verwalteter
+Worktree mit eigener editable Python-3.12-Umgebung wiederverwendet. Arbeitsbranch
+`codex/ims-board-strategy-plan`. Keine neue Simulation, kein Merge/Release.
+
+Lieferung: 22 Primärquellen und versionierte neun-dimensionale Evidenzmatrix,
+synthetischer Drei-VU-DORA-Vertrag, sechs tatsächliche Bestands-ICT-Läufe plus
+AP3-Preis-Replay, Nutzen-/Lückenbewertung, 65 nachvollziehbare Anforderungen und
+AP10–AP14 als proposed mit leeren Abschlussbelegen. Empfehlung: kleiner AP10-Fall
+nach AP7; AP13 nach AP10/AP11 ohne AP12; AP14 nach AP9/AP12/AP13. AP4–AP9 bleiben
+angenommen/unverändert, vorgeschlagene Ergänzungen separat; AP4 bleibt das nächste
+Produktpaket und wurde hier nicht gestartet.
+
+Quellen: `docs/research/ims_competition_review_2026_10.md` samt JSON;
+`docs/plans/ims_dora_reference_case.md`, `ims_board_strategy_2026_10.md` und
+`ims_board_strategy_plan.json`; echte Bestandsläufe in
+`docs/reports/ims_board_baseline_2026_10.md`/`.json`.
+Generator kompatibel für AP1–AP3 und Folgepläne, Vorschau vs freigegebener Auftrag
+mit echten Plan-/main-/Umsetzungsbelegen. Befehle in `ims_work_order_generator.md`.
+
+Offen: Benchmark-PDF G-BENCH nicht zugänglich; keine Zahlen übernommen.
+Proprietäre Werkzeuge nicht getestet, aktuelle API-/Kalibrierungs-/Kundennachweise
+teilweise unbekannt; kein Alleinstellungsnachweis. Neue Risiko-/Zeit-/Cash-/
+Capability- und Lebens-/RV-Verträge bleiben fachliche Tore.
+Vor Abschluss Test-/CI-Ergebnis und PR-Link ergänzen. Bei Fortsetzung denselben
+Draft-PR verwenden. Nach Review echte Planfreigabe dokumentieren; Merge erst nach
+gesondertem Auftrag, danach eigener AP4-Umsetzungsauftrag.
+
 Stand 01.10.2026. AP1 ist abgenommen und in main übernommen:
 PR #288, Merge 965156caf02734cc47e93615c1f8ca91692d51fe um 07:20:42 Berlin.
 Der Auftraggeber hat die unabhängige Windows-11-Abnahme, den Merge und das

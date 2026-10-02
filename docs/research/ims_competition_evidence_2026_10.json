@@ -1,0 +1,1124 @@
+{
+  "schema_version": "ims.competition-evidence.v1",
+  "version": 1,
+  "as_of": "2026-10-02",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "BCG Pricing War Games",
+      "url": "https://www.bcg.com/publications/2014/pricing-go-to-market-strategy-felix-schuler-pricing-war-games",
+      "published": "2014-06-27",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "How Pricing War Games Work; When to Use; Conducting",
+      "evidence_type": "vendor_description_historical",
+      "event_date": null
+    },
+    {
+      "id": "S02",
+      "title": "BCG Strategic Foresight",
+      "url": "https://www.bcg.com/publications/2025/navigating-the-future-with-strategic-foresight",
+      "published": "2025-01-14",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Case Study: life insurer; leading indicators",
+      "evidence_type": "vendor_method_and_case",
+      "event_date": null
+    },
+    {
+      "id": "S03",
+      "title": "McKinsey CFO war gaming",
+      "url": "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/how-cfos-can-use-war-gaming-to-support-strategic-decisions",
+      "published": "2017-02-17",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Transcript: game engine; incomplete information; controllers",
+      "evidence_type": "vendor_method_and_engine_description",
+      "event_date": null
+    },
+    {
+      "id": "S04",
+      "title": "McKinsey AI strategy",
+      "url": "https://www.mckinsey.de/capabilities/strategy-and-corporate-finance/our-insights/how-ai-is-transforming-strategy-development",
+      "published": "2025-02-05",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Simulator; Southeast Asian bank; guardrails",
+      "evidence_type": "vendor_method_and_case",
+      "event_date": null
+    },
+    {
+      "id": "S05",
+      "title": "Bain Scenario and Contingency Planning",
+      "url": "https://www.bain.com/insights/management-tools-scenario-and-contingency-planning/",
+      "published": "2023-01-31",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "How it works: scenarios, signposts, contingencies",
+      "evidence_type": "vendor_method",
+      "event_date": null
+    },
+    {
+      "id": "S06",
+      "title": "Bain Pricing Innovation",
+      "url": "https://www.bain.com/how-we-help/how-to-get-the-right-price-for-innovation/",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Step 4; agribusiness example",
+      "evidence_type": "vendor_method_and_case",
+      "event_date": null
+    },
+    {
+      "id": "S07",
+      "title": "Swiss Re IMS 2021 programme",
+      "url": "https://www.swissre.com/institute/conferences/client-programmes/insurance-management-simulation-june-2021.html",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Programme sessions 1–5; target audience; primary indexed page (direct extraction intermittent)",
+      "evidence_type": "vendor_programme_historical",
+      "event_date": "2021-06-28/2021-07-02"
+    },
+    {
+      "id": "S08",
+      "title": "Eurapco/Swiss Re Knives Out",
+      "url": "https://eurapco.com/programme/insurance-management-simulation/",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Programme; Objectives; Daily focus; Cost includes accommodation",
+      "evidence_type": "coorganizer_programme",
+      "event_date": "2026-10-12/2026-10-14"
+    },
+    {
+      "id": "S09",
+      "title": "Aon Capital Modeling Solutions",
+      "url": "https://www.aon.com/en/capabilities/strategy-and-technology-group/capital-modeling-solutions",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Tyche and ReMetrica case studies; What we offer",
+      "evidence_type": "vendor_software_and_anonymous_cases",
+      "event_date": null
+    },
+    {
+      "id": "S10",
+      "title": "Abgalis War Gaming the Balance Sheet",
+      "url": "https://abgalis.com/war-gaming/",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Opening exclusivity claim; What it delivers; regulatory disclaimer",
+      "evidence_type": "unconfirmed_vendor_claim",
+      "event_date": null
+    },
+    {
+      "id": "S11",
+      "title": "Abgalis Research",
+      "url": "https://abgalis.com/research/",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "The Abgalis Engine; gated research form; disclaimer",
+      "evidence_type": "vendor_description",
+      "event_date": null
+    },
+    {
+      "id": "S12",
+      "title": "Risk model homogeneity preprint",
+      "url": "https://arxiv.org/abs/1907.05954",
+      "published": "2019-07-12",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Abstract; v2 2019-11-20",
+      "evidence_type": "research_model",
+      "event_date": null
+    },
+    {
+      "id": "S13",
+      "title": "Oxford journal publication record",
+      "url": "https://www.inet.ox.ac.uk/publications/a-simulation-of-the-insurance-industry-the-problem-of-risk-model-homogeneity",
+      "published": "2021",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Abstract; J Econ Interact Coord; DOI 10.1007/s11403-021-00319-4",
+      "evidence_type": "research_publication",
+      "event_date": null
+    },
+    {
+      "id": "S14",
+      "title": "INET-Complexity ISLE source",
+      "url": "https://github.com/INET-Complexity/isle",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "README: risk models, seeds, ensemble schedule; Python model files",
+      "evidence_type": "inspectable_code_not_executed",
+      "event_date": null
+    },
+    {
+      "id": "S15",
+      "title": "EIOPA June 2026 stability report announcement",
+      "url": "https://www.eiopa.europa.eu/eiopas-financial-stability-report-shows-continued-resilience-insurance-amid-geopolitical-uncertainty-2026-06-24_en",
+      "published": "2026-06-24",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Operational risk; inflation; interconnectedness",
+      "evidence_type": "supervisor_context",
+      "event_date": null
+    },
+    {
+      "id": "S16",
+      "title": "EIOPA December 2025 stability report announcement",
+      "url": "https://www.eiopa.europa.eu/eiopa-flags-financial-stability-risks-related-private-credit-weakening-dollar-and-global-2025-12-15_en",
+      "published": "2025-12-15",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Private credit; systemic cyber; AI and third parties",
+      "evidence_type": "supervisor_context",
+      "event_date": null
+    },
+    {
+      "id": "S17",
+      "title": "EIOPA Insurance stress test 2024",
+      "url": "https://www.eiopa.europa.eu/insurance-stress-test-2024_en",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Capital and liquidity; reactive management actions; no pass/fail",
+      "evidence_type": "supervisor_exercise",
+      "event_date": "2024"
+    },
+    {
+      "id": "S18",
+      "title": "EIOPA/ESM catastrophe mechanism staff proposal",
+      "url": "https://www.eiopa.europa.eu/eiopa-and-esm-staff-propose-mechanism-better-manage-fallout-outsized-natural-catastrophes-2026-04-09_en",
+      "published": "2026-04-09",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Staff discussion paper: pooling and financing after exhaustion",
+      "evidence_type": "supervisor_staff_proposal",
+      "event_date": null
+    },
+    {
+      "id": "S19",
+      "title": "Bank of England insurer stress tests",
+      "url": "https://www.bankofengland.co.uk/stress-testing/insurers",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Dynamic General Insurance Stress Test; page updated 2026-07-03; launched May 2026",
+      "evidence_type": "supervisor_exercise",
+      "event_date": "2026-05"
+    },
+    {
+      "id": "S20",
+      "title": "EIOPA DORA",
+      "url": "https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Application from 17 January 2025; risk management, testing, third parties",
+      "evidence_type": "supervisor_context",
+      "event_date": "2025-01-17"
+    },
+    {
+      "id": "S21",
+      "title": "Abgalis Paper 01 PDF",
+      "url": "https://abgalis.com/abgalis-01-why-cascading-risk-models-fail.pdf",
+      "published": "2026-05",
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "PDF pages 5–6: channels; internal mathematical methodology not disclosed",
+      "evidence_type": "vendor_position_paper",
+      "event_date": null
+    },
+    {
+      "id": "S22",
+      "title": "Abgalis public paper library",
+      "url": "https://abgalis.com/papers/",
+      "published": null,
+      "accessed": "2026-10-02",
+      "timezone": "Europe/Berlin",
+      "locator": "Six position briefs; Paper 01 and supplier brief checked",
+      "evidence_type": "vendor_position_papers",
+      "event_date": null
+    }
+  ],
+  "dimensions": [
+    "Unternehmen/Markt",
+    "Menschen/adaptive Regeln",
+    "Kunden/Risiken/Anteile",
+    "Sparten/Bilanz/Kapital/Cash/RV",
+    "Kapazität/ICT/DORA/Cyber",
+    "Sequenz/unvollständige Information",
+    "Erklärung/Replay/Validierung",
+    "Eigenes Profil/Daten/Kalibrierung",
+    "Wiederverwendung/Bereitstellung/Schnittstellen"
+  ],
+  "rows": [
+    {
+      "provider": "BCG",
+      "dimensions": [
+        {
+          "dimension": "Unternehmen/Markt",
+          "claim": "Marktrollen in Preisplanspielen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S01"
+          ]
+        },
+        {
+          "dimension": "Menschen/adaptive Regeln",
+          "claim": "Menschliche Rollen; adaptive Softwareagenten offen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S01"
+          ]
+        },
+        {
+          "dimension": "Kunden/Risiken/Anteile",
+          "claim": "Preis-/Kundenreaktionen",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S01"
+          ]
+        },
+        {
+          "dimension": "Sparten/Bilanz/Kapital/Cash/RV",
+          "claim": "Versicherer-Foresight; finanzielle Modelltiefe offen",
+          "evidence_type": "vendor_application",
+          "source_ids": [
+            "S02"
+          ]
+        },
+        {
+          "dimension": "Kapazität/ICT/DORA/Cyber",
+          "claim": "Konkreter ICT-Prozesskern offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S01",
+            "S02"
+          ]
+        },
+        {
+          "dimension": "Sequenz/unvollständige Information",
+          "claim": "Signale und Szenarien",
+          "evidence_type": "method",
+          "source_ids": [
+            "S02"
+          ]
+        },
+        {
+          "dimension": "Erklärung/Replay/Validierung",
+          "claim": "Lernmethode; öffentlicher Replay-Test offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S01",
+            "S02"
+          ]
+        },
+        {
+          "dimension": "Eigenes Profil/Daten/Kalibrierung",
+          "claim": "Marktspezifische Vorbereitung",
+          "evidence_type": "method",
+          "source_ids": [
+            "S01"
+          ]
+        },
+        {
+          "dimension": "Wiederverwendung/Bereitstellung/Schnittstellen",
+          "claim": "Cloudplattform 2014 beschrieben; heutige Version/API offen",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S01"
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "category": "method",
+          "claim": "Moderierte Preis-/Zukunftsplanung",
+          "source_ids": [
+            "S01",
+            "S02"
+          ]
+        },
+        {
+          "category": "software_description",
+          "claim": "Historische Plattformbeschreibung",
+          "source_ids": [
+            "S01"
+          ]
+        },
+        {
+          "category": "vendor_application",
+          "claim": "Anonyme Preisfälle und Lebensversicherer",
+          "source_ids": [
+            "S01",
+            "S02"
+          ]
+        },
+        {
+          "category": "inspectable_technical",
+          "claim": "Kein ausführbarer Prüfstand hier zugänglich",
+          "source_ids": [
+            "S01",
+            "S02"
+          ]
+        },
+        {
+          "category": "unconfirmed_vendor_claim",
+          "claim": "Aktuelle Softwaregrenzen offen",
+          "source_ids": [
+            "S01",
+            "S02"
+          ]
+        }
+      ]
+    },
+    {
+      "provider": "McKinsey",
+      "dimensions": [
+        {
+          "dimension": "Unternehmen/Markt",
+          "claim": "Quantitativer Markt-Spielkern",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S03"
+          ]
+        },
+        {
+          "dimension": "Menschen/adaptive Regeln",
+          "claim": "Menschen und Spielleitung; autonome Agenten offen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S03",
+            "S04"
+          ]
+        },
+        {
+          "dimension": "Kunden/Risiken/Anteile",
+          "claim": "Reaktionskurven; Risikoselektion offen",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S03"
+          ]
+        },
+        {
+          "dimension": "Sparten/Bilanz/Kapital/Cash/RV",
+          "claim": "P&L; KI-Bankfall",
+          "evidence_type": "vendor_application",
+          "source_ids": [
+            "S03",
+            "S04"
+          ]
+        },
+        {
+          "dimension": "Kapazität/ICT/DORA/Cyber",
+          "claim": "ICT-Kapazitätskern offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S03",
+            "S04"
+          ]
+        },
+        {
+          "dimension": "Sequenz/unvollständige Information",
+          "claim": "Schrittweise Informationen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S03"
+          ]
+        },
+        {
+          "dimension": "Erklärung/Replay/Validierung",
+          "claim": "Regelgebundene Spielleitung; technischer Replay offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S03"
+          ]
+        },
+        {
+          "dimension": "Eigenes Profil/Daten/Kalibrierung",
+          "claim": "Datenbasierte Vorbereitung",
+          "evidence_type": "method",
+          "source_ids": [
+            "S03",
+            "S04"
+          ]
+        },
+        {
+          "dimension": "Wiederverwendung/Bereitstellung/Schnittstellen",
+          "claim": "Workshop und KI-Ansätze; Produkt/API offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S03",
+            "S04"
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "category": "method",
+          "claim": "Vorstands-War-Gaming",
+          "source_ids": [
+            "S03"
+          ]
+        },
+        {
+          "category": "software_description",
+          "claim": "Engine und KI-Simulator beschrieben",
+          "source_ids": [
+            "S03",
+            "S04"
+          ]
+        },
+        {
+          "category": "vendor_application",
+          "claim": "Anonymer Bankfall",
+          "source_ids": [
+            "S04"
+          ]
+        },
+        {
+          "category": "inspectable_technical",
+          "claim": "Keine unabhängige Replikation hier",
+          "source_ids": [
+            "S03",
+            "S04"
+          ]
+        },
+        {
+          "category": "unconfirmed_vendor_claim",
+          "claim": "KI-Potenzial kein validierter Versichereragent",
+          "source_ids": [
+            "S04"
+          ]
+        }
+      ]
+    },
+    {
+      "provider": "Bain",
+      "dimensions": [
+        {
+          "dimension": "Unternehmen/Markt",
+          "claim": "Szenarien und Wettbewerbsreaktionen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        },
+        {
+          "dimension": "Menschen/adaptive Regeln",
+          "claim": "Planspielmethode; Agenten offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S06"
+          ]
+        },
+        {
+          "dimension": "Kunden/Risiken/Anteile",
+          "claim": "Segmentierung und Preisreaktionen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S06"
+          ]
+        },
+        {
+          "dimension": "Sparten/Bilanz/Kapital/Cash/RV",
+          "claim": "Quantitativer Versicherungskern offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        },
+        {
+          "dimension": "Kapazität/ICT/DORA/Cyber",
+          "claim": "Konkreter ICT-/Cyberkern offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        },
+        {
+          "dimension": "Sequenz/unvollständige Information",
+          "claim": "Frühindikatoren und Handlungsoptionen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S05"
+          ]
+        },
+        {
+          "dimension": "Erklärung/Replay/Validierung",
+          "claim": "Methodik; technischer Replay offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        },
+        {
+          "dimension": "Eigenes Profil/Daten/Kalibrierung",
+          "claim": "Markt-/Kundenvorbereitung",
+          "evidence_type": "method",
+          "source_ids": [
+            "S06"
+          ]
+        },
+        {
+          "dimension": "Wiederverwendung/Bereitstellung/Schnittstellen",
+          "claim": "Wiederholte Szenarioplanung; Software/API offen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S05"
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "category": "method",
+          "claim": "Szenario- und Preisplanung",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        },
+        {
+          "category": "software_description",
+          "claim": "Keine konkrete Software hier belegt",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        },
+        {
+          "category": "vendor_application",
+          "claim": "Anonymer Agrarpreisfall",
+          "source_ids": [
+            "S06"
+          ]
+        },
+        {
+          "category": "inspectable_technical",
+          "claim": "Keine ausführbare technische Evidenz hier",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        },
+        {
+          "category": "unconfirmed_vendor_claim",
+          "claim": "Versicherungsspezifischer Umfang offen",
+          "source_ids": [
+            "S05",
+            "S06"
+          ]
+        }
+      ]
+    },
+    {
+      "provider": "Swiss Re / Eurapco",
+      "dimensions": [
+        {
+          "dimension": "Unternehmen/Markt",
+          "claim": "Konkurrierende Versichererteams",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "dimension": "Menschen/adaptive Regeln",
+          "claim": "Menschliche Führungsteams",
+          "evidence_type": "method",
+          "source_ids": [
+            "S08"
+          ]
+        },
+        {
+          "dimension": "Kunden/Risiken/Anteile",
+          "claim": "Kundengruppen/Preise 2021",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S07"
+          ]
+        },
+        {
+          "dimension": "Sparten/Bilanz/Kapital/Cash/RV",
+          "claim": "Underwriting, ALM, Kapital, Rückversicherung",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "dimension": "Kapazität/ICT/DORA/Cyber",
+          "claim": "Explizite ICT-Abhängigkeiten offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "dimension": "Sequenz/unvollständige Information",
+          "claim": "Veränderte Rundenbedingungen",
+          "evidence_type": "method",
+          "source_ids": [
+            "S08"
+          ]
+        },
+        {
+          "dimension": "Erklärung/Replay/Validierung",
+          "claim": "Öffentliche Replikation/API offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "dimension": "Eigenes Profil/Daten/Kalibrierung",
+          "claim": "Eigenes kalibriertes Hausprofil offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "dimension": "Wiederverwendung/Bereitstellung/Schnittstellen",
+          "claim": "2026 Dreitagesprogramm angekündigt; Lizenzbetrieb offen",
+          "evidence_type": "vendor_application",
+          "source_ids": [
+            "S08"
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "category": "method",
+          "claim": "Managementteams im Seminar",
+          "source_ids": [
+            "S08"
+          ]
+        },
+        {
+          "category": "software_description",
+          "claim": "Versicherungsentscheidungen beschrieben",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "category": "vendor_application",
+          "claim": "2021 historisch; Oktober 2026 noch bevorstehend",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "category": "inspectable_technical",
+          "claim": "Kein zugänglicher Softwareprüfstand hier",
+          "source_ids": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "category": "unconfirmed_vendor_claim",
+          "claim": "Seminarpreis belegt keinen Lizenzpreis",
+          "source_ids": [
+            "S08"
+          ]
+        }
+      ]
+    },
+    {
+      "provider": "Aon ReMetrica / Tyche",
+      "dimensions": [
+        {
+          "dimension": "Unternehmen/Markt",
+          "claim": "Unternehmens-/Portfoliomodelle",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Menschen/adaptive Regeln",
+          "claim": "Reagierender Kundenmarkt offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Kunden/Risiken/Anteile",
+          "claim": "Portfolio-/Risikoprofile; Kundenwechsel offen",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Sparten/Bilanz/Kapital/Cash/RV",
+          "claim": "Kapital, Profitabilität, RV/Optimierung",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Kapazität/ICT/DORA/Cyber",
+          "claim": "Prozess-/DORA-Kopplung offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Sequenz/unvollständige Information",
+          "claim": "Stressszenarien; Informationsspiel offen",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Erklärung/Replay/Validierung",
+          "claim": "Validierungsleistungen angeboten; öffentliche Replikation offen",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Eigenes Profil/Daten/Kalibrierung",
+          "claim": "Daten, Templates, eigene Modellierung",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "dimension": "Wiederverwendung/Bereitstellung/Schnittstellen",
+          "claim": "Software/Consulting; konkreter Integrationsvertrag offen",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S09"
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "category": "method",
+          "claim": "Kapitalmodellberatung",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "category": "software_description",
+          "claim": "Benannte Produkte",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "category": "vendor_application",
+          "claim": "Anonymer Tyche-Rückversicherer und ReMetrica-Erstversicherer",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "category": "inspectable_technical",
+          "claim": "Keine unabhängige technische Ausführung hier",
+          "source_ids": [
+            "S09"
+          ]
+        },
+        {
+          "category": "unconfirmed_vendor_claim",
+          "claim": "Markt-/ICT-Umfang offen",
+          "source_ids": [
+            "S09"
+          ]
+        }
+      ]
+    },
+    {
+      "provider": "Abgalis",
+      "dimensions": [
+        {
+          "dimension": "Unternehmen/Markt",
+          "claim": "Bilanz-War-Gaming beansprucht",
+          "evidence_type": "unconfirmed_vendor_claim",
+          "source_ids": [
+            "S10"
+          ]
+        },
+        {
+          "dimension": "Menschen/adaptive Regeln",
+          "claim": "Menschliche Rollen; adaptive Agenten offen",
+          "evidence_type": "unconfirmed_vendor_claim",
+          "source_ids": [
+            "S10"
+          ]
+        },
+        {
+          "dimension": "Kunden/Risiken/Anteile",
+          "claim": "Explizite Kunden-/Risikotransfers offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S10"
+          ]
+        },
+        {
+          "dimension": "Sparten/Bilanz/Kapital/Cash/RV",
+          "claim": "SCR/Reserven/ORSA-Ausgaben beansprucht",
+          "evidence_type": "unconfirmed_vendor_claim",
+          "source_ids": [
+            "S10"
+          ]
+        },
+        {
+          "dimension": "Kapazität/ICT/DORA/Cyber",
+          "claim": "Domänenübergreifende Risiken beschrieben",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S21",
+            "S22"
+          ]
+        },
+        {
+          "dimension": "Sequenz/unvollständige Information",
+          "claim": "Dynamische Kaskaden beansprucht",
+          "evidence_type": "unconfirmed_vendor_claim",
+          "source_ids": [
+            "S21"
+          ]
+        },
+        {
+          "dimension": "Erklärung/Replay/Validierung",
+          "claim": "Mathematik laut PDF nicht offengelegt",
+          "evidence_type": "software_description",
+          "source_ids": [
+            "S21"
+          ]
+        },
+        {
+          "dimension": "Eigenes Profil/Daten/Kalibrierung",
+          "claim": "Profil/Kalibrierung praktisch unbestätigt",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S10",
+            "S21"
+          ]
+        },
+        {
+          "dimension": "Wiederverwendung/Bereitstellung/Schnittstellen",
+          "claim": "Demo/Kundenprüfung nicht durchgeführt; API offen",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S10",
+            "S11"
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "category": "method",
+          "claim": "Rollenübung",
+          "source_ids": [
+            "S10"
+          ]
+        },
+        {
+          "category": "software_description",
+          "claim": "Engine auf Beschreibungsebene",
+          "source_ids": [
+            "S21"
+          ]
+        },
+        {
+          "category": "vendor_application",
+          "claim": "Kein unabhängig bestätigter Nutzerfall hier",
+          "source_ids": [
+            "S10",
+            "S11",
+            "S22"
+          ]
+        },
+        {
+          "category": "inspectable_technical",
+          "claim": "Positionspapier, kein ausführbares Modell/Validierungspaket",
+          "source_ids": [
+            "S21"
+          ]
+        },
+        {
+          "category": "unconfirmed_vendor_claim",
+          "claim": "Exklusivitäts-/Leistungsansprüche unbestätigt",
+          "source_ids": [
+            "S10"
+          ]
+        }
+      ]
+    },
+    {
+      "provider": "ISLE / Versicherungsmarktforschung",
+      "dimensions": [
+        {
+          "dimension": "Unternehmen/Markt",
+          "claim": "Versicherer und Rückversicherer",
+          "evidence_type": "research",
+          "source_ids": [
+            "S12"
+          ]
+        },
+        {
+          "dimension": "Menschen/adaptive Regeln",
+          "claim": "Programmierte Agenten",
+          "evidence_type": "inspectable_technical",
+          "source_ids": [
+            "S14"
+          ]
+        },
+        {
+          "dimension": "Kunden/Risiken/Anteile",
+          "claim": "Risikoallokation; Risikomodell-Homogenität",
+          "evidence_type": "research",
+          "source_ids": [
+            "S12",
+            "S13"
+          ]
+        },
+        {
+          "dimension": "Sparten/Bilanz/Kapital/Cash/RV",
+          "claim": "Prämien, Kapital, Schäden, RV/Cat Bonds",
+          "evidence_type": "research",
+          "source_ids": [
+            "S12"
+          ]
+        },
+        {
+          "dimension": "Kapazität/ICT/DORA/Cyber",
+          "claim": "Kein ICT-Handfall in geprüfter Darstellung",
+          "evidence_type": "unknown_in_checked_sources",
+          "source_ids": [
+            "S12",
+            "S14"
+          ]
+        },
+        {
+          "dimension": "Sequenz/unvollständige Information",
+          "claim": "Gemeinsame Schadensfolgen in Ensembles",
+          "evidence_type": "inspectable_technical",
+          "source_ids": [
+            "S14"
+          ]
+        },
+        {
+          "dimension": "Erklärung/Replay/Validierung",
+          "claim": "Öffentlicher Code/Seeds; hier nicht ausgeführt",
+          "evidence_type": "inspectable_technical",
+          "source_ids": [
+            "S14"
+          ]
+        },
+        {
+          "dimension": "Eigenes Profil/Daten/Kalibrierung",
+          "claim": "Forschungsparameter, keine deutsche Kalibrierung",
+          "evidence_type": "research",
+          "source_ids": [
+            "S12"
+          ]
+        },
+        {
+          "dimension": "Wiederverwendung/Bereitstellung/Schnittstellen",
+          "claim": "Python-Quellen, Ensembles; Vorstandsnutzung ungeprüft",
+          "evidence_type": "inspectable_technical",
+          "source_ids": [
+            "S14"
+          ]
+        }
+      ],
+      "layers": [
+        {
+          "category": "method",
+          "claim": "Modellforschung",
+          "source_ids": [
+            "S12",
+            "S13"
+          ]
+        },
+        {
+          "category": "software_description",
+          "claim": "Agentenmodell",
+          "source_ids": [
+            "S14"
+          ]
+        },
+        {
+          "category": "vendor_application",
+          "claim": "Publizierte Experimente",
+          "source_ids": [
+            "S12",
+            "S13"
+          ]
+        },
+        {
+          "category": "inspectable_technical",
+          "claim": "Öffentlicher Code, keine eigene Replikation",
+          "source_ids": [
+            "S14"
+          ]
+        },
+        {
+          "category": "unconfirmed_vendor_claim",
+          "claim": "Keine Unternehmenskalibrierung daraus ableitbar",
+          "source_ids": [
+            "S12"
+          ]
+        }
+      ]
+    }
+  ],
+  "policy": {
+    "primary_sources_only": true,
+    "foreign_software_tested": false,
+    "unknown_does_not_mean_absent": true,
+    "license_price_comparison": false
+  },
+  "gaps": [
+    {
+      "id": "G-BENCH",
+      "filename": "260630_DORA_Implementation_Benchmark_Report_BF_SEC (1).pdf",
+      "status": "not_accessible",
+      "searched": [
+        "Codex attachments",
+        "remote attachments",
+        "Downloads",
+        "Documents",
+        "source"
+      ],
+      "consequence": "AP13 requires source/page/question/group verification; no imported figures"
+    },
+    {
+      "id": "G-PROP",
+      "status": "not_tested",
+      "consequence": "Proprietary tools: version, API, calibration and practical validation remain open"
+    }
+  ]
+}

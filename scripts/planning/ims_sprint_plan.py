@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 from datetime import date
+import importlib.util
 import json
 from pathlib import Path, PurePosixPath
 import subprocess
@@ -242,7 +243,10 @@ Bericht am Ende: Ergebnis, Commit/PR, Tests, Blocker und nächster Schritt.
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", type=Path, default=DEFAULT_PLAN)
-    parser.add_argument("--package", default="auto", choices=["auto", "AP1", "AP2", "AP3"])
+    parser.add_argument("--package", default="auto", choices=["auto"] + [f"AP{i}" for i in range(1, 15)])
+    parser.add_argument("--mode", choices=["preview", "authorized"], help="Folgepläne: standardmäßig preview; authorized braucht echten Freigabebeleg.")
+    parser.add_argument("--authorization-file", type=Path, help="Dokumentierter tatsächlicher menschlicher Umsetzungsauftrag.")
+    parser.add_argument("--main-ref", default="origin/main", choices=["origin/main"], help="Vorher origin aktualisieren; angenommene Planung/erledigte Pakete daraus prüfen.")
     parser.add_argument("--out", type=Path, default=ROOT / ".tmp-pr-sprint")
     parser.add_argument("--commit", help="Commit of the checked-out manifest; defaults to git HEAD.")
     args = parser.parse_args(argv)
@@ -252,8 +256,7 @@ def main(argv: list[str] | None = None) -> int:
         args.out.mkdir(parents=True, exist_ok=True)
         for name in ("codex-work-order.md", "plan-report.md"):
             (args.out / name).unlink(missing_ok=True)
-        plan = validate(json.loads(args.plan.read_text(encoding="utf-8")), ROOT)
-        selected = select_package(plan, args.package)
+        plan = json.loads(args.plan.read_text(encoding="utf-8"))
         commit = args.commit
         if not commit:
             result = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
@@ -262,6 +265,17 @@ def main(argv: list[str] | None = None) -> int:
             commit = result.stdout.strip()
         require(len(commit) == 40 and all(c in "0123456789abcdef" for c in commit),
                 "--commit muss ein vollständiger Git-SHA sein.")
+        if isinstance(plan, dict) and plan.get("schema_version") in {
+            "ims.explainable-market-plan.v1", "ims.board-strategy-plan.v1"
+        }:
+            spec = importlib.util.spec_from_file_location("ims_followup_plan", ROOT / "scripts/planning/ims_followup_plan.py")
+            followup = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(followup)
+            return followup.run(plan, args, ROOT, validate, commit)
+        require(args.mode is None and args.authorization_file is None,
+                "AP1–AP3 verwenden den bisherigen Planprüfmodus ohne Folgeplan-Freigabeflags.")
+        plan = validate(plan, ROOT)
+        selected = select_package(plan, args.package)
         (args.out / "plan-report.md").write_text(
             render_report(plan, selected, commit), encoding="utf-8")
         if selected:
@@ -270,7 +284,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"PLAN OK: 25 Anforderungen; Auftrag={selected['id'] if selected else 'keiner'}")
         print(f"Ausgabe: {args.out}")
         return 0
-    except (PlanError, OSError, ValueError) as exc:
+    except (PlanError, OSError, ValueError, KeyError, TypeError) as exc:
         print(f"PLAN FEHLER: {exc}", file=sys.stderr)
         return 1
 

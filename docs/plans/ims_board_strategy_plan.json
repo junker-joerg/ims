@@ -1,0 +1,1261 @@
+{
+  "schema_version": "ims.board-strategy-plan.v1",
+  "date": "2026-10-02",
+  "status": "proposed",
+  "approval": null,
+  "implementation_authorized": false,
+  "baseline_commit": "81146aa8657e2d507cc51c921207e80895f78340",
+  "plan_document": "docs/plans/ims_board_strategy_2026_10.md",
+  "legacy_plan": "docs/plans/ims_ai_sprint_plan.json",
+  "market_plan": "docs/plans/ims_explainable_market_plan.json",
+  "research_manifest": "docs/research/ims_competition_evidence_2026_10.json",
+  "reference_case": "docs/plans/ims_dora_reference_case.md",
+  "evidence_report": "docs/reports/ims_board_baseline_2026_10.json",
+  "original_order": [
+    "AP10",
+    "AP11",
+    "AP12",
+    "AP13",
+    "AP14"
+  ],
+  "recommended_order": [
+    "AP10",
+    "AP11",
+    "AP13",
+    "AP12",
+    "AP14"
+  ],
+  "accepted_delivery_order": [
+    "AP4",
+    "AP5",
+    "AP6",
+    "AP7",
+    "AP8",
+    "AP9"
+  ],
+  "recommendation": "AP10 minimal DORA after AP7; accepted AP8/AP9 remain independent; AP13 after AP11 without AP12; AP14 integrates AP9/AP12/AP13.",
+  "requirements": [
+    {
+      "id": "AP10-R01",
+      "description": "Eigenes Profil: Sparten-, Kunden-/Risikomix, Anfangsbilanz, Kapazität, Entscheidungsgrenzen",
+      "original_assignment": "AP10",
+      "packages": [
+        "AP10"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP10-R02",
+      "description": "Gruppe/Einzelgesellschaft und Einsetzen des eigenen Hauses ohne Doppelzählung",
+      "original_assignment": "AP10",
+      "packages": [
+        "AP10"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP10-R03",
+      "description": "Preisführung, Margensicherung, selektives Wachstum, Rückzug, hohe Servicekapazität",
+      "original_assignment": "AP10",
+      "packages": [
+        "AP10"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP10-R04",
+      "description": "Verzögerte Reaktionen auf beobachtbare Preise, eigene Schäden und Auslastung",
+      "original_assignment": "AP10",
+      "packages": [
+        "AP10"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP10-R05",
+      "description": "Feste Entscheidungen, feste Reaktionsregeln und alternative Wettbewerber getrennt",
+      "original_assignment": "AP10",
+      "packages": [
+        "AP10"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP10-R06",
+      "description": "Ergebnis, Bestand, Risikomix, Marktanteil und Kapazitätsbelastung bedienbar vergleichen",
+      "original_assignment": "AP10",
+      "packages": [
+        "AP10"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP10-R07",
+      "description": "Drei-VU-Handfall, konsistente Kunden-/Risikotransfers, kein Vorwissen, stabile Draws",
+      "original_assignment": "AP10",
+      "packages": [
+        "AP10"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP11-R01",
+      "description": "Schadeninflation nach Sparte/Schadenart",
+      "original_assignment": "AP11",
+      "packages": [
+        "AP11"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP11-R02",
+      "description": "Nachreservierung alter Schadenjahrgänge",
+      "original_assignment": "AP11",
+      "packages": [
+        "AP11"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP11-R03",
+      "description": "Katastrophenfolgen mit heterogener Betroffenheit",
+      "original_assignment": "AP11",
+      "packages": [
+        "AP11"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP11-R04",
+      "description": "Rückversicherung: Selbstbehalt, Limit, Ausschöpfung und Zahlungszeitpunkt",
+      "original_assignment": "AP11",
+      "packages": [
+        "AP11"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP11-R05",
+      "description": "Erneuerung mit veränderten Preisen und Kapazitäten",
+      "original_assignment": "AP11",
+      "packages": [
+        "AP11"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP11-R06",
+      "description": "Beitragsanpassung, Zeichnungsbegrenzung, Prävention, RV und Schadenkapazität mit Kosten",
+      "original_assignment": "AP11",
+      "packages": [
+        "AP11"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP11-R07",
+      "description": "Aufwand, Reserve, Zahlung und RV-Forderung getrennt; Zweitereignis mit Restdeckung",
+      "original_assignment": "AP11",
+      "packages": [
+        "AP11"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R01",
+      "description": "Anlageklassen mit Zins, Spread, Ausfall und Liquidität",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R02",
+      "description": "Bewertung, laufende Erträge, realisierte Verkaufsverluste getrennt",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R03",
+      "description": "Vertrauensabhängiges Neugeschäft und produktspezifischer Kündigungs-/Rückkaufvertrag",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R04",
+      "description": "Verkäufe, Ausschüttungsbegrenzung und vertraglich verfügbare Finanzierung",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R05",
+      "description": "Optional gemeinsame Verkäufe mit externer Marktliquidität, 40 Gruppen sind nicht Gesamt-Kapitalmarkt",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R06",
+      "description": "CFO/CRO: Cash, Modellkapital und Handlungsspielraum",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R07",
+      "description": "Positives Eigenkapital bei Cash-Engpass; Rückkäufe konsistent in Bestand/Verpflichtungen/Zahlungen",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP12-R08",
+      "description": "Geprüfte Lebens-Bestands-/Auszahlungslogik; keine unbelegte SCR-Bezeichnung",
+      "original_assignment": "AP12",
+      "packages": [
+        "AP12"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R01",
+      "description": "Provider-, Ransomware- und Integritätsereignisse auf ICT-Basis",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP7",
+        "AP10",
+        "AP13"
+      ],
+      "disposition": "moved",
+      "reason": "AP3-Typen und angenommene AP7-Brücke wiederverwenden; minimaler Providerfall AP10, Ransomware-/Integritätszustände AP13.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R02",
+      "description": "Cyber-Kumul: eigene Betriebsverluste getrennt von versicherten Kundenschäden",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP13"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R03",
+      "description": "Gemeinsame KI-/Risikomodellfehler und spätere Tarifkorrektur",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP13"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R04",
+      "description": "Gleiches Budget: Wiederanlauf, Notbetrieb, unabhängiger Ersatz, Daten-/Modellkontrolle",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP10",
+        "AP13"
+      ],
+      "disposition": "moved",
+      "reason": "Minimaler Vorsorge-/Capability-/Fallback-/Buchungsvertrag bereits für DORA in AP10; Cyber-/KI-Ausbau und Benchmarkgrenze bleiben AP13.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R05",
+      "description": "Dokumentiert, technisch verfügbar, getestet getrennt",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP10",
+        "AP13"
+      ],
+      "disposition": "moved",
+      "reason": "Minimaler Vorsorge-/Capability-/Fallback-/Buchungsvertrag bereits für DORA in AP10; Cyber-/KI-Ausbau und Benchmarkgrenze bleiben AP13.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R06",
+      "description": "Versionierte Benchmarkquelle, Frage, Bezugsgruppe, Seite, offene Datenfragen",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP13"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R07",
+      "description": "Dokumentation ohne automatische technische Wirkung; gemeinsam abhängiger Fallback fällt mit aus",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP10",
+        "AP13"
+      ],
+      "disposition": "moved",
+      "reason": "Minimaler Vorsorge-/Capability-/Fallback-/Buchungsvertrag bereits für DORA in AP10; Cyber-/KI-Ausbau und Benchmarkgrenze bleiben AP13.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP13-R08",
+      "description": "Keine doppelte Verlustbuchung; Benchmark nicht als Ausfallwahrscheinlichkeit",
+      "original_assignment": "AP13",
+      "packages": [
+        "AP10",
+        "AP13"
+      ],
+      "disposition": "moved",
+      "reason": "Minimaler Vorsorge-/Capability-/Fallback-/Buchungsvertrag bereits für DORA in AP10; Cyber-/KI-Ausbau und Benchmarkgrenze bleiben AP13.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R01",
+      "description": "Matrix eigene Strategie × Schockfolge × Wettbewerberverhalten",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R02",
+      "description": "Maßnahmenvergleich mit gleichem Budget und Anfang",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R03",
+      "description": "Sensitivitäten und mehrere reproduzierbare Draw-Pfade",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R04",
+      "description": "Grenzverletzungen bei Ergebnis, Cash, Modellkapital und Service",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R05",
+      "description": "Sofortiges/verzögertes Handeln einschließlich Umsetzungsvorlauf",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R06",
+      "description": "Vorstandsspiel mit schrittweisem Wissen und protokolliertem Informationsstand",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R07",
+      "description": "Dossier: Strategie, Annahmen, Alternativen, Frühindikatoren, Umschaltregeln",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "AP14-R08",
+      "description": "Zusätzliche Prüfszenarien, begrenzte Kipppunkte, nachvollziehbare Buchung; keine realen Wahrscheinlichkeiten",
+      "original_assignment": "AP14",
+      "packages": [
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "E05-01",
+      "description": "Maßnahmen: Kosten, Vorlauf und Wirkungsdauer",
+      "original_assignment": "AP5",
+      "packages": [
+        "AP5",
+        "AP10"
+      ],
+      "disposition": "amendment",
+      "reason": "Angenommene Baseline erhalten; Ergänzung nur nach separater Annahme. Falls AP5/AP7/AP8 bereits geliefert oder die Ergänzung unangenommen bleibt: fehlender Minimalumfang in AP10, ohne Altbelege umzuschreiben.",
+      "acceptance_impact": "AP9 bleibt Abschluss AP4–AP8. Ergänzungen erhalten eigene Belege; historische Abnahmen unverändert."
+    },
+    {
+      "id": "E05-02",
+      "description": "Zeitpunktbezogener Informationsstand; konsistente Kunden/Risiken/Kapazitäten",
+      "original_assignment": "AP5",
+      "packages": [
+        "AP5",
+        "AP10"
+      ],
+      "disposition": "amendment",
+      "reason": "Angenommene Baseline erhalten; Ergänzung nur nach separater Annahme. Falls AP5/AP7/AP8 bereits geliefert oder die Ergänzung unangenommen bleibt: fehlender Minimalumfang in AP10, ohne Altbelege umzuschreiben.",
+      "acceptance_impact": "AP9 bleibt Abschluss AP4–AP8. Ergänzungen erhalten eigene Belege; historische Abnahmen unverändert."
+    },
+    {
+      "id": "E07-01",
+      "description": "Einzelereignis/Sequenz: Beginn, Dauer, Intensität, Akteure, Wirkungskanäle",
+      "original_assignment": "AP7",
+      "packages": [
+        "AP7",
+        "AP10"
+      ],
+      "disposition": "amendment",
+      "reason": "Angenommene Baseline erhalten; Ergänzung nur nach separater Annahme. Falls AP5/AP7/AP8 bereits geliefert oder die Ergänzung unangenommen bleibt: fehlender Minimalumfang in AP10, ohne Altbelege umzuschreiben.",
+      "acceptance_impact": "AP9 bleibt Abschluss AP4–AP8. Ergänzungen erhalten eigene Belege; historische Abnahmen unverändert."
+    },
+    {
+      "id": "E08-01",
+      "description": "Fokus, Rivalen, Modellmarkt: absolute Ergebnisse und relative Position nebeneinander",
+      "original_assignment": "AP8",
+      "packages": [
+        "AP8",
+        "AP10"
+      ],
+      "disposition": "amendment",
+      "reason": "Angenommene Baseline erhalten; Ergänzung nur nach separater Annahme. Falls AP5/AP7/AP8 bereits geliefert oder die Ergänzung unangenommen bleibt: fehlender Minimalumfang in AP10, ohne Altbelege umzuschreiben.",
+      "acceptance_impact": "AP9 bleibt Abschluss AP4–AP8. Ergänzungen erhalten eigene Belege; historische Abnahmen unverändert."
+    },
+    {
+      "id": "E09-01",
+      "description": "Bestehende Seminarabnahme eigenständig; neue Vorstandsgesamt-Abnahme AP14",
+      "original_assignment": "AP9",
+      "packages": [
+        "AP9",
+        "AP14"
+      ],
+      "disposition": "unchanged",
+      "reason": "Angenommene Baseline erhalten; Ergänzung nur nach separater Annahme. Falls AP5/AP7/AP8 bereits geliefert oder die Ergänzung unangenommen bleibt: fehlender Minimalumfang in AP10, ohne Altbelege umzuschreiben.",
+      "acceptance_impact": "AP9 bleibt Abschluss AP4–AP8. Ergänzungen erhalten eigene Belege; historische Abnahmen unverändert."
+    },
+    {
+      "id": "E04-01",
+      "description": "Keine zusätzliche fachliche AP4-Lieferung",
+      "original_assignment": "AP4",
+      "packages": [
+        "AP4"
+      ],
+      "disposition": "unchanged",
+      "reason": "Angenommene Baseline erhalten; Ergänzung nur nach separater Annahme. Falls AP5/AP7/AP8 bereits geliefert oder die Ergänzung unangenommen bleibt: fehlender Minimalumfang in AP10, ohne Altbelege umzuschreiben.",
+      "acceptance_impact": "AP9 bleibt Abschluss AP4–AP8. Ergänzungen erhalten eigene Belege; historische Abnahmen unverändert."
+    },
+    {
+      "id": "E06-01",
+      "description": "Keine zusätzliche fachliche AP6-Lieferung",
+      "original_assignment": "AP6",
+      "packages": [
+        "AP6"
+      ],
+      "disposition": "unchanged",
+      "reason": "Angenommene Baseline erhalten; Ergänzung nur nach separater Annahme. Falls AP5/AP7/AP8 bereits geliefert oder die Ergänzung unangenommen bleibt: fehlender Minimalumfang in AP10, ohne Altbelege umzuschreiben.",
+      "acceptance_impact": "AP9 bleibt Abschluss AP4–AP8. Ergänzungen erhalten eigene Belege; historische Abnahmen unverändert."
+    },
+    {
+      "id": "REF-01",
+      "description": "Drei synthetische Versicherer; echte Provider-/Fallback-Abhängigkeiten",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-02",
+      "description": "Identische Ausgangslage/Schock und stabile actor-period-event Draws",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-03",
+      "description": "Keine Zusatzvorsorge / getesteter Notbetrieb / unabhängige Alternative",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-04",
+      "description": "Gleiches Zusatzbudget; F0 eingespartes Budget; bezahlte/reservierte Kosten",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-05",
+      "description": "Investition, Verfügbarkeit, Test, Ausfall, Erkennung, Entscheidung, Erholung",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-06",
+      "description": "Begrenzte Arbeit/Aufnahme, Rückstand, erklärte Kundenreaktion und Risiko",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-07",
+      "description": "Feste Entscheidungen vs feste Regeln; alternative Rivalen; ohne Schock",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-08",
+      "description": "Ergebnis, Cash, Service, Risiko, Markt; Modellkapital nur begründet",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-09",
+      "description": "Keine Dokumentationsmagie, doppelte Verluste oder realen Providerbehauptungen",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-10",
+      "description": "Wachstum auch nachteilig möglich; Signale und rechtzeitiges Umsteuern",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-11",
+      "description": "Mehrnutzen gegenüber heutigem IMS/einfacher Rechnung; Erklärung bis Buchung",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "REF-12",
+      "description": "Sensitivitäten, Datenaufwand, echte Vorbereitungs-/Bedienzeit und Verständlichkeit",
+      "original_assignment": "1B",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "Zusätzlicher Entscheidungsnutzen am kleinen Referenzfall prüfen.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "RES-01",
+      "description": "Versionierte Primärquellenmatrix mit neun Dimensionen und fünf Evidenzstufen",
+      "original_assignment": "1A/1C/5",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "In diesem Planungs-PR recherchiert; Produktnutzenabnahme verbleibt in AP10/AP14.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "RES-02",
+      "description": "Historische Beschreibung nicht aktuelle Version; unbekannt nicht fehlend; keine Lizenzpreisvermutung",
+      "original_assignment": "1A/1C/5",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "In diesem Planungs-PR recherchiert; Produktnutzenabnahme verbleibt in AP10/AP14.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "RES-03",
+      "description": "Differenzierung als Nutzenhypothese, getrennt Forschung/Seminar/kommerziell/kalibriert",
+      "original_assignment": "1A/1C/5",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "In diesem Planungs-PR recherchiert; Produktnutzenabnahme verbleibt in AP10/AP14.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "RES-04",
+      "description": "Fachliche Primärquellen als Mechanismen ohne automatische Kalibrierung",
+      "original_assignment": "1A/1C/5",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "In diesem Planungs-PR recherchiert; Produktnutzenabnahme verbleibt in AP10/AP14.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "RES-05",
+      "description": "Bestehende Fälle laufen; erwartete vs tatsächliche Evidenz trennen; kein fremder Produkttest",
+      "original_assignment": "1A/1C/5",
+      "packages": [
+        "AP10",
+        "AP14"
+      ],
+      "disposition": "retained",
+      "reason": "In diesem Planungs-PR recherchiert; Produktnutzenabnahme verbleibt in AP10/AP14.",
+      "acceptance_impact": "Neue Abnahme; keine historische Abnahme geändert."
+    },
+    {
+      "id": "DEF-01",
+      "description": "Demografieschocks",
+      "original_assignment": "Backlog",
+      "packages": [],
+      "disposition": "deferred",
+      "reason": "Keine geprüfte endogene Bestands-/Mortalitätskalibrierung; nach eigenem Vertrag und Freigabe neu priorisieren.",
+      "acceptance_impact": "Kein Teil einer AP10–AP14-Abnahme; keine Löschung der Anforderung."
+    },
+    {
+      "id": "DEF-02",
+      "description": "Langlebigkeitsschocks",
+      "original_assignment": "Backlog",
+      "packages": [],
+      "disposition": "deferred",
+      "reason": "Keine geprüfte endogene Bestands-/Mortalitätskalibrierung; nach eigenem Vertrag und Freigabe neu priorisieren.",
+      "acceptance_impact": "Kein Teil einer AP10–AP14-Abnahme; keine Löschung der Anforderung."
+    },
+    {
+      "id": "DEF-03",
+      "description": "Morbiditätsschocks",
+      "original_assignment": "Backlog",
+      "packages": [],
+      "disposition": "deferred",
+      "reason": "Keine geprüfte endogene Bestands-/Mortalitätskalibrierung; nach eigenem Vertrag und Freigabe neu priorisieren.",
+      "acceptance_impact": "Kein Teil einer AP10–AP14-Abnahme; keine Löschung der Anforderung."
+    }
+  ],
+  "candidate_amendments": [
+    {
+      "package": "AP5",
+      "status": "proposed",
+      "requirement_ids": [
+        "E05-01",
+        "E05-02"
+      ],
+      "fallback_package": "AP10"
+    },
+    {
+      "package": "AP7",
+      "status": "proposed",
+      "requirement_ids": [
+        "E07-01"
+      ],
+      "fallback_package": "AP10"
+    },
+    {
+      "package": "AP8",
+      "status": "proposed",
+      "requirement_ids": [
+        "E08-01"
+      ],
+      "fallback_package": "AP10"
+    }
+  ],
+  "packages": [
+    {
+      "id": "AP10",
+      "title": "Eigene Versicherung, reagierende Rivalen und minimaler DORA-Fall",
+      "status": "proposed",
+      "plan_status": "proposed",
+      "implementation_authorized": false,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "depends_on": [
+        "AP7"
+      ],
+      "branch": "codex/ims-ap10-board",
+      "goal": "Eigene Versicherung, reagierende Rivalen und minimaler DORA-Fall",
+      "decision_benefit": "Kosten und rechtzeitige Verfügbarkeit von Vorsorge gegen Service-, Risikoaufnahme- und Cashfolgen abwägen; Umsteuern begründen.",
+      "deliverables": [
+        "Minimaler Drei-VU-Fall mit eigener Gruppe/Gesellschaft, Profileingabe, Segmenten und Aufnahme-/Prozessgrenzen",
+        "Lagged Beobachtungs-/Reaktionsvertrag mit fünf einfachen Rivalenregeln und drei Experimentmodi",
+        "Getesteter Notbetrieb vs unabhängiger Q-Pfad; Budget-/Verfügbarkeit-/Testvertrag",
+        "Kleine Cash-/Zahlungsbuchung für Periodenverträge; keine vollständige Kapitalanlage/RV",
+        "Vergleichsansicht, API, Erklärspur, Anleitung, Tests und höher versionierter Installer"
+      ],
+      "acceptance": [
+        "REF-01–12: Prozess-Handtabelle und zwölf kontrollierte Läufe; alternative Rivalen",
+        "Kunden-/Risikotransfers und A=L+E/Cash-Carryover, kein Look-ahead oder doppelter ICT-Abzug",
+        "Draw-/Sortier-/zusätzlicher-Akteur-Invarianz; Prefixe und Replay",
+        "F0 Budgetersparnis; gleiche F1/F2-Grenze; kein-Schock-Kosten",
+        "Mehrnutzen und Gegenbeispiele gegenüber Bestands-IMS und einfacher Rechnung",
+        "Gemessene Daten-/Vorbereitungs-/Bedienaufwände und Erklärbarkeit; keine Kalibrierungsbehauptung"
+      ],
+      "gates": [
+        "AP7-Brücke und Abhängigkeiten in main abgenommen",
+        "Drei-VU Mengen-/Risiko-/Zeit-/Buchungs-/Cashvertrag und beobachtbare Informationen fachlich freigegeben",
+        "Fallback-Unabhängigkeit, verfügbare/getestete Fähigkeiten und gemeinsame Kostenzuordnung nachgewiesen",
+        "Eigenes Haus nur Workshop-Profil bis separate Daten-/Validierungsfreigabe"
+      ],
+      "milestones": [
+        "M1 Vertrag/Handfall/Capability-Tor",
+        "M2 kleine gekoppelte Buchung und Replay",
+        "M3 feste Entscheidungen und feste Regeln; Gegenbeispiele",
+        "M4 API/UI/Anleitung/Nutzenmessung/Installer-Abnahme"
+      ],
+      "source_files": [
+        "docs/plans/ims_dora_reference_case.md",
+        "docs/research/ims_competition_evidence_2026_10.json",
+        "docs/plans/ims_board_strategy_2026_10.md",
+        "python_port/ims/ict/simulation.py",
+        "python_port/ims/strategies/modern_bridge.py"
+      ],
+      "source_ids": [
+        "S12",
+        "S14",
+        "S19",
+        "S20"
+      ],
+      "requirement_ids": [
+        "AP10-R01",
+        "AP10-R02",
+        "AP10-R03",
+        "AP10-R04",
+        "AP10-R05",
+        "AP10-R06",
+        "AP10-R07",
+        "AP13-R01",
+        "AP13-R04",
+        "AP13-R05",
+        "AP13-R07",
+        "AP13-R08",
+        "E05-01",
+        "E05-02",
+        "E07-01",
+        "E08-01",
+        "REF-01",
+        "REF-02",
+        "REF-03",
+        "REF-04",
+        "REF-05",
+        "REF-06",
+        "REF-07",
+        "REF-08",
+        "REF-09",
+        "REF-10",
+        "REF-11",
+        "REF-12",
+        "RES-01",
+        "RES-02",
+        "RES-03",
+        "RES-04",
+        "RES-05"
+      ],
+      "completion_evidence": [],
+      "merge_evidence": []
+    },
+    {
+      "id": "AP11",
+      "title": "Schadeninflation, Jahrgänge, Katastrophen und begrenzte Rückversicherung",
+      "status": "proposed",
+      "plan_status": "proposed",
+      "implementation_authorized": false,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "depends_on": [
+        "AP10"
+      ],
+      "branch": "codex/ims-ap11-board",
+      "goal": "Schadeninflation, Jahrgänge, Katastrophen und begrenzte Rückversicherung",
+      "decision_benefit": "Preis-/Wachstumsentscheidung nach Zweitereignis unter begrenzter Deckung und verzögerter Zahlung beurteilen.",
+      "deliverables": [
+        "Schadeninflation nach Sparte/Schadenart",
+        "Nachreservierung alter Schadenjahrgänge",
+        "Katastrophenfolgen mit heterogener Betroffenheit",
+        "Rückversicherung: Selbstbehalt, Limit, Ausschöpfung und Zahlungszeitpunkt",
+        "Erneuerung mit veränderten Preisen und Kapazitäten",
+        "Beitragsanpassung, Zeichnungsbegrenzung, Prävention, RV und Schadenkapazität mit Kosten",
+        "Aufwand, Reserve, Zahlung und RV-Forderung getrennt; Zweitereignis mit Restdeckung",
+        "API/UI/Erklärung, kleine Jahrgangs- und Zweiereignisfälle, Anleitung und Installer"
+      ],
+      "acceptance": [
+        "Aufwand/Reserve/Zahlung/Forderung getrennt und bilanz-/cashkonsistent",
+        "Zweites Ereignis nutzt verbleibendes Limit; Forderung vor Zahlung kein Cash",
+        "Erneuerung, Retention, Kosten und Wirkungszeit handprüfbar",
+        "Alte Szenarien unverändert; versionierter begrenzter Vertrag und Quellenmapping"
+      ],
+      "gates": [
+        "AP10 in main",
+        "Schadenjahrgang-/Zahlungs-/RV-Vertrag anhand kleiner Rechnungen freigegeben",
+        "Keine volle reale Rückversicherungs-/ORSA-Engine behauptet"
+      ],
+      "milestones": [
+        "M1 Jahrgänge/Reserve/Zahlung",
+        "M2 Retention/Limit/Restdeckung/Zahlungsverzug",
+        "M3 erneuerte Deckung und Maßnahmen",
+        "M4 API/UI/Tests/Anleitung/Installer"
+      ],
+      "source_files": [
+        "docs/plans/ims_dora_reference_case.md",
+        "docs/research/ims_competition_evidence_2026_10.json",
+        "docs/plans/ims_board_strategy_2026_10.md",
+        "python_port/ims/ict/simulation.py",
+        "python_port/ims/strategies/modern_bridge.py"
+      ],
+      "source_ids": [
+        "S09",
+        "S12",
+        "S15",
+        "S18"
+      ],
+      "requirement_ids": [
+        "AP11-R01",
+        "AP11-R02",
+        "AP11-R03",
+        "AP11-R04",
+        "AP11-R05",
+        "AP11-R06",
+        "AP11-R07"
+      ],
+      "completion_evidence": [],
+      "merge_evidence": []
+    },
+    {
+      "id": "AP12",
+      "title": "Kapitalanlagen, Cash und Vertrauenskrise",
+      "status": "proposed",
+      "plan_status": "proposed",
+      "implementation_authorized": false,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "depends_on": [
+        "AP11"
+      ],
+      "branch": "codex/ims-ap12-board",
+      "goal": "Kapitalanlagen, Cash und Vertrauenskrise",
+      "decision_benefit": "Liquiditätsengpass trotz positivem Eigenkapital erkennen; Verkäufe, Rückkäufe und verfügbar finanzierte Maßnahmen vergleichen.",
+      "deliverables": [
+        "Anlageklassen mit Zins, Spread, Ausfall und Liquidität",
+        "Bewertung, laufende Erträge, realisierte Verkaufsverluste getrennt",
+        "Vertrauensabhängiges Neugeschäft und produktspezifischer Kündigungs-/Rückkaufvertrag",
+        "Verkäufe, Ausschüttungsbegrenzung und vertraglich verfügbare Finanzierung",
+        "Optional gemeinsame Verkäufe mit externer Marktliquidität, 40 Gruppen sind nicht Gesamt-Kapitalmarkt",
+        "CFO/CRO: Cash, Modellkapital und Handlungsspielraum",
+        "Positives Eigenkapital bei Cash-Engpass; Rückkäufe konsistent in Bestand/Verpflichtungen/Zahlungen",
+        "Geprüfte Lebens-Bestands-/Auszahlungslogik; keine unbelegte SCR-Bezeichnung",
+        "Versionierte externe Kapitalmodell-Import-/Exportoption prüfen; keine unbewiesene fertige API",
+        "API/UI/kleine CFO-/CRO-Handfälle/Anleitung/Installer"
+      ],
+      "acceptance": [
+        "Positives E bei unzureichendem Cash; unverfügbare Finanzierung wirkt nicht",
+        "Markierung, Ertrag, Verkauf, Reserveauflösung und Rückkaufzahlung ohne Doppelbuchung",
+        "An-/Abgang und Verpflichtung je Produkt konsistent; gehaltene Garantien erklärt",
+        "Gemeinsamer Verkaufskanal aus/an, externer Marktmaßstab und Sensitivitäten sichtbar",
+        "Kein unbelegtes SCR; Fremdmodellantwort/Einheiten/Version/Validierung getrennt"
+      ],
+      "gates": [
+        "AP11 in main",
+        "Lebens-Rückkauf-/Auszahlungs-/Vertrauensvertrag fachlich geprüft",
+        "Bewertungs-/Liquiditäts-/Finanzierungsvertrag und externe Marktannahme freigegeben",
+        "Kapitalmodell-Anbindung nur mit tatsächlich zugänglichem Vertrag, sonst deklarierte Modellwerte"
+      ],
+      "milestones": [
+        "M1 Anlagen/Cash-Handfall",
+        "M2 Lebensvertrag/Tor",
+        "M3 Vertrauen/Verkaufskanal/CFO-CRO",
+        "M4 API/UI/Tests/Anleitung/Installer"
+      ],
+      "source_files": [
+        "docs/plans/ims_dora_reference_case.md",
+        "docs/research/ims_competition_evidence_2026_10.json",
+        "docs/plans/ims_board_strategy_2026_10.md",
+        "python_port/ims/ict/simulation.py",
+        "python_port/ims/strategies/modern_bridge.py"
+      ],
+      "source_ids": [
+        "S09",
+        "S16",
+        "S17"
+      ],
+      "requirement_ids": [
+        "AP12-R01",
+        "AP12-R02",
+        "AP12-R03",
+        "AP12-R04",
+        "AP12-R05",
+        "AP12-R06",
+        "AP12-R07",
+        "AP12-R08"
+      ],
+      "completion_evidence": [],
+      "merge_evidence": []
+    },
+    {
+      "id": "AP13",
+      "title": "Digitale Resilienz, Cyber-Kumul und gemeinsame Modellfehler",
+      "status": "proposed",
+      "plan_status": "proposed",
+      "implementation_authorized": false,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "depends_on": [
+        "AP10",
+        "AP11"
+      ],
+      "branch": "codex/ims-ap13-board",
+      "goal": "Digitale Resilienz, Cyber-Kumul und gemeinsame Modellfehler",
+      "decision_benefit": "Getestete Vorsorge und Modelldiversität gegen korrelierte Betriebs- und Versicherungsverluste beurteilen.",
+      "deliverables": [
+        "AP10 Capability-/Provider-/Budgetvertrag wiederverwenden; Ransomware und Integrität ergänzen",
+        "Eigener Betriebsverlust und versicherter Cyber-Schaden mit AP11-Jahrgängen/RV getrennt",
+        "Gemeinsame Risikomodellfehler/Erkennung/Tarifkorrektur mit beobachtbaren Informationen",
+        "Daten-/Modellkontrollen und gleiche Budgetgrenzen",
+        "Benchmarkregister mit Quelle/Frage/Bezugsgruppe/Seite/Version/Gaps",
+        "API/UI/Handfälle/Anleitung/Installer"
+      ],
+      "acceptance": [
+        "Gemeinsam abhängige Fallbacks versagen; Dokumentation ändert keine Technik",
+        "Eigener Aufwand vs versicherter Schaden einmal gebucht; RV-Restdeckung korrekt",
+        "Korrelierte Fehler und unterschiedliche Modelle als Mechanismus, keine kalibrierte KI-Prognose",
+        "Benchmark nur nach Primärprüfung; keine Häufigkeit als Ausfallwahrscheinlichkeit",
+        "Providerfall bleibt AP10-Regression; Integritäts-/Ransomwarezustand und Wiederherstellung handprüfbar"
+      ],
+      "gates": [
+        "AP10 und AP11 in main; kein AP12-Vollmodell nötig",
+        "Eigenschaden-/Kundenschaden-/Integritäts-/Modellfehlervertrag freigegeben",
+        "G-BENCH offen dokumentiert; Datenlieferung/Frage/Seite/Gruppe vor importierten Zahlen prüfen",
+        "Keine regulatorische technische DORA-Konformitätsbewertung"
+      ],
+      "milestones": [
+        "M1 Wiederverwendung/Trennungs-Tor",
+        "M2 Ransomware/Integrität und Cyber-Kumul",
+        "M3 Modellhomogenität/Kontrolle/Benchmarkregister",
+        "M4 API/UI/Tests/Anleitung/Installer"
+      ],
+      "source_files": [
+        "docs/plans/ims_dora_reference_case.md",
+        "docs/research/ims_competition_evidence_2026_10.json",
+        "docs/plans/ims_board_strategy_2026_10.md",
+        "python_port/ims/ict/simulation.py",
+        "python_port/ims/strategies/modern_bridge.py"
+      ],
+      "source_ids": [
+        "S12",
+        "S14",
+        "S15",
+        "S16",
+        "S20",
+        "S21"
+      ],
+      "requirement_ids": [
+        "AP13-R01",
+        "AP13-R02",
+        "AP13-R03",
+        "AP13-R04",
+        "AP13-R05",
+        "AP13-R06",
+        "AP13-R07",
+        "AP13-R08"
+      ],
+      "completion_evidence": [],
+      "merge_evidence": []
+    },
+    {
+      "id": "AP14",
+      "title": "Robuste Strategien und protokollierte Vorstandssimulation",
+      "status": "proposed",
+      "plan_status": "proposed",
+      "implementation_authorized": false,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "depends_on": [
+        "AP9",
+        "AP12",
+        "AP13"
+      ],
+      "branch": "codex/ims-ap14-board",
+      "goal": "Robuste Strategien und protokollierte Vorstandssimulation",
+      "decision_benefit": "Tragende Annahmen, Grenzen und frühe Umschaltsignale auf zusätzlichen Prüfszenarien erklären.",
+      "deliverables": [
+        "Matrix eigene Strategie × Schockfolge × Wettbewerberverhalten",
+        "Maßnahmenvergleich mit gleichem Budget und Anfang",
+        "Sensitivitäten und mehrere reproduzierbare Draw-Pfade",
+        "Grenzverletzungen bei Ergebnis, Cash, Modellkapital und Service",
+        "Sofortiges/verzögertes Handeln einschließlich Umsetzungsvorlauf",
+        "Vorstandsspiel mit schrittweisem Wissen und protokolliertem Informationsstand",
+        "Dossier: Strategie, Annahmen, Alternativen, Frühindikatoren, Umschaltregeln",
+        "Zusätzliche Prüfszenarien, begrenzte Kipppunkte, nachvollziehbare Buchung; keine realen Wahrscheinlichkeiten",
+        "Gesonderte Vorstandsgesamt-Abnahme mit Nutzer-/Vorbereitungs-/Validierungsmessung",
+        "API/UI/Dossier/Anleitung/Installer"
+      ],
+      "acceptance": [
+        "Budget-/Anfang-/Drawfairness und reproduzierbare Matrix",
+        "Held-out Ereignispfade außerhalb Auswahl; Empfehlung samt Gegenbeispielen",
+        "Kipppunkte nur im untersuchten Raum, keine reale Eintrittswahrscheinlichkeit",
+        "Entscheidungszeit/Informationssnapshot/Vorlauf bis Buchung nachvollziehbar",
+        "Benutzer erklären Entscheidung, Kosten, Grenzen und Umschaltregel nach festgelegter Rubrik",
+        "AP9-Seminarabnahme nicht rückwirkend erweitert"
+      ],
+      "gates": [
+        "AP9, AP12, AP13 in main",
+        "Grenzen, Suchraum, Trainings-/Prüfszenarien und Dossierrubrik vor Auswahl festgelegt",
+        "Unternehmensentscheidungshilfe erst nach separater Kalibrierungs-/Validierungsfreigabe"
+      ],
+      "milestones": [
+        "M1 Experimentmatrix/fairer Vertrag",
+        "M2 Sensitivität/Grenzen/Prüfszenarien",
+        "M3 Informationsspiel/Dossier",
+        "M4 Nutzer-/Gesamtabnahme/Installer"
+      ],
+      "source_files": [
+        "docs/plans/ims_dora_reference_case.md",
+        "docs/research/ims_competition_evidence_2026_10.json",
+        "docs/plans/ims_board_strategy_2026_10.md",
+        "python_port/ims/ict/simulation.py",
+        "python_port/ims/strategies/modern_bridge.py"
+      ],
+      "source_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S17",
+        "S19"
+      ],
+      "requirement_ids": [
+        "AP14-R01",
+        "AP14-R02",
+        "AP14-R03",
+        "AP14-R04",
+        "AP14-R05",
+        "AP14-R06",
+        "AP14-R07",
+        "AP14-R08",
+        "E09-01",
+        "REF-01",
+        "REF-02",
+        "REF-03",
+        "REF-04",
+        "REF-05",
+        "REF-06",
+        "REF-07",
+        "REF-08",
+        "REF-09",
+        "REF-10",
+        "REF-11",
+        "REF-12",
+        "RES-01",
+        "RES-02",
+        "RES-03",
+        "RES-04",
+        "RES-05"
+      ],
+      "completion_evidence": [],
+      "merge_evidence": []
+    }
+  ],
+  "backlog": [
+    {
+      "id": "DEF-01",
+      "status": "deferred",
+      "description": "Demografieschocks",
+      "reopen_when": "Eigener Bestands-/Biometrievertrag, Datenbasis und ausdrückliche Priorisierung"
+    },
+    {
+      "id": "DEF-02",
+      "status": "deferred",
+      "description": "Langlebigkeitsschocks",
+      "reopen_when": "Eigener Bestands-/Biometrievertrag, Datenbasis und ausdrückliche Priorisierung"
+    },
+    {
+      "id": "DEF-03",
+      "status": "deferred",
+      "description": "Morbiditätsschocks",
+      "reopen_when": "Eigener Bestands-/Biometrievertrag, Datenbasis und ausdrückliche Priorisierung"
+    }
+  ],
+  "dependency_changes": [
+    {
+      "package": "AP10",
+      "old": [
+        "AP9"
+      ],
+      "new": [
+        "AP7"
+      ],
+      "reason": "Kleiner gekoppelter DORA-Fall benötigt AP7-Brücke, nicht gesamte Seminar-Endabnahme."
+    },
+    {
+      "package": "AP13",
+      "old": [
+        "AP12"
+      ],
+      "new": [
+        "AP10",
+        "AP11"
+      ],
+      "reason": "AP10 liefert Capability-Vertrag; versicherter Cyber-Kumul nutzt AP11. Anlagen/Vertrauen nicht voraussetzen."
+    },
+    {
+      "package": "AP14",
+      "old": [
+        "AP13"
+      ],
+      "new": [
+        "AP9",
+        "AP12",
+        "AP13"
+      ],
+      "reason": "Gesamtabnahme benötigt Seminarabschluss und beide geprüften fachlichen Ausbauzweige."
+    }
+  ],
+  "evidence_policy": {
+    "research_is_not_validation": true,
+    "plan_is_not_execution_authorization": true,
+    "technical_done_is_not_merged": true,
+    "dependent_packages_require_main_evidence": true,
+    "foreign_product_tested": false
+  },
+  "missing_sources": [
+    "G-BENCH"
+  ],
+  "completion_evidence": []
+}

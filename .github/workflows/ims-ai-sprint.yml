@@ -5,16 +5,20 @@ on:
     paths:
       - "AGENTS.md"
       - "docs/plans/**"
+      - "docs/research/**"
+      - "docs/reports/ims_board_baseline*"
       - "scripts/planning/**"
-      - "tests/test_ai_sprint_plan.py"
+      - "tests/test_ai_sprint_plan*.py"
       - ".github/workflows/ims-ai-sprint.yml"
   push:
     branches: [main]
     paths:
       - "AGENTS.md"
       - "docs/plans/**"
+      - "docs/research/**"
+      - "docs/reports/ims_board_baseline*"
       - "scripts/planning/**"
-      - "tests/test_ai_sprint_plan.py"
+      - "tests/test_ai_sprint_plan*.py"
       - ".github/workflows/ims-ai-sprint.yml"
   workflow_dispatch:
     inputs:
@@ -22,7 +26,12 @@ on:
         description: "Arbeitsauftrag vorbereiten; startet keine Codex-Ausführung"
         type: choice
         default: auto
-        options: [auto, AP1, AP2, AP3]
+        options: [auto, AP1, AP2, AP3, AP4, AP5, AP6, AP7, AP8, AP9, AP10, AP11, AP12, AP13, AP14]
+      plan:
+        description: "Plan wählen; CI erstellt ausschließlich Vorschauen"
+        type: choice
+        default: board
+        options: [legacy, market, board]
 
 permissions:
   contents: read
@@ -39,21 +48,35 @@ jobs:
     env:
       PACKAGE_ID: ${{ inputs.package || 'auto' }}
       CHECKED_COMMIT: ${{ github.sha }}
+      PLAN_KIND: ${{ inputs.plan || 'board' }}
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Prüflogik testen
-        run: python -m unittest discover -s tests -p test_ai_sprint_plan.py -v
+        run: python -m unittest discover -s tests -p 'test_ai_sprint_plan*.py' -v
+      - name: Kompatiblen AP1–AP3-Plan prüfen
+        run: python scripts/planning/ims_sprint_plan.py --out "$RUNNER_TEMP/ims-legacy"
       - name: Plan prüfen und Arbeitsauftrag erzeugen
         run: |
-          python scripts/planning/ims_sprint_plan.py \
-            --package "$PACKAGE_ID" \
-            --commit "$CHECKED_COMMIT" \
-            --out "$RUNNER_TEMP/ims-sprint"
+          case "$PLAN_KIND" in
+            legacy)
+              python scripts/planning/ims_sprint_plan.py --package "$PACKAGE_ID" \
+                --commit "$CHECKED_COMMIT" --out "$RUNNER_TEMP/ims-sprint"
+              ;;
+            market) PLAN_FILE=docs/plans/ims_explainable_market_plan.json ;;
+            board) PLAN_FILE=docs/plans/ims_board_strategy_plan.json ;;
+            *) exit 1 ;;
+          esac
+          if [ "$PLAN_KIND" != legacy ]; then
+            python scripts/planning/ims_sprint_plan.py --plan "$PLAN_FILE" \
+              --package "$PACKAGE_ID" --mode preview \
+              --commit "$CHECKED_COMMIT" --out "$RUNNER_TEMP/ims-sprint"
+          fi
           cat "$RUNNER_TEMP/ims-sprint/plan-report.md" >> "$GITHUB_STEP_SUMMARY"
       - name: Planbericht und Arbeitsauftrag bereitstellen
         uses: actions/upload-artifact@v4
