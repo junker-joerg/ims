@@ -1,8 +1,12 @@
 # AP4 – Abschlussbericht: Erklärbares IMS Managementlabor
 
 Stand 02.10.2026, Beginn nach Planmerge #292. Status: **technisch geprüft und
-vom Auftraggeber abgenommen; Merge freigegeben**. Der tatsächliche Merge folgt
-nach grüner CI des Abnahmekommitts; keine Veröffentlichung. Branch
+vom Auftraggeber abgenommen und nach main übernommen**. PR #293 wurde am
+02.10.2026 um 10:49:21 Uhr (Europe/Berlin) mit vier grünen erforderlichen Checks
+am Head `c11a01dcd13c43119b7e480b3bdeed1a21f14448` gemergt:
+`9b0d45a22be4314eda8e9ab1db61c506a44160f7`. Merge- und geprüftes Head-Tree
+identisch (`ce44dc41f73e33d8d05240a85d6c7ef1663bf8d3`); main aktualisiert.
+Keine Veröffentlichung. Branch
 `codex/ims-explainable-roles`, [PR #293](https://github.com/junker-joerg/ims/pull/293).
 
 ## Auftrag und Grundlage

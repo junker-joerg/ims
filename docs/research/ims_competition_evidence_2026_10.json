@@ -1105,7 +1105,11 @@
     {
       "id": "G-BENCH",
       "filename": "260630_DORA_Implementation_Benchmark_Report_BF_SEC (1).pdf",
-      "status": "not_accessible",
+      "status": "source_verified",
+      "previous_status": "not_accessible_at_board_plan_acceptance",
+      "verified_on": "2026-10-02",
+      "evidence_file": "docs/research/dora_benchmark_2026_06.json",
+      "sha256": "b0f56062dfb70c3c247bd82bb29f3f9e981727f1edbd4589f54d1731023602a8",
       "searched": [
         "Codex attachments",
         "remote attachments",
@@ -1113,7 +1117,7 @@
         "Documents",
         "source"
       ],
-      "consequence": "AP13 requires source/page/question/group verification; no imported figures"
+      "consequence": "Source/page/question/denominator checked in separate register; access gap resolved. No AP5 runtime calibration, failure probabilities or AP13 completion implied."
     },
     {
       "id": "G-PROP",

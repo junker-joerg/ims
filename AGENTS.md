@@ -29,6 +29,20 @@ Für die Folgearbeit gilt die am 01.10.2026 vom Auftraggeber geprüfte und zum
 Merge freigegebene Planung in `docs/plans/ims_explainable_market_2026_10.md`
 und `docs/plans/ims_explainable_market_plan.json`. Mit Übernahme von PR #291
 nach main ist die Lieferreihenfolge AP4 → AP5 → AP6 → AP7 → AP8 → AP9 angenommen.
+AP4 ist nach Anwenderabnahme am 02.10.2026 über PR #293 nach main übernommen
+(`9b0d45a22be4314eda8e9ab1db61c506a44160f7`). AP5 ist im Branch
+`codex/ims-market-strategy-groups` beauftragt und begonnen. Paketplan und
+Fachvertragsvorschlag: `docs/plans/ims_ap5_implementation.md` und
+`docs/plans/ims_ap5_market_contract.md`. Der Auftraggeber nahm den konkreten
+Vertrag in Draft-PR #294 am 02.10.2026 mit „Vertrag annehmen und umsetzen“ an;
+Beleg `docs/reports/ims_ap5_contract_acceptance.md`. Umsetzung im selben PR.
+AP5 ist technisch fertig (`done`) und am 02.10.2026 vom Auftraggeber abgenommen;
+`docs/reports/ims_ap5_abschlussbericht.md` und `ims_ap5_verification.json`
+enthalten die Nachweise. `docs/reports/ims_ap5_user_acceptance.md` dokumentiert
+die ausdrücklich erteilte Anwenderabnahme und Mergefreigabe. Der tatsächliche
+Merge steht noch aus (`merged_to_main=false`). Danach ist AP6 gemäß dem
+Fortsetzungsauftrag in dieser Sitzung beauftragt; seine Daten-/Methodentore
+bleiben verbindlich. Ein done-Status im Branch ersetzt keinen main-Abhängigkeitsbeleg.
 AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
 und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
 jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,
@@ -69,10 +83,13 @@ erteilt den AP4-Mergeauftrag und beauftragt danach AP5. Abnahmebeleg:
 übernommenen AP4-Status in main; sein Mehr-VU-/Risiko-/Aggregat-/Gruppenvertrag
 ist anhand kleiner Handfälle zu erklären und anzunehmen. Die angenommenen
 Ergänzungen E05-01/E05-02 aus dem Boardplan sind mit eigener Herkunft einzubeziehen.
-Keine Freigabe für AP5-Merge, Veröffentlichung oder Umsetzung von AP6–AP14.
+Der spätere Auftrag derselben Sitzung erteilt die AP5-Abnahme/Mergefreigabe
+und setzt danach das nächste Paket AP6 fort; Beleg oben. Keine Freigabe für
+AP6-Merge, Veröffentlichung oder Umsetzung von AP7–AP14.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
-Seiten und Bezugsgruppen sind vor einer Verwendung zu prüfen. Der ehemalige
+Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
+geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige
 Zugangsblocker G-BENCH entfällt mit dem Eingang; daraus folgt keine Kalibrierung
 und keine Freigabe weiterer Modellkanäle. AP4 erklärt weiterhin vorhandene AP3-Fälle.
 

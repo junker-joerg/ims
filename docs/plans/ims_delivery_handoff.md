@@ -1,5 +1,113 @@
 # IMS-Lieferübergabe
 
+## AP5 abgenommen; Merge freigegeben, anschließend AP6 beauftragt
+
+02.10.2026: Auf die konkrete Frage nach AP5-Anwenderabnahme und Mergefreigabe
+bestätigt der Auftraggeber „Ja“. Beleg `../reports/ims_ap5_user_acceptance.md`.
+Alle vier Checks am endgültigen Produkthead 417a0ca erneut erfolgreich;
+CI-Tree identisch, aktueller CI-Installer heruntergeladen und Hash/Größe
+bestätigt. 14 Lifecycle- und 50 installierte Browserfälle bestanden;
+beide Handfälle frisch bestätigt. Die frühere allgemeine Abnahme war offen;
+die folgenden Zwischenstände bleiben historische Belege.
+
+Abnahmekommitt im selben PR #294 nach aktueller grüner CI übernehmen, main
+aktualisieren und tatsächlichen Merge/Tree nachweisen. Erst danach den echten
+AP6-Fortsetzungsauftrag gegen origin/main erzeugen und AP6 im eigenen
+Branch/Draft-PR bearbeiten: Datenjahr, deutsche direkte Bruttobeiträge,
+Gruppen-/Tochterkonsolidierung, vollständige Rangbasis und Grenze 40/41 zuerst
+prüfen. Keine unbelegte Top-40-Auswahl; keine Freigabe für AP6-Merge/Public-Release
+oder AP7–AP14. Genaue Anwender-Testdauer/Updatefolge weiterhin unbekannt.
+
+## AP5 technisch zur Anwenderabnahme bereit
+
+02.10.2026: Vertragsannahme dokumentiert, M2–M4 umgesetzt. Abschlussbericht
+`docs/reports/ims_ap5_abschlussbericht.md` und Prüfprotokoll
+`docs/reports/ims_ap5_verification.json`: 16 aktuelle AP5-Modell/APItests,
+50 lokale Browserfälle, nochmals zehn aktuelle AP5-Browserfälle inklusive
+Offlinebildern; vollständige Pythonregression 2715+14. Alle vier erforderlichen
+Checks für Produkthead 04617fb erfolgreich; CI-Release-Gate 2715+14,
+Installer-Lifecycle 14 und installierte Browserfälle 50 erfolgreich.
+40/41×100 mit stabilen Quellen-/Ergebnisdigests und gemessenen Grenzen.
+Guide, Bildstände und ausdrückliche Excel-/Prefixerklärung aktualisiert.
+Anwenderfassung alpha.5 / Windows 2.0.0.5. Finalen Dokumentationshead im selben
+Draft-PR #294 prüfen; keine Modelländerung nach geprüftem Produkthead.
+
+Manifest: AP5 done (technisch)/technically_complete, Produktabnahme und Merge
+ausstehend. Keine Freigabe für AP6–AP14 oder Public-Release. Hauptcheckout
+bleibt AP4-main 9b0d45a. Nächster menschlicher Schritt: alpha.5-Produkt prüfen.
+Die untenstehenden Zwischenstände bleiben datierte Herkunft.
+
+## AP5-Vertrag angenommen; gemeinsamer Produktmarkt angeschlossen
+
+02.10.2026: Der Auftraggeber bestätigt den konkreten Vertrag in Draft-PR #294
+mit „Vertrag annehmen und umsetzen“. Beleg `../reports/ims_ap5_contract_acceptance.md`,
+Vorschlagscommit `0a21cf8f6718a4b1188da92587a820058ca7c0a3`. Das fachliche Tor
+ist angenommen; keine Produktabnahme, kein AP5-Merge/Public-Release.
+
+M2/M3 umgesetzt: `ims.market` mit eigenem Vertrag, gemeinsamem Risikobuch,
+allen VU-Bilanzen, disjunkten Familien und überlappenden Peers. API in beiden
+Backendpfaden, Marktsicht `#market`, Strategie-/Maßnahmeneditor, ausgewählte
+VU in Excel, geprüfte Marktquelle in JSON. Zwölf anfängliche Modell-/APItests
+bestanden; zusätzliche Rand- und Desktopanschlussregressionen ergänzt.
+Die Browserfälle zu Handrechnung, Filtern, Änderungen und sechs Kontrast-/
+Tastaturansichten bestanden; der komplette 41×100-Lauf ebenso.
+
+Gemessene vollständige 40/41×100-Rechnungen: 15,696/16,124 Sekunden,
+Antworten 35.369.741/36.239.738 Bytes. Verlustloser Spaltentransport;
+16-MiB-Eingang/48-MiB-Ergebnisgrenzen, ein gleichzeitiger Auftrag.
+`../migration/ap5_common_market.md` erklärt Herkunft, Adapter und Grenzen.
+Einsteigeranleitung `../handbook/market_ap5.md`/`.html`, Releasekennung
+`2.0.0-alpha.5` / Windows `2.0.0.5` konsistent. Denselben Draft-PR fortsetzen.
+
+Nächster Schritt: vollständige Python-/Browser-/Planregressionen, Screenshot-
+Einbindung und tatsächlichen Installer bauen; Ergebnisse und CI im selben
+PR dokumentieren. AP5 bleibt in_progress; AP6–AP14 nicht begonnen.
+Der untenstehende frühe Arbeitsstand bleibt historischer Meilenstein.
+
+## AP4 übernommen; AP5 im eigenen Paket begonnen
+
+02.10.2026, 10:49:21 Uhr Europe/Berlin: PR #293 gemäß Anwenderabnahme/Mergeauftrag
+übernommen. Geprüfter Head `c11a01dcd13c43119b7e480b3bdeed1a21f14448`, alle vier
+erforderlichen Checks erfolgreich. Merge/main
+`9b0d45a22be4314eda8e9ab1db61c506a44160f7`, Tree
+`ce44dc41f73e33d8d05240a85d6c7ef1663bf8d3` identisch mit geprüftem Head.
+Primärer Checkout sauber per Fast-forward aktualisiert. AP4 done/merged,
+Release `2.0.0-alpha.4`; kein öffentliches Release erstellt.
+
+Der konkrete anschließende AP5-Auftrag wurde vor Paketmanifeständerungen mit
+authorized-Generator gegen dieses main bestätigt. Archiv:
+`ims_ap5_work_order.md`; angenommene Ergänzungen E05-01/E05-02 mit eigener
+Herkunft in `ims_ap5_implementation.md`. Geeigneten verwalteten Worktree mit
+eigener editable Umgebung weiterverwendet, Branch `codex/ims-market-strategy-groups`.
+
+Fachvertragsvorschlag `ims_ap5_market_contract.md`: neue gemeinsame Periodenphasen,
+prospektiv mitwechselnde Kohortenrisiken, Altreserve beim alten Träger,
+ganze Kohorten bei expliziter Kapazität, disjunkte Familien/überlappende Peers,
+Maßnahmenkosten/Vorlauf/Dauer und beobachtbarer Informationsstand.
+**Fachliche Annahme noch offen**, keine AP5-Produktfertigstellung oder Mergefreigabe.
+Fortschritt und tatsächliche Hand-/Kernelproben:
+`../reports/ims_ap5_fortschritt.md`, `ims_ap5_contract_probes.json`.
+Skript `scripts/planning/probe_ap5_contract.py` bestand: H1/H2, Carryover,
+40/41-Angebotskerne ×100 und Replay. Der alte Bilanzvalidator weist ID41
+weiterhin erwartungsgemäß zurück; neue gemeinsame Rechnung/API/UI noch offen.
+35 Plan-/Freigabeprüfungen bestanden (5,365 s), bestehende alpha.4-Metadaten
+konsistent; Diffprüfung bestanden. AP5-Produkt-/Browser-/Installerprüfungen
+stehen erst nach Umsetzung an.
+
+DORA-PDF vollständig gelesen/gerendert; relevante Diagramme visuell geprüft.
+Register `../research/dora_benchmark_2026_06.md`/`.json` mit Hash, Frage,
+Seite, Bezugsgruppe, Mehrfachantworten und Rundungsgrenzen. Zugangslücke G-BENCH
+geschlossen; historische Zugangsnotizen bleiben erhalten. Keine Runtime-
+Kalibrierung, Ausfallwahrscheinlichkeiten oder AP13-Abnahme daraus abgeleitet.
+
+Nächster Schritt: konkreten Fachvertrag annehmen lassen, echte Zustimmung
+dokumentieren und M2–M4 im selben AP5-Draft-PR ausführen. Bei Änderungen
+zuerst Handfälle nachziehen. Paket bleibt in_progress mit leeren Abschlussbelegen;
+AP6–AP14 werden nicht gestartet. Evernote-Werkzeuge aktuell nicht aufrufbar,
+AP4-/AP5-Berichte sind im Repository und PR gesichert; Ablage ausstehend.
+
+Die folgenden Abschnitte sind datierte Zwischenstände und historische Belege.
+
 ## AP4 abgenommen, Merge und anschließendes AP5 beauftragt
 
 02.10.2026: „Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt“ und

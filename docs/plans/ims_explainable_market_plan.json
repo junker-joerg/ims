@@ -112,7 +112,7 @@
       ],
       "implementation_authorized": true,
       "technically_complete": true,
-      "merged_to_main": false,
+      "merged_to_main": true,
       "execution_authorization": {
         "date": "2026-10-02",
         "scope": "implementation",
@@ -131,20 +131,136 @@
         "date": "2026-10-02",
         "user_request": "1) anbei DORA PDF\n2) Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt\n3) Fahre dann mit AP5 fort",
         "scope": "AP4"
-      }
+      },
+      "merge_evidence": [
+        {
+          "pull_request": "https://github.com/junker-joerg/ims/pull/293",
+          "commit": "9b0d45a22be4314eda8e9ab1db61c506a44160f7",
+          "merged_at": "2026-10-02T08:49:21Z",
+          "checked_head": "c11a01dcd13c43119b7e480b3bdeed1a21f14448",
+          "tree": "ce44dc41f73e33d8d05240a85d6c7ef1663bf8d3",
+          "tree_matches_checked_head": true,
+          "checks": [
+            {
+              "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+              "status": "completed",
+              "conclusion": "success",
+              "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928666/job/110764509830"
+            },
+            {
+              "name": "installer",
+              "status": "completed",
+              "conclusion": "success",
+              "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928651/job/110764509662"
+            },
+            {
+              "name": "browser",
+              "status": "completed",
+              "conclusion": "success",
+              "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928661/job/110764509538"
+            },
+            {
+              "name": "release-gate",
+              "status": "completed",
+              "conclusion": "success",
+              "html_url": "https://github.com/junker-joerg/ims/actions/runs/36983928635/job/110764509358"
+            }
+          ]
+        }
+      ]
     },
 
     {
       "id": "AP5",
       "title": "Marktmodell und auswertbare Strategiefamilien",
-      "status": "planned",
-      "depends_on": ["AP4"],
+      "status": "done",
+      "depends_on": [
+        "AP4"
+      ],
       "branch_proposal": "codex/ims-market-strategy-groups",
-      "deliverables": ["Neuer expliziter moderner Mehr-VU-Marktvertrag mit 40/41 Anbietern", "Gemeinsame Risiko-, Mengen-, Buchungs- und Bestandszuordnung", "Getrennte Versicherungs-, Vergleichs-, Kunden- und Strategiegruppen", "Gruppen-/Familien-API und erste nutzbare Marktsicht", "Quellengebundener Einzel-VU-Excel-Export"],
-      "acceptance": ["Zwei/drei-VU-Handfälle und deterministischer 40/41-VU-Lauf mit 100 Perioden", "Marktsumme und disjunkte Familiensummen stimmen mit Einzel-VUs überein", "Prämien, Risiko- und Mengenwechsel ohne Doppelbuchung; unversicherte Mengen bleiben sichtbar", "A = L + E, Carryover und gemeinsamer Anfang/Prefixe", "Akteurgebundene Zufallswerte und reproduzierbare Tie-Breaks", "Familienzuordnung mit Zeitfenstern und unverändertes Ergebnis bei bloßem Filterwechsel"],
-      "gates": ["Mehr-VU-, Risiko-, Aggregat- und Strategiegruppenvertrag anhand kleiner Handfälle erklärt und angenommen", "Neue Lebens-Nachfrage und zusätzliche Regelkerne explizit kartiert", "Ressourcenlimits anhand tatsächlicher 40/41-VU-Messungen festgelegt"],
-      "completion_evidence": []
+      "deliverables": [
+        "Neuer expliziter moderner Mehr-VU-Marktvertrag mit 40/41 Anbietern",
+        "Gemeinsame Risiko-, Mengen-, Buchungs- und Bestandszuordnung",
+        "Getrennte Versicherungs-, Vergleichs-, Kunden- und Strategiegruppen",
+        "Gruppen-/Familien-API und erste nutzbare Marktsicht",
+        "Quellengebundener Einzel-VU-Excel-Export"
+      ],
+      "acceptance": [
+        "Zwei/drei-VU-Handfälle und deterministischer 40/41-VU-Lauf mit 100 Perioden",
+        "Marktsumme und disjunkte Familiensummen stimmen mit Einzel-VUs überein",
+        "Prämien, Risiko- und Mengenwechsel ohne Doppelbuchung; unversicherte Mengen bleiben sichtbar",
+        "A = L + E, Carryover und gemeinsamer Anfang/Prefixe",
+        "Akteurgebundene Zufallswerte und reproduzierbare Tie-Breaks",
+        "Familienzuordnung mit Zeitfenstern und unverändertes Ergebnis bei bloßem Filterwechsel"
+      ],
+      "gates": [
+        "Mehr-VU-, Risiko-, Aggregat- und Strategiegruppenvertrag anhand kleiner Handfälle erklärt und angenommen",
+        "Neue Lebens-Nachfrage und zusätzliche Regelkerne explizit kartiert",
+        "Ressourcenlimits anhand tatsächlicher 40/41-VU-Messungen festgelegt"
+      ],
+      "completion_evidence": [
+        "docs/reports/ims_ap5_contract_acceptance.md: echte fachliche Annahme des Vorschlags 0a21cf8",
+        "docs/reports/ims_ap5_abschlussbericht.md: Umsetzung, Handfälle, API/UI/Excel, Anleitung, Herkunft und Grenzen",
+        "docs/reports/ims_ap5_verification.json: aktuelle Produkt-/Ressourcen-/Browser-/Installernachweise, alle vier CI-Checks für 04617fb erfolgreich",
+        "docs/handbook/market_ap5.md und .html: Einsteigeranleitung und echte Bildschirmbilder",
+        "docs/reports/ims_ap5_user_acceptance.md: ausdrückliche allgemeine Produktabnahme und Mergefreigabe am 02.10.2026; AP6 nach tatsächlichem Merge beauftragt"
+      ],
+      "implementation_authorized": true,
+      "technically_complete": true,
+      "merged_to_main": false,
+      "user_product_acceptance": "accepted",
+      "merge_authorized": true,
+      "user_acceptance": {
+        "date": "2026-10-02",
+        "user_request": "Gibst du AP5 zur Anwenderabnahme und zum Merge frei? Ja",
+        "evidence": "docs/reports/ims_ap5_user_acceptance.md",
+        "product_head": "417a0ca4f665c28a94f551aa55a3b05c08d4f125"
+      },
+      "merge_authorization": {
+        "date": "2026-10-02",
+        "user_request": "Gibst du AP5 zur Anwenderabnahme und zum Merge frei? Ja",
+        "scope": "AP5"
+      },
+      "execution_authorization": {
+        "schema_version": "ims.execution-authorization.v1",
+        "package": "AP5",
+        "scope": "implementation",
+        "plan_commit": "9b0d45a22be4314eda8e9ab1db61c506a44160f7",
+        "authorized_by": "Auftraggeber dieser Codex-Sitzung",
+        "authorized_at": "2026-10-02T10:50:41.754299+02:00",
+        "user_request": "1) anbei DORA PDF\n2) Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt\n3) Fahre dann mit AP5 fort",
+        "recording_note": "Zeitpunkt der Erfassung in Europe/Berlin; genauer Nachrichtenzeitpunkt nicht ausgewiesen. AP4-Merge geprüft. AP5-Umsetzung beauftragt, fachliches Marktvertragstor weiterhin offen; kein AP5-Merge oder öffentliches Release beauftragt."
+      },
+      "implementation_plan": "docs/plans/ims_ap5_implementation.md",
+      "progress_document": "docs/reports/ims_ap5_fortschritt.md",
+      "contract_gate": {
+        "status": "accepted",
+        "proposal": "docs/plans/ims_ap5_market_contract.md",
+        "probes": "docs/reports/ims_ap5_contract_probes.json",
+        "accepted_date": "2026-10-02",
+        "accepted_by": "Auftraggeber dieser Codex-Sitzung",
+        "answer": "Vertrag annehmen und umsetzen",
+        "proposal_commit": "0a21cf8f6718a4b1188da92587a820058ca7c0a3",
+        "acceptance_evidence": "docs/reports/ims_ap5_contract_acceptance.md"
+      },
+      "accepted_amendments": [
+        {
+          "id": "E05-01",
+          "origin": "docs/plans/ims_board_strategy_plan.json",
+          "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
+          "implementation_plan": "docs/plans/ims_ap5_implementation.md",
+          "completion_evidence": ["docs/reports/ims_ap5_verification.json: E05-01 mit aktueller Modell-/Browser-/CI-Prüfung", "docs/reports/ims_ap5_abschlussbericht.md"]
+        },
+        {
+          "id": "E05-02",
+          "origin": "docs/plans/ims_board_strategy_plan.json",
+          "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
+          "implementation_plan": "docs/plans/ims_ap5_implementation.md",
+          "completion_evidence": ["docs/reports/ims_ap5_verification.json: E05-02 mit aktueller Modell-/Browser-/CI-Prüfung", "docs/reports/ims_ap5_abschlussbericht.md"]
+        }
+      ]
     },
+
     {
       "id": "AP6",
       "title": "Deutscher Versicherungsmarkt mit 40 Gruppen",

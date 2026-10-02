@@ -35,3 +35,10 @@ Nächster Schritt: den Abnahmekommitt nach grüner aktueller CI gemäß Auftrag
 übernehmen, main aktualisieren und den tatsächlichen AP5-Auftrag gegen diese
 übernommene Basis erzeugen. Mergecommit und Fortsetzungsstand werden nach dem
 tatsächlichen Merge in der Lieferübergabe festgehalten.
+
+Nachtrag: Der geprüfte Abnahmehead `c11a01d` hatte anschließend alle vier
+erforderlichen Checks erfolgreich. PR #293 wurde gemäß Auftrag am 02.10.2026
+um 10:49:21 Uhr (Europe/Berlin) nach main übernommen, Mergecommit
+`9b0d45a22be4314eda8e9ab1db61c506a44160f7`. Treegleichheit mit dem geprüften
+Head bestätigt; der primäre main-Checkout wurde per Fast-forward aktualisiert.
+Der anschließende AP5-Umsetzungsauftrag wurde gegen diesen neuen Stand geprüft.

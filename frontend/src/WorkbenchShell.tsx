@@ -5,7 +5,7 @@ import ManagementOverview from "./ManagementOverview";
 import { ManagementSessionProvider, RoleOrientation, RolePicker } from "./ManagementSession";
 
 type AreaName = "overview" | "scenario" | "simulation" | "results" | "help";
-type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "seminar" | "capital" | "ict" | "hundred" | "strategies" | "execution";
+type ModelName = "balance" | "life" | "health" | "four-sector-balance" | "management" | "seminar" | "market" | "capital" | "ict" | "hundred" | "strategies" | "execution";
 type Route = { area: AreaName; model: ModelName };
 const areas = [
   { id: "overview", label: "Übersicht", icon: Home },
@@ -22,6 +22,7 @@ const models: { id: ModelName; label: string }[] = [
   { id: "hundred", label: "100-Perioden-Lauf" },
   { id: "management", label: "100er-Gesamtbilanz" },
   { id: "seminar", label: "Managementseminar" },
+  { id: "market", label: "Markt und Familien" },
   { id: "execution", label: "Ausführung" },
 ];
 const RouteContext = createContext<Route>({ area: "overview", model: "balance" });
@@ -118,7 +119,7 @@ function WorkbenchLayout({ children }: { children: ReactNode }) {
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}<span>{theme === "dark" ? "Hell" : "Dunkel"}</span>
           </button></div></header><RoleOrientation />
-        <Area name="overview"><ManagementOverview /></Area>
+        <Area name="overview"><ManagementOverview /><section className="panel"><h2>Gemeinsamen Modellmarkt erkunden</h2><p>40/41 synthetische Anbieter, Kundenwechsel, Risiken und ausführbare Strategiefamilien direkt in IMS vergleichen.</p><a className="primary-action" href="#market">Markt und Familien öffnen</a></section></Area>
         <Area name="simulation"><p className="area-intro">Wählen Sie einen vorhandenen Modellfall. Für Gesamtbilanz und Kapitalwirkung werden zuvor geprüfte Spartenquellen benötigt.</p>
           <nav className="model-navigation" aria-label="Modellfälle">{models.map(({ id, label }) =>
             <a key={id} href={`#${id}`} className={route.model === id ? "active" : ""} aria-current={route.model === id ? "page" : undefined}>{label}</a>)}</nav>
@@ -134,6 +135,7 @@ function WorkbenchLayout({ children }: { children: ReactNode }) {
             <li><a href="#results">Ergebnisse</a> exportieren. Speichern erfolgt erst nach ausdrücklicher Freigabe; geänderte Eingaben entwerten abhängige Nachweise.</li></ol>
           <p>Alle Berechnungen und Daten bleiben lokal. Hell-/Dunkelmodus ist oben umschaltbar. Tabulator bewegt den Fokus; breite Tabellen sind innerhalb ihrer Fläche scrollbar.</p>
           <p><a href="/api/seminar/handbook/management_ap4.html" target="_blank" rel="noreferrer">Einsteigeranleitung AP4 mit 15-Minuten-Übung</a>: Demofall direkt von der Übersicht laden, Kennzahlen vergleichen und eine Buchung erklären. Die Übungszeit ist ein Ziel; ihre tatsächliche Dauer wird bei der Benutzerabnahme erfasst.</p>
+          <p><a href="#market">Markt und Familien</a>: alle VUs gemeinsam bilanzieren, Risiken und Kapazität erklären. <a href="/api/seminar/handbook/market_ap5.html" target="_blank" rel="noreferrer">Einsteigeranleitung AP5 mit Handfällen</a>.</p>
           <dl className="beginner-glossary"><div><dt>VU</dt><dd>Anbieter / Versicherungsunternehmen; im Seminar wird eine VU bilanziert.</dd></div><div><dt>VN</dt><dd>Kunden / Versicherungsnehmer; benannte Gruppen tragen Expositionsgewichte.</dd></div><div><dt>BAV</dt><dd>Historischer Markt- und Koordinationskontext; keine heutige Aufsichtsberechnung.</dd></div><div><dt>Verhaltensregel</dt><dd>Ausgeführte Strategieregel mit Parametern und Zeitfenster.</dd></div><div><dt>Periode</dt><dd>Modellperiode; ihre zeitliche Einheit gehört zum jeweiligen Vertrag.</dd></div></dl>
           <p><a href="#seminar">Managementseminar öffnen</a>: moderne Strategiekopplung, benannte Gruppen, 100er-Bilanz und portable Fallbündel. Die <a href="/api/seminar/handbook/seminar_ap3.html" target="_blank" rel="noreferrer">aktuelle Seminaranleitung</a> mit Arbeitsblatt und realen Ergebnissen ist auch offline verfügbar.</p>
           <p>Die Seminar- und Bilanzmodelle sind keine gesetzliche Bilanz und kein regulatorischer SCR-/MCR-Nachweis. Die moderne Kopplung ist ausdrücklich erklärt; historische Spartenidentität und vollständiger Versicherungsmarkt bleiben offen.</p>
