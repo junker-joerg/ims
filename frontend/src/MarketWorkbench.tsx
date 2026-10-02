@@ -49,6 +49,7 @@ export default function MarketWorkbench() {
   const [actor, setActor] = useState(1), [family, setFamily] = useState(""), [end, setEnd] = useState(20);
   const [cost, setCost] = useState("3"), [lead, setLead] = useState(2), [duration, setDuration] = useState(3), [capacity, setCapacity] = useState("60");
   const revision = useRef(0);
+  const presetCount = caseId === "market" ? count : caseId === "switch" ? 2 : 3;
   function invalidate() { revision.current++; setResult(null); setError(null); }
   function changed(source: Source) { invalidate(); setInput(source); setExpert(JSON.stringify(source, null, 2)); }
   async function act(work: (version: number) => Promise<void>) {
@@ -59,7 +60,7 @@ export default function MarketWorkbench() {
   async function load() {
     invalidate(); setInput(null);
     await act(async version => {
-      const body = await post("/workshop-case", { case_id: caseId, period_count: horizon, vu_count: count });
+      const body = await post("/workshop-case", { case_id: caseId, period_count: horizon, vu_count: presetCount });
       if (version !== revision.current) return;
       setInput(body.source_input); setExpert(JSON.stringify(body.source_input, null, 2)); setActor(body.source_input.insurers[0].insurer_id);
       setFamily(body.source_input.families.find((f: Family) => f.sector_id === "motor")?.family_id || ""); setEnd(Math.min(20, horizon)); setFilter("market");
@@ -116,7 +117,7 @@ export default function MarketWorkbench() {
     {error && <p role="alert" className="ict-error">{error}</p>}
     <div className="ict-fields"><label>Marktfall<select aria-label="Marktfall" value={caseId} disabled={busy} onChange={e => { invalidate(); setInput(null); setCaseId(e.target.value); }}>{Object.entries(caseNames).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
       <label>Marktperioden<select aria-label="Marktperioden" value={horizon} disabled={busy} onChange={e => { invalidate(); setInput(null); setHorizon(Number(e.target.value)); }}>{[2, 5, 10, 25, 50, 100].map(n => <option key={n}>{n}</option>)}</select></label>
-      <label>Anzahl Modellanbieter<select aria-label="Anzahl Modellanbieter" value={count} disabled={busy || caseId !== "market"} onChange={e => { invalidate(); setInput(null); setCount(Number(e.target.value)); }}>{[2, 3, 40, 41].map(n => <option key={n}>{n}</option>)}</select></label></div>
+      <label>Anzahl Modellanbieter<select aria-label="Anzahl Modellanbieter" value={presetCount} disabled={busy || caseId !== "market"} onChange={e => { invalidate(); setInput(null); setCount(Number(e.target.value)); }}>{[2, 3, 40, 41].map(n => <option key={n}>{n}</option>)}</select></label></div>
     <div className="ict-downloads"><button type="button" disabled={busy} onClick={load}>Modellmarkt laden</button><label>Marktdatei öffnen<input type="file" accept=".json,application/json" aria-label="Marktdatei öffnen" disabled={busy} onChange={e => { const file = e.target.files?.[0]; if (file) { invalidate(); setInput(null); void act(async version => { if (file.size > 16 * 1024 * 1024) throw new Error("Marktdatei überschreitet 16 MiB."); const source = JSON.parse(await file.text()); const body: Result = await post("/calculate", source); if (version === revision.current) { setInput(body.source_input); setExpert(JSON.stringify(body.source_input, null, 2)); setResult(body); setHadResult(true); setFilter("market"); setActor(body.source_input.insurers[0].insurer_id); setPeriod(Math.min(6, body.period_count)); } }); } e.target.value = ""; }} /></label></div>
     {!result && hadResult && <p role="status">Eingaben geändert: Das bisherige Marktergebnis ist veraltet. Bitte neu berechnen.</p>}
     {input && <><p>{input.provenance.description}</p><p>{input.insurers.length} Modellanbieter · {input.period_count} Perioden. Fehlende Sparten werden nicht automatisch ergänzt.</p>

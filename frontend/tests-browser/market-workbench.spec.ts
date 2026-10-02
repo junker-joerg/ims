@@ -13,6 +13,7 @@ async function load(page: Page, id = "capacity", n = 10, count = 3) {
   await panel.getByLabel("Marktfall", { exact: true }).selectOption(id);
   await panel.getByLabel("Marktperioden", { exact: true }).selectOption(String(n));
   if (id === "market") await panel.getByLabel("Anzahl Modellanbieter", { exact: true }).selectOption(String(count));
+  await expect(panel.getByLabel("Anzahl Modellanbieter", { exact: true })).toHaveValue(String(id === "market" ? count : id === "switch" ? 2 : 3));
   await panel.getByRole("button", { name: "Modellmarkt laden", exact: true }).click();
   await expect(panel.getByRole("button", { name: "Gemeinsamen Markt berechnen", exact: true })).toBeEnabled();
   return panel;

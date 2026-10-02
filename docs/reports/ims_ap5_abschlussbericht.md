@@ -162,6 +162,22 @@ alpha.4→alpha.5-Binarywechsel. Der CI-Rechner enthält Entwicklertools; PATH
 ist für das Executable auf System32 beschränkt. Eine unabhängige Abnahme
 auf Windows 11 ohne Entwicklertools ist weiterhin ausstehend.
 
+Auch der anschließende Dokumentationsstand `a7b007c` hat alle vier
+erforderlichen Checks bestanden. Der frisch daraus gebaute lokale Installer
+hat 19.946.759 Bytes und SHA-256
+`4f20c53fa467e4855cc910a17df91147a8737f32a3e5b776af378562bfb8bf6c`.
+Ein zusätzlicher Frozen-Lauf mit frischem Datenordner bestätigt beide
+Handfälle, die Einzel-VU-Datei und die Offlinehilfe. Ein vorheriger Lauf mit
+wiederverwendetem Testordner hatte einen Verbindungsreset; im Laufzeitprotokoll
+war keine Backend-Ausnahme zu sehen. Eine Ursache ist nicht nachgewiesen.
+Der letzte Bedienungsabgleich korrigiert außerdem die deaktivierte
+Anbieterauswahl: Zwei-/Drei-VU-Handfälle zeigen jetzt ihre tatsächliche
+Anbieterzahl. Quelle und Rechnung verwendeten bereits die korrekte Anzahl.
+Alle zehn AP5-Browserfälle einschließlich dieser Anzeigeprüfung sind lokal
+in 62,45 Sekunden bestanden; TypeScript und der Produktbuild ebenfalls.
+Der endgültige Installer und die Checks dieser kleinen Anzeigeänderung
+werden im selben PR mit Commit und Hash nachgewiesen.
+
 Der Installer ist unsigned; Produktfassung und Wiederholungen bleiben über
 Commit, Windows-Dateiversion und SHA-256 nachvollziehbar. Die bestehende lokale
 IMS-Startmenügruppe enthält fünf Verknüpfungen. Der Installer-Lifecycle wird
