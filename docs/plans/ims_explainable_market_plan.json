@@ -215,9 +215,14 @@
       "implementation_plan": "docs/plans/ims_ap5_implementation.md",
       "progress_document": "docs/reports/ims_ap5_fortschritt.md",
       "contract_gate": {
-        "status": "awaiting_human_acceptance",
+        "status": "accepted",
         "proposal": "docs/plans/ims_ap5_market_contract.md",
-        "probes": "docs/reports/ims_ap5_contract_probes.json"
+        "probes": "docs/reports/ims_ap5_contract_probes.json",
+        "accepted_date": "2026-10-02",
+        "accepted_by": "Auftraggeber dieser Codex-Sitzung",
+        "answer": "Vertrag annehmen und umsetzen",
+        "proposal_commit": "0a21cf8f6718a4b1188da92587a820058ca7c0a3",
+        "acceptance_evidence": "docs/reports/ims_ap5_contract_acceptance.md"
       },
       "accepted_amendments": [
         {

@@ -33,7 +33,9 @@ AP4 ist nach Anwenderabnahme am 02.10.2026 über PR #293 nach main übernommen
 (`9b0d45a22be4314eda8e9ab1db61c506a44160f7`). AP5 ist im Branch
 `codex/ims-market-strategy-groups` beauftragt und begonnen. Paketplan und
 Fachvertragsvorschlag: `docs/plans/ims_ap5_implementation.md` und
-`docs/plans/ims_ap5_market_contract.md`; Annahme des Fachvertrags noch offen.
+`docs/plans/ims_ap5_market_contract.md`. Der Auftraggeber nahm den konkreten
+Vertrag in Draft-PR #294 am 02.10.2026 mit „Vertrag annehmen und umsetzen“ an;
+Beleg `docs/reports/ims_ap5_contract_acceptance.md`. Umsetzung im selben PR.
 AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
 und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
 jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,

@@ -1,5 +1,32 @@
 # IMS-Lieferübergabe
 
+## AP5-Vertrag angenommen; gemeinsamer Produktmarkt angeschlossen
+
+02.10.2026: Der Auftraggeber bestätigt den konkreten Vertrag in Draft-PR #294
+mit „Vertrag annehmen und umsetzen“. Beleg `../reports/ims_ap5_contract_acceptance.md`,
+Vorschlagscommit `0a21cf8f6718a4b1188da92587a820058ca7c0a3`. Das fachliche Tor
+ist angenommen; keine Produktabnahme, kein AP5-Merge/Public-Release.
+
+M2/M3 umgesetzt: `ims.market` mit eigenem Vertrag, gemeinsamem Risikobuch,
+allen VU-Bilanzen, disjunkten Familien und überlappenden Peers. API in beiden
+Backendpfaden, Marktsicht `#market`, Strategie-/Maßnahmeneditor, ausgewählte
+VU in Excel, geprüfte Marktquelle in JSON. Zwölf anfängliche Modell-/APItests
+bestanden; zusätzliche Rand- und Desktopanschlussregressionen ergänzt.
+Die Browserfälle zu Handrechnung, Filtern, Änderungen und sechs Kontrast-/
+Tastaturansichten bestanden; der komplette 41×100-Lauf ebenso.
+
+Gemessene vollständige 40/41×100-Rechnungen: 15,696/16,124 Sekunden,
+Antworten 35.369.741/36.239.738 Bytes. Verlustloser Spaltentransport;
+16-MiB-Eingang/48-MiB-Ergebnisgrenzen, ein gleichzeitiger Auftrag.
+`../migration/ap5_common_market.md` erklärt Herkunft, Adapter und Grenzen.
+Einsteigeranleitung `../handbook/market_ap5.md`/`.html`, Releasekennung
+`2.0.0-alpha.5` / Windows `2.0.0.5` konsistent. Denselben Draft-PR fortsetzen.
+
+Nächster Schritt: vollständige Python-/Browser-/Planregressionen, Screenshot-
+Einbindung und tatsächlichen Installer bauen; Ergebnisse und CI im selben
+PR dokumentieren. AP5 bleibt in_progress; AP6–AP14 nicht begonnen.
+Der untenstehende frühe Arbeitsstand bleibt historischer Meilenstein.
+
 ## AP4 übernommen; AP5 im eigenen Paket begonnen
 
 02.10.2026, 10:49:21 Uhr Europe/Berlin: PR #293 gemäß Anwenderabnahme/Mergeauftrag

@@ -6,7 +6,9 @@ Begonnen am 02.10.2026 nach tatsächlich gemergtem AP4. Basis:
 Branch `codex/ims-market-strategy-groups`, ein zusammenhängender Draft-PR.
 Der [archivierte Generatorauftrag](ims_ap5_work_order.md) wurde vor Änderungen
 am Paketmanifest gegen diese origin/main-Basis im Modus authorized geprüft.
-Der bestätigte Umsetzungsauftrag ist kein angenommener neuer Fachvertrag.
+Der zunächst bestätigte Umsetzungsauftrag war kein angenommener neuer Fachvertrag.
+Der konkrete Vorschlag in PR #294 wurde anschließend mit „Vertrag annehmen und
+umsetzen“ angenommen; [Annahmebeleg](../reports/ims_ap5_contract_acceptance.md).
 
 ## Quellen und Umfang
 
@@ -28,10 +30,10 @@ nicht in AP3-Schadeneingaben oder historische 25er-Validatoren hineingeschrieben
 
 | Schritt | Inhalt / Nachweis | Aktueller Stand |
 | --- | --- | --- |
-| M1 Fachvertrag | Zwei/drei VUs, Risikoträger/Altreserve, Mengen/Gruppe/Familie, Maßnahmen und Information erklären; fachlich annehmen. | Vorschlag und ausführbare Handfallproben liegen vor; Annahme offen. |
-| M2 Gemeinsame Rechnung | Eigener Validator, Periodenphasen, Kohorten-/Risikoledger, alle VU-Bilanzen, gruppierte Summen, stabiler RNG, Prefixe. | Beginnt nach Annahme des Fachvertrags. |
-| M3 Anschluss | API und erste Marktsicht mit Zeit-/Sparten-/Familien-/Vergleichsfilter, Erklärweg und Einzel-VU-Excel. | Offen. |
-| M4 Lieferung | Einsteigeranleitung, vollständige Regressionen, gemessene 40/41×100-Grenzen, neue Releasekennung, Installer und CI. | Offen; AP5-Merge/Public-Release nicht beauftragt. |
+| M1 Fachvertrag | Zwei/drei VUs, Risikoträger/Altreserve, Mengen/Gruppe/Familie, Maßnahmen und Information erklären; fachlich annehmen. | Handfallproben bestanden; vom Auftraggeber am 02.10.2026 angenommen. |
+| M2 Gemeinsame Rechnung | Eigener Validator, Periodenphasen, Kohorten-/Risikoledger, alle VU-Bilanzen, gruppierte Summen, stabiler RNG, Prefixe. | Implementiert; Handfälle, Replay, Prefixe und 40/41×100-Produktläufe bestanden. |
+| M3 Anschluss | API und erste Marktsicht mit Zeit-/Sparten-/Familien-/Vergleichsfilter, Erklärweg und Einzel-VU-Excel. | Angeschlossen; Browserprüfung läuft. |
+| M4 Lieferung | Einsteigeranleitung, vollständige Regressionen, gemessene 40/41×100-Grenzen, neue Releasekennung, Installer und CI. | Anleitung und alpha.5-Metadaten vorhanden; Installer/Gesamtprüfungen folgen. AP5-Merge/Public-Release nicht beauftragt. |
 
 Ein eigener moderner ID-Validator muss mindestens 41 Anbieter zulassen, ohne
 das alte Vdefmd6-Limit aufzuheben. Das Ergebnisvolumen und Laufzeitbudget werden
@@ -57,7 +59,7 @@ gesichert; keine Erhebungsquote fließt in den AP5-Risikopfad ein.
 
 ## Fortsetzen
 
-Nach Annahme von `ims_ap5_market_contract.md` die echte Zustimmung als eigenen
-Beleg dokumentieren und im selben PR M2–M4 ausführen. Bei Änderungen zuerst
+Die echte Zustimmung zu `ims_ap5_market_contract.md` ist dokumentiert.
+Im selben PR M2–M4 vollständig prüfen. Bei Änderungen zuerst
 betroffene Handfälle nachführen. Technische Fertigstellung, Benutzerabnahme
 und Merge bleiben getrennt; `completion_evidence` ist bisher leer.

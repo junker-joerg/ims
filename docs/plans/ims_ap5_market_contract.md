@@ -1,6 +1,8 @@
 # AP5: Mehr-VU-, Risiko- und Gruppenvertrag zur fachlichen Prüfung
 
-Stand 02.10.2026. **Vorschlag; fachliches Entscheidungstor noch offen.**
+Stand 02.10.2026. **Vom Auftraggeber fachlich angenommen und zur Umsetzung
+freigegeben:** „Vertrag annehmen und umsetzen“. Beleg:
+`../reports/ims_ap5_contract_acceptance.md`. Produktabnahmen stehen noch aus.
 Der AP5-Umsetzungsauftrag liegt vor. Dieser Vertrag konkretisiert die
 angenommene Marktplanung und die separat angenommenen Ergänzungen E05-01/02
 aus dem Vorstandsplan. Er ändert bisherige AP3-Ergebnisse nicht.
@@ -221,4 +223,6 @@ alten Träger verbleibende Altreserven; homogene ganze Kohorten mit erklärter
 Kapazitätsreihenfolge; die getrennten Gruppen-/Familienbegriffe; Kosten/Vorlauf/
 Dauer und der vorperiodische Informationsstand. H1/H2 und das Maßnahmenbeispiel
 machen diese Entscheidungen konkret prüfbar. Technische Handfallproben sind
-Vorbereitung des Tors und keine Anwenderabnahme der noch fehlenden AP5-Lieferung.
+Vorbereitung des Tors und keine Anwenderabnahme der AP5-Lieferung. Der Auftraggeber
+hat diesen konkreten Vorschlag anschließend ausdrücklich angenommen; der
+[Annahmebeleg](../reports/ims_ap5_contract_acceptance.md) hält Umfang und Grenze fest.

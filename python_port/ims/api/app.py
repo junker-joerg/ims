@@ -17,6 +17,7 @@ from ims.release import VERSION as APP_VERSION
 from ims.api.ict_workshop import create_ict_app
 from ims.api.guided_period_chain_routes import create_guided_chain_app
 from ims.api.seminar import create_seminar_app
+from ims.api.market import create_market_app
 from ims.api.management_case import create_management_app
 
 from ims.accounting.insurer_balance import (
@@ -3039,6 +3040,7 @@ def create_app(
         app.mount("/api/ict", create_ict_app())
         app.mount("/api/management-case", create_management_app())
         app.mount("/api/seminar", create_seminar_app())
+        app.mount("/api/market", create_market_app())
         app.mount("/api/strategies/guided-period-chain", create_guided_chain_app(metadata_source.get("path") if metadata_source.get("configured") else None))
 
         @app.get("/api/health")
@@ -3871,6 +3873,7 @@ def create_app(
         Mount("/api/ict", create_ict_app()),
         Mount("/api/management-case", create_management_app()),
         Mount("/api/seminar", create_seminar_app()),
+        Mount("/api/market", create_market_app()),
         Mount("/api/strategies/guided-period-chain", create_guided_chain_app(metadata_source.get("path") if metadata_source.get("configured") else None)),
         Route("/api/health", lambda request: JSONResponse(health_payload())),
         Route("/api/version", lambda request: JSONResponse(_version_payload())),

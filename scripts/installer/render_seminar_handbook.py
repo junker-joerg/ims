@@ -1,4 +1,4 @@
-"""Render the AP3/AP4 guides as offline HTML, using their Markdown constructs."""
+"""Render the AP3/AP4/AP5 guides as offline HTML, using their Markdown constructs."""
 import argparse
 from html import escape
 from pathlib import Path
@@ -59,9 +59,9 @@ def render(source: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--guide", choices=("ap3", "ap4"), default="ap3")
+    parser.add_argument("--guide", choices=("ap3", "ap4", "ap5"), default="ap3")
     args = parser.parse_args()
-    filename = "management_ap4" if args.guide == "ap4" else "seminar_ap3"
+    filename = {"ap3": "seminar_ap3", "ap4": "management_ap4", "ap5": "market_ap5"}[args.guide]
     source = (ROOT / f"docs/handbook/{filename}.md").read_text(encoding="utf-8")
     source = source.replace("../reports/ims_ap3_abschlussbericht.md", "https://github.com/junker-joerg/ims/blob/codex/ims-management-integration/docs/reports/ims_ap3_abschlussbericht.md")
     html = """<!doctype html>
@@ -71,6 +71,8 @@ def main() -> None:
 """ + render(source) + "\n</main></body></html>\n"
     if args.guide == "ap4":
         html = html.replace("IMS – Managementseminar AP3", "IMS – Managementlabor AP4")
+    if args.guide == "ap5":
+        html = html.replace("IMS – Managementseminar AP3", "IMS – Markt und Strategiefamilien AP5")
     (ROOT / f"docs/handbook/{filename}.html").write_text(html, encoding="utf-8")
 
 

@@ -1,5 +1,37 @@
 # AP5 – Arbeitsstand und Handfallprüfung
 
+Stand nach Vertragsannahme am 02.10.2026. **AP5 in Arbeit, produktiver Runner/API/UI implementiert.**
+Der Auftraggeber nahm den Vorschlag mit „Vertrag annehmen und umsetzen“ an;
+[Annahmebeleg](ims_ap5_contract_acceptance.md). Fortsetzung im selben
+[Draft-PR #294](https://github.com/junker-joerg/ims/pull/294).
+
+Gemeinsame Cash-/Reserve-/Eigenkapitalrechnung und Risikoledger, alle VUs,
+Gruppen-/Familiensummen, zeitliche Strategien/Maßnahmen, API, Marktsicht und
+Einzel-VU-Excel sind angeschlossen. Die ersten zwölf Modell-/APItests bestanden
+(43,80 s, inklusive echter 40/41×100-Märkte). Weitere fachliche Randfälle
+und der reale Desktop-APIanschluss wurden ergänzt. Neun Browserfälle und
+anschließend der komplette 41×100-Fall bestanden: drei Hand-/Bedienfälle,
+sechs Ansichten mit Axe ohne Verstöße, Kontrast ≥4,5:1 und ohne Seitenoverflow,
+sowie Großlauf mit echten API-/Tabellenwerten. Die vollständige neue AP5-
+Browsersuite bestand anschließend mit **10/10 Fällen (1,2 Minuten)**.
+Die bestehenden Browser-/Pythonregressionen und Installerprüfung folgen.
+
+Der vollständige 40er-Lauf dauerte 15,6959 s, der 41er-Lauf 16,1241 s.
+Eingänge 4.351.336/4.460.047 Bytes; verlustlose Antworten mit Baseline und
+Variante 35.369.741/36.239.738 Bytes. Das tatsächlich erforderliche Budget
+ist 48 MiB, Eingänge bleiben 16 MiB. Vorherige 32-MiB-Grenze schlug am
+vollen Lauf an; die wiederholten Feldnamen sind nun je Tabelle einmalig,
+ohne Verlust von Zeilen, Nullwerten oder Präzision. Vollständige Messung
+reproduzierbar über `scripts/planning/probe_ap5_market.py --out DATEI.json`.
+
+Neue Anleitung `../handbook/market_ap5.md`/`.html`, Herkunft
+`../migration/ap5_common_market.md`. Konsistente Produktkennung alpha.5,
+Windows-Dateiversion 2.0.0.5. Installer und Gesamt-CI stehen noch aus.
+Vertragsannahme ist keine Anwenderabnahme der späteren Produktlieferung;
+AP5-Merge/Public-Release und AP6–AP14 bleiben unautorisiert.
+
+## Historischer Meilenstein vor Vertragsannahme (Vorschlagscommit 0a21cf8)
+
 Stand 02.10.2026. **In Arbeit; kein fertiggestellter AP5-Produktlauf.**
 Begonnen nach abgenommenem AP4 und seinem autorisierten Merge #293.
 Basis-main `9b0d45a22be4314eda8e9ab1db61c506a44160f7`.
