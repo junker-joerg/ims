@@ -8,6 +8,7 @@
 .role-orientation a { display: inline-flex; align-items: center; padding: 10px 12px; background: var(--surface); color: var(--accent-text); border: 1px solid var(--border); font-size: .85rem; }
 .management-overview { min-width: 0; }
 .management-overview .panel { border: 1px solid var(--border); }
+.management-overview .demo-chooser:not([open]) { display: none; }
 .management-overview p { color: var(--muted); margin: 10px 0; }
 .management-overview h2 { font-size: 1.2rem; }
 .management-overview h3 { font-size: 1rem; }
@@ -20,21 +21,29 @@
 .management-intro { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
 .management-intro h2 { font-size: clamp(1.8rem, 3vw, 2.75rem); letter-spacing: -.025em; line-height: 1.15; margin: 8px 0; }
 .management-intro > div > p:last-child { font-size: clamp(1rem, 1.8vw, 1.4rem); }
+.management-intro .eyebrow { display: none; }
+.management-intro h2 { font-size: clamp(1.8rem, 2.5vw, 2.1rem); margin: 0; }
+.management-intro > div > p:last-child { font-size: 1.1rem; margin: 6px 0 0; }
 .demo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
 .demo-grid article { display: flex; flex-direction: column; align-items: start; gap: 6px; padding: 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-muted); }
 .demo-grid button { margin-top: auto; }
 .management-case { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.management-overview .management-case { margin-top: 16px; padding: 16px 20px; }
 .management-status { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; background: var(--surface-muted); color: var(--text) !important; font-size: .85rem; }
 .management-status.failed { color: var(--danger-text) !important; }
 .management-empty ol { padding-left: 24px; }
 .management-empty li { margin: 12px 0; }
 .management-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 24px; }
 .management-controls > span { color: var(--muted); font-size: .82rem; }
+.management-controls { margin-top: 16px; }
 .comparison-toggle { display: flex; padding: 4px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
 .management-overview .comparison-toggle button { min-width: 110px; border: 0; }
 .management-overview .comparison-toggle button[aria-pressed="true"] { background: var(--accent-fill); color: var(--on-accent); }
 .management-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .kpi > svg { color: var(--accent-text); margin-bottom: 12px; }
+.management-kpis .kpi { position: relative; padding: 18px; margin-top: 16px; }
+.kpi > svg { position: absolute; top: 18px; left: 18px; margin: 0; width: 20px; height: 20px; }
+.kpi > h3 { padding-left: 30px; min-height: 28px; }
 .kpi > strong { display: block; font-size: clamp(1.1rem, 2vw, 1.75rem); color: var(--accent-text); overflow-wrap: anywhere; margin-top: 10px; font-variant-numeric: tabular-nums; }
 .kpi > p { font-size: .83rem; }
 .kpi details { font-size: .85rem; }
@@ -73,6 +82,9 @@
 .explanation-values dd { margin: 4px 0; font-variant-numeric: tabular-nums; }
 .reconciliation { background: var(--surface-muted); border-radius: 12px; padding: 18px; margin-top: 24px; }
 .management-next { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+.shell[data-view="overview"] .topbar { margin-bottom: 16px; }
+.shell[data-view="overview"] .topbar h1 { font-size: 1.5rem; }
+.shell[data-view="overview"] .role-orientation { padding: 12px 18px; margin-bottom: 20px; }
 @media (max-width: 1100px) { .role-orientation { flex-direction: column; gap: 12px; } .management-charts { grid-template-columns: minmax(0, 1fr); } .management-kpis { gap: 10px; } .kpi { padding: 16px; } }
 @media (max-width: 760px) {
   .topbar { flex-wrap: wrap; gap: 16px; } .topbar-actions { width: 100%; align-items: center; justify-content: space-between; }

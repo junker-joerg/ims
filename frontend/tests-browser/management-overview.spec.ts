@@ -54,7 +54,13 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 1024, height: 768
       await page.getByLabel("Meine Rolle", { exact: true }).selectOption("ceo");
       const evidence = await accessible(page);
       const directory = process.env.IMS_AP4_CAPTURE === "1" ? resolve("../docs/handbook/images") : info.outputDir;
-      await mkdir(directory, { recursive: true }); await page.screenshot({ path: resolve(directory, `ap4_overview_${theme}_${viewport.width}x${viewport.height}.png`) });
+      await mkdir(directory, { recursive: true });
+      await page.evaluate(() => scrollTo(0, 0));
+      await page.screenshot({ path: resolve(directory, `ap4_overview_${theme}_${viewport.width}x${viewport.height}.png`) });
+      if (viewport.width === 1440 && theme === "light") {
+        await page.locator(".management-charts").screenshot({ path: resolve(directory, "ap4_charts_light_1440x900.png") });
+        await page.getByTestId("profit-reconciliation").screenshot({ path: resolve(directory, "ap4_reconciliation_light_1440x900.png") });
+      }
       await page.getByLabel("Übersichtsperiode", { exact: true }).selectOption("6");
       await expect(page.getByTestId("kpi-equity")).toHaveText(formatted(result.sides.variant.total_rows[5].closing_equity));
       await expect(page.getByTestId("explained-premium")).toHaveText("Preis 3,6000 × gedeckte Exposition 0,0000 = Prämie 0,0000.");
@@ -98,7 +104,10 @@ test("AP4: drei Demos ohne JSON, Offlinehilfe und Tastatur", async ({ page }) =>
   await help.goto("/api/seminar/handbook/management_ap4.html");
   await expect(help.getByRole("heading", { level: 1 })).toContainText("Managementlabor");
   await expect(help.getByText("BAV", { exact: true })).toBeVisible();
-  await expect.poll(() => help.locator("img").evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
+  for (const image of await help.locator("img").all()) {
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(() => image.evaluate(element => (element as HTMLImageElement).complete && (element as HTMLImageElement).naturalWidth > 0)).toBe(true);
+  }
   await help.close();
 });
 
