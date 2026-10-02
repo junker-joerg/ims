@@ -1,8 +1,9 @@
-# AP4 – Zwischenbericht: Erklärbares IMS Managementlabor
+# AP4 – Abschlussbericht: Erklärbares IMS Managementlabor
 
-Stand 02.10.2026, Beginn nach Planmerge #292. Status: **in Arbeit**, keine
-Produktabnahme, kein AP4-Merge und keine Veröffentlichung. Branch
-`codex/ims-explainable-roles`, [Draft-PR #293](https://github.com/junker-joerg/ims/pull/293).
+Stand 02.10.2026, Beginn nach Planmerge #292. Status: **technisch geprüft und
+vom Auftraggeber abgenommen; Merge freigegeben**. Der tatsächliche Merge folgt
+nach grüner CI des Abnahmekommitts; keine Veröffentlichung. Branch
+`codex/ims-explainable-roles`, [PR #293](https://github.com/junker-joerg/ims/pull/293).
 
 ## Auftrag und Grundlage
 
@@ -145,16 +146,27 @@ ist bestanden. Belege sind im
 Dieser nachfolgende Berichtskommitt verändert nur Bericht, Prüfprotokoll und
 Übergabe; sein eigener aktueller CI-Stand ist separat zu prüfen.
 
-## Offene Abnahme und nächster Schritt
+## Anwenderabnahme und Fortsetzung
 
-AP4 bleibt im selben Draft-PR in Arbeit. Aktuelle CI-Ergebnisse prüfen; dann
-den geführten Einstieg auf einem unabhängigen Windows-Rechner durchführen und
-die tatsächliche Übungsdauer erfassen. Ein reales AP3→AP4-Update ist gesondert
-zu belegen. Unabhängige Benutzerabnahme, Produktmerge und Veröffentlichung sind
-offen. Die DORA-Benchmark-PDF blockiert diese Oberfläche nicht; G-BENCH/AP13
-bleibt im Plan sichtbar.
+Der Auftraggeber bestätigt am 02.10.2026 die Anwenderabnahme und erteilt die
+Mergefreigabe sowie den anschließenden AP5-Auftrag. Wortlaut und genaue Grenzen
+stehen im [Abnahmebeleg](ims_ap4_user_acceptance.md). Die Übungsdauer und ein
+konkreter AP3-Updateablauf wurden nicht angegeben und bleiben unbekannt; die
+ausdrückliche generelle Produktabnahme ist erfasst. Am zuletzt gelieferten Head
+`d01d480` sind inzwischen alle vier erforderlichen CI-Prüfungen grün.
 
-Evernote-Ablage ist noch ausstehend, da in dieser Sitzung keine Evernote-
-Schnittstelle verfügbar ist. Der ausführliche Zwischenstand ist hier und im
-Draft-PR gesichert. `completion_evidence` bleibt bis zur vollständigen
-Paketabnahme leer; AP5 startet erst nach übernommenem AP4-Status in main.
+Die DORA-Benchmark-PDF ist jetzt bereitgestellt und lesbar. Der frühere
+Zugangsblocker ist damit behoben; ihre fachliche Quellenprüfung bleibt von
+AP4-Abnahme und zusätzlichen Modellkanälen getrennt. AP4 verändert keine
+DORA-Rechnung. Ein echter lokaler AP3→AP4-Updateversuch wird weiterhin nicht
+als ausgeführt bezeichnet.
+
+Nächster Schritt: aktuelle CI des reinen Abnahmekommitts prüfen und AP4 gemäß
+Auftrag mergen. Danach main aktualisieren und AP5 im eigenen Draft-PR fortsetzen,
+einschließlich E05-01/E05-02 und seines fachlichen Marktvertragstores. AP5-Merge
+und öffentliche Veröffentlichung sind nicht freigegeben.
+
+Evernote-Ablage ist noch ausstehend: Die Werkzeuge wurden kurz angezeigt,
+sind in dieser Sitzung aber nicht aufrufbar. Der ausführliche Bericht ist
+im Repository und PR gesichert. Die Abschlussbelege im Manifest trennen
+technische Prüfungen und bestätigte Anwenderabnahme vom tatsächlichen Merge.

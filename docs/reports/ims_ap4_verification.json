@@ -2,7 +2,7 @@
   "schema_version": "ims.ap4-verification.v1",
   "recorded_at_utc": "2026-10-02T07:23:06.543800+00:00",
   "package": "AP4",
-  "status": "in_progress",
+  "status": "accepted_awaiting_authorized_merge",
   "product_head": "e6b546c725b557b612481189622be94bcff34bd8",
   "product_tree": "33a308823d592c79ad38e97754def1bc666f955d",
   "plan_merge_commit": "de3d1de330df81ec948491dbcfbc97ca00a70c60",
@@ -346,9 +346,49 @@
   "beginner_exercise": {
     "target_minutes": 15,
     "measured_seconds": null,
-    "status": "pending"
+    "status": "user_acceptance_confirmed_duration_unspecified"
   },
   "evernote_copy": "pending_connector_unavailable",
   "ap4_merged_to_main": false,
-  "public_release": false
+  "public_release": false,
+  "user_acceptance": {
+    "confirmed": true,
+    "date": "2026-10-02",
+    "user_request": "1) anbei DORA PDF\n2) Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt\n3) Fahre dann mit AP5 fort",
+    "recorded_at_utc": "2026-10-02T08:23:43.440967+00:00",
+    "platform_details": null,
+    "installer_hash_used_by_user": null,
+    "measured_exercise_seconds": null,
+    "specific_upgrade_path_confirmed": false,
+    "evidence_file": "docs/reports/ims_ap4_user_acceptance.md"
+  },
+  "delivered_documentation_head_ci": {
+    "head": "d01d480b21178de384fc9da13318019fe69ffd23",
+    "checks": [
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36978366023/job/110747075838"
+      },
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36978365948/job/110747075676"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36978365913/job/110747075430"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/junker-joerg/ims/actions/runs/36978365933/job/110747075334"
+      }
+    ]
+  }
 }

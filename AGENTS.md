@@ -29,8 +29,8 @@ Für die Folgearbeit gilt die am 01.10.2026 vom Auftraggeber geprüfte und zum
 Merge freigegebene Planung in `docs/plans/ims_explainable_market_2026_10.md`
 und `docs/plans/ims_explainable_market_plan.json`. Mit Übernahme von PR #291
 nach main ist die Lieferreihenfolge AP4 → AP5 → AP6 → AP7 → AP8 → AP9 angenommen.
-AP4 ist das nächste Paket: erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
-und geführter Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
+AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
+und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
 jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,
 Einzel-VU-Details in Excel. Der Deutschland-Fall umfasst 40 Versicherungsgruppen
 nach deutschem Erstversicherungsgeschäft über alle Sparten, ohne doppelt
@@ -62,11 +62,19 @@ Historische Abnahmen niemals rückwirkend erweitern. Quellenmatrix, Referenzfall
 und aktuelle Manifeste lesen; recherchierte Fähigkeiten, tatsächliche IMS-Läufe
 und spezifizierte Modellkanäle unterscheiden.
 
-Der Auftrag vom 02.10.2026 autorisiert nach dem Planungsmerge ausschließlich
-AP4. Die nicht zugängliche DORA-Benchmark-PDF ist eine AP13-Quellenlücke und
-blockiert AP4 nicht: AP4 erklärt vorhandene AP3-Fälle, ohne neue DORA-Zahlen oder
-Modellkanäle einzuführen. AP4 als zusammenhängendes Paket im eigenen Draft-PR
-umsetzen; diese Freigabe nicht auf AP5–AP14, Merge oder Veröffentlichung erweitern.
+Der erste Umsetzungsauftrag vom 02.10.2026 autorisierte ausschließlich AP4.
+Der anschließende Auftrag desselben Tages bestätigt seine Anwenderabnahme,
+erteilt den AP4-Mergeauftrag und beauftragt danach AP5. Abnahmebeleg:
+`docs/reports/ims_ap4_user_acceptance.md`. AP5 beginnt erst nach dem tatsächlich
+übernommenen AP4-Status in main; sein Mehr-VU-/Risiko-/Aggregat-/Gruppenvertrag
+ist anhand kleiner Handfälle zu erklären und anzunehmen. Die angenommenen
+Ergänzungen E05-01/E05-02 aus dem Boardplan sind mit eigener Herkunft einzubeziehen.
+Keine Freigabe für AP5-Merge, Veröffentlichung oder Umsetzung von AP6–AP14.
+
+Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
+Seiten und Bezugsgruppen sind vor einer Verwendung zu prüfen. Der ehemalige
+Zugangsblocker G-BENCH entfällt mit dem Eingang; daraus folgt keine Kalibrierung
+und keine Freigabe weiterer Modellkanäle. AP4 erklärt weiterhin vorhandene AP3-Fälle.
 
 Ein Arbeitspaket umfasst Implementierung, API/UI-Anschluss, Tests und Anleitung
 in einem Branch und Draft-PR. Mehrere Stunden oder Sitzungen sind zulässig.

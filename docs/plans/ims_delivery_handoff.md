@@ -1,5 +1,23 @@
 # IMS-Lieferübergabe
 
+## AP4 abgenommen, Merge und anschließendes AP5 beauftragt
+
+02.10.2026: „Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt“ und
+„Fahre dann mit AP5 fort“. Beleg `../reports/ims_ap4_user_acceptance.md`.
+Alle vier CI-Prüfungen am gelieferten Head `d01d480` erfolgreich. AP4 im Manifest
+technisch done mit tatsächlichen Abschlussbelegen; vor dem aktuellen Merge
+`merged_to_main=false`. Den Abnahmekommitt nach aktueller grüner CI übernehmen,
+Merge/Tree verifizieren und primären main per Fast-forward aktualisieren.
+Danach freigegebenen AP5-Auftrag gegen diese Basis erzeugen und im eigenen
+Branch/Draft-PR beginnen. Die Markt-/Risiko-/Gruppentore sowie E05-01/E05-02
+bleiben verbindlich. Keine Freigabe für AP5-Merge oder Veröffentlichung.
+
+DORA-PDF jetzt lesbar: 32 Seiten, 6.478.853 Bytes, SHA-256
+`b0f56062dfb70c3c247bd82bb29f3f9e981727f1edbd4589f54d1731023602a8`.
+Eingang hebt den Zugangsblocker auf; keine Ausfallparameter ungeprüft übernehmen.
+Anwender-Testdauer und genauer AP3-Updateablauf bleiben unbekannt. Evernote-
+Werkzeuge derzeit nicht aufrufbar; Bericht vollständig im Repository/PR gesichert.
+
 ## AP4 begonnen nach verifiziertem Planmerge #292
 
 02.10.2026: #292 nach vier grünen Checks übernommen, main

@@ -81,7 +81,7 @@
     {
       "id": "AP4",
       "title": "Erklärbare Oberfläche und geführter Einstieg",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "AP3"
       ],
@@ -103,9 +103,15 @@
         "Annahme der Folgeplanung und AP3 in main",
         "Persona-Sichten verändern keine fachliche Rechnung"
       ],
-      "completion_evidence": [],
+      "completion_evidence": [
+        "docs/reports/ims_ap4_user_acceptance.md: Anwenderabnahme und ausdrücklicher AP4-Mergeauftrag am 02.10.2026",
+        "docs/reports/ims_ap4_abschlussbericht.md: Umsetzung, C-/AP3-Herkunft, tatsächliche Tests, Installer und Grenzen",
+        "docs/reports/ims_ap4_verification.json: 40 lokale Browserfälle, 14 CI-Lifecycle- und 40 installierte Browserfälle, Release-Gate und Quellenwerte",
+        "docs/handbook/management_ap4.md: offline erreichbare Einsteigeranleitung mit acht tatsächlichen Browserbildern",
+        "https://github.com/junker-joerg/ims/pull/293: gelieferter Produktstand 2.0.0-alpha.4; alle vier erforderlichen Checks am Head d01d480 erfolgreich"
+      ],
       "implementation_authorized": true,
-      "technically_complete": false,
+      "technically_complete": true,
       "merged_to_main": false,
       "execution_authorization": {
         "date": "2026-10-02",
@@ -115,8 +121,19 @@
         "dora_pdf_is_not_ap4_dependency": true
       },
       "progress_document": "docs/reports/ims_ap4_abschlussbericht.md",
-      "implementation_plan": "docs/plans/ims_ap4_implementation.md"
+      "implementation_plan": "docs/plans/ims_ap4_implementation.md",
+      "user_acceptance": {
+        "date": "2026-10-02",
+        "user_request": "1) anbei DORA PDF\n2) Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt\n3) Fahre dann mit AP5 fort",
+        "evidence": "docs/reports/ims_ap4_user_acceptance.md"
+      },
+      "merge_authorization": {
+        "date": "2026-10-02",
+        "user_request": "1) anbei DORA PDF\n2) Anwenderabhnahme erfolgt - Freigabe zum Merge erteilt\n3) Fahre dann mit AP5 fort",
+        "scope": "AP4"
+      }
     },
+
     {
       "id": "AP5",
       "title": "Marktmodell und auswertbare Strategiefamilien",
