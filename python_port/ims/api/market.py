@@ -15,6 +15,7 @@ from ims.market.runner import MAX_RESULT_BYTES, calculate
 from ims.market.reference import BUNDLE_VERSION, build_bundle, reference_values, calculate as reference_calculate
 from ims.desktop.paths import resource_root
 from ims.market.transport import wire_payload
+from ims.market.explorer import project_result
 from ims.market.shock_contract import INPUT_VERSION as SHOCK_VERSION
 from ims.market.shock_contract import validate as validate_shock
 from ims.market.shock_presets import build_case as build_shock_case
@@ -80,6 +81,12 @@ def create_market_app() -> Starlette:
                 result = shock_calculate(source) if version == SHOCK_VERSION else reference_calculate(source) if version == BUNDLE_VERSION else calculate(source)
                 if not result["valid"]:
                     return JSONResponse(result, status_code=422, headers=headers)
+                if request.url.path.endswith("/explore"):
+                    try:
+                        view = project_result(result)
+                    except (ContractError, ValueError, TypeError, KeyError, ArithmeticError) as exc:
+                        return JSONResponse(failed(exc if isinstance(exc, ContractError) else ContractError("$", str(exc))), status_code=422, headers=headers)
+                    return JSONResponse(wire_payload(view), headers={**headers, "ETag": '"' + view["content_digest"] + '"'})
                 etag = '"' + result["content_digest"] + '"'
                 reply = {**headers, "ETag": etag}
                 if exporting or request.url.path.endswith("/source.json"):
@@ -100,4 +107,5 @@ def create_market_app() -> Starlette:
         "max_customer_groups": MAX_COHORTS, "horizons": HORIZONS, "rules": {k: sorted(v) for k, v in RULE_PARAMETERS.items()}, "max_result_bytes": MAX_RESULT_BYTES}, headers=headers)),
         Route("/workshop-case", preset, methods=["POST"]), Route("/reference-case", reference_preset, methods=["POST"]),
         Route("/shock-case", shock_preset, methods=["POST"]), Route("/shock-source", shock_source, methods=["POST"]), Route("/calculate", action, methods=["POST"]),
+        Route("/explore", action, methods=["POST"]),
         Route("/export.xlsx", action, methods=["POST"]), Route("/source.json", action, methods=["POST"])])

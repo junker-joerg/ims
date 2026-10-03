@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 
-VERSION = "2.0.0-alpha.7"
+VERSION = "2.0.0-alpha.8"
 
 
 def windows_file_version(version: str) -> str:

@@ -52,9 +52,9 @@ Vertrag wird stillschweigend als vom Menschen angenommen ausgegeben.
 | Stand | Lieferung | Nachweis |
 | --- | --- | --- |
 | M1 vorbereitet | Auftrag, Herkunft, Darstellungs-/Nenner-/Gewichtsvertrag | Dieser Plan, Darstellungsvertrag und tatsächlicher AP7-Merge |
-| M2 folgt | Reine versionierte Projektion, frische API, Erhaltungs-/Rundungs-/Mitgliedschafts-/Wechseltests | Unabhängige kleine Handfälle und vorhandene Kernwerte |
-| M3 folgt | Sechs bedienbare verknüpfte Ansichten, Drilldown, Rollen/Fokus/Rivalen, JSON/Excel | Echte Browserwerte, Filter ohne Neurechnung, Kennzahlenidentität |
-| M4 folgt | Anleitung, echte Bilder, höhere Produktkennung und wirklicher Windows-Installer | Ressourcen-/Produkt-/Installer-CI; Anwenderabnahme/Merge separat |
+| M2 implementiert | Reine versionierte Projektion, frische API, Erhaltungs-/Rundungs-/Mitgliedschafts-/Wechseltests | Acht unabhängige kleine Tests, 39 gemeinsame AP8/AP5/AP7-Tests bestanden |
+| M3 lokal geprüft | Sechs bedienbare verknüpfte Ansichten, Drilldown, Rollen/Fokus/Rivalen, JSON/Excel | Alle vier echten 100er-Digests/Prefixläufe, Nenner/Gewichte/Bücher, Filter und Exporte bestanden |
+| M4 Produkt-CI folgt | Anleitung, zwölf echte Bilder, höhere Produktkennung und wirklicher Windows-Installer | Lokale Suite 2.763 + 14 Subtests bestanden; Ressourcen-/Produkt-/Installer-CI noch offen |
 
-Vorgesehene neue Produktfassung alpha.8 ist noch keine ausgelieferte Anwendung.
+Neue gemeinsame Produktkennung alpha.8 ist noch kein geprüfter ausgelieferter Installer.
 Aktueller Stand: [Fortschritt](../reports/ims_ap8_fortschritt.md).

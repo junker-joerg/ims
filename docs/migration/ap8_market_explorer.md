@@ -1,8 +1,8 @@
 # AP8: vorhandene Marktlogik erklären, keine neue Finanzlogik
 
 03.10.2026. [Paketplan](../plans/ims_ap8_implementation.md) und
-[Darstellungsvertrag](../plans/ims_ap8_view_contract.md). M1 vorbereitet;
-die nachstehenden Zielkomponenten sind noch nicht als implementiert behauptet.
+[Darstellungsvertrag](../plans/ims_ap8_view_contract.md). Projektion und Oberfläche
+sind implementiert; vollständige Produkt-/Installerprüfung läuft.
 
 | Ursprung | Vorhandener Python-Vertrag | AP8-Aufgabe / Grenze |
 | --- | --- | --- |
@@ -13,12 +13,22 @@ die nachstehenden Zielkomponenten sind noch nicht als implementiert behauptet.
 | AP7 `shock_plan` / `shock_process` | Aktive Ereignisse, konkrete Graphen, gemeinsame Budgets, FIFO, wirksame Policen/Wechsel und Kosten | Uhrzeit/Verfügbarkeit/Effekt unterscheiden; gemeinsame Ressourcen nicht pro VU vervielfachen |
 | Boardplan E08-01, angenommen über PR #292 | Separat angenommener Vergleich Fokus/Rivalen/Modellmarkt | Absolute Buchungswerte und relative Position mit eigenem AP8-Abnahmebeleg |
 
-Ziel: reines Modul `python_port/ims/market/explorer.py`, frischer API-Anschluss
+Reines Modul `python_port/ims/market/explorer.py`, frischer API-Anschluss
 `/api/market/explore`, vorhandene Rechensperre und unveränderte Modell-Ergebnis-
 Digests. React-Komponente und reine Filter-/Darstellungsfunktionen verwenden
-dieselben Zeilen; SVG-Positionen dürfen gerundet sein, Werte/Tabellen bleiben
+dieselben Zeilen in `MarketExplorerWorkbench.tsx` und den reinen Funktionen
+`marketExplorerPresentation.ts`; SVG-Positionen dürfen gerundet sein, Werte/Tabellen bleiben
 exakte Modellzahlen. JSON/Excel verwendet das vollständige Originalbündel.
 
 Keine historische Terminal-UI portieren. Konzentration, Familienquoten und
 neue Darstellungen sind ausdrücklich moderne Auswertungen; keine historische
 Vollgleichheit, empirische Firmenkalibrierung oder neue Ursache behauptet.
+
+Die bestehenden `runner`, `reference`, `shock_plan`, `shock_process`, Regelkerne
+und Policen-/Garantiebuchung bleiben unverändert. Die API führt denselben frischen
+Kernlauf aus und danach eine reine Projektion. Neue Schema-Domäne betrifft nur
+die Ansicht. JSON/Excel sind an den unveränderten Modell-Digest gebunden.
+`tests/test_market_explorer.py` prüft unabhängige Handwerte, Originalzeilen,
+Reinheit, Kostenidentität und Grenzen. Echte Browserprüfung in
+`frontend/tests-browser/market-explorer.spec.ts` vergleicht Punkte/Tabellen/Bücher,
+alle vier übernommenen AP7-100er-Digests, 25er-Prefix, lokale Filter und Exporte.

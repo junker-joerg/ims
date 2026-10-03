@@ -151,6 +151,13 @@ keinen Lauf. Nenner/Gewichte/Zeitpunkte und Addition/Kanal/Wechselwirkung/
 Korrelation explizit erklären. Ein Paket-PR einschließlich API/UI/Tests/
 Anleitung/Installer; keine zusätzliche Vertragsannahme erfinden. Kein AP8-Merge,
 öffentliches Release oder AP9–AP14-Auftrag.
+AP8-Projektion/API und sechs Ansichten sind inzwischen implementiert und lokal
+geprüft: vier echte 100er-/25er-Prefixfälle erhalten alle AP7-Modell-Digests,
+2.763 Python-Tests und 14 Subtests bestanden; Nenner/Gewichte/Bücher und
+JSON/Einzel-VU-Excel angeschlossen. Produktkennung alpha.8, zwölf echte Bilder
+und Offline-Anleitung `docs/handbook/market_ap8.md`. Vollständige Produkt-CI
+und tatsächlicher Installer werden in demselben Draft-PR #297 geprüft;
+technische Fertigstellung und Anwenderabnahme/Merge sind noch offen.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`

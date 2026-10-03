@@ -1,4 +1,4 @@
-# AP8: Auftrag und Darstellung vorbereitet
+# AP8: Projektion und sechs Ansichten in Produktprüfung
 
 03.10.2026. AP7 wurde tatsächlich nach main übernommen:
 `32ba3112d994f57f33e64e1bc318e7d095223cd0`, [Mergebeleg](ims_ap7_merge.md).
@@ -21,8 +21,57 @@ und Eigenkapitalidentitäten ohne Rest (9,188 s), Quellen unverändert. Dies sin
 vorhandene Kernbeobachtungen, keine AP8-Produktfälle, sechs fertigen Ansichten
 oder alpha.8-Anwendung. Unabhängige Gewichtungs-/HHI-Handwerte stehen im Vertrag.
 
-Nächster Schritt M2 im selben Paket-PR: reine versionierte Projektion und frische
-API mit bedeutungsvollen kleinen Tests; anschließend M3 Oberfläche/Drilldown und
-M4 Anleitung/Bilder/einzigartige höhere Produktfassung/Installer. AP8 in_progress,
-technisch nicht fertig, keine Anwenderabnahme/Mergefreigabe und kein öffentliches
-Release. Kein AP9–AP14-Auftrag.
+M2 implementiert: reine Projektion `ims.market-explorer-result.v1`, frische API
+`/api/market/explore` unter derselben Rechensperre, unveränderter Modellnachweis,
+eigener Ansichtsnachweis, vollständige 40-MiB-Grenze. Acht unabhängige Tests
+prüfen 90/10-Gewichte/HHI, Null-/negative Basis, halbe gerade Rundung,
+Mehrsparten-VU, tatsächliche Wechsel, Reinheit, dynamische Mitglieder,
+einmalige Kosten, frische Exportbindung und gemeinsamen Rechenausschluss.
+AP8/AP5/AP7 zusammen lokal: **39 bestanden**, eine bestehende Starlette-Warnung.
+Echte AP8-US-25er-Projektion: **6.946.163 Bytes** vollständiger Wire-Response.
+
+M3 implementiert: sechs verbundene Ansichten, gemeinsame lokale Filter,
+Fokus/Rivalen/Modellmarkt, aktuelle Familien, wirksame Wechsel, Zeitfenster,
+konkrete Providerpfade/Jobs/Buchungen, JSON/Einzel-VU-Excel. Erste echte
+1440×900-Hell-Browserprüfung bestanden (20,4 s Test, 25,6 s Sitzung),
+Tastatur/Filter/ICT und Axe-Kontrast geprüft. Eine zunächst uneindeutige
+Label-Zuordnung der neuen Auswahlfelder wurde explizit berichtigt; diese
+fehlgeschlagene Vorprüfung ist keine erfolgreiche Abnahme.
+
+M4 in Arbeit: gemeinsame Produktfassung **2.0.0-alpha.8**, Windows **2.0.0.8**;
+Frontend-Build bestanden, bestehender Größenhinweis. Offline-Anleitung und
+Ressourcenanbindung vorhanden; aktuelle Browserbilder und sämtliche vier echten
+100er-Fälle werden geprüft. Danach eingefrorener Produktkommitt, vier echte
+CI-Prüfungen und tatsächlicher Windows-Installer mit installierten Browserläufen.
+Noch keine Behauptung eines fertigen alpha.8-Installers oder bestandener
+vollständiger Produkt-CI. AP8 in_progress, technisch nicht fertig,
+keine Anwenderabnahme/Mergefreigabe/Veröffentlichung. Kein AP9–AP14-Auftrag.
+
+## Produktstand vor der echten CI-Prüfung
+
+03.10.2026, 13:01 UTC: vollständige lokale Python-Suite **2.763 bestanden,
+14 Subtests bestanden**, eine bestehende Warnung, **1.282,57 s**. Danach reine
+Darstellung verbessert: breite Ergebnis-/Positions-/Zeitlinientabellen,
+ausdrücklich undefinierte Balken/Leerzustände und sichtbare Quellenreste in
+Mio. EUR getrennt von Modellwährung. Die Simulationskerne bleiben unverändert.
+
+Alle vier echten 100er-Fälle mit unverändertem übernommenem AP7-Modell-Digest
+und exakt gleichem 25er-Prefix lokal bestanden. Der erste Gesamt-AP8-Browserlauf
+hatte zwölf bestandene Tests und ein noch nicht erzeugtes Anleitungsbild (404).
+Die vollständigen zwölf Bilder sind inzwischen vorhanden. Nach Layoutkorrektur
+acht echte Tests in einem Lauf bestanden (5,1 min): US-100, BaFin/Offline-Hilfe
+und alle sechs Hell-/Dunkel-Größen. Abschließend drei gezielte Tests bestanden
+(13,5 s): unabhängige Handwerte, Wechsel/Leerzustände/JSON/Excel und BaFin-
+Quellenreste/Offline-Hilfe. Dies sind getrennte Iterationsbelege, kein behaupteter
+fehlerfreier 13er-Gesamtlauf. Die vollständige neue CI-Suite umfasst 83 Browser-
+prüfungen einschließlich bisheriger Pakete; ihr Erfolg ist noch offen.
+
+Zwölf tatsächliche Bilder: sechs Ansichten aus dem 100er-US-Fall und sechs
+1440×900/1024×768/390×844-Hell-/Dunkelbilder. Sichtprüfung von Providergraph,
+Pfadnachweis und vollständig lesbarer Fokus-/Rivalen-/Modellmarkttabelle.
+Die aktuelle [Offline-Anleitung](../handbook/market_ap8.md) ist im Ressourcen-
+manifest zugelassen und von der Oberfläche sowie Installerhilfe erreichbar.
+Frontend-Build und gemeinsame Versionsmetadaten bestanden; alpha.8 / 2.0.0.8.
+Browser-CI-Zeitbudget 60 min, Installer 70 min, installierter Harness 60 min,
+für die zusätzlich gemessenen vier 100er-/Prefixläufe und Darstellungsprüfungen.
+Keine Tests übersprungen oder automatische Testwiederholung aktiviert.
