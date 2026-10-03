@@ -1,5 +1,18 @@
 # IMS-Lieferübergabe
 
+## AP6 abgenommen und Merge freigegeben; danach AP7 beauftragt
+
+03.10.2026: „Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort“.
+[Beleg](../reports/ims_ap6_user_acceptance.md). AP6-BaFin-Referenzumfang gilt
+unverändert. Alle vier Checks des gelieferten Heads 70c0431 nochmals erfolgreich
+geprüft. Aktuelle Abnahmedokumentation ändert kein Produkt; nach ihren grünen
+Checks #295 tatsächlich übernehmen, Merge-/Head-Tree und main prüfen.
+Erst danach AP7-authorized-Auftrag gegen gefetchtes main erzeugen, bevor dessen
+Manifeststatus geändert wird; eigener Branch/Draft-PR. Angenommene E07-01 separat
+einbeziehen, Lebens-Nachfrage- und ICT-Zeit-/Buchungsvertrag anhand Handfällen
+erklären und annehmen lassen. Keine neue DE-Top-40-Behauptung, keine AP7-Merge-/
+Veröffentlichungsfreigabe und keine AP8–AP14-Arbeit. Nachstehende Stände historisch.
+
 ## AP6: BaFin-Referenz technisch fertig; Anwenderabnahme und Merge offen
 
 02.10.2026, weiterhin derselbe Draft-PR #295 und Branch

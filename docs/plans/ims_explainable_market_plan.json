@@ -285,13 +285,25 @@
         "docs/reports/ims_ap6_scope_acceptance.md: ausdrückliche Annahme des gekennzeichneten BaFin-Referenzumfangs; keine rückwirkende Deutschland-Abnahme",
         "docs/reports/ims_ap6_produktpruefung.md: Quellen-/Modellvertrag, API/UI/Export, Handfälle, Anleitung und Liefergrenzen",
         "docs/reports/ims_ap6_verification.json: vier erfolgreiche Produkt-CI-Checks für 1874835; 2735 Python-/14 Subtests, 59 Browserfälle und echter Installer mit 14 Lifecycle-/59 installierten Browserprüfungen",
-        "docs/handbook/market_ap6.html und docs/migration/ap6_bafin_reference.md: Offline-Anleitung, Bilder und Altcode-Herkunft"
+        "docs/handbook/market_ap6.html und docs/migration/ap6_bafin_reference.md: Offline-Anleitung, Bilder und Altcode-Herkunft",
+        "docs/reports/ims_ap6_user_acceptance.md: ausdrückliche Anwenderabnahme und Mergefreigabe am 03.10.2026; AP7 nach tatsächlichem Merge beauftragt"
       ],
       "implementation_authorized": true,
       "technically_complete": true,
       "merged_to_main": false,
-      "user_product_acceptance": "pending",
-      "merge_authorized": false,
+      "user_product_acceptance": "accepted",
+      "merge_authorized": true,
+      "user_acceptance": {
+        "date": "2026-10-03",
+        "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
+        "evidence": "docs/reports/ims_ap6_user_acceptance.md",
+        "product_head": "70c04312375a66c6988d26e76d69236bac734780"
+      },
+      "merge_authorization": {
+        "date": "2026-10-03",
+        "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
+        "scope": "AP6"
+      },
       "execution_authorization": {
         "date": "2026-10-02",
         "scope": "implementation",
@@ -325,7 +337,7 @@
           "installer_checked": true,
           "product_checked": true,
           "technical_status": "verified",
-          "user_product_acceptance": "pending"
+          "user_product_acceptance": "accepted"
         },
         "ranking_year_candidate": 2025,
         "ranking_year_verified": false,

@@ -337,12 +337,120 @@
     "predecessor_note": "Synthetischer Vorgängerinstaller alpha.0 mit demselben alpha.6-Bundle; kein echter älterer Anwendungsstand.",
     "verified_local_copy": "dist/installer/verified-1874835/IMS-Setup-2.0.0-alpha.6-win-x64.exe"
   },
-  "user_acceptance": "pending",
-  "merge_authorized": false,
+  "user_acceptance": "accepted",
+  "merge_authorized": true,
   "merged_to_main": false,
   "schema_version": "ims.ap6.verification.v1",
   "tested_product_head": "18748357a2c71b2b159b4b2f11b01b1d60072982",
   "technically_complete": true,
   "public_release_created": false,
-  "completion_documentation_note": "Die Nachweisdokumentation folgt dem geprüften Produktkommitt. Produktcode und alle 357 Installer-Ressourcen bleiben identisch; neu ausgelöste Checks des Dokumentationskommitts sind über PR #295 separat sichtbar."
+  "completion_documentation_note": "Die Nachweisdokumentation folgt dem geprüften Produktkommitt. Produktcode und alle 357 Installer-Ressourcen bleiben identisch; neu ausgelöste Checks des Dokumentationskommitts sind über PR #295 separat sichtbar.",
+  "final_product_ci": {
+    "verified": true,
+    "head": "70c04312375a66c6988d26e76d69236bac734780",
+    "product_head": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+    "merge_commit": "72f12909edba578c7bd9c0dfefdb93349924fa99",
+    "tree": "271f7b9caa7f93be88a43fbed5a4e410a0072c1e",
+    "checks": [
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925258/job/110903801962",
+        "completed_at": "2026-10-02T15:40:54Z"
+      },
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925531/job/110903801800",
+        "completed_at": "2026-10-02T15:26:20Z"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925286/job/110903801427",
+        "completed_at": "2026-10-02T15:41:47Z"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925054/job/110903801197",
+        "completed_at": "2026-10-02T15:45:43Z"
+      }
+    ],
+    "resource_count": 357,
+    "all_resource_raw_hashes_match_previous_ci": true,
+    "only_completion_documents_changed": [
+      "AGENTS.md",
+      "docs/plans/ims_ap6_implementation.md",
+      "docs/plans/ims_delivery_handoff.md",
+      "docs/plans/ims_explainable_market_plan.json",
+      "docs/reports/ims_ap6_fortschritt.md",
+      "docs/reports/ims_ap6_produktpruefung.md",
+      "docs/reports/ims_ap6_verification.json"
+    ],
+    "artifact": {
+      "artifact_id": 11235678838,
+      "artifact_name": "IMS-Windows-x64-2.0.0-alpha.6-72f12909edba578c7bd9c0dfefdb93349924fa99",
+      "archive_bytes": 25874744,
+      "archive_sha256": "c346cd5a7d88eca91961bbd51e12fb393114a837979f3aed9bd9693a07511b25",
+      "extracted": [
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe.sha256",
+        "browser-report.json",
+        "build-evidence.json",
+        "installer-test-evidence.json",
+        "resource-inventory.json"
+      ],
+      "installer_bytes": 20348554,
+      "installer_sha256": "db75882bd11fda0a9c313b6e2c665d603ad9b5dc873052d82cd6e86395266ef0"
+    },
+    "build": {
+      "artifact": "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+      "sha256": "db75882bd11fda0a9c313b6e2c665d603ad9b5dc873052d82cd6e86395266ef0",
+      "bytes": 20348554,
+      "build_seconds": 52.6527217,
+      "commit": "72f12909edba578c7bd9c0dfefdb93349924fa99",
+      "version": "2.0.0-alpha.6",
+      "file_version": "2.0.0.6",
+      "inno": "6.7.3",
+      "dirty": false,
+      "node": "v22.23.3",
+      "python": "3.12.10",
+      "signed": false,
+      "clean_windows_acceptance": "pending"
+    },
+    "installer_lifecycle": {
+      "passed": 14,
+      "seconds": 811.2698834,
+      "previous_kind": "synthetic_same_bundle"
+    },
+    "installed_browser": {
+      "startTime": "2026-10-02T15:28:20.664Z",
+      "duration": 784012.743,
+      "expected": 59,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "python_tests": {
+      "passed": 2735,
+      "subtests_passed": 14,
+      "seconds": 1067.25
+    }
+  },
+  "user_acceptance_evidence": "docs/reports/ims_ap6_user_acceptance.md",
+  "user_acceptance_details": {
+    "date": "2026-10-03",
+    "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
+    "product_head": "70c04312375a66c6988d26e76d69236bac734780",
+    "independent_user_test_details": "unknown"
+  }
 }

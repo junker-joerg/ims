@@ -99,4 +99,7 @@ steht aus. Die Installer sind unsigniert; kein öffentliches Release wurde erste
 
 Die Abschlussdokumentation folgt diesem festgehaltenen Produktkommitt; aktuelle
 Checks des abschließenden Dokumentationsstands sind im selben PR separat sichtbar.
-Anwenderabnahme und Mergefreigabe sind ausstehend; AP7–AP14 bleiben unbeauftragt.
+Am 03.10.2026 wurden Anwenderabnahme und Mergeauftrag ausdrücklich erteilt;
+[Beleg](ims_ap6_user_acceptance.md). Danach ist AP7 mit erhaltenen fachlichen
+Toren beauftragt. Die ursprüngliche Deutschland-Abnahme bleibt unerfüllt;
+AP7-Merge, öffentliches Release und AP8–AP14 sind nicht beauftragt.
