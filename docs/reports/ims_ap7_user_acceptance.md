@@ -35,3 +35,10 @@ abgeleitet. Kein öffentliches Release angelegt.
 Erfassung am 03.10.2026 ab 11:04:36 UTC; dies ist die beobachtete Erfassungszeit,
 kein behaupteter sekundengenauer Nachrichtenzeitpunkt. Der tatsächliche Merge
 wird erst nach erfolgreicher Übernahme separat belegt.
+
+**Nachtrag nach tatsächlicher Übernahme:** PR #296 wurde am 03.10.2026,
+11:39:38 UTC, nach vier grünen Checks am Abnahmekommitt f440f4c nach main
+übernommen (`32ba3112d994f57f33e64e1bc318e7d095223cd0`); getesteter Head-
+und main-Tree sind identisch. [Mergebeleg](ims_ap7_merge.md). Danach AP8-Auftrag
+gegen frisch gefetchtes main im authorized-Modus erfolgreich erzeugt. Der
+ursprüngliche Abnahmebezug 48c7c9a bleibt unverändert erhalten.

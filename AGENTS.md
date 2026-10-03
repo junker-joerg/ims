@@ -137,6 +137,21 @@ Wechselwirkungen und Korrelation. Kein AP8-Merge, öffentliches Release oder
 AP9–AP14-Auftrag. Die früheren
 Freigabegrenzen oben dokumentieren die damaligen Aufträge.
 
+AP7 wurde am 03.10.2026 tatsächlich über PR #296 nach main übernommen
+(`32ba3112d994f57f33e64e1bc318e7d095223cd0`); `docs/reports/ims_ap7_merge.md`.
+Alle vier Checks an f440f4c bestanden, main-Tree identisch, 372 Ressourcen
+unverändert und vier vollständige Ergebnisdigests gleich zur gelieferten Fassung.
+Danach begann AP8 im Branch `codex/ims-market-visualizations` nach erfolgreich
+erzeugtem authorized-Auftrag gegen tatsächliches origin/main. Paketplan und
+Darstellungsvertrag: `docs/plans/ims_ap8_implementation.md`,
+`docs/plans/ims_ap8_view_contract.md`; Stand `docs/reports/ims_ap8_fortschritt.md`.
+AP8 liefert sechs verknüpfte Ansichten und die separat angenommene E08-01 mit
+eigener Herkunft. Bestehende Rechnungen bleiben unverändert; Filter verändern
+keinen Lauf. Nenner/Gewichte/Zeitpunkte und Addition/Kanal/Wechselwirkung/
+Korrelation explizit erklären. Ein Paket-PR einschließlich API/UI/Tests/
+Anleitung/Installer; keine zusätzliche Vertragsannahme erfinden. Kein AP8-Merge,
+öffentliches Release oder AP9–AP14-Auftrag.
+
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
 geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige

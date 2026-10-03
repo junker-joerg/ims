@@ -1,5 +1,19 @@
 # IMS-Lieferübergabe
 
+## AP7 tatsächlich in main; AP8 beauftragt und M1 vorbereitet
+
+03.10.2026: AP7 über PR #296 nach main übernommen, 11:39:38 UTC,
+`32ba3112d994f57f33e64e1bc318e7d095223cd0`; [Mergebeleg](../reports/ims_ap7_merge.md).
+Alle vier Checks am Abnahmekommitt f440f4c erfolgreich, main-Tree identisch.
+AP8-Auftrag gegen frisch gefetchtes main erfolgreich autorisiert, erst danach
+AP8-Status in_progress und Branch `codex/ims-market-visualizations`.
+[Plan](ims_ap8_implementation.md), [Darstellungsvertrag](ims_ap8_view_contract.md),
+[Stand](../reports/ims_ap8_fortschritt.md). E08-01 aus angenommenem Boardplan
+separat einbezogen; keine neuen Finanzkanäle. M2–M4 im selben Paket-PR umsetzen,
+keine erneute Frage nach dem bereits erteilten AP8-Umsetzungsauftrag.
+Anwenderabnahme/Merge für AP8 offen; kein öffentliches Release/AP9–AP14-Auftrag.
+Frühere Stände folgen.
+
 ## AP7-Anwenderabnahme und Mergeauftrag erteilt; danach AP8
 
 03.10.2026: Der Auftraggeber bestätigt wörtlich „Anwenderabnahme und Merge
