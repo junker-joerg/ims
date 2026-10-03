@@ -1,9 +1,21 @@
 """Single-VU Excel uses the same checked common-market rows; text cells are safe."""
 from io import BytesIO
 import json
+from collections.abc import Iterator
 
 from openpyxl import Workbook
 from openpyxl.cell import WriteOnlyCell
+
+
+def json_chunks(value: str) -> Iterator[str]:
+    """Excel counts UTF-16 units; preserve astral characters and full JSON."""
+    encoded, start = value.encode("utf-16-le"), 0
+    while start < len(encoded):
+        end = min(start + 60000, len(encoded))
+        if end < len(encoded) and 0xD800 <= int.from_bytes(encoded[end - 2:end], "little") <= 0xDBFF:
+            end -= 2
+        yield encoded[start:end].decode("utf-16-le")
+        start = end
 
 
 def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
@@ -39,8 +51,8 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
         append(source, [key, value])
     # Reproducible complete market context, chunked below Excel cell limits.
     encoded = json.dumps(result["source_input"], ensure_ascii=False, allow_nan=False)
-    for index in range(0, len(encoded), 30000):
-        append(source, ["source_input_json_chunk", encoded[index:index + 30000]])
+    for chunk in json_chunks(encoded):
+        append(source, ["source_input_json_chunk", chunk])
     if "source_bundle" in result:
         reference = result["reference"]
         group = next((g for g in reference["groups"] if g["insurer_id"] == insurer_id), None)
@@ -67,8 +79,8 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
                            "model_binding": reference["model_binding"], "model_binding_note": reference["model_binding_note"]}.items():
             append(assumptions, [key, json.dumps(value, ensure_ascii=False) if isinstance(value, (dict, list)) else value])
         bundle = json.dumps(result["source_bundle"], ensure_ascii=False, allow_nan=False)
-        for index in range(0, len(bundle), 30000):
-            append(source, ["source_bundle_json_chunk", bundle[index:index + 30000]])
+        for chunk in json_chunks(bundle):
+            append(source, ["source_bundle_json_chunk", chunk])
     output = BytesIO()
     if "shock_bundle" in result:
         for title, name in (("ICT-Prozesse", "ict_process_rows"), ("ICT-Abhängigkeiten", "ict_dependency_rows"),
@@ -83,7 +95,7 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
                     if "insurer_id" not in row or row["insurer_id"] == insurer_id or name == "switch_process_rows" and row.get("previous_insurer_id") == insurer_id:
                         append(sheet, [side, json.dumps(row, ensure_ascii=False)])
         encoded = json.dumps(result["shock_bundle"], ensure_ascii=False, allow_nan=False)
-        for index in range(0, len(encoded), 30000):
-            append(source, ["shock_bundle_json_chunk", encoded[index:index + 30000]])
+        for chunk in json_chunks(encoded):
+            append(source, ["shock_bundle_json_chunk", chunk])
     book.save(output)
     return output.getvalue()

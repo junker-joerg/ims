@@ -1,6 +1,6 @@
 # AP7: vier Schockfälle im angenommenen BaFin-Referenzmarkt
 
-03.10.2026. **Umsetzung beauftragt; fachliche Kopplungstore angenommen, M2 läuft.**
+03.10.2026. **Umsetzung beauftragt; fachliche Kopplungstore angenommen, M2/M3 implementiert; M4-Produktprüfung läuft.**
 [Wörtliche Annahme und ICT-Erkläranforderung](../reports/ims_ap7_contract_acceptance.md).
 Ein Branch `codex/ims-market-shock-demos`, ein Draft-PR für das gesamte Paket.
 Der [Arbeitsauftrag](ims_ap7_work_order.md) wurde gegen frisch gefetchtes main
@@ -43,15 +43,15 @@ unverändert. Keine Übernahme vorgeschlagener AP10–AP14-Kanäle.
 | --- | --- | --- |
 | M1 angenommen | C-/Python-Herkunft, Grenzen, konkreter Lebens-/Zeit-/Buchungs-/Ersatzpfadvertrag und kleine Handfälle | [Vertrag](ims_ap7_shock_contract.md), [Proben](../reports/ims_ap7_contract_probes.json), ausdrückliche menschliche Annahme |
 | M2 implementiert | Versionierter Schockvertrag, aktiver Eintritt, begrenzte Lebensanträge, physische Prozesszeit, Warteschlangen und einmalige Buchung | Angenommene zwei fachliche Tore; deterministische kleine Regressionen |
-| M3 in Prüfung | Vier echte 100er-Fälle, API/UI-Original/eigene Sitzung, frisches JSON/Excel und Rollen-Erklärpfade | Prefixe, Quellen-/Draw-Bindung, Bilanz-/Risiko-/Kosten-/Mengenabnahmen, Ressourcenmessung |
-| M4 in Vorbereitung | Offline-Anleitung, echte Bilder, höhere gemeinsame Produktversion und tatsächlicher Windows-Installer | Produkt-/Browser-/Lifecycle-CI, Anwenderabnahme separat, Merge separat |
+| M3 lokal verifiziert | Vier echte 100er-Fälle, API/UI-Original/eigene Sitzung, frisches JSON/Excel und Rollen-Erklärpfade | Prefixe, Quellen-/Draw-Bindung, Bilanz-/Risiko-/Kosten-/Mengenabnahmen, Ressourcenmessung |
+| M4 Produkt-CI läuft | Offline-Anleitung, echte Bilder, höhere gemeinsame Produktversion und tatsächlicher Windows-Installer | Produkt-/Browser-/Lifecycle-CI, Anwenderabnahme separat, Merge separat |
 
 M1 veränderte keinen Produktkern und lieferte keine alpha.7-Anwendung. M2/M3
 implementieren die jetzt ausdrücklich angenommenen Kanäle; alpha.7 ist im
 Branch vorbereitet, seine abschließende installierte Produktprüfung steht aus. Probeberichte unterscheiden bestehenden
 Kernlauf, unabhängige Handrechnung und erst vorgeschlagene Modellkanäle.
 
-## Zu entscheidender begrenzter Vertrag
+## Angenommener begrenzter Vertrag
 
 Der [vollständige Vorschlag](ims_ap7_shock_contract.md) erklärt einen synthetischen
 Lebens-Interessentenpool, erhaltene Altgarantien, Ausgabe erst nach Bearbeitung,

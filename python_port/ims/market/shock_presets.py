@@ -36,7 +36,7 @@ def process_owners(actors: dict, ids: list[int]) -> list[dict]:
 def response(key: str, kind: str, ids: list[int], value: str, cost: str, *, asset: str = "", replacement: str = "", hourly: str = "0") -> dict:
     return {"response_id": key, "kind": kind, "decision_period": 16, "lead_periods": 4, "duration_periods": 81,
             "insurer_ids": ids, "asset_id": asset, "replacement_asset_id": replacement, "value": value,
-            "cost": cost, "cost_per_hour": hourly, "assumption_note": "Deklarierte Gegenmaßnahme: Entscheidung P16, verfügbar P20; Preisantwort bei Eintritt P21. Keine tatsächliche Firmenstrategie."}
+            "cost": cost, "cost_per_hour": hourly, "assumption_note": "Deklarierte Gegenmaßnahme: Entscheidung und Verfügbarkeit folgen den benannten Parametern; Preisantwort wird bei Eintritt wirksam. Keine tatsächliche Firmenstrategie."}
 
 
 def build_case(catalog: dict, case_id: str, period_count: int = 100) -> dict:
@@ -90,7 +90,7 @@ def build_case(catalog: dict, case_id: str, period_count: int = 100) -> dict:
         event["assumption_note"] = "DORA 2.0 ist ein hypothetischer Seminarname. Zehn Perioden Umstellung: angenommener Kapazitätsverlust 50 %, Umstellungskosten 100; keine behauptete neue Vorschrift. " + NOTE
         responses["variant"] = [response("Vorbereitete_Kapazitaet", "capacity", original_ids, "2", "6", asset="portal", hourly="0.03")]
     else:
-        responses["variant"] = [response("Unabhaengiger_Q", "fallback", original_ids, "1", "6", asset="portal", replacement="q-independent", hourly="0.03")]
+        responses["variant"] = [response("Q_Vorsorge", "fallback", original_ids, "1", "6", asset="portal", replacement="q-independent", hourly="0.03")]
     actors = {actor["insurer_id"]: actor for actor in model["insurers"]}
     services = []
     for aid, actor in sorted(actors.items()):

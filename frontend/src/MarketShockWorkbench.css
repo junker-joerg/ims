@@ -12,7 +12,7 @@
 .shock-plot svg{width:100%;height:auto}
 .shock-plot .chart-legend{flex-wrap:wrap;gap:.7rem}
 .shock-window{fill:var(--warning-surface);stroke:var(--warning-text);stroke-width:1}
-.shock-step{margin:1.5rem 0;padding:1.1rem;border:1px solid var(--border);border-radius:12px;min-width:0}
+.shock-step{scroll-margin-top:1rem;margin:1.5rem 0;padding:1.1rem;border:1px solid var(--border);border-radius:12px;min-width:0}
 .shock-step h4{font-size:1.12rem;margin-top:0}
 .shock-focus{border:2px solid var(--accent-text)}
 .shock-dependency-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin:1rem 0}

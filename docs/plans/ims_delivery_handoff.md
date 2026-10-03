@@ -1,5 +1,15 @@
 # IMS-Lieferübergabe
 
+## AP7 M2/M3 umgesetzt; installierte Produktprüfung noch offen
+
+03.10.2026: Vier reale 100er-Browserfälle und ihre 25er-Prefixe bestanden,
+Bilanz-/Risiko-/Queue-/Kosten-/Gruppenerhaltung geprüft. API/UI, Original/eigene
+Sitzung, JSON/Excel und Anleitung alpha.7 angeschlossen. Abschließende
+Rollen-/Bildprüfung sowie echter Installer und Produkt-CI folgen; technische
+Fertigmeldung/Anwenderabnahme/Merge weiter offen.
+[Prüfstand](../reports/ims_ap7_fortschritt.md). Derselbe Draft-PR #296; keine
+AP8–AP14-Arbeit und keine erneute Frage nach der schon erteilten Vertragsannahme.
+
 ## AP7-Vertrag angenommen; M2 im selben PR #296
 
 03.10.2026: [Ausdrückliche Annahme](../reports/ims_ap7_contract_acceptance.md) des

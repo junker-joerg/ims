@@ -248,3 +248,18 @@ def test_sequence_uses_half_open_edges_and_one_shared_budget():
     assert worker.resource_rows[0]["capacity_work"] == "24.0000"
     assert [row["from_hour"] for row in worker.resource_rows[0]["capacity_segments"]] == ["120.0000", "126.0000", "132.0000", "138.0000"]
     assert worker.state("primary", Decimal(126))[0] == worker.state("primary", Decimal(138))[0] == 1
+
+
+def test_excel_portable_bundle_preserves_supplementary_unicode(complete_source):
+    from ims.market.export import single_vu_workbook
+    from ims.market.shock_runner import calculate
+    source = deepcopy(complete_source)
+    for asset in source["ict"]["assets"]:
+        asset["assumption_note"] = "🔑" * 2000
+    result = calculate(source)
+    assert result["valid"], result["issues"]
+    aid = source["model_input"]["insurers"][0]["insurer_id"]
+    book = load_workbook(BytesIO(single_vu_workbook(result, aid)), read_only=True)
+    chunks = [row[1] for row in book["Herkunft"].values if row[0] == "shock_bundle_json_chunk"]
+    assert all(len(chunk.encode("utf-16-le")) // 2 <= 30000 for chunk in chunks)
+    assert json.loads("".join(chunks)) == source

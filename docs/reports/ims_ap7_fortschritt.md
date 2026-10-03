@@ -21,6 +21,31 @@ und diesem Chat als Artefakt zugeordnet. Die gemeinsame fachliche Annahme des
 Lebens-/ICT-Vertrags ist beim Auftraggeber angefragt; keine Antwort als erteilt
 behauptet. Die späteren CI-Produktchecks sind vom lokalen M1-Stand getrennt.
 
+## M3 lokal vollständig geprüft; M4 folgt
+
+Vier tatsächliche 100er-Browserfälle bestanden (667,07 s einschließlich
+25er-Prefixrechnungen). Frische Rechnung/Anzeige pro Fall: US 136,484 s /
+55.758.615 Bytes; Google 134,406 s / 55.999.982 Bytes; Leben 138,856 s /
+55.324.176 Bytes; DORA 137,550 s / 55.787.965 Bytes. Alle liegen unter dem
+64-MiB-Ergebnisbudget. P1–P5 gleich, Prefix25 exakt, A=L+E/Carryover,
+Markt=VU-Summe, disjunkte Familien-/Gruppensummen, Risiko-/Mengen-/Kosten-
+konservation geprüft. Unabhängiger Q liefert in P21 96 statt 0 Einheiten.
+Sieben Bedienungs-/Wiederaufnahme-/Export-/Kontrastfälle bestanden zuvor:
+Minimum 6,13:1 hell / 6,85:1 dunkel, keine Axe-Verstöße oder Seitenüberbreite
+in 1440×900, 1024×768 und 390×844. Neue Rollen-Fokusnavigation, kompaktere aufklappbare Tabellen und JSON-
+Fehlerbehandlung anschließend nachgeprüft: acht echte Browserfälle bestanden
+(5,8 min), zwölf aktuelle Screenshots und alle acht über die lokale Anleitung
+geladenen PNGs geprüft. Die großen Geld-/Mengenserien nutzen unveränderte
+exakte Assertions im Node-Harness statt je Wert einen Browser-Trace-Schritt. 15 neue AP7-Tests und 10 AP6-Referenztests bestanden gemeinsam
+(105,91 s); AP5s 16 Regressionen erneut bestanden (43,31 s).
+
+Installer/Produkt-CI und deren Head-/Hash-/Ressourcenbindung stehen aus. AP7
+bleibt in_progress und nicht merged. Die vorläufigen frühen Kernläufe bzw.
+Browser-Harnessprobleme (exakte Beschriftungen, Inspector-Bodycache,
+Einzelassertionen im Trace) werden nicht als finale Produktprüfung verwendet.
+Korrigierter Harness leitet echte Antworten weiter und prüft große
+Erhaltungsserien ohne Hunderttausende Trace-Schritte.
+
 ## M2/M3: angenommene Kanäle implementiert
 
 03.10.2026. Eigenständige versionierte Hülle, vier portable Quellenfälle,

@@ -13,8 +13,8 @@ Produkte, Strategien, Kapital, Prozessmengen und Provider sind Modellannahmen.
 2. **Alle US-Hyperscaler fallen aus** und **100 Schockperioden** auswählen, **Schockdemo laden** klicken. Das Original bleibt schreibfrei.
 3. **Schockfall frisch berechnen** klicken. Ein vollständiger Fall kann mehrere Minuten benötigen. Währenddessen zeigt IMS den Prüfstatus; es liefert kein unvollständiges Ergebnis.
 4. **P20 · vorher**, **P21 · Schock** und **P22 · Vertragsfolge** vergleichen. Eine Periode bedeutet 24 deklarierte Prozessstunden. P21 umfasst Stunden 480 bis 504; der 36-Stunden-Ausfall endet in P22 bei Stunde 516.
-5. Mit **Erklärseite** Baseline und Variante wählen. Die obere Wirkungskarte zeigt Arbeitsbudget und Rückstand beider Seiten. Die Kurven zeigen alle Perioden, die Verlaufstabelle enthält die exakten Mengen.
-6. Im **Rollenfokus** CIO, COO, CSO Vertrieb oder CEO wählen. Der passende Abschnitt wird hervorgehoben. **Erklär-VU** beschränkt Prozess-/Bilanz-/Kostenzeilen auf ein Haus; Markt-Kurven und Markt-Eigenkapital bleiben ausdrücklich Marktwerte.
+5. Mit **Erklärseite** Baseline und Variante wählen. Die obere Wirkungskarte zeigt Arbeitsbudget und Rückstand beider Seiten. Die Kurven zeigen alle Perioden, die Verlaufstabelle enthält die exakten Mengen. VU-/Prozess-, Vertrags- und Kostentabellen lassen sich direkt im jeweiligen Erklärungsschritt aufklappen.
+6. Im **Rollenfokus** CIO, COO, CSO Vertrieb oder CEO wählen. Die Auswahl führt den Fokus zum passenden hervorgehobenen Abschnitt. **Erklär-VU** beschränkt Prozess-/Bilanz-/Kostenzeilen auf ein Haus; Markt-Kurven und Markt-Eigenkapital bleiben ausdrücklich Marktwerte.
 
 Ein kurzer Horizont von 25 Perioden eignet sich zum Erkunden. Bei 2, 5 oder 10
 liegt der Standardschock P21 außerhalb des Horizonts; das ist eine ausdrücklich

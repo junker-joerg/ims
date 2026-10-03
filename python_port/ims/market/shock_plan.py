@@ -172,11 +172,13 @@ class ShockPlan:
             event_period = int(Decimal(event["start_hour"]) // 24) + 1
             if event_period == period:
                 owners = equal_owners(self.actors, event["insurer_ids"])
+                explanation = "Ereigniskosten einmal mit gleichen Akteursgewichten in der ersten vorhandenen Modellsparte; keine Pfad-Doppelbuchung"
                 for resource in sorted(self.engine.resources.values(), key=lambda item: item["resource_id"]):
                     if set(event["asset_ids"]) & set(self.engine.paths(resource["asset_id"])) and {owner["insurer_id"] for owner in resource["owners"]} == set(event["insurer_ids"]):
                         owners = resource["owners"]
+                        explanation = "Ereigniskosten genau einmal nach erklärten Ressourcen-Kostenträgern; keine Pfad-Doppelbuchung"
                         break
-                self.ledger.allocate("event_" + event["event_id"], period, Decimal(event["cost"]), owners, "operation", "Ereigniskosten genau einmal nach erklärten Ressourcen-Kostenträgern; keine Pfad-Doppelbuchung")
+                self.ledger.allocate("event_" + event["event_id"], period, Decimal(event["cost"]), owners, "operation", explanation)
 
     def _build(self) -> None:
         owners = {cohort["group_id"]: cohort["initial_insurer_id"] for cohort in self.market["customer_groups"]}
