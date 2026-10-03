@@ -152,7 +152,7 @@ Korrelation explizit erklären. Ein Paket-PR einschließlich API/UI/Tests/
 Anleitung/Installer; keine zusätzliche Vertragsannahme erfinden. Kein AP8-Merge,
 öffentliches Release oder AP9–AP14-Auftrag.
 AP8 ist im angenommenen Umfang technisch fertig (`done`) im Paket-PR #297.
-Produktpunkt `23e493bf9eb5f835bf977467c1307bf19cca7384`: vier echte Produktchecks
+Produktpunkt `17cbf5e631233ff5e5f5153a673a2eb6adaa7375`: vier echte Produktchecks
 erfolgreich, 2.764 Python-Tests/14 Subtests, 83 Browserfälle, 14 Installer-Lifecycle-
 und 83 installierte Browserprüfungen. Alle vier 100er-/25er-Prefixfälle erhalten
 die AP7-Modell-Digests; Checkout und installierte Anwendung stimmen überein.

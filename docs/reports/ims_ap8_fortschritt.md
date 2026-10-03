@@ -137,3 +137,23 @@ und [Abschluss](ims_ap8_abschlussbericht.md) enthalten echte Zeiten, Download,
 Hash, Grenzen und Iterationsbelege. AP8 done/technisch fertig, Anwenderabnahme
 pending/Merge false. Kein öffentlicher Release oder AP9–AP14-Auftrag.
 Nachstehende beziehungsweise vorstehende frühere offene Prüfstände sind historisch.
+
+## Anwenderhinweis: tatsächlichen Einstieg in der Anleitung berichtigt
+
+Am 03.10.2026 meldete der Auftraggeber, den in Schritt 1 genannten Bereich
+„Markt und Strategien“ nicht zu finden. Die tatsächliche Navigation aus
+`frontend/src/WorkbenchShell.tsx` lautet **Simulation → Markt und Familien**;
+auf der Übersicht führt **Markt und Familien öffnen** zum selben `#market`.
+`MarketExplorerWorkbench.tsx` zeigt dort oben die Überschrift
+**Markt verstehen · sechs verknüpfte Ansichten**. Markdown-/Offline-HTML-Anleitung
+benennen nun diese konkreten Schritte, die gestartete Anwendung und die
+benötigte Release-Anzeige ab alpha.8. HTML mit dem vorhandenen Renderer neu
+erzeugt; sichtbare Bezeichnungen mit dem UI-Quellcode abgeglichen.
+
+Nur Anleitung und Arbeitsnachweis berichtigt, keine neue Produktfassung oder
+geänderter Installer ausgeliefert. Der geprüfte alpha.8-Installer bleibt am
+Produktpunkt 17cbf5e gebunden und enthält noch die frühere Anleitung; die lokale
+HTML-Anleitung enthält die Korrektur. Der versehentlich noch auf 23e493b zeigende
+Produktpunkt im AGENTS-Status wurde auf den tatsächlich erfolgreichen 17cbf5e
+berichtigt. Historische fehlgeschlagene Prüfstände bleiben dokumentiert.
+Anwenderabnahme und Merge weiterhin offen.

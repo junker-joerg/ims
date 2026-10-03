@@ -13,13 +13,24 @@ Quellen-Euro und Modellwährung sind getrennte Einheiten.
 
 ## Schnell beginnen
 
-1. Öffnen Sie **Markt und Strategien**, oben **Markt verstehen**.
-2. Wählen Sie einen Analysefall und zunächst 25 Analyseperioden.
-3. Klicken Sie **Analysevorlage laden**, danach **Marktansichten frisch berechnen**.
-4. Wählen Sie Periode, Sparte, Vergleichsgruppe und Seite. Diese Auswahl wirkt
+Führen Sie diese Schritte in der gestarteten IMS-Workbench aus. Die sechs
+Ansichten sind ab Produktfassung **2.0.0-alpha.8** verfügbar; die Release-Anzeige
+steht links unten in der Anwendung. Die hier geöffnete Anleitung ist eine
+eigene Seite.
+
+1. Klicken Sie in der IMS-Workbench links auf **Simulation** und oben in der
+   Auswahl der Modellfälle auf **Markt und Familien**.
+2. Im obersten Abschnitt steht **Markt verstehen · sechs verknüpfte Ansichten**.
+   Das ist die Überschrift des Arbeitsbereichs.
+3. Wählen Sie einen Analysefall und zunächst 25 Analyseperioden.
+4. Klicken Sie **Analysevorlage laden**, danach **Marktansichten frisch berechnen**.
+5. Wählen Sie Periode, Sparte, Vergleichsgruppe und Seite. Diese Auswahl wirkt
    gemeinsam auf die sechs Ansichten und löst keine neue Rechnung aus.
-5. Klicken Sie eine VU im Diagramm oder in einer Datentabelle. Der
+6. Klicken Sie eine VU im Diagramm oder in einer Datentabelle. Der
    Buchungsnachweis öffnet die exakten VU-/Spartenwerte und Eigenkapitalbrücke.
+
+Alternativ gelangen Sie auf der **Übersicht** über **Markt und Familien öffnen**
+zum selben Arbeitsbereich.
 
 Ein vollständiger 100er-Fall und jeder frische Export können mehrere Minuten
 dauern. Während einer Rechnung wartet die Oberfläche; ein weiterer Lauf im
