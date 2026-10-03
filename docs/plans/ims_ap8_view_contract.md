@@ -52,6 +52,12 @@ Sparte; Modellmarkt ist die gesamte vergleichbare Basis. Der Nenner folgt nicht
 unbemerkt einem Familienfilter. Beitragsrang mit gleichen Beiträgen als gleichem
 Rang; inaktive Anbieter und undefinierte Basis sind ausdrücklich gekennzeichnet.
 
+In den vorhandenen Kundendaten bezeichnet `risk_loss` den ganzen Kohortenschaden.
+Bei nicht versicherten Kohorten ist `uninsured_loss` seine Klassifikation,
+kein zusätzlicher Verlust. Die Wechselansicht zeigt dann VU-Risikoaufwand null
+und den unversicherten Schaden separat. Kein Schaden wird ohne gültigen
+Vertragsträger in ein VU-Buch umgedeutet; die Rohfelder werden nicht addiert.
+
 ## Exakte Addition, Kanal und Korrelation
 
 Die überprüfbare Buchungsbrücke lautet:

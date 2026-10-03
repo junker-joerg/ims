@@ -73,8 +73,10 @@ miteinander addiert. Ein Fokus außerhalb der Filtergruppe bleibt gekennzeichnet
 P1 ist Anfangsbestand. Nur eine tatsächlich geänderte Vertragszuordnung zählt
 als Wechsel. Nicht versichert ist eine eigene Gegenpartei. Kfz- und Sachmengen
 bleiben getrennt; keine gemeinsame Mengensumme. Bei vielen Wechseln zeigt die
-Pfadübersicht sechs, die Tabelle alle. Prämie und Risiko gehören dem gültigen
-Träger. Die Job-Tabelle verbindet Anfrage und tatsächlich wirksame Folgeperiode.
+Pfadübersicht sechs, die Tabelle alle. Bei versicherten Verträgen gehören Prämie
+und Risiko dem gültigen Träger. Unversicherte Schäden stehen in einer eigenen
+Spalte und werden keinem VU als Versicherungsaufwand zugeordnet. Die Job-Tabelle
+verbindet Anfrage und tatsächlich wirksame Folgeperiode.
 
 Lebens-Anträge sind ein eigener Kanal: Bearbeitung in P t, früheste Ausgabe
 P t+1. Wartende oder lediglich bearbeitete Anträge sind keine ausgegebenen

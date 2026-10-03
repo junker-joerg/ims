@@ -94,6 +94,19 @@ class ExplorerTests(unittest.TestCase):
             with self.assertRaisesRegex(ContractError, "40 MiB"):
                 project_result(calculate(workshop_case("switch", 10, 2)))
 
+    def test_uninsured_damage_remains_outside_insurer_books(self):
+        source = workshop_case("switch", 10, 2)
+        for side in ("baseline", "variant"):
+            source["measures"][side] = [{"measure_id": f"KapNull_{aid}", "insurer_id": aid,
+                "sector_id": "motor", "decision_period": 6, "lead_periods": 0, "duration": 5,
+                "cost": "0", "overrides": {"capacity": "0"}} for aid in (1, 2)]
+        view = project_result(calculate(source))
+        for side in ("baseline", "variant"):
+            switch = next(r for r in view["sides"][side]["switch_rows"] if r["period"] == 6)
+            self.assertIsNone(switch["insurer_id"])
+            self.assertEqual((switch["risk_loss"], switch["uninsured_loss"]), ("40.0000", "40.0000"))
+            self.assertEqual(sum(Decimal(r["insurance_expense"]) for r in view["sides"][side]["financial_rows"] if r["period"] == 6), 0)
+
     def test_fresh_view_and_core_export_digest_are_distinct_and_reimport_exact(self):
         source = workshop_case("switch", 10, 2)
         with TestClient(create_market_app()) as client:

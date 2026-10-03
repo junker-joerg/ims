@@ -101,6 +101,13 @@ test("AP8 Handfall: wirksamer Wechsel, lokale Filter und frischer JSON/Einzel-VU
   const excelPromise=page.waitForEvent("download");await panel.getByRole("button",{name:"Fokus-VU frisch als Excel exportieren",exact:true}).click();const excel=await excelPromise;assert.ok((await readFile((await excel.path())!)).length>5000);assert.ok(excel.suggestedFilename().includes("VU2"));
   const apiExcel=await page.request.post("/api/market/export.xlsx",{data:{source_input:source,insurer_id:2},headers:{"If-Match":`"${result.model_result_digest}"`}});assert.equal(apiExcel.status(),200);assert.equal(apiExcel.headers().etag,`"${result.model_result_digest}"`);
   await panel.getByLabel("Eigene Analysequelle importieren",{exact:true}).setInputFiles({name:"same.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(imported))});await expect(panel.getByTestId("explorer-results")).toHaveCount(0);const reloaded=await calculate(page);assert.equal(reloaded.content_digest,result.content_digest);
+  const uninsuredSource=structuredClone(source);
+  for(const s of ["baseline","variant"])uninsuredSource.measures[s]=[1,2].map(aid=>({measure_id:`KapNull_${aid}`,insurer_id:aid,sector_id:"motor",decision_period:6,lead_periods:0,duration:5,cost:"0",overrides:{capacity:"0"}}));
+  await panel.getByLabel("Eigene Analysequelle importieren",{exact:true}).setInputFiles({name:"uninsured.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(uninsuredSource))});const uninsured=await calculate(page);
+  await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("6");const switchRow=rows(uninsured,"variant","switch_rows").find(r=>r.period===6)!;
+  assert.equal(switchRow.insurer_id,null);assert.equal(switchRow.uninsured_loss,"40.0000");assert.equal(rows(uninsured,"variant","financial_rows").filter(r=>r.period===6).reduce((sum,r)=>sum+amountUnits(r.insurance_expense),0n),0n);
+  await panel.getByTestId("explorer-flows").getByText("Alle wirksamen Wechsel · keine gemischte Mengensumme",{exact:false}).click();
+  await expect(panel.getByTestId("explorer-vu-risk")).toHaveAttribute("data-value","0.0000");await expect(panel.getByTestId("explorer-uninsured-risk")).toHaveAttribute("data-value","40.0000");
   await panel.getByLabel("Eigene Analysequelle importieren",{exact:true}).setInputFiles({name:"invalid.json",mimeType:"application/json",buffer:Buffer.from("{}")} );await panel.getByRole("button",{name:"Marktansichten frisch berechnen",exact:true}).click();await expect(panel.getByRole("alert")).toBeVisible();await expect(panel.getByTestId("explorer-results")).toHaveCount(0);
 });
 

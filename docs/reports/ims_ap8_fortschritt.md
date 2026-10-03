@@ -75,3 +75,26 @@ Frontend-Build und gemeinsame Versionsmetadaten bestanden; alpha.8 / 2.0.0.8.
 Browser-CI-Zeitbudget 60 min, Installer 70 min, installierter Harness 60 min,
 für die zusätzlich gemessenen vier 100er-/Prefixläufe und Darstellungsprüfungen.
 Keine Tests übersprungen oder automatische Testwiederholung aktiviert.
+
+## Abschließende Korrektur der Risikoanzeige
+
+Vor technischer Fertigstellung fiel eine missverständliche Wechselspalte auf:
+`customer_decisions.risk_loss` bezeichnet den gesamten Kohortenschaden,
+auch wenn `insurer_id=null` und `uninsured_loss` denselben Schaden klassifiziert.
+Die VU-Bücher hatten diesen Betrag korrekt nicht als Versicherungsaufwand
+gebucht. Die Oberfläche trennt nun **beim VU gebuchten Risikoaufwand** und
+**unversicherten Schaden ohne VU-Buchung**; beide Rohfelder werden nicht addiert.
+Konkreter vorhandener AP5-Handfall: Kapazitäten beider VUs ab P6 gleich null,
+G1 bleibt mit 40 Schaden unversichert; VU-Risikoaufwand exakt 0, unversichert 40.
+Neun AP8-Tests bestanden (2,53 s); aktualisierter echter Browser-Handfall samt
+JSON/Excel, Quellenresten/Offline-Hilfe und unabhängigen Handwerten bestanden
+(drei Tests in 13,8 s). Kein Finanz-, Risiko-, Nachfrage-, Garantie- oder RNG-Kern
+geändert.
+
+Der frühere Produktpunkt 815ed86 hatte erfolgreiche Plan- und Release-Gate-
+Prüfung (2.763 + 14 Subtests, 1.060,95 s), noch laufende Browser-/Installer-
+Prüfungen und einen lokalen echten Installer mit drei erfolgreichen direkten
+Frozen-App-Prüfungen. Diese Belege ersetzen keine Prüfung der korrigierten
+Oberfläche. Neuer eingefrorener Produktpunkt und vollständige vier CI-Prüfungen
+folgen im selben PR. Die Suite enthält jetzt **2.764 Python-Tests + 14 Subtests**
+und **83 echte Browserprüfungen**; Erfolg am neuen Punkt noch offen.
