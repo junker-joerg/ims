@@ -11,7 +11,10 @@ Danach AP7-authorized-Auftrag gegen gefetchtes main erzeugt und Branch
 [Handproben](../reports/ims_ap7_contract_probes.json) und
 [Fortschritt](../reports/ims_ap7_fortschritt.md). E07-01 mit eigener Herkunft.
 M1 vorbereitet, fachliche Annahme des Lebens-/ICT-Vertrags noch offen; erst
-danach M2 im selben Draft-PR. Claims-/Service-Queues verschieben im vorgeschlagenen
+danach M2 im selben [Draft-PR #296](https://github.com/junker-joerg/ims/pull/296).
+M1-Vorschlagskommitt `c9e8c63be7ed7a4eb2495dfdef22e4db83eb3780`; gemeinsame
+fachliche Annahme angefragt, Antwort noch nicht dokumentiert.
+Claims-/Service-Queues verschieben im vorgeschlagenen
 begrenzten Umfang keine Versicherungszahlungen. Produkt bleibt alpha.6,
 vier neue 100er-Demos und alpha.7 sind noch nicht geliefert. Keine AP7-Merge-/
 Veröffentlichungsfreigabe oder AP8–AP14-Umsetzung. Nachstehende Stände historisch.

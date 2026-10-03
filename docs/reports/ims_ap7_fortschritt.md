@@ -7,6 +7,13 @@ AP7-[Arbeitsauftrag](../plans/ims_ap7_work_order.md) wurde vor Änderung seines
 Manifeststatus im authorized-Modus erfolgreich erzeugt. AP7 **in_progress**,
 technisch nicht fertig, Anwenderabnahme/Merge nicht freigegeben.
 
+Das gesamte Paket wird in [Draft-PR #296](https://github.com/junker-joerg/ims/pull/296)
+fortgesetzt. M1-Vorschlagskommitt `c9e8c63be7ed7a4eb2495dfdef22e4db83eb3780` enthält
+den konkreten Vertrag und die hier beschriebenen Prüfungen. PR wurde angelegt
+und diesem Chat als Artefakt zugeordnet. Die gemeinsame fachliche Annahme des
+Lebens-/ICT-Vertrags ist beim Auftraggeber angefragt; keine Antwort als erteilt
+behauptet. Die späteren CI-Produktchecks sind vom lokalen M1-Stand getrennt.
+
 ## M1: konkret zur fachlichen Prüfung vorbereitet
 
 [Paketplan](../plans/ims_ap7_implementation.md),
@@ -46,6 +53,7 @@ Kerne und unabhängige Handrechnung ausdrücklich von zukünftigen Produktkanäl
 | `pytest tests/test_ap7_contract_probes.py -q` | 5 bestanden, 1,40 s; Kernwerte, Finanzierung, Aktivzählgrenze, Queue-/Kosten-/Zeitkonservation und Überschreibschutz |
 | `unittest discover -s tests -p test_ai_sprint_plan*.py -v` | 35 bestanden, 5,541 s |
 | AP7-Umsetzungsauftrag gegen actual main | erfolgreich, AP6-Abhängigkeit erfüllt |
+| Plan-CI am M1-Kommitt c9e8c63 | [erfolgreich](https://github.com/junker-joerg/ims/actions/runs/37104003909/job/111148906606); Browser-/Release-Gate-/Installerchecks zum Beobachtungszeitpunkt noch laufend |
 
 Diese M1-Prüfungen sind keine vier fertigen 100er-Demos, keine AP7-Produkt-CI
 und kein alpha.7-Installer. Produktkern, API/UI und ausgelieferte alpha.6-Version
