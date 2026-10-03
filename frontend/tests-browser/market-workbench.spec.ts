@@ -12,6 +12,7 @@ function rows(table: { columns: string[]; rows: unknown[][]; missing?: Record<st
 }
 async function load(page: Page, id = "capacity", n = 10, count = 3) {
   await page.goto("/#market");
+  await page.getByRole("tab", { name: "Quellen und Handfälle", exact: true }).click();
   const panel = page.getByTestId("market-workbench");
   await panel.getByLabel("Marktfall", { exact: true }).selectOption(id);
   await panel.getByLabel("Marktperioden", { exact: true }).selectOption(String(n));

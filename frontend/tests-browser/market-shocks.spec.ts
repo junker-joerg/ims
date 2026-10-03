@@ -15,6 +15,7 @@ function rows(result: any, side: string, name: string): Row[] {
 }
 async function load(page: Page, caseId = "us_hyperscaler_outage", n = 25) {
   await page.goto("/#market");
+  await page.getByRole("tab", { name: "Schock bearbeiten", exact: true }).click();
   const panel = page.getByTestId("market-shock-workbench");
   await panel.getByLabel("Schockfall", { exact: true }).selectOption(caseId);
   await panel.getByLabel("Schockperioden", { exact: true }).selectOption(String(n));

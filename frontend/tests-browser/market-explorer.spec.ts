@@ -53,7 +53,7 @@ for(const caseId of Object.keys(digests)){
       assert.deepEqual(switches,rows(result,side,"customer_rows").filter(r=>r.period>1&&r.previous_insurer_id!==r.insurer_id));
       for(const f of rows(result,side,"family_rows")){const actual=vu.filter(r=>r.period===f.period&&r.family_id===f.family_id&&(f.sector_id==="total"||r.sector_id===f.sector_id));assert.deepEqual(f.member_ids,[...new Set(actual.map(r=>r.insurer_id))].sort((a,b)=>a-b));const derived=families(actual)[0];assert.equal(derived.mean,f.weighted_profit_percent===null?null:amountUnits(f.weighted_profit_percent));}
     }
-    for(const id of ["market","shares","families","flows","timeline","provider"])await expect(panel.getByTestId(`explorer-${id}`)).toBeVisible();
+    for(const [id,label] of [["market","1 Verlauf"],["shares","2 Position"],["families","3 Familien"],["flows","4 Wechsel"],["timeline","5 Zeitlinie"],["provider","6 ICT / Prozesse"]]){await panel.getByRole("tab",{name:label,exact:true}).click();await expect(panel.getByTestId(`explorer-${id}`)).toBeVisible();assert.equal(await panel.locator(".explorer-card:visible").count(),1);}await panel.getByRole("tab",{name:"1 Verlauf",exact:true}).click();
     const vu=rows(result,"variant","financial_rows").filter(r=>r.period===21),total=vu.reduce((sum,r)=>sum+amountUnits(r.premium_income),0n);
     await expect(panel.getByTestId("explorer-denominator")).toHaveAttribute("data-value",raw(total));
     await expect(panel.getByTestId("explorer-model-digest")).toHaveText(result.model_result_digest);
@@ -66,7 +66,7 @@ for(const caseId of Object.keys(digests)){
     await expect(panel.getByTestId("explorer-denominator")).toHaveAttribute("data-value",raw(total));
     const familyPremium=vu.filter(r=>r.family_id===family).reduce((sum,r)=>sum+amountUnits(r.premium_income),0n);
     await expect(panel.getByTestId("explorer-selected-premium")).toHaveAttribute("data-value",raw(familyPremium));
-    await expect(panel.getByTestId("explorer-composition")).toBeVisible();
+    await panel.getByRole("tab",{name:"3 Familien",exact:true}).click();await expect(panel.getByTestId("explorer-composition")).toBeVisible();
     await panel.getByLabel("Erklärrolle",{exact:true}).selectOption("cio");await expect(panel.getByTestId("explorer-provider")).toBeFocused();
     await panel.getByLabel("Vergleichsgruppe",{exact:true}).selectOption("market");
     await panel.getByRole("button",{name:"Konkrete Buchungsdetails öffnen",exact:true}).click();
@@ -78,7 +78,7 @@ for(const caseId of Object.keys(digests)){
     if(caseId==="us_hyperscaler_outage"){
       const b=rows(result,"baseline","resource_rows")[20],v=rows(result,"variant","resource_rows")[20];assert.equal(b.capacity_work,"0.0000");assert.equal(v.capacity_work,"96.0000");
       await panel.getByRole("button",{name:/q-dependent.*Q mit gemeinsamem US-IAM/}).click();await expect(panel.getByTestId("explorer-path-proof")).toContainText("us-iam");
-      for(const id of ["market","shares","families","flows","timeline","provider"])await capture(page,info,`ap8_view_${id}.png`,`explorer-${id}`);
+      for(const [id,label] of [["market","1 Verlauf"],["shares","2 Position"],["families","3 Familien"],["flows","4 Wechsel"],["timeline","5 Zeitlinie"],["provider","6 ICT / Prozesse"]]){await panel.getByRole("tab",{name:label,exact:true}).click();await capture(page,info,`ap8_view_${id}.png`,`explorer-${id}`);}
     }
     if(caseId==="google_motor_entry") {await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("20");await expect(panel.getByTestId("explorer-shares")).toContainText("41 registriert · 40 aktiv");await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("21");await expect(panel.getByTestId("explorer-shares")).toContainText("41 registriert · 41 aktiv");}
     // Independent shorter actual run must be exactly the same prefix for every table.
@@ -93,20 +93,20 @@ for(const caseId of Object.keys(digests)){
 test("AP8 Handfall: wirksamer Wechsel, lokale Filter und frischer JSON/Einzel-VU-Excel-Export",async({page})=>{
   test.setTimeout(180_000);const {panel,source}=await load(page,"switch",10);const result=await calculate(page);
   await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("6");await panel.getByLabel("Analysesparte",{exact:true}).selectOption("motor");await panel.getByLabel("Fokus-VU",{exact:true}).selectOption("2");
-  await expect(panel.getByTestId("explorer-flows")).toContainText("Kfz · 10,0000");await expect(panel.getByTestId("explorer-denominator")).toHaveAttribute("data-value","20.0000");
-  await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("1");await expect(panel.getByTestId("explorer-flows")).toContainText("kein wirksamer Eigentümerwechsel");await expect(panel.getByTestId("explorer-shares").getByRole("group",{name:"Gebuchte Modellbeitragsanteile · ausgewählte VUs",exact:true})).toContainText("Nicht definiert");
-  await panel.getByLabel("Analysesparte",{exact:true}).selectOption("health");await expect(panel.getByTestId("explorer-families")).toContainText("Keine auswertbaren Mitglieder");await panel.getByLabel("Analysesparte",{exact:true}).selectOption("motor");
+  await panel.getByRole("tab",{name:"4 Wechsel",exact:true}).click();await expect(panel.getByTestId("explorer-flows")).toContainText("Kfz · 10,0000");await expect(panel.getByTestId("explorer-denominator")).toHaveAttribute("data-value","20.0000");
+  await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("1");await expect(panel.getByTestId("explorer-flows")).toContainText("kein wirksamer Eigentümerwechsel");await panel.getByRole("tab",{name:"2 Position",exact:true}).click();await expect(panel.getByTestId("explorer-shares").getByRole("group",{name:"Gebuchte Modellbeitragsanteile · ausgewählte VUs",exact:true})).toContainText("Nicht definiert");
+  await panel.getByRole("tab",{name:"3 Familien",exact:true}).click();await panel.getByLabel("Analysesparte",{exact:true}).selectOption("health");await expect(panel.getByTestId("explorer-families")).toContainText("Keine auswertbaren Mitglieder");await panel.getByLabel("Analysesparte",{exact:true}).selectOption("motor");
   await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("6");
   const portablePromise=page.waitForEvent("download");await panel.getByRole("button",{name:"Analysequelle frisch als JSON exportieren",exact:true}).click();const portable=await portablePromise;const imported=JSON.parse(await readFile((await portable.path())!,"utf8"));assert.deepEqual(imported,source);
   const excelPromise=page.waitForEvent("download");await panel.getByRole("button",{name:"Fokus-VU frisch als Excel exportieren",exact:true}).click();const excel=await excelPromise;assert.ok((await readFile((await excel.path())!)).length>5000);assert.ok(excel.suggestedFilename().includes("VU2"));
   const apiExcel=await page.request.post("/api/market/export.xlsx",{data:{source_input:source,insurer_id:2},headers:{"If-Match":`"${result.model_result_digest}"`}});assert.equal(apiExcel.status(),200);assert.equal(apiExcel.headers().etag,`"${result.model_result_digest}"`);
-  await panel.getByLabel("Eigene Analysequelle importieren",{exact:true}).setInputFiles({name:"same.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(imported))});await expect(panel.getByTestId("explorer-results")).toHaveCount(0);const reloaded=await calculate(page);assert.equal(reloaded.content_digest,result.content_digest);
+  await panel.getByText("Eigene Analysequelle importieren",{exact:true}).click();await panel.getByLabel("Eigene Analysequelle importieren",{exact:true}).setInputFiles({name:"same.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(imported))});await expect(panel.getByTestId("explorer-results")).toHaveCount(0);const reloaded=await calculate(page);assert.equal(reloaded.content_digest,result.content_digest);
   const uninsuredSource=structuredClone(source);
   for(const s of ["baseline","variant"])uninsuredSource.measures[s]=[1,2].map(aid=>({measure_id:`KapNull_${aid}`,insurer_id:aid,sector_id:"motor",decision_period:6,lead_periods:0,duration:5,cost:"0",overrides:{capacity:"0"}}));
   await panel.getByLabel("Eigene Analysequelle importieren",{exact:true}).setInputFiles({name:"uninsured.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(uninsuredSource))});const uninsured=await calculate(page);
   await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("6");const switchRow=rows(uninsured,"variant","switch_rows").find(r=>r.period===6)!;
   assert.equal(switchRow.insurer_id,null);assert.equal(switchRow.uninsured_loss,"40.0000");assert.equal(rows(uninsured,"variant","financial_rows").filter(r=>r.period===6).reduce((sum,r)=>sum+amountUnits(r.insurance_expense),0n),0n);
-  await panel.getByTestId("explorer-flows").getByText("Alle wirksamen Wechsel · keine gemischte Mengensumme",{exact:false}).click();
+  await panel.getByRole("tab",{name:"4 Wechsel",exact:true}).click();await panel.getByTestId("explorer-flows").getByText("Alle wirksamen Wechsel · keine gemischte Mengensumme",{exact:false}).click();
   await expect(panel.getByTestId("explorer-vu-risk")).toHaveAttribute("data-value","0.0000");await expect(panel.getByTestId("explorer-uninsured-risk")).toHaveAttribute("data-value","40.0000");
   await panel.getByLabel("Eigene Analysequelle importieren",{exact:true}).setInputFiles({name:"invalid.json",mimeType:"application/json",buffer:Buffer.from("{}")} );await panel.getByRole("button",{name:"Marktansichten frisch berechnen",exact:true}).click();await expect(panel.getByRole("alert")).toBeVisible();await expect(panel.getByTestId("explorer-results")).toHaveCount(0);
 });
@@ -114,7 +114,7 @@ test("AP8 Handfall: wirksamer Wechsel, lokale Filter und frischer JSON/Einzel-VU
 test("AP8 BaFin-Referenz und offline Anleitung im echten Backend",async({page})=>{
   test.setTimeout(150_000);const {panel}=await load(page,"bafin",10);const result=await calculate(page);assert.equal(result.actors.length,40);assert.equal(result.clock,null);await expect(panel.getByTestId("explorer-provider")).toContainText("keinen ICT-/Prozesskanal");await expect(panel.getByTestId("explorer-reference")).toContainText("nicht belegt");await expect(panel.getByTestId("explorer-reference")).toContainText(String(result.reference.rest.selected_unmodeled_million_eur).replace(".",","));
   const help=await page.context().newPage();await help.goto("/api/seminar/handbook/market_ap8.html");await expect(help.getByRole("heading",{level:1})).toContainText("Sechs verknüpfte Marktansichten");await expect(help.locator("body")).toContainText("keine isolierte Kausalzuordnung");
-  const images=await help.locator("img").evaluateAll(nodes=>nodes.map(n=>n.getAttribute("src")!));assert.equal(images.length,12);for(const image of images){const reply=await help.request.get(`/api/seminar/handbook/${image}`);assert.equal(reply.status(),200);assert.ok((await reply.body()).length>1000);}await help.close();
+  const images=await help.locator("img").evaluateAll(nodes=>nodes.map(n=>n.getAttribute("src")!));assert.equal(images.length,13);assert.ok(images.includes("images/ap8_start_light_1440x900.png"));for(const image of images){const reply=await help.request.get(`/api/seminar/handbook/${image}`);assert.equal(reply.status(),200);assert.ok((await reply.body()).length>1000);}await help.close();
 });
 
 for(const viewport of [{width:1440,height:900},{width:1024,height:768},{width:390,height:844}])for(const theme of ["light","dark"] as const){

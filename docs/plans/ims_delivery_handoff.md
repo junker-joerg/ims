@@ -1,5 +1,16 @@
 # IMS-Lieferübergabe
 
+## AP8-Bedienkorrektur in Arbeit; alpha.9 vor Anwenderabnahme
+
+03.10.2026: Nach dem ausdrücklichen Anwenderhinweis zur unübersichtlichen
+Oberfläche ist AP8 im selben PR #297 wieder in Arbeit.
+[Bedienkorrektur](ims_ap8_usability_correction.md): direkter Markt-Einstieg,
+getrennte Arbeitsbereiche, jeweils eine der sechs Ansichten, klarer Ablauf,
+erhaltene Zustände und zugängliche Reiter. Neue Produktkennung alpha.9 ist eine
+AP8-Korrektur; AP9 bleibt planned. Frühere alpha.8-Produktchecks werden nicht
+als Prüfung der neuen Oberfläche ausgegeben. Neuer Produkt-/Installerprüfstand
+folgt separat. Kein Merge oder öffentlicher Release; Anwenderabnahme offen.
+
 ## AP8 technisch fertig; Anwenderabnahme und Merge offen
 
 03.10.2026: AP7 ist tatsächlich in main (PR #296, `32ba3112d994f57f33e64e1bc318e7d095223cd0`).

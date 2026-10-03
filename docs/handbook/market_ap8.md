@@ -1,6 +1,6 @@
 # Sechs verknüpfte Marktansichten · IMS AP8
 
-Produktfassung 2.0.0-alpha.8. Die sechs Ansichten erklären einen gemeinsamen
+Produktfassung 2.0.0-alpha.9 (Bedienkorrektur von AP8). Die sechs Ansichten erklären einen gemeinsamen
 geprüften Modelllauf. Die BaFin-Gruppenauswertung 2024 ist ein Workshop-Fall:
 verdiente Beiträge einschließlich Ausland und übernommener Rückversicherung,
 redaktionelle Gruppen ohne konzerninterne Eliminierung. Keine belegte deutsche
@@ -13,15 +13,16 @@ Quellen-Euro und Modellwährung sind getrennte Einheiten.
 
 ## Schnell beginnen
 
-Führen Sie diese Schritte in der gestarteten IMS-Workbench aus. Die sechs
-Ansichten sind ab Produktfassung **2.0.0-alpha.8** verfügbar; die Release-Anzeige
+Führen Sie diese Schritte in der gestarteten IMS-Workbench aus. Die folgende
+Menüführung gilt für Produktfassung **2.0.0-alpha.9**; die Release-Anzeige
 steht links unten in der Anwendung. Die hier geöffnete Anleitung ist eine
 eigene Seite.
 
-1. Klicken Sie in der IMS-Workbench links auf **Simulation** und oben in der
-   Auswahl der Modellfälle auf **Markt und Familien**.
-2. Im obersten Abschnitt steht **Markt verstehen · sechs verknüpfte Ansichten**.
-   Das ist die Überschrift des Arbeitsbereichs.
+1. Klicken Sie in der Hauptnavigation auf **Markt und Familien**.
+2. Der Arbeitsbereich **Markt verstehen** ist bereits ausgewählt. **Schock
+   bearbeiten** öffnet die Eingaben für Gegenmaßnahmen; **Quellen und Handfälle**
+   öffnet die BaFin-Quellenprüfung und kleinen Referenzfälle. Jeder Arbeitsbereich
+   behält seine eigenen Eingaben und Ergebnisse.
 3. Wählen Sie einen Analysefall und zunächst 25 Analyseperioden.
 4. Klicken Sie **Analysevorlage laden**, danach **Marktansichten frisch berechnen**.
 5. Wählen Sie Periode, Sparte, Vergleichsgruppe und Seite. Diese Auswahl wirkt
@@ -31,6 +32,15 @@ eigene Seite.
 
 Alternativ gelangen Sie auf der **Übersicht** über **Markt und Familien öffnen**
 zum selben Arbeitsbereich.
+
+Nach einer Rechnung wählen Sie eine der sechs Ansichten über ihre Reiter.
+Es ist jeweils eine Ansicht sichtbar. Mit Links/Rechts sowie Pos1/Ende wechseln
+Sie die Reiter per Tastatur; die gemeinsame Periode und Auswahl bleiben erhalten.
+**Erklärrolle** öffnet die passende Ansicht. **Hinweise für meine Rolle** im
+Seitenkopf enthält zusätzliche Orientierung. Für einen Import öffnen Sie
+**Eigene Analysequelle importieren** unter dem Analysefall.
+
+![Tatsächlicher Einstieg mit direkter Navigation und einem Analyseformular](images/ap8_start_light_1440x900.png)
 
 Ein vollständiger 100er-Fall und jeder frische Export können mehrere Minuten
 dauern. Während einer Rechnung wartet die Oberfläche; ein weiterer Lauf im
@@ -158,7 +168,7 @@ allein sind Beobachtungen. Es werden keine unabhängigen Ursachenanteile erfunde
 Die Erklärrolle setzt den Tastaturfokus in die betreffende Ansicht. Sie erhält
 Fall und Filter. Alle Diagramme haben Datentabellen; Diagrammpunkte/Markierungen
 und Tabellenknöpfe sind per Tastatur bedienbar. Hell/Dunkel verwendet dieselben
-Werte. Auf kleinen Bildschirmen stehen Karten untereinander; breite Tabellen
+Werte. Auf kleinen Bildschirmen passen sich Formular und Reiter an; breite Tabellen
 haben einen eigenen tastaturzugänglichen Scrollbereich.
 
 ## JSON und Einzel-VU-Excel
@@ -173,8 +183,10 @@ Die neue Ansicht hat einen eigenen Digest; Exportbindung ist der Modell-Digest.
 
 ## Aktuelle Ansichten aus echten Browserläufen
 
-Die sechs Bilder stammen aus dem tatsächlichen 100er-US-Workshop-Lauf in P21,
-mit Modellnachweis und vollständigen API-Zeilen. Keine gezeichneten Mockups.
+Die sechs Referenzbilder stammen aus dem tatsächlichen alpha.8-100er-US-
+Workshop-Lauf in P21, mit Modellnachweis und vollständigen API-Zeilen.
+Die fachlichen Ansichten bleiben in alpha.9 erhalten und sind nun einzeln über
+Reiter erreichbar. Der neue Einstieg ist oben als alpha.9-Browserbild gezeigt.
 
 ![Marktverlauf und genaue VU-Spartenbeiträge](images/ap8_view_market.png)
 
@@ -188,7 +200,7 @@ mit Modellnachweis und vollständigen API-Zeilen. Keine gezeichneten Mockups.
 
 ![Konkreter ICT-Graph gemeinsame Ressourcen und ausgewählter Rückstand](images/ap8_view_provider.png)
 
-Die folgenden Bilder zeigen denselben 25er-ICT-Fall, Hell/Dunkel und drei
+Die folgenden alpha.8-Referenzbilder zeigen denselben 25er-ICT-Fall, Hell/Dunkel und drei
 Bildschirmgrößen. Die CIO-Ansicht beginnt mit der benannten Ausfall-/Ersatzstruktur;
 Kurven und vollständige Datentabellen folgen darunter.
 

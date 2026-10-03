@@ -157,3 +157,46 @@ HTML-Anleitung enthält die Korrektur. Der versehentlich noch auf 23e493b zeigen
 Produktpunkt im AGENTS-Status wurde auf den tatsächlich erfolgreichen 17cbf5e
 berichtigt. Historische fehlgeschlagene Prüfstände bleiben dokumentiert.
 Anwenderabnahme und Merge weiterhin offen.
+
+## AP8 zur Bedienkorrektur erneut in Arbeit
+
+Der Auftraggeber meldete am 03.10.2026 zunehmende Orientierungsprobleme und
+hielt die Oberfläche für nicht vorzeigbar. Der konkrete Korrekturumfang steht
+in `docs/plans/ims_ap8_usability_correction.md`. AP8 im selben PR #297 erneut
+in_progress, aktuelle technische Fertigstellung offen. Historische alpha.8-
+Produktbelege bleiben erhalten. Die neue Produktkennung alpha.9 gehört zu AP8.
+
+Direkter Markt-Einstieg und eindeutiger Ort, vier häufige Modellfälle mit
+benannten weiteren Werkzeugen, getrennte Markt-/Schock-/Quellen-Arbeitsbereiche,
+klarer Lade-/Rechenablauf und sechs einzeln auswählbare Auswertungen umgesetzt.
+Instanzen bleiben montiert; Reiter und Rollen ändern keine Rechnung.
+Erste sechs Browserfälle bestanden in 38,5 s (Hell/Dunkel, drei Größen,
+Tastatur, Zustandserhalt, kein horizontaler Seitenüberlauf, keine Axe-Verstöße).
+Weitere Prüfung nach Detailkorrekturen läuft. Frühe Prüfschritte fanden einen
+unzulässigen ARIA-Tabpanel-Rolleneinsatz auf article (auf div berichtigt) und
+zwei ältere Testannahmen (nicht ausgewählte Ansicht; 12 statt jetzt 13 Bilder).
+Tests bedienen nun echte Reiter; keine Prüfung wird übersprungen/abgeschwächt.
+Keine Kernänderung. Neuer Installer und vollständige Produkt-CI folgen.
+
+Gezielte Abschlussprüfung der Bedienkorrektur: sechs aktuelle Navigations- und
+Zustandsfälle bestanden in 38,4 s, zwei AP8-Handfall-/JSON-/Excel-/BaFin-Fälle
+in 10,5 s und fünf bestehende AP5-/AP6-Fälle in 26,4 s; insgesamt 13, keine
+übersprungenen/instabilen Fälle. 35 Planprüfungen + 14 Subtests in 7,44 s bestanden.
+Build und gemeinsame alpha.9-/Windows-2.0.0.9-Metadaten erfolgreich; bestehende
+Vite-Bundlegrößenwarnung bleibt sichtbar. Letzte rein visuelle Anpassung hebt
+den nächsten Lade-/Rechenschritt hervor; sechs Einstiegsbilder danach frisch
+erfasst. `ims_ap8_usability_verification.json` enthält Fälle, Zeiten, Bilder und
+getrennte Grenzen. `docs/frontend_style_guide.md` legt die Regeln und Quellen fest.
+
+Die parallele lokale Langreihe war vor Anpassung ihrer Reiter-Prüfstellen
+gestartet und wurde als veraltet beendet. Zusätzlich hatten zwei lokale
+Testaufrufe denselben Ausgabeordner und kollidierende Trace-Dateien; die
+abschließenden gezielten Läufe nutzten einen eigenen Ordner. Keine erfolgreiche
+vollständige 19er-Reihe behauptet. Vollständige Produkt-/Installer-CI für die
+neue Oberfläche wird im selben PR separat ausgelöst und bleibt bis zu ihrem
+Ergebnis offen. Noch kein neuer Installer ausgeliefert.
+
+Lokale Vorschau `http://127.0.0.1:48418/#market` startet im eigenen temporären
+Vorschauordner außerhalb der Anwendungsdateien. Health bestätigt alpha.9 und
+verfügbares Frontend. Die Öffnung im Codex-Panel wurde als queued bestätigt;
+ein tatsächlich sichtbarer Tab wird dadurch nicht behauptet.

@@ -442,7 +442,7 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "done",
+      "status": "in_progress",
       "depends_on": [
         "AP7"
       ],
@@ -473,7 +473,7 @@
         "docs/migration/ap8_market_explorer.md: vorhandene Kerne unverändert; exakte Addition/Kanal/Wechselwirkung/Korrelation"
       ],
       "implementation_authorized": true,
-      "technically_complete": true,
+      "technically_complete": false,
       "merged_to_main": false,
       "user_product_acceptance": "pending",
       "merge_authorized": false,
@@ -503,7 +503,18 @@
             "docs/reports/ims_ap8_produktpruefung.md"
           ]
         }
-      ]
+      ],
+      "usability_revision": {
+        "status": "in_progress",
+        "release": "2.0.0-alpha.9",
+        "scope": "AP8-Bedienkorrektur im selben Paket-PR #297; keine AP9-Umsetzung",
+        "user_request": "Ich finde mich immer schlechter in dieser oberfläsche zurecht. Kennst Du keine Frontend-Style Guides für Webanwendungen? Das kann man so keinem zeigen",
+        "recording_note": "Wörtlicher aktueller Anwenderhinweis, Zeilenumbrüche normalisiert; kein sekundengenauer Nachrichtenzeitpunkt behauptet.",
+        "plan": "docs/plans/ims_ap8_usability_correction.md",
+        "previous_product": "17cbf5e631233ff5e5f5153a673a2eb6adaa7375",
+        "previous_product_release": "2.0.0-alpha.8",
+        "acceptance_impact": "Navigation und Darstellung erneut prüfen; frühere alpha.8-Abschlussbelege bleiben historisch. Anwenderabnahme/Merge weiterhin offen."
+      }
     },
     {
       "id": "AP9",

@@ -8,6 +8,7 @@ const { version: releaseVersion } = JSON.parse(readFileSync(new URL("../package.
 
 async function load(page: Page, n = 5) {
   await page.goto("/#market");
+  await page.getByRole("tab", { name: "Quellen und Handfälle", exact: true }).click();
   const panel = page.getByTestId("market-workbench");
   await panel.getByLabel("Marktfall", { exact: true }).selectOption("bafin");
   await panel.getByLabel("Marktperioden", { exact: true }).selectOption(String(n));

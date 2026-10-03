@@ -165,6 +165,16 @@ ausdrücklich außerhalb der VU-Bücher. Belege `docs/reports/ims_ap8_abschlussb
 Anwenderabnahme/Merge für AP8 weiter offen; kein öffentlicher Release/AP9–AP14.
 Ein done-Status im Branch ersetzt keinen nach main übernommenen Abhängigkeitsbeleg.
 
+Am 03.10.2026 meldete der Auftraggeber zunehmende Orientierungsprobleme und
+hielt die Oberfläche für nicht vorzeigbar. AP8 ist deshalb im selben Paket-PR
+#297 erneut in Arbeit: `docs/plans/ims_ap8_usability_correction.md`.
+Direkte Markt-Navigation, getrennte Arbeitsbereiche, jeweils eine von sechs
+Ansichten, klarer Lade-/Rechenablauf und erhaltene Zustände werden überprüft.
+Die neue Produktfassung alpha.9 bezeichnet die AP8-Bedienkorrektur, kein AP9.
+Frühere alpha.8-Abschlussbelege bleiben historisch; neue Produktprüfungen sind
+separat erforderlich. Aktuelles AP8-Manifest in_progress/technically_complete
+false. Anwenderabnahme und Merge bleiben offen, AP9–AP14 nicht beauftragt.
+
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
 geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige

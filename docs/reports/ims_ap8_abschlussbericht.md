@@ -1,5 +1,12 @@
 # AP8: Abschluss zur Anwenderabnahme
 
+**Aktueller Hinweis:** AP8 ist nach Anwenderkritik an der Orientierung zur
+Bedienkorrektur erneut in Arbeit. Dieser Bericht belegt die historische
+alpha.8-Fassung. Alpha.9 ist als Vorschau separat geprüft; vollständige
+Produktprüfung und Anwenderabnahme bleiben offen.
+[Aktueller Stand](ims_ap8_fortschritt.md),
+[Bedienprüfung](ims_ap8_usability_verification.json).
+
 Erfasst 2026-10-03 17:18:19 +02:00 (Europe/Berlin). **Technisch fertig**, Produkt **2.0.0-alpha.8** / Windows **2.0.0.8**,
 ein [Paket-PR #297](https://github.com/junker-joerg/ims/pull/297).
 AP7 wurde zuvor nach Ihrer ausdrücklichen Abnahme tatsächlich nach main übernommen.
