@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ims-port"
-version = "2.0.0-alpha.5"
+version = "2.0.0-alpha.6"
 description = "Schrittweise Python-Portierung des historischen IMS/ESS-Modells"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -29,7 +29,7 @@ pythonpath = ["."]
 addopts = "-q ../tests"
 
 [tool.setuptools]
-packages = ["ims", "ims.accounting", "ims.analysis", "ims.api", "ims.desktop", "ims.model", "ims.engine", "ims.io", "ims.strategies"]
+packages = ["ims", "ims.accounting", "ims.analysis", "ims.api", "ims.desktop", "ims.model", "ims.engine", "ims.io", "ims.strategies", "ims.market"]
 
 [tool.setuptools.package-data]
 "ims.strategies" = ["profiles/*.json"]

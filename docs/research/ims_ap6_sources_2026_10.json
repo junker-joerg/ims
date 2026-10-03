@@ -1,0 +1,186 @@
+{
+  "schema_version": "ims.market-source-research.v1",
+  "date": "2026-10-02",
+  "package": "AP6",
+  "evidence_kind": "research_not_selected_dataset",
+  "method_status": "proposal",
+  "method_document": "docs/plans/ims_ap6_data_method.md",
+  "implementation_plan": "docs/plans/ims_ap6_implementation.md",
+  "selection": {
+    "actor_count_required": 40,
+    "ranking_year": null,
+    "ranking_year_candidate": 2025,
+    "ranking_measure_proposal": "direct_german_gross_written_premiums",
+    "candidate_universe_complete": false,
+    "group_consolidation_verified": false,
+    "rank_40_41_verified": false,
+    "selection_verified": false,
+    "selected_groups": []
+  },
+  "sources": [
+    {
+      "id": "AP6-S01",
+      "title": "BaFin Gesamttabellen 2024",
+      "url": "https://www.bafin.de/SharedDocs/Downloads/DE/Statistik/Erstversicherer/dl_st_24_erstvu_gesamt_va.xlsx?__blob=publicationFile&v=1",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2024,
+      "local_download": ".tmp-pr-ap5/ap6-research/bafin-2024-gesamt.xlsx",
+      "bytes": 91791,
+      "sha256": "73389b3379a7213f6ccfca1b29819c8025f6e7c3b40b69bad5f7ebd57341bd6b",
+      "review": "Blatt 010: verdiente und gebuchte Beiträge des Gesamtgeschäfts; kein konsolidierter deutscher Direktrang.",
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S02",
+      "title": "BaFin Leben 2024",
+      "url": "https://www.bafin.de/SharedDocs/Downloads/DE/Statistik/Erstversicherer/dl_st_24_erstvu_lv_va.xlsx?__blob=publicationFile&v=1",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2024,
+      "local_download": ".tmp-pr-ap5/ap6-research/bafin-2024-lv.xlsx",
+      "bytes": 64279,
+      "sha256": "b432137eff8732826566f41646f96a2e68819ccda48c8eb273bb358cab43943e",
+      "review": "Blatt 160: Rang nach verdienten Bruttobeiträgen in Mio. Euro einschließlich übernommener Rückversicherung.",
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S03",
+      "title": "BaFin Kranken 2024",
+      "url": "https://www.bafin.de/SharedDocs/Downloads/DE/Statistik/Erstversicherer/dl_st_24_erstvu_kv_va.xlsx?__blob=publicationFile&v=1",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2024,
+      "local_download": ".tmp-pr-ap5/ap6-research/bafin-2024-kv.xlsx",
+      "bytes": 50492,
+      "sha256": "bf75c7bb66e409908617f5f9ae6cda3fb3f718f46541ff5be273818742a79d54",
+      "review": "Blatt 460: Rang nach verdienten Bruttobeiträgen in Tsd. Euro einschließlich übernommener Rückversicherung.",
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S04",
+      "title": "BaFin Schaden/Unfall 2024",
+      "url": "https://www.bafin.de/SharedDocs/Downloads/DE/Statistik/Erstversicherer/dl_st_24_erstvu_suv_va.xlsx?__blob=publicationFile&v=1",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2024,
+      "local_download": ".tmp-pr-ap5/ap6-research/bafin-2024-suv.xlsx",
+      "bytes": 262706,
+      "sha256": "f8566a16f9d24f35d034d1b5f0f0c6cd9820abea2074cef46c261216a226d301",
+      "review": "Blatt 560: verdiente Bruttobeiträge in Mio. Euro einschließlich übernommener Rückversicherung; Zweigtabellen 5610–5690 gesondert begrenzt.",
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S05",
+      "title": "BaFin Vorbemerkungen/Hinweise 2024",
+      "url": "https://www.bafin.de/SharedDocs/Downloads/DE/Statistik/Erstversicherer/dl_st_24_hinweise_va.pdf?__blob=publicationFile&v=1",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2024,
+      "local_download": ".tmp-pr-ap5/ap6-research/bafin-2024-hinweise.pdf",
+      "bytes": 601449,
+      "sha256": "26c25a471cee83808dfb5c598e238c6116eba1fb1fadbaa71f795e7766352d13",
+      "review": "PDF-Seiten 2–3, gedruckte Seiten 1–2: Erhebungskreis und Rangmaß. EWR-Unternehmen unter Herkunftsaufsicht nicht enthalten. Text und Rendering geprüft.",
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S06",
+      "title": "GDV Statistiken 2026",
+      "url": "https://www.gdv.de/resource/blob/215380/7c86eab9b3f0dd744669a41342ff8aaf/statistiken-zur-deutschen-versicherungswirtschaft-2026-pdf-data.pdf",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2024,
+      "local_download": ".tmp-pr-ap5/ap6-research/gdv-statistiken-2026.pdf",
+      "bytes": 2924233,
+      "sha256": "042545e311bf02dec337e04f5cf2ee56c6ca40db32166d25b5aaf6681c98227d",
+      "review": "Geprüfte PDF-Seiten 25/27: I|20 EWR-Geschäft in Deutschland und I|22 Konzentration, Daten bis 2024. Aggregatwerte ohne vollständige Gruppenrangfolge; unterschiedliche Kennzahlen. Text und Rendering geprüft.",
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S07",
+      "title": "KIVI/Assekurata Pressemitteilung 23.09.2026",
+      "url": "https://www.assekurata-rating.de/wp-content/uploads/2021/09/Assekurata_Pressemitteilung_23_09_2026_Marktanteilstudie_2025.pdf",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2025,
+      "local_download": ".tmp-pr-ap5/ap6-research/kivi-2025-press.pdf",
+      "bytes": 180665,
+      "sha256": "d8a092fbc20cbede188107ccdb237408886b2512504ea106b2787a275a228e5c",
+      "review": "Beide PDF-Seiten geprüft. Studienankündigung 2025, keine vollständigen Rangtabellen. Deutschlandkorrekturen und öffentlich-rechtliche Sammelposition erwähnt.",
+      "complete_german_group_ranking_verified": false,
+      "publisher_claims": {
+        "provider_count": 68,
+        "legal_entity_count": 263,
+        "coverage_percent": "99.38"
+      },
+      "claim_limit": "Angaben der Pressemitteilung; Studienbasis und Nenner nicht unabhängig an vollständiger Tabelle geprüft."
+    },
+    {
+      "id": "AP6-S08",
+      "title": "Verband öffentlicher Versicherer",
+      "url": "https://www.voev.de/oeffentliche-versicherer/",
+      "accessed_on": "2026-10-02",
+      "review": "Primärseite beschreibt regionale Unternehmen mit unterschiedlichen Trägern und Kooperationen. Verbandsaggregat ersetzt keine konkrete Gruppen-/Tochterprüfung.",
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S09",
+      "title": "EIOPA Versicherungsregister",
+      "url": "https://register.eiopa.europa.eu/registers/register-of-insurance-undertakings",
+      "accessed_on": "2026-10-02",
+      "review": "Öffentlich indexierte Registerbeschreibung gefunden; direkter Abruf Timeout, kein CSV-/Excel-Export geprüft. Identität und Geschäftsländer sind keine Beiträge.",
+      "export_reviewed": false,
+      "complete_german_group_ranking_verified": false
+    },
+    {
+      "id": "AP6-S10",
+      "title": "Versicherungsgruppen_Top40_2024.xlsx",
+      "origin": "user_provided_file",
+      "accessed_on": "2026-10-02",
+      "data_year_of_reviewed_content": 2024,
+      "bytes": 44412,
+      "sha256": "36253bf320b152ad031642b68402cbe4d7aa1e25dea5104fa6478ba4304b67a3",
+      "review": "326 Einzelwerte und Quellbezüge, 663 Formeln geprüft; 145 redaktionelle Gruppen. BaFin-Quellenumfang einschließlich Ausland/übernommener Rückversicherung, keine deutsche Direktmarktrangfolge. Vollständige Nichtauswahl in Prüfkatalog.",
+      "complete_german_group_ranking_verified": false,
+      "input_unchanged": true,
+      "audit": "docs/research/ims_ap6_top40_2024_audit.json"
+    }
+  ],
+  "open_evidence": [
+    "Vollständige nutzbare Rangbasis einschließlich nicht ausgewählter Gruppen und EWR-Geschäft.",
+    "Gemeinsames Jahr und gebuchte direkte Deutschlandbeiträge ohne Rückversicherungs-/Auslandsvermischung.",
+    "Gruppen-/Tochterzuordnung einschließlich regionaler öffentlicher Gruppen.",
+    "Belegter Spartenmix, fehlende Werte und nicht modellierte Zweige.",
+    "Rang 40/41 mit Präzision, Gleichständen und ungeklärten Kandidaten."
+  ],
+  "source_conflicts": [
+    {
+      "source": "AP6-S07",
+      "topic": "coverage_percent",
+      "primary_press_claim": "99.38",
+      "secondary_articles_claim": "98.38",
+      "resolution": "Offen bis zur vollständigen Studie; Primärangabe dokumentiert, keine bestätigte IMS-Abdeckung."
+    },
+    {
+      "source": "AP6-S10",
+      "topic": "bafin_dash_semantics",
+      "workbook_claim": "Methodik!B11: dash means missing",
+      "primary_source": "AP6-S05 PDF p.2 / printed p.1: ASCII dash means exact zero; numeric zero below unit",
+      "resolution": "Primary semantics retained in audit, raw values preserved; input workbook unchanged. Rows 84/329/330 outside selected 40."
+    }
+  ],
+  "external_actions": {
+    "commercial_study_obtained": false,
+    "purchase_made": false,
+    "messages_sent": false
+  },
+  "model_delivery": {
+    "german_top40_demo_implemented": false,
+    "release_version": "2.0.0-alpha.5",
+    "ap6_product_acceptance": false
+  },
+  "provided_workbook_audit": {
+    "source_id": "AP6-S10",
+    "report": "docs/reports/ims_ap6_top40_workbook_review.md",
+    "catalog": "docs/research/ims_ap6_top40_2024_audit.json",
+    "tool": "scripts/planning/audit_ap6_bafin_workbook.py",
+    "source_cells_and_arithmetic_passed": true,
+    "german_scope_verified": false,
+    "reference_proposal": "docs/plans/ims_ap6_bafin_reference_proposal.md",
+    "reference_proposal_accepted": true,
+    "scope_acceptance": "docs/reports/ims_ap6_scope_acceptance.md"
+  }
+}

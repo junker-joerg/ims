@@ -33,7 +33,7 @@ nicht in AP3-Schadeneingaben oder historische 25er-Validatoren hineingeschrieben
 | M1 Fachvertrag | Zwei/drei VUs, Risikoträger/Altreserve, Mengen/Gruppe/Familie, Maßnahmen und Information erklären; fachlich annehmen. | Handfallproben bestanden; vom Auftraggeber am 02.10.2026 angenommen. |
 | M2 Gemeinsame Rechnung | Eigener Validator, Periodenphasen, Kohorten-/Risikoledger, alle VU-Bilanzen, gruppierte Summen, stabiler RNG, Prefixe. | Implementiert; Handfälle, Replay, Prefixe und 40/41×100-Produktläufe bestanden. |
 | M3 Anschluss | API und erste Marktsicht mit Zeit-/Sparten-/Familien-/Vergleichsfilter, Erklärweg und Einzel-VU-Excel. | Vollständig angeschlossen und geprüft; zehn aktuelle AP5-/50 Gesamtbrowserfälle bestanden. |
-| M4 Lieferung | Einsteigeranleitung, vollständige Regressionen, gemessene 40/41×100-Grenzen, neue Releasekennung, Installer und CI. | Technisch fertig: Anleitung/Bilder, alpha.5-Installer, Python- und Browserregressionen; vier Produkt-CI-Checks erfolgreich. Allgemeine Anwenderabnahme und Mergefreigabe dokumentiert; tatsächlicher Merge noch ausstehend. |
+| M4 Lieferung | Einsteigeranleitung, vollständige Regressionen, gemessene 40/41×100-Grenzen, neue Releasekennung, Installer und CI. | Technisch fertig und vom Auftraggeber abgenommen; PR #294 nach vier grünen Checks am Abnahmekommitt 525916c nach main übernommen. [Mergebeleg](../reports/ims_ap5_merge.md). |
 
 Ein eigener moderner ID-Validator muss mindestens 41 Anbieter zulassen, ohne
 das alte Vdefmd6-Limit aufzuheben. Das Ergebnisvolumen und Laufzeitbudget werden

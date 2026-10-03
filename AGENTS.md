@@ -39,10 +39,21 @@ Beleg `docs/reports/ims_ap5_contract_acceptance.md`. Umsetzung im selben PR.
 AP5 ist technisch fertig (`done`) und am 02.10.2026 vom Auftraggeber abgenommen;
 `docs/reports/ims_ap5_abschlussbericht.md` und `ims_ap5_verification.json`
 enthalten die Nachweise. `docs/reports/ims_ap5_user_acceptance.md` dokumentiert
-die ausdrücklich erteilte Anwenderabnahme und Mergefreigabe. Der tatsächliche
-Merge steht noch aus (`merged_to_main=false`). Danach ist AP6 gemäß dem
-Fortsetzungsauftrag in dieser Sitzung beauftragt; seine Daten-/Methodentore
-bleiben verbindlich. Ein done-Status im Branch ersetzt keinen main-Abhängigkeitsbeleg.
+die ausdrücklich erteilte Anwenderabnahme und Mergefreigabe. PR #294 wurde am
+02.10.2026 tatsächlich nach main übernommen
+(`03f87662e85e6081998bab79e32ee12baac52da1`); Beleg
+`docs/reports/ims_ap5_merge.md`. Alle vier Checks am Abnahmekommitt 525916c
+bestanden, Merge-Tree identisch. Danach ist AP6 gemäß Fortsetzungsauftrag in
+dieser Sitzung im Branch `codex/ims-german-market-top40` begonnen. Auftrag,
+Methodenvorschlag, Quellen und Arbeitsstand: `docs/plans/ims_ap6_*` und
+`docs/reports/ims_ap6_fortschritt.md`. Die vollständige deutsche Rangbasis,
+das gemeinsame Datenjahr und Grenze 40/41 für den deutschen Direktmarkt sind
+weiter offen. AP6 ist im später ausdrücklich angenommenen BaFin-Referenzumfang
+technisch fertig (`done`); `docs/reports/ims_ap6_produktpruefung.md` und
+`ims_ap6_verification.json` enthalten vier erfolgreiche Produkt-CI-Checks,
+den echten alpha.6-Installer und installierte Browserprüfungen. Keine deutsche
+Top-40-Abnahme; die ursprünglichen Daten-/Methodentore bleiben sichtbar offen.
+Ein done-Status im Branch ersetzt keinen main-Abhängigkeitsbeleg.
 AP4 liefert erklärbare Oberfläche, CEO-/CIO-/COO-/CSO-Vertriebssichten
 und geführten Einstieg samt Einsteigeranleitung. Die Dokumentation wächst in
 jedem Paket. Marktaggregate und Strategiefamilien werden in IMS ausgewertet,
@@ -86,6 +97,25 @@ Ergänzungen E05-01/E05-02 aus dem Boardplan sind mit eigener Herkunft einzubezi
 Der spätere Auftrag derselben Sitzung erteilt die AP5-Abnahme/Mergefreigabe
 und setzt danach das nächste Paket AP6 fort; Beleg oben. Keine Freigabe für
 AP6-Merge, Veröffentlichung oder Umsetzung von AP7–AP14.
+
+Bei der AP6-Fortsetzung wurde die bereitgestellte BaFin-Top-40-Mappe 2024
+vollständig nachgerechnet. Der Auftraggeber hat anschließend ausdrücklich
+„Ja, AP6 als gekennzeichneten BaFin-Referenzfall weiterbauen“ bestätigt.
+Umfang und Abnahmeauswirkung: `docs/reports/ims_ap6_scope_acceptance.md` und
+`docs/plans/ims_ap6_bafin_reference_proposal.md`. Diese AP6-Lieferung heißt
+„BaFin-Gruppenauswertung 2024 – Workshop“: verdiente Beiträge einschließlich
+Ausland und übernommener Rückversicherung, redaktionelle Gruppensummen ohne
+konzerninterne Eliminierung. Kein belegter deutscher Direktmarkt; Fakten,
+ungeprüfte Gruppierungen und angenommener Spartenmix bleiben sichtbar getrennt.
+Historische Planabnahmen nicht ändern. API/UI/Export/Tests/Anleitung/Installer
+im selben PR #295 geliefert. Am 03.10.2026 hat der Auftraggeber ausdrücklich
+„Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort“
+bestätigt; `docs/reports/ims_ap6_user_acceptance.md`. AP6 ist allgemein abgenommen
+und sein Merge beauftragt. Danach ist AP7 beauftragt; Umsetzung erst nach
+tatsächlich übernommenem AP6 in main. Lebens-Nachfrage-/ICT-Zeit-/Buchungstore
+und die angenommene Ergänzung E07-01 bleiben verbindlich. Keine AP7-Merge- oder
+Veröffentlichungsfreigabe und keine AP8–AP14-Umsetzung. Die früheren
+Freigabegrenzen oben dokumentieren die damaligen Aufträge.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`

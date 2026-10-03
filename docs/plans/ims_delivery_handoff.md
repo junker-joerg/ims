@@ -1,5 +1,114 @@
 # IMS-Lieferübergabe
 
+## AP6 abgenommen und Merge freigegeben; danach AP7 beauftragt
+
+03.10.2026: „Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort“.
+[Beleg](../reports/ims_ap6_user_acceptance.md). AP6-BaFin-Referenzumfang gilt
+unverändert. Alle vier Checks des gelieferten Heads 70c0431 nochmals erfolgreich
+geprüft. Aktuelle Abnahmedokumentation ändert kein Produkt; nach ihren grünen
+Checks #295 tatsächlich übernehmen, Merge-/Head-Tree und main prüfen.
+Erst danach AP7-authorized-Auftrag gegen gefetchtes main erzeugen, bevor dessen
+Manifeststatus geändert wird; eigener Branch/Draft-PR. Angenommene E07-01 separat
+einbeziehen, Lebens-Nachfrage- und ICT-Zeit-/Buchungsvertrag anhand Handfällen
+erklären und annehmen lassen. Keine neue DE-Top-40-Behauptung, keine AP7-Merge-/
+Veröffentlichungsfreigabe und keine AP8–AP14-Arbeit. Nachstehende Stände historisch.
+
+## AP6: BaFin-Referenz technisch fertig; Anwenderabnahme und Merge offen
+
+02.10.2026, weiterhin derselbe Draft-PR #295 und Branch
+`codex/ims-german-market-top40`. Wörtlicher menschlicher Umfangsauftrag:
+[AP6-Umfangsannahme](../reports/ims_ap6_scope_acceptance.md). Nicht erneut nach
+Deutschland-/BaFin-Umfang fragen; der gekennzeichnete Referenzfall ist angenommen.
+Quellen-/Modellvertrag: [Abbildung](ims_ap6_reference_mapping.md).
+
+Implementiert: versionierter Offline-Katalog (326 Zeilen / 145 redaktionelle
+Gruppen), stabile IDs, 40er-Auswahl, begründete Overrides, vollständige Neusortierung,
+expliziter Mix, genaue Gewichte und disjunkte Reste. Referenzbündel und frische
+API-Rechnung; schreibfreies Original, eigene Sitzung, Quellen-/Mix-Bedienung,
+Einzel-VU-Excel mit Original und Annahmen, JSON-Wiederaufnahme; HTML-Anleitung
+und reale Bilder. Produktkennung alpha.6 / Windows 2.0.0.6.
+
+Lokale Prüfung: 10 Audit-, 10 Referenz-, 16 AP5-Regressions- und 35 Plantests;
+neun verschiedene Browserfälle einschließlich 40×100 sowie korrigierter
+Hell-/Dunkelmatrix (Farbmodus explizit, Textkontrast >= 4,5:1), Frontendbau.
+[Produktbericht](../reports/ims_ap6_produktpruefung.md),
+[Verifikation](../reports/ims_ap6_verification.json). Alle vier Produkt-CI-Checks
+für 1874835 bestanden: 2.735 Python-Tests / 14 Subtests, 59 Browserfälle,
+echter alpha.6-Installer mit 14 Lifecycle- und 59 installierten Browserprüfungen.
+M4 abgeschlossen; AP6 done/technically_complete im angenommenen BaFin-Umfang.
+Die ursprünglichen Deutschland-Auswahltore bleiben offen. Geprüfte Installerdatei
+und Anleitung zur Anwenderabnahme anbieten; aktuelle Checks der abschließenden
+Nachweisdokumentation im selben PR separat kontrollieren. Kein Merge
+ohne eigene Freigabe; AP7–AP14 nicht beginnen. Die nachstehenden Stände sind
+historische Zwischenstände.
+
+**Aktuelle Umfangsentscheidung:** Der Auftraggeber hat den gekennzeichneten
+BaFin-Referenzfall für AP6 ausdrücklich angenommen; [Beleg](../reports/ims_ap6_scope_acceptance.md).
+Die nachstehende ursprüngliche Deutschlandprüfung bleibt als Herkunft erhalten.
+Die Umsetzung wird mit diesem beschränkten Quellenumfang und sichtbar
+bearbeitbaren Workshop-Annahmen im selben PR fortgesetzt.
+
+
+## AP6: gelieferte BaFin-Arbeitsmappe geprüft; Umfangsentscheidung offen
+
+Fortsetzung am 02.10.2026 im selben [Draft-PR #295](https://github.com/junker-joerg/ims/pull/295).
+Der Auftraggeber stellte `Versicherungsgruppen_Top40_2024.xlsx` bereit und
+beauftragte „weiter gehts“. Eingangsdatei unverändert: 44.412 Bytes,
+SHA-256 `36253bf320b152ad031642b68402cbe4d7aa1e25dea5104fa6478ba4304b67a3`.
+326 Quellzeilen und 663 Formeln gegen drei gepinnte BaFin-Originale bestanden;
+145 redaktionelle Gruppen, vollständige Nichtauswahl, 206 Gesellschaften in
+den 40er-Summen. [Prüfbericht](../reports/ims_ap6_top40_workbook_review.md),
+[versionierter Prüfkatalog](../research/ims_ap6_top40_2024_audit.json),
+Prüfer und zehn Audit-Tests im Paket ergänzt.
+
+Die begrenzte BaFin-Grenze 40/41 ist präzisionsfest, kein belegter deutscher
+Direktmarktrang. Ausland/übernommene Rückversicherung, fehlende konzerninterne
+Eliminierung, EWR-Abdeckung und fehlender Kfz-/Sach-/Rest-Mix halten das
+angenommene AP6-Tor offen. BaFin-Striche bedeuten belegte Nullwerte; der
+Methodikwiderspruch ist im Prüfkatalog aufgelöst, die Originalmappe nicht geändert.
+Gezielte Gruppenbelege geprüft, keine vollständige Gruppenprüfung behauptet.
+
+Der [konkrete vorläufige BaFin-Referenzfall](ims_ap6_bafin_reference_proposal.md)
+liegt als Vorschlag zur Umfangsentscheidung vor. Die Frage wurde dem
+Auftraggeber gestellt; ohne ausdrückliche Annahme nicht als Freigabe behandeln.
+M1 arithmetisch vorangekommen, Deutschland-/Auswahl-/Gruppentor offen;
+M2–M4 noch nicht geliefert. Weiter alpha.5, keine AP6-Produktprüfung,
+Anwenderabnahme, Mergefreigabe oder AP7–AP14-Umsetzung. Nach Entscheidung
+im selben Branch/PR historische Gruppenbelege und Modellabbildung fortsetzen.
+Die nachstehenden früheren Zugangs-/Teststände sind historische Meilensteine.
+
+
+## AP5 tatsächlich übernommen; AP6 im eigenen Paket begonnen
+
+02.10.2026, 14:39:03 Uhr Europe/Berlin: PR #294 nach ausdrücklich erteilter
+Anwenderabnahme/Mergefreigabe übernommen. Head 525916c, alle vier Checks grün,
+main `03f87662e85e6081998bab79e32ee12baac52da1`, Tree
+`aa3d20160678ee3ea9571e08bf54d497904c8485` identisch. Primärer Checkout sauber
+per Fast-forward aktualisiert; aktueller alpha.5-CI-Installer mit Hash geprüft.
+[Mergebeleg](../reports/ims_ap5_merge.md). Kein öffentliches Release erzeugt.
+
+Danach AP6-Auftrag gegen tatsächliches gefetchtes main im authorized-Modus
+vor AP6-Manifeständerung erzeugt; [Auftrag](ims_ap6_work_order.md). Branch
+`codex/ims-german-market-top40`, eigene vorhandene editable Umgebung im
+primären Checkout. [Umsetzungsplan](ims_ap6_implementation.md),
+[Methodenvorschlag](ims_ap6_data_method.md),
+[Quellen](../research/ims_ap6_sources_2026_10.md) und
+[Arbeitsstand](../reports/ims_ap6_fortschritt.md) im selben
+[Paket-Draft-PR #295](https://github.com/junker-joerg/ims/pull/295).
+
+BaFin-Dateien 2024 und Hinweise tatsächlich erreichbar; GDV 2026 und KIVI-
+Studienmitteilung 2025 geprüft. Dennoch keine vollständige konsolidierte
+Deutschland-Rangbasis mit Spartenmix und Grenze 40/41. Die konkrete Datenfrage
+nach vorhandener KIVI-Studie oder vergleichbarer nutzbarer Tabelle ist offen.
+AP6 in_progress, M1 begonnen, Auswahl-/Jahres-/Konsolidierungstore offen,
+M2–M4 nicht fertig. Keine Top-40-DEMO oder neue Produktfassung behaupten.
+35 aktuelle Planprüfungen, sieben Downloadhashes, neun Quellen-IDs, 44 lokale
+Dokumentlinks, Release-Metadaten und Diff geprüft. Kein AP6-Produktlauf erfolgt.
+Denselben Draft-PR fortsetzen, zuerst eingehende Datentabelle und Methode
+prüfen; danach API/UI/Export/Tests/Anleitung/Installer vervollständigen.
+Keine AP6-Merge-/Releasefreigabe und keine AP7–AP14-Umsetzung.
+Die nachstehenden Stände bleiben historische Meilensteine.
+
 ## AP5 abgenommen; Merge freigegeben, anschließend AP6 beauftragt
 
 02.10.2026: Auf die konkrete Frage nach AP5-Anwenderabnahme und Mergefreigabe

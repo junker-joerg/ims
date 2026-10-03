@@ -1,11 +1,13 @@
 # AP5 – gemeinsamer Markt und auswertbare Strategiefamilien
 
-Stand 02.10.2026. Umsetzung im [Draft-PR #294](https://github.com/junker-joerg/ims/pull/294),
+Stand 02.10.2026. Umsetzung in [PR #294](https://github.com/junker-joerg/ims/pull/294),
 Branch `codex/ims-market-strategy-groups`, Anwenderkennung **2.0.0-alpha.5**,
 Windows-Dateiversion **2.0.0.5**. Technisch geprüft und vom Auftraggeber
 abgenommen; Merge ausdrücklich freigegeben. Alle vier erforderlichen CI-Checks
 für endgültigen Produkthead `417a0ca` bestehen; [Prüfprotokoll](ims_ap5_verification.json).
-AP5 ist noch nicht nach main übernommen. Die nachfolgende Produktabnahme ist im
+AP5 ist nach vier grünen Checks am Abnahmekommitt 525916c über PR #294 nach main
+übernommen (`03f87662e85e6081998bab79e32ee12baac52da1`); Tree identisch.
+[Mergebeleg](ims_ap5_merge.md). Die nachfolgende Produktabnahme ist im
 [Abnahmebeleg](ims_ap5_user_acceptance.md) getrennt von der Vertragsannahme dokumentiert.
 
 ## Auftrag und fachliche Annahme
@@ -192,7 +194,8 @@ Handfall, Gruppenvergleich, 40er-Markt, Maßnahmen, Dateien und Grenzen.
 [Arbeitsstand](ims_ap5_fortschritt.md) bewahrt frühe Vorversuche getrennt.
 Der Auftraggeber bestätigt anschließend am 02.10.2026 die allgemeine
 AP5-Anwenderabnahme und erteilt die ausdrückliche Mergefreigabe. Konkrete
-Rechner-/Testdauer-/Updateangaben fehlen weiterhin. AP6 wird nach dem
-tatsächlichen AP5-Merge gemäß Fortsetzungsauftrag begonnen; AP7–AP14 bleiben offen.
+Rechner-/Testdauer-/Updateangaben fehlen weiterhin. AP6 wurde nach dem
+tatsächlichen AP5-Merge gemäß Fortsetzungsauftrag im eigenen Branch begonnen;
+seine Daten-/Methodentore sind offen. AP7–AP14 bleiben offen.
 Evernote bleibt bis zu verfügbarem Plugin/angemeldeter Websitzung ausstehend;
 der In-app Browser zeigte beim letzten Zugriff die Loginseite.

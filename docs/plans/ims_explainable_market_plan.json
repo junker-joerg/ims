@@ -203,13 +203,23 @@
         "docs/reports/ims_ap5_abschlussbericht.md: Umsetzung, Handfälle, API/UI/Excel, Anleitung, Herkunft und Grenzen",
         "docs/reports/ims_ap5_verification.json: aktuelle Produkt-/Ressourcen-/Browser-/Installernachweise, alle vier CI-Checks für 04617fb erfolgreich",
         "docs/handbook/market_ap5.md und .html: Einsteigeranleitung und echte Bildschirmbilder",
-        "docs/reports/ims_ap5_user_acceptance.md: ausdrückliche allgemeine Produktabnahme und Mergefreigabe am 02.10.2026; AP6 nach tatsächlichem Merge beauftragt"
+        "docs/reports/ims_ap5_user_acceptance.md: ausdrückliche allgemeine Produktabnahme und Mergefreigabe am 02.10.2026; AP6 nach tatsächlichem Merge beauftragt",
+        "docs/reports/ims_ap5_merge.md: tatsächlicher Merge #294 nach vier grünen Checks am Abnahmekommitt 525916c, main-Tree identisch"
       ],
       "implementation_authorized": true,
       "technically_complete": true,
-      "merged_to_main": false,
+      "merged_to_main": true,
       "user_product_acceptance": "accepted",
       "merge_authorized": true,
+      "merge_evidence": {
+        "pull_request": 294,
+        "commit": "03f87662e85e6081998bab79e32ee12baac52da1",
+        "merged_at_utc": "2026-10-02T12:39:03Z",
+        "tested_head": "525916c5f011daa52ac6793fef7587fd9f0ca347",
+        "tree": "aa3d20160678ee3ea9571e08bf54d497904c8485",
+        "tree_matches_tested_head": true,
+        "evidence": "docs/reports/ims_ap5_merge.md"
+      },
       "user_acceptance": {
         "date": "2026-10-02",
         "user_request": "Gibst du AP5 zur Anwenderabnahme und zum Merge frei? Ja",
@@ -264,13 +274,77 @@
     {
       "id": "AP6",
       "title": "Deutscher Versicherungsmarkt mit 40 Gruppen",
-      "status": "planned",
+      "effective_title": "BaFin-Gruppenauswertung 2024 – Workshop",
+      "status": "done",
       "depends_on": ["AP5"],
       "branch_proposal": "codex/ims-german-market-top40",
       "deliverables": ["Belegte 40er-Gruppenauswahl mit deutschen Anzeigenamen und Tochterzuordnung", "Dokumentierte Rankingkennzahl, gemeinsames Jahr, Deutschlandumfang und Grenzprüfung", "Offline ladbarer Modellmarkt mit getrennten Fakten und Workshop-Annahmen", "Quellen-Dossier und ausdrückliche Darstellung des nicht simulierten Restmarkts"],
       "acceptance": ["Genau 40 eindeutige Gruppen und geprüfte Grenze Rang 40/41", "Keine Doppelzählung oder Vermischung globaler, deutscher, gebuchter und verdienter Beiträge", "Belegte Sparten und Gewichtssummen, fehlende Werte gekennzeichnet", "Unbekannte Strategien und ICT-Abhängigkeiten nicht als reale Unternehmensdaten ausgegeben", "Laden, Import, frische Berechnung und reproduzierbare Nachweise"],
       "gates": ["Gemeinsames Datenjahr, Rankingmaß und Gruppen-/Deutschlandkonsolidierung nachgewiesen", "Vollständige Rangbasis; keine unbelegte Top-40-Abnahme"],
-      "completion_evidence": []
+      "completion_evidence": [
+        "docs/reports/ims_ap6_scope_acceptance.md: ausdrückliche Annahme des gekennzeichneten BaFin-Referenzumfangs; keine rückwirkende Deutschland-Abnahme",
+        "docs/reports/ims_ap6_produktpruefung.md: Quellen-/Modellvertrag, API/UI/Export, Handfälle, Anleitung und Liefergrenzen",
+        "docs/reports/ims_ap6_verification.json: vier erfolgreiche Produkt-CI-Checks für 1874835; 2735 Python-/14 Subtests, 59 Browserfälle und echter Installer mit 14 Lifecycle-/59 installierten Browserprüfungen",
+        "docs/handbook/market_ap6.html und docs/migration/ap6_bafin_reference.md: Offline-Anleitung, Bilder und Altcode-Herkunft",
+        "docs/reports/ims_ap6_user_acceptance.md: ausdrückliche Anwenderabnahme und Mergefreigabe am 03.10.2026; AP7 nach tatsächlichem Merge beauftragt"
+      ],
+      "implementation_authorized": true,
+      "technically_complete": true,
+      "merged_to_main": false,
+      "user_product_acceptance": "accepted",
+      "merge_authorized": true,
+      "user_acceptance": {
+        "date": "2026-10-03",
+        "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
+        "evidence": "docs/reports/ims_ap6_user_acceptance.md",
+        "product_head": "70c04312375a66c6988d26e76d69236bac734780"
+      },
+      "merge_authorization": {
+        "date": "2026-10-03",
+        "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
+        "scope": "AP6"
+      },
+      "execution_authorization": {
+        "date": "2026-10-02",
+        "scope": "implementation",
+        "user_request": "Fahre mit dem nächsten IMS AP fort\nGibst du AP5 zur Anwenderabnahme und zum Merge frei? Ja",
+        "plan_commit": "03f87662e85e6081998bab79e32ee12baac52da1",
+        "effective_after_ap5_merge": true,
+        "evidence": "docs/plans/ims_ap6_work_order.md"
+      },
+      "implementation_plan": "docs/plans/ims_ap6_implementation.md",
+      "progress_document": "docs/reports/ims_ap6_fortschritt.md",
+      "data_gate": {
+        "status": "open",
+        "method_document": "docs/plans/ims_ap6_data_method.md",
+        "sources": "docs/research/ims_ap6_sources_2026_10.json",
+        "provided_workbook_audit": "docs/research/ims_ap6_top40_2024_audit.json",
+        "provided_workbook_report": "docs/reports/ims_ap6_top40_workbook_review.md",
+        "provided_reference_year": 2024,
+        "provided_reference_source_arithmetic_passed": true,
+        "provided_reference_german_scope_verified": false,
+        "reference_scope_proposal": "docs/plans/ims_ap6_bafin_reference_proposal.md",
+        "reference_scope_proposal_accepted": true,
+        "effective_scope": "bafin_2024_reference_workshop",
+        "scope_acceptance": "docs/reports/ims_ap6_scope_acceptance.md",
+        "reference_gate": {
+          "scope_accepted": true,
+          "source_arithmetic_verified": true,
+          "editorial_grouping_accepted_with_visible_limits": true,
+          "model_mapping_document": "docs/plans/ims_ap6_reference_mapping.md",
+          "model_mapping_locally_checked": true,
+          "product_verification": "docs/reports/ims_ap6_verification.json",
+          "installer_checked": true,
+          "product_checked": true,
+          "technical_status": "verified",
+          "user_product_acceptance": "accepted"
+        },
+        "ranking_year_candidate": 2025,
+        "ranking_year_verified": false,
+        "candidate_universe_complete": false,
+        "rank_40_41_verified": false,
+        "selection_verified": false
+      }
     },
     {
       "id": "AP7",

@@ -12,6 +12,8 @@ from ims.market.contract import HORIZONS, INPUT_VERSION, MAX_COHORTS, MAX_VUS, R
 from ims.market.export import single_vu_workbook
 from ims.market.presets import CASES, workshop_case
 from ims.market.runner import MAX_RESULT_BYTES, calculate
+from ims.market.reference import BUNDLE_VERSION, build_bundle, reference_values, calculate as reference_calculate
+from ims.desktop.paths import resource_root
 from ims.market.transport import wire_payload
 from ims.strategies.modern_bridge import ContractError, exact
 
@@ -26,6 +28,17 @@ def create_market_app() -> Starlette:
             source = workshop_case(value["case_id"], value["period_count"], value["vu_count"])
             return JSONResponse({"valid": True, "title": CASES[value["case_id"]], "source_input": source}, headers=headers)
         except (ValueError, TypeError) as exc:
+            return JSONResponse(failed(exc if isinstance(exc, ContractError) else ContractError("$", str(exc))), status_code=422, headers=headers)
+
+    async def reference_preset(request):
+        try:
+            value = exact(await request_json(request), {"period_count", "workshop", "overrides"}, "$")
+            catalog = json.loads((resource_root() / "seminar_cases/bafin_2024_catalog.json").read_text(encoding="utf-8"))
+            source = build_bundle(catalog, value["period_count"], value["workshop"], value["overrides"])
+            return JSONResponse({"valid": True, "title": source["title"], "source_bundle": source,
+                                 "source_input": source["model_input"],
+                                 "reference": reference_values(catalog, source["overrides"], source["workshop"])}, headers=headers)
+        except (ContractError, ValueError, TypeError, KeyError, ArithmeticError) as exc:
             return JSONResponse(failed(exc if isinstance(exc, ContractError) else ContractError("$", str(exc))), status_code=422, headers=headers)
 
     async def action(request):
@@ -43,7 +56,7 @@ def create_market_app() -> Starlette:
             return JSONResponse(failed(ContractError("$", "Eine gemeinsame Marktrechnung läuft bereits")), status_code=409, headers=headers)
         def work():
             try:
-                result = calculate(source)
+                result = reference_calculate(source) if isinstance(source, dict) and source.get("schema_version") == BUNDLE_VERSION else calculate(source)
                 if not result["valid"]:
                     return JSONResponse(result, status_code=422, headers=headers)
                 etag = '"' + result["content_digest"] + '"'
@@ -64,5 +77,5 @@ def create_market_app() -> Starlette:
 
     return Starlette(routes=[Route("/contract", lambda r: JSONResponse({"schema_version": INPUT_VERSION, "max_vus": MAX_VUS,
         "max_customer_groups": MAX_COHORTS, "horizons": HORIZONS, "rules": {k: sorted(v) for k, v in RULE_PARAMETERS.items()}, "max_result_bytes": MAX_RESULT_BYTES}, headers=headers)),
-        Route("/workshop-case", preset, methods=["POST"]), Route("/calculate", action, methods=["POST"]),
+        Route("/workshop-case", preset, methods=["POST"]), Route("/reference-case", reference_preset, methods=["POST"]), Route("/calculate", action, methods=["POST"]),
         Route("/export.xlsx", action, methods=["POST"]), Route("/source.json", action, methods=["POST"])])

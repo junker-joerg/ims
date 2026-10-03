@@ -1,0 +1,456 @@
+{
+  "package": "AP6",
+  "recorded_on": "2026-10-02",
+  "release_version": "2.0.0-alpha.6",
+  "windows_file_version": "2.0.0.6",
+  "scope": "accepted_bafin_2024_reference_workshop",
+  "scope_acceptance": "docs/reports/ims_ap6_scope_acceptance.md",
+  "german_direct_market_claim": false,
+  "input_workbook_sha256": "36253bf320b152ad031642b68402cbe4d7aa1e25dea5104fa6478ba4304b67a3",
+  "catalog_digest": "03ee33f97a772d8a88b69210784d5b4502ed533745bdd6f097eee699ec7c7b1a",
+  "local_checks": {
+    "audit_tests": {
+      "passed": 10,
+      "duration_seconds": 0.009
+    },
+    "reference_tests": {
+      "passed": 10,
+      "duration_seconds": 76.697
+    },
+    "ap5_regression_tests": {
+      "passed": 16,
+      "duration_seconds": 51.649
+    },
+    "planning_tests": {
+      "passed": 35,
+      "duration_seconds": 5.535
+    },
+    "frontend_build": {
+      "passed": true
+    },
+    "browser_journeys": {
+      "passed": 2,
+      "source_bundle_roundtrip": true,
+      "fresh_excel": true,
+      "overrides_and_stable_ids": true
+    },
+    "browser_40x100": {
+      "passed": 1,
+      "duration_displayed": "1.2 minutes",
+      "no_page_errors": true
+    },
+    "browser_corrected_theme_matrix": {
+      "passed": 6,
+      "duration_seconds": 33.331545,
+      "viewport_sizes": [
+        "1440x900",
+        "1024x768",
+        "390x844"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "theme_asserted": true,
+      "minimum_text_contrast_required": 4.5,
+      "no_axe_violations": true,
+      "no_horizontal_page_overflow": true
+    },
+    "earlier_theme_test_issue": "Initial matrix used wrong storage key, both rendered light. Corrected to ims.theme and rerun with explicit data-theme assertion; earlier dark evidence is not used.",
+    "installer_build": {
+      "artifact": "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+      "sha256": "0160a78e1904f1a510d51299f12141b64d37392389b53a661c45a5927e4b84cb",
+      "bytes": 20375898,
+      "build_seconds": 76.5663538,
+      "commit": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+      "version": "2.0.0-alpha.6",
+      "file_version": "2.0.0.6",
+      "inno": "6.7.3",
+      "dirty": false,
+      "node": "v22.23.2",
+      "python": "3.12.10",
+      "signed": false,
+      "clean_windows_acceptance": "pending"
+    },
+    "frozen_probe": {
+      "success": true,
+      "product_commit": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+      "kind": "frozen_program_not_installer_lifecycle",
+      "environment": "existing Windows developer host; child PATH System32 only; explicit separate data directory",
+      "existing_user_installation_or_shortcuts_changed": false,
+      "clean_windows_acceptance": "pending",
+      "health": {
+        "status": "ok",
+        "service": "ims-workbench-api",
+        "version": "2.0.0-alpha.6",
+        "frontend_available": true
+      },
+      "content_digest": "ba88f1cb7eb9ecbf0213654aa05ce037a785bccbfc816537bf81918cc825136e",
+      "catalog_digest": "03ee33f97a772d8a88b69210784d5b4502ed533745bdd6f097eee699ec7c7b1a",
+      "source_count": 326,
+      "group_count": 40,
+      "period_count": 5,
+      "guide_and_images_available": true,
+      "portable_source_identity": true,
+      "single_vu_excel_source_identity": true,
+      "required_resources": [
+        "seminar_cases/bafin_2024_catalog.json",
+        "docs/handbook/market_ap6.html"
+      ],
+      "seconds": 8.780797600004007
+    },
+    "installer_lifecycle_here": {
+      "performed": false,
+      "reason": "Fünf bestehende IMS-Startmenü-Verknüpfungen bleiben geschützt; Lifecycle im separaten CI-Testkonto."
+    },
+    "planning_after_completion": {
+      "passed": 35,
+      "subtests_passed": 14,
+      "duration_seconds": 5.68
+    }
+  },
+  "ci": {
+    "status": "passed",
+    "tested_product_head": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+    "merge_commit": "81febe295116a7c4e716a9425f9d64e77bdcff65",
+    "merge_parents": [
+      "03f87662e85e6081998bab79e32ee12baac52da1",
+      "18748357a2c71b2b159b4b2f11b01b1d60072982"
+    ],
+    "tree": "55e804b3b2865583a7a480a681fe278f96bbbec2",
+    "tree_matches_product_head": true,
+    "checks": [
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37024113090/job/110894273327",
+        "completed_at": "2026-10-02T15:13:50Z"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37024113216/job/110894272256",
+        "completed_at": "2026-10-02T15:20:16Z"
+      },
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37024113041/job/110894271873",
+        "completed_at": "2026-10-02T15:02:31Z"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37024113101/job/110894271432",
+        "completed_at": "2026-10-02T15:18:47Z"
+      }
+    ],
+    "release_gate": {
+      "run_url": "https://github.com/junker-joerg/ims/actions/runs/37024113216",
+      "passed": 2735,
+      "warnings": 1,
+      "subtests_passed": 14,
+      "python_seconds": 976.88,
+      "summary": {
+        "status": "ok",
+        "mode": "windows_release_gate",
+        "report_contract_version": "pr69-v1",
+        "corpus_report_status": "blocked",
+        "production_release_approved": false,
+        "missing_calculated_export_count": 15,
+        "release_ready": true,
+        "user_test_package_ready": true,
+        "writes_performed": false,
+        "execution_performed": false,
+        "simulation_performed": false,
+        "historical_full_equality_claimed": false
+      }
+    },
+    "browser": {
+      "run_url": "https://github.com/junker-joerg/ims/actions/runs/37024113090",
+      "stats": {
+        "startTime": "2026-10-02T15:03:46.082Z",
+        "duration": 596212.0580000001,
+        "expected": 59,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "artifact": {
+        "artifact_id": 11234478196,
+        "artifact_name": "IMS-Browser-81febe295116a7c4e716a9425f9d64e77bdcff65",
+        "archive_bytes": 6033623,
+        "archive_sha256": "363b8f99a126a5d6c0585e7b4baabc4b43ff814f44f7de6d53bd05d442ebdc20",
+        "extracted": [
+          "browser-report.json"
+        ]
+      }
+    }
+  },
+  "installer": {
+    "status": "passed",
+    "artifact_downloaded": true,
+    "installed_product_checked": true,
+    "run_url": "https://github.com/junker-joerg/ims/actions/runs/37024113101",
+    "artifact_url": "https://github.com/junker-joerg/ims/actions/runs/37024113101/artifacts/11234474195",
+    "download": {
+      "artifact_id": 11234474195,
+      "artifact_name": "IMS-Windows-x64-2.0.0-alpha.6-81febe295116a7c4e716a9425f9d64e77bdcff65",
+      "archive_bytes": 25874939,
+      "archive_sha256": "cf17ed5bf28243eb6a93a87131ce79e5b683951928b1499cbd8ee35a9a503fa5",
+      "extracted": [
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe.sha256",
+        "browser-report.json",
+        "build-evidence.json",
+        "installer-test-evidence.json",
+        "resource-inventory.json"
+      ],
+      "installer_bytes": 20348521,
+      "installer_sha256": "8bcf7fc144c68026809988331c404cdc78d9deb86040f97a23313f4f804e4556"
+    },
+    "build": {
+      "artifact": "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+      "sha256": "8bcf7fc144c68026809988331c404cdc78d9deb86040f97a23313f4f804e4556",
+      "bytes": 20348521,
+      "build_seconds": 54.528782,
+      "commit": "81febe295116a7c4e716a9425f9d64e77bdcff65",
+      "version": "2.0.0-alpha.6",
+      "file_version": "2.0.0.6",
+      "inno": "6.7.3",
+      "dirty": false,
+      "node": "v22.23.3",
+      "python": "3.12.10",
+      "signed": false,
+      "clean_windows_acceptance": "pending"
+    },
+    "lifecycle": {
+      "success": true,
+      "failure": null,
+      "environment": "Windows with developer tools; executable PATH restricted to System32",
+      "clean_windows_acceptance": "pending",
+      "work": "D:\\a\\ims\\ims\\.tmp-pr-installer\\Installer Prüfung Ä 65dcac5a",
+      "installer_sha256": "8bcf7fc144c68026809988331c404cdc78d9deb86040f97a23313f4f804e4556",
+      "previous_installer_sha256": "9c7fe1bad0f599b9927e05e4c90a3eaa6be4b394502a31d0ceca991fe9cbfdb4",
+      "previous_application_version": "2.0.0-alpha.6",
+      "previous_kind": "synthetic_same_bundle",
+      "seconds": 839.4638363,
+      "tests": [
+        {
+          "test": "install_synthetic_previous_version",
+          "result": "passed",
+          "seconds": 2.687608499999982
+        },
+        {
+          "test": "frozen_start_path_with_spaces_umlauts",
+          "result": "passed",
+          "seconds": 2.0562855999999954
+        },
+        {
+          "test": "second_start_same_process",
+          "result": "passed",
+          "seconds": 0.3939218000000153
+        },
+        {
+          "test": "existing_health_case_and_json_csv_xlsx_exports",
+          "result": "passed",
+          "seconds": 0.9338239999999871,
+          "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+          "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+        },
+        {
+          "test": "update_while_running",
+          "result": "passed",
+          "seconds": 3.5085215000000005
+        },
+        {
+          "test": "start_after_update",
+          "result": "passed",
+          "seconds": 2.0290243999999973
+        },
+        {
+          "test": "AP2_real_browser_against_installed_current_frontend",
+          "result": "passed",
+          "seconds": 813.2559311000001
+        },
+        {
+          "test": "occupied_port_fails_without_foreign_browser",
+          "result": "passed",
+          "seconds": 1.1895327999998244
+        },
+        {
+          "test": "explicit_adoption_with_source_and_target_backups",
+          "result": "passed"
+        },
+        {
+          "test": "start_before_uninstall",
+          "result": "passed",
+          "seconds": 1.9439021000000594
+        },
+        {
+          "test": "uninstall_while_running_preserves_data",
+          "result": "passed",
+          "seconds": 1.3776263000002018
+        },
+        {
+          "test": "reinstall",
+          "result": "passed",
+          "seconds": 2.7543300999998337
+        },
+        {
+          "test": "restart_after_reinstall",
+          "result": "passed",
+          "seconds": 1.9814998000001651
+        },
+        {
+          "test": "stored_result_preserved_update_uninstall_reinstall",
+          "result": "passed"
+        }
+      ]
+    },
+    "installed_browser": {
+      "startTime": "2026-10-02T15:04:53.031Z",
+      "duration": 812390.056,
+      "expected": 59,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "resource_count": 357,
+    "resource_contents_match_product_head": true,
+    "resource_raw_hashes_identical_count": 354,
+    "ci_checkout_crlf_only_differences": [
+      "docs/handbook/market_ap6.html",
+      "docs/handbook/market_data_ap6.md",
+      "docs/migration/ap6_bafin_reference.md"
+    ],
+    "clean_windows_independent_user_acceptance": "pending",
+    "real_alpha5_to_alpha6_upgrade_tested": false,
+    "predecessor_note": "Synthetischer Vorgängerinstaller alpha.0 mit demselben alpha.6-Bundle; kein echter älterer Anwendungsstand.",
+    "verified_local_copy": "dist/installer/verified-1874835/IMS-Setup-2.0.0-alpha.6-win-x64.exe"
+  },
+  "user_acceptance": "accepted",
+  "merge_authorized": true,
+  "merged_to_main": false,
+  "schema_version": "ims.ap6.verification.v1",
+  "tested_product_head": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+  "technically_complete": true,
+  "public_release_created": false,
+  "completion_documentation_note": "Die Nachweisdokumentation folgt dem geprüften Produktkommitt. Produktcode und alle 357 Installer-Ressourcen bleiben identisch; neu ausgelöste Checks des Dokumentationskommitts sind über PR #295 separat sichtbar.",
+  "final_product_ci": {
+    "verified": true,
+    "head": "70c04312375a66c6988d26e76d69236bac734780",
+    "product_head": "18748357a2c71b2b159b4b2f11b01b1d60072982",
+    "merge_commit": "72f12909edba578c7bd9c0dfefdb93349924fa99",
+    "tree": "271f7b9caa7f93be88a43fbed5a4e410a0072c1e",
+    "checks": [
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925258/job/110903801962",
+        "completed_at": "2026-10-02T15:40:54Z"
+      },
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925531/job/110903801800",
+        "completed_at": "2026-10-02T15:26:20Z"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925286/job/110903801427",
+        "completed_at": "2026-10-02T15:41:47Z"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "70c04312375a66c6988d26e76d69236bac734780",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37026925054/job/110903801197",
+        "completed_at": "2026-10-02T15:45:43Z"
+      }
+    ],
+    "resource_count": 357,
+    "all_resource_raw_hashes_match_previous_ci": true,
+    "only_completion_documents_changed": [
+      "AGENTS.md",
+      "docs/plans/ims_ap6_implementation.md",
+      "docs/plans/ims_delivery_handoff.md",
+      "docs/plans/ims_explainable_market_plan.json",
+      "docs/reports/ims_ap6_fortschritt.md",
+      "docs/reports/ims_ap6_produktpruefung.md",
+      "docs/reports/ims_ap6_verification.json"
+    ],
+    "artifact": {
+      "artifact_id": 11235678838,
+      "artifact_name": "IMS-Windows-x64-2.0.0-alpha.6-72f12909edba578c7bd9c0dfefdb93349924fa99",
+      "archive_bytes": 25874744,
+      "archive_sha256": "c346cd5a7d88eca91961bbd51e12fb393114a837979f3aed9bd9693a07511b25",
+      "extracted": [
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe.sha256",
+        "browser-report.json",
+        "build-evidence.json",
+        "installer-test-evidence.json",
+        "resource-inventory.json"
+      ],
+      "installer_bytes": 20348554,
+      "installer_sha256": "db75882bd11fda0a9c313b6e2c665d603ad9b5dc873052d82cd6e86395266ef0"
+    },
+    "build": {
+      "artifact": "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+      "sha256": "db75882bd11fda0a9c313b6e2c665d603ad9b5dc873052d82cd6e86395266ef0",
+      "bytes": 20348554,
+      "build_seconds": 52.6527217,
+      "commit": "72f12909edba578c7bd9c0dfefdb93349924fa99",
+      "version": "2.0.0-alpha.6",
+      "file_version": "2.0.0.6",
+      "inno": "6.7.3",
+      "dirty": false,
+      "node": "v22.23.3",
+      "python": "3.12.10",
+      "signed": false,
+      "clean_windows_acceptance": "pending"
+    },
+    "installer_lifecycle": {
+      "passed": 14,
+      "seconds": 811.2698834,
+      "previous_kind": "synthetic_same_bundle"
+    },
+    "installed_browser": {
+      "startTime": "2026-10-02T15:28:20.664Z",
+      "duration": 784012.743,
+      "expected": 59,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "python_tests": {
+      "passed": 2735,
+      "subtests_passed": 14,
+      "seconds": 1067.25
+    }
+  },
+  "user_acceptance_evidence": "docs/reports/ims_ap6_user_acceptance.md",
+  "user_acceptance_details": {
+    "date": "2026-10-03",
+    "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
+    "product_head": "70c04312375a66c6988d26e76d69236bac734780",
+    "independent_user_test_details": "unknown"
+  }
+}
