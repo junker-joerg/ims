@@ -1,6 +1,6 @@
 # AP7: vier Schockfälle im angenommenen BaFin-Referenzmarkt
 
-03.10.2026. **Umsetzung beauftragt; fachliche Kopplungstore angenommen, M1–M4 technisch fertig; Anwenderabnahme/Merge offen.**
+03.10.2026. **Umsetzung beauftragt; fachliche Kopplungstore angenommen, M1–M4 technisch fertig; Anwenderabnahme und Mergeauftrag erteilt, tatsächlicher Merge folgt.**
 [Wörtliche Annahme und ICT-Erkläranforderung](../reports/ims_ap7_contract_acceptance.md).
 Ein Branch `codex/ims-market-shock-demos`, ein Draft-PR für das gesamte Paket.
 Der [Arbeitsauftrag](ims_ap7_work_order.md) wurde gegen frisch gefetchtes main

@@ -1252,11 +1252,14 @@
       }
     }
   },
-  "user_product_acceptance": "pending",
-  "merge_authorized": false,
+  "user_product_acceptance": "accepted",
+  "merge_authorized": true,
   "merged_to_main": false,
   "public_release_performed": false,
-  "next_package_authorized": false,
+  "next_package_authorized": {
+    "package": "AP8",
+    "effective_after_actual_ap7_merge": true
+  },
   "limits": [
     "BaFin earned including foreign and inward reinsurance; editorial groups without intra-group elimination",
     "No verified German direct market",
@@ -3199,5 +3202,11 @@
       "docs/reports/ims_ap7_verification.json"
     ],
     "application_and_installer_resources_unchanged": true
+  },
+  "user_acceptance": {
+    "date": "2026-10-03",
+    "user_request": "Anwenderabnahme und Merge bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort",
+    "evidence": "docs/reports/ims_ap7_user_acceptance.md",
+    "product_head": "48c7c9a7654c4efc924b2212e12568e9e41a6d7f"
   }
 }

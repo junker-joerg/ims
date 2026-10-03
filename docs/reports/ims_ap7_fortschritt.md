@@ -1,4 +1,19 @@
-# AP7: technisch fertig; Anwenderabnahme offen
+# AP7: Anwenderabnahme und Mergeauftrag erteilt
+
+## AP7-Anwenderabnahme und Mergeauftrag erteilt; danach AP8
+
+03.10.2026: Der Auftraggeber bestätigt wörtlich „Anwenderabnahme und Merge
+bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort“.
+[Beleg](ims_ap7_user_acceptance.md). AP7 im angenommenen begrenzten
+Umfang abgenommen, Merge beauftragt. Danach AP8 gemäß angenommenem Manifest
+und separat angenommener Ergänzung E08-01 fortsetzen. Vor AP8-Umsetzung tatsächlichen
+AP7-main-Status belegen und authorized-Auftrag gegen frisch gefetchtes main
+erzeugen. Addition/Wechselwirkung/Korrelation unterscheiden; keine neuen
+Modellkanäle oder historischen Erweiterungsbehauptungen. Kein AP8-Merge,
+öffentliches Release oder AP9–AP14-Auftrag. Vorstehende technische Produktbelege
+bleiben erhalten; frühere Stände folgen.
+
+## Historischer technischer Abschluss
 
 03.10.2026. M1–M4 im selben Draft-PR #296 abgeschlossen. **alpha.7 technisch
 fertig**, vier Produktchecks am festgehaltenen Produktkommitt 37fe791 erfolgreich;

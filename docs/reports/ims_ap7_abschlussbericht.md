@@ -2,7 +2,9 @@
 
 03.10.2026. **Technisch fertig im ausdrücklich angenommenen Workshop-Umfang**,
 Produkt **2.0.0-alpha.7** in [Draft-PR #296](https://github.com/junker-joerg/ims/pull/296).
-Anwenderabnahme, Merge und öffentliche Veröffentlichung sind nicht erteilt.
+Die spätere [Anwenderabnahme und der AP7-Mergeauftrag](ims_ap7_user_acceptance.md)
+wurden am 03.10.2026 ausdrücklich erteilt; tatsächlicher Merge wird separat belegt.
+Keine öffentliche Veröffentlichung freigegeben.
 
 Vier echte portable 100-Perioden-Schockfälle, gemeinsame Anfangsperioden,
 bearbeitete Lebensanträge/Wechsel, erhaltene Altgarantien, konkrete Ersatzpfade
@@ -27,6 +29,6 @@ Versicherungszahlungen. BaFin-Quellenumfang, angenommene Provider-/Kostenprofile
 hypothetische DORA-Ausprägung und offene deutsche Direktmarkt-Tore bleiben
 sichtbar. Keine alte Abnahme wurde rückwirkend erweitert.
 
-Nächster Schritt ist die Anwenderprüfung des konkreten alpha.7-Produkts.
-Erst ein späterer ausdrücklicher AP7-Mergeauftrag erlaubt die Übernahme nach main;
-ein `done` im Branch ist kein Abhängigkeitsbeleg für AP8. Keine AP8–AP14-Umsetzung.
+Nächster Schritt ist der ausdrücklich beauftragte AP7-Merge nach den grünen
+Checks des Abnahmestands. Erst tatsächliches AP7 in main erfüllt die Abhängigkeit
+für den nun beauftragten AP8-Start. Kein AP8-Merge oder AP9–AP14-Auftrag.

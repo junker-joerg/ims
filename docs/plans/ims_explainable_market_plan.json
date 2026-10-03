@@ -371,13 +371,25 @@
         "docs/reports/ims_ap7_produktpruefung.md: vier 100er-Fälle, API/UI/Export, Herkunft, Grenzen und tatsächlicher Installer",
         "docs/reports/ims_ap7_verification.json: vier grüne Produktchecks an 37fe791; 2755 Python-/14 Subtests, 70 Browserfälle, 14 Lifecycle-/70 installierte Browserfälle; gleiche Digests und Git-/Hash-/Ressourcenbindung",
         "docs/handbook/market_ap7.html: Offline-Einstieg, Rollenwege, sichtbarer ICT-Erklärpfad und zwölf echte Browserbilder",
-        "https://github.com/junker-joerg/ims/pull/296: gesamtes AP7-Paket im selben Draft-PR; keine Mergefreigabe"
+        "https://github.com/junker-joerg/ims/pull/296: gesamtes AP7-Paket; spätere Anwenderabnahme und Mergeauftrag separat belegt",
+        "docs/reports/ims_ap7_user_acceptance.md: ausdrückliche Anwenderabnahme, AP7-Mergeauftrag und AP8-Fortsetzung nach tatsächlichem Merge am 03.10.2026"
       ],
       "implementation_authorized": true,
       "technically_complete": true,
       "merged_to_main": false,
-      "user_product_acceptance": "pending",
-      "merge_authorized": false,
+      "user_product_acceptance": "accepted",
+      "merge_authorized": true,
+      "user_acceptance": {
+        "date": "2026-10-03",
+        "user_request": "Anwenderabnahme und Merge bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort",
+        "evidence": "docs/reports/ims_ap7_user_acceptance.md",
+        "product_head": "48c7c9a7654c4efc924b2212e12568e9e41a6d7f"
+      },
+      "merge_authorization": {
+        "date": "2026-10-03",
+        "user_request": "Anwenderabnahme und Merge bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort",
+        "scope": "AP7"
+      },
       "execution_authorization": {
         "schema_version": "ims.execution-authorization.v1",
         "package": "AP7",

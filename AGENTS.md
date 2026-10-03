@@ -126,11 +126,15 @@ M1–M4 sind im selben PR technisch fertig (`done`), Produkt alpha.7.
 14 Lifecycle-/70 installierten Browserprüfungen und gleiche vier 100er-Digests
 im Checkout und installierten Produkt. ICT zeigt Ereignis, Abhängigkeit,
 Kapazität/Queue, Vertrag und Buchung für beide Vergleichsseiten; Anleitung
-und zwölf echte Browserbilder sind offline geliefert. Anwenderabnahme und
-Merge bleiben offen; die Abschlussdokumentation ändert keine Produktressource.
+und zwölf echte Browserbilder sind offline geliefert. Am 03.10.2026 erteilte
+der Auftraggeber ausdrücklich die Anwenderabnahme und den AP7-Mergeauftrag;
+`docs/reports/ims_ap7_user_acceptance.md`. Nach tatsächlichem AP7-Merge ist
+AP8 beauftragt. Die Abschluss-/Abnahmedokumentation ändert keine Produktressource.
 Lebens-Nachfrage-/ICT-Zeit-/Buchungsgrenzen
-und die angenommene Ergänzung E07-01 bleiben verbindlich. Keine AP7-Merge- oder
-Veröffentlichungsfreigabe und keine AP8–AP14-Umsetzung. Die früheren
+und die angenommene Ergänzung E07-01 bleiben verbindlich. AP8 übernimmt die
+angenommene Ergänzung E08-01 mit eigener Herkunft und unterscheidet Addition,
+Wechselwirkungen und Korrelation. Kein AP8-Merge, öffentliches Release oder
+AP9–AP14-Auftrag. Die früheren
 Freigabegrenzen oben dokumentieren die damaligen Aufträge.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,

@@ -5,7 +5,9 @@ Produkt **2.0.0-alpha.7**, Windows-Dateiversion **2.0.0.7**. Lieferung in
 [Draft-PR #296](https://github.com/junker-joerg/ims/pull/296).
 [Vertragsannahme](ims_ap7_contract_acceptance.md) und
 [maschinenlesbare Verifikation](ims_ap7_verification.json).
-Anwenderabnahme und Merge sind weiterhin offen; kein öffentliches Release.
+Anwenderabnahme und AP7-Mergeauftrag wurden später am 03.10.2026 ausdrücklich
+erteilt; [Beleg](ims_ap7_user_acceptance.md). Tatsächlicher Merge separat;
+kein öffentliches Release.
 
 ## Umsetzung und ICT-Erklärung
 
@@ -135,4 +137,6 @@ Abschlussdokumentationskommitt folgt diesem geprüften Produktkommitt und änder
 keine Installer-Ressource oder Anwendung. Seine eigenen CI-Checks sind im PR
 separat sichtbar. Nach Fortschreibung des Manifests bestanden die 35 lokalen
 Plan-/Freigabe-/Abhängigkeitstests erneut (5,421 s); historische Umfänge und
-andere Pakete blieben gleich. AP7 bleibt in Draft-PR #296; kein AP8–AP14-Auftrag.
+andere Pakete blieben gleich. Die spätere Zustimmung erteilt Anwenderabnahme,
+AP7-Mergeauftrag und AP8-Fortsetzung erst nach tatsächlichem Merge. AP8-Merge
+und AP9–AP14 sind nicht beauftragt; [Abnahmebeleg](ims_ap7_user_acceptance.md).
