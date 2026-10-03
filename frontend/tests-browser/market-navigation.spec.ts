@@ -1,0 +1,74 @@
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { mkdir } from "node:fs/promises";
+import { resolve } from "node:path";
+
+for (const viewport of [{width:1440,height:900},{width:1024,height:768},{width:390,height:844}]) {
+  for (const theme of ["light", "dark"] as const) {
+    test(`AP8 Bedienkorrektur ${viewport.width} ${theme}: Einstieg, Tastatur, erhaltene Zustände`, async ({page}, info) => {
+      test.setTimeout(120_000);
+      await page.setViewportSize(viewport);
+      await page.addInitScript(value => localStorage.setItem("ims.theme", value), theme);
+      await page.goto("/#overview");
+      const navigation = page.getByRole("navigation", {name:"Hauptnavigation",exact:true});
+      await navigation.getByRole("link", {name:"Markt und Familien",exact:true}).click();
+      await expect(page.getByRole("heading",{level:1})).toHaveText("Markt und Familien");
+      await expect(navigation.locator('[aria-current="page"]')).toHaveCount(1);
+      await expect(page.getByTestId("market-explorer-workbench")).toBeVisible();
+      await expect(page.getByTestId("market-shock-workbench")).toBeHidden();
+      await expect(page.getByTestId("market-workbench")).toBeHidden();
+      await expect(page.locator(".model-navigation")).toBeHidden();
+      const directory=process.env.IMS_AP8_CAPTURE==="1"?resolve("../docs/handbook/images"):info.outputDir;
+      await mkdir(directory,{recursive:true});
+      await page.waitForLoadState("networkidle");
+      await expect(navigation).toBeInViewport();
+      await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
+      await page.screenshot({path:resolve(directory,`ap8_start_${theme}_${viewport.width}x${viewport.height}.png`)});
+      const panel=page.getByTestId("market-explorer-workbench");
+      await panel.getByLabel("Analysefall",{exact:true}).selectOption("switch");
+      await panel.getByLabel("Analyseperioden",{exact:true}).selectOption("10");
+      await panel.getByRole("button",{name:"Analysevorlage laden",exact:true}).click();
+      await expect(panel.getByTestId("explorer-source")).toBeVisible();
+      let calculations=0;page.on("request",request=>{if(request.url().endsWith("/api/market/explore"))calculations++;});
+      await panel.getByRole("button",{name:"Marktansichten frisch berechnen",exact:true}).click();
+      await expect(panel.getByTestId("explorer-results")).toBeVisible();
+      const digest=await panel.getByTestId("explorer-model-digest").textContent();
+      const tabs=panel.getByRole("tablist",{name:"Sechs Marktansichten",exact:true});
+      await tabs.getByRole("tab",{name:"1 Verlauf",exact:true}).focus();
+      await page.keyboard.press("End");
+      await expect(tabs.getByRole("tab",{name:"6 ICT / Prozesse",exact:true})).toBeFocused();
+      await expect(panel.getByTestId("explorer-provider")).toBeVisible();
+      await expect(panel.locator(".explorer-card:visible")).toHaveCount(1);
+      await page.keyboard.press("Home");
+      await expect(panel.getByTestId("explorer-market")).toBeVisible();
+      await panel.getByRole("tab",{name:"4 Wechsel",exact:true}).click();
+      await panel.getByLabel("Analyseperiode",{exact:true}).selectOption("6");
+      await page.getByRole("tab",{name:"Schock bearbeiten",exact:true}).click();
+      await expect(panel).toBeHidden();
+      const shock=page.getByTestId("market-shock-workbench");
+      await shock.getByLabel("Schockperioden",{exact:true}).selectOption("10");
+      await page.getByRole("tab",{name:"Quellen und Handfälle",exact:true}).click();
+      await expect(page.getByTestId("market-workbench")).toBeVisible();
+      await page.getByRole("tab",{name:"Markt verstehen",exact:true}).click();
+      await expect(panel.getByTestId("explorer-flows")).toBeVisible();
+      await expect(panel.getByLabel("Analyseperiode",{exact:true})).toHaveValue("6");
+      await navigation.getByRole("link",{name:"Hilfe",exact:true}).click();
+      await navigation.getByRole("link",{name:"Simulation",exact:true}).click();
+      await expect(page.locator('.model-workspace[data-model="balance"]').first()).toBeVisible();
+      await expect(page.getByRole("navigation",{name:"Modellfälle",exact:true}).getByRole("link")).toHaveCount(4);
+      await navigation.getByRole("link",{name:"Markt und Familien",exact:true}).click();
+      await expect(panel.getByTestId("explorer-flows")).toBeVisible();
+      await expect(panel.getByTestId("explorer-model-digest")).toHaveText(digest!);
+      expect(calculations).toBe(1);
+      await page.getByRole("tab",{name:"Schock bearbeiten",exact:true}).click();
+      await expect(shock.getByLabel("Schockperioden",{exact:true})).toHaveValue("10");
+      await page.getByRole("tab",{name:"Markt verstehen",exact:true}).click();
+      const axe=await new AxeBuilder({page}).analyze();
+      expect(axe.violations.map(rule=>({id:rule.id,nodes:rule.nodes.map(node=>({target:node.target,reason:node.failureSummary}))}))).toEqual([]);
+      expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+      await panel.getByRole("tab",{name:"1 Verlauf",exact:true}).click();
+      await panel.getByTestId("explorer-market").scrollIntoViewIfNeeded();
+      await page.screenshot({path:resolve(directory,`ap8_result_${theme}_${viewport.width}x${viewport.height}.png`)});
+    });
+  }
+}

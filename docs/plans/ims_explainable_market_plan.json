@@ -372,11 +372,21 @@
         "docs/reports/ims_ap7_verification.json: vier grüne Produktchecks an 37fe791; 2755 Python-/14 Subtests, 70 Browserfälle, 14 Lifecycle-/70 installierte Browserfälle; gleiche Digests und Git-/Hash-/Ressourcenbindung",
         "docs/handbook/market_ap7.html: Offline-Einstieg, Rollenwege, sichtbarer ICT-Erklärpfad und zwölf echte Browserbilder",
         "https://github.com/junker-joerg/ims/pull/296: gesamtes AP7-Paket; spätere Anwenderabnahme und Mergeauftrag separat belegt",
-        "docs/reports/ims_ap7_user_acceptance.md: ausdrückliche Anwenderabnahme, AP7-Mergeauftrag und AP8-Fortsetzung nach tatsächlichem Merge am 03.10.2026"
+        "docs/reports/ims_ap7_user_acceptance.md: ausdrückliche Anwenderabnahme, AP7-Mergeauftrag und AP8-Fortsetzung nach tatsächlichem Merge am 03.10.2026",
+        "docs/reports/ims_ap7_merge.md: tatsächlicher Merge #296 am 03.10.2026 nach vier grünen Checks an f440f4c; main-Tree identisch"
       ],
+      "merge_evidence": {
+        "pull_request": 296,
+        "commit": "32ba3112d994f57f33e64e1bc318e7d095223cd0",
+        "merged_at_utc": "2026-10-03T11:39:38Z",
+        "tested_head": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+        "tree": "236102cec1386f096b3d95417c962d95953764f2",
+        "tree_matches_tested_head": true,
+        "evidence": "docs/reports/ims_ap7_merge.md"
+      },
       "implementation_authorized": true,
       "technically_complete": true,
-      "merged_to_main": false,
+      "merged_to_main": true,
       "user_product_acceptance": "accepted",
       "merge_authorized": true,
       "user_acceptance": {
@@ -432,13 +442,79 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "planned",
-      "depends_on": ["AP7"],
+      "status": "in_progress",
+      "depends_on": [
+        "AP7"
+      ],
       "branch_proposal": "codex/ims-market-visualizations",
-      "deliverables": ["Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten", "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang", "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung", "Marktinterpretation in IMS und Einzel-VU-Details in Excel", "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"],
-      "acceptance": ["Jeder Grafikpunkt stimmt mit API, Buchungen und Export überein", "Filter bleiben konsistent und ändern keinen Lauf", "Zeitabhängige Familien und Gruppen, korrekte Gewichte und Marktanteilsnenner", "Kunden-Wechselmengen ohne Doppelzählung und korrekte Ereigniszeiten", "Echte Gruppenauswertung ohne Excel interpretierbar", "Tastatur, zugängliche Tabellen, responsive Hell-/Dunkelansichten"],
-      "gates": ["Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"],
-      "completion_evidence": []
+      "deliverables": [
+        "Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten",
+        "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang",
+        "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung",
+        "Marktinterpretation in IMS und Einzel-VU-Details in Excel",
+        "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"
+      ],
+      "acceptance": [
+        "Jeder Grafikpunkt stimmt mit API, Buchungen und Export überein",
+        "Filter bleiben konsistent und ändern keinen Lauf",
+        "Zeitabhängige Familien und Gruppen, korrekte Gewichte und Marktanteilsnenner",
+        "Kunden-Wechselmengen ohne Doppelzählung und korrekte Ereigniszeiten",
+        "Echte Gruppenauswertung ohne Excel interpretierbar",
+        "Tastatur, zugängliche Tabellen, responsive Hell-/Dunkelansichten"
+      ],
+      "gates": [
+        "Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"
+      ],
+      "completion_evidence": [
+        "docs/reports/ims_ap8_abschlussbericht.md",
+        "docs/reports/ims_ap8_produktpruefung.md: vier erfolgreiche Produktchecks am eingefrorenen Produktpunkt 17cbf5e631233ff5e5f5153a673a2eb6adaa7375",
+        "docs/reports/ims_ap8_verification.json: 2.764 Python-Tests/14 Subtests, 83 Browserfälle, 14 Lifecycle- und 83 installierte Browserprüfungen",
+        "docs/handbook/market_ap8.md: sechs Ansichten, zwölf echte Bilder, offline im alpha.8-Installer",
+        "docs/migration/ap8_market_explorer.md: vorhandene Kerne unverändert; exakte Addition/Kanal/Wechselwirkung/Korrelation"
+      ],
+      "implementation_authorized": true,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "user_product_acceptance": "pending",
+      "merge_authorized": false,
+      "execution_authorization": {
+        "schema_version": "ims.execution-authorization.v1",
+        "package": "AP8",
+        "scope": "implementation",
+        "plan_commit": "32ba3112d994f57f33e64e1bc318e7d095223cd0",
+        "authorized_by": "Auftraggeber dieser Codex-Sitzung",
+        "authorized_at": "2026-10-03T11:40:21Z",
+        "user_request": "Anwenderabnahme und Merge bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort",
+        "recording_note": "Beobachtete Erfassung nach tatsächlich geprüftem AP7-Merge; genauer Nachrichtenzeitpunkt nicht ausgewiesen. Fortsetzung mit dem nächsten angenommenen Paket AP8, einschließlich separat angenommener E08-01. Exakte Addition, Wechselwirkung und Korrelation unterscheiden. Kein AP8-Merge, öffentliches Release oder AP9–AP14-Auftrag."
+      },
+      "implementation_plan": "docs/plans/ims_ap8_implementation.md",
+      "progress_document": "docs/reports/ims_ap8_fortschritt.md",
+      "view_contract": "docs/plans/ims_ap8_view_contract.md",
+      "accepted_amendments": [
+        {
+          "id": "E08-01",
+          "origin": "docs/plans/ims_board_strategy_plan.json",
+          "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
+          "implementation_plan": "docs/plans/ims_ap8_implementation.md",
+          "acceptance_impact": "Fokus, Rivalen und Modellmarkt: absolute Buchungswerte und relative Position mit benannten Nennern nebeneinander; eigene AP8-Belege, historische Abnahmen unverändert.",
+          "implemented": true,
+          "completion_evidence": [
+            "docs/reports/ims_ap8_verification.json: E08-01 mit Fokus/Rivalen/Modellmarkt, absoluten Buchungen, vollständigem Nenner und relativer Position",
+            "docs/reports/ims_ap8_produktpruefung.md"
+          ]
+        }
+      ],
+      "usability_revision": {
+        "status": "in_progress",
+        "release": "2.0.0-alpha.9",
+        "scope": "AP8-Bedienkorrektur im selben Paket-PR #297; keine AP9-Umsetzung",
+        "user_request": "Ich finde mich immer schlechter in dieser oberfläsche zurecht. Kennst Du keine Frontend-Style Guides für Webanwendungen? Das kann man so keinem zeigen",
+        "recording_note": "Wörtlicher aktueller Anwenderhinweis, Zeilenumbrüche normalisiert; kein sekundengenauer Nachrichtenzeitpunkt behauptet.",
+        "plan": "docs/plans/ims_ap8_usability_correction.md",
+        "previous_product": "17cbf5e631233ff5e5f5153a673a2eb6adaa7375",
+        "previous_product_release": "2.0.0-alpha.8",
+        "acceptance_impact": "Navigation und Darstellung erneut prüfen; frühere alpha.8-Abschlussbelege bleiben historisch. Anwenderabnahme/Merge weiterhin offen."
+      }
     },
     {
       "id": "AP9",

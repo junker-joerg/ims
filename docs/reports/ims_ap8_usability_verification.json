@@ -1,0 +1,155 @@
+{
+  "schema_version": "ims.ap8-usability-verification.v1",
+  "release": "2.0.0-alpha.9",
+  "package": "AP8",
+  "status": "preview_verified_full_product_pending",
+  "human_acceptance": "pending",
+  "merge_authorized": false,
+  "scope": "Navigation und Darstellung; bestehende Kernrechnungen unverändert",
+  "targeted_browser_passed": 13,
+  "checks": [
+    {
+      "kind": "navigation-accessibility-state",
+      "start_utc": "2026-10-03T17:04:52.054Z",
+      "duration_seconds": 38.361968999999995,
+      "passed": 6,
+      "cases": [
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1440 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.488
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1440 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.102
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1024 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.142
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1024 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 5.956
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 390 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 5.981
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 390 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 5.845
+        }
+      ]
+    },
+    {
+      "kind": "explorer-json-excel-bafin",
+      "start_utc": "2026-10-03T17:00:58.312Z",
+      "duration_seconds": 10.510743,
+      "passed": 2,
+      "cases": [
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 Handfall: wirksamer Wechsel, lokale Filter und frischer JSON/Einzel-VU-Excel-Export",
+          "seconds": 4.221
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 BaFin-Referenz und offline Anleitung im echten Backend",
+          "seconds": 4.543
+        }
+      ]
+    },
+    {
+      "kind": "existing-ap5-ap6-flows",
+      "start_utc": "2026-10-03T17:01:40.644Z",
+      "duration_seconds": 26.444353,
+      "passed": 5,
+      "cases": [
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: Original, frische Quellenbindung, Einzel-VU-Dateien und Offline-Wiederaufnahme",
+          "seconds": 8.509
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: Mix, Quellen-Override, stabile Identitäten und entwertete Ergebnisse",
+          "seconds": 8.013
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: Handbuch-Handfall, reale Risikobuchung und ausgewählte VU-Dateien",
+          "seconds": 2.265
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: überlappende Peers, leere Sparte und reine Filter ohne Neuberechnung",
+          "seconds": 2.116
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: Strategie und Kostenplan werden ausgeführt; ungültige Quellen entwerten den Stand",
+          "seconds": 3.537
+        }
+      ]
+    }
+  ],
+  "plan_tests": {
+    "passed": 35,
+    "subtests": 14,
+    "seconds": 7.44
+  },
+  "frontend_build": "passed; vorhandene Vite-Warnung zum Bundle über 500 kB",
+  "release_metadata": "2.0.0-alpha.9 / 2.0.0.9; lokales editable install aktualisiert",
+  "preview": {
+    "url": "http://127.0.0.1:48418/#market",
+    "health_version": "2.0.0-alpha.9",
+    "user_data": "Eigener temporärer Vorschauordner außerhalb der Anwendungsdateien"
+  },
+  "iteration_notes": [
+    "Früher unzulässige tabpanel-Rolle auf article auf div korrigiert.",
+    "Ältere Tests bedienen nun die neue Arbeitsbereichs-/Ansichtsauswahl und prüfen 13 Hilfebilder statt 12. Kein übersprungener Fall.",
+    "Zwei lokale Browserläufe hatten irrtümlich denselben Ausgabeordner; Trace-Dateikollision gefunden. Abschließende gezielte Läufe verwendeten einen eigenen Ausgabeordner und bestanden.",
+    "Eine vor der Reiter-Testanpassung gestartete lokale Langreihe wurde als veraltet beendet; keine erfolgreiche vollständige 19er-Prüfung behauptet.",
+    "Letzte Änderung hebt den jeweils nächsten Lade-/Rechenschritt hervor; sechs echte Einstiegsbilder danach frisch erfasst."
+  ],
+  "full_product_ci": "pending",
+  "installer": "pending; kein neuer Installer oder öffentliche Veröffentlichung ausgeliefert",
+  "previous_product_proof": "ims_ap8_verification.json: alpha.8, Produktpunkt 17cbf5e, historisch erhalten",
+  "images": [
+    {
+      "path": "docs/handbook/images/ap8_start_dark_1024x768.png",
+      "bytes": 61660,
+      "sha256": "a10d5bc1debca7de595ef5cca264843cf93c1bac990a696a7beb46b1163f8ff4"
+    },
+    {
+      "path": "docs/handbook/images/ap8_start_dark_1440x900.png",
+      "bytes": 68618,
+      "sha256": "925b3c66d0e627e6d311c2fbc766c513f865d2d74b4705a6560de01c023f8440"
+    },
+    {
+      "path": "docs/handbook/images/ap8_start_dark_390x844.png",
+      "bytes": 39874,
+      "sha256": "c13d98db5d3a6061700525952b74ef7d8282b58eb58ad85c32a878a00cec30f7"
+    },
+    {
+      "path": "docs/handbook/images/ap8_start_light_1024x768.png",
+      "bytes": 62028,
+      "sha256": "8e9e5d4d8ceb49480e82f5607a8d724c45606f2de0d86e87844d566c9c43fc40"
+    },
+    {
+      "path": "docs/handbook/images/ap8_start_light_1440x900.png",
+      "bytes": 69175,
+      "sha256": "94dbdea4527f473067e157fec6817163ad2116e1f893d66f53e206b94b08a880"
+    },
+    {
+      "path": "docs/handbook/images/ap8_start_light_390x844.png",
+      "bytes": 39740,
+      "sha256": "d075f552b962ccca2c39725a0dcd50f8b4f233a82dca5a8629fbaa0ed03f7ace"
+    }
+  ]
+}

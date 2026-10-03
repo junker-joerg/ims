@@ -1,6 +1,6 @@
 # Vier Schockfälle erklären: Markt und ICT
 
-IMS 2.0.0-alpha.7 · AP7 · Workshop mit der BaFin-Gruppenauswertung 2024.
+IMS 2.0.0-alpha.9 · Fachumfang AP7 · Workshop mit der BaFin-Gruppenauswertung 2024.
 Diese Anleitung gehört zur angenommenen begrenzten Markt-/ICT-Kopplung.
 Die BaFin-Basis umfasst verdiente Beiträge einschließlich Ausland und
 übernommener Rückversicherung sowie redaktionelle Gruppensummen ohne
@@ -9,7 +9,8 @@ Produkte, Strategien, Kapital, Prozessmengen und Provider sind Modellannahmen.
 
 ## In fünf Minuten anfangen
 
-1. IMS starten und **Markt** öffnen. Oben steht **Vier Schockfälle: Markt und ICT erklären**.
+1. In der Hauptnavigation **Markt und Familien** öffnen, dann den Arbeitsbereich
+   **Schock bearbeiten**. Dort steht **Vier Schockfälle: Markt und ICT erklären**.
 2. **Alle US-Hyperscaler fallen aus** und **100 Schockperioden** auswählen, **Schockdemo laden** klicken. Das Original bleibt schreibfrei.
 3. **Schockfall frisch berechnen** klicken. Ein vollständiger Fall kann mehrere Minuten benötigen. Währenddessen zeigt IMS den Prüfstatus; es liefert kein unvollständiges Ergebnis.
 4. **P20 · vorher**, **P21 · Schock** und **P22 · Vertragsfolge** vergleichen. Eine Periode bedeutet 24 deklarierte Prozessstunden. P21 umfasst Stunden 480 bis 504; der 36-Stunden-Ausfall endet in P22 bei Stunde 516.

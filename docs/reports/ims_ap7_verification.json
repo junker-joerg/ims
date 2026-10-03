@@ -1254,11 +1254,12 @@
   },
   "user_product_acceptance": "accepted",
   "merge_authorized": true,
-  "merged_to_main": false,
+  "merged_to_main": true,
   "public_release_performed": false,
   "next_package_authorized": {
     "package": "AP8",
-    "effective_after_actual_ap7_merge": true
+    "effective_after_actual_ap7_merge": true,
+    "dependency_met": true
   },
   "limits": [
     "BaFin earned including foreign and inward reinsurance; editorial groups without intra-group elimination",
@@ -3208,5 +3209,734 @@
     "user_request": "Anwenderabnahme und Merge bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort",
     "evidence": "docs/reports/ims_ap7_user_acceptance.md",
     "product_head": "48c7c9a7654c4efc924b2212e12568e9e41a6d7f"
+  },
+  "merge_evidence": {
+    "pull_request": 296,
+    "commit": "32ba3112d994f57f33e64e1bc318e7d095223cd0",
+    "merged_at_utc": "2026-10-03T11:39:38Z",
+    "tested_head": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+    "tree": "236102cec1386f096b3d95417c962d95953764f2",
+    "tree_matches_tested_head": true,
+    "evidence": "docs/reports/ims_ap7_merge.md"
+  },
+  "acceptance_point_verification": {
+    "head": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+    "ci_merge_commit": "a9d6cdedd2102622240219daf3302a3166570eef",
+    "tree": "236102cec1386f096b3d95417c962d95953764f2",
+    "checks": [
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37118688647/job/111190371358",
+        "completed_at": "2026-10-03T11:08:23Z"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37118688646/job/111190371264",
+        "completed_at": "2026-10-03T11:31:01Z"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37118688644/job/111190371224",
+        "completed_at": "2026-10-03T11:23:22Z"
+      },
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37118688670/job/111190371103",
+        "completed_at": "2026-10-03T11:36:21Z"
+      }
+    ],
+    "python_tests": {
+      "passed": 2755,
+      "warnings": 1,
+      "subtests_passed": 14,
+      "seconds": 791.56
+    },
+    "installer": {
+      "download": {
+        "artifact_id": 11272882148,
+        "artifact_name": "IMS-Windows-x64-2.0.0-alpha.7-a9d6cdedd2102622240219daf3302a3166570eef",
+        "archive_bytes": 27598508,
+        "archive_sha256": "27c33d212d57ab2ec1ec0681834614c6f96252b1a6444f8b37541367a3faf8d8",
+        "extracted": [
+          "IMS-Setup-2.0.0-alpha.7-win-x64.exe",
+          "IMS-Setup-2.0.0-alpha.7-win-x64.exe.sha256",
+          "browser-report.json",
+          "build-evidence.json",
+          "installer-test-evidence.json",
+          "resource-inventory.json"
+        ],
+        "installer_bytes": 21199107,
+        "installer_sha256": "321b22de571cee82bd8f3b12b40cac6305bd02dfba6a676b86d48dddade1d7de"
+      },
+      "build": {
+        "artifact": "IMS-Setup-2.0.0-alpha.7-win-x64.exe",
+        "sha256": "321b22de571cee82bd8f3b12b40cac6305bd02dfba6a676b86d48dddade1d7de",
+        "bytes": 21199107,
+        "build_seconds": 50.9403492,
+        "commit": "a9d6cdedd2102622240219daf3302a3166570eef",
+        "version": "2.0.0-alpha.7",
+        "file_version": "2.0.0.7",
+        "inno": "6.7.3",
+        "dirty": false,
+        "node": "v22.23.3",
+        "python": "3.12.10",
+        "signed": false,
+        "clean_windows_acceptance": "pending"
+      },
+      "lifecycle": {
+        "success": true,
+        "failure": null,
+        "environment": "Windows with developer tools; executable PATH restricted to System32",
+        "clean_windows_acceptance": "pending",
+        "work": "D:\\a\\ims\\ims\\.tmp-pr-installer\\Installer Prüfung Ä f9127128",
+        "installer_sha256": "321b22de571cee82bd8f3b12b40cac6305bd02dfba6a676b86d48dddade1d7de",
+        "previous_installer_sha256": "be10e0c0f344363ca9f89ebe9de3d10768b938282e170b62a0c73dbee38b1015",
+        "previous_application_version": "2.0.0-alpha.7",
+        "previous_kind": "synthetic_same_bundle",
+        "seconds": 1230.197871,
+        "tests": [
+          {
+            "test": "install_synthetic_previous_version",
+            "result": "passed",
+            "seconds": 2.4197589000000335
+          },
+          {
+            "test": "frozen_start_path_with_spaces_umlauts",
+            "result": "passed",
+            "seconds": 1.5084335999999894
+          },
+          {
+            "test": "second_start_same_process",
+            "result": "passed",
+            "seconds": 0.28689489999999296
+          },
+          {
+            "test": "existing_health_case_and_json_csv_xlsx_exports",
+            "result": "passed",
+            "seconds": 0.707049799999993,
+            "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+            "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+          },
+          {
+            "test": "update_while_running",
+            "result": "passed",
+            "seconds": 2.8922436999999945
+          },
+          {
+            "test": "start_after_update",
+            "result": "passed",
+            "seconds": 1.4583295000000476
+          },
+          {
+            "test": "AP2_real_browser_against_installed_current_frontend",
+            "result": "passed",
+            "seconds": 1208.8653436
+          },
+          {
+            "test": "occupied_port_fails_without_foreign_browser",
+            "result": "passed",
+            "seconds": 0.9620883000000049
+          },
+          {
+            "test": "explicit_adoption_with_source_and_target_backups",
+            "result": "passed"
+          },
+          {
+            "test": "start_before_uninstall",
+            "result": "passed",
+            "seconds": 1.4948437000000467
+          },
+          {
+            "test": "uninstall_while_running_preserves_data",
+            "result": "passed",
+            "seconds": 1.2208904999999959
+          },
+          {
+            "test": "reinstall",
+            "result": "passed",
+            "seconds": 2.531133999999838
+          },
+          {
+            "test": "restart_after_reinstall",
+            "result": "passed",
+            "seconds": 1.5348412000000735
+          },
+          {
+            "test": "stored_result_preserved_update_uninstall_reinstall",
+            "result": "passed"
+          }
+        ]
+      }
+    },
+    "installed_browser_stats": {
+      "startTime": "2026-10-03T11:10:36.752Z",
+      "duration": 1208204.977,
+      "expected": 70,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "checkout_browser_stats": {
+      "startTime": "2026-10-03T11:09:28.181Z",
+      "duration": 1607581.456,
+      "expected": 70,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "installed_and_checkout_results_identical": true,
+    "all_372_resources_identical_to_original_product": true,
+    "full_cases": [
+      {
+        "caseId": "us_hyperscaler_outage",
+        "elapsed_seconds": 94.982,
+        "wire_bytes": 55758655,
+        "digest": "7ee786bf1266f74c4e95aaca4f01bd50e60c1a9c708cea6169d1be32b8b10c66",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 2,
+          "ict_job_rows": 7980,
+          "cost_rows": 11175,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364274.4230",
+            "closing_equity": "362827.0206",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4068",
+            "measure_cost": "0.0000",
+            "opening_assets": "364636.6890",
+            "opening_equity": "361453.3266",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6940",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364211.4606",
+            "closing_equity": "362764.0582",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3906",
+            "measure_cost": "0.7200",
+            "opening_assets": "364574.4628",
+            "opening_equity": "361391.1004",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3912",
+            "period": 100,
+            "period_profit": "1372.9578",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.0000",
+                "capacity_per_hour": "0.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "0.0000",
+            "closing_queue": 84,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "24.0000",
+            "period": 21,
+            "processed_work": "0.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Q_Vorsorge"
+                ],
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "primary_causes": [
+                  "ap7-shock"
+                ],
+                "effective_factor": "1.0000",
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "google_motor_entry",
+        "elapsed_seconds": 92.323,
+        "wire_bytes": 56000022,
+        "digest": "8d5e165ab934891c5abedf1d10dce231d06e0bcbc5b69844b98dc7514611225f",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13700,
+          "market_rows": 500,
+          "family_rows": 15500,
+          "peer_rows": 0,
+          "insurance_group_rows": 20500,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19200,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 8004,
+          "cost_rows": 7909,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 24,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "462285.2831",
+            "closing_equity": "460837.8807",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462672.7279",
+            "opening_equity": "459489.3655",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1348.5152",
+            "premium_income": "2257.8456",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2640.8223",
+            "closing_assets": "462299.5561",
+            "closing_equity": "460852.1537",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "904.8623",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462685.1773",
+            "opening_equity": "459501.8149",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1350.3388",
+            "premium_income": "2307.4651",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 4,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "96.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "95.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "life_demand_shock",
+        "elapsed_seconds": 97.195,
+        "wire_bytes": 55324216,
+        "digest": "b5e4dcc1f876e5f76ec6ebf6abdef705eec1a975a1d750a36205dbfb191ae96a",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 7820,
+          "cost_rows": 7852,
+          "life_demand_rows": 100,
+          "life_contract_rows": 218,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 2
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2526.6955",
+            "closing_assets": "361470.9811",
+            "closing_equity": "360354.5696",
+            "closing_liabilities": "1116.4115",
+            "covered_quantity": null,
+            "insurance_expense": "790.7355",
+            "investment_income": "86.0213",
+            "measure_cost": "0.0000",
+            "opening_assets": "361867.2954",
+            "opening_equity": "359014.9239",
+            "opening_liabilities": "2852.3715",
+            "operating_expense": "137.6649",
+            "period": 100,
+            "period_profit": "1339.6457",
+            "premium_income": "2182.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2548.8058",
+            "closing_assets": "362399.9057",
+            "closing_equity": "361173.1639",
+            "closing_liabilities": "1226.7418",
+            "covered_quantity": null,
+            "insurance_expense": "812.8458",
+            "investment_income": "86.4802",
+            "measure_cost": "0.0000",
+            "opening_assets": "362784.8735",
+            "opening_equity": "359822.1717",
+            "opening_liabilities": "2962.7018",
+            "operating_expense": "137.6670",
+            "period": 100,
+            "period_profit": "1350.9922",
+            "premium_income": "2215.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "81.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "82.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "dora_2_workshop",
+        "elapsed_seconds": 94.017,
+        "wire_bytes": 55788005,
+        "digest": "f2a21bdc95f946eb77b479f489dd81b7ec0308ccbde9fabe8e1f48fc2c3c2a38",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 10,
+          "ict_job_rows": 7980,
+          "cost_rows": 11215,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364154.8580",
+            "closing_equity": "362707.4556",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3758",
+            "measure_cost": "0.0000",
+            "opening_assets": "364517.1550",
+            "opening_equity": "361333.7926",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6630",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364112.5487",
+            "closing_equity": "362665.1463",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3639",
+            "measure_cost": "0.7200",
+            "opening_assets": "364475.5330",
+            "opening_equity": "361292.1706",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3466",
+            "period": 100,
+            "period_profit": "1372.9757",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.5000",
+                "capacity_per_hour": "2.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "48.0000",
+            "closing_queue": 36,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "12.0000",
+            "period": 21,
+            "processed_work": "48.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Vorbereitete_Kapazitaet"
+                ],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      }
+    ]
   }
 }
