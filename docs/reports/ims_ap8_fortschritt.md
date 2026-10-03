@@ -98,3 +98,23 @@ Frozen-App-Prüfungen. Diese Belege ersetzen keine Prüfung der korrigierten
 Oberfläche. Neuer eingefrorener Produktpunkt und vollständige vier CI-Prüfungen
 folgen im selben PR. Die Suite enthält jetzt **2.764 Python-Tests + 14 Subtests**
 und **83 echte Browserprüfungen**; Erfolg am neuen Punkt noch offen.
+
+## Vollständige CI: veraltete Release-Erwartungen berichtigt
+
+Produktpunkt `23e493bf9eb5f835bf977467c1307bf19cca7384`: Plan und Windows-Release-
+Gate bestanden (2.764 Python-Tests + 14 Subtests, eine Warnung, 796,44 s).
+Checkout und tatsächliches installiertes Produkt haben jeweils **77 bestandene,
+sechs fehlgeschlagene Browserfälle**, keine übersprungenen/instabilen Fälle.
+Alle **13 neuen AP8-Fälle** einschließlich vier echten 100er-/25er- und sechs
+Hell-/Dunkel-Größenfällen bestanden in beiden Umgebungen. Die sechs Fehler
+betreffen ausschließlich ältere AP5-/AP6-/AP7-Prüfstellen, die nach dem korrekten
+Versionswechsel noch alpha.7 in der Sidebar verlangten statt sichtbarem alpha.8.
+Diese übersehenen Erwartungen sind keine erfolgreiche Gesamt-CI; der Installer-
+Lifecycle brach deshalb nach sechs bestandenen Teilprüfungen ab.
+
+Die drei betroffenen Testdateien beziehen ihre genaue Erwartung nun aus der
+Frontend-Release-Metadatei, nach dem bereits bestehenden Muster der Workbench-
+Versionsprüfungen. Die Übereinstimmung mit der gemeinsamen Python-Releasequelle
+wird weiterhin im echten Release-Gate geprüft. Keine Produkt-/Modelländerung,
+kein abgeschwächter Versionscheck oder übersprungener Fall. Alle 83 Tests werden
+vollständig aufgezählt; neue vierfache Produkt-CI folgt im selben PR #297.

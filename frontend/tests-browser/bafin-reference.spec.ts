@@ -1,7 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { readFileSync } from "node:fs";
 import { mkdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+
+const { version: releaseVersion } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
 
 async function load(page: Page, n = 5) {
   await page.goto("/#market");
@@ -122,7 +125,7 @@ test("AP6: tatsächlicher 40er-100-Perioden-Lauf und angezeigte API-Summen", asy
   const expected = Number(total.closing_equity).toLocaleString("de-DE", { minimumFractionDigits: 4, maximumFractionDigits: 4 }).replace("-", "−");
   await expect(panel.getByTestId("market-equity")).toHaveText(expected);
   await expect(panel.getByTestId("market-grand-total")).toContainText(expected);
-  await expect(page.locator(".sidebar")).toContainText("2.0.0-alpha.7");
+  await expect(page.locator(".sidebar")).toContainText(`Release ${releaseVersion}`);
   expect(result.reference.model_binding).toBe("preset_mapping");
   expect(errors).toEqual([]);
   await info.attach("AP6 40×100", { body: JSON.stringify({ content_digest: result.content_digest, total, source_count: result.source_bundle.source_catalog.entities.length, model_binding: result.reference.model_binding }), contentType: "application/json" });

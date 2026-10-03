@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { readFileSync } from "node:fs";
 import { mkdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { amountText, amountUnits } from "../src/seminarPresentation";
+
+const { version: releaseVersion } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
 
 type Row = Record<string, any>;
 function rows(result: any, side: string, name: string): Row[] {
@@ -137,7 +140,7 @@ for (const caseId of ["us_hyperscaler_outage", "google_motor_entry", "life_deman
     }
     await panel.locator(".shock-plots").scrollIntoViewIfNeeded();
     await capture(page, info, `ap7_${caseId}_100_light_1440x900.png`);
-    await expect(page.locator(".sidebar")).toContainText("2.0.0-alpha.7");
+    await expect(page.locator(".sidebar")).toContainText(`Release ${releaseVersion}`);
     assert.deepEqual(errors, []); assert.deepEqual(external, []);
     await info.attach("AP7 real 100", { body: JSON.stringify({ caseId, elapsed_seconds: elapsed, wire_bytes: byteLength, digest: result.content_digest, prefix_25: "passed", conservation: "passed", risk_and_partitions: "passed", row_counts: Object.fromEntries(Object.keys(result.sides.variant).map(name => [name, result.sides.variant[name].rows.length])), period_100: { baseline: total("baseline"), variant: total("variant") }, resources_21: { baseline: rows(result, "baseline", "ict_resource_rows")[20], variant: rows(result, "variant", "ict_resource_rows")[20] } }), contentType: "application/json" });
   });
