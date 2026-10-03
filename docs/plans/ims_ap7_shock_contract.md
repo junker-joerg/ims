@@ -225,3 +225,24 @@ Ereignis → Provider/Abhängigkeit → Prozesskapazität/Rückstand → Vertrag
 → einmalige Buchung, mit exakten Werten pro Periode und VU auf beiden Seiten.
 Annahme autorisiert ihre AP7-Umsetzung im selben Paket-PR, keinen Merge,
 kein öffentliches Release und kein AP8–AP14-Paket.
+
+## Konkrete sichtbare Standardannahmen der Umsetzung
+
+Die administrative Arbeit wird je VU der Modellsparte mit den größten
+deklarierten Anfangsaktiva zugeordnet. Gemeinsame Ressourcen-, Provider- und
+Bereitschaftskosten folgen expliziten vierstelligen Gewichten nach dieser
+Anfangsbasis, Gewichtskorrektur beim größten Träger. Jede Zahlung wird stabil
+auf vier Stellen gerundet, der letzte Kostenträger erhält den Rest; ein früher
+Anteil wird auf den verbleibenden Betrag begrenzt, damit Kleinstzahlungen
+keinen negativen Rest erzeugen. Kein Sparten-Funding oder zusätzliche
+Finanzierung wird eingeführt. Alle Angaben stehen im portablen Bündel, in
+Oberfläche, Export und Anleitung; eigene Einstellungen können abweichende
+zulässige Gewichte deklarieren.
+
+Ein gemeinsamer Ressourcenpfad hat genau einen erklärten Maßnahmenbezug und
+alle Kostenträger als Zielakteure. Personal-Kapazität gilt auf dem verfügbaren
+Primär-/Ersatzpfad unabhängig von der Listenreihenfolge; überlappende
+Personal-Faktoren werden mangels zusätzlichen Budgetvertrags abgewiesen.
+Providerereignisse benennen alle eingebundenen Akteure, konkrete Betroffenheit
+folgt transitiv aus dem Graphen. Positiver Ereignisaufwand verlangt den
+ausdrücklichen Kostenkanal. Eintritt ist Aktivierung mit Intensität 1.

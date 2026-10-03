@@ -43,10 +43,14 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
         append(source, ["source_input_json_chunk", encoded[index:index + 30000]])
     if "source_bundle" in result:
         reference = result["reference"]
-        group = next(g for g in reference["groups"] if g["insurer_id"] == insurer_id)
+        group = next((g for g in reference["groups"] if g["insurer_id"] == insurer_id), None)
+        if group is None:
+            group = {"insurer_id": insurer_id, "name": actor["name"], "entity_rows": [], "synthetic_extra_actor": True}
         facts = book.create_sheet("BaFin-Quellenwerte")
         append(facts, ["Verdiente Bruttobeiträge, Mio. EUR; einschließlich Ausland und übernommener Rückversicherung. Keine konzerninterne Eliminierung; kein vollständiger deutscher Direktmarkt."])
         append(facts, ["Redaktionelle Gruppenzuordnung, noch keine vollständige unabhängige Kontrollprüfung."])
+        if group.get("synthetic_extra_actor"):
+            append(facts, ["Fiktiver Zusatzanbieter: keine BaFin-Quellengruppe; nachstehende Dateien belegen nur den 40er-Ausgangsmarkt."])
         fields = ["workbook_row", "entity_source_name", "source_sector", "raw_value", "source_unit", "premium_million_eur", "value_status", "source_id", "source_sheet", "source_cell"]
         append(facts, fields)
         for row in result["source_bundle"]["source_catalog"]["entities"]:
@@ -66,5 +70,20 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
         for index in range(0, len(bundle), 30000):
             append(source, ["source_bundle_json_chunk", bundle[index:index + 30000]])
     output = BytesIO()
+    if "shock_bundle" in result:
+        for title, name in (("ICT-Prozesse", "ict_process_rows"), ("ICT-Abhängigkeiten", "ict_dependency_rows"),
+                            ("ICT-Ressourcen", "ict_resource_rows"), ("ICT-Ereignisse", "ict_event_rows"),
+                            ("Kosten-einmal", "cost_rows"), ("Lebens-Anträge", "life_demand_rows"),
+                            ("Neue-Lebenspolicen", "life_contract_rows"), ("Wirksame-Wechsel", "switch_process_rows"),
+                            ("Horizont-Rückstand", "terminal_process_rows")):
+            sheet = book.create_sheet(title)
+            append(sheet, ["Seite", "Einmalige Buchung / Vorgang / Abhängigkeit; Modellannahmen, keine recherchierten Firmenprofile"])
+            for side in ("baseline", "variant"):
+                for row in result["sides"][side][name]:
+                    if "insurer_id" not in row or row["insurer_id"] == insurer_id or name == "switch_process_rows" and row.get("previous_insurer_id") == insurer_id:
+                        append(sheet, [side, json.dumps(row, ensure_ascii=False)])
+        encoded = json.dumps(result["shock_bundle"], ensure_ascii=False, allow_nan=False)
+        for index in range(0, len(encoded), 30000):
+            append(source, ["shock_bundle_json_chunk", encoded[index:index + 30000]])
     book.save(output)
     return output.getvalue()

@@ -42,12 +42,13 @@ unverändert. Keine Übernahme vorgeschlagener AP10–AP14-Kanäle.
 | Stand | Arbeit | Nachweis / nächstes Tor |
 | --- | --- | --- |
 | M1 angenommen | C-/Python-Herkunft, Grenzen, konkreter Lebens-/Zeit-/Buchungs-/Ersatzpfadvertrag und kleine Handfälle | [Vertrag](ims_ap7_shock_contract.md), [Proben](../reports/ims_ap7_contract_probes.json), ausdrückliche menschliche Annahme |
-| M2 läuft | Versionierter Schockvertrag, aktiver Eintritt, begrenzte Lebensanträge, physische Prozesszeit, Warteschlangen und einmalige Buchung | Angenommene zwei fachliche Tore; deterministische kleine Regressionen |
-| M3 offen | Vier echte 100er-Fälle, API/UI-Original/eigene Sitzung, frisches JSON/Excel und Rollen-Erklärpfade | Prefixe, Quellen-/Draw-Bindung, Bilanz-/Risiko-/Kosten-/Mengenabnahmen, Ressourcenmessung |
-| M4 offen | Offline-Anleitung, echte Bilder, höhere gemeinsame Produktversion und tatsächlicher Windows-Installer | Produkt-/Browser-/Lifecycle-CI, Anwenderabnahme separat, Merge separat |
+| M2 implementiert | Versionierter Schockvertrag, aktiver Eintritt, begrenzte Lebensanträge, physische Prozesszeit, Warteschlangen und einmalige Buchung | Angenommene zwei fachliche Tore; deterministische kleine Regressionen |
+| M3 in Prüfung | Vier echte 100er-Fälle, API/UI-Original/eigene Sitzung, frisches JSON/Excel und Rollen-Erklärpfade | Prefixe, Quellen-/Draw-Bindung, Bilanz-/Risiko-/Kosten-/Mengenabnahmen, Ressourcenmessung |
+| M4 in Vorbereitung | Offline-Anleitung, echte Bilder, höhere gemeinsame Produktversion und tatsächlicher Windows-Installer | Produkt-/Browser-/Lifecycle-CI, Anwenderabnahme separat, Merge separat |
 
-M1 verändert keinen Produktkern und liefert keine alpha.7-Anwendung. Der letzte
-ausgelieferte Stand bleibt alpha.6. Probeberichte unterscheiden bestehenden
+M1 veränderte keinen Produktkern und lieferte keine alpha.7-Anwendung. M2/M3
+implementieren die jetzt ausdrücklich angenommenen Kanäle; alpha.7 ist im
+Branch vorbereitet, seine abschließende installierte Produktprüfung steht aus. Probeberichte unterscheiden bestehenden
 Kernlauf, unabhängige Handrechnung und erst vorgeschlagene Modellkanäle.
 
 ## Zu entscheidender begrenzter Vertrag

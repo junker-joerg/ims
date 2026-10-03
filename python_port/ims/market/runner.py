@@ -6,6 +6,10 @@ from dataclasses import dataclass
 from decimal import Decimal, localcontext
 from hashlib import sha256
 import json
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ims.market.shock_plan import ShockPlan
 
 from ims.accounting.health_period_chain import run_health_period_chain
 from ims.accounting.life_period_chain import run_life_policy_period_chain
@@ -65,11 +69,11 @@ def aggregate(rows: list[dict], p: int, sector: str) -> dict:
     else:
         quantity = sum((Decimal(row["covered_quantity"]) for row in rows), Decimal(0))
         result.update(covered_quantity=money(quantity), weighted_price=money(Decimal(result["premium_income"]) / quantity) if quantity else None)
-    result["active_vu_count"] = len({row["insurer_id"] for row in rows})
+    result["active_vu_count"] = len({row["insurer_id"] for row in rows if row.get("active_in_period", True)})
     return result
 
 
-def actuarial(doc: dict, side: str, actor: dict, sector: str, cache: dict) -> list[dict]:
+def actuarial(doc: dict, side: str, actor: dict, sector: str, cache: dict, bridge: ShockPlan | None = None) -> list[dict]:
     """Isolate existing per-VU actuarial contract at local ID 1; retain modern ID."""
     aid, n = actor["insurer_id"], doc["period_count"]
     source = deepcopy(actor["sectors"][sector]["source"])
@@ -92,6 +96,9 @@ def actuarial(doc: dict, side: str, actor: dict, sector: str, cache: dict) -> li
             row["operating_expense_paid"] = money(Decimal(row["operating_expense_paid"]) + cost)
         stock = ("cash", "benefit_liability")
     key = (sector, digest(source))
+    if bridge is not None:
+        source = bridge.actuarial_source(source, aid, sector)
+        key = (sector, digest(source))
     if key not in cache:
         cache[key] = run_life_policy_period_chain(source) if sector == "life" else run_health_period_chain(source)
     report = cache[key]
@@ -115,11 +122,29 @@ def actuarial(doc: dict, side: str, actor: dict, sector: str, cache: dict) -> li
                "capital_contribution": raw["capital_contribution"], "capital_distribution": raw["capital_distribution"]}
         for when in ("opening", "closing"):
             row.update({when + "_assets": raw[when + "_" + stock[0]], when + "_liabilities": raw[when + "_" + stock[1]], when + "_equity": raw[when + "_equity"]})
+        if bridge is not None:
+            row["measure_cost"] = money(cost + bridge.measure_cost(aid, sector, p))
+            bridge.decorate(row)
         rows.append(row)
     return rows
 
 
-def side_result(doc: dict, side: str, actuarial_cache: dict | None = None) -> dict:
+def quote_offer(doc: dict, side: str, aid: int, sector: str, p: int) -> tuple:
+    """The unchanged AP5 public quote and actor-bound draw contract."""
+    family, params, measures, cost = profile(doc, side, aid, sector, p)
+    draws = actor_draws(doc["seed"], aid, p)
+    if family["rule"] == "vu.vrvu01":
+        pf, af = float(params["premium_factor"]), float(params["advertising_factor"])
+        calculated = apply_vu_random_uniform_rule(Insurer(aid, premiums_current_sector=[pf * .5] * 2, advertising_current_sector=[af * .5] * 2),
+            VURandomUniformRuleParameters([pf] * 2, [af] * 2, [pf] * 2, [af] * 2), period=p, random_draws=draws, interest_rate=0)
+        index = NON_LIFE.index(sector)
+        price, ad = money(calculated.premiums_current_sector[index]), money(calculated.advertising_current_sector[index])
+    else:
+        price, ad = money(params["price"]), money(params["advertising"])
+    return family, params, measures, cost, draws, price, ad
+
+
+def side_result(doc: dict, side: str, actuarial_cache: dict | None = None, bridge: ShockPlan | None = None) -> dict:
     actors = sorted(doc["insurers"], key=lambda a: a["insurer_id"])
     if actuarial_cache is None:
         actuarial_cache = {}
@@ -130,7 +155,7 @@ def side_result(doc: dict, side: str, actuarial_cache: dict | None = None) -> di
             if sector in NON_LIFE:
                 balances[(aid, sector)] = Balance(*(Decimal(source["opening"][key]) for key in ("assets", "liabilities", "equity")))
             else:
-                closed[(aid, sector)] = actuarial(doc, side, actor, sector, actuarial_cache)
+                closed[(aid, sector)] = actuarial(doc, side, actor, sector, actuarial_cache, bridge)
                 sources.append({"insurer_id": aid, "sector_id": sector, "input_digest": digest(source["source"]), "adapter": "isolated_existing_actuarial_contract_id_1"})
     rows, decisions, market, families, peers, insurance_groups, snapshots = [], [], [], [], [], [], []
     owners = {c["group_id"]: c["initial_insurer_id"] for c in doc["customer_groups"]}
@@ -143,16 +168,9 @@ def side_result(doc: dict, side: str, actuarial_cache: dict | None = None) -> di
                 if sector not in actor["sectors"]:
                     continue
                 source = actor["sectors"][sector]
-                family, params, measures, cost = profile(doc, side, aid, sector, p)
-                draws = actor_draws(doc["seed"], aid, p)
-                if family["rule"] == "vu.vrvu01":
-                    pf, af = float(params["premium_factor"]), float(params["advertising_factor"])
-                    calculated = apply_vu_random_uniform_rule(Insurer(aid, premiums_current_sector=[pf * .5] * 2, advertising_current_sector=[af * .5] * 2),
-                        VURandomUniformRuleParameters([pf] * 2, [af] * 2, [pf] * 2, [af] * 2), period=p, random_draws=draws, interest_rate=0)
-                    index = NON_LIFE.index(sector)
-                    price, ad = money(calculated.premiums_current_sector[index]), money(calculated.advertising_current_sector[index])
-                else:
-                    price, ad = money(params["price"]), money(params["advertising"])
+                family, params, measures, cost, draws, price, ad = quote_offer(doc, side, aid, sector, p)
+                if bridge is not None:
+                    price, ad = bridge.offer(aid, sector, p, price, ad)
                 offers[aid] = price
                 capacities[aid] = Decimal(params.get("capacity", source["capacity"]))
                 flows[aid] = {"premium": Decimal(0), "loss": Decimal(0), "paid": Decimal(0), "quantity": Decimal(0),
@@ -163,7 +181,9 @@ def side_result(doc: dict, side: str, actuarial_cache: dict | None = None) -> di
                 quantity = Decimal(cohort["quantity"])
                 previous_owner = owners[cohort["group_id"]]
                 eligible = sorted(aid for aid in offers if capacities[aid] >= quantity)
-                if p == 1:
+                if bridge is not None:
+                    owner, eligible = bridge.owner(cohort["group_id"], p)
+                elif p == 1:
                     owner = cohort["initial_insurer_id"]
                     if owner is not None and owner not in eligible:
                         raise ContractError("$.customer_groups", "Anfangsvertrag überschreitet aktive Kapazität")
@@ -196,9 +216,13 @@ def side_result(doc: dict, side: str, actuarial_cache: dict | None = None) -> di
                 source = actor["sectors"][sector]
                 flow, stock = flows[aid], balances[(aid, sector)]
                 base = {key: Decimal(value) for key, value in source["periods"][p - 1].items() if key != "period"}
+                extra = Decimal(0)
+                if bridge is not None:
+                    extra = bridge.extra_expense(aid, sector, p)
+                    base["capital_contribution"] += bridge.capital(aid, p)
                 if base["old_claims_paid"] > stock.liabilities:
                     raise ContractError(f"$.VU{aid}.{sector}.period{p}", "Altzahlung übersteigt die beim Träger verbliebene Anfangsverbindlichkeit")
-                expense = base["operating_expense"] + flow["advertising"] + flow["cost"]
+                expense = base["operating_expense"] + flow["advertising"] + flow["cost"] + extra
                 paid = flow["paid"] + base["old_claims_paid"]
                 profit = flow["premium"] + base["investment_income"] - flow["loss"] - expense
                 closing = Balance(stock.assets + flow["premium"] + base["investment_income"] + base["capital_contribution"] - paid - expense - base["capital_distribution"],
@@ -213,10 +237,12 @@ def side_result(doc: dict, side: str, actuarial_cache: dict | None = None) -> di
                        "weighted_price": money(flow["premium"] / flow["quantity"]) if flow["quantity"] else None,
                        "premium_income": money(flow["premium"]), "investment_income": money(base["investment_income"]), "insurance_expense": money(flow["loss"]),
                        "claims_paid": money(paid), "new_claims_paid": money(flow["paid"]), "old_claims_paid": money(base["old_claims_paid"]),
-                       "operating_expense": money(expense), "advertising_expense": money(flow["advertising"]), "measure_cost": money(flow["cost"]),
+                       "operating_expense": money(expense), "advertising_expense": money(flow["advertising"]), "measure_cost": money(flow["cost"] + (bridge.measure_cost(aid, sector, p) if bridge else Decimal(0))),
                        "period_profit": money(profit), "capital_contribution": money(base["capital_contribution"]), "capital_distribution": money(base["capital_distribution"])}
                 for when, values in (("opening", stock), ("closing", closing)):
                     row.update({when + "_" + key: money(getattr(values, key)) for key in ("assets", "liabilities", "equity")})
+                if bridge is not None:
+                    bridge.decorate(row)
                 current.append(row)
                 balances[(aid, sector)] = closing
         for (aid, sector), series in closed.items():

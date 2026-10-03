@@ -1,0 +1,28 @@
+.market-shock-workbench{scroll-margin-top:1rem;min-width:0}
+.market-shock-workbench fieldset{border:1px solid var(--border);border-radius:12px;padding:1rem;margin:1rem 0;min-width:0}
+.market-shock-workbench textarea{width:100%;font-family:ui-monospace,monospace;overflow-wrap:anywhere;white-space:pre-wrap}
+.shock-status,.shock-path-proof{padding:1rem;border:1px solid var(--border);border-radius:12px;background:var(--surface-muted)}
+.shock-error{color:var(--danger-text)}
+.shock-comparison{font-weight:600}
+.shock-jumps{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.shock-jumps button[aria-pressed=true]{outline:2px solid var(--accent-text);outline-offset:2px}
+.shock-plots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.shock-plot{margin:1rem 0;padding:1rem;border:1px solid var(--border);border-radius:12px;min-width:0}
+.shock-plot figcaption{font-weight:600;margin-bottom:.5rem}
+.shock-plot svg{width:100%;height:auto}
+.shock-plot .chart-legend{flex-wrap:wrap;gap:.7rem}
+.shock-window{fill:var(--warning-surface);stroke:var(--warning-text);stroke-width:1}
+.shock-step{margin:1.5rem 0;padding:1.1rem;border:1px solid var(--border);border-radius:12px;min-width:0}
+.shock-step h4{font-size:1.12rem;margin-top:0}
+.shock-focus{border:2px solid var(--accent-text)}
+.shock-dependency-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin:1rem 0}
+.shock-node{display:flex;flex-direction:column;gap:.3rem;padding:.8rem;border:1px solid var(--border);border-radius:10px;overflow-wrap:anywhere;background:var(--surface-muted)}
+.shock-node.failed{border:2px solid var(--danger-text)}
+.shock-node.failed strong{color:var(--danger-text)}
+.shock-node small{color:var(--muted)}
+.market-shock-workbench .table-scroll{max-width:100%;overflow:auto}
+.market-shock-workbench th,.market-shock-workbench td{padding:.55rem;text-align:left;border-bottom:1px solid var(--border)}
+.market-shock-workbench input,.market-shock-workbench select{max-width:100%}
+@media(max-width:800px){.shock-plots,.shock-dependency-grid{grid-template-columns:1fr}.shock-step{padding:.8rem}.market-shock-workbench .ict-controls{grid-template-columns:1fr}}
+
+.shock-impact{padding:1rem;border:2px solid var(--accent-text);border-radius:12px;background:var(--surface-muted);font-size:1.06rem}

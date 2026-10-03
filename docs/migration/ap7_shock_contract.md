@@ -1,10 +1,12 @@
-# AP7: Herkunft und vorgeschlagene Erweiterungen
+# AP7: Herkunft und begrenzte Erweiterungen
 
-03.10.2026, M1. Noch nicht angenommener fachlicher Vertrag und keine fertige
-Schockimplementierung. [Vorschlag](../plans/ims_ap7_shock_contract.md),
-[Kern-/Handproben](../reports/ims_ap7_contract_probes.json).
+03.10.2026. Der konkrete Vertrag wurde ausdrücklich angenommen;
+[Annahme](../reports/ims_ap7_contract_acceptance.md).
+Die folgenden Ursprünge wurden in M1 geprüft; die moderne Erweiterung ist
+in M2/M3 implementiert. [Vertrag](../plans/ims_ap7_shock_contract.md),
+[historische M1-Kern-/Handproben](../reports/ims_ap7_contract_probes.json).
 
-| Ursprung | Bestehende Entsprechung | Vorgeschlagene AP7-Erweiterung / Grenze |
+| Ursprung | Bestehende Entsprechung | AP7-Erweiterung / Grenze |
 | --- | --- | --- |
 | `IMS.E` 231–246, `aktiVU`: aktive VU-Verwaltung | `ims.market.runner` zählt registrierte Sektorzeilen; Kapazitätsfenster begrenzen Annahme | Eigenes zeitabhängiges Aktivierungsmerkmal für den fiktiven Anbieter 41; C-Vektorbestand nicht kopieren |
 | `IMS.E` 3533–3591, `Vrvn06`: gesetzter Anfangsbestand, danach Minimum aktiver Angebote | AP5 `customer.price`, zulässige Anbieter, stabile Gleichstandsregel, Ganzkohortenaufnahme | Deklarierte Reichweite und bearbeiteter Wechsel; Werbeaufwand erhält keine implizite Elastizität |
@@ -21,10 +23,36 @@ historischen C-Union-Felds. Neue Lebens-Neunachfrage, Providerkontrolle und
 physische Markt-/ICT-Kopplung sind explizite Erweiterungen; dafür wird keine
 historische Vollgleichheit behauptet. Historische Terminal-UI bleibt unverändert.
 
-M1 enthält nur `scripts/planning/probe_ap7_contract.py` und dessen Tests als
-wissenschaftliche Vorbereitung. Produktmodule/-Dateinamen für M2 werden erst
-mit Annahme und Umsetzung konkret ergänzt; kein zukünftiger Modulname wird
-als bereits portiert ausgegeben. Quellen-Hashes stehen im Probebericht.
+M1 enthält `scripts/planning/probe_ap7_contract.py` und dessen Tests als
+wissenschaftliche Vorbereitung. Seine Quellen-Hashes und damaligen
+Produktbeobachtungen bleiben unverändert im Probebericht.
+
+## Tatsächliche Komponenten der angenommenen Umsetzung
+
+| Datei unter `python_port/ims/market/` | Fachliche Entsprechung |
+| --- | --- |
+| `shock_contract.py` | Eigene versionierte Ereignis-/Antwort-/Lebens-/Graphhülle mit Quellenbindung und atomaren Grenzen. Unveränderte AP5- und AP6-Verträge bleiben erhalten. |
+| `shock_presets.py` | Vier vollständige 100er-Standards aus dem kuratierten BaFin-Katalog, explizite synthetische Produkte, Finanzierung, Ressourcen und Kontrollannahmen. |
+| `shock_process.py` | Transitive Ausfallgraphen, konkrete Ersatzpfade, halboffene Stundenfenster, gemeinsames FIFO-Arbeitsbudget, Teilfortschritt, eindeutiger Kostenverteiler. Kein alter skalarer Fallback als Unabhängigkeitsbeweis. |
+| `shock_plan.py` | Aktivierung 41, alte Eigentümer während wartender Wechsel, tatsächliche Ausgabe ab Folgeperiode, gemeinsamer deterministischer Lebenspool und einmalige Vorsorge-/Ereigniskosten. |
+| `shock_life.py` | Ausschließlich ausgegebene neue Policen an den vorhandenen Garantie-/Policenperiodenkern anhängen; Altpolicen, alte Todes-/Ablaufflüsse erhalten. |
+| `shock_runner.py` | Frische gekoppelte Rechnung beider Seiten, gemeinsame Anfangsperioden und vollständiger Quellen-/Ergebnisdigest. Markt ist einzige finanzielle Rechnung. |
+| `runner.py`, `export.py` | Optionale Brücke zur vorhandenen VU-/Sparten-/Markt-/Gruppenbuchung; bestehende Pfade ohne Brücke unverändert. Excel enthält echte Einzel-VU-Zeilen und gemeinsame Erklärbelege. |
+
+API: `python_port/ims/api/market.py`, frische Fall-/Quellen-/Rechnungs-/Export-
+Routen mit bestehender Rechensperre. Oberfläche:
+`frontend/src/MarketShockWorkbench.tsx` und `.css`, Ereignis → Vorleistungen →
+Queue → Vertrag → Buchung, exakt aus geprüften Zeilen. Präsentation erzeugt
+keine Versicherungsflüsse. Anleitung: `docs/handbook/market_ap7.md` / `.html`.
+Tests: `tests/test_market_shocks.py`, `frontend/tests-browser/market-shocks.spec.ts`.
+
+Zusätzliche Nachfrage ist deterministisch; keine neue Zufallskalibrierung.
+Vorhandene akteurgebundene `quote_offer`-Draws werden unverändert wiederverwendet.
+Claims/Service erfassen nur administrative Arbeit/Kosten, keine Verschiebung
+von Versicherungszahlungen. Personal-Kapazität wirkt auf den verfügbaren
+Primär-/Ersatzpfad unabhängig von Listenreihenfolge. Unbekannte Kontrolle
+belegt keine Unabhängigkeit. Die moderne Kopplung behauptet keine historische
+C-Vollgleichheit und erweitert keine alten Abnahmen rückwirkend.
 
 Die vorhandene Lebens-Kernprobe bewahrt Todes- und alte Ablaufleistungen; ihre
 kleine deklarierte Neupolice kann Eigenkapital am Horizont sogar senken. Die

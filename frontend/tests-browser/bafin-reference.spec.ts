@@ -122,7 +122,7 @@ test("AP6: tatsächlicher 40er-100-Perioden-Lauf und angezeigte API-Summen", asy
   const expected = Number(total.closing_equity).toLocaleString("de-DE", { minimumFractionDigits: 4, maximumFractionDigits: 4 }).replace("-", "−");
   await expect(panel.getByTestId("market-equity")).toHaveText(expected);
   await expect(panel.getByTestId("market-grand-total")).toContainText(expected);
-  await expect(page.locator(".sidebar")).toContainText("2.0.0-alpha.6");
+  await expect(page.locator(".sidebar")).toContainText("2.0.0-alpha.7");
   expect(result.reference.model_binding).toBe("preset_mapping");
   expect(errors).toEqual([]);
   await info.attach("AP6 40×100", { body: JSON.stringify({ content_digest: result.content_digest, total, source_count: result.source_bundle.source_catalog.entities.length, model_binding: result.reference.model_binding }), contentType: "application/json" });

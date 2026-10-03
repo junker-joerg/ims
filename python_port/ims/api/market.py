@@ -15,6 +15,10 @@ from ims.market.runner import MAX_RESULT_BYTES, calculate
 from ims.market.reference import BUNDLE_VERSION, build_bundle, reference_values, calculate as reference_calculate
 from ims.desktop.paths import resource_root
 from ims.market.transport import wire_payload
+from ims.market.shock_contract import INPUT_VERSION as SHOCK_VERSION
+from ims.market.shock_contract import validate as validate_shock
+from ims.market.shock_presets import build_case as build_shock_case
+from ims.market.shock_runner import calculate as shock_calculate
 from ims.strategies.modern_bridge import ContractError, exact
 
 
@@ -41,6 +45,22 @@ def create_market_app() -> Starlette:
         except (ContractError, ValueError, TypeError, KeyError, ArithmeticError) as exc:
             return JSONResponse(failed(exc if isinstance(exc, ContractError) else ContractError("$", str(exc))), status_code=422, headers=headers)
 
+    async def shock_preset(request):
+        try:
+            value = exact(await request_json(request), {"case_id", "period_count"}, "$")
+            catalog = json.loads((resource_root() / "seminar_cases/bafin_2024_catalog.json").read_text(encoding="utf-8"))
+            source = build_shock_case(catalog, value["case_id"], value["period_count"])
+            return JSONResponse({"valid": True, "title": source["title"], "shock_bundle": source, "source_input": source["model_input"]}, headers=headers)
+        except (ContractError, ValueError, TypeError, KeyError, ArithmeticError) as exc:
+            return JSONResponse(failed(exc if isinstance(exc, ContractError) else ContractError("$", str(exc))), status_code=422, headers=headers)
+
+    async def shock_source(request):
+        try:
+            source, reference = validate_shock(await request_json(request))
+            return JSONResponse({"valid": True, "shock_bundle": source, "source_input": source["model_input"], "reference": reference}, headers=headers)
+        except (ContractError, ValueError, TypeError, KeyError, ArithmeticError, RecursionError) as exc:
+            return JSONResponse(failed(exc if isinstance(exc, ContractError) else ContractError("$", str(exc))), status_code=422, headers=headers)
+
     async def action(request):
         try:
             value = await request_json(request)
@@ -56,7 +76,8 @@ def create_market_app() -> Starlette:
             return JSONResponse(failed(ContractError("$", "Eine gemeinsame Marktrechnung läuft bereits")), status_code=409, headers=headers)
         def work():
             try:
-                result = reference_calculate(source) if isinstance(source, dict) and source.get("schema_version") == BUNDLE_VERSION else calculate(source)
+                version = source.get("schema_version") if isinstance(source, dict) else None
+                result = shock_calculate(source) if version == SHOCK_VERSION else reference_calculate(source) if version == BUNDLE_VERSION else calculate(source)
                 if not result["valid"]:
                     return JSONResponse(result, status_code=422, headers=headers)
                 etag = '"' + result["content_digest"] + '"'
@@ -77,5 +98,6 @@ def create_market_app() -> Starlette:
 
     return Starlette(routes=[Route("/contract", lambda r: JSONResponse({"schema_version": INPUT_VERSION, "max_vus": MAX_VUS,
         "max_customer_groups": MAX_COHORTS, "horizons": HORIZONS, "rules": {k: sorted(v) for k, v in RULE_PARAMETERS.items()}, "max_result_bytes": MAX_RESULT_BYTES}, headers=headers)),
-        Route("/workshop-case", preset, methods=["POST"]), Route("/reference-case", reference_preset, methods=["POST"]), Route("/calculate", action, methods=["POST"]),
+        Route("/workshop-case", preset, methods=["POST"]), Route("/reference-case", reference_preset, methods=["POST"]),
+        Route("/shock-case", shock_preset, methods=["POST"]), Route("/shock-source", shock_source, methods=["POST"]), Route("/calculate", action, methods=["POST"]),
         Route("/export.xlsx", action, methods=["POST"]), Route("/source.json", action, methods=["POST"])])

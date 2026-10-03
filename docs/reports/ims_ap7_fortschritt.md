@@ -21,6 +21,21 @@ und diesem Chat als Artefakt zugeordnet. Die gemeinsame fachliche Annahme des
 Lebens-/ICT-Vertrags ist beim Auftraggeber angefragt; keine Antwort als erteilt
 behauptet. Die späteren CI-Produktchecks sind vom lokalen M1-Stand getrennt.
 
+## M2/M3: angenommene Kanäle implementiert
+
+03.10.2026. Eigenständige versionierte Hülle, vier portable Quellenfälle,
+24-Stunden-Graph/FIFO, bearbeitete Lebensanträge/Wechsel, Aktivierung 41 und
+einmalige Markt-Kostenbuchung sind angeschlossen. Oberfläche erklärt beide
+Seiten über Ereignis, konkrete Vorleistungen, gemeinsames Arbeitsbudget,
+Queue, Vertrag und Bilanz. Original/eigene Sitzung, JSON/Einzel-VU-Excel und
+Offline-Anleitung alpha.7 sind angeschlossen. Vierzehn neue kleine AP7-Tests
+bestanden lokal (27,28 s); die vorherige gemeinsame Regression umfasste
+77 Tests und 14 Subtests (176,87 s). Frontend baut. Erste vier vorläufige 100er-Kernläufe
+bestanden; sie werden nicht als Nachweis des endgültigen Produktkommitts
+ausgegeben. Abschließende Browser-/Prefix-/Ressourcen-/Installerprüfungen
+laufen noch. Produktstatus bleibt in_progress; keine Anwenderabnahme oder
+Mergefreigabe erteilt.
+
 ## M1: konkret zur fachlichen Prüfung vorbereitet
 
 [Paketplan](../plans/ims_ap7_implementation.md),
