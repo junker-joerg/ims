@@ -359,15 +359,22 @@
     {
       "id": "AP7",
       "title": "Vier Schock Demos mit erklärten Gegenmaßnahmen",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": ["AP6"],
       "branch_proposal": "codex/ims-market-shock-demos",
       "deliverables": ["Vier vollständige portable 100-Perioden-Schockfälle", "Fiktiver Anbieter 41, deklarierter LV-Nachfrageschock, DORA-2.0-Workshop und US-Anbieterausfall", "Deklarierte Markt-/ICT-Zeit- und Buchungsbrücke", "Schreibfreie Demo, bearbeitbare Übernahme, aktive Gegenmaßnahmen und Rollen-Erklärpfade"],
       "acceptance": ["Alle vier Demos offline frisch ladbar und reproduzierbar", "Gemeinsame Anfangsperioden 1–5 und Akteur-/Perioden-Zufallsvertrag", "Anbieter aktiviert zum richtigen Zeitpunkt und Lebens-Altbestand erhalten", "Markt-/ICT-Verluste und gemeinsame Maßnahmenkosten genau einmal gebucht", "Transitive Ausfälle; unabhängiger Fallback wirkt, gemeinsam abhängiger Fallback fällt mit aus", "Handprüfbare Reaktionen und konsistente Markt-/Gruppensummen"],
       "gates": ["Lebens-Nachfragevertrag mit erhaltenen Garantien erklärt und angenommen", "ICT-Zeitabbildung, Kostenzuordnung und Vermeidung doppelter Verluste erklärt und angenommen", "DORA 2.0 ausdrücklich hypothetisch; Firmen-/Providerdaten und Annahmen getrennt"],
-      "completion_evidence": [],
+      "completion_evidence": [
+        "docs/reports/ims_ap7_contract_acceptance.md: ausdrücklich angenommener Lebens-/ICT-Vertrag und besondere ICT-Erkläranforderung",
+        "docs/reports/ims_ap7_abschlussbericht.md: technische Lieferung alpha.7 zur Anwenderabnahme; Anwenderabnahme/Merge offen",
+        "docs/reports/ims_ap7_produktpruefung.md: vier 100er-Fälle, API/UI/Export, Herkunft, Grenzen und tatsächlicher Installer",
+        "docs/reports/ims_ap7_verification.json: vier grüne Produktchecks an 37fe791; 2755 Python-/14 Subtests, 70 Browserfälle, 14 Lifecycle-/70 installierte Browserfälle; gleiche Digests und Git-/Hash-/Ressourcenbindung",
+        "docs/handbook/market_ap7.html: Offline-Einstieg, Rollenwege, sichtbarer ICT-Erklärpfad und zwölf echte Browserbilder",
+        "https://github.com/junker-joerg/ims/pull/296: gesamtes AP7-Paket im selben Draft-PR; keine Mergefreigabe"
+      ],
       "implementation_authorized": true,
-      "technically_complete": false,
+      "technically_complete": true,
       "merged_to_main": false,
       "user_product_acceptance": "pending",
       "merge_authorized": false,
@@ -382,7 +389,9 @@
         "recording_note": "Erfassung nach tatsächlich geprüftem AP6-Merge; genauer Nachrichtenzeitpunkt nicht ausgewiesen. Fortsetzung mit dem nächsten Paket AP7 gemäß angenommener Reihenfolge. Seine Lebens-Nachfrage-/ICT-Vertragstore bleiben offen; kein AP7-Merge, öffentliches Release oder AP8–AP14-Auftrag."
       },
       "implementation_plan": "docs/plans/ims_ap7_implementation.md",
-      "progress_document": "docs/reports/ims_ap7_fortschritt.md",
+      "progress_document": "docs/reports/ims_ap7_abschlussbericht.md",
+      "tested_product_head": "37fe79117c87c504df0ee945092040d3e329a690",
+      "product_verification": "docs/reports/ims_ap7_verification.json",
       "contract_gate": {
         "status": "accepted",
         "proposal": "docs/plans/ims_ap7_shock_contract.md",

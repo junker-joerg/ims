@@ -119,9 +119,16 @@ Umsetzungsplan und konkreter Vertragsvorschlag stehen in `docs/plans/ims_ap7_*`,
 Handproben und Fortschritt in `docs/reports/ims_ap7_*`; fortsetzen im selben
 Draft-PR #296. Der Auftraggeber nahm den konkreten Lebens-/ICT-Vertrag am
 03.10.2026 ausdrücklich an; `docs/reports/ims_ap7_contract_acceptance.md`.
-M2–M4 im selben PR fortsetzen. ICT-Schocks müssen besonders sichtbar und
-erklärbar werden: Ereignis, Abhängigkeit, Kapazität/Queue, Vertrag und Buchung
-für beide Vergleichsseiten. Lebens-Nachfrage-/ICT-Zeit-/Buchungsgrenzen
+M1–M4 sind im selben PR technisch fertig (`done`), Produkt alpha.7.
+`docs/reports/ims_ap7_abschlussbericht.md`, `ims_ap7_produktpruefung.md` und
+`ims_ap7_verification.json` belegen vier grüne Produktchecks an 37fe791,
+2.755 Python-Tests/14 Subtests, 70 Browserfälle, echten Installer mit
+14 Lifecycle-/70 installierten Browserprüfungen und gleiche vier 100er-Digests
+im Checkout und installierten Produkt. ICT zeigt Ereignis, Abhängigkeit,
+Kapazität/Queue, Vertrag und Buchung für beide Vergleichsseiten; Anleitung
+und zwölf echte Browserbilder sind offline geliefert. Anwenderabnahme und
+Merge bleiben offen; die Abschlussdokumentation ändert keine Produktressource.
+Lebens-Nachfrage-/ICT-Zeit-/Buchungsgrenzen
 und die angenommene Ergänzung E07-01 bleiben verbindlich. Keine AP7-Merge- oder
 Veröffentlichungsfreigabe und keine AP8–AP14-Umsetzung. Die früheren
 Freigabegrenzen oben dokumentieren die damaligen Aufträge.

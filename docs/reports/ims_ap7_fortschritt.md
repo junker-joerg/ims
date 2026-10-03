@@ -1,4 +1,21 @@
-# AP7: Stand und nächste Entscheidung
+# AP7: technisch fertig; Anwenderabnahme offen
+
+03.10.2026. M1–M4 im selben Draft-PR #296 abgeschlossen. **alpha.7 technisch
+fertig**, vier Produktchecks am festgehaltenen Produktkommitt 37fe791 erfolgreich;
+2.755 Python-Tests/14 Subtests, 70 Browserfälle und echter Installer mit
+14 Lifecycle-/70 installierten Browserprüfungen. Vier vollständige 100er-Fälle
+mit exakten 25er-Prefixen; installierte und Checkout-Ergebnisdigests identisch.
+Git-Tree, Binär-/Archivhash und Offline-Ressourcen geprüft.
+[Abschluss](ims_ap7_abschlussbericht.md), [Produktprüfung](ims_ap7_produktpruefung.md),
+[Verifikation](ims_ap7_verification.json).
+
+Der ausdrücklich angenommene Vertrag bleibt verbindlich. ICT zeigt Ereignis,
+Abhängigkeiten, echtes gemeinsames Arbeitsbudget/Rückstand, Vertrag und Buchung.
+Anwenderabnahme/Merge bleiben offen, kein öffentliches Release und kein
+AP8–AP14-Auftrag. Die nachstehenden Zwischenstände sind historisch und werden
+durch diesen Abschluss ersetzt.
+
+## Historischer AP7-Arbeitsstand
 
 **Fortsetzung nach Annahme am 03.10.2026:** Der Auftraggeber hat den konkreten
 Vertrag ausdrücklich angenommen; [Beleg](ims_ap7_contract_acceptance.md).

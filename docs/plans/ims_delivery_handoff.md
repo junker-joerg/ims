@@ -1,5 +1,21 @@
 # IMS-Lieferübergabe
 
+## AP7 technisch fertig; konkrete alpha.7-Anwenderabnahme offen
+
+03.10.2026: M1–M4 im selben Draft-PR #296 erledigt. Produktkommitt 37fe791,
+vier Produktchecks erfolgreich, 2.755 Python-Tests/14 Subtests, 70 Browserfälle,
+14 Installer-Lifecycle- und 70 installierte Browserprüfungen. Vier volle 100er-
+Fälle liefern im Checkout und installierten Produkt dieselben Digests.
+ICT-Ereignis/Vorleistung/Queue/Vertrag/Buchung sichtbar und erklärbar,
+konkreter unabhängiger/abhängiger Q geprüft. Offline-Anleitung mit zwölf echten
+Bildern und hashgebundener Installer alpha.7 geliefert.
+[Abschluss](../reports/ims_ap7_abschlussbericht.md),
+[Produktprüfung](../reports/ims_ap7_produktpruefung.md),
+[Verifikation](../reports/ims_ap7_verification.json).
+AP7-Manifest done/technisch fertig, Anwenderabnahme pending/Merge false.
+Kein öffentlicher Release, kein AP8–AP14-Auftrag; AP8 braucht tatsächliches
+AP7 in main und einen eigenen menschlichen Auftrag. Frühere Stände folgen.
+
 ## AP7 M2/M3 umgesetzt; installierte Produktprüfung noch offen
 
 03.10.2026: Vier reale 100er-Browserfälle und ihre 25er-Prefixe bestanden,
