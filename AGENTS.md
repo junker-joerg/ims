@@ -111,8 +111,13 @@ Historische Planabnahmen nicht ändern. API/UI/Export/Tests/Anleitung/Installer
 im selben PR #295 geliefert. Am 03.10.2026 hat der Auftraggeber ausdrücklich
 „Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort“
 bestätigt; `docs/reports/ims_ap6_user_acceptance.md`. AP6 ist allgemein abgenommen
-und sein Merge beauftragt. Danach ist AP7 beauftragt; Umsetzung erst nach
-tatsächlich übernommenem AP6 in main. Lebens-Nachfrage-/ICT-Zeit-/Buchungstore
+und am 03.10.2026 über PR #295 nach main übernommen
+(`88841290113a37faa6bf117d4cd67dcd9ff0867c`); `docs/reports/ims_ap6_merge.md`.
+Alle vier Checks am Abnahmekommitt a2787a9 bestanden, Merge-Tree identisch.
+Danach begann AP7 in `codex/ims-market-shock-demos`; Arbeitsauftrag,
+Umsetzungsplan und konkreter Vertragsvorschlag stehen in `docs/plans/ims_ap7_*`,
+Handproben und Fortschritt in `docs/reports/ims_ap7_*`. M1 erklärt den neuen
+Vertrag; dessen fachliche Annahme steht aus. Lebens-Nachfrage-/ICT-Zeit-/Buchungstore
 und die angenommene Ergänzung E07-01 bleiben verbindlich. Keine AP7-Merge- oder
 Veröffentlichungsfreigabe und keine AP8–AP14-Umsetzung. Die früheren
 Freigabegrenzen oben dokumentieren die damaligen Aufträge.

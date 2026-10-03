@@ -286,11 +286,12 @@
         "docs/reports/ims_ap6_produktpruefung.md: Quellen-/Modellvertrag, API/UI/Export, Handfälle, Anleitung und Liefergrenzen",
         "docs/reports/ims_ap6_verification.json: vier erfolgreiche Produkt-CI-Checks für 1874835; 2735 Python-/14 Subtests, 59 Browserfälle und echter Installer mit 14 Lifecycle-/59 installierten Browserprüfungen",
         "docs/handbook/market_ap6.html und docs/migration/ap6_bafin_reference.md: Offline-Anleitung, Bilder und Altcode-Herkunft",
-        "docs/reports/ims_ap6_user_acceptance.md: ausdrückliche Anwenderabnahme und Mergefreigabe am 03.10.2026; AP7 nach tatsächlichem Merge beauftragt"
+        "docs/reports/ims_ap6_user_acceptance.md: ausdrückliche Anwenderabnahme und Mergefreigabe am 03.10.2026; AP7 nach tatsächlichem Merge beauftragt",
+        "docs/reports/ims_ap6_merge.md: tatsächlicher Merge #295 am 03.10.2026 nach vier grünen Checks am Abnahmekommitt a2787a9; main-Tree identisch"
       ],
       "implementation_authorized": true,
       "technically_complete": true,
-      "merged_to_main": false,
+      "merged_to_main": true,
       "user_product_acceptance": "accepted",
       "merge_authorized": true,
       "user_acceptance": {
@@ -344,18 +345,63 @@
         "candidate_universe_complete": false,
         "rank_40_41_verified": false,
         "selection_verified": false
+      },
+      "merge_evidence": {
+        "pull_request": 295,
+        "commit": "88841290113a37faa6bf117d4cd67dcd9ff0867c",
+        "merged_at_utc": "2026-10-03T06:28:46Z",
+        "tested_head": "a2787a9592af858bd00b7ae733cfd99d8c8d9e87",
+        "tree": "82ea185836c4636bd9ccdb8679c78b7cf35965f7",
+        "tree_matches_tested_head": true,
+        "evidence": "docs/reports/ims_ap6_merge.md"
       }
     },
     {
       "id": "AP7",
       "title": "Vier Schock Demos mit erklärten Gegenmaßnahmen",
-      "status": "planned",
+      "status": "in_progress",
       "depends_on": ["AP6"],
       "branch_proposal": "codex/ims-market-shock-demos",
       "deliverables": ["Vier vollständige portable 100-Perioden-Schockfälle", "Fiktiver Anbieter 41, deklarierter LV-Nachfrageschock, DORA-2.0-Workshop und US-Anbieterausfall", "Deklarierte Markt-/ICT-Zeit- und Buchungsbrücke", "Schreibfreie Demo, bearbeitbare Übernahme, aktive Gegenmaßnahmen und Rollen-Erklärpfade"],
       "acceptance": ["Alle vier Demos offline frisch ladbar und reproduzierbar", "Gemeinsame Anfangsperioden 1–5 und Akteur-/Perioden-Zufallsvertrag", "Anbieter aktiviert zum richtigen Zeitpunkt und Lebens-Altbestand erhalten", "Markt-/ICT-Verluste und gemeinsame Maßnahmenkosten genau einmal gebucht", "Transitive Ausfälle; unabhängiger Fallback wirkt, gemeinsam abhängiger Fallback fällt mit aus", "Handprüfbare Reaktionen und konsistente Markt-/Gruppensummen"],
       "gates": ["Lebens-Nachfragevertrag mit erhaltenen Garantien erklärt und angenommen", "ICT-Zeitabbildung, Kostenzuordnung und Vermeidung doppelter Verluste erklärt und angenommen", "DORA 2.0 ausdrücklich hypothetisch; Firmen-/Providerdaten und Annahmen getrennt"],
-      "completion_evidence": []
+      "completion_evidence": [],
+      "implementation_authorized": true,
+      "technically_complete": false,
+      "merged_to_main": false,
+      "user_product_acceptance": "pending",
+      "merge_authorized": false,
+      "execution_authorization": {
+        "schema_version": "ims.execution-authorization.v1",
+        "package": "AP7",
+        "scope": "implementation",
+        "plan_commit": "88841290113a37faa6bf117d4cd67dcd9ff0867c",
+        "authorized_by": "Auftraggeber dieser Codex-Sitzung",
+        "authorized_at": "2026-10-03T08:33:06+02:00",
+        "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
+        "recording_note": "Erfassung nach tatsächlich geprüftem AP6-Merge; genauer Nachrichtenzeitpunkt nicht ausgewiesen. Fortsetzung mit dem nächsten Paket AP7 gemäß angenommener Reihenfolge. Seine Lebens-Nachfrage-/ICT-Vertragstore bleiben offen; kein AP7-Merge, öffentliches Release oder AP8–AP14-Auftrag."
+      },
+      "implementation_plan": "docs/plans/ims_ap7_implementation.md",
+      "progress_document": "docs/reports/ims_ap7_fortschritt.md",
+      "contract_gate": {
+        "status": "proposed",
+        "proposal": "docs/plans/ims_ap7_shock_contract.md",
+        "probes": "docs/reports/ims_ap7_contract_probes.json",
+        "requires": [
+          "Lebens-Nachfragevertrag mit erhaltenen Garantien erklärt und angenommen",
+          "ICT-Zeitabbildung, Kostenzuordnung und Vermeidung doppelter Verluste erklärt und angenommen"
+        ],
+        "human_acceptance_recorded": false
+      },
+      "accepted_amendments": [
+        {
+          "id": "E07-01",
+          "origin": "docs/plans/ims_board_strategy_plan.json",
+          "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
+          "implementation_plan": "docs/plans/ims_ap7_implementation.md",
+          "acceptance_impact": "Einzelereignis und Sequenz: stabile IDs, Beginn, Dauer, Intensität, Akteure und Wirkungskanäle; neue AP7-Belege, historische Abnahmen unverändert."
+        }
+      ]
     },
     {
       "id": "AP8",

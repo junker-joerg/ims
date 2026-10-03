@@ -1,5 +1,21 @@
 # IMS-Lieferübergabe
 
+## AP6 in main; AP7 begonnen, fachlicher Vertrag zur Prüfung
+
+03.10.2026: AP6 tatsächlich per PR #295 nach main übernommen,
+`88841290113a37faa6bf117d4cd67dcd9ff0867c`, 06:28:46 UTC. Vier Checks am
+Abnahmekommitt a2787a9 erfolgreich; Merge-Tree identisch. [Mergebeleg](../reports/ims_ap6_merge.md).
+Danach AP7-authorized-Auftrag gegen gefetchtes main erzeugt und Branch
+`codex/ims-market-shock-demos` angelegt. [Umsetzungsplan](ims_ap7_implementation.md),
+[konkreter Vertragsvorschlag](ims_ap7_shock_contract.md),
+[Handproben](../reports/ims_ap7_contract_probes.json) und
+[Fortschritt](../reports/ims_ap7_fortschritt.md). E07-01 mit eigener Herkunft.
+M1 vorbereitet, fachliche Annahme des Lebens-/ICT-Vertrags noch offen; erst
+danach M2 im selben Draft-PR. Claims-/Service-Queues verschieben im vorgeschlagenen
+begrenzten Umfang keine Versicherungszahlungen. Produkt bleibt alpha.6,
+vier neue 100er-Demos und alpha.7 sind noch nicht geliefert. Keine AP7-Merge-/
+Veröffentlichungsfreigabe oder AP8–AP14-Umsetzung. Nachstehende Stände historisch.
+
 ## AP6 abgenommen und Merge freigegeben; danach AP7 beauftragt
 
 03.10.2026: „Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort“.

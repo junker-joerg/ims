@@ -40,3 +40,10 @@ wird nicht aus der Zustimmung abgeleitet. Kein öffentliches Release erstellt.
 Erfasst am 03.10.2026 ab 06:00:19 UTC; dies ist die beobachtete Erfassungszeit,
 kein behaupteter sekundengenauer Nachrichtenzeitpunkt. Der tatsächliche Merge
 wird erst nach erfolgreicher Übernahme separat nachgewiesen.
+
+**Nachtrag nach tatsächlicher Übernahme:** PR #295 wurde am 03.10.2026,
+06:28:46 UTC, nach vier erfolgreichen Checks am Abnahmekommitt a2787a9 nach
+main übernommen (`88841290113a37faa6bf117d4cd67dcd9ff0867c`). Head- und
+Merge-Tree sind identisch. [Mergebeleg](ims_ap6_merge.md) enthält die aktuellen
+CI-/Installerwerte; der vorstehende Produkthead 70c0431 bleibt der ursprüngliche
+Bezug der menschlichen Zustimmung. AP7 begann anschließend im eigenen Branch.

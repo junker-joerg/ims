@@ -339,7 +339,7 @@
   },
   "user_acceptance": "accepted",
   "merge_authorized": true,
-  "merged_to_main": false,
+  "merged_to_main": true,
   "schema_version": "ims.ap6.verification.v1",
   "tested_product_head": "18748357a2c71b2b159b4b2f11b01b1d60072982",
   "technically_complete": true,
@@ -452,5 +452,108 @@
     "user_request": "Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort",
     "product_head": "70c04312375a66c6988d26e76d69236bac734780",
     "independent_user_test_details": "unknown"
+  },
+  "main_merge": {
+    "head": "a2787a9592af858bd00b7ae733cfd99d8c8d9e87",
+    "ci_merge_commit": "3576f211726b6ee8f79fbbdafd80044ea5bbaf1d",
+    "tree": "82ea185836c4636bd9ccdb8679c78b7cf35965f7",
+    "ci_merge_parents": [
+      "03f87662e85e6081998bab79e32ee12baac52da1",
+      "a2787a9592af858bd00b7ae733cfd99d8c8d9e87"
+    ],
+    "checks": [
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a2787a9592af858bd00b7ae733cfd99d8c8d9e87",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37101841560/job/111142752606",
+        "completed_at": "2026-10-03T06:14:45Z"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a2787a9592af858bd00b7ae733cfd99d8c8d9e87",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37101841558/job/111142752478",
+        "completed_at": "2026-10-03T06:25:53Z"
+      },
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a2787a9592af858bd00b7ae733cfd99d8c8d9e87",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37101841548/job/111142752378",
+        "completed_at": "2026-10-03T06:15:26Z"
+      },
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a2787a9592af858bd00b7ae733cfd99d8c8d9e87",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37101841552/job/111142752326",
+        "completed_at": "2026-10-03T06:04:23Z"
+      }
+    ],
+    "installer_download": {
+      "artifact_id": 11266503098,
+      "artifact_name": "IMS-Windows-x64-2.0.0-alpha.6-3576f211726b6ee8f79fbbdafd80044ea5bbaf1d",
+      "archive_bytes": 25872528,
+      "archive_sha256": "8cb56d9fcb590ec0765909295832cfdc1435cb40f6f0d9f80ec29cc526bfb793",
+      "extracted": [
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+        "IMS-Setup-2.0.0-alpha.6-win-x64.exe.sha256",
+        "browser-report.json",
+        "build-evidence.json",
+        "installer-test-evidence.json",
+        "resource-inventory.json"
+      ],
+      "installer_bytes": 20348136,
+      "installer_sha256": "487908e6271497d492fbe6f2a6066160deebb954f0b526332152af63dfb45296"
+    },
+    "build": {
+      "artifact": "IMS-Setup-2.0.0-alpha.6-win-x64.exe",
+      "sha256": "487908e6271497d492fbe6f2a6066160deebb954f0b526332152af63dfb45296",
+      "bytes": 20348136,
+      "build_seconds": 39.5781598,
+      "commit": "3576f211726b6ee8f79fbbdafd80044ea5bbaf1d",
+      "version": "2.0.0-alpha.6",
+      "file_version": "2.0.0.6",
+      "inno": "6.7.3",
+      "dirty": false,
+      "node": "v22.23.3",
+      "python": "3.12.10",
+      "signed": false,
+      "clean_windows_acceptance": "pending"
+    },
+    "lifecycle": {
+      "success": true,
+      "passed": 14,
+      "seconds": 519.9282867,
+      "previous_kind": "synthetic_same_bundle"
+    },
+    "installed_browser": {
+      "startTime": "2026-10-03T06:06:07.721Z",
+      "duration": 500476.643,
+      "expected": 59,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "python_tests": {
+      "passed": 2735,
+      "subtests_passed": 14,
+      "seconds": 1201.02
+    },
+    "resources_identical_to_accepted_product": true,
+    "pull_request": 295,
+    "commit": "88841290113a37faa6bf117d4cd67dcd9ff0867c",
+    "merged_at_utc": "2026-10-03T06:28:46Z",
+    "tested_head": "a2787a9592af858bd00b7ae733cfd99d8c8d9e87",
+    "tree_matches_tested_head": true,
+    "evidence": "docs/reports/ims_ap6_merge.md",
+    "actual_main_parent": "03f87662e85e6081998bab79e32ee12baac52da1",
+    "actual_main_tree": "82ea185836c4636bd9ccdb8679c78b7cf35965f7",
+    "public_release_created": false
   }
 }
