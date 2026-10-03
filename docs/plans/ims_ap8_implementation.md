@@ -52,9 +52,13 @@ Vertrag wird stillschweigend als vom Menschen angenommen ausgegeben.
 | Stand | Lieferung | Nachweis |
 | --- | --- | --- |
 | M1 vorbereitet | Auftrag, Herkunft, Darstellungs-/Nenner-/Gewichtsvertrag | Dieser Plan, Darstellungsvertrag und tatsächlicher AP7-Merge |
-| M2 implementiert | Reine versionierte Projektion, frische API, Erhaltungs-/Rundungs-/Mitgliedschafts-/Wechseltests | Acht unabhängige kleine Tests, 39 gemeinsame AP8/AP5/AP7-Tests bestanden |
+| M2 implementiert | Reine versionierte Projektion, frische API, Erhaltungs-/Rundungs-/Mitgliedschafts-/Wechseltests | Neun unabhängige kleine Tests; ursprüngliche 39 gemeinsame AP8/AP5/AP7-Tests und aktuelle Produkt-CI bestanden |
 | M3 lokal geprüft | Sechs bedienbare verknüpfte Ansichten, Drilldown, Rollen/Fokus/Rivalen, JSON/Excel | Alle vier echten 100er-Digests/Prefixläufe, Nenner/Gewichte/Bücher, Filter und Exporte bestanden |
-| M4 Produkt-CI folgt | Anleitung, zwölf echte Bilder, höhere Produktkennung und wirklicher Windows-Installer | Lokale Suite 2.763 + 14 Subtests bestanden; Ressourcen-/Produkt-/Installer-CI noch offen |
+| M4 technisch abgeschlossen | Anleitung, zwölf echte Bilder, höhere Produktkennung und wirklicher Windows-Installer | Vier echte Produktchecks bestanden: 2.764 + 14 Subtests, 83 Browserfälle, 14 Lifecycle-/83 installierte Browserprüfungen; 387 Ressourcen gebunden |
 
-Neue gemeinsame Produktkennung alpha.8 ist noch kein geprüfter ausgelieferter Installer.
+Geprüfter alpha.8-Installer und vollständige Produktbelege geliefert; Anwenderabnahme und AP8-Merge bleiben offen. Kein AP9–AP14-Auftrag.
 Aktueller Stand: [Fortschritt](../reports/ims_ap8_fortschritt.md).
+
+Vollständige [Produktprüfung](../reports/ims_ap8_produktpruefung.md) und
+[Abschluss](../reports/ims_ap8_abschlussbericht.md) am eingefrorenen korrigierten
+Produktpunkt `17cbf5e631233ff5e5f5153a673a2eb6adaa7375`.

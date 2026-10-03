@@ -442,15 +442,38 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "in_progress",
-      "depends_on": ["AP7"],
+      "status": "done",
+      "depends_on": [
+        "AP7"
+      ],
       "branch_proposal": "codex/ims-market-visualizations",
-      "deliverables": ["Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten", "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang", "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung", "Marktinterpretation in IMS und Einzel-VU-Details in Excel", "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"],
-      "acceptance": ["Jeder Grafikpunkt stimmt mit API, Buchungen und Export überein", "Filter bleiben konsistent und ändern keinen Lauf", "Zeitabhängige Familien und Gruppen, korrekte Gewichte und Marktanteilsnenner", "Kunden-Wechselmengen ohne Doppelzählung und korrekte Ereigniszeiten", "Echte Gruppenauswertung ohne Excel interpretierbar", "Tastatur, zugängliche Tabellen, responsive Hell-/Dunkelansichten"],
-      "gates": ["Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"],
-      "completion_evidence": [],
+      "deliverables": [
+        "Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten",
+        "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang",
+        "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung",
+        "Marktinterpretation in IMS und Einzel-VU-Details in Excel",
+        "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"
+      ],
+      "acceptance": [
+        "Jeder Grafikpunkt stimmt mit API, Buchungen und Export überein",
+        "Filter bleiben konsistent und ändern keinen Lauf",
+        "Zeitabhängige Familien und Gruppen, korrekte Gewichte und Marktanteilsnenner",
+        "Kunden-Wechselmengen ohne Doppelzählung und korrekte Ereigniszeiten",
+        "Echte Gruppenauswertung ohne Excel interpretierbar",
+        "Tastatur, zugängliche Tabellen, responsive Hell-/Dunkelansichten"
+      ],
+      "gates": [
+        "Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"
+      ],
+      "completion_evidence": [
+        "docs/reports/ims_ap8_abschlussbericht.md",
+        "docs/reports/ims_ap8_produktpruefung.md: vier erfolgreiche Produktchecks am eingefrorenen Produktpunkt 17cbf5e631233ff5e5f5153a673a2eb6adaa7375",
+        "docs/reports/ims_ap8_verification.json: 2.764 Python-Tests/14 Subtests, 83 Browserfälle, 14 Lifecycle- und 83 installierte Browserprüfungen",
+        "docs/handbook/market_ap8.md: sechs Ansichten, zwölf echte Bilder, offline im alpha.8-Installer",
+        "docs/migration/ap8_market_explorer.md: vorhandene Kerne unverändert; exakte Addition/Kanal/Wechselwirkung/Korrelation"
+      ],
       "implementation_authorized": true,
-      "technically_complete": false,
+      "technically_complete": true,
       "merged_to_main": false,
       "user_product_acceptance": "pending",
       "merge_authorized": false,
@@ -473,7 +496,12 @@
           "origin": "docs/plans/ims_board_strategy_plan.json",
           "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
           "implementation_plan": "docs/plans/ims_ap8_implementation.md",
-          "acceptance_impact": "Fokus, Rivalen und Modellmarkt: absolute Buchungswerte und relative Position mit benannten Nennern nebeneinander; eigene AP8-Belege, historische Abnahmen unverändert."
+          "acceptance_impact": "Fokus, Rivalen und Modellmarkt: absolute Buchungswerte und relative Position mit benannten Nennern nebeneinander; eigene AP8-Belege, historische Abnahmen unverändert.",
+          "implemented": true,
+          "completion_evidence": [
+            "docs/reports/ims_ap8_verification.json: E08-01 mit Fokus/Rivalen/Modellmarkt, absoluten Buchungen, vollständigem Nenner und relativer Position",
+            "docs/reports/ims_ap8_produktpruefung.md"
+          ]
         }
       ]
     },

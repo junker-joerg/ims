@@ -1,4 +1,4 @@
-# AP8: Projektion und sechs Ansichten in Produktprüfung
+# AP8: sechs Ansichten technisch fertig; frühere Prüfstände
 
 03.10.2026. AP7 wurde tatsächlich nach main übernommen:
 `32ba3112d994f57f33e64e1bc318e7d095223cd0`, [Mergebeleg](ims_ap7_merge.md).
@@ -118,3 +118,22 @@ Versionsprüfungen. Die Übereinstimmung mit der gemeinsamen Python-Releasequell
 wird weiterhin im echten Release-Gate geprüft. Keine Produkt-/Modelländerung,
 kein abgeschwächter Versionscheck oder übersprungener Fall. Alle 83 Tests werden
 vollständig aufgezählt; neue vierfache Produkt-CI folgt im selben PR #297.
+
+## M4 technisch abgeschlossen am korrigierten Produktpunkt
+
+Vier tatsächliche Produktchecks am Kommitt `17cbf5e631233ff5e5f5153a673a2eb6adaa7375` erfolgreich.
+2.764 Python-Tests + 14 Subtests, 83 Checkout-Browserfälle, 14 echte
+Installer-Lifecycle-Prüfungen und 83 Browserfälle am installierten Produkt bestanden.
+Keine übersprungenen/instabilen/fehlgeschlagenen Browserfälle. Alle vier frischen
+100er-Rechnungen und exakten 25er-Prefixe erhalten die AP7-Modell-Digests;
+Checkout und installierte Anwendung liefern dieselben Modell-/Ansichtsnachweise.
+CI-Prüfmerge-Tree entspricht exakt dem Produkt-Tree. 387 Ressourcen gebunden,
+darunter zwölf tatsächliche AP8-Bilder; SHA/Version/EXE/GitHub-Archiv geprüft.
+Korrigierter lokaler Installer und drei direkte Frozen-App-Prüfungen separat
+erfolgreich; keine lokale Installation behauptet.
+
+[Produktprüfung](ims_ap8_produktpruefung.md), [Verifikation](ims_ap8_verification.json)
+und [Abschluss](ims_ap8_abschlussbericht.md) enthalten echte Zeiten, Download,
+Hash, Grenzen und Iterationsbelege. AP8 done/technisch fertig, Anwenderabnahme
+pending/Merge false. Kein öffentlicher Release oder AP9–AP14-Auftrag.
+Nachstehende beziehungsweise vorstehende frühere offene Prüfstände sind historisch.

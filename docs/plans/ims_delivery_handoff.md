@@ -1,5 +1,24 @@
 # IMS-Lieferübergabe
 
+## AP8 technisch fertig; Anwenderabnahme und Merge offen
+
+03.10.2026: AP7 ist tatsächlich in main (PR #296, `32ba3112d994f57f33e64e1bc318e7d095223cd0`).
+Der danach autorisierte AP8-Auftrag ist im selben Paket-PR #297 umgesetzt:
+sechs verknüpfte Ansichten, E08-01 Fokus/Rivalen/Modellmarkt und besonders
+sichtbarer ICT-Erklärweg bis Rückstand/Erholung/Buchung. Keine Kernlogik geändert.
+Produktpunkt `17cbf5e631233ff5e5f5153a673a2eb6adaa7375` hat vier erfolgreiche Produktchecks:
+2.764 Python-Tests/14 Subtests, 83 Browserfälle, 14 Lifecycle- und 83 installierte
+Browserprüfungen. Alpha.8 / 2.0.0.8, authentischer Installer, 387 Ressourcen,
+Offline-Anleitung mit zwölf echten Bildern geliefert.
+[Abschluss](../reports/ims_ap8_abschlussbericht.md),
+[Produktprüfung](../reports/ims_ap8_produktpruefung.md),
+[Verifikation](../reports/ims_ap8_verification.json).
+AP8 done/technisch fertig; Anwenderabnahme pending, Merge nicht freigegeben und
+main enthält weiterhin AP7. Kein öffentliches Release/AP9–AP14-Auftrag.
+AP9 erst nach tatsächlichem AP8-Merge und eigenem Folgeauftrag. Finalen
+Dokumentationshead und dessen Checks vor Ready/Merge separat prüfen; historische
+Stände und Abnahmen bleiben erhalten. Frühere Übergaben folgen.
+
 ## AP7 tatsächlich in main; AP8 beauftragt und M1 vorbereitet
 
 03.10.2026: AP7 über PR #296 nach main übernommen, 11:39:38 UTC,
