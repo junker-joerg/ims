@@ -1,8 +1,9 @@
-# AP7: Vorschlag für vier Schockfälle und den begrenzten Kopplungsvertrag
+# AP7: angenommener Vertrag für vier Schockfälle und die begrenzte Kopplung
 
-03.10.2026. **Fachlicher Vorschlag; noch nicht angenommen oder als Produkt
-implementiert.** AP7 ist nach tatsächlichem AP6-Merge zur Umsetzung beauftragt.
-Die Lebens-Nachfrage- und ICT-Zeit-/Buchungstore verlangen eine eigene Annahme.
+03.10.2026. **Fachlich ausdrücklich angenommen; Produktumsetzung läuft.**
+[Wörtlicher Annahmebeleg](../reports/ims_ap7_contract_acceptance.md).
+AP7 ist nach tatsächlichem AP6-Merge zur Umsetzung beauftragt.
+Die Lebens-Nachfrage- und ICT-Zeit-/Buchungstore sind angenommen.
 AP6s angenommener BaFin-Referenzumfang bleibt Ausgangsquelle; Firmennamen
 begründen keine tatsächlichen Strategien oder Providerbeziehungen.
 
@@ -218,5 +219,9 @@ Zur Annahme stehen der deterministische Lebens-Neugeschäftskanal mit erhaltenen
 Altgarantien, die 24-Stunden-Abbildung, der wirksame Antrags-/Wechselkanal,
 einmalige Kostenbuchung und die Prüfung konkreter Ersatzpfade. Die begrenzte
 Claims-/Service-Kopplung ist ausdrücklich Teil der Abnahmeauswirkung.
+Der Auftraggeber hat diesen Umfang ausdrücklich angenommen; zusätzlich müssen
+die ICT-Schocks sehr gut sichtbar und erklärbar werden. Der Erklärpfad zeigt
+Ereignis → Provider/Abhängigkeit → Prozesskapazität/Rückstand → Vertragswirkung
+→ einmalige Buchung, mit exakten Werten pro Periode und VU auf beiden Seiten.
 Annahme autorisiert ihre AP7-Umsetzung im selben Paket-PR, keinen Merge,
 kein öffentliches Release und kein AP8–AP14-Paket.

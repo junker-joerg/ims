@@ -1,5 +1,12 @@
 # AP7: Stand und nächste Entscheidung
 
+**Fortsetzung nach Annahme am 03.10.2026:** Der Auftraggeber hat den konkreten
+Vertrag ausdrücklich angenommen; [Beleg](ims_ap7_contract_acceptance.md).
+Beide fachlichen Tore angenommen, M2 läuft im selben PR #296. Zusätzlich
+besonders sichtbarer ICT-Erklärpfad von Ereignis über Abhängigkeiten/Queues
+bis Vertragswirkung und Buchung für beide Seiten. Nachstehender M1-Stand ist
+historischer Vorbereitung-/Prüfnachweis; keine weiterhin offene Vertragsannahme.
+
 03.10.2026. Branch `codex/ims-market-shock-demos`, von frisch gefetchtem main
 `88841290113a37faa6bf117d4cd67dcd9ff0867c`. Der ausdrücklich beauftragte AP6-
 Merge ist tatsächlich erledigt; [Beleg](ims_ap6_merge.md). Der anschließende

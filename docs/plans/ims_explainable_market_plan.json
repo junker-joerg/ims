@@ -384,14 +384,19 @@
       "implementation_plan": "docs/plans/ims_ap7_implementation.md",
       "progress_document": "docs/reports/ims_ap7_fortschritt.md",
       "contract_gate": {
-        "status": "proposed",
+        "status": "accepted",
         "proposal": "docs/plans/ims_ap7_shock_contract.md",
         "probes": "docs/reports/ims_ap7_contract_probes.json",
         "requires": [
           "Lebens-Nachfragevertrag mit erhaltenen Garantien erklärt und angenommen",
           "ICT-Zeitabbildung, Kostenzuordnung und Vermeidung doppelter Verluste erklärt und angenommen"
         ],
-        "human_acceptance_recorded": false
+        "human_acceptance_recorded": true,
+        "accepted_date": "2026-10-03",
+        "accepted_by": "Auftraggeber dieser Codex-Sitzung",
+        "answer": "ja, nehme ich an - der ICT-Schock muss auch sehr gut \"sichtbar\" und \"erklärbar\" werden",
+        "proposal_commit": "d52c2661c6333b89d8d57abbb5d615366467d014",
+        "acceptance_evidence": "docs/reports/ims_ap7_contract_acceptance.md"
       },
       "accepted_amendments": [
         {

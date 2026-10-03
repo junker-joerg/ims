@@ -1,5 +1,16 @@
 # IMS-Lieferübergabe
 
+## AP7-Vertrag angenommen; M2 im selben PR #296
+
+03.10.2026: [Ausdrückliche Annahme](../reports/ims_ap7_contract_acceptance.md) des
+konkreten Vorschlags d52c266. Lebens-Nachfrage und ICT-Zeit-/Buchungsvertrag
+angenommen; M2–M4 im selben Branch/PR fortsetzen. ICT-Schock besonders sichtbar
+und erklärbar: Ereignis → Provider/Abhängigkeit → Kapazität/Queue → Vertrag
+→ Buchung, beide Vergleichsseiten, echte Gegenmaßnahme und Aufholung.
+Begrenzte Claims-/Service-Kopplung angenommen. Keine neue Nachfrage nach
+Vertragsannahme; spätere technische Fertigstellung/Anwenderabnahme/Merge getrennt.
+Keine AP7-Merge-/Veröffentlichungsfreigabe oder AP8–AP14-Arbeit. Frühere Stände folgen.
+
 ## AP6 in main; AP7 begonnen, fachlicher Vertrag zur Prüfung
 
 03.10.2026: AP6 tatsächlich per PR #295 nach main übernommen,

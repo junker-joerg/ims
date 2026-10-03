@@ -117,8 +117,11 @@ Alle vier Checks am Abnahmekommitt a2787a9 bestanden, Merge-Tree identisch.
 Danach begann AP7 in `codex/ims-market-shock-demos`; Arbeitsauftrag,
 Umsetzungsplan und konkreter Vertragsvorschlag stehen in `docs/plans/ims_ap7_*`,
 Handproben und Fortschritt in `docs/reports/ims_ap7_*`; fortsetzen im selben
-Draft-PR #296. M1 erklärt den neuen
-Vertrag; dessen fachliche Annahme steht aus. Lebens-Nachfrage-/ICT-Zeit-/Buchungstore
+Draft-PR #296. Der Auftraggeber nahm den konkreten Lebens-/ICT-Vertrag am
+03.10.2026 ausdrücklich an; `docs/reports/ims_ap7_contract_acceptance.md`.
+M2–M4 im selben PR fortsetzen. ICT-Schocks müssen besonders sichtbar und
+erklärbar werden: Ereignis, Abhängigkeit, Kapazität/Queue, Vertrag und Buchung
+für beide Vergleichsseiten. Lebens-Nachfrage-/ICT-Zeit-/Buchungsgrenzen
 und die angenommene Ergänzung E07-01 bleiben verbindlich. Keine AP7-Merge- oder
 Veröffentlichungsfreigabe und keine AP8–AP14-Umsetzung. Die früheren
 Freigabegrenzen oben dokumentieren die damaligen Aufträge.

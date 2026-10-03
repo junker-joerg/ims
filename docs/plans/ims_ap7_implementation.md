@@ -1,6 +1,7 @@
 # AP7: vier Schockfälle im angenommenen BaFin-Referenzmarkt
 
-03.10.2026. **Umsetzung beauftragt und begonnen; fachliche Kopplungstore offen.**
+03.10.2026. **Umsetzung beauftragt; fachliche Kopplungstore angenommen, M2 läuft.**
+[Wörtliche Annahme und ICT-Erkläranforderung](../reports/ims_ap7_contract_acceptance.md).
 Ein Branch `codex/ims-market-shock-demos`, ein Draft-PR für das gesamte Paket.
 Der [Arbeitsauftrag](ims_ap7_work_order.md) wurde gegen frisch gefetchtes main
 `88841290113a37faa6bf117d4cd67dcd9ff0867c` erzeugt, nachdem AP6 tatsächlich
@@ -40,8 +41,8 @@ unverändert. Keine Übernahme vorgeschlagener AP10–AP14-Kanäle.
 
 | Stand | Arbeit | Nachweis / nächstes Tor |
 | --- | --- | --- |
-| M1 in Prüfung | C-/Python-Herkunft, Grenzen, konkreter Lebens-/Zeit-/Buchungs-/Ersatzpfadvertrag und kleine Handfälle | [Vorschlag](ims_ap7_shock_contract.md), [Proben](../reports/ims_ap7_contract_probes.json), fachliche Annahme fehlt |
-| M2 offen | Versionierter Schockvertrag, aktiver Eintritt, begrenzte Lebensanträge, physische Prozesszeit, Warteschlangen und einmalige Buchung | Erst nach Annahme der zwei fachlichen Tore; deterministische kleine Regressionen |
+| M1 angenommen | C-/Python-Herkunft, Grenzen, konkreter Lebens-/Zeit-/Buchungs-/Ersatzpfadvertrag und kleine Handfälle | [Vertrag](ims_ap7_shock_contract.md), [Proben](../reports/ims_ap7_contract_probes.json), ausdrückliche menschliche Annahme |
+| M2 läuft | Versionierter Schockvertrag, aktiver Eintritt, begrenzte Lebensanträge, physische Prozesszeit, Warteschlangen und einmalige Buchung | Angenommene zwei fachliche Tore; deterministische kleine Regressionen |
 | M3 offen | Vier echte 100er-Fälle, API/UI-Original/eigene Sitzung, frisches JSON/Excel und Rollen-Erklärpfade | Prefixe, Quellen-/Draw-Bindung, Bilanz-/Risiko-/Kosten-/Mengenabnahmen, Ressourcenmessung |
 | M4 offen | Offline-Anleitung, echte Bilder, höhere gemeinsame Produktversion und tatsächlicher Windows-Installer | Produkt-/Browser-/Lifecycle-CI, Anwenderabnahme separat, Merge separat |
 
