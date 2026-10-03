@@ -1,0 +1,405 @@
+{
+  "schema_version": "ims.ap7-contract-probes.v1",
+  "status": "passed",
+  "kind": "existing_core_observations_and_independent_hand_arithmetic_not_production_implementation",
+  "new_model_contract_authorized": false,
+  "historical_full_equality_claim": false,
+  "existing_life_core": {
+    "source": "tests/fixtures/life_period_chain_v1.json",
+    "with_declared_new_business": [
+      {
+        "period": 1,
+        "premiums_collected": "20.0000",
+        "death_benefits_paid": "65.0000",
+        "maturity_benefits_paid": "25.0000",
+        "closing_backing_assets": "104.0000",
+        "closing_guarantee_liability": "54.0000",
+        "closing_equity": "50.0000"
+      },
+      {
+        "period": 2,
+        "premiums_collected": "5.0000",
+        "death_benefits_paid": "0.0000",
+        "maturity_benefits_paid": "72.0000",
+        "closing_backing_assets": "33.0000",
+        "closing_guarantee_liability": "0.0000",
+        "closing_equity": "33.0000"
+      }
+    ],
+    "without_new_business": [
+      {
+        "period": 1,
+        "premiums_collected": "10.0000",
+        "death_benefits_paid": "65.0000",
+        "maturity_benefits_paid": "25.0000",
+        "closing_backing_assets": "94.0000",
+        "closing_guarantee_liability": "46.0000",
+        "closing_equity": "48.0000"
+      },
+      {
+        "period": 2,
+        "premiums_collected": "5.0000",
+        "death_benefits_paid": "0.0000",
+        "maturity_benefits_paid": "60.0000",
+        "closing_backing_assets": "35.0000",
+        "closing_guarantee_liability": "0.0000",
+        "closing_equity": "35.0000"
+      }
+    ],
+    "old_death_and_first_maturity_preserved": true,
+    "input_unchanged": true
+  },
+  "existing_ict_core": {
+    "source": "ims.ict.presets.workshop_case",
+    "without_fallback_processed": "0.0000",
+    "declared_fallback_processed": "240.0000",
+    "fallback_kind": "declared_capacity_not_verified_independence",
+    "fallback_still_has_original_platform_dependency": true,
+    "input_unchanged": true
+  },
+  "existing_market_entry_probe": {
+    "period_count": 25,
+    "registered_actors": 3,
+    "entrant_P20_P21": [
+      {
+        "period": 20,
+        "sector_id": "motor",
+        "insurer_id": 3,
+        "insurance_group_id": "Fiktiver_Eintritt",
+        "family_id": "Fiktiver_Preis",
+        "rule": "offer.fixed",
+        "parameters": {
+          "price": "1",
+          "advertising": "0"
+        },
+        "active_measures": [],
+        "information_period": 19,
+        "draws": [
+          0.7709617656275098,
+          0.792978413784559,
+          0.6332313797960363,
+          0.6615840616607878
+        ],
+        "source_contract": "ims.modern-market.v1",
+        "quoted_price": "1.0000",
+        "covered_quantity": "0.0000",
+        "weighted_price": null,
+        "premium_income": "0.0000",
+        "investment_income": "0.0000",
+        "insurance_expense": "0.0000",
+        "claims_paid": "0.0000",
+        "new_claims_paid": "0.0000",
+        "old_claims_paid": "0.0000",
+        "operating_expense": "0.0000",
+        "advertising_expense": "0.0000",
+        "measure_cost": "0.0000",
+        "period_profit": "0.0000",
+        "capital_contribution": "0.0000",
+        "capital_distribution": "0.0000",
+        "opening_assets": "0.0000",
+        "opening_liabilities": "0.0000",
+        "opening_equity": "0.0000",
+        "closing_assets": "0.0000",
+        "closing_liabilities": "0.0000",
+        "closing_equity": "0.0000"
+      },
+      {
+        "period": 21,
+        "sector_id": "motor",
+        "insurer_id": 3,
+        "insurance_group_id": "Fiktiver_Eintritt",
+        "family_id": "Fiktiver_Preis",
+        "rule": "offer.fixed",
+        "parameters": {
+          "price": "1",
+          "advertising": "0",
+          "capacity": "10"
+        },
+        "active_measures": [
+          "Eintritt"
+        ],
+        "information_period": 20,
+        "draws": [
+          0.5025937539212971,
+          0.5772215027169997,
+          0.28752360796651466,
+          0.4382653592955038
+        ],
+        "source_contract": "ims.modern-market.v1",
+        "quoted_price": "1.0000",
+        "covered_quantity": "10.0000",
+        "weighted_price": "1.0000",
+        "premium_income": "10.0000",
+        "investment_income": "0.0000",
+        "insurance_expense": "8.0000",
+        "claims_paid": "8.0000",
+        "new_claims_paid": "8.0000",
+        "old_claims_paid": "0.0000",
+        "operating_expense": "0.0000",
+        "advertising_expense": "0.0000",
+        "measure_cost": "0.0000",
+        "period_profit": "2.0000",
+        "capital_contribution": "1000.0000",
+        "capital_distribution": "0.0000",
+        "opening_assets": "0.0000",
+        "opening_liabilities": "0.0000",
+        "opening_equity": "0.0000",
+        "closing_assets": "1002.0000",
+        "closing_liabilities": "0.0000",
+        "closing_equity": "1002.0000"
+      }
+    ],
+    "baseline_decision_P20_P21": [
+      {
+        "period": 20,
+        "sector_id": "motor",
+        "group_id": "G1",
+        "previous_insurer_id": 2,
+        "insurer_id": 2,
+        "quantity": "10.0000",
+        "insured": true,
+        "premium_income": "20.0000",
+        "risk_loss": "0.0000",
+        "new_claims_paid": "0.0000",
+        "uninsured_loss": "0.0000",
+        "eligible_insurer_ids": [
+          1,
+          2
+        ],
+        "rule": "vn.vrvn06_with_capacity_admission",
+        "information_period": 20,
+        "information_scope": "current_public_offers_before_risk_booking"
+      },
+      {
+        "period": 21,
+        "sector_id": "motor",
+        "group_id": "G1",
+        "previous_insurer_id": 2,
+        "insurer_id": 3,
+        "quantity": "10.0000",
+        "insured": true,
+        "premium_income": "10.0000",
+        "risk_loss": "8.0000",
+        "new_claims_paid": "8.0000",
+        "uninsured_loss": "0.0000",
+        "eligible_insurer_ids": [
+          1,
+          2,
+          3
+        ],
+        "rule": "vn.vrvn06_with_capacity_admission",
+        "information_period": 21,
+        "information_scope": "current_public_offers_before_risk_booking"
+      }
+    ],
+    "variant_decision_P21": {
+      "period": 21,
+      "sector_id": "motor",
+      "group_id": "G1",
+      "previous_insurer_id": 2,
+      "insurer_id": 1,
+      "quantity": "10.0000",
+      "insured": true,
+      "premium_income": "5.0000",
+      "risk_loss": "8.0000",
+      "new_claims_paid": "8.0000",
+      "uninsured_loss": "0.0000",
+      "eligible_insurer_ids": [
+        1,
+        2,
+        3
+      ],
+      "rule": "vn.vrvn06_with_capacity_admission",
+      "information_period": 21,
+      "information_scope": "current_public_offers_before_risk_booking"
+    },
+    "old_AP5_active_count_P20": 3,
+    "input_unchanged": true,
+    "limit": "AP5 counts registered sector rows as active; a new AP7 activation status remains to implement."
+  },
+  "independent_proposed_hand_arithmetic": {
+    "attractiveness_pool_4_counts": [
+      4,
+      1,
+      2
+    ],
+    "queue_baseline": {
+      "rows": [
+        {
+          "period": 1,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 0,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 0,
+          "premium": "0",
+          "new_liability": "0"
+        },
+        {
+          "period": 2,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 2,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 2,
+          "premium": "6",
+          "new_liability": "4"
+        },
+        {
+          "period": 3,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 2,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 4,
+          "premium": "6",
+          "new_liability": "4"
+        },
+        {
+          "period": 4,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 2,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 6,
+          "premium": "6",
+          "new_liability": "4"
+        },
+        {
+          "period": 5,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 2,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 8,
+          "premium": "6",
+          "new_liability": "4"
+        },
+        {
+          "period": 6,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 2,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 10,
+          "premium": "6",
+          "new_liability": "4"
+        }
+      ],
+      "issued": 10,
+      "pending_next_period": 2,
+      "queue": 0
+    },
+    "queue_shock": {
+      "rows": [
+        {
+          "period": 1,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 0,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 0,
+          "premium": "0",
+          "new_liability": "0"
+        },
+        {
+          "period": 2,
+          "arrivals": 2,
+          "completed": 2,
+          "issued": 2,
+          "closing_queue": 0,
+          "pending_next_period": 2,
+          "cumulative_issued": 2,
+          "premium": "6",
+          "new_liability": "4"
+        },
+        {
+          "period": 3,
+          "arrivals": 2,
+          "completed": 0,
+          "issued": 2,
+          "closing_queue": 2,
+          "pending_next_period": 0,
+          "cumulative_issued": 4,
+          "premium": "6",
+          "new_liability": "4"
+        },
+        {
+          "period": 4,
+          "arrivals": 2,
+          "completed": 0,
+          "issued": 0,
+          "closing_queue": 4,
+          "pending_next_period": 0,
+          "cumulative_issued": 4,
+          "premium": "0",
+          "new_liability": "0"
+        },
+        {
+          "period": 5,
+          "arrivals": 2,
+          "completed": 3,
+          "issued": 0,
+          "closing_queue": 3,
+          "pending_next_period": 3,
+          "cumulative_issued": 4,
+          "premium": "0",
+          "new_liability": "0"
+        },
+        {
+          "period": 6,
+          "arrivals": 2,
+          "completed": 3,
+          "issued": 3,
+          "closing_queue": 2,
+          "pending_next_period": 3,
+          "cumulative_issued": 7,
+          "premium": "9",
+          "new_liability": "6"
+        }
+      ],
+      "issued": 7,
+      "pending_next_period": 3,
+      "queue": 2
+    },
+    "premium_difference_at_horizon": "9",
+    "difference_kind": "deferred_issuance_with_terminal_pending_items_not_permanent_loss",
+    "no_second_ict_margin_deduction": true,
+    "shared_cost": "6",
+    "weights": [
+      "0.3333",
+      "0.3333",
+      "0.3334"
+    ],
+    "cost_allocations": [
+      "1.9998",
+      "1.9998",
+      "2.0004"
+    ],
+    "independent_fallback_available": true,
+    "dependent_fallback_available": false,
+    "outage_hours_P21_P22": [
+      24,
+      12
+    ],
+    "half_open_end_hour": 516,
+    "six_hour_hand_clock_note": "Tiny one-hour hand periods; proposed full-demo default is 24 hours per model period."
+  },
+  "source_hashes": {
+    "IMS.E": "de0e01a45e02b4193462e566d998c9a2319354b7dfea3fc522d4aabe55adeb0f",
+    "IMSDATA.C": "f7b02b04069982d16fdfaab2893742daa05f687edffc1deee9b0eae4890e9152",
+    "ESS.C": "dcda66c233162be06dad8fcb769443b43b6c4bd88a0f4ec707aa389d553b5edb",
+    "python_port/ims/market/runner.py": "d6e22c88b3a37f92a15a75a6e107fe8d921afec3c2de3e5900d00f91b270deaf",
+    "python_port/ims/ict/simulation.py": "ce7b81dd92c523b199255c07e48e606e8db2f34d0ad9eae3794c21048be80c8e",
+    "python_port/ims/accounting/life_period_chain.py": "707f3e965922c24355ad1a3254257d5a09f3d7e62feb55d923fab4689cf6e63f",
+    "tests/fixtures/life_period_chain_v1.json": "5821ce30427e6f2cfeb162d8d13537896ebf4da9b772552b96e957c8e44141dd"
+  },
+  "seconds": 0.16086130001349375
+}

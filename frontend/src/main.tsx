@@ -12,6 +12,7 @@ import GuidedChainWorkbench from "./GuidedChainWorkbench";
 import ManagementCaseWorkbench from "./ManagementCaseWorkbench";
 import SeminarWorkbench, { type SeminarCompanions } from "./SeminarWorkbench";
 import MarketWorkbench from "./MarketWorkbench";
+import MarketShockWorkbench from "./MarketShockWorkbench";
 import type { SeminarCapitalDefaults } from "./CapitalWorkbench";
 import type { CheckedFourSector, CheckedNonLife, CheckedSides } from "./fourSectorSources";
 import {
@@ -9137,7 +9138,7 @@ function App() {
         <ModelWorkspace model="capital"><CapitalWorkbench source={fourSectorReady} seminarDefaults={seminarCapital} /></ModelWorkspace>
         <ModelWorkspace model="ict"><IctWorkbench seminarSource={seminarCompanions?.ict} /></ModelWorkspace>
         <ModelWorkspace model="seminar"><SeminarWorkbench onReady={(source, capital) => { setFourSectorReady(source); setSeminarCapital(capital); }} onSources={setSeminarCompanions} /></ModelWorkspace>
-        <ModelWorkspace model="market"><MarketWorkbench /></ModelWorkspace>
+        <ModelWorkspace model="market"><MarketShockWorkbench /><MarketWorkbench /></ModelWorkspace>
         <ModelWorkspace model="management"><ManagementCaseWorkbench onReady={setFourSectorReady} /></ModelWorkspace>
         <ModelWorkspace model="hundred"><GuidedChainWorkbench seminarSource={seminarCompanions?.guided} onStored={() => setGuidedChainRevision(value => value + 1)} />
           <section className="panel" aria-label="Kontrollierter 100-Perioden-Lauf"><HundredPeriodResults refreshToken={guidedChainRevision} /></section>

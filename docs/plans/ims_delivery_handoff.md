@@ -1,5 +1,74 @@
 # IMS-Lieferübergabe
 
+## AP7-Anwenderabnahme und Mergeauftrag erteilt; danach AP8
+
+03.10.2026: Der Auftraggeber bestätigt wörtlich „Anwenderabnahme und Merge
+bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort“.
+[Beleg](../reports/ims_ap7_user_acceptance.md). AP7 im angenommenen begrenzten
+Umfang abgenommen, Merge beauftragt. Danach AP8 gemäß angenommenem Manifest
+und separat angenommener Ergänzung E08-01 fortsetzen. Vor AP8-Umsetzung tatsächlichen
+AP7-main-Status belegen und authorized-Auftrag gegen frisch gefetchtes main
+erzeugen. Addition/Wechselwirkung/Korrelation unterscheiden; keine neuen
+Modellkanäle oder historischen Erweiterungsbehauptungen. Kein AP8-Merge,
+öffentliches Release oder AP9–AP14-Auftrag. Vorstehende technische Produktbelege
+bleiben erhalten; frühere Stände folgen.
+
+## AP7 technisch fertig; konkrete alpha.7-Anwenderabnahme offen
+
+03.10.2026: M1–M4 im selben Draft-PR #296 erledigt. Produktkommitt 37fe791,
+vier Produktchecks erfolgreich, 2.755 Python-Tests/14 Subtests, 70 Browserfälle,
+14 Installer-Lifecycle- und 70 installierte Browserprüfungen. Vier volle 100er-
+Fälle liefern im Checkout und installierten Produkt dieselben Digests.
+ICT-Ereignis/Vorleistung/Queue/Vertrag/Buchung sichtbar und erklärbar,
+konkreter unabhängiger/abhängiger Q geprüft. Offline-Anleitung mit zwölf echten
+Bildern und hashgebundener Installer alpha.7 geliefert.
+[Abschluss](../reports/ims_ap7_abschlussbericht.md),
+[Produktprüfung](../reports/ims_ap7_produktpruefung.md),
+[Verifikation](../reports/ims_ap7_verification.json).
+AP7-Manifest done/technisch fertig, Anwenderabnahme pending/Merge false.
+Kein öffentlicher Release, kein AP8–AP14-Auftrag; AP8 braucht tatsächliches
+AP7 in main und einen eigenen menschlichen Auftrag. Frühere Stände folgen.
+
+## AP7 M2/M3 umgesetzt; installierte Produktprüfung noch offen
+
+03.10.2026: Vier reale 100er-Browserfälle und ihre 25er-Prefixe bestanden,
+Bilanz-/Risiko-/Queue-/Kosten-/Gruppenerhaltung geprüft. API/UI, Original/eigene
+Sitzung, JSON/Excel und Anleitung alpha.7 angeschlossen. Abschließende
+Rollen-/Bildprüfung sowie echter Installer und Produkt-CI folgen; technische
+Fertigmeldung/Anwenderabnahme/Merge weiter offen.
+[Prüfstand](../reports/ims_ap7_fortschritt.md). Derselbe Draft-PR #296; keine
+AP8–AP14-Arbeit und keine erneute Frage nach der schon erteilten Vertragsannahme.
+
+## AP7-Vertrag angenommen; M2 im selben PR #296
+
+03.10.2026: [Ausdrückliche Annahme](../reports/ims_ap7_contract_acceptance.md) des
+konkreten Vorschlags d52c266. Lebens-Nachfrage und ICT-Zeit-/Buchungsvertrag
+angenommen; M2–M4 im selben Branch/PR fortsetzen. ICT-Schock besonders sichtbar
+und erklärbar: Ereignis → Provider/Abhängigkeit → Kapazität/Queue → Vertrag
+→ Buchung, beide Vergleichsseiten, echte Gegenmaßnahme und Aufholung.
+Begrenzte Claims-/Service-Kopplung angenommen. Keine neue Nachfrage nach
+Vertragsannahme; spätere technische Fertigstellung/Anwenderabnahme/Merge getrennt.
+Keine AP7-Merge-/Veröffentlichungsfreigabe oder AP8–AP14-Arbeit. Frühere Stände folgen.
+
+## AP6 in main; AP7 begonnen, fachlicher Vertrag zur Prüfung
+
+03.10.2026: AP6 tatsächlich per PR #295 nach main übernommen,
+`88841290113a37faa6bf117d4cd67dcd9ff0867c`, 06:28:46 UTC. Vier Checks am
+Abnahmekommitt a2787a9 erfolgreich; Merge-Tree identisch. [Mergebeleg](../reports/ims_ap6_merge.md).
+Danach AP7-authorized-Auftrag gegen gefetchtes main erzeugt und Branch
+`codex/ims-market-shock-demos` angelegt. [Umsetzungsplan](ims_ap7_implementation.md),
+[konkreter Vertragsvorschlag](ims_ap7_shock_contract.md),
+[Handproben](../reports/ims_ap7_contract_probes.json) und
+[Fortschritt](../reports/ims_ap7_fortschritt.md). E07-01 mit eigener Herkunft.
+M1 vorbereitet, fachliche Annahme des Lebens-/ICT-Vertrags noch offen; erst
+danach M2 im selben [Draft-PR #296](https://github.com/junker-joerg/ims/pull/296).
+M1-Vorschlagskommitt `c9e8c63be7ed7a4eb2495dfdef22e4db83eb3780`; gemeinsame
+fachliche Annahme angefragt, Antwort noch nicht dokumentiert.
+Claims-/Service-Queues verschieben im vorgeschlagenen
+begrenzten Umfang keine Versicherungszahlungen. Produkt bleibt alpha.6,
+vier neue 100er-Demos und alpha.7 sind noch nicht geliefert. Keine AP7-Merge-/
+Veröffentlichungsfreigabe oder AP8–AP14-Umsetzung. Nachstehende Stände historisch.
+
 ## AP6 abgenommen und Merge freigegeben; danach AP7 beauftragt
 
 03.10.2026: „Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort“.

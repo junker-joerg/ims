@@ -59,9 +59,9 @@ def render(source: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--guide", choices=("ap3", "ap4", "ap5"), default="ap3")
+    parser.add_argument("--guide", choices=("ap3", "ap4", "ap5", "ap7"), default="ap3")
     args = parser.parse_args()
-    filename = {"ap3": "seminar_ap3", "ap4": "management_ap4", "ap5": "market_ap5"}[args.guide]
+    filename = {"ap3": "seminar_ap3", "ap4": "management_ap4", "ap5": "market_ap5", "ap7": "market_ap7"}[args.guide]
     source = (ROOT / f"docs/handbook/{filename}.md").read_text(encoding="utf-8")
     source = source.replace("../reports/ims_ap3_abschlussbericht.md", "https://github.com/junker-joerg/ims/blob/codex/ims-management-integration/docs/reports/ims_ap3_abschlussbericht.md")
     html = """<!doctype html>
@@ -73,6 +73,8 @@ def main() -> None:
         html = html.replace("IMS – Managementseminar AP3", "IMS – Managementlabor AP4")
     if args.guide == "ap5":
         html = html.replace("IMS – Managementseminar AP3", "IMS – Markt und Strategiefamilien AP5")
+    if args.guide == "ap7":
+        html = html.replace("IMS – Managementseminar AP3", "IMS – Vier Markt- und ICT-Schockfälle AP7")
     (ROOT / f"docs/handbook/{filename}.html").write_text(html, encoding="utf-8")
 
 

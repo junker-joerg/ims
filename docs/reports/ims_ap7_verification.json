@@ -1,0 +1,3212 @@
+{
+  "package": "AP7",
+  "recorded_on": "2026-10-03",
+  "release_version": "2.0.0-alpha.7",
+  "windows_file_version": "2.0.0.7",
+  "scope": "accepted_ap7_bounded_market_ict_workshop",
+  "contract_acceptance": "docs/reports/ims_ap7_contract_acceptance.md",
+  "product_head": "37fe79117c87c504df0ee945092040d3e329a690",
+  "product_tree": "5d587300b8db89ae83dd66d0133df82001ab4636",
+  "ci_merge_commit": "c954b5928265cce53a970a58c6311fd58b29861a",
+  "ci_tree_matches_head": true,
+  "main_dependency_commit": "88841290113a37faa6bf117d4cd67dcd9ff0867c",
+  "local_checks": {
+    "ap7_unit": {
+      "passed": 15,
+      "duration_seconds": 20.39
+    },
+    "ap5_regression_after_export": {
+      "passed": 16,
+      "duration_seconds": 43.31
+    },
+    "combined_ap7_ap6_reference": {
+      "passed": 25,
+      "duration_seconds": 105.91
+    },
+    "planning_plus_ap7_before_unicode_case": {
+      "passed": 49,
+      "subtests": 14,
+      "duration_seconds": 36.72
+    },
+    "frontend_build_passed": true,
+    "first_full_browser_report": [
+      {
+        "caseId": "us_hyperscaler_outage",
+        "elapsed_seconds": 136.484,
+        "wire_bytes": 55758615,
+        "digest": "7243b5f1b5add68e4367781b623a24ee804e00cdb0dfb41a8c9f31335098dea9",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 2,
+          "ict_job_rows": 7980,
+          "cost_rows": 11175,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364274.4230",
+            "closing_equity": "362827.0206",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4068",
+            "measure_cost": "0.0000",
+            "opening_assets": "364636.6890",
+            "opening_equity": "361453.3266",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6940",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364211.4606",
+            "closing_equity": "362764.0582",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3906",
+            "measure_cost": "0.7200",
+            "opening_assets": "364574.4628",
+            "opening_equity": "361391.1004",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3912",
+            "period": 100,
+            "period_profit": "1372.9578",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.0000",
+                "capacity_per_hour": "0.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "0.0000",
+            "closing_queue": 84,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "24.0000",
+            "period": 21,
+            "processed_work": "0.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Q_Vorsorge"
+                ],
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "primary_causes": [
+                  "ap7-shock"
+                ],
+                "effective_factor": "1.0000",
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "google_motor_entry",
+        "elapsed_seconds": 134.406,
+        "wire_bytes": 55999982,
+        "digest": "673b1d15c0f83dacc91d9899b912aa18c2a7c1949bf01de534d67f142c615b16",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13700,
+          "market_rows": 500,
+          "family_rows": 15500,
+          "peer_rows": 0,
+          "insurance_group_rows": 20500,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19200,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 8004,
+          "cost_rows": 7909,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 24,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "462285.2831",
+            "closing_equity": "460837.8807",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462672.7279",
+            "opening_equity": "459489.3655",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1348.5152",
+            "premium_income": "2257.8456",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2640.8223",
+            "closing_assets": "462299.5561",
+            "closing_equity": "460852.1537",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "904.8623",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462685.1773",
+            "opening_equity": "459501.8149",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1350.3388",
+            "premium_income": "2307.4651",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 4,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "96.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "95.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "life_demand_shock",
+        "elapsed_seconds": 138.856,
+        "wire_bytes": 55324176,
+        "digest": "fc7a4073c092fe75c4b6799770bc096e140bf00dfd11a9ff7f44a877fdca8025",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 7820,
+          "cost_rows": 7852,
+          "life_demand_rows": 100,
+          "life_contract_rows": 218,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 2
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2526.6955",
+            "closing_assets": "361470.9811",
+            "closing_equity": "360354.5696",
+            "closing_liabilities": "1116.4115",
+            "covered_quantity": null,
+            "insurance_expense": "790.7355",
+            "investment_income": "86.0213",
+            "measure_cost": "0.0000",
+            "opening_assets": "361867.2954",
+            "opening_equity": "359014.9239",
+            "opening_liabilities": "2852.3715",
+            "operating_expense": "137.6649",
+            "period": 100,
+            "period_profit": "1339.6457",
+            "premium_income": "2182.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2548.8058",
+            "closing_assets": "362399.9057",
+            "closing_equity": "361173.1639",
+            "closing_liabilities": "1226.7418",
+            "covered_quantity": null,
+            "insurance_expense": "812.8458",
+            "investment_income": "86.4802",
+            "measure_cost": "0.0000",
+            "opening_assets": "362784.8735",
+            "opening_equity": "359822.1717",
+            "opening_liabilities": "2962.7018",
+            "operating_expense": "137.6670",
+            "period": 100,
+            "period_profit": "1350.9922",
+            "premium_income": "2215.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "81.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "82.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "dora_2_workshop",
+        "elapsed_seconds": 137.55,
+        "wire_bytes": 55787965,
+        "digest": "380d395bfd59fac0aa89e8bcbf0f54d00b811fe7a6140aca23918d23af73b4b9",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 10,
+          "ict_job_rows": 7980,
+          "cost_rows": 11215,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364154.8580",
+            "closing_equity": "362707.4556",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3758",
+            "measure_cost": "0.0000",
+            "opening_assets": "364517.1550",
+            "opening_equity": "361333.7926",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6630",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364112.5487",
+            "closing_equity": "362665.1463",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3639",
+            "measure_cost": "0.7200",
+            "opening_assets": "364475.5330",
+            "opening_equity": "361292.1706",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3466",
+            "period": 100,
+            "period_profit": "1372.9757",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.5000",
+                "capacity_per_hour": "2.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "48.0000",
+            "closing_queue": 36,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "12.0000",
+            "period": 21,
+            "processed_work": "48.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Vorbereitete_Kapazitaet"
+                ],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      }
+    ],
+    "initial_short_matrix": {
+      "test_count": 7,
+      "duration_seconds": 223.932432,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "contrast": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "theme": "light",
+          "minimumContrast": 6.13,
+          "checkedTextNodes": 1473
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "theme": "dark",
+          "minimumContrast": 6.85,
+          "checkedTextNodes": 1473
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "theme": "light",
+          "minimumContrast": 6.13,
+          "checkedTextNodes": 1092
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "theme": "dark",
+          "minimumContrast": 6.85,
+          "checkedTextNodes": 1092
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "theme": "light",
+          "minimumContrast": 6.13,
+          "checkedTextNodes": 391
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "theme": "dark",
+          "minimumContrast": 6.85,
+          "checkedTextNodes": 391
+        }
+      ]
+    },
+    "final_ui_browser_expected": 8,
+    "final_ui_browser_passed": true,
+    "case_digests_note": "Earlier local result digests remain historical. The exact frozen product has its own CI digests, identical between checkout and installed executable.",
+    "final_ui_browser_duration_seconds": 347.387796
+  },
+  "current_input_cases": [
+    {
+      "case": "google_motor_entry",
+      "input_digest": "be08c35b137dd075ea03a2f8be9096a4862b9a7421085ebde3bac3fac27a21d1",
+      "input_bytes": 7620466
+    },
+    {
+      "case": "life_demand_shock",
+      "input_digest": "a0274ebafdafc06e80f49ae42cfad6d70daf4c224b94bb9c7af7fd9f8196f560",
+      "input_bytes": 7605130
+    },
+    {
+      "case": "dora_2_workshop",
+      "input_digest": "96223f568196aa325bc4771eff7e0621e719024e711fdb6395c72216252eb03d",
+      "input_bytes": 7605350
+    },
+    {
+      "case": "us_hyperscaler_outage",
+      "input_digest": "f6197ed4d50ed6b6a37c8838428905c53b2c7851f4f8ae45d3259309d208fc0a",
+      "input_bytes": 7605201
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/handbook/images/ap7_dependent_q_25_light_1440x900.png",
+      "sha256": "6a9dc667335c7323c690b4f1c3f29aaca4121ada6a54daa88293169a9292c4a9",
+      "bytes": 86126
+    },
+    {
+      "path": "docs/handbook/images/ap7_dora_2_workshop_100_light_1440x900.png",
+      "sha256": "d607273bb519f2b9c5c406148fa52884b767f717c60373ecc0e6b8998df90596",
+      "bytes": 81452
+    },
+    {
+      "path": "docs/handbook/images/ap7_google_motor_entry_100_light_1440x900.png",
+      "sha256": "4f13a1d256121fafb8c0d83ab7f8012eaaf3e904e3b41ed6b1d42d3a05ce36b2",
+      "bytes": 72160
+    },
+    {
+      "path": "docs/handbook/images/ap7_ict_dark_1024x768.png",
+      "sha256": "ab7e904d46ee02cb9396c89ae1ae967f01c9e90d505b87cfb43e5857e1f64632",
+      "bytes": 83111
+    },
+    {
+      "path": "docs/handbook/images/ap7_ict_dark_1440x900.png",
+      "sha256": "eb2053f07bf6a98329bd0d47f18173c3f9bd79e542e345466aa86beac2ca0ec2",
+      "bytes": 102062
+    },
+    {
+      "path": "docs/handbook/images/ap7_ict_dark_390x844.png",
+      "sha256": "6f7c9fd94a111e8b4e2545173f107833970d6ce3519540d3815f8621d7d2767c",
+      "bytes": 39350
+    },
+    {
+      "path": "docs/handbook/images/ap7_ict_light_1024x768.png",
+      "sha256": "cc9380c9c9d55c2b1fb9a71dace30f19593fd886b9210c7a98828e348b6bd251",
+      "bytes": 82142
+    },
+    {
+      "path": "docs/handbook/images/ap7_ict_light_1440x900.png",
+      "sha256": "b4cc74add22652cfdb8be61f0afda8728c5e52503271504664e3fe8621fabadb",
+      "bytes": 100612
+    },
+    {
+      "path": "docs/handbook/images/ap7_ict_light_390x844.png",
+      "sha256": "0a871f8d220a6745c2c68106d8f465c0d7f74c6270f1095b5955c3b19fb355e3",
+      "bytes": 38854
+    },
+    {
+      "path": "docs/handbook/images/ap7_life_demand_shock_100_light_1440x900.png",
+      "sha256": "1aba83ead75209a02d8bc12c5a0207e16201648346b19943c2887f8b054d156f",
+      "bytes": 72354
+    },
+    {
+      "path": "docs/handbook/images/ap7_us_hyperscaler_outage_100_light_1440x900.png",
+      "sha256": "91aef8299fe073d62e56c938cbe0f6edc33cfbcbd2c5a537f99cfb2039bf1e46",
+      "bytes": 79659
+    },
+    {
+      "path": "docs/handbook/images/ap7_us_path_100_light_1440x900.png",
+      "sha256": "dd78a2fdaab209e8d3416f5d9ab13f7ea5e412c19a4c1e12bb4f60878ffd7339",
+      "bytes": 87937
+    }
+  ],
+  "source_workbook_sha256": "36253bf320b152ad031642b68402cbe4d7aa1e25dea5104fa6478ba4304b67a3",
+  "source_catalog_digest": "03ee33f97a772d8a88b69210784d5b4502ed533745bdd6f097eee699ec7c7b1a",
+  "product_ci": {
+    "verified": true,
+    "product_head": "37fe79117c87c504df0ee945092040d3e329a690",
+    "product_tree": "5d587300b8db89ae83dd66d0133df82001ab4636",
+    "ci_merge_commit": "c954b5928265cce53a970a58c6311fd58b29861a",
+    "ci_tree_matches_head": true,
+    "main_dependency_commit": "88841290113a37faa6bf117d4cd67dcd9ff0867c",
+    "checks": [
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "37fe79117c87c504df0ee945092040d3e329a690",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37111434967/job/111169962550",
+        "completed_at": "2026-10-03T09:25:55Z"
+      },
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "37fe79117c87c504df0ee945092040d3e329a690",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37111434981/job/111169962500",
+        "completed_at": "2026-10-03T08:57:56Z"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "37fe79117c87c504df0ee945092040d3e329a690",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37111434943/job/111169962419",
+        "completed_at": "2026-10-03T09:27:03Z"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "37fe79117c87c504df0ee945092040d3e329a690",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37111434997/job/111169962258",
+        "completed_at": "2026-10-03T09:16:34Z"
+      }
+    ],
+    "resources": {
+      "count": 372,
+      "raw_git_blob_matches": 46,
+      "only_crlf_conversion": [
+        "docs/handbook/README.md",
+        "docs/handbook/data_and_updates.md",
+        "docs/handbook/hundred_ap3.md",
+        "docs/handbook/ict_ap3.md",
+        "docs/handbook/installation_test_package_windows.md",
+        "docs/handbook/installation_windows.md",
+        "docs/handbook/installer_windows.md",
+        "docs/handbook/management_ap3.md",
+        "docs/handbook/management_ap4.html",
+        "docs/handbook/management_ap4.md",
+        "docs/handbook/management_seminar_guide.md",
+        "docs/handbook/market_ap5.html",
+        "docs/handbook/market_ap5.md",
+        "docs/handbook/market_ap6.html",
+        "docs/handbook/market_ap7.html",
+        "docs/handbook/market_ap7.md",
+        "docs/handbook/market_data_ap6.md",
+        "docs/handbook/operation.md",
+        "docs/handbook/quickstart_windows.md",
+        "docs/handbook/results_and_validation.md",
+        "docs/handbook/seminar_ap3.html",
+        "docs/handbook/seminar_ap3.md",
+        "docs/handbook/seminar_ap3_draft.md",
+        "docs/handbook/technical_reference.md",
+        "docs/handbook/user_guide_test_package.md",
+        "docs/handbook/workbench_ap2.md",
+        "docs/migration/README.md",
+        "docs/migration/agrsich_export_large_slice.md",
+        "docs/migration/agrsich_large_slice.md",
+        "docs/migration/agrsich_replay_plan.md",
+        "docs/migration/agrsich_replay_runner.md",
+        "docs/migration/agrsich_sector_policyholder_counts.md",
+        "docs/migration/agrsich_validation_report.md",
+        "docs/migration/agrsich_writer_and_reference_compare.md",
+        "docs/migration/ap5_common_market.md",
+        "docs/migration/ap6_bafin_reference.md",
+        "docs/migration/ap7_shock_contract.md",
+        "docs/migration/bav_frmdinf_extended_slice.md",
+        "docs/migration/bav_frmdinf_sector_vectors.md",
+        "docs/migration/bav_service_slice.md",
+        "docs/migration/bav_update_slice.md",
+        "docs/migration/calculated_export_provenance_map.md",
+        "docs/migration/calculated_legacy_deviation_report.md",
+        "docs/migration/calculated_legacy_multi_period_contract.md",
+        "docs/migration/controlled_event_loop.md",
+        "docs/migration/controlled_execution_adapter.md",
+        "docs/migration/controlled_execution_adapter_contract.md",
+        "docs/migration/eighth_fachlicher_regressionstest.md",
+        "docs/migration/entity_mapping.md",
+        "docs/migration/event_builder_modularization.md",
+        "docs/migration/explicit_period_legacy_targets.md",
+        "docs/migration/explicit_period_plan_legacy_targets.md",
+        "docs/migration/explicit_period_transition_diagnostics.md",
+        "docs/migration/explicit_vu14_calculated_deviation_slice.md",
+        "docs/migration/explicit_vu_vn_period_plan.md",
+        "docs/migration/explicit_vu_vn_period_runner.md",
+        "docs/migration/fachlogik_migration_status.md",
+        "docs/migration/fifth_fachlicher_regressionstest.md",
+        "docs/migration/first_fachlicher_regressionstest.md",
+        "docs/migration/first_slice.md",
+        "docs/migration/four_sector_model_balance.md",
+        "docs/migration/fourth_fachlicher_regressionstest.md",
+        "docs/migration/historical_100_period_corpus_delivery.md",
+        "docs/migration/historical_300_period_rule_delivery.md",
+        "docs/migration/historical_500_period_vn_class_delivery.md",
+        "docs/migration/historical_500_period_vn_rule_delivery.md",
+        "docs/migration/historical_500_period_vu_class_delivery.md",
+        "docs/migration/historical_500_period_vusk1_delivery.md",
+        "docs/migration/historical_archive_manifest.md",
+        "docs/migration/historical_archive_run_metadata.md",
+        "docs/migration/historical_horizon_contract.md",
+        "docs/migration/historical_reference_archive_coherence.md",
+        "docs/migration/historical_reference_layer_contract.md",
+        "docs/migration/ims_2x_deterministic_health_case.md",
+        "docs/migration/ims_2x_deterministic_life_case.md",
+        "docs/migration/ims_2x_health_period_chain.md",
+        "docs/migration/ims_2x_health_period_sources.md",
+        "docs/migration/ims_2x_health_result_delivery.md",
+        "docs/migration/ims_2x_health_sector_contract.md",
+        "docs/migration/ims_2x_health_workbench.md",
+        "docs/migration/ims_2x_hundred_period_results_workbench.md",
+        "docs/migration/ims_2x_insurer_balance_workbench.md",
+        "docs/migration/ims_2x_legacy_damage_adapter.md",
+        "docs/migration/ims_2x_life_assumptions.md",
+        "docs/migration/ims_2x_life_closed_cohort_death_capital.md",
+        "docs/migration/ims_2x_life_cohort_new_business.md",
+        "docs/migration/ims_2x_life_period_chain.md",
+        "docs/migration/ims_2x_life_policy_maturity.md",
+        "docs/migration/ims_2x_life_result_delivery.md",
+        "docs/migration/ims_2x_life_sector_contract.md",
+        "docs/migration/ims_2x_life_v3_contract.md",
+        "docs/migration/ims_2x_life_workbench.md",
+        "docs/migration/ims_2x_model_balance_contract.md",
+        "docs/migration/ims_2x_non_life_model_balance.md",
+        "docs/migration/ims_2x_sector_strategy_plan.md",
+        "docs/migration/ims_2x_sector_taxonomy.md",
+        "docs/migration/ims_2x_strategy_assignment_contract.md",
+        "docs/migration/ims_2x_strategy_assignment_draft.md",
+        "docs/migration/ims_2x_strategy_assignment_draft_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_context.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_context_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization_contract.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization_validation.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_translation.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_translation_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization_contract.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization_validation.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_state_validation.md",
+        "docs/migration/ims_2x_strategy_catalog.md",
+        "docs/migration/ims_2x_strategy_catalog_ui.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_build.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_contract.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_effect_probe.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_effect_probe_browser_acceptance.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_effect_probe_start.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_run_control.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_store.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_ui.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_validation.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_bounded_runner_contract.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_build.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_contract.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_effect_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_effect_probe_browser_acceptance.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_effect_probe_start.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_extended_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_build.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe_browser_acceptance.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe_start.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_horizon_contract.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_hundred_period_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_resolution.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_run_control.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_store.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_validation.md",
+        "docs/migration/ims_2x_strategy_execution_result_bundle.md",
+        "docs/migration/ims_ap1_windows_installer.md",
+        "docs/migration/ims_ap3_guided_period_chain.md",
+        "docs/migration/ims_ap3_ict_workshop.md",
+        "docs/migration/ims_ap3_management_case.md",
+        "docs/migration/ims_ap3_modern_strategy_bridge.md",
+        "docs/migration/ims_inventory.md",
+        "docs/migration/insurer_class_family_imsvuvk.md",
+        "docs/migration/legacy_agrsich_multi_period_step.md",
+        "docs/migration/legacy_agrsich_validation_step.md",
+        "docs/migration/legacy_bav_field_mapping.md",
+        "docs/migration/legacy_bav_service_mapping.md",
+        "docs/migration/legacy_vn_validation_step.md",
+        "docs/migration/level_iv_selector_canonicalization.md",
+        "docs/migration/loop_period_progression.md",
+        "docs/migration/minimal_simulation_loop.md",
+        "docs/migration/mixed_controlled_event_loop.md",
+        "docs/migration/mixed_loop_period_progression.md",
+        "docs/migration/ninth_fachlicher_regressionstest.md",
+        "docs/migration/orchestration_modularization.md",
+        "docs/migration/parameter_output_vu014pr1.md",
+        "docs/migration/period_plan_context_overrides.md",
+        "docs/migration/period_plan_input_validation.md",
+        "docs/migration/period_progression.md",
+        "docs/migration/portable_user_test_package.md",
+        "docs/migration/priority_sequence.md",
+        "docs/migration/production_release_corpus_report.md",
+        "docs/migration/python_target_architecture.md",
+        "docs/migration/result_builder_modularization.md",
+        "docs/migration/rng_strategy.md",
+        "docs/migration/run_control_adapter_result_api_contract.md",
+        "docs/migration/run_control_adapter_result_contract.md",
+        "docs/migration/run_control_adapter_start_contract.md",
+        "docs/migration/run_control_atomic_adapter_start.md",
+        "docs/migration/run_control_browser_demo_smoke.md",
+        "docs/migration/run_control_execution_flow_ui.md",
+        "docs/migration/run_control_execution_history.md",
+        "docs/migration/run_control_execution_release_check.md",
+        "docs/migration/run_control_execution_result_store.md",
+        "docs/migration/run_control_execution_result_view.md",
+        "docs/migration/scheduled_explicit_vu_vn_period.md",
+        "docs/migration/scheduler_dispatch_slice.md",
+        "docs/migration/scheduler_mapping.md",
+        "docs/migration/second_event_type.md",
+        "docs/migration/second_fachlicher_regressionstest.md",
+        "docs/migration/seventh_fachlicher_regressionstest.md",
+        "docs/migration/sixth_fachlicher_regressionstest.md",
+        "docs/migration/tenth_fachlicher_regressionstest.md",
+        "docs/migration/third_fachlicher_regressionstest.md",
+        "docs/migration/two_event_sequence.md",
+        "docs/migration/vdefmd6_100_period_run_contract.md",
+        "docs/migration/vdefmd6_300_period_state_contract.md",
+        "docs/migration/vdefmd6_500_period_state_contract.md",
+        "docs/migration/vdefmd6_action_seed_contract.md",
+        "docs/migration/vdefmd6_core_export_review.md",
+        "docs/migration/vdefmd6_population_builder.md",
+        "docs/migration/vdefmd6_pre_shock_run_contract.md",
+        "docs/migration/vdefmd6_pre_shock_snapshot_contract.md",
+        "docs/migration/vdefmd6_vn_aggregate_run_contract.md",
+        "docs/migration/vdefmd6_vn_input_draw_contract.md",
+        "docs/migration/vdefmd6_vn_rule_group_1_run_contract.md",
+        "docs/migration/vdefmd6_vn_rule_group_2_run_contract.md",
+        "docs/migration/vdefmd6_vu_aggregate_run_contract.md",
+        "docs/migration/vdefmd6_vu_snapshot_contract.md",
+        "docs/migration/vn_agrsich_legacy_targets.md",
+        "docs/migration/vn_agrsich_replay.md",
+        "docs/migration/vn_agrsich_replay_plan.md",
+        "docs/migration/vn_best_info_insurance_rule.md",
+        "docs/migration/vn_class_family_imsvnvk.md",
+        "docs/migration/vn_compulsory_insurance_rule.md",
+        "docs/migration/vn_damage_core.md",
+        "docs/migration/vn_damage_draw_basis.md",
+        "docs/migration/vn_damage_settlement_link.md",
+        "docs/migration/vn_explicit_damage_period.md",
+        "docs/migration/vn_insurance_rule_dispatch.md",
+        "docs/migration/vn_multi_period_runner.md",
+        "docs/migration/vn_period_plan_legacy_targets.md",
+        "docs/migration/vn_preference_insurance_rule.md",
+        "docs/migration/vn_random_insurance_rule.md",
+        "docs/migration/vn_rule_family_imsvnr.md",
+        "docs/migration/vn_sample_search_insurance_rule.md",
+        "docs/migration/vn_search_insurance_rule.md",
+        "docs/migration/vn_settlement_core.md",
+        "docs/migration/vn_snapshot_target_integrity.md",
+        "docs/migration/vn_state_carryover.md",
+        "docs/migration/vu14_100_period_generation_contract.md",
+        "docs/migration/vu14_pre_shock_projection.md",
+        "docs/migration/vu14_vdefmd6_source_binding.md",
+        "docs/migration/vu_expected_claim_rule.md",
+        "docs/migration/vu_foreign_info_period_runner.md",
+        "docs/migration/vu_foreign_info_rule_core.md",
+        "docs/migration/vu_free_linear_rule.md",
+        "docs/migration/vu_global_period_order.md",
+        "docs/migration/vu_market_share_active_count.md",
+        "docs/migration/vu_market_share_markup_rule.md",
+        "docs/migration/vu_markup_reserve_rule.md",
+        "docs/migration/vu_net_switcher_carryover_window.md",
+        "docs/migration/vu_net_switcher_markup_rule.md",
+        "docs/migration/vu_net_switcher_previous_policyholders.md",
+        "docs/migration/vu_random_draw_basis.md",
+        "docs/migration/vu_random_rule_kernels.md",
+        "docs/migration/vu_replay_legacy_targets.md",
+        "docs/migration/windows_release_gate.md",
+        "docs/migration/workbench_demo_checklist.md",
+        "docs/migration/workbench_metadata_recovery.md",
+        "docs/migration/workbench_packaging_plan.md",
+        "docs/migration/workbench_release_checklist.md",
+        "docs/migration/workbench_run_control_plan.md",
+        "docs/migration/workbench_shell.md",
+        "docs/migration/zins000_reference_layer.md",
+        "seminar_cases/bafin_2024_catalog.json",
+        "seminar_cases/capital.json",
+        "seminar_cases/inflation.json",
+        "seminar_cases/price.json",
+        "tests/fixtures/calculated_vu14_explicit_slice.json",
+        "tests/fixtures/calculated_vu14_validation_slice.json",
+        "tests/fixtures/health_model_balance_v1.json",
+        "tests/fixtures/health_period_chain_v1.json",
+        "tests/fixtures/health_period_sources_v1.json",
+        "tests/fixtures/legacy_validation_batch.json",
+        "tests/fixtures/legacy_validation_bundle.json",
+        "tests/fixtures/legacy_vn05_alignment.json",
+        "tests/fixtures/legacy_vnsk1_alignment.json",
+        "tests/fixtures/legacy_vu14_alignment.json",
+        "tests/fixtures/legacy_vusk1_alignment.json",
+        "tests/fixtures/legacy_zins000_reference_layer.json",
+        "tests/fixtures/life_assumptions_v1.json",
+        "tests/fixtures/life_closed_cohort_v1.json",
+        "tests/fixtures/life_cohort_balance_v1.json",
+        "tests/fixtures/life_model_balance_v1.json",
+        "tests/fixtures/life_period_chain_v1.json",
+        "tests/fixtures/life_policy_balance_v1.json",
+        "tests/fixtures/minimal_scenario.json",
+        "tests/fixtures/non_life_model_balance_v1.json",
+        "tests/fixtures/replay_vn_policyholder_transition_plan.json",
+        "tests/fixtures/replay_vu14_period_plan.json",
+        "tests/fixtures/replay_vu14_window.json",
+        "tests/fixtures/replay_vusk1_period_plan.json",
+        "tests/fixtures/replay_vusk1_window.json",
+        "tests/fixtures/sector_strategy_plan_v1.json",
+        "tests/fixtures/strategy_assignment_draft_v1.json",
+        "tests/fixtures/strategy_assignment_snapshot_context_v1.json",
+        "tests/fixtures/strategy_assignment_snapshot_materialization_validation_v1.json",
+        "tests/fixtures/strategy_assignment_snapshot_materialization_vn_context_v1.json",
+        "tests/fixtures/strategy_execution_candidate_input_v1.json",
+        "tests/fixtures/strategy_execution_period_chain_input_v1.json",
+        "tests/fixtures/vdefmd6_100_period_run_contract.json",
+        "tests/fixtures/vdefmd6_300_period_state_contract.json",
+        "tests/fixtures/vdefmd6_500_period_state_contract.json",
+        "tests/fixtures/vdefmd6_action_seed_contract.json",
+        "tests/fixtures/vdefmd6_core_export_run_contract.json",
+        "tests/fixtures/vdefmd6_core_export_window_bundle.json",
+        "tests/fixtures/vdefmd6_population_contract.json",
+        "tests/fixtures/vdefmd6_pre_shock_run_contract.json",
+        "tests/fixtures/vdefmd6_pre_shock_snapshot_contract.json",
+        "tests/fixtures/vdefmd6_vn_aggregate_run_contract.json",
+        "tests/fixtures/vdefmd6_vn_input_draw_contract.json",
+        "tests/fixtures/vdefmd6_vn_rule_group_1_run_contract.json",
+        "tests/fixtures/vdefmd6_vn_rule_group_2_run_contract.json",
+        "tests/fixtures/vdefmd6_vu_aggregate_run_contract.json",
+        "tests/fixtures/vdefmd6_vu_snapshot_contract.json",
+        "tests/fixtures/vu14_100_period_generation_contract.json",
+        "tests/fixtures/vu14_pre_shock_projection_contract.json",
+        "tests/fixtures/vu14_vdefmd6_source_binding.json",
+        "tests/references/legacy_agrsich/IMSVNR01.DAT",
+        "tests/references/legacy_agrsich/IMSVNR02.DAT",
+        "tests/references/legacy_agrsich/IMSVNR03.DAT",
+        "tests/references/legacy_agrsich/IMSVNR04.DAT",
+        "tests/references/legacy_agrsich/IMSVNR05.DAT",
+        "tests/references/legacy_agrsich/IMSVNR06.DAT",
+        "tests/references/legacy_agrsich/IMSVNSK1.DAT",
+        "tests/references/legacy_agrsich/IMSVNVK1.DAT",
+        "tests/references/legacy_agrsich/IMSVNVK2.DAT",
+        "tests/references/legacy_agrsich/IMSVNVK3.DAT",
+        "tests/references/legacy_agrsich/IMSVUVK1.DAT",
+        "tests/references/legacy_agrsich/IMSVUVK2.DAT",
+        "tests/references/legacy_agrsich/IMSVUVK3.DAT",
+        "tests/references/legacy_agrsich/VU14L1.DAT",
+        "tests/references/legacy_agrsich/VUSK1L1.DAT",
+        "tests/references/legacy_agrsich/VUSK1L2.DAT",
+        "tests/references/legacy_agrsich/VUSK1L3.DAT",
+        "tests/references/legacy_agrsich/VUSK1L4.DAT",
+        "tests/references/legacy_agrsich/VUSK1L5.DAT",
+        "tests/references/legacy_agrsich/zins000/IMSVU014.DAT",
+        "tests/references/legacy_agrsich/zins000/IMSVUSK1.DAT"
+      ],
+      "all_contents_match_product_tree": true,
+      "ap7_image_count": 12
+    },
+    "installed_and_checkout_results_identical": true,
+    "python_tests": {
+      "passed": 2755,
+      "warnings": 1,
+      "subtests_passed": 14,
+      "seconds": 1049.19
+    },
+    "release_gate": {
+      "status": "ok",
+      "mode": "windows_release_gate",
+      "report_contract_version": "pr69-v1",
+      "corpus_report_status": "blocked",
+      "production_release_approved": false,
+      "missing_calculated_export_count": 15,
+      "release_ready": true,
+      "user_test_package_ready": true,
+      "writes_performed": false,
+      "execution_performed": false,
+      "simulation_performed": false,
+      "historical_full_equality_claimed": false
+    },
+    "status": "passed"
+  },
+  "installer": {
+    "download": {
+      "artifact_id": 11270276173,
+      "artifact_name": "IMS-Windows-x64-2.0.0-alpha.7-c954b5928265cce53a970a58c6311fd58b29861a",
+      "archive_bytes": 27600987,
+      "archive_sha256": "dc3fa4e185f945d5f9c77bc2d2536b3dae9051e11a73dcf9160f635537d42294",
+      "extracted": [
+        "IMS-Setup-2.0.0-alpha.7-win-x64.exe",
+        "IMS-Setup-2.0.0-alpha.7-win-x64.exe.sha256",
+        "browser-report.json",
+        "build-evidence.json",
+        "installer-test-evidence.json",
+        "resource-inventory.json"
+      ],
+      "installer_bytes": 21201657,
+      "installer_sha256": "8241658f36d04dc756bf22a57d109ae3697e901214d09b6a4f44ba8ae02b8156"
+    },
+    "build": {
+      "artifact": "IMS-Setup-2.0.0-alpha.7-win-x64.exe",
+      "sha256": "8241658f36d04dc756bf22a57d109ae3697e901214d09b6a4f44ba8ae02b8156",
+      "bytes": 21201657,
+      "build_seconds": 52.125763,
+      "commit": "c954b5928265cce53a970a58c6311fd58b29861a",
+      "version": "2.0.0-alpha.7",
+      "file_version": "2.0.0.7",
+      "inno": "6.7.3",
+      "dirty": false,
+      "node": "v22.23.3",
+      "python": "3.12.10",
+      "signed": false,
+      "clean_windows_acceptance": "pending"
+    },
+    "lifecycle": {
+      "success": true,
+      "failure": null,
+      "environment": "Windows with developer tools; executable PATH restricted to System32",
+      "clean_windows_acceptance": "pending",
+      "work": "D:\\a\\ims\\ims\\.tmp-pr-installer\\Installer Prüfung Ä 5cdbc008",
+      "installer_sha256": "8241658f36d04dc756bf22a57d109ae3697e901214d09b6a4f44ba8ae02b8156",
+      "previous_installer_sha256": "c6c9c1478390c0fe1a400438bf8bee8ec5c0151d113ce01babbf2cc27f1c1671",
+      "previous_application_version": "2.0.0-alpha.7",
+      "previous_kind": "synthetic_same_bundle",
+      "seconds": 1630.2916304,
+      "tests": [
+        {
+          "test": "install_synthetic_previous_version",
+          "result": "passed",
+          "seconds": 2.6514752999999587
+        },
+        {
+          "test": "frozen_start_path_with_spaces_umlauts",
+          "result": "passed",
+          "seconds": 1.9368067999999994
+        },
+        {
+          "test": "second_start_same_process",
+          "result": "passed",
+          "seconds": 0.3095505000000003
+        },
+        {
+          "test": "existing_health_case_and_json_csv_xlsx_exports",
+          "result": "passed",
+          "seconds": 0.9089723999999819,
+          "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+          "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+        },
+        {
+          "test": "update_while_running",
+          "result": "passed",
+          "seconds": 3.4607948999999962
+        },
+        {
+          "test": "start_after_update",
+          "result": "passed",
+          "seconds": 1.9107515999999691
+        },
+        {
+          "test": "AP2_real_browser_against_installed_current_frontend",
+          "result": "passed",
+          "seconds": 1605.105163
+        },
+        {
+          "test": "occupied_port_fails_without_foreign_browser",
+          "result": "passed",
+          "seconds": 1.1272679999999582
+        },
+        {
+          "test": "explicit_adoption_with_source_and_target_backups",
+          "result": "passed"
+        },
+        {
+          "test": "start_before_uninstall",
+          "result": "passed",
+          "seconds": 1.8770293000000038
+        },
+        {
+          "test": "uninstall_while_running_preserves_data",
+          "result": "passed",
+          "seconds": 1.3474028999999064
+        },
+        {
+          "test": "reinstall",
+          "result": "passed",
+          "seconds": 2.6750915999998597
+        },
+        {
+          "test": "restart_after_reinstall",
+          "result": "passed",
+          "seconds": 1.940838999999869
+        },
+        {
+          "test": "stored_result_preserved_update_uninstall_reinstall",
+          "result": "passed"
+        }
+      ]
+    },
+    "status": "verified",
+    "local_copy": "dist/installer/IMS-Setup-2.0.0-alpha.7-win-x64.exe",
+    "actual_alpha6_to_alpha7_upgrade_tested": false,
+    "actual_upgrade_not_attempted_reason": "Existing IMS Start Menu shortcuts; lifecycle safety guard would refuse local installation. No existing shortcuts altered.",
+    "actual_file_metadata": {
+      "raw": {
+        "FileVersion": "2.0.0.7             ",
+        "ProductVersion": "2.0.0-alpha.7                                     "
+      },
+      "normalized": {
+        "FileVersion": "2.0.0.7",
+        "ProductVersion": "2.0.0-alpha.7"
+      }
+    }
+  },
+  "user_product_acceptance": "accepted",
+  "merge_authorized": true,
+  "merged_to_main": false,
+  "public_release_performed": false,
+  "next_package_authorized": {
+    "package": "AP8",
+    "effective_after_actual_ap7_merge": true
+  },
+  "limits": [
+    "BaFin earned including foreign and inward reinsurance; editorial groups without intra-group elimination",
+    "No verified German direct market",
+    "Assumed provider/product/process/cost profiles",
+    "Claims/service administration only; no insurance benefit delay",
+    "No surrender, cross-sector funding, dynamic insolvency, SCR/MCR or compliance claim"
+  ],
+  "recorded_at_utc": "2026-10-03T09:29:57.410512+00:00",
+  "technical_status": "verified",
+  "technically_complete": true,
+  "installed_browser": {
+    "stats": {
+      "startTime": "2026-10-03T09:00:00.046Z",
+      "duration": 1604220.71,
+      "expected": 70,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6: Original, frische Quellenbindung, Einzel-VU-Dateien und Offline-Wiederaufnahme",
+        "seconds": 7.848
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6: Mix, Quellen-Override, stabile Identitäten und entwertete Ergebnisse",
+        "seconds": 7.049
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6: tatsächlicher 40er-100-Perioden-Lauf und angezeigte API-Summen",
+        "seconds": 65.582
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1440×900 light: Quellen, Kontrast und Tastatur",
+        "seconds": 3.344
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1440×900 dark: Quellen, Kontrast und Tastatur",
+        "seconds": 3.252
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1024×768 light: Quellen, Kontrast und Tastatur",
+        "seconds": 3.242
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1024×768 dark: Quellen, Kontrast und Tastatur",
+        "seconds": 3.236
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 390×844 light: Quellen, Kontrast und Tastatur",
+        "seconds": 3.2
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 390×844 dark: Quellen, Kontrast und Tastatur",
+        "seconds": 3.155
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 1440 light: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 12.852
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 1440 dark: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 12.769
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 390 light: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 13.285
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 390 dark: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 13.3
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1440 light: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.454
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1440 dark: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.538
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1024 light: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.159
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1024 dark: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.438
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 390 light: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.34
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 390 dark: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.805
+      },
+      {
+        "file": "legacy-models.spec.ts",
+        "title": "Vorhandener Modellnachweis: health_workbench_pr169d.mjs",
+        "seconds": 4.515
+      },
+      {
+        "file": "legacy-models.spec.ts",
+        "title": "Vorhandener Modellnachweis: four_sector_balance_pr170a.mjs",
+        "seconds": 3.498
+      },
+      {
+        "file": "legacy-models.spec.ts",
+        "title": "Vorhandener Modellnachweis: solvency_capital_pr178.mjs",
+        "seconds": 3.467
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 1440 light: 100er, Quellen, Exporte, Kapital",
+        "seconds": 30.117
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 1440 dark: 100er, Quellen, Exporte, Kapital",
+        "seconds": 29.303
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 390 light: 100er, Quellen, Exporte, Kapital",
+        "seconds": 30.197
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 390 dark: 100er, Quellen, Exporte, Kapital",
+        "seconds": 30.553
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1440×900 light: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 18.222
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1440×900 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 13.157
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1024×768 light: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 13.241
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1024×768 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 14.239
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 390×844 light: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 15.457
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 390×844 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 15.96
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4: drei Demos ohne JSON, Offlinehilfe und Tastatur",
+        "seconds": 18.536
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4: Rollen erhalten editierte Eingaben/Freigaben; veraltete, laufende und fehlerhafte Ergebnisse",
+        "seconds": 13.811
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4: tatsächlicher gültiger Lauf mit Null-Baseline und negativem Eigenkapital",
+        "seconds": 15.675
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 us_hyperscaler_outage: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 147.777
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 google_motor_entry: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 150.866
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 life_demand_shock: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 161.539
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 dora_2_workshop: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 154.947
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7: eigene Sitzung, abhängiger Q-Pfad, entwertetes Ergebnis, JSON und Google-Excel",
+        "seconds": 76.335
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1440×900 light: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 17.836
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1440×900 dark: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 17.862
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1024×768 light: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 18.596
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1024×768 dark: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 20.074
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 390×844 light: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 20.402
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 390×844 dark: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 17.019
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: Handbuch-Handfall, reale Risikobuchung und ausgewählte VU-Dateien",
+        "seconds": 2.509
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: überlappende Peers, leere Sparte und reine Filter ohne Neuberechnung",
+        "seconds": 2.136
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: Strategie und Kostenplan werden ausgeführt; ungültige Quellen entwerten den Stand",
+        "seconds": 3.846
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: vollständiger 41er-Markt, 100 Perioden und Anzeige aus derselben API",
+        "seconds": 24.326
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1440×900 light: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 14.96
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1440×900 dark: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 5.419
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1024×768 light: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.274
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1024×768 dark: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.32
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 390×844 light: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.635
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 390×844 dark: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.586
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 1440 light: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 75.674
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 1440 dark: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 14.585
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 390 light: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 15.227
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 390 dark: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 15.218
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1440×900 light: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 21.231
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1440×900 dark: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 23.818
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1024×768 light: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 19.157
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1024×768 dark: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.744
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "390×844 light: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.356
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "390×844 dark: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.285
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Navigation erhält Eingaben, Ergebnis und Freigabe; Fehlerkorrektur und drei Exporte",
+        "seconds": 17.217
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Release unten links bleibt bei API-Fehler sichtbar und erkennt eine alte Anwendung",
+        "seconds": 8.403
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Tastatur, Zurück/Vorwärts, gespeicherter Farbmodus, reduzierte Bewegung und Details",
+        "seconds": 3.474
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Laden und API-Fehler sind sichtbar und lassen sich ohne Formularverlust beheben",
+        "seconds": 1.951
+      }
+    ],
+    "full_cases": [
+      {
+        "caseId": "us_hyperscaler_outage",
+        "elapsed_seconds": 123.653,
+        "wire_bytes": 55758655,
+        "digest": "7ee786bf1266f74c4e95aaca4f01bd50e60c1a9c708cea6169d1be32b8b10c66",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 2,
+          "ict_job_rows": 7980,
+          "cost_rows": 11175,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364274.4230",
+            "closing_equity": "362827.0206",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4068",
+            "measure_cost": "0.0000",
+            "opening_assets": "364636.6890",
+            "opening_equity": "361453.3266",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6940",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364211.4606",
+            "closing_equity": "362764.0582",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3906",
+            "measure_cost": "0.7200",
+            "opening_assets": "364574.4628",
+            "opening_equity": "361391.1004",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3912",
+            "period": 100,
+            "period_profit": "1372.9578",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.0000",
+                "capacity_per_hour": "0.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "0.0000",
+            "closing_queue": 84,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "24.0000",
+            "period": 21,
+            "processed_work": "0.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Q_Vorsorge"
+                ],
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "primary_causes": [
+                  "ap7-shock"
+                ],
+                "effective_factor": "1.0000",
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "google_motor_entry",
+        "elapsed_seconds": 126.234,
+        "wire_bytes": 56000022,
+        "digest": "8d5e165ab934891c5abedf1d10dce231d06e0bcbc5b69844b98dc7514611225f",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13700,
+          "market_rows": 500,
+          "family_rows": 15500,
+          "peer_rows": 0,
+          "insurance_group_rows": 20500,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19200,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 8004,
+          "cost_rows": 7909,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 24,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "462285.2831",
+            "closing_equity": "460837.8807",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462672.7279",
+            "opening_equity": "459489.3655",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1348.5152",
+            "premium_income": "2257.8456",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2640.8223",
+            "closing_assets": "462299.5561",
+            "closing_equity": "460852.1537",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "904.8623",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462685.1773",
+            "opening_equity": "459501.8149",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1350.3388",
+            "premium_income": "2307.4651",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 4,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "96.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "95.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "life_demand_shock",
+        "elapsed_seconds": 134.79,
+        "wire_bytes": 55324216,
+        "digest": "b5e4dcc1f876e5f76ec6ebf6abdef705eec1a975a1d750a36205dbfb191ae96a",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 7820,
+          "cost_rows": 7852,
+          "life_demand_rows": 100,
+          "life_contract_rows": 218,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 2
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2526.6955",
+            "closing_assets": "361470.9811",
+            "closing_equity": "360354.5696",
+            "closing_liabilities": "1116.4115",
+            "covered_quantity": null,
+            "insurance_expense": "790.7355",
+            "investment_income": "86.0213",
+            "measure_cost": "0.0000",
+            "opening_assets": "361867.2954",
+            "opening_equity": "359014.9239",
+            "opening_liabilities": "2852.3715",
+            "operating_expense": "137.6649",
+            "period": 100,
+            "period_profit": "1339.6457",
+            "premium_income": "2182.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2548.8058",
+            "closing_assets": "362399.9057",
+            "closing_equity": "361173.1639",
+            "closing_liabilities": "1226.7418",
+            "covered_quantity": null,
+            "insurance_expense": "812.8458",
+            "investment_income": "86.4802",
+            "measure_cost": "0.0000",
+            "opening_assets": "362784.8735",
+            "opening_equity": "359822.1717",
+            "opening_liabilities": "2962.7018",
+            "operating_expense": "137.6670",
+            "period": 100,
+            "period_profit": "1350.9922",
+            "premium_income": "2215.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "81.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "82.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "dora_2_workshop",
+        "elapsed_seconds": 129.215,
+        "wire_bytes": 55788005,
+        "digest": "f2a21bdc95f946eb77b479f489dd81b7ec0308ccbde9fabe8e1f48fc2c3c2a38",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 10,
+          "ict_job_rows": 7980,
+          "cost_rows": 11215,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364154.8580",
+            "closing_equity": "362707.4556",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3758",
+            "measure_cost": "0.0000",
+            "opening_assets": "364517.1550",
+            "opening_equity": "361333.7926",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6630",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364112.5487",
+            "closing_equity": "362665.1463",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3639",
+            "measure_cost": "0.7200",
+            "opening_assets": "364475.5330",
+            "opening_equity": "361292.1706",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3466",
+            "period": 100,
+            "period_profit": "1372.9757",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.5000",
+                "capacity_per_hour": "2.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "48.0000",
+            "closing_queue": 36,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "12.0000",
+            "period": 21,
+            "processed_work": "48.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Vorbereitete_Kapazitaet"
+                ],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      }
+    ],
+    "contrast": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 114
+      }
+    ]
+  },
+  "checkout_browser": {
+    "stats": {
+      "startTime": "2026-10-03T08:59:00.709Z",
+      "duration": 1605657.494,
+      "expected": 70,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6: Original, frische Quellenbindung, Einzel-VU-Dateien und Offline-Wiederaufnahme",
+        "seconds": 8.161
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6: Mix, Quellen-Override, stabile Identitäten und entwertete Ergebnisse",
+        "seconds": 7.179
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6: tatsächlicher 40er-100-Perioden-Lauf und angezeigte API-Summen",
+        "seconds": 66.432
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1440×900 light: Quellen, Kontrast und Tastatur",
+        "seconds": 3.383
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1440×900 dark: Quellen, Kontrast und Tastatur",
+        "seconds": 3.406
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1024×768 light: Quellen, Kontrast und Tastatur",
+        "seconds": 3.349
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 1024×768 dark: Quellen, Kontrast und Tastatur",
+        "seconds": 3.222
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 390×844 light: Quellen, Kontrast und Tastatur",
+        "seconds": 3.185
+      },
+      {
+        "file": "bafin-reference.spec.ts",
+        "title": "AP6 390×844 dark: Quellen, Kontrast und Tastatur",
+        "seconds": 3.189
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 1440 light: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 13.001
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 1440 dark: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 13.416
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 390 light: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 13.03
+      },
+      {
+        "file": "guided-chain.spec.ts",
+        "title": "Geführter 100er 390 dark: frische Kette, Prefix, Lauf, ZIP",
+        "seconds": 13.597
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1440 light: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.434
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1440 dark: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.454
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1024 light: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 6.211
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 1024 dark: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.652
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 390 light: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 5.254
+      },
+      {
+        "file": "ict.spec.ts",
+        "title": "ICT 390 dark: 100 Perioden, Fehler, Zustand, Dossier",
+        "seconds": 6.11
+      },
+      {
+        "file": "legacy-models.spec.ts",
+        "title": "Vorhandener Modellnachweis: health_workbench_pr169d.mjs",
+        "seconds": 5.407
+      },
+      {
+        "file": "legacy-models.spec.ts",
+        "title": "Vorhandener Modellnachweis: four_sector_balance_pr170a.mjs",
+        "seconds": 3.222
+      },
+      {
+        "file": "legacy-models.spec.ts",
+        "title": "Vorhandener Modellnachweis: solvency_capital_pr178.mjs",
+        "seconds": 3.478
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 1440 light: 100er, Quellen, Exporte, Kapital",
+        "seconds": 29.797
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 1440 dark: 100er, Quellen, Exporte, Kapital",
+        "seconds": 29.782
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 390 light: 100er, Quellen, Exporte, Kapital",
+        "seconds": 29.772
+      },
+      {
+        "file": "management-case.spec.ts",
+        "title": "Gemeinsame Bilanz 390 dark: 100er, Quellen, Exporte, Kapital",
+        "seconds": 29.859
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1440×900 light: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 18.344
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1440×900 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 13.313
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1024×768 light: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 13.245
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 1024×768 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 14.261
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 390×844 light: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 13.404
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4 390×844 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+        "seconds": 13.9
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4: drei Demos ohne JSON, Offlinehilfe und Tastatur",
+        "seconds": 20.631
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4: Rollen erhalten editierte Eingaben/Freigaben; veraltete, laufende und fehlerhafte Ergebnisse",
+        "seconds": 15.675
+      },
+      {
+        "file": "management-overview.spec.ts",
+        "title": "AP4: tatsächlicher gültiger Lauf mit Null-Baseline und negativem Eigenkapital",
+        "seconds": 16.796
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 us_hyperscaler_outage: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 151.197
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 google_motor_entry: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 154.392
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 life_demand_shock: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 160.454
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 dora_2_workshop: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+        "seconds": 156.766
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7: eigene Sitzung, abhängiger Q-Pfad, entwertetes Ergebnis, JSON und Google-Excel",
+        "seconds": 79.441
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1440×900 light: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 16.917
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1440×900 dark: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 28.969
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1024×768 light: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 17.524
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 1024×768 dark: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 17.414
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 390×844 light: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 18.1
+      },
+      {
+        "file": "market-shocks.spec.ts",
+        "title": "AP7 390×844 dark: ICT-Erklärung, Kontrast, Tastatur",
+        "seconds": 17.883
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: Handbuch-Handfall, reale Risikobuchung und ausgewählte VU-Dateien",
+        "seconds": 3.002
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: überlappende Peers, leere Sparte und reine Filter ohne Neuberechnung",
+        "seconds": 2.944
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: Strategie und Kostenplan werden ausgeführt; ungültige Quellen entwerten den Stand",
+        "seconds": 4.384
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5: vollständiger 41er-Markt, 100 Perioden und Anzeige aus derselben API",
+        "seconds": 26.654
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1440×900 light: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.498
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1440×900 dark: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.679
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1024×768 light: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.286
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 1024×768 dark: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.644
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 390×844 light: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.631
+      },
+      {
+        "file": "market-workbench.spec.ts",
+        "title": "AP5 390×844 dark: Kontrast, Tastatur und echte Tabellen",
+        "seconds": 4.32
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 1440 light: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 75.708
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 1440 dark: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 13.114
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 390 light: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 12.939
+      },
+      {
+        "file": "seminar.spec.ts",
+        "title": "Modernes Seminar 390 dark: Entscheidung, Exposition, Bilanz und Bündel",
+        "seconds": 12.93
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1440×900 light: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.688
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1440×900 dark: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.608
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1024×768 light: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.522
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "1024×768 dark: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.621
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "390×844 light: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.293
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "390×844 dark: Bereiche, Kontrast, Ziele, Tabellen",
+        "seconds": 18.2
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Navigation erhält Eingaben, Ergebnis und Freigabe; Fehlerkorrektur und drei Exporte",
+        "seconds": 17.052
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Release unten links bleibt bei API-Fehler sichtbar und erkennt eine alte Anwendung",
+        "seconds": 8.433
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Tastatur, Zurück/Vorwärts, gespeicherter Farbmodus, reduzierte Bewegung und Details",
+        "seconds": 3.741
+      },
+      {
+        "file": "workbench.spec.ts",
+        "title": "Laden und API-Fehler sind sichtbar und lassen sich ohne Formularverlust beheben",
+        "seconds": 1.241
+      }
+    ],
+    "full_cases": [
+      {
+        "caseId": "us_hyperscaler_outage",
+        "elapsed_seconds": 126.745,
+        "wire_bytes": 55758655,
+        "digest": "7ee786bf1266f74c4e95aaca4f01bd50e60c1a9c708cea6169d1be32b8b10c66",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 2,
+          "ict_job_rows": 7980,
+          "cost_rows": 11175,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364274.4230",
+            "closing_equity": "362827.0206",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4068",
+            "measure_cost": "0.0000",
+            "opening_assets": "364636.6890",
+            "opening_equity": "361453.3266",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6940",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364211.4606",
+            "closing_equity": "362764.0582",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3906",
+            "measure_cost": "0.7200",
+            "opening_assets": "364574.4628",
+            "opening_equity": "361391.1004",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3912",
+            "period": 100,
+            "period_profit": "1372.9578",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.0000",
+                "capacity_per_hour": "0.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "0.0000",
+            "closing_queue": 84,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "24.0000",
+            "period": 21,
+            "processed_work": "0.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Q_Vorsorge"
+                ],
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "primary_causes": [
+                  "ap7-shock"
+                ],
+                "effective_factor": "1.0000",
+                "replacements": [
+                  {
+                    "response_id": "Q_Vorsorge",
+                    "path": [
+                      "eu-data",
+                      "eu-dns",
+                      "eu-iam",
+                      "eu-keys",
+                      "eu-network",
+                      "q-independent"
+                    ],
+                    "available": "1.0000",
+                    "effective_factor": "1.0000",
+                    "causes": [],
+                    "unknown_control": false
+                  }
+                ]
+              }
+            ],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "google_motor_entry",
+        "elapsed_seconds": 128.525,
+        "wire_bytes": 56000022,
+        "digest": "8d5e165ab934891c5abedf1d10dce231d06e0bcbc5b69844b98dc7514611225f",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13700,
+          "market_rows": 500,
+          "family_rows": 15500,
+          "peer_rows": 0,
+          "insurance_group_rows": 20500,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19200,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 8004,
+          "cost_rows": 7909,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 24,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "462285.2831",
+            "closing_equity": "460837.8807",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462672.7279",
+            "opening_equity": "459489.3655",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1348.5152",
+            "premium_income": "2257.8456",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 41,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2640.8223",
+            "closing_assets": "462299.5561",
+            "closing_equity": "460852.1537",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "904.8623",
+            "investment_income": "87.4072",
+            "measure_cost": "0.0000",
+            "opening_assets": "462685.1773",
+            "opening_equity": "459501.8149",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "139.6712",
+            "period": 100,
+            "period_profit": "1350.3388",
+            "premium_income": "2307.4651",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 4,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "96.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "95.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "life_demand_shock",
+        "elapsed_seconds": 132.929,
+        "wire_bytes": 55324216,
+        "digest": "b5e4dcc1f876e5f76ec6ebf6abdef705eec1a975a1d750a36205dbfb191ae96a",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 80,
+          "ict_job_rows": 7820,
+          "cost_rows": 7852,
+          "life_demand_rows": 100,
+          "life_contract_rows": 218,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 2
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2526.6955",
+            "closing_assets": "361470.9811",
+            "closing_equity": "360354.5696",
+            "closing_liabilities": "1116.4115",
+            "covered_quantity": null,
+            "insurance_expense": "790.7355",
+            "investment_income": "86.0213",
+            "measure_cost": "0.0000",
+            "opening_assets": "361867.2954",
+            "opening_equity": "359014.9239",
+            "opening_liabilities": "2852.3715",
+            "operating_expense": "137.6649",
+            "period": 100,
+            "period_profit": "1339.6457",
+            "premium_income": "2182.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2548.8058",
+            "closing_assets": "362399.9057",
+            "closing_equity": "361173.1639",
+            "closing_liabilities": "1226.7418",
+            "covered_quantity": null,
+            "insurance_expense": "812.8458",
+            "investment_income": "86.4802",
+            "measure_cost": "0.0000",
+            "opening_assets": "362784.8735",
+            "opening_equity": "359822.1717",
+            "opening_liabilities": "2962.7018",
+            "operating_expense": "137.6670",
+            "period": 100,
+            "period_profit": "1350.9922",
+            "premium_income": "2215.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "81.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "82.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      },
+      {
+        "caseId": "dora_2_workshop",
+        "elapsed_seconds": 129.664,
+        "wire_bytes": 55788005,
+        "digest": "f2a21bdc95f946eb77b479f489dd81b7ec0308ccbde9fabe8e1f48fc2c3c2a38",
+        "prefix_25": "passed",
+        "conservation": "passed",
+        "risk_and_partitions": "passed",
+        "row_counts": {
+          "vu_rows": 13600,
+          "market_rows": 500,
+          "family_rows": 15000,
+          "peer_rows": 0,
+          "insurance_group_rows": 20000,
+          "customer_decisions": 7400,
+          "information_snapshots": 100,
+          "actuarial_sources": 62,
+          "ict_process_rows": 19100,
+          "ict_resource_rows": 100,
+          "ict_dependency_rows": 1000,
+          "ict_event_rows": 10,
+          "ict_job_rows": 7980,
+          "cost_rows": 11215,
+          "life_demand_rows": 100,
+          "life_contract_rows": 376,
+          "switch_process_rows": 0,
+          "terminal_process_rows": 4
+        },
+        "period_100": {
+          "baseline": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364154.8580",
+            "closing_equity": "362707.4556",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3758",
+            "measure_cost": "0.0000",
+            "opening_assets": "364517.1550",
+            "opening_equity": "361333.7926",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "137.6712",
+            "period": 100,
+            "period_profit": "1373.6630",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          },
+          "variant": {
+            "active_vu_count": 40,
+            "capital_contribution": "0.0000",
+            "capital_distribution": "0.0000",
+            "claims_paid": "2593.0264",
+            "closing_assets": "364112.5487",
+            "closing_equity": "362665.1463",
+            "closing_liabilities": "1447.4024",
+            "covered_quantity": null,
+            "insurance_expense": "857.0664",
+            "investment_income": "87.3639",
+            "measure_cost": "0.7200",
+            "opening_assets": "364475.5330",
+            "opening_equity": "361292.1706",
+            "opening_liabilities": "3183.3624",
+            "operating_expense": "138.3466",
+            "period": 100,
+            "period_profit": "1372.9757",
+            "premium_income": "2281.0248",
+            "sector_id": "total",
+            "weighted_price": null
+          }
+        },
+        "resources_21": {
+          "baseline": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "0.5000",
+                "capacity_per_hour": "2.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "48.0000",
+            "closing_queue": 36,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "12.0000",
+            "period": 21,
+            "processed_work": "48.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          },
+          "variant": {
+            "asset_id": "portal",
+            "capacity_segments": [
+              {
+                "from_hour": "480.0000",
+                "through_hour": "504.0000",
+                "effective_factor": "1.0000",
+                "capacity_per_hour": "4.0000",
+                "causing_event_ids": [
+                  "ap7-shock"
+                ],
+                "active_response_ids": [
+                  "Vorbereitete_Kapazitaet"
+                ],
+                "replacements": []
+              }
+            ],
+            "capacity_work": "96.0000",
+            "closing_queue": 0,
+            "fallback_segments": [],
+            "lost_equivalent_hours": "0.0000",
+            "period": 21,
+            "processed_work": "84.0000",
+            "resource_id": "shared-staff-platform",
+            "shared_budget": true
+          }
+        }
+      }
+    ],
+    "contrast": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "light",
+        "minimumContrast": 6.13,
+        "checkedTextNodes": 114
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "theme": "dark",
+        "minimumContrast": 6.85,
+        "checkedTextNodes": 114
+      }
+    ]
+  },
+  "completion_document_checks": {
+    "planning_tests_passed": 35,
+    "seconds": 5.421,
+    "local_markdown_links_checked": 44,
+    "historical_scope_and_other_packages_unchanged": true,
+    "changed_paths": [
+      "AGENTS.md",
+      "docs/plans/ims_ap7_implementation.md",
+      "docs/plans/ims_delivery_handoff.md",
+      "docs/plans/ims_explainable_market_plan.json",
+      "docs/reports/ims_ap7_abschlussbericht.md",
+      "docs/reports/ims_ap7_fortschritt.md",
+      "docs/reports/ims_ap7_produktpruefung.md",
+      "docs/reports/ims_ap7_verification.json"
+    ],
+    "application_and_installer_resources_unchanged": true
+  },
+  "user_acceptance": {
+    "date": "2026-10-03",
+    "user_request": "Anwenderabnahme und Merge bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort",
+    "evidence": "docs/reports/ims_ap7_user_acceptance.md",
+    "product_head": "48c7c9a7654c4efc924b2212e12568e9e41a6d7f"
+  }
+}

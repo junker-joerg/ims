@@ -1,9 +1,21 @@
 """Single-VU Excel uses the same checked common-market rows; text cells are safe."""
 from io import BytesIO
 import json
+from collections.abc import Iterator
 
 from openpyxl import Workbook
 from openpyxl.cell import WriteOnlyCell
+
+
+def json_chunks(value: str) -> Iterator[str]:
+    """Excel counts UTF-16 units; preserve astral characters and full JSON."""
+    encoded, start = value.encode("utf-16-le"), 0
+    while start < len(encoded):
+        end = min(start + 60000, len(encoded))
+        if end < len(encoded) and 0xD800 <= int.from_bytes(encoded[end - 2:end], "little") <= 0xDBFF:
+            end -= 2
+        yield encoded[start:end].decode("utf-16-le")
+        start = end
 
 
 def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
@@ -39,14 +51,18 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
         append(source, [key, value])
     # Reproducible complete market context, chunked below Excel cell limits.
     encoded = json.dumps(result["source_input"], ensure_ascii=False, allow_nan=False)
-    for index in range(0, len(encoded), 30000):
-        append(source, ["source_input_json_chunk", encoded[index:index + 30000]])
+    for chunk in json_chunks(encoded):
+        append(source, ["source_input_json_chunk", chunk])
     if "source_bundle" in result:
         reference = result["reference"]
-        group = next(g for g in reference["groups"] if g["insurer_id"] == insurer_id)
+        group = next((g for g in reference["groups"] if g["insurer_id"] == insurer_id), None)
+        if group is None:
+            group = {"insurer_id": insurer_id, "name": actor["name"], "entity_rows": [], "synthetic_extra_actor": True}
         facts = book.create_sheet("BaFin-Quellenwerte")
         append(facts, ["Verdiente Bruttobeiträge, Mio. EUR; einschließlich Ausland und übernommener Rückversicherung. Keine konzerninterne Eliminierung; kein vollständiger deutscher Direktmarkt."])
         append(facts, ["Redaktionelle Gruppenzuordnung, noch keine vollständige unabhängige Kontrollprüfung."])
+        if group.get("synthetic_extra_actor"):
+            append(facts, ["Fiktiver Zusatzanbieter: keine BaFin-Quellengruppe; nachstehende Dateien belegen nur den 40er-Ausgangsmarkt."])
         fields = ["workbook_row", "entity_source_name", "source_sector", "raw_value", "source_unit", "premium_million_eur", "value_status", "source_id", "source_sheet", "source_cell"]
         append(facts, fields)
         for row in result["source_bundle"]["source_catalog"]["entities"]:
@@ -63,8 +79,23 @@ def single_vu_workbook(result: dict, insurer_id: int) -> bytes:
                            "model_binding": reference["model_binding"], "model_binding_note": reference["model_binding_note"]}.items():
             append(assumptions, [key, json.dumps(value, ensure_ascii=False) if isinstance(value, (dict, list)) else value])
         bundle = json.dumps(result["source_bundle"], ensure_ascii=False, allow_nan=False)
-        for index in range(0, len(bundle), 30000):
-            append(source, ["source_bundle_json_chunk", bundle[index:index + 30000]])
+        for chunk in json_chunks(bundle):
+            append(source, ["source_bundle_json_chunk", chunk])
     output = BytesIO()
+    if "shock_bundle" in result:
+        for title, name in (("ICT-Prozesse", "ict_process_rows"), ("ICT-Abhängigkeiten", "ict_dependency_rows"),
+                            ("ICT-Ressourcen", "ict_resource_rows"), ("ICT-Ereignisse", "ict_event_rows"),
+                            ("Kosten-einmal", "cost_rows"), ("Lebens-Anträge", "life_demand_rows"),
+                            ("Neue-Lebenspolicen", "life_contract_rows"), ("Wirksame-Wechsel", "switch_process_rows"),
+                            ("Horizont-Rückstand", "terminal_process_rows")):
+            sheet = book.create_sheet(title)
+            append(sheet, ["Seite", "Einmalige Buchung / Vorgang / Abhängigkeit; Modellannahmen, keine recherchierten Firmenprofile"])
+            for side in ("baseline", "variant"):
+                for row in result["sides"][side][name]:
+                    if "insurer_id" not in row or row["insurer_id"] == insurer_id or name == "switch_process_rows" and row.get("previous_insurer_id") == insurer_id:
+                        append(sheet, [side, json.dumps(row, ensure_ascii=False)])
+        encoded = json.dumps(result["shock_bundle"], ensure_ascii=False, allow_nan=False)
+        for chunk in json_chunks(encoded):
+            append(source, ["shock_bundle_json_chunk", chunk])
     book.save(output)
     return output.getvalue()

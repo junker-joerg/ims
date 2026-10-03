@@ -111,10 +111,30 @@ Historische Planabnahmen nicht ändern. API/UI/Export/Tests/Anleitung/Installer
 im selben PR #295 geliefert. Am 03.10.2026 hat der Auftraggeber ausdrücklich
 „Gibst du AP6 zur Anwenderabnahme und zum Merge frei? Freigabe erteilt - fahre fort“
 bestätigt; `docs/reports/ims_ap6_user_acceptance.md`. AP6 ist allgemein abgenommen
-und sein Merge beauftragt. Danach ist AP7 beauftragt; Umsetzung erst nach
-tatsächlich übernommenem AP6 in main. Lebens-Nachfrage-/ICT-Zeit-/Buchungstore
-und die angenommene Ergänzung E07-01 bleiben verbindlich. Keine AP7-Merge- oder
-Veröffentlichungsfreigabe und keine AP8–AP14-Umsetzung. Die früheren
+und am 03.10.2026 über PR #295 nach main übernommen
+(`88841290113a37faa6bf117d4cd67dcd9ff0867c`); `docs/reports/ims_ap6_merge.md`.
+Alle vier Checks am Abnahmekommitt a2787a9 bestanden, Merge-Tree identisch.
+Danach begann AP7 in `codex/ims-market-shock-demos`; Arbeitsauftrag,
+Umsetzungsplan und konkreter Vertragsvorschlag stehen in `docs/plans/ims_ap7_*`,
+Handproben und Fortschritt in `docs/reports/ims_ap7_*`; fortsetzen im selben
+Draft-PR #296. Der Auftraggeber nahm den konkreten Lebens-/ICT-Vertrag am
+03.10.2026 ausdrücklich an; `docs/reports/ims_ap7_contract_acceptance.md`.
+M1–M4 sind im selben PR technisch fertig (`done`), Produkt alpha.7.
+`docs/reports/ims_ap7_abschlussbericht.md`, `ims_ap7_produktpruefung.md` und
+`ims_ap7_verification.json` belegen vier grüne Produktchecks an 37fe791,
+2.755 Python-Tests/14 Subtests, 70 Browserfälle, echten Installer mit
+14 Lifecycle-/70 installierten Browserprüfungen und gleiche vier 100er-Digests
+im Checkout und installierten Produkt. ICT zeigt Ereignis, Abhängigkeit,
+Kapazität/Queue, Vertrag und Buchung für beide Vergleichsseiten; Anleitung
+und zwölf echte Browserbilder sind offline geliefert. Am 03.10.2026 erteilte
+der Auftraggeber ausdrücklich die Anwenderabnahme und den AP7-Mergeauftrag;
+`docs/reports/ims_ap7_user_acceptance.md`. Nach tatsächlichem AP7-Merge ist
+AP8 beauftragt. Die Abschluss-/Abnahmedokumentation ändert keine Produktressource.
+Lebens-Nachfrage-/ICT-Zeit-/Buchungsgrenzen
+und die angenommene Ergänzung E07-01 bleiben verbindlich. AP8 übernimmt die
+angenommene Ergänzung E08-01 mit eigener Herkunft und unterscheidet Addition,
+Wechselwirkungen und Korrelation. Kein AP8-Merge, öffentliches Release oder
+AP9–AP14-Auftrag. Die früheren
 Freigabegrenzen oben dokumentieren die damaligen Aufträge.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
