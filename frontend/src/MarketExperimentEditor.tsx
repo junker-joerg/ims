@@ -13,6 +13,11 @@ export function experimentSummary(source: unknown) {
   const root = object(source), model = experimentModel(source);
   return { actors: rows(model.insurers), families: rows(model.families), customers: rows(model.customer_groups), events: rows(root.events), periodCount:Number(model.period_count || 0), shock: root.schema_version === "ims.market-shock-bundle.v1", reference: root.schema_version === "ims.bafin-reference-bundle.v1" };
 }
+export function boardWindowIssue(source: unknown): string | null {
+  const model=experimentModel(source);
+  const early=rows(object(model.measures).variant).find(m=>String(m.measure_id).startsWith("Board_")&&Number(m.decision_period)<6);
+  return early ? "Eine neue Vorstandsvariante beginnt frühestens in P6. Setzen Sie die Entscheidung dieser Maßnahme auf P6 oder später; P1–P5 bleiben der gemeinsame Vergleichsanfang." : null;
+}
 const parameterLabels: Record<string, string> = {
   price: "Angebotspreis · Modellwährung", advertising: "Werbung · Modellwährung",
   premium_factor: "Prämienfaktor", advertising_factor: "Werbefaktor",
@@ -49,7 +54,7 @@ export default function MarketExperimentEditor({ source, original, busy, mode, o
   function boardParameter(key: string, value: string) {
     mutate((_root, nextModel) => {
       const nextMeasures = rows(object(nextModel.measures).variant);
-      let target = nextMeasures.find(m => m.measure_id === ownId) || nextMeasures.find(m => m.insurer_id === actor?.insurer_id && m.sector_id === selectedSector && key in object(m.overrides));
+      let target = nextMeasures.find(m => m.insurer_id === actor?.insurer_id && m.sector_id === selectedSector && key in object(m.overrides)) || nextMeasures.find(m => m.measure_id === ownId);
       if (!target) {
         target = { measure_id:ownId, insurer_id:actor?.insurer_id, sector_id:selectedSector, decision_period:6, lead_periods:0, duration:Math.max(1,periodCount-5), cost:"0", overrides:{} };
         nextMeasures.push(target); object(nextModel.measures).variant = nextMeasures;
@@ -66,7 +71,7 @@ export default function MarketExperimentEditor({ source, original, busy, mode, o
         <div className="editor-fields"><label>Vorstands-VU<select aria-label="Vorstands-VU" value={String(actor.insurer_id)} onChange={e => setActorId(Number(e.target.value))}>{summary.actors.map(a => <option key={String(a.insurer_id)} value={String(a.insurer_id)}>{String(a.name)}</option>)}</select></label><label>Vorstands-Sparte<select aria-label="Vorstands-Sparte" value={selectedSector} onChange={e=>setSector(e.target.value)}>{sectors.map(s=><option key={s} value={s}>{sectorNames[s] || s}</option>)}</select></label></div>
         <p className="rule-caption">Regelkern <code>{String(family?.rule || "Keine Familie")}</code> · {String(family?.label || "")}<br/>P1–P5 bleiben der gemeinsame Vergleichsanfang. Änderungen erzeugen eine ausführbare Maßnahme; Kosten und Vorlauf bleiben explizit.</p>
         <fieldset disabled={disabled || periodCount < 6}><legend>Vom Vorstand gesetzte Parameter</legend><div className="editor-fields">{Object.entries(object(family?.parameters)).map(([key,value])=>{
-          const measure = own || measures.find(m=>m.insurer_id===actor.insurer_id && m.sector_id===selectedSector && key in object(m.overrides));
+          const measure = measures.find(m=>m.insurer_id===actor.insurer_id && m.sector_id===selectedSector && key in object(m.overrides));
           return <label key={key}>{parameterLabels[key] || key}<input aria-label={`Vorstand: ${parameterLabels[key] || key}`} inputMode="decimal" value={String(object(measure?.overrides)[key] ?? value)} onChange={e=>boardParameter(key,e.target.value)}/></label>;
         })}</div></fieldset>
         {own && <fieldset disabled={disabled}><legend>Entscheidung und Buchung dieser Maßnahme</legend><div className="editor-fields">{[["decision_period","Entscheidung · Periode"],["lead_periods","Vorlauf · Perioden"],["duration","Wirksamkeit · Perioden"],["cost","Einmalige Maßnahmenkosten"]].map(([key,label])=><label key={key}>{label}<input inputMode="decimal" value={String(own[key])} onChange={e=>mutate((_r,m)=>{const target=rows(object(m.measures).variant).find(v=>v.measure_id===ownId)!;target[key]=key==="cost"?e.target.value.replace(",","."):Number(e.target.value);})}/></label>)}</div></fieldset>}

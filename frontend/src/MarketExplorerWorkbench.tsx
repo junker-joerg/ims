@@ -4,7 +4,7 @@ import { actorsIn, bookTerms, decodeResult, families, fields, ids, indexResult, 
 import "./MarketExplorerWorkbench.css";
 import WorkspaceTabs from "./WorkspaceTabs";
 import { Activity, ArrowRight, Building2, Globe2, Play, Layers3, Zap, CheckCircle2, Network, Coins, TrendingUp } from "lucide-react";
-import MarketExperimentEditor, { experimentSummary } from "./MarketExperimentEditor";
+import MarketExperimentEditor, { boardWindowIssue, experimentSummary } from "./MarketExperimentEditor";
 import ProviderNetwork from "./ProviderNetwork";
 
 const viewTabs = [{id:"market",label:"1 Verlauf"},{id:"shares",label:"2 Position"},{id:"families",label:"3 Familien"},{id:"flows",label:"4 Wechsel"},{id:"timeline",label:"5 Zeitlinie"},{id:"provider",label:"6 ICT / Prozesse"}];
@@ -66,7 +66,7 @@ export default function MarketExplorerWorkbench() {
     const body=await post(reference?"reference-case":hand?"workshop-case":"shock-case",reference?{period_count:horizon,workshop:null,overrides:[]} : hand?{case_id:caseId,period_count:horizon,vu_count:caseId==="switch"?2:3}:{case_id:caseId,period_count:horizon});
     if(version===revision.current){setSource(body.shock_bundle||body.source_bundle||body.source_input);setOriginal(true);}
   });}
-  async function calculate(){if(!source)return;invalidate();await act(async version=>{const body=decodeResult(await post("explore",source));if(version!==revision.current)return;setResult(body);setStage("results");setActiveView("market");setPeriod(Math.min(21,body.period_count));setSector("total");setGroup("market");setFocus(body.actors[0].insurer_id);});}
+  async function calculate(){if(!source)return;const issue=boardWindowIssue(source);invalidate();if(issue){setError(issue);return;}await act(async version=>{const body=decodeResult(await post("explore",source));if(version!==revision.current)return;setResult(body);setStage("results");setActiveView("market");setPeriod(Math.min(21,body.period_count));setSector("total");setGroup("market");setFocus(body.actors[0].insurer_id);});}
   function changeSource(next:unknown){invalidate();setSource(next);setOriginal(false);}
   async function readFile(file?:File){if(!file)return;invalidate();setSource(null);if(file.size>16*1024*1024){setError("Analysequelle überschreitet 16 MiB.");return;}await act(async version=>{const next=JSON.parse(await file.text());if(version===revision.current){setSource(next);setOriginal(false);}});}
   async function download(excel:boolean){if(!result||!source)return;await act(async version=>{const digest=result.model_result_digest;const response=await fetch(`/api/market/${excel?"export.xlsx":"source.json"}`,{method:"POST",headers:{"Content-Type":"application/json","If-Match":`"${digest}"`},body:JSON.stringify(excel?{source_input:source,insurer_id:focus}:source)});if(!response.ok||response.headers.get("etag")!==`"${digest}"`)throw new Error("Export benötigt denselben frischen Modellnachweis.");const blob=await response.blob();if(version!==revision.current)return;const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download=`IMS-AP8-${excel?`VU${focus}`:"Quelle"}-${digest.slice(0,12)}.${excel?"xlsx":"json"}`;link.click();setTimeout(()=>URL.revokeObjectURL(url),0);});}

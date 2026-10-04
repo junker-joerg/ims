@@ -34,8 +34,15 @@ Providerdiagramm zeigt deklarierte Kanten und reale Modell-Ausfallzeilen.
   Schrift, Speicherung/Exporte und AP5-Quellen). Ein zusätzlich verdeckter
   Rollenpfad wurde durch automatisches Öffnen beim Rollenwechsel korrigiert und
   anschließend in den neun Fällen erfolgreich nachgeprüft.
-- Vollständige AP8-Browserprüfung mit vier übernommenen 100er-Digests läuft.
-  Vollständige neue Produkt-CI und Installerbelege folgen am eingefrorenen Produktpunkt.
+- Vollständige lokale AP8-Browserprüfung: 13 Fälle erfolgreich in 12,6 Minuten,
+  einschließlich aller vier übernommenen 100er-Digests, 25er-Prefixe, frischem
+  JSON-/Excel-Export, 22 Offline-Anleitungsbildern und sechs Hell/Dunkel-/ICT-
+  Kombinationen. Keine übersprungenen, flaky oder wiederholten Testfälle.
+- Der neue Vorstandseditor erhält bestehende Parametermaßnahmen statt sie zu
+  überlappen. Neue Board-Maßnahmen vor P6 werden im geführten Vergleich abgewiesen;
+  bestehende Rechenverträge und historische Handfälle bleiben unverändert.
+  Die gezielte Browserprüfung des neuen Eingabewegs und der sechs Darstellungen wurde danach erneut ausgeführt: neun Fälle erfolgreich in 64,2 Sekunden.
+- Vollständige neue Produkt-CI und Installerbelege folgen am eingefrorenen Produktpunkt.
 
 Die alpha.9-CI am Commit 392efe7 war nicht vollständig erfolgreich:
 sechs Browserfälle scheiterten an verdeckten Werkzeuglinks beziehungsweise dem

@@ -24,6 +24,11 @@ test("AP8 gemeinsames Experiment: endogene Parameter, VN-Verhalten, Kosten und f
   await panel.getByRole("button",{name:"Als eigenes Experiment übernehmen"}).click();
   await expect(panel.getByTestId("explorer-results")).toHaveCount(0);
   await price.fill("1,5");await panel.getByLabel("Einmalige Maßnahmenkosten",{exact:true}).fill("3");
+  await panel.getByLabel("Entscheidung · Periode",{exact:true}).fill("2");
+  await panel.getByRole("button",{name:"Marktansichten frisch berechnen",exact:true}).click();
+  await expect(panel.getByRole("alert")).toContainText("frühestens in P6");
+  await expect(panel.getByTestId("explorer-results")).toHaveCount(0);
+  await panel.getByLabel("Entscheidung · Periode",{exact:true}).fill("6");
   await panel.getByLabel("VN Versicherungsschwelle",{exact:true}).fill("0.9");
   const changed=await run(page);expect(changed.body.model_result_digest).not.toBe(initial.body.model_result_digest);
   expect(changed.source.measures.variant).toContainEqual(expect.objectContaining({decision_period:6,cost:"3",overrides:{price:"1.5"}}));
