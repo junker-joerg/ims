@@ -175,6 +175,16 @@ Frühere alpha.8-Abschlussbelege bleiben historisch; neue Produktprüfungen sind
 separat erforderlich. Aktuelles AP8-Manifest in_progress/technically_complete
 false. Anwenderabnahme und Merge bleiben offen, AP9–AP14 nicht beauftragt.
 
+Am vom Client ausgewiesenen 04.10.2026 beauftragte der Anwender die gesamte
+Benutzerführung anhand vier Cockpitbildern erneut: Vorstandsstrategien endogen,
+Marktänderungen durch Schocks/Regulierung/Entwicklungen exogen. AP8 wird im
+selben PR #297 als gemeinsames Marktexperiment weitergeführt; Plan
+`docs/plans/ims_ap8_experiment_cockpit.md`. Produkt alpha.10 bezeichnet diese
+Bedien-/Gestaltungskorrektur, kein AP9. Bestehende AP5-/AP7-Eingabekanäle werden
+verbunden, der Simulationskern bleibt unverändert. Neue Produkt-, Browser- und
+Installerbelege sind erforderlich; frühere Fassungen bleiben historisch.
+Anwenderabnahme/Merge und AP9–AP14 bleiben offen beziehungsweise nicht beauftragt.
+
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
 geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige

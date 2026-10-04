@@ -37,7 +37,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await expect(workbench.getByTestId("management-case-results")).toBeVisible();
       await expect(calculate).toBeHidden();
       await expect(page.locator(".results-empty")).toBeHidden();
-      await page.getByRole("link", { name: "Simulation", exact: true }).click();
+      await page.getByRole("link", { name: "Modellwerkzeuge", exact: true }).click();
       await workbench.getByRole("link", { name: "Kapitalwirkung dieser geprüften Quelle", exact: true }).click();
       const capital = page.getByTestId("capital-workbench");
       await expect(capital.getByRole("button", { name: "Kapitalwirkung berechnen", exact: true })).toBeVisible();
@@ -46,6 +46,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await capital.getByRole("button", { name: "Kapitalwirkung berechnen", exact: true }).click();
       await expect(capital.getByTestId("capital-results")).toBeVisible();
       await expect(capital.getByTestId("capital-regulatory")).toContainText("gesperrt");
+      if (!await page.getByRole("link", { name: "100er-Gesamtbilanz", exact: true }).isVisible()) await page.getByText("Weitere Modellwerkzeuge", { exact:true }).click();
       await page.getByRole("link", { name: "100er-Gesamtbilanz", exact: true }).click();
       await workbench.getByText("Expertenmodus: vier Sparten und gemeinsame Quellen", { exact: true }).click();
       const editor = workbench.getByLabel("Management Quellenvertrag", { exact: true });
@@ -55,7 +56,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await expect(workbench.getByTestId("management-case-results")).toHaveCount(0);
       await page.getByRole("link", { name: "Ergebnisse", exact: true }).click();
       await expect(page.locator(".results-empty")).toBeVisible();
-      await page.getByRole("link", { name: "Simulation", exact: true }).click();
+      await page.getByRole("link", { name: "Modellwerkzeuge", exact: true }).click();
       await workbench.getByRole("checkbox").check();
       const rebind = workbench.getByRole("button", { name: "Geänderte Quellen prüfen und neu binden", exact: true });
       await rebind.click();

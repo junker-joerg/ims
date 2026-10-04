@@ -1,6 +1,6 @@
 # Sechs verknüpfte Marktansichten · IMS AP8
 
-Produktfassung 2.0.0-alpha.9 (Bedienkorrektur von AP8). Die sechs Ansichten erklären einen gemeinsamen
+Produktfassung 2.0.0-alpha.10 (Bedienkorrektur von AP8). Die sechs Ansichten erklären einen gemeinsamen
 geprüften Modelllauf. Die BaFin-Gruppenauswertung 2024 ist ein Workshop-Fall:
 verdiente Beiträge einschließlich Ausland und übernommener Rückversicherung,
 redaktionelle Gruppen ohne konzerninterne Eliminierung. Keine belegte deutsche
@@ -14,23 +14,27 @@ Quellen-Euro und Modellwährung sind getrennte Einheiten.
 ## Schnell beginnen
 
 Führen Sie diese Schritte in der gestarteten IMS-Workbench aus. Die folgende
-Menüführung gilt für Produktfassung **2.0.0-alpha.9**; die Release-Anzeige
+Menüführung gilt für Produktfassung **2.0.0-alpha.10**; die Release-Anzeige
 steht links unten in der Anwendung. Die hier geöffnete Anleitung ist eine
 eigene Seite.
 
-1. Klicken Sie in der Hauptnavigation auf **Markt und Familien**.
-2. Der Arbeitsbereich **Markt verstehen** ist bereits ausgewählt. **Schock
-   bearbeiten** öffnet die Eingaben für Gegenmaßnahmen; **Quellen und Handfälle**
-   öffnet die BaFin-Quellenprüfung und kleinen Referenzfälle. Jeder Arbeitsbereich
-   behält seine eigenen Eingaben und Ergebnisse.
+1. Klicken Sie in der Hauptnavigation auf **Markt und Strategien**.
+2. Der Arbeitsbereich **Markt verstehen** enthält Ihr gemeinsames Experiment.
+   Seine vier Schritte heißen **Markt wählen**, **Vorstand & Strategien**,
+   **Umwelt & Schocks** und **Wirkung verstehen**. Quelle und Rechnung bleiben
+   beim Schrittwechsel erhalten. **Schock bearbeiten** und **Quellen und Handfälle**
+   sind zusätzliche Fachwerkzeuge mit eigenen, ausdrücklich getrennten Sitzungen.
 3. Wählen Sie einen Analysefall und zunächst 25 Analyseperioden.
-4. Klicken Sie **Analysevorlage laden**, danach **Marktansichten frisch berechnen**.
+4. Klicken Sie **Analysevorlage laden**. Öffnen Sie **Vorstand & Strategien**
+   und **Umwelt & Schocks**, um die Annahmen zu verstehen. Änderungen beginnen
+   mit **Als eigenes Experiment übernehmen**. Klicken Sie anschließend
+   **Marktansichten frisch berechnen**.
 5. Wählen Sie Periode, Sparte, Vergleichsgruppe und Seite. Diese Auswahl wirkt
    gemeinsam auf die sechs Ansichten und löst keine neue Rechnung aus.
 6. Klicken Sie eine VU im Diagramm oder in einer Datentabelle. Der
    Buchungsnachweis öffnet die exakten VU-/Spartenwerte und Eigenkapitalbrücke.
 
-Alternativ gelangen Sie auf der **Übersicht** über **Markt und Familien öffnen**
+Alternativ gelangen Sie auf der **Übersicht** über **Marktexperiment öffnen**
 zum selben Arbeitsbereich.
 
 Nach einer Rechnung wählen Sie eine der sechs Ansichten über ihre Reiter.
@@ -39,6 +43,51 @@ Sie die Reiter per Tastatur; die gemeinsame Periode und Auswahl bleiben erhalten
 **Erklärrolle** öffnet die passende Ansicht. **Hinweise für meine Rolle** im
 Seitenkopf enthält zusätzliche Orientierung. Für einen Import öffnen Sie
 **Eigene Analysequelle importieren** unter dem Analysefall.
+
+## Strategien sind endogen, Marktumwelt ist exogen
+
+Der **Vorstand** setzt Parameter der Anbieterstrategie und entscheidet über
+Gegenmaßnahmen. Die Oberfläche erzeugt ausführbare Maßnahmen im vorhandenen
+Marktvertrag. P1–P5 bleiben der gemeinsame Vergleichsanfang. Bei neuen Maßnahmen
+beginnt die Entscheidung in P6; Entscheidung, Vorlauf, Dauer und einmalige Kosten
+können anschließend eingestellt werden. Bereits vorhandene Maßnahmen behalten
+ihr eigenes Zeitfenster. Einmalige Kosten werden nicht pro Periode wiederholt.
+Die Nachfrage folgt dem vorhandenen VN-Regelkern. Seine Versicherungsschwelle
+ist eine erklärte gemeinsame Verhaltensannahme; der Versicherervorstand steuert
+die Kundenregel nicht während des Marktgeschehens.
+
+Unter **Umwelt & Schocks** stehen Eintritt, Dauer, Intensität und deklarierte
+Ereigniskosten. Diese Eingaben ändern die äußere Situation, keine Vorstandsentscheidung.
+24 Prozessstunden entsprechen einer Modellperiode. Das bestehende Ereignis wirkt
+über seinen benannten Kanal. Die anhaltende Lebens-Nachfrageentwicklung betrifft
+Neugeschäft; vorhandene Altgarantien bleiben bestehen. Der hypothetische DORA-Fall
+ist keine neue Rechtsvorschrift. Weitere Trendkanäle werden nicht behauptet.
+
+Die **Vergleichsachse** im Vorstandsbereich macht den Versuch eindeutig:
+
+- **Gleicher Schock · ohne / mit Gegenmaßnahme:** beide Seiten erhalten dieselbe
+  Umwelt, führen aber ihre eigenen deklarierten Antworten aus.
+- **Gleiche Entscheidungen · ohne / mit Schock:** beide Seiten führen die
+  Vorstandsentscheidungen der Variante aus; die Basis erhält kein äußeres Ereignis.
+
+Jede Änderung der Quelle entwertet Ergebnis und Exportnachweis. Schrittwechsel,
+Rollenansicht und Ergebnisfilter ändern keinen Lauf. Beim direkt gebundenen
+BaFin-Referenzfall bearbeiten Sie Workshop-Mapping im Fachwerkzeug **Quellen und
+Handfälle**; für eine eigene Vorstands-/Schockvariante wählen Sie einen der vier
+abgeleiteten Fälle. Seine BaFin-Referenzidentitäten bleiben erhalten.
+
+Das Cockpit zeigt tatsächlich gebuchte Beiträge, Periodenergebnis,
+Schluss-Eigenkapital und Betriebskosten mit derselben Periode, Vergleichsgruppe,
+Sparte und Seite. Δ ist Variante minus Basis in Modellwährung. Es werden keine
+fiktiven Solvenzquoten oder Kundenkennzahlen aus Gestaltungsreferenzen eingesetzt.
+
+Das ICT-Netz bildet die **deklarierten Kanten** und **tatsächlichen Ausfallstunden**
+der gewählten Periode ab. Türkis: keine Ausfallstunden; Bernstein: betroffen.
+Die beschriftete Liste darunter und der konkrete Pfadnachweis sind die exakte
+Alternative zum räumlich gestalteten Diagramm. Ein gemeinsam benötigtes US-IAM
+bleibt auch beim Q-Ersatzpfad sichtbar. Die Netzwerkgeometrie ist keine berechnete
+Risikooberfläche. Von Ereignis und Abhängigkeit führt der Weg über Kapazität,
+Vorgang und wirksamen Vertrag zur konkreten Buchung.
 
 ![Tatsächlicher Einstieg mit direkter Navigation und einem Analyseformular](images/ap8_start_light_1440x900.png)
 
@@ -185,8 +234,33 @@ Die neue Ansicht hat einen eigenen Digest; Exportbindung ist der Modell-Digest.
 
 Die sechs Referenzbilder stammen aus dem tatsächlichen alpha.8-100er-US-
 Workshop-Lauf in P21, mit Modellnachweis und vollständigen API-Zeilen.
-Die fachlichen Ansichten bleiben in alpha.9 erhalten und sind nun einzeln über
-Reiter erreichbar. Der neue Einstieg ist oben als alpha.9-Browserbild gezeigt.
+Die fachlichen Ansichten bleiben in alpha.10 erhalten und sind einzeln über
+Reiter erreichbar. Der neue Einstieg ist oben als alpha.10-Browserbild gezeigt.
+
+Die folgenden Bilder zeigen das tatsächliche alpha.10-Cockpit und den
+25er-US-Hyperscaler-Fall in P21. Die Rechnung stammt aus denselben vollständigen
+Quellen wie die sechs Ansichten; die räumliche Netzzeichnung ist eine Darstellung
+der tatsächlichen Abhängigkeiten und Ausfallzeilen.
+
+![Neuer Einstieg in das lokale Marktexperiment](images/ap8_cockpit_overview_dark.png)
+
+![Endogene Vorstandsstrategien und ausführbare Maßnahmen](images/ap8_cockpit_board_light.png)
+
+![Vorstandsentscheidungen im Dunkelmodus](images/ap8_cockpit_board_dark.png)
+
+![Exogene Ereignisparameter und erklärte Wirkungskanäle](images/ap8_cockpit_environment_light.png)
+
+![Exogene Umwelt im Dunkelmodus](images/ap8_cockpit_environment_dark.png)
+
+![Cockpitkennzahlen aus tatsächlichen Modellbuchungen](images/ap8_cockpit_result_light.png)
+
+![Modellergebnisse im Dunkelmodus](images/ap8_cockpit_result_dark.png)
+
+![Tatsächliche Providerabhängigkeiten und Ausfallstatus](images/ap8_cockpit_network_light.png)
+
+![ICT-Netz mit gemeinsamem US-IAM und konkreten Ersatzpfaden](images/ap8_cockpit_network_dark.png)
+
+Die folgenden älteren Bilder dokumentieren die alpha.8-Referenzfassung.
 
 ![Marktverlauf und genaue VU-Spartenbeiträge](images/ap8_view_market.png)
 

@@ -11,8 +11,8 @@ for (const viewport of [{width:1440,height:900},{width:1024,height:768},{width:3
       await page.addInitScript(value => localStorage.setItem("ims.theme", value), theme);
       await page.goto("/#overview");
       const navigation = page.getByRole("navigation", {name:"Hauptnavigation",exact:true});
-      await navigation.getByRole("link", {name:"Markt und Familien",exact:true}).click();
-      await expect(page.getByRole("heading",{level:1})).toHaveText("Markt und Familien");
+      await navigation.getByRole("link", {name:"Markt und Strategien",exact:true}).click();
+      await expect(page.getByRole("heading",{level:1})).toHaveText("Markt und Strategien");
       await expect(navigation.locator('[aria-current="page"]')).toHaveCount(1);
       await expect(page.getByTestId("market-explorer-workbench")).toBeVisible();
       await expect(page.getByTestId("market-shock-workbench")).toBeHidden();
@@ -53,10 +53,10 @@ for (const viewport of [{width:1440,height:900},{width:1024,height:768},{width:3
       await expect(panel.getByTestId("explorer-flows")).toBeVisible();
       await expect(panel.getByLabel("Analyseperiode",{exact:true})).toHaveValue("6");
       await navigation.getByRole("link",{name:"Hilfe",exact:true}).click();
-      await navigation.getByRole("link",{name:"Simulation",exact:true}).click();
+      await navigation.getByRole("link",{name:"Modellwerkzeuge",exact:true}).click();
       await expect(page.locator('.model-workspace[data-model="balance"]').first()).toBeVisible();
       await expect(page.getByRole("navigation",{name:"Modellfälle",exact:true}).getByRole("link")).toHaveCount(4);
-      await navigation.getByRole("link",{name:"Markt und Familien",exact:true}).click();
+      await navigation.getByRole("link",{name:"Markt und Strategien",exact:true}).click();
       await expect(panel.getByTestId("explorer-flows")).toBeVisible();
       await expect(panel.getByTestId("explorer-model-digest")).toHaveText(digest!);
       expect(calculations).toBe(1);

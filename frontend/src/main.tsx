@@ -44,6 +44,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 import "./WorkbenchShell.css";
+import "./Cockpit.css";
 
 type StatusItem = {
   label: string;

@@ -12,7 +12,7 @@ Starten Sie IMS Workbench über das Windows-Startmenü. Unten links steht die
 Release-Nummer. Sie muss mit Ihrem Installer und der Anwendung übereinstimmen.
 Eine Meldung über unterschiedliche Versionen bedeutet: IMS neu starten und
 die Browserseite neu laden. Mit der Hauptnavigation kommen Sie immer zu
-Übersicht, Markt und Familien, Szenario, Simulation, Ergebnisse und Hilfe zurück.
+Übersicht, Markt und Strategien, Fallablage, Modellwerkzeuge, Ergebnisse und Hilfe zurück.
 
 Die **Übersicht** ist der direkte Einstieg in die vorhandenen Seminarfälle.
 **Szenario** verwaltet lokale Metadaten; ein Metadatensatz führt noch keine

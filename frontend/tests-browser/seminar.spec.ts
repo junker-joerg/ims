@@ -30,7 +30,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await page.getByRole("link", { name: "Ergebnisse", exact: true }).click();
       await expect(workbench.getByTestId("seminar-results")).toBeVisible();
       await expect(calculate).toBeHidden();
-      await page.getByRole("link", { name: "Simulation", exact: true }).click();
+      await page.getByRole("link", { name: "Modellwerkzeuge", exact: true }).click();
       if (viewport.width === 1440 && theme === "light") {
         for (const [label, extension] of [["Strategie JSON", "json"], ["Strategie CSV", "csv"], ["Strategie Excel", "xlsx"]]) {
           const downloaded = page.waitForEvent("download"); await workbench.getByRole("button", { name: label, exact: true }).click();
@@ -58,6 +58,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
         await expect(capital.locator(".capital-summary > div").filter({ has: page.getByText("Restproxy", { exact: true }) }).locator("strong")).toHaveText("87175,7633");
         await expect(capital.getByTestId("capital-regulatory")).toContainText("gesperrt");
         await capital.getByTestId("capital-results").screenshot({ path: info.outputPath("seminar-model-capital-1440-light.png") });
+        if (!await page.getByRole("link", { name: "ICT-Wirkung", exact: true }).isVisible()) await page.getByText("Weitere Modellwerkzeuge", { exact:true }).click();
         await page.getByRole("link", { name: "ICT-Wirkung", exact: true }).click();
         const ict = page.getByTestId("ict-workbench");
         await ict.getByRole("button", { name: "Baseline und ICT-Variante berechnen", exact: true }).click();

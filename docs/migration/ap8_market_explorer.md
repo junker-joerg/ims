@@ -24,6 +24,19 @@ Keine historische Terminal-UI portieren. Konzentration, Familienquoten und
 neue Darstellungen sind ausdrücklich moderne Auswertungen; keine historische
 Vollgleichheit, empirische Firmenkalibrierung oder neue Ursache behauptet.
 
+Die am 04.10.2026 beauftragte Benutzerführung verbindet bestehende Eingabe-
+und Rechenverträge in einer Sitzung. `MarketExperimentEditor.tsx` schreibt
+Anbieterparameter als AP5-Maßnahmen mit Entscheidung/Vorlauf/Dauer/Kosten,
+VN-Verhaltensparameter als gemeinsame Nachfrageannahme und AP7-Ereignisse
+als exogene Annahmen. `MarketExplorerWorkbench.tsx` hält die gemeinsame Quelle,
+entwertet beim Ändern sämtliche Ergebnisse und berechnet über denselben
+`/api/market/explore`-Pfad frisch. Quellen-/Exportbindung bleibt erhalten.
+`ProviderNetwork.tsx` zeichnet ausschließlich deklarierte Kanten und tatsächliche
+Ausfallzeilen; Geometrie ist keine zusätzliche Modellrechnung. `Cockpit.css`
+gestaltet auch vorhandene Einzelmodelle, ohne deren Formulare oder Freigaben
+in den Kern zu verschieben. Neue Vorlage-Digests müssen unverändert bleiben;
+eigene Quellen dürfen andere nachgewiesene Ergebnisse erzeugen.
+
 Die bestehenden `runner`, `reference`, `shock_plan`, `shock_process`, Regelkerne
 und Policen-/Garantiebuchung bleiben unverändert. Die API führt denselben frischen
 Kernlauf aus und danach eine reine Projektion. Neue Schema-Domäne betrifft nur

@@ -172,6 +172,7 @@ test("AP7: eigene Sitzung, abhängiger Q-Pfad, entwertetes Ergebnis, JSON und Go
   await expect(panel.getByRole("alert")).toBeVisible();
   await expect(panel.getByTestId("shock-results")).toHaveCount(0);
   await page.reload();
+  await page.getByRole("tab", { name: "Schock bearbeiten", exact: true }).click();
   await panel.getByLabel("AP7-Sitzung aus JSON laden", { exact: true }).setInputFiles(path);
   await expect(panel.getByTestId("shock-original")).toContainText("Eigene bearbeitbare Sitzung");
   assert.equal((await calculate(page)).content_digest, dependent.content_digest);

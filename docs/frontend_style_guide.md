@@ -1,6 +1,6 @@
 # IMS: Leitlinien für die Weboberfläche
 
-Stand 03.10.2026. Anwendung im bestehenden React-Frontend; keine neue UI-Bibliothek.
+Stand 04.10.2026. Anwendung im bestehenden React-Frontend; keine neue UI-Bibliothek.
 Diese Leitlinien beantworten den Anwenderbefund mangelnder Orientierung.
 
 ## Orientierung und Aufgaben
@@ -19,6 +19,21 @@ Diese Leitlinien beantworten den Anwenderbefund mangelnder Orientierung.
   Modelllauf und verliert keine Eingaben, Ergebnisnachweise oder Freigaben.
 
 ## Gestaltung und Bedienung
+
+Die vier vom Anwender bereitgestellten Cockpitbilder geben Gestaltungsrichtung
+und Informationshierarchie vor: dunkle Navigation, klare Kennzahlenkarten,
+große Datenvisualisierung, aufgabenbezogene Eingaben, großzügige Abstände und
+präzise Akzentfarben. Ihre fiktiven Kennzahlen und Funktionen werden nicht als
+IMS-Fakten übernommen. `Cockpit.css` enthält die gemeinsame visuelle Sprache.
+Türkis bezeichnet endogene Strategieentscheidungen, Bernstein exogene Umwelt.
+Diese Bedeutungen stehen immer zusätzlich als Text an den Bereichen.
+
+Der zentrale Marktbereich führt ein gemeinsames Experiment in vier Schritten:
+Markt wählen, Vorstand/Strategien, Umwelt/Schocks, Wirkung verstehen. Die
+Fallablage verwaltet lokale Metadaten. Modellwerkzeuge enthalten die vorhandenen
+einzelnen Fachmodelle. Ergebnisse zeigen den zuletzt geöffneten Modellfall.
+Ein räumlich gezeichnetes Providerdiagramm visualisiert deklarierte Kanten und
+tatsächliche Ausfallstunden; es behauptet keine zusätzliche Risikorechnung.
 
 * Farben, Kontrast, Abstände und Radien aus den bestehenden CSS-Tokens beziehen.
   Beschriftete Formulare, ruhige Flächen und eine abgestufte Überschriftenfolge.
