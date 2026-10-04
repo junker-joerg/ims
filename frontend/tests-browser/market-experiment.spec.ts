@@ -19,6 +19,7 @@ async function run(page:Page) {
 }
 test("AP8 gemeinsames Experiment: endogene Parameter, VN-Verhalten, Kosten und frischer Export",async({page})=>{
   const panel=await open(page);const initial=await run(page);
+  await panel.getByLabel("Erklärrolle",{exact:true}).selectOption("ceo");
   await panel.getByRole("button",{name:"02 Vorstand & Strategien",exact:true}).click();
   const price=panel.getByLabel("Vorstand: Angebotspreis · Modellwährung",{exact:true});await expect(price).toBeDisabled();
   await panel.getByRole("button",{name:"Als eigenes Experiment übernehmen"}).click();
@@ -31,6 +32,8 @@ test("AP8 gemeinsames Experiment: endogene Parameter, VN-Verhalten, Kosten und f
   await panel.getByLabel("Entscheidung · Periode",{exact:true}).fill("6");
   await panel.getByLabel("VN Versicherungsschwelle",{exact:true}).fill("0.9");
   const changed=await run(page);expect(changed.body.model_result_digest).not.toBe(initial.body.model_result_digest);
+  await expect(panel.getByLabel("Erklärrolle",{exact:true})).toHaveValue("ceo");
+  await expect(panel.getByTestId("explorer-shares")).toBeVisible();
   expect(changed.source.measures.variant).toContainEqual(expect.objectContaining({decision_period:6,cost:"3",overrides:{price:"1.5"}}));
   expect(changed.source.customer_groups[0].insurance_threshold).toBe("0.9");
   // Model evidence, not a snapshot of the editor: the cost is booked once at P6.
