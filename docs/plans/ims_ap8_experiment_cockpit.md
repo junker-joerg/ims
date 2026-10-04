@@ -52,3 +52,10 @@ sechs Ansichten mit gemeinsamen Filtern; erhaltene vier AP7-Ergebnisdigests;
 vollständige Produktprüfungen, neue Offline-Anleitung und Installer. Aktuelle
 alpha.9-CI-Fehler werden anhand ihrer tatsächlichen Berichte behoben. Anwenderabnahme
 und Merge bleiben offen.
+
+## Technischer Abschluss
+
+04.10.2026: Vier vollständige Produktchecks am Kommitt `11384cf69f14f52d3c0f0ae72537986a94484e57`
+bestanden. [Produktprüfung](../reports/ims_ap8_cockpit_produktpruefung.md) und
+[Verifikation](../reports/ims_ap8_cockpit_verification.json) belegen den gelieferten
+Installer und beide Browserumgebungen. Anwenderabnahme/Merge bleiben offen.

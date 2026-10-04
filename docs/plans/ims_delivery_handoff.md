@@ -1,5 +1,19 @@
 # IMS-Lieferübergabe
 
+## Aktuell: AP8-Marktcockpit alpha.10 technisch fertig
+
+04.10.2026: Der Auftrag zur gesamten Benutzerführung ist im selben PR #297
+umgesetzt und vollständig geprüft. Gemeinsames endogenes/exogenes Experiment,
+moderne Gesamtgestaltung und tatsächliches ICT-Netz. Produktpunkt `11384cf69f14f52d3c0f0ae72537986a94484e57`:
+vier erfolgreiche Produktchecks, 2764 Python-Tests/14 Subtests, 91 Checkout-/
+91 installierte Browserfälle, 14 Lifecycle-Prüfungen und 409 Ressourcen.
+[Abschluss](../reports/ims_ap8_cockpit_abschlussbericht.md),
+[Produktprüfung](../reports/ims_ap8_cockpit_produktpruefung.md),
+[Verifikation](../reports/ims_ap8_cockpit_verification.json).
+Anwenderabnahme pending, AP8-Merge nicht autorisiert, origin/main weiterhin AP7.
+Keine öffentliche Veröffentlichung oder AP9–AP14-Umsetzung. Finale Dokumentations-
+checks vor Ready/Merge separat prüfen; frühere Übergaben bleiben historisch.
+
 ## AP8-Bedienkorrektur in Arbeit; alpha.9 vor Anwenderabnahme
 
 03.10.2026: Nach dem ausdrücklichen Anwenderhinweis zur unübersichtlichen

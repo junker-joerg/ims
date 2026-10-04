@@ -1,10 +1,15 @@
 # AP8: Produktprüfung der sechs verknüpften Marktansichten
 
-**Aktueller Hinweis:** Die nachfolgende Prüfung gehört zum historischen
-alpha.8-Produktpunkt. Die aktuelle AP8-Bedienkorrektur alpha.9 braucht eigene
+**Neue Fassung:** Die gemeinsame Cockpitkorrektur alpha.10 besitzt jetzt eigene
+[Produktbelege](ims_ap8_cockpit_produktpruefung.md) und einen
+[aktuellen Abschluss](ims_ap8_cockpit_abschlussbericht.md). Dieser Bericht
+bleibt der historische alpha.8-Nachweis.
+
+**Historischer Zwischenstand:** Die nachfolgende Prüfung gehört zum historischen
+alpha.8-Produktpunkt. Die damalige AP8-Bedienkorrektur alpha.9 braucht eigene
 vollständige Produktbelege. Gezielte Vorschauprüfungen sind in
 [ims_ap8_usability_verification.json](ims_ap8_usability_verification.json)
-getrennt dokumentiert; aktueller Stand [Fortschritt](ims_ap8_fortschritt.md).
+getrennt dokumentiert; damaliger Stand [Fortschritt](ims_ap8_fortschritt.md).
 
 Erfasst 2026-10-03 17:18:19 +02:00 (Europe/Berlin). **AP8 technisch fertig**, Produkt **2.0.0-alpha.8**, Windows
 **2.0.0.8**, ein [Paket-PR #297](https://github.com/junker-joerg/ims/pull/297).

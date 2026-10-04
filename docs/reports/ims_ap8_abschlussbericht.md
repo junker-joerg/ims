@@ -1,10 +1,15 @@
 # AP8: Abschluss zur Anwenderabnahme
 
-**Aktueller Hinweis:** AP8 ist nach Anwenderkritik an der Orientierung zur
+**Neue Fassung:** Die gemeinsame Cockpitkorrektur alpha.10 besitzt jetzt eigene
+[Produktbelege](ims_ap8_cockpit_produktpruefung.md) und einen
+[aktuellen Abschluss](ims_ap8_cockpit_abschlussbericht.md). Dieser Bericht
+bleibt der historische alpha.8-Nachweis.
+
+**Historischer Zwischenstand:** AP8 ist nach Anwenderkritik an der Orientierung zur
 Bedienkorrektur erneut in Arbeit. Dieser Bericht belegt die historische
 alpha.8-Fassung. Alpha.9 ist als Vorschau separat geprüft; vollständige
 Produktprüfung und Anwenderabnahme bleiben offen.
-[Aktueller Stand](ims_ap8_fortschritt.md),
+[Damaliger Stand](ims_ap8_fortschritt.md),
 [Bedienprüfung](ims_ap8_usability_verification.json).
 
 Erfasst 2026-10-03 17:18:19 +02:00 (Europe/Berlin). **Technisch fertig**, Produkt **2.0.0-alpha.8** / Windows **2.0.0.8**,

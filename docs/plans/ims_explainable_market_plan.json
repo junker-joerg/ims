@@ -623,7 +623,7 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "AP7"
       ],
@@ -647,14 +647,15 @@
         "Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"
       ],
       "completion_evidence": [
-        "docs/reports/ims_ap8_abschlussbericht.md",
-        "docs/reports/ims_ap8_produktpruefung.md: vier erfolgreiche Produktchecks am eingefrorenen Produktpunkt 17cbf5e631233ff5e5f5153a673a2eb6adaa7375",
-        "docs/reports/ims_ap8_verification.json: 2.764 Python-Tests/14 Subtests, 83 Browserfälle, 14 Lifecycle- und 83 installierte Browserprüfungen",
-        "docs/handbook/market_ap8.md: sechs Ansichten, zwölf echte Bilder, offline im alpha.8-Installer",
-        "docs/migration/ap8_market_explorer.md: vorhandene Kerne unverändert; exakte Addition/Kanal/Wechselwirkung/Korrelation"
+        "docs/reports/ims_ap8_cockpit_abschlussbericht.md",
+        "docs/reports/ims_ap8_cockpit_produktpruefung.md: vier erfolgreiche Produktchecks an 11384cf69f14f52d3c0f0ae72537986a94484e57",
+        "docs/reports/ims_ap8_cockpit_verification.json: 2764 Python-Tests/14 Subtests, 91 Browserfälle, 14 Lifecycle-/91 installierte Browserprüfungen",
+        "docs/handbook/market_ap8.md: gemeinsames Experiment, sechs Ansichten, 22 aktuelle/historische Bildreferenzen, offline im alpha.10-Installer",
+        "docs/migration/ap8_market_explorer.md: Modellkerne unverändert; aktueller Oberflächen-/Editorvertrag",
+        "docs/reports/ims_ap8_verification.json: historischer alpha.8-Produktbeleg bleibt erhalten"
       ],
       "implementation_authorized": true,
-      "technically_complete": false,
+      "technically_complete": true,
       "merged_to_main": false,
       "user_product_acceptance": "pending",
       "merge_authorized": false,
@@ -669,7 +670,7 @@
         "recording_note": "Beobachtete Erfassung nach tatsächlich geprüftem AP7-Merge; genauer Nachrichtenzeitpunkt nicht ausgewiesen. Fortsetzung mit dem nächsten angenommenen Paket AP8, einschließlich separat angenommener E08-01. Exakte Addition, Wechselwirkung und Korrelation unterscheiden. Kein AP8-Merge, öffentliches Release oder AP9–AP14-Auftrag."
       },
       "implementation_plan": "docs/plans/ims_ap8_implementation.md",
-      "progress_document": "docs/reports/ims_ap8_fortschritt.md",
+      "progress_document": "docs/reports/ims_ap8_cockpit_fortschritt.md",
       "view_contract": "docs/plans/ims_ap8_view_contract.md",
       "accepted_amendments": [
         {
@@ -680,13 +681,13 @@
           "acceptance_impact": "Fokus, Rivalen und Modellmarkt: absolute Buchungswerte und relative Position mit benannten Nennern nebeneinander; eigene AP8-Belege, historische Abnahmen unverändert.",
           "implemented": true,
           "completion_evidence": [
-            "docs/reports/ims_ap8_verification.json: E08-01 mit Fokus/Rivalen/Modellmarkt, absoluten Buchungen, vollständigem Nenner und relativer Position",
-            "docs/reports/ims_ap8_produktpruefung.md"
+            "docs/reports/ims_ap8_cockpit_verification.json: E08-01 unverändert und vollständig erneut geprüft",
+            "docs/reports/ims_ap8_cockpit_produktpruefung.md"
           ]
         }
       ],
       "usability_revision": {
-        "status": "in_progress",
+        "status": "superseded",
         "release": "2.0.0-alpha.9",
         "scope": "AP8-Bedienkorrektur im selben Paket-PR #297; keine AP9-Umsetzung",
         "user_request": "Ich finde mich immer schlechter in dieser oberfläsche zurecht. Kennst Du keine Frontend-Style Guides für Webanwendungen? Das kann man so keinem zeigen",
@@ -694,16 +695,21 @@
         "plan": "docs/plans/ims_ap8_usability_correction.md",
         "previous_product": "17cbf5e631233ff5e5f5153a673a2eb6adaa7375",
         "previous_product_release": "2.0.0-alpha.8",
-        "acceptance_impact": "Navigation und Darstellung erneut prüfen; frühere alpha.8-Abschlussbelege bleiben historisch. Anwenderabnahme/Merge weiterhin offen."
+        "acceptance_impact": "Navigation und Darstellung erneut prüfen; frühere alpha.8-Abschlussbelege bleiben historisch. Anwenderabnahme/Merge weiterhin offen.",
+        "superseded_by": "2.0.0-alpha.10",
+        "verification": "docs/reports/ims_ap8_cockpit_verification.json",
+        "historical_result": "alpha.9-CI nicht vollständig erfolgreich; sechs gescheiterte Browserwege, im aktuellen vollständigen Lauf korrigiert"
       },
       "cockpit_revision": {
-        "status": "in_progress",
+        "status": "done",
         "release": "2.0.0-alpha.10",
         "scope": "Gesamte Benutzerführung, gemeinsames endogenes/exogenes Marktexperiment im selben AP8-Paket-PR #297",
         "user_request": "Überarbeite die Gesamte Benutzerführung; Strategieparameter endogen durch den Vorstand, Marktänderungen durch Schocks, Regulierungen und Trends exogen; moderne Oberfläche anhand vier Cockpitbildern.",
         "recording_note": "Inhaltlicher Fortsetzungsauftrag des Anwenders am vom Client ausgewiesenen 04.10.2026; kein sekundengenauer Nachrichtenzeitpunkt behauptet. Mockup-Fakten sind keine Modellanforderungen.",
         "plan": "docs/plans/ims_ap8_experiment_cockpit.md",
-        "acceptance_impact": "Neue Browser-, Anleitung- und Installerprüfung erforderlich; historische alpha.8/alpha.9-Belege bleiben getrennt. Anwenderabnahme und Merge offen."
+        "acceptance_impact": "Neue Browser-, Anleitung- und Installerprüfung erforderlich; historische alpha.8/alpha.9-Belege bleiben getrennt. Anwenderabnahme und Merge offen.",
+        "product_commit": "11384cf69f14f52d3c0f0ae72537986a94484e57",
+        "verification": "docs/reports/ims_ap8_cockpit_verification.json"
       }
     },
     {

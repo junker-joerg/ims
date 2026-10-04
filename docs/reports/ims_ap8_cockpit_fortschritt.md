@@ -54,3 +54,13 @@ Verständlichkeitsabnahme.
 
 Nächster Schritt: echte Produkt-CI einschließlich Installer und installierter
 Browserprüfungen auswerten, Paketbeschreibung und Abschlussbelege aktualisieren.
+
+## Vollständiger technischer Abschluss
+
+04.10.2026: Vier Produktchecks an `11384cf69f14f52d3c0f0ae72537986a94484e57` erfolgreich.
+2764 Python-Tests/14 Subtests, 91 Checkout- und 91 installierte Browserfälle,
+14 Lifecycle-Prüfungen, 409 Ressourcen und geprüfter alpha.10-Installer.
+[Produktprüfung](ims_ap8_cockpit_produktpruefung.md),
+[Verifikation](ims_ap8_cockpit_verification.json),
+[Abschluss](ims_ap8_cockpit_abschlussbericht.md).
+Vorstehende offene Prüfstände sind historisch. Anwenderabnahme und Merge offen.

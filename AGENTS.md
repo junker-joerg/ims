@@ -172,7 +172,7 @@ Direkte Markt-Navigation, getrennte Arbeitsbereiche, jeweils eine von sechs
 Ansichten, klarer Lade-/Rechenablauf und erhaltene Zustände werden überprüft.
 Die neue Produktfassung alpha.9 bezeichnet die AP8-Bedienkorrektur, kein AP9.
 Frühere alpha.8-Abschlussbelege bleiben historisch; neue Produktprüfungen sind
-separat erforderlich. Aktuelles AP8-Manifest in_progress/technically_complete
+separat erforderlich. Damaliges AP8-Manifest in_progress/technically_complete
 false. Anwenderabnahme und Merge bleiben offen, AP9–AP14 nicht beauftragt.
 
 Am vom Client ausgewiesenen 04.10.2026 beauftragte der Anwender die gesamte
@@ -184,6 +184,20 @@ Bedien-/Gestaltungskorrektur, kein AP9. Bestehende AP5-/AP7-Eingabekanäle werde
 verbunden, der Simulationskern bleibt unverändert. Neue Produkt-, Browser- und
 Installerbelege sind erforderlich; frühere Fassungen bleiben historisch.
 Anwenderabnahme/Merge und AP9–AP14 bleiben offen beziehungsweise nicht beauftragt.
+
+AP8-Cockpitkorrektur alpha.10 ist am 04.10.2026 technisch fertig (`done`) im selben
+PR #297. Produktpunkt `11384cf69f14f52d3c0f0ae72537986a94484e57`: vier erfolgreiche
+Produktchecks, 2764 Python-Tests/14 Subtests, 91 Browserfälle und 14 Lifecycle-/
+91 installierte Browserprüfungen. 409 Ressourcen am Git-Tree gebunden;
+authentischer Windows-Installer 2.0.0.10 geliefert. Gemeinsames Marktexperiment
+mit endogenen Vorstands-/VN-Eingaben, exogenen Ereignissen, tatsächlichem ICT-Netz,
+frischen Exporten und aktueller Offline-Anleitung. Vier AP7-Modell-Digests und
+Kernverträge unverändert. Belege `docs/reports/ims_ap8_cockpit_abschlussbericht.md`,
+`ims_ap8_cockpit_produktpruefung.md`, `ims_ap8_cockpit_verification.json`.
+Aktuelles Manifest done/technically_complete true; frühere alpha.8/alpha.9-
+Stände oben bleiben historisch. Anwenderabnahme pending, Merge nicht autorisiert,
+kein öffentlicher Release/AP9–AP14-Auftrag. Der spätere Dokumentationshead ist
+vom geprüften Produktpunkt zu unterscheiden; keine Produktressource verändert.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
