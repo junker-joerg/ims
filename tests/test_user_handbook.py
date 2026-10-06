@@ -12,7 +12,19 @@ def _read(filename: str) -> str:
 def test_handbook_index_defines_scope_navigation_and_platform_status() -> None:
     index = _read("README.md")
 
-    assert "Handbuchstand: PR178a" in index
+    assert "[Gemeinsames Marktexperiment](market_ap8.md)" in index
+    assert "[notwendige Eingaben](eingabeinventar.md)" in index
+    assert "[Rechenkern und fachliche Abweichungen](rechenkern.md)" in index
+    for label in (
+        "Übersicht", "Markt und Strategien", "Fallablage", "Modellwerkzeuge",
+        "Ergebnisse", "Hilfe", "Markt verstehen", "Modellwelt", "Unternehmen",
+        "Laufansicht",
+    ):
+        assert f"**{label}**" in index
+    assert "sie pausiert keinen Kernzustand" in index
+    assert "Früherer Seminarstand PR178a" in index
+    for filename in ("market_ap8.md", "eingabeinventar.md", "rechenkern.md"):
+        assert (HANDBOOK_ROOT / filename).is_file(), filename
     assert "[IMS im Managementseminar](management_seminar_guide.md)" in index
     assert "[Windows-Testpaket in zwei Seiten installieren]" in index
     assert "[IMS in zehn Seiten verstehen und bedienen]" in index

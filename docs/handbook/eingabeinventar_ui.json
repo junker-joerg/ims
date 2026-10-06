@@ -1,0 +1,2799 @@
+{
+  "schema": "ims.ui-input-syntax-inventory.v1",
+  "date": "2026-10-06",
+  "method": "TypeScript AST; each control syntax once, dynamic loops represented by their source syntax. This is not a model-field validator.",
+  "components": [
+    {
+      "file": "frontend/src/CapitalWorkbench.tsx",
+      "controls": [
+        {
+          "line": 363,
+          "kind": "select",
+          "attributes": [
+            "value={period}",
+            "onChange={(event) => { setPeriod(Number(event.target.value)); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 366,
+          "kind": "input",
+          "attributes": [
+            "type=\"date\"",
+            "value={referenceDate}",
+            "onChange={(event) => { setReferenceDate(event.target.value); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 367,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "maxLength={160}",
+            "value={note}",
+            "onChange={(event) => { setNote(event.target.value); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 375,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`${label} Aktiva-Änderung`}",
+            "inputMode=\"decimal\"",
+            "value={adjustments[index].asset_delta}",
+            "onChange={(event) => setAdjustment(index, \"asset_delta\", event.target.value)}"
+          ]
+        },
+        {
+          "line": 377,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`${label} Verpflichtungs-Änderung`}",
+            "inputMode=\"decimal\"",
+            "value={adjustments[index].liability_delta}",
+            "onChange={(event) => setAdjustment(index, \"liability_delta\", event.target.value)}"
+          ]
+        },
+        {
+          "line": 387,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`${label} Teilbetrag`}",
+            "inputMode=\"decimal\"",
+            "value={exposures[index].amount}",
+            "onChange={(event) => setExposure(index, \"amount\", event.target.value)}"
+          ]
+        },
+        {
+          "line": 389,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`${label} Stresssatz`}",
+            "inputMode=\"decimal\"",
+            "value={exposures[index].rate}",
+            "onChange={(event) => setExposure(index, \"rate\", event.target.value)}"
+          ]
+        },
+        {
+          "line": 397,
+          "kind": "input",
+          "attributes": [
+            "inputMode=\"decimal\"",
+            "value={operationalLoss}",
+            "onChange={(event) => { setOperationalLoss(decimal(event.target.value)); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 398,
+          "kind": "input",
+          "attributes": [
+            "inputMode=\"decimal\"",
+            "value={bufferCapacity}",
+            "onChange={(event) => { setBufferCapacity(decimal(event.target.value)); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 399,
+          "kind": "input",
+          "attributes": [
+            "inputMode=\"decimal\"",
+            "value={bufferApplied}",
+            "onChange={(event) => { setBufferApplied(decimal(event.target.value)); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 400,
+          "kind": "input",
+          "attributes": [
+            "inputMode=\"decimal\"",
+            "value={maxLoss}",
+            "onChange={(event) => { setMaxLoss(decimal(event.target.value)); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 401,
+          "kind": "input",
+          "attributes": [
+            "inputMode=\"decimal\"",
+            "value={minEquity}",
+            "onChange={(event) => { setMinEquity(decimal(event.target.value)); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 407,
+          "kind": "input",
+          "attributes": [
+            "inputMode=\"decimal\"",
+            "value={factors[id]}",
+            "onChange={(event) => {\r\n              setFactors((current) => ({ ...current, [id]: decimal(event.target.value) })); invalidate();\r\n            }}"
+          ]
+        },
+        {
+          "line": 413,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={confirmed}",
+            "disabled={!contracts || Boolean(busy)}",
+            "onChange={(event) => { setConfirmed(event.target.checked); if (!event.target.checked) invalidate(); }}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 363,
+          "syntax": "<label>Modellperiode<select value={period} onChange={(event) => { setPeriod(Number(event.target.value)); invalidate(); }}>\r\n          {Array.from({ length: source.periodCount }, (_, index) => <option value={index + 1} key={index}>{index + 1}</option>)}\r\n        </select></label>"
+        },
+        {
+          "line": 366,
+          "syntax": "<label>Szenario-Referenztag<input type=\"date\" value={referenceDate} onChange={(event) => { setReferenceDate(event.target.value); invalidate(); }} /></label>"
+        },
+        {
+          "line": 367,
+          "syntax": "<label>Annahmenotiz<input type=\"text\" maxLength={160} value={note} onChange={(event) => { setNote(event.target.value); invalidate(); }} /></label>"
+        },
+        {
+          "line": 397,
+          "syntax": "<label>Betriebsverlust<input inputMode=\"decimal\" value={operationalLoss} onChange={(event) => { setOperationalLoss(decimal(event.target.value)); invalidate(); }} /></label>"
+        },
+        {
+          "line": 398,
+          "syntax": "<label>Modellpuffer-Kapazität<input inputMode=\"decimal\" value={bufferCapacity} onChange={(event) => { setBufferCapacity(decimal(event.target.value)); invalidate(); }} /></label>"
+        },
+        {
+          "line": 399,
+          "syntax": "<label>Angerechneter Puffer<input inputMode=\"decimal\" value={bufferApplied} onChange={(event) => { setBufferApplied(decimal(event.target.value)); invalidate(); }} /></label>"
+        },
+        {
+          "line": 400,
+          "syntax": "<label>Maximaler Nettoverlust<input inputMode=\"decimal\" value={maxLoss} onChange={(event) => { setMaxLoss(decimal(event.target.value)); invalidate(); }} /></label>"
+        },
+        {
+          "line": 401,
+          "syntax": "<label>Minimaler Restproxy<input inputMode=\"decimal\" value={minEquity} onChange={(event) => { setMinEquity(decimal(event.target.value)); invalidate(); }} /></label>"
+        },
+        {
+          "line": 406,
+          "syntax": "<label key={id}>{label}\r\n            <input inputMode=\"decimal\" value={factors[id]} onChange={(event) => {\r\n              setFactors((current) => ({ ...current, [id]: decimal(event.target.value) })); invalidate();\r\n            }} /></label>"
+        },
+        {
+          "line": 413,
+          "syntax": "<label className=\"capital-confirm\"><input type=\"checkbox\" checked={confirmed} disabled={!contracts || Boolean(busy)}\r\n          onChange={(event) => { setConfirmed(event.target.checked); if (!event.target.checked) invalidate(); }} />\r\n          <span>Diese Werte sind ausdrücklich deklarierte Modellannahmen, keine regulatorischen Parameter.</span></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/FourSectorBalanceWorkbench.tsx",
+      "controls": [
+        {
+          "line": 226,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={confirmed}",
+            "disabled={!ready || busy}",
+            "onChange={(event) => {\r\n            setConfirmed(event.target.checked);\r\n            if (!event.target.checked) {\r\n              onReady?.(null);\r\n              setResult(null);\r\n            }\r\n          }}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 226,
+          "syntax": "<label className=\"four-sector-confirm\"><input type=\"checkbox\" checked={confirmed} disabled={!ready || busy}\r\n          onChange={(event) => {\r\n            setConfirmed(event.target.checked);\r\n            if (!event.target.checked) {\r\n              onReady?.(null);\r\n              setResult(null);\r\n            }\r\n          }} />\r\n          <span>Die vier Eingaben gehören fachlich zu {selected.health?.scenarioId ?? \"diesem Szenario\"}</span></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/GuidedChainWorkbench.tsx",
+      "controls": [
+        {
+          "line": 98,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"100er Seed\"",
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"2147483647\"",
+            "disabled={busy}",
+            "value={seed}",
+            "onChange={e => { invalidate(); setSeed(e.target.value); setSource(null); setDirty(false); }}"
+          ]
+        },
+        {
+          "line": 98,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"100er Laufindex\"",
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"0\"",
+            "disabled={busy}",
+            "value={runIndex}",
+            "onChange={e => { invalidate(); setRunIndex(e.target.value); setSource(null); setDirty(false); }}"
+          ]
+        },
+        {
+          "line": 102,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label=\"100er Quellenvertrag\"",
+            "rows={12}",
+            "disabled={busy}",
+            "value={expert}",
+            "onChange={e => { invalidate(); setExpert(e.target.value); setDirty(true); }}"
+          ]
+        },
+        {
+          "line": 106,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "disabled={busy}",
+            "checked={storageRelease}",
+            "onChange={e => setStorageRelease(e.target.checked)}"
+          ]
+        },
+        {
+          "line": 109,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Prefix Verantwortlich\"",
+            "disabled={busy}",
+            "value={actor}",
+            "onChange={e => { setActor(e.target.value); setRunRelease(false); }}"
+          ]
+        },
+        {
+          "line": 109,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Prefix Grund\"",
+            "disabled={busy}",
+            "value={reason}",
+            "onChange={e => { setReason(e.target.value); setRunRelease(false); }}"
+          ]
+        },
+        {
+          "line": 110,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "disabled={busy}",
+            "checked={runRelease}",
+            "onChange={e => setRunRelease(e.target.checked)}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 98,
+          "syntax": "<label>Seed<input aria-label=\"100er Seed\" type=\"number\" min=\"0\" max=\"2147483647\" disabled={busy} value={seed} onChange={e => { invalidate(); setSeed(e.target.value); setSource(null); setDirty(false); }} /></label>"
+        },
+        {
+          "line": 98,
+          "syntax": "<label>Laufindex<input aria-label=\"100er Laufindex\" type=\"number\" min=\"0\" max=\"0\" disabled={busy} value={runIndex} onChange={e => { invalidate(); setRunIndex(e.target.value); setSource(null); setDirty(false); }} /></label>"
+        },
+        {
+          "line": 102,
+          "syntax": "<label>100er Quellenvertrag<textarea aria-label=\"100er Quellenvertrag\" rows={12} disabled={busy} value={expert} onChange={e => { invalidate(); setExpert(e.target.value); setDirty(true); }} /></label>"
+        },
+        {
+          "line": 106,
+          "syntax": "<label><input type=\"checkbox\" disabled={busy} checked={storageRelease} onChange={e => setStorageRelease(e.target.checked)} />Die geprüften Kandidaten und Ketten unveränderlich lokal speichern.</label>"
+        },
+        {
+          "line": 109,
+          "syntax": "<label>Verantwortlich<input aria-label=\"Prefix Verantwortlich\" disabled={busy} value={actor} onChange={e => { setActor(e.target.value); setRunRelease(false); }} /></label>"
+        },
+        {
+          "line": 109,
+          "syntax": "<label>Grund<input aria-label=\"Prefix Grund\" disabled={busy} value={reason} onChange={e => { setReason(e.target.value); setRunRelease(false); }} /></label>"
+        },
+        {
+          "line": 110,
+          "syntax": "<label><input type=\"checkbox\" disabled={busy} checked={runRelease} onChange={e => setRunRelease(e.target.checked)} />Referenzläufe 1–2 und 1–5 ausführen und ihre unveränderlichen Ergebnisse speichern; vorhandene Nachweise erneut prüfen.</label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/HealthWorkbench.tsx",
+      "controls": [
+        {
+          "line": 305,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"1\"",
+            "max=\"25\"",
+            "value={draft.insurerId}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(\"insurerId\", Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 307,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "maxLength={40}",
+            "value={draft.scenarioId}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(\"scenarioId\", event.target.value)}"
+          ]
+        },
+        {
+          "line": 309,
+          "kind": "select",
+          "attributes": [
+            "value={draft.periodCount}",
+            "disabled={busy !== null}",
+            "onChange={(event) => horizon(Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 318,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"1000000000\"",
+            "value={draft.openingActivePolicies}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(\"openingActivePolicies\", Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 323,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={draft[key]}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(key, event.target.value)}"
+          ]
+        },
+        {
+          "line": 332,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"1000000000\"",
+            "value={draft.newBusinessPerPeriod}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(\"newBusinessPerPeriod\", Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 334,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"1000000000\"",
+            "value={draft.exitsPerPeriod}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(\"exitsPerPeriod\", Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 337,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={String(draft[key])}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(key, event.target.value)}"
+          ]
+        },
+        {
+          "line": 344,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"1\"",
+            "max=\"100\"",
+            "value={draft.variantStartPeriod}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(\"variantStartPeriod\", Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 348,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={String(draft[key])}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(key, event.target.value)}"
+          ]
+        },
+        {
+          "line": 378,
+          "kind": "select",
+          "attributes": [
+            "value={metric}",
+            "onChange={(event) => setMetric(event.target.value)}"
+          ]
+        },
+        {
+          "line": 421,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={confirmed}",
+            "disabled={!previews[selectedSide] || !historyReady || busy !== null || view !== \"compare\"}",
+            "onChange={(event) => setConfirmed(event.target.checked)}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 305,
+          "syntax": "<label><span>Versicherer</span><input type=\"number\" min=\"1\" max=\"25\" value={draft.insurerId} disabled={busy !== null}\r\n          onChange={(event) => edit(\"insurerId\", Number(event.target.value))} /></label>"
+        },
+        {
+          "line": 307,
+          "syntax": "<label><span>Szenario</span><input type=\"text\" maxLength={40} value={draft.scenarioId} disabled={busy !== null}\r\n          onChange={(event) => edit(\"scenarioId\", event.target.value)} /></label>"
+        },
+        {
+          "line": 309,
+          "syntax": "<label><span>Perioden</span><select value={draft.periodCount} disabled={busy !== null}\r\n          onChange={(event) => horizon(Number(event.target.value))}>\r\n          {HEALTH_HORIZONS.map((count) => <option key={count} value={count}>{count}</option>)}\r\n        </select></label>"
+        },
+        {
+          "line": 318,
+          "syntax": "<label><span>Aktive Verträge</span><input type=\"number\" min=\"0\" max=\"1000000000\" value={draft.openingActivePolicies}\r\n            disabled={busy !== null} onChange={(event) => edit(\"openingActivePolicies\", Number(event.target.value))} /></label>"
+        },
+        {
+          "line": 323,
+          "syntax": "<label key={key}><span>{label}</span><input type=\"text\" inputMode=\"decimal\" value={draft[key]} disabled={busy !== null}\r\n              onChange={(event) => edit(key, event.target.value)} /></label>"
+        },
+        {
+          "line": 332,
+          "syntax": "<label><span>Neugeschäft je Periode</span><input type=\"number\" min=\"0\" max=\"1000000000\" value={draft.newBusinessPerPeriod}\r\n              disabled={busy !== null} onChange={(event) => edit(\"newBusinessPerPeriod\", Number(event.target.value))} /></label>"
+        },
+        {
+          "line": 334,
+          "syntax": "<label><span>Abgang je Periode</span><input type=\"number\" min=\"0\" max=\"1000000000\" value={draft.exitsPerPeriod}\r\n              disabled={busy !== null} onChange={(event) => edit(\"exitsPerPeriod\", Number(event.target.value))} /></label>"
+        },
+        {
+          "line": 336,
+          "syntax": "<label key={key}><span>{label}</span>\r\n              <input type=\"text\" inputMode=\"decimal\" value={String(draft[key])} disabled={busy !== null}\r\n                onChange={(event) => edit(key, event.target.value)} /></label>"
+        },
+        {
+          "line": 344,
+          "syntax": "<label><span>Änderung ab Periode</span><input type=\"number\" min=\"1\" max=\"100\"\r\n              value={draft.variantStartPeriod} disabled={busy !== null}\r\n              onChange={(event) => edit(\"variantStartPeriod\", Number(event.target.value))} /></label>"
+        },
+        {
+          "line": 347,
+          "syntax": "<label key={key}><span>{label}</span>\r\n              <input type=\"text\" inputMode=\"decimal\" value={String(draft[key])} disabled={busy !== null}\r\n                onChange={(event) => edit(key, event.target.value)} /></label>"
+        },
+        {
+          "line": 378,
+          "syntax": "<label><span>Kennzahl</span><select value={metric} onChange={(event) => setMetric(event.target.value)}>\r\n              {METRICS.map((item) => <option key={item.key} value={item.key}>{item.label}</option>)}\r\n            </select></label>"
+        },
+        {
+          "line": 421,
+          "syntax": "<label className=\"health-check\"><input type=\"checkbox\" checked={confirmed}\r\n            disabled={!previews[selectedSide] || !historyReady || busy !== null || view !== \"compare\"}\r\n            onChange={(event) => setConfirmed(event.target.checked)} />\r\n            <span>{selectedSide === \"baseline\" ? \"Baseline\" : \"Variante\"} ausdrücklich speichern</span></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/HundredPeriodResults.tsx",
+      "controls": [
+        {
+          "line": 371,
+          "kind": "select",
+          "attributes": [
+            "value={selectedId}",
+            "onChange={(event) => setSelectedId(event.target.value)}",
+            "disabled={busy !== null}",
+            "data-testid=\"hundred-chain-select\""
+          ]
+        },
+        {
+          "line": 377,
+          "kind": "select",
+          "attributes": [
+            "value={prefix?.chain_id ?? \"\"}",
+            "onChange={(event) => setBaselineId(event.target.value)}",
+            "disabled={busy !== null || matchingBaselines.length === 0}",
+            "data-testid=\"hundred-prefix-select\""
+          ]
+        },
+        {
+          "line": 382,
+          "kind": "input",
+          "attributes": [
+            "value={actor}",
+            "onChange={(event) => setActor(event.target.value)}",
+            "disabled={busy !== null}"
+          ]
+        },
+        {
+          "line": 384,
+          "kind": "input",
+          "attributes": [
+            "value={reason}",
+            "onChange={(event) => setReason(event.target.value)}",
+            "disabled={busy !== null}"
+          ]
+        },
+        {
+          "line": 388,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={confirmed}",
+            "onChange={(event) => setConfirmed(event.target.checked)}",
+            "disabled={busy !== null}",
+            "data-testid=\"hundred-run-confirm\""
+          ]
+        },
+        {
+          "line": 422,
+          "kind": "select",
+          "attributes": [
+            "value={chosenActorId}",
+            "onChange={(event) => setActorId(Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 425,
+          "kind": "select",
+          "attributes": [
+            "value={metric.field}",
+            "onChange={(event) => setMetricField(event.target.value)}"
+          ]
+        },
+        {
+          "line": 428,
+          "kind": "select",
+          "attributes": [
+            "value={chosenSector}",
+            "onChange={(event) => setSector(Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 431,
+          "kind": "select",
+          "attributes": [
+            "value={comparison?.chain_id ?? \"\"}",
+            "onChange={(event) => setComparisonId(event.target.value)}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 371,
+          "syntax": "<label><span>Periodenkette</span><select value={selectedId} onChange={(event) => setSelectedId(event.target.value)}\r\n                disabled={busy !== null} data-testid=\"hundred-chain-select\">\r\n                {chains.map((chain) => <option key={chain.chain_id} value={chain.chain_id}>\r\n                  Lauf {chain.run_index} · {shortId(chain.chain_id)}\r\n                </option>)}\r\n              </select></label>"
+        },
+        {
+          "line": 377,
+          "syntax": "<label><span>Prefixnachweis</span><select value={prefix?.chain_id ?? \"\"} onChange={(event) => setBaselineId(event.target.value)}\r\n                disabled={busy !== null || matchingBaselines.length === 0} data-testid=\"hundred-prefix-select\">\r\n                {matchingBaselines.length === 0 && <option value=\"\">Kein Fuenf-Perioden-Nachweis</option>}\r\n                {matchingBaselines.map((item) => <option key={item.chain_id} value={item.chain_id}>{shortId(item.chain_id)}</option>)}\r\n              </select></label>"
+        },
+        {
+          "line": 382,
+          "syntax": "<label><span>Freigabe durch</span><input value={actor} onChange={(event) => setActor(event.target.value)}\r\n                disabled={busy !== null} /></label>"
+        },
+        {
+          "line": 384,
+          "syntax": "<label><span>Grund</span><input value={reason} onChange={(event) => setReason(event.target.value)}\r\n                disabled={busy !== null} /></label>"
+        },
+        {
+          "line": 388,
+          "syntax": "<label><input type=\"checkbox\" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)}\r\n                disabled={busy !== null} data-testid=\"hundred-run-confirm\" />\r\n                100 Perioden jetzt fluechtig ausfuehren</label>"
+        },
+        {
+          "line": 422,
+          "syntax": "<label><span>Akteur</span><select value={chosenActorId} onChange={(event) => setActorId(Number(event.target.value))}>\r\n                  {ids.map((id) => <option key={id} value={id}>#{id}</option>)}\r\n                </select></label>"
+        },
+        {
+          "line": 425,
+          "syntax": "<label><span>Kennzahl</span><select value={metric.field} onChange={(event) => setMetricField(event.target.value)}>\r\n                  {metrics.map((item) => <option key={item.field} value={item.field}>{item.label}</option>)}\r\n                </select></label>"
+        },
+        {
+          "line": 428,
+          "syntax": "<label><span>Vektorposition</span><select value={chosenSector} onChange={(event) => setSector(Number(event.target.value))}>\r\n                  {positions.map((index) => <option key={index} value={index}>{index}</option>)}\r\n                </select></label>"
+        },
+        {
+          "line": 431,
+          "syntax": "<label><span>Vergleichslauf</span><select value={comparison?.chain_id ?? \"\"}\r\n                  onChange={(event) => setComparisonId(event.target.value)}>\r\n                  <option value=\"\">Keiner</option>\r\n                  {comparable.map((chain) => <option key={chain.chain_id} value={chain.chain_id}>\r\n                    Lauf {chain.run_index} · {shortId(chain.chain_id)}\r\n                  </option>)}\r\n                </select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/IctWorkbench.tsx",
+      "controls": [
+        {
+          "line": 118,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"ICT Perioden\"",
+            "type=\"number\"",
+            "min=\"1\"",
+            "max=\"100\"",
+            "value={input.period_count}",
+            "onChange={e => change({ ...input, period_count: Number(e.target.value) })}"
+          ]
+        },
+        {
+          "line": 119,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Stunden je ICT-Periode\"",
+            "value={input.period_hours}",
+            "onChange={e => change({ ...input, period_hours: number(e.target.value) })}"
+          ]
+        },
+        {
+          "line": 123,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"ICT Ereignistyp\"",
+            "value={event.kind}",
+            "onChange={e => kindChange(e.target.value)}"
+          ]
+        },
+        {
+          "line": 124,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"ICT Ereignisziel\"",
+            "value={event.target_id}",
+            "onChange={e => eventChange({ target_id: e.target.value })}"
+          ]
+        },
+        {
+          "line": 125,
+          "kind": "input",
+          "attributes": [
+            "aria-label={label}",
+            "value={event[key]}",
+            "onChange={e => eventChange({ [key]: number(e.target.value) })}"
+          ]
+        },
+        {
+          "line": 128,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"ICT Gegenmaßnahme\"",
+            "value={strategy?.kind || \"\"}",
+            "onChange={e => measureChange(e.target.value)}"
+          ]
+        },
+        {
+          "line": 129,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Maßnahmen-Asset\"",
+            "value={strategy.asset_id}",
+            "onChange={e => change({ ...input, strategies: [{ ...strategy, asset_id: e.target.value }, ...input.strategies.slice(1)] })}"
+          ]
+        },
+        {
+          "line": 130,
+          "kind": "input",
+          "attributes": [
+            "aria-label={label}",
+            "value={strategy[key]}",
+            "onChange={e => change({ ...input, strategies: [{ ...strategy, [key]: number(e.target.value) }, ...input.strategies.slice(1)] })}"
+          ]
+        },
+        {
+          "line": 133,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`${service.service_id} ${label}`}",
+            "value={service[key]}",
+            "onChange={e => change({ ...input, services: input.services.map((s, n) => n === index ? { ...s, [key]: number(e.target.value) } : s) })}"
+          ]
+        },
+        {
+          "line": 135,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label=\"ICT Quellenvertrag\"",
+            "rows={12}",
+            "value={expert}",
+            "onChange={e => { revision.current++; setExpert(e.target.value); setExpertDirty(true); setResult(null); setBusy(false); }}"
+          ]
+        },
+        {
+          "line": 139,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"ICT Ergebnisperiode\"",
+            "value={period}",
+            "onChange={e => setPeriod(Number(e.target.value))}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 118,
+          "syntax": "<label>Perioden<input aria-label=\"ICT Perioden\" type=\"number\" min=\"1\" max=\"100\" value={input.period_count} onChange={e => change({ ...input, period_count: Number(e.target.value) })} /></label>"
+        },
+        {
+          "line": 119,
+          "syntax": "<label>Stunden je Periode<input aria-label=\"Stunden je ICT-Periode\" value={input.period_hours} onChange={e => change({ ...input, period_hours: number(e.target.value) })} /></label>"
+        },
+        {
+          "line": 123,
+          "syntax": "<label>Ereignistyp<select aria-label=\"ICT Ereignistyp\" value={event.kind} onChange={e => kindChange(e.target.value)}>{Object.entries(kinds).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>"
+        },
+        {
+          "line": 124,
+          "syntax": "<label>Ziel<select aria-label=\"ICT Ereignisziel\" value={event.target_id} onChange={e => eventChange({ target_id: e.target.value })}>{(event.kind === \"provider_outage\" ? input.providers.map(p => p.provider_id) : input.assets.map(a => a.asset_id)).map(key => <option key={key}>{key}</option>)}</select></label>"
+        },
+        {
+          "line": 125,
+          "syntax": "<label key={key}>{label}<input aria-label={label} value={event[key]} onChange={e => eventChange({ [key]: number(e.target.value) })} /></label>"
+        },
+        {
+          "line": 128,
+          "syntax": "<label>Maßnahme<select aria-label=\"ICT Gegenmaßnahme\" value={strategy?.kind || \"\"} onChange={e => measureChange(e.target.value)}><option value=\"\">Keine</option>{Object.entries(measures).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>"
+        },
+        {
+          "line": 129,
+          "syntax": "<label>Asset<select aria-label=\"Maßnahmen-Asset\" value={strategy.asset_id} onChange={e => change({ ...input, strategies: [{ ...strategy, asset_id: e.target.value }, ...input.strategies.slice(1)] })}>{input.assets.map(a => <option key={a.asset_id}>{a.asset_id}</option>)}</select></label>"
+        },
+        {
+          "line": 130,
+          "syntax": "<label key={key}>{label}<input aria-label={label} value={strategy[key]} onChange={e => change({ ...input, strategies: [{ ...strategy, [key]: number(e.target.value) }, ...input.strategies.slice(1)] })} /></label>"
+        },
+        {
+          "line": 133,
+          "syntax": "<label key={key}>{label}<input aria-label={`${service.service_id} ${label}`} value={service[key]} onChange={e => change({ ...input, services: input.services.map((s, n) => n === index ? { ...s, [key]: number(e.target.value) } : s) })} /></label>"
+        },
+        {
+          "line": 135,
+          "syntax": "<label>ICT Quellenvertrag<textarea aria-label=\"ICT Quellenvertrag\" rows={12} value={expert} onChange={e => { revision.current++; setExpert(e.target.value); setExpertDirty(true); setResult(null); setBusy(false); }} /></label>"
+        },
+        {
+          "line": 139,
+          "syntax": "<label>Ergebnisperiode<select aria-label=\"ICT Ergebnisperiode\" value={period} onChange={e => setPeriod(Number(e.target.value))}>{Array.from({ length: result.period_count }, (_, i) => <option key={i + 1}>{i + 1}</option>)}</select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/LifeWorkbench.tsx",
+      "controls": [
+        {
+          "line": 350,
+          "kind": "select",
+          "attributes": [
+            "value={selectedCase}",
+            "disabled={!presets || busy !== null}",
+            "onChange={(event) => chooseCase(event.target.value)}"
+          ]
+        },
+        {
+          "line": 353,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"1\"",
+            "max=\"25\"",
+            "value={drafts?.baseline.insurer_id ?? 1}",
+            "disabled={!drafts || busy !== null}",
+            "onChange={(event) => insurer(Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 384,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={current.assumptions.mortality.periods[0].death_policy_ids.includes(\"A2\")}",
+            "disabled={busy !== null}",
+            "onChange={(event) => death(selectedSide, event.target.checked)}"
+          ]
+        },
+        {
+          "line": 387,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={current.periods[0].new_business.length > 0}",
+            "disabled={busy !== null}",
+            "onChange={(event) => newBusiness(selectedSide, event.target.checked)}"
+          ]
+        },
+        {
+          "line": 394,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={bundle[key]}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(selectedSide, (draft) => {\r\n                  draft.periods[0].new_business[0][key] = event.target.value;\r\n                  draft.periods[0].new_business[0].policies[0][key] = event.target.value;\r\n                })}"
+          ]
+        },
+        {
+          "line": 408,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={current.assumptions.investment.periods[index].investment_result}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(selectedSide, (draft) => { draft.assumptions.investment.periods[index].investment_result = event.target.value; })}"
+          ]
+        },
+        {
+          "line": 411,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={period[key]}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(selectedSide, (draft) => { draft.periods[index][key] = event.target.value; })}"
+          ]
+        },
+        {
+          "line": 418,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={flow[key]}",
+            "disabled={busy !== null}",
+            "onChange={(event) => edit(selectedSide, (draft) => {\r\n                        const target = draft.periods[index].policy_flows.find((item) => item.policy_id === flow.policy_id);\r\n                        if (target) target[key] = event.target.value;\r\n                      })}"
+          ]
+        },
+        {
+          "line": 442,
+          "kind": "select",
+          "attributes": [
+            "value={metric}",
+            "onChange={(event) => setMetric(event.target.value)}"
+          ]
+        },
+        {
+          "line": 475,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={confirmed}",
+            "disabled={!selectedPreview || !historyReady || busy !== null}",
+            "onChange={(event) => setConfirmed(event.target.checked)}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 350,
+          "syntax": "<label><span>Seminarfall</span><select value={selectedCase} disabled={!presets || busy !== null} onChange={(event) => chooseCase(event.target.value)}>\r\n          {presets?.cases.map((item) => <option key={item.id} value={item.id}>{item.id === \"new_business\" ? \"Neugeschäft\" : item.name}</option>)}\r\n        </select></label>"
+        },
+        {
+          "line": 353,
+          "syntax": "<label><span>Versicherer</span><input type=\"number\" min=\"1\" max=\"25\" value={drafts?.baseline.insurer_id ?? 1}\r\n          disabled={!drafts || busy !== null} onChange={(event) => insurer(Number(event.target.value))} /></label>"
+        },
+        {
+          "line": 384,
+          "syntax": "<label className=\"life-check\"><input type=\"checkbox\" checked={current.assumptions.mortality.periods[0].death_policy_ids.includes(\"A2\")}\r\n              disabled={busy !== null} onChange={(event) => death(selectedSide, event.target.checked)} />\r\n              <span>Todesfall A2 in Periode 1</span></label>"
+        },
+        {
+          "line": 387,
+          "syntax": "<label className=\"life-check\"><input type=\"checkbox\" checked={current.periods[0].new_business.length > 0}\r\n              disabled={busy !== null} onChange={(event) => newBusiness(selectedSide, event.target.checked)} />\r\n              <span>Neuer Vertrag C1 ab Periode 1</span></label>"
+        },
+        {
+          "line": 394,
+          "syntax": "<label key={key}><span>{label}</span><input type=\"text\" inputMode=\"decimal\"\r\n                value={bundle[key]} disabled={busy !== null}\r\n                onChange={(event) => edit(selectedSide, (draft) => {\r\n                  draft.periods[0].new_business[0][key] = event.target.value;\r\n                  draft.periods[0].new_business[0].policies[0][key] = event.target.value;\r\n                })} /></label>"
+        },
+        {
+          "line": 408,
+          "syntax": "<label><span>Anlageergebnis</span><input type=\"text\" inputMode=\"decimal\"\r\n                  value={current.assumptions.investment.periods[index].investment_result} disabled={busy !== null}\r\n                  onChange={(event) => edit(selectedSide, (draft) => { draft.assumptions.investment.periods[index].investment_result = event.target.value; })} /></label>"
+        },
+        {
+          "line": 411,
+          "syntax": "<label key={key}><span>{label}</span><input type=\"text\" inputMode=\"decimal\"\r\n                  value={period[key]} disabled={busy !== null}\r\n                  onChange={(event) => edit(selectedSide, (draft) => { draft.periods[index][key] = event.target.value; })} /></label>"
+        },
+        {
+          "line": 418,
+          "syntax": "<label key={key}><span>{label}</span><input type=\"text\" inputMode=\"decimal\"\r\n                      value={flow[key]} disabled={busy !== null}\r\n                      onChange={(event) => edit(selectedSide, (draft) => {\r\n                        const target = draft.periods[index].policy_flows.find((item) => item.policy_id === flow.policy_id);\r\n                        if (target) target[key] = event.target.value;\r\n                      })} /></label>"
+        },
+        {
+          "line": 442,
+          "syntax": "<label><span>Kennzahl</span><select value={metric} onChange={(event) => setMetric(event.target.value)}>\r\n          {METRICS.map((item) => <option key={item.key} value={item.key}>{item.label}</option>)}\r\n        </select></label>"
+        },
+        {
+          "line": 475,
+          "syntax": "<label className=\"life-check\"><input type=\"checkbox\" checked={confirmed} disabled={!selectedPreview || !historyReady || busy !== null}\r\n            onChange={(event) => setConfirmed(event.target.checked)} /><span>{selectedSide === \"baseline\" ? \"Baseline\" : \"Variante\"} ausdrücklich speichern</span></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/ManagementCaseWorkbench.tsx",
+      "controls": [
+        {
+          "line": 74,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Managementfall\"",
+            "disabled={busy}",
+            "value={caseId}",
+            "onChange={e => { invalidate(); setSource(null); setCaseId(e.target.value); }}"
+          ]
+        },
+        {
+          "line": 75,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Managementperioden\"",
+            "disabled={busy}",
+            "value={horizon}",
+            "onChange={e => { invalidate(); setSource(null); setHorizon(Number(e.target.value)); }}"
+          ]
+        },
+        {
+          "line": 76,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Management VU-ID\"",
+            "type=\"number\"",
+            "min=\"1\"",
+            "max=\"25\"",
+            "disabled={busy}",
+            "value={insurer}",
+            "onChange={e => { invalidate(); setSource(null); setInsurer(Number(e.target.value)); }}"
+          ]
+        },
+        {
+          "line": 79,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label=\"Management Quellenvertrag\"",
+            "rows={12}",
+            "disabled={busy}",
+            "value={expert}",
+            "onChange={e => { invalidate(); setExpert(e.target.value); setDirty(true); }}"
+          ]
+        },
+        {
+          "line": 80,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "disabled={busy}",
+            "checked={confirmed}",
+            "onChange={e => setConfirmed(e.target.checked)}"
+          ]
+        },
+        {
+          "line": 87,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Management Ergebnisperiode\"",
+            "value={period}",
+            "disabled={busy}",
+            "onChange={e => setPeriod(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 88,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Management Kapitalquelle\"",
+            "value={side}",
+            "disabled={busy}",
+            "onChange={e => { const selected = e.target.value as Side; setSide(selected); if (source) publish(result, source, selected); }}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 74,
+          "syntax": "<label>Fall<select aria-label=\"Managementfall\" disabled={busy} value={caseId} onChange={e => { invalidate(); setSource(null); setCaseId(e.target.value); }}><option value=\"inflation\">Deklarierte Schaden- und Leistungskosten</option><option value=\"price\">Deklarierte Prämienvariante</option><option value=\"capital\">Deklarierter Anlageertrag</option></select></label>"
+        },
+        {
+          "line": 75,
+          "syntax": "<label>Perioden<select aria-label=\"Managementperioden\" disabled={busy} value={horizon} onChange={e => { invalidate(); setSource(null); setHorizon(Number(e.target.value)); }}>{[2, 5, 10, 25, 50, 100].map(value => <option key={value}>{value}</option>)}</select></label>"
+        },
+        {
+          "line": 76,
+          "syntax": "<label>VU-ID<input aria-label=\"Management VU-ID\" type=\"number\" min=\"1\" max=\"25\" disabled={busy} value={insurer} onChange={e => { invalidate(); setSource(null); setInsurer(Number(e.target.value)); }} /></label>"
+        },
+        {
+          "line": 79,
+          "syntax": "<label>Management Quellenvertrag<textarea aria-label=\"Management Quellenvertrag\" rows={12} disabled={busy} value={expert} onChange={e => { invalidate(); setExpert(e.target.value); setDirty(true); }} /></label>"
+        },
+        {
+          "line": 80,
+          "syntax": "<label><input type=\"checkbox\" disabled={busy} checked={confirmed} onChange={e => setConfirmed(e.target.checked)} />Die wirtschaftliche Zusammengehörigkeit dieser Quellen und Varianten ist ausdrücklich erklärt.</label>"
+        },
+        {
+          "line": 87,
+          "syntax": "<label>Ergebnisperiode<select aria-label=\"Management Ergebnisperiode\" value={period} disabled={busy} onChange={e => setPeriod(Number(e.target.value))}>{Array.from({ length: result.period_count }, (_, i) => <option key={i + 1}>{i + 1}</option>)}</select></label>"
+        },
+        {
+          "line": 88,
+          "syntax": "<label>Quelle für Kapitalwirkung<select aria-label=\"Management Kapitalquelle\" value={side} disabled={busy} onChange={e => { const selected = e.target.value as Side; setSide(selected); if (source) publish(result, source, selected); }}><option value=\"baseline\">Baseline</option><option value=\"variant\">Variante</option></select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/ManagementOverview.tsx",
+      "controls": [
+        {
+          "line": 52,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Übersichtsperiode\"",
+            "value={selectedPeriod}",
+            "onChange={event => setPeriod(Number(event.target.value))}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 52,
+          "syntax": "<label>Kennzahlen und Erklärweg für Modellperiode<select aria-label=\"Übersichtsperiode\" value={selectedPeriod} onChange={event => setPeriod(Number(event.target.value))}>{Array.from({ length: result.period_count }, (_, index) => <option key={index + 1}>{index + 1}</option>)}</select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/ManagementSession.tsx",
+      "controls": [
+        {
+          "line": 32,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Meine Rolle\"",
+            "value={role}",
+            "onChange={event => setRole(event.target.value as Role)}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 32,
+          "syntax": "<label className=\"role-picker\">Meine Rolle<select aria-label=\"Meine Rolle\" value={role} onChange={event => setRole(event.target.value as Role)}>{Object.entries(rolePaths).map(([id, path]) => <option key={id} value={id}>{path.label}</option>)}</select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/MarketExperimentEditor.tsx",
+      "controls": [
+        {
+          "line": 71,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Vorstands-VU\"",
+            "value={String(actor.insurer_id)}",
+            "onChange={e => onActor?.(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 71,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Vorstands-Sparte\"",
+            "value={selectedSector}",
+            "onChange={e=>setSector(e.target.value)}"
+          ]
+        },
+        {
+          "line": 75,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`Vorstand: ${parameterLabels[key] || key}`}",
+            "inputMode=\"decimal\"",
+            "value={String(object(measure?.overrides)[key] ?? value)}",
+            "onChange={e=>boardParameter(key,e.target.value)}"
+          ]
+        },
+        {
+          "line": 77,
+          "kind": "input",
+          "attributes": [
+            "inputMode=\"decimal\"",
+            "value={String(own[key])}",
+            "onChange={e=>mutate((_r,m)=>{const target=rows(object(m.measures).variant).find(v=>v.measure_id===ownId)!;target[key]=key===\"cost\"?e.target.value.replace(\",\",\".\"):Number(e.target.value);})}"
+          ]
+        },
+        {
+          "line": 79,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Experimentvergleich\"",
+            "value={String(root.comparison)}",
+            "onChange={e=>mutate(r=>{r.comparison=e.target.value;})}"
+          ]
+        },
+        {
+          "line": 81,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`${side} ${response.response_id}: ${label}`}",
+            "inputMode=\"decimal\"",
+            "value={String(response[key])}",
+            "onChange={e=>mutate(r=>{rows(object(r.responses)[side])[i][key]=key.includes(\"period\")?Number(e.target.value):e.target.value.replace(\",\",\".\");})}"
+          ]
+        },
+        {
+          "line": 81,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Konkreter Ersatzpfad\"",
+            "value={String(response.replacement_asset_id)}",
+            "onChange={e=>mutate(r=>{rows(object(r.responses)[side])[i].replacement_asset_id=e.target.value;})}"
+          ]
+        },
+        {
+          "line": 83,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Nachfragegruppe\"",
+            "value={String(cohort.group_id)}",
+            "onChange={e=>setCohortId(e.target.value)}"
+          ]
+        },
+        {
+          "line": 83,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"VN Versicherungsschwelle\"",
+            "inputMode=\"decimal\"",
+            "value={String(cohort.insurance_threshold)}",
+            "onChange={e=>mutate((_r,m)=>{rows(m.customer_groups).find(c=>c.group_id===cohort.group_id)!.insurance_threshold=e.target.value.replace(\",\",\".\");})}"
+          ]
+        },
+        {
+          "line": 85,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`Umwelt: ${label}`}",
+            "inputMode=\"decimal\"",
+            "value={String(event[key])}",
+            "onChange={e=>mutate(r=>{rows(r.events)[i][key]=e.target.value.replace(\",\",\".\");})}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 71,
+          "syntax": "<label>Vorstands-VU<select aria-label=\"Vorstands-VU\" value={String(actor.insurer_id)} onChange={e => onActor?.(Number(e.target.value))}>{summary.actors.map(a => <option key={String(a.insurer_id)} value={String(a.insurer_id)}>{String(a.name)}</option>)}</select></label>"
+        },
+        {
+          "line": 71,
+          "syntax": "<label>Vorstands-Sparte<select aria-label=\"Vorstands-Sparte\" value={selectedSector} onChange={e=>setSector(e.target.value)}>{sectors.map(s=><option key={s} value={s}>{sectorNames[s] || s}</option>)}</select></label>"
+        },
+        {
+          "line": 75,
+          "syntax": "<label key={key}>{parameterLabels[key] || key}<input aria-label={`Vorstand: ${parameterLabels[key] || key}`} inputMode=\"decimal\" value={String(object(measure?.overrides)[key] ?? value)} onChange={e=>boardParameter(key,e.target.value)}/></label>"
+        },
+        {
+          "line": 77,
+          "syntax": "<label key={key}>{label}<input inputMode=\"decimal\" value={String(own[key])} onChange={e=>mutate((_r,m)=>{const target=rows(object(m.measures).variant).find(v=>v.measure_id===ownId)!;target[key]=key===\"cost\"?e.target.value.replace(\",\",\".\"):Number(e.target.value);})}/></label>"
+        },
+        {
+          "line": 79,
+          "syntax": "<label>Experimentvergleich<select aria-label=\"Experimentvergleich\" value={String(root.comparison)} onChange={e=>mutate(r=>{r.comparison=e.target.value;})}><option value=\"shock_with_response\">Gleicher Schock · ohne / mit Gegenmaßnahme</option><option value=\"no_shock_vs_shock\">Gleiche Entscheidungen · ohne / mit Schock</option></select></label>"
+        },
+        {
+          "line": 81,
+          "syntax": "<label key={key}>{label}<input aria-label={`${side} ${response.response_id}: ${label}`} inputMode=\"decimal\" value={String(response[key])} onChange={e=>mutate(r=>{rows(object(r.responses)[side])[i][key]=key.includes(\"period\")?Number(e.target.value):e.target.value.replace(\",\",\".\");})}/></label>"
+        },
+        {
+          "line": 81,
+          "syntax": "<label>Konkreter Ersatzpfad<select aria-label=\"Konkreter Ersatzpfad\" value={String(response.replacement_asset_id)} onChange={e=>mutate(r=>{rows(object(r.responses)[side])[i].replacement_asset_id=e.target.value;})}>{rows(object(root.ict).assets).map(a=><option key={String(a.asset_id)} value={String(a.asset_id)}>{String(a.label)}</option>)}</select></label>"
+        },
+        {
+          "line": 83,
+          "syntax": "<label>Nachfragegruppe<select aria-label=\"Nachfragegruppe\" value={String(cohort.group_id)} onChange={e=>setCohortId(e.target.value)}>{summary.customers.map(c=><option key={String(c.group_id)} value={String(c.group_id)}>{String(c.group_id)} · {sectorNames[String(c.sector_id)]}</option>)}</select></label>"
+        },
+        {
+          "line": 83,
+          "syntax": "<label>Versicherungsschwelle · 0 bis 1<input aria-label=\"VN Versicherungsschwelle\" inputMode=\"decimal\" value={String(cohort.insurance_threshold)} onChange={e=>mutate((_r,m)=>{rows(m.customer_groups).find(c=>c.group_id===cohort.group_id)!.insurance_threshold=e.target.value.replace(\",\",\".\");})}/></label>"
+        },
+        {
+          "line": 85,
+          "syntax": "<label key={key}>{label}<input aria-label={`Umwelt: ${label}`} inputMode=\"decimal\" value={String(event[key])} onChange={e=>mutate(r=>{rows(r.events)[i][key]=e.target.value.replace(\",\",\".\");})}/></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/MarketExplorerWorkbench.tsx",
+      "controls": [
+        {
+          "line": 117,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Analysefall\"",
+            "value={caseId}",
+            "onChange={e=>{invalidate();setSource(null);setCaseId(e.target.value);}}"
+          ]
+        },
+        {
+          "line": 118,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Analyseperioden\"",
+            "value={horizon}",
+            "onChange={e=>{invalidate();setSource(null);setHorizon(Number(e.target.value));}}"
+          ]
+        },
+        {
+          "line": 120,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Eigene Analysequelle importieren\"",
+            "type=\"file\"",
+            "accept=\".json,application/json\"",
+            "onChange={e=>readFile(e.target.files?.[0])}"
+          ]
+        },
+        {
+          "line": 133,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Analyseperiode\"",
+            "value={period}",
+            "onChange={e=>setPeriod(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 134,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Analysesparte\"",
+            "value={sector}",
+            "onChange={e=>setSector(e.target.value)}"
+          ]
+        },
+        {
+          "line": 135,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Vergleichsgruppe\"",
+            "value={group}",
+            "onChange={e=>setGroup(e.target.value)}"
+          ]
+        },
+        {
+          "line": 136,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Vergleichsseite\"",
+            "value={side}",
+            "onChange={e=>setSide(e.target.value as Side)}"
+          ]
+        },
+        {
+          "line": 137,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Fokus-VU\"",
+            "value={focus}",
+            "onChange={e=>setFocus(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 138,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Erklärrolle\"",
+            "value={role}",
+            "onChange={e=>{const next=e.target.value as keyof typeof roles;setRole(next);jump(roles[next].view);}}"
+          ]
+        },
+        {
+          "line": 139,
+          "kind": "input",
+          "attributes": [
+            "type=\"range\"",
+            "min={1}",
+            "max={result.period_count}",
+            "value={period}",
+            "onChange={e=>setPeriod(Number(e.target.value))}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 117,
+          "syntax": "<label>Analysefall<select aria-label=\"Analysefall\" value={caseId} onChange={e=>{invalidate();setSource(null);setCaseId(e.target.value);}}>{Object.entries(choices).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>"
+        },
+        {
+          "line": 118,
+          "syntax": "<label>Analyseperioden<select aria-label=\"Analyseperioden\" value={horizon} onChange={e=>{invalidate();setSource(null);setHorizon(Number(e.target.value));}}>{[10,25,50,100].map(n=><option key={n}>{n}</option>)}</select></label>"
+        },
+        {
+          "line": 120,
+          "syntax": "<label>JSON-Datei auswählen<input aria-label=\"Eigene Analysequelle importieren\" type=\"file\" accept=\".json,application/json\" onChange={e=>readFile(e.target.files?.[0])}/></label>"
+        },
+        {
+          "line": 133,
+          "syntax": "<label>Analyseperiode<select aria-label=\"Analyseperiode\" value={period} onChange={e=>setPeriod(Number(e.target.value))}>{Array.from({length:result.period_count},(_,i)=><option key={i+1} value={i+1}>P{i+1}</option>)}</select></label>"
+        },
+        {
+          "line": 134,
+          "syntax": "<label>Analysesparte<select aria-label=\"Analysesparte\" value={sector} onChange={e=>setSector(e.target.value)}>{Object.entries(names).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>"
+        },
+        {
+          "line": 135,
+          "syntax": "<label>Vergleichsgruppe<select aria-label=\"Vergleichsgruppe\" value={group} onChange={e=>setGroup(e.target.value)}><option value=\"market\">Gesamter Modellmarkt</option>{result.families.map(f=><option key={f.family_id} value={`family:${f.family_id}`}>Familie · {f.label} ({sectorNames[f.sector_id]})</option>)}{[...new Set(result.actors.map(a=>a.insurance_group_id))].map(g=><option key={g} value={`insurance:${g}`}>Versicherungsgruppe · {g}</option>)}{result.peer_groups.map(p=><option key={p.group_id} value={`peer:${p.group_id}`}>Peer · {p.label}</option>)}</select></label>"
+        },
+        {
+          "line": 136,
+          "syntax": "<label>Vergleichsseite<select aria-label=\"Vergleichsseite\" value={side} onChange={e=>setSide(e.target.value as Side)}><option value=\"baseline\">{labels.baseline}</option><option value=\"variant\">{labels.variant}</option></select></label>"
+        },
+        {
+          "line": 137,
+          "syntax": "<label>Fokus-VU<select aria-label=\"Fokus-VU\" value={focus} onChange={e=>setFocus(Number(e.target.value))}>{result.actors.map(a=><option key={a.insurer_id} value={a.insurer_id}>{a.name}</option>)}</select></label>"
+        },
+        {
+          "line": 138,
+          "syntax": "<label>Erklärrolle<select aria-label=\"Erklärrolle\" value={role} onChange={e=>{const next=e.target.value as keyof typeof roles;setRole(next);jump(roles[next].view);}}><option value=\"\" disabled>Rollenweg wählen …</option>{Object.entries(roles).map(([id,r])=><option key={id} value={id}>{r.label}</option>)}</select></label>"
+        },
+        {
+          "line": 139,
+          "syntax": "<label className=\"explorer-slider\">Periodenschieber · P{period}<input type=\"range\" min={1} max={result.period_count} value={period} onChange={e=>setPeriod(Number(e.target.value))}/></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/MarketModelWorld.tsx",
+      "controls": [
+        {
+          "line": 58,
+          "kind": "input",
+          "attributes": [
+            "type=\"search\"",
+            "value={search}",
+            "onChange={e=>{setSearch(e.target.value);setPage(1);}}"
+          ]
+        },
+        {
+          "line": 58,
+          "kind": "select",
+          "attributes": [
+            "value={sector}",
+            "onChange={e=>{setSector(e.target.value);setPage(1);}}"
+          ]
+        },
+        {
+          "line": 58,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "aria-label={`VU ${id} für Anzeigevergleich`}",
+            "checked={validSelection.includes(id)}",
+            "onChange={()=>toggle(id)}"
+          ]
+        },
+        {
+          "line": 65,
+          "kind": "input",
+          "attributes": [
+            "type=\"range\"",
+            "min={1}",
+            "max={result.period_count}",
+            "value={period}",
+            "onChange={e=>{onPlaying(false);onPeriod(Number(e.target.value));}}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 58,
+          "syntax": "<label>Unternehmen suchen<input type=\"search\" value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}} /></label>"
+        },
+        {
+          "line": 58,
+          "syntax": "<label>Portfoliosparte<select value={sector} onChange={e=>{setSector(e.target.value);setPage(1);}}><option value=\"total\">Alle Modellsparten</option>{Object.entries(sectorNames).map(([id,label])=><option value={id} key={id}>{label}</option>)}</select></label>"
+        },
+        {
+          "line": 65,
+          "syntax": "<label className=\"replay-slider\">Anzeigeperiode · P{period}<input type=\"range\" min={1} max={result.period_count} value={period} onChange={e=>{onPlaying(false);onPeriod(Number(e.target.value));}}/></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/MarketShockWorkbench.tsx",
+      "controls": [
+        {
+          "line": 119,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Schockfall\"",
+            "value={caseId}",
+            "disabled={busy}",
+            "onChange={event => setCaseId(event.target.value)}"
+          ]
+        },
+        {
+          "line": 119,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Schockperioden\"",
+            "value={horizon}",
+            "disabled={busy}",
+            "onChange={event => setHorizon(Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 127,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"6\"",
+            "max=\"100\"",
+            "value={Number(firstEvent.start_hour) / 24 + 1}",
+            "onChange={event => change(next => { next.events[0].start_hour = String((Number(event.target.value) - 1) * 24); if (firstEvent.kind === \"entry\") next.events[0].duration_hours = String(Math.max(24, (next.model_input.period_count - Number(event.target.value) + 1) * 24)); })}"
+          ]
+        },
+        {
+          "line": 128,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0.0001\"",
+            "max=\"2400\"",
+            "step=\"0.0001\"",
+            "value={firstEvent.duration_hours}",
+            "disabled={firstEvent.kind === \"entry\"}",
+            "onChange={event => change(next => { next.events[0].duration_hours = event.target.value; })}"
+          ]
+        },
+        {
+          "line": 129,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"1\"",
+            "step=\"0.01\"",
+            "value={firstEvent.intensity}",
+            "onChange={event => change(next => { next.events[0].intensity = event.target.value; })}",
+            "disabled={firstEvent.kind === \"entry\"}"
+          ]
+        },
+        {
+          "line": 130,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Vergleichsachse\"",
+            "value={bundle.comparison}",
+            "onChange={event => change(next => { next.comparison = event.target.value; })}"
+          ]
+        },
+        {
+          "line": 131,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"6\"",
+            "max=\"100\"",
+            "value={response.decision_period}",
+            "onChange={event => change(next => { next.responses.variant[0].decision_period = Number(event.target.value); })}"
+          ]
+        },
+        {
+          "line": 131,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"100\"",
+            "value={response.lead_periods}",
+            "onChange={event => change(next => { next.responses.variant[0].lead_periods = Number(event.target.value); })}"
+          ]
+        },
+        {
+          "line": 131,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0\"",
+            "step=\"0.0001\"",
+            "value={response.cost}",
+            "onChange={event => change(next => { next.responses.variant[0].cost = event.target.value; })}"
+          ]
+        },
+        {
+          "line": 132,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Ersatzpfad\"",
+            "value={response.replacement_asset_id}",
+            "onChange={event => change(next => { next.responses.variant[0].replacement_asset_id = event.target.value; })}"
+          ]
+        },
+        {
+          "line": 132,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"0\"",
+            "step=\"0.01\"",
+            "value={response.value}",
+            "onChange={event => change(next => { next.responses.variant[0].value = event.target.value; })}"
+          ]
+        },
+        {
+          "line": 135,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label=\"AP7-Quellenbündel JSON\"",
+            "rows={9}",
+            "value={expert}",
+            "disabled={original || busy}",
+            "onChange={event => { invalidate(); setExpert(event.target.value); setDirty(true); }}"
+          ]
+        },
+        {
+          "line": 139,
+          "kind": "input",
+          "attributes": [
+            "type=\"file\"",
+            "accept=\"application/json,.json\"",
+            "disabled={busy}",
+            "onChange={event => readFile(event.target.files?.[0])}"
+          ]
+        },
+        {
+          "line": 142,
+          "kind": "input",
+          "attributes": [
+            "type=\"range\"",
+            "min=\"1\"",
+            "max={result.period_count}",
+            "value={period}",
+            "onChange={event => setPeriod(Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 142,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Erklärseite\"",
+            "value={side}",
+            "onChange={event => setSide(event.target.value as Side)}"
+          ]
+        },
+        {
+          "line": 142,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Erklär-VU\"",
+            "value={actor}",
+            "onChange={event => setActor(Number(event.target.value))}"
+          ]
+        },
+        {
+          "line": 142,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Rollenfokus\"",
+            "value={role}",
+            "onChange={event => { const chosen = event.target.value; setRole(chosen); requestAnimationFrame(() => roleSections.current[chosen]?.focus()); }}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 119,
+          "syntax": "<label>Schockfall<select aria-label=\"Schockfall\" value={caseId} disabled={busy} onChange={event => setCaseId(event.target.value)}>{Object.entries(cases).map(([id, item]) => <option key={id} value={id}>{item.title}</option>)}</select></label>"
+        },
+        {
+          "line": 119,
+          "syntax": "<label>Schockperioden<select aria-label=\"Schockperioden\" value={horizon} disabled={busy} onChange={event => setHorizon(Number(event.target.value))}>{[2, 5, 10, 25, 50, 100].map(n => <option key={n} value={n}>{n}</option>)}</select></label>"
+        },
+        {
+          "line": 127,
+          "syntax": "<label>Schockbeginn in Periode<input type=\"number\" min=\"6\" max=\"100\" value={Number(firstEvent.start_hour) / 24 + 1} onChange={event => change(next => { next.events[0].start_hour = String((Number(event.target.value) - 1) * 24); if (firstEvent.kind === \"entry\") next.events[0].duration_hours = String(Math.max(24, (next.model_input.period_count - Number(event.target.value) + 1) * 24)); })} /></label>"
+        },
+        {
+          "line": 128,
+          "syntax": "<label>Schockdauer in Stunden<input type=\"number\" min=\"0.0001\" max=\"2400\" step=\"0.0001\" value={firstEvent.duration_hours} disabled={firstEvent.kind === \"entry\"} onChange={event => change(next => { next.events[0].duration_hours = event.target.value; })} /></label>"
+        },
+        {
+          "line": 129,
+          "syntax": "<label>{firstEvent.kind === \"life_demand\" ? \"Rückgang der Attraktivität\" : \"Intensität / Kapazitätsverlust\"}<input type=\"number\" min=\"0\" max=\"1\" step=\"0.01\" value={firstEvent.intensity} onChange={event => change(next => { next.events[0].intensity = event.target.value; })} disabled={firstEvent.kind === \"entry\"} /></label>"
+        },
+        {
+          "line": 130,
+          "syntax": "<label>Vergleichsachse<select aria-label=\"Vergleichsachse\" value={bundle.comparison} onChange={event => change(next => { next.comparison = event.target.value; })}><option value=\"shock_with_response\">Schock ohne / mit Gegenmaßnahme</option><option value=\"no_shock_vs_shock\">Kein Schock / Schock, gleiche beschlossene Vorsorge</option></select></label>"
+        },
+        {
+          "line": 131,
+          "syntax": "<label>Entscheidungsperiode der Gegenmaßnahme<input type=\"number\" min=\"6\" max=\"100\" value={response.decision_period} onChange={event => change(next => { next.responses.variant[0].decision_period = Number(event.target.value); })} /></label>"
+        },
+        {
+          "line": 131,
+          "syntax": "<label>Vorlauf in Perioden<input type=\"number\" min=\"0\" max=\"100\" value={response.lead_periods} onChange={event => change(next => { next.responses.variant[0].lead_periods = Number(event.target.value); })} /></label>"
+        },
+        {
+          "line": 131,
+          "syntax": "<label>Einmalige Vorsorgekosten<input type=\"number\" min=\"0\" step=\"0.0001\" value={response.cost} onChange={event => change(next => { next.responses.variant[0].cost = event.target.value; })} /></label>"
+        },
+        {
+          "line": 132,
+          "syntax": "<label>Ersatzpfad<select aria-label=\"Ersatzpfad\" value={response.replacement_asset_id} onChange={event => change(next => { next.responses.variant[0].replacement_asset_id = event.target.value; })}><option value=\"q-independent\">Q mit unabhängigen Vorleistungen</option><option value=\"q-dependent\">Q mit gemeinsamem US-IAM</option></select></label>"
+        },
+        {
+          "line": 132,
+          "syntax": "<label>{response.kind === \"price\" ? \"Antwortpreis\" : response.kind === \"life_attractiveness\" ? \"Attraktivität mit Vertriebsantwort\" : \"Kapazitätsfaktor der Gegenmaßnahme\"}<input type=\"number\" min=\"0\" step=\"0.01\" value={response.value} onChange={event => change(next => { next.responses.variant[0].value = event.target.value; })} /></label>"
+        },
+        {
+          "line": 135,
+          "syntax": "<label>AP7-Quellenbündel JSON<textarea aria-label=\"AP7-Quellenbündel JSON\" rows={9} value={expert} disabled={original || busy} onChange={event => { invalidate(); setExpert(event.target.value); setDirty(true); }} /></label>"
+        },
+        {
+          "line": 139,
+          "syntax": "<label>AP7-Sitzung aus JSON laden<input type=\"file\" accept=\"application/json,.json\" disabled={busy} onChange={event => readFile(event.target.files?.[0])} /></label>"
+        },
+        {
+          "line": 142,
+          "syntax": "<label>Erklärperiode<input type=\"range\" min=\"1\" max={result.period_count} value={period} onChange={event => setPeriod(Number(event.target.value))} /></label>"
+        },
+        {
+          "line": 142,
+          "syntax": "<label>Erklärseite<select aria-label=\"Erklärseite\" value={side} onChange={event => setSide(event.target.value as Side)}><option value=\"baseline\">Baseline</option><option value=\"variant\">Variante</option></select></label>"
+        },
+        {
+          "line": 142,
+          "syntax": "<label>Erklär-VU<select aria-label=\"Erklär-VU\" value={actor} onChange={event => setActor(Number(event.target.value))}><option value=\"0\">Ganzer Modellmarkt</option>{actors.map(item => <option key={item.insurer_id} value={item.insurer_id}>{item.name}</option>)}</select></label>"
+        },
+        {
+          "line": 142,
+          "syntax": "<label>Rollenfokus<select aria-label=\"Rollenfokus\" value={role} onChange={event => { const chosen = event.target.value; setRole(chosen); requestAnimationFrame(() => roleSections.current[chosen]?.focus()); }}><option value=\"ceo\">CEO · Ergebnis und Kosten</option><option value=\"cio\">CIO · Provider und Ersatzpfad</option><option value=\"coo\">COO · Kapazität und Aufholung</option><option value=\"cso\">CSO Vertrieb · Anträge und Verträge</option></select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/MarketWorkbench.tsx",
+      "controls": [
+        {
+          "line": 146,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Marktfall\"",
+            "value={caseId}",
+            "disabled={busy}",
+            "onChange={e => { invalidate(); setInput(null); setCaseId(e.target.value); }}"
+          ]
+        },
+        {
+          "line": 147,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Marktperioden\"",
+            "value={horizon}",
+            "disabled={busy}",
+            "onChange={e => { invalidate(); setInput(null); setHorizon(Number(e.target.value)); }}"
+          ]
+        },
+        {
+          "line": 148,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Anzahl Modellanbieter\"",
+            "value={presetCount}",
+            "disabled={busy || caseId !== \"market\"}",
+            "onChange={e => { invalidate(); setInput(null); setCount(Number(e.target.value)); }}"
+          ]
+        },
+        {
+          "line": 149,
+          "kind": "input",
+          "attributes": [
+            "type=\"file\"",
+            "accept=\".json,application/json\"",
+            "aria-label=\"Marktdatei öffnen\"",
+            "disabled={busy}",
+            "onChange={e => { const file = e.target.files?.[0]; if (file) { invalidate(); setInput(null); setBundle(null); setReference(null); void act(async version => { if (file.size > 16 * 1024 * 1024) throw new Error(\"Marktdatei überschreitet 16 MiB.\"); const source = JSON.parse(await file.text()); const body: Result = await post(\"/calculate\", source); if (version === revision.current) { accept(body); setResult(body); setHadResult(true); setFilter(\"market\"); setPeriod(Math.min(6, body.period_count)); } }); } e.target.value = \"\"; }}"
+          ]
+        },
+        {
+          "line": 154,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`Workshop-Anteil ${s}`}",
+            "value={v}",
+            "onChange={e => { invalidate(); setReference(null); setMixPending(true); setMix({ ...mix, [s]: e.target.value }); }}"
+          ]
+        },
+        {
+          "line": 156,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"BaFin Quellenzeile\"",
+            "value={entityRow}",
+            "onChange={e => { const id = Number(e.target.value); setEntityRow(id); setOverrideAmount(bundle.source_catalog.entities.find(r => r.workbook_row === id)!.premium_million_eur); }}"
+          ]
+        },
+        {
+          "line": 156,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"BaFin angenommener Beitrag\"",
+            "value={overrideAmount}",
+            "onChange={e => setOverrideAmount(e.target.value)}"
+          ]
+        },
+        {
+          "line": 156,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"BaFin Override Begründung\"",
+            "value={overrideNote}",
+            "onChange={e => setOverrideNote(e.target.value)}"
+          ]
+        },
+        {
+          "line": 163,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Markt Anbieter\"",
+            "value={actor}",
+            "onChange={e => setActor(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 164,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Markt Strategiefamilie\"",
+            "value={family}",
+            "onChange={e => setFamily(e.target.value)}"
+          ]
+        },
+        {
+          "line": 165,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Markt Familienende\"",
+            "type=\"number\"",
+            "min=\"6\"",
+            "max={input.period_count}",
+            "value={end}",
+            "onChange={e => setEnd(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 168,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Markt Maßnahmenkosten\"",
+            "value={cost}",
+            "onChange={e => setCost(e.target.value)}"
+          ]
+        },
+        {
+          "line": 168,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Markt Vorlauf\"",
+            "type=\"number\"",
+            "min=\"0\"",
+            "max=\"100\"",
+            "value={lead}",
+            "onChange={e => setLead(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 168,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Markt Wirkdauer\"",
+            "type=\"number\"",
+            "min=\"1\"",
+            "max=\"100\"",
+            "value={duration}",
+            "onChange={e => setDuration(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 168,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Markt Aufnahmekapazität\"",
+            "value={capacity}",
+            "onChange={e => setCapacity(e.target.value)}"
+          ]
+        },
+        {
+          "line": 170,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label=\"Vollständige Marktquelle\"",
+            "rows={12}",
+            "value={expert}",
+            "disabled={busy || original}",
+            "onChange={e => { invalidate(); setReference(null); setExpert(e.target.value); }}"
+          ]
+        },
+        {
+          "line": 174,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Markt Ergebnisperiode\"",
+            "value={period}",
+            "onChange={e => setPeriod(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 175,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Markt Ergebnisvariante\"",
+            "value={side}",
+            "onChange={e => setSide(e.target.value as Side)}"
+          ]
+        },
+        {
+          "line": 176,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Markt Sparte\"",
+            "value={sector}",
+            "onChange={e => setSector(e.target.value)}"
+          ]
+        },
+        {
+          "line": 177,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Markt Vergleichsgruppe\"",
+            "value={filter}",
+            "onChange={e => setFilter(e.target.value)}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 146,
+          "syntax": "<label>Marktfall<select aria-label=\"Marktfall\" value={caseId} disabled={busy} onChange={e => { invalidate(); setInput(null); setCaseId(e.target.value); }}>{Object.entries(caseNames).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>"
+        },
+        {
+          "line": 147,
+          "syntax": "<label>Marktperioden<select aria-label=\"Marktperioden\" value={horizon} disabled={busy} onChange={e => { invalidate(); setInput(null); setHorizon(Number(e.target.value)); }}>{[2, 5, 10, 25, 50, 100].map(n => <option key={n}>{n}</option>)}</select></label>"
+        },
+        {
+          "line": 148,
+          "syntax": "<label>Anzahl Modellanbieter<select aria-label=\"Anzahl Modellanbieter\" value={presetCount} disabled={busy || caseId !== \"market\"} onChange={e => { invalidate(); setInput(null); setCount(Number(e.target.value)); }}>{[2, 3, 40, 41].map(n => <option key={n}>{n}</option>)}</select></label>"
+        },
+        {
+          "line": 149,
+          "syntax": "<label>Marktdatei öffnen<input type=\"file\" accept=\".json,application/json\" aria-label=\"Marktdatei öffnen\" disabled={busy} onChange={e => { const file = e.target.files?.[0]; if (file) { invalidate(); setInput(null); setBundle(null); setReference(null); void act(async version => { if (file.size > 16 * 1024 * 1024) throw new Error(\"Marktdatei überschreitet 16 MiB.\"); const source = JSON.parse(await file.text()); const body: Result = await post(\"/calculate\", source); if (version === revision.current) { accept(body); setResult(body); setHadResult(true); setFilter(\"market\"); setPeriod(Math.min(6, body.period_count)); } }); } e.target.value = \"\"; }} /></label>"
+        },
+        {
+          "line": 154,
+          "syntax": "<label key={s}>{s === \"unmodeled\" ? \"Nicht modellierter Rest\" : names[s]} in %<input aria-label={`Workshop-Anteil ${s}`} value={v} onChange={e => { invalidate(); setReference(null); setMixPending(true); setMix({ ...mix, [s]: e.target.value }); }} /></label>"
+        },
+        {
+          "line": 156,
+          "syntax": "<label>Quellenzeile<select aria-label=\"BaFin Quellenzeile\" value={entityRow} onChange={e => { const id = Number(e.target.value); setEntityRow(id); setOverrideAmount(bundle.source_catalog.entities.find(r => r.workbook_row === id)!.premium_million_eur); }}>{bundle.source_catalog.entities.map(r => <option key={r.workbook_row} value={r.workbook_row}>{r.entity_source_name} · {r.group_assertion}</option>)}</select></label>"
+        },
+        {
+          "line": 156,
+          "syntax": "<label>Angenommener Beitrag in Mio. EUR<input aria-label=\"BaFin angenommener Beitrag\" value={overrideAmount} onChange={e => setOverrideAmount(e.target.value)} /></label>"
+        },
+        {
+          "line": 156,
+          "syntax": "<label>Begründung der Workshop-Annahme<input aria-label=\"BaFin Override Begründung\" value={overrideNote} onChange={e => setOverrideNote(e.target.value)} /></label>"
+        },
+        {
+          "line": 163,
+          "syntax": "<label>Anbieter für Variante und Einzel-VU-Excel<select aria-label=\"Markt Anbieter\" value={actor} onChange={e => setActor(Number(e.target.value))}>{input.insurers.map(a => <option key={a.insurer_id} value={a.insurer_id}>{a.name}</option>)}</select></label>"
+        },
+        {
+          "line": 164,
+          "syntax": "<label>Ausführbare Strategiefamilie<select aria-label=\"Markt Strategiefamilie\" value={family} onChange={e => setFamily(e.target.value)}>{input.families.filter(f => f.sector_id === \"motor\").map(f => <option key={f.family_id} value={f.family_id}>{f.label}</option>)}</select></label>"
+        },
+        {
+          "line": 165,
+          "syntax": "<label>Familienende einschließlich<input aria-label=\"Markt Familienende\" type=\"number\" min=\"6\" max={input.period_count} value={end} onChange={e => setEnd(Number(e.target.value))} /></label>"
+        },
+        {
+          "line": 168,
+          "syntax": "<label>Maßnahmenkosten<input aria-label=\"Markt Maßnahmenkosten\" value={cost} onChange={e => setCost(e.target.value)} /></label>"
+        },
+        {
+          "line": 168,
+          "syntax": "<label>Vorlauf in Perioden<input aria-label=\"Markt Vorlauf\" type=\"number\" min=\"0\" max=\"100\" value={lead} onChange={e => setLead(Number(e.target.value))} /></label>"
+        },
+        {
+          "line": 168,
+          "syntax": "<label>Wirkdauer<input aria-label=\"Markt Wirkdauer\" type=\"number\" min=\"1\" max=\"100\" value={duration} onChange={e => setDuration(Number(e.target.value))} /></label>"
+        },
+        {
+          "line": 168,
+          "syntax": "<label>Aufnahmekapazität<input aria-label=\"Markt Aufnahmekapazität\" value={capacity} onChange={e => setCapacity(e.target.value)} /></label>"
+        },
+        {
+          "line": 170,
+          "syntax": "<label>Vollständige Marktquelle<textarea aria-label=\"Vollständige Marktquelle\" rows={12} value={expert} disabled={busy || original} onChange={e => { invalidate(); setReference(null); setExpert(e.target.value); }} /></label>"
+        },
+        {
+          "line": 174,
+          "syntax": "<label>Markt Ergebnisperiode<select aria-label=\"Markt Ergebnisperiode\" value={period} onChange={e => setPeriod(Number(e.target.value))}>{Array.from({ length: result.period_count }, (_, i) => <option key={i + 1}>{i + 1}</option>)}</select></label>"
+        },
+        {
+          "line": 175,
+          "syntax": "<label>Markt Ergebnisvariante<select aria-label=\"Markt Ergebnisvariante\" value={side} onChange={e => setSide(e.target.value as Side)}><option value=\"baseline\">Baseline</option><option value=\"variant\">Variante</option></select></label>"
+        },
+        {
+          "line": 176,
+          "syntax": "<label>Markt Sparte<select aria-label=\"Markt Sparte\" value={sector} onChange={e => setSector(e.target.value)}>{Object.entries(names).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>"
+        },
+        {
+          "line": 177,
+          "syntax": "<label>Markt Vergleichsgruppe<select aria-label=\"Markt Vergleichsgruppe\" value={filter} onChange={e => setFilter(e.target.value)}><option value=\"market\">Gesamter Modellmarkt</option>{input?.families.map(f => <option key={f.family_id} value={`family:${f.family_id}`}>Familie: {f.label}</option>)}{input?.peer_groups.map(g => <option key={g.group_id} value={`peer:${g.group_id}`}>Vergleich: {g.label}</option>)}{[...new Set(input?.insurers.map(a => a.insurance_group_id))].map(g => <option key={g} value={`insurance:${g}`}>Versicherungsgruppe: {input?.insurers.find(a => a.insurance_group_id === g)?.name || g}</option>)}</select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/ModelBalanceWorkbench.tsx",
+      "controls": [
+        {
+          "line": 286,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"1\"",
+            "max=\"25\"",
+            "value={insurerId}",
+            "disabled={busy !== null}",
+            "onChange={(event) => { setInsurerId(Number(event.target.value)); invalidate(); }}"
+          ]
+        },
+        {
+          "line": 300,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "value={drafts[activeSector].opening[key]}",
+            "onChange={(event) => setOpening(key, event.target.value)}",
+            "disabled={busy !== null}"
+          ]
+        },
+        {
+          "line": 308,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "inputMode=\"decimal\"",
+            "aria-label={`${label}, ${SECTORS.find((item) => item.id === activeSector)?.label}, Periode ${period.period}`}",
+            "value={period[key]}",
+            "onChange={(event) => setPeriodValue(index, key, event.target.value)}",
+            "disabled={busy !== null}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 286,
+          "syntax": "<label className=\"balance-insurer\"><span>Versicherer-ID</span><input type=\"number\" min=\"1\" max=\"25\" value={insurerId} disabled={busy !== null}\r\n          onChange={(event) => { setInsurerId(Number(event.target.value)); invalidate(); }} /></label>"
+        },
+        {
+          "line": 300,
+          "syntax": "<label key={key}><span>{label} Anfang</span><input type=\"text\" inputMode=\"decimal\"\r\n          value={drafts[activeSector].opening[key]} onChange={(event) => setOpening(key, event.target.value)} disabled={busy !== null} /></label>"
+        },
+        {
+          "line": 308,
+          "syntax": "<label key={key}><span>{label}</span><input type=\"text\" inputMode=\"decimal\"\r\n            aria-label={`${label}, ${SECTORS.find((item) => item.id === activeSector)?.label}, Periode ${period.period}`}\r\n            value={period[key]} onChange={(event) => setPeriodValue(index, key, event.target.value)} disabled={busy !== null} /></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/SeminarExplanation.tsx",
+      "controls": [
+        {
+          "line": 15,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Sparte erklären\"",
+            "value={sector}",
+            "onChange={event => setSector(event.target.value)}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 15,
+          "syntax": "<label>Sparte erklären<select aria-label=\"Sparte erklären\" value={sector} onChange={event => setSector(event.target.value)}>{result.sides[side].sectors.map(item => <option key={item.sector_id} value={item.sector_id}>{sectorNames[item.sector_id]}</option>)}</select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/SeminarWorkbench.tsx",
+      "controls": [
+        {
+          "line": 116,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Seminarfall\"",
+            "disabled={busy || demo}",
+            "value={caseId}",
+            "onChange={e => { invalidate(); setInput(null); setCaseId(e.target.value); }}"
+          ]
+        },
+        {
+          "line": 116,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Seminarperioden\"",
+            "disabled={busy || demo}",
+            "value={horizon}",
+            "onChange={e => { invalidate(); setInput(null); setHorizon(Number(e.target.value)); }}"
+          ]
+        },
+        {
+          "line": 118,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Portables Seminarbündel importieren\"",
+            "type=\"file\"",
+            "accept=\".json,application/json\"",
+            "disabled={busy}",
+            "onChange={e => { const file = e.target.files?.[0]; if (file) void importBundle(async () => { if (file.size > 16 * 1024 * 1024) throw new Error(\"Seminarbündel überschreitet 16 MiB.\"); return JSON.parse(await file.text()); }); e.target.value = \"\"; }}"
+          ]
+        },
+        {
+          "line": 122,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`Exposition ${group.group_id}`}",
+            "value={group.exposure}",
+            "disabled={busy || demo || expertDirty}",
+            "onChange={e => { const next = structuredClone(input); next.policyholder_groups.find(g => g.group_id === group.group_id)!.exposure = e.target.value.replace(\",\", \".\"); changed(next); }}"
+          ]
+        },
+        {
+          "line": 123,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Gruppe und Strategiekanal\"",
+            "value={target}",
+            "onChange={e => choose(input, e.target.value)}"
+          ]
+        },
+        {
+          "line": 124,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Strategiebeginn\"",
+            "type=\"number\"",
+            "min=\"6\"",
+            "max={input.period_count}",
+            "value={start}",
+            "onChange={e => { invalidate(); setStart(Number(e.target.value)); setPending(true); }}"
+          ]
+        },
+        {
+          "line": 124,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Strategieende\"",
+            "type=\"number\"",
+            "min={start}",
+            "max={input.period_count}",
+            "value={end}",
+            "onChange={e => { invalidate(); setEnd(Number(e.target.value)); setPending(true); }}"
+          ]
+        },
+        {
+          "line": 125,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`Strategie ${parameters[field]}`}",
+            "value={value}",
+            "onChange={e => { invalidate(); setEdits({ ...edits, [field]: field === \"count\" ? Number(e.target.value) : e.target.value.replace(\",\", \".\") }); setPending(true); }}"
+          ]
+        },
+        {
+          "line": 128,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label=\"Moderne Seminarquellen\"",
+            "rows={12}",
+            "value={expert}",
+            "disabled={busy || demo}",
+            "onChange={e => { invalidate(); setExpert(e.target.value); setExpertDirty(true); setPending(false); }}"
+          ]
+        },
+        {
+          "line": 129,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={confirmed}",
+            "disabled={busy}",
+            "onChange={e => setConfirmed(e.target.checked)}"
+          ]
+        },
+        {
+          "line": 134,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Seminar-Ergebnisperiode\"",
+            "value={period}",
+            "disabled={busy}",
+            "onChange={e => setPeriod(Number(e.target.value))}"
+          ]
+        },
+        {
+          "line": 134,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Seminar Kapitalquelle\"",
+            "value={side}",
+            "disabled={busy}",
+            "onChange={e => { const selected = e.target.value as \"baseline\" | \"variant\"; setSide(selected); publish(result, selected); }}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 116,
+          "syntax": "<label>Seminarfall<select aria-label=\"Seminarfall\" disabled={busy || demo} value={caseId} onChange={e => { invalidate(); setInput(null); setCaseId(e.target.value); }}><option value=\"price\">Preis und Anbieterwechsel</option><option value=\"inflation\">Kosten und Beitragsreaktion</option><option value=\"capital\">Lebens-Anlageentscheidung</option>{![\"price\", \"inflation\", \"capital\"].includes(caseId) && <option value={caseId}>Importierter Fall: {caseId}</option>}</select></label>"
+        },
+        {
+          "line": 116,
+          "syntax": "<label>Perioden<select aria-label=\"Seminarperioden\" disabled={busy || demo} value={horizon} onChange={e => { invalidate(); setInput(null); setHorizon(Number(e.target.value)); }}>{[2, 5, 10, 25, 50, 100].map(n => <option key={n}>{n}</option>)}</select></label>"
+        },
+        {
+          "line": 118,
+          "syntax": "<label>Portables Seminarbündel importieren<input aria-label=\"Portables Seminarbündel importieren\" type=\"file\" accept=\".json,application/json\" disabled={busy} onChange={e => { const file = e.target.files?.[0]; if (file) void importBundle(async () => { if (file.size > 16 * 1024 * 1024) throw new Error(\"Seminarbündel überschreitet 16 MiB.\"); return JSON.parse(await file.text()); }); e.target.value = \"\"; }} /></label>"
+        },
+        {
+          "line": 122,
+          "syntax": "<label key={group.group_id}>{group.group_id} · {sectors[group.sector_id]} · Anfang VU {group.initial_insurer_id}<input aria-label={`Exposition ${group.group_id}`} value={group.exposure} disabled={busy || demo || expertDirty} onChange={e => { const next = structuredClone(input); next.policyholder_groups.find(g => g.group_id === group.group_id)!.exposure = e.target.value.replace(\",\", \".\"); changed(next); }} /></label>"
+        },
+        {
+          "line": 123,
+          "syntax": "<label>Gruppe und Strategiekanal<select aria-label=\"Gruppe und Strategiekanal\" value={target} onChange={e => choose(input, e.target.value)}>{input.strategies.baseline.map(item => <option key={key(item)} value={key(item)}>{item.target_id} · {sectors[item.sector_id]} · {rules[item.strategy_id]}</option>)}</select></label>"
+        },
+        {
+          "line": 124,
+          "syntax": "<label>Beginn einschließlich<input aria-label=\"Strategiebeginn\" type=\"number\" min=\"6\" max={input.period_count} value={start} onChange={e => { invalidate(); setStart(Number(e.target.value)); setPending(true); }} /></label>"
+        },
+        {
+          "line": 124,
+          "syntax": "<label>Ende einschließlich<input aria-label=\"Strategieende\" type=\"number\" min={start} max={input.period_count} value={end} onChange={e => { invalidate(); setEnd(Number(e.target.value)); setPending(true); }} /></label>"
+        },
+        {
+          "line": 125,
+          "syntax": "<label key={field}>{parameters[field]}<input aria-label={`Strategie ${parameters[field]}`} value={value} onChange={e => { invalidate(); setEdits({ ...edits, [field]: field === \"count\" ? Number(e.target.value) : e.target.value.replace(\",\", \".\") }); setPending(true); }} /></label>"
+        },
+        {
+          "line": 128,
+          "syntax": "<label>Moderne Seminarquellen<textarea aria-label=\"Moderne Seminarquellen\" rows={12} value={expert} disabled={busy || demo} onChange={e => { invalidate(); setExpert(e.target.value); setExpertDirty(true); setPending(false); }} /></label>"
+        },
+        {
+          "line": 129,
+          "syntax": "<label><input type=\"checkbox\" checked={confirmed} disabled={busy} onChange={e => setConfirmed(e.target.checked)} />Die modernen Einheiten, Gruppen und exogenen Annahmen dieses Falls sind erklärt.</label>"
+        },
+        {
+          "line": 134,
+          "syntax": "<label>Seminar-Ergebnisperiode<select aria-label=\"Seminar-Ergebnisperiode\" value={period} disabled={busy} onChange={e => setPeriod(Number(e.target.value))}>{Array.from({ length: result.period_count }, (_, i) => <option key={i + 1}>{i + 1}</option>)}</select></label>"
+        },
+        {
+          "line": 134,
+          "syntax": "<label>Quelle für Kapitalwirkung<select aria-label=\"Seminar Kapitalquelle\" value={side} disabled={busy} onChange={e => { const selected = e.target.value as \"baseline\" | \"variant\"; setSide(selected); publish(result, selected); }}><option value=\"baseline\">Baseline</option><option value=\"variant\">Variante</option></select></label>"
+        }
+      ]
+    },
+    {
+      "file": "frontend/src/main.tsx",
+      "controls": [
+        {
+          "line": 5874,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "data-testid=\"strategy-candidate-release-actor\"",
+            "value={strategyCandidateProbeActor}",
+            "onChange={(event) => setStrategyCandidateProbeActor(event.target.value)}",
+            "disabled={strategyCandidateProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 5884,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "data-testid=\"strategy-candidate-release-reason\"",
+            "value={strategyCandidateProbeReason}",
+            "onChange={(event) => setStrategyCandidateProbeReason(event.target.value)}",
+            "disabled={strategyCandidateProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 5893,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "data-testid=\"strategy-candidate-release-confirmation\"",
+            "checked={strategyCandidateProbeConfirmed}",
+            "onChange={(event) => setStrategyCandidateProbeConfirmed(event.target.checked)}",
+            "disabled={strategyCandidateProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 6256,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "data-testid=\"strategy-period-chain-release-actor\"",
+            "value={strategyPeriodChainProbeActor}",
+            "onChange={(event) => setStrategyPeriodChainProbeActor(event.target.value)}",
+            "disabled={strategyPeriodChainProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 6266,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "data-testid=\"strategy-period-chain-release-reason\"",
+            "value={strategyPeriodChainProbeReason}",
+            "onChange={(event) => setStrategyPeriodChainProbeReason(event.target.value)}",
+            "disabled={strategyPeriodChainProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 6275,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "data-testid=\"strategy-period-chain-release-confirmation\"",
+            "checked={strategyPeriodChainProbeConfirmed}",
+            "onChange={(event) => setStrategyPeriodChainProbeConfirmed(event.target.checked)}",
+            "disabled={strategyPeriodChainProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 6474,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "data-testid=\"strategy-five-period-release-actor\"",
+            "value={strategyFivePeriodProbeActor}",
+            "onChange={(event) => setStrategyFivePeriodProbeActor(event.target.value)}",
+            "disabled={strategyFivePeriodProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 6484,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "data-testid=\"strategy-five-period-release-reason\"",
+            "value={strategyFivePeriodProbeReason}",
+            "onChange={(event) => setStrategyFivePeriodProbeReason(event.target.value)}",
+            "disabled={strategyFivePeriodProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 6494,
+          "kind": "select",
+          "attributes": [
+            "data-testid=\"strategy-five-period-prefix-baseline\"",
+            "value={selectedStrategyFivePeriodPrefixChainId ?? \"\"}",
+            "onChange={(event) => setSelectedStrategyFivePeriodPrefixChainId(event.target.value)}",
+            "disabled={strategyFivePeriodProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 6508,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "data-testid=\"strategy-five-period-release-confirmation\"",
+            "checked={strategyFivePeriodProbeConfirmed}",
+            "onChange={(event) => setStrategyFivePeriodProbeConfirmed(event.target.checked)}",
+            "disabled={strategyFivePeriodProbeStartState === \"loading\"}"
+          ]
+        },
+        {
+          "line": 7164,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Zinssatz im VU-Zustandsbeleg\"",
+            "type=\"number\"",
+            "step=\"any\"",
+            "value={strategyVUStateEditor.interestRate}",
+            "onChange={(event) => updateStrategyVUPeriodState(\r\n                                  \"interestRate\",\r\n                                  event.target.value\r\n                                )}",
+            "placeholder=\"z. B. 0,02\""
+          ]
+        },
+        {
+          "line": 7178,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Schockstatus im VU-Zustandsbeleg\"",
+            "value={strategyVUStateEditor.changeShock}",
+            "onChange={(event) => updateStrategyVUPeriodState(\r\n                                  \"changeShock\",\r\n                                  event.target.value\r\n                                )}"
+          ]
+        },
+        {
+          "line": 7193,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Aktive VN im VU-Zustandsbeleg\"",
+            "type=\"number\"",
+            "min=\"0\"",
+            "step=\"1\"",
+            "value={strategyVUStateEditor.activePolicyholderCount}",
+            "onChange={(event) => updateStrategyVUPeriodState(\r\n                                  \"activePolicyholderCount\",\r\n                                  event.target.value\r\n                                )}",
+            "placeholder=\"Anzahl\""
+          ]
+        },
+        {
+          "line": 7243,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label={`${\r\n                                            strategyVUStateFieldLabels[fieldName] ?? fieldName\r\n                                          } fuer VU ${entry.insurer_id}`}",
+            "rows={2}",
+            "value={entry.values[fieldName]}",
+            "onChange={(event) => updateStrategyVUEntryState(\r\n                                            entryIndex,\r\n                                            fieldName,\r\n                                            event.target.value\r\n                                          )}",
+            "placeholder={fieldName === \"policyholders_t_minus_2\"\r\n                                            ? \"[0, 0]\"\r\n                                            : \"[0, 0, 0]\"}",
+            "spellCheck={false}"
+          ]
+        },
+        {
+          "line": 7551,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Periode des Snapshot-Kontexts\"",
+            "type=\"number\"",
+            "min=\"1\"",
+            "step=\"1\"",
+            "value={strategySnapshotContextPeriod}",
+            "onChange={(event) => {\r\n                            setStrategySnapshotContextPeriod(event.target.value);\r\n                            invalidateStrategySnapshotContextValidation();\r\n                          }}",
+            "placeholder=\"z. B. 1\""
+          ]
+        },
+        {
+          "line": 7642,
+          "kind": "select",
+          "attributes": [
+            "aria-label={inputLabel}",
+            "disabled={editorValue.explicitlyOpen}",
+            "value={editorValue.raw}",
+            "onChange={(event) => updateStrategySnapshotContextValue(\r\n                                                  entryIndex,\r\n                                                  fieldName,\r\n                                                  { raw: event.target.value }\r\n                                                )}"
+          ]
+        },
+        {
+          "line": 7658,
+          "kind": "input",
+          "attributes": [
+            "aria-label={inputLabel}",
+            "type=\"number\"",
+            "step={definition.value_shape === \"integer\" ? \"1\" : \"any\"}",
+            "disabled={editorValue.explicitlyOpen}",
+            "value={editorValue.raw}",
+            "onChange={(event) => updateStrategySnapshotContextValue(\r\n                                                  entryIndex,\r\n                                                  fieldName,\r\n                                                  { raw: event.target.value }\r\n                                                )}",
+            "placeholder={strategySnapshotContextPlaceholder(definition)}"
+          ]
+        },
+        {
+          "line": 7672,
+          "kind": "textarea",
+          "attributes": [
+            "aria-label={inputLabel}",
+            "rows={definition.value_shape === \"object\" ? 3 : 2}",
+            "disabled={editorValue.explicitlyOpen}",
+            "value={editorValue.raw}",
+            "onChange={(event) => updateStrategySnapshotContextValue(\r\n                                                  entryIndex,\r\n                                                  fieldName,\r\n                                                  { raw: event.target.value }\r\n                                                )}",
+            "placeholder={strategySnapshotContextPlaceholder(definition)}",
+            "spellCheck={false}"
+          ]
+        },
+        {
+          "line": 7694,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={editorValue.explicitlyOpen}",
+            "onChange={(event) => updateStrategySnapshotContextValue(\r\n                                                  entryIndex,\r\n                                                  fieldName,\r\n                                                  { explicitlyOpen: event.target.checked }\r\n                                                )}"
+          ]
+        },
+        {
+          "line": 8068,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "value={strategyDraftId}",
+            "onChange={(event) => {\r\n                      setStrategyDraftId(event.target.value);\r\n                      invalidateStrategyDraftValidation();\r\n                    }}",
+            "placeholder=\"z. B. marktvergleich-01\""
+          ]
+        },
+        {
+          "line": 8080,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "value={strategyDraftLabel}",
+            "onChange={(event) => {\r\n                      setStrategyDraftLabel(event.target.value);\r\n                      invalidateStrategyDraftValidation();\r\n                    }}",
+            "placeholder=\"Bezeichnung des Entwurfs\""
+          ]
+        },
+        {
+          "line": 8118,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Ziel-ID\"",
+            "type=\"number\"",
+            "min={strategyDraftTargetLimit?.minimum ?? 1}",
+            "max={strategyDraftTargetLimit?.maximum}",
+            "step=\"1\"",
+            "value={strategyDraftEditor.targetId}",
+            "onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        targetId: event.target.value\r\n                      }))}",
+            "placeholder={strategyDraftTargetLimit\r\n                        ? `${strategyDraftTargetLimit.minimum}-${strategyDraftTargetLimit.maximum}`\r\n                        : \"ID\"}"
+          ]
+        },
+        {
+          "line": 8143,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Strategie\"",
+            "value={strategyDraftEditor.strategyId}",
+            "onChange={(event) => selectStrategyDraftStrategy(event.target.value)}"
+          ]
+        },
+        {
+          "line": 8159,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"1\"",
+            "step=\"1\"",
+            "value={strategyDraftEditor.activationPeriod}",
+            "onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        activationPeriod: event.target.value\r\n                      }))}",
+            "placeholder=\"Periode\""
+          ]
+        },
+        {
+          "line": 8173,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"1\"",
+            "step=\"1\"",
+            "value={strategyDraftEditor.activeThroughRun}",
+            "onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        activeThroughRun: event.target.value\r\n                      }))}",
+            "placeholder=\"Laufgrenze\""
+          ]
+        },
+        {
+          "line": 8187,
+          "kind": "input",
+          "attributes": [
+            "type=\"number\"",
+            "min=\"1\"",
+            "step=\"1\"",
+            "value={strategyDraftEditor.logicalTime}",
+            "onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        logicalTime: event.target.value\r\n                      }))}",
+            "placeholder=\"Zeitpunkt\""
+          ]
+        },
+        {
+          "line": 8223,
+          "kind": "input",
+          "attributes": [
+            "aria-label={`${field.display_name}, Position ${position + 1}`}",
+            "type=\"number\"",
+            "min={field.python_type === \"list[int]\" ? \"0\" : undefined}",
+            "step={field.python_type === \"list[int]\" ? \"1\" : \"any\"}",
+            "value={values[position]}",
+            "onChange={(event) => setStrategyDraftEditor((current) => {\r\n                                    const currentValues = current.parameterValues[field.field_name] ?? [\"\", \"\"];\r\n                                    const nextValues = position === 0\r\n                                      ? [event.target.value, currentValues[1]]\r\n                                      : [currentValues[0], event.target.value];\r\n                                    return {\r\n                                      ...current,\r\n                                      parameterValues: {\r\n                                        ...current.parameterValues,\r\n                                        [field.field_name]: nextValues as [string, string]\r\n                                      }\r\n                                    };\r\n                                  })}"
+          ]
+        },
+        {
+          "line": 8396,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Szenariosuche\"",
+            "onChange={(event) => setScenarioQuery(event.target.value)}",
+            "placeholder=\"Name oder ID\"",
+            "type=\"search\"",
+            "value={scenarioQuery}"
+          ]
+        },
+        {
+          "line": 8406,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Szenario-Statusfilter\"",
+            "onChange={(event) => setScenarioStatusFilter(event.target.value)}",
+            "value={scenarioStatusFilter}"
+          ]
+        },
+        {
+          "line": 8421,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Szenario-Quellenfilter\"",
+            "onChange={(event) => setScenarioSourceFilter(event.target.value)}",
+            "value={scenarioSourceFilter}"
+          ]
+        },
+        {
+          "line": 8436,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Szenario-Scopefilter\"",
+            "onChange={(event) => setScenarioScopeFilter(event.target.value)}",
+            "value={scenarioScopeFilter}"
+          ]
+        },
+        {
+          "line": 8495,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Runsuche\"",
+            "onChange={(event) => setRunQuery(event.target.value)}",
+            "placeholder=\"Name oder ID\"",
+            "type=\"search\"",
+            "value={runQuery}"
+          ]
+        },
+        {
+          "line": 8505,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Run-Statusfilter\"",
+            "onChange={(event) => setRunStatusFilter(event.target.value)}",
+            "value={runStatusFilter}"
+          ]
+        },
+        {
+          "line": 8520,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Run-Szenariofilter\"",
+            "onChange={(event) => setRunScenarioFilter(event.target.value)}",
+            "value={runScenarioFilter}"
+          ]
+        },
+        {
+          "line": 8535,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Run-Quellenfilter\"",
+            "onChange={(event) => setRunSourceFilter(event.target.value)}",
+            "value={runSourceFilter}"
+          ]
+        },
+        {
+          "line": 8685,
+          "kind": "input",
+          "attributes": [
+            "aria-label=\"Run-Control-Queuesuche\"",
+            "onChange={(event) => setQueueQuery(event.target.value)}",
+            "placeholder=\"Queue, Run oder Person\"",
+            "type=\"search\"",
+            "value={queueQuery}"
+          ]
+        },
+        {
+          "line": 8695,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Run-Control-Statusfilter\"",
+            "onChange={(event) => setQueueStatusFilter(event.target.value)}",
+            "value={queueStatusFilter}"
+          ]
+        },
+        {
+          "line": 8710,
+          "kind": "select",
+          "attributes": [
+            "aria-label=\"Run-Control-Szenariofilter\"",
+            "onChange={(event) => setQueueScenarioFilter(event.target.value)}",
+            "value={queueScenarioFilter}"
+          ]
+        },
+        {
+          "line": 8936,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "value={executionReleaseActor}",
+            "onChange={(event) => {\r\n                    setExecutionReleaseActor(event.target.value);\r\n                    invalidateExecutionRelease();\r\n                  }}"
+          ]
+        },
+        {
+          "line": 8947,
+          "kind": "input",
+          "attributes": [
+            "type=\"text\"",
+            "value={executionReleaseReason}",
+            "onChange={(event) => {\r\n                    setExecutionReleaseReason(event.target.value);\r\n                    invalidateExecutionRelease();\r\n                  }}"
+          ]
+        },
+        {
+          "line": 8959,
+          "kind": "input",
+          "attributes": [
+            "type=\"checkbox\"",
+            "checked={executionReleaseConfirmed}",
+            "onChange={(event) => {\r\n                    setExecutionReleaseConfirmed(event.target.checked);\r\n                    invalidateExecutionRelease();\r\n                  }}"
+          ]
+        }
+      ],
+      "labels": [
+        {
+          "line": 5872,
+          "syntax": "<label>\r\n                              <span>Freigabe durch</span>\r\n                              <input\r\n                                type=\"text\"\r\n                                data-testid=\"strategy-candidate-release-actor\"\r\n                                value={strategyCandidateProbeActor}\r\n                                onChange={(event) => setStrategyCandidateProbeActor(event.target.value)}\r\n                                disabled={strategyCandidateProbeStartState === \"loading\"}\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 5882,
+          "syntax": "<label>\r\n                              <span>Grund</span>\r\n                              <input\r\n                                type=\"text\"\r\n                                data-testid=\"strategy-candidate-release-reason\"\r\n                                value={strategyCandidateProbeReason}\r\n                                onChange={(event) => setStrategyCandidateProbeReason(event.target.value)}\r\n                                disabled={strategyCandidateProbeStartState === \"loading\"}\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 5892,
+          "syntax": "<label className=\"strategy-candidate-probe-confirmation\">\r\n                              <input\r\n                                type=\"checkbox\"\r\n                                data-testid=\"strategy-candidate-release-confirmation\"\r\n                                checked={strategyCandidateProbeConfirmed}\r\n                                onChange={(event) => setStrategyCandidateProbeConfirmed(event.target.checked)}\r\n                                disabled={strategyCandidateProbeStartState === \"loading\"}\r\n                              />\r\n                              <span>Genau eine isolierte Periode jetzt ausfuehren</span>\r\n                            </label>"
+        },
+        {
+          "line": 6254,
+          "syntax": "<label>\r\n                              <span>Freigabe durch</span>\r\n                              <input\r\n                                type=\"text\"\r\n                                data-testid=\"strategy-period-chain-release-actor\"\r\n                                value={strategyPeriodChainProbeActor}\r\n                                onChange={(event) => setStrategyPeriodChainProbeActor(event.target.value)}\r\n                                disabled={strategyPeriodChainProbeStartState === \"loading\"}\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 6264,
+          "syntax": "<label>\r\n                              <span>Grund</span>\r\n                              <input\r\n                                type=\"text\"\r\n                                data-testid=\"strategy-period-chain-release-reason\"\r\n                                value={strategyPeriodChainProbeReason}\r\n                                onChange={(event) => setStrategyPeriodChainProbeReason(event.target.value)}\r\n                                disabled={strategyPeriodChainProbeStartState === \"loading\"}\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 6274,
+          "syntax": "<label className=\"strategy-candidate-probe-confirmation\">\r\n                              <input\r\n                                type=\"checkbox\"\r\n                                data-testid=\"strategy-period-chain-release-confirmation\"\r\n                                checked={strategyPeriodChainProbeConfirmed}\r\n                                onChange={(event) => setStrategyPeriodChainProbeConfirmed(event.target.checked)}\r\n                                disabled={strategyPeriodChainProbeStartState === \"loading\"}\r\n                              />\r\n                              <span>Periode 1 und 2 mit gespeichertem Carryover jetzt ausfuehren</span>\r\n                            </label>"
+        },
+        {
+          "line": 6472,
+          "syntax": "<label>\r\n                              <span>Freigabe durch</span>\r\n                              <input\r\n                                type=\"text\"\r\n                                data-testid=\"strategy-five-period-release-actor\"\r\n                                value={strategyFivePeriodProbeActor}\r\n                                onChange={(event) => setStrategyFivePeriodProbeActor(event.target.value)}\r\n                                disabled={strategyFivePeriodProbeStartState === \"loading\"}\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 6482,
+          "syntax": "<label>\r\n                              <span>Grund</span>\r\n                              <input\r\n                                type=\"text\"\r\n                                data-testid=\"strategy-five-period-release-reason\"\r\n                                value={strategyFivePeriodProbeReason}\r\n                                onChange={(event) => setStrategyFivePeriodProbeReason(event.target.value)}\r\n                                disabled={strategyFivePeriodProbeStartState === \"loading\"}\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 6492,
+          "syntax": "<label className=\"strategy-five-period-baseline\">\r\n                              <span>Gepruefter Vergleich fuer Periode 1-2</span>\r\n                              <select\r\n                                data-testid=\"strategy-five-period-prefix-baseline\"\r\n                                value={selectedStrategyFivePeriodPrefixChainId ?? \"\"}\r\n                                onChange={(event) => setSelectedStrategyFivePeriodPrefixChainId(event.target.value)}\r\n                                disabled={strategyFivePeriodProbeStartState === \"loading\"}\r\n                              >\r\n                                {strategyFivePeriodPrefixBaselines.map((baseline) => (\r\n                                  <option value={baseline.chain_id} key={baseline.chain_id}>\r\n                                    {shortCandidateDigest(baseline.expected_result_digest)} / Periode 1-2\r\n                                  </option>\r\n                                ))}\r\n                              </select>\r\n                            </label>"
+        },
+        {
+          "line": 6507,
+          "syntax": "<label className=\"strategy-candidate-probe-confirmation\">\r\n                              <input\r\n                                type=\"checkbox\"\r\n                                data-testid=\"strategy-five-period-release-confirmation\"\r\n                                checked={strategyFivePeriodProbeConfirmed}\r\n                                onChange={(event) => setStrategyFivePeriodProbeConfirmed(event.target.checked)}\r\n                                disabled={strategyFivePeriodProbeStartState === \"loading\"}\r\n                              />\r\n                              <span>Periode 1 bis 5 mit gespeichertem Carryover jetzt ausfuehren</span>\r\n                            </label>"
+        },
+        {
+          "line": 7162,
+          "syntax": "<label>\r\n                              <span>Zinssatz</span>\r\n                              <input\r\n                                aria-label=\"Zinssatz im VU-Zustandsbeleg\"\r\n                                type=\"number\"\r\n                                step=\"any\"\r\n                                value={strategyVUStateEditor.interestRate}\r\n                                onChange={(event) => updateStrategyVUPeriodState(\r\n                                  \"interestRate\",\r\n                                  event.target.value\r\n                                )}\r\n                                placeholder=\"z. B. 0,02\"\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 7176,
+          "syntax": "<label>\r\n                              <span>Schockstatus</span>\r\n                              <select\r\n                                aria-label=\"Schockstatus im VU-Zustandsbeleg\"\r\n                                value={strategyVUStateEditor.changeShock}\r\n                                onChange={(event) => updateStrategyVUPeriodState(\r\n                                  \"changeShock\",\r\n                                  event.target.value\r\n                                )}\r\n                              >\r\n                                <option value=\"\">Bitte waehlen</option>\r\n                                <option value=\"false\">Normalzustand</option>\r\n                                <option value=\"true\">Aenderungsschock</option>\r\n                              </select>\r\n                            </label>"
+        },
+        {
+          "line": 7191,
+          "syntax": "<label>\r\n                              <span>Aktive VN</span>\r\n                              <input\r\n                                aria-label=\"Aktive VN im VU-Zustandsbeleg\"\r\n                                type=\"number\"\r\n                                min=\"0\"\r\n                                step=\"1\"\r\n                                value={strategyVUStateEditor.activePolicyholderCount}\r\n                                onChange={(event) => updateStrategyVUPeriodState(\r\n                                  \"activePolicyholderCount\",\r\n                                  event.target.value\r\n                                )}\r\n                                placeholder=\"Anzahl\"\r\n                              />\r\n                            </label>"
+        },
+        {
+          "line": 7549,
+          "syntax": "<label>\r\n                        <span>Periode</span>\r\n                        <input\r\n                          aria-label=\"Periode des Snapshot-Kontexts\"\r\n                          type=\"number\"\r\n                          min=\"1\"\r\n                          step=\"1\"\r\n                          value={strategySnapshotContextPeriod}\r\n                          onChange={(event) => {\r\n                            setStrategySnapshotContextPeriod(event.target.value);\r\n                            invalidateStrategySnapshotContextValidation();\r\n                          }}\r\n                          placeholder=\"z. B. 1\"\r\n                        />\r\n                      </label>"
+        },
+        {
+          "line": 7693,
+          "syntax": "<label className=\"strategy-context-null-toggle\">\r\n                                              <input\r\n                                                type=\"checkbox\"\r\n                                                checked={editorValue.explicitlyOpen}\r\n                                                onChange={(event) => updateStrategySnapshotContextValue(\r\n                                                  entryIndex,\r\n                                                  fieldName,\r\n                                                  { explicitlyOpen: event.target.checked }\r\n                                                )}\r\n                                              />\r\n                                              <span>Bewusst offen</span>\r\n                                              <small><code>null</code> bleibt unaufgeloest</small>\r\n                                            </label>"
+        },
+        {
+          "line": 8066,
+          "syntax": "<label>\r\n                  <span>Entwurfs-ID</span>\r\n                  <input\r\n                    type=\"text\"\r\n                    value={strategyDraftId}\r\n                    onChange={(event) => {\r\n                      setStrategyDraftId(event.target.value);\r\n                      invalidateStrategyDraftValidation();\r\n                    }}\r\n                    placeholder=\"z. B. marktvergleich-01\"\r\n                  />\r\n                </label>"
+        },
+        {
+          "line": 8078,
+          "syntax": "<label>\r\n                  <span>Bezeichnung</span>\r\n                  <input\r\n                    type=\"text\"\r\n                    value={strategyDraftLabel}\r\n                    onChange={(event) => {\r\n                      setStrategyDraftLabel(event.target.value);\r\n                      invalidateStrategyDraftValidation();\r\n                    }}\r\n                    placeholder=\"Bezeichnung des Entwurfs\"\r\n                  />\r\n                </label>"
+        },
+        {
+          "line": 8116,
+          "syntax": "<label>\r\n                    <span>Ziel-ID</span>\r\n                    <input\r\n                      aria-label=\"Ziel-ID\"\r\n                      type=\"number\"\r\n                      min={strategyDraftTargetLimit?.minimum ?? 1}\r\n                      max={strategyDraftTargetLimit?.maximum}\r\n                      step=\"1\"\r\n                      value={strategyDraftEditor.targetId}\r\n                      onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        targetId: event.target.value\r\n                      }))}\r\n                      placeholder={strategyDraftTargetLimit\r\n                        ? `${strategyDraftTargetLimit.minimum}-${strategyDraftTargetLimit.maximum}`\r\n                        : \"ID\"}\r\n                    />\r\n                    <small>\r\n                      {strategyDraftTargetDuplicate\r\n                        ? \"Dieser Akteur ist bereits zugeordnet.\"\r\n                        : strategyDraftTargetLimit\r\n                          ? `Zulaessig: ${strategyDraftTargetLimit.minimum}-${strategyDraftTargetLimit.maximum}`\r\n                          : \"Zielgrenze wird geladen\"}\r\n                    </sma"
+        },
+        {
+          "line": 8141,
+          "syntax": "<label className=\"strategy-draft-strategy-field\">\r\n                    <span>Strategie</span>\r\n                    <select\r\n                      aria-label=\"Strategie\"\r\n                      value={strategyDraftEditor.strategyId}\r\n                      onChange={(event) => selectStrategyDraftStrategy(event.target.value)}\r\n                    >\r\n                      <option value=\"\">Strategie waehlen</option>\r\n                      {strategyDraftEligibleStrategies.map((strategy) => (\r\n                        <option value={strategy.strategy_id} key={strategy.strategy_id}>\r\n                          {strategy.display_name}\r\n                        </option>\r\n                      ))}\r\n                    </select>\r\n                    <small>{selectedStrategyDraftDefinition?.strategy_id ?? \"Noch keine Strategie ausgewaehlt\"}</small>\r\n                  </label>"
+        },
+        {
+          "line": 8157,
+          "syntax": "<label>\r\n                    <span>Aktiv ab Periode</span>\r\n                    <input\r\n                      type=\"number\"\r\n                      min=\"1\"\r\n                      step=\"1\"\r\n                      value={strategyDraftEditor.activationPeriod}\r\n                      onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        activationPeriod: event.target.value\r\n                      }))}\r\n                      placeholder=\"Periode\"\r\n                    />\r\n                  </label>"
+        },
+        {
+          "line": 8171,
+          "syntax": "<label>\r\n                    <span>Aktiv bis Lauf</span>\r\n                    <input\r\n                      type=\"number\"\r\n                      min=\"1\"\r\n                      step=\"1\"\r\n                      value={strategyDraftEditor.activeThroughRun}\r\n                      onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        activeThroughRun: event.target.value\r\n                      }))}\r\n                      placeholder=\"Laufgrenze\"\r\n                    />\r\n                  </label>"
+        },
+        {
+          "line": 8185,
+          "syntax": "<label>\r\n                    <span>Logische Zeit</span>\r\n                    <input\r\n                      type=\"number\"\r\n                      min=\"1\"\r\n                      step=\"1\"\r\n                      value={strategyDraftEditor.logicalTime}\r\n                      onChange={(event) => setStrategyDraftEditor((current) => ({\r\n                        ...current,\r\n                        logicalTime: event.target.value\r\n                      }))}\r\n                      placeholder=\"Zeitpunkt\"\r\n                    />\r\n                  </label>"
+        },
+        {
+          "line": 8221,
+          "syntax": "<label key={position}>\r\n                                <span>Position {position + 1}</span>\r\n                                <input\r\n                                  aria-label={`${field.display_name}, Position ${position + 1}`}\r\n                                  type=\"number\"\r\n                                  min={field.python_type === \"list[int]\" ? \"0\" : undefined}\r\n                                  step={field.python_type === \"list[int]\" ? \"1\" : \"any\"}\r\n                                  value={values[position]}\r\n                                  onChange={(event) => setStrategyDraftEditor((current) => {\r\n                                    const currentValues = current.parameterValues[field.field_name] ?? [\"\", \"\"];\r\n                                    const nextValues = position === 0\r\n                                      ? [event.target.value, currentValues[1]]\r\n                                      : [currentValues[0], event.target.value];\r\n                                    return {\r\n                                      ...current,\r\n                                      parameterValues: {\r\n                                        ...current.parameterValues,\r\n            "
+        },
+        {
+          "line": 8393,
+          "syntax": "<label className=\"scenario-search\">\r\n              <Search size={17} aria-hidden=\"true\" />\r\n              <span>Suche</span>\r\n              <input\r\n                aria-label=\"Szenariosuche\"\r\n                onChange={(event) => setScenarioQuery(event.target.value)}\r\n                placeholder=\"Name oder ID\"\r\n                type=\"search\"\r\n                value={scenarioQuery}\r\n              />\r\n            </label>"
+        },
+        {
+          "line": 8404,
+          "syntax": "<label>\r\n              <span>Status</span>\r\n              <select\r\n                aria-label=\"Szenario-Statusfilter\"\r\n                onChange={(event) => setScenarioStatusFilter(event.target.value)}\r\n                value={scenarioStatusFilter}\r\n              >\r\n                <option value={ALL_SCENARIO_FILTERS}>alle</option>\r\n                {scenarioStatusOptions.map((status) => (\r\n                  <option key={status} value={status}>\r\n                    {status}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8419,
+          "syntax": "<label>\r\n              <span>Quelle</span>\r\n              <select\r\n                aria-label=\"Szenario-Quellenfilter\"\r\n                onChange={(event) => setScenarioSourceFilter(event.target.value)}\r\n                value={scenarioSourceFilter}\r\n              >\r\n                <option value={ALL_SCENARIO_FILTERS}>alle</option>\r\n                {scenarioSourceOptions.map((source) => (\r\n                  <option key={source} value={source}>\r\n                    {source}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8434,
+          "syntax": "<label>\r\n              <span>Umfang</span>\r\n              <select\r\n                aria-label=\"Szenario-Scopefilter\"\r\n                onChange={(event) => setScenarioScopeFilter(event.target.value)}\r\n                value={scenarioScopeFilter}\r\n              >\r\n                <option value={ALL_SCENARIO_FILTERS}>alle</option>\r\n                {scenarioScopeOptions.map((scope) => (\r\n                  <option key={scope} value={scope}>\r\n                    {scope}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8492,
+          "syntax": "<label className=\"run-search\">\r\n              <Search size={17} aria-hidden=\"true\" />\r\n              <span>Suche</span>\r\n              <input\r\n                aria-label=\"Runsuche\"\r\n                onChange={(event) => setRunQuery(event.target.value)}\r\n                placeholder=\"Name oder ID\"\r\n                type=\"search\"\r\n                value={runQuery}\r\n              />\r\n            </label>"
+        },
+        {
+          "line": 8503,
+          "syntax": "<label>\r\n              <span>Status</span>\r\n              <select\r\n                aria-label=\"Run-Statusfilter\"\r\n                onChange={(event) => setRunStatusFilter(event.target.value)}\r\n                value={runStatusFilter}\r\n              >\r\n                <option value={ALL_RUN_FILTERS}>alle</option>\r\n                {runStatusOptions.map((status) => (\r\n                  <option key={status} value={status}>\r\n                    {status}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8518,
+          "syntax": "<label>\r\n              <span>Szenario</span>\r\n              <select\r\n                aria-label=\"Run-Szenariofilter\"\r\n                onChange={(event) => setRunScenarioFilter(event.target.value)}\r\n                value={runScenarioFilter}\r\n              >\r\n                <option value={ALL_RUN_FILTERS}>alle</option>\r\n                {runScenarioOptions.map((scenarioId) => (\r\n                  <option key={scenarioId} value={scenarioId}>\r\n                    {scenarioNameById.get(scenarioId) ?? scenarioId}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8533,
+          "syntax": "<label>\r\n              <span>Quelle</span>\r\n              <select\r\n                aria-label=\"Run-Quellenfilter\"\r\n                onChange={(event) => setRunSourceFilter(event.target.value)}\r\n                value={runSourceFilter}\r\n              >\r\n                <option value={ALL_RUN_FILTERS}>alle</option>\r\n                {runSourceOptions.map((source) => (\r\n                  <option key={source} value={source}>\r\n                    {source}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8682,
+          "syntax": "<label className=\"run-control-search\">\r\n              <Search size={17} aria-hidden=\"true\" />\r\n              <span>Suche</span>\r\n              <input\r\n                aria-label=\"Run-Control-Queuesuche\"\r\n                onChange={(event) => setQueueQuery(event.target.value)}\r\n                placeholder=\"Queue, Run oder Person\"\r\n                type=\"search\"\r\n                value={queueQuery}\r\n              />\r\n            </label>"
+        },
+        {
+          "line": 8693,
+          "syntax": "<label>\r\n              <span>Status</span>\r\n              <select\r\n                aria-label=\"Run-Control-Statusfilter\"\r\n                onChange={(event) => setQueueStatusFilter(event.target.value)}\r\n                value={queueStatusFilter}\r\n              >\r\n                <option value={ALL_QUEUE_FILTERS}>alle</option>\r\n                {queueStatusOptions.map((status) => (\r\n                  <option key={status} value={status}>\r\n                    {status}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8708,
+          "syntax": "<label>\r\n              <span>Szenario</span>\r\n              <select\r\n                aria-label=\"Run-Control-Szenariofilter\"\r\n                onChange={(event) => setQueueScenarioFilter(event.target.value)}\r\n                value={queueScenarioFilter}\r\n              >\r\n                <option value={ALL_QUEUE_FILTERS}>alle</option>\r\n                {queueScenarioOptions.map((scenarioId) => (\r\n                  <option key={scenarioId} value={scenarioId}>\r\n                    {scenarioNameById.get(scenarioId) ?? scenarioId}\r\n                  </option>\r\n                ))}\r\n              </select>\r\n            </label>"
+        },
+        {
+          "line": 8934,
+          "syntax": "<label>\r\n                <span>Freigegeben von</span>\r\n                <input\r\n                  type=\"text\"\r\n                  value={executionReleaseActor}\r\n                  onChange={(event) => {\r\n                    setExecutionReleaseActor(event.target.value);\r\n                    invalidateExecutionRelease();\r\n                  }}\r\n                />\r\n              </label>"
+        },
+        {
+          "line": 8945,
+          "syntax": "<label>\r\n                <span>Begruendung</span>\r\n                <input\r\n                  type=\"text\"\r\n                  value={executionReleaseReason}\r\n                  onChange={(event) => {\r\n                    setExecutionReleaseReason(event.target.value);\r\n                    invalidateExecutionRelease();\r\n                  }}\r\n                />\r\n              </label>"
+        },
+        {
+          "line": 8958,
+          "syntax": "<label className=\"run-control-execution-confirmation\">\r\n                <input\r\n                  type=\"checkbox\"\r\n                  checked={executionReleaseConfirmed}\r\n                  onChange={(event) => {\r\n                    setExecutionReleaseConfirmed(event.target.checked);\r\n                    invalidateExecutionRelease();\r\n                  }}\r\n                />\r\n                <span>Ausfuehrung explizit freigeben</span>\r\n              </label>"
+        }
+      ]
+    }
+  ]
+}

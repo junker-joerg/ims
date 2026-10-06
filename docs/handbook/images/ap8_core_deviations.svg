@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 850" role="img" aria-labelledby="title desc"><title id="title">Original IMS und heutiger Markt · erhalten, geändert, offen</title><desc id="desc">Keine Behauptung einer vollständigen numerischen Identität mit dem historischen IMS/ESS. Quellenstellen und Prüfgrenzen im Handbuch rechenkern.md; die UI-Mockups erweitern keinen Modellvertrag.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L8 3L0 6Z" fill="#476781"/></marker></defs>
+<rect width="1280" height="850" fill="#f6f9fc"/>
+<text x="40" y="50" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#102b46">Original IMS und heutiger Markt · erhalten, geändert, offen</text>
+<text x="40" y="84" font-family="Arial,sans-serif" font-size="19" fill="#284966">Keine Behauptung einer vollständigen numerischen Identität mit dem historischen IMS/ESS</text>
+<path d="M410 410L455 410" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M825 410L870 410" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="125" width="370" height="590" rx="12" fill="white" stroke="#284966" stroke-width="2"/><rect x="40" y="125" width="6" height="590" rx="3" fill="#284966"/>
+<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#284966">Historische Referenz</text>
+<text x="60" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">ESS.C: Aktionen nach Periode und</text>
+<text x="60" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">logischer Zeit; optionale</text>
+<text x="60" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Subjektmischung</text>
+<text x="60" y="266" font-family="Arial,sans-serif" font-size="18" fill="#172e42">IMS.E: aktive Anbieter; Vrvu01 /</text>
+<text x="60" y="292" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Vrvn06</text>
+<text x="60" y="318" font-family="Arial,sans-serif" font-size="18" fill="#172e42">VN: Einzelakteure, historische</text>
+<text x="60" y="344" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Zufalls-Schadenerzeugung</text>
+<text x="60" y="370" font-family="Arial,sans-serif" font-size="18" fill="#172e42">IMSDATA.C: VU-/VN-/BAV-Zustände</text>
+<text x="60" y="396" font-family="Arial,sans-serif" font-size="18" fill="#172e42">und Aggregattabellen</text>
+<text x="60" y="422" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Historische Finanz- und</text>
+<text x="60" y="448" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Garantiestrukturen als Herkunft</text>
+<text x="60" y="474" font-family="Arial,sans-serif" font-size="18" fill="#172e42">der bestehenden Portierungen</text>
+<rect x="455" y="125" width="370" height="590" rx="12" fill="white" stroke="#565bb4" stroke-width="2"/><rect x="455" y="125" width="6" height="590" rx="3" fill="#565bb4"/>
+<text x="475" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#565bb4">Bewusst moderne Abbildung</text>
+<text x="475" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Explizite Verträge und getrennte</text>
+<text x="475" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Baseline/Variante</text>
+<text x="475" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Gebundene VU-Zufallszüge; keine</text>
+<text x="475" y="266" font-family="Arial,sans-serif" font-size="18" fill="#172e42">myrndf-Identität</text>
+<text x="475" y="292" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Kohorten in stabiler ID-</text>
+<text x="475" y="318" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Reihenfolge; ganze Kohorte bei</text>
+<text x="475" y="344" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Kapazitätszulassung</text>
+<text x="475" y="370" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Deklarierte Schäden statt neuer</text>
+<text x="475" y="396" font-family="Arial,sans-serif" font-size="18" fill="#172e42">historischer Schadenzüge im Markt</text>
+<text x="475" y="422" font-family="Arial,sans-serif" font-size="18" fill="#172e42">AP7: ICT-Graph, FIFO, wirksame</text>
+<text x="475" y="448" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Anträge und deterministisches LV-</text>
+<text x="475" y="474" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Neugeschäft</text>
+<text x="475" y="500" font-family="Arial,sans-serif" font-size="18" fill="#172e42">BaFin: empirische Beiträge +</text>
+<text x="475" y="526" font-family="Arial,sans-serif" font-size="18" fill="#172e42">getrennte Workshop-Annahmen</text>
+<rect x="870" y="125" width="370" height="590" rx="12" fill="white" stroke="#ac5710" stroke-width="2"/><rect x="870" y="125" width="6" height="590" rx="3" fill="#ac5710"/>
+<text x="890" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#ac5710">Nicht nachgewiesen / offen</text>
+<text x="890" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Vollständiger C/Python-Markt-</text>
+<text x="890" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Gleichlauf</text>
+<text x="890" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Deutscher Top-40-Direktmarkt und</text>
+<text x="890" y="266" font-family="Arial,sans-serif" font-size="18" fill="#172e42">echter Spartenmix</text>
+<text x="890" y="292" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Regulatorische Solvenz / SCR /</text>
+<text x="890" y="318" font-family="Arial,sans-serif" font-size="18" fill="#172e42">MCR</text>
+<text x="890" y="344" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Dynamische Insolvenz,</text>
+<text x="890" y="370" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Konzerneliminierung,</text>
+<text x="890" y="396" font-family="Arial,sans-serif" font-size="18" fill="#172e42">spartenübergreifende Finanzierung</text>
+<text x="890" y="422" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Claims-Queue → verzögerte</text>
+<text x="890" y="448" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Auszahlung</text>
+<text x="890" y="474" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Gespeicherte Kernpause und</text>
+<text x="890" y="500" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Fortsetzung</text>
+<text x="890" y="526" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Korrelation als kausal</text>
+<text x="890" y="552" font-family="Arial,sans-serif" font-size="18" fill="#172e42">kalibrierter Kanal</text>
+<text x="40" y="810" font-family="Arial,sans-serif" font-size="18" fill="#284966">Quellenstellen und Prüfgrenzen im Handbuch rechenkern.md; die UI-Mockups erweitern keinen Modellvertrag.</text></svg>

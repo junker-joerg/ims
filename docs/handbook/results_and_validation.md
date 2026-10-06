@@ -1,5 +1,7 @@
 # Ergebnisse und historische Validierung verstehen
 
+Aktuelle Einordnung vom 06.10.2026: [Handbuchindex](README.md), [Marktexperiment](market_ap8.md), [Eingaben](eingabeinventar.md) und [Rechenkern mit Abweichungen](rechenkern.md). Die nachstehenden datierten technischen/historischen Nachweise behalten ihre Grenzen; Navigation zu Einzelmodellen heute über **Modellwerkzeuge**, lokale Metadaten über **Fallablage**.
+
 Stand: 2026-09-14
 Kernvalidierungsstand: PR102
 

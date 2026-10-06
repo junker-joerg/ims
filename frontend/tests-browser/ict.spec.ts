@@ -41,7 +41,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 1024, height: 768
       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
       await page.screenshot({ path: info.outputPath(`ict-${viewport.width}-${theme}.png`) });
       await page.getByRole("link", { name: "Übersicht", exact: true }).click();
-      await page.getByRole("link", { name: "Simulation", exact: true }).click();
+      await page.getByRole("link", { name: "Modellwerkzeuge", exact: true }).click();
       await expect(workbench.getByTestId("ict-results")).toBeVisible();
       await workbench.getByLabel("ICT Gegenmaßnahme", { exact: true }).selectOption("fallback");
       await expect(workbench.getByTestId("ict-results")).toHaveCount(0);

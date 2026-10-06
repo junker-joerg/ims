@@ -1,0 +1,316 @@
+# Sechs verknüpfte Marktansichten · IMS AP8
+
+Aktuelle Ergänzung vom 06.10.2026: **Modellwelt**, **Unternehmen** und **Laufansicht** stehen im selben Experiment neben den vier Arbeitsschritten. [Eingaben im Überblick](eingabeinventar.html) und [Rechenkern mit drei Grafiken](rechenkern.html) sind aus der Anwendung und offline erreichbar.
+
+Produktfassung 2.0.0-alpha.11 (Bedienkorrektur von AP8). Die sechs Ansichten erklären einen gemeinsamen
+geprüften Modelllauf. Die BaFin-Gruppenauswertung 2024 ist ein Workshop-Fall:
+verdiente Beiträge einschließlich Ausland und übernommener Rückversicherung,
+redaktionelle Gruppen ohne konzerninterne Eliminierung. Keine belegte deutsche
+Top-40-Direktmarkt-Auswahl. Modellbilanzen, Spartenmix, Strategien und
+Providerbeziehungen sind Annahmen, keine realen Unternehmensprognosen.
+Die Kopfzeile zeigt Quellenjahr, redaktionelle Kandidatengruppen sowie
+nicht ausgewählte Gruppen und nicht modellierte Anteile nach angenommenem
+Mapping. Diese Quellenreste in Mio. EUR gehören nicht zum Modellanteilsnenner.
+Quellen-Euro und Modellwährung sind getrennte Einheiten.
+
+## Schnell beginnen
+
+Führen Sie diese Schritte in der gestarteten IMS-Workbench aus. Die folgende
+Menüführung gilt für Produktfassung **2.0.0-alpha.11**; die Release-Anzeige
+steht links unten in der Anwendung. Die hier geöffnete Anleitung ist eine
+eigene Seite.
+
+1. Klicken Sie in der Hauptnavigation auf **Markt und Strategien**.
+2. Der Arbeitsbereich **Markt verstehen** enthält Ihr gemeinsames Experiment.
+   Seine vier Schritte heißen **Markt wählen**, **Vorstand & Strategien**,
+   **Umwelt & Schocks** und **Wirkung verstehen**. Quelle und Rechnung bleiben
+   beim Schrittwechsel erhalten. **Schock bearbeiten** und **Quellen und Handfälle**
+   sind zusätzliche Fachwerkzeuge mit eigenen, ausdrücklich getrennten Sitzungen.
+3. Wählen Sie einen Analysefall und zunächst 25 Analyseperioden.
+4. Klicken Sie **Analysevorlage laden**. Öffnen Sie **Vorstand & Strategien**
+   und **Umwelt & Schocks**, um die Annahmen zu verstehen. Änderungen beginnen
+   mit **Als eigenes Experiment übernehmen**. Klicken Sie anschließend
+   **Marktansichten frisch berechnen**.
+5. Wählen Sie Periode, Sparte, Vergleichsgruppe und Seite. Diese Auswahl wirkt
+   gemeinsam auf die sechs Ansichten und löst keine neue Rechnung aus.
+6. Klicken Sie eine VU im Diagramm oder in einer Datentabelle. Der
+   Buchungsnachweis öffnet die exakten VU-/Spartenwerte und Eigenkapitalbrücke.
+
+Alternativ gelangen Sie auf der **Übersicht** über **Marktexperiment öffnen**
+zum selben Arbeitsbereich.
+
+Nach einer Rechnung wählen Sie eine der sechs Ansichten über ihre Reiter.
+Es ist jeweils eine Ansicht sichtbar. Mit Links/Rechts sowie Pos1/Ende wechseln
+Sie die Reiter per Tastatur; die gemeinsame Periode und Auswahl bleiben erhalten.
+**Erklärrolle** öffnet die passende Ansicht. **Hinweise für meine Rolle** im
+Seitenkopf enthält zusätzliche Orientierung. Für einen Import öffnen Sie
+**Eigene Analysequelle importieren** unter dem Analysefall.
+
+## Modellwelt, Unternehmen und Laufansicht
+
+**Modellwelt** zeigt fünf auswählbare Ebenen Ihrer geladenen Quelle. Eine Ebene mit der Maus oder Tab/Enter auswählen; rechts erscheinen Quellenpfad und fachliche Grenze. Die Perspektive erklärt eine Struktur, keine räumliche Rechnung. Ohne Rechnung steht ausdrücklich „Quelle geladen · Rechnung noch offen“.
+
+**Unternehmen** enthält eine durchsuchbare Liste und einen Fokusinspektor. Vor der Rechnung stehen dort nur deklarierte Profile, danach gebuchte Beiträge, Periodenergebnis und Modellanteile. Der Beitragsnenner umfasst alle Anbieter der ausgewählten Sparte/Seite/Periode. Der Spartenmix im Fokusprofil verwendet die tatsächlich gebuchten Beiträge dieses Anbieters über alle Sparten. **Strategie bearbeiten** öffnet denselben Fokus im Vorstandsbereich. Der Mehrfachvergleich filtert nur die Anzeige.
+
+**Laufansicht** gibt bereits berechnete Perioden wieder. **Anzeige abspielen**, **Anzeige pausieren**, **Eine Periode weiter** und **Anzeige auf P1** ändern keine Rechnung. Für eine neue Entscheidung die Vorstandsvariante bearbeiten und vollständig neu berechnen; es gibt keine Kernfortsetzung ab dem angezeigten Zeitpunkt. Die Warteschlange zeigt die Anzahl wartender Antrags-, Schaden- und Servicevorgänge. Schaden-/Servicevorgänge bilden administrative Bearbeitung ab; ihr Rückstand ist kein gezahlter Schadenbetrag. Das ICT-Netz zeigt dieselben deklarierten Kanten und tatsächlichen Ausfallzeilen wie die Auswertung.
+
+![Modellwelt aus dem tatsächlichen alpha.11-Fall im Hellmodus](images/ap8_modelworld_light.png)
+
+![Modellwelt im Dunkelmodus](images/ap8_modelworld_dark.png)
+
+![Unternehmensportfolio aus berechneten Modellzeilen](images/ap8_portfolio_light.png)
+
+![Unternehmensportfolio im Dunkelmodus](images/ap8_portfolio_dark.png)
+
+![Wiedergabe vorhandener Perioden mit erklärtem ICT-Netz](images/ap8_replay_light.png)
+
+![Laufansicht im Dunkelmodus](images/ap8_replay_dark.png)
+
+## Strategien sind endogen, Marktumwelt ist exogen
+
+Der **Vorstand** setzt Parameter der Anbieterstrategie und entscheidet über
+Gegenmaßnahmen. Die Oberfläche erzeugt ausführbare Maßnahmen im vorhandenen
+Marktvertrag. P1–P5 bleiben der gemeinsame Vergleichsanfang. Bei neuen Maßnahmen
+beginnt die Entscheidung in P6; Entscheidung, Vorlauf, Dauer und einmalige Kosten
+können anschließend eingestellt werden. Bereits vorhandene Maßnahmen behalten
+ihr eigenes Zeitfenster. Einmalige Kosten werden nicht pro Periode wiederholt.
+Die Nachfrage folgt dem vorhandenen VN-Regelkern. Seine Versicherungsschwelle
+ist eine erklärte gemeinsame Verhaltensannahme; der Versicherervorstand steuert
+die Kundenregel nicht während des Marktgeschehens.
+
+Unter **Umwelt & Schocks** stehen Eintritt, Dauer, Intensität und deklarierte
+Ereigniskosten. Diese Eingaben ändern die äußere Situation, keine Vorstandsentscheidung.
+24 Prozessstunden entsprechen einer Modellperiode. Das bestehende Ereignis wirkt
+über seinen benannten Kanal. Die anhaltende Lebens-Nachfrageentwicklung betrifft
+Neugeschäft; vorhandene Altgarantien bleiben bestehen. Der hypothetische DORA-Fall
+ist keine neue Rechtsvorschrift. Weitere Trendkanäle werden nicht behauptet.
+
+Die **Vergleichsachse** im Vorstandsbereich macht den Versuch eindeutig:
+
+- **Gleicher Schock · ohne / mit Gegenmaßnahme:** beide Seiten erhalten dieselbe
+  Umwelt, führen aber ihre eigenen deklarierten Antworten aus.
+- **Gleiche Entscheidungen · ohne / mit Schock:** beide Seiten führen die
+  Vorstandsentscheidungen der Variante aus; die Basis erhält kein äußeres Ereignis.
+
+Jede Änderung der Quelle entwertet Ergebnis und Exportnachweis. Schrittwechsel,
+Rollenansicht und Ergebnisfilter ändern keinen Lauf. Beim direkt gebundenen
+BaFin-Referenzfall bearbeiten Sie Workshop-Mapping im Fachwerkzeug **Quellen und
+Handfälle**; für eine eigene Vorstands-/Schockvariante wählen Sie einen der vier
+abgeleiteten Fälle. Seine BaFin-Referenzidentitäten bleiben erhalten.
+
+Das Cockpit zeigt tatsächlich gebuchte Beiträge, Periodenergebnis,
+Schluss-Eigenkapital und Betriebskosten mit derselben Periode, Vergleichsgruppe,
+Sparte und Seite. Δ ist Variante minus Basis in Modellwährung. Es werden keine
+fiktiven Solvenzquoten oder Kundenkennzahlen aus Gestaltungsreferenzen eingesetzt.
+
+Das ICT-Netz bildet die **deklarierten Kanten** und **tatsächlichen Ausfallstunden**
+der gewählten Periode ab. Türkis: keine Ausfallstunden; Bernstein: betroffen.
+Die beschriftete Liste darunter und der konkrete Pfadnachweis sind die exakte
+Alternative zum räumlich gestalteten Diagramm. Ein gemeinsam benötigtes US-IAM
+bleibt auch beim Q-Ersatzpfad sichtbar. Die Netzwerkgeometrie ist keine berechnete
+Risikooberfläche. Von Ereignis und Abhängigkeit führt der Weg über Kapazität,
+Vorgang und wirksamen Vertrag zur konkreten Buchung.
+
+![Tatsächlicher Einstieg mit direkter Navigation und einem Analyseformular](images/ap8_start_light_1440x900.png)
+
+Ein vollständiger 100er-Fall und jeder frische Export können mehrere Minuten
+dauern. Während einer Rechnung wartet die Oberfläche; ein weiterer Lauf im
+gleichen Backend wird abgewiesen. Ungültige Quellen oder Ressourcenüberschreitungen
+erzeugen kein Teilergebnis. Eine neue Vorlage oder ein Import entwertet die alte
+Ansicht. Das Demooriginal wird nicht gespeichert oder verändert.
+
+## 1 · Markt und Sparten im Verlauf
+
+Die Kurven zeigen Periodenergebnis, die Tabelle außerdem Beiträge und
+Schluss-Eigenkapital beider Seiten. Ergebnis/Beiträge sind Flüsse der bezeichneten
+Periode; Eigenkapital ist ein Bestand. Achsen sind gerundet, Tabellen exakt.
+Geldsummen dürfen spartenübergreifend addiert werden, unterschiedliche
+Expositionsmengen nicht. Der Schieber, Sprungknöpfe und Pfeiltasten im Diagramm
+wählen dieselbe Periode. Die VU-/Spartentabelle erklärt jeden Summanden.
+
+## 2 · Fokus, Rivalen und Modellmarkt
+
+Fokus zeigt absolute Beiträge, Ergebnis und Eigenkapital neben Anteil und Rang.
+Rivalen sind sämtliche übrigen Modell-VUs derselben Periode/Sparte. Der gesamte
+Modellmarkt bildet den Nenner, auch bei Familien-, Versicherungsgruppen- oder
+Peer-Auswahl. Diese Auswahl hebt Mitglieder hervor; sie verkleinert den Nenner
+nicht. Gleiche Beiträge erhalten gleichen Rang; inaktive Anbieter keinen Rang.
+
+Anteil = 100 × gebuchte VU-Beiträge / gesamte Modellbeiträge. HHI =
+10.000 × Summe quadrierter VU-Beiträge / Quadrat der gesamten Beiträge.
+Bei Beiträgen 90/10 sind Anteile 90/10 % und HHI 8.200. Nullnenner oder
+negative Beitragsbasis liefern keine erfundene Quote. Einzeln gerundete
+Anteile können in ihrer Summe geringfügig von 100 % abweichen.
+Registrierte und tatsächlich aktive VUs stehen getrennt: der fiktive
+Google-Anbieter ist vor Eintritt registriert, aber noch nicht aktiv.
+
+## 3 · Familien, Streuung und Gewichte
+
+Die Mitgliedschaft stammt aus der tatsächlich wirksamen VU-/Spartenzeile der
+gewählten Periode und Seite. Ein Familienklick setzt den gemeinsamen Filter.
+Die Tabelle nennt sämtliche Mitglieder, Anfangsaktiva, Ergebnis, Quote und
+Min/Max gültiger Einzelquoten. Das Diagramm zeigt höchstens acht Familien;
+alle übrigen bleiben in der vollständigen Tabelle erreichbar.
+
+Quote = 100 × Periodenergebnis / Anfangsaktiva. Das Familienmittel gewichtet
+mit Anfangsaktiva: Aktiva 90/10, Ergebnisse 9/3 ergeben 12 %, einzelne Quoten
+10/30 %. Ihr ungewichteter Durchschnitt 20 % wäre eine andere Kennzahl.
+Null-Anfangsaktiva haben keine individuelle Quote. Zusammensetzungswechsel
+zwischen Seiten/Perioden können mitwirken; keine isolierte Strategiewirkung.
+Überlappende Peer-Gruppen sind jeweils eindeutige VU-Mengen und werden nicht
+miteinander addiert. Ein Fokus außerhalb der Filtergruppe bleibt gekennzeichnet.
+
+## 4 · Wirksame Kundenwechsel
+
+P1 ist Anfangsbestand. Nur eine tatsächlich geänderte Vertragszuordnung zählt
+als Wechsel. Nicht versichert ist eine eigene Gegenpartei. Kfz- und Sachmengen
+bleiben getrennt; keine gemeinsame Mengensumme. Bei vielen Wechseln zeigt die
+Pfadübersicht sechs, die Tabelle alle. Bei versicherten Verträgen gehören Prämie
+und Risiko dem gültigen Träger. Unversicherte Schäden stehen in einer eigenen
+Spalte und werden keinem VU als Versicherungsaufwand zugeordnet. Die Job-Tabelle
+verbindet Anfrage und tatsächlich wirksame Folgeperiode.
+
+Lebens-Anträge sind ein eigener Kanal: Bearbeitung in P t, früheste Ausgabe
+P t+1. Wartende oder lediglich bearbeitete Anträge sind keine ausgegebenen
+Policen. Die Lebens-Tabelle zeigt wirklich ausgegebene Verträge mit Police,
+Job, Anfrage und Ausgabe. Die vorhandenen Altgarantien bleiben erhalten.
+
+## 5 · Ereignisse und Entscheidungen
+
+Die Zeitlinie unterscheidet deklarierte Entscheidung, Vorlauf, Verfügbarkeit
+und tatsächlich belegten Effekt. Beim ICT-Beispiel wird Vorsorge P16
+beschlossen, nach vier Perioden P20 verfügbar; der Ausfall beginnt P21.
+Eine verfügbare Preisantwort greift erst beim vorgesehenen Eintritt.
+Familien-/Maßnahmenfenster, aktuelle Regeln und Parameter sowie konkrete
+Kosten-IDs stehen in eigenen Tabellen. Die Nachschau kennt den deklarierten
+Plan; daraus folgt kein damals verfügbares Zukunftswissen der VU. VUs
+verwenden Vorperiodeninformation, Kunden aktuelle öffentliche Angebote.
+
+AP7-Fälle verwenden 24 deklarierte Prozessstunden je Periode und halboffene
+Ereignisfenster. Das ist kein historischer Kalender und keine Jahreskalibrierung.
+Ein Fall ohne ICT-Kanal bekommt keine erfundene 24-Stunden-Uhr.
+
+## 6 · ICT sichtbar und erklärbar
+
+Wählen Sie **ICT: alle US-Hyperscaler fallen aus**, P21 und Erklärrolle CIO.
+Der rote Primär-/IAM-Pfad zeigt tatsächlich verlorene Stunden; der gewählte
+Pfad nennt transitive Vorleistungen und verursachende Ereignis-IDs. Vergleichen
+Sie `q-independent` und `q-dependent`: gemeinsame US-Identität ist eine
+Abhängigkeit, auch bei erklärter EU-Kontrolle des Ersatzanbieters. Unbekannte
+Kontrolle beweist keine Unabhängigkeit. Jede Beziehung ist eine Workshop-Annahme.
+
+Der Primärpfad kann ausfallen, während wirksamer Ersatz das Ressourcenbudget
+erhält. Die tatsächlichen Ersatz-/Kapazitätssegmente zeigen Stunden, Faktoren
+und Ersatzprüfung. Budget zählt **Arbeitseinheiten einmal je gemeinsamem Pool**;
+Rückstand zählt **Vorgänge der ausgewählten VUs/Sparten**. Die beiden Kurven
+haben eigene Einheiten. Das gesamte Budget wird nicht jedem VU erneut zugerechnet.
+Wechseln Sie P21 → P22 → P25, um Ausfallende, Bearbeitung und Rückstandsabbau
+nachzuvollziehen. Job-IDs und Bearbeitungsstunden erklären konkrete Vorgänge.
+
+Claims/Service koppeln Verwaltungsarbeit und Kosten. Versicherungszahlungen
+werden dadurch nicht verzögert. Kein SCR/MCR-, Storno-, Insolvenz-, empirisches
+Resilienz- oder Complianceurteil. Ein Fall ohne ICT zeigt diese Grenze ausdrücklich.
+
+## Vom Diagramm zur Buchung
+
+Öffnen Sie eine konkrete VU. Die Brücke zeigt exakt:
+
+Δ Schluss-Eigenkapital = Δ Anfangs-Eigenkapital + Δ Beiträge + Δ Kapitalanlage
+− Δ Versicherungsaufwand − Δ Betriebskosten + Δ Kapitalzuführung − Δ Ausschüttung.
+
+Δ bedeutet Variante minus Basis, in der bezeichneten Periode/Sparte/Fokus-VU.
+Maßnahmen-/Prozesskosten sind bereits in Betriebskosten enthalten. Gezahlte
+Leistungen sind keine zweite Belastung derselben Ergebnisrechnung. Die
+Buchungsidentität ist eine exakte Addition, keine isolierte Kausalzuordnung.
+Der Modellkanal Ereignis → Abhängigkeit/Strategie → Vorgang/Vertrag →
+Prämie/Risiko/Kosten ist durch echte Zeilen belegbar. Gleichzeitige Mechanismen
+und Gruppenwechsel können zusammenwirken; parallel verlaufende Kurven
+allein sind Beobachtungen. Es werden keine unabhängigen Ursachenanteile erfunden.
+
+## Vier Rollen am selben Lauf
+
+| Rolle | Einstieg | Prüfbare Frage |
+| --- | --- | --- |
+| CEO | Position | Wie stehen Fokus, Rivalen und Modellmarkt absolut und relativ? |
+| CIO | ICT / Prozesse | Welche Vorleistung fällt aus, welcher konkrete Ersatz trägt? |
+| COO | Wechsel | Wann wird der bearbeitete Vorgang zum gültigen Vertrag? |
+| CSO | Familien | Welche Mitglieder und Gewichte bilden den Vergleich? |
+
+Die Erklärrolle setzt den Tastaturfokus in die betreffende Ansicht. Sie erhält
+Fall und Filter. Alle Diagramme haben Datentabellen; Diagrammpunkte/Markierungen
+und Tabellenknöpfe sind per Tastatur bedienbar. Hell/Dunkel verwendet dieselben
+Werte. Auf kleinen Bildschirmen passen sich Formular und Reiter an; breite Tabellen
+haben einen eigenen tastaturzugänglichen Scrollbereich.
+
+## JSON und Einzel-VU-Excel
+
+**Analysequelle frisch als JSON exportieren** rechnet die vollständige Originalquelle
+erneut und gibt nur bei gleichem Modellnachweis das portable Quellenbündel aus.
+**Fokus-VU frisch als Excel exportieren** tut dasselbe für die gewählte Einzel-VU.
+Der Familienfilter ändert den Modellmarkt oder die Excelquelle nicht. Importieren
+Sie das JSON über **Eigene Analysequelle importieren** und rechnen Sie neu.
+Quellen-, Modell- und Ansichtsnachweis stehen getrennt in der Oberfläche.
+Die neue Ansicht hat einen eigenen Digest; Exportbindung ist der Modell-Digest.
+
+## Aktuelle Ansichten aus echten Browserläufen
+
+Die sechs Referenzbilder stammen aus dem tatsächlichen alpha.8-100er-US-
+Workshop-Lauf in P21, mit Modellnachweis und vollständigen API-Zeilen.
+Die fachlichen Ansichten bleiben in alpha.10 erhalten und sind einzeln über
+Reiter erreichbar. Der neue Einstieg ist oben als alpha.10-Browserbild gezeigt.
+
+Die folgenden Bilder zeigen das tatsächliche alpha.10-Cockpit und den
+25er-US-Hyperscaler-Fall in P21. Die Rechnung stammt aus denselben vollständigen
+Quellen wie die sechs Ansichten; die räumliche Netzzeichnung ist eine Darstellung
+der tatsächlichen Abhängigkeiten und Ausfallzeilen.
+
+![Neuer Einstieg in das lokale Marktexperiment](images/ap8_cockpit_overview_dark.png)
+
+![Endogene Vorstandsstrategien und ausführbare Maßnahmen](images/ap8_cockpit_board_light.png)
+
+![Vorstandsentscheidungen im Dunkelmodus](images/ap8_cockpit_board_dark.png)
+
+![Exogene Ereignisparameter und erklärte Wirkungskanäle](images/ap8_cockpit_environment_light.png)
+
+![Exogene Umwelt im Dunkelmodus](images/ap8_cockpit_environment_dark.png)
+
+![Cockpitkennzahlen aus tatsächlichen Modellbuchungen](images/ap8_cockpit_result_light.png)
+
+![Modellergebnisse im Dunkelmodus](images/ap8_cockpit_result_dark.png)
+
+![Tatsächliche Providerabhängigkeiten und Ausfallstatus](images/ap8_cockpit_network_light.png)
+
+![ICT-Netz mit gemeinsamem US-IAM und konkreten Ersatzpfaden](images/ap8_cockpit_network_dark.png)
+
+Die folgenden älteren Bilder dokumentieren die alpha.8-Referenzfassung.
+
+![Marktverlauf und genaue VU-Spartenbeiträge](images/ap8_view_market.png)
+
+![Fokus Rivalen und Modellmarkt mit unverändertem Beitragsnenner](images/ap8_view_shares.png)
+
+![Aktuelle Familien mit Anfangsaktiva-Gewichten und Min-Max-Spannen](images/ap8_view_families.png)
+
+![Wirksame Wechsel und ausgegebene Lebenspolicen](images/ap8_view_flows.png)
+
+![Ereignis Entscheidung Vorlauf und tatsächlich gebuchte Kosten](images/ap8_view_timeline.png)
+
+![Konkreter ICT-Graph gemeinsame Ressourcen und ausgewählter Rückstand](images/ap8_view_provider.png)
+
+Die folgenden alpha.8-Referenzbilder zeigen denselben 25er-ICT-Fall, Hell/Dunkel und drei
+Bildschirmgrößen. Die CIO-Ansicht beginnt mit der benannten Ausfall-/Ersatzstruktur;
+Kurven und vollständige Datentabellen folgen darunter.
+
+![ICT-Erklärung hell 1440 mal 900](images/ap8_ict_light_1440x900.png)
+
+![ICT-Erklärung dunkel 1440 mal 900](images/ap8_ict_dark_1440x900.png)
+
+![ICT-Erklärung hell 1024 mal 768](images/ap8_ict_light_1024x768.png)
+
+![ICT-Erklärung dunkel 1024 mal 768](images/ap8_ict_dark_1024x768.png)
+
+![ICT-Erklärung hell 390 mal 844](images/ap8_ict_light_390x844.png)
+
+![ICT-Erklärung dunkel 390 mal 844](images/ap8_ict_dark_390x844.png)
+
+Technische Prüfung, menschliche Anwenderabnahme und Merge bleiben getrennte
+Nachweise. Die Browserbilder messen keine menschliche Seminarverständlichkeit.

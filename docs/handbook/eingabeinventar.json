@@ -1,0 +1,305 @@
+{
+  "schema": "ims.market-input-inventory.v1",
+  "date": "2026-10-06",
+  "release": "2.0.0-alpha.11",
+  "scope": "AP5/AP6/AP7 shared-market inputs and AP8 display; existing expert screens separately inventoried by TypeScript AST",
+  "default_policy": "Template supplies actual case-dependent values; no invented universal defaults",
+  "items": [
+    {
+      "category": "Modellbasis",
+      "paths": "schema_version, case_id, period_count, seed, provenance.kind/units/description",
+      "purpose": "Version, Versuch, Horizont und Reproduzierbarkeit",
+      "surface": "JSON / Fallwahl",
+      "unit_and_limits": "GUI 10/25/50/100; Vertrag 2/5/10/25/50/100; Seed Ganzzahl 0..2^53−1; units=model_currency",
+      "required": "Pflicht; Vorlage liefert Werte"
+    },
+    {
+      "category": "Modellbasis",
+      "paths": "insurers[].insurer_id/name/insurance_group_id/sectors",
+      "purpose": "Identität und vorhandene Sparten",
+      "surface": "JSON / Quellenprofil",
+      "unit_and_limits": "1..41 VUs; ID 1..1000000; Name 1..120 Zeichen; motor/property_liability/life/health",
+      "required": "Pflicht; keine freien VUs aus Mockup erzeugen"
+    },
+    {
+      "category": "Modellbasis",
+      "paths": "insurers[].sectors.{motor,property_liability}.opening.assets/liabilities/equity",
+      "purpose": "Anfangsbestand je Nichtleben-Buch",
+      "surface": "JSON",
+      "unit_and_limits": "Modellwährung; assets=liabilities+equity",
+      "required": "Pflicht pro deklarierter Nichtleben-Sparte"
+    },
+    {
+      "category": "Modellbasis",
+      "paths": "insurers[].sectors.{motor,property_liability}.capacity",
+      "purpose": "Kapazität zur Aufnahme ganzer Kohorten",
+      "surface": "JSON / Maßnahme",
+      "unit_and_limits": "Nichtnegative Menge; Aufnahmekapazität ist keine ICT-Stundenkapazität",
+      "required": "Pflicht"
+    },
+    {
+      "category": "Modellbasis",
+      "paths": "insurers[].sectors.{motor,property_liability}.periods[].period/old_claims_paid/operating_expense/investment_income/capital_contribution/capital_distribution",
+      "purpose": "Vollständiger Zahlungs- und Kostenpfad",
+      "surface": "JSON",
+      "unit_and_limits": "Genau jede Periode; Geld, Anlageertrag darf negativ sein; Altzahlung <= Anfangsverpflichtungen",
+      "required": "Pflicht"
+    },
+    {
+      "category": "Modellbasis",
+      "paths": "insurers[].sectors.{life,health}.source",
+      "purpose": "Bestehender Spartenvertrag",
+      "surface": "JSON / eigene Fachwerkzeuge",
+      "unit_and_limits": "Passende Version und voller Horizont; lokale VU-ID 1; Details im Leben-/Krankenvertrag",
+      "required": "Pflicht bei deklarierter Leben-/Kranken-Sparte"
+    },
+    {
+      "category": "Nachfrage",
+      "paths": "customer_groups[].group_id/sector_id/quantity/initial_insurer_id",
+      "purpose": "Kohorte und anfänglicher Vertrag",
+      "surface": "JSON",
+      "unit_and_limits": "Bis 200 Gruppen; motor oder property_liability; positive Menge; Anfangs-VU bekannt oder null",
+      "required": "Pflicht"
+    },
+    {
+      "category": "Nachfrage",
+      "paths": "customer_groups[].insurance_threshold",
+      "purpose": "VN-Versicherungsschwelle",
+      "surface": "GUI Vorstand / JSON",
+      "unit_and_limits": "Dezimalanteil 0..1; gemeinsame Verhaltensannahme, kein VU-Steuerhebel",
+      "required": "Pflicht pro Gruppe"
+    },
+    {
+      "category": "Nachfrage",
+      "paths": "customer_groups[].risk_periods[].period/loss/paid_share",
+      "purpose": "Risikoschaden und sofort gezahlter Anteil",
+      "surface": "JSON",
+      "unit_and_limits": "Voller Horizont; Modellwährung; paid_share 0..1",
+      "required": "Pflicht; deklarierte Risiken, keine C-Schadenzüge"
+    },
+    {
+      "category": "Umwelt",
+      "paths": "damage_indicators[]",
+      "purpose": "Öffentlicher Schadenindikator je Periode",
+      "surface": "JSON",
+      "unit_and_limits": "Voller Horizont; Dezimalanteile 0..1",
+      "required": "Pflicht im Marktvertrag"
+    },
+    {
+      "category": "Strategie",
+      "paths": "families[].family_id/label/sector_id/rule/parameters",
+      "purpose": "Ausführbare Strategiefamilie",
+      "surface": "JSON / Vorlage",
+      "unit_and_limits": "Bis 200; eindeutige ID; Regel muss zur Sparte passen",
+      "required": "Pflicht; vollständiger Parametersatz"
+    },
+    {
+      "category": "Strategie",
+      "paths": "families[].parameters.price/advertising",
+      "purpose": "Festangebot offer.fixed",
+      "surface": "GUI Vorstand / JSON",
+      "unit_and_limits": "Modellwährung 0..1000000",
+      "required": "Nur offer.fixed; Preis und Werbung"
+    },
+    {
+      "category": "Strategie",
+      "paths": "families[].parameters.premium_factor/advertising_factor",
+      "purpose": "VU-Regel vu.vrvu01",
+      "surface": "GUI Vorstand / JSON",
+      "unit_and_limits": "Dezimalfaktor 0..1000000",
+      "required": "Nur vu.vrvu01; beide Faktoren"
+    },
+    {
+      "category": "Strategie",
+      "paths": "families[].parameters.rate_per_period",
+      "purpose": "life.opening_assets_rate",
+      "surface": "GUI Vorstand / JSON",
+      "unit_and_limits": "Dezimalanteil −1..1 je Modellperiode",
+      "required": "Nur Leben-Regel; keine Jahresrendite behauptet"
+    },
+    {
+      "category": "Strategie",
+      "paths": "families[].parameters.price_per_policy/new_business/exits",
+      "purpose": "health.declared_profile",
+      "surface": "GUI Vorstand / JSON",
+      "unit_and_limits": "Preis 0..1000000; new_business/exits Ganzzahl 0..1000",
+      "required": "Nur Kranken-Regel"
+    },
+    {
+      "category": "Strategie",
+      "paths": "assignments.{baseline,variant}[].insurer_id/sector_id/family_id/start/end",
+      "purpose": "Familienzuordnung je Seite und Zeitfenster",
+      "surface": "JSON / Fachwerkzeug",
+      "unit_and_limits": "Inklusive Fenster; 1..100; genau eine gültige Zuordnung je VU/Sparte/Periode",
+      "required": "Pflicht, lückenfrei; P1–P5 identisch"
+    },
+    {
+      "category": "Strategie",
+      "paths": "measures.{baseline,variant}[].measure_id/insurer_id/sector_id",
+      "purpose": "Maßnahmenidentität und Träger",
+      "surface": "JSON / GUI generiert",
+      "unit_and_limits": "Bis 200 Maßnahmen je Seite; eindeutige ID; bekannte VU/Sparte",
+      "required": "Liste darf leer sein"
+    },
+    {
+      "category": "Strategie",
+      "paths": "measures.{baseline,variant}[].decision_period/lead_periods/duration/cost/overrides",
+      "purpose": "Wirksamkeit, einmalige Kosten und Parameter",
+      "surface": "GUI Vorstand / JSON",
+      "unit_and_limits": "Entscheidung 1..100 (neue GUI-Variante ab P6); Vorlauf 0..100; Dauer 1..100; cost nichtnegatives Geld; Overrides regelabhängig",
+      "required": "Bei Maßnahme Pflicht; gleicher Parameter nicht widersprüchlich überlappen"
+    },
+    {
+      "category": "Strategie",
+      "paths": "measures.{baseline,variant}[].overrides.capacity",
+      "purpose": "Nichtleben-Aufnahmekapazität verändern",
+      "surface": "JSON / vorhandenes Profil",
+      "unit_and_limits": "Nichtnegative Menge; nur Nichtleben",
+      "required": "Optional zusätzlich zu ausführbarem Override"
+    },
+    {
+      "category": "Gruppen",
+      "paths": "peer_groups[].group_id/label/insurer_ids",
+      "purpose": "Benannte Vergleichsgruppe",
+      "surface": "JSON / Fachwerkzeug",
+      "unit_and_limits": "Bis 50 Gruppen; Mitglieder eindeutig und bekannt; Gruppen dürfen überlappen",
+      "required": "Pflichtliste darf leer sein; keine Summierung über überlappende Gruppen"
+    },
+    {
+      "category": "BaFin-Quelle",
+      "paths": "source_catalog/catalog_digest/workshop/overrides/model_input",
+      "purpose": "Quellengebundene Referenz und Modellabbildung",
+      "surface": "Quellen und Handfälle / JSON",
+      "unit_and_limits": "Exakter Quellenbeleg; angenommene Workshop-Abbildung; Details in market_data_ap6.md",
+      "required": "Im BaFin-Bündel Pflicht; eigener AP7-Fall separat model_input"
+    },
+    {
+      "category": "AP7-Bündel",
+      "paths": "schema_version/case_id/title/assumption_note/reference_bundle/model_input/period_hours/comparison",
+      "purpose": "Schockvertrag und Vergleichsachse",
+      "surface": "GUI / JSON",
+      "unit_and_limits": "period_hours exakt Text 24; shock_with_response oder no_shock_vs_shock; gleicher Seed/Horizont zur Referenz",
+      "required": "Pflicht im AP7-Fall; Vorlage liefert Bezüge"
+    },
+    {
+      "category": "Umwelt",
+      "paths": "events[].event_id/kind/insurer_ids/asset_ids/channels/assumption_note",
+      "purpose": "Ereignisidentität, Ziele und ausgeführter Kanal",
+      "surface": "JSON / Vorlage",
+      "unit_and_limits": "1..20 Ereignisse; entry/life_demand/regulatory/provider_outage; bekannte Ziele, typabhängige Kanäle",
+      "required": "Pflicht im AP7-Fall"
+    },
+    {
+      "category": "Umwelt",
+      "paths": "events[].start_hour/duration_hours/intensity/cost",
+      "purpose": "Äußeres Zeitfenster und Stärke",
+      "surface": "GUI Umwelt / JSON",
+      "unit_and_limits": "Stundenstart 120..2400; Dauer 0.0001..2400; Intensität 0..1; Kosten nichtnegatives Geld; Eintritt Intensität=1 bis Horizont",
+      "required": "Pflicht; Eintritt/Nachfrage am Periodenanfang"
+    },
+    {
+      "category": "Antwort",
+      "paths": "responses.{baseline,variant}[].response_id/kind/insurer_ids/asset_id/replacement_asset_id/assumption_note",
+      "purpose": "Ausführbare Vorstandsantwort",
+      "surface": "JSON / konkreter Ersatzpfad GUI",
+      "unit_and_limits": "Bis 20; price/life_attractiveness/fallback/capacity; bekannte Träger; konkreter Pfad inkl. Abhängigkeiten",
+      "required": "Listen dürfen leer sein; alle Schlüssel erforderlich"
+    },
+    {
+      "category": "Antwort",
+      "paths": "responses.{baseline,variant}[].decision_period/lead_periods/duration_periods/value/cost/cost_per_hour",
+      "purpose": "Antwortzeit, Wirkung und einmalige/laufende Kosten",
+      "surface": "GUI Vorstand / JSON",
+      "unit_and_limits": "P6..100; Vorlauf 0..100; Dauer 1..100; value Geld/Faktor/Attraktivität je kind; nichtnegative Kosten",
+      "required": "Bei Antwort Pflicht; typabhängige zusätzliche Pfadprüfung"
+    },
+    {
+      "category": "Eintritt",
+      "paths": "activation[].insurer_id/event_id/capital/reachable_group_ids",
+      "purpose": "Fiktiven Anbieter aktivieren und finanzieren",
+      "surface": "JSON / Vorlage",
+      "unit_and_limits": "Max. 1 zusätzlicher Anbieter; Kfz; Null-Anfangsbestand; Kapital einmal; bekannte erreichbare Kohorten",
+      "required": "Google-Fall Pflicht, sonst ggf. leer"
+    },
+    {
+      "category": "Lebensnachfrage",
+      "paths": "life.pool_per_period/start_period/offers",
+      "purpose": "Deterministischer Neugeschäftspool",
+      "surface": "JSON / Vorlage",
+      "unit_and_limits": "Pool Ganzzahl 0..20; Start P6..100; bis 40 Angebote",
+      "required": "Pflichtstruktur AP7, leerer Pool möglich"
+    },
+    {
+      "category": "Lebensnachfrage",
+      "paths": "life.offers[].insurer_id/premium/allocation/renewal_premium/renewal_allocation/term_periods/guarantee_rate/admission_per_period",
+      "purpose": "Neue Police, Garantie und Zulassung",
+      "surface": "JSON",
+      "unit_and_limits": "Garantiezuführung <= jeweiliger Prämie; Laufzeit 1..20; Garantiesatz 0..1; Zulassung 1..4; Anbieter mit Antragsprozess",
+      "required": "Bei Angebot Pflicht; Altgarantien bleiben erhalten"
+    },
+    {
+      "category": "ICT",
+      "paths": "ict.assets[].asset_id/label/control/depends_on/assumption_note",
+      "purpose": "Vorleistungen und Abhängigkeitsgraph",
+      "surface": "JSON / Vorlage",
+      "unit_and_limits": "1..40 Assets; Kontrolle US/EU/unknown; bekannte eindeutige Kanten; azyklisch",
+      "required": "Pflicht AP7; reale Modellkanten, keine real erhobenen Providerbeziehungen"
+    },
+    {
+      "category": "ICT",
+      "paths": "ict.resources[].resource_id/asset_id/capacity_per_hour/cost_per_hour/owners",
+      "purpose": "Geteilte Arbeitsressource",
+      "surface": "JSON",
+      "unit_and_limits": "1..40 Ressourcen; Arbeitsmenge/Stunde und Geld/Stunde; bekannter Pfad",
+      "required": "Pflicht AP7"
+    },
+    {
+      "category": "ICT",
+      "paths": "ict.resources[].owners[].insurer_id/sector_id/weight",
+      "purpose": "Kostenverteilung",
+      "surface": "JSON",
+      "unit_and_limits": "Bekannte VU/Sparte; Dezimalgewichte Summe exakt 1",
+      "required": "Pflicht pro Ressource"
+    },
+    {
+      "category": "ICT",
+      "paths": "ict.services[].service_id/insurer_id/sector_id/kind/resource_id/arrivals_per_period/assumption_note",
+      "purpose": "Anträge, Claims und Servicearbeit",
+      "surface": "JSON",
+      "unit_and_limits": "Bis 246 Dienste; underwriting/claims/service; Zufluss Ganzzahl 0..20; underwriting exogener Zufluss exakt 0",
+      "required": "Pflichtstruktur; Anträge entstehen aus dem Markt"
+    },
+    {
+      "category": "ICT",
+      "paths": "ict.holding_cost_per_job_hour",
+      "purpose": "Kosten wartender Arbeit",
+      "surface": "JSON",
+      "unit_and_limits": "Modellwährung je Vorgangsstunde, nichtnegative Dezimalzahl",
+      "required": "Pflicht AP7"
+    },
+    {
+      "category": "Anzeige",
+      "paths": "Periode, Sparte, Vergleichsgruppe, Seite, Fokus-VU, Erklärrolle, ICT-Asset",
+      "purpose": "Gemeinsame Auswahl der sechs Ansichten",
+      "surface": "GUI Auswertung",
+      "unit_and_limits": "Nur vorhandene Ergebniszeilen; kein Neulauf",
+      "required": "Anzeige, kein Rechenkern-Input"
+    },
+    {
+      "category": "Anzeige",
+      "paths": "Portfolio-Suche, Portfoliosparte, Anzeigevergleich, Modellebene, Wiedergabe/Pause/Schieber",
+      "purpose": "Modellwelt, Portfolio und Laufansicht",
+      "surface": "GUI alpha.11",
+      "unit_and_limits": "Anzeige vorhandener Quelle/Ergebnisse; kein fortsetzbarer Kernzustand",
+      "required": "Anzeige, kein Rechenkern-Input"
+    },
+    {
+      "category": "Import/Export",
+      "paths": "JSON-Datei; Export-VU und erwarteter Modelldigest",
+      "purpose": "Quelle laden und frisch gebunden exportieren",
+      "surface": "GUI / HTTP",
+      "unit_and_limits": "Import <=16 MiB; Export frisch, If-Match erwarteter Digest; Einzel-VU Excel",
+      "required": "Datei ist Eingabe; Digest technische Bindung"
+    }
+  ]
+}

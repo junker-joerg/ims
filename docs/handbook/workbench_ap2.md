@@ -1,6 +1,6 @@
 # Die Workbench bedienen
 
-Die Oberfläche ist in fünf Bereiche gegliedert. Am großen Bildschirm wechseln
+Stand: 06.10.2026. Die Oberfläche ist in sechs Hauptbereiche gegliedert. Der gemeinsame Markt liegt unter **Markt und Strategien → Markt verstehen**; seine [aktuelle Anleitung](market_ap8.md) erklärt den Ablauf. Am großen Bildschirm wechseln
 Sie links, am Smartphone über die untere Navigation. Eingaben, berechnete
 Ergebnisse und noch nicht verwendete Freigaben bleiben beim Wechsel erhalten.
 Neuladen der Seite beginnt eine neue Sitzung; gespeicherte Fälle bleiben in der
@@ -9,14 +9,15 @@ lokalen Ablage.
 | Bereich | Zweck |
 | --- | --- |
 | Übersicht | Modellfall öffnen, Szenario vorbereiten, Ergebnisse oder Hilfe erreichen; Systemstatus lesen. |
-| Szenario | Vorhandene lokale Szenario- und Laufmetadaten ansehen, filtern und bearbeiten. Rechenannahmen stehen im Modellfall. |
-| Simulation | Kfz/Sach, Leben, Kranken, Gesamtbilanz und Kapitalwirkung berechnen. Strategien und Ausführung sind gesonderte Expertenansichten. |
+| Markt und Strategien | Gemeinsamer Modellmarkt, Vorstandsstrategien, äußere Ereignisse und sechs verknüpfte Auswertungen; Modellwelt, Unternehmen und Laufwiedergabe. |
+| Fallablage | Vorhandene lokale Szenario- und Laufmetadaten ansehen, filtern und bearbeiten. Rechenannahmen stehen im Modellfall. |
+| Modellwerkzeuge | Kfz/Sach, Leben, Kranken, Gesamtbilanz und Kapitalwirkung berechnen. Strategien und Ausführung sind gesonderte Expertenansichten. |
 | Ergebnisse | Tatsächlich berechnete Ergebnisse und lokale Lebens-/Krankenverläufe prüfen, ausdrücklich speichern und exportieren. |
 | Hilfe | Bedienhinweise und Modellgrenzen lesen; Diagnose- und Vertragsdetails bei Bedarf aufklappen. |
 
 ## Ein Modell prüfen
 
-1. In der Übersicht **Modellfall öffnen** wählen oder unter **Simulation**
+1. In der Übersicht **Modellfall öffnen** wählen oder unter **Modellwerkzeuge**
    eine Sparte öffnen.
 2. Baseline und Variante eingeben. Die sichtbaren Herkunftsangaben erklären,
    ob Beispielwerte oder geprüfte Spartenquellen vorliegen.

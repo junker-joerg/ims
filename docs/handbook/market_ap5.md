@@ -1,6 +1,6 @@
 # IMS: Markt und Strategiefamilien verstehen
 
-Anwenderfassung **2.0.0-alpha.5**. AP5 erweitert das Managementlabor um
+Menüführung für Produktfassung **2.0.0-alpha.11**, Fachumfang AP5. AP5 erweitert das Managementlabor um
 einen gemeinsam berechneten Modellmarkt. Die bisherigen AP3-Seminarfälle
 und die AP4-Einstiegsübersicht bleiben über ihre eigenen Menüpunkte erreichbar.
 Eine Modellperiode ist kein automatisch festgelegter Monat oder Kalenderjahr.
@@ -9,8 +9,9 @@ Variante ab Periode 6 wählen Sie mindestens zehn Perioden.
 
 ## Der erste kleine Markt: fünf Minuten zum Handfall
 
-1. In der Übersicht **Markt und Familien öffnen** wählen, oder unter
-   **Simulation → Markt und Familien** einsteigen.
+1. In der Hauptnavigation **Markt und Strategien** wählen, dann den Arbeitsbereich
+   **Quellen und Handfälle**. Auf der Übersicht führt **Marktexperiment öffnen**
+   zum selben Marktbereich.
 2. **Marktfall → Wechsel mit Altreserve** und **Marktperioden → 10** wählen.
    **Modellmarkt laden** öffnet die vollständigen synthetischen Quellen.
 3. **Gemeinsamen Markt berechnen** wählen. Nach erfolgreicher Prüfung erscheinen

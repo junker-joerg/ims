@@ -1,6 +1,6 @@
 # ICT-Wirkung in der Workbench
 
-Unter **Simulation → ICT-Wirkung** liegt ein ausdrücklich deklarierter
+Unter **Modellwerkzeuge → ICT-Wirkung** liegt ein ausdrücklich deklarierter
 100-Perioden-Workshopfall mit zwei VUs und einem gemeinsamen Anbieter.
 
 1. Prüfen Sie Periodenzahl und Stunden je Periode. Die Dauer der historischen

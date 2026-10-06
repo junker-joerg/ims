@@ -46,7 +46,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await page.screenshot({ path: info.outputPath(`guided-${viewport.width}-${theme}.png`) });
       await runner.getByTestId("hundred-result").screenshot({ path: info.outputPath(`guided-result-${viewport.width}-${theme}.png`) });
       await page.getByRole("link", { name: "Übersicht", exact: true }).click();
-      await page.getByRole("link", { name: "Simulation", exact: true }).click();
+      await page.getByRole("link", { name: "Modellwerkzeuge", exact: true }).click();
       await expect(runner.getByTestId("hundred-result")).toBeVisible();
       await wizard.getByText("Expertenmodus: alle Periodenkontexte, Schocks und Zuweisungen", { exact: true }).click();
       await wizard.getByLabel("100er Quellenvertrag", { exact: true }).fill("{");

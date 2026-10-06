@@ -1,7 +1,9 @@
 # IMS installieren: Windows-Installer (AP1)
 
-Aktueller AP3-Stand: **2.0.0-alpha.3**, Installer
-`IMS-Setup-2.0.0-alpha.3-win-x64.exe` für Windows 11 x64.
+Stand: 06.10.2026. Ein tatsächlicher alpha.11-Produkt-/Installerprüfbeleg wird getrennt vom früheren AP1-Abnahmebeleg geführt. AP8-Anwenderabnahme und Merge bleiben offen. Die aktuelle Bedienführung steht in der [AP8-Anleitung](market_ap8.md); die grafische [Rechenkern-Dokumentation](rechenkern.md) wird offline mitgeliefert.
+
+Aktuelle AP8-Produktfassung: **2.0.0-alpha.11**, Installer
+`IMS-Setup-2.0.0-alpha.11-win-x64.exe` für Windows 11 x64.
 Frühere AP1-/AP2- und erste AP3-Pakete trugen noch dieselbe Nummer alpha.1.
 Auf dem Startbildschirm und allen Bereichen steht der Release-Stand unten links.
 Bei unterschiedlichen Browser-/Anwendungsversionen erscheint dort ein Hinweis:

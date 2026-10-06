@@ -1,7 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { readFileSync } from "node:fs";
 import { mkdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+
+const { version: releaseVersion } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
 
 const formatted = (value: string) => Number(value).toLocaleString("de-DE", { minimumFractionDigits: 4, maximumFractionDigits: 4 }).replace("-", "−");
 function rows(table: { columns: string[]; rows: unknown[][]; missing?: Record<string, string[]> }) {
@@ -9,6 +12,7 @@ function rows(table: { columns: string[]; rows: unknown[][]; missing?: Record<st
 }
 async function load(page: Page, id = "capacity", n = 10, count = 3) {
   await page.goto("/#market");
+  await page.getByRole("tab", { name: "Quellen und Handfälle", exact: true }).click();
   const panel = page.getByTestId("market-workbench");
   await panel.getByLabel("Marktfall", { exact: true }).selectOption(id);
   await panel.getByLabel("Marktperioden", { exact: true }).selectOption(String(n));
@@ -126,7 +130,7 @@ test("AP5: vollständiger 41er-Markt, 100 Perioden und Anzeige aus derselben API
   await panel.getByText("Exakte Markt-Verlaufstabelle öffnen", { exact: true }).click();
   const table = panel.getByRole("region", { name: "Exakte Markt-Verlaufstabelle", exact: true });
   await expect(table.locator("tbody tr")).toHaveCount(100); await expect(table.locator("tbody tr").last()).toContainText(formatted(total.closing_equity as string));
-  await expect(page.locator(".sidebar")).toContainText("2.0.0-alpha.7");
+  await expect(page.locator(".sidebar")).toContainText(`Release ${releaseVersion}`);
   expect(errors).toEqual([]);
   await info.attach("AP5 41×100", { body: JSON.stringify({ content_digest: result.content_digest, total, rows: 16400 }), contentType: "application/json" });
 });

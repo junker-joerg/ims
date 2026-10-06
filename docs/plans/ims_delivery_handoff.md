@@ -1,5 +1,69 @@
 # IMS-Lieferübergabe
 
+## Aktuell: AP8 alpha.11 technisch fertig
+
+06.10.2026: Weitere vier Designreferenzen und Auftrag für Eingabeinventar, Rechenkern-Grafiken/Technikdokumentation und Dokumentationsaudit. [Umsetzungsplan](ims_ap8_modelworld_documentation.md). Fortsetzung im selben PR #297; unveränderte AP5-/AP7-Rechnungen, neue Modellwelt, Portfolio und Anzeige-Wiedergabe. Vier echte grüne Produktchecks an `6117b72eb48a05d93b73e354099e5528a8b0ba6b`, 2764 Python-Tests/14 Subtests, 99 Checkout-/99 installierte Browserfälle, 14 Lifecycle-Prüfungen, 424 gebundene Ressourcen. [Produktprüfung](../reports/ims_ap8_modelworld_produktpruefung.md), [Verifikation](../reports/ims_ap8_modelworld_verification.json). Keine AP8-Abnahme/Mergefreigabe, keine AP9–AP14-Umsetzung.
+
+Die folgenden Übergaben bleiben historische Lieferbelege.
+
+## Historisch: AP8-Marktcockpit alpha.10 technisch fertig
+
+04.10.2026: Der Auftrag zur gesamten Benutzerführung ist im selben PR #297
+umgesetzt und vollständig geprüft. Gemeinsames endogenes/exogenes Experiment,
+moderne Gesamtgestaltung und tatsächliches ICT-Netz. Produktpunkt `11384cf69f14f52d3c0f0ae72537986a94484e57`:
+vier erfolgreiche Produktchecks, 2764 Python-Tests/14 Subtests, 91 Checkout-/
+91 installierte Browserfälle, 14 Lifecycle-Prüfungen und 409 Ressourcen.
+[Abschluss](../reports/ims_ap8_cockpit_abschlussbericht.md),
+[Produktprüfung](../reports/ims_ap8_cockpit_produktpruefung.md),
+[Verifikation](../reports/ims_ap8_cockpit_verification.json).
+Anwenderabnahme pending, AP8-Merge nicht autorisiert, origin/main weiterhin AP7.
+Keine öffentliche Veröffentlichung oder AP9–AP14-Umsetzung. Finale Dokumentations-
+checks vor Ready/Merge separat prüfen; frühere Übergaben bleiben historisch.
+
+## AP8-Bedienkorrektur in Arbeit; alpha.9 vor Anwenderabnahme
+
+03.10.2026: Nach dem ausdrücklichen Anwenderhinweis zur unübersichtlichen
+Oberfläche ist AP8 im selben PR #297 wieder in Arbeit.
+[Bedienkorrektur](ims_ap8_usability_correction.md): direkter Markt-Einstieg,
+getrennte Arbeitsbereiche, jeweils eine der sechs Ansichten, klarer Ablauf,
+erhaltene Zustände und zugängliche Reiter. Neue Produktkennung alpha.9 ist eine
+AP8-Korrektur; AP9 bleibt planned. Frühere alpha.8-Produktchecks werden nicht
+als Prüfung der neuen Oberfläche ausgegeben. Neuer Produkt-/Installerprüfstand
+folgt separat. Kein Merge oder öffentlicher Release; Anwenderabnahme offen.
+
+## AP8 technisch fertig; Anwenderabnahme und Merge offen
+
+03.10.2026: AP7 ist tatsächlich in main (PR #296, `32ba3112d994f57f33e64e1bc318e7d095223cd0`).
+Der danach autorisierte AP8-Auftrag ist im selben Paket-PR #297 umgesetzt:
+sechs verknüpfte Ansichten, E08-01 Fokus/Rivalen/Modellmarkt und besonders
+sichtbarer ICT-Erklärweg bis Rückstand/Erholung/Buchung. Keine Kernlogik geändert.
+Produktpunkt `17cbf5e631233ff5e5f5153a673a2eb6adaa7375` hat vier erfolgreiche Produktchecks:
+2.764 Python-Tests/14 Subtests, 83 Browserfälle, 14 Lifecycle- und 83 installierte
+Browserprüfungen. Alpha.8 / 2.0.0.8, authentischer Installer, 387 Ressourcen,
+Offline-Anleitung mit zwölf echten Bildern geliefert.
+[Abschluss](../reports/ims_ap8_abschlussbericht.md),
+[Produktprüfung](../reports/ims_ap8_produktpruefung.md),
+[Verifikation](../reports/ims_ap8_verification.json).
+AP8 done/technisch fertig; Anwenderabnahme pending, Merge nicht freigegeben und
+main enthält weiterhin AP7. Kein öffentliches Release/AP9–AP14-Auftrag.
+AP9 erst nach tatsächlichem AP8-Merge und eigenem Folgeauftrag. Finalen
+Dokumentationshead und dessen Checks vor Ready/Merge separat prüfen; historische
+Stände und Abnahmen bleiben erhalten. Frühere Übergaben folgen.
+
+## AP7 tatsächlich in main; AP8 beauftragt und M1 vorbereitet
+
+03.10.2026: AP7 über PR #296 nach main übernommen, 11:39:38 UTC,
+`32ba3112d994f57f33e64e1bc318e7d095223cd0`; [Mergebeleg](../reports/ims_ap7_merge.md).
+Alle vier Checks am Abnahmekommitt f440f4c erfolgreich, main-Tree identisch.
+AP8-Auftrag gegen frisch gefetchtes main erfolgreich autorisiert, erst danach
+AP8-Status in_progress und Branch `codex/ims-market-visualizations`.
+[Plan](ims_ap8_implementation.md), [Darstellungsvertrag](ims_ap8_view_contract.md),
+[Stand](../reports/ims_ap8_fortschritt.md). E08-01 aus angenommenem Boardplan
+separat einbezogen; keine neuen Finanzkanäle. M2–M4 im selben Paket-PR umsetzen,
+keine erneute Frage nach dem bereits erteilten AP8-Umsetzungsauftrag.
+Anwenderabnahme/Merge für AP8 offen; kein öffentliches Release/AP9–AP14-Auftrag.
+Frühere Stände folgen.
+
 ## AP7-Anwenderabnahme und Mergeauftrag erteilt; danach AP8
 
 03.10.2026: Der Auftraggeber bestätigt wörtlich „Anwenderabnahme und Merge

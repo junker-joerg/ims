@@ -1,5 +1,7 @@
 # IMS Workbench 2026 - Installation des Windows-Testpakets
 
+Aktualitätshinweis 06.10.2026: Der folgende Text dokumentiert seinen datierten Fach-/Testpaketstand. Aktuelle Menüwege und das gemeinsame Marktexperiment stehen in der [AP8-Anleitung](market_ap8.md). Ältere Begrenzungen sind auf ihren damaligen Modellpfad bezogen, keine Aussage gegen heute vorhandene AP5-/AP7-Marktkanäle.
+
 Stand: 2026-09-18
 Umfang: 2 Seiten
 Zielgruppe: Anwender ohne Entwicklungsumgebung

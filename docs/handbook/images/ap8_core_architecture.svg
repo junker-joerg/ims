@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 850" role="img" aria-labelledby="title desc"><title id="title">IMS-Rechenkern · vom Experiment zum Nachweis</title><desc id="desc">Stand 06.10.2026 · AP8 alpha.11 · gemeinsame Marktquelle und unveränderte Rechenkanäle. Teal: übernommene Vertragslogik · Violett: moderne Ergänzung · Orange: fachliche Grenze · Details im Handbuch.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L8 3L0 6Z" fill="#476781"/></marker></defs>
+<rect width="1280" height="850" fill="#f6f9fc"/>
+<text x="40" y="50" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#102b46">IMS-Rechenkern · vom Experiment zum Nachweis</text>
+<text x="40" y="84" font-family="Arial,sans-serif" font-size="19" fill="#284966">Stand 06.10.2026 · AP8 alpha.11 · gemeinsame Marktquelle und unveränderte Rechenkanäle</text>
+<path d="M220 300L220 355" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M620 300L620 355" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M1040 300L1040 355" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M220 460L220 515" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M405 610L445 610" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M810 610L850 610" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="125" width="365" height="175" rx="12" fill="white" stroke="#087c86" stroke-width="2"/><rect x="40" y="125" width="6" height="175" rx="3" fill="#087c86"/>
+<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#087c86">Endogene Entscheidungen</text>
+<text x="60" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Familien und Zuordnungen</text>
+<text x="60" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">VU-Parameter, Maßnahmen und</text>
+<text x="60" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Antworten</text>
+<text x="60" y="266" font-family="Arial,sans-serif" font-size="18" fill="#172e42">VN-Regel mit eigener Schwelle</text>
+<rect x="445" y="125" width="365" height="175" rx="12" fill="white" stroke="#565bb4" stroke-width="2"/><rect x="445" y="125" width="6" height="175" rx="3" fill="#565bb4"/>
+<text x="465" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#565bb4">Exogene Annahmen</text>
+<text x="465" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Risikozeilen, Schadenindikator</text>
+<text x="465" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Eintritt, Nachfrage, Ausfall,</text>
+<text x="465" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">hypothetische Regulierung</text>
+<text x="465" y="266" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Ereigniszeit und Wirkungskanal</text>
+<rect x="850" y="125" width="390" height="175" rx="12" fill="white" stroke="#ac5710" stroke-width="2"/><rect x="850" y="125" width="6" height="175" rx="3" fill="#ac5710"/>
+<text x="870" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#ac5710">Quellen und Anfangsbestände</text>
+<text x="870" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Modellwährung, Seed, Horizont</text>
+<text x="870" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">VU-/Spartenbücher und Kunden</text>
+<text x="870" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">BaFin-Referenz: keine deutsche</text>
+<text x="870" y="266" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Direktmarkt-Kalibrierung</text>
+<rect x="40" y="355" width="1200" height="105" rx="12" fill="white" stroke="#284966" stroke-width="2"/><rect x="40" y="355" width="6" height="105" rx="3" fill="#284966"/>
+<text x="60" y="387" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#284966">1 · Vollständigen Vertrag validieren</text>
+<text x="60" y="418" font-family="Arial,sans-serif" font-size="18" fill="#172e42">AP5 contract.py / AP6 reference.py / AP7 shock_contract.py · bekannte Bezüge, Zeitfenster, Bilanz und Quellenbindung</text>
+<rect x="40" y="515" width="365" height="200" rx="12" fill="white" stroke="#087c86" stroke-width="2"/><rect x="40" y="515" width="6" height="200" rx="3" fill="#087c86"/>
+<text x="60" y="547" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#087c86">2 · Zwei Vergleichsseiten</text>
+<text x="60" y="578" font-family="Arial,sans-serif" font-size="18" fill="#172e42">runner.py + shock_runner.py</text>
+<text x="60" y="604" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Identischer tatsächlicher Anfang</text>
+<text x="60" y="630" font-family="Arial,sans-serif" font-size="18" fill="#172e42">P1–P5</text>
+<text x="60" y="656" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Kein partielles Ergebnis bei</text>
+<text x="60" y="682" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Vertragsfehlern</text>
+<rect x="445" y="515" width="365" height="200" rx="12" fill="white" stroke="#565bb4" stroke-width="2"/><rect x="445" y="515" width="6" height="200" rx="3" fill="#565bb4"/>
+<text x="465" y="547" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#565bb4">3 · Ausgeführte Modellkanäle</text>
+<text x="465" y="578" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Angebot → Antrag → Vertrag</text>
+<text x="465" y="604" font-family="Arial,sans-serif" font-size="18" fill="#172e42">ICT-Arbeit und Kostenledger</text>
+<text x="465" y="630" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Getrennte Spartenbücher →</text>
+<text x="465" y="656" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Aggregate</text>
+<text x="465" y="682" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Bestehende Leben-/Krankenkerne</text>
+<rect x="850" y="515" width="390" height="200" rx="12" fill="white" stroke="#284966" stroke-width="2"/><rect x="850" y="515" width="6" height="200" rx="3" fill="#284966"/>
+<text x="870" y="547" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#284966">4 · Lesen und erklären</text>
+<text x="870" y="578" font-family="Arial,sans-serif" font-size="18" fill="#172e42">explorer.py / transport.py</text>
+<text x="870" y="604" font-family="Arial,sans-serif" font-size="18" fill="#172e42">6 Ansichten, Portfolio, Wiedergabe</text>
+<text x="870" y="630" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Filter ändern keine Rechnung</text>
+<text x="870" y="656" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Frische JSON-/Einzel-VU-Exporte mit</text>
+<text x="870" y="682" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Digestbindung</text>
+<text x="40" y="810" font-family="Arial,sans-serif" font-size="18" fill="#284966">Teal: übernommene Vertragslogik · Violett: moderne Ergänzung · Orange: fachliche Grenze · Details im Handbuch.</text></svg>

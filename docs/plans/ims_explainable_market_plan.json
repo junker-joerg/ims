@@ -23,7 +23,10 @@
     "ap3_merge_commit": "abc8a7e347e29bbd5059abd8b59df2a98eb9d78e",
     "ap3_merged_at_utc": "2026-10-01T16:48:44Z",
     "ap3_merge_tree_matches_tested_product": true,
-    "implementation_requires": ["Folgeplanung angenommen", "AP3 in main"]
+    "implementation_requires": [
+      "Folgeplanung angenommen",
+      "AP3 in main"
+    ]
   },
   "market_scope": {
     "human_confirmed": true,
@@ -31,7 +34,12 @@
     "unit": "insurance_group",
     "geography": "german_primary_insurance_business",
     "ranking_all_primary_insurance_lines": true,
-    "model_sectors": ["motor", "property_liability", "life", "health"],
+    "model_sectors": [
+      "motor",
+      "property_liability",
+      "life",
+      "health"
+    ],
     "unmodelled_lines_reported": true,
     "foreign_groups_with_german_business_included": true,
     "subsidiaries_counted_twice": false,
@@ -43,31 +51,166 @@
     "entrant_demo_actor_count": 41
   },
   "roles": [
-    {"id": "ceo", "label": "CEO", "focus": "Markt, Ergebnis, Sparten und Strategiefamilien"},
-    {"id": "cio", "label": "CIO", "focus": "ICT, Abhängigkeiten, DORA und digitale Souveränität"},
-    {"id": "coo", "label": "COO", "focus": "Prozesse, Kapazität, Rückstand und Wiederanlauf"},
-    {"id": "cso_sales", "label": "CSO Vertrieb", "focus": "Nachfrage, Kundengruppen, Wechsel, Preis und Neugeschäft"}
+    {
+      "id": "ceo",
+      "label": "CEO",
+      "focus": "Markt, Ergebnis, Sparten und Strategiefamilien"
+    },
+    {
+      "id": "cio",
+      "label": "CIO",
+      "focus": "ICT, Abhängigkeiten, DORA und digitale Souveränität"
+    },
+    {
+      "id": "coo",
+      "label": "COO",
+      "focus": "Prozesse, Kapazität, Rückstand und Wiederanlauf"
+    },
+    {
+      "id": "cso_sales",
+      "label": "CSO Vertrieb",
+      "focus": "Nachfrage, Kundengruppen, Wechsel, Preis und Neugeschäft"
+    }
   ],
   "demos": [
-    {"id": "google_motor_entry", "title": "Google kommt in die Kfz-Versicherung", "package": "AP7", "assumption": "Fiktiver zusätzlicher Marktanbieter"},
-    {"id": "life_demand_shock", "title": "LV wird unattraktiv", "package": "AP7", "assumption": "Deklarierter moderner Nachfrageschock; Altverträge erhalten"},
-    {"id": "dora_2_workshop", "title": "Regulierungsschock ICT DORA 2.0", "package": "AP7", "assumption": "Hypothetisch verschärfte Resilienzanforderungen"},
-    {"id": "us_hyperscaler_outage", "title": "Alle US Hyperscaler fallen aus", "package": "AP7", "assumption": "Gemeinsamer Ausfall der deklarierten US-kontrollierten Anbieter"}
+    {
+      "id": "google_motor_entry",
+      "title": "Google kommt in die Kfz-Versicherung",
+      "package": "AP7",
+      "assumption": "Fiktiver zusätzlicher Marktanbieter"
+    },
+    {
+      "id": "life_demand_shock",
+      "title": "LV wird unattraktiv",
+      "package": "AP7",
+      "assumption": "Deklarierter moderner Nachfrageschock; Altverträge erhalten"
+    },
+    {
+      "id": "dora_2_workshop",
+      "title": "Regulierungsschock ICT DORA 2.0",
+      "package": "AP7",
+      "assumption": "Hypothetisch verschärfte Resilienzanforderungen"
+    },
+    {
+      "id": "us_hyperscaler_outage",
+      "title": "Alle US Hyperscaler fallen aus",
+      "package": "AP7",
+      "assumption": "Gemeinsamer Ausfall der deklarierten US-kontrollierten Anbieter"
+    }
   ],
   "requirements": [
-    {"id": "R01", "description": "Erklärbare Oberfläche gemäß Mockup", "packages": ["AP4", "AP8", "AP9"]},
-    {"id": "R02", "description": "Vier Rollen CEO, CIO, COO und CSO Vertrieb", "packages": ["AP4", "AP8", "AP9"]},
-    {"id": "R03", "description": "Einsteigeranleitung und Wiedereinstieg für Altprogrammierer", "packages": ["AP4", "AP9"]},
-    {"id": "R04", "description": "Offline ladbare und frisch geprüfte DEMO-Szenarien", "packages": ["AP4", "AP6", "AP7"]},
-    {"id": "R05", "description": "Anbieterschock Google in Kfz", "packages": ["AP5", "AP7"]},
-    {"id": "R06", "description": "Nachfrageschock Lebensversicherung", "packages": ["AP5", "AP7"]},
-    {"id": "R07", "description": "Regulierungsschock ICT DORA 2.0", "packages": ["AP7"]},
-    {"id": "R08", "description": "Digitale Souveränität und gemeinsamer US-Hyperscaler-Ausfall", "packages": ["AP7"]},
-    {"id": "R09", "description": "Strategien nach Gruppen und Familien auswerten", "packages": ["AP5", "AP8"]},
-    {"id": "R10", "description": "Marktaggregate und Marktprozesse unmittelbar in IMS visualisieren", "packages": ["AP4", "AP5", "AP8"]},
-    {"id": "R11", "description": "Einzel-VU-Details in Excel mit Modell- und Quellenbezug", "packages": ["AP5", "AP8", "AP9"]},
-    {"id": "R12", "description": "Deutscher Versicherungsmarkt mit 40 belegten Gruppen", "packages": ["AP5", "AP6", "AP7"]},
-    {"id": "R13", "description": "Höhere eindeutige Releasenummern für neue Produktlieferungen", "packages": ["AP4", "AP5", "AP6", "AP7", "AP8", "AP9"]}
+    {
+      "id": "R01",
+      "description": "Erklärbare Oberfläche gemäß Mockup",
+      "packages": [
+        "AP4",
+        "AP8",
+        "AP9"
+      ]
+    },
+    {
+      "id": "R02",
+      "description": "Vier Rollen CEO, CIO, COO und CSO Vertrieb",
+      "packages": [
+        "AP4",
+        "AP8",
+        "AP9"
+      ]
+    },
+    {
+      "id": "R03",
+      "description": "Einsteigeranleitung und Wiedereinstieg für Altprogrammierer",
+      "packages": [
+        "AP4",
+        "AP9"
+      ]
+    },
+    {
+      "id": "R04",
+      "description": "Offline ladbare und frisch geprüfte DEMO-Szenarien",
+      "packages": [
+        "AP4",
+        "AP6",
+        "AP7"
+      ]
+    },
+    {
+      "id": "R05",
+      "description": "Anbieterschock Google in Kfz",
+      "packages": [
+        "AP5",
+        "AP7"
+      ]
+    },
+    {
+      "id": "R06",
+      "description": "Nachfrageschock Lebensversicherung",
+      "packages": [
+        "AP5",
+        "AP7"
+      ]
+    },
+    {
+      "id": "R07",
+      "description": "Regulierungsschock ICT DORA 2.0",
+      "packages": [
+        "AP7"
+      ]
+    },
+    {
+      "id": "R08",
+      "description": "Digitale Souveränität und gemeinsamer US-Hyperscaler-Ausfall",
+      "packages": [
+        "AP7"
+      ]
+    },
+    {
+      "id": "R09",
+      "description": "Strategien nach Gruppen und Familien auswerten",
+      "packages": [
+        "AP5",
+        "AP8"
+      ]
+    },
+    {
+      "id": "R10",
+      "description": "Marktaggregate und Marktprozesse unmittelbar in IMS visualisieren",
+      "packages": [
+        "AP4",
+        "AP5",
+        "AP8"
+      ]
+    },
+    {
+      "id": "R11",
+      "description": "Einzel-VU-Details in Excel mit Modell- und Quellenbezug",
+      "packages": [
+        "AP5",
+        "AP8",
+        "AP9"
+      ]
+    },
+    {
+      "id": "R12",
+      "description": "Deutscher Versicherungsmarkt mit 40 belegten Gruppen",
+      "packages": [
+        "AP5",
+        "AP6",
+        "AP7"
+      ]
+    },
+    {
+      "id": "R13",
+      "description": "Höhere eindeutige Releasenummern für neue Produktlieferungen",
+      "packages": [
+        "AP4",
+        "AP5",
+        "AP6",
+        "AP7",
+        "AP8",
+        "AP9"
+      ]
+    }
   ],
   "common_acceptance": [
     "Ein zusammenhängender Branch und Draft-PR pro Paket einschließlich API, bedienbarer Oberfläche, Tests und Anleitung",
@@ -169,7 +312,6 @@
         }
       ]
     },
-
     {
       "id": "AP5",
       "title": "Marktmodell und auswertbare Strategiefamilien",
@@ -259,28 +401,49 @@
           "origin": "docs/plans/ims_board_strategy_plan.json",
           "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
           "implementation_plan": "docs/plans/ims_ap5_implementation.md",
-          "completion_evidence": ["docs/reports/ims_ap5_verification.json: E05-01 mit aktueller Modell-/Browser-/CI-Prüfung", "docs/reports/ims_ap5_abschlussbericht.md"]
+          "completion_evidence": [
+            "docs/reports/ims_ap5_verification.json: E05-01 mit aktueller Modell-/Browser-/CI-Prüfung",
+            "docs/reports/ims_ap5_abschlussbericht.md"
+          ]
         },
         {
           "id": "E05-02",
           "origin": "docs/plans/ims_board_strategy_plan.json",
           "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
           "implementation_plan": "docs/plans/ims_ap5_implementation.md",
-          "completion_evidence": ["docs/reports/ims_ap5_verification.json: E05-02 mit aktueller Modell-/Browser-/CI-Prüfung", "docs/reports/ims_ap5_abschlussbericht.md"]
+          "completion_evidence": [
+            "docs/reports/ims_ap5_verification.json: E05-02 mit aktueller Modell-/Browser-/CI-Prüfung",
+            "docs/reports/ims_ap5_abschlussbericht.md"
+          ]
         }
       ]
     },
-
     {
       "id": "AP6",
       "title": "Deutscher Versicherungsmarkt mit 40 Gruppen",
       "effective_title": "BaFin-Gruppenauswertung 2024 – Workshop",
       "status": "done",
-      "depends_on": ["AP5"],
+      "depends_on": [
+        "AP5"
+      ],
       "branch_proposal": "codex/ims-german-market-top40",
-      "deliverables": ["Belegte 40er-Gruppenauswahl mit deutschen Anzeigenamen und Tochterzuordnung", "Dokumentierte Rankingkennzahl, gemeinsames Jahr, Deutschlandumfang und Grenzprüfung", "Offline ladbarer Modellmarkt mit getrennten Fakten und Workshop-Annahmen", "Quellen-Dossier und ausdrückliche Darstellung des nicht simulierten Restmarkts"],
-      "acceptance": ["Genau 40 eindeutige Gruppen und geprüfte Grenze Rang 40/41", "Keine Doppelzählung oder Vermischung globaler, deutscher, gebuchter und verdienter Beiträge", "Belegte Sparten und Gewichtssummen, fehlende Werte gekennzeichnet", "Unbekannte Strategien und ICT-Abhängigkeiten nicht als reale Unternehmensdaten ausgegeben", "Laden, Import, frische Berechnung und reproduzierbare Nachweise"],
-      "gates": ["Gemeinsames Datenjahr, Rankingmaß und Gruppen-/Deutschlandkonsolidierung nachgewiesen", "Vollständige Rangbasis; keine unbelegte Top-40-Abnahme"],
+      "deliverables": [
+        "Belegte 40er-Gruppenauswahl mit deutschen Anzeigenamen und Tochterzuordnung",
+        "Dokumentierte Rankingkennzahl, gemeinsames Jahr, Deutschlandumfang und Grenzprüfung",
+        "Offline ladbarer Modellmarkt mit getrennten Fakten und Workshop-Annahmen",
+        "Quellen-Dossier und ausdrückliche Darstellung des nicht simulierten Restmarkts"
+      ],
+      "acceptance": [
+        "Genau 40 eindeutige Gruppen und geprüfte Grenze Rang 40/41",
+        "Keine Doppelzählung oder Vermischung globaler, deutscher, gebuchter und verdienter Beiträge",
+        "Belegte Sparten und Gewichtssummen, fehlende Werte gekennzeichnet",
+        "Unbekannte Strategien und ICT-Abhängigkeiten nicht als reale Unternehmensdaten ausgegeben",
+        "Laden, Import, frische Berechnung und reproduzierbare Nachweise"
+      ],
+      "gates": [
+        "Gemeinsames Datenjahr, Rankingmaß und Gruppen-/Deutschlandkonsolidierung nachgewiesen",
+        "Vollständige Rangbasis; keine unbelegte Top-40-Abnahme"
+      ],
       "completion_evidence": [
         "docs/reports/ims_ap6_scope_acceptance.md: ausdrückliche Annahme des gekennzeichneten BaFin-Referenzumfangs; keine rückwirkende Deutschland-Abnahme",
         "docs/reports/ims_ap6_produktpruefung.md: Quellen-/Modellvertrag, API/UI/Export, Handfälle, Anleitung und Liefergrenzen",
@@ -360,11 +523,29 @@
       "id": "AP7",
       "title": "Vier Schock Demos mit erklärten Gegenmaßnahmen",
       "status": "done",
-      "depends_on": ["AP6"],
+      "depends_on": [
+        "AP6"
+      ],
       "branch_proposal": "codex/ims-market-shock-demos",
-      "deliverables": ["Vier vollständige portable 100-Perioden-Schockfälle", "Fiktiver Anbieter 41, deklarierter LV-Nachfrageschock, DORA-2.0-Workshop und US-Anbieterausfall", "Deklarierte Markt-/ICT-Zeit- und Buchungsbrücke", "Schreibfreie Demo, bearbeitbare Übernahme, aktive Gegenmaßnahmen und Rollen-Erklärpfade"],
-      "acceptance": ["Alle vier Demos offline frisch ladbar und reproduzierbar", "Gemeinsame Anfangsperioden 1–5 und Akteur-/Perioden-Zufallsvertrag", "Anbieter aktiviert zum richtigen Zeitpunkt und Lebens-Altbestand erhalten", "Markt-/ICT-Verluste und gemeinsame Maßnahmenkosten genau einmal gebucht", "Transitive Ausfälle; unabhängiger Fallback wirkt, gemeinsam abhängiger Fallback fällt mit aus", "Handprüfbare Reaktionen und konsistente Markt-/Gruppensummen"],
-      "gates": ["Lebens-Nachfragevertrag mit erhaltenen Garantien erklärt und angenommen", "ICT-Zeitabbildung, Kostenzuordnung und Vermeidung doppelter Verluste erklärt und angenommen", "DORA 2.0 ausdrücklich hypothetisch; Firmen-/Providerdaten und Annahmen getrennt"],
+      "deliverables": [
+        "Vier vollständige portable 100-Perioden-Schockfälle",
+        "Fiktiver Anbieter 41, deklarierter LV-Nachfrageschock, DORA-2.0-Workshop und US-Anbieterausfall",
+        "Deklarierte Markt-/ICT-Zeit- und Buchungsbrücke",
+        "Schreibfreie Demo, bearbeitbare Übernahme, aktive Gegenmaßnahmen und Rollen-Erklärpfade"
+      ],
+      "acceptance": [
+        "Alle vier Demos offline frisch ladbar und reproduzierbar",
+        "Gemeinsame Anfangsperioden 1–5 und Akteur-/Perioden-Zufallsvertrag",
+        "Anbieter aktiviert zum richtigen Zeitpunkt und Lebens-Altbestand erhalten",
+        "Markt-/ICT-Verluste und gemeinsame Maßnahmenkosten genau einmal gebucht",
+        "Transitive Ausfälle; unabhängiger Fallback wirkt, gemeinsam abhängiger Fallback fällt mit aus",
+        "Handprüfbare Reaktionen und konsistente Markt-/Gruppensummen"
+      ],
+      "gates": [
+        "Lebens-Nachfragevertrag mit erhaltenen Garantien erklärt und angenommen",
+        "ICT-Zeitabbildung, Kostenzuordnung und Vermeidung doppelter Verluste erklärt und angenommen",
+        "DORA 2.0 ausdrücklich hypothetisch; Firmen-/Providerdaten und Annahmen getrennt"
+      ],
       "completion_evidence": [
         "docs/reports/ims_ap7_contract_acceptance.md: ausdrücklich angenommener Lebens-/ICT-Vertrag und besondere ICT-Erkläranforderung",
         "docs/reports/ims_ap7_abschlussbericht.md: technische Lieferung alpha.7 zur Anwenderabnahme; Anwenderabnahme/Merge offen",
@@ -372,11 +553,21 @@
         "docs/reports/ims_ap7_verification.json: vier grüne Produktchecks an 37fe791; 2755 Python-/14 Subtests, 70 Browserfälle, 14 Lifecycle-/70 installierte Browserfälle; gleiche Digests und Git-/Hash-/Ressourcenbindung",
         "docs/handbook/market_ap7.html: Offline-Einstieg, Rollenwege, sichtbarer ICT-Erklärpfad und zwölf echte Browserbilder",
         "https://github.com/junker-joerg/ims/pull/296: gesamtes AP7-Paket; spätere Anwenderabnahme und Mergeauftrag separat belegt",
-        "docs/reports/ims_ap7_user_acceptance.md: ausdrückliche Anwenderabnahme, AP7-Mergeauftrag und AP8-Fortsetzung nach tatsächlichem Merge am 03.10.2026"
+        "docs/reports/ims_ap7_user_acceptance.md: ausdrückliche Anwenderabnahme, AP7-Mergeauftrag und AP8-Fortsetzung nach tatsächlichem Merge am 03.10.2026",
+        "docs/reports/ims_ap7_merge.md: tatsächlicher Merge #296 am 03.10.2026 nach vier grünen Checks an f440f4c; main-Tree identisch"
       ],
+      "merge_evidence": {
+        "pull_request": 296,
+        "commit": "32ba3112d994f57f33e64e1bc318e7d095223cd0",
+        "merged_at_utc": "2026-10-03T11:39:38Z",
+        "tested_head": "f440f4c7823eb029cb42c4c7219f6304d4205d37",
+        "tree": "236102cec1386f096b3d95417c962d95953764f2",
+        "tree_matches_tested_head": true,
+        "evidence": "docs/reports/ims_ap7_merge.md"
+      },
       "implementation_authorized": true,
       "technically_complete": true,
-      "merged_to_main": false,
+      "merged_to_main": true,
       "user_product_acceptance": "accepted",
       "merge_authorized": true,
       "user_acceptance": {
@@ -432,23 +623,137 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "planned",
-      "depends_on": ["AP7"],
+      "status": "done",
+      "depends_on": [
+        "AP7"
+      ],
       "branch_proposal": "codex/ims-market-visualizations",
-      "deliverables": ["Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten", "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang", "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung", "Marktinterpretation in IMS und Einzel-VU-Details in Excel", "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"],
-      "acceptance": ["Jeder Grafikpunkt stimmt mit API, Buchungen und Export überein", "Filter bleiben konsistent und ändern keinen Lauf", "Zeitabhängige Familien und Gruppen, korrekte Gewichte und Marktanteilsnenner", "Kunden-Wechselmengen ohne Doppelzählung und korrekte Ereigniszeiten", "Echte Gruppenauswertung ohne Excel interpretierbar", "Tastatur, zugängliche Tabellen, responsive Hell-/Dunkelansichten"],
-      "gates": ["Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"],
-      "completion_evidence": []
+      "deliverables": [
+        "Sechs verknüpfte Markt-, Sparten-, Familien-, Wechsel-, Zeitlinien- und Provider-/Prozessansichten",
+        "Erklärte Gewichte, Nenner, Einheiten und Modellmarktumfang",
+        "Klickpfad von Verlauf und Gruppenvergleich zu Akteur und Buchung",
+        "Marktinterpretation in IMS und Einzel-VU-Details in Excel",
+        "Aktuelle Rollen-/Markthilfe mit tatsächlichen Browserbildern"
+      ],
+      "acceptance": [
+        "Jeder Grafikpunkt stimmt mit API, Buchungen und Export überein",
+        "Filter bleiben konsistent und ändern keinen Lauf",
+        "Zeitabhängige Familien und Gruppen, korrekte Gewichte und Marktanteilsnenner",
+        "Kunden-Wechselmengen ohne Doppelzählung und korrekte Ereigniszeiten",
+        "Echte Gruppenauswertung ohne Excel interpretierbar",
+        "Tastatur, zugängliche Tabellen, responsive Hell-/Dunkelansichten"
+      ],
+      "gates": [
+        "Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"
+      ],
+      "implementation_authorized": true,
+      "technically_complete": true,
+      "merged_to_main": false,
+      "user_product_acceptance": "pending",
+      "merge_authorized": false,
+      "execution_authorization": {
+        "schema_version": "ims.execution-authorization.v1",
+        "package": "AP8",
+        "scope": "implementation",
+        "plan_commit": "32ba3112d994f57f33e64e1bc318e7d095223cd0",
+        "authorized_by": "Auftraggeber dieser Codex-Sitzung",
+        "authorized_at": "2026-10-03T11:40:21Z",
+        "user_request": "Anwenderabnahme und Merge bleiben offen - Anwenderabnahme erteilt - merge auf MAIN und fahre fort",
+        "recording_note": "Beobachtete Erfassung nach tatsächlich geprüftem AP7-Merge; genauer Nachrichtenzeitpunkt nicht ausgewiesen. Fortsetzung mit dem nächsten angenommenen Paket AP8, einschließlich separat angenommener E08-01. Exakte Addition, Wechselwirkung und Korrelation unterscheiden. Kein AP8-Merge, öffentliches Release oder AP9–AP14-Auftrag."
+      },
+      "implementation_plan": "docs/plans/ims_ap8_implementation.md",
+      "progress_document": "docs/reports/ims_ap8_modelworld_fortschritt.md",
+      "view_contract": "docs/plans/ims_ap8_view_contract.md",
+      "accepted_amendments": [
+        {
+          "id": "E08-01",
+          "origin": "docs/plans/ims_board_strategy_plan.json",
+          "plan_acceptance_pr": "https://github.com/junker-joerg/ims/pull/292",
+          "implementation_plan": "docs/plans/ims_ap8_implementation.md",
+          "acceptance_impact": "Fokus, Rivalen und Modellmarkt: absolute Buchungswerte und relative Position mit benannten Nennern nebeneinander; eigene AP8-Belege, historische Abnahmen unverändert.",
+          "implemented": true,
+          "completion_evidence": [
+            "docs/reports/ims_ap8_cockpit_verification.json: E08-01 unverändert und vollständig erneut geprüft",
+            "docs/reports/ims_ap8_cockpit_produktpruefung.md"
+          ]
+        }
+      ],
+      "usability_revision": {
+        "status": "superseded",
+        "release": "2.0.0-alpha.9",
+        "scope": "AP8-Bedienkorrektur im selben Paket-PR #297; keine AP9-Umsetzung",
+        "user_request": "Ich finde mich immer schlechter in dieser oberfläsche zurecht. Kennst Du keine Frontend-Style Guides für Webanwendungen? Das kann man so keinem zeigen",
+        "recording_note": "Wörtlicher aktueller Anwenderhinweis, Zeilenumbrüche normalisiert; kein sekundengenauer Nachrichtenzeitpunkt behauptet.",
+        "plan": "docs/plans/ims_ap8_usability_correction.md",
+        "previous_product": "17cbf5e631233ff5e5f5153a673a2eb6adaa7375",
+        "previous_product_release": "2.0.0-alpha.8",
+        "acceptance_impact": "Navigation und Darstellung erneut prüfen; frühere alpha.8-Abschlussbelege bleiben historisch. Anwenderabnahme/Merge weiterhin offen.",
+        "superseded_by": "2.0.0-alpha.10",
+        "verification": "docs/reports/ims_ap8_cockpit_verification.json",
+        "historical_result": "alpha.9-CI nicht vollständig erfolgreich; sechs gescheiterte Browserwege, im aktuellen vollständigen Lauf korrigiert"
+      },
+      "cockpit_revision": {
+        "status": "done",
+        "release": "2.0.0-alpha.10",
+        "scope": "Gesamte Benutzerführung, gemeinsames endogenes/exogenes Marktexperiment im selben AP8-Paket-PR #297",
+        "user_request": "Überarbeite die Gesamte Benutzerführung; Strategieparameter endogen durch den Vorstand, Marktänderungen durch Schocks, Regulierungen und Trends exogen; moderne Oberfläche anhand vier Cockpitbildern.",
+        "recording_note": "Inhaltlicher Fortsetzungsauftrag des Anwenders am vom Client ausgewiesenen 04.10.2026; kein sekundengenauer Nachrichtenzeitpunkt behauptet. Mockup-Fakten sind keine Modellanforderungen.",
+        "plan": "docs/plans/ims_ap8_experiment_cockpit.md",
+        "acceptance_impact": "Neue Browser-, Anleitung- und Installerprüfung erforderlich; historische alpha.8/alpha.9-Belege bleiben getrennt. Anwenderabnahme und Merge offen.",
+        "product_commit": "11384cf69f14f52d3c0f0ae72537986a94484e57",
+        "verification": "docs/reports/ims_ap8_cockpit_verification.json"
+      },
+      "previous_completion_evidence": [
+        "docs/reports/ims_ap8_cockpit_abschlussbericht.md",
+        "docs/reports/ims_ap8_cockpit_produktpruefung.md: vier erfolgreiche Produktchecks an 11384cf69f14f52d3c0f0ae72537986a94484e57",
+        "docs/reports/ims_ap8_cockpit_verification.json: 2764 Python-Tests/14 Subtests, 91 Browserfälle, 14 Lifecycle-/91 installierte Browserprüfungen",
+        "docs/handbook/market_ap8.md: gemeinsames Experiment, sechs Ansichten, 22 aktuelle/historische Bildreferenzen, offline im alpha.10-Installer",
+        "docs/migration/ap8_market_explorer.md: Modellkerne unverändert; aktueller Oberflächen-/Editorvertrag",
+        "docs/reports/ims_ap8_verification.json: historischer alpha.8-Produktbeleg bleibt erhalten"
+      ],
+      "modelworld_revision": {
+        "status": "done",
+        "release": "2.0.0-alpha.11",
+        "date": "2026-10-06",
+        "scope": "Vier weitere Designreferenzen, Modellwelt/Portfolio/Laufwiedergabe, Eingabeinventar, Rechenkern-Grafiken und Aktualitätsprüfung; gleicher AP8-PR #297, keine neuen Modellkanäle.",
+        "user_request": "1) Berücksichtige diese Designs bei der Überarbeitung der UI 2) Erstelle eine Liste von notwendigen Eingabe-Items aus dem bisherigen Design 3) Erstelle eine oder mehrere Grafiken des Rechenkerns inkl. den fachlichen Abweichungen zum ursprünglichen IMS und leite daraus eine - gut lesbare - technische Dokumentation ab 4) Überprüfe die Dokumentation im Repo auf Aktualität - aktualisiere, was notwendig auf den neusten Stand",
+        "plan": "docs/plans/ims_ap8_modelworld_documentation.md",
+        "acceptance_impact": "Eigene Produkt-/Browser-/Installerbelege; historische Abnahmen unverändert. Anwenderabnahme pending, Merge nicht autorisiert. Mockup-Pause nur Anzeige, kein fortsetzbarer Kernzustand.",
+        "product_commit": "6117b72eb48a05d93b73e354099e5528a8b0ba6b",
+        "verification": "docs/reports/ims_ap8_modelworld_verification.json"
+      },
+      "completion_evidence": [
+        "docs/reports/ims_ap8_modelworld_abschlussbericht.md",
+        "docs/reports/ims_ap8_modelworld_produktpruefung.md",
+        "docs/reports/ims_ap8_modelworld_verification.json: vier grüne Produktchecks an 6117b72eb48a05d93b73e354099e5528a8b0ba6b; 2764 Python-Tests/14 Subtests, 99 Browserfälle/99 installierte Browserfälle, 14 Lifecycle-Prüfungen",
+        "docs/handbook/market_ap8.md, rechenkern.md und eingabeinventar.md: alpha.11; 424 Ressourcen am Produkt-Tree geprüft"
+      ]
     },
     {
       "id": "AP9",
       "title": "Einsteigerhandbuch und gemeinsame Seminarabnahme",
       "status": "planned",
-      "depends_on": ["AP8"],
+      "depends_on": [
+        "AP8"
+      ],
       "branch_proposal": "codex/ims-role-seminar-acceptance",
-      "deliverables": ["Vollständiges installiertes Einsteiger-/Wiedereinsteigerhandbuch", "Begriffskarte, vier Rollenwege, vier Schockgeschichten und Gruppen-/Diagrammhilfe", "Gemeinsamer Seminarpfad mit Moderationsvorschlag und tatsächlichen Bildern", "Dokumentierte Benutzer-, Browser-, Installer- und Produktabnahme"],
-      "acceptance": ["Vier Rollen durchlaufen die vier Demos mit demselben Fallvertrag", "Einsteiger und Altprogrammierer können eine Veränderung bis Eingabe/Buchung erklären", "Bedien-/Lauf-/Speichermessungen getrennt von Schätzungen", "Offline-Anleitung aus dem tatsächlichen Installer erreichbar", "Installation, Update, Datenerhalt und installierte Browseroberfläche geprüft", "Release unten links stimmt mit Backend und Installer überein"],
-      "gates": ["Tatsächliche Benutzerabnahme und wissenschaftliche Grenzen dokumentiert; keine unbelegte fachliche Gleichwertigkeit"],
+      "deliverables": [
+        "Vollständiges installiertes Einsteiger-/Wiedereinsteigerhandbuch",
+        "Begriffskarte, vier Rollenwege, vier Schockgeschichten und Gruppen-/Diagrammhilfe",
+        "Gemeinsamer Seminarpfad mit Moderationsvorschlag und tatsächlichen Bildern",
+        "Dokumentierte Benutzer-, Browser-, Installer- und Produktabnahme"
+      ],
+      "acceptance": [
+        "Vier Rollen durchlaufen die vier Demos mit demselben Fallvertrag",
+        "Einsteiger und Altprogrammierer können eine Veränderung bis Eingabe/Buchung erklären",
+        "Bedien-/Lauf-/Speichermessungen getrennt von Schätzungen",
+        "Offline-Anleitung aus dem tatsächlichen Installer erreichbar",
+        "Installation, Update, Datenerhalt und installierte Browseroberfläche geprüft",
+        "Release unten links stimmt mit Backend und Installer überein"
+      ],
+      "gates": [
+        "Tatsächliche Benutzerabnahme und wissenschaftliche Grenzen dokumentiert; keine unbelegte fachliche Gleichwertigkeit"
+      ],
       "completion_evidence": []
     }
   ]

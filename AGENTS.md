@@ -137,6 +137,82 @@ Wechselwirkungen und Korrelation. Kein AP8-Merge, öffentliches Release oder
 AP9–AP14-Auftrag. Die früheren
 Freigabegrenzen oben dokumentieren die damaligen Aufträge.
 
+AP7 wurde am 03.10.2026 tatsächlich über PR #296 nach main übernommen
+(`32ba3112d994f57f33e64e1bc318e7d095223cd0`); `docs/reports/ims_ap7_merge.md`.
+Alle vier Checks an f440f4c bestanden, main-Tree identisch, 372 Ressourcen
+unverändert und vier vollständige Ergebnisdigests gleich zur gelieferten Fassung.
+Danach begann AP8 im Branch `codex/ims-market-visualizations` nach erfolgreich
+erzeugtem authorized-Auftrag gegen tatsächliches origin/main. Paketplan und
+Darstellungsvertrag: `docs/plans/ims_ap8_implementation.md`,
+`docs/plans/ims_ap8_view_contract.md`; Stand `docs/reports/ims_ap8_fortschritt.md`.
+AP8 liefert sechs verknüpfte Ansichten und die separat angenommene E08-01 mit
+eigener Herkunft. Bestehende Rechnungen bleiben unverändert; Filter verändern
+keinen Lauf. Nenner/Gewichte/Zeitpunkte und Addition/Kanal/Wechselwirkung/
+Korrelation explizit erklären. Ein Paket-PR einschließlich API/UI/Tests/
+Anleitung/Installer; keine zusätzliche Vertragsannahme erfinden. Kein AP8-Merge,
+öffentliches Release oder AP9–AP14-Auftrag.
+AP8 ist im angenommenen Umfang technisch fertig (`done`) im Paket-PR #297.
+Produktpunkt `17cbf5e631233ff5e5f5153a673a2eb6adaa7375`: vier echte Produktchecks
+erfolgreich, 2.764 Python-Tests/14 Subtests, 83 Browserfälle, 14 Installer-Lifecycle-
+und 83 installierte Browserprüfungen. Alle vier 100er-/25er-Prefixfälle erhalten
+die AP7-Modell-Digests; Checkout und installierte Anwendung stimmen überein.
+Sechs verknüpfte Ansichten, E08-01 Fokus/Rivalen/Modellmarkt, sichtbare ICT-Pfade,
+Nenner/Gewichte/Buchungsbrücke und frische JSON-/Einzel-VU-Exporte geliefert.
+Alpha.8 / Windows 2.0.0.8, Offline-Anleitung mit zwölf echten Bildern und
+387 an den Git-Tree gebundene Ressourcen. Unversicherter Schaden bleibt
+ausdrücklich außerhalb der VU-Bücher. Belege `docs/reports/ims_ap8_abschlussbericht.md`,
+`ims_ap8_produktpruefung.md` und `ims_ap8_verification.json`.
+Anwenderabnahme/Merge für AP8 weiter offen; kein öffentlicher Release/AP9–AP14.
+Ein done-Status im Branch ersetzt keinen nach main übernommenen Abhängigkeitsbeleg.
+
+Am 03.10.2026 meldete der Auftraggeber zunehmende Orientierungsprobleme und
+hielt die Oberfläche für nicht vorzeigbar. AP8 ist deshalb im selben Paket-PR
+#297 erneut in Arbeit: `docs/plans/ims_ap8_usability_correction.md`.
+Direkte Markt-Navigation, getrennte Arbeitsbereiche, jeweils eine von sechs
+Ansichten, klarer Lade-/Rechenablauf und erhaltene Zustände werden überprüft.
+Die neue Produktfassung alpha.9 bezeichnet die AP8-Bedienkorrektur, kein AP9.
+Frühere alpha.8-Abschlussbelege bleiben historisch; neue Produktprüfungen sind
+separat erforderlich. Damaliges AP8-Manifest in_progress/technically_complete
+false. Anwenderabnahme und Merge bleiben offen, AP9–AP14 nicht beauftragt.
+
+Am vom Client ausgewiesenen 04.10.2026 beauftragte der Anwender die gesamte
+Benutzerführung anhand vier Cockpitbildern erneut: Vorstandsstrategien endogen,
+Marktänderungen durch Schocks/Regulierung/Entwicklungen exogen. AP8 wird im
+selben PR #297 als gemeinsames Marktexperiment weitergeführt; Plan
+`docs/plans/ims_ap8_experiment_cockpit.md`. Produkt alpha.10 bezeichnet diese
+Bedien-/Gestaltungskorrektur, kein AP9. Bestehende AP5-/AP7-Eingabekanäle werden
+verbunden, der Simulationskern bleibt unverändert. Neue Produkt-, Browser- und
+Installerbelege sind erforderlich; frühere Fassungen bleiben historisch.
+Anwenderabnahme/Merge und AP9–AP14 bleiben offen beziehungsweise nicht beauftragt.
+
+AP8-Cockpitkorrektur alpha.10 ist am 04.10.2026 technisch fertig (`done`) im selben
+PR #297. Produktpunkt `11384cf69f14f52d3c0f0ae72537986a94484e57`: vier erfolgreiche
+Produktchecks, 2764 Python-Tests/14 Subtests, 91 Browserfälle und 14 Lifecycle-/
+91 installierte Browserprüfungen. 409 Ressourcen am Git-Tree gebunden;
+authentischer Windows-Installer 2.0.0.10 geliefert. Gemeinsames Marktexperiment
+mit endogenen Vorstands-/VN-Eingaben, exogenen Ereignissen, tatsächlichem ICT-Netz,
+frischen Exporten und aktueller Offline-Anleitung. Vier AP7-Modell-Digests und
+Kernverträge unverändert. Belege `docs/reports/ims_ap8_cockpit_abschlussbericht.md`,
+`ims_ap8_cockpit_produktpruefung.md`, `ims_ap8_cockpit_verification.json`.
+Aktuelles Manifest done/technically_complete true; frühere alpha.8/alpha.9-
+Stände oben bleiben historisch. Anwenderabnahme pending, Merge nicht autorisiert,
+kein öffentlicher Release/AP9–AP14-Auftrag. Der spätere Dokumentationshead ist
+vom geprüften Produktpunkt zu unterscheiden; keine Produktressource verändert.
+
+Am 06.10.2026 beauftragte der Anwender vier weitere UI-Designreferenzen,
+ein notwendiges Eingabeinventar, Grafiken des Rechenkerns mit fachlichen
+Abweichungen zum ursprünglichen IMS und einen Dokumentationsaudit. AP8 bleibt
+im selben PR #297; Plan `docs/plans/ims_ap8_modelworld_documentation.md`.
+Alpha.11 bezeichnet Modellwelt, Unternehmensportfolio und Wiedergabe bereits
+vollständig berechneter Perioden, keinen pausierbaren Kernzustand und kein AP9.
+Die AP5-/AP7-Rechnungen bleiben unverändert. Frühere alpha.10-Belege bleiben
+historisch. Alpha.11 ist technisch fertig am Produktpunkt 6117b72eb48a05d93b73e354099e5528a8b0ba6b:
+2764 Python-Tests/14 Subtests, 99 Checkout-/99 installierte Browserfälle,
+14 Lifecycle-Prüfungen und 424 Git-Tree-gebundene Ressourcen. Belege
+`docs/reports/ims_ap8_modelworld_produktpruefung.md` und
+`ims_ap8_modelworld_verification.json`. Marktkerne und vier AP7-Digests unverändert. Anwenderabnahme
+und Merge weiter offen, kein öffentliches Release oder AP9–AP14-Auftrag.
+
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
 geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige

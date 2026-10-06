@@ -1,5 +1,7 @@
 # AP5: gemeinsamer moderner Markt
 
+Aktuelle Einordnung 06.10.2026: Dieser Text beschreibt den AP5-Vertrag. Spätere AP6-/AP7-Erweiterungen liefern den gekennzeichneten BaFin-Referenzfall, Lebens-Neugeschäft und begrenzte Markt-/ICT-Kopplung. Der [heutige Rechenkernüberblick](../handbook/rechenkern.md) unterscheidet diese Ergänzungen von AP5-Grenzen.
+
 Der am 02.10.2026 angenommene [Marktvertrag](../plans/ims_ap5_market_contract.md)
 ist eine eigene deklarierte Modellrechnung. AP3-Verträge und historische
 25er-Validatoren bleiben erhalten. Keine vollständige historische Gleichheit.

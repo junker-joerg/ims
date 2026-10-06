@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 850" role="img" aria-labelledby="title desc"><title id="title">Eine AP7-Periode · der kausale Wirkungspfad</title><desc id="desc">24 Prozessstunden = 1 Modellperiode · Prozessplan wird vor der finanziellen Seitenauswertung erstellt. Prozessplan → Buchungsadapter, keine zweite Ereignissimulation. Original-ESS-Aktionsmischung wird hier nicht nachgebildet.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L8 3L0 6Z" fill="#476781"/></marker></defs>
+<rect width="1280" height="850" fill="#f6f9fc"/>
+<text x="40" y="50" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#102b46">Eine AP7-Periode · der kausale Wirkungspfad</text>
+<text x="40" y="84" font-family="Arial,sans-serif" font-size="19" fill="#284966">24 Prozessstunden = 1 Modellperiode · Prozessplan wird vor der finanziellen Seitenauswertung erstellt</text>
+<path d="M610 210L670 210" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M950 295L950 350" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M670 450L610 450" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M330 540L330 600" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M610 675L670 675" stroke="#476781" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="125" width="570" height="170" rx="12" fill="white" stroke="#565bb4" stroke-width="2"/><rect x="40" y="125" width="6" height="170" rx="3" fill="#565bb4"/>
+<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#565bb4">1 · Vorperiodische Fertigstellungen</text>
+<text x="60" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Abgeschlossene Anträge aus P−1 werden in P wirksam.</text>
+<text x="60" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Altverträge bleiben bei wartendem Wechsel erhalten.</text>
+<text x="60" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Neue Lebenspolicen behalten ihre eigene Garantie.</text>
+<rect x="670" y="125" width="570" height="170" rx="12" fill="white" stroke="#087c86" stroke-width="2"/><rect x="670" y="125" width="6" height="170" rx="3" fill="#087c86"/>
+<text x="690" y="157" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#087c86">2 · Angebote und neue Anträge</text>
+<text x="690" y="188" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Familie + wirksame Parameter / Antwort → Angebot</text>
+<text x="690" y="214" font-family="Arial,sans-serif" font-size="18" fill="#172e42">VN-Auswahl; Lebenspool deterministisch verteilt</text>
+<text x="690" y="240" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Noch kein neuer Vertrag allein durch einen Antrag</text>
+<rect x="40" y="350" width="570" height="190" rx="12" fill="white" stroke="#565bb4" stroke-width="2"/><rect x="40" y="350" width="6" height="190" rx="3" fill="#565bb4"/>
+<text x="60" y="382" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#565bb4">4 · FIFO-Arbeit auf Ressourcen</text>
+<text x="60" y="413" font-family="Arial,sans-serif" font-size="18" fill="#172e42">shock_process.py: Anträge, Claims, Service</text>
+<text x="60" y="439" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Geteilte Kapazität, Teilfortschritt und Warteschlange</text>
+<text x="60" y="465" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Fertige Anträge werden erst in P+1 wirksam.</text>
+<text x="60" y="491" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Kosten nach deklarierten Trägergewichten, Summe 1</text>
+<rect x="670" y="350" width="570" height="190" rx="12" fill="white" stroke="#565bb4" stroke-width="2"/><rect x="670" y="350" width="6" height="190" rx="3" fill="#565bb4"/>
+<text x="690" y="382" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#565bb4">3 · Ereignisse und Antworten</text>
+<text x="690" y="413" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Zeitüberschneidung → transitive Abhängigkeiten</text>
+<text x="690" y="439" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Konkreten Ersatzpfad prüfen → verfügbare Stunden</text>
+<text x="690" y="465" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Gemeinsame Ressource einmal zählen</text>
+<text x="690" y="491" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Ereignis-/Antwortkosten genau einmal buchen</text>
+<rect x="40" y="600" width="570" height="155" rx="12" fill="white" stroke="#087c86" stroke-width="2"/><rect x="40" y="600" width="6" height="155" rx="3" fill="#087c86"/>
+<text x="60" y="632" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#087c86">5 · Verträge, Risiko und Spartenbücher</text>
+<text x="60" y="663" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Beiträge nur beim wirksamen Vertrag</text>
+<text x="60" y="689" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Nichtleben: A = L + E; Aufwand ≠ Auszahlung</text>
+<text x="60" y="715" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Leben/Kranken: bestehende isolierte Kernverträge</text>
+<rect x="670" y="600" width="570" height="155" rx="12" fill="white" stroke="#ac5710" stroke-width="2"/><rect x="670" y="600" width="6" height="155" rx="3" fill="#ac5710"/>
+<text x="690" y="632" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#ac5710">6 · Aggregate und Nachweise</text>
+<text x="690" y="663" font-family="Arial,sans-serif" font-size="18" fill="#172e42">VU-/Spartenzeilen summieren; Nenner offenlegen</text>
+<text x="690" y="689" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Snapshot P ist für VU in P+1 verfügbar.</text>
+<text x="690" y="715" font-family="Arial,sans-serif" font-size="18" fill="#172e42">Claims/Service verändern keine Leistungszahlung.</text>
+<text x="40" y="810" font-family="Arial,sans-serif" font-size="18" fill="#284966">Prozessplan → Buchungsadapter, keine zweite Ereignissimulation. Original-ESS-Aktionsmischung wird hier nicht nachgebildet.</text></svg>

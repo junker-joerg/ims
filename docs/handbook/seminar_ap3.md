@@ -7,7 +7,7 @@ moderne Annahmen bestätigt. Die historische Spartenidentität ist nicht belegt.
 
 ## Ohne Quellcode beginnen
 
-Starten Sie die installierte IMS Workbench und wählen Sie **Simulation →
+Starten Sie die installierte IMS Workbench und wählen Sie **Modellwerkzeuge →
 Managementseminar**. Drei vorbereitete Fälle sind direkt verfügbar. Mit
 **Kuratierte Demo öffnen** werden alle Quellen neu geprüft und gerechnet;
 die Demo ist gegen Änderungen gesperrt und legt keine neuen Kandidaten oder
