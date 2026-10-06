@@ -33,6 +33,8 @@ for (const theme of ["light","dark"]) for(const viewport of [{width:1440,height:
   expect((await new AxeBuilder({page}).analyze()).violations).toEqual([]);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
   await panel.getByRole("button",{name:"Laufansicht",exact:true}).click();const replay=panel.getByTestId("run-replay");
+  await expect(replay).toContainText("Ausgewählter Schlussrückstand · Anzahl Vorgänge");
+  await expect(replay).toContainText("Anzahl wartender Antrags-, Schaden- und Servicevorgänge");
   await expect(replay).toContainText("Vollständiger Lauf bereits gerechnet");await replay.getByRole("button",{name:"Anzeige auf P1",exact:true}).click();
   await replay.getByRole("button",{name:"Eine Periode weiter",exact:true}).click();await expect(replay).toContainText("Anzeige P2 von 10");
   await replay.getByRole("button",{name:"Anzeige abspielen",exact:true}).click();await expect(replay).toContainText("Anzeige P3 von 10");

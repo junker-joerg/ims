@@ -1,4 +1,4 @@
-"""Render the AP3/AP4/AP5 guides as offline HTML, using their Markdown constructs."""
+"""Render IMS user guides, core documentation and input inventory as offline HTML."""
 import argparse
 from html import escape
 from pathlib import Path
