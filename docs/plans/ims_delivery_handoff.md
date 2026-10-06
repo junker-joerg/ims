@@ -1,8 +1,8 @@
 # IMS-Lieferübergabe
 
-## Aktuell: AP8 alpha.11 erneut in Arbeit
+## Aktuell: AP8 alpha.11 technisch fertig
 
-06.10.2026: Weitere vier Designreferenzen und Auftrag für Eingabeinventar, Rechenkern-Grafiken/Technikdokumentation und Dokumentationsaudit. [Umsetzungsplan](ims_ap8_modelworld_documentation.md). Fortsetzung im selben PR #297; unveränderte AP5-/AP7-Rechnungen, neue Modellwelt, Portfolio und Anzeige-Wiedergabe. Eigenständige aktuelle Produktprüfungen erforderlich. Keine AP8-Abnahme/Mergefreigabe, keine AP9–AP14-Umsetzung.
+06.10.2026: Weitere vier Designreferenzen und Auftrag für Eingabeinventar, Rechenkern-Grafiken/Technikdokumentation und Dokumentationsaudit. [Umsetzungsplan](ims_ap8_modelworld_documentation.md). Fortsetzung im selben PR #297; unveränderte AP5-/AP7-Rechnungen, neue Modellwelt, Portfolio und Anzeige-Wiedergabe. Vier echte grüne Produktchecks an `6117b72eb48a05d93b73e354099e5528a8b0ba6b`, 2764 Python-Tests/14 Subtests, 99 Checkout-/99 installierte Browserfälle, 14 Lifecycle-Prüfungen, 424 gebundene Ressourcen. [Produktprüfung](../reports/ims_ap8_modelworld_produktpruefung.md), [Verifikation](../reports/ims_ap8_modelworld_verification.json). Keine AP8-Abnahme/Mergefreigabe, keine AP9–AP14-Umsetzung.
 
 Die folgenden Übergaben bleiben historische Lieferbelege.
 

@@ -8,6 +8,8 @@ Stand: 06.10.2026, AP8 alpha.11. Auftrag umfasst aktuelle Benutzerführung, Eing
 
 Die aktuellen Handbuch-Einstiege, Menüwege, Releasehinweise und Aussagen zum gemeinsamen Markt wurden mit den tatsächlich vorhandenen UI-Komponenten und AP5-/AP6-/AP7-Verträgen verglichen. Originalherkunft und Abweichungen sind in [Rechenkern](../handbook/rechenkern.md) erläutert. Der frühere Gesamt-C-Gleichlauf wird nicht aus aktuellen modernen Prüfungen abgeleitet.
 
+Abschließendes Inventar vom 06.10.2026 einschließlich der neuen alpha.11-Abschlussbelege: 536 Textdokumente und 625 lokale Verweise erfasst, kein fehlendes Ziel. Die aktuelle Oberfläche ist an vier erfolgreiche Produktchecks gebunden; 99 Checkout- und 99 installierte Browserfälle, 14 Lifecycle-Prüfungen sowie 424 versionierte Installerressourcen sind nachgewiesen. Historische Berichte werden durch diese aktuellen Prüfungen nicht rückwirkend erweitert.
+
 ## Notwendige Korrekturen
 
 | Fund | Aktualisierung |

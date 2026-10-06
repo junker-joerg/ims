@@ -623,7 +623,7 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "AP7"
       ],
@@ -647,7 +647,7 @@
         "Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"
       ],
       "implementation_authorized": true,
-      "technically_complete": false,
+      "technically_complete": true,
       "merged_to_main": false,
       "user_product_acceptance": "pending",
       "merge_authorized": false,
@@ -712,15 +712,22 @@
         "docs/reports/ims_ap8_verification.json: historischer alpha.8-Produktbeleg bleibt erhalten"
       ],
       "modelworld_revision": {
-        "status": "in_progress",
+        "status": "done",
         "release": "2.0.0-alpha.11",
         "date": "2026-10-06",
         "scope": "Vier weitere Designreferenzen, Modellwelt/Portfolio/Laufwiedergabe, Eingabeinventar, Rechenkern-Grafiken und Aktualitätsprüfung; gleicher AP8-PR #297, keine neuen Modellkanäle.",
         "user_request": "1) Berücksichtige diese Designs bei der Überarbeitung der UI 2) Erstelle eine Liste von notwendigen Eingabe-Items aus dem bisherigen Design 3) Erstelle eine oder mehrere Grafiken des Rechenkerns inkl. den fachlichen Abweichungen zum ursprünglichen IMS und leite daraus eine - gut lesbare - technische Dokumentation ab 4) Überprüfe die Dokumentation im Repo auf Aktualität - aktualisiere, was notwendig auf den neusten Stand",
         "plan": "docs/plans/ims_ap8_modelworld_documentation.md",
-        "acceptance_impact": "Eigene Produkt-/Browser-/Installerbelege; historische Abnahmen unverändert. Anwenderabnahme pending, Merge nicht autorisiert. Mockup-Pause nur Anzeige, kein fortsetzbarer Kernzustand."
+        "acceptance_impact": "Eigene Produkt-/Browser-/Installerbelege; historische Abnahmen unverändert. Anwenderabnahme pending, Merge nicht autorisiert. Mockup-Pause nur Anzeige, kein fortsetzbarer Kernzustand.",
+        "product_commit": "6117b72eb48a05d93b73e354099e5528a8b0ba6b",
+        "verification": "docs/reports/ims_ap8_modelworld_verification.json"
       },
-      "completion_evidence": []
+      "completion_evidence": [
+        "docs/reports/ims_ap8_modelworld_abschlussbericht.md",
+        "docs/reports/ims_ap8_modelworld_produktpruefung.md",
+        "docs/reports/ims_ap8_modelworld_verification.json: vier grüne Produktchecks an 6117b72eb48a05d93b73e354099e5528a8b0ba6b; 2764 Python-Tests/14 Subtests, 99 Browserfälle/99 installierte Browserfälle, 14 Lifecycle-Prüfungen",
+        "docs/handbook/market_ap8.md, rechenkern.md und eingabeinventar.md: alpha.11; 424 Ressourcen am Produkt-Tree geprüft"
+      ]
     },
     {
       "id": "AP9",

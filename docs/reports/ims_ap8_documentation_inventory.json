@@ -14,6 +14,11 @@
       "classification": "entry_or_other",
       "links": [
         {
+          "target": "docs/reports/ims_ap8_modelworld_produktpruefung.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
           "target": "docs/handbook/market_ap8.md",
           "exists_in_checkout": true,
           "resolution": "document-relative"
@@ -4316,6 +4321,16 @@
           "resolution": "document-relative"
         },
         {
+          "target": "../reports/ims_ap8_modelworld_produktpruefung.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "../reports/ims_ap8_modelworld_verification.json",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
           "target": "../reports/ims_ap8_cockpit_abschlussbericht.md",
           "exists_in_checkout": true,
           "resolution": "document-relative"
@@ -5936,7 +5951,78 @@
       "review": "inventoried; dated component/plan/report evidence retained"
     },
     {
+      "path": "docs/reports/ims_ap8_modelworld_abschlussbericht.md",
+      "classification": "historical_report",
+      "links": [
+        {
+          "target": "ims_ap8_modelworld_produktpruefung.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "ims_ap8_modelworld_verification.json",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        }
+      ],
+      "review": "inventoried; dated component/plan/report evidence retained"
+    },
+    {
       "path": "docs/reports/ims_ap8_modelworld_fortschritt.md",
+      "classification": "historical_report",
+      "links": [
+        {
+          "target": "ims_ap8_modelworld_produktpruefung.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "ims_ap8_modelworld_verification.json",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "ims_ap8_modelworld_abschlussbericht.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        }
+      ],
+      "review": "inventoried; dated component/plan/report evidence retained"
+    },
+    {
+      "path": "docs/reports/ims_ap8_modelworld_produktpruefung.md",
+      "classification": "historical_report",
+      "links": [
+        {
+          "target": "../handbook/eingabeinventar.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "../handbook/rechenkern.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "ims_ap8_documentation_audit.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "ims_ap8_modelworld_verification.json",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        },
+        {
+          "target": "ims_ap8_cockpit_produktpruefung.md",
+          "exists_in_checkout": true,
+          "resolution": "document-relative"
+        }
+      ],
+      "review": "inventoried; dated component/plan/report evidence retained"
+    },
+    {
+      "path": "docs/reports/ims_ap8_modelworld_verification.json",
       "classification": "historical_report",
       "links": [],
       "review": "inventoried; dated component/plan/report evidence retained"
@@ -6358,8 +6444,8 @@
   ],
   "missing_local_links": [],
   "counts": {
-    "files": 533,
-    "links": 612,
+    "files": 536,
+    "links": 625,
     "missing": 0,
     "missing_current_handbook": 0
   }

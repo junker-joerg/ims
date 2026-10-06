@@ -1,0 +1,1768 @@
+{
+  "schema_version": "ims.ap8-modelworld-verification.v1",
+  "recorded_at_utc": "2026-10-06T07:47:16.480702+00:00",
+  "request_client_date": "2026-10-06",
+  "package": "AP8",
+  "release": "2.0.0-alpha.11",
+  "windows_file_version": "2.0.0.11",
+  "status": "technically_complete",
+  "pull_request": "https://github.com/junker-joerg/ims/pull/297",
+  "branch": "codex/ims-market-visualizations",
+  "product_proof": {
+    "verified": true,
+    "product_head": "6117b72eb48a05d93b73e354099e5528a8b0ba6b",
+    "product_tree": "4b8c247ad42064145a8bee6053b1027bec373ccc",
+    "ci_merge_commit": "f3ecba92ece38f6a2a37afb4167d5fbea1ee016d",
+    "main_dependency_commit": "32ba3112d994f57f33e64e1bc318e7d095223cd0",
+    "ci_tree_matches_head": true,
+    "checks": [
+      {
+        "name": "browser",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "6117b72eb48a05d93b73e354099e5528a8b0ba6b",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37426574864/job/112147756300",
+        "completed_at": "2026-10-06T07:40:10Z"
+      },
+      {
+        "name": "installer",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "6117b72eb48a05d93b73e354099e5528a8b0ba6b",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37426574893/job/112147638391",
+        "completed_at": "2026-10-06T07:31:56Z"
+      },
+      {
+        "name": "release-gate",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "6117b72eb48a05d93b73e354099e5528a8b0ba6b",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37426574862/job/112147594111",
+        "completed_at": "2026-10-06T07:17:51Z"
+      },
+      {
+        "name": "Plan prüfen und Codex-Auftrag vorbereiten",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "6117b72eb48a05d93b73e354099e5528a8b0ba6b",
+        "details_url": "https://github.com/junker-joerg/ims/actions/runs/37426574847/job/112147468593",
+        "completed_at": "2026-10-06T06:56:07Z"
+      }
+    ],
+    "installer": {
+      "download": {
+        "artifact_id": 11397180032,
+        "artifact_name": "IMS-Windows-x64-2.0.0-alpha.11-f3ecba92ece38f6a2a37afb4167d5fbea1ee016d",
+        "archive_bytes": 46484889,
+        "archive_sha256": "e1acc01e4f7e8438b2fb6c1ee32ef795f09ccb8f335d3f28c4b1c84b9a7ba2cb",
+        "extracted": [
+          "IMS-Setup-2.0.0-alpha.11-win-x64.exe",
+          "IMS-Setup-2.0.0-alpha.11-win-x64.exe.sha256",
+          "browser-report.json",
+          "build-evidence.json",
+          "installer-test-evidence.json",
+          "resource-inventory.json"
+        ],
+        "installer_bytes": 29277186,
+        "installer_sha256": "376a3c1d3d5d67eea8949170747c976fa0128951f71d2345ab0c0e961dd3ebef"
+      },
+      "build": {
+        "artifact": "IMS-Setup-2.0.0-alpha.11-win-x64.exe",
+        "sha256": "376a3c1d3d5d67eea8949170747c976fa0128951f71d2345ab0c0e961dd3ebef",
+        "bytes": 29277186,
+        "build_seconds": 64.9975339,
+        "commit": "f3ecba92ece38f6a2a37afb4167d5fbea1ee016d",
+        "version": "2.0.0-alpha.11",
+        "file_version": "2.0.0.11",
+        "inno": "6.7.3",
+        "dirty": false,
+        "node": "v22.23.3",
+        "python": "3.12.10",
+        "signed": false,
+        "clean_windows_acceptance": "pending"
+      },
+      "lifecycle": {
+        "success": true,
+        "failure": null,
+        "environment": "Windows with developer tools; executable PATH restricted to System32",
+        "clean_windows_acceptance": "pending",
+        "work": "D:\\a\\ims\\ims\\.tmp-pr-installer\\Installer Prüfung Ä 197cfb49",
+        "installer_sha256": "376a3c1d3d5d67eea8949170747c976fa0128951f71d2345ab0c0e961dd3ebef",
+        "previous_installer_sha256": "c3c7aef3b33a53f72a44c8ef47dd132cc393a87abb9987d21d27346d6b6a8028",
+        "previous_application_version": "2.0.0-alpha.11",
+        "previous_kind": "synthetic_same_bundle",
+        "seconds": 1971.2969229999999,
+        "tests": [
+          {
+            "test": "install_synthetic_previous_version",
+            "result": "passed",
+            "seconds": 3.4036689000000138
+          },
+          {
+            "test": "frozen_start_path_with_spaces_umlauts",
+            "result": "passed",
+            "seconds": 1.4585430999999858
+          },
+          {
+            "test": "second_start_same_process",
+            "result": "passed",
+            "seconds": 0.23771439999995891
+          },
+          {
+            "test": "existing_health_case_and_json_csv_xlsx_exports",
+            "result": "passed",
+            "seconds": 0.6961747000000287,
+            "input_digest": "sha256:a61f232cb0231a64169cdae2e0e36ffb62c37f8b08865b32f4c4b966bb7b0a48",
+            "result_digest": "sha256:44474a6edeaf262732204e44b0498b9c6b53e833e364c03d5104f9c75d8bd5f5"
+          },
+          {
+            "test": "update_while_running",
+            "result": "passed",
+            "seconds": 3.2649096999999756
+          },
+          {
+            "test": "start_after_update",
+            "result": "passed",
+            "seconds": 1.457336199999986
+          },
+          {
+            "test": "AP2_real_browser_against_installed_current_frontend",
+            "result": "passed",
+            "seconds": 1948.0527579000002
+          },
+          {
+            "test": "occupied_port_fails_without_foreign_browser",
+            "result": "passed",
+            "seconds": 0.8770905999999741
+          },
+          {
+            "test": "explicit_adoption_with_source_and_target_backups",
+            "result": "passed"
+          },
+          {
+            "test": "start_before_uninstall",
+            "result": "passed",
+            "seconds": 1.4214307000002009
+          },
+          {
+            "test": "uninstall_while_running_preserves_data",
+            "result": "passed",
+            "seconds": 1.8428994999999304
+          },
+          {
+            "test": "reinstall",
+            "result": "passed",
+            "seconds": 2.9110062999998263
+          },
+          {
+            "test": "restart_after_reinstall",
+            "result": "passed",
+            "seconds": 1.4427076000001762
+          },
+          {
+            "test": "stored_result_preserved_update_uninstall_reinstall",
+            "result": "passed"
+          }
+        ]
+      }
+    },
+    "resources": {
+      "count": 424,
+      "raw_git_blob_matches": 86,
+      "only_crlf_conversion": [
+        "docs/handbook/README.md",
+        "docs/handbook/data_and_updates.md",
+        "docs/handbook/eingabeinventar.html",
+        "docs/handbook/eingabeinventar.json",
+        "docs/handbook/eingabeinventar.md",
+        "docs/handbook/eingabeinventar_ui.json",
+        "docs/handbook/hundred_ap3.md",
+        "docs/handbook/ict_ap3.md",
+        "docs/handbook/images/ap8_core_architecture.svg",
+        "docs/handbook/images/ap8_core_deviations.svg",
+        "docs/handbook/images/ap8_core_period.svg",
+        "docs/handbook/installation_test_package_windows.md",
+        "docs/handbook/installation_windows.md",
+        "docs/handbook/installer_windows.md",
+        "docs/handbook/management_ap3.md",
+        "docs/handbook/management_ap4.html",
+        "docs/handbook/management_ap4.md",
+        "docs/handbook/management_seminar_guide.md",
+        "docs/handbook/market_ap5.html",
+        "docs/handbook/market_ap5.md",
+        "docs/handbook/market_ap6.html",
+        "docs/handbook/market_ap7.html",
+        "docs/handbook/market_ap7.md",
+        "docs/handbook/market_ap8.html",
+        "docs/handbook/market_ap8.md",
+        "docs/handbook/market_data_ap6.md",
+        "docs/handbook/operation.md",
+        "docs/handbook/quickstart_windows.md",
+        "docs/handbook/rechenkern.html",
+        "docs/handbook/rechenkern.md",
+        "docs/handbook/results_and_validation.md",
+        "docs/handbook/seminar_ap3.html",
+        "docs/handbook/seminar_ap3.md",
+        "docs/handbook/seminar_ap3_draft.md",
+        "docs/handbook/technical_reference.md",
+        "docs/handbook/user_guide_test_package.md",
+        "docs/handbook/workbench_ap2.md",
+        "docs/migration/README.md",
+        "docs/migration/agrsich_export_large_slice.md",
+        "docs/migration/agrsich_large_slice.md",
+        "docs/migration/agrsich_replay_plan.md",
+        "docs/migration/agrsich_replay_runner.md",
+        "docs/migration/agrsich_sector_policyholder_counts.md",
+        "docs/migration/agrsich_validation_report.md",
+        "docs/migration/agrsich_writer_and_reference_compare.md",
+        "docs/migration/ap5_common_market.md",
+        "docs/migration/ap6_bafin_reference.md",
+        "docs/migration/ap7_shock_contract.md",
+        "docs/migration/ap8_market_explorer.md",
+        "docs/migration/bav_frmdinf_extended_slice.md",
+        "docs/migration/bav_frmdinf_sector_vectors.md",
+        "docs/migration/bav_service_slice.md",
+        "docs/migration/bav_update_slice.md",
+        "docs/migration/calculated_export_provenance_map.md",
+        "docs/migration/calculated_legacy_deviation_report.md",
+        "docs/migration/calculated_legacy_multi_period_contract.md",
+        "docs/migration/controlled_event_loop.md",
+        "docs/migration/controlled_execution_adapter.md",
+        "docs/migration/controlled_execution_adapter_contract.md",
+        "docs/migration/eighth_fachlicher_regressionstest.md",
+        "docs/migration/entity_mapping.md",
+        "docs/migration/event_builder_modularization.md",
+        "docs/migration/explicit_period_legacy_targets.md",
+        "docs/migration/explicit_period_plan_legacy_targets.md",
+        "docs/migration/explicit_period_transition_diagnostics.md",
+        "docs/migration/explicit_vu14_calculated_deviation_slice.md",
+        "docs/migration/explicit_vu_vn_period_plan.md",
+        "docs/migration/explicit_vu_vn_period_runner.md",
+        "docs/migration/fachlogik_migration_status.md",
+        "docs/migration/fifth_fachlicher_regressionstest.md",
+        "docs/migration/first_fachlicher_regressionstest.md",
+        "docs/migration/first_slice.md",
+        "docs/migration/four_sector_model_balance.md",
+        "docs/migration/fourth_fachlicher_regressionstest.md",
+        "docs/migration/historical_100_period_corpus_delivery.md",
+        "docs/migration/historical_300_period_rule_delivery.md",
+        "docs/migration/historical_500_period_vn_class_delivery.md",
+        "docs/migration/historical_500_period_vn_rule_delivery.md",
+        "docs/migration/historical_500_period_vu_class_delivery.md",
+        "docs/migration/historical_500_period_vusk1_delivery.md",
+        "docs/migration/historical_archive_manifest.md",
+        "docs/migration/historical_archive_run_metadata.md",
+        "docs/migration/historical_horizon_contract.md",
+        "docs/migration/historical_reference_archive_coherence.md",
+        "docs/migration/historical_reference_layer_contract.md",
+        "docs/migration/ims_2x_deterministic_health_case.md",
+        "docs/migration/ims_2x_deterministic_life_case.md",
+        "docs/migration/ims_2x_health_period_chain.md",
+        "docs/migration/ims_2x_health_period_sources.md",
+        "docs/migration/ims_2x_health_result_delivery.md",
+        "docs/migration/ims_2x_health_sector_contract.md",
+        "docs/migration/ims_2x_health_workbench.md",
+        "docs/migration/ims_2x_hundred_period_results_workbench.md",
+        "docs/migration/ims_2x_insurer_balance_workbench.md",
+        "docs/migration/ims_2x_legacy_damage_adapter.md",
+        "docs/migration/ims_2x_life_assumptions.md",
+        "docs/migration/ims_2x_life_closed_cohort_death_capital.md",
+        "docs/migration/ims_2x_life_cohort_new_business.md",
+        "docs/migration/ims_2x_life_period_chain.md",
+        "docs/migration/ims_2x_life_policy_maturity.md",
+        "docs/migration/ims_2x_life_result_delivery.md",
+        "docs/migration/ims_2x_life_sector_contract.md",
+        "docs/migration/ims_2x_life_v3_contract.md",
+        "docs/migration/ims_2x_life_workbench.md",
+        "docs/migration/ims_2x_model_balance_contract.md",
+        "docs/migration/ims_2x_non_life_model_balance.md",
+        "docs/migration/ims_2x_sector_strategy_plan.md",
+        "docs/migration/ims_2x_sector_taxonomy.md",
+        "docs/migration/ims_2x_strategy_assignment_contract.md",
+        "docs/migration/ims_2x_strategy_assignment_draft.md",
+        "docs/migration/ims_2x_strategy_assignment_draft_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_context.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_context_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization_contract.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_materialization_validation.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_translation.md",
+        "docs/migration/ims_2x_strategy_assignment_snapshot_translation_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization_contract.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization_ui.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_materialization_validation.md",
+        "docs/migration/ims_2x_strategy_assignment_vu_snapshot_state_validation.md",
+        "docs/migration/ims_2x_strategy_catalog.md",
+        "docs/migration/ims_2x_strategy_catalog_ui.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_build.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_contract.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_effect_probe.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_effect_probe_browser_acceptance.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_effect_probe_start.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_run_control.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_store.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_ui.md",
+        "docs/migration/ims_2x_strategy_execution_candidate_validation.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_bounded_runner_contract.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_build.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_contract.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_effect_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_effect_probe_browser_acceptance.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_effect_probe_start.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_extended_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_build.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe_browser_acceptance.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_five_period_effect_probe_start.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_horizon_contract.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_hundred_period_probe.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_resolution.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_run_control.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_store.md",
+        "docs/migration/ims_2x_strategy_execution_period_chain_validation.md",
+        "docs/migration/ims_2x_strategy_execution_result_bundle.md",
+        "docs/migration/ims_ap1_windows_installer.md",
+        "docs/migration/ims_ap3_guided_period_chain.md",
+        "docs/migration/ims_ap3_ict_workshop.md",
+        "docs/migration/ims_ap3_management_case.md",
+        "docs/migration/ims_ap3_modern_strategy_bridge.md",
+        "docs/migration/ims_inventory.md",
+        "docs/migration/insurer_class_family_imsvuvk.md",
+        "docs/migration/legacy_agrsich_multi_period_step.md",
+        "docs/migration/legacy_agrsich_validation_step.md",
+        "docs/migration/legacy_bav_field_mapping.md",
+        "docs/migration/legacy_bav_service_mapping.md",
+        "docs/migration/legacy_vn_validation_step.md",
+        "docs/migration/level_iv_selector_canonicalization.md",
+        "docs/migration/loop_period_progression.md",
+        "docs/migration/minimal_simulation_loop.md",
+        "docs/migration/mixed_controlled_event_loop.md",
+        "docs/migration/mixed_loop_period_progression.md",
+        "docs/migration/ninth_fachlicher_regressionstest.md",
+        "docs/migration/orchestration_modularization.md",
+        "docs/migration/parameter_output_vu014pr1.md",
+        "docs/migration/period_plan_context_overrides.md",
+        "docs/migration/period_plan_input_validation.md",
+        "docs/migration/period_progression.md",
+        "docs/migration/portable_user_test_package.md",
+        "docs/migration/priority_sequence.md",
+        "docs/migration/production_release_corpus_report.md",
+        "docs/migration/python_target_architecture.md",
+        "docs/migration/result_builder_modularization.md",
+        "docs/migration/rng_strategy.md",
+        "docs/migration/run_control_adapter_result_api_contract.md",
+        "docs/migration/run_control_adapter_result_contract.md",
+        "docs/migration/run_control_adapter_start_contract.md",
+        "docs/migration/run_control_atomic_adapter_start.md",
+        "docs/migration/run_control_browser_demo_smoke.md",
+        "docs/migration/run_control_execution_flow_ui.md",
+        "docs/migration/run_control_execution_history.md",
+        "docs/migration/run_control_execution_release_check.md",
+        "docs/migration/run_control_execution_result_store.md",
+        "docs/migration/run_control_execution_result_view.md",
+        "docs/migration/scheduled_explicit_vu_vn_period.md",
+        "docs/migration/scheduler_dispatch_slice.md",
+        "docs/migration/scheduler_mapping.md",
+        "docs/migration/second_event_type.md",
+        "docs/migration/second_fachlicher_regressionstest.md",
+        "docs/migration/seventh_fachlicher_regressionstest.md",
+        "docs/migration/sixth_fachlicher_regressionstest.md",
+        "docs/migration/tenth_fachlicher_regressionstest.md",
+        "docs/migration/third_fachlicher_regressionstest.md",
+        "docs/migration/two_event_sequence.md",
+        "docs/migration/vdefmd6_100_period_run_contract.md",
+        "docs/migration/vdefmd6_300_period_state_contract.md",
+        "docs/migration/vdefmd6_500_period_state_contract.md",
+        "docs/migration/vdefmd6_action_seed_contract.md",
+        "docs/migration/vdefmd6_core_export_review.md",
+        "docs/migration/vdefmd6_population_builder.md",
+        "docs/migration/vdefmd6_pre_shock_run_contract.md",
+        "docs/migration/vdefmd6_pre_shock_snapshot_contract.md",
+        "docs/migration/vdefmd6_vn_aggregate_run_contract.md",
+        "docs/migration/vdefmd6_vn_input_draw_contract.md",
+        "docs/migration/vdefmd6_vn_rule_group_1_run_contract.md",
+        "docs/migration/vdefmd6_vn_rule_group_2_run_contract.md",
+        "docs/migration/vdefmd6_vu_aggregate_run_contract.md",
+        "docs/migration/vdefmd6_vu_snapshot_contract.md",
+        "docs/migration/vn_agrsich_legacy_targets.md",
+        "docs/migration/vn_agrsich_replay.md",
+        "docs/migration/vn_agrsich_replay_plan.md",
+        "docs/migration/vn_best_info_insurance_rule.md",
+        "docs/migration/vn_class_family_imsvnvk.md",
+        "docs/migration/vn_compulsory_insurance_rule.md",
+        "docs/migration/vn_damage_core.md",
+        "docs/migration/vn_damage_draw_basis.md",
+        "docs/migration/vn_damage_settlement_link.md",
+        "docs/migration/vn_explicit_damage_period.md",
+        "docs/migration/vn_insurance_rule_dispatch.md",
+        "docs/migration/vn_multi_period_runner.md",
+        "docs/migration/vn_period_plan_legacy_targets.md",
+        "docs/migration/vn_preference_insurance_rule.md",
+        "docs/migration/vn_random_insurance_rule.md",
+        "docs/migration/vn_rule_family_imsvnr.md",
+        "docs/migration/vn_sample_search_insurance_rule.md",
+        "docs/migration/vn_search_insurance_rule.md",
+        "docs/migration/vn_settlement_core.md",
+        "docs/migration/vn_snapshot_target_integrity.md",
+        "docs/migration/vn_state_carryover.md",
+        "docs/migration/vu14_100_period_generation_contract.md",
+        "docs/migration/vu14_pre_shock_projection.md",
+        "docs/migration/vu14_vdefmd6_source_binding.md",
+        "docs/migration/vu_expected_claim_rule.md",
+        "docs/migration/vu_foreign_info_period_runner.md",
+        "docs/migration/vu_foreign_info_rule_core.md",
+        "docs/migration/vu_free_linear_rule.md",
+        "docs/migration/vu_global_period_order.md",
+        "docs/migration/vu_market_share_active_count.md",
+        "docs/migration/vu_market_share_markup_rule.md",
+        "docs/migration/vu_markup_reserve_rule.md",
+        "docs/migration/vu_net_switcher_carryover_window.md",
+        "docs/migration/vu_net_switcher_markup_rule.md",
+        "docs/migration/vu_net_switcher_previous_policyholders.md",
+        "docs/migration/vu_random_draw_basis.md",
+        "docs/migration/vu_random_rule_kernels.md",
+        "docs/migration/vu_replay_legacy_targets.md",
+        "docs/migration/windows_release_gate.md",
+        "docs/migration/workbench_demo_checklist.md",
+        "docs/migration/workbench_metadata_recovery.md",
+        "docs/migration/workbench_packaging_plan.md",
+        "docs/migration/workbench_release_checklist.md",
+        "docs/migration/workbench_run_control_plan.md",
+        "docs/migration/workbench_shell.md",
+        "docs/migration/zins000_reference_layer.md",
+        "seminar_cases/bafin_2024_catalog.json",
+        "seminar_cases/capital.json",
+        "seminar_cases/inflation.json",
+        "seminar_cases/price.json",
+        "tests/fixtures/calculated_vu14_explicit_slice.json",
+        "tests/fixtures/calculated_vu14_validation_slice.json",
+        "tests/fixtures/health_model_balance_v1.json",
+        "tests/fixtures/health_period_chain_v1.json",
+        "tests/fixtures/health_period_sources_v1.json",
+        "tests/fixtures/legacy_validation_batch.json",
+        "tests/fixtures/legacy_validation_bundle.json",
+        "tests/fixtures/legacy_vn05_alignment.json",
+        "tests/fixtures/legacy_vnsk1_alignment.json",
+        "tests/fixtures/legacy_vu14_alignment.json",
+        "tests/fixtures/legacy_vusk1_alignment.json",
+        "tests/fixtures/legacy_zins000_reference_layer.json",
+        "tests/fixtures/life_assumptions_v1.json",
+        "tests/fixtures/life_closed_cohort_v1.json",
+        "tests/fixtures/life_cohort_balance_v1.json",
+        "tests/fixtures/life_model_balance_v1.json",
+        "tests/fixtures/life_period_chain_v1.json",
+        "tests/fixtures/life_policy_balance_v1.json",
+        "tests/fixtures/minimal_scenario.json",
+        "tests/fixtures/non_life_model_balance_v1.json",
+        "tests/fixtures/replay_vn_policyholder_transition_plan.json",
+        "tests/fixtures/replay_vu14_period_plan.json",
+        "tests/fixtures/replay_vu14_window.json",
+        "tests/fixtures/replay_vusk1_period_plan.json",
+        "tests/fixtures/replay_vusk1_window.json",
+        "tests/fixtures/sector_strategy_plan_v1.json",
+        "tests/fixtures/strategy_assignment_draft_v1.json",
+        "tests/fixtures/strategy_assignment_snapshot_context_v1.json",
+        "tests/fixtures/strategy_assignment_snapshot_materialization_validation_v1.json",
+        "tests/fixtures/strategy_assignment_snapshot_materialization_vn_context_v1.json",
+        "tests/fixtures/strategy_execution_candidate_input_v1.json",
+        "tests/fixtures/strategy_execution_period_chain_input_v1.json",
+        "tests/fixtures/vdefmd6_100_period_run_contract.json",
+        "tests/fixtures/vdefmd6_300_period_state_contract.json",
+        "tests/fixtures/vdefmd6_500_period_state_contract.json",
+        "tests/fixtures/vdefmd6_action_seed_contract.json",
+        "tests/fixtures/vdefmd6_core_export_run_contract.json",
+        "tests/fixtures/vdefmd6_core_export_window_bundle.json",
+        "tests/fixtures/vdefmd6_population_contract.json",
+        "tests/fixtures/vdefmd6_pre_shock_run_contract.json",
+        "tests/fixtures/vdefmd6_pre_shock_snapshot_contract.json",
+        "tests/fixtures/vdefmd6_vn_aggregate_run_contract.json",
+        "tests/fixtures/vdefmd6_vn_input_draw_contract.json",
+        "tests/fixtures/vdefmd6_vn_rule_group_1_run_contract.json",
+        "tests/fixtures/vdefmd6_vn_rule_group_2_run_contract.json",
+        "tests/fixtures/vdefmd6_vu_aggregate_run_contract.json",
+        "tests/fixtures/vdefmd6_vu_snapshot_contract.json",
+        "tests/fixtures/vu14_100_period_generation_contract.json",
+        "tests/fixtures/vu14_pre_shock_projection_contract.json",
+        "tests/fixtures/vu14_vdefmd6_source_binding.json",
+        "tests/references/legacy_agrsich/IMSVNR01.DAT",
+        "tests/references/legacy_agrsich/IMSVNR02.DAT",
+        "tests/references/legacy_agrsich/IMSVNR03.DAT",
+        "tests/references/legacy_agrsich/IMSVNR04.DAT",
+        "tests/references/legacy_agrsich/IMSVNR05.DAT",
+        "tests/references/legacy_agrsich/IMSVNR06.DAT",
+        "tests/references/legacy_agrsich/IMSVNSK1.DAT",
+        "tests/references/legacy_agrsich/IMSVNVK1.DAT",
+        "tests/references/legacy_agrsich/IMSVNVK2.DAT",
+        "tests/references/legacy_agrsich/IMSVNVK3.DAT",
+        "tests/references/legacy_agrsich/IMSVUVK1.DAT",
+        "tests/references/legacy_agrsich/IMSVUVK2.DAT",
+        "tests/references/legacy_agrsich/IMSVUVK3.DAT",
+        "tests/references/legacy_agrsich/VU14L1.DAT",
+        "tests/references/legacy_agrsich/VUSK1L1.DAT",
+        "tests/references/legacy_agrsich/VUSK1L2.DAT",
+        "tests/references/legacy_agrsich/VUSK1L3.DAT",
+        "tests/references/legacy_agrsich/VUSK1L4.DAT",
+        "tests/references/legacy_agrsich/VUSK1L5.DAT",
+        "tests/references/legacy_agrsich/zins000/IMSVU014.DAT",
+        "tests/references/legacy_agrsich/zins000/IMSVUSK1.DAT"
+      ],
+      "all_contents_match_product_tree": true,
+      "ap8_image_count": 40,
+      "core_svg_count": 3
+    },
+    "installed_browser": {
+      "stats": {
+        "startTime": "2026-10-06T06:59:09.855Z",
+        "duration": 1947383.25,
+        "expected": 99,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: Original, frische Quellenbindung, Einzel-VU-Dateien und Offline-Wiederaufnahme",
+          "seconds": 6.051
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: Mix, Quellen-Override, stabile Identitäten und entwertete Ergebnisse",
+          "seconds": 6.161
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: tatsächlicher 40er-100-Perioden-Lauf und angezeigte API-Summen",
+          "seconds": 48.748
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1440×900 light: Quellen, Kontrast und Tastatur",
+          "seconds": 2.99
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1440×900 dark: Quellen, Kontrast und Tastatur",
+          "seconds": 3.05
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1024×768 light: Quellen, Kontrast und Tastatur",
+          "seconds": 2.903
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1024×768 dark: Quellen, Kontrast und Tastatur",
+          "seconds": 2.863
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 390×844 light: Quellen, Kontrast und Tastatur",
+          "seconds": 2.718
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 390×844 dark: Quellen, Kontrast und Tastatur",
+          "seconds": 2.825
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 1440 light: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 10.146
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 1440 dark: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 10.433
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 390 light: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 10.493
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 390 dark: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 10.678
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1440 light: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 4.315
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1440 dark: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 4.762
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1024 light: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 4.306
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1024 dark: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 4.862
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 390 light: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 4.778
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 390 dark: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 4.728
+        },
+        {
+          "file": "legacy-models.spec.ts",
+          "title": "Vorhandener Modellnachweis: health_workbench_pr169d.mjs",
+          "seconds": 4.258
+        },
+        {
+          "file": "legacy-models.spec.ts",
+          "title": "Vorhandener Modellnachweis: four_sector_balance_pr170a.mjs",
+          "seconds": 2.705
+        },
+        {
+          "file": "legacy-models.spec.ts",
+          "title": "Vorhandener Modellnachweis: solvency_capital_pr178.mjs",
+          "seconds": 2.723
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 1440 light: 100er, Quellen, Exporte, Kapital",
+          "seconds": 22.229
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 1440 dark: 100er, Quellen, Exporte, Kapital",
+          "seconds": 22.457
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 390 light: 100er, Quellen, Exporte, Kapital",
+          "seconds": 22.647
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 390 dark: 100er, Quellen, Exporte, Kapital",
+          "seconds": 22.44
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1440×900 light: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 14.679
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1440×900 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 11.251
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1024×768 light: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 10.574
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1024×768 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 10.637
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 390×844 light: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 10.643
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 390×844 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 11.369
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4: drei Demos ohne JSON, Offlinehilfe und Tastatur",
+          "seconds": 13.566
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4: Rollen erhalten editierte Eingaben/Freigaben; veraltete, laufende und fehlerhafte Ergebnisse",
+          "seconds": 10.195
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4: tatsächlicher gültiger Lauf mit Null-Baseline und negativem Eigenkapital",
+          "seconds": 12.176
+        },
+        {
+          "file": "market-experiment.spec.ts",
+          "title": "AP8 gemeinsames Experiment: endogene Parameter, VN-Verhalten, Kosten und frischer Export",
+          "seconds": 3.796
+        },
+        {
+          "file": "market-experiment.spec.ts",
+          "title": "AP8 ICT-Experiment: exogener Ausfall, endogene Ersatzentscheidung und tatsächliches Netz",
+          "seconds": 15.219
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 unabhängige Gewichte, HHI, Rundung, Rang und Nullnenner",
+          "seconds": 0.002
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 us_hyperscaler_outage: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 118.279
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 google_motor_entry: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 111.313
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 life_demand_shock: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 115.687
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 dora_2_workshop: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 112.116
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 Handfall: wirksamer Wechsel, lokale Filter und frischer JSON/Einzel-VU-Excel-Export",
+          "seconds": 3.377
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 BaFin-Referenz und offline Anleitung im echten Backend",
+          "seconds": 3.979
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1440x900 light: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 15.201
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1440x900 dark: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 15.504
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1024x768 light: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 15.753
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1024x768 dark: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 15.145
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 390x844 light: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 15.082
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 390x844 dark: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 16.171
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · light · 1440",
+          "seconds": 9.796
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · light · 1024",
+          "seconds": 9.95
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · light · 390",
+          "seconds": 9.919
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · dark · 1440",
+          "seconds": 9.913
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · dark · 1024",
+          "seconds": 9.11
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · dark · 390",
+          "seconds": 10.508
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Offline-Rechenkern: drei lesbare SVGs und Eingabeinventar",
+          "seconds": 0.032
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 BaFin-Portfolio: Seiten und Suche verändern die geladene Quelle nicht",
+          "seconds": 2.467
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1440 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.604
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1440 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.138
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1024 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 5.924
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1024 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.058
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 390 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.426
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 390 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 6.216
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 us_hyperscaler_outage: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 116.947
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 google_motor_entry: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 121.395
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 life_demand_shock: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 125.675
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 dora_2_workshop: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 122.732
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7: eigene Sitzung, abhängiger Q-Pfad, entwertetes Ergebnis, JSON und Google-Excel",
+          "seconds": 59.44
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1440×900 light: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 14.395
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1440×900 dark: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 14.407
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1024×768 light: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 14.079
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1024×768 dark: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 13.264
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 390×844 light: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 12.639
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 390×844 dark: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 13.46
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: Handbuch-Handfall, reale Risikobuchung und ausgewählte VU-Dateien",
+          "seconds": 2.898
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: überlappende Peers, leere Sparte und reine Filter ohne Neuberechnung",
+          "seconds": 2.819
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: Strategie und Kostenplan werden ausgeführt; ungültige Quellen entwerten den Stand",
+          "seconds": 3.857
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: vollständiger 41er-Markt, 100 Perioden und Anzeige aus derselben API",
+          "seconds": 21.872
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1440×900 light: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 4.134
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1440×900 dark: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 3.707
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1024×768 light: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 3.714
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1024×768 dark: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 3.304
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 390×844 light: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 2.96
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 390×844 dark: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 3.567
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 1440 light: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 61.149
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 1440 dark: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 11.448
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 390 light: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 11.225
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 390 dark: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 11.399
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1440×900 light: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 18.073
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1440×900 dark: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 18.17
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1024×768 light: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 18.044
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1024×768 dark: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 17.885
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "390×844 light: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 17.623
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "390×844 dark: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 17.625
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Navigation erhält Eingaben, Ergebnis und Freigabe; Fehlerkorrektur und drei Exporte",
+          "seconds": 19.104
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Release unten links bleibt bei API-Fehler sichtbar und erkennt eine alte Anwendung",
+          "seconds": 7.693
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Tastatur, Zurück/Vorwärts, gespeicherter Farbmodus, reduzierte Bewegung und Details",
+          "seconds": 3.106
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Laden und API-Fehler sind sichtbar und lassen sich ohne Formularverlust beheben",
+          "seconds": 1.665
+        }
+      ],
+      "full_cases": [
+        {
+          "caseId": "us_hyperscaler_outage",
+          "periods": 100,
+          "elapsedSeconds": 115.186,
+          "wireBytes": 27994700,
+          "modelDigest": "7ee786bf1266f74c4e95aaca4f01bd50e60c1a9c708cea6169d1be32b8b10c66",
+          "viewDigest": "2069ea23b478ad58e3520797b8fa73096d169fd0e13a99dd30dde812687cbb96"
+        },
+        {
+          "caseId": "google_motor_entry",
+          "periods": 100,
+          "elapsedSeconds": 108.903,
+          "wireBytes": 27920690,
+          "modelDigest": "8d5e165ab934891c5abedf1d10dce231d06e0bcbc5b69844b98dc7514611225f",
+          "viewDigest": "873e64e7d737588f808bd0d6c71367b0c5084431aff89bab1eeed417bd90ae60"
+        },
+        {
+          "caseId": "life_demand_shock",
+          "periods": 100,
+          "elapsedSeconds": 113.396,
+          "wireBytes": 27561354,
+          "modelDigest": "b5e4dcc1f876e5f76ec6ebf6abdef705eec1a975a1d750a36205dbfb191ae96a",
+          "viewDigest": "db618e81700146be2229ff0dfe978f1340b943e5da1a8bcdd7562363b1321384"
+        },
+        {
+          "caseId": "dora_2_workshop",
+          "periods": 100,
+          "elapsedSeconds": 109.629,
+          "wireBytes": 28024102,
+          "modelDigest": "f2a21bdc95f946eb77b479f489dd81b7ec0308ccbde9fabe8e1f48fc2c3c2a38",
+          "viewDigest": "c779d793def9930203cf075bd69d790ebf648f2ac9c426d77597fec925a355e3"
+        }
+      ],
+      "contrast": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "theme": "light",
+          "minimumContrast": 5.3,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "theme": "dark",
+          "minimumContrast": 5.32,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "theme": "light",
+          "minimumContrast": 5.3,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "theme": "dark",
+          "minimumContrast": 5.32,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "theme": "light",
+          "minimumContrast": 5.3,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "theme": "dark",
+          "minimumContrast": 5.32,
+          "checkedTextNodes": 124
+        }
+      ]
+    },
+    "standalone_browser": {
+      "stats": {
+        "startTime": "2026-10-06T06:58:09.615Z",
+        "duration": 2512992.697,
+        "expected": 99,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: Original, frische Quellenbindung, Einzel-VU-Dateien und Offline-Wiederaufnahme",
+          "seconds": 8.094
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: Mix, Quellen-Override, stabile Identitäten und entwertete Ergebnisse",
+          "seconds": 7.863
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6: tatsächlicher 40er-100-Perioden-Lauf und angezeigte API-Summen",
+          "seconds": 64.862
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1440×900 light: Quellen, Kontrast und Tastatur",
+          "seconds": 3.666
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1440×900 dark: Quellen, Kontrast und Tastatur",
+          "seconds": 3.867
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1024×768 light: Quellen, Kontrast und Tastatur",
+          "seconds": 3.552
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 1024×768 dark: Quellen, Kontrast und Tastatur",
+          "seconds": 3.619
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 390×844 light: Quellen, Kontrast und Tastatur",
+          "seconds": 3.594
+        },
+        {
+          "file": "bafin-reference.spec.ts",
+          "title": "AP6 390×844 dark: Quellen, Kontrast und Tastatur",
+          "seconds": 3.509
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 1440 light: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 13.402
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 1440 dark: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 13.622
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 390 light: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 13.83
+        },
+        {
+          "file": "guided-chain.spec.ts",
+          "title": "Geführter 100er 390 dark: frische Kette, Prefix, Lauf, ZIP",
+          "seconds": 14.971
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1440 light: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 5.63
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1440 dark: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 5.872
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1024 light: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 5.816
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 1024 dark: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 5.789
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 390 light: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 5.462
+        },
+        {
+          "file": "ict.spec.ts",
+          "title": "ICT 390 dark: 100 Perioden, Fehler, Zustand, Dossier",
+          "seconds": 5.464
+        },
+        {
+          "file": "legacy-models.spec.ts",
+          "title": "Vorhandener Modellnachweis: health_workbench_pr169d.mjs",
+          "seconds": 4.861
+        },
+        {
+          "file": "legacy-models.spec.ts",
+          "title": "Vorhandener Modellnachweis: four_sector_balance_pr170a.mjs",
+          "seconds": 3.659
+        },
+        {
+          "file": "legacy-models.spec.ts",
+          "title": "Vorhandener Modellnachweis: solvency_capital_pr178.mjs",
+          "seconds": 3.207
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 1440 light: 100er, Quellen, Exporte, Kapital",
+          "seconds": 30.371
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 1440 dark: 100er, Quellen, Exporte, Kapital",
+          "seconds": 30.014
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 390 light: 100er, Quellen, Exporte, Kapital",
+          "seconds": 31.534
+        },
+        {
+          "file": "management-case.spec.ts",
+          "title": "Gemeinsame Bilanz 390 dark: 100er, Quellen, Exporte, Kapital",
+          "seconds": 33.481
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1440×900 light: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 19.916
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1440×900 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 14.738
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1024×768 light: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 14.452
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 1024×768 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 14.156
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 390×844 light: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 13.755
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4 390×844 dark: echte Kennzahlen, Erklärweg und vier Rollen",
+          "seconds": 13.603
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4: drei Demos ohne JSON, Offlinehilfe und Tastatur",
+          "seconds": 19.724
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4: Rollen erhalten editierte Eingaben/Freigaben; veraltete, laufende und fehlerhafte Ergebnisse",
+          "seconds": 14.988
+        },
+        {
+          "file": "management-overview.spec.ts",
+          "title": "AP4: tatsächlicher gültiger Lauf mit Null-Baseline und negativem Eigenkapital",
+          "seconds": 18.535
+        },
+        {
+          "file": "market-experiment.spec.ts",
+          "title": "AP8 gemeinsames Experiment: endogene Parameter, VN-Verhalten, Kosten und frischer Export",
+          "seconds": 4.765
+        },
+        {
+          "file": "market-experiment.spec.ts",
+          "title": "AP8 ICT-Experiment: exogener Ausfall, endogene Ersatzentscheidung und tatsächliches Netz",
+          "seconds": 19.277
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 unabhängige Gewichte, HHI, Rundung, Rang und Nullnenner",
+          "seconds": 0.002
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 us_hyperscaler_outage: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 152.57
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 google_motor_entry: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 154.156
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 life_demand_shock: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 161.644
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 dora_2_workshop: echter 100er-Lauf, sechs Ansichten, unverändertes AP7 und 25er-Prefix",
+          "seconds": 157.341
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 Handfall: wirksamer Wechsel, lokale Filter und frischer JSON/Einzel-VU-Excel-Export",
+          "seconds": 5.415
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 BaFin-Referenz und offline Anleitung im echten Backend",
+          "seconds": 6.066
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1440x900 light: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 20.905
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1440x900 dark: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 21.016
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1024x768 light: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 21.054
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 1024x768 dark: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 21.419
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 390x844 light: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 23.094
+        },
+        {
+          "file": "market-explorer.spec.ts",
+          "title": "AP8 390x844 dark: sechs Ansichten, ICT, Tastatur und Kontrast",
+          "seconds": 22.618
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · light · 1440",
+          "seconds": 11.999
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · light · 1024",
+          "seconds": 10.941
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · light · 390",
+          "seconds": 10.518
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · dark · 1440",
+          "seconds": 19.627
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · dark · 1024",
+          "seconds": 14.299
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Modellwelt und Portfolio verbinden dieselbe Quelle · dark · 390",
+          "seconds": 11.594
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 Offline-Rechenkern: drei lesbare SVGs und Eingabeinventar",
+          "seconds": 0.038
+        },
+        {
+          "file": "market-modelworld.spec.ts",
+          "title": "AP8 BaFin-Portfolio: Seiten und Suche verändern die geladene Quelle nicht",
+          "seconds": 3.212
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1440 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 8.118
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1440 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 8.17
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1024 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 7.996
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 1024 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 7.982
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 390 light: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 7.67
+        },
+        {
+          "file": "market-navigation.spec.ts",
+          "title": "AP8 Bedienkorrektur 390 dark: Einstieg, Tastatur, erhaltene Zustände",
+          "seconds": 7.63
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 us_hyperscaler_outage: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 160.98
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 google_motor_entry: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 148.771
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 life_demand_shock: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 154.898
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 dora_2_workshop: realer 100er-Lauf, Erhaltung, Prefix und sichtbare Wirkung",
+          "seconds": 149.694
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7: eigene Sitzung, abhängiger Q-Pfad, entwertetes Ergebnis, JSON und Google-Excel",
+          "seconds": 69.766
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1440×900 light: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 16.931
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1440×900 dark: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 16.719
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1024×768 light: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 16.598
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 1024×768 dark: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 16.448
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 390×844 light: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 16.363
+        },
+        {
+          "file": "market-shocks.spec.ts",
+          "title": "AP7 390×844 dark: ICT-Erklärung, Kontrast, Tastatur",
+          "seconds": 16.457
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: Handbuch-Handfall, reale Risikobuchung und ausgewählte VU-Dateien",
+          "seconds": 3.052
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: überlappende Peers, leere Sparte und reine Filter ohne Neuberechnung",
+          "seconds": 2.908
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: Strategie und Kostenplan werden ausgeführt; ungültige Quellen entwerten den Stand",
+          "seconds": 4.068
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5: vollständiger 41er-Markt, 100 Perioden und Anzeige aus derselben API",
+          "seconds": 24.492
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1440×900 light: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 4.43
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1440×900 dark: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 4.566
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1024×768 light: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 4.461
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 1024×768 dark: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 3.995
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 390×844 light: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 4.399
+        },
+        {
+          "file": "market-workbench.spec.ts",
+          "title": "AP5 390×844 dark: Kontrast, Tastatur und echte Tabellen",
+          "seconds": 3.986
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 1440 light: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 70.538
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 1440 dark: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 13.956
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 390 light: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 13.348
+        },
+        {
+          "file": "seminar.spec.ts",
+          "title": "Modernes Seminar 390 dark: Entscheidung, Exposition, Bilanz und Bündel",
+          "seconds": 13.927
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1440×900 light: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 20.593
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1440×900 dark: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 20.458
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1024×768 light: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 20.186
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "1024×768 dark: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 20.352
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "390×844 light: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 19.678
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "390×844 dark: Bereiche, Kontrast, Ziele, Tabellen",
+          "seconds": 19.921
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Navigation erhält Eingaben, Ergebnis und Freigabe; Fehlerkorrektur und drei Exporte",
+          "seconds": 18.164
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Release unten links bleibt bei API-Fehler sichtbar und erkennt eine alte Anwendung",
+          "seconds": 9.498
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Tastatur, Zurück/Vorwärts, gespeicherter Farbmodus, reduzierte Bewegung und Details",
+          "seconds": 3.812
+        },
+        {
+          "file": "workbench.spec.ts",
+          "title": "Laden und API-Fehler sind sichtbar und lassen sich ohne Formularverlust beheben",
+          "seconds": 2.001
+        }
+      ],
+      "full_cases": [
+        {
+          "caseId": "us_hyperscaler_outage",
+          "periods": 100,
+          "elapsedSeconds": 149.239,
+          "wireBytes": 27994700,
+          "modelDigest": "7ee786bf1266f74c4e95aaca4f01bd50e60c1a9c708cea6169d1be32b8b10c66",
+          "viewDigest": "2069ea23b478ad58e3520797b8fa73096d169fd0e13a99dd30dde812687cbb96"
+        },
+        {
+          "caseId": "google_motor_entry",
+          "periods": 100,
+          "elapsedSeconds": 150.894,
+          "wireBytes": 27920690,
+          "modelDigest": "8d5e165ab934891c5abedf1d10dce231d06e0bcbc5b69844b98dc7514611225f",
+          "viewDigest": "873e64e7d737588f808bd0d6c71367b0c5084431aff89bab1eeed417bd90ae60"
+        },
+        {
+          "caseId": "life_demand_shock",
+          "periods": 100,
+          "elapsedSeconds": 158.341,
+          "wireBytes": 27561354,
+          "modelDigest": "b5e4dcc1f876e5f76ec6ebf6abdef705eec1a975a1d750a36205dbfb191ae96a",
+          "viewDigest": "db618e81700146be2229ff0dfe978f1340b943e5da1a8bcdd7562363b1321384"
+        },
+        {
+          "caseId": "dora_2_workshop",
+          "periods": 100,
+          "elapsedSeconds": 153.818,
+          "wireBytes": 28024102,
+          "modelDigest": "f2a21bdc95f946eb77b479f489dd81b7ec0308ccbde9fabe8e1f48fc2c3c2a38",
+          "viewDigest": "c779d793def9930203cf075bd69d790ebf648f2ac9c426d77597fec925a355e3"
+        }
+      ],
+      "contrast": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "theme": "light",
+          "minimumContrast": 5.3,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "theme": "dark",
+          "minimumContrast": 5.32,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "theme": "light",
+          "minimumContrast": 5.3,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "theme": "dark",
+          "minimumContrast": 5.32,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "theme": "light",
+          "minimumContrast": 5.3,
+          "checkedTextNodes": 124
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "theme": "dark",
+          "minimumContrast": 5.32,
+          "checkedTextNodes": 124
+        }
+      ]
+    },
+    "installed_and_checkout_results_identical": true,
+    "python_tests": {
+      "passed": 2764,
+      "warnings": 1,
+      "subtests_passed": 14,
+      "seconds": 1182.56
+    },
+    "release_gate": {
+      "status": "ok",
+      "mode": "windows_release_gate",
+      "report_contract_version": "pr69-v1",
+      "corpus_report_status": "blocked",
+      "production_release_approved": false,
+      "missing_calculated_export_count": 15,
+      "release_ready": true,
+      "user_test_package_ready": true,
+      "writes_performed": false,
+      "execution_performed": false,
+      "simulation_performed": false,
+      "historical_full_equality_claimed": false
+    }
+  },
+  "delivery": {
+    "installer": "C:\\Users\\P52\\source\\ims\\dist\\installer\\IMS-Setup-2.0.0-alpha.11-win-x64.exe",
+    "artifact_url": "https://github.com/junker-joerg/ims/actions/runs/37426574893/artifacts/11397180032",
+    "offline_guide": "docs/handbook/market_ap8.html",
+    "technical_document": "docs/handbook/rechenkern.html",
+    "input_inventory": "docs/handbook/eingabeinventar.html",
+    "guide_image_references": 28,
+    "core_svg_diagrams": 3,
+    "semantic_input_groups": 37,
+    "tsx_control_declarations": 191,
+    "tsx_components_with_controls": 19
+  },
+  "historical_product_evidence_preserved": "docs/reports/ims_ap8_cockpit_verification.json",
+  "user_product_acceptance": "pending",
+  "merge_authorized": false,
+  "merged_to_main": false,
+  "public_release_authorized": false,
+  "ap9_ap14_implementation_authorized": false,
+  "limits": {
+    "market_core_files_unchanged_from_alpha10": true,
+    "kernel_checkpoint_or_resume": false,
+    "synthetic_same_bundle_upgrade_only": true,
+    "external_clean_windows_user_acceptance": "pending",
+    "historical_full_equality_claimed": false,
+    "regulatory_solvency_computed": false,
+    "bafin_german_direct_market_claimed": false
+  },
+  "superseded_failed_check": {
+    "product_head": "f9e6b05f7161c4f608f05e0fa47484f01008880e",
+    "check": "release-gate",
+    "url": "https://github.com/junker-joerg/ims/actions/runs/37422825328/job/112135769482",
+    "passed": 2763,
+    "failed": 1,
+    "subtests_passed": 14,
+    "reason": "Outdated assertion demanded Handbuchstand: PR178a in the current handbook index. Updated existing test to current navigation, linked inventory/core files, and preserved historical seminar link."
+  }
+}

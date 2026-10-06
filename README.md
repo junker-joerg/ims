@@ -1,6 +1,6 @@
 # ims
 
-Aktueller Arbeitsstand am 06.10.2026: AP4–AP7 sind nach main übernommen. AP8 wird im selben PR #297 als **alpha.11** um Modellwelt, Unternehmensportfolio, Laufwiedergabe und aktuelle Rechenkern-Dokumentation ergänzt. Die alpha.10-Produktbelege bleiben historisch; die neue Fassung erhält eigene Prüfungen. AP8-Anwenderabnahme/Merge bleiben offen, AP9–AP14 sind nicht beauftragt.
+Aktueller Arbeitsstand am 06.10.2026: AP4–AP7 sind nach main übernommen. AP8 ist im selben PR #297 als **alpha.11** um Modellwelt, Unternehmensportfolio, Laufwiedergabe und Rechenkern-Dokumentation ergänzt und technisch fertig. [Eigene Produktprüfung](docs/reports/ims_ap8_modelworld_produktpruefung.md) mit vier grünen Checks, 2764 Python-Tests/14 Subtests, 99 Checkout-/99 installierten Browserfällen und authentischem Installer. Die alpha.10-Produktbelege bleiben historisch. AP8-Anwenderabnahme/Merge bleiben offen, AP9–AP14 sind nicht beauftragt.
 
 Hier beginnen: [Marktexperiment bedienen](docs/handbook/market_ap8.md), [notwendige Eingaben](docs/handbook/eingabeinventar.md), [Rechenkern mit drei Grafiken und Abweichungen zum ursprünglichen IMS](docs/handbook/rechenkern.md), [Handbuchindex](docs/handbook/README.md). Vorstandsstrategien sind endogen; Ereignisse und Umweltannahmen exogen. BaFin 2024 bleibt ein gekennzeichneter Workshop-Referenzfall.
 

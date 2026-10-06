@@ -206,7 +206,11 @@ im selben PR #297; Plan `docs/plans/ims_ap8_modelworld_documentation.md`.
 Alpha.11 bezeichnet Modellwelt, Unternehmensportfolio und Wiedergabe bereits
 vollständig berechneter Perioden, keinen pausierbaren Kernzustand und kein AP9.
 Die AP5-/AP7-Rechnungen bleiben unverändert. Frühere alpha.10-Belege bleiben
-historisch; eigene aktuelle Produkt-/Installerprüfungen folgen. Anwenderabnahme
+historisch. Alpha.11 ist technisch fertig am Produktpunkt 6117b72eb48a05d93b73e354099e5528a8b0ba6b:
+2764 Python-Tests/14 Subtests, 99 Checkout-/99 installierte Browserfälle,
+14 Lifecycle-Prüfungen und 424 Git-Tree-gebundene Ressourcen. Belege
+`docs/reports/ims_ap8_modelworld_produktpruefung.md` und
+`ims_ap8_modelworld_verification.json`. Marktkerne und vier AP7-Digests unverändert. Anwenderabnahme
 und Merge weiter offen, kein öffentliches Release oder AP9–AP14-Auftrag.
 
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
