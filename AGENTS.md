@@ -199,6 +199,16 @@ Stände oben bleiben historisch. Anwenderabnahme pending, Merge nicht autorisier
 kein öffentlicher Release/AP9–AP14-Auftrag. Der spätere Dokumentationshead ist
 vom geprüften Produktpunkt zu unterscheiden; keine Produktressource verändert.
 
+Am 06.10.2026 beauftragte der Anwender vier weitere UI-Designreferenzen,
+ein notwendiges Eingabeinventar, Grafiken des Rechenkerns mit fachlichen
+Abweichungen zum ursprünglichen IMS und einen Dokumentationsaudit. AP8 bleibt
+im selben PR #297; Plan `docs/plans/ims_ap8_modelworld_documentation.md`.
+Alpha.11 bezeichnet Modellwelt, Unternehmensportfolio und Wiedergabe bereits
+vollständig berechneter Perioden, keinen pausierbaren Kernzustand und kein AP9.
+Die AP5-/AP7-Rechnungen bleiben unverändert. Frühere alpha.10-Belege bleiben
+historisch; eigene aktuelle Produkt-/Installerprüfungen folgen. Anwenderabnahme
+und Merge weiter offen, kein öffentliches Release oder AP9–AP14-Auftrag.
+
 Die DORA-Benchmark-PDF wurde inzwischen bereitgestellt. Ihre Quelle, Fragen,
 Seiten und Bezugsgruppen sind im Register `docs/research/dora_benchmark_2026_06.json`
 geprüft; die Einordnung steht in der gleichnamigen Markdown-Datei. Der ehemalige

@@ -27,12 +27,12 @@ const parameterLabels: Record<string, string> = {
 const eventNames: Record<string,string> = { provider_outage:"Provider-Ausfall", entry:"Markteintritt", life_demand:"Lebens-Nachfrage", regulatory:"Hypothetische Regulierung" };
 const responseNames: Record<string,string> = { price:"Preisreaktion", life_attractiveness:"Vertriebsreaktion", fallback:"Ersatzpfad", migration:"ICT-Umstellung", capacity:"Kapazitätsreaktion" };
 
-export default function MarketExperimentEditor({ source, original, busy, mode, onOwn, onChange }: {
+export default function MarketExperimentEditor({ source, original, busy, mode, actorId = 0, onActor, onOwn, onChange }: {
   source: unknown; original: boolean; busy: boolean; mode: "board" | "environment";
-  onOwn: () => void; onChange: (source: unknown) => void;
+  actorId?: number; onActor?: (id:number)=>void; onOwn: () => void; onChange: (source: unknown) => void;
 }) {
   const summary = experimentSummary(source), root = object(source), model = experimentModel(source);
-  const [actorId, setActorId] = useState(0), [sector, setSector] = useState("motor"), [cohortId, setCohortId] = useState("");
+  const [sector, setSector] = useState("motor"), [cohortId, setCohortId] = useState("");
   const actor = summary.actors.find(a => a.insurer_id === actorId) || summary.actors[0];
   const sectors = Object.keys(object(actor?.sectors)), selectedSector = sectors.includes(sector) ? sector : sectors[0];
   const assignments = rows(object(model.assignments).variant).filter(a => a.insurer_id === actor?.insurer_id && a.sector_id === selectedSector);
@@ -68,7 +68,7 @@ export default function MarketExperimentEditor({ source, original, busy, mode, o
     <div className="editor-ownership" role="status">{reference ? <p>Dieser BaFin-Referenzfall bleibt an seine Quellenabbildung gebunden. Workshop-Mapping im Bereich „Quellen und Handfälle“ bearbeiten; für Vorstands- und Umweltvarianten einen der vier abgeleiteten Schockfälle wählen.</p> : original ? <><p>Geladene Vorlage. Für Änderungen übernehmen Sie dieselbe Quelle als eigenes Experiment.</p><button className="primary-action" disabled={busy} onClick={onOwn}>Als eigenes Experiment übernehmen <ArrowRight size={17} aria-hidden="true"/></button></> : <p><ShieldCheck size={18} aria-hidden="true"/> Eigenes Experiment · jede Änderung erfordert eine frische Rechnung.</p>}</div>
     {mode === "board" ? <>
       <section className="decision-card"><div className="card-heading"><Building2 size={22} aria-hidden="true"/><div><h4>Anbieterstrategie</h4><p>Variante · ab P6 oder dem vorhandenen Maßnahmenfenster</p></div></div>
-        <div className="editor-fields"><label>Vorstands-VU<select aria-label="Vorstands-VU" value={String(actor.insurer_id)} onChange={e => setActorId(Number(e.target.value))}>{summary.actors.map(a => <option key={String(a.insurer_id)} value={String(a.insurer_id)}>{String(a.name)}</option>)}</select></label><label>Vorstands-Sparte<select aria-label="Vorstands-Sparte" value={selectedSector} onChange={e=>setSector(e.target.value)}>{sectors.map(s=><option key={s} value={s}>{sectorNames[s] || s}</option>)}</select></label></div>
+        <div className="editor-fields"><label>Vorstands-VU<select aria-label="Vorstands-VU" value={String(actor.insurer_id)} onChange={e => onActor?.(Number(e.target.value))}>{summary.actors.map(a => <option key={String(a.insurer_id)} value={String(a.insurer_id)}>{String(a.name)}</option>)}</select></label><label>Vorstands-Sparte<select aria-label="Vorstands-Sparte" value={selectedSector} onChange={e=>setSector(e.target.value)}>{sectors.map(s=><option key={s} value={s}>{sectorNames[s] || s}</option>)}</select></label></div>
         <p className="rule-caption">Regelkern <code>{String(family?.rule || "Keine Familie")}</code> · {String(family?.label || "")}<br/>P1–P5 bleiben der gemeinsame Vergleichsanfang. Änderungen erzeugen eine ausführbare Maßnahme; Kosten und Vorlauf bleiben explizit.</p>
         <fieldset disabled={disabled || periodCount < 6}><legend>Vom Vorstand gesetzte Parameter</legend><div className="editor-fields">{Object.entries(object(family?.parameters)).map(([key,value])=>{
           const measure = measures.find(m=>m.insurer_id===actor.insurer_id && m.sector_id===selectedSector && key in object(m.overrides));

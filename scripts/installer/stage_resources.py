@@ -27,7 +27,7 @@ def main() -> None:
             and relative.lower().endswith((".dat", ".json"))
         ) or (relative.startswith(("docs/handbook/", "docs/migration/")) and relative.endswith(".md")) or (
             relative.startswith(("docs/handbook/images/ap3_", "docs/handbook/images/ap4_", "docs/handbook/images/ap5_", "docs/handbook/images/ap6_", "docs/handbook/images/ap7_", "docs/handbook/images/ap8_")) and relative.endswith(".png")
-        ) or relative in ("docs/handbook/seminar_ap3.html", "docs/handbook/management_ap4.html", "docs/handbook/market_ap5.html", "docs/handbook/market_ap6.html", "docs/handbook/market_ap7.html", "docs/handbook/market_ap8.html") or (
+        ) or (relative.startswith("docs/handbook/images/ap8_core_") and relative.endswith(".svg")) or relative in ("docs/handbook/rechenkern.html", "docs/handbook/eingabeinventar.html", "docs/handbook/eingabeinventar.json", "docs/handbook/eingabeinventar_ui.json", "docs/handbook/seminar_ap3.html", "docs/handbook/management_ap4.html", "docs/handbook/market_ap5.html", "docs/handbook/market_ap6.html", "docs/handbook/market_ap7.html", "docs/handbook/market_ap8.html") or (
             relative.startswith("seminar_cases/") and relative.endswith(".json")
         )
         if approved:

@@ -1,5 +1,7 @@
 # Deutsche Marktdaten und Modellannahmen verstehen
 
+Aktualitätshinweis 06.10.2026: Der folgende Text dokumentiert seinen datierten Fach-/Testpaketstand. Aktuelle Menüwege und das gemeinsame Marktexperiment stehen in der [AP8-Anleitung](market_ap8.md). Ältere Begrenzungen sind auf ihren damaligen Modellpfad bezogen, keine Aussage gegen heute vorhandene AP5-/AP7-Marktkanäle. Der gelieferte BaFin-Fall ist in [BaFin-Referenzfall AP6](market_ap6.html) erklärt; die deutschen Direktmarkt-Datentore bleiben offen.
+
 **Arbeitsfassung für AP6, Stand 02.10.2026.** Die aktuelle Anwenderfassung
 alpha.5 lädt die erklärten synthetischen AP5-Märkte. Der deutsche Top-40-Fall
 befindet sich in der Datenprüfung und ist noch nicht ausgeliefert.

@@ -1,6 +1,6 @@
 # Vier Schockfälle erklären: Markt und ICT
 
-IMS 2.0.0-alpha.10 · Fachumfang AP7 · Workshop mit der BaFin-Gruppenauswertung 2024.
+IMS 2.0.0-alpha.11 · Fachumfang AP7 · Workshop mit der BaFin-Gruppenauswertung 2024.
 Diese Anleitung gehört zur angenommenen begrenzten Markt-/ICT-Kopplung.
 Die BaFin-Basis umfasst verdiente Beiträge einschließlich Ausland und
 übernommener Rückversicherung sowie redaktionelle Gruppensummen ohne

@@ -59,11 +59,13 @@ def render(source: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--guide", choices=("ap3", "ap4", "ap5", "ap7", "ap8"), default="ap3")
+    parser.add_argument("--guide", choices=("ap3", "ap4", "ap5", "ap7", "ap8", "core", "inputs"), default="ap3")
     args = parser.parse_args()
-    filename = {"ap3": "seminar_ap3", "ap4": "management_ap4", "ap5": "market_ap5", "ap7": "market_ap7", "ap8": "market_ap8"}[args.guide]
+    filename = {"ap3": "seminar_ap3", "ap4": "management_ap4", "ap5": "market_ap5", "ap7": "market_ap7", "ap8": "market_ap8", "core": "rechenkern", "inputs": "eingabeinventar"}[args.guide]
     source = (ROOT / f"docs/handbook/{filename}.md").read_text(encoding="utf-8")
     source = source.replace("../reports/ims_ap3_abschlussbericht.md", "https://github.com/junker-joerg/ims/blob/codex/ims-management-integration/docs/reports/ims_ap3_abschlussbericht.md")
+    if args.guide in ("core", "inputs"):
+        source = re.sub(r"\]\(\.\./(reports|migration)/([^)]*)\)", r"](https://github.com/junker-joerg/ims/blob/codex/ims-market-visualizations/docs/\1/\2)", source)
     html = """<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>IMS – Managementseminar AP3</title>
@@ -77,6 +79,8 @@ def main() -> None:
         html = html.replace("IMS – Managementseminar AP3", "IMS – Vier Markt- und ICT-Schockfälle AP7")
     if args.guide == "ap8":
         html = html.replace("IMS – Managementseminar AP3", "IMS – Sechs verknüpfte Marktansichten AP8")
+    if args.guide in ("core", "inputs"):
+        html = html.replace("IMS – Managementseminar AP3", "IMS – " + ("Rechenkern verständlich erklärt" if args.guide == "core" else "Notwendige Eingaben"))
     (ROOT / f"docs/handbook/{filename}.html").write_text(html, encoding="utf-8")
 
 

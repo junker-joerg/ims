@@ -1,7 +1,13 @@
 # IMS-Benutzerhandbuch
 
-Stand: 2026-10-01 | Oberfläche: AP2, PR #289; Managementlabor: AP3, PR #290.
-Die älteren Modell- und Seminaranleitungen haben Handbuchstand: PR178a.
+Stand: 06.10.2026 | Aktueller AP8-Arbeitsstand: alpha.11 im Paket-PR #297.
+AP8-Anwenderabnahme und Merge bleiben offen. Frühere Prüfberichte und Bilder behalten ihre ursprüngliche Version.
+
+**Aktueller Einstieg:** [Gemeinsames Marktexperiment](market_ap8.md) ([Offline-HTML](market_ap8.html)), [notwendige Eingaben](eingabeinventar.md), [Rechenkern und fachliche Abweichungen](rechenkern.md). In der Hauptnavigation **Markt und Strategien**, dann **Markt verstehen** wählen. Dort stehen vier Arbeitsschritte sowie **Modellwelt**, **Unternehmen** und **Laufansicht**. Die Laufansicht gibt vollständig berechnete Perioden wieder; sie pausiert keinen Kernzustand.
+
+Die sechs Hauptbereiche heißen **Übersicht**, **Markt und Strategien**, **Fallablage**, **Modellwerkzeuge**, **Ergebnisse** und **Hilfe**. Die zusätzliche [Workbench-Bedienhilfe](workbench_ap2.md) beschreibt die weiter vorhandenen Fachwerkzeuge.
+
+Die folgenden AP3-/Testpaket-Anleitungen betreffen ihre eigenen älteren Modellpfade, keine automatische Übernahme ihrer Eingaben in das gemeinsame Marktexperiment.
 
 **Hier beginnen:**
 
@@ -11,8 +17,7 @@ Modellkapital, ICT und den kontrollierten historischen Lauf. Die
 [offline lesbare HTML-Anleitung](seminar_ap3.html), geprüften Musterbündel und
 echten Browserbilder werden mit dem AP3-Installer geliefert.
 
-Die [aktuelle Workbench-Bedienhilfe](workbench_ap2.md) beschreibt die fünf
-Bereiche Übersicht, Szenario, Simulation, Ergebnisse und Hilfe sowie
+Die [aktualisierte Workbench-Bedienhilfe](workbench_ap2.md) beschreibt die aktuellen Bereiche sowie
 Hell-/Dunkelmodus, Navigation, Fehlerkorrektur und unveränderte Freigaben.
 
 Der neue [AP1-Windows-Installer](installer_windows.md) bündelt die Laufzeit.
@@ -46,8 +51,8 @@ fachliche Grenzen. Die zwei PDFs sind Bestandteil des Windows-Testpakets.
 ## Vorhandene Funktionen und frühere Bereichsnamen
 
 Die folgenden Bezeichnungen gehören zu den älteren Bildern/Anleitungen.
-Modellfälle, Strategien und Ausführung stehen heute unter **Simulation**,
-Diagnosen unter **Hilfe**, Metadaten unter **Szenario** und Resultate unter
+Einzelmodellfälle, Strategien und historische Ausführung stehen heute unter **Modellwerkzeuge**,
+Diagnosen unter **Hilfe**, Metadaten unter **Fallablage** und Resultate unter
 **Ergebnisse**. Historische Direktlinks werden weiterhin aufgelöst.
 
 - `Dashboard` und `Szenarien` zeigen Betriebszustand und vorhandene Faelle.
@@ -65,8 +70,7 @@ Diagnosen unter **Hilfe**, Metadaten unter **Szenario** und Resultate unter
   Adapterverlauf. Keines davon ist automatisch ein neuer Modelllauf.
 
 Ein erfolgreicher Start belegt **nur technische Erreichbarkeit**. Historische
-Feldvollgleichheit, regulatorische Compliance und ein frei konfigurierbarer
-100-Perioden-Mehrspartenmarkt sind nicht nachgewiesen. Heruntergeladene
+Feldvollgleichheit und regulatorische Compliance sind nicht nachgewiesen. Der gemeinsame AP5-/AP7-Markt rechnet gültige deklarierte Quellen bis 100 Perioden; daraus folgt kein beliebiger historischer Mehrspartenvertrag. Heruntergeladene
 Dateien landen im Downloadordner des Browsers; gespeichert wird nur nach
 ausdruecklicher Freigabe in den dafuer vorgesehenen Teilansichten.
 

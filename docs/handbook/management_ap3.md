@@ -1,6 +1,6 @@
 # Vier Sparten über 100 Perioden vergleichen
 
-Öffnen Sie **Simulation → 100er-Gesamtbilanz**.
+Öffnen Sie **Modellwerkzeuge → 100er-Gesamtbilanz**.
 
 1. Wählen Sie den deklarierten Fall, einen Horizont und eine VU-ID.
 2. **Gemeinsame Quellen erzeugen** stellt vollständige Eingaben für Baseline

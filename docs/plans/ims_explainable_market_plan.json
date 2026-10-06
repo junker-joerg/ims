@@ -623,7 +623,7 @@
     {
       "id": "AP8",
       "title": "Marktprozesse und Strategiefamilien in IMS visualisieren",
-      "status": "done",
+      "status": "in_progress",
       "depends_on": [
         "AP7"
       ],
@@ -646,16 +646,8 @@
       "gates": [
         "Exakte Ursachenzerlegung, Wechselwirkungen und bloße Korrelation im jeweiligen Diagramm unterschieden"
       ],
-      "completion_evidence": [
-        "docs/reports/ims_ap8_cockpit_abschlussbericht.md",
-        "docs/reports/ims_ap8_cockpit_produktpruefung.md: vier erfolgreiche Produktchecks an 11384cf69f14f52d3c0f0ae72537986a94484e57",
-        "docs/reports/ims_ap8_cockpit_verification.json: 2764 Python-Tests/14 Subtests, 91 Browserfälle, 14 Lifecycle-/91 installierte Browserprüfungen",
-        "docs/handbook/market_ap8.md: gemeinsames Experiment, sechs Ansichten, 22 aktuelle/historische Bildreferenzen, offline im alpha.10-Installer",
-        "docs/migration/ap8_market_explorer.md: Modellkerne unverändert; aktueller Oberflächen-/Editorvertrag",
-        "docs/reports/ims_ap8_verification.json: historischer alpha.8-Produktbeleg bleibt erhalten"
-      ],
       "implementation_authorized": true,
-      "technically_complete": true,
+      "technically_complete": false,
       "merged_to_main": false,
       "user_product_acceptance": "pending",
       "merge_authorized": false,
@@ -670,7 +662,7 @@
         "recording_note": "Beobachtete Erfassung nach tatsächlich geprüftem AP7-Merge; genauer Nachrichtenzeitpunkt nicht ausgewiesen. Fortsetzung mit dem nächsten angenommenen Paket AP8, einschließlich separat angenommener E08-01. Exakte Addition, Wechselwirkung und Korrelation unterscheiden. Kein AP8-Merge, öffentliches Release oder AP9–AP14-Auftrag."
       },
       "implementation_plan": "docs/plans/ims_ap8_implementation.md",
-      "progress_document": "docs/reports/ims_ap8_cockpit_fortschritt.md",
+      "progress_document": "docs/reports/ims_ap8_modelworld_fortschritt.md",
       "view_contract": "docs/plans/ims_ap8_view_contract.md",
       "accepted_amendments": [
         {
@@ -710,7 +702,25 @@
         "acceptance_impact": "Neue Browser-, Anleitung- und Installerprüfung erforderlich; historische alpha.8/alpha.9-Belege bleiben getrennt. Anwenderabnahme und Merge offen.",
         "product_commit": "11384cf69f14f52d3c0f0ae72537986a94484e57",
         "verification": "docs/reports/ims_ap8_cockpit_verification.json"
-      }
+      },
+      "previous_completion_evidence": [
+        "docs/reports/ims_ap8_cockpit_abschlussbericht.md",
+        "docs/reports/ims_ap8_cockpit_produktpruefung.md: vier erfolgreiche Produktchecks an 11384cf69f14f52d3c0f0ae72537986a94484e57",
+        "docs/reports/ims_ap8_cockpit_verification.json: 2764 Python-Tests/14 Subtests, 91 Browserfälle, 14 Lifecycle-/91 installierte Browserprüfungen",
+        "docs/handbook/market_ap8.md: gemeinsames Experiment, sechs Ansichten, 22 aktuelle/historische Bildreferenzen, offline im alpha.10-Installer",
+        "docs/migration/ap8_market_explorer.md: Modellkerne unverändert; aktueller Oberflächen-/Editorvertrag",
+        "docs/reports/ims_ap8_verification.json: historischer alpha.8-Produktbeleg bleibt erhalten"
+      ],
+      "modelworld_revision": {
+        "status": "in_progress",
+        "release": "2.0.0-alpha.11",
+        "date": "2026-10-06",
+        "scope": "Vier weitere Designreferenzen, Modellwelt/Portfolio/Laufwiedergabe, Eingabeinventar, Rechenkern-Grafiken und Aktualitätsprüfung; gleicher AP8-PR #297, keine neuen Modellkanäle.",
+        "user_request": "1) Berücksichtige diese Designs bei der Überarbeitung der UI 2) Erstelle eine Liste von notwendigen Eingabe-Items aus dem bisherigen Design 3) Erstelle eine oder mehrere Grafiken des Rechenkerns inkl. den fachlichen Abweichungen zum ursprünglichen IMS und leite daraus eine - gut lesbare - technische Dokumentation ab 4) Überprüfe die Dokumentation im Repo auf Aktualität - aktualisiere, was notwendig auf den neusten Stand",
+        "plan": "docs/plans/ims_ap8_modelworld_documentation.md",
+        "acceptance_impact": "Eigene Produkt-/Browser-/Installerbelege; historische Abnahmen unverändert. Anwenderabnahme pending, Merge nicht autorisiert. Mockup-Pause nur Anzeige, kein fortsetzbarer Kernzustand."
+      },
+      "completion_evidence": []
     },
     {
       "id": "AP9",

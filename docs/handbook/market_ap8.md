@@ -1,6 +1,8 @@
 # Sechs verknüpfte Marktansichten · IMS AP8
 
-Produktfassung 2.0.0-alpha.10 (Bedienkorrektur von AP8). Die sechs Ansichten erklären einen gemeinsamen
+Aktuelle Ergänzung vom 06.10.2026: **Modellwelt**, **Unternehmen** und **Laufansicht** stehen im selben Experiment neben den vier Arbeitsschritten. [Eingaben im Überblick](eingabeinventar.html) und [Rechenkern mit drei Grafiken](rechenkern.html) sind aus der Anwendung und offline erreichbar.
+
+Produktfassung 2.0.0-alpha.11 (Bedienkorrektur von AP8). Die sechs Ansichten erklären einen gemeinsamen
 geprüften Modelllauf. Die BaFin-Gruppenauswertung 2024 ist ein Workshop-Fall:
 verdiente Beiträge einschließlich Ausland und übernommener Rückversicherung,
 redaktionelle Gruppen ohne konzerninterne Eliminierung. Keine belegte deutsche
@@ -14,7 +16,7 @@ Quellen-Euro und Modellwährung sind getrennte Einheiten.
 ## Schnell beginnen
 
 Führen Sie diese Schritte in der gestarteten IMS-Workbench aus. Die folgende
-Menüführung gilt für Produktfassung **2.0.0-alpha.10**; die Release-Anzeige
+Menüführung gilt für Produktfassung **2.0.0-alpha.11**; die Release-Anzeige
 steht links unten in der Anwendung. Die hier geöffnete Anleitung ist eine
 eigene Seite.
 
@@ -43,6 +45,26 @@ Sie die Reiter per Tastatur; die gemeinsame Periode und Auswahl bleiben erhalten
 **Erklärrolle** öffnet die passende Ansicht. **Hinweise für meine Rolle** im
 Seitenkopf enthält zusätzliche Orientierung. Für einen Import öffnen Sie
 **Eigene Analysequelle importieren** unter dem Analysefall.
+
+## Modellwelt, Unternehmen und Laufansicht
+
+**Modellwelt** zeigt fünf auswählbare Ebenen Ihrer geladenen Quelle. Eine Ebene mit der Maus oder Tab/Enter auswählen; rechts erscheinen Quellenpfad und fachliche Grenze. Die Perspektive erklärt eine Struktur, keine räumliche Rechnung. Ohne Rechnung steht ausdrücklich „Quelle geladen · Rechnung noch offen“.
+
+**Unternehmen** enthält eine durchsuchbare Liste und einen Fokusinspektor. Vor der Rechnung stehen dort nur deklarierte Profile, danach gebuchte Beiträge, Periodenergebnis und Modellanteile. Der Beitragsnenner umfasst alle Anbieter der ausgewählten Sparte/Seite/Periode. Der Spartenmix im Fokusprofil verwendet die tatsächlich gebuchten Beiträge dieses Anbieters über alle Sparten. **Strategie bearbeiten** öffnet denselben Fokus im Vorstandsbereich. Der Mehrfachvergleich filtert nur die Anzeige.
+
+**Laufansicht** gibt bereits berechnete Perioden wieder. **Anzeige abspielen**, **Anzeige pausieren**, **Eine Periode weiter** und **Anzeige auf P1** ändern keine Rechnung. Für eine neue Entscheidung die Vorstandsvariante bearbeiten und vollständig neu berechnen; es gibt keine Kernfortsetzung ab dem angezeigten Zeitpunkt. Die Warteschlange misst administrative Arbeit, keinen gezahlten Schadenbetrag. Das ICT-Netz zeigt dieselben deklarierten Kanten und tatsächlichen Ausfallzeilen wie die Auswertung.
+
+![Modellwelt aus dem tatsächlichen alpha.11-Fall im Hellmodus](images/ap8_modelworld_light.png)
+
+![Modellwelt im Dunkelmodus](images/ap8_modelworld_dark.png)
+
+![Unternehmensportfolio aus berechneten Modellzeilen](images/ap8_portfolio_light.png)
+
+![Unternehmensportfolio im Dunkelmodus](images/ap8_portfolio_dark.png)
+
+![Wiedergabe vorhandener Perioden mit erklärtem ICT-Netz](images/ap8_replay_light.png)
+
+![Laufansicht im Dunkelmodus](images/ap8_replay_dark.png)
 
 ## Strategien sind endogen, Marktumwelt ist exogen
 

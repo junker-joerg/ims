@@ -1,5 +1,7 @@
 # Migration IMS/ESS -> Python
 
+Aktueller Überblick am 06.10.2026: [Rechenkern mit Herkunft, Periodenablauf und fachlichen Abweichungen](../handbook/rechenkern.md), [Eingabeinventar](../handbook/eingabeinventar.md), [AP5 gemeinsamer Markt](ap5_common_market.md), [AP7 Schockvertrag](ap7_shock_contract.md) und [AP8 Auswertung](ap8_market_explorer.md). Die folgenden Kapitel bleiben komponentenbezogene historische Migrationsnachweise.
+
 Dieses Verzeichnis buendelt die fachliche und technische Dokumentation fuer die kontrollierte Migration des historischen IMS/ESS-Codes nach Python.
 
 ## Grundsaetze

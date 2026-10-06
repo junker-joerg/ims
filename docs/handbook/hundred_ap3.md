@@ -1,6 +1,6 @@
 # Einen 100-Perioden-Fall selbst aufbauen
 
-Öffnen Sie **Simulation → 100-Perioden-Lauf**.
+Öffnen Sie **Modellwerkzeuge → 100-Perioden-Lauf**.
 
 1. Geben Sie einen Seed an und erzeugen Sie 100 vollständige Kontexte.
    Laufindex 0 ist die aktuelle freigegebene Grenze des gemeinsamen Prefixwegs.

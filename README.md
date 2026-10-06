@@ -1,5 +1,11 @@
 # ims
 
+Aktueller Arbeitsstand am 06.10.2026: AP4–AP7 sind nach main übernommen. AP8 wird im selben PR #297 als **alpha.11** um Modellwelt, Unternehmensportfolio, Laufwiedergabe und aktuelle Rechenkern-Dokumentation ergänzt. Die alpha.10-Produktbelege bleiben historisch; die neue Fassung erhält eigene Prüfungen. AP8-Anwenderabnahme/Merge bleiben offen, AP9–AP14 sind nicht beauftragt.
+
+Hier beginnen: [Marktexperiment bedienen](docs/handbook/market_ap8.md), [notwendige Eingaben](docs/handbook/eingabeinventar.md), [Rechenkern mit drei Grafiken und Abweichungen zum ursprünglichen IMS](docs/handbook/rechenkern.md), [Handbuchindex](docs/handbook/README.md). Vorstandsstrategien sind endogen; Ereignisse und Umweltannahmen exogen. BaFin 2024 bleibt ein gekennzeichneter Workshop-Referenzfall.
+
+Die nachfolgenden Entwicklerabschnitte dokumentieren die früheren Lieferstände. Ihre paketbezogenen Freigaben und Prüfgrenzen gelten für den jeweils genannten Zeitpunkt.
+
 Dieses Repository enthält das Arbeitsgerüst für eine schrittweise, PR-basierte und semantisch konservative Migration von IMS.
 Das neue Anwenderhandbuch beginnt unter `docs/handbook/README.md`; technische
 Migrationshinweise stehen unter `docs/migration/README.md`.
@@ -11,7 +17,7 @@ AP2 gestaltet die vorhandene Oberfläche in fünf Bereichen mit Hell-/Dunkelmodu
 die [aktuelle Bedienhilfe](docs/handbook/workbench_ap2.md) erläutert Navigation,
 Modellfälle, Ergebnisse und Freigaben.
 
-## Versionslinien
+## Versionslinien der früheren Lieferstände
 
 - `ims-legacy-baseline-2026-09-01` friert den technisch release-bereiten
   IMS-1995-2026-Migrationsstand auf Commit `2e92637` ein. Das ist keine

@@ -1,5 +1,7 @@
 # IMS im Managementseminar
 
+Aktualitätshinweis 06.10.2026: Der folgende Text dokumentiert seinen datierten Fach-/Testpaketstand. Aktuelle Menüwege und das gemeinsame Marktexperiment stehen in der [AP8-Anleitung](market_ap8.md). Ältere Begrenzungen sind auf ihren damaligen Modellpfad bezogen, keine Aussage gegen heute vorhandene AP5-/AP7-Marktkanäle.
+
 Dieser Text bewahrt den früheren Handbuchschnitt PR178a. Für die aktuelle
 Oberfläche, drei ausführbare 100er-Fälle und portable Demo-Bündel siehe
 [Managementseminar mit AP3](seminar_ap3.md). Die damaligen Funktionsgrenzen

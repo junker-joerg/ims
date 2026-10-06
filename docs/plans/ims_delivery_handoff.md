@@ -1,6 +1,12 @@
 # IMS-Lieferübergabe
 
-## Aktuell: AP8-Marktcockpit alpha.10 technisch fertig
+## Aktuell: AP8 alpha.11 erneut in Arbeit
+
+06.10.2026: Weitere vier Designreferenzen und Auftrag für Eingabeinventar, Rechenkern-Grafiken/Technikdokumentation und Dokumentationsaudit. [Umsetzungsplan](ims_ap8_modelworld_documentation.md). Fortsetzung im selben PR #297; unveränderte AP5-/AP7-Rechnungen, neue Modellwelt, Portfolio und Anzeige-Wiedergabe. Eigenständige aktuelle Produktprüfungen erforderlich. Keine AP8-Abnahme/Mergefreigabe, keine AP9–AP14-Umsetzung.
+
+Die folgenden Übergaben bleiben historische Lieferbelege.
+
+## Historisch: AP8-Marktcockpit alpha.10 technisch fertig
 
 04.10.2026: Der Auftrag zur gesamten Benutzerführung ist im selben PR #297
 umgesetzt und vollständig geprüft. Gemeinsames endogenes/exogenes Experiment,

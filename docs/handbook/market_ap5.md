@@ -1,6 +1,6 @@
 # IMS: Markt und Strategiefamilien verstehen
 
-Menüführung für Produktfassung **2.0.0-alpha.10**, Fachumfang AP5. AP5 erweitert das Managementlabor um
+Menüführung für Produktfassung **2.0.0-alpha.11**, Fachumfang AP5. AP5 erweitert das Managementlabor um
 einen gemeinsam berechneten Modellmarkt. Die bisherigen AP3-Seminarfälle
 und die AP4-Einstiegsübersicht bleiben über ihre eigenen Menüpunkte erreichbar.
 Eine Modellperiode ist kein automatisch festgelegter Monat oder Kalenderjahr.
